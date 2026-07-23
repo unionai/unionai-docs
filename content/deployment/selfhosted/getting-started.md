@@ -1,0 +1,498 @@
+---
+title: Getting started
+weight: 1
+variants: -flyte +union
+---
+
+# Getting started
+
+This guide walks you through installing a {{< key product_name >}} self-hosted deployment end-to-end using the canonical `values.{aws,gcp}.yaml` overlays. The walkthrough is topology-agnostic — control plane and data plane reach each other through `UNION_HOST`. If you're running both planes in the same Kubernetes cluster, see [Optional: intracluster topology](#optional-intracluster-topology) at the bottom to layer in cluster-local routing.
+
+It assumes your cloud substrate (VPC, Kubernetes cluster, database, object storage, identity bindings) is already provisioned. For what to provision and how to size it, see [Infrastructure requirements](./infrastructure-requirements).
+
+> [!NOTE]
+> Self-hosted deployment is officially supported on **AWS**. **GCP** support is in preview; additional cloud providers are coming. The walkthrough below uses tabs to switch between cloud-specific details where they differ.
+
+## Prerequisites
+
+Before starting, confirm you have:
+
+1. A Kubernetes cluster meeting [Infrastructure requirements](./infrastructure-requirements) — sufficient capacity for both control plane and data plane, identity bindings for workload access to cloud resources, and a TLS-terminating ingress path.
+2. Cloud resources provisioned: a PostgreSQL database (RDS or Cloud SQL), object storage buckets, and a managed secrets store. See [Infrastructure requirements](./infrastructure-requirements).
+3. An OIDC provider (Okta, Entra ID, Auth0, or any OIDC-compliant IdP) for user authentication. See [Authentication](./authentication).
+4. Registry credentials for the {{< key product_name >}} control-plane image registry, provided by your {{< key product_name >}} contact.
+5. Local tools: [`helm`](https://helm.sh/docs/intro/install/) 3.18+, `kubectl` configured against your cluster, and `openssl` for TLS certificate generation (or `cert-manager` already installed in the cluster).
+
+Two notes on conventions used below:
+
+- Replace `<controlplane-namespace>` and `<dataplane-namespace>` with the Kubernetes namespaces where you intend to install each chart.
+- The walkthrough overrides only the values that must be set per environment. For everything else, the chart's `values.{aws,gcp}.yaml` provides the defaults. Avoid copying chart values into your overrides file — they drift quickly. Reference the chart's published values files in the [Helm chart repository](https://github.com/unionai/helm-charts) when you need to inspect a default.
+
+## Deployment overview
+
+1. Add Helm repositories and install control plane CRDs.
+2. Create namespaces and the registry image pull secret.
+3. Generate TLS certificates.
+4. Create the database password secret.
+5. Author your environment overrides file.
+6. Install the control plane.
+7. Install data plane CRDs.
+8. Install the data plane.
+9. Verify the installation.
+
+## Step 1: Helm repositories and control plane CRDs
+
+Add the chart repositories:
+
+```shell
+helm repo add unionai https://unionai.github.io/helm-charts/
+helm repo add flyte https://helm.flyte.org
+helm repo update
+```
+
+The control plane chart pulls in subcharts that ship CustomResourceDefinitions with OpenAPI v3 schemas larger than Kubernetes' 256 KiB per-annotation limit. A default Helm install of those CRDs overflows the `kubectl.kubernetes.io/last-applied-configuration` annotation and fails with `metadata.annotations: Too long`. To avoid this, install the CRDs separately via **server-side apply** before installing the chart with `--skip-crds` (Step 6).
+
+The CRDs are vendored in the `helm-charts` repository under `crds/<name>/`. Clone or check out the repo to get the YAML files (paths below are relative to the repo root):
+
+```shell
+git clone https://github.com/unionai/helm-charts.git
+cd helm-charts
+```
+
+Install only the CRD sets that match the features you'll enable. Each `kubectl apply` call below targets a single directory and is independent — skip any whose feature is disabled in your overrides.
+
+```shell
+# Required when monitoring.enabled=true on the control plane (chart default).
+# Also covers the data plane's monitoring stack — install once.
+# Skip if your cluster already runs kube-prometheus-stack from another
+# source AND that installation manages these CRDs.
+kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
+
+# Required when using the control plane's embedded ScyllaDB (default).
+# Skip if you bring your own scylla-operator install that manages these CRDs.
+kubectl apply --server-side --force-conflicts -f crds/scylla-operator/
+
+# Required when envoy-gateway.enabled=true on the control plane. SKIP if
+# your cluster already has Gateway API CRDs (gateway.networking.k8s.io)
+# installed from another source — this directory bundles both the standard
+# Gateway API CRDs and the envoy-specific (gateway.envoyproxy.io) CRDs,
+# and double-installing the Gateway API CRDs causes field-manager
+# conflicts between owners.
+kubectl apply --server-side --force-conflicts -f crds/envoy-gateway/
+```
+
+Data plane CRDs are installed separately in [Step 7](#step-7-install-data-plane-crds).
+
+`--force-conflicts` is required only on first install (or when adopting CRDs previously owned by a Helm-installed copy). It tells the API server to transfer SSA field ownership to the new `kubectl` field manager.
+
+## Step 2: Namespaces and registry pull secret
+
+Create the control plane namespace and the registry pull secret:
+
+```shell
+kubectl create namespace <controlplane-namespace>
+
+kubectl create secret docker-registry union-registry-secret \
+  --docker-server="registry.unionai.cloud" \
+  --docker-username="<REGISTRY_USERNAME>" \
+  --docker-password="<REGISTRY_PASSWORD>" \
+  -n <controlplane-namespace>
+```
+
+> [!NOTE]
+> Registry usernames typically follow the format `robot$<org-name>`. When passing the username on a shell, escape the `$` (`robot\$<org-name>`). Contact {{< key product_name >}} support if you have not received credentials.
+
+## Step 3: TLS certificates
+
+The control plane's NGINX ingress terminates gRPC over HTTP/2, which requires TLS. The chart references a Kubernetes TLS secret by name (`controlplane-tls-cert` in this walkthrough) — it neither generates nor requires any particular certificate source. Populate that secret with whatever certificate fits your trust model.
+
+The chart's control plane Ingress serves `UNION_HOST` (plus any additional hostnames you add via `ingress.extraHosts`). The TLS secret name is wired into your overrides file in [Step 5](#step-5-environment-overrides).
+
+Three common ways to source the certificate:
+
+{{< tabs >}}
+{{< tab "Existing certificate" >}}
+{{< markdown >}}
+
+If your organization already issues certificates (corporate CA, ACM, GCP Certificate Manager, etc.), load the PEM-encoded cert and key directly:
+
+```shell
+kubectl create secret tls controlplane-tls-cert \
+  --key path/to/tls.key \
+  --cert path/to/tls.crt \
+  -n <controlplane-namespace>
+```
+
+The certificate's SANs should include your `UNION_HOST` DNS name.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "cert-manager" >}}
+{{< markdown >}}
+
+If cert-manager runs in the cluster, define a `Certificate` resource that writes to the secret name. Point the `issuerRef` at your organization's CA or a public ACME provider (Let's Encrypt):
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: controlplane-tls-cert
+  namespace: <controlplane-namespace>
+spec:
+  secretName: controlplane-tls-cert
+  dnsNames:
+    - <UNION_HOST>
+  issuerRef:
+    name: <your-issuer>
+    kind: ClusterIssuer
+```
+
+See the [cert-manager documentation](https://cert-manager.io/docs/usage/certificate/) for `Issuer`/`ClusterIssuer` setup.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "OpenSSL self-signed" >}}
+{{< markdown >}}
+
+For lab and evaluation environments where only trusted internal workloads reach the control plane:
+
+```shell
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout controlplane-tls.key \
+  -out controlplane-tls.crt \
+  -subj "/CN=<UNION_HOST>"
+
+kubectl create secret tls controlplane-tls-cert \
+  --key controlplane-tls.key \
+  --cert controlplane-tls.crt \
+  -n <controlplane-namespace>
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+## Step 4: Database password secret
+
+```shell
+kubectl create secret generic <controlplane-secrets> \
+  --from-literal=pass.txt='<YOUR_DB_PASSWORD>' \
+  -n <controlplane-namespace>
+```
+
+> [!NOTE]
+> The secret must contain a key named `pass.txt`. The default secret name is configurable in your Helm values.
+
+## Step 5: Environment overrides
+
+Author your own overrides file with the environment-specific values for your deployment — pick any filename you like (this guide uses `my-overrides.yaml`). The chart's `values.{aws,gcp}.yaml` covers everything else.
+
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+```yaml
+global:
+  AWS_REGION: "us-east-1"
+  DB_HOST: "my-rds-instance.abcdef.us-east-1.rds.amazonaws.com"
+  DB_NAME: "unionai"
+  DB_USER: "unionai"
+  BUCKET_NAME: "my-company-cp-flyte"
+  ARTIFACTS_BUCKET_NAME: "my-company-cp-artifacts"
+  ARTIFACT_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-artifacts"
+  FLYTEADMIN_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-flyteadmin"
+  UNION_ORG: "my-company"
+  TLS_SECRET_NAMESPACE: "<controlplane-namespace>"
+  TLS_SECRET_NAME: "controlplane-tls-cert"
+
+ingress-nginx:
+  controller:
+    extraArgs:
+      default-ssl-certificate: "<controlplane-namespace>/controlplane-tls-cert"
+```
+
+For the full list of available keys, see [`values.aws.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.aws.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+```yaml
+global:
+  GCP_REGION: "us-central1"
+  DB_HOST: "10.247.0.3"
+  DB_NAME: "unionai"
+  DB_USER: "unionai"
+  BUCKET_NAME: "my-company-cp-flyte"
+  ARTIFACTS_BUCKET_NAME: "my-company-cp-artifacts"
+  ARTIFACT_IAM_ROLE_ARN: "artifacts@my-project.iam.gserviceaccount.com"
+  FLYTEADMIN_IAM_ROLE_ARN: "flyteadmin@my-project.iam.gserviceaccount.com"
+  UNION_ORG: "my-company"
+  GOOGLE_PROJECT_ID: "my-gcp-project"
+  TLS_SECRET_NAMESPACE: "<controlplane-namespace>"
+  TLS_SECRET_NAME: "controlplane-tls-cert"
+
+ingress-nginx:
+  controller:
+    extraArgs:
+      default-ssl-certificate: "<controlplane-namespace>/controlplane-tls-cert"
+```
+
+For the full list of available keys, see [`values.gcp.yaml`](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/values.gcp.yaml). To enable authentication, add the OIDC stanza per [Authentication](./authentication).
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+## Step 6: Install the control plane
+
+Download the chart's cloud overlay, then install with your overrides layered on top:
+
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+```shell
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.aws.yaml
+
+helm upgrade --install unionai-controlplane unionai/controlplane \
+  --namespace <controlplane-namespace> \
+  --create-namespace \
+  -f values.aws.yaml \
+  -f my-overrides.yaml \
+  --skip-crds \
+  --timeout 15m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+```shell
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/controlplane/values.gcp.yaml
+
+helm upgrade --install unionai-controlplane unionai/controlplane \
+  --namespace <controlplane-namespace> \
+  --create-namespace \
+  -f values.gcp.yaml \
+  -f my-overrides.yaml \
+  --skip-crds \
+  --timeout 15m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+**Values file layering (applied in order):**
+
+1. The chart's `values.{aws,gcp}.yaml` — cloud infrastructure defaults (database, storage, networking, registry secret references).
+2. Your `my-overrides.yaml` — environment-specific overrides.
+
+The registry image pull secret created in Step 2 (`union-registry-secret`) is referenced by the chart's default `imagePullSecrets` — no separate registry values file is required.
+
+## Step 7: Install data plane CRDs
+
+The data plane operator reconciles `FlyteWorkflow` resources and (optionally) Knative serving CRs. Install the CRDs from the vendored `helm-charts/crds/` directory (same checkout as Step 1):
+
+```shell
+# Mandatory — the data plane operator requires the FlyteWorkflow CRD.
+kubectl apply --server-side --force-conflicts -f crds/flyte-v1/
+
+# Required when App Serving is enabled in your data plane overrides
+# (the Knative operator consumes these CRDs at runtime).
+# Skip if App Serving is disabled, or if your cluster already manages
+# the Knative CRDs from another source.
+kubectl apply --server-side --force-conflicts -f crds/knative-operator/
+```
+
+If you enable `monitoring.enabled=true` on the data plane but did not install the `kube-prometheus-stack` CRDs in Step 1, install them now:
+
+```shell
+kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/
+```
+
+## Step 8: Install the data plane
+
+Author a data plane overrides file `dataplane-overrides.yaml` with the per-environment globals. The data plane reaches the control plane via `CONTROLPLANE_HOST`; the chart defaults `CONTROLPLANE_GRPC_ENDPOINT` to `dns:///{CONTROLPLANE_HOST}:443`.
+
+{{< tabs >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+```yaml
+global:
+  UNION_CONTROL_PLANE_HOST: "<UNION_HOST>"
+  CLUSTER_NAME: "prod-us-east-1"
+  ORG_NAME: "my-company"
+  METADATA_BUCKET: "my-company-dp-metadata"
+  FAST_REGISTRATION_BUCKET: "my-company-dp-metadata"
+  AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "123456789012"
+  BACKEND_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-backend"
+  WORKER_IAM_ROLE_ARN: "arn:aws:iam::123456789012:role/union-worker"
+  CONTROLPLANE_HOST: "<UNION_HOST>"
+```
+
+Then install:
+
+```shell
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.yaml
+
+helm upgrade --install unionai-dataplane unionai/dataplane \
+  --namespace <dataplane-namespace> \
+  --create-namespace \
+  -f values.aws.yaml \
+  -f dataplane-overrides.yaml \
+  --skip-crds \
+  --timeout 10m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+```yaml
+global:
+  UNION_CONTROL_PLANE_HOST: "<UNION_HOST>"
+  CLUSTER_NAME: "prod-us-central1"
+  ORG_NAME: "my-company"
+  METADATA_BUCKET: "my-company-dp-metadata"
+  FAST_REGISTRATION_BUCKET: "my-company-dp-metadata"
+  GCP_REGION: "us-central1"
+  GOOGLE_PROJECT_ID: "my-gcp-project"
+  BACKEND_IAM_ROLE_ARN: "union-backend@my-project.iam.gserviceaccount.com"
+  WORKER_IAM_ROLE_ARN: "union-worker@my-project.iam.gserviceaccount.com"
+  CONTROLPLANE_HOST: "<UNION_HOST>"
+```
+
+Then install:
+
+```shell
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.gcp.yaml
+
+helm upgrade --install unionai-dataplane unionai/dataplane \
+  --namespace <dataplane-namespace> \
+  --create-namespace \
+  -f values.gcp.yaml \
+  -f dataplane-overrides.yaml \
+  --skip-crds \
+  --timeout 10m --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+If authentication is enabled on the control plane, also set `AUTH_CLIENT_ID` and `AUTH_TOKEN_URL` in your overrides file. See [Authentication](./authentication).
+
+### Data plane self-registration
+
+> [!NOTE]
+> Self-registration is **opt-in as of 2026.7.0** and becomes the default in a future release; it requires the control plane and data planes on 2026.7.0 or later. Leaving it off keeps the existing behavior — the control plane routes to its statically-configured data plane URL. See the helm-charts [control plane](https://github.com/unionai/helm-charts/releases/tag/controlplane-2026.7.0) and [data plane](https://github.com/unionai/helm-charts/releases/tag/dataplane-2026.7.0) release notes.
+
+The data plane operator self-registers with the control plane on first contact — no manual provisioning step is required. On startup, the operator:
+
+1. Uses its existing OAuth client credentials (configured into the chart via `AUTH_CLIENT_ID` + secret) to authenticate to the control plane.
+2. The control plane's authorizer recognizes the identity (bound to the org admin policy at install time via the control plane chart's `services.authorizer.configMap.authorizer.bootstrap.serviceAccounts` block) and lazily creates the per-cluster authz Resource on the first `Heartbeat` and `UpdateStatus` call.
+3. On every `UpdateStatus` call, the operator reports a `connection_config` blob — the reachable host and TLS posture the control plane uses to dial this data plane, so it can reach a data plane in a separate cluster without a statically-configured endpoint.
+
+For the third step to take effect, opt in and set the data plane's externally-reachable hostname in the chart's `updateStatus.connectionConfig` block:
+
+```yaml
+updateStatus:
+  connectionConfig:
+    # Opt in to self-reporting (off by default). Enable only on operator
+    # images that support connection_config.
+    enabled: true
+    # DP-reachable hostname the control plane should dial back to reach this
+    # data plane. The operator self-reports this bare host in every
+    # UpdateStatus call; the control plane (2026.7.0+) constructs the dial
+    # target (dns:///<host>:443) and reverse-proxy URL from it.
+    host: "dp-1.internal.<your-tenant-domain>"
+    # CP dials with plain HTTP/2 when true. Default false.
+    insecure: false
+    # CP skips TLS cert validation. Set true for envs where the data plane
+    # presents a self-signed certificate.
+    insecureSkipVerify: false
+```
+
+If `host` is left empty, the operator skips self-reporting and the control plane routes to its statically-configured data plane URL (the intra-cluster default).
+
+For a control plane serving **multiple** data planes, also set the dataproxy `clusterSelector.type: direct` on the control-plane chart so it routes across data planes using these self-reports; the default `local` does single-data-plane self-resolution only. Once enabled, adding a further data plane needs no control plane re-deploy.
+
+## Step 9: Verify the installation
+
+```shell
+# Control plane pods
+kubectl get pods -n <controlplane-namespace>
+
+# Data plane pods
+kubectl get pods -n <dataplane-namespace>
+
+# Service endpoints
+kubectl get svc -n <controlplane-namespace>
+kubectl get svc -n <dataplane-namespace>
+
+# Data plane → control plane connectivity
+kubectl exec -n <dataplane-namespace> deploy/unionai-dataplane-operator -- \
+  nslookup <controlplane-ingress>.<controlplane-namespace>.svc.cluster.local
+```
+
+All pods should reach `Running` state and service DNS resolution should succeed. To smoke-test the full path, trigger a hello-world run via `uctl` and confirm it reaches `SUCCEEDED`.
+
+## Key configuration
+
+A few values are worth understanding because they affect the deployment's identity and security posture.
+
+### Single-tenant mode
+
+Self-hosted deployments operate in single-tenant mode with an explicit organization name:
+
+```yaml
+global:
+  UNION_ORG: "my-company"
+```
+
+### Service discovery
+
+Within each plane, services discover each other via cluster-local Kubernetes DNS (e.g., `flyteadmin.<controlplane-namespace>.svc.cluster.local`). DP→CP and CP→DP cross-plane calls go through `CONTROLPLANE_HOST` and `DATAPLANE_HOST` respectively — those values resolve to whatever ingress the operator points them at (public, private DNS, or cluster-local).
+
+## Optional: intracluster topology
+
+When the control plane and data plane both run in the *same* Kubernetes cluster, DP→CP traffic can bypass the public ingress and dial CP Services directly through `*.svc.cluster.local`. This is faster, avoids public-LB egress costs, and removes a dependency on external DNS for in-cluster traffic.
+
+To enable it, set these two DP globals in your `values.{cloud}.yaml` (replace `controlplane` with your CP release namespace if it differs):
+
+```yaml
+global:
+  CONTROLPLANE_GRPC_ENDPOINT: "dns:///controlplane-nginx-controller.controlplane.svc.cluster.local:443"
+  QUEUE_GRPC_ENDPOINT: "dns:///queue.controlplane.svc.cluster.local:80"
+```
+
+`QUEUE_GRPC_ENDPOINT` is the auth-less path task pods use for queue events (task pods don't carry OAuth credentials; see chart `MIGRATION.md`).
+
+See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the substrate trade-offs (shared etcd, shared node pools, migration path to split-cluster).
+
+## Key differences from a self-managed deployment
+
+The defining difference between [self-managed](../selfmanaged/_index) and self-hosted is **who operates the control plane**. Everything else — topology, networking, certificate sources — follows from that choice and varies independently.
+
+| Aspect | Self-managed | Self-hosted |
+| --- | --- | --- |
+| Control plane operator | {{< key product_name >}} | You |
+| Control plane location | {{< key product_name >}}-managed infrastructure | Your Kubernetes cluster(s) |
+| Authentication setup | Automated via `uctl selfserve` | OIDC configuration in your identity provider, with {{< key product_name >}} support — see [Authentication](./authentication) |
+| Customization surface | Configurable within {{< key product_name >}}-supported parameters | Full Helm chart access |
+
+## Next steps
+
+- [Authentication](./authentication) — configure OIDC/OAuth2 for users and clients.
+- [Authorization](./authorization) — pick an authorization mode (Noop, External, or built-in RBAC).
+- [Image builder](./image-builder) — enable automatic task-image builds.
+- [Operations](./operations/_index) — day-2 guidance: CI/CD integration, key rotation.
+- [Operations → Troubleshooting](./operations/troubleshooting) — installation and runtime troubleshooting.
+- [Operations → Monitoring](./operations/monitoring/_index) — observability stack setup and metrics reference.
