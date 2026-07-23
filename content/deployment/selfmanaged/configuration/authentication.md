@@ -307,7 +307,7 @@ config:
 
 ### In-pod control plane authentication (EAGER_API_KEY)
 
-Flyte task pods may need to call back into the Union.ai control plane during execution -- to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover -- the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
+Flyte task pods may need to call back into the Union.ai control plane during execution: to launch sub-tasks, fetch remote references, run apps that make programmatic API calls, and similar. The `EAGER_API_KEY` secret holds the OAuth2 client credentials used to authenticate those calls. (The "eager" prefix is a Flyte 1.x holdover; the key is needed for every task pod that may reach the control plane, not just eager workflows. There is no separate eager-mode toggle in Flyte 2.x.)
 
 The executor injects the secret into task pods via:
 
@@ -319,8 +319,19 @@ executor:
       secretName: EAGER_API_KEY
 ```
 
-> [!NOTE] Provisioning the EAGER_API_KEY
-> The `EAGER_API_KEY` secret must be provisioned for the organization before any task pod can call the control plane. The key value is issued by Union.ai; contact your Union.ai Support representative to have it provisioned for your tenant. Once you have the value, deliver it to the `EAGER_API_KEY` Kubernetes secret in the executor's namespace via External Secrets Operator (or another out-of-band secret delivery mechanism). The provisioning workflow is being moved to a self-serve flow on the Union.ai console; until then, the contact-Support path is the canonical one.
+#### Provisioning
+
+The {{< key product_name >}} operator provisions this key for you: no manual step and no support request are needed. On each reconciliation tick the operator checks whether the key already exists; if it does not, the operator mints one on the control plane and writes it into the cluster through the local operator proxy. Once the key is in place the check is a no-op, so the loop is safe to run continuously and re-provisions the key automatically if it is ever removed.
+
+Self-provisioning is active when secret management is enabled, which is the chart default:
+
+```yaml
+proxy:
+  secretManager:
+    enabled: true
+```
+
+If you disable secret management, the operator cannot store the key and you must deliver the `EAGER_API_KEY` secret yourself, following the same [External Secrets Operator](#option-a-external-secrets-operator-recommended) pattern used for the client secrets below.
 
 ### Data plane secrets
 
