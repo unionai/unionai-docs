@@ -1,6 +1,6 @@
 ---
 title: SandboxedConfig
-version: 2.5.12
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---

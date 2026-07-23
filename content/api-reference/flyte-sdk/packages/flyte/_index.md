@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.12
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -1006,7 +1006,7 @@ if __name__ == "__main__":
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
-| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Not yet supported by the backend (raises NotImplementedError at submit until flyteidl2 RunSpec.recover ships). |
+| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Not yet supported by the backend (raises NotImplementedError at submit until flyteidl2 RunSpec.relation ships). |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner
