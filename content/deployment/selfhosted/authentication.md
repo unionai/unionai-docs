@@ -29,6 +29,9 @@ Self-hosted authentication requires creating **five OAuth2 client applications**
 > [!NOTE]
 > App 6 (CI/CD) is only needed if you deploy workflows from automated pipelines. See the [CI/CD integration](./operations/cicd) guide for full setup instructions.
 
+> [!IMPORTANT]
+> **With more than one data plane, create a separate Operator (App 4) and EAGER (App 5) client for _each_ data plane cluster.** Each data plane then authenticates as its own identity — one you can grant cluster-management permission on only its own cluster — and mints its own `EAGER_API_KEY`. Sharing a single Operator client forces one identity to hold cluster-management rights on every cluster, and sharing a single EAGER client causes rotation interference: each data plane's key request rotates the shared secret and invalidates the others. Apps 1–3 (and the optional App 6) stay single and control-plane-wide.
+
 ## Identity provider requirements
 
 You must use an OIDC-compliant identity provider that you manage outside of {{< key product_name >}}. Any standards-compliant provider will work. {{< key product_name >}} uses [Okta](https://www.okta.com/) for its internal deployments, but you can use whichever provider your organization already uses.
@@ -208,6 +211,9 @@ Used by data plane services (operator, propeller, cluster-resource-sync) to auth
 
 Note the **Client ID** (used as `AUTH_CLIENT_ID` in data plane configuration) and the **Client Secret** (stored in Kubernetes secrets).
 
+> [!NOTE]
+> Create one Operator app **per data plane cluster** (for example `<org>-operator-dp-1`, `<org>-operator-dp-2`). Each data plane uses its own Client ID as `AUTH_CLIENT_ID`, so it authenticates as a distinct identity that can be granted cluster-management permission on only its own cluster.
+
 ### Application 5: EAGER (Confidential)
 
 Used for task pod authentication. The encoded credentials form the `EAGER_API_KEY`.
@@ -218,6 +224,9 @@ Used for task pod authentication. The encoded credentials form the `EAGER_API_KE
 | Grant types | `client_credentials` |
 
 Note the **Client ID** and **Client Secret** — these are encoded into the EAGER_API_KEY.
+
+> [!NOTE]
+> Create one EAGER app **per data plane cluster**. Each data plane's operator mints its `EAGER_API_KEY` against its own EAGER client, so a key request from one data plane never rotates or invalidates another's.
 
 ## Step 2: Configure control plane
 
@@ -445,6 +454,9 @@ flyte:
 
 ## Step 4: Configure data plane
 
+> [!IMPORTANT]
+> Repeat this step for **each** data plane, using that data plane's own Operator (App 4) client ID and secret. Every data plane gets its own `AUTH_CLIENT_ID` and its own `union-secret-auth` secret in its namespace.
+
 Add the operator client ID to your data plane overrides file:
 
 ```yaml
@@ -464,6 +476,9 @@ kubectl create secret generic union-secret-auth \
 
 The EAGER_API_KEY is a base64-encoded string containing the EAGER app credentials. It enables task pods to authenticate to the control plane.
 
+> [!IMPORTANT]
+> Generate a distinct `EAGER_API_KEY` for **each** data plane from that data plane's own EAGER (App 5) credentials, and create the secret in that data plane's namespace.
+
 Generate the key:
 
 ```shell
@@ -481,6 +496,43 @@ kubectl create secret generic <eager-secret-name> \
 
 > [!NOTE]
 > The exact secret name and key depend on your deployment's embedded K8s secret manager configuration. The secret name is typically an MD5 hash of a logical identifier. Contact {{< key product_name >}} support for the exact values for your organization.
+
+## Seed EAGER credentials without creating an OAuth app (`apiKeyOverrides`)
+
+Some identity providers cannot create service (`client_credentials`) OAuth applications programmatically, or you may run a control plane with no identity-provider integration at all. In that case the control plane cannot register an EAGER client on demand when a task pod requests its key.
+
+Instead of registering an app, **seed** the EAGER client credentials as a Kubernetes Secret and point the identity service at it with `apiKeyOverrides`. When a key request matches an override, the identity service returns the seeded credentials from the mounted Secret rather than creating a new OAuth application in your IdP.
+
+Configure overrides in your control plane Helm values:
+
+```yaml
+services:
+  identity:
+    apiKeyOverrides:
+      - key: EAGER_API_KEY
+        clusterName: dp-1          # this override applies to the dp-1 data plane
+        existingSecret:
+          name: eager-dp-1-creds   # Secret holding the seeded EAGER client credentials
+      - key: EAGER_API_KEY
+        clusterName: dp-2
+        existingSecret:
+          name: eager-dp-2-creds
+```
+
+- **`key`** — the system key to override (`EAGER_API_KEY`).
+- **`clusterName`** _(optional)_ — scopes the override to one data plane. Overrides are resolved on `(organization, key, clusterName)`; an entry without `clusterName` matches any cluster (a control-plane-wide fallback). With multiple data planes, give each its own `clusterName` entry and its own seeded Secret so their credentials stay independent.
+- **`existingSecret.name`** — a Secret you create in the control plane namespace holding the seeded EAGER client's ID and secret. By default the chart reads the keys `client_id` and `client_secret`; set `clientIdKey` / `clientSecretKey` if your Secret uses different keys.
+
+Create one seeded Secret per data plane:
+
+```shell
+kubectl create secret generic eager-dp-1-creds \
+  --from-literal=client_id='<EAGER_CLIENT_ID>' \
+  --from-literal=client_secret='<EAGER_CLIENT_SECRET>' \
+  -n <controlplane-namespace>
+```
+
+With an override in place you do not create App 5 in your IdP for that data plane — the seeded credentials serve its `EAGER_API_KEY` directly.
 
 ## Step 6: Deploy
 
@@ -530,6 +582,9 @@ kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=
 | `<controlplane-secrets>` | `<controlplane-namespace>` | `pass.txt`, `client_secret` | DB password, Service-to-service app (App 3) secret |
 | `union-secret-auth` | `<dataplane-namespace>` | `client_secret` | Operator app (App 4) secret |
 | EAGER secret | `<dataplane-namespace>` | varies | EAGER app (App 5) encoded key |
+
+> [!NOTE]
+> `union-secret-auth` and the EAGER secret are **per data plane** — each data plane holds its own copy in its own namespace, sourced from that data plane's Operator (App 4) and EAGER (App 5) clients. If instead you seed EAGER credentials via `apiKeyOverrides` (see the section above), those Secrets live in the control plane namespace.
 
 ## Self-hosted vs. self-managed authentication
 
