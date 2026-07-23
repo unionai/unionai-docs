@@ -24,7 +24,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [uctl](../../../api-reference/uctl-cli/_index).
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli).
-* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte get cluster` command: `pip install flyteplugins-union`.
+* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
 ## Deploy the {{< key product_name >}} operator
 

@@ -23,7 +23,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [uctl](../../../api-reference/uctl-cli/_index).
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli) (used later to run a sample workflow).
-* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte get cluster` command: `pip install flyteplugins-union`.
+* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 * Install the [Nebius CLI](https://docs.nebius.com/cli) and authenticate with `nebius profile create`.
 
 ## Deploy the {{< key product_name >}} operator
