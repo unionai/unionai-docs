@@ -1,0 +1,73 @@
+name: "Cut docs version"
+
+# Cut a versioned docs snapshot (DOC-1245, prds docs_versioning §9.4). Two triggers:
+#
+#   1. flyte-sdk release (automatic) — when the SDK API-ref version bumps on main
+#      (i.e. a refresh-api-docs regen PR merged), cut v2.x.y.0. The `--auto` gate
+#      makes this a no-op unless it is genuinely an sdk-release cut (a new triple),
+#      so a plain content merge that happens to touch the SDK index never cuts.
+#   2. Manual cut (workflow_dispatch) — a maintainer cuts v2.x.y.(z+1) when enough
+#      non-SDK change has accumulated with no SDK release.
+#
+# A cut collects every sub-part's current value into data/version-manifest.json,
+# commits it on a detached HEAD, and tags v2.x.y.z. `main` is never advanced — the
+# tag pins an immutable manifest; /docs/latest stays current from main.
+# The versioned build/publish that reacts to the tag is a later slice.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Resolve + print the next version only; do not tag."
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      # The flyte-sdk API-ref version file — a bump here is the sdk-release signal.
+      - "content/api-reference/flyte-sdk/_index.md"
+
+permissions:
+  contents: write  # push the tag
+
+concurrency:
+  # Serialize cuts so two runs can't race on tag creation.
+  group: docs-cut
+  cancel-in-progress: false
+
+jobs:
+  cut:
+    name: "Cut a docs version"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true   # need unionai-docs-infra (the tool + script)
+          fetch-depth: 0     # need all tags for the z computation
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Cut
+        env:
+          # The flyte-variant backend version is read from flyteorg/flyte releases.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          args=()
+          # On the push trigger, gate: only cut if the SDK actually moved.
+          if [ "${{ github.event_name }}" = "push" ]; then
+            args+=(--auto)
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            args+=(--dry-run)
+          else
+            args+=(--push)
+          fi
+          bash unionai-docs-infra/scripts/cut-docs-version.sh "${args[@]}"
