@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.5.12
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,6 +47,7 @@ class Action(
 | `name` | `str` | Get the name of the action. |
 | `phase` | `ActionPhase` | Get the phase of the action. |
 | `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `relation` | `None` | Provenance link (``flyteidl2.common.run_pb2.Relation``: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
 | `run_name` | `str` | Get the name of the run. |
 | `start_time` | `datetime` | Get the start time of the action. |
 | `task_name` | `str \| None` | Get the name of the task. |

@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.5.12
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,6 +47,7 @@ class ActionDetails(
 | `phase_durations` | `Dict[ActionPhase, timedelta]` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
 | `queued_time` | `timedelta \| None` | Get the time spent in the QUEUED phase for the latest attempt. |
 | `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `relation` | `None` | Provenance link (``flyteidl2.common.run_pb2.Relation``: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
 | `run_name` | `str` | Get the name of the run. |
 | `running_time` | `timedelta \| None` | Get the time spent in the RUNNING phase for the latest attempt. |
 | `runtime` | `timedelta` | Get the runtime of the action. |
