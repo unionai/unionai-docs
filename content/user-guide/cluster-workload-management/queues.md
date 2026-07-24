@@ -23,9 +23,9 @@ CLI or Python. For how workflow authors *target* a queue from task code, see
 ## How a queue routes
 
 A queue lives inside one **cluster pool** and routes work to one or more clusters
-*within that pool*. By default (the `*` selector) it spreads across every healthy
-cluster in the pool; you can also pin it to specific clusters. It can never reach a
-cluster in another pool: pools are isolation boundaries.
+*within that pool*. By default (the `*` selector) it spreads across the pool's
+healthy, enabled clusters; you can also pin it to specific clusters. It can never
+reach a cluster in another pool: pools are isolation boundaries.
 
 ```mermaid
 flowchart TD
@@ -59,19 +59,56 @@ flowchart TD
 Users submit to a **queue**, never to a pool or a cluster directly. Each queue sits
 inside exactly one pool:
 
-- **`default`** spreads across all clusters in the `default` pool.
-- **`prod-queue`** spreads across all clusters in the `prod` pool.
+- **`default`** spreads across the eligible clusters in the `default` pool.
+- **`prod-queue`** spreads across the eligible clusters in the `prod` pool.
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
+
+> [!NOTE] Wildcard routing skips unhealthy and disabled clusters
+> A `*` selector does not mean *every* cluster in the pool — it means every
+> cluster that is both **healthy** and **enabled**, evaluated against the pool's
+> current state. Say a pool holds two clusters and the second goes unhealthy for
+> any reason, including a
+> [config mismatch with the pool](./cluster-pools#how-a-pools-config-is-established):
+> the queue routes new runs and actions to the first cluster only, and sends
+> nothing to the second until it becomes healthy again. This governs the placement
+> of new work; it does not move work that has already been dispatched. Check with
+> `flyte get cluster <name>`, which reports each cluster's state, health, and
+> unhealthy reasons.
+
+### Queues you get for free
+
+You don't have to create a queue to have one. Two exist without any action on
+your part:
+
+- The org-wide **`default`** queue, in the `default` pool with the `*` selector.
+  Anything that doesn't explicitly target a queue goes here.
+- A **co-named queue** for every cluster: registering a cluster creates a queue
+  with the *same name as the cluster*, in that cluster's pool, whose selector
+  names that one cluster explicitly rather than using `*`. Register
+  `prod-us-east-1` and you get a `prod-us-east-1` queue that routes only to
+  `prod-us-east-1` — so any cluster can be targeted by name immediately, without
+  setting up a queue for it. See
+  [The co-named queue](./clusters#the-co-named-queue).
+
+Both are ordinary queues: they show up in `flyte get queue` and take the same
+settings and updates as queues you create yourself.
 
 The selector (which clusters within the pool) is mutable. The pool a queue lives
 in is **fixed at creation**: an update that changes it is rejected, because
 moving a queue to another pool would cross an isolation boundary. To move
 workloads to another pool, see [Move work to another pool](#move-work-to-another-pool).
 
-> [!NOTE] Queue scope
-> Queues are currently organization-scoped. Some CLI and Python surfaces expose
-> `project` and `domain` parameters for future scoped queues, but current
-> deployments reject project/domain-scoped queue creation.
+There is one exception, and it isn't a queue update: a cluster's co-named queue
+follows that cluster if the cluster is
+[reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool). Any
+other queue pinned to that cluster must be repointed first, or the reassignment
+is rejected.
+
+> [!NOTE] Queues are organization-scoped
+> Every queue is visible to the whole organization; a queue cannot yet be scoped
+> to a project or a domain. Some CLI and Python surfaces already expose `project`
+> and `domain` parameters, but project/domain-scoped queue creation is not
+> implemented yet and is rejected. Support is coming soon.
 
 ## Create a queue
 
@@ -150,7 +187,9 @@ queue = Queue.create(
   pool.
 - **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
   Omit to use all clusters in the pool. In the API, `["*"]` means all enabled and
-  healthy clusters in the pool, and `*` must be the only entry if used.
+  healthy clusters in the pool (see
+  [Wildcard routing](#how-a-queue-routes)), and `*` must be the only entry if
+  used.
 - **`run_concurrency` / `--run-concurrency`**: maximum number of *runs* active on
   the queue at once. Children of an active run aren't counted; use this to stop a
   job from overlapping with a previous invocation of itself. `0` means no limit.
