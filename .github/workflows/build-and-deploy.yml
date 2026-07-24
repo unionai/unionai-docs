@@ -22,6 +22,10 @@ on:
   push:
     branches:
       - main
+    tags:
+      # A cut (docs versioning, DOC-1245) pushes a v2.x.y.z tag → redeploy so
+      # /docs/v2 re-points to the new stable and the new pinned version publishes.
+      - 'v2.*'
   workflow_dispatch:
 
 permissions:
@@ -38,13 +42,13 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy:
-#   - push to main: queue in order, don't cancel, so we never leave
-#     production in an inconsistent state mid-deploy.
-#   - workflow_dispatch: own group, distinct from push, so manual
-#     re-runs never block or get blocked by an in-progress production
-#     deploy.
+#   - all production deploys (push to main AND cut tags `v2.*`) share one `prod`
+#     group, queued in order (never cancel), so a main-merge deploy and a
+#     cut-tag deploy can't race on the single CF Pages project.
+#   - workflow_dispatch: own `manual` group, so manual re-runs never block or
+#     get blocked by an in-progress production deploy.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}
   cancel-in-progress: false
 
 jobs:
@@ -58,7 +62,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 1
+          # 0 (was 1): the multi-version assembly checks out cut tags + main into
+          # isolated worktrees, so it needs full history + all tags.
+          fetch-depth: 0
 
       - name: Set up Hugo
         uses: peaceiris/actions-hugo@v3
@@ -85,7 +91,18 @@ jobs:
       - name: Build dist
         run: |
           start=$(date +%s)
-          make dist
+          # Docs versioning (DOC-1245): when versions.toml is present, assemble the
+          # multi-version dist — /docs/latest (main, noindex), /docs/v2 (the stable
+          # tag, indexed) and each pinned /docs/v2.x.y.z (noindex). Until versions.toml
+          # is added (after the first cut), fall back to the single-version build, so
+          # merging this change is a NO-OP until versioning is switched on.
+          if [ -f versions.toml ]; then
+            echo "versions.toml present -> multi-version assembly"
+            LATEST_REF=origin/main bash unionai-docs-infra/scripts/build_versions.sh
+          else
+            echo "no versions.toml -> single-version build (current behavior)"
+            make dist
+          fi
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
       - name: Emit build provenance
