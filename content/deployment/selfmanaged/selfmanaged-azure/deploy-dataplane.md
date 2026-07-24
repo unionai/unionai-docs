@@ -133,5 +133,6 @@ user guide:
 - [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
 - [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, priority, and fairness.
 
-Every organization is provisioned with a `default` pool that new clusters join
-automatically, so a single-cluster deployment needs no extra pool setup.
+Each cluster is assigned exactly one pool. If no custom pool is specified when the
+cluster is created, it joins the `default` pool that every organization is
+provisioned with, so a single-cluster deployment needs no extra pool setup.

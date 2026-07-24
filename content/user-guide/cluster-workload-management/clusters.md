@@ -56,20 +56,46 @@ Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 {{< /tab >}}
 {{< /tabs >}}
 
-When a cluster registers, its declared object store, secret store, and container
-registry are validated against the target pool's data plane contract. A cluster
-whose configuration doesn't match the pool is marked unhealthy or rejected,
-depending on where the mismatch is detected. This is what guarantees that any
-workload routed to the pool can run on any of its healthy clusters.
+Registration itself does not validate the cluster against the pool: any cluster
+is allowed to join. Validation happens asynchronously, once the cluster starts
+reporting its real object store, secret store, and container registry to the
+control plane. The control plane compares each reported value against the pool's
+config and marks the cluster **unhealthy** on a mismatch. An unhealthy cluster is
+no longer eligible for
+[wildcard routing](./queues#how-a-queue-routes), so queues with the `*` selector
+stop sending new work to it until it recovers. If the pool has no config yet, the
+first cluster to report instead *populates* it. See
+[How a pool's config is established](./cluster-pools#how-a-pools-config-is-established)
+for the full mechanism.
 
-Registering a cluster also creates an implicit queue named after the
-cluster, pinned to it, in the cluster's pool, so every cluster can be targeted
-by name from day one. Registration additionally ensures the org-wide `default`
-queue exists. The `default` queue lives in the `default` pool with the `*`
-selector, so it routes to every healthy cluster in the `default` pool: a
-cluster registered there joins it automatically, while a cluster in any other
-pool never does. These are ordinary queues; manage them like any other on the
-[Queues](./queues) page.
+This is what guarantees that any workload routed to the pool can run on any of
+its healthy clusters — so after registering into a custom pool, confirm with
+`flyte get cluster <name>` that the cluster settles healthy.
+
+### The co-named queue
+
+Registering a cluster also creates an implicit **co-named queue**: a queue with
+the same name as the cluster, in the cluster's pool, whose selector names that
+one cluster explicitly — not the `*` wildcard. So `flyte create cluster
+prod-us-east-1` also gives you a `prod-us-east-1` queue that routes only to
+`prod-us-east-1`, and every cluster can be targeted by name from day one, with no
+queue setup:
+
+```python
+flyte.with_runcontext(queue="prod-us-east-1").run(main)
+```
+
+Registration additionally ensures the org-wide `default` queue exists. The
+`default` queue lives in the `default` pool with the `*` selector, so it routes
+to every healthy, enabled cluster in the `default` pool: a cluster registered
+there joins it automatically, while a cluster in any other pool never does.
+
+Both are ordinary queues — they appear in `flyte get queue`, carry the same
+concurrency, depth, priority, and fairness settings as any other, and are managed
+the same way on the [Managing queues](./queues) page. Two behaviors are specific
+to the co-named queue: it follows its cluster if the cluster is
+[reassigned to another pool](#move-a-cluster-to-a-different-pool), and its
+selector empties out if the cluster is [deleted](#delete-a-cluster).
 
 ## Inspect clusters
 
@@ -97,12 +123,14 @@ flyte get cluster --limit 50
 from flyteplugins.union.remote import Cluster
 
 for cluster in Cluster.listall(limit=100):
-    print(cluster.name, cluster.pools, cluster.state, cluster.health, cluster.capacity)
+    print(cluster.name, cluster.pool, cluster.state, cluster.health, cluster.capacity)
 
 cluster = Cluster.get("prod-us-east-1")
 print(cluster.name)
-print(cluster.pools)
+print(cluster.pool)
 print(cluster.queues)
+print(cluster.health, cluster.unhealthy_reasons)
+print(cluster.capacity)
 print(cluster.config_drift)
 ```
 
@@ -115,39 +143,99 @@ which queues are bound to it, useful when deciding where to route or pin a queue
 
 ## Move a cluster to a different pool
 
-A cluster's pool assignment is fixed for the life of the cluster record: a
-registration that names a different pool for an existing cluster is rejected,
-because the cluster may already have reported status, synced configuration, and
-served workloads against the old pool's data plane. Moving a cluster is
-therefore a delete-and-re-register:
+A cluster can be reassigned to another pool in place, without deleting and
+re-registering it. This is a **disruptive** operation: read the warning below
+before you run it.
 
-1. [Drain](./queues#drain-and-reactivate-a-queue) the queues that pin the
-   cluster, so in-flight work finishes without new submissions landing.
-   (Draining is not yet available; until it is, wait for in-flight work to
-   finish, watching with `flyte get queue <name> --watch`.)
-2. Delete the cluster record. This automatically removes the cluster from the
-   selector of every queue that pinned it.
-3. Register the cluster in the destination pool, under a **new name**.
-4. Point queues at the new cluster: create new queues in the destination pool,
-   or add the new cluster to the selectors of existing queues in that pool.
+> [!WARNING] Moving a cluster does not stop in-flight work
+> Reassigning a cluster's pool does **not** drain the cluster, wait for running
+> work, or reschedule anything. The change takes effect immediately and can break
+> whatever is currently running on that cluster. The control plane enforces
+> exactly one precondition — that no custom-named queue in the current pool still
+> points at the cluster — and checks nothing else. Ensuring that no
+> {{< key product_name >}} workload is running on the cluster is **your
+> responsibility**. Treat this as a maintenance-window operation.
 
-Use a new name for the re-registered cluster. Registration creates an implicit
-queue named after the cluster, and a queue's pool can never change, so if you
-reuse the old name, the existing same-named queue stays bound to the old
-pool with an empty selector, and anything still targeting that queue by name
-silently routes nowhere.
+{{< tabs "move-cluster" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte update cluster prod-us-east-1 --pool prod
+flyte update cluster prod-us-east-1 --pool prod --yes   # skip the confirmation prompt
+```
+
+Without `--yes`, the CLI warns that the operation is unsafe and asks you to
+confirm.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+from flyteplugins.union.remote import Cluster
+
+Cluster.update("prod-us-east-1", cluster_pool_name="prod")
+```
+
+There is no confirmation prompt on this path.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+### Before you move a cluster
+
+1. **Repoint custom-named queues.** Any queue *other* than the one named after
+   the cluster that pins it must be repointed or removed from the cluster first,
+   or the move is rejected. The cluster's [co-named queue](#the-co-named-queue)
+   moves to the destination pool with it, automatically.
+   `flyte get cluster <name>` lists the queues bound to the cluster.
+2. **Let runs finish.** [Draining](./queues#drain-and-reactivate-a-queue) is
+   coming in a future release; until it ships, wait for in-flight work to finish,
+   watching with `flyte get queue <name> --watch`.
+3. **Check for apps and v1 executions.** A cluster does not only serve runs: it
+   can also be hosting [apps](../serve-and-deploy-apps/_index) and legacy v1
+   executions, which {{< key product_name >}} still supports today. There is
+   currently **no way to see how many apps or v1 executions are running on a
+   given cluster**, and the queue precondition above does not account for them,
+   so nothing will block the move. If any are running when you reassign the
+   cluster, the cluster can be marked unhealthy and drop out of scheduling until
+   the mismatch is resolved. Confirm out-of-band that the cluster is idle before
+   moving it.
+4. **Make sure the configs match.** The destination pool's config must match
+   what the cluster reports, or the cluster goes unhealthy shortly after the
+   move — see below.
+
+### If the cluster goes unhealthy after the move
+
+Pool config is validated asynchronously against what the cluster reports (see
+[How a pool's config is established](./cluster-pools#how-a-pools-config-is-established)),
+so a mismatch surfaces only after the move, as an unhealthy cluster that
+[wildcard queues](./queues#how-a-queue-routes) will no longer route to.
+`flyte get cluster <name>` shows the state, health, and unhealthy reasons. Fix
+whichever side is wrong:
+
+- **The cluster's config**: the reported values come from the deployed data
+  plane, so change them where that deployment is defined (Terraform, Helm values,
+  and so on) and redeploy the cluster. The control plane picks up the new values
+  on the cluster's next status report.
+- **The pool's config**: run `flyte update cluster-pool <pool>`, which opens the
+  pool in your `$EDITOR`. See [Update a pool](./cluster-pools#update-a-pool).
 
 ## Delete a cluster
 
 [Drain](./queues#drain-and-reactivate-a-queue) or repoint any queues bound to a
 cluster before removing it, so in-flight work isn't lost when the cluster goes
-away. (Draining is not yet available, coming in a future release.)
+away. (Draining is coming in a future release; until it ships, repoint the queue
+or wait for its in-flight work to finish.)
 
 Deleting a cluster automatically removes it from the selector of every queue
 that pins it explicitly; wildcard (`*`) queues are unaffected. A queue whose
 selector becomes empty stops routing work anywhere until you point it at
-another cluster **in its pool**. A queue's pool can never change, so if the
-replacement cluster lives in a different pool, create a new queue there
+another cluster **in its pool**. You cannot move a queue to another pool, so if
+the replacement cluster lives in a different pool, create a new queue there
 instead.
 
 {{< tabs "delete-cluster" >}}
