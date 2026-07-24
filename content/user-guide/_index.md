@@ -121,8 +121,8 @@ Build durable, self-healing agents using tasks and apps as building blocks.
 Implement ReAct, Plan-and-Execute, and other agent patterns with full observability.
 {{< /link-card >}}
 
-{{< link-card target="agent-framework-integrations" icon="plugin" title="Agent framework integrations" >}}
-Integrate with third-party agent frameworks like LangGraph, PydanticAI, and OpenAI Agents SDK.
+{{< link-card target="../integrations/agents" icon="plugin" title="Agent frameworks" >}}
+Run agents from OpenAI, Claude, LangGraph, CrewAI, and more as durable Flyte tasks.
 {{< /link-card >}}
 
 {{< link-card target="sandboxing" icon="box" title="Sandboxing" >}}

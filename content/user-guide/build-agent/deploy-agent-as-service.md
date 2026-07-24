@@ -7,7 +7,7 @@ mermaid: true
 
 # Deploy an agent as a service
 
-Once you've built an agent (with [pure Python](./python-agents), the [`Agent` harness](./flyte-agents), or a [third-party framework](../agent-framework-integrations/_index)), *how* you run it is an independent choice. The same agent object can be deployed in several ways:
+Once you've built an agent (with [pure Python](./python-agents), the [`Agent` harness](./flyte-agents), or a [third-party framework](../../integrations/agents/_index)), *how* you run it is an independent choice. The same agent object can be deployed in several ways:
 
 | Pattern | When to use it | What invokes the agent |
 |---------|----------------|------------------------|
