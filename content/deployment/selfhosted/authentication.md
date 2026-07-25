@@ -497,6 +497,22 @@ kubectl create secret generic <eager-secret-name> \
 > [!NOTE]
 > The exact secret name and key depend on your deployment's embedded K8s secret manager configuration. The secret name is typically an MD5 hash of a logical identifier. Contact {{< key product_name >}} support for the exact values for your organization.
 
+### Provision the task-pod key automatically with the operator
+
+Rather than encoding the `EAGER_API_KEY` and creating the data plane secret by hand, you can let the data plane operator mint it and write it to the task-pod secret store, where the pod webhook injects it into task pods. Enable it in the data plane Helm values:
+
+```yaml
+config:
+  operator:
+    apiKey:
+      enabled: true
+```
+
+This relies on the embedded Kubernetes secret manager (`proxy.secretManager.enabled`, enabled by default). The operator scopes the key to its own cluster, so in a multi-data-plane organization each data plane provisions and rotates its own `EAGER_API_KEY` without overwriting another's. With this enabled you skip the manual `base64` encoding and `kubectl create secret` steps above.
+
+> [!NOTE]
+> `config.operator.apiKey.enabled` is currently opt-in (default `false`) and is expected to become the default in a future chart release. It still requires the EAGER (App 5) credentials to be resolvable on the control plane — either a registered EAGER client or a seeded `apiKeyOverrides` entry (see below).
+
 ## Seed EAGER credentials without creating an OAuth app (`apiKeyOverrides`)
 
 Some identity providers cannot create service (`client_credentials`) OAuth applications programmatically, or you may run a control plane with no identity-provider integration at all. In that case the control plane cannot register an EAGER client on demand when a task pod requests its key.
