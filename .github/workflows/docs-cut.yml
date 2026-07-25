@@ -1,50 +1,60 @@
 name: "Cut docs version"
 
-# Cut a versioned docs snapshot (DOC-1245, prds docs_versioning §9.4). Two triggers:
+# Propose a manual docs-version cut (DOC-1245, prds docs_versioning §9.4).
 #
-#   1. flyte-sdk release (automatic) — when the SDK API-ref version bumps on main
-#      (i.e. a refresh-api-docs regen PR merged), cut v2.x.y.0. The `--auto` gate
-#      makes this a no-op unless it is genuinely an sdk-release cut (a new triple),
-#      so a plain content merge that happens to touch the SDK index never cuts.
-#   2. Manual cut (workflow_dispatch) — a maintainer cuts v2.x.y.(z+1) when enough
-#      non-SDK change has accumulated with no SDK release.
+# One-merge model: a cut is materialized at MERGE by build-and-deploy (which mints
+# the tag named by versions.toml). So this workflow does NOT tag directly — it opens
+# a draft PR that bumps versions.toml to the next version, for a human to merge.
+# Two symmetric "buttons" produce the same shape (a versions.toml-bump PR):
 #
-# A cut collects every sub-part's current value into data/version-manifest.json,
-# commits it on a detached HEAD, and tags v2.x.y.z. `main` is never advanced — the
-# tag pins an immutable manifest; /docs/latest stays current from main.
-# The versioned build/publish that reacts to the tag is a later slice.
+#   * flyte-sdk release (automatic) — regen-api-docs.yml folds the promote into its
+#     regen PR (a new x.y.z.0). Handled there, not here.
+#   * manual cut (this workflow)    — a maintainer clicks "Run workflow" to cut
+#     v2.x.y.(z+1) when enough non-SDK change has accumulated with no SDK release.
+#
+# Manual cut = two steps: (1) click Run workflow → this opens the versions.toml PR;
+# (2) merge it → build-and-deploy mints the tag + rebuilds /docs/v2.
 
 on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Resolve + print the next version only; do not tag."
+        description: "Resolve + print the next version only; do not open a PR."
         type: boolean
         default: false
-  push:
-    branches: [main]
-    paths:
-      # The flyte-sdk API-ref version file — a bump here is the sdk-release signal.
-      - "content/api-reference/flyte-sdk/_index.md"
-
-permissions:
-  contents: write  # push the tag
 
 concurrency:
-  # Serialize cuts so two runs can't race on tag creation.
+  # Serialize so two dispatches can't open competing versions.toml PRs.
   group: docs-cut
   cancel-in-progress: false
 
+permissions:
+  contents: write        # push the PR branch
+  pull-requests: write   # open the draft PR
+
 jobs:
   cut:
-    name: "Cut a docs version"
+    name: "Propose a docs-version cut"
     runs-on: ubuntu-latest
+    # Job-level env so the App id is referenceable in step `if:` (secrets aren't).
+    env:
+      DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: true   # need unionai-docs-infra (the tool + script)
+          submodules: true   # need unionai-docs-infra (the resolver tool)
           fetch-depth: 0     # need all tags for the z computation
+
+      # Mint a docsy-bot App token so the PR triggers CI (PRs opened by the default
+      # GITHUB_TOKEN do not). Falls back to GITHUB_TOKEN when the App isn't configured.
+      - name: Mint docsy-bot App token
+        id: app-token
+        if: ${{ env.DOCSY_BOT_APP_ID != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -54,20 +64,64 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
-      - name: Cut
+      - name: Resolve next version
+        id: resolve
         env:
           # The flyte-variant backend version is read from flyteorg/flyte releases.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_ROOT: ${{ github.workspace }}
         run: |
-          args=()
-          # On the push trigger, gate: only cut if the SDK actually moved.
-          if [ "${{ github.event_name }}" = "push" ]; then
-            args+=(--auto)
-          fi
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            args+=(--dry-run)
-          else
-            args+=(--push)
-          fi
-          bash unionai-docs-infra/scripts/cut-docs-version.sh "${args[@]}"
+          set -euo pipefail
+          eval "$(uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"
+          echo "tag=${DOCS_TAG}" >> "$GITHUB_OUTPUT"
+          echo "kind=${DOCS_CUT_KIND}" >> "$GITHUB_OUTPUT"
+          echo "on_pypi=${DOCS_SDK_ON_PYPI}" >> "$GITHUB_OUTPUT"
+          echo "Next cut: ${DOCS_TAG} (${DOCS_CUT_KIND}, sdk=${DOCS_SDK}, on_pypi=${DOCS_SDK_ON_PYPI})"
+
+      - name: Dry run — stop before opening a PR
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "dry_run: would open a PR bumping versions.toml to ${{ steps.resolve.outputs.tag }}."
+          echo "Re-run without dry_run to open it."
+
+      - name: Promote into versions.toml
+        if: ${{ ! inputs.dry_run }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          # --promote refuses a non-PyPI SDK version (guarded), then writes versions.toml.
+          uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
+
+      - name: Build PR body
+        if: ${{ ! inputs.dry_run }}
+        run: |
+          {
+            echo "## Manual docs-version cut → \`${{ steps.resolve.outputs.tag }}\`"
+            echo ""
+            echo "Bumps \`versions.toml\` to promote a new docs version (\`${{ steps.resolve.outputs.kind }}\` cut). Merging this **is** the cut: \`build-and-deploy\` mints the tag \`${{ steps.resolve.outputs.tag }}\` at merge and rebuilds \`/docs/v2\` (stable) + the pinned \`/docs/${{ steps.resolve.outputs.tag }}/\` copy."
+            echo ""
+            echo "Triggered manually (\`workflow_dispatch\`). Left as a **draft** for review (agent proposes; human disposes)."
+            echo ""
+            echo "> If checks aren't running, the docsy-bot App isn't configured — set \`DOCSY_BOT_APP_ID\` + \`DOCSY_BOT_PRIVATE_KEY\` (PRs opened by GITHUB_TOKEN do not trigger workflows)."
+          } > /tmp/pr-body.md
+
+      - name: Open draft PR
+        if: ${{ ! inputs.dry_run }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          branch: docsy/v2-cut-${{ steps.resolve.outputs.tag }}
+          base: main
+          draft: true
+          add-paths: versions.toml
+          commit-message: "docs: cut ${{ steps.resolve.outputs.tag }} (promote versions.toml)"
+          # DCO: "Check DCO" is required on main — the bot commit must sign off.
+          author: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          committer: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          signoff: true
+          title: "docsy(v2): cut ${{ steps.resolve.outputs.tag }}"
+          body-path: /tmp/pr-body.md
+          labels: docsy
+          delete-branch: true
