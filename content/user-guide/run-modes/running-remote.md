@@ -8,9 +8,13 @@ variants: +flyte +union
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your {{< key product_name >}} instance.
 
-{{< note >}}
-Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
-{{< /note >}}
+<!--
+Hidden until the in-browser demo is repaired. The linked demo
+(https://flyte2intro.apps.demo.hosted.unionai.cloud/) is currently unreachable.
+To restore: re-add a note callout reading "Want to try Flyte without installing
+anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
+-->
+
 
 ## Prerequisites
 
