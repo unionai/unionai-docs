@@ -8,9 +8,13 @@ variants: +flyte +union
 
 Let's get you up and running with your first workflow on your local machine.
 
-{{< note >}}
-Want to try Flyte without installing anything? [Try Flyte 2 in your browser](https://flyte2intro.apps.demo.hosted.unionai.cloud/).
-{{< /note >}}
+<!--
+Hidden until the in-browser demo is repaired. The linked demo
+(https://flyte2intro.apps.demo.hosted.unionai.cloud/) is currently unreachable.
+To restore: re-add a note callout reading "Want to try Flyte without installing
+anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
+-->
+
 
 ## What you'll need
 
