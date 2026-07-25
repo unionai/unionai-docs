@@ -14,6 +14,10 @@ Guides for operating a {{< key product_name >}} self-hosted deployment after ini
 Deploy workflows from CI/CD pipelines using non-interactive authentication
 {{< /link-card >}}
 
+{{< link-card target="./task-routing" icon="route" title="Task routing" >}}
+Configure cluster pools, queues, and per-project routing so tasks run on a data plane
+{{< /link-card >}}
+
 {{< link-card target="./troubleshooting" icon="life-buoy" title="Troubleshooting" >}}
 Diagnose common control plane, data plane, and cloud-binding issues
 {{< /link-card >}}
