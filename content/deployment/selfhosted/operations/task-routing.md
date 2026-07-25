@@ -15,12 +15,12 @@ This guide covers the queue model and the one-time steps to configure routing fo
 Routing a task requires three constructs, created in order:
 
 1. A **cluster pool** — carries the object store, secret store, and image registry contract that tasks in the pool use.
-2. A **cluster** subscribed to that pool. Subscribing a cluster implicitly creates a **queue** of the same name.
+2. A **cluster** subscribed to that pool. Subscribing a cluster implicitly creates a **queue** that takes the cluster's name.
 3. A **`run.default_queue`** setting on each `(project, domain)` pair, pointing at a queue.
 
 A run submitted for a `(project, domain)` resolves to its default queue, which resolves to the pool the queue is bound to, which resolves to an enabled, healthy cluster in that pool.
 
-The simplest topology — and the recommended default — is **one pool, one cluster, one queue per data plane, all sharing the data plane's name.** You then point each project's `run.default_queue` at the data plane that should run its tasks.
+The simplest topology — and the recommended default — is **one pool, one cluster, one queue per data plane, reusing the data plane's name for all three.** Reusing the name is a readability convention, not a requirement: the pool name is independent of the cluster name, so a cluster can subscribe to any existing pool. You then point each project's `run.default_queue` at the data plane that should run its tasks.
 
 > [!NOTE]
 > Configuration is **create-only and additive.** At present there is no supported way to rename, delete, or repoint a cluster pool, cluster, or queue — draining is gated server-side. Choose data plane and pool names deliberately, and treat every step below as adding routing, never reconciling it. See [Changing existing routing](#changing-existing-routing) for the operational escape hatch when you must repoint an already-configured environment.
@@ -81,7 +81,7 @@ flyte create cluster-pool my-data-plane --file cluster-pool.yaml
 
 ## Step 2: Create a cluster
 
-Subscribe a cluster to the pool. Use the same name for the cluster, the pool, and the resulting queue so routing is easy to reason about. Subscribing the cluster implicitly creates a queue of that name.
+Subscribe a cluster to the pool. Subscribing the cluster implicitly creates a queue that takes the **cluster's** name. The `--pool` value just names an existing pool to subscribe to — it does not have to match the cluster name. Reusing the data plane's name for the cluster and pool (as below) keeps routing easy to reason about, but it isn't required.
 
 ```shell
 flyte create cluster my-data-plane --pool my-data-plane
@@ -118,7 +118,10 @@ A fresh environment never hits this.
 
 ### Repoint the bindings in the control-plane database
 
-Until a day-2 update command is available, repoint the bindings directly in the control-plane Postgres database. This bypasses the immutability guard on purpose — only do it on an environment you own, and only for clusters and queues with no in-flight work.
+> [!WARNING] Unsupported, destructive operation
+> Editing the control-plane database directly bypasses the API's immutability guard. It is **not a supported operation** and has **no guaranteed behavior for in-flight runs** — executions that are queued or running against an affected cluster or queue may be lost or misrouted. Only do this on an environment you own, only when the affected clusters and queues have no in-flight work, and take a database backup first. A supported day-2 update path is planned; wherever possible, prefer standing up a fresh, correctly-named topology instead.
+
+Until a day-2 update command is available, repoint the bindings directly in the control-plane Postgres database.
 
 The control-plane database is typically a private-network managed Postgres instance, so run a throwaway `psql` client **inside the cluster**. The connection host, database name, and user come from any control-plane pod that talks to the database (its mounted `config.yaml`); the password comes from the mounted database-password secret.
 
