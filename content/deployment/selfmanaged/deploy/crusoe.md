@@ -1,12 +1,12 @@
 ---
-title: Deploy the dataplane
+title: Crusoe
 weight: 2
 variants: -flyte +union
 ---
 
-# Deploy the dataplane
+# Deploy the data plane on Crusoe
 
-If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Storage bucket, access keys, access policy), see [Prepare infrastructure](../selfmanaged-crusoe/prepare-infra) first.
+If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Storage bucket, access keys, access policy), see [Prepare infrastructure](../infrastructure-recommendations/crusoe) first.
 
 > [!NOTE] Planning more than one cluster?
 > This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
@@ -16,7 +16,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
 * You have a CMK cluster running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* You have a Crusoe Cloud Storage bucket, access keys, and access policy as described in [Prepare infrastructure](../selfmanaged-crusoe/prepare-infra).
+* You have a Crusoe Cloud Storage bucket, access keys, and access policy as described in [Prepare infrastructure](../infrastructure-recommendations/crusoe).
 
 ## Prerequisites
 
@@ -214,7 +214,7 @@ To run a sample workflow, complete the following steps:
 
 | Symptom                                      | Cause                                                  | Fix                                                                                                                       |
 | -------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `PathStyleRequestNotAllowed 400`             | Control plane generates path-style URLs but Crusoe requires virtual-hosted. | `compat` cannot express this setting. Switch `storage` to `provider: custom` with an explicit `stow` block setting `disable_force_path_style: true`. Keep `credentialsSecretRef`: the chart still injects the task-pod variables and also merges the stow credentials into the `custom` stow config automatically, as the [CoreWeave page](../selfmanaged-coreweave/deploy-dataplane) shows. |
+| `PathStyleRequestNotAllowed 400`             | Control plane generates path-style URLs but Crusoe requires virtual-hosted. | `compat` cannot express this setting. Switch `storage` to `provider: custom` with an explicit `stow` block setting `disable_force_path_style: true`. Keep `credentialsSecretRef`: the chart still injects the task-pod variables and also merges the stow credentials into the `custom` stow config automatically, as the [CoreWeave page](./coreweave) shows. |
 | `403 Forbidden` on S3 operations             | No access policy attached to the storage key.          | Create/attach an object storage access policy in the Crusoe Cloud Console.                                                |
 | Task pods reach `s3.us-east-1.amazonaws.com` | Task pods missing the Crusoe endpoint.                 | The chart injects `FLYTE_AWS_ENDPOINT` from `storage.endpoint` when `injectPodEnvVars` is enabled (the default); confirm that value is set.                     |
 | "All enabled clusters are unhealthy"         | Control plane can't reach the data plane.              | Verify the tunnel service: `kubectl get pods -n union \| grep proxy`.                                                     |

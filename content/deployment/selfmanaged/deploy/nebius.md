@@ -1,12 +1,12 @@
 ---
-title: Deploy the dataplane
-weight: 2
+title: Nebius
+weight: 3
 variants: -flyte +union
 ---
 
-# Deploy the dataplane
+# Deploy the data plane on Nebius
 
-If you have not yet set up the required Nebius resources (MK8s cluster, Object Storage bucket, service account, access key), see [Prepare infrastructure](../selfmanaged-nebius/prepare-infra) first.
+If you have not yet set up the required Nebius resources (MK8s cluster, Object Storage bucket, service account, access key), see [Prepare infrastructure](../infrastructure-recommendations/nebius) first.
 
 > [!NOTE] Planning more than one cluster?
 > This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure below.
@@ -16,7 +16,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
 * You have a Nebius Managed Kubernetes cluster running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* You have a Nebius Object Storage bucket, service account, and access key as described in [Prepare infrastructure](../selfmanaged-nebius/prepare-infra).
+* You have a Nebius Object Storage bucket, service account, and access key as described in [Prepare infrastructure](../infrastructure-recommendations/nebius).
 
 ## Prerequisites
 

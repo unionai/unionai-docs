@@ -40,7 +40,7 @@ cluster with the control plane.
 
 If you run a self-managed deployment, provision the data plane first with
 [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-[Data plane setup on AWS](../../deployment/selfmanaged/selfmanaged-aws/_index)),
+[Data plane setup on AWS](../../deployment/selfmanaged/infrastructure-recommendations/aws)),
 then use the commands here to manage the pool, cluster, and queue records that
 route work to it.
 

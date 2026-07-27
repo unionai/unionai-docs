@@ -1,12 +1,12 @@
 ---
-title: Prepare infrastructure
+title: AWS
 weight: 1
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# AWS infrastructure
 
-This page walks you through creating the AWS resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-aws/deploy-dataplane).
+This page walks you through creating the AWS resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 ## Environment variables
 
@@ -22,7 +22,7 @@ export IAM_ROLE_NAME=union-system-role               # IAM role name
 
 ## EKS cluster
 
-You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 If you don't already have a cluster, create one with `eksctl`:
 
@@ -52,6 +52,39 @@ aws eks list-addons --cluster-name ${CLUSTER_NAME} --region ${AWS_REGION}
 ```
 
 Union supports Autoscaling and the use of spot (interruptible) instances.
+
+## Networking and IP capacity
+
+The AWS VPC CNI assigns one VPC IP per pod from the **node's subnet**, so pod-IP exhaustion is
+the most common scale blocker. Completed/terminating pods hold their IPs until garbage-collected,
+so high-churn workloads compound subnet pressure. Size the VPC greedily up front — adding VPC
+CIDR blocks later works, but resizing existing subnets does not.
+
+Suggested defaults for a production-scale data plane:
+
+| Component | Setting |
+| --- | --- |
+| VPC CIDR | `10.0.0.0/16` |
+| Private subnets | 3× `/18` (`10.0.64.0/18`, `10.0.128.0/18`, `10.0.192.0/18`) — ~16,376 IPs per AZ |
+| Public subnets | 3× `/24` — only NAT gateways and internet-facing load balancers live here |
+| NAT gateways | 1 (cost-optimized) or per-AZ (production resilience) |
+
+This sizing supports up to ~40,000 pods and ~9,000 nodes per VPC. When a single cluster scales
+past ~40,000 concurrent pods, add `10.1.0.0/16`, `10.2.0.0/16`, etc. as additional VPC CIDR
+blocks and provision new private subnets from them — the VPC CNI does not require contiguous
+CIDRs.
+
+**Relieving pod-IP pressure**:
+
+- Add CIDR blocks to the VPC (typically `/16` per block). New private subnets become available
+  immediately.
+- Enable VPC CNI **prefix delegation** — allocates `/28` prefixes (16 IPs) per ENI attachment
+  instead of individual IPs.
+- Reduce the pod-GC timer for completed pods (default 24 h → 1 h) so IPs return to the pool
+  faster.
+
+For the full set of per-cluster scaling ceilings (vCPU quotas, image pull rate, conntrack,
+etcd), see [Scaling constraints](../infrastructure-recommendations/scaling-constraints).
 
 ## S3
 
@@ -122,6 +155,15 @@ aws ecr create-repository \
 ```
 
 Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`). You will reference it when configuring IAM permissions below.
+
+> [!NOTE] Image pulls use the node role; watch pull rate at scale
+> Kubelet pulls task images using the node's instance-profile IAM role, not the pod's IRSA
+> binding. `eksctl`-managed node groups attach `AmazonEC2ContainerRegistryReadOnly` by
+> default, so pulls work out of the box; if you use a custom node role, grant it ECR read on
+> this repository. During rapid node scale-up, public system-image pulls funnel through the
+> NAT gateway and can hit per-IP rate limits — configure an ECR pull-through cache or VPC
+> interface endpoints for `ecr.api`/`ecr.dkr`. See
+> [Image registry pull rate](../infrastructure-recommendations/scaling-constraints#image-registry-pull-rate).
 
 ## IAM
 
@@ -273,3 +315,21 @@ commonServiceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::<AWS_ACCOUNT_ID>:role/${IAM_ROLE_NAME}"
 ```
+
+## Deploy configuration
+
+When you [deploy the data plane](../deploy/_index), download the AWS values file and set the AWS-specific keys below. The shared `global` keys (`UNION_CONTROL_PLANE_HOST`, `CLUSTER_NAME`, `ORG_NAME`) are covered in the deploy walkthrough.
+
+```bash
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.aws.yaml
+```
+
+Using the [environment variables](#environment-variables) from above, set the following keys under `global`. The rest of the file (storage, service account annotations, IRSA) is templated from these values, so you do not need to edit it:
+
+- Set `global.AWS_ACCOUNT_ID` to your AWS account ID. You can retrieve it with `aws sts get-caller-identity --query Account --output text`.
+- Set `global.AWS_REGION` to `${AWS_REGION}`.
+- Set `global.METADATA_BUCKET` to `${BUCKET_PREFIX}-metadata`.
+- Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
+- Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}` (where `AWS_ACCOUNT_ID` is your 12-digit account ID).
+- Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
+- Optionally set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (defaults to `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).

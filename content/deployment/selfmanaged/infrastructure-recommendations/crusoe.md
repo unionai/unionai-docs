@@ -1,16 +1,16 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: Crusoe
+weight: 7
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# Crusoe infrastructure
 
-This page walks you through creating the resources needed for a Union data plane on [Crusoe Managed Kubernetes (CMK)](https://docs.crusoecloud.com/kubernetes/overview/) with [Crusoe Cloud Storage](https://docs.crusoecloud.com/storage/object-storage/overview). If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-crusoe/deploy-dataplane).
+This page walks you through creating the resources needed for a Union data plane on [Crusoe Managed Kubernetes (CMK)](https://docs.crusoecloud.com/kubernetes/overview/) with [Crusoe Cloud Storage](https://docs.crusoecloud.com/storage/object-storage/overview). If you already have these resources, skip to [Deploy the dataplane](../deploy/crusoe).
 
 ## CMK cluster
 
-You need a [CMK cluster](https://docs.crusoecloud.com/kubernetes/overview/) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need a [CMK cluster](https://docs.crusoecloud.com/kubernetes/overview/) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 For instructions on creating a cluster, see [Create a CMK cluster](https://docs.crusoecloud.com/kubernetes/cluster-creation) <!-- [VERIFY link] -->.
 
