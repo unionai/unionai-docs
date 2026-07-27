@@ -12,7 +12,7 @@ llm_readable_bundle: true
 This section covers how to build different types of apps with Flyte, from single-script apps to multi-file projects, common usage patterns, and authentication.
 
 > [!TIP]
-> Go to [Introducing apps](../core-concepts/introducing-apps) for an overview of apps and a quick example. For pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, and SGLang, see [Native app integrations](../native-app-integrations/_index).
+> Go to [Introducing apps](../core-concepts/introducing-apps) for an overview of apps and a quick example. For pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama, see [Native app integrations](../native-app-integrations/_index).
 
 ## App types
 
@@ -20,7 +20,7 @@ Flyte supports various types of apps:
 
 - **UI dashboard apps**: Interactive web dashboards and data visualization tools like Streamlit and Gradio
 - **Web API apps**: REST APIs, webhooks, and backend services like FastAPI and Flask
-- **Model serving apps**: High-performance LLM serving with vLLM and SGLang
+- **Model serving apps**: High-performance LLM serving with vLLM and SGLang, or lightweight serving with Ollama
 {{< variant union >}}
 {{< markdown >}}
 - **Connector apps**: Long-running services that delegate task execution to external systems

@@ -6,12 +6,6 @@ variants: -flyte +union
 
 # Queues
 
-> [!NOTE] Beta
-> Queues are a beta feature. The set of queues available to you, and the limits
-> each one enforces, are configured by your platform administrator. Talk to your
-> platform admin about which queues exist in your environment, what they're
-> intended for, and what limits they apply before pinning workloads to them.
-
 A **queue** is a named scheduling lane for your work. Instead of every run and
 action competing for whatever capacity happens to be free, a queue gives the
 platform a place to apply policy: how many things run at once, how deep the
@@ -89,8 +83,10 @@ async def main(queue_name: str):
 
 ## What a queue controls
 
-Queues are configured by your platform admin, but it helps to understand the
-knobs so you can pick the right queue for a workload:
+Queues are configured by your platform admin (see
+[Managing queues](../cluster-workload-management/queues) for how they are created
+and managed), but it helps to understand the knobs so you can pick the right
+queue for a workload:
 
 - **Action concurrency**: the maximum number of tasks routed to the queue that
   run at the same time. A queue with a cap of 1 serializes its work; a cap of 3

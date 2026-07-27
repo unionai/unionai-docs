@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.5.11
+version: 2.5.12
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ image = (
 - `with_requirements()` — Install from a requirements.txt file
 - `with_uv_project()` — Install from a uv/pyproject.toml project
 - `with_poetry_project()` — Install from a Poetry project
+- `with_pixi_project()` — Install from a pixi project (conda + PyPI packages)
 - `with_source_folder()` — Include a source directory
 - `with_source_file()` — Include a single source file
 - `with_code_bundle()` — Include a code bundle
@@ -104,6 +105,7 @@ class Image(
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_local_v2_plugins()`](#with_local_v2_plugins) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
+| [`with_pixi_project()`](#with_pixi_project) | Use this method to create a new image with the specified pixi project layered on top of the current image. |
 | [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
 | [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file(s) layered on top of the current image. |
@@ -475,6 +477,60 @@ def my_task(x: int) -> int:
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. |
+
+**Returns:** Image
+
+### with_pixi_project()
+
+```python
+def with_pixi_project(
+    manifest_file: str | Path,
+    pixi_lock: Path | None,
+    environment: str,
+    extra_args: Optional[str],
+    secret_mounts: Optional[SecretRequest],
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
+) -> Image
+```
+Use this method to create a new image with the specified pixi project layered on top of the current image.
+The manifest is resolved and installed with `pixi install` at build time, and the resulting pixi
+environment becomes the image's runtime environment.
+
+The manifest may be either a `pixi.toml` file or a `pyproject.toml` file with a `[tool.pixi]`
+section. You may also pass the pixi project directory itself, in which case the manifest is
+discovered the same way pixi discovers it (`pixi.toml` first, then `pyproject.toml`).
+
+By default, this method copies only the manifest and lock file into the image. When the lock file
+is present, `pixi install --locked` is used so the build reproduces the lock exactly.
+
+If `project_install_mode` is "install_project", the entire directory containing the manifest is
+copied into the image instead. Use this when the manifest installs the project itself, e.g. a
+`pyproject.toml`-based pixi project that declares the project as an editable pypi dependency.
+
+Note that after this layer, the pixi environment replaces the image's virtualenv as the active
+runtime (and as the target of subsequent `with_pip_packages` / `with_requirements` layers), so
+`flyte` must be available in it for tasks to run. Either declare `flyte` in the manifest (e.g.
+under `[pypi-dependencies]`) or add `.with_pip_packages("flyte")` after this layer. The
+environment must provide `python` (add it to the manifest's dependencies if it is conda-only).
+
+If the manifest has a CUDA `[system-requirements]` and image builds run on GPU-less machines, set
+`.with_env_vars({"CONDA_OVERRIDE_CUDA": "&lt;version&gt;"})` *before* this layer so install-time
+validation of the `__cuda` virtual package succeeds.
+
+The manifest's `platforms` must cover every architecture the image is built for — e.g. a
+multi-arch (`linux/amd64` + `linux/arm64`) image needs `platforms = ["linux-64", "linux-aarch64"]`
+in the manifest, or `pixi install` fails for the missing architecture at build time.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `manifest_file` | `str \| Path` | path to the pixi manifest (`pixi.toml` or `pyproject.toml`), or to the pixi project directory containing it |
+| `pixi_lock` | `Path \| None` | path to the pixi.lock file, if not specified, will use the default pixi.lock file in the same directory as the manifest if it exists. (manifest.parent / pixi.lock) |
+| `environment` | `str` | name of the pixi environment to install and activate, default is "default" |
+| `extra_args` | `Optional[str]` | extra arguments to pass to `pixi install`, default is None |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process (e.g. private channels). |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to copy the whole project into the image or only the manifest and lock file, default is "dependencies_only" |
 
 **Returns:** Image
 
