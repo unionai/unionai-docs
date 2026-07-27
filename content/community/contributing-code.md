@@ -164,7 +164,7 @@ git commit -s -m "Add caching to the local runner"
 ```
 
 This appends a `Signed-off-by: Your Name <your-email@example.com>` line to the
-commit message. The email must match your GitHub account.
+commit message. The email should match the commit author identity configured in git (your `user.name`/`user.email`).
 
 If you forgot to sign off, amend the most recent commit:
 
