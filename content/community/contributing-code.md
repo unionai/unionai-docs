@@ -28,7 +28,7 @@ Flyte 2 is developed across two Apache-2.0 licensed repositories:
 > and is rolling out — some backend components are still being opened up. To run
 > Flyte 2 today you can apply for a [beta preview of the Union backend](https://www.union.ai/beta).
 > Most SDK contributions can be developed and tested with a local
-> [Flyte Devbox](https://www.union.ai/docs/v2/flyte/user-guide/run-modes/running-devbox/).
+> [Flyte Devbox]({{< docs_home flyte v2 >}}/user-guide/run-modes/running-devbox).
 
 Issues and discussions for **both** repositories are tracked in
 [`flyteorg/flyte`](https://github.com/flyteorg/flyte).
