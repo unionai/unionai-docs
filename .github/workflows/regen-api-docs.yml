@@ -104,6 +104,25 @@ jobs:
         if: steps.drift.outputs.drift == 'true'
         run: make update-api-docs < /dev/null
 
+      # One-merge fold (DOC-1245): if versioning is live (versions.toml present) and
+      # this regen is an SDK-release cut (a new flyte-sdk triple, PyPI-published),
+      # promote the new tag into versions.toml IN THIS PR. Then merging the regen both
+      # updates the API reference AND advances /docs/v2 to the new stable in a single
+      # human action; the tag itself is minted at merge by build-and-deploy. Inert
+      # until go-live (no versions.toml → skipped); a non-SDK-release regen (a manual
+      # cut's z-bump) is a maintainer decision, not folded here.
+      - name: Fold version promotion (SDK-release cut)
+        if: steps.drift.outputs.drift == 'true' && hashFiles('versions.toml') != ''
+        run: |
+          set -euo pipefail
+          eval "$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"
+          if [ "${DOCS_CUT_KIND:-}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
+            REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
+            echo "Folded ${DOCS_TAG} promotion into this regen PR (versions.toml stable=${DOCS_TAG})."
+          else
+            echo "Not an SDK-release cut (kind=${DOCS_CUT_KIND:-none}, on_pypi=${DOCS_SDK_ON_PYPI:-?}) → no promotion."
+          fi
+
       # Deterministic surface-delta classifier (NO AI runs in CI). Decides whether
       # this regen moved the public API surface (material) or is only version-string
       # churn (cosmetic). Detection lives here because both the pre- and post-regen
@@ -217,6 +236,7 @@ jobs:
           add-paths: |
             content/api-reference/**
             linkmap/*-linkmap.json
+            versions.toml
           commit-message: "docs(api-reference): regenerate API docs (automated)"
           # DCO: "Check DCO" is a required status check on main (DOC-1244), so the
           # automated regen commit must carry a Signed-off-by trailer or the PR
