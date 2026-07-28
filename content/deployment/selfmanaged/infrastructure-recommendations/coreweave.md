@@ -1,16 +1,16 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: CoreWeave
+weight: 6
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# CoreWeave infrastructure
 
-This page walks you through creating the resources needed for a Union data plane on CoreWeave Kubernetes Service (CKS) with [CoreWeave AI Object Storage](https://docs.coreweave.com/products/storage/object-storage). If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-coreweave/deploy-dataplane).
+This page walks you through creating the resources needed for a Union data plane on CoreWeave Kubernetes Service (CKS) with [CoreWeave AI Object Storage](https://docs.coreweave.com/products/storage/object-storage). If you already have these resources, skip to [Deploy the dataplane](../deploy/coreweave).
 
 ## CKS cluster
 
-You need a [CKS cluster](https://docs.coreweave.com/products/cks/clusters/introduction) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need a [CKS cluster](https://docs.coreweave.com/products/cks/clusters/introduction) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 For instructions on creating a cluster, see [Create a CKS cluster](https://docs.coreweave.com/products/cks/clusters/create).
 

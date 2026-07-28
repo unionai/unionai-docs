@@ -1,16 +1,16 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: Nebius
+weight: 8
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# Nebius infrastructure
 
-This page walks you through creating the resources needed for a Union data plane on Nebius Managed Kubernetes with Nebius Object Storage. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-nebius/deploy-dataplane).
+This page walks you through creating the resources needed for a Union data plane on Nebius Managed Kubernetes with Nebius Object Storage. If you already have these resources, skip to [Deploy the dataplane](../deploy/nebius).
 
 ## Nebius Managed Kubernetes cluster
 
-You need a [Nebius Managed Kubernetes cluster](https://docs.nebius.com/kubernetes) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need a [Nebius Managed Kubernetes cluster](https://docs.nebius.com/kubernetes) running one of the most recent three minor Kubernetes versions, with `kubectl` access configured. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 GPU node groups should be provisioned ahead of time if you plan to run training or inference workloads. Nebius supports H100, H200, and B200 SKUs. Confirm your tenant has quota in the [desired region](https://docs.nebius.com/overview/regions#public-regions).
 

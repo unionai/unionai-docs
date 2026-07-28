@@ -1,12 +1,12 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: Azure
+weight: 3
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# Azure infrastructure
 
-This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE] **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
 
@@ -54,7 +54,7 @@ az group create \
 
 ## 2. AKS cluster
 
-You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 Three specific add-ons are required:
 
@@ -359,4 +359,36 @@ az role assignment create \
 
 The Key Vault URI (`https://${KEY_VAULT_NAME}.vault.azure.net/`) maps to `AZURE_KEY_VAULT_URI` in the chart values.
 
-Once your infrastructure is ready, proceed to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+Once your infrastructure is ready, proceed to [Deploy the dataplane](../deploy/_index).
+
+## Deploy configuration
+
+When you [deploy the data plane](../deploy/_index), download the Azure values file and set the Azure-specific keys below. The shared `global` keys (`UNION_CONTROL_PLANE_HOST`, `CLUSTER_NAME`, `ORG_NAME`) are covered in the deploy walkthrough.
+
+```bash
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.azure.yaml
+```
+
+Using the [environment variables](#environment-variables) from above, set the following keys under `global`. The rest of the file (Blob storage, service account annotations, Workload Identity) is templated from these values, so you do not need to edit it:
+
+- Set `global.METADATA_CONTAINER` to `${METADATA_CONTAINER}`.
+- Set `global.AZURE_STORAGE_ACCOUNT` to `${STORAGE_ACCOUNT}`.
+- Set `global.AZURE_SUBSCRIPTION_ID`, `global.AZURE_TENANT_ID`, and `global.AZURE_RESOURCE_GROUP` to the subscription, tenant, and resource group holding your Union resources.
+- Set `global.AZURE_BACKEND_CLIENT_ID` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
+- Set `global.AZURE_WORKER_CLIENT_ID` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
+- For persisted task logs, wire FluentBit to the `${FLUENTBIT_SECRET_NAME}` secret you created in [Persisted logs storage key](#8-persisted-logs-storage-key-fluentbit). FluentBit's `azure_blob` output cannot use Workload Identity, so it reads the storage key from that secret at runtime (the key never lands in the rendered ConfigMap):
+
+  ```yaml
+  fluentbit:
+    azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+    env:
+      - name: AZURE_STORAGE_SHARED_KEY
+        valueFrom:
+          secretKeyRef:
+            name: ${FLUENTBIT_SECRET_NAME}
+            key: shared_key
+  ```
+
+If using Azure Key Vault (optional):
+
+- Set `global.AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.

@@ -1,16 +1,16 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: OCI
+weight: 4
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# OCI infrastructure
 
-This page walks you through creating the OCI resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane).
+This page walks you through creating the OCI resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 ## OKE cluster
 
-You need an OKE cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need an OKE cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 If you don't already have a cluster, create one via the [OCI Console](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingclusterusingoke.htm) or the OCI CLI:
 
@@ -141,4 +141,18 @@ oci iam customer-secret-key create \
 
 > [!NOTE] The command output contains the secret key value. Save it immediately; it cannot be retrieved again.
 
-You will configure these credentials in the Helm values file during deployment (see step 3 in [Deploy the dataplane](../selfmanaged-oci/deploy-dataplane)).
+You will configure these credentials in the Helm values file during deployment (see step 3 in [Deploy the dataplane](../deploy/_index)).
+
+## Deploy configuration
+
+When you [deploy the data plane](../deploy/_index), start from the base values file (there is no published OCI overlay) and set the OCI-specific keys below. The shared `global` keys (`UNION_CONTROL_PLANE_HOST`, `CLUSTER_NAME`, `ORG_NAME`) are covered in the deploy walkthrough.
+
+```bash
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+```
+
+Set the OCI-specific keys on top of the base file:
+
+- Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your Object Storage bucket name(s).
+- Set `storage.region` to your OCI region.
+- If using static credentials (Option B), set `storage.accessKey` and `storage.secretKey` to your S3 Compatibility API credentials.

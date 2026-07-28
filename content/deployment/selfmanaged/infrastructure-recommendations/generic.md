@@ -1,18 +1,18 @@
 ---
-title: Prepare infrastructure
-weight: 1
+title: Generic Kubernetes
+weight: 5
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# Generic Kubernetes infrastructure
 
-This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-generic/deploy-dataplane).
+This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
-> [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../selfmanaged-aws/_index), [GCP](../selfmanaged-gcp/_index), [Azure](../selfmanaged-azure/_index), [OCI](../selfmanaged-oci/_index).
+> [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./aws), [GCP](./gcp), [Azure](./azure), [OCI](./oci).
 
 ## Kubernetes cluster
 
-You need a Kubernetes cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need a Kubernetes cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 If you don't already have a cluster, common options for provisioning one include:
 
@@ -126,3 +126,40 @@ Ensure you have push/pull credentials for your container registry. The specifics
 
 > [!NOTE] Worker pod authentication
 > Worker pods (task executions) use the same storage credentials as the platform services. The credentials are injected into per-project namespaces via the cluster resource sync mechanism.
+
+## Deploy configuration
+
+When you [deploy the data plane](../deploy/_index), start from the base values file (the published overlays cover AWS, GCP, and Azure only) and set the generic keys below. The shared `global` keys (`UNION_CONTROL_PLANE_HOST`, `CLUSTER_NAME`, `ORG_NAME`) are covered in the deploy walkthrough.
+
+```bash
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.yaml
+```
+
+Set the storage keys for your S3-compatible provider:
+
+- Set `storage.endpoint` to your S3-compatible storage endpoint (e.g. your MinIO URL).
+- Set `storage.bucketName` and `storage.fastRegistrationBucketName` to your bucket name(s).
+- Set `storage.region` to the region of your storage provider.
+- The same credentials are also needed in `fluentbit.env` for log shipping.
+
+Rather than putting your storage credentials in the values file, store them in a Kubernetes Secret and reference it from the chart. Create the namespace and the secret first; the chart reads the secret while rendering, so it must exist before you install:
+
+```bash
+kubectl create namespace union
+kubectl create secret generic storage-credentials -n union \
+  --from-literal=access_key_id=<ACCESS_KEY_ID> \
+  --from-literal=secret_key=<SECRET_ACCESS_KEY>
+```
+
+Then reference it instead of setting `storage.accessKey` and `storage.secretKey`:
+
+```yaml
+storage:
+  provider: compat
+  authType: accesskey
+  credentialsSecretRef:
+    name: storage-credentials
+```
+
+> [!NOTE]
+> The chart resolves the secret with a Helm `lookup`, which returns nothing during `helm template` or `--dry-run`. Those commands render the storage config without credentials; only a real install picks them up. If your secret uses different field names, set `credentialsSecretRef.accessKeyIdKey` and `credentialsSecretRef.secretKeyKey` to match.
