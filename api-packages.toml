@@ -316,3 +316,16 @@ plugin = "flytekitplugins.whylogs"
 title = "whylogs"
 name = "whylogs"
 frozen = true
+
+# === Docs versioning (DOC-1245) ===
+# Point the shared docs-version resolver (unionai-docs-infra manifest.py) at the v1
+# line's packages. Without this section (as on main/v2) the resolver defaults to
+# flyte / flyteplugins-union / the v2.0.x backend. Here the SDK is flytekit (1.x), so
+# the docs version is v1.x.y.z; the independently-versioned passenger is the union SDK.
+[docs_version]
+sdk_package = "flytekit"
+sdk_label = "flytekit"
+passenger_package = "union"
+passenger_label = "union"
+backend_repo = "flyteorg/flyte"
+backend_series = "v1."
