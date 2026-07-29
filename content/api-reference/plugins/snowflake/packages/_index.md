@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,5 +9,5 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.snowflake.connector`](flytekitplugins.snowflake.connector) |  |
-| [`flytekitplugins.snowflake.task`](flytekitplugins.snowflake.task) |  |
+| [`flytekitplugins.snowflake.connector`](flytekitplugins.snowflake.connector/_index) |  |
+| [`flytekitplugins.snowflake.task`](flytekitplugins.snowflake.task/_index) |  |

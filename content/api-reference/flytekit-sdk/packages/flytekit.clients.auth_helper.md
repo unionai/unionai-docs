@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,11 +26,18 @@ layout: py_api
 | [`get_channel()`](#get_channel) | Creates a new grpc. |
 | [`get_proxy_authenticator()`](#get_proxy_authenticator) |  |
 | [`get_session()`](#get_session) | Return a new session for the given platform config. |
+| [`register_authenticator_plugin()`](#register_authenticator_plugin) | Register an authenticator factory by name. |
 | [`upgrade_channel_to_authenticated()`](#upgrade_channel_to_authenticated) | Given a grpc. |
 | [`upgrade_channel_to_proxy_authenticated()`](#upgrade_channel_to_proxy_authenticated) | If activated in the platform config, given a grpc. |
 | [`upgrade_session_to_proxy_authenticated()`](#upgrade_session_to_proxy_authenticated) | Given a requests. |
 | [`wrap_exceptions_channel()`](#wrap_exceptions_channel) | Wraps the input channel with RetryExceptionWrapperInterceptor. |
 
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `AUTH_ENTRY_POINT_GROUP` | `str` |  |
 
 ## Methods
 
@@ -71,6 +78,12 @@ def get_authenticator(
 ) -> flytekit.clients.auth.authenticator.Authenticator
 ```
 Returns a new authenticator based on the platform config.
+
+Built-in auth types (PKCE, ClientSecret, ExternalCommand, DeviceFlow) are
+tried first.  If ``auth_mode`` is a string that does not match any built-in
+type, the function falls back to entry-point discovery: any installed
+package can register an authenticator factory under the
+``flytekit.auth`` entry point group and it will be loaded automatically.
 
 
 | Parameter | Type | Description |
@@ -144,6 +157,27 @@ Return a new session for the given platform config.
 |-|-|-|
 | `cfg` | `flytekit.configuration.PlatformConfig` | |
 | `kwargs` | `**kwargs` | |
+
+#### register_authenticator_plugin()
+
+```python
+def register_authenticator_plugin(
+    name: str,
+    factory: typing.Callable[[ForwardRef('PlatformConfig'), flytekit.clients.auth.authenticator.ClientConfigStore], flytekit.clients.auth.authenticator.Authenticator],
+)
+```
+Register an authenticator factory by name.
+
+This is the primary registration mechanism and works in every environment
+(pip, Bazel, mono-repo vendoring, etc.).  Entry-point discovery is attempted
+as a fallback when no explicit registration exists.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `factory` | `typing.Callable[[ForwardRef('PlatformConfig'), flytekit.clients.auth.authenticator.ClientConfigStore], flytekit.clients.auth.authenticator.Authenticator]` | |
 
 #### upgrade_channel_to_authenticated()
 

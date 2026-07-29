@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.constants
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---

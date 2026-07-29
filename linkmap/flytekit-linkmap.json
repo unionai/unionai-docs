@@ -1424,6 +1424,7 @@
     "flytekit.clients.auth_helper.get_channel": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#get_channel",
     "flytekit.clients.auth_helper.get_proxy_authenticator": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#get_proxy_authenticator",
     "flytekit.clients.auth_helper.get_session": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#get_session",
+    "flytekit.clients.auth_helper.register_authenticator_plugin": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#register_authenticator_plugin",
     "flytekit.clients.auth_helper.upgrade_channel_to_authenticated": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#upgrade_channel_to_authenticated",
     "flytekit.clients.auth_helper.upgrade_channel_to_proxy_authenticated": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#upgrade_channel_to_proxy_authenticated",
     "flytekit.clients.auth_helper.upgrade_session_to_proxy_authenticated": "/api-reference/flytekit-sdk/packages/flytekit.clients.auth_helper/#upgrade_session_to_proxy_authenticated",
