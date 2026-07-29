@@ -5,22 +5,20 @@ name: Build and deploy docs
 # Replaces CF Pages' native build runner — CF Pages stays only as the
 # static host.
 #
+# Production-only path (mirrors main). PR previews are handled by the two-stage
+# pair `build-pr.yml` (untrusted build, no secrets) + `deploy-pr-preview.yml`
+# (trusted workflow_run deploy, has secrets), because GitHub does NOT expose repo
+# secrets to pull_request workflows triggered from forks. See DOC-1228.
+#
 # Triggers:
-#   - push to v1 — production deploy (project=docs, --branch=v1).
-#     This is the prod path; CF auto-deploys on the `docs` project are
-#     disabled, so GHA owns prod end-to-end.
-#   - pull_request — branch deploy to the `docs` project. Each PR gets
-#     a preview at <sanitized-branch>.docs-dog.pages.dev, identical to
-#     what CF Pages' bot used to produce. Sticky comment posts the URL.
-#   - workflow_dispatch — manual run; redeploys whatever commit the branch
-#     is at to the docs project (useful for re-runs after a flake).
+#   - push to v1 — production deploy (project=docs, --branch=v1). The prod path;
+#     CF auto-deploys are disabled, so GHA owns prod end-to-end.
+#   - workflow_dispatch — manual run; redeploys the branch's current commit.
 
 on:
   push:
     branches:
       - v1
-  pull_request:
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 # contents: write — the one-merge cut (DOC-1245) materializes + pushes the stable

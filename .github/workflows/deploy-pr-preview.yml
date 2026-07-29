@@ -1,0 +1,118 @@
+name: Deploy PR preview
+
+# Deploy half of the two-stage preview pipeline (DOC-1228).
+#
+# Triggered by `workflow_run` after "Build PR" completes. A workflow_run
+# always executes in the TRUSTED base-repo context (using the base ref's
+# workflow definition and with repo secrets available), even when the
+# triggering PR came from a fork. That is what makes fork-PR previews work:
+# the untrusted build happens secret-less in build-pr.yml, and this job only
+# ever DOWNLOADS that prebuilt artifact and deploys it — it never checks out
+# or executes untrusted PR code/build scripts with secrets in scope.
+
+on:
+  workflow_run:
+    workflows: ["Build PR"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+# Opt in early to the Node.js 24 runtime for JavaScript actions (see
+# build-and-deploy.yml for the full rationale).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  deploy:
+    # Only deploy for successful PR builds. workflow_run fires for every
+    # completion; gate on the originating event + a green build.
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Download PR dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
+
+      - name: Parse PR metadata
+        id: meta
+        run: |
+          pr_number=$(jq -r '.pr_number' pr-meta.json)
+          head_sha=$(jq -r '.head_sha' pr-meta.json)
+          head_ref=$(jq -r '.head_ref' pr-meta.json)
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$head_ref" >> "$GITHUB_OUTPUT"
+          echo "Parsed PR #$pr_number, head_ref '$head_ref', head_sha $head_sha"
+
+      - name: Sanitize branch name for CF Pages
+        id: branch
+        run: |
+          # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
+          #
+          # Compose `pr-<num>-<branch>` then sanitize. The `pr-<num>` prefix
+          # (a) makes each PR's preview alias unique even when two PRs share a
+          # long common branch-name prefix, and (b) guarantees a PR deploy can
+          # never sanitize to a production branch name like `main` or `v1`.
+          pr_num="${{ steps.meta.outputs.pr_number }}"
+          raw_branch="${{ steps.meta.outputs.head_ref }}"
+          full=$(printf 'pr-%s-%s' "$pr_num" "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
+          sanitized=$(printf '%s' "$full" | cut -c1-28 | sed -E 's#-+$##g')
+          echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
+          echo "name=$sanitized" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        # Step-level cap: fail a hung wrangler upload fast (normal deploy ~1-3
+        # min) instead of consuming the whole job budget. Parity with
+        # build-and-deploy.yml. See DOC-1229.
+        timeout-minutes: 10
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # --commit-dirty: the prebuilt dist contains regenerated tracked
+          # files, so wrangler would otherwise warn about a dirty tree. The
+          # warning is noise here.
+          command: pages deploy ./dist --project-name=docs --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Project: \`docs\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${{ steps.meta.outputs.head_sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
+            echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Post / update preview comment on PR
+        if: success()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: gha-build-and-deploy-preview
+          # workflow_run runs detached from any PR, so the comment target must
+          # be named explicitly via `number`.
+          number: ${{ steps.meta.outputs.pr_number }}
+          message: |
+            ### GHA build & deploy preview
+
+            Built by `.github/workflows/build-pr.yml` and deployed to the **`docs`** CF Pages project by `.github/workflows/deploy-pr-preview.yml`.
+
+            | | |
+            |---|---|
+            | Branch alias | <https://${{ steps.branch.outputs.name }}.docs-dog.pages.dev> |
+            | This commit | ${{ steps.deploy.outputs.deployment-url }} |
+            | Commit SHA | `${{ steps.meta.outputs.head_sha }}` |
+
+            Updated automatically on every push.
