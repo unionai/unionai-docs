@@ -7,45 +7,42 @@ mermaid: true
 
 # Cluster and workload management
 
-> [!NOTE] Beta
-> Cluster pools, clusters, and queues are managed through the `flyte`
-> CLI or the `flyteplugins.union.remote` Python objects, and are configured by
-> your platform administrator. The operations on these pages are administrative
-> operations. Most workflow authors only need
-> [task-side queue routing](../task-configuration/queues).
-
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte` cluster, pool, and queue commands and the Python objects on these
 > pages are provided by the `flyteplugins-union` package. Install it with
 > `pip install flyteplugins-union`.
 
-> [!NOTE] Standing up a new cluster?
-> The pages in this section manage the **control-plane records** for pools,
-> clusters, and the **queues** that route work to them. If you run a self-managed
-> deployment and still need to provision the **data plane** itself: the cloud
-> resources (object store, secret store, registry) and the Helm release that
-> registers a cluster with the control plane. Start with
-> [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-> [Data plane setup on AWS](../../deployment/selfmanaged/selfmanaged-aws/_index)).
-> The two are complementary: the deployment runbook provisions and connects a
-> cluster's data plane, and the commands here manage the pool, cluster, and queue
-> records that route work to it.
+As a {{< key product_name >}} deployment grows past a single cluster, you need to
+control *where* a workload runs and *under what limits*. Three primitives do this:
 
-As a {{< key product_name >}} deployment grows past a single cluster, you need a
-way to decide *where* a workload runs and *under what limits*. Three primitives
-work together to make that decision explicit and safe:
-
-- **Cluster pool**: an org-level **isolation boundary**. Both the clusters *and*
-  the queues inside a pool share one **data plane configuration**: the same object
-  store, secret store, and container registry. Anything {{< key product_name >}}
-  uploads for a run (inputs, code bundles, secrets) is reachable from every cluster
-  in the same pool, and from no cluster outside it. Pools do not connect: you
-  cannot move a workload directly from one pool to another (see
+- **Cluster pool**: an isolation boundary. The clusters and queues inside a pool
+  share one **data plane**: the same object store, secret store, and container
+  registry. Work cannot cross from one pool to another (see
   [Crossing a pool boundary](#crossing-a-pool-boundary)).
 - **Cluster**: an execution cluster that lives in exactly one pool.
-- **Queue**: what users actually submit to. A queue lives inside one pool and
-  **routes** work to one or more clusters *in that pool*, carrying the concurrency,
-  depth, priority, and fairness limits applied to the work it admits.
+- **Queue**: what you submit work to. A queue lives in one pool, **routes** work to
+  one or more clusters in that pool, and applies the concurrency, depth, priority,
+  and fairness limits for the work it admits.
+
+## Tooling
+
+Pools, clusters, and queues are managed with the `flyte` CLI or the
+`flyteplugins.union.remote` Python objects, and are set up by your platform
+administrator. These are administrative tasks; most workflow authors only need
+[task-side queue routing](../task-configuration/queues).
+
+## Standing up a self-managed cluster?
+
+The pages here manage the **control-plane records** for pools, clusters, and
+queues. They do not provision the **data plane** itself: the cloud resources
+(object store, secret store, registry) and the Helm release that registers a
+cluster with the control plane.
+
+If you run a self-managed deployment, provision the data plane first with
+[Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
+[Data plane setup on AWS](../../deployment/selfmanaged/selfmanaged-aws/_index)),
+then use the commands here to manage the pool, cluster, and queue records that
+route work to it.
 
 ## How they fit together
 
@@ -99,7 +96,7 @@ changes are rare and explicit (moving work between pools is a
 > automatically. If you run a single cluster, or several clusters that share one
 > bucket, secret store, and registry, you never need to think about pools. Your
 > cluster lands in `default`, queues route to `default`, and you can skip straight
-> to [Queues](./queues). Pools only matter once you have clusters with **distinct**
+> to [Managing queues](./queues). Pools only matter once you have clusters with **distinct**
 > data planes (for example, separate dev and prod cloud accounts).
 
 ## In this section
@@ -114,7 +111,7 @@ Group clusters that share a data plane. Create and manage pools, or stay on the 
 Register execution clusters into a pool and inspect their state, capacity, and bound queues.
 {{< /link-card >}}
 
-{{< link-card target="queues" icon="workflow" title="Queues" >}}
+{{< link-card target="queues" icon="workflow" title="Managing queues" >}}
 Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
 {{< /link-card >}}
 

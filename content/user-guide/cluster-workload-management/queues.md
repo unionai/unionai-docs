@@ -1,11 +1,11 @@
 ---
-title: Queues
+title: Managing queues
 weight: 3
 variants: -flyte +union
 mermaid: true
 ---
 
-# Queues
+# Managing queues
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The queue CLI commands and Python objects on this page are provided by the
