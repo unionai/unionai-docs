@@ -1,6 +1,6 @@
 ---
 title: TypeEngine
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -96,7 +96,7 @@ Transforms a flyte-specific `LiteralType` to a regular python value.
 
 ```python
 def guess_python_types(
-    flyte_variable_list: typing.List[interface_pb2.VariableEntry],
+    flyte_variable_list: typing.Sequence[interface_pb2.VariableEntry],
 ) -> typing.Dict[str, Type[Any]]
 ```
 Transforms a list of flyte-specific `VariableEntry` objects to a dictionary of regular python values.
@@ -104,7 +104,7 @@ Transforms a list of flyte-specific `VariableEntry` objects to a dictionary of r
 
 | Parameter | Type | Description |
 |-|-|-|
-| `flyte_variable_list` | `typing.List[interface_pb2.VariableEntry]` | |
+| `flyte_variable_list` | `typing.Sequence[interface_pb2.VariableEntry]` | |
 
 ### lazy_import_transformers()
 
