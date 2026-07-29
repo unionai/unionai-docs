@@ -1,0 +1,27 @@
+{
+  "docs_version": "1.16.23.0",
+  "tag": "v1.16.23.0",
+  "z": 0,
+  "cut_kind": "sdk-release",
+  "existing_z": [],
+  "sdk": "1.16.23",
+  "sdk_on_pypi": "true",
+  "sdk_label": "flytekit",
+  "variants": {
+    "union": {
+      "flytekit": "1.16.23",
+      "union": "0.1.203",
+      "backend": null,
+      "examples": "4f53f8989eefdb329755190091b492554b5eb7e0",
+      "content": "20de4e45260d5d5331c1fd8e831632b3c1612ee4",
+      "infra": "af86078c958e7be6f79af700088b56c426ee4063"
+    },
+    "flyte": {
+      "flytekit": "1.16.23",
+      "backend": "v1.16.8",
+      "examples": "4f53f8989eefdb329755190091b492554b5eb7e0",
+      "content": "20de4e45260d5d5331c1fd8e831632b3c1612ee4",
+      "infra": "af86078c958e7be6f79af700088b56c426ee4063"
+    }
+  }
+}
