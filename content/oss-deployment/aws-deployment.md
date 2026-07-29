@@ -11,6 +11,12 @@ already provisioned the [external dependencies](./overview) (a Kubernetes cluste
 PostgreSQL database, and an object-store bucket) and that you have `helm` and
 `kubectl` configured against your cluster.
 
+> [!TIP] Deploy this with an AI assistant
+> The [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins)
+> Claude Code plugin includes a `flyte-deploy-aws` skill that provisions a Flyte v2
+> cluster on AWS end to end — EKS + S3 + RDS behind an ALB, with optional TLS and
+> Okta SSO. See [Flyte agent plugins](../api-reference/agent-plugins).
+
 ## 1. Add the Helm repository
 
 ```bash
