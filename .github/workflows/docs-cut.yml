@@ -93,6 +93,7 @@ jobs:
           set -euo pipefail
           # --promote refuses a non-PyPI SDK version (guarded), then writes versions.toml.
           uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
+          uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --write --variant both --out data/version-manifest.json
 
       - name: Build PR body
         if: ${{ ! inputs.dry_run }}
@@ -115,7 +116,9 @@ jobs:
           branch: docsy/v1-cut-${{ steps.resolve.outputs.tag }}
           base: v1
           draft: true
-          add-paths: versions.toml
+          add-paths: |
+            versions.toml
+            data/version-manifest.json
           commit-message: "docs: cut ${{ steps.resolve.outputs.tag }} (promote versions.toml)"
           # DCO: "Check DCO" is required on main — the bot commit must sign off.
           author: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
