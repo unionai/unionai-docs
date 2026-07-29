@@ -22,7 +22,7 @@ only for a **narrow set of self-managed and organization-admin operations** that
 |------|-----|
 | Run, deploy, and manage workflows, tasks, projects, secrets, RBAC, clusters, and queues | [`flyte` CLI](../flyte-cli/) — `flyte run`, `flyte deploy`, `flyte create …` |
 | Set project/domain defaults (task resources, default queue, service account, labels…) | `flyte` settings — `flyte get settings` / `flyte edit settings` |
-| Provision self-managed dataplane resources; manage cluster config templates, cluster node pools, and organization domains | **`uctl`** — see [Commands](#commands) |
+| Provision self-managed dataplane resources; manage cluster node pools; view organization domains | **`uctl`** — see [Commands](#commands) |
 
 Former `uctl` commands and their `flyte` equivalents:
 
@@ -133,14 +133,6 @@ Run `uctl <command> --help` for the full flags and usage of any command below.
   organization. This is the current tool for self-managed dataplane onboarding; see the per-provider
   [self-managed deployment runbooks](../../deployment/selfmanaged/) for the full flow.
 
-### Cluster configuration
-
-Manage self-managed cluster configuration templates:
-
-* **`uctl apply clusterconfig`** — Store a cluster configuration template in the organization.
-* **`uctl get clusterconfig`** — Retrieve a cluster configuration template.
-* **`uctl delete clusterconfig`** — Delete a cluster configuration template.
-
 ### Cluster node pools
 
 * **`uctl get clusternodepool`** — List the node pools of a cluster.
@@ -148,9 +140,4 @@ Manage self-managed cluster configuration templates:
 
 ### Domains
 
-Manage the domains of your organization:
-
-* **`uctl create domain`** — Create a new domain within your organization.
 * **`uctl get domain`** — Retrieve the domains of your organization.
-* **`uctl update domain`** — Update a domain.
-* **`uctl delete domain`** — Delete a domain.
