@@ -118,7 +118,8 @@ jobs:
           eval "$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"
           if [ "${DOCS_CUT_KIND:-}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
             REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
-            echo "Folded ${DOCS_TAG} promotion into this regen PR (versions.toml stable=${DOCS_TAG})."
+            REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --write --variant both --out data/version-manifest.json
+            echo "Folded ${DOCS_TAG} into this regen PR: versions.toml stable=${DOCS_TAG} + data/version-manifest.json (inline cut tag)."
           else
             echo "Not an SDK-release cut (kind=${DOCS_CUT_KIND:-none}, on_pypi=${DOCS_SDK_ON_PYPI:-?}) → no promotion."
           fi
@@ -237,6 +238,7 @@ jobs:
             content/api-reference/**
             linkmap/*-linkmap.json
             versions.toml
+            data/version-manifest.json
           commit-message: "docs(api-reference): regenerate API docs (automated)"
           # DCO: "Check DCO" is a required status check on main (DOC-1244), so the
           # automated regen commit must carry a Signed-off-by trailer or the PR

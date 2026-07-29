@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.mcp
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,5 +14,5 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteMCPAppEnvironment`](../flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
-| [`MCPAppEnvironment`](../flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn). |
+| [`MCPAppEnvironment`](../flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
 

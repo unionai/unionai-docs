@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,7 +44,7 @@ class App(
 | [`get()`](#get) | Get an app by name. |
 | [`is_active()`](#is_active) | Check if the app is currently active or started. |
 | [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
-| [`listall()`](#listall) |  |
+| [`listall()`](#listall) | List all apps, optionally filtered. |
 | [`replace()`](#replace) | Replace an existing app's that matches the given name, with a new spec and optionally labels. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
@@ -207,14 +207,20 @@ def listall(
     created_by_subject: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
     limit: int,
+    in_status: str | Tuple[str, ...] | None,
 ) -> AsyncIterator[App]
 ```
+List all apps, optionally filtered.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `created_by_subject` | `str \| None` | |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | |
-| `limit` | `int` | |
+| `created_by_subject` | `str \| None` | Only return apps created by this subject. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | Sorting criteria, in the format (field, order). |
+| `limit` | `int` | Maximum number of apps to return. |
+| `in_status` | `str \| Tuple[str, ...] \| None` | Filter apps by one or more deployment statuses, e.g. "active" or ("active", "failed"). Accepts short names (case-insensitive) or full DEPLOYMENT_STATUS_* names. |
 
 ### replace()
 

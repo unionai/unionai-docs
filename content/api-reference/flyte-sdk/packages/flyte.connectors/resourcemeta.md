@@ -1,6 +1,6 @@
 ---
 title: ResourceMeta
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,7 +30,7 @@ def ResourceMeta()
 ```python
 def decode(
     data: bytes,
-) -> ResourceMeta
+) -> typing.Self
 ```
 Decode the resource meta from bytes.
 

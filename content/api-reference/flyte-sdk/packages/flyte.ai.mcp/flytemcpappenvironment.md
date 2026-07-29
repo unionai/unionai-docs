@@ -1,6 +1,6 @@
 ---
 title: FlyteMCPAppEnvironment
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -65,7 +65,7 @@ class FlyteMCPAppEnvironment(
     timeouts: Timeouts,
     type: str,
     mcp_mount_path: str,
-    transport: Literal['stdio', 'sse', 'streamable-http'],
+    transport: MCPTransport,
     uvicorn_config: uvicorn.Config | None,
     title: str | None,
     instructions: str | None,
@@ -103,7 +103,7 @@ class FlyteMCPAppEnvironment(
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `mcp_mount_path` | `str` | |
-| `transport` | `Literal['stdio', 'sse', 'streamable-http']` | |
+| `transport` | `MCPTransport` | |
 | `uvicorn_config` | `uvicorn.Config \| None` | |
 | `title` | `str \| None` | |
 | `instructions` | `str \| None` | |
@@ -135,6 +135,8 @@ class FlyteMCPAppEnvironment(
 | [`get_port()`](#get_port) |  |
 | [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
 | [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
+| [`run_stdio()`](#run_stdio) | Blocking wrapper around :meth:`run_stdio_async`, for use as a process entry point. |
+| [`run_stdio_async()`](#run_stdio_async) | Serve MCP over this process's stdin/stdout until the client disconnects. |
 | [`server()`](#server) | Decorator to define the server function for the app environment. |
 
 
@@ -232,8 +234,8 @@ def get_port()
 
 ```python
 def on_shutdown(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the shutdown function for the app environment.
 
@@ -246,14 +248,14 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
 
 ### on_startup()
 
 ```python
 def on_startup(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the startup function for the app environment.
 
@@ -266,14 +268,40 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
+
+### run_stdio()
+
+```python
+def run_stdio()
+```
+Blocking wrapper around :meth:`run_stdio_async`, for use as a process entry point.
+
+
+### run_stdio_async()
+
+```python
+def run_stdio_async()
+```
+Serve MCP over this process's stdin/stdout until the client disconnects.
+
+Validates the transport and then delegates to the wrapped :class:`FastMCP`,
+whose method of the same name does the actual serving.
+
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | if ``transport`` is not ``"stdio"``. |
 
 ### server()
 
 ```python
 def server(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the server function for the app environment.
 
@@ -284,5 +312,5 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
 
