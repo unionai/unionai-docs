@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,6 +36,7 @@ layout: py_api
 | Property | Type | Description |
 |-|-|-|
 | `MAX_INLINE_IO_BYTES` | `int` |  |
+| `NULL_TASK_CONTEXT` | `_NullTaskContext` |  |
 | `TYPE_CHECKING` | `bool` |  |
 
 ## Methods

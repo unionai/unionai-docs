@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---

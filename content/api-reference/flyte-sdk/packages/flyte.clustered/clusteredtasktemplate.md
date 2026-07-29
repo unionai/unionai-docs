@@ -1,6 +1,6 @@
 ---
 title: ClusteredTaskTemplate
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -159,7 +159,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def container_args(
-    sctx: SerializationContext,
+    serialize_context: SerializationContext,
 ) -> List[str]
 ```
 Returns the container args for the task. This is a set of key-value pairs that can be used to
@@ -168,7 +168,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Parameter | Type | Description |
 |-|-|-|
-| `sctx` | `SerializationContext` | |
+| `serialize_context` | `SerializationContext` | |
 
 ### custom_config()
 
@@ -190,7 +190,7 @@ configure the task execution environment at runtime. This is usually used by plu
 ```python
 def data_loading_config(
     sctx: SerializationContext,
-) -> DataLoadingConfig
+) -> Optional[DataLoadingConfig]
 ```
 This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
 Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container
@@ -255,6 +255,7 @@ def override(
     interruptible: Optional[bool],
     entrypoint: Optional[bool],
     links: Tuple[Link, ...],
+    plugin_config: Optional[Any],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -279,6 +280,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
+| `plugin_config` | `Optional[Any]` | Optional override for the plugin specific configuration. Only supported by task templates that declare a `plugin_config` field. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 
 **Returns:** A new TaskTemplate instance with the overridden parameters.

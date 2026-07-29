@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.12
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,6 +14,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Class | Description |
 |-|-|
+| [`AsyncFunctionTaskTemplate`](../flyte/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`Backoff`](../flyte/backoff) | Exponential backoff policy applied between user retries. |
 | [`BaseCheckpoint`](../flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`Cache`](../flyte/cache) | Cache configuration for a task. |
@@ -31,6 +32,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ReusePolicy`](../flyte/reusepolicy) | Configure a task environment for container reuse across multiple task invocations. |
 | [`Secret`](../flyte/secret) | Secrets are used to inject sensitive information into tasks or image build context. |
 | [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
+| [`TaskTemplate`](../flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
 | [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
 
@@ -53,7 +55,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
 | [`build_images()`](#build_images) | Build the images for the given environment(s). |
-| [`ctx()`](#ctx) | Returns flyte. |
+| [`ctx()`](#ctx) | Returns the current flyte. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
@@ -242,7 +244,12 @@ Build the images for the given environment(s).
 ```python
 def ctx()
 ```
-Returns flyte.models.TaskContext if within a task context, else None
+Returns the current flyte.models.TaskContext when running inside a task.
+
+Outside a task execution it returns a falsy null context whose fields are all None,
+so task code can read ``flyte.ctx().&lt;field&gt;`` without a None-guard. To detect whether
+a task context is active, rely on truthiness: ``if flyte.ctx(): ...``.
+
 Note: Only use this in task code and not module level.
 
 Use :attr:`flyte.models.TaskContext.checkpoint` for durable task checkpointing
@@ -1006,7 +1013,7 @@ if __name__ == "__main__":
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
-| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Not yet supported by the backend (raises NotImplementedError at submit until flyteidl2 RunSpec.recover ships). |
+| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Not yet supported by the backend (raises NotImplementedError at submit until flyteidl2 RunSpec.relation ships). |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner

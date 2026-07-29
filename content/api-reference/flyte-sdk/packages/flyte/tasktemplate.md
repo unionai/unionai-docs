@@ -1,52 +1,87 @@
 ---
-title: ContainerTask
+title: TaskTemplate
 version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
 
-# ContainerTask
+# TaskTemplate
 
-**Package:** `flyte.extras`
+**Package:** `flyte`
 
-This is an intermediate class that represents Flyte Tasks that run a container at execution time. This is the vast
-majority of tasks - the typical `@task` decorated tasks; for instance, all run a container. An example of
-something that doesn't run a container would be something like the Athena SQL task.
+Task template is a template for a task that can be executed. It defines various parameters for the task, which
+can be defined statically at the time of task definition or dynamically at the time of task invocation using
+the override method.
+
+Example usage:
+```python
+@task(name="my_task", image="my_image", resources=Resources(cpu="1", memory="1Gi"))
+def my_task():
+    pass
+```
 
 
 
 ## Parameters
 
 ```python
-class ContainerTask(
+class TaskTemplate(
     name: str,
-    image: typing.Union[str, flyte._image.Image],
-    command: typing.List[str],
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    arguments: typing.Optional[typing.List[str]],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib.Path,
-    output_data_dir: str | pathlib.Path,
-    metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
-    local_logs: bool,
-    file_input_layout: typing.Literal['DIRECT', 'NAMED_DIR'],
-    kwargs,
+    interface: NativeInterface,
+    short_name: str,
+    task_type: str,
+    task_type_version: int,
+    image: Union[str, Image, Literal['auto']] | None,
+    resources: Optional[Resources],
+    cache: CacheRequest,
+    interruptible: bool,
+    retries: Union[int, RetryStrategy],
+    reusable: Union[ReusePolicy, None],
+    docs: Optional[Documentation],
+    env_vars: Optional[Dict[str, str]],
+    secrets: Optional[SecretRequest],
+    timeout: Optional[TimeoutType],
+    pod_template: Optional[Union[str, PodTemplate]],
+    report: bool,
+    queue: Optional[str],
+    debuggable: bool,
+    entrypoint: bool,
+    parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
+    parent_env_name: Optional[str],
+    max_inline_io_bytes: int,
+    triggers: Tuple[Trigger, ...],
+    links: Tuple[Link, ...],
+    _call_as_synchronous: bool,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the task |
-| `image` | `typing.Union[str, flyte._image.Image]` | The container image to use for the task. This can be a string or an Image object. |
-| `command` | `typing.List[str]` | The command to run in the container. This can be a list of strings or a single string. |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The inputs to the task. This is a dictionary of input names to types. |
-| `arguments` | `typing.Optional[typing.List[str]]` | The arguments to pass to the command. This is a list of strings. |
-| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The outputs of the task. This is a dictionary of output names to types. |
-| `input_data_dir` | `str \| pathlib.Path` | The directory where the input data is stored. This is a string or a Path object. |
-| `output_data_dir` | `str \| pathlib.Path` | The directory where the output data is stored. This is a string or a Path object. |
-| `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
-| `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
-| `file_input_layout` | `typing.Literal['DIRECT', 'NAMED_DIR']` | How CoPilot stages File / list[File] inputs on disk. "DIRECT" (default) uses the bare path/index; "NAMED_DIR" preserves each input's original basename (and extension), so extension-sniffing tools work. |
-| `kwargs` | `**kwargs` | |
+| `name` | `str` | Optional The name of the task (defaults to the function name) |
+| `interface` | `NativeInterface` | |
+| `short_name` | `str` | |
+| `task_type` | `str` | Router type for the task, this is used to determine how the task will be executed. This is usually set to match with th execution plugin. |
+| `task_type_version` | `int` | |
+| `image` | `Union[str, Image, Literal['auto']] \| None` | Optional The image to use for the task, if set to "auto" will use the default image for the python version with flyte installed |
+| `resources` | `Optional[Resources]` | Optional The resources to use for the task |
+| `cache` | `CacheRequest` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
+| `interruptible` | `bool` | Optional The interruptible policy for the task, defaults to False, which means the task will not be scheduled on interruptible nodes. If set to True, the task will be scheduled on interruptible nodes, and the code should handle interruptions and resumptions. |
+| `retries` | `Union[int, RetryStrategy]` | Optional The number of retries for the task, defaults to 0, which means no retries. |
+| `reusable` | `Union[ReusePolicy, None]` | Optional The reusability policy for the task, defaults to None, which means the task environment will not be reused across task invocations. |
+| `docs` | `Optional[Documentation]` | Optional The documentation for the task, if not provided the function docstring will be used. |
+| `env_vars` | `Optional[Dict[str, str]]` | Optional The environment variables to set for the task. |
+| `secrets` | `Optional[SecretRequest]` | Optional The secrets that will be injected into the task at runtime. |
+| `timeout` | `Optional[TimeoutType]` | Optional The timeout for the task. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional The pod template to use for the task. |
+| `report` | `bool` | Optional Whether to report the task execution to the Flyte console, defaults to False. |
+| `queue` | `Optional[str]` | Optional The queue to use for the task. If not provided, the default queue will be used. |
+| `debuggable` | `bool` | Optional Whether the task supports debugging capabilities, defaults to False. |
+| `entrypoint` | `bool` | |
+| `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` | |
+| `parent_env_name` | `Optional[str]` | |
+| `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
+| `triggers` | `Tuple[Trigger, ...]` | |
+| `links` | `Tuple[Link, ...]` | |
+| `_call_as_synchronous` | `bool` | |
 
 ## Properties
 
@@ -122,8 +157,8 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def container_args(
-    serialize_context: flyte.models.SerializationContext,
-) -> typing.List[str]
+    serialize_context: SerializationContext,
+) -> List[str]
 ```
 Returns the container args for the task. This is a set of key-value pairs that can be used to
 configure the task execution environment at runtime. This is usually used by plugins.
@@ -131,7 +166,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Parameter | Type | Description |
 |-|-|-|
-| `serialize_context` | `flyte.models.SerializationContext` | |
+| `serialize_context` | `SerializationContext` | |
 
 ### custom_config()
 
@@ -152,8 +187,8 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def data_loading_config(
-    sctx: flyte.models.SerializationContext,
-) -> flyteidl2.core.tasks_pb2.DataLoadingConfig
+    sctx: SerializationContext,
+) -> Optional[DataLoadingConfig]
 ```
 This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
 Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container
@@ -163,20 +198,22 @@ Any outputs generated by the user container - within output_path are automatical
 
 | Parameter | Type | Description |
 |-|-|-|
-| `sctx` | `flyte.models.SerializationContext` | |
+| `sctx` | `SerializationContext` | |
 
 ### execute()
 
 ```python
 def execute(
+    args,
     kwargs,
-) -> typing.Any
+) -> Any
 ```
 This is the pure python function that will be executed when the task is called.
 
 
 | Parameter | Type | Description |
 |-|-|-|
+| `args` | `*args` | |
 | `kwargs` | `**kwargs` | |
 
 ### forward()
