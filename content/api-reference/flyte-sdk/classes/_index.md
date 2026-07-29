@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.5.11
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,6 +9,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`flyte.AsyncFunctionTaskTemplate`](../packages/flyte/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.Backoff`](../packages/flyte/backoff) |Exponential backoff policy applied between user retries. |
 | [`flyte.BaseCheckpoint`](../packages/flyte/basecheckpoint) |Base type for task checkpoint helpers. |
 | [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
@@ -26,6 +27,7 @@ layout: py_api
 | [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |Configure a task environment for container reuse across multiple task invocations. |
 | [`flyte.Secret`](../packages/flyte/secret) |Secrets are used to inject sensitive information into tasks or image build context. |
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Define an execution environment for a set of tasks. |
+| [`flyte.TaskTemplate`](../packages/flyte/tasktemplate) |Task template is a template for a task that can be executed. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout bounds for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |Specification for a scheduled trigger that can be associated with any Flyte task. |
 | [`flyte.ai.agents.AccessDenied`](../packages/flyte.ai.agents/accessdenied) |Raised when a write targets a read-only or reserved prefix. |
@@ -53,10 +55,11 @@ layout: py_api
 | [`flyte.ai.chat.app.AgentChatAppEnvironment`](../packages/flyte.ai.chat.app/agentchatappenvironment) |An :class:`~flyte. |
 | [`flyte.ai.chat.app.CustomTheme`](../packages/flyte.ai.chat.app/customtheme) |Declarative color theme for the Agent Chat UI. |
 | [`flyte.ai.mcp.FlyteMCPAppEnvironment`](../packages/flyte.ai.mcp/flytemcpappenvironment) |Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
-| [`flyte.ai.mcp.MCPAppEnvironment`](../packages/flyte.ai.mcp/mcpappenvironment) |Serve a FastMCP server over HTTP (Starlette + Uvicorn). |
+| [`flyte.ai.mcp.MCPAppEnvironment`](../packages/flyte.ai.mcp/mcpappenvironment) |Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
 | [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) |Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) |Configure a connector environment for custom Flyte connectors. |
+| [`flyte.app.DeployedAppEnvironment`](../packages/flyte.app/deployedappenvironment) | |
 | [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
 | [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
 | [`flyte.app.Parameter`](../packages/flyte.app/parameter) |Parameter for application. |

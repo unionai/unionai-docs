@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.5.11
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -558,7 +558,7 @@ def open(
     cache_options: Optional[dict],
     compression: Optional[str],
     kwargs,
-) -> AsyncGenerator[Union[AsyncWritableFile, AsyncReadableFile, 'HashingWriter'], None]
+) -> AbstractAsyncContextManager[Union[AsyncWritableFile, AsyncReadableFile, 'HashingWriter']]
 ```
 Asynchronously open the file and return a file-like object.
 

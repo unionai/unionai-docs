@@ -1,6 +1,6 @@
 ---
 title: ContainerTask
-version: 2.5.11
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -122,7 +122,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def container_args(
-    sctx: flyte.models.SerializationContext,
+    serialize_context: flyte.models.SerializationContext,
 ) -> typing.List[str]
 ```
 Returns the container args for the task. This is a set of key-value pairs that can be used to
@@ -131,7 +131,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Parameter | Type | Description |
 |-|-|-|
-| `sctx` | `flyte.models.SerializationContext` | |
+| `serialize_context` | `flyte.models.SerializationContext` | |
 
 ### custom_config()
 
@@ -215,6 +215,7 @@ def override(
     interruptible: Optional[bool],
     entrypoint: Optional[bool],
     links: Tuple[Link, ...],
+    plugin_config: Optional[Any],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -239,6 +240,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
+| `plugin_config` | `Optional[Any]` | Optional override for the plugin specific configuration. Only supported by task templates that declare a `plugin_config` field. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 
 **Returns:** A new TaskTemplate instance with the overridden parameters.

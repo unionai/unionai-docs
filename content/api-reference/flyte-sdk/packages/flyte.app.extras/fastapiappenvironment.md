@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.5.11
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -179,8 +179,8 @@ def get_port()
 
 ```python
 def on_shutdown(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the shutdown function for the app environment.
 
@@ -193,14 +193,14 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
 
 ### on_startup()
 
 ```python
 def on_startup(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the startup function for the app environment.
 
@@ -213,14 +213,14 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
 
 ### server()
 
 ```python
 def server(
-    fn: Callable[..., None],
-) -> Callable[..., None]
+    fn: F,
+) -> F
 ```
 Decorator to define the server function for the app environment.
 
@@ -231,5 +231,5 @@ definition.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fn` | `Callable[..., None]` | |
+| `fn` | `F` | |
 

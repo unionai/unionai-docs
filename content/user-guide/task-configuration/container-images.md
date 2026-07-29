@@ -105,6 +105,7 @@ The available customization methods are:
 | `flyte.Image.with_requirements()` | Install Python dependencies from a `requirements.txt` file. |
 | `flyte.Image.with_uv_project()` | Install dependencies from a `pyproject.toml` + `uv.lock` pair. |
 | `flyte.Image.with_poetry_project()` | Install dependencies from a `pyproject.toml` + `poetry.lock` pair. |
+| `flyte.Image.with_pixi_project()` | Install dependencies from a [pixi](https://pixi.sh) project (conda and PyPI packages) defined in a `pixi.toml`, or a `pyproject.toml` with a `[tool.pixi]` section. |
 | `flyte.Image.with_source_file()` | Copy a single local file into the image. |
 | `flyte.Image.with_source_folder()` | Copy a local directory into the image. |
 | `flyte.Image.with_commands()` | Run additional shell commands during the build (do not prefix them with `RUN`). |
@@ -138,6 +139,32 @@ image = (
 ```
 
 By default only the dependencies are installed. To also install the project itself as a package, pass `project_install_mode="install_project"`.
+
+### Installing dependencies from a pixi project
+
+If your dependencies are managed with [pixi](https://pixi.sh) (conda and PyPI packages together), use `[[Image.with_pixi_project()]]` to build the image from a pixi manifest.
+The manifest is resolved and installed with `pixi install` at build time, and the resulting pixi environment becomes the image's runtime environment:
+
+```python
+from flyte import Image
+
+image = (
+    Image.from_debian_base()
+    .with_pixi_project("pixi.toml")
+)
+```
+
+The manifest argument can be a `pixi.toml` file, a `pyproject.toml` with a `[tool.pixi]` section, or the project directory containing either.
+When a `pixi.lock` sits next to the manifest, the build uses `pixi install --locked` so it reproduces the lock exactly.
+By default only the manifest and lock file are copied into the image; pass `project_install_mode="install_project"` to copy the whole project directory (use this when the manifest installs the project itself, for example a `pyproject.toml` that declares the project as an editable dependency).
+
+Three things to keep in mind:
+
+* **`flyte` must be present in the pixi environment.** After this layer the pixi environment replaces the image's virtualenv as the runtime, so tasks run only if `flyte` is installed in it. Declare `flyte` in the manifest (for example under `[pypi-dependencies]`), or add `.with_pip_packages("flyte")` after the pixi layer (it installs into the pixi environment). The environment must also provide `python`.
+* **`platforms` must cover every build architecture.** A multi-architecture image (`linux/amd64` plus `linux/arm64`) needs `platforms = ["linux-64", "linux-aarch64"]` in the manifest, or `pixi install` fails for the missing architecture at build time.
+* **GPU-less builders with a CUDA manifest.** If the manifest declares a CUDA `[system-requirements]` and image builds run on machines without a GPU, set `.with_env_vars({"CONDA_OVERRIDE_CUDA": "<version>"})` before the pixi layer so install-time validation of the `__cuda` virtual package succeeds.
+
+For the full parameter list (`environment`, `extra_args`, `secret_mounts`, `project_install_mode`), see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image#with_pixi_project).
 
 ### Copying local files into the image
 

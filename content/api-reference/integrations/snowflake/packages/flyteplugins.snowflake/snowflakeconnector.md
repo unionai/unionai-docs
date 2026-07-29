@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConnector
-version: 2.5.11
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -93,25 +93,30 @@ Poll the status of a Snowflake query.
 
 ```python
 def get_logs(
-    resource_meta: flyte.connectors._connector.ResourceMeta,
+    resource_meta: ~M,
     kwargs,
-) -> flyteidl2.connector.connector_pb2.GetTaskLogsResponse
+) -> typing.Union[typing.Coroutine[typing.Any, typing.Any, flyteidl2.connector.connector_pb2.GetTaskLogsResponse], typing.AsyncIterator[flyteidl2.connector.connector_pb2.GetTaskLogsResponse]]
 ```
 Return the task execution logs. Populate `body.lines` (structured
 LogLine entries with timestamp + originator) in the returned
 GetTaskLogsResponse.
 
+Overrides may be a plain async function returning a single
+``GetTaskLogsResponse``, or an async generator yielding multiple
+responses (preferred for paginated logs — the connector server
+handles both shapes).
+
 
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `resource_meta` | `~M` | |
 | `kwargs` | `**kwargs` | |
 
 ### get_metrics()
 
 ```python
 def get_metrics(
-    resource_meta: flyte.connectors._connector.ResourceMeta,
+    resource_meta: ~M,
     kwargs,
 ) -> flyteidl2.connector.connector_pb2.GetTaskMetricsResponse
 ```
@@ -120,6 +125,6 @@ Return the metrics for the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `resource_meta` | `~M` | |
 | `kwargs` | `**kwargs` | |
 
