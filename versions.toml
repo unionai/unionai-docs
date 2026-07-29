@@ -1,9 +1,4 @@
-# Docs versions served (DOC-1245). Managed by `manifest.py --promote`;
-# build-and-deploy reads it and materializes any named-but-missing tag.
-# stable     = newest tag, served at /docs/<line> (the one indexed URL).
-# enumerated = OLDER tags only, served at /docs/<tag>. The newest is NEVER
-#              enumerated -- no byte-identical duplicate tree.
 stable = "v1.16.26.0"
 enumerated = [
-  "v1.16.23.0",
 ]
+latest = false
