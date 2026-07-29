@@ -1,0 +1,254 @@
+name: "Regenerate v1 API docs"
+
+# Automated API-reference regen for the v1 line (flytekit) — mirror of main's
+# regen-api-docs.yml (DOC-1044 / DOC-1245).
+#
+# Regenerates the generated API reference against the latest PyPI flytekit release
+# and opens/updates a DRAFT PR; when versioning is live it folds the versions.toml
+# promote (the one-merge cut). Nothing auto-merges; a human reviews + merges.
+#
+# Trigger — MANUAL ONLY on v1:
+#   workflow_dispatch — `gh workflow run regen-api-docs.yml --ref v1`.
+#
+# Why manual-only: GitHub fires `schedule` and `repository_dispatch` ONLY from the
+# repo's DEFAULT branch (main), so those triggers on this v1-branch file would never
+# run. True v1 auto-regen (daily poll / flytekit-release dispatch) needs a main-side
+# driver that regenerates the v1 branch — a follow-up, not wired yet.
+#
+# PREREQUISITE for CI to run on the PR: the PR is opened with a GitHub App
+# installation token (the "docsy-bot" App) so the docs build / Check Generated
+# Content checks run on it — PRs opened by the default GITHUB_TOKEN do NOT trigger
+# other workflows. Set repo secrets DOCSY_BOT_APP_ID + DOCSY_BOT_PRIVATE_KEY (the
+# App's id + .pem private key); the App must be installed on this repo with
+# Contents: RW + Pull requests: RW. The workflow falls back to GITHUB_TOKEN when
+# those secrets are absent, so it still runs — the PR's checks just stay idle until
+# the App is configured.
+
+on:
+  workflow_dispatch:   # manual only on v1 (schedule/repository_dispatch fire from main only — see header)
+
+concurrency:
+  group: regen-api-docs-v1
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regen:
+    name: "Regenerate API docs and open draft PR"
+    runs-on: ubuntu-latest
+    # Job-level env so the App id is referenceable in step `if:` (secrets aren't).
+    env:
+      DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      # Mint a short-lived installation token for the docsy-bot App so the draft
+      # PR triggers CI (and is attributed to the bot). Skipped until the App
+      # secrets exist; create-pull-request then falls back to GITHUB_TOKEN.
+      - name: Mint docsy-bot App token
+        id: app-token
+        if: ${{ env.DOCSY_BOT_APP_ID != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      # Belt-and-suspenders: when triggered by the release signal, make sure the
+      # announced version is actually installable on PyPI before regenerating
+      # (the regen installs from PyPI). No-op for schedule/manual runs.
+      - name: Wait for PyPI availability (dispatch only)
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          LINK="https://pypi.org/project/flytekit/${VERSION}/"
+          echo "Waiting for $LINK"
+          for i in $(seq 1 60); do
+            if curl -L -I -s -f "$LINK" >/dev/null; then
+              echo "Found on PyPI: $LINK"; exit 0
+            fi
+            echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
+          done
+          echo "ERROR: timed out waiting for PyPI ($LINK)"; exit 1
+
+      # Gate: check-api-docs exits non-zero on drift. Capture, don't fail the job.
+      - name: Check API docs freshness
+        id: drift
+        run: |
+          set -o pipefail
+          if make check-api-docs 2>&1 | tee /tmp/drift.txt; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "API docs are already up to date with PyPI — nothing to regenerate."
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate API docs
+        if: steps.drift.outputs.drift == 'true'
+        run: make update-api-docs < /dev/null
+
+      # One-merge fold (DOC-1245): if versioning is live (versions.toml present) and
+      # this regen is an SDK-release cut (a new flyte-sdk triple, PyPI-published),
+      # promote the new tag into versions.toml IN THIS PR. Then merging the regen both
+      # updates the API reference AND advances /docs/v2 to the new stable in a single
+      # human action; the tag itself is minted at merge by build-and-deploy. Inert
+      # until go-live (no versions.toml → skipped); a non-SDK-release regen (a manual
+      # cut's z-bump) is a maintainer decision, not folded here.
+      - name: Fold version promotion (SDK-release cut)
+        if: steps.drift.outputs.drift == 'true' && hashFiles('versions.toml') != ''
+        run: |
+          set -euo pipefail
+          eval "$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"
+          if [ "${DOCS_CUT_KIND:-}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
+            REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
+            echo "Folded ${DOCS_TAG} promotion into this regen PR (versions.toml stable=${DOCS_TAG})."
+          else
+            echo "Not an SDK-release cut (kind=${DOCS_CUT_KIND:-none}, on_pypi=${DOCS_SDK_ON_PYPI:-?}) → no promotion."
+          fi
+
+      # Deterministic surface-delta classifier (NO AI runs in CI). Decides whether
+      # this regen moved the public API surface (material) or is only version-string
+      # churn (cosmetic). Detection lives here because both the pre- and post-regen
+      # trees are in hand; the narrative-impact ASSESSMENT happens later and
+      # pull-based on the docsy side: process-sources picks up the
+      # `docsy:api-surface-delta` label -> a scoped docsy ticket -> assess-docs-impact.
+      # CI never invokes a model. See docsy FINDINGS 2026-07-22.
+      - name: Classify surface delta
+        id: classify
+        if: steps.drift.outputs.drift == 'true'
+        run: |
+          set -euo pipefail
+          # Stage so newly-generated (untracked) pages are visible to `git diff`.
+          git add -A content/api-reference/ linkmap/ || true
+
+          material=false
+          reasons=""
+
+          # (1) Structural: an added / deleted / renamed generated page means a public
+          #     symbol appeared / disappeared / moved (renames show as R under -M).
+          structural=$(git -c core.quotepath=false diff --cached --name-status -M \
+                        -- content/api-reference/ | grep -E '^(A|D|R)' || true)
+          if [ -n "$structural" ]; then
+            material=true
+            reasons+=$'symbol pages added / removed / renamed:\n'"$structural"$'\n\n'
+          fi
+
+          # (2) Content: in MODIFIED pages, is any changed line something OTHER than a
+          #     frontmatter `version:` bump? This is the PRIMARY detector: the most
+          #     common material delta is a new method on an EXISTING class, which shows
+          #     as a modified page (not a new file), so the structural check misses it.
+          #     -U0 = changed lines only; drop file headers; drop the version-bump line.
+          substantive=$(git diff --cached -U0 -- content/api-reference/ \
+                          | grep -E '^[+-]' \
+                          | grep -vE '^(\+\+\+|---)' \
+                          | grep -vE '^[+-][[:space:]]*version:[[:space:]]' \
+                          || true)
+          if [ -n "$substantive" ]; then
+            material=true
+            reasons+=$'non-version content changed in existing pages\n\n'
+          fi
+
+          # Enhancement: name the specific new symbols so the downstream docsy ticket
+          # seeds assess-docs-impact with exact xref keys. New method/function sections
+          # in these generated pages render as `### name()`.
+          symbols=$(git diff --cached -U0 -- content/api-reference/ \
+                      | grep -oE '^\+### [a-zA-Z_][a-zA-Z0-9_]*\(\)' \
+                      | sed -E 's/^\+### //' | sort -u || true)
+
+          echo "material=$material" >> "$GITHUB_OUTPUT"
+
+          # Machine-readable block appended to the PR body for the funnel to read.
+          {
+            echo ""
+            if [ "$material" = "true" ]; then
+              echo "### API surface delta: \`material\`"
+              echo ""
+              echo "This regen changes the **public API surface**, not just version strings. docsy will assess whether narrative docs (user guide, how-tos) that cite these symbols need updating: \`process-sources\` picks up the \`docsy:api-surface-delta\` label, opens a scoped ticket, and runs \`assess-docs-impact\`."
+              if [ -n "$symbols" ]; then
+                echo ""
+                echo "**Changed public symbols (seed for the narrative-impact assessment):**"
+                echo '```'
+                printf '%s\n' "$symbols"
+                echo '```'
+              fi
+              echo ""
+              echo "<details><summary>Detection detail</summary>"
+              echo ""
+              echo '```'
+              printf '%s' "$reasons"
+              echo '```'
+              echo ""
+              echo "</details>"
+            else
+              echo "### API surface delta: \`cosmetic\`"
+              echo ""
+              echo "Only frontmatter \`version:\` bumps. No narrative-impact assessment needed."
+            fi
+          } > /tmp/delta.md
+
+      - name: Build PR body
+        if: steps.drift.outputs.drift == 'true'
+        run: |
+          {
+            echo "## Automated API-reference regeneration"
+            echo ""
+            echo "Regenerated the generated API reference against the latest PyPI releases via the build pipeline (\`make update-api-docs\`). No hand-authored content."
+            echo ""
+            echo "Triggered by: \`${{ github.event_name }}\`."
+            echo ""
+            echo "### Drift detected"
+            echo '```'
+            grep -E "OUTDATED|up-to-date" /tmp/drift.txt || cat /tmp/drift.txt
+            echo '```'
+            echo ""
+            echo "Produced by docsy's API-docs automation (Option 2 / DOC-1044) — the CI complement to \`/docsy --refresh-api\`. Left as a **draft** for human review (agent proposes; human disposes)."
+            echo ""
+            echo "> If this PR's checks are not running, the docsy-bot App isn't configured yet — set the \`DOCSY_BOT_APP_ID\` + \`DOCSY_BOT_PRIVATE_KEY\` repo secrets (PRs opened by GITHUB_TOKEN do not trigger workflows)."
+          } > /tmp/pr-body.md
+          # Append the surface-delta classification (material/cosmetic + symbols).
+          cat /tmp/delta.md >> /tmp/pr-body.md 2>/dev/null || true
+
+      - name: Create or update draft PR
+        if: steps.drift.outputs.drift == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          branch: docsy/v1-api-ref-refresh-auto
+          base: v1
+          draft: true
+          add-paths: |
+            content/api-reference/**
+            linkmap/*-linkmap.json
+            versions.toml
+          commit-message: "docs(api-reference): regenerate v1 API docs (automated)"
+          # DCO: "Check DCO" is a required status check on main (DOC-1244), so the
+          # automated regen commit must carry a Signed-off-by trailer or the PR
+          # can never merge. Pin the bot as author+committer and let the action
+          # append the sign-off from that identity (peter-evans signoff option).
+          author: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          committer: "unionai-docsy-bot[bot] <295918299+unionai-docsy-bot[bot]@users.noreply.github.com>"
+          signoff: true
+          title: "docs(api-reference): regenerate v1 API docs (automated)"
+          body-path: /tmp/pr-body.md
+          # Always label api-docs-regen; add docsy:api-surface-delta only when the
+          # regen moved the public surface, so process-sources opens a
+          # narrative-impact ticket (docsy FINDINGS 2026-07-22). The empty string on
+          # the cosmetic branch yields a blank line the action ignores.
+          labels: |
+            api-docs-regen
+            ${{ steps.classify.outputs.material == 'true' && 'docsy:api-surface-delta' || '' }}
+          delete-branch: false
