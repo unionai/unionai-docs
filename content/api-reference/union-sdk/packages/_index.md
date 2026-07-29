@@ -9,14 +9,14 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`union`](union) |  |
-| [`union.actor`](union.actor) |  |
-| [`union.app`](union.app) |  |
-| [`union.app.llm`](union.app.llm) |  |
-| [`union.artifacts`](union.artifacts) |  |
-| [`union.cache`](union.cache) |  |
-| [`union.configuration`](union.configuration) |  |
-| [`union.filesystems`](union.filesystems) | Module for fsspec implementations. |
-| [`union.map`](union.map) |  |
-| [`union.remote`](union.remote) |  |
-| [`union.ucimage`](union.ucimage) |  |
+| [`union`](union/_index) |  |
+| [`union.actor`](union.actor/_index) |  |
+| [`union.app`](union.app/_index) |  |
+| [`union.app.llm`](union.app.llm/_index) |  |
+| [`union.artifacts`](union.artifacts/_index) |  |
+| [`union.cache`](union.cache/_index) |  |
+| [`union.configuration`](union.configuration/_index) |  |
+| [`union.filesystems`](union.filesystems/_index) | Module for fsspec implementations. |
+| [`union.map`](union.map/_index) |  |
+| [`union.remote`](union.remote/_index) |  |
+| [`union.ucimage`](union.ucimage/_index) |  |

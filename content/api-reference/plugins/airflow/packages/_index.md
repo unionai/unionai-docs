@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,5 +9,5 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.airflow.connector`](flytekitplugins.airflow.connector) |  |
-| [`flytekitplugins.airflow.task`](flytekitplugins.airflow.task) |  |
+| [`flytekitplugins.airflow.connector`](flytekitplugins.airflow.connector/_index) |  |
+| [`flytekitplugins.airflow.task`](flytekitplugins.airflow.task/_index) |  |

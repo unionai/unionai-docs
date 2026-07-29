@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.utils
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,15 +30,24 @@ layout: py_api
 
 ```python
 def execute_command(
-    cmd,
+    cmd: str,
+    env: typing.Optional[typing.Dict[str, str]],
 )
 ```
 Execute a command in the shell.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cmd` |  | |
+| `cmd` | `str` | The command to execute. |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | Environment variables to set for the subprocess. These are merged on top of the current process environment, so callers can override specific variables (e.g. ``PORT``) without dropping the rest of the inherited environment. |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `RuntimeError` | If the command exits with a non-zero return code. |
 
 #### get_task_inputs()
 

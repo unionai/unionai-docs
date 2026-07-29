@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,4 +9,4 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.papermill.task`](flytekitplugins.papermill.task) |  |
+| [`flytekitplugins.papermill.task`](flytekitplugins.papermill.task/_index) |  |

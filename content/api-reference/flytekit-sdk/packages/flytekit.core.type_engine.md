@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
@@ -1493,7 +1493,7 @@ Converts any python val (dataframe, int, float) to a html string, and it will be
 ```python
 def to_literal(
     ctx: FlyteContext,
-    python_val: enum.Enum,
+    python_val: Union[enum.Enum, str],
     python_type: Type[T],
     expected: LiteralType,
 ) -> Literal
@@ -1507,7 +1507,7 @@ what was the mismatch
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
-| `python_val` | `enum.Enum` | The actual value to be transformed |
+| `python_val` | `Union[enum.Enum, str]` | The actual value to be transformed |
 | `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
 | `expected` | `LiteralType` | Expected Literal Type |
 
@@ -2224,7 +2224,7 @@ def update(
 )
 ```
 D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.
-If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
+If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
 If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 

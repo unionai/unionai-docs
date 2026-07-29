@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.papermill.task
-version: 1.16.23
+version: 1.16.26
 variants: +flyte +union
 layout: py_api
 ---
