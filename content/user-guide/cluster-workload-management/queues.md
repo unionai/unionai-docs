@@ -139,12 +139,9 @@ queue = Queue.create(
 {{< tab "Console" >}}
 {{< markdown >}}
 
-In the console, go to **Settings > Queues** and click **New Queue**.
-
-![The console Queues list, with the New Queue button highlighted](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
-
-Fill in the **New queue** form and click **Create queue**. The fields map to the
-same settings the CLI and Python expose:
+In the console, go to **Settings > Queues** and click **New Queue**. Fill in the
+**New queue** form and click **Create queue**. The fields map to the same settings
+the CLI and Python expose:
 
 ![The New queue form in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-new-form.png)
 
@@ -246,10 +243,13 @@ for metrics in Queue.watch("gpu-queue"):
 {{< tab "Console" >}}
 {{< markdown >}}
 
-Go to **Settings > Queues** for the same view. Queues are grouped by cluster pool
-(the **View by Pool** toggle), and each row shows its status, priority, and live
-**Queued**, **Runs**, and **Actions** counts. Use the **Status** filter or the
-search box to narrow the list.
+Go to **Settings > Queues** to see all your queues.
+
+![The console Queues list, grouped by cluster pool](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
+
+Queues are grouped by cluster pool (the **View by Pool** toggle), and each row
+shows its status, priority, and live **Queued**, **Runs**, and **Actions** counts.
+Use the **Status** filter or the search box to narrow the list.
 
 {{< /markdown >}}
 {{< /tab >}}
