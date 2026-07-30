@@ -47,28 +47,25 @@ full re-run, you can adjust the inputs in the launch form first.
 ## Run lineage
 
 When you re-run a run from the UI, {{< key product_name >}} records the run you started from as the
-new run's parent. This provenance is captured automatically, so you never have to set it yourself.
-The same parent link is recorded when a run is derived from another run in other ways, such as
-recovering from a failed run.
+new run's parent. This provenance is captured automatically, so you never have to set it yourself. A
+parent link is also recorded when a run is derived from another run in other ways, such as recovering
+a failed run.
 
-Run lineage lets you trace a result back to the run it came from, or follow a chain of retries
-forward to the run that finally succeeded.
+Run lineage lets you trace a run back to the one it was started from.
 
-The relationship is surfaced in two places in the console:
+The parent is surfaced in two places in the console:
 
-- **On the run list views**, a lineage indicator marks rows that have a related run, so you can tell
-  at a glance which runs are re-runs of an earlier one.
+- **In the run list**, a re-run is marked with a rerun icon next to its run ID. Hover the icon to see
+  "Rerun of" and the ID of the parent run, so you can tell at a glance which runs were started from
+  an earlier run. A re-run also shows no trigger and is owned by the user who started it, rather than
+  by a schedule.
 
-<!-- SCREENSHOT NEEDED: A run list view (any list-runs page) with the lineage indicator visible on a row that is a re-run of an earlier run. The indicator/badge that marks the row as having a parent must be clearly visible. -->
-![A run list view with the lineage indicator on a re-run row](../../_static/images/user-guide/task-deployment/rerun-runs/run-list-lineage-indicator.png)
+![A run list with the rerun icon and "Rerun of" tooltip on a re-run row](../../_static/images/user-guide/task-deployment/rerun-runs/run-list-rerun-indicator.png)
 
-- **On the run details page**, a Related runs panel shows the run's parent and any child runs it
-  produced. Each entry links to the related run, so you can move up and down the lineage.
+- **On the run details page**, a re-run shows a **Rerun** badge next to its status. Hover the badge,
+  or open **Run info**, to see the **Rerun of** link to the parent run.
 
-<!-- SCREENSHOT NEEDED: The run details page of a run that was created by re-running an earlier run, with the related-runs panel expanded so the parent-run link is visible (and a child run too, if one exists). This shot also settles the exact panel label. -->
-![The Related runs panel on the run details page](../../_static/images/user-guide/task-deployment/rerun-runs/run-details-related-runs-panel.png)
-
-<!-- LABEL UNCONFIRMED: "Related runs" and "lineage indicator" are the working names from the backend design (ENG26-628); the exact console labels must be confirmed against the live UI when the screenshots are captured, and the prose adjusted to match. -->
+![The Rerun badge and "Rerun of" parent link on the run details page](../../_static/images/user-guide/task-deployment/rerun-runs/run-details-rerun-of-parent.png)
 
 {{< /markdown >}}
 {{< /variant >}}
