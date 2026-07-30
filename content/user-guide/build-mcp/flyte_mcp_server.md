@@ -10,6 +10,16 @@ variants: +flyte +union
 
 Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, this environment ships a curated set of Flyte tools out of the box. You decide which of them to expose and what they're allowed to touch.
 
+> [!TIP] Prefer a prebuilt plugin?
+> If you just want these Flyte tools available in your AI coding agent without
+> building a server yourself, [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) —
+> a portable agent harness plugin for Claude Code, Codex, OpenCode, and other
+> harnesses — bundles a ready-to-use `flyte-cluster` MCP server (the same
+> control-plane tools) plus a hosted `flyte-docs` search server. See
+> [Flyte agent plugins](../../api-reference/agent-plugins) for details. Build your
+> own `FlyteMCPAppEnvironment` (below) when you need to scope, allowlist, or deploy
+> a shared server.
+
 ## When to use it
 
 Use a Flyte MCP server when you want an assistant to *act on your cluster on your behalf*. Common scenarios:

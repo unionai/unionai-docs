@@ -1,7 +1,7 @@
 ---
 title: Union plugin
 version: 0.5.2
-variants: +flyte +union
+variants: -flyte +union
 layout: py_api
 weight: 5
 ---

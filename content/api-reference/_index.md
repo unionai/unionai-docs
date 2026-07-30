@@ -27,6 +27,10 @@ The Flyte SDK provides the core Python API for building workflows and apps on yo
 The Flyte CLI is the command-line interface for interacting with your Union instance.
 {{< /link-card >}}
 
+{{< link-card target="agent-plugins" icon="robot" title="Flyte agent plugins" >}}
+A portable agent-harness plugin — skills and MCP servers for authoring, migrating, and deploying Flyte with an AI agent.
+{{< /link-card >}}
+
 {{< /grid >}}
 
 Migrating from Flyte 1? See [Migration from Flyte 1](../user-guide/migration/flyte-2/overview) in the User Guide.
