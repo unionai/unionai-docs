@@ -152,16 +152,14 @@ This makes it easy to swap execution backends or introduce distributed compute i
 
 ## Agentic AI
 
-Agentic AI integrations provide drop-in replacements for LLM provider SDKs. They let you use Flyte tasks as agent tools so that tool calls run with full Flyte observability, retries, and caching.
+Agentic AI integrations let you run agents written in a third-party framework as durable Flyte tasks. You keep the framework's own idioms; Flyte supplies the runtime underneath, so tool calls become containerized child actions with their own resources, retries and caching, completed model turns replay instead of re-billing, and conversations persist across runs.
 
 ### Supported agentic AI integrations
 
-| Plugin                              | Description                                                    | Common use cases                         |
-| ----------------------------------- | -------------------------------------------------------------- | ---------------------------------------- |
-| [OpenAI](./openai/_index)           | Drop-in replacement for OpenAI Agents SDK `function_tool`      | Agentic workflows with OpenAI models     |
-| [Anthropic](./anthropic/_index)     | Agent loop and `function_tool` for the Anthropic Claude SDK    | Agentic workflows with Claude            |
-| [Gemini](./gemini/_index)           | Agent loop and `function_tool` for the Google Gemini SDK       | Agentic workflows with Gemini            |
-| [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes | Data processing, ETL, analysis pipelines |
+| Plugin                                  | Description                                                                                                          | Common use cases                                     |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [Agent frameworks](./agents/_index)     | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory     |
+| [Code generation](./codegen/_index)     | LLM-driven code generation with automatic testing in sandboxes                                                       | Data processing, ETL, analysis pipelines             |
 
 ## Experiment tracking
 

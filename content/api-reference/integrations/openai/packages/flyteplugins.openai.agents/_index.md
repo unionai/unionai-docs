@@ -7,6 +7,9 @@ layout: py_api
 
 # flyteplugins.openai.agents
 
+> [!WARNING] Deprecated
+> The `flyteplugins-openai` package has been removed from the SDK. OpenAI Agents SDK agents now run on Flyte through `flyteplugins-agents-openai`. See [OpenAI](../../../../../integrations/agents/openai) for the current integration. This reference is retained for users on an older release.
+
 ## Directory
 
 ### Methods

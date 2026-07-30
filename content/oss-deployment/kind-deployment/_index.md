@@ -22,6 +22,15 @@ way it's a fast way to try Flyte without running a production-grade control plan
 > [cloud firewall](https://docs.digitalocean.com/products/networking/firewalls/) while
 > you evaluate.
 
+> [!TIP] Deploy this with an AI assistant
+> [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) — a
+> portable agent harness plugin for Claude Code, Codex, OpenCode, and other
+> harnesses — packages this walkthrough as skills: `deploy-flyte-kind` drives the
+> kind install (PostgreSQL + object store), `deploy-flyte-kind-vm` provisions a
+> host or cloud VM first, and `start-dex-local` stands up the local Dex IdP for the
+> optional [auth step](#7-add-authentication-with-a-local-idp-optional).
+> See [Flyte agent plugins](../../api-reference/agent-plugins).
+
 ## 1. Prerequisites
 
 {{< tabs "kind-host" >}}

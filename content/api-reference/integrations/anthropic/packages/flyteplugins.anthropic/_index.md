@@ -7,6 +7,9 @@ layout: py_api
 
 # flyteplugins.anthropic
 
+> [!WARNING] Deprecated
+> The `flyteplugins-anthropic` package has been removed from the SDK. Claude agents now run on Flyte through the Claude Agent SDK adapter, `flyteplugins-agents-claude`. See [Claude](../../../../../integrations/agents/claude-agent-sdk) for the current integration. This reference is retained for users on an older release.
+
 Anthropic Claude plugin for Flyte.
 
 This plugin provides integration between Flyte tasks and Anthropic's Claude API,

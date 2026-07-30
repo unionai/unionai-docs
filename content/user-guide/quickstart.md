@@ -80,6 +80,13 @@ Run `flyte get config` to check which configuration is currently active.
 
 ## Write your first workflow
 
+> [!TIP] Author workflows with an AI assistant
+> [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) — a
+> portable agent harness plugin for Claude Code, Codex, OpenCode, and other
+> harnesses — adds skills that scaffold projects and generate tasks, workflows,
+> apps, and tests for you, plus MCP servers that ground the agent in the Flyte SDK
+> and docs. See [Flyte agent plugins](../api-reference/agent-plugins) to get started.
+
 Create `hello.py`:
 
 {{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
