@@ -139,7 +139,7 @@ queue = Queue.create(
 {{< tab "Console" >}}
 {{< markdown >}}
 
-In the console, go to **Settings → Queues** and click **New Queue**.
+In the console, go to **Settings > Queues** and click **New Queue**.
 
 ![The console Queues list, with the New Queue button highlighted](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
 
@@ -153,7 +153,7 @@ same settings the CLI and Python expose:
 | **Name** | the queue name |
 | **Priority** | `priority` (shown as Low / Medium / High, see below) |
 | **Cluster pool** | `cluster_pool` / `--cluster-pool` |
-| **Clusters** | `clusters` / `--cluster` (`All available clusters` routes to every cluster in the pool) |
+| **Clusters** | `clusters` / `--cluster` ("All available clusters (default behavior)" routes to every cluster in the pool) |
 | **Depth** | `depth` / `--depth` |
 | **Run concurrency** | `run_concurrency` / `--run-concurrency` |
 | **Action concurrency** | `action_concurrency` / `--action-concurrency` |
@@ -246,9 +246,10 @@ for metrics in Queue.watch("gpu-queue"):
 {{< tab "Console" >}}
 {{< markdown >}}
 
-Go to **Settings → Queues** for the same view. Queues are grouped by cluster pool,
-and each row shows its status, priority, and live **Queued**, **Runs**, and
-**Actions** counts. Use the **Status** filter or the search box to narrow the list.
+Go to **Settings > Queues** for the same view. Queues are grouped by cluster pool
+(the **View by Pool** toggle), and each row shows its status, priority, and live
+**Queued**, **Runs**, and **Actions** counts. Use the **Status** filter or the
+search box to narrow the list.
 
 {{< /markdown >}}
 {{< /tab >}}
