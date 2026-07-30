@@ -28,7 +28,7 @@ The Flyte CLI is the command-line interface for interacting with your Union inst
 {{< /link-card >}}
 
 {{< link-card target="agent-plugins" icon="robot" title="Flyte agent plugins" >}}
-Claude Code skills and MCP servers for authoring, migrating, and deploying Flyte with an AI assistant.
+A portable agent-harness plugin — skills and MCP servers for authoring, migrating, and deploying Flyte with an AI agent.
 {{< /link-card >}}
 
 {{< /grid >}}

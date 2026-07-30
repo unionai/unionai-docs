@@ -1,27 +1,40 @@
 ---
 title: Flyte agent plugins
-weight: 2
+weight: 5
 variants: +flyte +union
 ---
 
 # Flyte agent plugins
 
-[`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) is a
-Claude Code plugin marketplace for working with Flyte. It bundles a set of
-**agent skills** and two **MCP servers** that let an AI coding assistant scaffold
-workflows, build and serve apps, run and inspect executions, migrate Flyte 1
-code to Flyte 2, and deploy Flyte clusters — grounded in the Flyte SDK, the
-documentation, and (optionally) your own cluster.
+[`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) is an
+**agent harness plugin for Flyte** — a portable bundle of **agent skills** and two
+**MCP servers** that teach an AI coding agent to scaffold workflows, build and serve
+apps, run and inspect executions, migrate Flyte 1 code to Flyte 2, and deploy Flyte
+clusters, grounded in the Flyte SDK, the documentation, and (optionally) your own
+cluster.
 
-The skills are portable across several agent harnesses (Claude Code, Codex CLI,
-Hermes, opencode, and pi); the MCP servers are configured automatically in
-Claude Code and set up manually elsewhere.
+It's harness-agnostic: the same skills run in **Claude Code, Codex, Hermes,
+OpenCode, Pi, and other agent harnesses**. In Claude Code the bundled MCP servers
+are wired up for you automatically; in other harnesses you configure them manually.
+
+## Compatibility
+
+| Harness | Skills | MCP servers |
+|---------|--------|-------------|
+| Claude Code | All | Both, configured automatically |
+| Codex | All | Manual setup |
+| Hermes | Per-skill | Manual setup |
+| OpenCode | All | Manual setup |
+| Pi | All | Manual setup |
+
+Support extends to other harnesses that load agent skills and MCP servers; see the
+repository README for the current list and per-harness setup notes.
 
 > [!NOTE]
 > This is a community/open-source toolkit maintained in the
 > [`flyteorg/flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins)
 > repository. See the repository README for the authoritative, up-to-date list of
-> skills, tools, and installation options.
+> harnesses, skills, tools, and installation options.
 
 ## Installation
 
@@ -39,7 +52,10 @@ To pin a version, add the marketplace from a git reference:
 ```
 
 Installing the plugin makes all of the skills available and, in Claude Code,
-wires up both bundled MCP servers automatically.
+wires up both bundled MCP servers automatically. In other harnesses (Codex,
+Hermes, OpenCode, Pi, …), point the harness at the same repository to load the
+skills, then configure the MCP servers manually — see the repository README for
+per-harness instructions.
 
 ## Skills
 
@@ -105,5 +121,5 @@ externally.
 > [!TIP]
 > The `flyte-cluster` server is the same set of Flyte control-plane tools you can
 > expose yourself with a `FlyteMCPAppEnvironment`. See
-> [Flyte MCP server](../user-guide/build-mcp/flyte_mcp_server) for how to build
+> [Flyte MCP server](../../user-guide/build-mcp/flyte_mcp_server) for how to build
 > and scope your own Flyte MCP server.

@@ -198,6 +198,8 @@ name = "union-plugin"
 # positioned in the nav between flyte-sdk (weight 4) and integrations (weight 6).
 output_folder = "content/api-reference/union-plugin"
 weight = 5
+# Union-only: the union plugin is not part of open-source Flyte.
+variants = "-flyte +union"
 
 [[plugins]]
 package = "flyteplugins-vllm"
