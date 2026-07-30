@@ -46,6 +46,7 @@
 #   title    - Display title for the documentation
 #   name     - Folder name under output_base
 #   extras   - (optional) pip extras to install, e.g. ["bigquery", "snowflake"]
+#   frozen   - (optional) If true, skip clean/generate (committed content, no longer regenerable)
 
 # === SDK packages ===
 
@@ -87,6 +88,20 @@ output_base = "content/api-reference/integrations"
 default_include = "include/api.plugin.md"
 no_flatten = true  # v2: hierarchical output (separate class files per package)
 
+# Frozen agentic plugins. flyteplugins-{anthropic,gemini,openai} were removed from
+# the SDK; agents now run on Flyte through the framework adapters documented under
+# content/integrations/agents/. Their API-reference dirs are retained by hand as
+# version-stamped snapshots carrying a deprecation notice, for users still on an
+# older release. Listed here (rather than deleted) so the registry stays the full
+# account of what lives under output_base; `frozen` keeps the regen, clean, and
+# PyPI drift checks off them. Do not unfreeze - the packages no longer publish.
+[[plugins]]
+package = "flyteplugins-anthropic"
+plugin = "flyteplugins.anthropic"
+title = "Anthropic"
+name = "anthropic"
+frozen = true
+
 [[plugins]]
 package = "flyteplugins-bigquery"
 plugin = "flyteplugins.bigquery"
@@ -112,6 +127,13 @@ title = "Databricks"
 name = "databricks"
 
 [[plugins]]
+package = "flyteplugins-gemini"
+plugin = "flyteplugins.gemini"
+title = "Gemini"
+name = "gemini"
+frozen = true  # see "Frozen agentic plugins" above
+
+[[plugins]]
 package = "flyteplugins-hydra"
 plugin = "flyteplugins.hydra"
 title = "Hydra"
@@ -128,6 +150,13 @@ package = "flyteplugins-mlflow"
 plugin = "flyteplugins.mlflow"
 title = "MLflow"
 name = "mlflow"
+
+[[plugins]]
+package = "flyteplugins-openai"
+plugin = "flyteplugins.openai"
+title = "OpenAI"
+name = "openai"
+frozen = true  # see "Frozen agentic plugins" above
 
 [[plugins]]
 package = "flyteplugins-omegaconf"
