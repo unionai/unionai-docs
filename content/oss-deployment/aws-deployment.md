@@ -55,6 +55,10 @@ configuration:
       s3:
         region: <region>              # e.g. us-east-1
         authType: iam                 # iam (recommended) | accesskey
+        
+flyte-core-components:
+  runs:
+    storagePrefix: "s3//<bucket_name>" # object-store bucket Flyte runs read from and write to
 
 serviceAccount:
   create: true
