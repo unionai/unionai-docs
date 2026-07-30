@@ -251,6 +251,25 @@ Queues are grouped by cluster pool (the **View by Pool** toggle), and each row
 shows its status, priority, and live **Queued**, **Runs**, and **Actions** counts.
 Use the **Status** filter or the search box to narrow the list.
 
+Click a queue to open its detail view, which has three tabs.
+
+**Overview** shows the queue's live state: its cluster pool, the clusters it is
+connected to and their CPU, GPU, and memory capacity, and the in-flight **Queued**,
+**Runs**, and **Actions** counts.
+
+![The Overview tab of a queue's detail view in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-overview.png)
+
+**Usage** gives ready-to-copy snippets for routing work to this queue, at run level
+and per task, with the queue's name already filled in. These are the same routing
+methods described in [Queues in Configure tasks](../task-configuration/queues).
+
+![The Usage tab of a queue's detail view, showing run-level and task-level routing snippets](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-usage.png)
+
+**Settings** lists the queue's current configuration: its pool, connected clusters,
+and scope, plus its priority, depth, and run and action concurrency limits.
+
+![The Settings tab of a queue's detail view, listing its configuration](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-settings.png)
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
