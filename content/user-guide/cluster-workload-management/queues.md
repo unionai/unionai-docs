@@ -136,6 +136,35 @@ queue = Queue.create(
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "Console" >}}
+{{< markdown >}}
+
+In the console, go to **Settings → Queues** and click **New Queue**.
+
+![The console Queues list, with the New Queue button highlighted](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
+
+Fill in the **New queue** form and click **Create queue**. The fields map to the
+same settings the CLI and Python expose:
+
+![The New queue form in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-new-form.png)
+
+| Form field | Setting |
+|---|---|
+| **Name** | the queue name |
+| **Priority** | `priority` (shown as Low / Medium / High, see below) |
+| **Cluster pool** | `cluster_pool` / `--cluster-pool` |
+| **Clusters** | `clusters` / `--cluster` (`All available clusters` routes to every cluster in the pool) |
+| **Depth** | `depth` / `--depth` |
+| **Run concurrency** | `run_concurrency` / `--run-concurrency` |
+| **Action concurrency** | `action_concurrency` / `--action-concurrency` |
+
+The console labels priority **Low**, **Medium**, and **High**; these are the same
+levels the CLI and Python call `min`, `medium`, and `max`. **Fairness** is not in
+the form, so set it from the CLI or Python if you need a value other than the
+default.
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 > [!NOTE] Queues are bound to a cluster pool
@@ -208,6 +237,15 @@ To stream metrics:
 for metrics in Queue.watch("gpu-queue"):
     print(metrics)
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Console" >}}
+{{< markdown >}}
+
+Go to **Settings → Queues** for the same view. Queues are grouped by cluster pool,
+and each row shows its status, priority, and live **Queued**, **Runs**, and
+**Actions** counts. Use the **Status** filter or the search box to narrow the list.
 
 {{< /markdown >}}
 {{< /tab >}}

@@ -37,7 +37,7 @@ dr-region:
 
 ## Routing work to a cluster pool
 
-Work reaches a cluster pool through a [queue](../../../user-guide/cluster-workload-management/queues). A queue lives in one cluster pool and routes runs to the clusters in it; users submit to a queue, never to a pool or a cluster directly. See [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) and [Managing queues](../../../user-guide/cluster-workload-management/queues) for the full model.
+Work reaches a cluster pool through a queue. A queue lives in one cluster pool and routes runs to the clusters in it; users submit to a queue, never to a pool or a cluster directly. See [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools) and [Managing queues](../../../user-guide/cluster-workload-management/queues) for the full model.
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte create queue` and related commands are provided by the `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
