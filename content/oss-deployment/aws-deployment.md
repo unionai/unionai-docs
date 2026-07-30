@@ -58,7 +58,7 @@ configuration:
         
 flyte-core-components:
   runs:
-    storagePrefix: "s3//<bucket_name>" # object-store bucket Flyte runs read from and write to
+    storagePrefix: "s3://<bucket_name>" # object-store bucket Flyte runs read from and write to
 
 serviceAccount:
   create: true
@@ -243,7 +243,7 @@ configuration:
       
 flyte-core-components:
   runs:
-    storagePrefix: "s3//<bucket_name>"      
+    storagePrefix: "s3://<bucket_name>"      
 
 serviceAccount:
   create: true
