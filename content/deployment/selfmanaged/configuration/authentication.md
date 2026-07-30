@@ -466,7 +466,7 @@ The SDK and CLI use PKCE (Proof Key for Code Exchange) for interactive authentic
 5. The SDK exchanges the code for tokens and stores them locally.
 6. Subsequent requests include the token in the `flyte-authorization` header.
 
-No additional SDK configuration is required beyond the standard `uctl` or Union config:
+No additional SDK configuration is required beyond the standard `flyte` connection config:
 
 ```yaml
 admin:

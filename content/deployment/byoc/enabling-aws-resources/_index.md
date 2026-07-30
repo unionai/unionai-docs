@@ -175,9 +175,9 @@ In AWS:
 * Add the `userflyterole` policy to `<CustomRole>`.
 * Add `<CustomPolicy>` to `<CustomRole>`.
 
-In {{< key product_name >}} (using `uctl`):
+In {{< key product_name >}}:
 
-* Bind `<CustomRole>` to the project-domain pair desired.
+* Bind `<CustomRole>` to the project-domain pair desired (see [Bind the IAM role to a project-domain pair](#bind-the-iam-role-to-a-project-domain-pair) below).
 
 ### Create the IAM role
 
@@ -205,29 +205,8 @@ In {{< key product_name >}} (using `uctl`):
 10. Select **Create role**.
 11. In the **Summary** section of the new role's details pane, note the ARN value.
 
-### Configure the cluster to use the new IAM role
+### Bind the IAM role to a project-domain pair
 
-Repeat the following steps for each project-domain pair:
-
-1. Create a file named `cluster_resource_attributes.yaml` with the following contents:
-
-```yaml
-attributes:
-defaultUserRoleValue: <ARN from step 11 above>
-domain: <domain>
-project: <project>
-```
-
-2. Run the following command to override the IAM role used for {{< key product_name >}} Tasks in this Project-Domain:
-
-```bash
-uctl update cluster-resource-attribute --attrFile cluster_resource_attributes.yaml
-```
-
-3. You can verify the overrides by running:
-
-```bash
-uctl get cluster-resource-attribute -p <project> -d <domain>
-```
+Once the IAM role exists, the mapping from a project-domain pair to that role is applied in the {{< key product_name >}} control plane. Provide the {{< key product_name >}} team with the role ARN (from step 11 above) and the project-domain pairs it should apply to, and they will bind the role to those namespaces.
 
 **At this point, only code in your chosen project-domain pairs will have access to the cloud resource as defined by your custom policy.**
