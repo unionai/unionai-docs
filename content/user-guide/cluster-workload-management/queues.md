@@ -213,6 +213,9 @@ flyte get queue gpu-queue
 flyte get queue gpu-queue --watch
 ```
 
+`--watch` renders live progress bars for run concurrency, action concurrency, and
+depth, so you can see a queue filling up or draining in real time.
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
@@ -250,9 +253,6 @@ and each row shows its status, priority, and live **Queued**, **Runs**, and
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
-
-`--watch` renders live progress bars for run concurrency, action concurrency, and
-depth, so you can see a queue filling up or draining in real time.
 
 ## Change a queue's settings
 
