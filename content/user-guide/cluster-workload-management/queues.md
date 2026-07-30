@@ -136,6 +136,32 @@ queue = Queue.create(
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "Console" >}}
+{{< markdown >}}
+
+In the console, go to **Settings > Queues** and click **New Queue**. Fill in the
+**New queue** form and click **Create queue**. The fields map to the same settings
+the CLI and Python expose:
+
+![The New queue form in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-new-form.png)
+
+| Form field | Setting |
+|---|---|
+| **Name** | the queue name |
+| **Priority** | `priority` (shown as Low / Medium / High, see below) |
+| **Cluster pool** | `cluster_pool` / `--cluster-pool` |
+| **Clusters** | `clusters` / `--cluster` ("All available clusters (default behavior)" routes to every cluster in the pool) |
+| **Depth** | `depth` / `--depth` |
+| **Run concurrency** | `run_concurrency` / `--run-concurrency` |
+| **Action concurrency** | `action_concurrency` / `--action-concurrency` |
+
+The console labels priority **Low**, **Medium**, and **High**; these are the same
+levels the CLI and Python call `min`, `medium`, and `max`. **Fairness** is not in
+the form, so set it from the CLI or Python if you need a value other than the
+default.
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 > [!NOTE] Queues are bound to a cluster pool
@@ -184,6 +210,9 @@ flyte get queue gpu-queue
 flyte get queue gpu-queue --watch
 ```
 
+`--watch` renders live progress bars for run concurrency, action concurrency, and
+depth, so you can see a queue filling up or draining in real time.
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
@@ -211,10 +240,39 @@ for metrics in Queue.watch("gpu-queue"):
 
 {{< /markdown >}}
 {{< /tab >}}
-{{< /tabs >}}
+{{< tab "Console" >}}
+{{< markdown >}}
 
-`--watch` renders live progress bars for run concurrency, action concurrency, and
-depth, so you can see a queue filling up or draining in real time.
+Go to **Settings > Queues** to see all your queues.
+
+![The console Queues list, grouped by cluster pool](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
+
+Queues are grouped by cluster pool (the **View by Pool** toggle), and each row
+shows its status, priority, and live **Queued**, **Runs**, and **Actions** counts.
+Use the **Status** filter or the search box to narrow the list.
+
+Click a queue to open its detail view, which has three tabs.
+
+**Overview** shows the queue's live state: its cluster pool, the clusters it is
+connected to and their CPU, GPU, and memory capacity, and the in-flight **Queued**,
+**Runs**, and **Actions** counts.
+
+![The Overview tab of a queue's detail view in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-overview.png)
+
+**Usage** gives ready-to-copy snippets for routing work to this queue, at run level
+and per task, with the queue's name already filled in. These are the same routing
+methods described in [Queues in Configure tasks](../task-configuration/queues).
+
+![The Usage tab of a queue's detail view, showing run-level and task-level routing snippets](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-usage.png)
+
+**Settings** lists the queue's current configuration: its pool, connected clusters,
+and scope, plus its priority, depth, and run and action concurrency limits.
+
+![The Settings tab of a queue's detail view, listing its configuration](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-settings.png)
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Change a queue's settings
 
