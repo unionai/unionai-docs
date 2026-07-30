@@ -204,6 +204,19 @@ The VPC should be configured with the following characteristics:
   * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. We recommend associating the name with services, e.g. `gke-services`.
   * Identify a /28 CIDR block that will be used for the Kubernetes Master IP addresses. Note this CIDR block is not reserved within the subnet. Google Kubernetes Engine requires this /28 block to be available.
 
+{{< markdown >}}
+{{< callout type="warning" >}}
+**Firewall rules are scoped to address ranges.**
+
+{{< key product_name >}} creates firewall rules permitting traffic within the subnet's own
+ranges, and permitting the GKE control plane to reach nodes on ports `8443` and `9443`,
+which admission webhooks require.
+
+If you maintain additional firewall rules that list source or destination ranges
+explicitly, keep them in step with your subnet's primary and secondary ranges.
+{{< /callout >}}
+{{< /markdown >}}
+
 Once your VPC is set up, provide the following to {{< key product_name >}}:
 
 * VPC name

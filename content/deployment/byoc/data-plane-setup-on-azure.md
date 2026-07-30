@@ -137,6 +137,21 @@ We recommend using a VNet within the same Azure tenant as your {{< key product_n
 - (Recommended): Enable [virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) `Microsoft.Storage`, `Microsoft.ContainerRegistry`, and `Microsoft.KeyVault`.
 - (Recommended) Create a [NAT gateway for virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limiting scenarios.
 
+{{< markdown >}}
+{{< callout type="warning" >}}
+**Service endpoints are configured per subnet.**
+
+The service endpoints above are enabled on individual subnets, not on the virtual network
+as a whole. A subnet without them does not inherit the access other subnets have, so every
+subnet used for Kubernetes nodes or pods needs `Microsoft.Storage`,
+`Microsoft.ContainerRegistry` and `Microsoft.KeyVault` enabled.
+
+The same applies to any resource firewall that allows specific subnets, such as a storage
+account or key vault restricted to selected networks. Those allow lists must be kept in
+step with your subnets.
+{{< /callout >}}
+{{< /markdown >}}
+
 Once your VPC is set up, provide the following to {{< key product_name >}}:
 
 - The Virtual Network's subscription ID.
