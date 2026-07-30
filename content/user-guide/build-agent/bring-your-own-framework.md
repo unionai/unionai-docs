@@ -1,15 +1,29 @@
 ---
 title: Bring your own framework
-weight: 4
+weight: 3
 variants: +flyte +serverless +union
-mermaid: true
 ---
 
 # Bring your own framework
 
-The dedicated pages ([LangGraph](./langgraph), [PydanticAI](./pydantic-ai), [OpenAI Agents SDK](./openai-agents-sdk)) are just worked examples of one underlying idea: **{{< key product_name >}} is the runtime, your framework is the loop.** If your agent library is written in Python, it runs on {{< key product_name >}} with no special plugin.
+The [supported plugins](../../integrations/agents/_index) are worked examples of one underlying idea: **{{< key product_name >}} is the runtime, your framework is the loop.** If your agent library is written in Python, it runs on {{< key product_name >}} with no special plugin.
 
-This page is a framework-agnostic template. Drop in any library ([CrewAI](https://docs.crewai.com/), [AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop) wherever the comments say so.
+This page is a framework-agnostic template for the frameworks that don't have one. Drop in any library ([AutoGen](https://microsoft.github.io/autogen/), [smolagents](https://github.com/huggingface/smolagents), [Atomic Agents](https://github.com/BrainBlend-AI/atomic-agents), a raw provider SDK, or your own homegrown loop) wherever the comments say so.
+
+> [!NOTE] Check for a plugin first
+> If your framework is one of the ten with a first-party adapter, use that instead. The plugins give you per-tool containerization, model-turn replay and cross-run memory that this template does not. See [Agent frameworks](../../integrations/agents/_index).
+
+## How much control does the framework give you?
+
+Frameworks differ in how much of the agent loop they own, which shapes how you integrate them:
+
+| Level of control | What it means | Integration pattern |
+|------------------|---------------|---------------------|
+| **You own the loop** | The framework gives you primitives (graph nodes, tools) and you wire the control flow | Decorate nodes with `@flyte.trace` and run the compiled graph inside a task |
+| **The framework owns the loop, you own the tools** | The framework runs the tool-calling loop; you provide tools as plain functions | Have tools delegate to durable `@env.task`s |
+| **The framework owns everything** | The framework builds and runs the agent from configuration | Wrap the whole run in a task and trace the seam below the loop |
+
+Whichever model your framework uses, the integration is the same in spirit: the framework decides *what* the agent does next, and {{< key product_name >}} decides *where and how durably* each step runs.
 
 ## The core pattern
 
@@ -138,6 +152,7 @@ To bring any Python agent framework onto {{< key product_name >}}:
 
 ## Next steps
 
-- [Deploy an agent as a service](../build-agent/deploy-agent-as-service): run your agent on a schedule or behind a webhook.
-- [The Flyte Agent harness](../build-agent/flyte-agents): a built-in, batteries-included loop if you'd rather not bring a framework.
-- [Build an agent with pure Python](../build-agent/python-agents): hand-roll the loop with no framework at all.
+- [Agent frameworks](../../integrations/agents/_index): the ten frameworks with a first-party plugin, if yours is one of them.
+- [The Flyte Agent harness](./flyte-agents): a built-in, batteries-included loop if you'd rather not bring a framework.
+- [Build an agent with pure Python](./python-agents): hand-roll the loop with no framework at all.
+- [Deploy an agent as a service](./deploy-agent-as-service): run your agent on a schedule or behind a webhook.

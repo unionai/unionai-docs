@@ -7,6 +7,9 @@ layout: py_api
 
 # flyteplugins.gemini
 
+> [!WARNING] Deprecated
+> The `flyteplugins-gemini` package has been removed from the SDK. Google Gemini agents now run on Flyte through the Google ADK adapter, `flyteplugins-agents-google`. See [Google ADK](../../../../../integrations/agents/google-adk) for the current integration. This reference is retained for users on an older release.
+
 Google Gemini plugin for Flyte.
 
 This plugin provides integration between Flyte tasks and Google's Gemini API,
