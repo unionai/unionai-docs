@@ -240,6 +240,10 @@ configuration:
   inline:
     executor:
       defaultK8sServiceAccount: flyte   # task pods inherit S3 access via IRSA
+      
+flyte-core-components:
+  runs:
+    storagePrefix: "s3//<bucket_name>"      
 
 serviceAccount:
   create: true
