@@ -26,52 +26,43 @@ A production domain in particular ensures a clean slate, so cached executions fr
 
 A common pattern is to split clusters and networking across domains as well: for example, a dedicated production cluster with stricter network controls, separate from the cluster development and staging share. See [multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster) for how this maps to underlying cloud accounts.
 
-## Resource quotas
+## Resource limits
 
-### Set quotas per project-domain pair
+### Set per-task resource limits per project-domain pair
 
-Quotas should be configured for each project-domain pair, not globally. This ensures workflows can't exceed designated limits and prevents any single project or domain from impacting resources available to others.
+Resource limits are configured through the [settings](../core-concepts/settings) hierarchy, which resolves through the org → domain → project chain. Set them for a whole domain, or narrow them to a single project-domain pair:
 
-Configure via `uctl` with a YAML attribute file:
+```bash
+# Domain-wide, inherited by every project in the domain
+flyte edit settings --domain production
+
+# Narrowed to one project-domain pair
+flyte edit settings --domain production --project team-alpha
+```
+
+The command opens an editor. Uncomment and set the `task_resource` keys you want:
+
+- **`task_resource.max.cpu`**, **`task_resource.max.memory`**, **`task_resource.max.storage`**: hard per-task ceilings. A per-task `flyte.Resources` request above the maximum is **capped to the maximum rather than rejected**. This is how you bound how large any single task in a domain or project can get.
+- **`task_resource.min.cpu`**, **`task_resource.min.memory`**, **`task_resource.min.storage`**: the default request applied when a task doesn't specify one.
+- **`task_resource.max.gpu`**, **`task_resource.min.gpu`**: the same ceiling and default, applied to GPU.
+
+For scripted or CI setup, apply a YAML file non-interactively instead of opening the editor:
+
+```bash
+flyte edit settings --domain production --from-file limits.yaml
+```
 
 ```yaml
-domain: development
-project: team-alpha
-attributes:
-  projectQuotaCpu: "500"
-  projectQuotaMemory: 2Ti
+task_resource.max.cpu: "8"
+task_resource.max.memory: 32Gi
+task_resource.max.gpu: "4"
 ```
 
-Apply it with:
+See [Settings](../core-concepts/settings) for the full key list and how inheritance and overrides work.
 
-```bash
-uctl update cluster-resource-attribute --attrFile cra.yaml
-```
+### Why limits matter
 
-Verify with:
-
-```bash
-uctl get cluster-resource-attribute -p <project> -d <domain>
-```
-
-### GPU limits
-
-The `projectQuota*` attributes above set namespace CPU and memory quotas; there is no equivalent standard GPU quota key. GPU limits are enforced instead through the [settings](../core-concepts/settings) system, which resolves through the org → domain → project hierarchy:
-
-- **`task_resource.max.gpu`**: the maximum GPU per task pod, enforced as a hard ceiling: a per-task `flyte.Resources` GPU request above it is **capped to the maximum rather than rejected**. This is how you cap (or raise) the GPU ceiling for a domain or project.
-- **`task_resource.min.gpu`**: the default GPU request applied when a task doesn't specify one.
-
-Set them at the scope you want with `flyte edit settings`, then uncomment and edit the relevant key:
-
-```bash
-flyte edit settings --domain production
-```
-
-Unlike the CPU and memory quotas above, these are per-task limits rather than a namespace-wide aggregate. See [Settings](../core-concepts/settings) for the full key list and how inheritance and overrides work.
-
-### Why quotas matter
-
-Without quotas, projects can starve each other for shared resources. Runs that exceed available capacity are still dispatched to the cluster, and pods sit pending while the execution shows as "running." Quotas turn that silent contention into an explicit, fail-fast signal teams can act on.
+These are per-task ceilings, not a namespace-wide aggregate: they bound how large any individual task can get, which keeps a single oversized task from claiming a whole node's worth of capacity. Setting a sane `task_resource.max` per domain (tighter in development, looser in production) is a low-effort guardrail against noisy-neighbor contention. Coordinate the ceilings with whoever sizes tasks so requests stay within them.
 
 ## Task-level resources
 
@@ -92,7 +83,7 @@ def my_task():
     ...
 ```
 
-If a task's resource request exceeds your project-domain quota, the execution fails immediately rather than queueing forever. That's the behavior you want, but it means teams should know what their quota is before sizing tasks. Coordinate with whoever owns quota configuration so requests stay within budget, or so the budget gets raised intentionally.
+If a task requests more than the `task_resource.max` ceiling set for its project-domain, the request is capped to that ceiling rather than rejected, so the task still runs but with the maximum the scope allows. Teams should know the ceilings before sizing tasks. Coordinate with whoever owns the [settings](../core-concepts/settings) for the scope so requests stay within the ceiling, or so the ceiling gets raised intentionally.
 
 ### Be explicit about ephemeral storage
 
@@ -141,22 +132,21 @@ shared_preprocess = flyte.remote.Task.get(
 
 This requires governance around versioning and backward compatibility, but it scales better than copy-paste.
 
-### Use cluster assignment for multi-cluster deployments
+### Route work to the right cluster pool in multi-cluster deployments
 
-The cluster assignment matchable attribute pins matching executions to a specific Union cluster in multi-cluster deployments. Without an explicit assignment, cluster selection is random: fine for homogeneous setups, but a poor default once cluster heterogeneity exists (for example, GPU clusters alongside CPU-only clusters).
-
-Set the assignment per project-domain with `uctl`:
-
-```yaml
-# cpa.yaml
-domain: production
-project: team-alpha
-clusterPoolName: gpu-pool
-```
+In a multi-cluster deployment, work reaches a cluster through a [queue](../cluster-workload-management/queues), which routes to a [cluster pool](../cluster-workload-management/cluster-pools). To pin a project or domain's work to a specific pool (for example, a GPU pool), create a queue in that pool and set it as the default queue for the scope:
 
 ```bash
-uctl update cluster-pool-attributes --attrFile cpa.yaml
+flyte edit settings --domain production --project team-alpha
 ```
+
+Set `run.default_queue` to a queue that lives in the target pool:
+
+```yaml
+run.default_queue: gpu-queue
+```
+
+An individual task environment can also target a queue directly with the `queue` parameter. See [Managing queues](../cluster-workload-management/queues) for how queues bind to pools and clusters.
 
 ### Treat production as a managed service
 
@@ -170,13 +160,13 @@ The [Union Terraform provider](../../deployment/terraform/_index) is a good fit 
 |---|---|
 | Team isolation | One project per team or ML product |
 | Environments | Use domains (dev / staging / prod) |
-| Quota scope | Per project-domain pair, never global |
-| Task resources | Declare `cpu`, `memory`, and `disk` on `flyte.Resources` and stay within your quota |
+| Resource limits | Per-task ceilings via settings, scoped per project-domain |
+| Task resources | Declare `cpu`, `memory`, and `disk` on `flyte.Resources` and stay within your limits |
 | Ephemeral storage | Set `disk` explicitly for data-heavy tasks |
 | RBAC | Bind roles via policies at the scope you actually need (project-domain, domain, project, or org) |
 | Production access | CI/CD service accounts + admins only |
 | Secrets | Scope to narrowest project-domain |
-| Multi-cluster | Use cluster assignment, not random routing |
+| Multi-cluster | Route via queues to a cluster pool |
 | Shared tasks | Put in a dedicated project, target via `flyte.remote.Task` |
 | Production config | Manage with the Union Terraform provider |
 | Naming | `<team>-<product>` once you exceed ~10 projects |
