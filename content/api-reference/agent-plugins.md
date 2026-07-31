@@ -148,7 +148,7 @@ To add the hosted `flyte-docs` server, edit `opencode.json`:
 
 {{< tab "Pi" >}}
 {{< markdown >}}
-Install from the default branch or pin a specific tag:
+Install from the default branch or pin a specific tag/commit:
 
 ```bash
 pi install https://github.com/flyteorg/flyte-agent-plugins
