@@ -25,8 +25,10 @@ How to structure Flyte projects with uv, from single-package setups to multi-tea
 How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but the building blocks (API key, `flyte deploy`, commit-pinned versions) translate to any runner.
 {{< /link-card >}}
 
+{{< variant union >}}
 {{< link-card target="resource-management" title="Resource management and multi-team scaling" >}}
 Projects, domains, quotas, RBAC, and secrets: the primitives to set up before you have ten teams and a noisy-neighbor problem.
 {{< /link-card >}}
+{{< /variant >}}
 
 {{< /grid >}}
