@@ -688,6 +688,45 @@ For programmatic usage, ensure proper initialization:
 - Debugging and logging environment-specific behavior
 - Integration with external deployment systems that set environment variables
 
+## Dependency and version management
+
+Flyte declares its dependencies with loose version ranges so that installing `flyte` doesn't over-constrain the rest of your project. The downside is that a new release of a transitive dependency can sometimes introduce a regression in an environment that isn't otherwise pinned. To get reproducible installs, pin your dependency versions using one of the approaches below. Both are optional. Neither changes how a plain `pip install flyte` behaves.
+
+### Recommended: use a lockfile
+
+If you manage your project with `uv` (or any tool that produces a lockfile), commit the lockfile and install from it:
+
+```bash
+uv add flyte          # resolves and records exact versions in uv.lock
+uv sync --frozen      # installs exactly what uv.lock specifies, no re-resolution
+```
+
+Commit `uv.lock` to version control. A lockfile records the exact version of every direct and transitive dependency, so every install resolves to the same versions locally, in CI, and in your Flyte task images. When you build task images with `.with_uv_project()` (see [PyProject package deployment](#pyproject-package-deployment)), the image is built from the locked environment, so what you test is what runs remotely.
+
+### No lockfile? Install against Flyte's published constraints
+
+If you don't use a lockfile tool, Flyte publishes a constraints file with every release. It lists the exact transitive dependency versions that release was tested against. Pass it to your installer with `-c`:
+
+```bash
+# Pin to the versions tested for a specific release
+pip install "flyte==<version>" \
+  -c "https://github.com/flyteorg/flyte-sdk/releases/download/v<version>/constraints-<version>.txt"
+
+# Or always track the latest release's constraints
+pip install flyte \
+  -c "https://github.com/flyteorg/flyte-sdk/releases/latest/download/constraints.txt"
+```
+
+`uv pip install` accepts the same `-c` flag. A constraints file only pins the versions of packages that get installed. It never pulls a package into your environment on its own, and using it is optional. It gives you Flyte's tested dependency set without adopting a lockfile.
+
+### Choosing an approach
+
+| Approach | Reproducibility | Best for |
+|----------|-----------------|----------|
+| Lockfile (`uv.lock`) | Full. Every dependency pinned in your own repo | Projects already using `uv` or another lockfile tool |
+| Published constraints (`-c`) | Pinned to Flyte's per-release tested versions | Projects that can't or don't want to maintain a lockfile |
+| Default ranges (no pinning) | None | Quick prototypes and experiments |
+
 ## Best practices
 
 ### Project organization
