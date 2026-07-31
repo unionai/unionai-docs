@@ -164,6 +164,15 @@ defined in `~/.pi/agent/mcp.json`.
 {{< /tab >}}
 {{< /tabs >}}
 
+For harnesses other than Claude Code, wire up both MCP servers manually:
+
+- `flyte-docs` (remote HTTP): `https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp`
+- `flyte-cluster` (local stdio): configure a local MCP server that runs the launcher script with an absolute path, for example:
+
+    uv run --quiet --no-project /abs/path/to/plugins/flyte/scripts/flyte_mcp_stdio.py
+
+See the upstream `flyte-agent-plugins` README (“Adding the MCP servers elsewhere”) for harness-specific configuration keys.
+
 ## Skills
 
 The plugin ships skills across three areas: authoring Flyte 2 workflows and apps,
