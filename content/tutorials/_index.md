@@ -20,7 +20,7 @@ The example applications range from training XGBoost models in tabular datasets 
 Fine-tune a pre-trained language model in the IMDB dataset for sentiment classification.
 {{< /link-card >}}
 
-{{< link-card target="language-models/agentic-rag" icon="" title="Agentic Retrieval Augmented Generation" >}}
+{{< link-card target="retrieval-augmented-generation/agentic-rag" icon="" title="Agentic Retrieval Augmented Generation" >}}
 Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
 {{< /link-card >}}
 
@@ -28,7 +28,7 @@ Build an agentic retrieval augmented generation system with ChromaDB and Langcha
 Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
 {{< /link-card >}}
 
-{{< link-card target="language-models/llama_edge_deployment" icon="" title="Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM" >}}
+{{< link-card target="serving/llama_edge_deployment" icon="" title="Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM" >}}
 Fine-tune a Llama 3 model on the Cohere Aya Telugu subset and generate a model artifact for deployment as an iOS app.
 {{< /link-card >}}
 
@@ -57,11 +57,11 @@ Use NVIDIA RAPIDS `cuDF` DataFrame library and `cuML` machine learning to predic
 Pre-process raw sequencing reads, build an index, and perform alignment to a reference genome using the Bowtie2 aligner.
 {{< /link-card >}}
 
-{{< link-card target="multimodal-ai/video-dubbing" icon="" title="Video Dubbing with Open-Source Models" >}}
+{{< link-card target="compound-ai-systems/video-dubbing" icon="" title="Video Dubbing with Open-Source Models" >}}
 Use open-source models to dub videos.
 {{< /link-card >}}
 
-{{< link-card target="language-models/vllm-serving-on-actor" icon="" title="Efficient Named Entity Recognition with vLLM" >}}
+{{< link-card target="serving/vllm-serving-on-actor" icon="" title="Efficient Named Entity Recognition with vLLM" >}}
 Serve a vLLM model on a warm container and trigger inference automatically with artifacts.
 {{< /link-card >}}
 

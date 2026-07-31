@@ -87,7 +87,7 @@ Learn about {{< key product_name >}}-specific programming constructs.
 {{< key product_full_name >}} administrators can manage users, projects, and resources.
 {{< /link-card >}}
 
-{{< link-card target="integrations" icon="tools" title="Integrations" >}}
+{{< link-card target="../integrations" icon="tools" title="Integrations" >}}
 {{< key product_full_name >}} integrates with your cloud resources and external services.
 {{< /link-card >}}
 
