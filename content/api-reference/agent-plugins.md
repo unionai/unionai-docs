@@ -38,10 +38,10 @@ repository README for the current list and per-harness setup notes.
 
 ## Installation
 
-Installation loads all of the skills into your harness. In **Claude Code** the two
-bundled MCP servers (`flyte-docs` and `flyte-cluster`) are wired up automatically;
-in every other harness you load the skills the same way, then configure the MCP
-servers manually. Select your harness below.
+Installation loads Flyte agent skills into your harness. In **Claude Code**, installing
+the `flyte` plugin wires up both bundled MCP servers (`flyte-docs` and `flyte-cluster`)
+automatically. Other harnesses install the skills (sometimes per-skill) and require
+manual MCP server configuration. Select your harness below.
 
 {{< tabs "install" >}}
 {{< tab "Claude Code" >}}
