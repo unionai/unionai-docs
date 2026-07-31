@@ -83,13 +83,17 @@ Serve NVIDIA NIM-supported language models, powered by {{< key product_name >}} 
 {{< /link-card >}}
 {{< /variant >}}
 
+{{< variant union >}}
 {{< link-card target="retrieval-augmented-generation/lance-db-rag" icon="" title="Creating a RAG App with LanceDB and Google Gemini" >}}
 Power your RAG app with {{< key product_name >}} Serving.
 {{< /link-card >}}
+{{< /variant >}}
 
+{{< variant union >}}
 {{< link-card target="compound-ai-systems/enterprise-rag-blueprint" icon="" title="Taking NVIDIA’s Enterprise RAG Blueprint to Production" >}}
 Serve models and run background jobs like data ingestion — all within {{< key product_name >}} using {{< key product_name >}} Serving and {{< key product_name >}} Workflows.
 {{< /link-card >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< link-card target="language-models/data-streaming" icon="" title="Fine-Tune BERT on Arabic Reviews with Multi-Node Training and Data Streaming" >}}
