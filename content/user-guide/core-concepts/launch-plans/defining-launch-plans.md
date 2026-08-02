@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Defining launch plans
 
-You can define a launch plan with the [`LaunchPlan` class](../../../api-reference/flytekit-sdk/packages/flytekit.core.launch_plan).
+You can define a launch plan with the [`LaunchPlan` class](../../../api-reference/flytekit-sdk/flytekit.core.launch_plan).
 
 This is a simple example of defining a launch plan:
 

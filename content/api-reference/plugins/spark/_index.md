@@ -15,40 +15,51 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.spark.connector.DatabricksConnector`](packages/flytekitplugins.spark.connector/databricksconnector) |  |
-| [`flytekitplugins.spark.connector.DatabricksConnectorV2`](packages/flytekitplugins.spark.connector/databricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
-| [`flytekitplugins.spark.connector.DatabricksJobMetadata`](packages/flytekitplugins.spark.connector/databricksjobmetadata) |  |
-| [`flytekitplugins.spark.generic_task.GenericSparkConf`](packages/flytekitplugins.spark.generic_task/genericsparkconf) |  |
-| [`flytekitplugins.spark.generic_task.GenericSparkTask`](packages/flytekitplugins.spark.generic_task/genericsparktask) |  |
-| [`flytekitplugins.spark.models.SparkJob`](packages/flytekitplugins.spark.models/sparkjob) |  |
-| [`flytekitplugins.spark.models.SparkType`](packages/flytekitplugins.spark.models/sparktype) |  |
-| [`flytekitplugins.spark.pyspark_transformers.PySparkPipelineModelTransformer`](packages/flytekitplugins.spark.pyspark_transformers/pysparkpipelinemodeltransformer) |  |
-| [`flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaReader`](packages/flytekitplugins.spark.schema/classicsparkdataframeschemareader) | Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
-| [`flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaWriter`](packages/flytekitplugins.spark.schema/classicsparkdataframeschemawriter) | Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema. |
-| [`flytekitplugins.spark.schema.ClassicSparkDataFrameTransformer`](packages/flytekitplugins.spark.schema/classicsparkdataframetransformer) | Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped). |
-| [`flytekitplugins.spark.schema.SparkDataFrameSchemaReader`](packages/flytekitplugins.spark.schema/sparkdataframeschemareader) | Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
-| [`flytekitplugins.spark.schema.SparkDataFrameSchemaWriter`](packages/flytekitplugins.spark.schema/sparkdataframeschemawriter) | Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema. |
-| [`flytekitplugins.spark.schema.SparkDataFrameTransformer`](packages/flytekitplugins.spark.schema/sparkdataframetransformer) | Transforms Spark DataFrame's to and from a Schema (typed/untyped). |
-| [`flytekitplugins.spark.sd_transformers.ClassicSparkToParquetEncodingHandler`](packages/flytekitplugins.spark.sd_transformers/classicsparktoparquetencodinghandler) |  |
-| [`flytekitplugins.spark.sd_transformers.ParquetToClassicSparkDecodingHandler`](packages/flytekitplugins.spark.sd_transformers/parquettoclassicsparkdecodinghandler) |  |
-| [`flytekitplugins.spark.sd_transformers.ParquetToSparkDecodingHandler`](packages/flytekitplugins.spark.sd_transformers/parquettosparkdecodinghandler) |  |
-| [`flytekitplugins.spark.sd_transformers.SparkDataFrameRenderer`](packages/flytekitplugins.spark.sd_transformers/sparkdataframerenderer) | Render a Spark dataframe schema as an HTML table. |
-| [`flytekitplugins.spark.sd_transformers.SparkToParquetEncodingHandler`](packages/flytekitplugins.spark.sd_transformers/sparktoparquetencodinghandler) |  |
-| [`flytekitplugins.spark.task.Databricks`](packages/flytekitplugins.spark.task/databricks) | Deprecated. |
-| [`flytekitplugins.spark.task.DatabricksV2`](packages/flytekitplugins.spark.task/databricksv2) | Use this to configure a Databricks task. |
-| [`flytekitplugins.spark.task.PysparkFunctionTask`](packages/flytekitplugins.spark.task/pysparkfunctiontask) | Actual Plugin that transforms the local python code for execution within a spark context. |
-| [`flytekitplugins.spark.task.Spark`](packages/flytekitplugins.spark.task/spark) | Use this to configure a SparkContext for a your task. |
+| [`flytekitplugins.spark.connector.DatabricksConnector`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnector) |  |
+| [`flytekitplugins.spark.connector.DatabricksConnectorV2`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
+| [`flytekitplugins.spark.connector.DatabricksJobMetadata`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) |  |
+| [`flytekitplugins.spark.generic_task.GenericSparkConf`](flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparkconf) |  |
+| [`flytekitplugins.spark.generic_task.GenericSparkTask`](flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparktask) |  |
+| [`flytekitplugins.spark.models.SparkJob`](flytekitplugins.spark.models#flytekitpluginssparkmodelssparkjob) |  |
+| [`flytekitplugins.spark.models.SparkType`](flytekitplugins.spark.models#flytekitpluginssparkmodelssparktype) |  |
+| [`flytekitplugins.spark.pyspark_transformers.PySparkPipelineModelTransformer`](flytekitplugins.spark.pyspark_transformers#flytekitpluginssparkpyspark_transformerspysparkpipelinemodeltransformer) |  |
+| [`flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaReader`](flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemareader) | Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
+| [`flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaWriter`](flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemawriter) | Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema. |
+| [`flytekitplugins.spark.schema.ClassicSparkDataFrameTransformer`](flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframetransformer) | Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped). |
+| [`flytekitplugins.spark.schema.SparkDataFrameSchemaReader`](flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemareader) | Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
+| [`flytekitplugins.spark.schema.SparkDataFrameSchemaWriter`](flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemawriter) | Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema. |
+| [`flytekitplugins.spark.schema.SparkDataFrameTransformer`](flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframetransformer) | Transforms Spark DataFrame's to and from a Schema (typed/untyped). |
+| [`flytekitplugins.spark.sd_transformers.ClassicSparkToParquetEncodingHandler`](flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersclassicsparktoparquetencodinghandler) |  |
+| [`flytekitplugins.spark.sd_transformers.ParquetToClassicSparkDecodingHandler`](flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettoclassicsparkdecodinghandler) |  |
+| [`flytekitplugins.spark.sd_transformers.ParquetToSparkDecodingHandler`](flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettosparkdecodinghandler) |  |
+| [`flytekitplugins.spark.sd_transformers.SparkDataFrameRenderer`](flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparkdataframerenderer) | Render a Spark dataframe schema as an HTML table. |
+| [`flytekitplugins.spark.sd_transformers.SparkToParquetEncodingHandler`](flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparktoparquetencodinghandler) |  |
+| [`flytekitplugins.spark.task.Databricks`](flytekitplugins.spark.task#flytekitpluginssparktaskdatabricks) | Deprecated. |
+| [`flytekitplugins.spark.task.DatabricksV2`](flytekitplugins.spark.task#flytekitpluginssparktaskdatabricksv2) | Use this to configure a Databricks task. |
+| [`flytekitplugins.spark.task.PysparkFunctionTask`](flytekitplugins.spark.task#flytekitpluginssparktaskpysparkfunctiontask) | Actual Plugin that transforms the local python code for execution within a spark context. |
+| [`flytekitplugins.spark.task.Spark`](flytekitplugins.spark.task#flytekitpluginssparktaskspark) | Use this to configure a SparkContext for a your task. |
+
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.spark.connector.get_databricks_token()`](flytekitplugins.spark.connector#get_databricks_token) | Get the Databricks access token with multi-tenant support. |
+| [`flytekitplugins.spark.connector.get_header()`](flytekitplugins.spark.connector#get_header) | Get the authorization header for Databricks API calls. |
+| [`flytekitplugins.spark.connector.get_secret_from_k8s()`](flytekitplugins.spark.connector#get_secret_from_k8s) | Read a secret from Kubernetes using the Kubernetes Python client. |
+| [`flytekitplugins.spark.connector.result_state_is_available()`](flytekitplugins.spark.connector#result_state_is_available) |  |
+| [`flytekitplugins.spark.task.new_spark_session()`](flytekitplugins.spark.task#new_spark_session) | Optionally creates a new spark session and returns it. |
+| [`flytekitplugins.spark.utils.is_serverless_config()`](flytekitplugins.spark.utils#is_serverless_config) | Detect if the Databricks configuration is for serverless compute. |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.spark.connector`](packages/flytekitplugins.spark.connector/_index) |  |
-| [`flytekitplugins.spark.generic_task`](packages/flytekitplugins.spark.generic_task/_index) |  |
-| [`flytekitplugins.spark.models`](packages/flytekitplugins.spark.models/_index) |  |
-| [`flytekitplugins.spark.pyspark_transformers`](packages/flytekitplugins.spark.pyspark_transformers/_index) |  |
-| [`flytekitplugins.spark.schema`](packages/flytekitplugins.spark.schema/_index) |  |
-| [`flytekitplugins.spark.sd_transformers`](packages/flytekitplugins.spark.sd_transformers/_index) |  |
-| [`flytekitplugins.spark.task`](packages/flytekitplugins.spark.task/_index) |  |
-| [`flytekitplugins.spark.utils`](packages/flytekitplugins.spark.utils/_index) |  |
+| [`flytekitplugins.spark.connector`](flytekitplugins.spark.connector) |  |
+| [`flytekitplugins.spark.generic_task`](flytekitplugins.spark.generic_task) |  |
+| [`flytekitplugins.spark.models`](flytekitplugins.spark.models) |  |
+| [`flytekitplugins.spark.pyspark_transformers`](flytekitplugins.spark.pyspark_transformers) |  |
+| [`flytekitplugins.spark.schema`](flytekitplugins.spark.schema) |  |
+| [`flytekitplugins.spark.sd_transformers`](flytekitplugins.spark.sd_transformers) |  |
+| [`flytekitplugins.spark.task`](flytekitplugins.spark.task) |  |
+| [`flytekitplugins.spark.utils`](flytekitplugins.spark.utils) |  |
 

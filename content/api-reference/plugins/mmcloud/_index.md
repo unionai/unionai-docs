@@ -15,16 +15,24 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.mmcloud.connector.MMCloudConnector`](packages/flytekitplugins.mmcloud.connector/mmcloudconnector) |  |
-| [`flytekitplugins.mmcloud.connector.MMCloudMetadata`](packages/flytekitplugins.mmcloud.connector/mmcloudmetadata) |  |
-| [`flytekitplugins.mmcloud.task.MMCloudConfig`](packages/flytekitplugins.mmcloud.task/mmcloudconfig) | Configures MMCloudTask. |
-| [`flytekitplugins.mmcloud.task.MMCloudTask`](packages/flytekitplugins.mmcloud.task/mmcloudtask) |  |
+| [`flytekitplugins.mmcloud.connector.MMCloudConnector`](flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudconnector) |  |
+| [`flytekitplugins.mmcloud.connector.MMCloudMetadata`](flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudmetadata) |  |
+| [`flytekitplugins.mmcloud.task.MMCloudConfig`](flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudconfig) | Configures MMCloudTask. |
+| [`flytekitplugins.mmcloud.task.MMCloudTask`](flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudtask) |  |
+
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.mmcloud.utils.async_check_output()`](flytekitplugins.mmcloud.utils#async_check_output) | This behaves similarly to subprocess. |
+| [`flytekitplugins.mmcloud.utils.flyte_to_mmcloud_resources()`](flytekitplugins.mmcloud.utils#flyte_to_mmcloud_resources) | Map Flyte (K8s) resources to MMCloud resources. |
+| [`flytekitplugins.mmcloud.utils.mmcloud_status_to_flyte_phase()`](flytekitplugins.mmcloud.utils#mmcloud_status_to_flyte_phase) | Map MMCloud status to Flyte phase. |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.mmcloud.connector`](packages/flytekitplugins.mmcloud.connector/_index) |  |
-| [`flytekitplugins.mmcloud.task`](packages/flytekitplugins.mmcloud.task/_index) |  |
-| [`flytekitplugins.mmcloud.utils`](packages/flytekitplugins.mmcloud.utils/_index) |  |
+| [`flytekitplugins.mmcloud.connector`](flytekitplugins.mmcloud.connector) |  |
+| [`flytekitplugins.mmcloud.task`](flytekitplugins.mmcloud.task) |  |
+| [`flytekitplugins.mmcloud.utils`](flytekitplugins.mmcloud.utils) |  |
 

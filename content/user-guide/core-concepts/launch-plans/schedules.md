@@ -14,7 +14,7 @@ To set up a schedule, you can use the `schedule` parameter of the `LaunchPlan.ge
 
 ## Fixed-rate schedules
 
-In the following example we add a [FixedRate](../../../api-reference/flytekit-sdk/packages/flytekit.core.schedule#flytekitcoreschedulefixedrate) that will invoke the workflow every 10 minutes.
+In the following example we add a [FixedRate](../../../api-reference/flytekit-sdk/flytekit.core.schedule#flytekitcoreschedulefixedrate) that will invoke the workflow every 10 minutes.
 
 ```python
 from datetime import timedelta
@@ -45,7 +45,7 @@ Fixed rate schedules can also be defined using `days` or `hours`.
 
 ## Cron schedules
 
-A [`CronSchedule`](../../../api-reference/flytekit-sdk/packages/flytekit.core.schedule#flytekitcoreschedulecronschedule) allows you to specify a schedule using a `cron` expression:
+A [`CronSchedule`](../../../api-reference/flytekit-sdk/flytekit.core.schedule#flytekitcoreschedulecronschedule) allows you to specify a schedule using a `cron` expression:
 
 ```python
 import {{< key kit_import >}}

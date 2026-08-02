@@ -11,9 +11,15 @@ layout: py_api
 
 ## Directory
 
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.neptune.neptune_scale_run()`](flytekitplugins.neptune#neptune_scale_run) | Neptune Scale Plugin. |
+
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.neptune`](packages/flytekitplugins.neptune/_index) |  |
+| [`flytekitplugins.neptune`](flytekitplugins.neptune) |  |
 

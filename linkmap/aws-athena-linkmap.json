@@ -1,5 +1,13 @@
 {
-  "packages": {},
-  "identifiers": {},
+  "packages": {
+    "flytekitplugins.athena": "/api-reference/plugins/aws-athena/flytekitplugins.athena/",
+    "flytekitplugins.athena.task": "/api-reference/plugins/aws-athena/flytekitplugins.athena.task/"
+  },
+  "identifiers": {
+    "flytekitplugins.athena.task.AthenaConfig": "/api-reference/plugins/aws-athena/flytekitplugins.athena.task/#flytekitpluginsathenataskathenaconfig",
+    "AthenaConfig": "/api-reference/plugins/aws-athena/flytekitplugins.athena.task/#flytekitpluginsathenataskathenaconfig",
+    "flytekitplugins.athena.task.AthenaTask": "/api-reference/plugins/aws-athena/flytekitplugins.athena.task/#flytekitpluginsathenataskathenatask",
+    "AthenaTask": "/api-reference/plugins/aws-athena/flytekitplugins.athena.task/#flytekitpluginsathenataskathenatask"
+  },
   "methods": {}
 }

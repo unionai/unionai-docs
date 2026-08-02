@@ -15,7 +15,7 @@ The [`union cache model-from-hf`](../../../api-reference/union-cli#model-from-hf
 Caching models from HuggingFace Hub as Union Artifacts provides several key benefits:
 
 - **Faster Model Downloads**: Once cached, models load much faster since they're stored in Union's optimized blob storage.
-- **Stream model weights into GPU memory**: Union's [`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp) and [`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp) classes also allow you to load model weights
+- **Stream model weights into GPU memory**: Union's [`SGLangApp`](../../../api-reference/union-sdk/union.app.llm#unionappllmsglangapp) and [`VLLMApp`](../../../api-reference/union-sdk/union.app.llm#unionappllmvllmapp) classes also allow you to load model weights
   directly into GPU memory instead of downloading the weights to disk first, then loading to GPU memory.
 - **Reliability**: Eliminates dependency on HuggingFace Hub availability during model serving.
 - **Cost Efficiency**: Reduces repeated downloads and bandwidth costs from HuggingFace Hub.
@@ -171,10 +171,10 @@ args:
 ```
 
 The `shard_config.yaml` file is a YAML file that should conform to the
-[`remote.ShardConfig`](../../../api-reference/union-sdk/packages/union.remote#unionremoteshardconfig)
+[`remote.ShardConfig`](../../../api-reference/union-sdk/union.remote#unionremoteshardconfig)
 dataclass, where the `args` field contains configuration that's forwarded to the
 underlying inference engine. Currently, only the `vLLM` engine is supported for sharding, so
-the `args` field should conform to the [`remote.VLLMShardArgs`](../../../api-reference/union-sdk/packages/union.remote#unionremotevllmshardargs) dataclass.
+the `args` field should conform to the [`remote.VLLMShardArgs`](../../../api-reference/union-sdk/union.remote#unionremotevllmshardargs) dataclass.
 
 ### Cache the Sharded Model
 

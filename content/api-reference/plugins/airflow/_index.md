@@ -15,17 +15,23 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.airflow.connector.AirflowConnector`](packages/flytekitplugins.airflow.connector/airflowconnector) | It is used to run Airflow tasks. |
-| [`flytekitplugins.airflow.connector.AirflowMetadata`](packages/flytekitplugins.airflow.connector/airflowmetadata) | This class is used to store the Airflow task configuration. |
-| [`flytekitplugins.airflow.task.AirflowContainerTask`](packages/flytekitplugins.airflow.task/airflowcontainertask) | This python container task is used to wrap an Airflow task. |
-| [`flytekitplugins.airflow.task.AirflowObj`](packages/flytekitplugins.airflow.task/airflowobj) | This class is used to store the Airflow task configuration. |
-| [`flytekitplugins.airflow.task.AirflowTask`](packages/flytekitplugins.airflow.task/airflowtask) | This python task is used to wrap an Airflow task. |
-| [`flytekitplugins.airflow.task.AirflowTaskResolver`](packages/flytekitplugins.airflow.task/airflowtaskresolver) | This class is used to resolve an Airflow task. |
+| [`flytekitplugins.airflow.connector.AirflowConnector`](flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowconnector) | It is used to run Airflow tasks. |
+| [`flytekitplugins.airflow.connector.AirflowMetadata`](flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowmetadata) | This class is used to store the Airflow task configuration. |
+| [`flytekitplugins.airflow.task.AirflowContainerTask`](flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowcontainertask) | This python container task is used to wrap an Airflow task. |
+| [`flytekitplugins.airflow.task.AirflowObj`](flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowobj) | This class is used to store the Airflow task configuration. |
+| [`flytekitplugins.airflow.task.AirflowTask`](flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtask) | This python task is used to wrap an Airflow task. |
+| [`flytekitplugins.airflow.task.AirflowTaskResolver`](flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtaskresolver) | This class is used to resolve an Airflow task. |
+
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.airflow.connector.get_log_links()`](flytekitplugins.airflow.connector#get_log_links) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.airflow.connector`](packages/flytekitplugins.airflow.connector/_index) |  |
-| [`flytekitplugins.airflow.task`](packages/flytekitplugins.airflow.task/_index) |  |
+| [`flytekitplugins.airflow.connector`](flytekitplugins.airflow.connector) |  |
+| [`flytekitplugins.airflow.task`](flytekitplugins.airflow.task) |  |
 

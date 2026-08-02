@@ -15,19 +15,19 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.kfmpi.task.CleanPodPolicy`](packages/flytekitplugins.kfmpi.task/cleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
-| [`flytekitplugins.kfmpi.task.HorovodFunctionTask`](packages/flytekitplugins.kfmpi.task/horovodfunctiontask) | For more info, check out https://github. |
-| [`flytekitplugins.kfmpi.task.HorovodJob`](packages/flytekitplugins.kfmpi.task/horovodjob) | Configuration for an executable [`Horovod Job using MPI operator`](https://github. |
-| [`flytekitplugins.kfmpi.task.Launcher`](packages/flytekitplugins.kfmpi.task/launcher) | Launcher replica configuration. |
-| [`flytekitplugins.kfmpi.task.MPIFunctionTask`](packages/flytekitplugins.kfmpi.task/mpifunctiontask) | Plugin that submits a MPIJob (see https://github. |
-| [`flytekitplugins.kfmpi.task.MPIJob`](packages/flytekitplugins.kfmpi.task/mpijob) | Configuration for an executable [`MPI Job`](https://github. |
-| [`flytekitplugins.kfmpi.task.RestartPolicy`](packages/flytekitplugins.kfmpi.task/restartpolicy) | RestartPolicy describes how the replicas should be restarted. |
-| [`flytekitplugins.kfmpi.task.RunPolicy`](packages/flytekitplugins.kfmpi.task/runpolicy) | RunPolicy describes some policy to apply to the execution of a kubeflow job. |
-| [`flytekitplugins.kfmpi.task.Worker`](packages/flytekitplugins.kfmpi.task/worker) | Worker replica configuration. |
+| [`flytekitplugins.kfmpi.task.CleanPodPolicy`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
+| [`flytekitplugins.kfmpi.task.HorovodFunctionTask`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskhorovodfunctiontask) | For more info, check out https://github. |
+| [`flytekitplugins.kfmpi.task.HorovodJob`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskhorovodjob) | Configuration for an executable [`Horovod Job using MPI operator`](https://github. |
+| [`flytekitplugins.kfmpi.task.Launcher`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitasklauncher) | Launcher replica configuration. |
+| [`flytekitplugins.kfmpi.task.MPIFunctionTask`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskmpifunctiontask) | Plugin that submits a MPIJob (see https://github. |
+| [`flytekitplugins.kfmpi.task.MPIJob`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskmpijob) | Configuration for an executable [`MPI Job`](https://github. |
+| [`flytekitplugins.kfmpi.task.RestartPolicy`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
+| [`flytekitplugins.kfmpi.task.RunPolicy`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskrunpolicy) | RunPolicy describes some policy to apply to the execution of a kubeflow job. |
+| [`flytekitplugins.kfmpi.task.Worker`](flytekitplugins.kfmpi.task#flytekitpluginskfmpitaskworker) | Worker replica configuration. |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.kfmpi.task`](packages/flytekitplugins.kfmpi.task/_index) | This Plugin adds the capability of running distributed MPI training to Flyte using backend plugins, natively on. |
+| [`flytekitplugins.kfmpi.task`](flytekitplugins.kfmpi.task) | This Plugin adds the capability of running distributed MPI training to Flyte using backend plugins, natively on. |
 

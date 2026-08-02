@@ -15,12 +15,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem`](packages/flytekitplugins.async_fsspec.s3fs.s3fs/asyncs3filesystem) |  |
+| [`flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem`](flytekitplugins.async_fsspec.s3fs.s3fs#flytekitpluginsasync_fsspecs3fss3fsasyncs3filesystem) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.async_fsspec.s3fs.constants`](packages/flytekitplugins.async_fsspec.s3fs.constants/_index) |  |
-| [`flytekitplugins.async_fsspec.s3fs.s3fs`](packages/flytekitplugins.async_fsspec.s3fs.s3fs/_index) |  |
+| [`flytekitplugins.async_fsspec.s3fs.constants`](flytekitplugins.async_fsspec.s3fs.constants) |  |
+| [`flytekitplugins.async_fsspec.s3fs.s3fs`](flytekitplugins.async_fsspec.s3fs.s3fs) |  |
 
