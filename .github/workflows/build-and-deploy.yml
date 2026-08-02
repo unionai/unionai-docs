@@ -111,16 +111,10 @@ jobs:
       - name: Build dist
         run: |
           start=$(date +%s)
-          # Docs versioning (DOC-1245): when versions.toml is present, assemble the
-          # multi-version dist for the v1 line; else the single-version build. Inert
-          # (no-op) until versions.toml is added, so merging this is safe on frozen v1.
-          if [ -f versions.toml ]; then
-            echo "versions.toml present -> multi-version assembly"
-            LATEST_REF=origin/v1 bash unionai-docs-infra/scripts/build_versions.sh
-          else
-            echo "no versions.toml -> single-version build (current behavior)"
-            make dist
-          fi
+          # One shared CI build step (DOC-1333): `auto` = the versions.toml gate,
+          # identical to the previous inline logic. build-pr.yml calls the SAME
+          # script with an explicit mode, so the two build paths cannot drift.
+          LATEST_REF=origin/v1 bash unionai-docs-infra/scripts/ci-build-dist.sh auto
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
       - name: Emit build provenance
