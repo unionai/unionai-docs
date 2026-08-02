@@ -128,7 +128,7 @@ care about. The most commonly caught errors are:
 
 These all derive from `flyte.errors.RuntimeUserError`, so a single `except flyte.errors.RuntimeUserError`
 catches any of them when you want uniform handling. This is only a selection. For the complete catalog of
-catchable exception classes, see the [`flyte.errors` API reference](../../api-reference/flyte-sdk/packages/flyte.errors/_index).
+catchable exception classes, see the [`flyte.errors` API reference](../../api-reference/flyte-sdk/flyte.errors/_index).
 
 ## Related pages
 

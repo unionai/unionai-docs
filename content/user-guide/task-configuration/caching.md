@@ -157,7 +157,7 @@ A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new
 
 ## Cache policies
 
-For details on implementing custom cache policies, see the [`CachePolicy` protocol](../../api-reference/flyte-sdk/packages/flyte/cachepolicy) and [`Cache` class](../../api-reference/flyte-sdk/packages/flyte/cache) API references.
+For details on implementing custom cache policies, see the [`CachePolicy` protocol](../../api-reference/flyte-sdk/flyte/cachepolicy) and [`Cache` class](../../api-reference/flyte-sdk/flyte/cache) API references.
 
 For `behavior="auto"`, Flyte uses cache policies to generate version hashes.
 

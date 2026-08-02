@@ -66,7 +66,7 @@ Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 ## `ReusePolicy` parameters
 
-For complete parameter documentation, including accepted types, defaults, capacity math, and lifecycle behavior, see the [`ReusePolicy` API reference](../../api-reference/flyte-sdk/packages/flyte/reusepolicy).
+For complete parameter documentation, including accepted types, defaults, capacity math, and lifecycle behavior, see the [`ReusePolicy` API reference](../../api-reference/flyte-sdk/flyte/reusepolicy).
 
 ## Understanding parameter relationships
 

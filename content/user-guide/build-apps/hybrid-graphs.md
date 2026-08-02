@@ -34,7 +34,7 @@ Key points:
 
 There are cases where you want to build a durable batch inference workflow that
 calls to a reusable inference service. You can achieve this by creating a light-weight,
-long-running [`AppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment) that the task calls via HTTP.
+long-running [`AppEnvironment`](../../api-reference/flyte-sdk/flyte.app/appenvironment) that the task calls via HTTP.
 
 ```mermaid
 flowchart LR
