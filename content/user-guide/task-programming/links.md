@@ -15,7 +15,7 @@ You can attach links to tasks in two ways:
 - **Statically** in the task decorator with `links=`
 - **Dynamically** at call time with `task.override(links=...)`
 
-`Link` is a Python [Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol) that you subclass to define how URLs are generated. The Weights & Biases plugin provides a [built-in link implementation](../../api-reference/integrations/wandb/packages/flyteplugins.wandb/wandb) as an example.
+`Link` is a Python [Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol) that you subclass to define how URLs are generated. The Weights & Biases plugin provides a [built-in link implementation](../../api-reference/integrations/wandb/wandb) as an example.
 
 ## Creating a link
 
@@ -92,7 +92,7 @@ class Wandb(Link):
 
 The `name` attribute controls the display label in the UI.
 
-See the [`get_link()` API reference](../../api-reference/flyte-sdk/packages/flyte/link#get_link) for more details. Note that `action_name` and `pod_name` are template variables (`{{.actionName}}` and `{{.podName}}`) that are populated by the backend at runtime.
+See the [`get_link()` API reference](../../api-reference/flyte-sdk/flyte/link#get_link) for more details. Note that `action_name` and `pod_name` are template variables (`{{.actionName}}` and `{{.podName}}`) that are populated by the backend at runtime.
 
 ## Dynamic links with override
 

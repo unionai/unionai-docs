@@ -49,15 +49,15 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
-| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/packages/flyte/resources) |
-| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
-| **retries** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/packages/flyte/retrystrategy) |
-| **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/packages/flyte/timeout) |
-| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
+| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/flyte/resources) |
+| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/flyte/cache) |
+| **retries** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/flyte/retrystrategy) |
+| **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/flyte/timeout) |
+| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/flyte/reusepolicy) |
 | **env_vars** | [Additional task settings](./additional-task-settings#environment-variables) |
-| **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
+| **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/flyte/secret) |
 | **max_inline_io_bytes** | [Additional task settings](./additional-task-settings#inline-io-threshold) |
-| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
+| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/flyte/podtemplate) |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |
 
@@ -70,15 +70,15 @@ The key idiom is `task.override(...)(args)`: `override()` returns a callable tas
 | Parameter | Details |
 |-----------|---------|
 | **short_name** | [Additional task settings](./additional-task-settings) |
-| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/packages/flyte/resources) |
-| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/packages/flyte/cache) |
-| **retries** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/packages/flyte/retrystrategy) |
-| **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/packages/flyte/timeout) |
-| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/packages/flyte/reusepolicy) |
+| **resources** | [Resources](./resources) &bull; [`Resources` API ref](../../api-reference/flyte-sdk/flyte/resources) |
+| **cache** | [Caching](./caching) &bull; [`Cache` API ref](../../api-reference/flyte-sdk/flyte/cache) |
+| **retries** | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../api-reference/flyte-sdk/flyte/retrystrategy) |
+| **timeout** | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../api-reference/flyte-sdk/flyte/timeout) |
+| **reusable** | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../api-reference/flyte-sdk/flyte/reusepolicy) |
 | **env_vars** | [Additional task settings](./additional-task-settings#environment-variables) |
-| **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/packages/flyte/secret) |
+| **secrets** | [Overriding secrets](#overriding-secrets) &bull; [Secrets](./secrets) &bull; [`Secret` API ref](../../api-reference/flyte-sdk/flyte/secret) |
 | **max_inline_io_bytes** | [Additional task settings](./additional-task-settings#inline-io-threshold) |
-| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/packages/flyte/podtemplate) |
+| **pod_template** | [Pod templates](./pod-templates) &bull; [`PodTemplate` API ref](../../api-reference/flyte-sdk/flyte/podtemplate) |
 | **queue** | [Queues](./queues) |
 | **interruptible** | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **links** | [Additional task settings](./additional-task-settings#links) |

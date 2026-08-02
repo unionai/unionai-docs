@@ -35,7 +35,7 @@ If you want full control over the trigger behavior, you can define a trigger usi
 
 ## `flyte.Trigger`
 
-For complete parameter documentation, see the [`Trigger`](../../api-reference/flyte-sdk/packages/flyte/trigger), [`Cron`](../../api-reference/flyte-sdk/packages/flyte/cron), and [`FixedRate`](../../api-reference/flyte-sdk/packages/flyte/fixedrate) API references.
+For complete parameter documentation, see the [`Trigger`](../../api-reference/flyte-sdk/flyte/trigger), [`Cron`](../../api-reference/flyte-sdk/flyte/cron), and [`FixedRate`](../../api-reference/flyte-sdk/flyte/fixedrate) API references.
 
 The `Trigger` class allows you to define custom triggers with full control over scheduling and execution behavior. It has the following signature:
 
@@ -159,7 +159,7 @@ flyte.Trigger.weekly() == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
 flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
 ```
 
-All predefined trigger methods accept the same parameters as `flyte.Trigger`, plus a `trigger_time_input_key`. For the full parameter list, see the [`Trigger` API reference](../../api-reference/flyte-sdk/packages/flyte/trigger).
+All predefined trigger methods accept the same parameters as `flyte.Trigger`, plus a `trigger_time_input_key`. For the full parameter list, see the [`Trigger` API reference](../../api-reference/flyte-sdk/flyte/trigger).
 
 ### Trigger time in predefined triggers
 

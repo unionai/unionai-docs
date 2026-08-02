@@ -1,13 +1,13 @@
 {
   "packages": {
-    "flyteplugins.anthropic": "/api-reference/integrations/anthropic/packages/flyteplugins.anthropic/"
+    "flyteplugins.anthropic": "/api-reference/integrations/anthropic/"
   },
   "identifiers": {
-    "flyteplugins.anthropic.Agent": "/api-reference/integrations/anthropic/packages/flyteplugins.anthropic/agent/",
-    "Agent": "/api-reference/integrations/anthropic/packages/flyteplugins.anthropic/agent/"
+    "flyteplugins.anthropic.Agent": "/api-reference/integrations/anthropic/agent/",
+    "Agent": "/api-reference/integrations/anthropic/agent/"
   },
   "methods": {
-    "flyteplugins.anthropic.function_tool": "/api-reference/integrations/anthropic/packages/flyteplugins.anthropic/#function_tool",
-    "flyteplugins.anthropic.run_agent": "/api-reference/integrations/anthropic/packages/flyteplugins.anthropic/#run_agent"
+    "flyteplugins.anthropic.function_tool": "/api-reference/integrations/anthropic/#function_tool",
+    "flyteplugins.anthropic.run_agent": "/api-reference/integrations/anthropic/#run_agent"
   }
 }

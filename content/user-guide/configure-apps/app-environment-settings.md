@@ -20,7 +20,7 @@ variants: +flyte +union
 
 ## App-specific environment settings
 
-For complete parameter documentation, type signatures, and defaults, see the [`AppEnvironment` API reference](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment).
+For complete parameter documentation, type signatures, and defaults, see the [`AppEnvironment` API reference](../../api-reference/flyte-sdk/flyte.app/appenvironment).
 
 Key app-specific parameters include `type`, `port`, `args`, `command`, `requires_auth`, `scaling`, `domain`, `links`, `include`, `parameters`, `cluster_pool`, and `timeouts`. See also:
 

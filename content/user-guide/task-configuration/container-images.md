@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Container images
 
-The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) is used to specify a container image.
+The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/flyte/taskenvironment) is used to specify a container image.
 Every task defined using that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}`](https://github.com/orgs/flyteorg/packages/container/package/flyte)).
@@ -34,7 +34,7 @@ You can also construct an image programmatically using the `flyte.Image` object.
 
 The `flyte.Image` object provides a fluent interface for building container images: start with a `from_*` base constructor, then customize with `with_*` methods. Each method returns a new immutable `Image`.
 
-For a complete list of all available methods and their parameters, see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image).
+For a complete list of all available methods and their parameters, see the [`Image` API reference](../../api-reference/flyte-sdk/flyte/image).
 
 Here are some examples of the most common patterns for building images with `flyte.Image`.
 
@@ -113,7 +113,7 @@ The available customization methods are:
 | `flyte.Image.with_workdir()` | Set the working directory in the image. |
 | `flyte.Image.with_dockerignore()` | Point at a `.dockerignore` file to exclude paths from the build context. |
 
-For the full signature of each method, see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image).
+For the full signature of each method, see the [`Image` API reference](../../api-reference/flyte-sdk/flyte/image).
 
 > [!NOTE]
 > The `with_*` methods that install Python dependencies (`with_pip_packages`, `with_requirements`, `with_uv_project`, `with_poetry_project`) cannot be combined with a conda-based image.
@@ -164,7 +164,7 @@ Three things to keep in mind:
 * **`platforms` must cover every build architecture.** A multi-architecture image (`linux/amd64` plus `linux/arm64`) needs `platforms = ["linux-64", "linux-aarch64"]` in the manifest, or `pixi install` fails for the missing architecture at build time.
 * **GPU-less builders with a CUDA manifest.** If the manifest declares a CUDA `[system-requirements]` and image builds run on machines without a GPU, set `.with_env_vars({"CONDA_OVERRIDE_CUDA": "<version>"})` before the pixi layer so install-time validation of the `__cuda` virtual package succeeds.
 
-For the full parameter list (`environment`, `extra_args`, `secret_mounts`, `project_install_mode`), see the [`Image` API reference](../../api-reference/flyte-sdk/packages/flyte/image#with_pixi_project).
+For the full parameter list (`environment`, `extra_args`, `secret_mounts`, `project_install_mode`), see the [`Image` API reference](../../api-reference/flyte-sdk/flyte/image#with_pixi_project).
 
 ### Copying local files into the image
 
