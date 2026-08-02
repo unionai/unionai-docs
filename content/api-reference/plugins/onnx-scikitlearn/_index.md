@@ -15,13 +15,20 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNX`](packages/flytekitplugins.onnxscikitlearn.schema/scikitlearn2onnx) |  |
-| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXConfig`](packages/flytekitplugins.onnxscikitlearn.schema/scikitlearn2onnxconfig) | ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion. |
-| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer`](packages/flytekitplugins.onnxscikitlearn.schema/scikitlearn2onnxtransformer) |  |
+| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNX`](flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnx) |  |
+| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXConfig`](flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxconfig) | ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion. |
+| [`flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer`](flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxtransformer) |  |
+
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.onnxscikitlearn.schema.extract_config()`](flytekitplugins.onnxscikitlearn.schema#extract_config) |  |
+| [`flytekitplugins.onnxscikitlearn.schema.to_onnx()`](flytekitplugins.onnxscikitlearn.schema#to_onnx) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.onnxscikitlearn.schema`](packages/flytekitplugins.onnxscikitlearn.schema/_index) |  |
+| [`flytekitplugins.onnxscikitlearn.schema`](flytekitplugins.onnxscikitlearn.schema) |  |
 

@@ -67,13 +67,13 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 {{< variant union >}}
 {{< markdown >}}
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
-For more options and details see [Reference > {{< key kit_remote >}}](../../../api-reference/union-sdk/packages/union.remote).
+For more options and details see [Reference > {{< key kit_remote >}}](../../../api-reference/union-sdk/union.remote).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
-For more options and details see [Reference > {{< key kit_remote >}}](../../../api-reference/flytekit-sdk/packages/flytekit.remote.remote).
+For more options and details see [Reference > {{< key kit_remote >}}](../../../api-reference/flytekit-sdk/flytekit.remote.remote).
 {{< /markdown >}}
 {{< /variant >}}
 

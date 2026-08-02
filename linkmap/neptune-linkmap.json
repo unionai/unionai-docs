@@ -1,9 +1,9 @@
 {
   "packages": {
-    "flytekitplugins.neptune": "/api-reference/plugins/neptune/packages/flytekitplugins.neptune/"
+    "flytekitplugins.neptune": "/api-reference/plugins/neptune/flytekitplugins.neptune/"
   },
   "identifiers": {},
   "methods": {
-    "flytekitplugins.neptune.neptune_scale_run": "/api-reference/plugins/neptune/packages/flytekitplugins.neptune/#neptune_scale_run"
+    "flytekitplugins.neptune.neptune_scale_run": "/api-reference/plugins/neptune/flytekitplugins.neptune/#neptune_scale_run"
   }
 }

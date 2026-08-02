@@ -1,0 +1,17 @@
+---
+title: flytekitplugins.flyteinteractive.jupyter_lib.jupyter_constants
+version: 1.16.26
+variants: +flyte +union
+layout: py_api
+---
+
+# flytekitplugins.flyteinteractive.jupyter_lib.jupyter_constants
+
+## Directory
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `EXAMPLE_JUPYTER_NOTEBOOK_NAME` | `str` |  |
+

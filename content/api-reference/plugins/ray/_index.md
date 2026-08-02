@@ -15,21 +15,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.ray.models.AutoscalerOptions`](packages/flytekitplugins.ray.models/autoscaleroptions) |  |
-| [`flytekitplugins.ray.models.HeadGroupSpec`](packages/flytekitplugins.ray.models/headgroupspec) |  |
-| [`flytekitplugins.ray.models.RayCluster`](packages/flytekitplugins.ray.models/raycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
-| [`flytekitplugins.ray.models.RayJob`](packages/flytekitplugins.ray.models/rayjob) | Models _ray_pb2. |
-| [`flytekitplugins.ray.models.WorkerGroupSpec`](packages/flytekitplugins.ray.models/workergroupspec) |  |
-| [`flytekitplugins.ray.task.AutoscalerOptionsConfig`](packages/flytekitplugins.ray.task/autoscaleroptionsconfig) |  |
-| [`flytekitplugins.ray.task.HeadNodeConfig`](packages/flytekitplugins.ray.task/headnodeconfig) |  |
-| [`flytekitplugins.ray.task.RayFunctionTask`](packages/flytekitplugins.ray.task/rayfunctiontask) | Actual Plugin that transforms the local python code for execution within Ray job. |
-| [`flytekitplugins.ray.task.RayJobConfig`](packages/flytekitplugins.ray.task/rayjobconfig) |  |
-| [`flytekitplugins.ray.task.WorkerNodeConfig`](packages/flytekitplugins.ray.task/workernodeconfig) |  |
+| [`flytekitplugins.ray.models.AutoscalerOptions`](flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) |  |
+| [`flytekitplugins.ray.models.HeadGroupSpec`](flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) |  |
+| [`flytekitplugins.ray.models.RayCluster`](flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
+| [`flytekitplugins.ray.models.RayJob`](flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2. |
+| [`flytekitplugins.ray.models.WorkerGroupSpec`](flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) |  |
+| [`flytekitplugins.ray.task.AutoscalerOptionsConfig`](flytekitplugins.ray.task#flytekitpluginsraytaskautoscaleroptionsconfig) |  |
+| [`flytekitplugins.ray.task.HeadNodeConfig`](flytekitplugins.ray.task#flytekitpluginsraytaskheadnodeconfig) |  |
+| [`flytekitplugins.ray.task.RayFunctionTask`](flytekitplugins.ray.task#flytekitpluginsraytaskrayfunctiontask) | Actual Plugin that transforms the local python code for execution within Ray job. |
+| [`flytekitplugins.ray.task.RayJobConfig`](flytekitplugins.ray.task#flytekitpluginsraytaskrayjobconfig) |  |
+| [`flytekitplugins.ray.task.WorkerNodeConfig`](flytekitplugins.ray.task#flytekitpluginsraytaskworkernodeconfig) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.ray.models`](packages/flytekitplugins.ray.models/_index) |  |
-| [`flytekitplugins.ray.task`](packages/flytekitplugins.ray.task/_index) |  |
+| [`flytekitplugins.ray.models`](flytekitplugins.ray.models) |  |
+| [`flytekitplugins.ray.task`](flytekitplugins.ray.task) |  |
 

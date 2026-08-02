@@ -364,7 +364,7 @@ In {{< key product_name >}}, each task runs in its own container. This means tha
 
 The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the {{< key product_name >}} object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file) and [`FlyteDirectory`](../../api-reference/flytekit-sdk/packages/flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) classes, which automate this process.
+Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/flytekit-sdk/flytekit.types.file.file) and [`FlyteDirectory`](../../api-reference/flytekit-sdk/flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) classes, which automate this process.
 
 ## How the classes work
 
@@ -414,7 +414,7 @@ def wf():
 * The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers.
 * The `Blob` object is passed to `task_2`.
 * Because the type of the input parameter of `task_2` is `FlyteFile`, {{< key product_name >}} converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
-* Inside `task_2` you can now perform a [`FlyteFile.open()`](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file#open) and read the file contents.
+* Inside `task_2` you can now perform a [`FlyteFile.open()`](../../api-reference/flytekit-sdk/flytekit.types.file.file#open) and read the file contents.
 
 ### Local directory example
 
@@ -639,7 +639,7 @@ FlyteDirectory.new_file()
 ## Typed aliases
 
 The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file):
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/flytekit.types.file.file):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -651,7 +651,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/flytekit-sdk/packages/flytekit.types.directory.types):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/flytekit-sdk/flytekit.types.directory.types):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

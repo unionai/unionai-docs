@@ -15,20 +15,20 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.inference.nim.serve.NIM`](packages/flytekitplugins.inference.nim.serve/nim) |  |
-| [`flytekitplugins.inference.nim.serve.NIMSecrets`](packages/flytekitplugins.inference.nim.serve/nimsecrets) |  |
-| [`flytekitplugins.inference.ollama.serve.Model`](packages/flytekitplugins.inference.ollama.serve/model) | Represents the configuration for a model used in a Kubernetes pod template. |
-| [`flytekitplugins.inference.ollama.serve.Ollama`](packages/flytekitplugins.inference.ollama.serve/ollama) |  |
-| [`flytekitplugins.inference.sidecar_template.ModelInferenceTemplate`](packages/flytekitplugins.inference.sidecar_template/modelinferencetemplate) |  |
-| [`flytekitplugins.inference.vllm.serve.HFSecret`](packages/flytekitplugins.inference.vllm.serve/hfsecret) |  |
-| [`flytekitplugins.inference.vllm.serve.VLLM`](packages/flytekitplugins.inference.vllm.serve/vllm) |  |
+| [`flytekitplugins.inference.nim.serve.NIM`](flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenim) |  |
+| [`flytekitplugins.inference.nim.serve.NIMSecrets`](flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenimsecrets) |  |
+| [`flytekitplugins.inference.ollama.serve.Model`](flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaservemodel) | Represents the configuration for a model used in a Kubernetes pod template. |
+| [`flytekitplugins.inference.ollama.serve.Ollama`](flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaserveollama) |  |
+| [`flytekitplugins.inference.sidecar_template.ModelInferenceTemplate`](flytekitplugins.inference.sidecar_template#flytekitpluginsinferencesidecar_templatemodelinferencetemplate) |  |
+| [`flytekitplugins.inference.vllm.serve.HFSecret`](flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservehfsecret) |  |
+| [`flytekitplugins.inference.vllm.serve.VLLM`](flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservevllm) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.inference.nim.serve`](packages/flytekitplugins.inference.nim.serve/_index) |  |
-| [`flytekitplugins.inference.ollama.serve`](packages/flytekitplugins.inference.ollama.serve/_index) |  |
-| [`flytekitplugins.inference.sidecar_template`](packages/flytekitplugins.inference.sidecar_template/_index) |  |
-| [`flytekitplugins.inference.vllm.serve`](packages/flytekitplugins.inference.vllm.serve/_index) |  |
+| [`flytekitplugins.inference.nim.serve`](flytekitplugins.inference.nim.serve) |  |
+| [`flytekitplugins.inference.ollama.serve`](flytekitplugins.inference.ollama.serve) |  |
+| [`flytekitplugins.inference.sidecar_template`](flytekitplugins.inference.sidecar_template) |  |
+| [`flytekitplugins.inference.vllm.serve`](flytekitplugins.inference.vllm.serve) |  |
 

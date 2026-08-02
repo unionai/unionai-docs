@@ -15,13 +15,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetRenderer`](packages/flytekitplugins.huggingface.sd_transformers/huggingfacedatasetrenderer) | The datasets. |
-| [`flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetToParquetEncodingHandler`](packages/flytekitplugins.huggingface.sd_transformers/huggingfacedatasettoparquetencodinghandler) |  |
-| [`flytekitplugins.huggingface.sd_transformers.ParquetToHuggingFaceDatasetDecodingHandler`](packages/flytekitplugins.huggingface.sd_transformers/parquettohuggingfacedatasetdecodinghandler) |  |
+| [`flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetRenderer`](flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets. |
+| [`flytekitplugins.huggingface.sd_transformers.HuggingFaceDatasetToParquetEncodingHandler`](flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) |  |
+| [`flytekitplugins.huggingface.sd_transformers.ParquetToHuggingFaceDatasetDecodingHandler`](flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.huggingface.sd_transformers`](packages/flytekitplugins.huggingface.sd_transformers/_index) |  |
+| [`flytekitplugins.huggingface.sd_transformers`](flytekitplugins.huggingface.sd_transformers) |  |
 

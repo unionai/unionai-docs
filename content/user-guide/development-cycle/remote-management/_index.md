@@ -83,7 +83,7 @@ remote = {{< key kit_as >}}.{{< key kit_remote >}}(
     )
 ```
 
-For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/flytekit-sdk/packages/flytekit.configuration#flytekitconfigurationconfig)
+For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/flytekit-sdk/flytekit.configuration#flytekitconfigurationconfig)
 
 {{< /markdown >}}
 {{< /variant >}}

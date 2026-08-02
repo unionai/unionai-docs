@@ -15,11 +15,17 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.optuna.Optimizer`](packages/flytekitplugins.optuna/optimizer) |  |
+| [`flytekitplugins.optuna.Optimizer`](flytekitplugins.optuna#flytekitpluginsoptunaoptimizer) |  |
+
+### Functions
+
+| Function | Description |
+|-|-|
+| [`flytekitplugins.optuna.optimize()`](flytekitplugins.optuna#optimize) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.optuna`](packages/flytekitplugins.optuna/_index) |  |
+| [`flytekitplugins.optuna`](flytekitplugins.optuna) |  |
 

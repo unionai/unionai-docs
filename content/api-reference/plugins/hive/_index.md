@@ -15,13 +15,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.hive.task.HiveConfig`](packages/flytekitplugins.hive.task/hiveconfig) | HiveConfig should be used to configure a Hive Task. |
-| [`flytekitplugins.hive.task.HiveSelectTask`](packages/flytekitplugins.hive.task/hiveselecttask) |  |
-| [`flytekitplugins.hive.task.HiveTask`](packages/flytekitplugins.hive.task/hivetask) | This is the simplest form of a Hive Task, that can be used even for tasks that do not produce any output. |
+| [`flytekitplugins.hive.task.HiveConfig`](flytekitplugins.hive.task#flytekitpluginshivetaskhiveconfig) | HiveConfig should be used to configure a Hive Task. |
+| [`flytekitplugins.hive.task.HiveSelectTask`](flytekitplugins.hive.task#flytekitpluginshivetaskhiveselecttask) |  |
+| [`flytekitplugins.hive.task.HiveTask`](flytekitplugins.hive.task#flytekitpluginshivetaskhivetask) | This is the simplest form of a Hive Task, that can be used even for tasks that do not produce any output. |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.hive.task`](packages/flytekitplugins.hive.task/_index) |  |
+| [`flytekitplugins.hive.task`](flytekitplugins.hive.task) |  |
 

@@ -1,5 +1,14 @@
 {
-  "packages": {},
+  "packages": {
+    "flytekitplugins.mlflow": "/api-reference/plugins/mlflow/flytekitplugins.mlflow/",
+    "flytekitplugins.mlflow.tracking": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/"
+  },
   "identifiers": {},
-  "methods": {}
+  "methods": {
+    "flytekitplugins.mlflow.tracking.get_run_metrics": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/#get_run_metrics",
+    "flytekitplugins.mlflow.tracking.get_run_params": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/#get_run_params",
+    "flytekitplugins.mlflow.tracking.metric_to_df": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/#metric_to_df",
+    "flytekitplugins.mlflow.tracking.mlflow_autolog": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/#mlflow_autolog",
+    "flytekitplugins.mlflow.tracking.plot_metrics": "/api-reference/plugins/mlflow/flytekitplugins.mlflow.tracking/#plot_metrics"
+  }
 }

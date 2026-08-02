@@ -1,12 +1,12 @@
 {
   "packages": {
-    "flytekitplugins.optuna": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/"
+    "flytekitplugins.optuna": "/api-reference/plugins/optuna/flytekitplugins.optuna/"
   },
   "identifiers": {
-    "flytekitplugins.optuna.Optimizer": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#flytekitpluginsoptunaoptimizer",
-    "Optimizer": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#flytekitpluginsoptunaoptimizer"
+    "flytekitplugins.optuna.Optimizer": "/api-reference/plugins/optuna/flytekitplugins.optuna/#flytekitpluginsoptunaoptimizer",
+    "Optimizer": "/api-reference/plugins/optuna/flytekitplugins.optuna/#flytekitpluginsoptunaoptimizer"
   },
   "methods": {
-    "flytekitplugins.optuna.optimize": "/api-reference/plugins/optuna/packages/flytekitplugins.optuna/#optimize"
+    "flytekitplugins.optuna.optimize": "/api-reference/plugins/optuna/flytekitplugins.optuna/#optimize"
   }
 }

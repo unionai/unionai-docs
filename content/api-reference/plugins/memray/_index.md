@@ -15,11 +15,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.memray.memray_profiling`](packages/flytekitplugins.memray/memray_profiling) |  |
+| [`flytekitplugins.memray.memray_profiling`](flytekitplugins.memray#flytekitpluginsmemraymemray_profiling) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.memray`](packages/flytekitplugins.memray/_index) |  |
+| [`flytekitplugins.memray`](flytekitplugins.memray) |  |
 

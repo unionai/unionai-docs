@@ -18,8 +18,8 @@ see the [Cache a HuggingFace Model as an Artifact](./cache-huggingface-model) gu
 
 Union provides two specialized app classes for serving high-performance LLM endpoints:
 
-- **[`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp)**: uses [SGLang](https://docs.sglang.ai/), a fast serving framework for large language models and vision language models.
-- **[`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp)**: uses [vLLM](https://docs.vllm.ai/en/latest/), a fast and easy-to-use library for LLM inference and serving.
+- **[`SGLangApp`](../../../api-reference/union-sdk/union.app.llm#unionappllmsglangapp)**: uses [SGLang](https://docs.sglang.ai/), a fast serving framework for large language models and vision language models.
+- **[`VLLMApp`](../../../api-reference/union-sdk/union.app.llm#unionappllmvllmapp)**: uses [vLLM](https://docs.vllm.ai/en/latest/), a fast and easy-to-use library for LLM inference and serving.
 
 By default, both classes provide:
 

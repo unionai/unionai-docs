@@ -15,11 +15,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.wandb.wandb_init`](packages/flytekitplugins.wandb/wandb_init) |  |
+| [`flytekitplugins.wandb.wandb_init`](flytekitplugins.wandb#flytekitpluginswandbwandb_init) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.wandb`](packages/flytekitplugins.wandb/_index) |  |
+| [`flytekitplugins.wandb`](flytekitplugins.wandb) |  |
 

@@ -118,7 +118,7 @@ To make changes to your cluster configuration, go to the [{{< key product_name >
 
 When `requests`, `limits`, or `accelerator` are specified in the `@{{< key kit_as >}}.task` decorator, they apply every time that a task is invoked from a workflow.
 In some cases, you may wish to change the resources specified from one invocation to another.
-To do that, use the [`with_overrides` method](../../../../api-reference/flytekit-sdk/packages/flytekit.core.node#with_overrides) of the task function.
+To do that, use the [`with_overrides` method](../../../../api-reference/flytekit-sdk/flytekit.core.node#with_overrides) of the task function.
 
 For example:
 
