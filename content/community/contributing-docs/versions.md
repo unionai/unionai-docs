@@ -18,6 +18,22 @@ while the URL for version `v2` of the same page is:
 
 `{{< docs_home flyte v2 >}}/community/contributing-docs/versions`
 
+## What a version contains (and what it does not)
+
+A docs version is a snapshot of **content** — the pages, examples and generated API
+reference as they stood against a given SDK release. The site's **look and
+navigation** (the theme, built from the shared `unionai-docs-infra` submodule) is
+*not* part of the snapshot: every published version, however old, is always served
+with the **current** site UI. This is deliberate — the content you are reading has a
+version; the reading experience should always be the best available.
+
+Two practical consequences for contributors:
+
+- **Theme or build-system changes never require a new docs version.** They reach
+  every published version automatically when the infra submodule pointer is bumped
+  on the docs branch.
+- **Content changes reach the stable version at the next cut.**
+
 ### Versions are branches
 
 The versioning system is based on long-lived Git branches in the `unionai/unionai-docs` GitHub repository:
