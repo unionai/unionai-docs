@@ -33,7 +33,9 @@ scripts/e2e_workspace/
 scripts/.e2e-keys/
 
 # AI assistant
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/commands/
 .codex/
 
 **/.flyte
