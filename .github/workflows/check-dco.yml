@@ -1,0 +1,63 @@
+name: Check DCO
+
+# Developer Certificate of Origin (DCO) sign-off check (DOC-1244).
+#
+# Verifies every commit in a pull request carries a `Signed-off-by:` trailer
+# (added with `git commit -s`), so all contributions are attributable per the
+# DCO (https://developercertificate.org/).
+#
+# POSTURE — MANDATORY / blocking. A commit missing a `Signed-off-by` trailer
+# FAILS this check. "Check DCO" is registered as a REQUIRED status check on the
+# protected `main` branch, so a PR cannot merge until every commit is signed
+# off. Contributors sign off with `git commit -s` (or repair existing commits
+# with `git rebase --signoff <base>` + force-push). The "Contributing to the
+# docs" guide (DOC-1243) documents the `-s` convention.
+#
+# (Committed-CI implementation, matching the repo's "one check-*.yml per check"
+# convention. The DCO GitHub App is the alternative; this workflow is the
+# chosen path.)
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    name: "Check DCO"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so every commit in the PR range is inspectable.
+          fetch-depth: 0
+
+      - name: Check Signed-off-by on every PR commit
+        # Mandatory — a missing sign-off fails the check (and blocks merge, as
+        # "Check DCO" is a required status check on main).
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          missing=0
+          # Commits unique to this PR (base..head), excluding merge commits.
+          for sha in $(git rev-list --no-merges "$BASE_SHA".."$HEAD_SHA"); do
+            subject="$(git show -s --format='%s' "$sha")"
+            author="$(git show -s --format='%an <%ae>' "$sha")"
+            if git show -s --format='%B' "$sha" | grep -qiE '^Signed-off-by: .+ <.+@.+>'; then
+              echo "  ok   ${sha:0:12}  $subject"
+            else
+              echo "::error::Commit ${sha:0:12} ($author) is missing a 'Signed-off-by' trailer. Sign off with 'git commit -s' (amend or rebase existing commits). See https://developercertificate.org/"
+              echo "  MISS ${sha:0:12}  $subject"
+              missing=1
+            fi
+          done
+          if [ "$missing" -eq 0 ]; then
+            echo "::notice::All PR commits carry a DCO Signed-off-by trailer."
+          else
+            echo "::error::One or more commits are missing a DCO sign-off. This check is required — sign off all commits (git commit -s, or git rebase --signoff <base>) and push again."
+            exit 1
+          fi
