@@ -295,6 +295,6 @@ See [Secrets](../task-configuration/secrets) for how to store secrets in Flyte.
 
 ## Related
 
-- [`ConnectorEnvironment` API reference](../../api-reference/flyte-sdk/packages/flyte.app/connectorenvironment)
-- [`AsyncConnector` API reference](../../api-reference/flyte-sdk/packages/flyte.connectors/asyncconnector)
+- [`ConnectorEnvironment` API reference](../../api-reference/flyte-sdk/flyte.app/connectorenvironment)
+- [`AsyncConnector` API reference](../../api-reference/flyte-sdk/flyte.connectors/asyncconnector)
 - [Task plugins](../task-configuration/task-plugins)

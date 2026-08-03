@@ -76,7 +76,7 @@ There is no parameter to set. See [Source-code link discovery](../task-deploymen
 The `links` parameter on `@env.task` (and `override()`) attaches clickable URLs to tasks in the UI.
 Use links to connect tasks to external tools like experiment trackers, monitoring dashboards, or logging systems.
 
-Links are defined by implementing the [`Link`](../../api-reference/flyte-sdk/packages/flyte/link) protocol.
+Links are defined by implementing the [`Link`](../../api-reference/flyte-sdk/flyte/link) protocol.
 See [Links](../task-programming/links) for full details on creating and using links.
 
 ## Default inputs

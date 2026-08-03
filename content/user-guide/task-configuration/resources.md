@@ -18,7 +18,7 @@ If neither `TaskEnvironment` nor the task decorator specifies `resources`, the d
 
 ## Resources data class
 
-For the full class definition, parameter types, and accepted formats, see the [`Resources` API reference](../../api-reference/flyte-sdk/packages/flyte/resources).
+For the full class definition, parameter types, and accepted formats, see the [`Resources` API reference](../../api-reference/flyte-sdk/flyte/resources).
 
 The main parameters are:
 
@@ -73,7 +73,7 @@ Here's a complete example of defining a TaskEnvironment with resource specificat
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="override" lang="python" >}}
 
-For complete format specifications for each resource type (CPU, memory, GPU/TPU/Device, disk, shared memory), including accepted string formats, request/limit ranges, GPU partitioning, and supported accelerator types, see the [`Resources` API reference](../../api-reference/flyte-sdk/packages/flyte/resources).
+For complete format specifications for each resource type (CPU, memory, GPU/TPU/Device, disk, shared memory), including accepted string formats, request/limit ranges, GPU partitioning, and supported accelerator types, see the [`Resources` API reference](../../api-reference/flyte-sdk/flyte/resources).
 
 ## Accelerators
 
@@ -153,4 +153,4 @@ resources=flyte.Resources(gpu="Gaudi1:1")
 > [!NOTE]
 > Which accelerator types are actually available depends on your deployment and the node pools configured in your cluster. Requesting a type that no node provides will leave the task's pod `Pending`.
 
-For the full list of accepted accelerator strings and device-configuration options, see the [`Resources` API reference](../../api-reference/flyte-sdk/packages/flyte/resources).
+For the full list of accepted accelerator strings and device-configuration options, see the [`Resources` API reference](../../api-reference/flyte-sdk/flyte/resources).
