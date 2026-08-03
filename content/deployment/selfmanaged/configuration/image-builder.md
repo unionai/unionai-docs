@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Image builder
 
-Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../../user-guide/task-configuration/container-images).
+Union Image Builder supports the ability to build container images within the dataplane. This enables the use of the `remote` builder type for any defined [Container Image](../../../user-guide/tasks/task-configuration/container-images).
 
 Configure the use of remote image builder:
 
@@ -14,7 +14,7 @@ Configure the use of remote image builder:
 flyte create config --builder=remote --endpoint...
 ```
 
-Write custom [container images](../../../user-guide/task-configuration/container-images):
+Write custom [container images](../../../user-guide/tasks/task-configuration/container-images):
 
 ```python
 env = flyte.TaskEnvironment(

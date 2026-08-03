@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # OpenTelemetry
 
-[OpenTelemetry](https://opentelemetry.io/) (OTel) tracing in Flyte 2 is user-owned. Flyte exposes a context-propagation primitive, [`custom_context`](../../user-guide/task-programming/custom-context), that lets you carry the W3C `traceparent` header (and any other tracing metadata) across task boundaries. You bring the rest of the OTel stack: tracer provider, span exporter, and any instrumentation libraries you need.
+[OpenTelemetry](https://opentelemetry.io/) (OTel) tracing in Flyte 2 is user-owned. Flyte exposes a context-propagation primitive, [`custom_context`](../../user-guide/tasks/task-programming/custom-context), that lets you carry the W3C `traceparent` header (and any other tracing metadata) across task boundaries. You bring the rest of the OTel stack: tracer provider, span exporter, and any instrumentation libraries you need.
 
 Unlike the other entries in this section, OpenTelemetry is not a Flyte plugin. It is a usage pattern built on top of `custom_context` plus the standard `opentelemetry-*` packages.
 

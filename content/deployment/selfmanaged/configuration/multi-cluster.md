@@ -44,7 +44,7 @@ Work reaches a cluster pool through a queue. A queue lives in one cluster pool a
 
 ### Route a project or domain to a pool
 
-Create a queue in the target pool, then set it as the default queue for the project-domain scope through the [settings](../../../user-guide/core-concepts/settings) hierarchy.
+Create a queue in the target pool, then set it as the default queue for the project-domain scope through the [settings](../../../user-guide/get-started/core-concepts/settings) hierarchy.
 
 1. Create a queue in the pool the work should land in:
 
@@ -82,7 +82,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-You can also choose a queue when you launch a run, or from a trigger, without touching task code. See [Queues](../../../user-guide/task-configuration/queues) for every way to target a queue.
+You can also choose a queue when you launch a run, or from a trigger, without touching task code. See [Queues](../../../user-guide/tasks/task-configuration/queues) for every way to target a queue.
 
 ## Data sharing between cluster pools
 

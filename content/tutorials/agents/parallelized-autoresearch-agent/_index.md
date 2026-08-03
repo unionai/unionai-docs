@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/parallelized_autoresearch).
 
-This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop (minimize validation bits-per-byte on a TinyGPT variant) but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](../../../user-guide/sandboxing/_index) execution.
+This tutorial extends the [Autoresearch agent](../autoresearch/_index) pattern with a code-mode MLE agent that plans **batches** of training experiments, saves distinct `train.py` edits, and runs them **in parallel** via `flyte.map`. It follows the [karpathy/autoresearch](https://github.com/karpathy/autoresearch) loop (minimize validation bits-per-byte on a TinyGPT variant) but orchestrates fan-out batches with durable Flyte tasks and [unionai-sandbox](../../../user-guide/agents/sandboxing/_index) execution.
 
 Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 
@@ -18,7 +18,7 @@ Compared to the single-threaded Claude Code autoresearch tutorial, this agent:
 - Persists a **leaderboard**, code-edit history, and batch plans in `MemoryStore`
 - **Right-sizes each experiment** with an LLM via a `@tool` **`call_handler`**, then retries on Flyte or sandbox OOM by bumping memory
 
-Each experiment has different compute needs (wider models, larger batch sizes, longer training loops). A single static `flyte.Resources` on the task would either waste cluster memory or OOM on the heavy configs. Instead, this example uses the same [`call_handler` pattern](../../../user-guide/build-agent/flyte-agents) as the Flyte SDK self-correcting agent: before every run, a sizing LLM reads the tool name, docstring, and call arguments and returns a JSON resource spec; the handler applies it with `tool_fn.target.override(resources=...).aio(**kwargs)` and retries with more memory when needed.
+Each experiment has different compute needs (wider models, larger batch sizes, longer training loops). A single static `flyte.Resources` on the task would either waste cluster memory or OOM on the heavy configs. Instead, this example uses the same [`call_handler` pattern](../../../user-guide/agents/build-agent/flyte-agents) as the Flyte SDK self-correcting agent: before every run, a sizing LLM reads the tool name, docstring, and call arguments and returns a JSON resource spec; the handler applies it with `tool_fn.target.override(resources=...).aio(**kwargs)` and retries with more memory when needed.
 
 ## Define the task environments
 

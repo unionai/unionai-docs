@@ -1,0 +1,160 @@
+---
+title: Secrets
+weight: 3
+variants: +flyte +union
+---
+
+# Secrets
+
+Flyte secrets enable you to securely store and manage sensitive information, such as API keys, passwords, and other credentials.
+Secrets reside in a secret store on the data plane of your Union/Flyte backend.
+You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
+Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
+
+## Creating a literal string secret
+
+You can create a secret using the [`flyte create secret`](../../../api-reference/flyte-cli#flyte-create-secret) command like this:
+
+```bash
+flyte create secret MY_SECRET_KEY --value my_secret_value
+```
+
+This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value`.
+This secret will be scoped to your entire organization.
+It will be available across all projects and domains in your organization.
+See the [scoping secrets](#scoping-secrets) section below for more details.
+See [Using a literal string secret](#using-a-literal-string-secret) for how to access the secret in your task code.
+
+## Creating a file secret
+
+You can also create a secret by specifying a local file:
+
+```bash
+flyte create secret MY_SECRET_KEY --from-file /local/path/to/my_secret_file
+```
+
+In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-file-secret).
+
+## Scoping secrets
+
+When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level.
+This means that the secret will be available across all projects and domains in the organization.
+
+{{< variant union >}}
+{{< markdown >}}
+If your organization spans multiple cluster pools, see [Org-wide secrets in a multi-cluster deployment](#org-wide-secrets-in-a-multi-cluster-deployment) below: org-wide secrets are stored per pool.
+{{< /markdown >}}
+{{< /variant >}}
+
+You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
+
+* A specific project (across all domains)
+* A specific domain (across all projects)
+* A specific project and a specific domain.
+
+For example, to create a secret that it is only available in `my_project/development`, you would execute the following command:
+
+```bash
+flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project --domain development
+```
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Org-wide secrets in a multi-cluster deployment
+
+Each [cluster pool](../../cluster-workload-management/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
+A secret therefore lives in the secret store of one particular pool, not in a single global store.
+
+If your organization has more than one [cluster pool](../../cluster-workload-management/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
+All three secret commands accept it:
+
+```bash
+# Create an org-wide secret in the `prod` pool's secret store
+flyte create secret MY_SECRET_KEY --value my_secret_value --cluster-pool prod
+
+# List the org-wide secrets in that pool
+flyte get secret --cluster-pool prod
+
+# Delete an org-wide secret from that pool
+flyte delete secret MY_SECRET_KEY --cluster-pool prod
+```
+
+Use `flyte get cluster-pool` to list the pool names available in your organization.
+
+To make the same org-wide secret available to workloads in every pool, create it once per pool.
+
+```python
+import flyte
+import flyte.remote
+
+flyte.init_from_config()
+
+flyte.remote.Secret.create(name="MY_SECRET_KEY", value="my_secret_value", cluster_pool="prod")
+
+for secret in flyte.remote.Secret.listall(cluster_pool="prod"):
+    print(secret.name)
+```
+
+{{< /markdown >}}
+{{< /variant >}}
+
+## Listing secrets
+
+You can list existing secrets with the [`flyte get secret`](../../../api-reference/flyte-cli#flyte-get-secret) command.
+For example, the following command will list all secrets in the organization:
+
+```bash
+flyte get secret
+```
+
+Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** available in that project and/or domain.
+
+For example, to list the secrets that are only available in `my_project` and domain `development`, you would run:
+
+```bash
+flyte get secret --project my_project --domain development
+```
+
+## Deleting secrets
+
+To delete a secret, use the [`flyte delete secret`](../../../api-reference/flyte-cli#flyte-delete-secret) command:
+
+```bash
+flyte delete secret MY_SECRET_KEY
+```
+
+## Using a literal string secret
+
+To use a literal string secret, specify it in the `TaskEnvironment` along with the name of the environment variable into which it will be injected.
+You can then access it using `os.getenv()` in your task code.
+For example:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
+
+## Using a file secret
+
+To use a file secret, specify it in the `TaskEnvironment` along with the `mount="/etc/flyte/secrets"` argument (with that precise value).
+
+The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
+
+For example:
+
+{{< code file="/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
+
+> [!NOTE]
+> Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
+> This fixed path is the directory in which the secret file will be placed.
+> The name of the secret file will be equal to the key of the secret.
+
+## Overriding secrets at invocation time
+
+The secrets above are declared when the task is defined, on the `TaskEnvironment`.
+You can also override which secrets are injected for a **single invocation** of a task using `task.override(secrets=...)` &mdash; useful when the same task needs different credentials depending on how it's called.
+See [Overriding secrets](./overrides#overriding-secrets) for details and an example.
+
+> [!NOTE]
+> A `TaskEnvironment` can only access a secret if the scope of the secret includes the project and domain where the `TaskEnvironment` is deployed.
+
+> [!WARNING]
+> Do not return secret values from tasks. Returned values are stored in plaintext in your data plane's object store and shown in the UI and to downstream tasks, defeating the secret store's protections.

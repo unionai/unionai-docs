@@ -309,7 +309,7 @@ import os
 api_key = os.environ["MY_API_KEY"]
 ```
 
-See [Secrets](../user-guide/task-configuration/secrets) for how to store and manage secrets.
+See [Secrets](../user-guide/tasks/task-configuration/secrets) for how to store and manage secrets.
 
 ### Deploy a custom connector
 
@@ -370,10 +370,10 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                        | Description                                         | Common use cases             |
 | --------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/native-app-integrations/sglang-app) and [vLLM app](../user-guide/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
 
 ## Notebook execution
 
@@ -387,7 +387,7 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ## Observability
 
-Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/tasks/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
 
 ### Supported observability integrations
 

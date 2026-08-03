@@ -17,7 +17,7 @@ may be evicted when a spot node is reclaimed.
 
 To make the `interruptible` setting take effect, tell Union how to recognize your spot and on-demand
 nodes using the keys described below. For how to mark a task or task environment as interruptible in
-your workflow code, see [Interruptible tasks](../../../user-guide/task-configuration/interruptible-tasks-and-queues)
+your workflow code, see [Interruptible tasks](../../../user-guide/tasks/task-configuration/interruptible-tasks-and-queues)
 in the user guide.
 
 ## Scheduling mechanisms

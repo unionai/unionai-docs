@@ -1,6 +1,6 @@
 ---
 title: Advanced project
-weight: 102
+weight: 10
 variants: +flyte +union
 mermaid: true
 llm_readable_bundle: true
