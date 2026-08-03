@@ -148,7 +148,7 @@ task:
   domain: development
 ```
 
-The `clientId` and `endpoint` are safe to commit; only the client secret named by `clientSecretEnvVar` comes from the CI secret store. `builder: local` means images are built on the runner with Docker (Flyte OSS has no remote builder). See [Container images](../task-configuration/container-images#image-building).
+The `clientId` and `endpoint` are safe to commit; only the client secret named by `clientSecretEnvVar` comes from the CI secret store. `builder: local` means images are built on the runner with Docker (Flyte OSS has no remote builder). See [Container images](../tasks/task-configuration/container-images#image-building).
 {{< /markdown >}}
 {{< /variant >}}
 

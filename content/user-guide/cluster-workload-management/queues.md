@@ -18,7 +18,7 @@ fairness limits.
 
 This page covers creating and managing queues administratively, from either the
 CLI or Python. For how workflow authors *target* a queue from task code, see
-[Queues in Configure tasks](../task-configuration/queues).
+[Queues in Configure tasks](../tasks/task-configuration/queues).
 
 ## How a queue routes
 
@@ -261,7 +261,7 @@ connected to and their CPU, GPU, and memory capacity, and the in-flight **Queued
 
 **Usage** gives ready-to-copy snippets for routing work to this queue, at run level
 and per task, with the queue's name already filled in. These are the same routing
-methods described in [Queues in Configure tasks](../task-configuration/queues).
+methods described in [Queues in Configure tasks](../tasks/task-configuration/queues).
 
 ![The Usage tab of a queue's detail view, showing run-level and task-level routing snippets](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-usage.png)
 
@@ -383,14 +383,14 @@ never change pools in place; moving work is a drain-and-replace migration:
 
 > [!NOTE] Queue overrides stay within a pool
 > A task can override its queue at runtime
-> ([`task.override(queue=...)`](../task-configuration/queues#overriding-a-queue-at-runtime)),
+> ([`task.override(queue=...)`](../tasks/task-configuration/queues#overriding-a-queue-at-runtime)),
 > but only to another queue in the **same pool** as the run's original queue. A
 > cross-pool override is rejected, for the same data plane reason that moving
 > work between pools requires a drain-and-replace migration.
 
 ## See also
 
-- [Queues in Configure tasks](../task-configuration/queues): routing work to a
+- [Queues in Configure tasks](../tasks/task-configuration/queues): routing work to a
   queue from task code, triggers, and per-run context.
 - [Cluster pools](./cluster-pools) and [Clusters](./clusters): the routing
   targets a queue points at.

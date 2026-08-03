@@ -103,7 +103,7 @@ If you have not yet set up the required AWS resources (EKS cluster, S3, ECR, IAM
    <cluster>   <org>   enabled   healthy
    ```
 
-7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+7. Follow the [Quickstart](../../../user-guide/get-started/quickstart) to run your first workflow and verify your cluster is working correctly.
 
 ## Next: manage your cluster and pools
 

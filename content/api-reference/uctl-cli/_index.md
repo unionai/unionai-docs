@@ -131,7 +131,7 @@ Run `uctl <command> --help` for the full flags and usage of any command below.
 
 * **`uctl selfserve provision-dataplane-resources`** — Provision dataplane resources for an existing Union
   organization. This is the current tool for self-managed dataplane onboarding; see the per-provider
-  [self-managed deployment runbooks](../../deployment/selfmanaged/) for the full flow.
+  [self-managed deployment runbooks](../../deployment/selfmanaged/_index) for the full flow.
 
 ### Cluster node pools
 

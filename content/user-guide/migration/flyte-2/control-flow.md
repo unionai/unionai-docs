@@ -59,7 +59,7 @@ except flyte.errors.OOMError:
     )(sample_size)
 ```
 
-See [Error handling](../../task-programming/error-handling) for more.
+See [Error handling](../../tasks/task-programming/error-handling) for more.
 
 ## Next
 

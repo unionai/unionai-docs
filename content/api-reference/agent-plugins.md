@@ -121,5 +121,5 @@ externally.
 > [!TIP]
 > The `flyte-cluster` server is the same set of Flyte control-plane tools you can
 > expose yourself with a `FlyteMCPAppEnvironment`. See
-> [Flyte MCP server](../../user-guide/build-mcp/flyte_mcp_server) for how to build
+> [Flyte MCP server](../../user-guide/agents/build-mcp/flyte_mcp_server) for how to build
 > and scope your own Flyte MCP server.

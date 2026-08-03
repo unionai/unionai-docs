@@ -12,7 +12,7 @@ top_menu: true
 
 ### :rocket: Retries with Backoff and Timeout Controls
 
-Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running. Pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/task-configuration/retries-and-timeouts) for details.
+Tasks now accept a `flyte.RetryStrategy` with exponential backoff and a `flyte.Timeout` with three independent bounds: `max_runtime` (per-attempt running time), `max_queued_time` (per-attempt time waiting for capacity), and `deadline` (an absolute wall-clock budget across all attempts). The `max_runtime` budget starts when your code actually begins running. Pod scheduling and image pulls no longer count against it. See the [Retries and timeouts documentation](../user-guide/tasks/task-configuration/retries-and-timeouts) for details.
 
 ```python
 import flyte
@@ -47,7 +47,7 @@ Log streaming now covers every pod of a distributed action (Ray, Spark, multi-no
 
 ### :computer: Build and Deploy MCP Servers
 
-You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/build-mcp/_index) to get started.
+You can now author a Model Context Protocol server with the SDK and deploy it as a Union app, so agents and IDEs can call your tasks and data as tools. See the [MCP server documentation](../user-guide/agents/build-mcp/_index) to get started.
 
 
 ### :sparkles: Smarter Failure Classification
@@ -82,7 +82,7 @@ You can now exclude files from code bundles even when they are tracked in git: l
 
 ### :wrench: Settings Applied at Run Creation
 
-Org- and domain-scoped settings are now fully applied when runs are created: tasks submitted without explicit resource values pick up the defaults configured in Settings. See the [Settings documentation](../user-guide/core-concepts/settings).
+Org- and domain-scoped settings are now fully applied when runs are created: tasks submitted without explicit resource values pick up the defaults configured in Settings. See the [Settings documentation](../user-guide/get-started/core-concepts/settings).
 
 
 ### :sparkles: Console Run Exploration Improvements
@@ -112,7 +112,7 @@ Pydantic `Union` types with `Field` annotations are now supported in task signat
 
 ### :sparkles: Queues with Concurrency and Depth Control (Beta)
 
-Queues now support concurrency control (how many actions a queue runs at once) and depth control (how deep the queue can grow), with runnable SDK examples. Queues are in Beta: queue definitions are not yet enforced by the execution engine, and full queue management from the CLI and Console arrives with general availability. See the [Queues documentation](../user-guide/task-configuration/queues).
+Queues now support concurrency control (how many actions a queue runs at once) and depth control (how deep the queue can grow), with runnable SDK examples. Queues are in Beta: queue definitions are not yet enforced by the execution engine, and full queue management from the CLI and Console arrives with general availability. See the [Queues documentation](../user-guide/tasks/task-configuration/queues).
 
 
 ### :sparkles: Events API (Beta)
@@ -842,7 +842,7 @@ Now, you can debug multi-node distributed computations on Ray directly.
 ![Debugging Ray Head Node](../_static/images/release-notes/2025-10_ray_head_debug.gif)
 
 ### :zap: Triggers and audit history
-[Triggers](../user-guide/task-configuration/triggers) let you templatize and set schedules for your workflows, similar to Launch Plans in Flyte 1.0.
+[Triggers](../user-guide/tasks/task-configuration/triggers) let you templatize and set schedules for your workflows, similar to Launch Plans in Flyte 1.0.
 
 ```python
 @env.task(triggers=flyte.Trigger.hourly())  # Every hour

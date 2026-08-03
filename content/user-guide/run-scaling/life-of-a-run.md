@@ -22,7 +22,7 @@ When you execute `flyte.run()`, the system goes through several phases:
 7. **State management**: Track and persist execution state
 
 > [!NOTE]
-> This walkthrough follows a run's *control flow*. For what the inputs and outputs actually are (**literals**, stored inline or offloaded as **raw data**) and where each lives, see [Where your data lives](../core-concepts/where-data-lives).
+> This walkthrough follows a run's *control flow*. For what the inputs and outputs actually are (**literals**, stored inline or offloaded as **raw data**) and where each lives, see [Where your data lives](../get-started/core-concepts/where-data-lives).
 
 ## Phase 1: Code analysis and preparation
 
@@ -43,7 +43,7 @@ Container images provide the runtime environment for your tasks:
 - **Caching**: Previously built images are reused when possible.
 - **Parallel builds**: Multiple images can be built concurrently.
 
-For more details on container images, see [Container Images](../task-configuration/container-images).
+For more details on container images, see [Container Images](../tasks/task-configuration/container-images).
 
 ## Phase 3: Code bundling
 
@@ -68,7 +68,7 @@ image = flyte.Image.from_dockerfile("Dockerfile")
 run = flyte.with_runcontext(copy_style="none").run(my_task, input_data=data)
 ```
 
-For more details on code packaging, see [Packaging](../task-deployment/packaging).
+For more details on code packaging, see [Packaging](../tasks/task-deployment/packaging).
 
 ## Phase 4: Upload code bundle
 
@@ -174,7 +174,7 @@ When downstream tasks are invoked:
 
 ## Reusable containers
 
-When using [reusable containers](../task-configuration/reusable-containers), the execution model changes:
+When using [reusable containers](../tasks/task-configuration/reusable-containers), the execution model changes:
 
 1. **Environment spin-up**: The container environment is first spun up with configured replicas.
 2. **Task allocation**: Tasks are allocated to available replicas in the environment.

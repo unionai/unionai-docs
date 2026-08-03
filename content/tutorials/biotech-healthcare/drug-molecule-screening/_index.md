@@ -15,7 +15,7 @@ The pattern follows how cheminformatics agents like ChemCrow and PharmAgents are
 
 Flyte provides:
 
-- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` (see [Flyte-native agents](../../../user-guide/build-agent/flyte-agents/))
+- **Flyte-native agent orchestration** via `flyte.ai.agents.Agent` (see [Flyte-native agents](../../../user-guide/agents/build-agent/flyte-agents))
 - **Typed agent tool I/O**: Flyte 2.5.4+ passes `flyte.io.Dir`, `File`, and `DataFrame` between agent tool calls so the LLM can compose multi-step pipelines directly
 - **Cached molecule loading** so repeated runs skip re-parsing SMILES
 - **Report-enabled stage tasks** that stream property charts, similarity matrices, and candidate spotlights as each step completes
@@ -28,7 +28,7 @@ Flyte provides:
 > flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 > ```
 >
-> See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+> See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ## Define the task environment
 

@@ -258,5 +258,5 @@ The shared machinery lives in `flyteplugins-agents-core`, which every adapter de
 ## Next steps
 
 - [Agent frameworks](./_index): the supported list and the capability matrix.
-- [Secrets](../../user-guide/task-configuration/secrets): how to wire provider API keys.
-- [Caching](../../user-guide/task-configuration/caching): what `cache="auto"` does on a tool task.
+- [Secrets](../../user-guide/tasks/task-configuration/secrets): how to wire provider API keys.
+- [Caching](../../user-guide/tasks/task-configuration/caching): what `cache="auto"` does on a tool task.
