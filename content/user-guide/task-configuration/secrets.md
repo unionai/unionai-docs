@@ -40,6 +40,12 @@ In this case, when accessing the secret in your task code, you will need to [mou
 When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level.
 This means that the secret will be available across all projects and domains in the organization.
 
+{{< variant union >}}
+{{< markdown >}}
+If your organization spans multiple cluster pools, see [Org-wide secrets in a multi-cluster deployment](#org-wide-secrets-in-a-multi-cluster-deployment) below: org-wide secrets are stored per pool.
+{{< /markdown >}}
+{{< /variant >}}
+
 You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
 
 * A specific project (across all domains)
@@ -51,6 +57,47 @@ For example, to create a secret that it is only available in `my_project/develop
 ```bash
 flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project --domain development
 ```
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Org-wide secrets in a multi-cluster deployment
+
+Each [cluster pool](../cluster-workload-management/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
+A secret therefore lives in the secret store of one particular pool, not in a single global store.
+
+If your organization has more than one [cluster pool](../cluster-workload-management/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
+All three secret commands accept it:
+
+```bash
+# Create an org-wide secret in the `prod` pool's secret store
+flyte create secret MY_SECRET_KEY --value my_secret_value --cluster-pool prod
+
+# List the org-wide secrets in that pool
+flyte get secret --cluster-pool prod
+
+# Delete an org-wide secret from that pool
+flyte delete secret MY_SECRET_KEY --cluster-pool prod
+```
+
+Use `flyte get cluster-pool` to list the pool names available in your organization.
+
+To make the same org-wide secret available to workloads in every pool, create it once per pool.
+
+```python
+import flyte
+import flyte.remote
+
+flyte.init_from_config()
+
+flyte.remote.Secret.create(name="MY_SECRET_KEY", value="my_secret_value", cluster_pool="prod")
+
+for secret in flyte.remote.Secret.listall(cluster_pool="prod"):
+    print(secret.name)
+```
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Listing secrets
 
