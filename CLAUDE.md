@@ -47,7 +47,11 @@ The repo separates **version-specific content/config** (top level) from **shared
 - `api-packages.toml` — API package registry
 - `content/`, `data/`, `linkmap/`, `include/` — Content and generated data
 
-**`unionai-docs-infra/`** — shared build infrastructure (identical across branches):
+**`unionai-docs-infra/`** — shared build infrastructure (identical across branches).
+**Policy (DOC-1329): content is versioned; chrome is promoted.** Cut tags snapshot content only;
+builds wrap every version tree (latest, stable, all pins) in the infra named by the *branch tip's*
+submodule pointer. Infra/theme changes ship via a pointer bump — never a cut; the pin inside a tag
+is provenance only. Details: `unionai-docs-infra/VERSIONING.md`.
 - `Makefile` — Real build logic (top-level Makefile forwards to this)
 - `hugo.toml`, `hugo.site.toml`, `hugo.ver.toml`, `config.{variant}.toml` — Hugo config
 - `static/` — Shared static assets (CSS, JS, images)
