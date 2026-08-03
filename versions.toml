@@ -6,8 +6,5 @@
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
 stable = "v1.16.26.2"
-enumerated = [
-  "v1.16.26.0",
-  "v1.16.26.1",
-]
+enumerated = []
 latest = false
