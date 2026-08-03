@@ -46,3 +46,11 @@ jobs:
             echo "::error::Deleted pages are missing redirects. Run 'make check-deleted-pages' for details, then add redirects to unionai-docs-infra/redirects.csv or exclude paths in unionai-docs-infra/.redirects-exclude."
             exit 1
           fi
+
+      - name: Run redirect unit tests
+        run: |
+          # Static redirect suite: CSV invariants + generator logic. Includes
+          # test_no_redirect_chains_within_csv, which gates the CSV against
+          # multi-hop chains (live HTTP tests stay behind --live and don't run).
+          cd unionai-docs-infra
+          uv run --with pytest pytest tests/test_redirects.py -q
