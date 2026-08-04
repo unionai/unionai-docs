@@ -704,6 +704,27 @@ The VPC should be configured with the following characteristics.
     - Ensure the security groups allow all traffic from within the VPC.
     - Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
 
+### Outbound access required by private subnets
+
+Private subnets need outbound access to the AWS services the data plane depends on, not
+only general internet access. These are the EC2 API, ECR, S3, CloudWatch Logs and the EKS
+API. A subnet with a valid `0.0.0.0/0` route can still be unable to reach them.
+
+{{< markdown >}}
+{{< callout type="warning" >}}
+**Interface endpoints take precedence over routing.**
+
+Private DNS applies across the whole VPC and has no fallback. Once an interface endpoint
+exists for a service with private DNS enabled, every instance in the VPC resolves that
+service to the endpoint's private addresses, regardless of route tables or NAT gateways.
+
+Each endpoint's security group must therefore allow TCP 443 from every private subnet
+CIDR, and the S3 gateway endpoint must be associated with every private subnet's route
+table. Where a security group lists CIDRs explicitly rather than allowing the whole VPC,
+keep that list in step with your subnets.
+{{< /callout >}}
+{{< /markdown >}}
+
 Once your VPC is set up, you will need to provide the {{< key product_name >}} team with the following information:
 
 - **VPC ID**
