@@ -14,13 +14,13 @@ Refer to [Azure documentation for more details](https://learn.microsoft.com/en-u
 
 ## Creating a container registry
 
-### Creating a container registry outside of {{< key product_name >}}
+### Creating a container registry outside of {{% key product_name %}}
 
 ACR instances that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
 
 Private ACR for {{< key product_name >}} images is only supported for ACRs within the same tenant as the {{< key product_name >}} data plane. Refer to [Azure documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) for creating Container Registries.
 
-### Creating a {{< key product_name >}}-managed container registry
+### Creating a {{% key product_name %}}-managed container registry
 
 Upon request, {{< key product_name >}} can create a container registry within your data plane.
 
@@ -44,7 +44,7 @@ Upon request, {{< key product_name >}} can:
 
 {{< key product_name >}} data plane resources will require permissions to pull images from your container registry.
 
-### Allow {{< key product_name >}} to manage permissions
+### Allow {{% key product_name %}} to manage permissions
 
 The simplest, most flexible approach is to provide {{< key product_name >}} the ability to add roles assignments against the container registry. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow {{< key product_name >}} to assign roles to the container registry. These permissions should be scoped to the target container registry. Follow these steps to set up the required access:
 

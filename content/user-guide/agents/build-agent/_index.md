@@ -19,7 +19,7 @@ Building an agent on {{< key product_name >}} breaks down into two **orthogonal*
 
 Any agent from axis (1) can be deployed via any pattern in axis (2). The two are independent, so you can start with a pure-Python loop run on demand and later move it behind a schedule or a webhook without rewriting the agent.
 
-## How {{< key product_name >}} maps to the agentic world
+## How {{% key product_name %}} maps to the agentic world
 
 - **`TaskEnvironment`**: The sandboxed execution environment for your agent steps. It configures the container image, hardware resources (CPU, GPU), and secrets (API keys). Think of it as defining "where this code runs."
 - **`@env.task`**: Turns any Python function into a remotely-executed step. Each task runs in its own container with the resources you specified. This is the equivalent of a node in LangGraph or n8n.
