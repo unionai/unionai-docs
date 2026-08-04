@@ -25,7 +25,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli) (used later to run a sample workflow).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Set your `KUBECONFIG` to the CKS cluster where you want to deploy the data plane:
 
