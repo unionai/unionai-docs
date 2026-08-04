@@ -68,7 +68,7 @@ $ gcloud iam workload-identity-pools providers create-aws unionai-aws \
     --account-id="479331373192"
 ```
 
-## Create a role for {{< key product_name >}} admin
+## Create a role for {{% key product_name %}} admin
 
 To ensure that the {{< key product_name >}} team has all the privileges needed to deploy the data plane, _but no more than strictly necessary_, you will need to create a custom role that the {{< key product_name >}} service account will assume.
 
@@ -87,7 +87,7 @@ $ gcloud iam roles create UnionaiAdministrator \
     --file=union-ai-admin-role.yaml
 ```
 
-## Create the {{< key product_name >}} admin service account
+## Create the {{% key product_name %}} admin service account
 
 ### In the GCP web console
 

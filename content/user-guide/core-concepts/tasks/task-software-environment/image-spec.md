@@ -59,7 +59,7 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
 
-## Install and configure `{{< key cli >}}` and Docker
+## Install and configure `{{% key cli %}}` and Docker
 
 To install Docker, see [Setting up container image handling](../../../getting-started/local-setup#install-docker-and-get-access-to-a-container-registry).
 To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Getting started](../../../getting-started/_index).
@@ -92,7 +92,7 @@ You will need to set up your local Docker client to authenticate with GHCR. This
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry).
 
-## Set up your project and domain on {{< key product_name >}}
+## Set up your project and domain on {{% key product_name %}}
 
 You will need to set up a project on your {{< key product_name >}} instance to which you can register your workflow.
 See [Setting up the project](../../../development-cycle/setting-up-a-project).
@@ -133,7 +133,7 @@ To see the registered workflow, go to the UI and navigate to the project and dom
 If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on {{< key product_name >}}.
 See [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#about-inheritance-of-access-permissions-and-visibility).
 
-## Run the workflow on {{< key product_name >}}
+## Run the workflow on {{% key product_name %}}
 
 Assuming your image is publicly accessible, you can now run the workflow on {{< key product_name >}} by clicking **Launch Workflow**.
 

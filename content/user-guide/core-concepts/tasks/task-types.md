@@ -225,7 +225,7 @@ See the [Integration section]() for examples.
 
 <!-- TODO: INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY
 
-## @{{< key kit_as >}}.task parameters
+## @{{% key kit_as %}}.task parameters
 
 `task_config`: This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use.
 It is impossible to define the unit of execution of a task in the same

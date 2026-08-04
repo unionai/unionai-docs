@@ -13,7 +13,7 @@ and a corresponding {{< key product_name >}} project to which you will deploy th
 {{< variant union >}}
 {{< markdown >}}
 
-## Create a new {{< key product_name >}} project
+## Create a new {{% key product_name %}} project
 
 Create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 

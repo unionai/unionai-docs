@@ -24,7 +24,7 @@ The {{< key product_name >}}-managed `userflyterole` identity must be granted pe
 > [!NOTE] {{< key product_name >}} managed user-assigned identities
 > Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user-assigned identity within the {{< key product_name >}} data plane resource group.
 
-## Accessing the secret within {{< key product_name >}}
+## Accessing the secret within {{% key product_name %}}
 
 * Define a `Secret` object where
   * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`

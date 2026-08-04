@@ -60,7 +60,7 @@ When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command
 {{< variant union >}}
 {{< markdown >}}
 
-## {{< key product_name >}} cloud image builder {#cloud-image-builder}
+## {{% key product_name %}} cloud image builder {#cloud-image-builder}
 
 If you have specified `builder="union"` in the `ImageSpec`, {{< key product_name >}} will build the image using its `ImageBuilder` service in the cloud
 and registered the image in {{< key product_name >}}'s own container registry. From there it will be pulled and installed in the task container when it spins up.
@@ -111,7 +111,7 @@ You will need to set up your local Docker client to authenticate to GHCR in orde
 
 Follow the directions in [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry).
 
-### Make your image accessible to {{< key product_name >}}
+### Make your image accessible to {{% key product_name %}}
 
 In addition to making sure your registry is accessible from your local machine, you will need to ensure that the specific image, once pushed to the registry, is itself publicly accessible.
 

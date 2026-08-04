@@ -69,7 +69,7 @@ Running Execution on local.
 Hello, everybody!
 ```
 
-## Running remotely on {{< key product_name >}} in the cloud
+## Running remotely on {{% key product_name %}} in the cloud
 
 Running you code in your local Python environment is useful for testing and debugging.
 
@@ -156,7 +156,7 @@ Serializing and registering 3 flyte entities
 Successfully registered 3 entities
 ```
 
-## Run the workflow from the {{< key product_name >}} interface
+## Run the workflow from the {{% key product_name %}} interface
 
 To run the workflow, you need to go to the {{< key product_name >}} interface:
 
@@ -169,7 +169,7 @@ To run the workflow, you need to go to the {{< key product_name >}} interface:
 
 To view the workflow execution graph, click the **Graph** tab above the running workflow.
 
-## View the workflow execution on {{< key product_name >}}
+## View the workflow execution on {{% key product_name %}}
 
 When you view the workflow execution graph, you will see the following:
 

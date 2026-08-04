@@ -25,7 +25,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 {{< variant union >}}
 {{< markdown >}}
 
-# {{< key product_name >}}
+# {{% key product_name %}}
 
 {{< key product_name >}} empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
 

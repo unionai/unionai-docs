@@ -53,7 +53,7 @@ A production domain ensures a “clean slate” so that cached development
 executions do not result in unexpected behavior.  Additionally, secrets may be
 configured for external production data sources.
 
-## When to use different {{< key product_name >}} projects?
+## When to use different {{% key product_name %}} projects?
 
 Projects help group independent workflows related to specific teams, business
 areas, or applications.  Generally speaking, each independent team or ML product

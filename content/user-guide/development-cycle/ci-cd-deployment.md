@@ -11,7 +11,7 @@ In many cases, you will want to automate this process through a CI/CD system.
 In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on {{< key product_name >}}.
 We will use GitHub Actions as the example CI/CD system.
 
-## Create a {{< key product_name >}} API key
+## Create a {{% key product_name %}} API key
 
 An API key is registered in your {{< key product_name >}} control plane to enable external systems to perform actions on your behalf.
 To allow your CI/CD system to authenticate with {{< key product_name >}}, create a {{< key product_name >}} API key.

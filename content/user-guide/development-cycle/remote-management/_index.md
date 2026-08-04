@@ -4,7 +4,7 @@ weight: 19
 variants: +flyte +union
 ---
 
-# {{< key kit_remote >}}
+# {{% key kit_remote %}}
 
 The `{{< key kit_remote >}}` Python API supports functionality similar to that of the {{< key cli_name >}} CLI, enabling you to manage {{< key product_name >}} workflows, tasks, launch plans and artifacts from within your Python code.
 
@@ -13,7 +13,7 @@ The `{{< key kit_remote >}}` Python API supports functionality similar to that o
 >
 > In other words: _Do not use `{{< key kit_remote >}}` within task code._
 
-## Creating a `{{< key kit_remote >}}` object
+## Creating a `{{% key kit_remote %}}` object
 
 Ensure that you have the {{<key kit_name >}} SDK installed, import the `{{< key kit_remote >}}` class and create the object like this:
 

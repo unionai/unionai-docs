@@ -21,7 +21,7 @@ az acr login --name <acrName>
 
 Refer to [Individual login with Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#individual-login-with-microsoft-entra-id) in the Azure documentation for additional details.
 
-## Register your workflow to {{< key product_name >}}
+## Register your workflow to {{% key product_name %}}
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
