@@ -238,7 +238,7 @@ at your IdP, not in Flyte, so signing out takes two steps. The console serves bo
 from `/v2/logout`:
 
 1. Expire the proxy's session cookies, so the browser stops presenting a valid session.
-2. Redirect to your IdP's logout endpoint, so the IdP session ends too.
+2. Redirect to a logout endpoint (typically your IdP's; for some proxies, the proxy's sign-out endpoint), so the IdP session ends too.
 
 Step 2 is the one you configure. Without it, only the proxy session is cleared: the
 next request bounces to the IdP, which still has a live session, signs the user back in
@@ -249,9 +249,9 @@ Both settings are environment variables on the console container:
 ```yaml
 console:
   env:
-    # Your IdP's logout endpoint. Without this, sign out clears the proxy
-    # session only and the IdP silently signs the user back in.
-    - name: OIDC_LOGOUT_URL
+    # Logout endpoint to redirect to after clearing cookies. Typically your IdP's logout
+    # endpoint; for some proxies, use the proxy sign-out endpoint (see below).
+    # Without this, sign out clears the proxy session only and the IdP silently signs the user back in.
       value: https://<your-idp>/oauth2/<id>/v1/logout?client_id=<client-id>&post_logout_redirect_uri=https%3A%2F%2F<your-host>%2Fv2%2Fprojects
     # Session cookies to expire. Defaults to ALB's; see below.
     # - name: LOGOUT_CLEAR_COOKIES
