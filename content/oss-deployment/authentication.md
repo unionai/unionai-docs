@@ -249,9 +249,10 @@ Both settings are environment variables on the console container:
 ```yaml
 console:
   env:
-    # Logout endpoint to redirect to after clearing cookies. Typically your IdP's logout
-    # endpoint; for some proxies, use the proxy sign-out endpoint (see below).
-    # Without this, sign out clears the proxy session only and the IdP silently signs the user back in.
+    # Logout endpoint to redirect to after clearing cookies. Typically your IdP's,
+    # but on some proxies their own sign-out endpoint (see below). Without this,
+    # sign out clears the proxy session only and the IdP signs the user back in.
+    - name: OIDC_LOGOUT_URL
       value: https://<your-idp>/oauth2/<id>/v1/logout?client_id=<client-id>&post_logout_redirect_uri=https%3A%2F%2F<your-host>%2Fv2%2Fprojects
     # Session cookies to expire. Defaults to ALB's; see below.
     # - name: LOGOUT_CLEAR_COOKIES
