@@ -38,7 +38,15 @@ repository README for the current list and per-harness setup notes.
 
 ## Installation
 
-In Claude Code, add the marketplace and install the `flyte` plugin:
+Installation loads Flyte agent skills into your harness. In **Claude Code**, installing
+the `flyte` plugin wires up both bundled MCP servers (`flyte-docs` and `flyte-cluster`)
+automatically. Other harnesses install the skills (sometimes per-skill) and require
+manual MCP server configuration. Select your harness below.
+
+{{< tabs "install" >}}
+{{< tab "Claude Code" >}}
+{{< markdown >}}
+Add the marketplace and install the `flyte` plugin:
 
 ```bash
 /plugin marketplace add flyteorg/flyte-agent-plugins
@@ -49,13 +57,121 @@ To pin a version, add the marketplace from a git reference:
 
 ```bash
 /plugin marketplace add https://github.com/flyteorg/flyte-agent-plugins.git#<tag-or-branch>
+/plugin install flyte@flyte-agent-plugins
 ```
 
-Installing the plugin makes all of the skills available and, in Claude Code,
-wires up both bundled MCP servers automatically. In other harnesses (Codex,
-Hermes, OpenCode, Pi, …), point the harness at the same repository to load the
-skills, then configure the MCP servers manually — see the repository README for
-per-harness instructions.
+To switch versions later, remove and re-add the marketplace with a different
+reference. Both MCP servers are configured automatically from the plugin's
+`.mcp.json`, so no further setup is required.
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "Codex" >}}
+{{< markdown >}}
+Add the marketplace, then browse and install with `/plugins` inside Codex:
+
+```bash
+codex plugin marketplace add flyteorg/flyte-agent-plugins
+```
+
+Add `--ref <tag-or-branch>` to pin a specific version.
+
+Codex does not bundle the MCP servers. To add the hosted `flyte-docs` server,
+edit `~/.codex/config.toml`:
+
+```toml
+# ~/.codex/config.toml
+[mcp_servers.flyte-docs]
+url = "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
+```
+
+For `flyte-cluster`, point Codex at the local launcher script using an absolute
+path (Codex does not expand environment variables such as
+`${CLAUDE_PLUGIN_ROOT}`).
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "Hermes" >}}
+{{< markdown >}}
+Install individual skills by their repository path:
+
+```bash
+hermes skills install flyteorg/flyte-agent-plugins/plugins/flyte/skills/<skill-name>
+```
+
+For example:
+
+```bash
+hermes skills install flyteorg/flyte-agent-plugins/plugins/flyte/skills/flyte-deploy-aws
+```
+
+Hermes installs from the default branch only (no version pinning). Refresh
+installed skills with `hermes skills check` or `hermes skills update`.
+
+To add the hosted `flyte-docs` server, edit `~/.hermes/config.yaml`:
+
+```yaml
+mcp_servers:
+  flyte-docs:
+    url: "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
+```
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "OpenCode" >}}
+{{< markdown >}}
+The simplest approach uses the `skills` CLI, which reads the marketplace manifest:
+
+```bash
+npx skills add flyteorg/flyte-agent-plugins
+npx skills add flyteorg/flyte-agent-plugins@<ref>
+```
+
+Alternatively, copy skill folders directly into the skills directory:
+
+```bash
+cp -r plugins/flyte/skills/flyte-deploy-aws ~/.config/opencode/skills/
+```
+
+OpenCode discovers `SKILL.md` folders in `.opencode/skills/` (project) and
+`~/.config/opencode/skills/` (global).
+
+To add the hosted `flyte-docs` server, edit `opencode.json`:
+
+```json
+{ "mcp": { "flyte-docs": { "type": "remote",
+  "url": "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp",
+  "enabled": true } } }
+```
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "Pi" >}}
+{{< markdown >}}
+Install from the default branch or pin a specific tag/commit:
+
+```bash
+pi install https://github.com/flyteorg/flyte-agent-plugins
+pi install git:github.com/flyteorg/flyte-agent-plugins@<tag>
+```
+
+Alternatively, clone the repository into `~/.pi/agent/skills/` — Pi discovers
+nested `SKILL.md` folders recursively.
+
+Pi uses the same `mcpServers` configuration format as the other harnesses,
+defined in `~/.pi/agent/mcp.json`.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+For harnesses other than Claude Code, wire up both MCP servers manually:
+
+- `flyte-docs` (remote HTTP): `https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp`
+- `flyte-cluster` (local stdio): configure a local MCP server that runs the launcher script with an absolute path, for example:
+
+    uv run --quiet --no-project /abs/path/to/plugins/flyte/scripts/flyte_mcp_stdio.py
+
+See the upstream `flyte-agent-plugins` README (“Adding the MCP servers elsewhere”) for harness-specific configuration keys.
 
 ## Skills
 
