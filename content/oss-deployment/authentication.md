@@ -268,12 +268,6 @@ The `post_logout_redirect_uri` must be registered on the IdP application as a
 redirect URI). If it isn't registered, the IdP rejects the logout request, typically
 with a bare `400 Bad Request` and no explanation.
 
-> **Okta note.** Okta also has an org-level `https://<domain>/login/signout`, which
-> needs no registration and does end the session. The tradeoff: it has nowhere to
-> return to, so it lands the user on Okta's sign-in page. Signing in there
-> re-establishes the session, which looks like sign out failed. Prefer the
-> `/oauth2/<id>/v1/logout` endpoint above once the redirect URI is registered.
-
 ### Cookies to expire
 
 The default targets AWS ALB, which is the proxy that needs this most: it has **no
