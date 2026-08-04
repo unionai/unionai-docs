@@ -231,6 +231,79 @@ back into the console.
 The ALB callback path is fixed at `/oauth2/idpresponse`, and auth applies only to the
 annotated ingress's HTTPS listener rules.
 
+## Sign out
+
+The console's user menu has a **Sign out** action. The session lives at the proxy and
+at your IdP, not in Flyte, so signing out takes two steps. The console serves both
+from `/v2/logout`:
+
+1. Expire the proxy's session cookies, so the browser stops presenting a valid session.
+2. Redirect to your IdP's logout endpoint, so the IdP session ends too.
+
+Step 2 is the one you configure. Without it, only the proxy session is cleared: the
+next request bounces to the IdP, which still has a live session, signs the user back in
+silently, and sign out appears not to have worked.
+
+Both settings are environment variables on the console container:
+
+```yaml
+console:
+  env:
+    # Your IdP's logout endpoint. Without this, sign out clears the proxy
+    # session only and the IdP silently signs the user back in.
+    - name: OIDC_LOGOUT_URL
+      value: https://<your-idp>/oauth2/<id>/v1/logout?client_id=<client-id>&post_logout_redirect_uri=https%3A%2F%2F<your-host>%2Fv2%2Fprojects
+    # Session cookies to expire. Defaults to ALB's; see below.
+    # - name: LOGOUT_CLEAR_COOKIES
+    #   value: ""
+```
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `OIDC_LOGOUT_URL` | *(unset)* | Where to send the browser after clearing cookies. Unset means sign out only clears cookies and returns to the console. |
+| `LOGOUT_CLEAR_COOKIES` | `AWSELBAuthSessionCookie-0,…-1,…-2,…-3` | Comma-separated session cookies to expire. Set to `""` to expire none. |
+
+The `post_logout_redirect_uri` must be registered on the IdP application as a
+**sign-out redirect URI** (Okta calls it that; the OIDC spec calls it a post-logout
+redirect URI). If it isn't registered, the IdP rejects the logout request, typically
+with a bare `400 Bad Request` and no explanation.
+
+> **Okta note.** Okta also has an org-level `https://<domain>/login/signout`, which
+> needs no registration and does end the session. The tradeoff: it has nowhere to
+> return to, so it lands the user on Okta's sign-in page. Signing in there
+> re-establishes the session, which looks like sign out failed. Prefer the
+> `/oauth2/<id>/v1/logout` endpoint above once the redirect URI is registered.
+
+### Cookies to expire
+
+The default targets AWS ALB, which is the proxy that needs this most: it has **no
+logout endpoint of its own**, so the application has to expire its cookies. ALB splits
+its session cookie at 4 KB and supports 16 KB total, so `-0` through `-3` covers every
+shard it can produce. Override the list if the listener rule sets a custom
+`SessionCookieName`.
+
+Expiring a cookie that was never set is a no-op, so the default is harmless on other
+platforms. But most other proxies expose a sign-out endpoint that clears their own
+cookie. Point `OIDC_LOGOUT_URL` at it and expire nothing yourself:
+
+| Proxy | `OIDC_LOGOUT_URL` | `LOGOUT_CLEAR_COOKIES` |
+|---|---|---|
+| AWS ALB | IdP logout endpoint | *(default)* |
+| oauth2-proxy | `https://<host>/oauth2/sign_out?rd=<idp-logout>` | `""` |
+| GCP IAP | `https://<host>/_gcp_iap/clear_login_cookie` | `""` |
+| Cloudflare Access | `https://<host>/cdn-cgi/access/logout` | `""` |
+
+Pointing straight at the IdP's logout endpoint on these platforms leaves the proxy's
+own cookie alive, and the user stays signed in.
+
+### Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| Signed out, but a new tab is still signed in | The IdP session is still live. Set `OIDC_LOGOUT_URL`, and check you didn't sign in again on the IdP's page after being signed out. |
+| The proxy's session cookie is still in the browser afterwards | The cookie names don't match what your proxy sets. Check `LOGOUT_CLEAR_COOKIES` against the cookies in your browser's dev tools (ALB's are `HttpOnly`, so they appear under Application → Cookies, not in `document.cookie`). |
+| The IdP returns `400 Bad Request` on logout | The post-logout redirect URI isn't registered on the IdP application. |
+
 ## Run attribution (`executed_by`)
 
 Once authentication happens at the edge, Flyte records **who created each run**
