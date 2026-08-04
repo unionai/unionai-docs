@@ -56,6 +56,8 @@ The UI itself is two Jinja2 templates with no client-side framework: `templates/
 
 On completion, if the agent's own convergence check flagged the result as unsatisfactory, a plain-language explanation of what went wrong and what to try next.
 
+![](../../../_static/images/tutorials/auto_train/training_analysis.png)
+
 
 
 ## Three Agents, One Pipeline
@@ -188,9 +190,9 @@ After a run completes:
 
   ![](../../../_static/images/tutorials/auto_train/preformance_tab.png)
 
-  And full logs are available for every stage:
+  And the Task tab shows every sub-run nested inside `run_research` - each traced step (CLI setup, git clone, the baseline implementation, each change proposal, each training run, crash fixes, commits, PR creation, the final convergence check) as its own sub-run with inputs, outputs, timing, and logs:
 
-  <!-- placeholder image: full logs -->
+  ![](../../../_static/images/tutorials/auto_train/training_steps.png)
 
 - **GitHub**: an experiment branch with the full history of `train.py` revisions (one commit per improvement) and a PR summarizing the best result, ready to review or merge.
 - **The status page**: the best metric value, a link to the PR, and - if the agent's own convergence check flagged the result as unsatisfactory - a plain-language explanation of what went wrong and what to try next.
