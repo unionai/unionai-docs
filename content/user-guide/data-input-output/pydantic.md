@@ -105,7 +105,7 @@ def add(x: Datum, y: Datum) -> Datum:
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
 ```
 
-## {{< key product_name >}} types
+## {{% key product_name %}} types
 
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and
 `FlyteDirectory`.

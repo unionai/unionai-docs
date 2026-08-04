@@ -4,7 +4,7 @@ weight: 4
 variants: +flyte -union
 ---
 
-# {{< key ctl_name >}} CLI
+# {{% key ctl_name %}} CLI
 
 The `{{< key ctl >}}` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration.
 

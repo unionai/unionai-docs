@@ -114,7 +114,7 @@ The directions are also reproduced below. (We show the directions for the `us-ea
 > $ gcloud auth configure-docker us-east1-docker.pkg.dev
 > ```
 
-## Register your workflow to {{< key product_name >}}
+## Register your workflow to {{% key product_name %}}
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 

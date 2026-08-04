@@ -14,7 +14,7 @@ When building tasks and workflows in a notebook, you write the code in cells as 
 
 From those cells you can run the code locally (i.e., in the notebook itself, not on {{< key product_name >}}) by clikcing the run button, as you would in any notebook.
 
-## Enable the notebook to register workflows to {{< key product_name >}}
+## Enable the notebook to register workflows to {{% key product_name %}}
 
 To enable the tasks and workflows in your notebok to be easily registered and run on your {{< key product_name >}} instance, you needdto set up an _interactive_ {{<key kit_remote >}} object and then use to invoke the remote executions:
 

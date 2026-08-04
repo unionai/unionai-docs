@@ -4,7 +4,7 @@ weight: 1
 variants: +flyte +union
 ---
 
-# {{< key kit_remote >}} examples
+# {{% key kit_remote %}} examples
 
 ## Registering and running a workflow
 
@@ -235,7 +235,7 @@ latest_success = remote.recent_executions(
 )
 ```
 
-## Launch task via {{< key kit_remote >}} with a new version
+## Launch task via {{% key kit_remote %}} with a new version
 
 ```python
 import {{< key kit_import >}}
@@ -274,7 +274,7 @@ input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
 ```
 
-## Launch workflow via {{< key kit_remote >}}
+## Launch workflow via {{% key kit_remote %}}
 
 Workflows can be executed with `{{< key kit_remote >}}` because under the hood it fetches and triggers a default launch plan.
 
@@ -303,7 +303,7 @@ execution = remote.execute(
 )
 ```
 
-## Launch launchplan via {{< key kit_remote >}}
+## Launch launchplan via {{% key kit_remote %}}
 
 A launch plan can be launched via {{< key kit_remote >}} programmatically.
 

@@ -1,0 +1,53 @@
+name: Check Build Determinism
+
+# Reproducibility gate (DOC-1357). Two things run here:
+#
+#   1. A content lint: no heading may call a shortcode with `{{< ... >}}`, since
+#      Hugo resolves that form AFTER goldmark has computed the heading id, so the
+#      id ends up built out of Hugo's internal placeholder. Use `{{% ... %}}` (or
+#      an explicit `{#my-id}`) instead.
+#   2. The general check: build each variant twice and require the two trees to
+#      be byte-identical, modulo the `?v=<timestamp>` asset cache-buster.
+#
+# Nothing else in CI asserted reproducibility, which is why a build-varying
+# heading anchor survived for as long as it did -- and why diffing built output
+# to verify an infra change was unreliable.
+
+on:
+  pull_request:
+  push:
+    branches: [v1]
+
+jobs:
+  check-determinism:
+    name: "Check Build Determinism"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.161.1'
+          extended: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check heading shortcode form
+        run: python unionai-docs-infra/tools/check_heading_shortcodes.py content
+
+      - name: Check build determinism
+        run: unionai-docs-infra/scripts/check-determinism.sh
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::The build is not reproducible. Run 'unionai-docs-infra/scripts/check-determinism.sh' locally for details."

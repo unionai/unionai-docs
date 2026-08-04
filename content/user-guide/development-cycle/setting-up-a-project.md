@@ -37,7 +37,7 @@ To avoid confusion, in this guide we will stick to the following naming conventi
 * **{{< key product_name >}} project**: The entity in your {{< key product_name >}} instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
 * **Local project**: The local directory (usually the working directory of a GitHub repository) in which you are developing workflows.
 
-## Create a {{< key product_name >}} project
+## Create a {{% key product_name %}} project
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -74,7 +74,7 @@ The next step is to set up a local workflow directory.
 {{< /markdown >}}
 {{< /variant >}}
 
-## Creating a local production project directory using `{{< key cli >}} init`
+## Creating a local production project directory using `{{% key cli %}} init`
 
 Earlier, in the [Getting started](../getting-started/_index) section we used `{{< key cli >}} init`
 to create a new local project based on the `{{< key product>}}-simple`.

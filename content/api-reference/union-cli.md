@@ -4,7 +4,7 @@ weight: 3
 variants: -flyte +union
 ---
 
-# {{< key cli_name >}} CLI
+# {{% key cli_name %}} CLI
 
 The `{{< key cli >}}` CLI is the main tool developers use to interact with {{< key product_name >}} on the command line.
 
@@ -19,7 +19,7 @@ $ uv tool install {{< key kit >}}
 This will install the `{{< key cli >}}` CLI globally on your system [as a `uv` tool](https://docs.astral.sh/uv/concepts/tools/).
 
 
-## Configure the `{{< key cli >}}` CLI
+## Configure the `{{% key cli %}}` CLI
 
 {{< variant union >}}
 {{< markdown >}}
@@ -55,7 +55,7 @@ Alternatively, you can always specify the configuration file on the command line
 $ {{< key cli >}} --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-## `{{< key cli >}}` CLI configuration search path
+## `{{% key cli %}}` CLI configuration search path
 
 The `{{< key cli >}}` CLI will check for configuration files as follows:
 
@@ -102,7 +102,7 @@ Third, the hard-coded location `~/.flyte/config.yaml`.
 
 If none of these are present, the CLI will raise an error.
 
-## `{{< key cli >}}` CLI commands
+## `{{% key cli %}}` CLI commands
 
 Entrypoint for all the user commands.
 

@@ -98,7 +98,7 @@ def decorating_task_wf(x: int) -> int:
     return t2(x=t1(x=x))
 ```
 
-## Run the example on {{< key product_name >}}
+## Run the example on {{% key product_name %}}
 
 To run the workflow, execute the following command:
 

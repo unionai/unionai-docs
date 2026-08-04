@@ -18,7 +18,7 @@ Depending on your needs, there are two different of ways to define and register 
 * Configuration in the `@{{< key kit_as >}}.task` decorator
 * Defining a `PodTemplate`
 
-### Using the `@{{< key kit_as >}}.task` decorator
+### Using the `@{{% key kit_as %}}.task` decorator
 
 You can specify `requests` and `limits` on:
 
@@ -54,7 +54,7 @@ This requires that you coordinate with {{< key product_name >}} to set up the re
 
 In your task definition you then use a `PodTemplate` that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 
-### `pod_template` and `pod_template_name` @{{< key kit_as >}}.task parameters
+### `pod_template` and `pod_template_name` @{{% key kit_as %}}.task parameters
 
 The `pod_template` parameter can be used to supply a custom Kubernetes `PodTemplate` to the task.
 This can be used to define details about node selectors, affinity, tolerations, and other Kubernetes-specific settings.

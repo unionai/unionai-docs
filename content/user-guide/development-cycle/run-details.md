@@ -40,7 +40,7 @@ $ {{< key cli >}} run example.py wf --last-name 'Einstein'
 
 This passes the value `Einstein` for that parameter.
 
-## Why `{{< key cli >}} run` rather than `python`?
+## Why `{{% key cli %}} run` rather than `python`?
 
 You could add a `main` guard at the end of the script like this:
 

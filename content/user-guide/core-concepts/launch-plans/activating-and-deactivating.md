@@ -91,7 +91,7 @@ See [Uctl CLI](../../../api-reference/uctl-cli) for more details.
 {{< /markdown >}}
 {{< /variant >}}
 
-## Activating and deactivating a launch plan in Python with `{{< key kit_remote >}}`
+## Activating and deactivating a launch plan in Python with `{{% key kit_remote %}}`
 
 To activate a launch plan using version `{{< key kit_remote >}}`:
 

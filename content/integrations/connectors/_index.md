@@ -98,7 +98,7 @@ For testing examples, see the [BigQuery connector](./bigquery-connector#local-te
 {{< variant union >}}
 {{< markdown >}}
 
-## Enabling a connector in your {{< key product_name >}} deployment
+## Enabling a connector in your {{% key product_name %}} deployment
 
 To enable a connector in your {{< key product_name >}} deployment, contact the {{< key product_name >}} team.
 

@@ -22,7 +22,7 @@ After your administrator has onboarded you to {{< key product_name >}} (see [Dep
 - Your {{< key product_name >}} credentials.
 - The URL of your {{< key product_name >}} instance. We will refer to this as `<union-host-url>` below.
 
-## Log into {{< key product_name >}}
+## Log into {{% key product_name %}}
 
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the {{< key product_name >}} UI.
