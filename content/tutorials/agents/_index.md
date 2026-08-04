@@ -55,6 +55,10 @@ Enrich geo-tagged operational events with real-world public context using the Yo
 An autonomous ML agent that designs, runs, and iterates on experiments using Flyte's durable sandbox for safe LLM-generated code execution.
 {{< /link-card >}}
 
+{{< link-card target="auto_train" title="AutoTrain: multi-agent AutoML pipeline" >}}
+Submit a dataset through a web form and let a data agent, design agent, and research agent chain together to profile, plan, and iteratively train a model with the Claude Agent SDK, opening a GitHub PR with the results.
+{{< /link-card >}}
+
 {{< link-card target="support-resolution-agent" title="Support resolution agent" >}}
 Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 {{< /link-card >}}
