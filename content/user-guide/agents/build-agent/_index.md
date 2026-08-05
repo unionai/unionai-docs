@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Build an agent
 
-{{< llm-bundle-note >}}
-
 This section covers how to build, deploy, and run agentic AI applications on {{< key product_name >}}.
 
 Building an agent on {{< key product_name >}} breaks down into two **orthogonal** choices:

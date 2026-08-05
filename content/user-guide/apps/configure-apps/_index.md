@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Configure apps
 
-{{< llm-bundle-note >}}
-
 `[[AppEnvironment]]`s allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
 
 Similar to `[[TaskEnvironment]]`, configuration can be set when creating the `[[AppEnvironment]]` object. Unlike tasks, apps are long-running services, so they have additional configuration options specific to web services:

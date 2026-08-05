@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Single sign on setup
 
-{{< llm-bundle-note >}}
-
 {{< key product_name >}} authentication uses OAuth2 with Okta and supports SAML and OIDC-compliant identity providers (IdP) to configure single sign on (SSO).
 
 To enable SSO, create an app for your preferred identity provider and provide the associated secrets to the {{< key product_name >}} team.

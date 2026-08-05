@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Contributing docs and examples
 
-{{< llm-bundle-note >}}
-
 We welcome contributions to the docs and examples for both Flyte and Union.
 This section explains how the docs site works and walks you through setting it up, authoring content, and submitting your changes.
 

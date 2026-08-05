@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Scale your runs
 
-{{< llm-bundle-note >}}
-
 This guide helps you understand and optimize the performance of your Flyte workflows. Whether you're building latency-sensitive applications or high-throughput data pipelines, these docs will help you make the right architectural choices.
 
 ## Understanding Flyte execution

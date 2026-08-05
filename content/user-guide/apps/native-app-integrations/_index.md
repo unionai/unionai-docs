@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Native app integrations
 
-{{< llm-bundle-note >}}
-
 Flyte ships with a set of pre-built [`AppEnvironment`](../build-apps/_index) integrations that wrap popular frameworks and serving runtimes, so you can deploy common app types without writing the integration glue yourself. Each integration provides a ready-to-use environment class: just configure your app, image, resources, and scaling, and Flyte handles the rest.
 
 > [!TIP]

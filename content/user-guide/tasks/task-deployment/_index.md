@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Run and deploy tasks
 
-{{< llm-bundle-note >}}
-
 You have seen how to configure and build the tasks that compose your project.
 Now you need to decide how to execute them on your Flyte backend.
 

@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Serve and deploy apps
 
-{{< llm-bundle-note >}}
-
 Flyte provides two main ways to deploy apps: **serve** (for development) and **deploy** (for production). This section covers both methods and their differences.
 
 ## Serve vs deploy
