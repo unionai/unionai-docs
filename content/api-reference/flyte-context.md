@@ -16,12 +16,9 @@ and similar tools.
 These files also follow the [`llms.txt` convention](https://llmstxt.org/),
 making them discoverable by AI search engines.
 
-Every page on the site also has an **LLM-optimized** section in the right-hand sidebar
-that points to:
-* This "LLM-optimized documentation" page (for explanation).
-* An LLM-optimized version of that page.
-* An LLM-optimized single file containing the whole section (only on top pages of key sections).
-* The full site index for LLMs.
+These files are not linked from the pages they cover. They are addressed by convention:
+append `/page.md` to any page URL, or `/section.md` to a section URL. Start from the
+`llms.txt` index below, which lists every page and every available bundle.
 
 All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
 so files work correctly when copied locally and used outside the docs site.
@@ -29,18 +26,18 @@ so files work correctly when copied locally and used outside the docs site.
 ## Per-page markdown (`page.md`)
 
 Every page on this site has a parallel LLM-optimized version in clean Markdown,
-accessible at the same URL path with `/page.md` appended and via the "**This page**" link in the "**LLM-optimized**" section of the right sidebar.
+accessible at the same URL path with `/page.md` appended.
 For example, this page is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v2 >}}/api-reference/flyte-context/`](.)
+* `{{< docs_home union v2 >}}/api-reference/flyte-context/`
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context/`](.)
+* `{{< docs_home flyte v2 >}}/api-reference/flyte-context/`
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -66,7 +63,7 @@ making it easy to identify the right page to fetch.
 For key documentation sections, a curated bundle file concatenates all pages in the section
 into a single `section.md` file.
 
-These are accessible at the same URL path as the top page of the section, with `/section.md` appended and via the "**This section in one file**" link in the "**LLM-optimized**" section of the right sidebar.
+These are accessible at the same URL path as the top page of the section, with `/section.md` appended.
 
 These `section.md` files are sized to fit within modern LLM context windows
 and are ideal for pasting into a prompt or adding to project context.
@@ -90,13 +87,13 @@ rather than having the information always available.
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (~32K tokens)
+* [`llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (~50K tokens)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (~32K tokens)
+* [`llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (~50K tokens)
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -112,13 +109,13 @@ but it may be useful for RAG-based tools.
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt) (~1.4M tokens)
+* [`llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt) (~2M tokens)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt) (~1.4M tokens)
+* [`llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt) (~2M tokens)
 {{< /markdown >}}
 {{< /variant >}}
 

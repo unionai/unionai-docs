@@ -71,7 +71,7 @@ weight: 3
 | `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly. By default, sections collapse and only the active path expands automatically. |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
-| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
+| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional content
 

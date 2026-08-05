@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Advanced project: LLM reporting agent
 
-{{< llm-bundle-note >}}
-
 This example demonstrates a resilient agentic report generator that showcases
 Flyte 2.0's advanced features for building production-grade AI workflows.
 

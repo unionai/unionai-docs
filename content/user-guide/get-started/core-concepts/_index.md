@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Core concepts
 
-{{< llm-bundle-note >}}
-
 Now that you've completed the [Quickstart](../quickstart), let's explore Flyte's core concepts through working examples.
 
 By the end of this section, you'll understand:

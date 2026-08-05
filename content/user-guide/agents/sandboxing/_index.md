@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Sandboxing
 
-{{< llm-bundle-note >}}
-
 A **sandbox** is an isolated, secure environment where code can run without affecting the host system.
 Sandboxes restrict what the executing code can do (limiting filesystem access, blocking network calls, and preventing arbitrary system operations) so that even malicious or buggy code cannot cause harm.
 
