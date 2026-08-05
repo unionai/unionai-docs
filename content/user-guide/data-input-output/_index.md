@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Data input/output
 
-{{< llm-bundle-note >}}
-
 <!-- TODO: Double check this seciton for variant acccuracy -->
 {{< variant flyte >}}
 {{< markdown >}}

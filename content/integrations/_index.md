@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Integrations
 
-{{< llm-bundle-note >}}
-
 {{< variant flyte >}}
 {{< markdown >}}
 

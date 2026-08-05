@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Tasks
 
-{{< llm-bundle-note >}}
-
 Tasks are the fundamental units of compute in {{< key product_name >}}.
 They are independently executable, strongly typed, and containerized building blocks that make up workflows.
 Workflows are constructed by chaining together tasks, with the output of one task feeding into the input of the next to form a directed acyclic graph.

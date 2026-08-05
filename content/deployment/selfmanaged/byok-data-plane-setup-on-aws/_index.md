@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Data plane setup on AWS
 
-{{< llm-bundle-note >}}
-
 To set up your {{< key product_name >}} data plane on Amazon Web Services (AWS), you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
 
 There are two approaches to setting up your data plane:
