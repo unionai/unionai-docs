@@ -7,6 +7,4 @@ llm_readable_bundle: true
 
 # Flyte deployment
 
-{{< llm-bundle-note >}}
-
 This section covers Flyte deployment.

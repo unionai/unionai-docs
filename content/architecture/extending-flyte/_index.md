@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Extending Flyte
 
-{{< llm-bundle-note >}}
-
 The core of Flyte is a container execution engine, where you can write one or more tasks and compose them together to form a data dependency DAG, called a `workflow`.
 If your work involves writing simple tasks that can either perform operations on their own or call out to external services, then there is _no need to extend Flyte_.
 

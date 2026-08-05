@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Tutorials
 
-{{< llm-bundle-note >}}
-
 This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 

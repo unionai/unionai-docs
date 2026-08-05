@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Enabling AWS resources
 
-{{< llm-bundle-note >}}
-
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management

@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Artifacts
 
-{{< llm-bundle-note >}}
-
 {{< key product_name >}} produces many intermediate outputs when running tasks and workflows. These outputs are stored internally in {{< key product_name >}} and are accessible through the relevant executions, but are not usually directly accessible to users.
 
 The Artifact service indexes and adds semantic meaning to outputs of all {{< key product_name >}} task and workflow executions, such as models, files, or any other kinds of data, enabling you to directly access, track, and orchestrate pipelines through the outputs themselves. Artifacts allow you to store additional metadata for these outputs in the form of [partitions](#partitions), which are key-value pairs that describe the artifact and which can be used to query the Artifact Service to locate artifacts. Artifacts allow for loose coupling of workflows—for example, a downstream workflow can be configured to consume the latest result of an upstream workflow. With this higher-order abstraction, {{< key product_name >}} aims to ease collaboration across teams, provide for reactivity and automation, and give you a broader view of how artifacts move across executions.
