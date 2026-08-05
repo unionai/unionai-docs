@@ -107,7 +107,7 @@ ray_config = RayJobConfig(
 
 ## Reusable Ray clusters
 
-By default every Ray task pays the full cluster cold-start cost: a new Ray cluster is provisioned for the task and torn down when it finishes. If your workload runs many Ray jobs with the same cluster configuration, you can instead share one long-lived Ray cluster across tasks by attaching a [`ReusePolicy`](../../user-guide/tasks/task-configuration/reusable-containers) to the Ray `TaskEnvironment`:
+By default, every Ray task pays the full cluster cold-start cost: a new Ray cluster is provisioned for the task and torn down when it finishes. If your workload runs many Ray jobs with the same cluster configuration, you can instead share one long-lived Ray cluster across tasks by attaching a `flyte.ReusePolicy` (see [Reusable containers](../../user-guide/tasks/task-configuration/reusable-containers)) to the Ray `TaskEnvironment`:
 
 ```python
 import flyte
