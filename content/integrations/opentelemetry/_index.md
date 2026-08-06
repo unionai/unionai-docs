@@ -74,7 +74,9 @@ main                          ← task span
 └── double
 ```
 
-![Quick start](../../_static/images/integrations/opentelemetry/quick_start.png)
+![Flyte UI showing the run's action tree beside the console-exported JSON for one span](../../_static/images/integrations/opentelemetry/quick_start.png)
+
+*The quick start run in the Flyte UI. On the left, the action tree shows `main` and its three `double` steps. On the right, the Logs tab holds `ConsoleSpanExporter` output for one `double` span, carrying the `flyte.*` attributes and the `parent_id` that nests it under the task span.*
 
 With no arguments, `init()` reads the standard `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_HEADERS` variables, which is how most vendors document their setup. See [Exporters and configuration](./configuration) for pointing it at a real backend and for supplying credentials as a `flyte.Secret` instead of hardcoding them.
 

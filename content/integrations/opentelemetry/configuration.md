@@ -164,8 +164,13 @@ async def my_task() -> str:
     ...
 ```
 
-![Flyte UI Link](../../_static/images/integrations/opentelemetry/flyte_ui_link.png)
-![Grafana Link](../../_static/images/integrations/opentelemetry/grafana_dashboard.png)
+![Flyte UI action summary with the Grafana trace link highlighted in its Links section](../../_static/images/integrations/opentelemetry/flyte_ui_link.png)
+
+*`GrafanaTrace` renders in the action's **Links** section in the Flyte UI, on every run of the task.*
+
+![Grafana Explore opened on the run's trace, with the TraceQL query already filled in](../../_static/images/integrations/opentelemetry/grafana_dashboard.png)
+
+*Following it opens Grafana Explore with the query already scoped to this run, so you land on its spans instead of searching for the run name by hand.*
 
 | Parameter        | Default           | What it does                                                    |
 | ---------------- | ----------------- | --------------------------------------------------------------- |

@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Grafana Agent Observability
 
-`flyteplugins-agento11y` sends your agent's generations, tool calls, token usage and cost to [Grafana Agent Observability](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/), nested inside the Flyte task span and grouped by Flyte run.
+`flyteplugins-agento11y` sends your agent's generations, tool calls, token usage and cost to [Grafana Agent Observability](https://grafana.com/docs/grafana-cloud/observe-and-act/agent-observability/), nested inside the Flyte task span and grouped by Flyte run.
 
 It instruments agents built with the [agent framework plugins](../agents/_index), the `flyteplugins-agents-*` adapters that run a framework's agent loop inside a Flyte task, with each model turn as a durable traced step and each tool as a child action.
 
@@ -49,7 +49,9 @@ async def support_agent(question: str) -> str:
 
 That covers instrumentation. [Configuration](#configuration) covers the credentials that decide where the generations actually go.
 
-![OpenAI Agent](../../_static/images/integrations/grafana-agent-observability/openai_agent.png)
+![Agent Observability conversation view showing the agent's two model calls, its tool call, and the prompt and answer](../../_static/images/integrations/grafana-agent-observability/openai_agent.png)
+
+*The agent above, in Agent Observability. The flow on the left is the two model calls with the `lookup_order` tool call between them; the thread on the right is the prompt and the answer. Call count, token usage, and cost sit in the header.*
 
 This plugin builds on [`flyteplugins-otel`](../opentelemetry/_index), which it initializes for you. Read that page first if you want to understand where the spans come from.
 
@@ -88,7 +90,13 @@ Without the plugin, three model calls in a task become three unrelated root trac
 
 One run is one trace, and generation records carry that trace ID. That ID is the link from a generation in Grafana back to the Flyte run that produced it.
 
-![Agent Trace](../../_static/images/integrations/grafana-agent-observability/agent_trace.png)
+![Tempo trace with each generation span nested inside the Flyte step that produced it, across three attempts](../../_static/images/integrations/grafana-agent-observability/agent_trace.png)
+
+*A durable agent's trace. Each `generateText` span sits inside the `flyte.trace` step that produced it, which sits inside the task span. In the second attempt the steps are microsecond replays with no `generateText` child at all: the resume did not call the model again.*
+
+![Expanded generation span listing gen_ai attributes bound to Flyte's run, task, and version](../../_static/images/integrations/grafana-agent-observability/trace_id.png)
+
+*Expanding one generation shows the binding described below: `gen_ai.conversation.id` is the Flyte run name, `gen_ai.agent.name` the task, and `gen_ai.agent.version` the task version.*
 
 ### Flyte identity is bound onto agento11y's context
 
@@ -102,7 +110,9 @@ Nothing has to be restated by hand:
 
 A Flyte run therefore shows up in Grafana as one conversation, and a redeploy shows up as a new agent version, so the before and after of a prompt change is directly comparable.
 
-![Conversations](../../_static/images/integrations/grafana-agent-observability/conversations.png)
+![Agent Observability conversations list with one row per Flyte run, agents named after Flyte tasks](../../_static/images/integrations/grafana-agent-observability/conversations.png)
+
+*The conversations list, one row per Flyte run. **Conversation** holds run names and **Agents** holds task names, so runs driving different frameworks and models line up in a single view.*
 
 Both bindings are switchable because both assume something that is not always true:
 
@@ -196,7 +206,9 @@ async def support_agent(question: str) -> str:
     ...
 ```
 
-![UI Links](../../_static/images/integrations/grafana-agent-observability/ui_links.png)
+![Flyte UI action summary with both Grafana links highlighted in its Links section](../../_static/images/integrations/grafana-agent-observability/ui_links.png)
+
+*Both links on the same action. **Grafana Agent Observability** opens this run's conversation; **Grafana trace** opens its spans in Tempo.*
 
 The two answer different questions. The first goes to the generations, prompts and cost. The second goes to the distributed trace in Tempo; it lives in [`flyteplugins-otel`](../opentelemetry/configuration#linking-back-from-grafana) because it needs nothing from this package.
 

@@ -164,7 +164,9 @@ agent                          ← attempt 2, succeeded
 └── think  (4)
 ```
 
-![Replayed Trace](../../_static/images/integrations/opentelemetry/replayed_trace.png)
+![Grafana Tempo trace holding two attempts of one run, the second with microsecond replayed steps](../../_static/images/integrations/opentelemetry/replayed_trace.png)
+
+*The same run in Grafana Tempo, found by a TraceQL query on `flyte.run_name` rather than by trace ID. Each attempt is its own subtree under a single trace. In the second, the microsecond `think` spans are replays served from the durable log and the 200 ms ones are the steps that actually executed. The `POST` spans are Flyte's own calls to the control plane.*
 
 ## Flyte's own control-plane spans
 
