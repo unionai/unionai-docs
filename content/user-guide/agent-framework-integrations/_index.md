@@ -35,6 +35,13 @@ Whichever model your framework uses, the integration is the same in spirit: the 
 
 Don't see your framework? The same pattern (invoke the framework from inside an `@env.task` and trace its calls) applies to any Python agent library. See [Bring your own framework](./bring-your-own-framework) for a framework-agnostic template.
 
+## Sending agent telemetry to an external backend
+
+The {{< key product_name >}} dashboard shows every task and traced step of an agent run. When you also want generations, token usage and cost in an LLM-native tool, two plugins export the same run outward:
+
+- [**OpenTelemetry**](../../integrations/opentelemetry/_index): records each task and traced step as a span and exports it over OTLP, with a crashed-and-resumed run arriving as one trace.
+- [**Grafana Agent Observability**](../../integrations/grafana-agent-observability/_index): adds generations, tool calls, token usage and cost on top of those spans, grouped by run.
+
 ## Next steps
 
 - [Deploy an agent as a service](../build-agent/deploy-agent-as-service): run your agent on a schedule or behind a webhook.

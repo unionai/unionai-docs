@@ -40,7 +40,7 @@ Flyte 2 integrations fall into the following categories:
 7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-10. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
+10. **Observability**: Export task and agent telemetry to external tracing and observability backends.
 
 ## Distributed compute
 
@@ -389,10 +389,13 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ## Observability
 
-Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+Observability integrations export telemetry from a Flyte run to an external backend. They understand that a durable run is several processes over time, so a run that crashes and resumes arrives as one trace rather than several, and steps replayed from the durable log are still recorded.
 
 ### Supported observability integrations
 
-| Integration                              | Description                                                                                                | Common use cases                                     |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| [OpenTelemetry](./opentelemetry/_index)  | Propagate W3C trace context across task boundaries so workflow traces unify with downstream service traces | Distributed tracing, debugging cross-service latency |
+| Plugin                                                                   | Description                                                                                | Common use cases                                                    |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [OpenTelemetry](./opentelemetry/_index)                                  | Records tasks and traced steps as OpenTelemetry spans and exports them over OTLP           | Distributed tracing, debugging cross-service latency, durable traces |
+| [Grafana Agent Observability](./grafana-agent-observability/_index)      | Sends agent generations, tool calls, token usage, and cost to Grafana, grouped by Flyte run | LLM cost tracking, prompt iteration, agent debugging                 |
+
+Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.
