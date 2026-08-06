@@ -31,8 +31,10 @@ image = (
 ```
 
 {{< variant union >}}
+{{< markdown >}}
 > [!NOTE]
-For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged//configuration/plugins#ray) to enable the Ray plugin in your data plane.
+> For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged/configuration/plugins#ray) to enable the Ray plugin in your data plane.
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Configuration
