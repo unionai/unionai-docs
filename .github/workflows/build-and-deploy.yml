@@ -24,8 +24,10 @@ on:
       - main
   workflow_dispatch:
 
+# contents: write — the one-merge cut (DOC-1245) materializes + pushes the stable
+# tag named by versions.toml as a pre-build step (see "Materialize stable tag").
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 # Opt in early to the Node.js 24 runtime for JavaScript actions. GitHub forces
@@ -38,13 +40,14 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy:
-#   - push to main: queue in order, don't cancel, so we never leave
-#     production in an inconsistent state mid-deploy.
-#   - workflow_dispatch: own group, distinct from push, so manual
-#     re-runs never block or get blocked by an in-progress production
-#     deploy.
+#   - production deploys (push to main) use one `prod` group, queued in order
+#     (never cancel), so two merges can't race on the single CF Pages project —
+#     and, crucially, can't race on cutting the same stable tag (the cut runs
+#     in-job, so serializing the job serializes the cut).
+#   - workflow_dispatch: own `manual` group, so manual re-runs never block or
+#     get blocked by an in-progress production deploy.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}
   cancel-in-progress: false
 
 jobs:
@@ -58,7 +61,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 1
+          # 0 (was 1): the multi-version assembly checks out cut tags + main into
+          # isolated worktrees, so it needs full history + all tags.
+          fetch-depth: 0
 
       - name: Set up Hugo
         uses: peaceiris/actions-hugo@v3
@@ -82,10 +87,41 @@ jobs:
           uv --version
           echo "::endgroup::"
 
+      # One-merge cut (DOC-1245): versions.toml names the stable tag /docs/v2 serves.
+      # If that tag doesn't exist yet, THIS merge is the promotion — materialize it
+      # (guarded: PyPI-published SDK + versions.toml agrees with the resolver) BEFORE
+      # the build, so /docs/v2 assembles from it in the same job (no cut↔deploy race).
+      # Idempotent: an already-cut stable is a no-op. Inert until versioning go-live
+      # (no versions.toml → skipped), matching the Build-dist feature gate below.
+      - name: Materialize stable tag if needed (cut)
+        if: github.event_name == 'push'
+        env:
+          # cut-docs-version.sh reads flyteorg/flyte releases for the backend row.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          if [ ! -f versions.toml ]; then
+            echo "no versions.toml → versioning off; skip cut"; exit 0
+          fi
+          STABLE=$(sed -n 's/^stable *= *"\(.*\)"/\1/p' versions.toml | head -1)
+          if [ -z "$STABLE" ]; then echo "versions.toml has no stable → skip"; exit 0; fi
+          if git rev-parse -q --verify "refs/tags/$STABLE" >/dev/null; then
+            echo "stable tag $STABLE already cut → no-op"; exit 0
+          fi
+          echo "stable $STABLE not yet cut → materializing at this merge"
+          bash unionai-docs-infra/scripts/cut-docs-version.sh --push
+
       - name: Build dist
         run: |
           start=$(date +%s)
-          make dist
+          # One shared CI build step (DOC-1333): `auto` = the versions.toml gate,
+          # identical to the previous inline logic (multi-version assembly when
+          # present — /docs/latest, /docs/v2, pins — else single-version).
+          # build-pr.yml calls the SAME script with an explicit mode, so the two
+          # build paths cannot silently drift again (that drift is how previews
+          # spent months building a different artifact class than production).
+          LATEST_REF=origin/main bash unionai-docs-infra/scripts/ci-build-dist.sh auto
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
       - name: Emit build provenance

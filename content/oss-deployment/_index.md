@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Platform deployment
 
-{{< llm-bundle-note >}}
-
 This section covers how to deploy **Flyte** to your own Kubernetes cluster using the
 `flyte-binary` Helm chart.
 

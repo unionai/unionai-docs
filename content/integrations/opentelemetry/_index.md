@@ -85,13 +85,13 @@ With no arguments, `init()` reads the standard `OTEL_EXPORTER_OTLP_ENDPOINT` and
 
 ## What becomes a span
 
-| Flyte concept                                                    | Span                    | Parent                                             |
-| ---------------------------------------------------------------- | ----------------------- | -------------------------------------------------- |
-| A task executing in its container                                | Task span, named after the task | The inbound trace context if any; otherwise a root |
-| A [`flyte.trace`](../../user-guide/task-programming/traces) step | Step span               | The task span that owns it                          |
-| A step replayed from the durable log                             | Step span, `flyte.replayed=true` | The task span of the attempt that replayed it |
-| A sub-action (a task calling another task)                       | Its own task span, in another pod | The calling task's span, via `custom_context` |
-| Anything an instrumentation library emits                        | Whatever that library emits | The active span, which is the task or step span |
+| Flyte concept                                                    | Span                              | Parent                                             |
+| ---------------------------------------------------------------- | --------------------------------- | -------------------------------------------------- |
+| A task executing in its container                                | Task span, named after the task   | The inbound trace context if any; otherwise a root |
+| A [`flyte.trace`](../../user-guide/task-programming/traces) step | Step span                         | The task span that owns it                         |
+| A step replayed from the durable log                             | Step span, `flyte.replayed=true`  | The task span of the attempt that replayed it      |
+| A sub-action (a task calling another task)                       | Its own task span, in another pod | The calling task's span, via `custom_context`      |
+| Anything an instrumentation library emits                        | Whatever that library emits       | The active span, which is the task or step span    |
 
 Task lifecycle itself is not instrumented: there are no spans for scheduling, queueing or the control plane's decision to retry. A span starts when a container begins executing a task.
 

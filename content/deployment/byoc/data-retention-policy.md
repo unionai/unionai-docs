@@ -8,7 +8,7 @@ variants: -flyte +union
 
 Data retention policies determine how long workflow data is kept in the data plane object store. After the retention period expires, the data is automatically deleted.
 
-For the conceptual map of what's in the data plane bucket versus the control plane database, see [Where your data lives](../../user-guide/core-concepts/where-data-lives). This page describes which data is covered by the retention policy and what happens when data is deleted.
+For the conceptual map of what's in the data plane bucket versus the control plane database, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives). This page describes which data is covered by the retention policy and what happens when data is deleted.
 
 Retention periods are set by your {{< key product_name >}} plan:
 
@@ -49,7 +49,7 @@ To remedy this, you have to both re-deploy and re-run the workflow.
 
 ## Separating raw data from metadata
 
-You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data, for example, to a bucket with its own lifecycle rules. Only the raw offloaded contents move; the `inputs.pb` / `outputs.pb` payloads still land in the configured metadata bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+You can route a run's **raw data** (offloaded values such as `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, and checkpoints) to a different bucket or prefix than the rest of the run's data, for example, to a bucket with its own lifecycle rules. Only the raw offloaded contents move; the `inputs.pb` / `outputs.pb` payloads still land in the configured metadata bucket. For the conceptual map of what "raw data" versus "metadata" means, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives).
 
 You can set the raw-data path **per run**, or as a **default for a whole project or domain**.
 
@@ -83,7 +83,7 @@ Edit the settings for a project and domain interactively, then set `storage.raw_
 flyte edit settings --domain production --project ml-pipeline
 ```
 
-You can also configure this in the Union UI under the project's settings. See [Settings](../../user-guide/core-concepts/settings#available-settings) for the full list of available settings (including `storage.raw_data_path`) and how scopes are resolved.
+You can also configure this in the Union UI under the project's settings. See [Settings](../../user-guide/get-started/core-concepts/settings#available-settings) for the full list of available settings (including `storage.raw_data_path`) and how scopes are resolved.
 
 ## Data retention and task caching
 

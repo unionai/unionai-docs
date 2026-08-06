@@ -1,10 +1,10 @@
 {
   "packages": {
-    "flyteplugins.openai": "/api-reference/integrations/openai/packages/flyteplugins.openai/",
-    "flyteplugins.openai.agents": "/api-reference/integrations/openai/packages/flyteplugins.openai.agents/"
+    "flyteplugins.openai": "/api-reference/integrations/openai/",
+    "flyteplugins.openai.agents": "/api-reference/integrations/openai/"
   },
   "identifiers": {},
   "methods": {
-    "flyteplugins.openai.agents.function_tool": "/api-reference/integrations/openai/packages/flyteplugins.openai.agents/#function_tool"
+    "flyteplugins.openai.agents.function_tool": "/api-reference/integrations/openai/#function_tool"
   }
 }

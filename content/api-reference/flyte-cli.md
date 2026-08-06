@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.9
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -1235,6 +1235,7 @@ Apps are long-running services deployed on the Flyte platform.
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of apps to fetch when listing. |
 | `--only-mine` | `boolean` | `False` | Show only apps created by the current user (you). |
+| `--status` | `choice` |  | Filter apps by deployment status. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |

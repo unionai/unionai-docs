@@ -170,10 +170,10 @@ async with TokenBatcher(
 
 ## Combining with app environments
 
-[`DynamicBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/dynamicbatcher) on its own improves utilization within a single task, but the model has to be loaded from scratch on every invocation. To amortize that cost across many task runs, host the model inside a long-lived [`AppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app/appenvironment) and have driver tasks call it over HTTP:
+[`DynamicBatcher`](../../api-reference/flyte-sdk/flyte.extras/dynamicbatcher) on its own improves utilization within a single task, but the model has to be loaded from scratch on every invocation. To amortize that cost across many task runs, host the model inside a long-lived [`AppEnvironment`](../../api-reference/flyte-sdk/flyte.app/appenvironment) and have driver tasks call it over HTTP:
 
 - **Amortized model loading**: the model is loaded once when the app starts and stays in memory for the lifetime of the replica
-- **Cross-task batching**: every concurrent HTTP request submits to the **same shared [`TokenBatcher`](../../api-reference/flyte-sdk/packages/flyte.extras/tokenbatcher)**, so the GPU always has a full queue of work
+- **Cross-task batching**: every concurrent HTTP request submits to the **same shared [`TokenBatcher`](../../api-reference/flyte-sdk/flyte.extras/tokenbatcher)**, so the GPU always has a full queue of work
 - **Automatic scaling**: the app autoscales between min and max replicas based on a concurrency target, and each replica maintains its own model and batcher
 
 ```mermaid
@@ -307,7 +307,7 @@ async def generate(request_body: GenerateRequest, request: Request):
 
 #### 3. Define the app environment and driver task environment
 
-The app uses a [`FastAPIAppEnvironment`](../../api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment) on a GPU and autoscales via [`Scaling`](../../api-reference/flyte-sdk/packages/flyte.app/scaling). The driver runs in a CPU-only [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) that `depends_on` the app so the app is deployed before the driver runs:
+The app uses a [`FastAPIAppEnvironment`](../../api-reference/flyte-sdk/flyte.app.extras/fastapiappenvironment) on a GPU and autoscales via [`Scaling`](../../api-reference/flyte-sdk/flyte.app/scaling). The driver runs in a CPU-only [`TaskEnvironment`](../../api-reference/flyte-sdk/flyte/taskenvironment) that `depends_on` the app so the app is deployed before the driver runs:
 
 ```python
 image = (
@@ -409,7 +409,7 @@ async def main(
 
 ## Combining with reusable containers
 
-`DynamicBatcher` on its own improves utilization within a single task. When combined with [reusable containers](../task-configuration/reusable-containers), it adds three capabilities:
+`DynamicBatcher` on its own improves utilization within a single task. When combined with [reusable containers](../tasks/task-configuration/reusable-containers), it adds three capabilities:
 
 - **Amortized model loading**: the model is loaded once per container and reused across many task invocations, avoiding repeated download and initialization costs
 - **Cross-task batching**: with `ReusePolicy(concurrency=N)`, multiple task invocations run concurrently on the same replica, all feeding records into the **same shared batcher**. This means the GPU always has a full queue of work.

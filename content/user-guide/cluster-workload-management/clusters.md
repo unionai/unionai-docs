@@ -12,7 +12,8 @@ variants: -flyte +union
 
 A **cluster** is an execution cluster registered with {{< key product_name >}}.
 Every cluster subscribes to exactly one [cluster pool](./cluster-pools), which
-determines the data plane (object store, secrets, registry) the cluster uses.
+determines the data plane configuration (object store, secret store, container
+registry) the cluster uses.
 
 Creating a cluster record registers the cluster in the control plane. It does not
 install Kubernetes resources or deploy the data plane itself. For self-managed
@@ -118,8 +119,8 @@ which queues are bound to it, useful when deciding where to route or pin a queue
 A cluster's pool assignment is fixed for the life of the cluster record: a
 registration that names a different pool for an existing cluster is rejected,
 because the cluster may already have reported status, synced configuration, and
-served workloads against the old pool's data plane. Moving a cluster is
-therefore a delete-and-re-register:
+served workloads against the old pool's data plane configuration. Moving a
+cluster is therefore a delete-and-re-register:
 
 1. [Drain](./queues#drain-and-reactivate-a-queue) the queues that pin the
    cluster, so in-flight work finishes without new submissions landing.
