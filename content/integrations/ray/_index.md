@@ -104,6 +104,7 @@ ray_config = RayJobConfig(
 ```
 
 {{< variant union >}}
+{{< markdown >}}
 
 ## Reusable Ray clusters
 
