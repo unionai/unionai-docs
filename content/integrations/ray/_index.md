@@ -154,6 +154,7 @@ A shared cluster is never deleted when an individual task completes or is aborte
 
 - `replicas` must be exactly `1` — one shared Ray cluster per environment.
 - `concurrency` must be `1` (the default); Ray itself handles parallelism inside the cluster.
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Examples
