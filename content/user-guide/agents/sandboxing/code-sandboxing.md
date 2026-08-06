@@ -429,7 +429,7 @@ total = sum(data["values"])
 
 The following example defines sandboxes in all three modes, creates helper tasks, and runs everything in a single pipeline:
 
-{{< code file="/unionai-examples/v2/user-guide/sandboxing/code_sandbox.py" lang=python highlight="5 7 14 17-18 25 46 64">}}
+{{< code file="/unionai-examples/v2/user-guide/sandboxing/code_sandbox.py" lang=python highlight="5 7 14 18-19 25 46 64">}}
 
 ## API reference
 

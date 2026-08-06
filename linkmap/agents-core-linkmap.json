@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "flyteplugins.agents.core": "/api-reference/integrations/agents/core/"
+  },
+  "identifiers": {
+    "flyteplugins.agents.core.ReportTimeline": "/api-reference/integrations/agents/core/reporttimeline/",
+    "ReportTimeline": "/api-reference/integrations/agents/core/reporttimeline/",
+    "flyteplugins.agents.core.ToolTaskResolver": "/api-reference/integrations/agents/core/tooltaskresolver/",
+    "ToolTaskResolver": "/api-reference/integrations/agents/core/tooltaskresolver/"
+  },
+  "methods": {
+    "flyteplugins.agents.core.abbrev": "/api-reference/integrations/agents/core/#abbrev",
+    "flyteplugins.agents.core.attach_tool_resolver": "/api-reference/integrations/agents/core/#attach_tool_resolver",
+    "flyteplugins.agents.core.coerce_tool_args": "/api-reference/integrations/agents/core/#coerce_tool_args",
+    "flyteplugins.agents.core.durable_step": "/api-reference/integrations/agents/core/#durable_step",
+    "flyteplugins.agents.core.duration_ms": "/api-reference/integrations/agents/core/#duration_ms",
+    "flyteplugins.agents.core.fingerprint": "/api-reference/integrations/agents/core/#fingerprint",
+    "flyteplugins.agents.core.flush_report": "/api-reference/integrations/agents/core/#flush_report",
+    "flyteplugins.agents.core.jsonable": "/api-reference/integrations/agents/core/#jsonable",
+    "flyteplugins.agents.core.resolve_memory": "/api-reference/integrations/agents/core/#resolve_memory",
+    "flyteplugins.agents.core.run_coro_sync": "/api-reference/integrations/agents/core/#run_coro_sync",
+    "flyteplugins.agents.core.sync_variant": "/api-reference/integrations/agents/core/#sync_variant",
+    "flyteplugins.agents.core.task_json_schema": "/api-reference/integrations/agents/core/#task_json_schema",
+    "flyteplugins.agents.core.tool": "/api-reference/integrations/agents/core/#tool"
+  }
+}

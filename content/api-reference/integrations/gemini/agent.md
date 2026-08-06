@@ -9,6 +9,11 @@ layout: py_api
 
 **Package:** `flyteplugins.gemini`
 
+> [!WARNING] Deprecated
+> `flyteplugins-gemini` has been removed from the Flyte SDK. This is a frozen snapshot of
+> version 2.5.8. Use [`flyteplugins-agents-google`](../../agents/google/_index) instead, and see
+> [Gemini](./_index) for what changes.
+
 A Gemini agent configuration.
 
 This class represents the configuration for a Gemini agent, including

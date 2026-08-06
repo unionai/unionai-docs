@@ -42,7 +42,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-See [Secrets](../../user-guide/task-configuration/secrets) for creating and managing them.
+See [Secrets](../../user-guide/tasks/task-configuration/secrets) for creating and managing them.
 
 ## Configuring in code
 
@@ -153,7 +153,7 @@ init(service_name="my-service")
 
 ## Linking back from Grafana
 
-`flyteplugins.otel.grafana` builds [links](../../user-guide/task-programming/links) from a Flyte action into Grafana, rendered on the action in the Flyte UI. They are plain URL builders with no Grafana dependency:
+`flyteplugins.otel.grafana` builds [links](../../user-guide/tasks/task-programming/links) from a Flyte action into Grafana, rendered on the action in the Flyte UI. They are plain URL builders with no Grafana dependency:
 
 ```python{hl_lines=[3]}
 from flyteplugins.otel.grafana import GrafanaTrace

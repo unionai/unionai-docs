@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "flyteplugins.agents.langchain": "/api-reference/integrations/agents/langchain/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.langchain.run_agent": "/api-reference/integrations/agents/langchain/#run_agent",
+    "flyteplugins.agents.langchain.run_agent_sync": "/api-reference/integrations/agents/langchain/#run_agent_sync",
+    "flyteplugins.agents.langchain.tool": "/api-reference/integrations/agents/langchain/#tool"
+  }
+}

@@ -394,4 +394,4 @@ Observability integrations export telemetry from a Flyte run to an external back
 | [OpenTelemetry](./opentelemetry/_index)                             | Records tasks and traced steps as OpenTelemetry spans and exports them over OTLP            | Distributed tracing, debugging cross-service latency, durable traces |
 | [Grafana Agent Observability](./grafana-agent-observability/_index) | Sends agent generations, tool calls, token usage, and cost to Grafana, grouped by Flyte run | LLM cost tracking, prompt iteration, agent debugging                 |
 
-Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.
+Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/tasks/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.

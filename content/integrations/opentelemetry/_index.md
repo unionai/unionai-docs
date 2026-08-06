@@ -8,7 +8,7 @@ variants: +flyte +union
 
 `flyteplugins-otel` turns a Flyte run into an [OpenTelemetry](https://opentelemetry.io/) trace.
 
-Every task becomes a span. Every [traced function](../../user-guide/task-programming/traces) becomes a child span inside it. Spans created by your own code or by any OpenTelemetry instrumentation library nest underneath without extra wiring. Export goes wherever OTLP goes: Grafana Tempo, Jaeger, Honeycomb, an OpenTelemetry Collector or several at once.
+Every task becomes a span. Every [traced function](../../user-guide/tasks/task-programming/traces) becomes a child span inside it. Spans created by your own code or by any OpenTelemetry instrumentation library nest underneath without extra wiring. Export goes wherever OTLP goes: Grafana Tempo, Jaeger, Honeycomb, an OpenTelemetry Collector or several at once.
 
 None of this is specific to agents or to LLM workloads. It is ordinary distributed tracing for ordinary Flyte tasks, plus two behaviors that exist because Flyte runs are durable and a stock OpenTelemetry setup has no way to model them:
 
@@ -88,7 +88,7 @@ With no arguments, `init()` reads the standard `OTEL_EXPORTER_OTLP_ENDPOINT` and
 | Flyte concept                                                    | Span                              | Parent                                             |
 | ---------------------------------------------------------------- | --------------------------------- | -------------------------------------------------- |
 | A task executing in its container                                | Task span, named after the task   | The inbound trace context if any; otherwise a root |
-| A [`flyte.trace`](../../user-guide/task-programming/traces) step | Step span                         | The task span that owns it                         |
+| A [`flyte.trace`](../../user-guide/tasks/task-programming/traces) step | Step span                         | The task span that owns it                         |
 | A step replayed from the durable log                             | Step span, `flyte.replayed=true`  | The task span of the attempt that replayed it      |
 | A sub-action (a task calling another task)                       | Its own task span, in another pod | The calling task's span, via `custom_context`      |
 | Anything an instrumentation library emits                        | Whatever that library emits       | The active span, which is the task or step span    |

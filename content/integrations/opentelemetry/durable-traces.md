@@ -20,24 +20,54 @@ Flyte propagates a key-value `custom_context` through a run and into every sub-a
 
 When a run is kicked off from inside an existing span, a web request, a scheduler, another service, you usually want the run to appear inside that trace rather than as a separate one. Inject a carrier into `custom_context` at submit time and the plugin picks it up: the task span starts under the caller's span instead of becoming a root.
 
-```python{hl_lines=["5-6",8]}
+```python{hl_lines=["24-25",27]}
+import flyte
 from opentelemetry import trace
 from opentelemetry.propagate import inject
 
-with tracer.start_as_current_span("incoming_request"):
-    carrier: dict[str, str] = {}
-    inject(carrier)
+from flyteplugins.otel import init
 
-    run = flyte.with_runcontext(custom_context=carrier).run(handle, url="https://example.com")
+init(service_name="my-service")
+tracer = trace.get_tracer("my.caller")
+
+env = flyte.TaskEnvironment(name="my_env")
+
+
+# The task you submit. Flyte 2 has no separate workflow entrypoint: `run` takes the
+# task itself, and any tasks it awaits become sub-actions of the same run.
+@env.task
+async def handle(url: str) -> str:
+    return f"handled {url}"
+
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+
+    with tracer.start_as_current_span("incoming_request"):
+        carrier: dict[str, str] = {}
+        inject(carrier)
+
+        run = flyte.with_runcontext(custom_context=carrier).run(handle, url="https://example.com")
+        print(run.url)
 ```
 
 The carrier is a plain `dict[str, str]`, which is exactly what `custom_context` expects.
+
+`tracer` here is the caller's own tracer, not the plugin's. The plugin only needs `init()` to have run; it parents the task span off whatever `traceparent` arrives in the carrier, whoever produced it.
 
 ### Outbound: nested tasks, in other pods
 
 Once the task span is open, the plugin publishes it back into `custom_context`. A child task running in a different pod nests under the task that spawned it with nothing passed by hand:
 
 ```python
+import asyncio
+
+
+@flyte.trace
+async def score(item: int) -> int:
+    return item * 3
+
+
 @env.task
 async def worker(item: int) -> int:
     return await score(item)
@@ -83,7 +113,7 @@ trace_id = format_trace_id(trace_id_for_run(flyte.ctx().action))
 
 ## Replayed steps
 
-A resumed run serves already-completed [traced steps](../../user-guide/task-programming/traces) out of its durable log without re-executing them. The plugin records those as spans marked `flyte.replayed=true`.
+A resumed run serves already-completed [traced steps](../../user-guide/tasks/task-programming/traces) out of its durable log without re-executing them. The plugin records those as spans marked `flyte.replayed=true`.
 
 They have no meaningful duration, because no work happened in this process, but they are present, so the trace is complete and you can see exactly which steps the resume skipped.
 

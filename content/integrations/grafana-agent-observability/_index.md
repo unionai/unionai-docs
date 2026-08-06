@@ -8,7 +8,7 @@ variants: +flyte +union
 
 `flyteplugins-agento11y` sends your agent's generations, tool calls, token usage and cost to [Grafana Agent Observability](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/), nested inside the Flyte task span and grouped by Flyte run.
 
-It instruments agents built with the Flyte agents plugin, the `flyteplugins-agents-<framework>` adapters that run a framework's agent loop inside a Flyte task, with each model turn as a durable traced step and each tool as a child action.
+It instruments agents built with the [agent framework plugins](../agents/_index), the `flyteplugins-agents-*` adapters that run a framework's agent loop inside a Flyte task, with each model turn as a durable traced step and each tool as a child action.
 
 One call at module scope is the whole integration. Your agent code does not change:
 
@@ -242,7 +242,7 @@ async def ask(question: str) -> str:
     return answer
 ```
 
-Putting the call inside a [`flyte.trace`](../../user-guide/task-programming/traces) step is what makes it durable: a resumed run replays the recorded result instead of calling the model again.
+Putting the call inside a [`flyte.trace`](../../user-guide/tasks/task-programming/traces) step is what makes it durable: a resumed run replays the recorded result instead of calling the model again.
 
 ## Content capture
 
@@ -311,8 +311,8 @@ Both registries are best-effort by construction. If your instrumentor or wrapper
 
 - **[OpenTelemetry](../opentelemetry/_index)**: the tracing layer this plugin builds on.
 - **[Traces across crashes and resumes](../opentelemetry/durable-traces)**: why a durable run needs more than a stock OpenTelemetry setup.
-- **[Build an agent](../../user-guide/build-agent/_index)**: building the agent this instruments.
-- **[Agent framework integrations](../../user-guide/agent-framework-integrations/_index)**: running LangGraph, PydanticAI, and the OpenAI Agents SDK on Flyte.
+- **[Agent frameworks](../agents/_index)**: the `flyteplugins-agents-*` adapters this instruments.
+- **[Build an agent](../../user-guide/agents/build-agent/_index)**: building the agent in the first place.
 
 > [!NOTE] Runnable examples
 > The plugin ships [worked examples](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/agento11y/examples)

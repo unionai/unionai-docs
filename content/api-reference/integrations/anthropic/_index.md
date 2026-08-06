@@ -7,7 +7,16 @@ layout: py_api
 
 # Anthropic
 
-
+> [!WARNING] Deprecated
+> `flyteplugins-anthropic` has been removed from the Flyte SDK and no longer publishes new
+> releases. This page is a frozen snapshot of version 2.5.8, kept for users still on an older
+> release.
+>
+> Use [`flyteplugins-agents-claude`](../agents/claude/_index) instead. It runs the Claude Agent
+> SDK's own loop inside a Flyte task, so model turns replay on resume and each tool call becomes
+> a durable child action. See [Agent frameworks](../../../integrations/agents/_index) for the
+> full set of adapters and [Claude Agent SDK](../../../integrations/agents/claude-agent-sdk) for
+> the migration target.
 
 Anthropic Claude plugin for Flyte.
 
