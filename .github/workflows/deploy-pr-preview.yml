@@ -9,6 +9,22 @@ name: Deploy PR preview
 # the untrusted build happens secret-less in build-pr.yml, and this job only
 # ever DOWNLOADS that prebuilt artifact and deploys it — it never checks out
 # or executes untrusted PR code/build scripts with secrets in scope.
+#
+# SECURITY (untrusted DATA, not just untrusted code): pr-meta.json is written
+# by our own build-pr.yml, but every field in it comes from the fork PR
+# (head_ref is the fork's branch name, pr_number / head_sha the PR's), so by
+# the time this trusted job reads it, all three are ATTACKER-CONTROLLED. They
+# must never be interpolated as `${{ }}` into a `run:` script body: GitHub
+# substitutes `${{ }}` into the script TEXT before bash parses it, so a branch
+# named `$(cmd)` would execute here with the Cloudflare secrets in scope.
+# Instead: (1) validate each field and fail closed in "Parse PR metadata",
+# and (2) pass values into later steps via `env:` and reference them quoted —
+# `env:` is not subject to script-text substitution.
+#
+# Defense in depth: fork-originated previews additionally pass through the
+# `fork_gate` job, which requires a maintainer to approve the `fork-preview-deploy`
+# environment before the secret-bearing `deploy` job runs. Same-repo previews
+# skip that gate. See the `fork_gate` job below.
 
 on:
   workflow_run:
@@ -26,10 +42,38 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  # Approval gate for FORK-originated previews only (DOC-1395 defense in depth).
+  #
+  # This job carries no secrets and does nothing but exist — its only purpose is
+  # to reference the `fork-preview-deploy` environment, whose required-reviewer
+  # protection rule pauses it until a maintainer approves. The secret-bearing
+  # `deploy` job `needs:` it, so for a fork PR the Cloudflare token is never in
+  # scope until a human has signed off on that specific run. The `if:` fires
+  # ONLY when the triggering PR came from a fork (head repo != base repo), so
+  # same-repo (docsy / member) previews skip this job and deploy with no
+  # friction. The code-level fix (validate + `env:`) already closes the
+  # injection; this makes a fork deploy additionally require human sign-off.
+  fork_gate:
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name != github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: fork-preview-deploy
+    steps:
+      - name: Approved
+        run: echo "Fork-originated preview deploy approved by a required reviewer."
+
   deploy:
-    # Only deploy for successful PR builds. workflow_run fires for every
-    # completion; gate on the originating event + a green build.
-    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    # Runs after fork_gate. Gate on the originating event + a green build, AND
+    # on fork_gate having either SUCCEEDED (fork PR, approved) or been SKIPPED
+    # (same-repo PR, no approval needed). `!cancelled()` lets this job evaluate
+    # even though a skipped `needs` job would otherwise short-circuit it; a
+    # REJECTED fork_gate resolves to 'failure', so the deploy is skipped.
+    needs: [fork_gate]
+    if: >-
+      ${{ !cancelled()
+      && github.event.workflow_run.event == 'pull_request'
+      && github.event.workflow_run.conclusion == 'success'
+      && (needs.fork_gate.result == 'success' || needs.fork_gate.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -48,6 +92,21 @@ jobs:
           pr_number=$(jq -r '.pr_number' pr-meta.json)
           head_sha=$(jq -r '.head_sha' pr-meta.json)
           head_ref=$(jq -r '.head_ref' pr-meta.json)
+          # Every field of pr-meta.json originates in the fork PR, so treat all
+          # three as untrusted and validate BEFORE they reach any later step.
+          # Fail closed: a value that does not match its expected shape aborts
+          # the deploy rather than flowing to a sink. (Git ref names are already
+          # constrained, but the value arrived through an artifact, so we
+          # re-validate here defensively.)
+          if ! printf '%s' "$pr_number" | grep -qE '^[0-9]+$'; then
+            echo "Refusing non-numeric pr_number: $pr_number" >&2; exit 1
+          fi
+          if ! printf '%s' "$head_sha" | grep -qE '^[0-9a-fA-F]{7,40}$'; then
+            echo "Refusing non-hex head_sha: $head_sha" >&2; exit 1
+          fi
+          if ! printf '%s' "$head_ref" | grep -qE '^[A-Za-z0-9._/-]+$'; then
+            echo "Refusing suspicious head_ref: $head_ref" >&2; exit 1
+          fi
           echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
           echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
           echo "head_ref=$head_ref" >> "$GITHUB_OUTPUT"
@@ -55,6 +114,13 @@ jobs:
 
       - name: Sanitize branch name for CF Pages
         id: branch
+        # Untrusted values reach this step via env:, NOT via ${{ }} interpolation
+        # into the script text. A branch named `$(cmd)` therefore lands in
+        # "$RAW_BRANCH" as literal data and is never executed. See the SECURITY
+        # note at the top of this file.
+        env:
+          PR_NUM: ${{ steps.meta.outputs.pr_number }}
+          RAW_BRANCH: ${{ steps.meta.outputs.head_ref }}
         run: |
           # CF Pages branch names: lowercase alphanumeric + hyphens, max 28 chars.
           #
@@ -62,11 +128,9 @@ jobs:
           # (a) makes each PR's preview alias unique even when two PRs share a
           # long common branch-name prefix, and (b) guarantees a PR deploy can
           # never sanitize to a production branch name like `main` or `v1`.
-          pr_num="${{ steps.meta.outputs.pr_number }}"
-          raw_branch="${{ steps.meta.outputs.head_ref }}"
-          full=$(printf 'pr-%s-%s' "$pr_num" "$raw_branch" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
+          full=$(printf 'pr-%s-%s' "$PR_NUM" "$RAW_BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g' | sed -E 's#^-+|-+$##g')
           sanitized=$(printf '%s' "$full" | cut -c1-28 | sed -E 's#-+$##g')
-          echo "Source PR #$pr_num branch '$raw_branch' → CF Pages branch: $sanitized"
+          echo "Source PR #$PR_NUM branch '$RAW_BRANCH' → CF Pages branch: $sanitized"
           echo "name=$sanitized" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Cloudflare Pages
@@ -79,6 +143,8 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # branch is steps.branch.outputs.name — already sanitized to
+          # [a-z0-9-], max 28 chars, so it cannot inject into this command.
           # --commit-dirty: the prebuilt dist contains regenerated tracked
           # files, so wrangler would otherwise warn about a dirty tree. The
           # warning is noise here.
@@ -86,14 +152,21 @@ jobs:
 
       - name: Deploy summary
         if: success()
+        # Values via env: rather than ${{ }} in the script text (defense in
+        # depth — head_sha is validated hex and CF_BRANCH is sanitized, but they
+        # still originate from the untrusted artifact).
+        env:
+          CF_BRANCH: ${{ steps.branch.outputs.name }}
+          HEAD_SHA: ${{ steps.meta.outputs.head_sha }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: |
           echo "## Deployment" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Project: \`docs\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Branch (CF Pages): \`${{ steps.branch.outputs.name }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Commit: \`${{ steps.meta.outputs.head_sha }}\`" >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "${{ steps.deploy.outputs.deployment-url }}" ]; then
-            echo "- Deployment URL: ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch (CF Pages): \`$CF_BRANCH\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`$HEAD_SHA\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$DEPLOY_URL" ]; then
+            echo "- Deployment URL: $DEPLOY_URL" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Post / update preview comment on PR
@@ -102,7 +175,9 @@ jobs:
         with:
           header: gha-build-and-deploy-preview
           # workflow_run runs detached from any PR, so the comment target must
-          # be named explicitly via `number`.
+          # be named explicitly via `number`. These values render as comment
+          # DATA (an action input), not a shell script, and pr_number is
+          # validated numeric above.
           number: ${{ steps.meta.outputs.pr_number }}
           message: |
             ### GHA build & deploy preview
