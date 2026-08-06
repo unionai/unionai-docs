@@ -20,6 +20,11 @@ name: Deploy PR preview
 # Instead: (1) validate each field and fail closed in "Parse PR metadata",
 # and (2) pass values into later steps via `env:` and reference them quoted —
 # `env:` is not subject to script-text substitution.
+#
+# Defense in depth: fork-originated previews additionally pass through the
+# `fork_gate` job, which requires a maintainer to approve the `fork-preview-deploy`
+# environment before the secret-bearing `deploy` job runs. Same-repo previews
+# skip that gate. See the `fork_gate` job below.
 
 on:
   workflow_run:
@@ -37,10 +42,38 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  # Approval gate for FORK-originated previews only (DOC-1395 defense in depth).
+  #
+  # This job carries no secrets and does nothing but exist — its only purpose is
+  # to reference the `fork-preview-deploy` environment, whose required-reviewer
+  # protection rule pauses it until a maintainer approves. The secret-bearing
+  # `deploy` job `needs:` it, so for a fork PR the Cloudflare token is never in
+  # scope until a human has signed off on that specific run. The `if:` fires
+  # ONLY when the triggering PR came from a fork (head repo != base repo), so
+  # same-repo (docsy / member) previews skip this job and deploy with no
+  # friction. The code-level fix (validate + `env:`) already closes the
+  # injection; this makes a fork deploy additionally require human sign-off.
+  fork_gate:
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name != github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: fork-preview-deploy
+    steps:
+      - name: Approved
+        run: echo "Fork-originated preview deploy approved by a required reviewer."
+
   deploy:
-    # Only deploy for successful PR builds. workflow_run fires for every
-    # completion; gate on the originating event + a green build.
-    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    # Runs after fork_gate. Gate on the originating event + a green build, AND
+    # on fork_gate having either SUCCEEDED (fork PR, approved) or been SKIPPED
+    # (same-repo PR, no approval needed). `!cancelled()` lets this job evaluate
+    # even though a skipped `needs` job would otherwise short-circuit it; a
+    # REJECTED fork_gate resolves to 'failure', so the deploy is skipped.
+    needs: [fork_gate]
+    if: >-
+      ${{ !cancelled()
+      && github.event.workflow_run.event == 'pull_request'
+      && github.event.workflow_run.conclusion == 'success'
+      && (needs.fork_gate.result == 'success' || needs.fork_gate.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
