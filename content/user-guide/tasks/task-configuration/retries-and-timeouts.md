@@ -119,8 +119,8 @@ Finally, configure Flyte and run:
 Failures caused by the underlying infrastructure (a node disappearing, ephemeral storage running out, a spot instance getting preempted, and so on) are handled separately. The platform retries these on its own and they do not consume your `retries=N` budget. They **do**, however, count against the `deadline` (see below), because the deadline is an absolute bound on total wall-clock regardless of who triggered the retry.
 
 > [!NOTE]
-> Retries run the task from the beginning, so tasks logic should be idempotent.
-> Avoid relying on local state from a previous attempt, and make external side effects safe to repeat.
+> Retries run the task from the beginning, so your task logic should be idempotent.
+> Avoid relying on local state from a previous attempt, and make any external side effects safe to repeat.
 
 The platform does eventually give up, but only after many retries: a persistent infrastructure problem can churn for a while before the run is terminated. If you spot a task repeatedly failing on the same infrastructure error, abort it manually rather than waiting for the system to give up on its own. You don't configure the system retry budget from Python; it's a platform-level concern.
 
