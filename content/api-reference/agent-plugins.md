@@ -150,8 +150,9 @@ is duplicated between them.
 moment you install, with no corpus to download and no `uv` required. Your search queries
 do leave your machine.
 
-`flyte-cluster` runs on your machine. It is the SDK's own `flyte-mcp` entry point,
-fetched from PyPI at launch:
+`flyte-cluster` runs on your machine. It is the SDK's own `flyte-mcp` entry point. In
+Claude Code and Codex the harness runs it for you; `uvx` fetches it from PyPI at each
+launch. This is the command:
 
 ```bash
 uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio \
@@ -186,12 +187,6 @@ takes a few lines.
 
 `flyte-docs`:
 
-```toml
-# Codex: ~/.codex/config.toml
-[mcp_servers.flyte-docs]
-url = "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
-```
-
 ```json
 // opencode: opencode.json
 { "mcp": { "flyte-docs": { "type": "remote",
@@ -206,17 +201,13 @@ mcp_servers:
     url: "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
 ```
 
-pi uses the same `mcpServers` shape in `~/.pi/agent/mcp.json`.
+```json
+// pi: ~/.pi/agent/mcp.json
+{ "mcpServers": { "flyte-docs": { "type": "http",
+  "url": "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp" } } }
+```
 
 `flyte-cluster`:
-
-```toml
-# Codex: ~/.codex/config.toml
-[mcp_servers.flyte-cluster]
-command = "uvx"
-args = ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
-        "--tool-groups", "task,run,action,logs,app,trigger,project,secret,condition,identity"]
-```
 
 ```json
 // opencode: opencode.json
@@ -234,6 +225,19 @@ mcp_servers:
     args: ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
            "--tool-groups", "task,run,action,logs,app,trigger,project,secret,condition,identity"]
 ```
+
+```json
+// pi: ~/.pi/agent/mcp.json
+{ "mcpServers": { "flyte-cluster": {
+  "command": "uvx",
+  "args": ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
+           "--tool-groups",
+           "task,run,action,logs,app,trigger,project,secret,condition,identity"] } } }
+```
+
+If you would rather configure Claude Code or Codex globally instead of through the
+plugin, the same two entries go in their own config files: `.mcp.json` for Claude Code,
+`[mcp_servers.<name>]` in `~/.codex/config.toml` for Codex.
 
 ### Changing what is served
 
