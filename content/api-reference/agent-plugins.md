@@ -8,9 +8,9 @@ variants: +flyte +union
 
 [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) bundles agent
 skills and two MCP servers for Flyte. Install it and your coding agent can scaffold
-workflows, build and serve apps, run and inspect executions, migrate Flyte 1 code to
-Flyte 2, and deploy clusters, grounded in the Flyte SDK, the documentation, and
-optionally your own cluster.
+workflows, build and serve apps, run and inspect executions, migrate Flyte 1 code and
+Slurm batch jobs to Flyte 2, and deploy clusters, grounded in the Flyte SDK, the
+documentation, and optionally your own cluster.
 
 The same skills run in Claude Code, Codex, Hermes, opencode, pi, and any other harness
 that supports agent skills. Claude Code and Codex wire up the MCP servers for you;
@@ -24,11 +24,11 @@ are declared in the plugin's `.mcp.json`, which only some harnesses read.
 
 | Harness | Skills | MCP servers | Version pinning |
 |---------|--------|-------------|-----------------|
-| Claude Code | All 20 | Both, automatically | Yes, git ref |
-| Codex CLI | All 20 | Both, automatically | Yes, `--ref` |
+| Claude Code | All 21 | Both, automatically | Yes, git ref |
+| Codex CLI | All 21 | Both, automatically | Yes, `--ref` |
 | Hermes | Per-skill | Manual | No, default branch only |
-| opencode | All 20 | Manual | Yes, tag/branch/commit |
-| pi | All 20 | Manual | Yes, tag/commit |
+| opencode | All 21 | Manual | Yes, tag/branch/commit |
+| pi | All 21 | Manual | Yes, tag/commit |
 
 Claude Code reads `.mcp.json` by convention; Codex is pointed at the same file by
 `.codex-plugin/plugin.json`. The other three install the skills only. You can still add
@@ -92,7 +92,7 @@ pi install git:github.com/flyteorg/flyte-agent-plugins@<tag>      # pinned
 ## Skills
 
 The plugin ships skills across three areas: authoring Flyte 2 workflows and apps,
-migrating from Flyte 1, and deploying Flyte clusters.
+migrating existing workloads to Flyte 2, and deploying Flyte clusters.
 
 ### SDK & workflow authoring
 
@@ -119,6 +119,17 @@ migrating from Flyte 1, and deploying Flyte clusters.
 | `flyte-migrate-control-flow` | Migrate branching, dynamic workflows, failure handling, and fan-out to native Flyte 2 Python. |
 | `flyte-migrate-data-io` | Migrate data types and offloaded I/O (`FlyteFile`, `FlyteDirectory`, `StructuredDataset`) to `flyte.io`. |
 | `flyte-migrate-ml` | Migrate ML workloads (training, HPO, GPU, batch inference) and adopt net-new v2 patterns. |
+
+### Migration (Slurm → Flyte 2)
+
+| Skill | What it helps with |
+|-------|--------------------|
+| `flyte-migrate-slurm` | Port HPC batch workloads off Slurm: `#SBATCH` pragmas become `TaskEnvironment` config, job arrays become `flyte.map` or `asyncio.gather`, `--dependency` chains become plain Python, multi-node `srun` becomes a clustered task environment, and `--requeue` splits into retries, checkpoints, and spot capacity. |
+
+> [!NOTE]
+> Treat this one as a starting point rather than a mechanical translator, and review what
+> it produces. Multi-node, multi-GPU training ports over cleanly; tightly coupled MPI
+> simulation is the main thing that stays on Slurm.
 
 ### Deployment
 
