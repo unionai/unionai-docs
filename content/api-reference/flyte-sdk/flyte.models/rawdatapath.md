@@ -1,6 +1,6 @@
 ---
 title: RawDataPath
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,7 +42,6 @@ def from_local_folder(
 ) -> RawDataPath
 ```
 Create a new context attribute object, with local path given. Will be created if it doesn't exist.
-
 
 
 | Parameter | Type | Description |

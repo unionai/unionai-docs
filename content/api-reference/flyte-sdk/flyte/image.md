@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -144,8 +144,8 @@ registry, or other base properties.
 | `base_image` | `Optional[str]` | Base image to use for the image |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
 | `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
-| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be  used as a base image for other images, and additional layers cannot be added on top of it. If None  (default),  defaults to False for safety. |
-| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | Architecture(s) to build for. If not specified, the cloned image keeps the original's platform. Pass a tuple for multi-arch builds, e.g. `("linux/amd64", "linux/arm64")`. |
+| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | Architecture(s) to build for. If not specified, the cloned image keeps the original's platform. Pass a tuple for multi-arch builds, e.g. ``("linux/amd64", "linux/arm64")``. |
 
 ### from_base()
 
@@ -157,13 +157,13 @@ def from_base(
 Use this method to start with a pre-built base image. This image must already exist in the registry of course.
 
 Unlike `from_debian_base`, this method does **not** create a runtime user or chown
-the working directory. The resulting container runs as whatever `USER` your base
-image declares, with whatever `WORKDIR` the image (or builder) sets. The Flyte
+the working directory. The resulting container runs as whatever ``USER`` your base
+image declares, with whatever ``WORKDIR`` the image (or builder) sets. The Flyte
 runtime extracts the code bundle into that working directory at task start, so the
 resolved user must have read, write, and traverse permissions on it. Hardened bases
-(UBI `nonroot`, distroless `nonroot`, chainguard `nonroot`) commonly need a
-`.with_commands(["chmod 0755 /root && chown <uid>:<gid> /root"])` layer, or the
-equivalent for whatever path the image uses as `WorkingDir`.
+(UBI ``nonroot``, distroless ``nonroot``, chainguard ``nonroot``) commonly need a
+``.with_commands(["chmod 0755 /root && chown <uid>:<gid> /root"])`` layer, or the
+equivalent for whatever path the image uses as ``WorkingDir``.
 
 See the "Base image USER requirements" section of the Bring Your Own Image guide
 for the full pattern.
@@ -172,7 +172,7 @@ for the full pattern.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
+| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt; |
 
 ### from_debian_base()
 
@@ -276,6 +276,7 @@ For more information on the uv script format, see the documentation:
 
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `script` | `Path \| str` | path to the uv script |
@@ -288,7 +289,7 @@ For more information on the uv script format, see the documentation:
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
-| `secret_mounts` | `Optional[SecretRequest]` | Secret mounts to use for the image, default is None. |
+| `secret_mounts` | `Optional[SecretRequest]` | |
 
 **Returns:** Image
 

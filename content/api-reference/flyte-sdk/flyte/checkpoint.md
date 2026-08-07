@@ -1,6 +1,6 @@
 ---
 title: Checkpoint
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---

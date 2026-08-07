@@ -1,6 +1,6 @@
 ---
 title: SerializationContext
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,7 +59,6 @@ def get_entrypoint_path(
 ) -> str
 ```
 Get the entrypoint path for the task. This is used to determine the entrypoint for the task execution.
-
 
 
 | Parameter | Type | Description |

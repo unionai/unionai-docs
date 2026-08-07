@@ -1,6 +1,6 @@
 ---
 title: Glob
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.extras.shell`
 
-A multi-file output bundle. Lives in `/var/outputs/<output_name>/`.
+A multi-file output bundle. Lives in ``/var/outputs/<output_name>/``.
 
 
 ## Parameters

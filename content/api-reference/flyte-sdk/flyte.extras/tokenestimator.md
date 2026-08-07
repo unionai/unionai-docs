@@ -1,6 +1,6 @@
 ---
 title: TokenEstimator
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,14 +15,6 @@ Implement this on your record type and the `TokenBatcher` will
 call it automatically when no explicit `estimated_tokens` is passed
 to `TokenBatcher.submit`.
 
-```python
-@dataclass
-class Prompt:
-    text: str
-
-    def estimate_tokens(self) -> int:
-        return len(self.text) // 4 + 1
-```
 
 
 ```python

@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -67,7 +67,6 @@ def activate(
 Start the app
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
 | `wait` | `bool` | Wait for the app to reach activated state |
@@ -103,7 +102,6 @@ def deactivate(
 ) -> App
 ```
 Stop the app
-
 
 
 | Parameter | Type | Description |
@@ -245,7 +243,6 @@ def replace(
 Replace an existing app's that matches the given name, with a new spec and optionally labels.
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
@@ -314,11 +311,8 @@ def watch(
 ```
 Watch for the app to reach activated or deactivated state.
 
-Returns: The app in the desired state.
-Raises: RuntimeError if the app did not reach desired state and failed!
-
 
 | Parameter | Type | Description |
 |-|-|-|
-| `wait_for` | `WaitFor` | ["activated", "deactivated"] |
+| `wait_for` | `WaitFor` | ["activated", "deactivated"]  Returns: The app in the desired state. Raises: RuntimeError if the app did not reach desired state and failed! |
 

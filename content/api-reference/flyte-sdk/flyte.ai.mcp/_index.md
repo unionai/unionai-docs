@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.mcp
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,8 +45,8 @@ def resolve_tools(
 ```
 Return the set of MCP tool names to expose.
 
-If both `tool_groups` and `tools` are omitted, all tools are enabled. Otherwise pass
-either one (not both). The `core` group selects no tools; only the HTTP routes are served.
+If both ``tool_groups`` and ``tools`` are omitted, all tools are enabled. Otherwise pass
+either one (not both). The ``core`` group selects no tools; only the HTTP routes are served.
 
 
 
@@ -54,7 +54,7 @@ either one (not both). The `core` group selects no tools; only the HTTP routes a
 |-|-|-|
 | `tool_groups` | `list[str] \| None` | Group names from `TOOL_GROUP_MAPPING` |
 | `tools` | `list[str] \| None` | Explicit tool names from `ALL_MCP_TOOLS` |
-| `read_only` | `bool` | Drop every tool that is not annotated `readOnlyHint=True` |
+| `read_only` | `bool` | Drop every tool that is not annotated ``readOnlyHint=True`` |
 
 **Returns:** The enabled tool names
 

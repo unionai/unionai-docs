@@ -1,6 +1,6 @@
 ---
 title: Condition
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,11 +12,11 @@ layout: py_api
 A remote Condition registered within an action of a run.
 
 Conditions pause a run until an external signal is delivered. On the backend a condition is
-backed by a *condition action*, so a `Condition` simply wraps the condition
-`flyteidl2.workflow.run_definition_pb2.Action` it represents.
+backed by a *condition action*, so a ``Condition`` simply wraps the condition
+`Action` it represents.
 
-Use `Condition.listall` to discover the conditions of a run, `Condition.get` to look one up by
-name, and `Condition.signal` to resolve one with a typed payload.
+Use `listall` to discover the conditions of a run, `get` to look one up by
+name, and `signal` to resolve one with a typed payload.
 
 
 ## Parameters
@@ -35,9 +35,9 @@ class Condition(
 | Property | Type | Description |
 |-|-|-|
 | `action_name` | `str` | The name of the condition action backing this condition. |
-| `expected_type` | `type \| None` | Python type the condition expects for its payload, derived from `metadata.condition.type` populated by the backend. Returns `None` if the underlying action is not a condition or the backend has not yet exposed the type (older deployments / older `flyteidl2` stubs). |
+| `expected_type` | `type \| None` | Python type the condition expects for its payload, derived from ``metadata.condition.type`` populated by the backend. Returns ``None`` if the underlying action is not a condition or the backend has not yet exposed the type (older deployments / older ``flyteidl2`` stubs). |
 | `name` | `str` | The condition name (the condition action's declared name). |
-| `phase` | `str` | The current phase of the underlying condition action (e.g. `RUNNING`). |
+| `phase` | `str` | The current phase of the underlying condition action (e.g. ``RUNNING``). |
 | `run_name` | `str` | The name of the run this condition belongs to. |
 
 ## Methods
@@ -100,7 +100,7 @@ def listall(
 List all Conditions for a run, optionally filtered to a specific parent action.
 
 Conditions are condition actions, so this lists the run's actions filtered (server
-side) to `ACTION_TYPE_CONDITION`.
+side) to ``ACTION_TYPE_CONDITION``.
 
 
 
@@ -127,7 +127,7 @@ def signal(
 ```
 Signal the condition with the provided payload.
 
-The payload must be one of: `bool`, `int`, `float`, or `str`.
+The payload must be one of: ``bool``, ``int``, ``float``, or ``str``.
 
 
 

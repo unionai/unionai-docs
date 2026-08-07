@@ -1,6 +1,6 @@
 ---
 title: MemoryStore
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,60 +13,82 @@ Conversation transcript + path-addressed artifact memory backed by `flyte.io.Dir
 
 The construct combines two complementary stores:
 
-- `messages`: the live LLM conversation transcript (managed by
-  `flyte.ai.agents.Agent`; mutate via `MemoryStore.append` /
-  `MemoryStore.extend` only).
-- **Path-addressed files** under a working directory `root`. Use
-  `MemoryStore.write_text` / `MemoryStore.read_text` / `MemoryStore.write_json` /
-  `MemoryStore.read_json` / `MemoryStore.list_paths` for arbitrary named blobs that
+- ``messages``: the live LLM conversation transcript (managed by
+  `Agent`; mutate via `append` /
+  `extend` only).
+- **Path-addressed files** under a working directory ``root``. Use
+  `write_text` / `read_text` / `write_json` /
+  `read_json` / `list_paths` for arbitrary named blobs that
   should round-trip through Flyte object storage.
 
 Persistence is `flyte.io.Dir`-backed. Obtain a store via
-`MemoryStore.create` or `MemoryStore.get_or_create`; it saves to a deterministic
+`create` or `get_or_create`; it saves to a deterministic
 blob-store namespace under the active Flyte raw-data bucket, derived from
-its `key`. `MemoryStore.save` always targets that deterministic
-`MemoryStore.remote_path`. `MemoryStore.create`, `MemoryStore.get_or_create`, and
-`MemoryStore.save` are sync-by-default (`MemoryStore.create(...)`) with an
-`.aio(...)` companion for async call sites, mirroring the rest of the
+its ``key``. `save` always targets that deterministic
+`remote_path`. `create`, `get_or_create`, and
+`save` are sync-by-default (``MemoryStore.create(...)``) with an
+``.aio(...)`` companion for async call sites, mirroring the rest of the
 Flyte SDK.
 
-The on-disk layout under `root` looks like:
+The on-disk layout under ``root`` looks like::
 
-```text
-<root>/messages.json                           # transcript
-<root>/<your/path>.{txt,json,…}                # path-addressed entries
-<root>/meta/<encoded_path>.json                # per-entry metadata
-<root>/audit/log.jsonl                         # opt-in audit trail
-<root>/versions/<encoded_path>/<ts>_<sha>.txt  # opt-in version history
-```
+    &lt;root&gt;/messages.json                           # transcript
+    &lt;root&gt;/&lt;your/path&gt;.{txt,json,…}                # path-addressed entries
+    &lt;root&gt;/meta/&lt;encoded_path&gt;.json                # per-entry metadata
+    &lt;root&gt;/audit/log.jsonl                         # opt-in audit trail
+    &lt;root&gt;/versions/&lt;encoded_path&gt;/&lt;ts&gt;_&lt;sha&gt;.txt  # opt-in version history
 
 Optional capabilities (off-by-default unless noted):
 
-- `read_only_prefixes`: block direct writes into one or more prefixes
-  (e.g. `("memory/",)`). Useful when the agent must stage proposals
-  under `user/` and a separate trusted pipeline (sleep cycle, reviewer)
+- ``read_only_prefixes``: block direct writes into one or more prefixes
+  (e.g. ``("memory/",)``). Useful when the agent must stage proposals
+  under ``user/`` and a separate trusted pipeline (sleep cycle, reviewer)
   promotes them.
-- `audit` *(default: True)*: append every successful write to
-  `audit/log.jsonl`. Cheap and easy to disable.
-- `keep_versions`: snapshot every successful write under
-  `versions/<encoded_path>/<ts>_<sha>.txt` for full history (≈ 2x
+- ``audit`` *(default: True)*: append every successful write to
+  ``audit/log.jsonl``. Cheap and easy to disable.
+- ``keep_versions``: snapshot every successful write under
+  ``versions/<encoded_path>/<ts>_<sha>.txt`` for full history (≈ 2x
   storage on every mutation).
 
-Optimistic concurrency is supported via the `expected_sha=` argument on
-`MemoryStore.write_text` / `MemoryStore.write_json`; mismatches raise
-`flyte.ai.agents.ConcurrencyError`.
+Optimistic concurrency is supported via the ``expected_sha=`` argument on
+`write_text` / `write_json`; mismatches raise
+`ConcurrencyError`.
 
-Public I/O methods are async by default. Each one has a `*_sync`
+Public I/O methods are async by default. Each one has a ``*_sync``
 companion that runs the same logic on the calling thread; the async
 version simply dispatches the sync version to a background thread via
 `asyncio.to_thread`.
 
-Every `flyte.ai.agents.MemoryStore` is **keyed**: it is bound to a deterministic
-blob-store namespace derived from its `key`. Obtain one via
-`MemoryStore.create` or `MemoryStore.get_or_create` (the recommended entry points);
+Every `MemoryStore` is **keyed**: it is bound to a deterministic
+blob-store namespace derived from its ``key``. Obtain one via
+`create` or `get_or_create` (the recommended entry points);
 direct construction is supported for serialization / advanced use but still
-requires a `key`. There is no such thing as an unkeyed / ephemeral store.
+requires a ``key``. There is no such thing as an unkeyed / ephemeral store.
 
+Parameters
+----------
+key:
+    Deterministic memory key (a single path segment). Determines the
+    durable `remote_path` under the active raw-data root.
+messages:
+    Pre-existing conversation transcript. Defaults to empty.
+root:
+    Local working directory backing the store. When omitted, a fresh
+    temporary directory is created (and automatically cleaned up when
+    the `MemoryStore` is garbage-collected). When pointing at an
+    existing directory that contains ``messages.json``, the transcript
+    is auto-loaded. This is an internal staging directory; callers
+    normally never set it.
+remote_path:
+    Durable destination for `save`. Usually resolved from ``key``
+    (and the Flyte context) by `create` / `get_or_create`;
+    when omitted it is resolved lazily on first `save` / hydration.
+read_only_prefixes:
+    Prefixes that direct writes are not permitted to target.
+audit:
+    Enable the append-only audit log.
+keep_versions:
+    Snapshot every successful write under ``versions/``.
 
 
 ## Parameters
@@ -84,36 +106,36 @@ class MemoryStore(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `key` | `str` | Deterministic memory key (a single path segment). Determines the durable `MemoryStore.remote_path` under the active raw-data root. |
-| `messages` | `list[dict[str, Any]]` | Pre-existing conversation transcript. Defaults to empty. |
-| `root` | `pathlib.Path \| str \| None` | Local working directory backing the store. When omitted, a fresh temporary directory is created (and automatically cleaned up when the `flyte.ai.agents.MemoryStore` is garbage-collected). When pointing at an existing directory that contains `messages.json`, the transcript is auto-loaded. This is an internal staging directory; callers normally never set it. |
-| `remote_path` | `str \| None` | Durable destination for `MemoryStore.save`. Usually resolved from `key` (and the Flyte context) by `MemoryStore.create` / `MemoryStore.get_or_create`; when omitted it is resolved lazily on first `MemoryStore.save` / hydration. |
-| `read_only_prefixes` | `tuple[str, ...]` | Prefixes that direct writes are not permitted to target. |
-| `audit` | `bool` | Enable the append-only audit log. |
-| `keep_versions` | `bool` | Snapshot every successful write under `versions/`. |
+| `key` | `str` | |
+| `messages` | `list[dict[str, Any]]` | |
+| `root` | `pathlib.Path \| str \| None` | |
+| `remote_path` | `str \| None` | |
+| `read_only_prefixes` | `tuple[str, ...]` | |
+| `audit` | `bool` | |
+| `keep_versions` | `bool` | |
 
 ## Methods
 
 | Method | Description |
 |-|-|
 | [`append()`](#append) | Append a single message to the conversation transcript. |
-| [`audit_tail()`](#audit_tail) | Return the last `n` audit events (most recent last). |
-| [`audit_tail_sync()`](#audit_tail_sync) | Synchronous variant of `MemoryStore.audit_tail`. |
+| [`audit_tail()`](#audit_tail) | Return the last ``n`` audit events (most recent last). |
+| [`audit_tail_sync()`](#audit_tail_sync) | Synchronous variant of `audit_tail`. |
 | [`create()`](#create) | Create a new keyed memory store at its deterministic remote path. |
-| [`current_sha()`](#current_sha) | Return the sha256 of `rel_path` (empty string if it does not exist). |
+| [`current_sha()`](#current_sha) | Return the sha256 of ``rel_path`` (empty string if it does not exist). |
 | [`exists()`](#exists) |  |
 | [`extend()`](#extend) | Append a sequence of messages to the conversation transcript. |
-| [`flush_messages()`](#flush_messages) | Persist the live transcript to `messages.json` under the working root. |
-| [`flush_messages_sync()`](#flush_messages_sync) | Synchronous variant of `MemoryStore.flush_messages`. |
-| [`get_meta()`](#get_meta) | Return the `flyte.ai.agents.MemoryMeta` sidecar for `rel_path` if present. |
+| [`flush_messages()`](#flush_messages) | Persist the live transcript to ``messages.json`` under the working root. |
+| [`flush_messages_sync()`](#flush_messages_sync) | Synchronous variant of `flush_messages`. |
+| [`get_meta()`](#get_meta) | Return the `MemoryMeta` sidecar for ``rel_path`` if present. |
 | [`get_or_create()`](#get_or_create) | Load a keyed memory store if present, otherwise create it. |
-| [`list_paths()`](#list_paths) | List memory file paths under `prefix` (POSIX-relative, sorted). |
-| [`read_json()`](#read_json) | Return the JSON-decoded contents of `rel_path` (or `default` if empty/missing). |
-| [`read_text()`](#read_text) | Return the UTF-8 contents of `rel_path` (or `default` if missing). |
+| [`list_paths()`](#list_paths) | List memory file paths under ``prefix`` (POSIX-relative, sorted). |
+| [`read_json()`](#read_json) | Return the JSON-decoded contents of ``rel_path`` (or ``default`` if empty/missing). |
+| [`read_text()`](#read_text) | Return the UTF-8 contents of ``rel_path`` (or ``default`` if missing). |
 | [`remote_path_for_key()`](#remote_path_for_key) | Return the deterministic blob-store path for a keyed memory store. |
 | [`save()`](#save) | Serialize this memory to its deterministic keyed remote path. |
-| [`write_json()`](#write_json) | JSON-encode `obj` and write it via `MemoryStore.write_text`. |
-| [`write_text()`](#write_text) | Write `content` to `rel_path` with optional concurrency + audit + versioning. |
+| [`write_json()`](#write_json) | JSON-encode ``obj`` and write it via `write_text`. |
+| [`write_text()`](#write_text) | Write ``content`` to ``rel_path`` with optional concurrency + audit + versioning. |
 
 
 ### append()
@@ -137,7 +159,7 @@ def audit_tail(
     n: int = 20,
 ) -> list[dict[str, Any]]
 ```
-Return the last `n` audit events (most recent last).
+Return the last ``n`` audit events (most recent last).
 
 Returns an empty list when auditing is disabled or the log does not
 exist yet.
@@ -154,7 +176,7 @@ def audit_tail_sync(
     n: int = 20,
 ) -> list[dict[str, Any]]
 ```
-Synchronous variant of `MemoryStore.audit_tail`.
+Synchronous variant of `audit_tail`.
 
 
 | Parameter | Type | Description |
@@ -182,12 +204,12 @@ def create(
 ```
 Create a new keyed memory store at its deterministic remote path.
 
-Call synchronously via `MemoryStore.create(...)`; in async contexts use
-`MemoryStore.create.aio(...)`.
+Call synchronously via ``MemoryStore.create(...)``; in async contexts use
+``MemoryStore.create.aio(...)``.
 
-Raises `flyte.ai.agents.MemoryStoreError` if the keyed blob-store path already
+Raises `MemoryStoreError` if the keyed blob-store path already
 exists. This preserves the explicit "create means new" contract while
-keeping subsequent saves deterministic via `MemoryStore.save`.
+keeping subsequent saves deterministic via `save`.
 
 
 | Parameter | Type | Description |
@@ -213,9 +235,9 @@ def current_sha(
     rel_path: str,
 ) -> str
 ```
-Return the sha256 of `rel_path` (empty string if it does not exist).
+Return the sha256 of ``rel_path`` (empty string if it does not exist).
 
-Sync-by-default (`memory.current_sha(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.current_sha(...)``) with an ``.aio(...)`` companion.
 
 
 | Parameter | Type | Description |
@@ -258,7 +280,7 @@ Append a sequence of messages to the conversation transcript.
 ```python
 def flush_messages()
 ```
-Persist the live transcript to `messages.json` under the working root.
+Persist the live transcript to ``messages.json`` under the working root.
 
 
 ### flush_messages_sync()
@@ -266,7 +288,7 @@ Persist the live transcript to `messages.json` under the working root.
 ```python
 def flush_messages_sync()
 ```
-Synchronous variant of `MemoryStore.flush_messages`.
+Synchronous variant of `flush_messages`.
 
 
 ### get_meta()
@@ -281,9 +303,9 @@ def get_meta(
     rel_path: str,
 ) -> MemoryMeta | None
 ```
-Return the `flyte.ai.agents.MemoryMeta` sidecar for `rel_path` if present.
+Return the `MemoryMeta` sidecar for ``rel_path`` if present.
 
-Sync-by-default (`memory.get_meta(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.get_meta(...)``) with an ``.aio(...)`` companion.
 
 
 | Parameter | Type | Description |
@@ -311,8 +333,8 @@ def get_or_create(
 ```
 Load a keyed memory store if present, otherwise create it.
 
-Call synchronously via `MemoryStore.get_or_create(...)`; in async contexts
-use `MemoryStore.get_or_create.aio(...)`.
+Call synchronously via ``MemoryStore.get_or_create(...)``; in async contexts
+use ``MemoryStore.get_or_create.aio(...)``.
 
 
 | Parameter | Type | Description |
@@ -333,10 +355,10 @@ def list_paths(
     prefix: str = '',
 ) -> list[str]
 ```
-List memory file paths under `prefix` (POSIX-relative, sorted).
+List memory file paths under ``prefix`` (POSIX-relative, sorted).
 
-Internal bookkeeping (`audit/`, `meta/`, `versions/`) and the
-conversation transcript (`messages.json`) are excluded. Symlinked
+Internal bookkeeping (``audit/``, ``meta/``, ``versions/``) and the
+conversation transcript (``messages.json``) are excluded. Symlinked
 files are also skipped — both for safety (they can point outside
 the root) and to keep the listing deterministic.
 
@@ -358,9 +380,9 @@ def read_json(
     default: Any = None,
 ) -> Any
 ```
-Return the JSON-decoded contents of `rel_path` (or `default` if empty/missing).
+Return the JSON-decoded contents of ``rel_path`` (or ``default`` if empty/missing).
 
-Sync-by-default (`memory.read_json(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.read_json(...)``) with an ``.aio(...)`` companion.
 
 
 | Parameter | Type | Description |
@@ -381,9 +403,9 @@ def read_text(
     default: str = '',
 ) -> str
 ```
-Return the UTF-8 contents of `rel_path` (or `default` if missing).
+Return the UTF-8 contents of ``rel_path`` (or ``default`` if missing).
 
-Sync-by-default (`memory.read_text(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.read_text(...)``) with an ``.aio(...)`` companion.
 
 
 | Parameter | Type | Description |
@@ -404,13 +426,11 @@ def remote_path_for_key(
 Return the deterministic blob-store path for a keyed memory store.
 
 The path is rooted at the active raw-data bucket/storage root, excluding
-bucket-internal sharding and run-specific prefixes:
+bucket-internal sharding and run-specific prefixes::
 
-```python
-{storage_root}/agents/memory-store/v0/{org}/{project}/{domain}/{key}
-```
+    {storage_root}/agents/memory-store/v0/{org}/{project}/{domain}/{key}
 
-The `agents/memory-store` prefix and `v0` version come from
+The ``agents/memory-store`` prefix and ``v0`` version come from
 `_MEMORY_NAMESPACE` / `_MEMORY_SCHEMA_VERSION`.
 
 
@@ -433,13 +453,13 @@ def save()
 ```
 Serialize this memory to its deterministic keyed remote path.
 
-Call synchronously via `memory.save(...)`; in async contexts use
-`memory.save.aio(...)`.
+Call synchronously via ``memory.save(...)``; in async contexts use
+``memory.save.aio(...)``.
 
-Flushes the conversation transcript to `messages.json` under the working
+Flushes the conversation transcript to ``messages.json`` under the working
 root, then uploads the whole root (live files plus audit log, metadata
-sidecars, and any version snapshots) to `MemoryStore.remote_path` (resolved
-from `MemoryStore.key` if not already set).
+sidecars, and any version snapshots) to `remote_path` (resolved
+from `key` if not already set).
 
 
 ### write_json()
@@ -458,9 +478,9 @@ def write_json(
     expected_sha: str | None = None,
 ) -> MemoryMeta
 ```
-JSON-encode `obj` and write it via `MemoryStore.write_text`.
+JSON-encode ``obj`` and write it via `write_text`.
 
-Sync-by-default (`memory.write_json(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.write_json(...)``) with an ``.aio(...)`` companion.
 
 
 | Parameter | Type | Description |
@@ -487,9 +507,9 @@ def write_text(
     expected_sha: str | None = None,
 ) -> MemoryMeta
 ```
-Write `content` to `rel_path` with optional concurrency + audit + versioning.
+Write ``content`` to ``rel_path`` with optional concurrency + audit + versioning.
 
-Sync-by-default (`memory.write_text(...)`) with an `.aio(...)` companion.
+Sync-by-default (``memory.write_text(...)``) with an ``.aio(...)`` companion.
 
 
 
@@ -499,7 +519,7 @@ Sync-by-default (`memory.write_text(...)`) with an `.aio(...)` companion.
 | `content` | `str` | UTF-8 string to write. |
 | `actor` | `str` | Free-form identifier of the writer (typically the tool or agent name). Recorded in the audit log + metadata sidecar. |
 | `reason` | `str` | Optional human-readable explanation. |
-| `expected_sha` | `str \| None` | When provided, the write succeeds only if the current sha256 of `rel_path` matches. Mismatches raise `flyte.ai.agents.ConcurrencyError`. |
+| `expected_sha` | `str \| None` | When provided, the write succeeds only if the current sha256 of ``rel_path`` matches. Mismatches raise `ConcurrencyError`. |
 
-**Returns:** The `flyte.ai.agents.MemoryMeta` describing the new content.
+**Returns:** The `MemoryMeta` describing the new content.
 

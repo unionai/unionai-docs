@@ -1,6 +1,6 @@
 ---
 title: TokenBatcher
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,14 +18,6 @@ token-specific parameter names (`inference_fn`, `token_estimator`,
 Also checks the `TokenEstimator` protocol (`estimate_tokens()`)
 in addition to `CostEstimator` (`estimate_cost()`).
 
-```python
-async def inference(batch: list[Prompt]) -> list[str]:
-    ...
-
-async with TokenBatcher(inference_fn=inference) as batcher:
-    future = await batcher.submit(Prompt(text="Hello"))
-    result = await future
-```
 
 
 ## Parameters
