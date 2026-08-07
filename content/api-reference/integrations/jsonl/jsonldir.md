@@ -1,6 +1,6 @@
 ---
 title: JsonlDir
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,26 +19,22 @@ Shard files are named `part-00000.jsonl` (or `.jsonl.zst` for
 compressed shards), zero-padded to 5 digits and sorted alphabetically
 on read. Mixed compression within a single directory is supported.
 
-Example (Async read):
+Example (Async read)::
 
-```python
-@env.task
-async def process(d: JsonlDir):
-    async for record in d.iter_records():
-        print(record)
-```
+    @env.task
+    async def process(d: JsonlDir):
+        async for record in d.iter_records():
+            print(record)
 
-Example (Async write):
+Example (Async write)::
 
-```python
-@env.task
-async def create() -> JsonlDir:
-    d = JsonlDir.new_remote("output_shards")
-    async with d.writer(max_records_per_shard=1000) as w:
-        for i in range(5000):
-            await w.write({"id": i})
-    return d
-```
+    @env.task
+    async def create() -&gt; JsonlDir:
+        d = JsonlDir.new_remote("output_shards")
+        async with d.writer(max_records_per_shard=1000) as w:
+            for i in range(5000):
+                await w.write({"id": i})
+        return d
 
 
 ## Parameters
@@ -46,9 +42,9 @@ async def create() -> JsonlDir:
 ```python
 class JsonlDir(
     path: str,
-    name: typing.Optional[str] = None,
-    format: str = 'jsonl',
-    hash: typing.Optional[str] = None,
+    name: typing.Optional[str],
+    format: str,
+    hash: typing.Optional[str],
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -70,7 +66,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `is_empty` | `bool` | True when this is a sentinel `Dir` produced by `flyte.io.EmptyDir`/`Dir.empty()` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with `Optional[Dir]` (which the type engine cannot round-trip correctly through `SerializableType`). |
+| `is_empty` | `bool` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
 | `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
@@ -79,7 +75,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
-| [`empty()`](#empty) | Return a sentinel `Dir` representing 'no directory was produced'. |
+| [`empty()`](#empty) | Return a sentinel ``Dir`` representing 'no directory was produced'. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -109,7 +105,7 @@ validated to form a valid model.
 
 ```python
 def download(
-    local_path: Optional[Union[str, Path]] = None,
+    local_path: Optional[Union[str, Path]],
 ) -> str
 ```
 Asynchronously download the entire directory to a local path.
@@ -147,7 +143,7 @@ async def download_to_path(d: Dir) -> str:
 
 ```python
 def download_sync(
-    local_path: Optional[Union[str, Path]] = None,
+    local_path: Optional[Union[str, Path]],
 ) -> str
 ```
 Synchronously download the entire directory to a local path.
@@ -185,11 +181,11 @@ def download_to_path_sync(d: Dir) -> str:
 ```python
 def empty()
 ```
-Return a sentinel `Dir` representing 'no directory was produced'.
+Return a sentinel ``Dir`` representing 'no directory was produced'.
 
 Use as the return value when a task may or may not produce an output directory; the
-caller can check `Dir.is_empty` to detect the sentinel. Round-trips cleanly
-through Flyte serialization (unlike `Optional[Dir]`).
+caller can check :attr:`Dir.is_empty` to detect the sentinel. Round-trips cleanly
+through Flyte serialization (unlike ``Optional[Dir]``).
 
 
 ### exists()
@@ -247,7 +243,7 @@ True if the directory exists, False otherwise
 ```python
 def from_existing_remote(
     remote_path: str,
-    dir_cache_key: Optional[str] = None,
+    dir_cache_key: Optional[str],
 ) -> Dir[T]
 ```
 Create a Dir reference from an existing remote directory.
@@ -286,9 +282,9 @@ async def process_with_cache_key() -> int:
 ```python
 def from_local(
     local_path: Union[str, Path],
-    remote_destination: Optional[str] = None,
-    dir_cache_key: Optional[str] = None,
-    batch_size: Optional[int] = None,
+    remote_destination: Optional[str],
+    dir_cache_key: Optional[str],
+    batch_size: Optional[int],
 ) -> Dir[T]
 ```
 Asynchronously create a new Dir by uploading a local directory to remote storage.
@@ -343,8 +339,8 @@ async def upload_with_cache_key() -> Dir:
 ```python
 def from_local_sync(
     local_path: Union[str, Path],
-    remote_destination: Optional[str] = None,
-    dir_cache_key: Optional[str] = None,
+    remote_destination: Optional[str],
+    dir_cache_key: Optional[str],
 ) -> Dir[T]
 ```
 Synchronously create a new Dir by uploading a local directory to remote storage.
@@ -462,8 +458,8 @@ def read_specific_file_sync(d: Dir) -> str:
 
 ```python
 def iter_arrow_batches(
-    batch_size: int = 65536,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> AsyncGenerator[Any, None]
 ```
 Async generator that yields Arrow RecordBatches across all shards.
@@ -479,8 +475,8 @@ Async generator that yields Arrow RecordBatches across all shards.
 
 ```python
 def iter_arrow_batches_sync(
-    batch_size: int = 65536,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> Generator[Any, None, None]
 ```
 Sync generator that yields Arrow RecordBatches across all shards.
@@ -496,10 +492,10 @@ Sync generator that yields Arrow RecordBatches across all shards.
 
 ```python
 def iter_batches(
-    batch_size: int = 1000,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
-    prefetch: bool = True,
-    queue_size: int = 8192,
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
+    prefetch: bool,
+    queue_size: int,
 ) -> AsyncGenerator[list[dict[str, Any]], None]
 ```
 Async generator that yields lists of records in batches.
@@ -517,8 +513,8 @@ Async generator that yields lists of records in batches.
 
 ```python
 def iter_batches_sync(
-    batch_size: int = 1000,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> Generator[list[dict[str, Any]], None, None]
 ```
 Sync generator that yields lists of records in batches.
@@ -534,9 +530,9 @@ Sync generator that yields lists of records in batches.
 
 ```python
 def iter_records(
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
-    prefetch: bool = True,
-    queue_size: int = 8192,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
+    prefetch: bool,
+    queue_size: int,
 ) -> AsyncGenerator[dict[str, Any], None]
 ```
 Async generator that yields records from all shards in sorted order.
@@ -550,7 +546,7 @@ than one shard in memory.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable `(line_number, raw_line, exception) -> None`. |
+| `on_error` | `Literal['raise', 'skip'] \| ErrorHandler` | `"raise"` (default), `"skip"`, or a callable `(line_number, raw_line, exception) -&gt; None`. |
 | `prefetch` | `bool` | Overlap next-shard network I/O with current-shard processing for higher throughput. |
 | `queue_size` | `int` | Memory safety bound on the read-ahead buffer (default 8192). |
 
@@ -558,7 +554,7 @@ than one shard in memory.
 
 ```python
 def iter_records_sync(
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> Generator[dict[str, Any], None, None]
 ```
 Sync generator that yields records from all shards in sorted order.
@@ -665,22 +661,14 @@ It takes context as an argument since that's what pydantic-core passes when call
 
 ```python
 def new_remote(
-    dir_name: Optional[str] = None,
-    hash: Optional[str] = None,
+    dir_name: Optional[str],
+    hash: Optional[str],
 ) -> Dir[T]
 ```
 Create a new Dir reference for a remote directory that will be written to.
 
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
-
-```python
-@env.task
-async def create() -> Dir:
-    d = Dir.new_remote("output")
-    # write files into d ...
-    return d
-```
 
 
 
@@ -723,8 +711,8 @@ Internal: Check if incoming schema matches Dir schema. Not intended for direct u
 
 ```python
 def walk(
-    recursive: bool = True,
-    max_depth: Optional[int] = None,
+    recursive: bool,
+    max_depth: Optional[int],
 ) -> AsyncIterator[File[T]]
 ```
 Asynchronously walk through the directory and yield File objects.
@@ -778,9 +766,9 @@ Yields:
 
 ```python
 def walk_sync(
-    recursive: bool = True,
-    file_pattern: str = '*',
-    max_depth: Optional[int] = None,
+    recursive: bool,
+    file_pattern: str,
+    max_depth: Optional[int],
 ) -> Iterator[File[T]]
 ```
 Synchronously walk through the directory and yield File objects.
@@ -834,11 +822,11 @@ Yields:
 
 ```python
 def writer(
-    shard_extension: str = '.jsonl',
-    max_records_per_shard: int | None = None,
-    max_bytes_per_shard: int = 268435456,
-    flush_bytes: int = 1048576,
-    compression_level: int = 3,
+    shard_extension: str,
+    max_records_per_shard: int | None,
+    max_bytes_per_shard: int,
+    flush_bytes: int,
+    compression_level: int,
 ) -> AsyncGenerator[JsonlDirWriter, None]
 ```
 Async context manager returning a `JsonlDirWriter`.
@@ -860,11 +848,11 @@ next available index, so appending to an existing directory is safe.
 
 ```python
 def writer_sync(
-    shard_extension: str = '.jsonl',
-    max_records_per_shard: int | None = None,
-    max_bytes_per_shard: int = 268435456,
-    flush_bytes: int = 1048576,
-    compression_level: int = 3,
+    shard_extension: str,
+    max_records_per_shard: int | None,
+    max_bytes_per_shard: int,
+    flush_bytes: int,
+    compression_level: int,
 ) -> Generator[JsonlDirWriterSync, None, None]
 ```
 Sync context manager returning a `JsonlDirWriterSync`.

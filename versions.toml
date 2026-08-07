@@ -5,11 +5,21 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.18.0"
+stable = "v2.5.18.1"
 enumerated = [
   "v2.5.16.3",
 ]
-# v2.5.19.0 is deliberately absent. flyte 2.5.19 was yanked on PyPI ("should be
-# minor" -- it added the whole flyte.artifacts package in a patch release), so the
-# cut named after it documented an API surface nobody can install. The git tag
-# stays as history; withdrawing it from here stops /docs/v2.5.19.0 being served.
+# Two cuts are deliberately absent from `enumerated`, so neither is served.
+#
+# v2.5.19.0 -- flyte 2.5.19 was yanked on PyPI ("should be minor": it added the
+# whole flyte.artifacts package in a patch release), so the cut named after it
+# documented an API surface nobody can install.
+#
+# v2.5.18.0 -- corrected the SDK half but still carried the flyteplugins-* 2.5.19
+# API reference, which is being yanked for the same reason. Superseded by
+# v2.5.18.1, which rolls those plugin pages back too.
+#
+# Both git tags stay as history; leaving them out here is what stops /docs/<tag>
+# serving content for releases that do not exist. Note `manifest.py --promote`
+# would rotate the outgoing stable INTO enumerated -- correct in the normal case,
+# wrong for a withdrawal, so these edits are deliberately by hand.

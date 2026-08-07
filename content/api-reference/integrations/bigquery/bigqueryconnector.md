@@ -1,6 +1,6 @@
 ---
 title: BigQueryConnector
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,9 +25,9 @@ layout: py_api
 ```python
 def create(
     task_template: flyteidl2.core.tasks_pb2.TaskTemplate,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    google_application_credentials: typing.Optional[str] = None,
-    **kwargs,
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
+    google_application_credentials: typing.Optional[str],
+    kwargs,
 ) -> flyteplugins.bigquery.connector.BigQueryMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -38,15 +38,15 @@ Return a resource meta that can be used to get the status of the task.
 | `task_template` | `flyteidl2.core.tasks_pb2.TaskTemplate` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
 | `google_application_credentials` | `typing.Optional[str]` | |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### delete()
 
 ```python
 def delete(
     resource_meta: flyteplugins.bigquery.connector.BigQueryMetadata,
-    google_application_credentials: typing.Optional[str] = None,
-    **kwargs,
+    google_application_credentials: typing.Optional[str],
+    kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -56,15 +56,15 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 |-|-|-|
 | `resource_meta` | `flyteplugins.bigquery.connector.BigQueryMetadata` | |
 | `google_application_credentials` | `typing.Optional[str]` | |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### get()
 
 ```python
 def get(
     resource_meta: flyteplugins.bigquery.connector.BigQueryMetadata,
-    google_application_credentials: typing.Optional[str] = None,
-    **kwargs,
+    google_application_credentials: typing.Optional[str],
+    kwargs,
 ) -> flyte.connectors._connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -76,14 +76,14 @@ and the propeller will write the structured dataset to the blob store.
 |-|-|-|
 | `resource_meta` | `flyteplugins.bigquery.connector.BigQueryMetadata` | |
 | `google_application_credentials` | `typing.Optional[str]` | |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### get_logs()
 
 ```python
 def get_logs(
     resource_meta: ~M,
-    **kwargs,
+    kwargs,
 ) -> typing.Union[typing.Coroutine[typing.Any, typing.Any, flyteidl2.connector.connector_pb2.GetTaskLogsResponse], typing.AsyncIterator[flyteidl2.connector.connector_pb2.GetTaskLogsResponse]]
 ```
 Return the task execution logs. Populate `body.lines` (structured
@@ -91,7 +91,7 @@ LogLine entries with timestamp + originator) in the returned
 GetTaskLogsResponse.
 
 Overrides may be a plain async function returning a single
-`GetTaskLogsResponse`, or an async generator yielding multiple
+``GetTaskLogsResponse``, or an async generator yielding multiple
 responses (preferred for paginated logs — the connector server
 handles both shapes).
 
@@ -99,14 +99,14 @@ handles both shapes).
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `~M` | |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: ~M,
-    **kwargs,
+    kwargs,
 ) -> flyteidl2.connector.connector_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -115,5 +115,5 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `~M` | |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 

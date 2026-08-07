@@ -1,6 +1,6 @@
 ---
 title: Elastic
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,11 +13,9 @@ Elastic defines the configuration for running a PyTorch elastic job using torch.
 
 When a worker fails (e.g. CUDA OOM), the elastic agent detects the failure and
 restarts all workers as a group. Each restart cycle has a cost determined by the
-NCCL timeout settings below. The total worst-case time before the job fails is:
+NCCL timeout settings below. The total worst-case time before the job fails is::
 
-```python
-(max_restarts + 1) * (nccl_collective_timeout_sec + nccl_heartbeat_timeout_sec)
-```
+    (max_restarts + 1) * (nccl_collective_timeout_sec + nccl_heartbeat_timeout_sec)
 
 For example, with defaults (max_restarts=3, collective=600s, heartbeat=300s):
 4 * 900s = 60 min. With aggressive settings (max_restarts=0, collective=60s,
@@ -31,15 +29,15 @@ heartbeat=60s): 1 * 120s = 2 min.
 class Elastic(
     nnodes: typing.Union[int, str],
     nproc_per_node: int,
-    rdzv_backend: typing.Literal['c10d', 'etcd', 'etcd-v2'] = 'c10d',
-    run_policy: typing.Optional[flyteplugins.pytorch.task.RunPolicy] = None,
-    monitor_interval: int = 3,
-    max_restarts: int = 3,
-    rdzv_configs: typing.Dict[str, typing.Any] = <factory>,
-    nccl_heartbeat_timeout_sec: typing.Optional[int] = 300,
-    nccl_async_error_handling: bool = False,
-    nccl_collective_timeout_sec: typing.Optional[int] = None,
-    nccl_enable_monitoring: bool = True,
+    rdzv_backend: typing.Literal['c10d', 'etcd', 'etcd-v2'],
+    run_policy: typing.Optional[flyteplugins.pytorch.task.RunPolicy],
+    monitor_interval: int,
+    max_restarts: int,
+    rdzv_configs: typing.Dict[str, typing.Any],
+    nccl_heartbeat_timeout_sec: typing.Optional[int],
+    nccl_async_error_handling: bool,
+    nccl_collective_timeout_sec: typing.Optional[int],
+    nccl_enable_monitoring: bool,
 )
 ```
 | Parameter | Type | Description |

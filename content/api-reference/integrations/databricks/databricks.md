@@ -1,6 +1,6 @@
 ---
 title: Databricks
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,15 +21,15 @@ cluster and authentication settings.
 
 ```python
 class Databricks(
-    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
-    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
-    executor_path: typing.Optional[str] = None,
-    applications_path: typing.Optional[str] = None,
-    driver_pod: typing.Optional[flyte._pod.PodTemplate] = None,
-    executor_pod: typing.Optional[flyte._pod.PodTemplate] = None,
-    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]] = None,
-    databricks_instance: typing.Optional[str] = None,
-    databricks_token: typing.Optional[str] = None,
+    spark_conf: typing.Optional[typing.Dict[str, str]],
+    hadoop_conf: typing.Optional[typing.Dict[str, str]],
+    executor_path: typing.Optional[str],
+    applications_path: typing.Optional[str],
+    driver_pod: typing.Optional[flyte._pod.PodTemplate],
+    executor_pod: typing.Optional[flyte._pod.PodTemplate],
+    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]],
+    databricks_instance: typing.Optional[str],
+    databricks_token: typing.Optional[str],
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: WorkerGroup
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,9 +17,9 @@ Configuration for a group of dask worker pods
 
 ```python
 class WorkerGroup(
-    number_of_workers: typing.Optional[int] = 1,
-    image: typing.Optional[str] = None,
-    resources: typing.Optional[flyte._resources.Resources] = None,
+    number_of_workers: typing.Optional[int],
+    image: typing.Optional[str],
+    resources: typing.Optional[flyte._resources.Resources],
 )
 ```
 | Parameter | Type | Description |

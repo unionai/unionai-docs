@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConfig
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,7 +26,7 @@ class SnowflakeConfig(
     schema: str,
     warehouse: str,
     user: str,
-    connection_kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    connection_kwargs: typing.Optional[typing.Dict[str, typing.Any]],
 )
 ```
 | Parameter | Type | Description |
