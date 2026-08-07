@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -55,6 +55,7 @@ def download_code_bundle(
 Downloads the code bundle if it is not already downloaded.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `code_bundle` | `flyte.models.CodeBundle` | The code bundle to download. |
@@ -69,6 +70,7 @@ def get_proto_extended_resources(
 ) -> typing.Optional[flyteidl2.core.tasks_pb2.ExtendedResources]
 ```
 TODO Implement partitioning logic string handling for GPU
+
 
 
 | Parameter | Type | Description |
@@ -111,24 +113,28 @@ def lazy_module(
 )
 ```
 This function is used to lazily import modules.  It is used in the following way:
-.. code-block:: python
-    from flytekit.lazy_import import lazy_module
-    sklearn = lazy_module("sklearn")
-    sklearn.svm.SVC()
+
+```python
+from flyte._utils.lazy_module import lazy_module
+
+sklearn = lazy_module("sklearn")
+sklearn.svm.SVC()
+```
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `fullname` |  | |
+| `fullname` |  | The full name of the module to import |
 
 #### pod_spec_from_resources()
 
 ```python
 def pod_spec_from_resources(
-    primary_container_name: str,
-    requests: typing.Optional[flyte._resources.Resources],
-    limits: typing.Optional[flyte._resources.Resources],
-    k8s_gpu_resource_key: str,
+    primary_container_name: str = 'primary',
+    requests: typing.Optional[flyte._resources.Resources] = None,
+    limits: typing.Optional[flyte._resources.Resources] = None,
+    k8s_gpu_resource_key: str = 'nvidia.com/gpu',
 ) -> V1PodSpec
 ```
 | Parameter | Type | Description |

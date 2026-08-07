@@ -1,6 +1,6 @@
 ---
 title: ActionID
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,10 +17,10 @@ A class representing the ID of an Action, nested within a Run. This is used to i
 ```python
 class ActionID(
     name: str,
-    run_name: str | None,
-    project: str | None,
-    domain: str | None,
-    org: str | None,
+    run_name: str | None = None,
+    project: str | None = None,
+    domain: str | None = None,
+    org: str | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -37,7 +37,7 @@ class ActionID(
 |-|-|
 | [`create_random()`](#create_random) |  |
 | [`new_sub_action()`](#new_sub_action) | Create a new sub-run with the given name. |
-| [`new_sub_action_from()`](#new_sub_action_from) | Make a deterministic name. |
+| [`new_sub_action_from()`](#new_sub_action_from) | Make a deterministic name from the parent action name, the task identity, the inputs. |
 | [`unique_id_str()`](#unique_id_str) | Generate a unique ID string for this action in the format:. |
 
 
@@ -50,7 +50,7 @@ def create_random()
 
 ```python
 def new_sub_action(
-    name: str | None,
+    name: str | None = None,
 ) -> ActionID
 ```
 Create a new sub-run with the given name. If  name is None, a random name will be generated.
@@ -70,7 +70,11 @@ def new_sub_action_from(
     group: str | None,
 ) -> ActionID
 ```
-Make a deterministic name
+Make a deterministic name from the parent action name, the task identity, the inputs
+hash, the call sequence, and the group (if any). All components must be stable across
+runs — recovery matches completed actions from a previous run by this name — so
+`task_hash` must not depend on the code-bundle version or container image (see
+convert.generate_task_identity_hash).
 
 
 | Parameter | Type | Description |
@@ -84,7 +88,7 @@ Make a deterministic name
 
 ```python
 def unique_id_str(
-    salt: str | None,
+    salt: str | None = None,
 ) -> str
 ```
 Generate a unique ID string for this action in the format:

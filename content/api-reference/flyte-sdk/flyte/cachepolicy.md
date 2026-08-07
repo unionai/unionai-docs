@@ -1,6 +1,6 @@
 ---
 title: CachePolicy
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,7 +11,7 @@ layout: py_api
 
 Protocol for custom cache version strategies.
 
-Implement `get_version(salt, params) -&gt; str` to define how cache versions
+Implement `get_version(salt, params) -> str` to define how cache versions
 are computed. The default implementation is `FunctionBodyPolicy`, which
 hashes the function source code.
 

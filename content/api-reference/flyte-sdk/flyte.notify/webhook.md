@@ -1,6 +1,6 @@
 ---
 title: Webhook
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,9 +19,9 @@ Send custom HTTP webhook notifications (most flexible option).
 class Webhook(
     on_phase: typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]],
     url: str,
-    method: typing.Literal['POST', 'PUT', 'PATCH', 'GET', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT'],
-    headers: typing.Optional[typing.Dict[str, str]],
-    body: typing.Optional[typing.Dict[str, typing.Any]],
+    method: typing.Literal['POST', 'PUT', 'PATCH', 'GET', 'DELETE', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT'] = 'POST',
+    headers: typing.Optional[typing.Dict[str, str]] = None,
+    body: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |

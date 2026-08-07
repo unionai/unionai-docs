@@ -1,6 +1,6 @@
 ---
 title: AsyncConnectorExecutorMixin
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,10 +24,10 @@ Task should inherit from this class if the task can be run in the connector.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

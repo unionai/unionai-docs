@@ -1,6 +1,6 @@
 ---
 title: Port
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,7 +14,7 @@ layout: py_api
 ```python
 class Port(
     port: int,
-    name: typing.Optional[str],
+    name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

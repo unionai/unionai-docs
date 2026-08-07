@@ -1,6 +1,6 @@
 ---
 title: NotebookTask
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,37 +12,55 @@ layout: py_api
 A Flyte task that executes a Jupyter notebook via Papermill.
 
 The notebook receives task inputs as parameters (injected into the cell
-tagged ``parameters``) and produces outputs via ``record_outputs()``
+tagged `parameters`) and produces outputs via `record_outputs()`
 called inside the notebook.
 
-Inside *notebooks/analyze.ipynb*::
+```python
+from flyteplugins.papermill import NotebookTask
 
-    from flyteplugins.papermill import record_outputs
+analyze = NotebookTask(
+    name="analyze",
+    notebook_path="notebooks/analyze.ipynb",
+    task_environment=env,
+    inputs={"x": int, "y": float},
+    outputs={"result": int},
+)
+```
 
-    result = x + y  # x, y injected by papermill
-    record_outputs(result=int(result))
+Inside *notebooks/analyze.ipynb*:
+
+```python
+from flyteplugins.papermill import record_outputs
+
+result = x + y  # x, y injected by papermill
+record_outputs(result=int(result))
+```
 
 You can also call other Flyte tasks from within the notebook — just
-import and call them as usual::
+import and call them as usual:
 
-    from my_tasks import expensive_task
+```python
+from my_tasks import expensive_task
 
-    intermediate = await expensive_task(data=x)  # submitted to Flyte when running remotely
-    record_outputs(result=intermediate)
+intermediate = await expensive_task(data=x)  # submitted to Flyte when running remotely
+record_outputs(result=intermediate)
+```
 
-Spark example::
+Spark example:
 
-    from flyteplugins.papermill import NotebookTask
-    from flyteplugins.spark import Spark
+```python
+from flyteplugins.papermill import NotebookTask
+from flyteplugins.spark import Spark
 
-    spark_nb = NotebookTask(
-        name="spark_analyze",
-        notebook_path="notebooks/spark_analysis.ipynb",
-        task_environment=env,
-        plugin_config=Spark(spark_conf={...}),
-        inputs={"path": str},
-        outputs={"count": int},
-    )
+spark_nb = NotebookTask(
+    name="spark_analyze",
+    notebook_path="notebooks/spark_analysis.ipynb",
+    task_environment=env,
+    plugin_config=Spark(spark_conf={...}),
+    inputs={"path": str},
+    outputs={"count": int},
+)
+```
 
 
 
@@ -53,43 +71,43 @@ class NotebookTask(
     name: str,
     notebook_path: str,
     task_environment: TaskEnvironment,
-    plugin_config: Optional[Any],
-    inputs: Optional[dict[str, Type]],
-    outputs: Optional[dict[str, Type]],
-    kernel_name: Optional[str],
-    engine_name: Optional[str],
-    log_output: bool,
-    start_timeout: int,
-    execution_timeout: Optional[int],
-    report_mode: bool,
-    request_save_on_cell_execute: bool,
-    progress_bar: bool,
-    language: Optional[str],
-    engine_kwargs: Optional[dict[str, Any]],
-    output_notebooks: bool,
-    kwargs: **kwargs,
+    plugin_config: Optional[Any] = None,
+    inputs: Optional[dict[str, Type]] = None,
+    outputs: Optional[dict[str, Type]] = None,
+    kernel_name: Optional[str] = None,
+    engine_name: Optional[str] = None,
+    log_output: bool = False,
+    start_timeout: int = 60,
+    execution_timeout: Optional[int] = None,
+    report_mode: bool = False,
+    request_save_on_cell_execute: bool = True,
+    progress_bar: bool = True,
+    language: Optional[str] = None,
+    engine_kwargs: Optional[dict[str, Any]] = None,
+    output_notebooks: bool = False,
+    **kwargs: Any,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Task name. |
-| `notebook_path` | `str` | Path to the ``.ipynb`` file (relative to the caller's file or absolute). |
-| `task_environment` | `TaskEnvironment` | The ``TaskEnvironment`` this task belongs to. Required for remote execution. |
-| `plugin_config` | `Optional[Any]` | Plugin configuration (e.g. ``Spark(...)``). Sets the task type and execution environment accordingly. |
+| `notebook_path` | `str` | Path to the `.ipynb` file (relative to the caller's file or absolute). |
+| `task_environment` | `TaskEnvironment` | The `TaskEnvironment` this task belongs to. Required for remote execution. |
+| `plugin_config` | `Optional[Any]` | Plugin configuration (e.g. `Spark(...)`). Sets the task type and execution environment accordingly. |
 | `inputs` | `Optional[dict[str, Type]]` | Mapping of input names to Python types. |
 | `outputs` | `Optional[dict[str, Type]]` | Mapping of output names to Python types. |
 | `kernel_name` | `Optional[str]` | Jupyter kernel to use. Defaults to the kernel specified in the notebook metadata. |
-| `engine_name` | `Optional[str]` | Papermill engine name. Defaults to the standard ``nbclient`` engine. Custom engines registered via the ``papermill.engine`` entry point are also available. |
+| `engine_name` | `Optional[str]` | Papermill engine name. Defaults to the standard `nbclient` engine. Custom engines registered via the `papermill.engine` entry point are also available. |
 | `log_output` | `bool` | Stream cell outputs to the task log. |
 | `start_timeout` | `int` | Seconds to wait for the kernel to start. |
-| `execution_timeout` | `Optional[int]` | Per-cell execution timeout in seconds. ``None`` means no timeout. |
+| `execution_timeout` | `Optional[int]` | Per-cell execution timeout in seconds. `None` means no timeout. |
 | `report_mode` | `bool` | Hide input cells in the output notebook. |
 | `request_save_on_cell_execute` | `bool` | Save the notebook after every cell execution. Useful for inspecting partial progress on failure. |
 | `progress_bar` | `bool` | Show a progress bar during execution. |
 | `language` | `Optional[str]` | Override the notebook language. |
-| `engine_kwargs` | `Optional[dict[str, Any]]` | Extra keyword arguments forwarded to the papermill engine (e.g. ``autosave_cell_every``). |
-| `output_notebooks` | `bool` | When ``True``, the actual and executed ``.ipynb`` files are uploaded to remote storage and returned as `Files`s in the task output, making it accessible to downstream tasks. |
-| `kwargs` | `**kwargs` | |
+| `engine_kwargs` | `Optional[dict[str, Any]]` | Extra keyword arguments forwarded to the papermill engine (e.g. `autosave_cell_every`). |
+| `output_notebooks` | `bool` | When `True`, the actual and executed `.ipynb` files are uploaded to remote storage and returned as `Files`s in the task output, making it accessible to downstream tasks. |
+| `**kwargs` | `Any` | |
 
 ## Properties
 
@@ -121,8 +139,8 @@ class NotebookTask(
 
 ```python
 def aio(
-    args: *args,
-    kwargs: **kwargs,
+    *args: P.args,
+    **kwargs: P.kwargs,
 ) -> Coroutine[Any, Any, R] | R
 ```
 The aio function allows executing "sync" tasks, in an async context. This helps with migrating v1 defined sync
@@ -145,8 +163,8 @@ async def my_new_parent_task(n: int) -> List[int]:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `P.args` | |
+| `**kwargs` | `P.kwargs` | |
 
 ### config()
 
@@ -214,8 +232,8 @@ Any outputs generated by the user container - within output_path are automatical
 
 ```python
 def execute(
-    args: *args,
-    kwargs: **kwargs,
+    *args: Any,
+    **kwargs: Any,
 ) -> Any
 ```
 Execute the notebook within a Flyte task context.
@@ -223,15 +241,15 @@ Execute the notebook within a Flyte task context.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `Any` | |
+| `**kwargs` | `Any` | |
 
 ### forward()
 
 ```python
 def forward(
-    args: *args,
-    kwargs: **kwargs,
+    *args: Any,
+    **kwargs: Any,
 ) -> Any
 ```
 Execute the notebook locally (outside of a Flyte run context).
@@ -243,29 +261,30 @@ Runs the notebook in-process and returns Python values.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `Any` | |
+| `**kwargs` | `Any` | |
 
 ### override()
 
 ```python
 def override(
-    short_name: Optional[str],
-    resources: Optional[Resources],
-    cache: Optional[CacheRequest],
-    retries: Union[int, RetryStrategy],
-    timeout: Optional[TimeoutType],
-    reusable: Union[ReusePolicy, Literal['off'], None],
-    env_vars: Optional[Dict[str, str]],
-    secrets: Optional[SecretRequest],
-    max_inline_io_bytes: int | None,
-    pod_template: Optional[Union[str, PodTemplate]],
-    queue: Optional[str],
-    interruptible: Optional[bool],
-    entrypoint: Optional[bool],
-    links: Tuple[Link, ...],
-    plugin_config: Optional[Any],
-    kwargs: **kwargs,
+    short_name: Optional[str] = None,
+    resources: Optional[Resources] = None,
+    cache: Optional[CacheRequest] = None,
+    retries: Union[int, RetryStrategy] = 0,
+    timeout: Optional[TimeoutType] = None,
+    reusable: Union[ReusePolicy, Literal['off'], None] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    max_inline_io_bytes: int | None = None,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    queue: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    entrypoint: Optional[bool] = None,
+    produces_artifacts: Optional[bool] = None,
+    links: Tuple[Link, ...] = (),
+    plugin_config: Optional[Any] = None,
+    **kwargs: Any,
 ) -> TaskTemplate
 ```
 Override various parameters of the task template. This allows for dynamic configuration of the task
@@ -288,9 +307,10 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
+| `produces_artifacts` | `Optional[bool]` | Optional override for the produces_artifacts flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `plugin_config` | `Optional[Any]` | Optional override for the plugin specific configuration. Only supported by task templates that declare a `plugin_config` field. |
-| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
+| `**kwargs` | `Any` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
 
 **Returns:** A new TaskTemplate instance with the overridden parameters.
 
@@ -313,8 +333,8 @@ called after the task is executed
 
 ```python
 def pre(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> Dict[str, Any]
 ```
 This is the preexecute function that will be
@@ -323,8 +343,8 @@ called before the task is executed
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### sql()
 

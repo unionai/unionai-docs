@@ -1,6 +1,6 @@
 ---
 title: ActionOutputs
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,7 +40,7 @@ Output:
 class ActionOutputs(
     pb2: common_pb2.Outputs,
     data: Tuple[Any, ...],
-    fields: List[str] | None,
+    fields: List[str] | None = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: EmptyDir
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,26 +9,28 @@ layout: py_api
 
 **Package:** `flyte.io`
 
-A sentinel :class:`Dir` representing 'no directory was produced'.
+A sentinel `flyte.io.Dir` representing 'no directory was produced'.
 
 Use this as a return value when a task may or may not produce an output directory,
-e.g. ``flyte.run_python_script`` when the user did not request ``output_dir``::
+e.g. `flyte.run_python_script` when the user did not request `output_dir`:
 
-    @env.task
-    async def maybe_produce_dir(...) -&gt; Output:
-        if user_wants_dir:
-            return Output(output_dir=await Dir.from_local(path))
-        return Output(output_dir=EmptyDir())
+```python
+@env.task
+async def maybe_produce_dir(...) -> Output:
+    if user_wants_dir:
+        return Output(output_dir=await Dir.from_local(path))
+    return Output(output_dir=EmptyDir())
+```
 
-On the receiving side, the value comes back as a plain ``Dir`` with
-:attr:`Dir.is_empty` set to ``True`` (the deserializer doesn't preserve the
-``EmptyDir`` subclass identity, but the sentinel path round-trips). Callers should
-branch on ``dir.is_empty`` rather than ``isinstance(dir, EmptyDir)``.
+On the receiving side, the value comes back as a plain `Dir` with
+`Dir.is_empty` set to `True` (the deserializer doesn't preserve the
+`EmptyDir` subclass identity, but the sentinel path round-trips). Callers should
+branch on `dir.is_empty` rather than `isinstance(dir, EmptyDir)`.
 
-This exists because ``Optional[Dir]`` cannot round-trip through Flyte's
-``DataclassTransformer`` — mashumaro strips the ``Optional`` and calls
-``Dir._deserialize(None)`` which fails. ``EmptyDir`` keeps the field type as
-plain ``Dir`` so the round-trip works.
+This exists because `Optional[Dir]` cannot round-trip through Flyte's
+`DataclassTransformer` — mashumaro strips the `Optional` and calls
+`Dir._deserialize(None)` which fails. `EmptyDir` keeps the field type as
+plain `Dir` so the round-trip works.
 
 
 ## Parameters
@@ -36,9 +38,9 @@ plain ``Dir`` so the round-trip works.
 ```python
 class EmptyDir(
     path: str,
-    name: typing.Optional[str],
-    format: str,
-    hash: typing.Optional[str],
+    name: typing.Optional[str] = None,
+    format: str = '',
+    hash: typing.Optional[str] = None,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -60,7 +62,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `is_empty` | `bool` | True when this is a sentinel ``Dir`` produced by :class:`EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
+| `is_empty` | `bool` | True when this is a sentinel `Dir` produced by `flyte.io.EmptyDir`/`Dir.empty()` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with `Optional[Dir]` (which the type engine cannot round-trip correctly through `SerializableType`). |
 | `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
@@ -69,7 +71,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
-| [`empty()`](#empty) | Return a sentinel ``Dir`` representing 'no directory was produced'. |
+| [`empty()`](#empty) | Return a sentinel `Dir` representing 'no directory was produced'. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -91,7 +93,7 @@ validated to form a valid model.
 
 ```python
 def download(
-    local_path: Optional[Union[str, Path]],
+    local_path: Optional[Union[str, Path]] = None,
 ) -> str
 ```
 Asynchronously download the entire directory to a local path.
@@ -129,7 +131,7 @@ async def download_to_path(d: Dir) -> str:
 
 ```python
 def download_sync(
-    local_path: Optional[Union[str, Path]],
+    local_path: Optional[Union[str, Path]] = None,
 ) -> str
 ```
 Synchronously download the entire directory to a local path.
@@ -167,11 +169,11 @@ def download_to_path_sync(d: Dir) -> str:
 ```python
 def empty()
 ```
-Return a sentinel ``Dir`` representing 'no directory was produced'.
+Return a sentinel `Dir` representing 'no directory was produced'.
 
 Use as the return value when a task may or may not produce an output directory; the
-caller can check :attr:`Dir.is_empty` to detect the sentinel. Round-trips cleanly
-through Flyte serialization (unlike ``Optional[Dir]``).
+caller can check `Dir.is_empty` to detect the sentinel. Round-trips cleanly
+through Flyte serialization (unlike `Optional[Dir]`).
 
 
 ### exists()
@@ -229,7 +231,7 @@ True if the directory exists, False otherwise
 ```python
 def from_existing_remote(
     remote_path: str,
-    dir_cache_key: Optional[str],
+    dir_cache_key: Optional[str] = None,
 ) -> Dir[T]
 ```
 Create a Dir reference from an existing remote directory.
@@ -268,9 +270,9 @@ async def process_with_cache_key() -> int:
 ```python
 def from_local(
     local_path: Union[str, Path],
-    remote_destination: Optional[str],
-    dir_cache_key: Optional[str],
-    batch_size: Optional[int],
+    remote_destination: Optional[str] = None,
+    dir_cache_key: Optional[str] = None,
+    batch_size: Optional[int] = None,
 ) -> Dir[T]
 ```
 Asynchronously create a new Dir by uploading a local directory to remote storage.
@@ -325,8 +327,8 @@ async def upload_with_cache_key() -> Dir:
 ```python
 def from_local_sync(
     local_path: Union[str, Path],
-    remote_destination: Optional[str],
-    dir_cache_key: Optional[str],
+    remote_destination: Optional[str] = None,
+    dir_cache_key: Optional[str] = None,
 ) -> Dir[T]
 ```
 Synchronously create a new Dir by uploading a local directory to remote storage.
@@ -537,14 +539,22 @@ It takes context as an argument since that's what pydantic-core passes when call
 
 ```python
 def new_remote(
-    dir_name: Optional[str],
-    hash: Optional[str],
+    dir_name: Optional[str] = None,
+    hash: Optional[str] = None,
 ) -> Dir[T]
 ```
 Create a new Dir reference for a remote directory that will be written to.
 
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
+
+```python
+@env.task
+async def create() -> Dir:
+    d = Dir.new_remote("output")
+    # write files into d ...
+    return d
+```
 
 
 
@@ -587,8 +597,8 @@ Internal: Check if incoming schema matches Dir schema. Not intended for direct u
 
 ```python
 def walk(
-    recursive: bool,
-    max_depth: Optional[int],
+    recursive: bool = True,
+    max_depth: Optional[int] = None,
 ) -> AsyncIterator[File[T]]
 ```
 Asynchronously walk through the directory and yield File objects.
@@ -642,9 +652,9 @@ Yields:
 
 ```python
 def walk_sync(
-    recursive: bool,
-    file_pattern: str,
-    max_depth: Optional[int],
+    recursive: bool = True,
+    file_pattern: str = '*',
+    max_depth: Optional[int] = None,
 ) -> Iterator[File[T]]
 ```
 Synchronously walk through the directory and yield File objects.

@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,7 +17,7 @@ Represents a trigger in the Flyte platform.
 ```python
 class Trigger(
     pb2: trigger_definition_pb2.Trigger,
-    details: TriggerDetails | None,
+    details: TriggerDetails | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -62,7 +62,7 @@ def create(
     cls,
     trigger: flyte.Trigger,
     task_name: str,
-    task_version: str | None,
+    task_version: str | None = None,
 ) -> Trigger
 ```
 Create a new trigger in the Flyte platform.
@@ -88,8 +88,8 @@ def delete(
     cls,
     name: str,
     task_name: str,
-    project: str | None,
-    domain: str | None,
+    project: str | None = None,
+    domain: str | None = None,
 )
 ```
 Delete a trigger by its name.
@@ -144,9 +144,9 @@ Get detailed information about this trigger.
 ```python
 def listall(
     cls,
-    task_name: str | None,
-    task_version: str | None,
-    limit: int,
+    task_name: str | None = None,
+    task_version: str | None = None,
+    limit: int = 100,
 ) -> AsyncIterator[Trigger]
 ```
 List all triggers associated with a specific task or all tasks if no task name is provided.

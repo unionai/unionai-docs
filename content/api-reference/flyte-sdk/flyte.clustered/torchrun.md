@@ -1,6 +1,6 @@
 ---
 title: TorchRun
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ TorchRun launcher configuration for a ClusteredTaskEnvironment.
 
 ```python
 class TorchRun(
-    rdzv_backend: Literal['static', 'c10d'],
-    max_restarts: int,
+    rdzv_backend: Literal['static', 'c10d'] = 'static',
+    max_restarts: int = 0,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ Custom links to add to the app
 class Link(
     path: str,
     title: str,
-    is_relative: bool,
+    is_relative: bool = False,
 )
 ```
 | Parameter | Type | Description |

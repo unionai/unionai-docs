@@ -1,6 +1,6 @@
 ---
 title: ErrorDiagnosis
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,9 +17,9 @@ Structured diagnosis of execution errors.
 ```python
 class ErrorDiagnosis(
     failures: list[flyteplugins.codegen.core.types.TestFailure],
-    needs_system_packages: list[str],
-    needs_language_packages: list[str],
-    needs_additional_commands: list[str],
+    needs_system_packages: list[str] = list(),
+    needs_language_packages: list[str] = list(),
+    needs_additional_commands: list[str] = list(),
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.

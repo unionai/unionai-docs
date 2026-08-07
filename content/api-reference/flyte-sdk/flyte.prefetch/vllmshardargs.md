@@ -1,6 +1,6 @@
 ---
 title: VLLMShardArgs
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,12 +17,12 @@ Arguments for sharding a model using vLLM.
 
 ```python
 class VLLMShardArgs(
-    tensor_parallel_size: int,
-    dtype: str,
-    trust_remote_code: bool,
-    max_model_len: int | None,
-    file_pattern: str | None,
-    max_file_size: int,
+    tensor_parallel_size: int = 1,
+    dtype: str = 'auto',
+    trust_remote_code: bool = True,
+    max_model_len: int | None = None,
+    file_pattern: str | None = 'model-rank-{rank}-part-{part}.safetensors',
+    max_file_size: int = 5368709120,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.

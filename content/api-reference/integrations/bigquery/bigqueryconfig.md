@@ -1,6 +1,6 @@
 ---
 title: BigQueryConfig
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,8 +18,8 @@ Configuration for a BigQuery task.
 ```python
 class BigQueryConfig(
     ProjectID: str,
-    Location: typing.Optional[str],
-    QueryJobConfig: typing.Optional[google.cloud.bigquery.job.query.QueryJobConfig],
+    Location: typing.Optional[str] = None,
+    QueryJobConfig: typing.Optional[google.cloud.bigquery.job.query.QueryJobConfig] = None,
 )
 ```
 | Parameter | Type | Description |

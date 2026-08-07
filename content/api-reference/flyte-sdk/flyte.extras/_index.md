@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,7 +32,7 @@ This package provides various utilities that make it possible to build highly cu
 
 | Class | Description |
 |-|-|
-| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher. |
+| [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
@@ -46,4 +46,51 @@ This package provides various utilities that make it possible to build highly cu
 |-|-|
 | [`CostEstimator`](../flyte.extras/costestimator) | Protocol for records that can estimate their own processing cost. |
 | [`TokenEstimator`](../flyte.extras/tokenestimator) | Protocol for records that can estimate their own token count. |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`serialize()`](#serialize) | Translate a single task to its wire TaskSpec, offline and code-agnostic. |
+| [`serialize_env()`](#serialize_env) | Serialize every task in an environment. |
+
+
+## Methods
+
+#### serialize()
+
+```python
+def serialize(
+    task: TaskTemplate,
+    ctx: Optional[SerializationContext] = None,
+) -> task_definition_pb2.TaskSpec
+```
+Translate a single task to its wire TaskSpec, offline and code-agnostic.
+
+Reuses the same `translate_task_to_wire` primitive the run/deploy path uses
+(see `_Runner._build_task_spec_from_template`), but without a client, image
+cache, or code bundle, so the spec can be produced ahead of time. Pass a
+SerializationContext to override the defaults.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `task` | `TaskTemplate` | |
+| `ctx` | `Optional[SerializationContext]` | |
+
+#### serialize_env()
+
+```python
+def serialize_env(
+    env: TaskEnvironment,
+    ctx: Optional[SerializationContext] = None,
+) -> List[task_definition_pb2.TaskSpec]
+```
+Serialize every task in an environment.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `TaskEnvironment` | |
+| `ctx` | `Optional[SerializationContext]` | |
 

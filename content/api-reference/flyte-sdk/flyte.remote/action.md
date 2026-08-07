@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,7 +31,7 @@ From a datamodel perspective, a Run consists of actions. All actions are linearl
 ```python
 class Action(
     pb2: run_definition_pb2.Action,
-    _details: ActionDetails | None,
+    _details: ActionDetails | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -47,7 +47,7 @@ class Action(
 | `name` | `str` | Get the name of the action. |
 | `phase` | `ActionPhase` | Get the phase of the action. |
 | `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
-| `relation` | `None` | Provenance link (``flyteidl2.common.run_pb2.Relation``: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
+| `relation` | `None` | Provenance link (`flyteidl2.common.run_pb2.Relation`: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
 | `run_name` | `str` | Get the name of the run. |
 | `start_time` | `datetime` | Get the start time of the action. |
 | `task_name` | `str \| None` | Get the name of the task. |
@@ -61,6 +61,7 @@ class Action(
 | [`done()`](#done) | Check if the action is done. |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_logs()`](#get_logs) | Get logs for the action as an iterator of strings. |
+| [`get_report()`](#get_report) | Get the HTML report associated with this action. |
 | [`listall()`](#listall) | Get all actions for a given run. |
 | [`show_logs()`](#show_logs) | Display logs for the action. |
 | [`sync()`](#sync) | Sync the action with the remote server. |
@@ -79,7 +80,7 @@ class Action(
 > `result = await <Action instance>.abort.aio()`.
 ```python
 def abort(
-    reason: str,
+    reason: str = 'Manually aborted from the SDK.',
 )
 ```
 Aborts / Terminates the action.
@@ -115,9 +116,9 @@ Check if the action is done.
 ```python
 def get(
     cls,
-    uri: str | None,
-    run_name: str | None,
-    name: str | None,
+    uri: str | None = None,
+    run_name: str | None = None,
+    name: str | None = None,
 ) -> Action
 ```
 Get a run by its ID or name. If both are provided, the ID will take precedence.
@@ -140,9 +141,9 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 > `result = await <Action instance>.get_logs.aio()`.
 ```python
 def get_logs(
-    attempt: int | None,
-    filter_system: bool,
-    show_ts: bool,
+    attempt: int | None = None,
+    filter_system: bool = False,
+    show_ts: bool = False,
 ) -> AsyncGenerator[str, None]
 ```
 Get logs for the action as an iterator of strings.
@@ -158,6 +159,31 @@ via `.aio()` (returns `AsyncIterator[str]`).
 | `filter_system` | `bool` | If True, filter out system-generated log lines. |
 | `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
 
+### get_report()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.get_report.aio()`.
+```python
+def get_report(
+    attempt: int | None = None,
+) -> str
+```
+Get the HTML report associated with this action.
+
+This first requests a signed download link from the data proxy for the report artifact,
+then downloads the report from that URL and returns its contents as an HTML string.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to fetch the report for. Defaults to the latest attempt. |
+
+**Returns:** The report contents as an HTML string.
+
 ### listall()
 
 
@@ -169,10 +195,10 @@ via `.aio()` (returns `AsyncIterator[str]`).
 def listall(
     cls,
     for_run_name: str,
-    in_phase: Tuple[ActionPhase | str, ...] | None,
-    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
-    created_at: TimeFilter | None,
-    updated_at: TimeFilter | None,
+    in_phase: Tuple[ActionPhase | str, ...] | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    created_at: TimeFilter | None = None,
+    updated_at: TimeFilter | None = None,
 ) -> Union[Iterator[Action], AsyncIterator[Action]]
 ```
 Get all actions for a given run.
@@ -199,11 +225,11 @@ Get all actions for a given run.
 > `result = await <Action instance>.show_logs.aio()`.
 ```python
 def show_logs(
-    attempt: int | None,
-    max_lines: int,
-    show_ts: bool,
-    raw: bool,
-    filter_system: bool,
+    attempt: int | None = None,
+    max_lines: int = 30,
+    show_ts: bool = False,
+    raw: bool = False,
+    filter_system: bool = False,
 )
 ```
 Display logs for the action.
@@ -252,8 +278,8 @@ Convert the object to a JSON string.
 
 ```python
 def wait(
-    quiet: bool,
-    wait_for: WaitFor,
+    quiet: bool = False,
+    wait_for: WaitFor = 'terminal',
 )
 ```
 Wait for the run to complete, displaying a rich progress panel with status transitions,
@@ -269,8 +295,8 @@ time elapsed, and error details in case of failure.
 
 ```python
 def watch(
-    cache_data_on_done: bool,
-    wait_for: WaitFor,
+    cache_data_on_done: bool = False,
+    wait_for: WaitFor = 'terminal',
 ) -> AsyncGenerator[ActionDetails, None]
 ```
 Watch the action for updates, updating the internal Action state with latest details.

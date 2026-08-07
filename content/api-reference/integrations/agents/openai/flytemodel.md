@@ -1,6 +1,6 @@
 ---
 title: FlyteModel
-version: 2.5.18
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-Wrap a :class:`~agents.models.interface.Model` so each turn is durable.
+Wrap a `agents.models.interface.Model` so each turn is durable.
 
-``get_response`` is recorded/replayed via ``durable_step``. ``stream_response``
+`get_response` is recorded/replayed via `durable_step`. `stream_response`
 is delegated unchanged: streamed turns are not memoized in this version (tool
 calls remain durable regardless).
 
@@ -33,7 +33,6 @@ class FlyteModel(
 |-|-|
 | [`close()`](#close) | Release any resources held by the model. |
 | [`get_response()`](#get_response) | Get a response from the model. |
-| [`get_retry_advice()`](#get_retry_advice) | Return provider-specific retry guidance for a failed model request. |
 | [`stream_response()`](#stream_response) | Stream a response from the model. |
 
 
@@ -52,8 +51,8 @@ is a no-op.
 
 ```python
 def get_response(
-    args: *args,
-    kwargs: **kwargs,
+    *args: typing.Any,
+    **kwargs: typing.Any,
 ) -> typing.Any
 ```
 Get a response from the model.
@@ -62,34 +61,17 @@ Get a response from the model.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `typing.Any` | |
+| `**kwargs` | `typing.Any` | |
 
 **Returns:** The full model response.
-
-### get_retry_advice()
-
-```python
-def get_retry_advice(
-    request: ModelRetryAdviceRequest,
-) -> ModelRetryAdvice | None
-```
-Return provider-specific retry guidance for a failed model request.
-
-Models can override this to surface transport- or provider-specific hints such as replay
-safety, retry-after delays, or explicit server retry guidance.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `request` | `ModelRetryAdviceRequest` | |
 
 ### stream_response()
 
 ```python
 def stream_response(
-    args: *args,
-    kwargs: **kwargs,
+    *args: typing.Any,
+    **kwargs: typing.Any,
 ) -> AsyncIterator[typing.Any]
 ```
 Stream a response from the model.
@@ -98,8 +80,8 @@ Stream a response from the model.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `typing.Any` | |
+| `**kwargs` | `typing.Any` | |
 
 **Returns:** An iterator of response stream events, in OpenAI Responses format.
 

@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,25 +39,25 @@ async def my_task(start_time: datetime, x: int) -> str:
 ```python
 class Trigger(
     name: str,
-    automation: Union[Cron, FixedRate],
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    notifications: NamedRule | Notification | Tuple[Notification, ...] | None,
-    custom_context: Mapping[str, str] | None,
+    automation: Union[Cron, FixedRate, OnArtifact],
+    description: str = '',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    notifications: NamedRule | Notification | Tuple[Notification, ...] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Unique name for the trigger (required). |
-| `automation` | `Union[Cron, FixedRate]` | Schedule type — `Cron(...)` or `FixedRate(...)` (required). |
+| `automation` | `Union[Cron, FixedRate, OnArtifact]` | Schedule type — `Cron(...)` or `FixedRate(...)` (required). |
 | `description` | `str` | Human-readable description (max 255 characters). Default `""`. |
 | `auto_activate` | `bool` | Whether to activate the trigger automatically on deployment. Default `True`. |
 | `inputs` | `Dict[str, Any] \| None` | Default input values for triggered runs. Use `flyte.TriggerTime` to bind the trigger's scheduled time to an input parameter. |
@@ -65,11 +65,11 @@ class Trigger(
 | `interruptible` | `bool \| None` | Whether triggered runs use spot/preemptible instances. `None` (default) preserves the task's configured behavior. Overrides the task's configured value. |
 | `overwrite_cache` | `bool` | Force cache refresh on triggered runs. Default `False`. |
 | `queue` | `str \| None` | Queue name for triggered runs (overrides the task's configured value). |
-| `max_action_concurrency` | `int \| None` | Maximum number of actions that can run concurrently within a triggered run. `None` (default) defers to the platform default (the ``run.max_action_concurrency`` setting). Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
+| `max_action_concurrency` | `int \| None` | Maximum number of actions that can run concurrently within a triggered run. `None` (default) defers to the platform default (the `run.max_action_concurrency` setting). Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `labels` | `Mapping[str, str] \| None` | Kubernetes labels to attach to triggered runs. |
 | `annotations` | `Mapping[str, str] \| None` | Kubernetes annotations to attach to triggered runs. |
 | `notifications` | `NamedRule \| Notification \| Tuple[Notification, ...] \| None` | |
-| `custom_context` | `Mapping[str, str] \| None` | Metadata propagated through the entire task hierarchy of triggered runs. Readable inside any task via ``flyte.ctx().custom_context``. |
+| `custom_context` | `Mapping[str, str] \| None` | Metadata propagated through the entire task hierarchy of triggered runs. Readable inside any task via `flyte.ctx().custom_context`. |
 
 ## Methods
 
@@ -86,19 +86,19 @@ class Trigger(
 
 ```python
 def daily(
-    trigger_time_input_key: str | None,
-    name: str,
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
+    trigger_time_input_key: str | None = None,
+    name: str = 'daily',
+    description: str = 'A trigger that runs daily at midnight',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs daily at midnight.
@@ -127,19 +127,19 @@ Creates a Cron trigger that runs daily at midnight.
 
 ```python
 def hourly(
-    trigger_time_input_key: str | None,
-    name: str,
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
+    trigger_time_input_key: str | None = None,
+    name: str = 'hourly',
+    description: str = 'A trigger that runs every hour',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs every hour.
@@ -168,19 +168,19 @@ Creates a Cron trigger that runs every hour.
 
 ```python
 def minutely(
-    trigger_time_input_key: str | None,
-    name: str,
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
+    trigger_time_input_key: str | None = None,
+    name: str = 'minutely',
+    description: str = 'A trigger that runs every minute',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs every minute.
@@ -209,19 +209,19 @@ Creates a Cron trigger that runs every minute.
 
 ```python
 def monthly(
-    trigger_time_input_key: str | None,
-    name: str,
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
+    trigger_time_input_key: str | None = None,
+    name: str = 'monthly',
+    description: str = 'A trigger that runs monthly on the 1st at midnight',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs monthly on the 1st at midnight.
@@ -250,19 +250,19 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 
 ```python
 def weekly(
-    trigger_time_input_key: str | None,
-    name: str,
-    description: str,
-    auto_activate: bool,
-    inputs: Dict[str, Any] | None,
-    env_vars: Dict[str, str] | None,
-    interruptible: bool | None,
-    overwrite_cache: bool,
-    queue: str | None,
-    max_action_concurrency: int | None,
-    labels: Mapping[str, str] | None,
-    annotations: Mapping[str, str] | None,
-    custom_context: Mapping[str, str] | None,
+    trigger_time_input_key: str | None = None,
+    name: str = 'weekly',
+    description: str = 'A trigger that runs weekly on Sundays at midnight',
+    auto_activate: bool = True,
+    inputs: Dict[str, Any] | None = None,
+    env_vars: Dict[str, str] | None = None,
+    interruptible: bool | None = None,
+    overwrite_cache: bool = False,
+    queue: str | None = None,
+    max_action_concurrency: int | None = None,
+    labels: Mapping[str, str] | None = None,
+    annotations: Mapping[str, str] | None = None,
+    custom_context: Mapping[str, str] | None = None,
 ) -> Trigger
 ```
 Creates a Cron trigger that runs weekly on Sundays at midnight.

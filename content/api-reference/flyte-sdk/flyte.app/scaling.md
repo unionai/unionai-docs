@@ -1,6 +1,6 @@
 ---
 title: Scaling
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,9 +26,9 @@ Common scaling patterns:
 
 ```python
 class Scaling(
-    replicas: typing.Union[int, typing.Tuple[int, int]],
-    metric: typing.Union[flyte.app._types.Scaling.Concurrency, flyte.app._types.Scaling.RequestRate, NoneType],
-    scaledown_after: int | datetime.timedelta | None,
+    replicas: typing.Union[int, typing.Tuple[int, int]] = (0, 1),
+    metric: typing.Union[flyte.app._types.Scaling.Concurrency, flyte.app._types.Scaling.RequestRate, NoneType] = None,
+    scaledown_after: int | datetime.timedelta | None = None,
 )
 ```
 | Parameter | Type | Description |

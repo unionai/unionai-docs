@@ -1,6 +1,6 @@
 ---
 title: Stderr
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,14 +9,14 @@ layout: py_api
 
 **Package:** `flyte.extras.shell`
 
-Capture the task's stderr as a typed output. See :class:`Stdout`.
+Capture the task's stderr as a typed output. See `flyte.extras.shell.Stdout`.
 
 
 ## Parameters
 
 ```python
 class Stderr(
-    type: Type,
+    type: Type = flyte.io._file.File,
 )
 ```
 | Parameter | Type | Description |

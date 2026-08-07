@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -67,24 +67,24 @@ be overridden via `task.override()` with `reusable="off"` in the same call.
 ```python
 class TaskEnvironment(
     name: str,
-    depends_on: List[Environment],
-    pod_template: Optional[Union[str, PodTemplate]],
-    description: Optional[str],
-    secrets: Optional[SecretRequest],
-    env_vars: Optional[Dict[str, str]],
-    resources: Optional[Resources],
-    interruptible: bool,
-    image: Union[str, Image, Literal['auto'], None],
-    include: Tuple[str, ...],
-    cache: CacheRequest,
-    reusable: ReusePolicy | None,
-    plugin_config: Optional[Any],
-    queue: Optional[str],
+    depends_on: List[Environment] = <factory>,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    description: Optional[str] = None,
+    secrets: Optional[SecretRequest] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    resources: Optional[Resources] = None,
+    interruptible: bool = False,
+    image: Union[str, Image, Literal['auto'], None] = 'auto',
+    include: Tuple[str, ...] = <factory>,
+    cache: CacheRequest = 'disable',
+    reusable: ReusePolicy | None = None,
+    plugin_config: Optional[Any] = None,
+    queue: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. The fully-qualified name of each task is `&lt;env_name&gt;.&lt;function_name&gt;` (e.g., environment `"my_env"` containing function `my_task` produces FQN `"my_env.my_task"`). Neither component is overridable. |
+| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. The fully-qualified name of each task is `<env_name>.<function_name>` (e.g., environment `"my_env"` containing function `my_task` produces FQN `"my_env.my_task"`). Neither component is overridable. |
 | `depends_on` | `List[Environment]` | List of other environments this one depends on. Used at deploy time to ensure dependencies are also deployed. TaskEnvironment level only. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template for advanced configuration (sidecars, volumes, etc.). Also settable in `@env.task` and `task.override`. |
 | `description` | `Optional[str]` | Human-readable description (max 255 characters). TaskEnvironment level only. |
@@ -120,7 +120,7 @@ class TaskEnvironment(
 
 ```python
 def add_dependency(
-    env: Environment,
+    *env: Environment,
 )
 ```
 Add one or more environment dependencies so they are deployed together.
@@ -137,22 +137,22 @@ depend on itself.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 
 ```python
 def clone_with(
     name: str,
-    image: Optional[Union[str, Image, Literal['auto']]],
-    resources: Optional[Resources],
-    env_vars: Optional[Dict[str, str]],
-    secrets: Optional[SecretRequest],
-    depends_on: Optional[List[Environment]],
-    description: Optional[str],
-    interruptible: Optional[bool],
-    include: Optional[Tuple[str, ...]],
-    kwargs: **kwargs,
+    image: Optional[Union[str, Image, Literal['auto']]] = None,
+    resources: Optional[Resources] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    depends_on: Optional[List[Environment]] = None,
+    description: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    include: Optional[Tuple[str, ...]] = None,
+    **kwargs: Any,
 ) -> TaskEnvironment
 ```
 Create a new `TaskEnvironment` that shares most settings with this one
@@ -189,15 +189,15 @@ original environment.
 | `description` | `Optional[str]` | Override the description. |
 | `interruptible` | `Optional[bool]` | Override the interruptible setting. |
 | `include` | `Optional[Tuple[str, ...]]` | |
-| `kwargs` | `**kwargs` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
+| `**kwargs` | `Any` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
 
 ### from_task()
 
 ```python
 def from_task(
     name: str,
-    tasks: TaskTemplate,
-    depends_on: Optional[List['Environment']],
+    *tasks: TaskTemplate,
+    depends_on: Optional[List['Environment']] = None,
 ) -> TaskEnvironment
 ```
 Create a TaskEnvironment from a list of tasks. All tasks should have the same image or no Image defined.
@@ -213,10 +213,13 @@ attribute of the other TaskEnvironment.
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | The name of the environment. |
-| `tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
+| `*tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
 | `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on. |
 
-**Returns:** The created TaskEnvironment.
+**Returns**
+
+The created TaskEnvironment.
+
 
 **Raises**
 
@@ -228,21 +231,22 @@ attribute of the other TaskEnvironment.
 
 ```python
 def task(
-    _func: F | None,
-    short_name: Optional[str],
-    cache: CacheRequest | None,
-    retries: Union[int, RetryStrategy],
-    timeout: TimeoutType,
-    docs: Optional[Documentation],
-    pod_template: Optional[Union[str, PodTemplate]],
-    report: bool,
-    interruptible: bool | None,
-    max_inline_io_bytes: int,
-    queue: Optional[str],
-    triggers: Tuple[Trigger, ...] | Trigger,
-    links: Tuple[Link, ...] | Link,
-    task_resolver: Any | None,
-    entrypoint: bool,
+    _func: F | None = None,
+    short_name: Optional[str] = None,
+    cache: CacheRequest | None = None,
+    retries: Union[int, RetryStrategy] = 0,
+    timeout: TimeoutType = 0,
+    docs: Optional[Documentation] = None,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    report: bool = False,
+    interruptible: bool | None = None,
+    max_inline_io_bytes: int = 10485760,
+    queue: Optional[str] = None,
+    triggers: Tuple[Trigger, ...] | Trigger = (),
+    links: Tuple[Link, ...] | Link = (),
+    task_resolver: Any | None = None,
+    entrypoint: bool = False,
+    produces_artifacts: bool = False,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -266,6 +270,7 @@ Decorate a function to be a task.
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |
 | `entrypoint` | `bool` | Optionally mark a task as an entrypoint task, defaults to False. This serves as a hint to the UI. |
+| `produces_artifacts` | `bool` | Optional Whether the backend should extract artifact metadata stamped on this task's output literals (via `flyte.artifacts.new(...)`) and record them as generated artifacts on the action, defaults to False. |
 
 **Returns:** A TaskTemplate that can be used to deploy the task.
 

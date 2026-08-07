@@ -1,6 +1,6 @@
 ---
 title: MCPAppEnvironment
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,29 +11,31 @@ layout: py_api
 
 Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio.
 
-Pass a configured ``FastMCP`` instance and optional HTTP layout settings.
-Install extras with ``pip install 'flyte[mcp]'``.
+Pass a configured `FastMCP` instance and optional HTTP layout settings.
+Install extras with `pip install 'flyte[mcp]'`.
 
-**HTTP layout** (``transport="streamable-http"`` or ``"sse"``)
+**HTTP layout** (`transport="streamable-http"` or `"sse"`)
 
-- ``GET /health`` — liveness/readiness JSON ``{"status": "healthy"}``.
-- The MCP ASGI app is mounted at ``mcp_mount_path`` (default ``/mcp``). With
-  ``transport="streamable-http"``, the session endpoint is ``{mcp_mount_path}/mcp``.
-  SSE transport uses ``{mcp_mount_path}/sse`` instead.
+- `GET /health` — liveness/readiness JSON `{"status": "healthy"}`.
+- The MCP ASGI app is mounted at `mcp_mount_path` (default `/mcp`). With
+  `transport="streamable-http"`, the session endpoint is `{mcp_mount_path}/mcp`.
+  SSE transport uses `{mcp_mount_path}/sse` instead.
 
-**stdio** (``transport="stdio"``)
+**stdio** (`transport="stdio"`)
 
 Speaks JSON-RPC over the current process's stdin/stdout, for MCP clients that
 launch the server as a subprocess. There is no HTTP surface at all: no Starlette
-app, no ``/health`` route, no links, and ``mcp_mount_path`` is unused.
+app, no `/health` route, no links, and `mcp_mount_path` is unused.
 
 stdio is a *local* transport and cannot be deployed or served via
-:func:`flyte.serve` — that path runs the server on a background thread and polls
+`flyte.serve` — that path runs the server on a background thread and polls
 an HTTP health check, neither of which applies to a process-bound stdio stream.
-Run it directly instead::
+Run it directly instead:
 
-    env = MCPAppEnvironment(name="my-mcp", mcp=mcp, transport="stdio")
-    env.run_stdio()
+```python
+env = MCPAppEnvironment(name="my-mcp", mcp=mcp, transport="stdio")
+env.run_stdio()
+```
 
 Anything written to stdout corrupts the JSON-RPC stream, so route logging and
 diagnostics to stderr.
@@ -44,30 +46,30 @@ diagnostics to stderr.
 ```python
 class MCPAppEnvironment(
     name: str,
-    depends_on: List[Environment],
-    pod_template: Optional[Union[str, PodTemplate]],
-    description: Optional[str],
-    secrets: Optional[SecretRequest],
-    env_vars: Optional[Dict[str, str]],
-    resources: Optional[Resources],
-    interruptible: bool,
-    image: Union[str, Image, Literal['auto'], None],
-    include: Tuple[str, ...],
-    port: int | Port,
-    args: *args,
-    command: Optional[Union[List[str], str]],
-    requires_auth: bool,
-    scaling: Scaling,
-    domain: Domain | None,
-    links: List[Link],
-    parameters: List[Parameter],
-    cluster_pool: str,
-    timeouts: Timeouts,
-    type: str,
+    depends_on: List[Environment] = <factory>,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    description: Optional[str] = None,
+    secrets: Optional[SecretRequest] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    resources: Optional[Resources] = None,
+    interruptible: bool = False,
+    image: Union[str, Image, Literal['auto'], None] = 'auto',
+    include: Tuple[str, ...] = <factory>,
+    port: int | Port = 8080,
+    args: Optional[Union[List[str], str]] = None,
+    command: Optional[Union[List[str], str]] = None,
+    requires_auth: bool = True,
+    scaling: Scaling = <factory>,
+    domain: Domain | None = <factory>,
+    links: List[Link] = <factory>,
+    parameters: List[Parameter] = <factory>,
+    cluster_pool: str = 'default',
+    timeouts: Timeouts = <factory>,
+    type: str = 'MCPApp',
     mcp: FastMCP,
-    mcp_mount_path: str,
-    transport: MCPTransport,
-    uvicorn_config: uvicorn.Config | None,
+    mcp_mount_path: str = '/mcp',
+    transport: MCPTransport = 'streamable-http',
+    uvicorn_config: uvicorn.Config | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -83,7 +85,7 @@ class MCPAppEnvironment(
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `include` | `Tuple[str, ...]` | |
 | `port` | `int \| Port` | |
-| `args` | `*args` | |
+| `args` | `Optional[Union[List[str], str]]` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | |
 | `scaling` | `Scaling` | |
@@ -116,7 +118,7 @@ class MCPAppEnvironment(
 | [`get_port()`](#get_port) |  |
 | [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
 | [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
-| [`run_stdio()`](#run_stdio) | Blocking wrapper around :meth:`run_stdio_async`, for use as a process entry point. |
+| [`run_stdio()`](#run_stdio) | Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point. |
 | [`run_stdio_async()`](#run_stdio_async) | Serve MCP over this process's stdin/stdout until the client disconnects. |
 | [`server()`](#server) | Decorator to define the server function for the app environment. |
 
@@ -125,7 +127,7 @@ class MCPAppEnvironment(
 
 ```python
 def add_dependency(
-    env: Environment,
+    *env: Environment,
 )
 ```
 Add one or more environment dependencies so they are deployed together.
@@ -142,21 +144,21 @@ depend on itself.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 
 ```python
 def clone_with(
     name: str,
-    image: Optional[Union[str, Image, Literal['auto']]],
-    resources: Optional[Resources],
-    env_vars: Optional[dict[str, str]],
-    secrets: Optional[SecretRequest],
-    depends_on: Optional[List[Environment]],
-    description: Optional[str],
-    interruptible: Optional[bool],
-    kwargs: **kwargs,
+    image: Optional[Union[str, Image, Literal['auto']]] = None,
+    resources: Optional[Resources] = None,
+    env_vars: Optional[dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    depends_on: Optional[List[Environment]] = None,
+    description: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    **kwargs: Any,
 ) -> AppEnvironment
 ```
 | Parameter | Type | Description |
@@ -169,7 +171,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 ### container_args()
 
@@ -187,7 +189,7 @@ def container_args(
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    parameter_overrides: list[Parameter] | None,
+    parameter_overrides: list[Parameter] | None = None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |
@@ -256,7 +258,7 @@ definition.
 ```python
 def run_stdio()
 ```
-Blocking wrapper around :meth:`run_stdio_async`, for use as a process entry point.
+Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point.
 
 
 ### run_stdio_async()
@@ -266,7 +268,7 @@ def run_stdio_async()
 ```
 Serve MCP over this process's stdin/stdout until the client disconnects.
 
-Validates the transport and then delegates to the wrapped :class:`FastMCP`,
+Validates the transport and then delegates to the wrapped `FastMCP`,
 whose method of the same name does the actual serving.
 
 
@@ -275,7 +277,7 @@ whose method of the same name does the actual serving.
 
 | Exception | Description |
 |-|-|
-| `ValueError` | if ``transport`` is not ``"stdio"``. |
+| `ValueError` | if `transport` is not `"stdio"`. |
 
 ### server()
 

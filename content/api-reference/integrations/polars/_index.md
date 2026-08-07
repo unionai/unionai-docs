@@ -1,6 +1,6 @@
 ---
 title: Polars
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,7 +40,7 @@ layout: py_api
 ```python
 def get_polars_storage_options(
     protocol: typing.Optional[str],
-    anonymous: bool,
+    anonymous: bool = False,
 ) -> typing.Dict[str, str]
 ```
 Get storage options in a format compatible with Polars.

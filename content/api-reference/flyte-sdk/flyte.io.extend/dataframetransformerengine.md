@@ -1,6 +1,6 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -162,9 +162,9 @@ The other aspects of it - columns, external schema type, etc. can be read from a
 
 ```python
 def get_structured_dataset_type(
-    storage_format: str | None,
-    pa_schema: Optional['pa.lib.Schema'],
-    column_map: typing.OrderedDict[str, type[typing.Any]] | None,
+    storage_format: str | None = None,
+    pa_schema: Optional['pa.lib.Schema'] = None,
+    column_map: typing.OrderedDict[str, type[typing.Any]] | None = None,
 ) -> types_pb2.StructuredDatasetType
 ```
 | Parameter | Type | Description |
@@ -237,10 +237,10 @@ def open_as(
 ```python
 def register(
     h: Handlers,
-    default_for_type: bool,
-    override: bool,
-    default_format_for_type: bool,
-    default_storage_for_type: bool,
+    default_for_type: bool = False,
+    override: bool = False,
+    default_format_for_type: bool = False,
+    default_storage_for_type: bool = False,
 )
 ```
 Call this with any Encoder or Decoder to register it with the flytekit type system. If your handler does not
@@ -342,6 +342,7 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `python_val` | `Union[DataFrame, typing.Any]` | The actual value to be transformed |
@@ -359,31 +360,32 @@ def to_python_value(
 The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at
 the start of a task execution, is the column subsetting behavior. For example, if you have,
 
-def t1() -&gt; Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
+```python
+def t1() -> Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
 def t2(in_a: Annotated[StructuredDataset, kwtypes(col_b=float)]): ...
+```
 
 where t2(in_a=t1()), when t2 does in_a.open(pd.DataFrame).all(), it should get a DataFrame
 with only one column.
 
-+-----------------------------+-----------------------------------------+--------------------------------------+
-|                             |          StructuredDatasetType of the incoming Literal                         |
-+-----------------------------+-----------------------------------------+--------------------------------------+
-| StructuredDatasetType       | Has columns defined                     |  [] columns or None                  |
-| of currently running task   |                                         |                                      |
-+=============================+=========================================+======================================+
-|    Has columns              | The StructuredDatasetType passed to the decoder will have the columns          |
-|    defined                  | as defined by the type annotation of the currently running task.               |
-|                             |                                                                                |
-|                             | Decoders **should** then subset the incoming data to the columns requested.    |
-|                             |                                                                                |
-+-----------------------------+-----------------------------------------+--------------------------------------+
-|   [] columns or None        | StructuredDatasetType passed to decoder | StructuredDatasetType passed to the  |
-|                             | will have the columns from the incoming | decoder will have an empty list of   |
-|                             | Literal. This is the scenario where     | columns.                             |
-|                             | the Literal returned by the running     |                                      |
-|                             | task will have more information than    |                                      |
-|                             | the running task's signature.           |                                      |
-+-----------------------------+-----------------------------------------+--------------------------------------+
+What the decoder receives depends on whether each side declares columns.
+
+**The currently running task has columns defined.** The
+`StructuredDatasetType` passed to the decoder has the columns defined by
+that task's type annotation, whether or not the incoming Literal declares
+any. Decoders **should** then subset the incoming data to the columns
+requested.
+
+**The currently running task has `[]` columns or None.** Then it depends
+on the incoming Literal:
+
+- *Incoming Literal has columns defined* — the `StructuredDatasetType`
+  passed to the decoder has the columns from the incoming Literal. This is
+  the scenario where the Literal returned by the running task carries more
+  information than the running task's signature.
+- *Incoming Literal has `[]` columns or None* — the
+  `StructuredDatasetType` passed to the decoder has an empty list of
+  columns.
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: FlagSpec
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.extras.shell`
 
-How to render a typed input as a CLI flag in ``{flags.&lt;name&gt;}``.
+How to render a typed input as a CLI flag in `{flags.<name>}`.
 
 
 ## Parameters
@@ -17,9 +17,9 @@ How to render a typed input as a CLI flag in ``{flags.&lt;name&gt;}``.
 ```python
 class FlagSpec(
     flag: str,
-    list_mode: listMode,
-    separator: str,
-    dict_mode: DictMode,
+    list_mode: listMode = 'join',
+    separator: str = ' ',
+    dict_mode: DictMode = 'pairs',
 )
 ```
 | Parameter | Type | Description |

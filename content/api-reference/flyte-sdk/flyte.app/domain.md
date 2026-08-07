@@ -1,6 +1,6 @@
 ---
 title: Domain
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,8 +16,8 @@ Subdomain to use for the domain. If not set, the default subdomain will be used.
 
 ```python
 class Domain(
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
+    subdomain: typing.Optional[str] = None,
+    custom_domain: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

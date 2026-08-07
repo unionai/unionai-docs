@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,9 +20,9 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`abbreviate()`](#abbreviate) | HTML-escape ``value`` for a report row. |
+| [`abbreviate()`](#abbreviate) | HTML-escape `value` for a report row. |
 | [`current_report()`](#current_report) | Get the current report. |
-| [`duration_ms()`](#duration_ms) | Format the gap between two ISO-8601 timestamps as ``"<n> ms"`` (best-effort). |
+| [`duration_ms()`](#duration_ms) | Format the gap between two ISO-8601 timestamps as `"<n> ms"` (best-effort). |
 | [`flush()`](#flush) | Flush the report. |
 | [`get_tab()`](#get_tab) | Get a tab by name. |
 | [`log()`](#log) | Log content to the main tab. |
@@ -36,13 +36,13 @@ layout: py_api
 ```python
 def abbreviate(
     value: typing.Any,
-    limit: int,
+    limit: int = 300,
 ) -> str
 ```
-HTML-escape ``value`` for a report row.
+HTML-escape `value` for a report row.
 
-Short values render inline. Longer ones collapse into an expandable ``&lt;details&gt;``:
-the row shows a ``limit``-character preview with a ``+N`` overflow marker, and
+Short values render inline. Longer ones collapse into an expandable `<details>`:
+the row shows a `limit`-character preview with a `+N` overflow marker, and
 clicking it reveals the full content (up to a hard cap). Nothing is dropped on the
 floor, so a value that trails off in the report can always be opened in place.
 
@@ -71,7 +71,7 @@ def duration_ms(
     end_iso: typing.Any,
 ) -> str
 ```
-Format the gap between two ISO-8601 timestamps as ``"&lt;n&gt; ms"`` (best-effort).
+Format the gap between two ISO-8601 timestamps as `"<n> ms"` (best-effort).
 
 
 | Parameter | Type | Description |
@@ -97,7 +97,7 @@ Flush the report.
 ```python
 def get_tab(
     name: str,
-    create_if_missing: bool,
+    create_if_missing: bool = True,
 ) -> flyte.report._report.Tab
 ```
 Get a tab by name. If the tab does not exist, create it.
@@ -121,7 +121,7 @@ Get a tab by name. If the tab does not exist, create it.
 ```python
 def log(
     content: str,
-    do_flush: bool,
+    do_flush: bool = False,
 )
 ```
 Log content to the main tab. The content should be a valid HTML string, but not a complete HTML document,
@@ -144,7 +144,7 @@ Log content to the main tab. The content should be a valid HTML string, but not 
 ```python
 def replace(
     content: str,
-    do_flush: bool,
+    do_flush: bool = False,
 )
 ```
 Get the report. Replaces the content of the main tab.

@@ -1,6 +1,6 @@
 ---
 title: Cache
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,11 +30,11 @@ Set via `TaskEnvironment(cache=...)`, `@env.task(cache=...)`, or
 ```python
 class Cache(
     behavior: typing.Literal['auto', 'override', 'disable'],
-    version_override: typing.Optional[str],
-    serialize: bool,
-    ignored_inputs: typing.Union[typing.Tuple[str, ...], str],
-    salt: str,
-    policies: typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType],
+    version_override: typing.Optional[str] = None,
+    serialize: bool = False,
+    ignored_inputs: typing.Union[typing.Tuple[str, ...], str] = <factory>,
+    salt: str = '',
+    policies: typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -64,7 +64,7 @@ def get_ignored_inputs()
 
 ```python
 def get_version(
-    params: typing.Optional[flyte._cache.cache.VersionParameters],
+    params: typing.Optional[flyte._cache.cache.VersionParameters] = None,
 ) -> str
 ```
 | Parameter | Type | Description |

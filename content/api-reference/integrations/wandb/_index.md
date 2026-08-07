@@ -1,6 +1,6 @@
 ---
 title: Weights & Biases
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -261,9 +261,9 @@ async def my_task():
 
 ```python
 def download_wandb_run_dir(
-    run_id: typing.Optional[str],
-    path: typing.Optional[str],
-    include_history: bool,
+    run_id: typing.Optional[str] = None,
+    path: typing.Optional[str] = None,
+    include_history: bool = True,
 ) -> str
 ```
 Download wandb run data from wandb cloud.
@@ -336,9 +336,9 @@ Dir containing the downloaded wandb run files.
 
 ```python
 def download_wandb_sweep_dirs(
-    sweep_id: typing.Optional[str],
-    base_path: typing.Optional[str],
-    include_history: bool,
+    sweep_id: typing.Optional[str] = None,
+    base_path: typing.Optional[str] = None,
+    include_history: bool = True,
 ) -> list[str]
 ```
 Download all run data for a wandb sweep.
@@ -484,19 +484,19 @@ Returns `None` if not within a `wandb_sweep` context.
 
 ```python
 def wandb_config(
-    project: typing.Optional[str],
-    entity: typing.Optional[str],
-    host: typing.Optional[str],
-    id: typing.Optional[str],
-    name: typing.Optional[str],
-    tags: typing.Optional[list[str]],
-    config: typing.Optional[dict[str, typing.Any]],
-    mode: typing.Optional[str],
-    group: typing.Optional[str],
-    run_mode: typing.Literal['auto', 'new', 'shared'],
-    rank_scope: typing.Literal['global', 'worker'],
-    download_logs: bool,
-    kwargs: **kwargs,
+    project: typing.Optional[str] = None,
+    entity: typing.Optional[str] = None,
+    host: typing.Optional[str] = None,
+    id: typing.Optional[str] = None,
+    name: typing.Optional[str] = None,
+    tags: typing.Optional[list[str]] = None,
+    config: typing.Optional[dict[str, typing.Any]] = None,
+    mode: typing.Optional[str] = None,
+    group: typing.Optional[str] = None,
+    run_mode: typing.Literal['auto', 'new', 'shared'] = 'auto',
+    rank_scope: typing.Literal['global', 'worker'] = 'global',
+    download_logs: bool = False,
+    **kwargs: typing.Any,
 ) -> flyteplugins.wandb._context._WandBConfig
 ```
 Create wandb configuration.
@@ -521,19 +521,19 @@ This function works in two contexts:
 | `run_mode` | `typing.Literal['auto', 'new', 'shared']` | "auto", "new" or "shared". Controls whether tasks create new W&B runs or share existing ones. - "auto" (default): Creates new run if no parent run exists, otherwise shares parent's run - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID In distributed training context (single-node): - "auto" (default): Only rank 0 logs. - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). Multi-node: behavior depends on `rank_scope`. |
 | `rank_scope` | `typing.Literal['global', 'worker']` | "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `download_logs` | `bool` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `typing.Any` | |
 
 #### wandb_init()
 
 ```python
 def wandb_init(
-    _func: typing.Optional[~F],
-    run_mode: typing.Optional[typing.Literal['auto', 'new', 'shared']],
-    rank_scope: typing.Optional[typing.Literal['global', 'worker']],
-    download_logs: typing.Optional[bool],
-    project: typing.Optional[str],
-    entity: typing.Optional[str],
-    kwargs,
+    _func: typing.Optional[~F] = None,
+    run_mode: typing.Optional[typing.Literal['auto', 'new', 'shared']] = None,
+    rank_scope: typing.Optional[typing.Literal['global', 'worker']] = None,
+    download_logs: typing.Optional[bool] = None,
+    project: typing.Optional[str] = None,
+    entity: typing.Optional[str] = None,
+    **kwargs,
 ) -> ~F
 ```
 Decorator to automatically initialize wandb for Flyte tasks and wandb sweep objectives.
@@ -562,17 +562,17 @@ This decorator:
 | `download_logs` | `typing.Optional[bool]` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from `wandb_config()` context if set. |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### wandb_sweep()
 
 ```python
 def wandb_sweep(
-    _func: typing.Optional[~F],
-    project: typing.Optional[str],
-    entity: typing.Optional[str],
-    download_logs: typing.Optional[bool],
-    kwargs,
+    _func: typing.Optional[~F] = None,
+    project: typing.Optional[str] = None,
+    entity: typing.Optional[str] = None,
+    download_logs: typing.Optional[bool] = None,
+    **kwargs,
 ) -> ~F
 ```
 Decorator to create a wandb sweep and make `sweep_id` available.
@@ -597,21 +597,21 @@ Decorator Order:
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
 | `download_logs` | `typing.Optional[bool]` | if `True`, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from wandb_sweep_config() context if set. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### wandb_sweep_config()
 
 ```python
 def wandb_sweep_config(
-    method: typing.Optional[str],
-    metric: typing.Optional[dict[str, typing.Any]],
-    parameters: typing.Optional[dict[str, typing.Any]],
-    project: typing.Optional[str],
-    entity: typing.Optional[str],
-    prior_runs: typing.Optional[list[str]],
-    name: typing.Optional[str],
-    download_logs: bool,
-    kwargs: **kwargs,
+    method: typing.Optional[str] = None,
+    metric: typing.Optional[dict[str, typing.Any]] = None,
+    parameters: typing.Optional[dict[str, typing.Any]] = None,
+    project: typing.Optional[str] = None,
+    entity: typing.Optional[str] = None,
+    prior_runs: typing.Optional[list[str]] = None,
+    name: typing.Optional[str] = None,
+    download_logs: bool = False,
+    **kwargs: typing.Any,
 ) -> flyteplugins.wandb._context._WandBSweepConfig
 ```
 Create wandb sweep configuration for hyperparameter optimization.
@@ -629,5 +629,5 @@ See: https://docs.wandb.ai/models/sweeps/sweep-config-keys
 | `prior_runs` | `typing.Optional[list[str]]` | List of prior run IDs to include in the sweep analysis |
 | `name` | `typing.Optional[str]` | Sweep name (auto-generated as `{run_name}-{action_name}` if not provided) |
 | `download_logs` | `bool` | If `True`, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `typing.Any` | |
 
