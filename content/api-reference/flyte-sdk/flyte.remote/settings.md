@@ -1,6 +1,6 @@
 ---
 title: Settings
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -90,34 +90,24 @@ Retrieve settings at the requested scope along with parent scopes.
 Returns a Settings object containing both the effective (resolved) settings
 with inheritance, and the local overrides at the requested scope.
 
-The scope is determined by `domain` and `project`:
+The scope is determined by ``domain`` and ``project``:
 
 - no args → ORG scope.
-- `domain` only → DOMAIN scope.
-- `domain` + `project` → PROJECT scope, inherits from DOMAIN.
+- ``domain`` only → DOMAIN scope.
+- ``domain`` + ``project`` → PROJECT scope, inherits from DOMAIN.
 
 These are explicit parameters — they are **not** inferred from
-`flyte.init()`.
+``flyte.init()``.
 
-```python
-# Domain-level settings
-settings = Settings.get_settings_for_edit(domain="production")
+:returns: Settings object with effective_settings, local_settings, and version.
 
-# Project-level — inherits from DOMAIN
-settings = Settings.get_settings_for_edit(domain="production", project="ml-pipeline")
-```
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `project` | `str \| None` | Project name. Requires `domain` to also be set. |
+| `project` | `str \| None` | Project name. Requires ``domain`` to also be set. |
 | `domain` | `str \| None` | Domain name. |
-
-**Returns**
-
-Settings object with effective_settings, local_settings, and version.
-
 
 ### local_overrides()
 
@@ -136,10 +126,10 @@ def parse_yaml(
 ```
 Parse YAML content into a dict of overrides.
 
-Uses `yaml.safe_load`, so all YAML syntax is supported — including
-flow collections (`[a, b]`, `{k: v}`) and block collections — for
-the map leaves (`labels`, `annotations`,
-`environment_variables`). Commented lines are ignored (template
+Uses ``yaml.safe_load``, so all YAML syntax is supported — including
+flow collections (``[a, b]``, ``{k: v}``) and block collections — for
+the map leaves (``labels``, ``annotations``,
+``environment_variables``). Commented lines are ignored (template
 entries stay as comments until the user uncomments them).
 
 
@@ -187,14 +177,14 @@ Generate YAML representation of this scope.
 Three comment prefixes form a visibility hierarchy for both human
 readers and line-based stylers:
 
-* `###` — section headers (scope header, section titles). Prominent.
-* `##` — descriptions and metadata (per-field docs, inline origin
+* ``###`` — section headers (scope header, section titles). Prominent.
+* ``##`` — descriptions and metadata (per-field docs, inline origin
   annotations). Dim.
-* `#` — a commented-out setting. Uncomment (strip a single leading
-  `#`) to activate.
+* ``#`` — a commented-out setting. Uncomment (strip a single leading
+  ``#``) to activate.
 
-A bulk `# ` → `` pass safely activates every setting while leaving
-descriptions (`##` → `#`) and section headers (`###` → `##`)
+A bulk ``# `` → `` pass safely activates every setting while leaving
+descriptions (``##`` → ``#``) and section headers (``###`` → ``##``)
 intact as comments.
 
 Output has up to three sections:
@@ -213,11 +203,11 @@ def to_yaml_sections()
 ```
 Return the YAML content split into labelled sections.
 
-Each tuple is `(section_title, yaml_body)`; sections are omitted
-when they have no entries. See `Settings.to_yaml` for the comment-prefix
+Each tuple is ``(section_title, yaml_body)``; sections are omitted
+when they have no entries. See `to_yaml` for the comment-prefix
 convention.
 
-Section titles: `"Local overrides"`, `"Inherited settings"`, `"Available settings"`.
+Section titles: ``"Local overrides"``, ``"Inherited settings"``, ``"Available settings"``.
 
 
 ### update_settings()
@@ -234,22 +224,15 @@ def update_settings(
 ```
 Replace the complete set of local overrides for this scope.
 
-Uses the scope (`domain` / `project`) this object was retrieved for.
-Settings not included in `overrides` will inherit from the parent scope.
+Uses the scope (``domain`` / ``project``) this object was retrieved for.
+Settings not included in ``overrides`` will inherit from the parent scope.
 
 Uses optimistic locking via the version obtained from
-`get_settings_for_edit`.
+``get_settings_for_edit``.
 
-```python
-settings = Settings.get_settings_for_edit(domain="production")
-settings.update_settings({
-    "run.default_queue": "gpu",
-    "task_resource.min.cpu": "2",
-})
-```
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `overrides` | `dict[str, Any]` | Dict of flat dot-notation keys to values. Example: `{"run.default_queue": "gpu", "security.service_account": "my-sa"}` |
+| `overrides` | `dict[str, Any]` | Dict of flat dot-notation keys to values. Example: ``{"run.default_queue": "gpu", "security.service_account": "my-sa"}`` |
 

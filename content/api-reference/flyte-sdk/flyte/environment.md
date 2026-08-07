@@ -1,6 +1,6 @@
 ---
 title: Environment
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,14 +38,14 @@ class Environment(
 |-|-|-|
 | `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. |
 | `depends_on` | `List[Environment]` | List of other environments to deploy alongside this one. |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template as a string reference to a named template or a `PodTemplate` object. To set a termination grace period without depending on the `kubernetes` package, use `flyte.PodTemplate().with_termination_grace_period(...)`. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template as a string reference to a named template or a `PodTemplate` object. |
 | `description` | `Optional[str]` | Human-readable description (max 255 characters). |
 | `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables as `dict[str, str]`. |
 | `resources` | `Optional[Resources]` | Compute resources (CPU, memory, GPU, disk) via a `Resources` object. |
 | `interruptible` | `bool` | Whether the environment can be scheduled on spot/preemptible instances. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. |
-| `include` | `Tuple[str, ...]` | Extra files to bundle with the environment's code (e.g., HTML templates, config files, non-Python assets). Paths may be relative (resolved against the directory of the file where the environment is instantiated), absolute, directories (recursively included), or glob patterns. Files listed here are bundled **in addition to** the default `copy_style` discovery (`loaded_modules` or `all`), not in place of it. |
+| `include` | `Tuple[str, ...]` | Extra files to bundle with the environment's code (e.g., HTML templates, config files, non-Python assets). Paths may be relative (resolved against the directory of the file where the environment is instantiated), absolute, directories (recursively included), or glob patterns. Files listed here are bundled **in addition to** the default ``copy_style`` discovery (``loaded_modules`` or ``all``), not in place of it. |
 
 ## Methods
 

@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -186,8 +186,8 @@ This first requests a signed download link from the data proxy for the report ar
 then downloads the report from that URL and returns its contents as an HTML string.
 
 To fetch the report for a specific action nested inside the run (rather than the root
-action), use `Action.get_report` on that action, e.g. via `Action.get` or by
-iterating `Action.listall`.
+action), use `Action.get_report` on that action, e.g. via ``Action.get`` or by
+iterating ``Action.listall``.
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: CostEstimator
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,14 +15,6 @@ Implement this on your record type and the batcher will call it
 automatically when no explicit `estimated_cost` is passed to
 `DynamicBatcher.submit`.
 
-```python
-@dataclass
-class ApiRequest:
-    payload: str
-
-    def estimate_cost(self) -> int:
-        return len(self.payload)
-```
 
 
 ```python

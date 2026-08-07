@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -184,7 +184,6 @@ async def foo() -> DataFrame:
     return await DataFrame.from_local(df, hash_method=hash_method)
 ```
 
-Returns: DataFrame object.
 
 
 | Parameter | Type | Description |
@@ -192,7 +191,7 @@ Returns: DataFrame object.
 | `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
 | `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
 | `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context. |
-| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes. |
+| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes.  Returns: DataFrame object. |
 
 ### from_local_sync()
 
@@ -229,7 +228,6 @@ def foo() -> DataFrame:
     return DataFrame.from_local_sync(df, hash_method=hash_method)
 ```
 
-Returns: DataFrame object.
 
 
 | Parameter | Type | Description |
@@ -237,7 +235,7 @@ Returns: DataFrame object.
 | `df` | `typing.Any` | The dataframe object to be uploaded and converted. |
 | `columns` | `typing.OrderedDict[str, type[typing.Any]] \| None` | Optionally, any column information to be stored as part of the metadata |
 | `remote_destination` | `str \| None` | Optional destination URI to upload to, if not specified, this is automatically determined based on the current context. For example, locally it will use flyte:// automatic data management system to upload data (this is slow and useful for smaller datasets). On remote it will use the storage configuration and the raw data directory setting in the task context. |
-| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes. |
+| `hash_method` | `HashMethod \| str \| None` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash from the dataframe. If not specified, the cache key will be based on dataframe attributes.  Returns: DataFrame object. |
 
 ### iter()
 

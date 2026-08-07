@@ -1,6 +1,6 @@
 ---
 title: FlyteMCPAppEnvironment
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,46 +14,66 @@ Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn).
 Use this environment when you want LLM clients to call Flyte operations
 (tasks, runs, actions, logs, apps, triggers, projects, secrets, conditions,
 docs search) through the Model Context Protocol. Install extras with
-`pip install 'flyte[mcp]'`.
+``pip install 'flyte[mcp]'``.
 
 **HTTP layout**
 
-- `GET /health` — liveness/readiness JSON `{"status": "healthy"}`.
-- The MCP ASGI app is mounted at `mcp_mount_path` (default `/flyte-mcp`). With
-  the default `transport="streamable-http"`, the session endpoint is
-  `{mcp_mount_path}/mcp` (for example `/flyte-mcp/mcp`). SSE transport uses
-  `{mcp_mount_path}/sse` instead.
+- ``GET /health`` — liveness/readiness JSON ``{"status": "healthy"}``.
+- The MCP ASGI app is mounted at ``mcp_mount_path`` (default ``/flyte-mcp``). With
+  the default ``transport="streamable-http"``, the session endpoint is
+  ``{mcp_mount_path}/mcp`` (for example ``/flyte-mcp/mcp``). SSE transport uses
+  ``{mcp_mount_path}/sse`` instead.
 
 **Tool selection**
 
-Pass `tool_groups` *or* `tools` to restrict which MCP tools are
-registered (not both). Omit both to enable all tools. `read_only=True` then drops
-everything that is not annotated `readOnlyHint=True`, so a public deployment gets a
+Pass ``tool_groups`` *or* ``tools`` to restrict which MCP tools are
+registered (not both). Omit both to enable all tools. ``read_only=True`` then drops
+everything that is not annotated ``readOnlyHint=True``, so a public deployment gets a
 safe surface without maintaining a hand-written tool list. Optional allowlists
 limit which tasks, apps, or triggers remote calls may target. Search tools
-require `sdk_examples_path`, `docs_examples_path`, and/or
-`full_docs_path` when those tools are enabled.
+require ``sdk_examples_path``, ``docs_examples_path``, and/or
+``full_docs_path`` when those tools are enabled.
 
 **Project / domain resolution**
 
-Project- and domain-scoped tools take optional `project`/`domain` arguments. They
-resolve in this order: the explicit argument, then `FLYTE_MCP_PROJECT` /
-`FLYTE_MCP_DOMAIN`, then whatever the initialized config carries. If nothing resolves,
-the tool fails with a message telling the caller to pass them explicitly.
+Project- and domain-scoped tools take optional ``project``/``domain`` arguments. They
+resolve in this order: the explicit argument, then ``FLYTE_MCP_PROJECT`` /
+``FLYTE_MCP_DOMAIN`` (skipped in central mode, where there is no server-wide tenant),
+then whatever the initialized config carries. If nothing resolves, the tool fails with a
+message telling the caller to pass them explicitly.
+
+**Central (multi-tenant) mode**
+
+With ``central_mode=True`` a single deployment serves *any* tenant: instead of binding one
+endpoint for the whole process at startup, `CentralTenantMiddleware`
+resolves the tenant from each request's ``Authorization: Bearer <api-key>`` and scopes the
+Flyte client to that request. ``requires_auth`` is then irrelevant to tool access — the
+middleware always requires a credential — and no process-global ``init_passthrough`` runs, so
+project/domain must be supplied per call.
+
+By default only Union-operated control planes are reachable — ``<org>.hosted.unionai.cloud``,
+``<org>.<region>.unionai.cloud`` for the regions Union runs, ``<org>.s.union.ai`` and
+``<org>.us-east-2.s.union.ai``, with ``<org>`` a single DNS label (see
+`DEFAULT_ALLOWED_ENDPOINT_PATTERNS`). Setting
+``allowed_endpoint_suffixes`` (or ``FLYTE_MCP_ALLOWED_ENDPOINT_SUFFIXES``) **replaces** the
+defaults with plain suffix / exact-host matching, which is how a self-hosted or private
+deployment names its own control planes.
 
 **Transport security**
 
-Set `allowed_hosts` / `allowed_origins` (or `FLYTE_MCP_ALLOWED_HOSTS` /
-`FLYTE_MCP_ALLOWED_ORIGINS`) to turn on MCP's DNS-rebinding protection. Any deployment
-reachable over HTTP wants it. When neither is configured the protection stays off,
-preserving the behavior existing deployments were built against.
+Set ``allowed_hosts`` / ``allowed_origins`` (or ``FLYTE_MCP_ALLOWED_HOSTS`` /
+``FLYTE_MCP_ALLOWED_ORIGINS``) to turn on MCP's DNS-rebinding protection. When neither is
+configured the protection stays off, preserving the behavior existing per-tenant deployments
+were built against — **except in central mode**, where one of the two is required and
+construction fails without it. A public multi-tenant endpoint that silently shipped with
+DNS-rebinding protection off is exactly the deploy mistake worth failing loudly on.
 
 **Image**
 
-When `image` is omitted (or set to `"auto"`), the environment uses
+When ``image`` is omitted (or set to ``"auto"``), the environment uses
 `DEFAULT_IMAGE`, which preinstalls the MCP/Starlette/Uvicorn stack
 and clones the flyte-sdk + unionai-examples repos and the Union docs
-`llms.txt` into `/root` so the search tools have content to scan.
+``llms.txt`` into ``/root`` so the search tools have content to scan.
 
 
 ## Parameters
@@ -92,6 +112,8 @@ class FlyteMCPAppEnvironment(
     task_allowlist: list[str] | None = None,
     app_allowlist: list[str] | None = None,
     trigger_allowlist: list[str] | None = None,
+    central_mode: bool = False,
+    allowed_endpoint_suffixes: list[str] | None = None,
     allowed_hosts: list[str] | None = None,
     allowed_origins: list[str] | None = None,
     sdk_examples_path: str | None = '/root/flyte-sdk/examples',
@@ -133,6 +155,8 @@ class FlyteMCPAppEnvironment(
 | `task_allowlist` | `list[str] \| None` | |
 | `app_allowlist` | `list[str] \| None` | |
 | `trigger_allowlist` | `list[str] \| None` | |
+| `central_mode` | `bool` | |
+| `allowed_endpoint_suffixes` | `list[str] \| None` | |
 | `allowed_hosts` | `list[str] \| None` | |
 | `allowed_origins` | `list[str] \| None` | |
 | `sdk_examples_path` | `str \| None` | |
@@ -159,9 +183,9 @@ class FlyteMCPAppEnvironment(
 | [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
 | [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
 | [`resolve_scope()`](#resolve_scope) | Resolve the project/domain a tool call should run against. |
-| [`resolved_allowed_hosts()`](#resolved_allowed_hosts) | `Host` header allowlist: the explicit field, else `FLYTE_MCP_ALLOWED_HOSTS`. |
-| [`resolved_allowed_origins()`](#resolved_allowed_origins) | `Origin` header allowlist: the explicit field, else `FLYTE_MCP_ALLOWED_ORIGINS`. |
-| [`run_stdio()`](#run_stdio) | Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point. |
+| [`resolved_allowed_hosts()`](#resolved_allowed_hosts) | ``Host`` header allowlist: the explicit field, else ``FLYTE_MCP_ALLOWED_HOSTS``. |
+| [`resolved_allowed_origins()`](#resolved_allowed_origins) | ``Origin`` header allowlist: the explicit field, else ``FLYTE_MCP_ALLOWED_ORIGINS``. |
+| [`run_stdio()`](#run_stdio) | Blocking wrapper around `run_stdio_async`, for use as a process entry point. |
 | [`run_stdio_async()`](#run_stdio_async) | Serve MCP over this process's stdin/stdout until the client disconnects. |
 | [`server()`](#server) | Decorator to define the server function for the app environment. |
 
@@ -306,9 +330,10 @@ def resolve_scope(
 ```
 Resolve the project/domain a tool call should run against.
 
-Order: the explicit argument, then the server-wide env default, then the initialized
-config.
+Order: the explicit argument, then the server-wide env default (never in central mode,
+where the process has no tenant of its own), then the initialized config.
 
+    outcome for a caller who forgot to pass them, so the message says so.
 
 
 | Parameter | Type | Description |
@@ -320,14 +345,14 @@ config.
 
 | Exception | Description |
 |-|-|
-| `ToolError` | when neither is resolvable. |
+| `ToolError` | when neither is resolvable — in central mode that is the normal |
 
 ### resolved_allowed_hosts()
 
 ```python
 def resolved_allowed_hosts()
 ```
-`Host` header allowlist: the explicit field, else `FLYTE_MCP_ALLOWED_HOSTS`.
+``Host`` header allowlist: the explicit field, else ``FLYTE_MCP_ALLOWED_HOSTS``.
 
 
 ### resolved_allowed_origins()
@@ -335,7 +360,7 @@ def resolved_allowed_hosts()
 ```python
 def resolved_allowed_origins()
 ```
-`Origin` header allowlist: the explicit field, else `FLYTE_MCP_ALLOWED_ORIGINS`.
+``Origin`` header allowlist: the explicit field, else ``FLYTE_MCP_ALLOWED_ORIGINS``.
 
 
 ### run_stdio()
@@ -343,7 +368,7 @@ def resolved_allowed_origins()
 ```python
 def run_stdio()
 ```
-Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point.
+Blocking wrapper around `run_stdio_async`, for use as a process entry point.
 
 
 ### run_stdio_async()
@@ -362,7 +387,7 @@ whose method of the same name does the actual serving.
 
 | Exception | Description |
 |-|-|
-| `ValueError` | if `transport` is not `"stdio"`. |
+| `ValueError` | if ``transport`` is not ``"stdio"``. |
 
 ### server()
 

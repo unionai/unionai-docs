@@ -1,6 +1,6 @@
 ---
 title: Timeline
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,7 +12,7 @@ layout: py_api
 Append a best-effort chronological timeline to a tab of the task report.
 
 Writes are skipped silently when there is no active report (running locally, or the
-task was not created with `report=True`), so rendering a timeline never breaks the
+task was not created with ``report=True``), so rendering a timeline never breaks the
 work it is observing.
 
 

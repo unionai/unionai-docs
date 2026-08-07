@@ -1,6 +1,6 @@
 ---
 title: ClusteredTaskEnvironment
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,7 +59,7 @@ class ClusteredTaskEnvironment(
 | `plugin_config` | `Optional[Any]` | |
 | `queue` | `Optional[str]` | |
 | `replicas` | `int` | Number of pods (== number of nodes). Required. |
-| `nproc_per_node` | `int` | Number of processes per pod, passed to `torchrun --nproc-per-node`. Must be &gt;= 1 and, when resources.gpu is set, &lt;= resources.gpu. Required. |
+| `nproc_per_node` | `int` | Number of processes per pod, passed to ``torchrun --nproc-per-node``. Must be &gt;= 1 and, when resources.gpu is set, &lt;= resources.gpu. Required. |
 | `runtime` | `Runtime` | Launcher configuration. Phase 1 supports only TorchRun(). |
 | `interconnect` | `Literal['tcp']` | Network fabric. Currently only "tcp" is supported. |
 | `failure_policy` | `ClusterFailurePolicy` | JobSet-level restart and eviction policy. |
@@ -183,10 +183,7 @@ attribute of the other TaskEnvironment.
 | `*tasks` | `TaskTemplate` | The list of tasks to create the environment from. |
 | `depends_on` | `Optional[List['Environment']]` | Optional list of environments that this environment depends on. |
 
-**Returns**
-
-The created TaskEnvironment.
-
+**Returns:** The created TaskEnvironment.
 
 **Raises**
 
@@ -213,7 +210,6 @@ def task(
     links: Tuple[Link, ...] | Link = (),
     task_resolver: Any | None = None,
     entrypoint: bool = False,
-    produces_artifacts: bool = False,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -237,7 +233,6 @@ Decorate a function to be a task.
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |
 | `entrypoint` | `bool` | Optionally mark a task as an entrypoint task, defaults to False. This serves as a hint to the UI. |
-| `produces_artifacts` | `bool` | Optional Whether the backend should extract artifact metadata stamped on this task's output literals (via `flyte.artifacts.new(...)`) and record them as generated artifacts on the action, defaults to False. |
 
 **Returns:** A TaskTemplate that can be used to deploy the task.
 
@@ -249,6 +244,6 @@ def to_custom_dict()
 Serialize this environment to the dict shape expected by ClusteredTaskSpec proto.
 
 Imported lazily so the heavy clustered_pb2 module is only loaded at serialization
-time rather than on every `flyte.clustered` import.
+time rather than on every ``flyte.clustered`` import.
 
 

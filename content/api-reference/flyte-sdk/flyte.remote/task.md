@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,7 +28,7 @@ Initialize a Task object.
 
 | Property | Type | Description |
 |-|-|-|
-| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch `TaskDetails` to read the authoritative value from the task template. |
+| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
 | `name` | `str` | The name of the task. |
 | `url` | `str` | Get the console URL for viewing the task. |
 | `version` | `str` | The version of the task. |

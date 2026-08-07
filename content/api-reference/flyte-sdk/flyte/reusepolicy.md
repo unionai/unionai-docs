@@ -1,6 +1,6 @@
 ---
 title: ReusePolicy
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,11 +42,11 @@ class ReusePolicy(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `replicas` | `typing.Union[int, typing.Tuple[int, int]]` | Number of container replicas to maintain. - `int`: Fixed replica count, always running (e.g., `replicas=3`). - `tuple(min, max)`: Auto-scaling range (e.g., `replicas=(1, 5)`).   Scales between min and max based on demand. Default is `2`. A minimum of 2 replicas is recommended to avoid starvation when the parent task occupies one replica. |
+| `replicas` | `typing.Union[int, typing.Tuple[int, int]]` | Number of container replicas to maintain.  - `int`: Fixed replica count, always running (e.g., `replicas=3`). - `tuple(min, max)`: Auto-scaling range (e.g., `replicas=(1, 5)`). Scales between min and max based on demand.  Default is `2`. A minimum of 2 replicas is recommended to avoid starvation when the parent task occupies one replica. |
 | `idle_ttl` | `typing.Union[int, datetime.timedelta]` | Environment-level idle timeout — shuts down **all** replicas when the entire environment has been idle for this duration. Specified as seconds (`int`) or `timedelta`. Minimum 30 seconds. Default is 30 seconds. |
 | `concurrency` | `int` | Maximum concurrent tasks per replica. Values greater than 1 are only supported for `async` tasks. Default is `1`. |
-| `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` | Per-replica scale-down delay — minimum time to wait before removing an **individual** idle replica. Prevents rapid scale-down when tasks arrive in bursts. Specified as seconds (`int`) or `timedelta`. Default is 30 seconds. Note the distinction: `idle_ttl` controls when the whole environment shuts down; `scaledown_ttl` controls when individual replicas are removed during auto-scaling. |
-| `scope` | `typing.Literal['global', 'run']` | How widely the reusable environment may be shared. - `"global"` (default): reuse one environment across all runs. - `"run"`: restrict reuse to a single run, so each run gets its own   environment. |
+| `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` | Per-replica scale-down delay — minimum time to wait before removing an **individual** idle replica. Prevents rapid scale-down when tasks arrive in bursts. Specified as seconds (`int`) or `timedelta`. Default is 30 seconds.  Note the distinction: `idle_ttl` controls when the whole environment shuts down; `scaledown_ttl` controls when individual replicas are removed during auto-scaling. |
+| `scope` | `typing.Literal['global', 'run']` | How widely the reusable environment may be shared.  - `"global"` (default): reuse one environment across all runs. - `"run"`: restrict reuse to a single run — each run gets its own environment. |
 
 ## Properties
 

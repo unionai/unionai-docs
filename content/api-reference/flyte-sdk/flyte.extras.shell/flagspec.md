@@ -1,6 +1,6 @@
 ---
 title: FlagSpec
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.extras.shell`
 
-How to render a typed input as a CLI flag in `{flags.<name>}`.
+How to render a typed input as a CLI flag in ``{flags.<name>}``.
 
 
 ## Parameters

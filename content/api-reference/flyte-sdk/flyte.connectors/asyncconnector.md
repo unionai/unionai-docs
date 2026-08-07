@@ -1,6 +1,6 @@
 ---
 title: AsyncConnector
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ All the connectors should be registered in the ConnectorRegistry.
 Connector Service will look up the connector based on the task type and version.
 
 Subclasses may parameterize by their resource-meta type (e.g.
-`class MyConnector(AsyncConnector[MyJobMetadata])`) so that overrides of
-`create`/`get`/`delete`/`get_logs` type-check against the concrete meta type.
+``class MyConnector(AsyncConnector[MyJobMetadata])``) so that overrides of
+``create``/``get``/``delete``/``get_logs`` type-check against the concrete meta type.
 
 
 ## Methods
@@ -101,7 +101,7 @@ LogLine entries with timestamp + originator) in the returned
 GetTaskLogsResponse.
 
 Overrides may be a plain async function returning a single
-`GetTaskLogsResponse`, or an async generator yielding multiple
+``GetTaskLogsResponse``, or an async generator yielding multiple
 responses (preferred for paginated logs — the connector server
 handles both shapes).
 

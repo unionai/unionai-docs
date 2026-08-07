@@ -5,7 +5,11 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.19.0"
+stable = "v2.5.18.0"
 enumerated = [
   "v2.5.16.3",
 ]
+# v2.5.19.0 is deliberately absent. flyte 2.5.19 was yanked on PyPI ("should be
+# minor" -- it added the whole flyte.artifacts package in a patch release), so the
+# cut named after it documented an API surface nobody can install. The git tag
+# stays as history; withdrawing it from here stops /docs/v2.5.19.0 being served.

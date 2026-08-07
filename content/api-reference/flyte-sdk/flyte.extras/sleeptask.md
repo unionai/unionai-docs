@@ -1,6 +1,6 @@
 ---
 title: SleepTask
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,7 +33,6 @@ class SleepTask(
     queue: Optional[str] = None,
     debuggable: bool = True,
     entrypoint: bool = False,
-    produces_artifacts: bool = False,
     parent_env: Optional[weakref.ReferenceType[TaskEnvironment]] = None,
     parent_env_name: Optional[str] = None,
     max_inline_io_bytes: int = 10485760,
@@ -67,7 +66,6 @@ class SleepTask(
 | `queue` | `Optional[str]` | |
 | `debuggable` | `bool` | |
 | `entrypoint` | `bool` | |
-| `produces_artifacts` | `bool` | |
 | `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` | |
 | `parent_env_name` | `Optional[str]` | |
 | `max_inline_io_bytes` | `int` | |
@@ -248,7 +246,6 @@ def override(
     queue: Optional[str] = None,
     interruptible: Optional[bool] = None,
     entrypoint: Optional[bool] = None,
-    produces_artifacts: Optional[bool] = None,
     links: Tuple[Link, ...] = (),
     plugin_config: Optional[Any] = None,
     **kwargs: Any,
@@ -274,7 +271,6 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
-| `produces_artifacts` | `Optional[bool]` | Optional override for the produces_artifacts flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `plugin_config` | `Optional[Any]` | Optional override for the plugin specific configuration. Only supported by task templates that declare a `plugin_config` field. |
 | `**kwargs` | `Any` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |
