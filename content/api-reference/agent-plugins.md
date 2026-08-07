@@ -6,16 +6,15 @@ variants: +flyte +union
 
 # Flyte agent plugins
 
-[`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) is an
-**agent harness plugin for Flyte** — a portable bundle of **agent skills** and two
-**MCP servers** that teach an AI coding agent to scaffold workflows, build and serve
-apps, run and inspect executions, migrate Flyte 1 code to Flyte 2, and deploy Flyte
-clusters, grounded in the Flyte SDK, the documentation, and (optionally) your own
-cluster.
+[`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) bundles agent
+skills and two MCP servers for Flyte. Install it and your coding agent can scaffold
+workflows, build and serve apps, run and inspect executions, migrate Flyte 1 code to
+Flyte 2, and deploy clusters, grounded in the Flyte SDK, the documentation, and
+optionally your own cluster.
 
-It's harness-agnostic: the same skills run in **Claude Code, Codex, Hermes,
-OpenCode, Pi, and other agent harnesses**. Claude Code and Codex wire up the
-bundled MCP servers for you; in other harnesses you configure them manually.
+The same skills run in Claude Code, Codex, Hermes, opencode, pi, and any other harness
+that supports agent skills. Claude Code and Codex wire up the MCP servers for you;
+elsewhere you add them by hand.
 
 ## Compatibility
 
@@ -25,15 +24,15 @@ are declared in the plugin's `.mcp.json`, which only some harnesses read.
 
 | Harness | Skills | MCP servers | Version pinning |
 |---------|--------|-------------|-----------------|
-| Claude Code | All 20 | Both, automatically | Yes — git ref |
-| Codex CLI | All 20 | Both, automatically | Yes — `--ref` |
-| Hermes | Per-skill | Manual | No — default branch only |
-| opencode | All 20 | Manual | Yes — tag/branch/commit |
-| pi | All 20 | Manual | Yes — tag/commit |
+| Claude Code | All 20 | Both, automatically | Yes, git ref |
+| Codex CLI | All 20 | Both, automatically | Yes, `--ref` |
+| Hermes | Per-skill | Manual | No, default branch only |
+| opencode | All 20 | Manual | Yes, tag/branch/commit |
+| pi | All 20 | Manual | Yes, tag/commit |
 
 Claude Code reads `.mcp.json` by convention; Codex is pointed at the same file by
-`.codex-plugin/plugin.json`. The other three install the skills only — you can still
-add the servers by hand, and [the snippets are below](#adding-the-mcp-servers-manually).
+`.codex-plugin/plugin.json`. The other three install the skills only. You can still add
+the servers by hand; [the snippets are below](#adding-the-mcp-servers-manually).
 
 ## Installation
 
@@ -105,8 +104,8 @@ migrating from Flyte 1, and deploying Flyte clusters.
 | `flyte-sdk-run` | Run workflows, inspect runs and actions, retrieve logs and outputs, and manage the run lifecycle. |
 | `flyte-sdk-eval` | Build evaluation harnesses and unit tests to validate correctness and performance early. |
 | `flyte-sdk-optimize` | Improve performance via task granularity, caching, and resource tuning using run metadata. |
-| `flyte-sdk-app` | Build and serve apps — FastAPI, Streamlit, vLLM, SGLang, WebSocket, and browser apps. |
-| `flyte-sdk-agent` | Build durable agents — ReAct, Plan-and-Execute, LangGraph, PydanticAI, memory, and MCP tools. |
+| `flyte-sdk-app` | Build and serve apps: FastAPI, Streamlit, vLLM, SGLang, WebSocket, and browser apps. |
+| `flyte-sdk-agent` | Build durable agents: ReAct, Plan-and-Execute, LangGraph, PydanticAI, memory, and MCP tools. |
 | `flyte-sdk-data` | Author data-engineering patterns: ETL, data-quality checks, fan-out/map tasks, and dynamic workflows. |
 | `flyte-sdk-ml` | Author ML workloads: training, hyperparameter optimization, evaluation, and batch/real-time inference. |
 
@@ -125,15 +124,15 @@ migrating from Flyte 1, and deploying Flyte clusters.
 
 | Skill | What it helps with |
 |-------|--------------------|
-| `flyte-deploy-aws` | Deploy a Flyte v2 cluster on AWS from scratch — EKS + S3 + RDS, behind an ALB, with optional TLS and SSO. |
+| `flyte-deploy-aws` | Deploy a Flyte v2 cluster on AWS from scratch: EKS + S3 + RDS, behind an ALB, with optional TLS and SSO. |
 | `deploy-flyte-kind` | Deploy a Flyte stack on a local [kind](https://kind.sigs.k8s.io/) cluster with hosted PostgreSQL and object storage. |
 | `deploy-flyte-kind-vm` | Provision a host (local or a cloud VM) and run the kind-based Flyte deployment on it. |
 | `start-dex-local` | Stand up [Dex](https://dexidp.io/) as an in-cluster OIDC provider to test authentication locally. |
 
 > [!NOTE]
-> The deployment skills target self-hosted, open-source Flyte — provisioning your
-> own EKS or kind cluster. They're most useful for evaluation and self-managed
-> deployments; on a fully managed offering, cluster provisioning is handled for you.
+> The deployment skills target self-hosted, open-source Flyte: they provision your own
+> EKS or kind cluster. On a managed offering Union runs the cluster for you, so these
+> skills are mainly useful for evaluation and self-managed deployments.
 
 ## MCP servers
 
@@ -142,16 +141,16 @@ is duplicated between them.
 
 | Server | Transport | Tools | Needs |
 |--------|-----------|-------|-------|
-| `flyte-docs` | Hosted HTTP | 3 search tools — Flyte SDK examples, docs examples, `llms.txt` | Nothing |
-| `flyte-cluster` | Local stdio | 29 control-plane tools — tasks, runs, actions, logs, apps, triggers, projects, secrets, conditions, identity | `uv`; a Flyte login for the tools to return data |
+| `flyte-docs` | Hosted HTTP | 3 search tools over Flyte SDK examples, docs examples, `llms.txt` | Nothing |
+| `flyte-cluster` | Local stdio | 29 control-plane tools: tasks, runs, actions, logs, apps, triggers, projects, secrets, conditions, identity | `uv`; a Flyte login for the tools to return data |
 
 ### What each one does with your data
 
-`flyte-docs` is read-only, unauthenticated, and **operated by Union**. Search works the
+`flyte-docs` is read-only, unauthenticated, and operated by Union. Search works the
 moment you install, with no corpus to download and no `uv` required. Your search queries
 do leave your machine.
 
-`flyte-cluster` runs **on your machine**. It is the SDK's own `flyte-mcp` entry point,
+`flyte-cluster` runs on your machine. It is the SDK's own `flyte-mcp` entry point,
 fetched from PyPI at launch:
 
 ```bash
@@ -162,46 +161,46 @@ uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio \
 Calls go straight from your machine to your control plane, so no cluster data passes
 through anything Union operates.
 
-Two details in that command are deliberate:
+Two things in that command matter:
 
-- **`>=2.5.18`** is the first release that caps its `mcp` dependency below 2.0. Below it,
-  the server fails at import.
-- **The `search` groups are excluded.** `flyte-docs` already serves them hosted, and
-  enabling them here clones roughly 120 MB into `~/.flyte/mcp` on first launch.
+- `>=2.5.18` is the first release that caps its `mcp` dependency below 2.0. Below it the
+  server fails at import.
+- The `search` groups are left out. `flyte-docs` already serves them hosted, and enabling
+  them here clones roughly 120 MB into `~/.flyte/mcp` on first launch.
 
-If you would rather send nothing out at all, drop `flyte-docs` and add `search` to the
-`flyte-cluster` groups. You then trade the hosted lookup for that local corpus.
+To send nothing out at all, drop `flyte-docs` and add `search` to the `flyte-cluster`
+groups. You trade the hosted lookup for the local corpus.
 
 ### A cluster is optional
 
 `flyte-cluster` is tenant-agnostic: it uses the SDK's normal config discovery, so it acts
-on whichever control plane your `flyte` CLI is authenticated against. It **starts even with
-no Flyte config at all** — the tools register either way and fail only when called. The
-plugin is therefore useful while you are still deploying your first cluster.
+on whichever control plane your `flyte` CLI is authenticated against. It starts even with
+no Flyte config: the tools register either way and fail only when called. So the plugin
+still helps while you are deploying your first cluster.
 
 ### Adding the MCP servers manually
 
-Hermes, opencode, and pi support MCP; the plugin simply does not configure it for them.
-Both servers are portable — one is a URL, the other needs no checkout or path — so wiring
-them up is a few lines.
+Hermes, opencode, and pi support MCP; the plugin does not configure it for them. Both
+servers are portable: one is a URL, the other needs no checkout or path. Wiring them up
+takes a few lines.
 
-**`flyte-docs`:**
+`flyte-docs`:
 
 ```toml
-# Codex — ~/.codex/config.toml
+# Codex: ~/.codex/config.toml
 [mcp_servers.flyte-docs]
 url = "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
 ```
 
 ```json
-// opencode — opencode.json
+// opencode: opencode.json
 { "mcp": { "flyte-docs": { "type": "remote",
   "url": "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp",
   "enabled": true } } }
 ```
 
 ```yaml
-# Hermes — ~/.hermes/config.yaml
+# Hermes: ~/.hermes/config.yaml
 mcp_servers:
   flyte-docs:
     url: "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp"
@@ -209,10 +208,10 @@ mcp_servers:
 
 pi uses the same `mcpServers` shape in `~/.pi/agent/mcp.json`.
 
-**`flyte-cluster`:**
+`flyte-cluster`:
 
 ```toml
-# Codex — ~/.codex/config.toml
+# Codex: ~/.codex/config.toml
 [mcp_servers.flyte-cluster]
 command = "uvx"
 args = ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
@@ -220,7 +219,7 @@ args = ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
 ```
 
 ```json
-// opencode — opencode.json
+// opencode: opencode.json
 { "mcp": { "flyte-cluster": { "type": "local", "enabled": true,
   "command": ["uvx", "--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
               "--tool-groups",
@@ -228,7 +227,7 @@ args = ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
 ```
 
 ```yaml
-# Hermes — ~/.hermes/config.yaml
+# Hermes: ~/.hermes/config.yaml
 mcp_servers:
   flyte-cluster:
     command: "uvx"
@@ -238,7 +237,7 @@ mcp_servers:
 
 ### Changing what is served
 
-Edit `args` in the plugin's `.mcp.json` — or in your own config above — to pass
+Edit `args` in the plugin's `.mcp.json`, or in your own config above, to pass
 `--tool-groups`, `--tools`, or `--read-only`. Scope the server to one project and domain
 with the `FLYTE_MCP_PROJECT` and `FLYTE_MCP_DOMAIN` environment variables.
 
