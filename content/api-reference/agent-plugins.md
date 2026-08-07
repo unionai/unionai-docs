@@ -8,9 +8,9 @@ variants: +flyte +union
 
 [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) bundles agent
 skills and two MCP servers for Flyte. Install it and your coding agent can scaffold
-workflows, build and serve apps, run and inspect executions, migrate Flyte 1 code to
-Flyte 2, port Slurm batch jobs to Flyte, and deploy clusters, grounded in the Flyte SDK,
-the documentation, and optionally your own cluster.
+workflows, build and serve apps, run and inspect executions, migrate Flyte 1 code and
+Slurm batch jobs to Flyte 2, and deploy clusters, grounded in the Flyte SDK, the
+documentation, and optionally your own cluster.
 
 The same skills run in Claude Code, Codex, Hermes, opencode, pi, and any other harness
 that supports agent skills. Claude Code and Codex wire up the MCP servers for you;
