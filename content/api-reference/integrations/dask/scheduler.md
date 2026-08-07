@@ -1,6 +1,6 @@
 ---
 title: Scheduler
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ Configuration for the scheduler pod
 
 ```python
 class Scheduler(
-    image: typing.Optional[str],
-    resources: typing.Optional[flyte._resources.Resources],
+    image: typing.Optional[str] = None,
+    resources: typing.Optional[flyte._resources.Resources] = None,
 )
 ```
 | Parameter | Type | Description |

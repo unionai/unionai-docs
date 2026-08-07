@@ -1,6 +1,6 @@
 ---
 title: Report
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,8 +14,8 @@ layout: py_api
 ```python
 class Report(
     name: str,
-    tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib.Path,
+    tabs: typing.Dict[str, flyte.report._report.Tab] = <factory>,
+    template_path: pathlib.Path = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -48,7 +48,7 @@ Get the final report as a string.
 ```python
 def get_tab(
     name: str,
-    create_if_missing: bool,
+    create_if_missing: bool = True,
 ) -> flyte.report._report.Tab
 ```
 Get a tab by name. If the tab does not exist, create it.

@@ -1,6 +1,6 @@
 ---
 title: TokenBatcher
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,25 +18,33 @@ token-specific parameter names (`inference_fn`, `token_estimator`,
 Also checks the `TokenEstimator` protocol (`estimate_tokens()`)
 in addition to `CostEstimator` (`estimate_cost()`).
 
+```python
+async def inference(batch: list[Prompt]) -> list[str]:
+    ...
+
+async with TokenBatcher(inference_fn=inference) as batcher:
+    future = await batcher.submit(Prompt(text="Hello"))
+    result = await future
+```
 
 
 ## Parameters
 
 ```python
 class TokenBatcher(
-    inference_fn: ProcessFn[RecordT, ResultT] | None,
-    process_fn: ProcessFn[RecordT, ResultT] | None,
-    token_estimator: CostEstimatorFn[RecordT] | None,
-    cost_estimator: CostEstimatorFn[RecordT] | None,
-    target_batch_tokens: int | None,
-    target_batch_cost: int,
-    default_token_estimate: int | None,
-    default_cost: int,
-    max_batch_size: int,
-    min_batch_size: int,
-    batch_timeout_s: float,
-    max_queue_size: int,
-    prefetch_batches: int,
+    inference_fn: ProcessFn[RecordT, ResultT] | None = None,
+    process_fn: ProcessFn[RecordT, ResultT] | None = None,
+    token_estimator: CostEstimatorFn[RecordT] | None = None,
+    cost_estimator: CostEstimatorFn[RecordT] | None = None,
+    target_batch_tokens: int | None = None,
+    target_batch_cost: int = 32000,
+    default_token_estimate: int | None = None,
+    default_cost: int = 1,
+    max_batch_size: int = 256,
+    min_batch_size: int = 1,
+    batch_timeout_s: float = 0.05,
+    max_queue_size: int = 5000,
+    prefetch_batches: int = 2,
 )
 ```
 | Parameter | Type | Description |
@@ -102,8 +110,8 @@ Blocks until every pending future is resolved.
 ```python
 def submit(
     record: RecordT,
-    estimated_tokens: int | None,
-    estimated_cost: int | None,
+    estimated_tokens: int | None = None,
+    estimated_cost: int | None = None,
 ) -> asyncio.Future[ResultT]
 ```
 Submit a single record for batched inference.
@@ -128,7 +136,7 @@ returned by the inference function.
 ```python
 def submit_batch(
     records: Sequence[RecordT],
-    estimated_cost: Sequence[int] | None,
+    estimated_cost: Sequence[int] | None = None,
 ) -> list[asyncio.Future[ResultT]]
 ```
 Convenience: submit multiple records and return their futures.

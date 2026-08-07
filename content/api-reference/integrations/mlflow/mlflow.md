@@ -1,6 +1,6 @@
 ---
 title: Mlflow
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,11 +13,13 @@ MLflow UI link for Flyte tasks.
 
 Resolves the link URL from one of two sources (in priority order):
 
-1. **Explicit link** — set at definition or override time::
+1. **Explicit link** — set at definition or override time:
 
-       @env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
+```python
+@env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
 
-       task.override(links=[Mlflow(link="https://...")])()
+task.override(links=[Mlflow(link="https://...")])()
+```
 
 2. **Context link** — auto-generated from `link_host` (and optional
    `link_template`) set via `mlflow_config()`. Propagates to child
@@ -31,9 +33,9 @@ Resolves the link URL from one of two sources (in priority order):
 
 ```python
 class Mlflow(
-    name: str,
-    link: str,
-    _decorator_run_mode: str,
+    name: str = 'MLflow',
+    link: str = '',
+    _decorator_run_mode: str = '',
 )
 ```
 | Parameter | Type | Description |
@@ -60,11 +62,12 @@ def get_link(
     parent_action_name: str,
     action_name: str,
     pod_name: str,
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 Returns a task log link given the action.
 Link can have template variables that are replaced by the backend.
+
 
 
 | Parameter | Type | Description |
@@ -76,7 +79,7 @@ Link can have template variables that are replaced by the backend.
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
 | `pod_name` | `str` | The name of the pod. |
-| `kwargs` | `**kwargs` | Additional keyword arguments. |
+| `**kwargs` |  | Additional keyword arguments. |
 
 **Returns:** The generated link.
 

@@ -1,6 +1,6 @@
 ---
 title: TypeTransformer
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ Base transformer type that should be implemented for every python native type th
 class TypeTransformer(
     name: str,
     t: Type[T],
-    enable_type_assertions: bool,
+    enable_type_assertions: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -181,6 +181,7 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `python_val` | `T` | The actual value to be transformed |
@@ -196,6 +197,7 @@ def to_python_value(
 ) -> Optional[T]
 ```
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
+
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: AppEndpoint
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,9 +20,9 @@ the upstream app's endpoint as a public or private url.
 
 ```python
 class AppEndpoint(
-    type: typing.Literal['string'],
+    type: typing.Literal['string'] = 'string',
     app_name: str,
-    public: bool,
+    public: bool = False,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.

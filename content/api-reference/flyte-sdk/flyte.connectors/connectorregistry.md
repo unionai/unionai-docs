@@ -1,6 +1,6 @@
 ---
 title: ConnectorRegistry
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,7 +26,7 @@ The connector service will look up the connector registry based on the task type
 ```python
 def get_connector(
     task_type_name: str,
-    task_type_version: int,
+    task_type_version: int = 0,
 ) -> AsyncConnector[Any]
 ```
 | Parameter | Type | Description |
@@ -39,7 +39,7 @@ def get_connector(
 ```python
 def register(
     connector: flyte.connectors._connector.AsyncConnector[typing.Any],
-    override: bool,
+    override: bool = False,
 )
 ```
 | Parameter | Type | Description |

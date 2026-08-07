@@ -1,6 +1,6 @@
 ---
 title: FlyteModelProvider
-version: 2.5.18
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,18 +9,18 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-Wrap a ``ModelProvider`` so every model it returns produces durable turns.
+Wrap a `ModelProvider` so every model it returns produces durable turns.
 
-Pass an explicit ``inner`` provider to keep custom routing (Azure, a gateway,
-a local OpenAI-compatible server); defaults to the SDK's ``MultiProvider``.
-Set it on ``RunConfig.model_provider`` (``run_agent`` does this for you).
+Pass an explicit `inner` provider to keep custom routing (Azure, a gateway,
+a local OpenAI-compatible server); defaults to the SDK's `MultiProvider`.
+Set it on `RunConfig.model_provider` (`run_agent` does this for you).
 
 
 ## Parameters
 
 ```python
 class FlyteModelProvider(
-    inner: ModelProvider | None,
+    inner: ModelProvider | None = None,
 )
 ```
 | Parameter | Type | Description |

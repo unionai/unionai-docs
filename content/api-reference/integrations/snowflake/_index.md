@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---

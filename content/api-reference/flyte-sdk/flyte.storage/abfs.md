@@ -1,6 +1,6 @@
 ---
 title: ABFS
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,15 +16,15 @@ Any Azure Blob Storage specific configuration.
 
 ```python
 class ABFS(
-    retries: int,
-    backoff: datetime.timedelta,
-    enable_debug: bool,
-    attach_execution_metadata: bool,
-    account_name: typing.Optional[str],
-    account_key: typing.Optional[str],
-    tenant_id: typing.Optional[str],
-    client_id: typing.Optional[str],
-    client_secret: typing.Optional[str],
+    retries: int = 3,
+    backoff: datetime.timedelta = datetime.timedelta(seconds=5),
+    enable_debug: bool = False,
+    attach_execution_metadata: bool = True,
+    account_name: typing.Optional[str] = None,
+    account_key: typing.Optional[str] = None,
+    tenant_id: typing.Optional[str] = None,
+    client_id: typing.Optional[str] = None,
+    client_secret: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -59,8 +59,8 @@ Construct the config object automatically from environment variables.
 
 ```python
 def get_fsspec_kwargs(
-    anonymous: bool,
-    kwargs,
+    anonymous: bool = False,
+    **kwargs,
 ) -> typing.Dict[str, typing.Any]
 ```
 Returns the configuration as kwargs for constructing an fsspec filesystem.
@@ -69,5 +69,5 @@ Returns the configuration as kwargs for constructing an fsspec filesystem.
 | Parameter | Type | Description |
 |-|-|-|
 | `anonymous` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

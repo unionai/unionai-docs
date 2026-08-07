@@ -1,6 +1,6 @@
 ---
 title: PrimaryContainerNotFoundError
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ This error is raised when the primary container is not found.
 class PrimaryContainerNotFoundError(
     code: str,
     message: str,
-    worker: str | None,
+    worker: str | None = None,
 )
 ```
 | Parameter | Type | Description |

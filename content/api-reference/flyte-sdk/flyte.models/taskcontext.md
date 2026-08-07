@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,22 +21,22 @@ class TaskContext(
     action: ActionID,
     version: str,
     raw_data_path: RawDataPath,
-    input_path: str | None,
+    input_path: str | None = None,
     output_path: str,
     run_base_dir: str,
     report: Report,
-    group_data: GroupData | None,
-    checkpoint_paths: CheckpointPaths | None,
-    code_bundle: CodeBundle | None,
-    compiled_image_cache: ImageCache | None,
-    data: Dict[str, Any],
-    mode: Literal['local', 'remote', 'hybrid'],
-    interactive_mode: bool,
-    custom_context: Dict[str, str],
-    disable_run_cache: bool,
-    in_driver_literal_conversion: bool,
-    run_start_time: Optional[datetime],
-    task_action: ActionID | None,
+    group_data: GroupData | None = None,
+    checkpoint_paths: CheckpointPaths | None = None,
+    code_bundle: CodeBundle | None = None,
+    compiled_image_cache: ImageCache | None = None,
+    data: Dict[str, Any] = <factory>,
+    mode: Literal['local', 'remote', 'hybrid'] = 'remote',
+    interactive_mode: bool = False,
+    custom_context: Dict[str, str] = <factory>,
+    disable_run_cache: bool = False,
+    in_driver_literal_conversion: bool = False,
+    run_start_time: Optional[datetime] = <factory>,
+    task_action: ActionID | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -58,8 +58,8 @@ class TaskContext(
 | `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
 | `disable_run_cache` | `bool` | |
 | `in_driver_literal_conversion` | `bool` | Set by the runtime during nested-task literal marshalling; type transformers may use it to skip duplicate side effects (e.g. report tabs) outside true task-body I/O. |
-| `run_start_time` | `Optional[datetime]` | UTC datetime at which the parent run was triggered. Populated by the backend via the ``{{.runStartTime}}`` template; defaults to ``datetime.now(timezone.utc)`` when not supplied so local runs always have a value. |
-| `task_action` | `ActionID \| None` | The action ID of the real task running in this container. Unlike ``action`` — which ``@trace`` swaps out for a per-trace pseudo-action — this stays pinned to the running task for the whole execution. Defaults to ``action`` when not given. Used as ``parent_action_name`` when submitting trace records, so trace bookkeeping nests under the real running task — not the outer trace's pseudo-action. |
+| `run_start_time` | `Optional[datetime]` | UTC datetime at which the parent run was triggered. Populated by the backend via the `{{.runStartTime}}` template; defaults to `datetime.now(timezone.utc)` when not supplied so local runs always have a value. |
+| `task_action` | `ActionID \| None` | The action ID of the real task running in this container. Unlike `action` — which `@trace` swaps out for a per-trace pseudo-action — this stays pinned to the running task for the whole execution. Defaults to `action` when not given. Used as `parent_action_name` when submitting trace records, so trace bookkeeping nests under the real running task — not the outer trace's pseudo-action. |
 
 ## Properties
 
@@ -93,16 +93,17 @@ def is_in_cluster()
 Check if the task is running in a cluster.
 
 
+
 **Returns:** bool
 
 ### replace()
 
 ```python
 def replace(
-    kwargs,
+    **kwargs,
 ) -> TaskContext
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

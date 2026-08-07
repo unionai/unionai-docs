@@ -1,6 +1,6 @@
 ---
 title: AgentTool
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,18 +9,18 @@ layout: py_api
 
 **Package:** `flyte.ai.agents`
 
-A normalized tool descriptor used by :class:`Agent`.
+A normalized tool descriptor used by `flyte.ai.agents.Agent`.
 
-Most users do not construct :class:`AgentTool` directly — pass plain
-callables, ``@flyte.trace`` helpers, or ``@env.task`` templates to
-:class:`Agent` and they will be wrapped automatically. Build one
+Most users do not construct `flyte.ai.agents.AgentTool` directly — pass plain
+callables, `@flyte.trace` helpers, or `@env.task` templates to
+`flyte.ai.agents.Agent` and they will be wrapped automatically. Build one
 explicitly when you need to:
 
 - rename a tool for the LLM,
 - override the description shown to the model,
 - require human approval before execution (HITL),
 - inject a fully custom JSON schema,
-- intercept invocation with a ``call_handler``.
+- intercept invocation with a `call_handler`.
 
 
 ## Parameters
@@ -31,12 +31,12 @@ class AgentTool(
     description: str,
     parameters: dict[str, Any],
     execute: _ToolExecutor,
-    requires_approval: bool,
-    source: Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom'],
-    target: Any,
-    call_handler: ToolCallHandler | None,
-    call_llm: LLMCallable | None,
-    model: str | None,
+    requires_approval: bool = False,
+    source: Literal['function', 'task', 'trace', 'remote_task', 'mcp', 'custom'] = 'function',
+    target: Any = None,
+    call_handler: ToolCallHandler | None = None,
+    call_llm: LLMCallable | None = None,
+    model: str | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -56,7 +56,7 @@ class AgentTool(
 
 | Method | Description |
 |-|-|
-| [`aio()`](#aio) | Invoke the tool, routing through ``call_handler`` when one is registered. |
+| [`aio()`](#aio) | Invoke the tool, routing through `call_handler` when one is registered. |
 | [`to_openai_format()`](#to_openai_format) | Convert to the OpenAI / litellm tools schema. |
 
 
@@ -64,23 +64,23 @@ class AgentTool(
 
 ```python
 def aio(
-    args: *args,
-    kwargs: **kwargs,
+    *args: Any,
+    **kwargs: Any,
 ) -> Any
 ```
-Invoke the tool, routing through ``call_handler`` when one is registered.
+Invoke the tool, routing through `call_handler` when one is registered.
 
-Mirrors :meth:`~flyte._task.TaskTemplate.aio` enough for ``flyte.map`` and
-in-task calls on ``@tool``-wrapped tasks. When a ``call_handler`` is set,
-it runs with :attr:`call_llm` and :attr:`model` (or their defaults).
-Otherwise, durable ``@env.task`` / remote-task targets delegate to their
-underlying ``.aio``; everything else goes through :meth:`execute`.
+Mirrors `flyte._task.TaskTemplate.aio` enough for `flyte.map` and
+in-task calls on `@tool`-wrapped tasks. When a `call_handler` is set,
+it runs with `AgentTool.call_llm` and `AgentTool.model` (or their defaults).
+Otherwise, durable `@env.task` / remote-task targets delegate to their
+underlying `.aio`; everything else goes through `AgentTool.execute`.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `Any` | |
+| `**kwargs` | `Any` | |
 
 ### to_openai_format()
 

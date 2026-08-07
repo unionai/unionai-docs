@@ -1,6 +1,6 @@
 ---
 title: ActionPhase
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,6 +21,7 @@ Actions progress through different phases during their lifecycle:
 - Failed: Action failed during execution
 - Aborted: Action was manually aborted
 - Timed out: Action exceeded its timeout limit
+- Recovered: Action was recovered as-is from a prior run (terminal, success-equivalent)
 
 This enum can be used for filtering runs and checking execution status.
 
@@ -30,12 +31,12 @@ This enum can be used for filtering runs and checking execution status.
 
 ```python
 class ActionPhase(
-    args,
-    kwds,
+    *args,
+    **kwds,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwds` |  | |
+| `*args` |  | |
+| `**kwds` |  | |
 

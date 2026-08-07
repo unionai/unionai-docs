@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,7 +28,7 @@ Initialize a Task object.
 
 | Property | Type | Description |
 |-|-|-|
-| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch ``TaskDetails`` to read the authoritative value from the task template. |
+| `entrypoint` | `bool` | Whether this task is marked as an entrypoint. Not populated in listing responses; fetch `TaskDetails` to read the authoritative value from the task template. |
 | `name` | `str` | The name of the task. |
 | `url` | `str` | Get the console URL for viewing the task. |
 | `version` | `str` | The version of the task. |
@@ -48,10 +48,10 @@ Initialize a Task object.
 ```python
 def get(
     name: str,
-    project: str | None,
-    domain: str | None,
-    version: str | None,
-    auto_version: AutoVersioning | None,
+    project: str | None = None,
+    domain: str | None = None,
+    version: str | None = None,
+    auto_version: AutoVersioning | None = None,
 ) -> LazyEntity
 ```
 Get a task by its ID or name. If both are provided, the ID will take precedence.
@@ -78,13 +78,13 @@ Either version or auto_version are required parameters.
 ```python
 def listall(
     cls,
-    by_task_name: str | None,
-    by_task_env: str | None,
-    project: str | None,
-    domain: str | None,
-    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
-    limit: int,
-    entrypoint: bool | None,
+    by_task_name: str | None = None,
+    by_task_env: str | None = None,
+    project: str | None = None,
+    domain: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    limit: int = 100,
+    entrypoint: bool | None = None,
 ) -> Union[AsyncIterator[Task], Iterator[Task]]
 ```
 Get all tasks for the current project and domain.

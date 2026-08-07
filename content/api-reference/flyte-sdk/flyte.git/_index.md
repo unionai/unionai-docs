@@ -1,6 +1,6 @@
 ---
 title: flyte.git
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,7 +28,7 @@ layout: py_api
 
 ```python
 def config_from_root(
-    path: pathlib.Path | str,
+    path: pathlib.Path | str = '.flyte/config.yaml',
 ) -> flyte.config._config.Config | None
 ```
 Get the config file from the git root directory.
@@ -39,7 +39,7 @@ By default, the config file is expected to be in `.flyte/config.yaml` in the git
 
 | Parameter | Type | Description |
 |-|-|-|
-| `path` | `pathlib.Path \| str` | Path to the config file relative to git root directory (default |
+| `path` | `pathlib.Path \| str` | Path to the config file relative to git root directory (default: ".flyte/config.yaml") |
 
 **Returns:** Config object if found, None otherwise
 

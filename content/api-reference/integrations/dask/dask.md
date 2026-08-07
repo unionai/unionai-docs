@@ -1,6 +1,6 @@
 ---
 title: Dask
-version: 2.5.14
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ Configuration for the dask task
 
 ```python
 class Dask(
-    scheduler: flyteplugins.dask.task.Scheduler,
-    workers: flyteplugins.dask.task.WorkerGroup,
+    scheduler: flyteplugins.dask.task.Scheduler = <factory>,
+    workers: flyteplugins.dask.task.WorkerGroup = <factory>,
 )
 ```
 | Parameter | Type | Description |

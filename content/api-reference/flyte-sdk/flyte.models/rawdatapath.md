@@ -1,6 +1,6 @@
 ---
 title: RawDataPath
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ also get mutations on the path.
 ```python
 class RawDataPath(
     path: str,
-    path_rewrite: Optional[PathRewrite],
+    path_rewrite: Optional[PathRewrite] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -38,10 +38,11 @@ class RawDataPath(
 
 ```python
 def from_local_folder(
-    local_folder: str | pathlib.Path | None,
+    local_folder: str | pathlib.Path | None = None,
 ) -> RawDataPath
 ```
 Create a new context attribute object, with local path given. Will be created if it doesn't exist.
+
 
 
 | Parameter | Type | Description |
@@ -54,7 +55,7 @@ Create a new context attribute object, with local path given. Will be created if
 
 ```python
 def get_random_remote_path(
-    file_name: Optional[str],
+    file_name: Optional[str] = None,
 ) -> str
 ```
 Returns a random path for uploading a file/directory to. This file/folder will not be created, it's just a path.

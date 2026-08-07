@@ -1,6 +1,6 @@
 ---
 title: Config
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,11 +21,11 @@ this object holds all the config necessary to
 
 ```python
 class Config(
-    platform: PlatformConfig,
-    task: TaskConfig,
-    image: ImageConfig,
-    local: LocalConfig,
-    source: pathlib.Path | None,
+    platform: PlatformConfig = PlatformConfig(scopes=[]),
+    task: TaskConfig = TaskConfig(),
+    image: ImageConfig = ImageConfig(image_refs={}),
+    local: LocalConfig = LocalConfig(),
+    source: pathlib.Path | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -48,7 +48,7 @@ class Config(
 
 ```python
 def auto(
-    config_file: typing.Union[str, pathlib.Path, ConfigFile, None],
+    config_file: typing.Union[str, pathlib.Path, ConfigFile, None] = None,
 ) -> 'Config'
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
@@ -68,9 +68,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 ```python
 def with_params(
-    platform: PlatformConfig | None,
-    task: TaskConfig | None,
-    image: ImageConfig | None,
+    platform: PlatformConfig | None = None,
+    task: TaskConfig | None = None,
+    image: ImageConfig | None = None,
 ) -> 'Config'
 ```
 | Parameter | Type | Description |

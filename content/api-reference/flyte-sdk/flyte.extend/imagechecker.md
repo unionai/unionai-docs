@@ -1,6 +1,6 @@
 ---
 title: ImageChecker
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,7 +25,7 @@ protocol ImageChecker()
 def image_exists(
     repository: str,
     tag: str,
-    arch: Tuple[Architecture, ...],
+    arch: Tuple[Architecture, ...] = ('linux/amd64',),
 ) -> Optional[str]
 ```
 Check whether an image exists in a registry or cache.

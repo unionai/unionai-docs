@@ -1,6 +1,6 @@
 ---
 title: Papermill
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,9 +21,9 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`load_dataframe()`](#load_dataframe) | Load a ``flyte. |
-| [`load_dir()`](#load_dir) | Load a ``flyte. |
-| [`load_file()`](#load_file) | Load a ``flyte. |
+| [`load_dataframe()`](#load_dataframe) | Load a `flyte.io.DataFrame` from a serialized URI inside a notebook. |
+| [`load_dir()`](#load_dir) | Load a `flyte.io.Dir` from a serialized path inside a notebook. |
+| [`load_file()`](#load_file) | Load a `flyte.io.File` from a serialized path inside a notebook. |
 | [`record_outputs()`](#record_outputs) | Record output values from a notebook for use by downstream Flyte tasks. |
 
 
@@ -34,28 +34,30 @@ layout: py_api
 ```python
 def load_dataframe(
     uri: str,
-    fmt: str,
+    fmt: str = 'parquet',
 )
 ```
-Load a ``flyte.io.DataFrame`` from a serialized URI inside a notebook.
+Load a `flyte.io.DataFrame` from a serialized URI inside a notebook.
 
-When a ``DataFrame`` is passed as an input to a ``NotebookTask``, it is
+When a `DataFrame` is passed as an input to a `NotebookTask`, it is
 serialized to its remote URI for papermill injection.  Use this helper
-to reconstruct it::
+to reconstruct it:
 
-    from flyteplugins.papermill import load_dataframe
+```python
+from flyteplugins.papermill import load_dataframe
 
-    df = load_dataframe(my_df_uri)
-    pandas_df = df.all()  # materializes as pandas DataFrame
+df = load_dataframe(my_df_uri)
+pandas_df = df.all()  # materializes as pandas DataFrame
+```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `uri` | `str` | The remote URI string (injected as a papermill parameter). |
-| `fmt` | `str` | The storage format (default ``"parquet"``). |
+| `fmt` | `str` | The storage format (default `"parquet"`). |
 
-**Returns:** A ``flyte.io.DataFrame`` instance pointing at the remote URI.
+**Returns:** A `flyte.io.DataFrame` instance pointing at the remote URI.
 
 #### load_dir()
 
@@ -64,15 +66,17 @@ def load_dir(
     path: str,
 )
 ```
-Load a ``flyte.io.Dir`` from a serialized path inside a notebook.
+Load a `flyte.io.Dir` from a serialized path inside a notebook.
 
-When a ``Dir`` is passed as an input to a ``NotebookTask``, it is
+When a `Dir` is passed as an input to a `NotebookTask`, it is
 serialized to its remote path string.  Use this helper to
-reconstruct it::
+reconstruct it:
 
-    from flyteplugins.papermill import load_dir
+```python
+from flyteplugins.papermill import load_dir
 
-    d = load_dir(my_dir_path)
+d = load_dir(my_dir_path)
+```
 
 
 
@@ -80,7 +84,7 @@ reconstruct it::
 |-|-|-|
 | `path` | `str` | The remote path string (injected as a papermill parameter). |
 
-**Returns:** A ``flyte.io.Dir`` instance pointing at the remote path.
+**Returns:** A `flyte.io.Dir` instance pointing at the remote path.
 
 #### load_file()
 
@@ -89,17 +93,19 @@ def load_file(
     path: str,
 )
 ```
-Load a ``flyte.io.File`` from a serialized path inside a notebook.
+Load a `flyte.io.File` from a serialized path inside a notebook.
 
-When a ``File`` is passed as an input to a ``NotebookTask``, it is
+When a `File` is passed as an input to a `NotebookTask`, it is
 serialized to its remote path string for papermill injection.  Use
-this helper to reconstruct the ``File`` object inside the notebook::
+this helper to reconstruct the `File` object inside the notebook:
 
-    from flyteplugins.papermill import load_file
+```python
+from flyteplugins.papermill import load_file
 
-    f = load_file(my_file_path)  # my_file_path injected by papermill
-    with f.open_sync() as fh:
-        data = fh.read()
+f = load_file(my_file_path)  # my_file_path injected by papermill
+with f.open_sync() as fh:
+    data = fh.read()
+```
 
 
 
@@ -107,39 +113,41 @@ this helper to reconstruct the ``File`` object inside the notebook::
 |-|-|-|
 | `path` | `str` | The remote path string (injected as a papermill parameter). |
 
-**Returns:** A ``flyte.io.File`` instance pointing at the remote path.
+**Returns:** A `flyte.io.File` instance pointing at the remote path.
 
 #### record_outputs()
 
 ```python
 def record_outputs(
-    kwargs: **kwargs,
+    **kwargs: Any,
 ) -> str
 ```
 Record output values from a notebook for use by downstream Flyte tasks.
 
-Call this as the **last expression** in a cell tagged ``"outputs"``.
+Call this as the **last expression** in a cell tagged `"outputs"`.
 The returned protobuf text is captured by Jupyter as the cell output
-and later extracted by ``NotebookTask``.
+and later extracted by `NotebookTask`.
 
 Values are serialized as Flyte Literals, so any type supported by
-Flyte's type system works — primitives, ``File``, ``Dir``,
-``DataFrame``, dataclasses, etc.
+Flyte's type system works — primitives, `File`, `Dir`,
+`DataFrame`, dataclasses, etc.
 
-Example (cell tagged ``"outputs"``)::
+Example (cell tagged `"outputs"`):
 
-    from flyteplugins.papermill import record_outputs
+```python
+from flyteplugins.papermill import record_outputs
 
-    record_outputs(result=42, summary="done")
+record_outputs(result=42, summary="done")
+```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns**
 
-Protobuf text representation of a ``LiteralMap``. Jupyter captures
+Protobuf text representation of a `LiteralMap`. Jupyter captures
 this as the cell's text/plain output.
 

@@ -5,5 +5,7 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.16.3"
-enumerated = []
+stable = "v2.5.19.0"
+enumerated = [
+  "v2.5.16.3",
+]

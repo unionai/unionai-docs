@@ -1,6 +1,6 @@
 ---
 title: BatchStats
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,14 +17,14 @@ Monitoring statistics exposed by `DynamicBatcher.stats`.
 
 ```python
 class BatchStats(
-    total_submitted: int,
-    total_completed: int,
-    total_batches: int,
-    total_batch_cost: int,
-    avg_batch_size: float,
-    avg_batch_cost: float,
-    busy_time_s: float,
-    idle_time_s: float,
+    total_submitted: int = 0,
+    total_completed: int = 0,
+    total_batches: int = 0,
+    total_batch_cost: int = 0,
+    avg_batch_size: float = 0.0,
+    avg_batch_cost: float = 0.0,
+    busy_time_s: float = 0.0,
+    idle_time_s: float = 0.0,
 )
 ```
 | Parameter | Type | Description |

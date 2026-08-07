@@ -1,6 +1,6 @@
 ---
 title: HuggingFaceModelInfo
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,14 +18,14 @@ Information about a HuggingFace model to store.
 ```python
 class HuggingFaceModelInfo(
     repo: str,
-    artifact_name: str | None,
-    architecture: str | None,
-    task: str,
-    modality: tuple[str, ...],
-    serial_format: str | None,
-    model_type: str | None,
-    short_description: str | None,
-    shard_config: flyte.prefetch._hf_model.ShardConfig | None,
+    artifact_name: str | None = None,
+    architecture: str | None = None,
+    task: str = 'auto',
+    modality: tuple[str, ...] = ('text',),
+    serial_format: str | None = None,
+    model_type: str | None = None,
+    short_description: str | None = None,
+    shard_config: flyte.prefetch._hf_model.ShardConfig | None = None,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.

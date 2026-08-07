@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -48,11 +48,11 @@ run_output = RunOutput(type="file", task_name="env.my_task", task_version="xyz")
 ```python
 class RunOutput(
     type: typing.Literal['string', 'file', 'directory', 'app_endpoint'],
-    run_name: str | None,
-    task_name: str | None,
-    task_version: str | None,
-    task_auto_version: typing.Optional[typing.Literal['latest', 'current']],
-    getter: tuple[typing.Any, ...],
+    run_name: str | None = None,
+    task_name: str | None = None,
+    task_version: str | None = None,
+    task_auto_version: typing.Optional[typing.Literal['latest', 'current']] = None,
+    getter: tuple[typing.Any, ...] = (0,),
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.

@@ -1,6 +1,6 @@
 ---
 title: OmegaConf
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,10 +31,10 @@ OmegaConf DictConfig/ListConfig support for Flyte.
 ```python
 def log_yaml(
     config: OmegaConfContainer,
-    title: str,
-    tab: str,
-    sort_keys: bool,
-    do_flush: bool,
+    title: str = 'OmegaConf config',
+    tab: str = 'OmegaConf',
+    sort_keys: bool = False,
+    do_flush: bool = True,
 )
 ```
 Append a YAML rendering of an OmegaConf container to a Flyte report tab.

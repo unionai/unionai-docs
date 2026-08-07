@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,17 +52,17 @@ image = (
 
 ```python
 class Image(
-    base_image: Optional[str],
-    dockerfile: Optional[Path],
-    registry: Optional[str],
-    name: Optional[str],
-    platform: Tuple[Architecture, ...],
-    python_version: Tuple[int, int],
-    extendable: bool,
-    _is_cloned: bool,
-    _ref_name: Optional[str],
-    _layers: Tuple[Layer, ...],
-    _image_registry_secret: Optional[Secret],
+    base_image: Optional[str] = None,
+    dockerfile: Optional[Path] = None,
+    registry: Optional[str] = None,
+    name: Optional[str] = None,
+    platform: Tuple[Architecture, ...] = ('linux/amd64',),
+    python_version: Tuple[int, int] = <factory>,
+    extendable: bool = False,
+    _is_cloned: bool = False,
+    _ref_name: Optional[str] = None,
+    _layers: Tuple[Layer, ...] = <factory>,
+    _image_registry_secret: Optional[Secret] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -118,14 +118,14 @@ class Image(
 
 ```python
 def clone(
-    registry: Optional[str],
-    registry_secret: Optional[str | Secret],
-    name: Optional[str],
-    base_image: Optional[str],
-    python_version: Optional[Tuple[int, int]],
-    addl_layer: Optional[Layer],
-    extendable: Optional[bool],
-    platform: Union[Architecture, Tuple[Architecture, ...], None],
+    registry: Optional[str] = None,
+    registry_secret: Optional[str | Secret] = None,
+    name: Optional[str] = None,
+    base_image: Optional[str] = None,
+    python_version: Optional[Tuple[int, int]] = None,
+    addl_layer: Optional[Layer] = None,
+    extendable: Optional[bool] = None,
+    platform: Union[Architecture, Tuple[Architecture, ...], None] = None,
 ) -> Image
 ```
 Clone an existing image, optionally with a new name or registry.
@@ -144,8 +144,8 @@ registry, or other base properties.
 | `base_image` | `Optional[str]` | Base image to use for the image |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
 | `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. |
-| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be used as a base image for other images, and additional layers cannot be added on top of it. If None (default), defaults to False for safety. |
-| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | Architecture(s) to build for. If not specified, the cloned image keeps the original's platform. Pass a tuple for multi-arch builds, e.g. ``("linux/amd64", "linux/arm64")``. |
+| `extendable` | `Optional[bool]` | Whether the image is extendable by other images. If True, the image can be used as a base image for other images, and additional layers can be added on top of it. If False, the image cannot be  used as a base image for other images, and additional layers cannot be added on top of it. If None  (default),  defaults to False for safety. |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | Architecture(s) to build for. If not specified, the cloned image keeps the original's platform. Pass a tuple for multi-arch builds, e.g. `("linux/amd64", "linux/arm64")`. |
 
 ### from_base()
 
@@ -157,13 +157,13 @@ def from_base(
 Use this method to start with a pre-built base image. This image must already exist in the registry of course.
 
 Unlike `from_debian_base`, this method does **not** create a runtime user or chown
-the working directory. The resulting container runs as whatever ``USER`` your base
-image declares, with whatever ``WORKDIR`` the image (or builder) sets. The Flyte
+the working directory. The resulting container runs as whatever `USER` your base
+image declares, with whatever `WORKDIR` the image (or builder) sets. The Flyte
 runtime extracts the code bundle into that working directory at task start, so the
 resolved user must have read, write, and traverse permissions on it. Hardened bases
-(UBI ``nonroot``, distroless ``nonroot``, chainguard ``nonroot``) commonly need a
-``.with_commands(["chmod 0755 /root && chown &lt;uid&gt;:&lt;gid&gt; /root"])`` layer, or the
-equivalent for whatever path the image uses as ``WorkingDir``.
+(UBI `nonroot`, distroless `nonroot`, chainguard `nonroot`) commonly need a
+`.with_commands(["chmod 0755 /root && chown <uid>:<gid> /root"])` layer, or the
+equivalent for whatever path the image uses as `WorkingDir`.
 
 See the "Base image USER requirements" section of the Bring Your Own Image guide
 for the full pattern.
@@ -172,19 +172,19 @@ for the full pattern.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt; |
+| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
 
 ### from_debian_base()
 
 ```python
 def from_debian_base(
-    python_version: Optional[Tuple[int, int]],
-    flyte_version: Optional[str],
-    install_flyte: bool,
-    registry: Optional[str],
-    registry_secret: Optional[str | Secret],
-    name: Optional[str],
-    platform: Optional[Tuple[Architecture, ...]],
+    python_version: Optional[Tuple[int, int]] = None,
+    flyte_version: Optional[str] = None,
+    install_flyte: bool = True,
+    registry: Optional[str] = None,
+    registry_secret: Optional[str | Secret] = None,
+    name: Optional[str] = None,
+    platform: Optional[Tuple[Architecture, ...]] = None,
 ) -> Image
 ```
 Use this method to start using the default base image, built from this library's base Dockerfile
@@ -211,7 +211,7 @@ def from_dockerfile(
     file: Union[Path, str],
     registry: str,
     name: str,
-    platform: Union[Architecture, Tuple[Architecture, ...], None],
+    platform: Union[Architecture, Tuple[Architecture, ...], None] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified dockerfile. Note you cannot use additional layers
@@ -234,7 +234,7 @@ context for the builder will be the directory where the dockerfile is located.
 
 ```python
 def from_ref_name(
-    name: str,
+    name: str = 'default',
 ) -> Image
 ```
 | Parameter | Type | Description |
@@ -247,15 +247,15 @@ def from_ref_name(
 def from_uv_script(
     script: Path | str,
     name: str,
-    registry: str | None,
-    registry_secret: Optional[str | Secret],
-    python_version: Optional[Tuple[int, int]],
-    index_url: Optional[str],
-    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
-    pre: bool,
-    extra_args: Optional[str],
-    platform: Optional[Tuple[Architecture, ...]],
-    secret_mounts: Optional[SecretRequest],
+    registry: str | None = None,
+    registry_secret: Optional[str | Secret] = None,
+    python_version: Optional[Tuple[int, int]] = None,
+    index_url: Optional[str] = None,
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None] = None,
+    pre: bool = False,
+    extra_args: Optional[str] = None,
+    platform: Optional[Tuple[Architecture, ...]] = None,
+    secret_mounts: Optional[SecretRequest] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified uv script.
@@ -276,7 +276,6 @@ For more information on the uv script format, see the documentation:
 
 
 
-
 | Parameter | Type | Description |
 |-|-|-|
 | `script` | `Path \| str` | path to the uv script |
@@ -289,7 +288,7 @@ For more information on the uv script format, see the documentation:
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
-| `secret_mounts` | `Optional[SecretRequest]` | |
+| `secret_mounts` | `Optional[SecretRequest]` | Secret mounts to use for the image, default is None. |
 
 **Returns:** Image
 
@@ -302,8 +301,8 @@ def validate()
 
 ```python
 def with_apt_packages(
-    packages: str,
-    secret_mounts: Optional[SecretRequest],
+    *packages: str,
+    secret_mounts: Optional[SecretRequest] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified apt packages layered on top of the current image
@@ -312,7 +311,7 @@ Use this method to create a new image with the specified apt packages layered on
 
 | Parameter | Type | Description |
 |-|-|-|
-| `packages` | `str` | list of apt packages to install |
+| `*packages` | `str` | list of apt packages to install |
 | `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. |
 
 **Returns:** Image
@@ -321,8 +320,8 @@ Use this method to create a new image with the specified apt packages layered on
 
 ```python
 def with_code_bundle(
-    copy_style: Literal['loaded_modules', 'all'],
-    dst: str,
+    copy_style: Literal['loaded_modules', 'all'] = 'loaded_modules',
+    dst: str = '.',
 ) -> Image
 ```
 Configure this image to automatically copy source code from root_dir
@@ -344,7 +343,7 @@ When the runner's copy_style is not "none", this is a no-op.
 ```python
 def with_commands(
     commands: List[str],
-    secret_mounts: Optional[SecretRequest],
+    secret_mounts: Optional[SecretRequest] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified commands layered on top of the current image
@@ -415,7 +414,7 @@ This will override any existing builder
 
 ```python
 def with_local_v2_plugins(
-    plugins: str | list[str] | None,
+    plugins: str | list[str] | None = None,
 ) -> Image
 ```
 Use this method to create a new image with the local v2 builder
@@ -433,12 +432,12 @@ This will override any existing builder
 
 ```python
 def with_pip_packages(
-    packages: str,
-    index_url: Optional[str],
-    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
-    pre: bool,
-    extra_args: Optional[str],
-    secret_mounts: Optional[SecretRequest],
+    *packages: str,
+    index_url: Optional[str] = None,
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None] = None,
+    pre: bool = False,
+    extra_args: Optional[str] = None,
+    secret_mounts: Optional[SecretRequest] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified pip packages layered on top of the current image
@@ -471,7 +470,7 @@ def my_task(x: int) -> int:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `packages` | `str` | list of pip packages to install, follows pip install syntax |
+| `*packages` | `str` | list of pip packages to install, follows pip install syntax |
 | `index_url` | `Optional[str]` | index url to use for pip install, default is None |
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
@@ -485,11 +484,11 @@ def my_task(x: int) -> int:
 ```python
 def with_pixi_project(
     manifest_file: str | Path,
-    pixi_lock: Path | None,
-    environment: str,
-    extra_args: Optional[str],
-    secret_mounts: Optional[SecretRequest],
-    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
+    pixi_lock: Path | None = None,
+    environment: str = 'default',
+    extra_args: Optional[str] = None,
+    secret_mounts: Optional[SecretRequest] = None,
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'] = 'dependencies_only',
 ) -> Image
 ```
 Use this method to create a new image with the specified pixi project layered on top of the current image.
@@ -517,7 +516,7 @@ under `[pypi-dependencies]`) or add `.with_pip_packages("flyte")` after this lay
 environment must provide `python` (add it to the manifest's dependencies if it is conda-only).
 
 If the manifest has a CUDA `[system-requirements]` and image builds run on GPU-less machines, set
-`.with_env_vars({"CONDA_OVERRIDE_CUDA": "&lt;version&gt;"})` *before* this layer so install-time
+`.with_env_vars({"CONDA_OVERRIDE_CUDA": "<version>"})` *before* this layer so install-time
 validation of the `__cuda` virtual package succeeds.
 
 The manifest's `platforms` must cover every architecture the image is built for — e.g. a
@@ -542,10 +541,10 @@ in the manifest, or `pixi install` fails for the missing architecture at build t
 ```python
 def with_poetry_project(
     pyproject_file: str | Path,
-    poetry_lock: Path | None,
-    extra_args: Optional[str],
-    secret_mounts: Optional[SecretRequest],
-    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
+    poetry_lock: Path | None = None,
+    extra_args: Optional[str] = None,
+    secret_mounts: Optional[SecretRequest] = None,
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'] = 'dependencies_only',
 )
 ```
 Use this method to create a new image with the specified pyproject.toml layered on top of the current image.
@@ -576,11 +575,11 @@ into the image.
 ```python
 def with_requirements(
     file: str | Path,
-    index_url: Optional[str],
-    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
-    pre: bool,
-    extra_args: Optional[str],
-    secret_mounts: Optional[SecretRequest],
+    index_url: Optional[str] = None,
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None] = None,
+    pre: bool = False,
+    extra_args: Optional[str] = None,
+    secret_mounts: Optional[SecretRequest] = None,
 ) -> Image
 ```
 Use this method to create a new image with the specified requirements file layered on top of the current image
@@ -602,7 +601,7 @@ Cannot be used in conjunction with conda
 ```python
 def with_source_file(
     src: typing.Union[Path, typing.List[Path]],
-    dst: str,
+    dst: str = '.',
 ) -> Image
 ```
 Use this method to create a new image with the specified local file(s) layered on top of the current image.
@@ -622,8 +621,8 @@ If dest is not specified, it will be copied to the working directory of the imag
 ```python
 def with_source_folder(
     src: Path,
-    dst: str,
-    copy_contents_only: bool,
+    dst: str = '.',
+    copy_contents_only: bool = False,
 ) -> Image
 ```
 Use this method to create a new image with the specified local directory layered on top of the current image.
@@ -644,13 +643,13 @@ If dest is not specified, it will be copied to the working directory of the imag
 ```python
 def with_uv_project(
     pyproject_file: str | Path,
-    uvlock: Path | None,
-    index_url: Optional[str],
-    extra_index_urls: Union[List[str], Tuple[str, ...], None],
-    pre: bool,
-    extra_args: Optional[str],
-    secret_mounts: Optional[SecretRequest],
-    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
+    uvlock: Path | None = None,
+    index_url: Optional[str] = None,
+    extra_index_urls: Union[List[str], Tuple[str, ...], None] = None,
+    pre: bool = False,
+    extra_args: Optional[str] = None,
+    secret_mounts: Optional[SecretRequest] = None,
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'] = 'dependencies_only',
 ) -> Image
 ```
 Use this method to create a new image with the specified uv.lock file layered on top of the current image

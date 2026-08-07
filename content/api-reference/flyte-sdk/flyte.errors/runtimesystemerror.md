@@ -1,6 +1,6 @@
 ---
 title: RuntimeSystemError
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,7 +19,7 @@ Union system or a bug in the user's code.
 class RuntimeSystemError(
     code: str,
     message: str,
-    worker: str | None,
+    worker: str | None = None,
 )
 ```
 | Parameter | Type | Description |

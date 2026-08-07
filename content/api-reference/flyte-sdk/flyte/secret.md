@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,9 +35,9 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 ```python
 class Secret(
     key: str,
-    group: typing.Optional[str],
-    mount: pathlib.Path | None,
-    as_env_var: typing.Optional[str],
+    group: typing.Optional[str] = None,
+    mount: pathlib.Path | None = None,
+    as_env_var: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

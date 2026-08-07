@@ -1,6 +1,6 @@
 ---
 title: ClusterFailurePolicy
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ Failure and restart policy for the JobSet as a whole.
 
 ```python
 class ClusterFailurePolicy(
-    max_restarts: int,
-    restart_on_host_maintenance: bool,
+    max_restarts: int = 0,
+    restart_on_host_maintenance: bool = False,
 )
 ```
 | Parameter | Type | Description |

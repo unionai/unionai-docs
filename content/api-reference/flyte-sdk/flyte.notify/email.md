@@ -1,6 +1,6 @@
 ---
 title: Email
-version: 2.5.16
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,11 +19,11 @@ Send email notifications.
 class Email(
     on_phase: typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]],
     recipients: typing.Tuple[str, ...],
-    cc: typing.Tuple[str, ...],
-    bcc: typing.Tuple[str, ...],
-    subject: str,
-    body: str,
-    html_body: typing.Optional[str],
+    cc: typing.Tuple[str, ...] = (),
+    bcc: typing.Tuple[str, ...] = (),
+    subject: str = 'Run {{.Run.Name}} {{.Phase}}',
+    body: str = 'Run: {{.Run.Name}}\nProject/Domain: {{.Run.Project}}/{{.Run.Domain}}\nPhase: {{.Phase}}\nError: {{.Error}}\n',
+    html_body: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
