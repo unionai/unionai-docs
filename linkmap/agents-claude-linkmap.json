@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "flyteplugins.agents.claude": "/api-reference/integrations/agents/claude/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.claude.run_agent": "/api-reference/integrations/agents/claude/#run_agent",
+    "flyteplugins.agents.claude.run_agent_sync": "/api-reference/integrations/agents/claude/#run_agent_sync",
+    "flyteplugins.agents.claude.tool": "/api-reference/integrations/agents/claude/#tool"
+  }
+}

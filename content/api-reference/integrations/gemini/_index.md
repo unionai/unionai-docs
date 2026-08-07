@@ -7,7 +7,16 @@ layout: py_api
 
 # Gemini
 
-
+> [!WARNING] Deprecated
+> `flyteplugins-gemini` has been removed from the Flyte SDK and no longer publishes new
+> releases. This page is a frozen snapshot of version 2.5.8, kept for users still on an older
+> release.
+>
+> Use [`flyteplugins-agents-google`](../agents/google/_index) instead. It runs the Google ADK's
+> own loop inside a Flyte task, so model turns replay on resume and each tool call becomes a
+> durable child action. See [Agent frameworks](../../../integrations/agents/_index) for the full
+> set of adapters and [Google ADK](../../../integrations/agents/google-adk) for the migration
+> target.
 
 Google Gemini plugin for Flyte.
 

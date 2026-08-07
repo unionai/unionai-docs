@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "flyteplugins.agents.pydantic_ai": "/api-reference/integrations/agents/pydantic-ai/"
+  },
+  "identifiers": {
+    "flyteplugins.agents.pydantic_ai.FlyteModel": "/api-reference/integrations/agents/pydantic-ai/flytemodel/",
+    "FlyteModel": "/api-reference/integrations/agents/pydantic-ai/flytemodel/"
+  },
+  "methods": {
+    "flyteplugins.agents.pydantic_ai.run_agent": "/api-reference/integrations/agents/pydantic-ai/#run_agent",
+    "flyteplugins.agents.pydantic_ai.run_agent_sync": "/api-reference/integrations/agents/pydantic-ai/#run_agent_sync",
+    "flyteplugins.agents.pydantic_ai.tool": "/api-reference/integrations/agents/pydantic-ai/#tool"
+  }
+}

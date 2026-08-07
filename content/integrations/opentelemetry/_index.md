@@ -6,142 +6,160 @@ variants: +flyte +union
 
 # OpenTelemetry
 
-[OpenTelemetry](https://opentelemetry.io/) (OTel) tracing in Flyte 2 is user-owned. Flyte exposes a context-propagation primitive, [`custom_context`](../../user-guide/tasks/task-programming/custom-context), that lets you carry the W3C `traceparent` header (and any other tracing metadata) across task boundaries. You bring the rest of the OTel stack: tracer provider, span exporter, and any instrumentation libraries you need.
+`flyteplugins-otel` turns a Flyte run into an [OpenTelemetry](https://opentelemetry.io/) trace.
 
-Unlike the other entries in this section, OpenTelemetry is not a Flyte plugin. It is a usage pattern built on top of `custom_context` plus the standard `opentelemetry-*` packages.
+Every task becomes a span. Every [traced function](../../user-guide/tasks/task-programming/traces) becomes a child span inside it. Spans created by your own code or by any OpenTelemetry instrumentation library nest underneath without extra wiring. Export goes wherever OTLP goes: Grafana Tempo, Jaeger, Honeycomb, an OpenTelemetry Collector or several at once.
 
-## What Flyte provides
+None of this is specific to agents or to LLM workloads. It is ordinary distributed tracing for ordinary Flyte tasks, plus two behaviors that exist because Flyte runs are durable and a stock OpenTelemetry setup has no way to model them:
 
-| Capability                                                             | Where it lives                                        |
-| ---------------------------------------------------------------------- | ----------------------------------------------------- |
-| Trace context propagation across task boundaries                       | `flyte.custom_context` / `flyte.ctx().custom_context` |
-| Tracer provider and span exporter                                      | Your code (`opentelemetry-sdk`)                       |
-| Auto-instrumentation for libraries (httpx, requests, SQLAlchemy, etc.) | Your code (`opentelemetry-instrumentation-*`)         |
-| Span emission for Flyte control plane API calls                        | Not exposed                                           |
-| Span emission for task lifecycle (scheduling, retries)                 | Not exposed                                           |
+- **A crashed and resumed run is one trace, not several:** Each attempt is a fresh process with a fresh OpenTelemetry SDK, so each would normally mint its own trace ID. The plugin derives the trace ID from the run instead, so every process converges on the same trace with no coordination.
+- **Steps served from the durable log still appear.** A resumed run replays completed steps rather than re-executing them, so nothing instruments them and the trace would otherwise have holes exactly where durability did its job. The plugin records them as spans marked `flyte.replayed`.
 
-Flyte does not emit OTel spans into your collector. Every span that shows up in your tracing backend is one you create from inside your own code.
+[Traces across crashes and resumes](./durable-traces) covers both in detail.
 
 ## Installation
 
-Add the OTel libraries to your task image:
-
-```python
-image = flyte.Image.from_debian_base().with_pip_packages(
-    "opentelemetry-sdk",
-    "opentelemetry-instrumentation-httpx",   # one per library you want auto-instrumented
-    "httpx",
-)
+```bash
+pip install flyteplugins-otel
 ```
 
-The same packages must also be importable in the driver process that calls `flyte.with_runcontext(...).run(...)`.
+OTLP over HTTP is included. gRPC ships separately:
 
-## Configure the tracer
+```bash
+pip install "flyteplugins-otel[grpc]"
+```
 
-Initialize a tracer provider and exporter once at module import. The example below uses `ConsoleSpanExporter` for clarity; in production swap in an OTLP, Jaeger, or vendor-specific exporter that points at your collector.
+## Quick start
+
+Call `init()` once at module scope, then write tasks as you normally would:
+
+```python{hl_lines=[2,6]}
+import flyte
+from flyteplugins.otel import init
+
+# Module scope, not inside a task. The task span opens before the task body runs,
+# so initializing from within the body means that task's own span is already missed.
+init(service_name="my-service")
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-otel"),
+)
+
+
+@flyte.trace
+async def double(x: int) -> int:
+    return x * 2
+
+
+@env.task
+async def main(n: int = 3) -> int:
+    total = 0
+    for i in range(n):
+        total += await double(i)
+    return total
+
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    print(flyte.run(main, n=3).url)
+```
+
+That produces one trace shaped like this:
+
+```text
+main                          ← task span
+├── double                    ← flyte.trace step span
+├── double
+└── double
+```
+
+![Flyte UI showing the run's action tree beside the console-exported JSON for one span](../../_static/images/integrations/opentelemetry/quick_start.png)
+
+*The quick start run in the Flyte UI. On the left, the action tree shows `main` and its three `double` steps. On the right, the Logs tab holds `ConsoleSpanExporter` output for one `double` span, carrying the `flyte.*` attributes and the `parent_id` that nests it under the task span.*
+
+With no arguments, `init()` reads the standard `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_HEADERS` variables, which is how most vendors document their setup. See [Exporters and configuration](./configuration) for pointing it at a real backend and for supplying credentials as a `flyte.Secret` instead of hardcoding them.
+
+> [!WARNING] Call `init()` at module scope
+> The task span opens before the task body runs, so calling `init()` from inside a task means
+> that task's own span has already been missed. The symptom is a trace holding step spans with
+> no task span to hang them from. The plugin logs a warning when it detects this.
+
+## What becomes a span
+
+| Flyte concept                                                    | Span                              | Parent                                             |
+| ---------------------------------------------------------------- | --------------------------------- | -------------------------------------------------- |
+| A task executing in its container                                | Task span, named after the task   | The inbound trace context if any; otherwise a root |
+| A [`flyte.trace`](../../user-guide/tasks/task-programming/traces) step | Step span                         | The task span that owns it                         |
+| A step replayed from the durable log                             | Step span, `flyte.replayed=true`  | The task span of the attempt that replayed it      |
+| A sub-action (a task calling another task)                       | Its own task span, in another pod | The calling task's span, via `custom_context`      |
+| Anything an instrumentation library emits                        | Whatever that library emits       | The active span, which is the task or step span    |
+
+Task lifecycle itself is not instrumented: there are no spans for scheduling, queueing or the control plane's decision to retry. A span starts when a container begins executing a task.
+
+You will however, see HTTP client spans for Flyte's own calls to the control plane once tracing is on. Those come from Flyte's transport rather than from this plugin; [Flyte's own control-plane spans](./durable-traces#flytes-own-control-plane-spans) explains where they come from and how to switch them off.
+
+## Span attributes
+
+Every span the plugin emits carries the identifiers needed to get back to the run that produced it. These names are effectively public API: a Grafana data link queries on them to jump from a span into the Flyte UI and [`GrafanaTrace`](./configuration#linking-back-from-grafana) is built on them.
+
+| Attribute                                    | On         | Meaning                                           |
+| -------------------------------------------- | ---------- | ------------------------------------------------- |
+| `flyte.run_name`                             | All spans  | The run, and what the trace ID is derived from    |
+| `flyte.action_name`                          | All spans  | The action that produced the span                 |
+| `flyte.project`, `flyte.domain`, `flyte.org` | All spans  | Where the run lives                               |
+| `flyte.task_name`                            | Task spans | The task being executed                           |
+| `flyte.step_name`                            | Step spans | The traced function                               |
+| `flyte.task_action_name`                     | Step spans | The task that owns the step                       |
+| `flyte.replayed`                             | Step spans | Whether this step was served from the durable log |
+
+## Your own spans
+
+Spans you create with a plain OpenTelemetry tracer nest inside the task span automatically. Parenting in OpenTelemetry comes from the active context and the plugin keeps the task span active for the whole task body, so there is nothing to extract and no context to pass around:
 
 ```python
 from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+tracer = trace.get_tracer("my.app")
+
+
+@env.task
+async def etl(rows: int = 100) -> int:
+    with tracer.start_as_current_span("extract") as span:
+        span.set_attribute("rows.requested", rows)
+        extracted = rows
+
+    with tracer.start_as_current_span("transform"):
+        # Spans nest as deeply as you like; this one lands under transform.
+        with tracer.start_as_current_span("validate"):
+            transformed = extracted - 1
+
+    with tracer.start_as_current_span("load") as span:
+        span.set_attribute("rows.loaded", transformed)
+
+    return transformed
+```
+
+The same is true of third-party auto-instrumentation. An HTTP client instrumentor, a database instrumentor or an LLM instrumentor needs no extra wiring:
+
+```python
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 
-trace.set_tracer_provider(TracerProvider())
-trace.get_tracer_provider().add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+init(service_name="my-service")
 HTTPXClientInstrumentor().instrument()
-tracer = trace.get_tracer("my.app")
 ```
 
-## Start a trace and pass it into the run
+Call `init()` before the other library so everything stays on one export pipeline. For libraries that want to be handed a tracer, `get_tracer()` returns the one the plugin built.
 
-Open a root span in your driver code, inject the resulting trace context into a carrier dict, and hand it to the run via `with_runcontext(custom_context=...)`:
+## What's next
 
-```python
-from opentelemetry.propagate import inject
+- **[Exporters and configuration](./configuration)**: point the plugin at a backend, adopt a tracer provider you already have, and link back from Grafana into the Flyte UI.
+- **[Traces across crashes and resumes](./durable-traces)**: trace context in and out of a run, run-derived trace IDs, and replayed steps.
+- **[Grafana Agent Observability](../grafana-agent-observability/_index)**: add LLM generations, tool calls, token usage and cost on top of these traces.
 
-with tracer.start_as_current_span("workflow_run"):
-    carrier = {}
-    inject(carrier)   # writes traceparent (and tracestate/baggage if configured) into carrier
-    run = flyte.with_runcontext(custom_context=carrier).run(main, url="https://httpbin.org/get")
-    print(run.url)
-```
-
-The carrier is a regular `Dict[str, str]`, which is exactly what `custom_context` expects.
-
-## Re-parent spans inside a task
-
-Each task pulls the parent context out of `flyte.ctx().custom_context` and uses it to anchor its own spans:
-
-```python
-import httpx
-from opentelemetry.propagate import extract
-
-@env.task
-async def fetch(url: str) -> int:
-    parent = extract(flyte.ctx().custom_context)
-    with tracer.start_as_current_span("fetch", context=parent):
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url)
-        return resp.status_code
-```
-
-Without `extract(...)`, the span you open inside the task would be a new root span in your tracing backend, disconnected from the rest of the workflow.
-
-## Propagate into nested tasks
-
-When a task calls another task, refresh the carrier with the current span and pass it through `flyte.custom_context(...)` so the child task's `flyte.ctx().custom_context` carries the updated parent:
-
-```python
-from opentelemetry.propagate import extract, inject
-
-@env.task
-async def main(url: str) -> int:
-    parent = extract(flyte.ctx().custom_context)
-    with tracer.start_as_current_span("main", context=parent):
-        carrier = {}
-        inject(carrier)
-        with flyte.custom_context(**carrier):
-            return await fetch(url)
-```
-
-The pattern composes: every task that opens a span and calls another task repeats the `inject` + `flyte.custom_context(...)` step.
-
-## Reusable decorator
-
-The `extract` / `start_as_current_span` / `inject` / `flyte.custom_context` sequence is mechanical. Wrap it in a decorator so task bodies stay clean:
-
-```python
-import functools
-from opentelemetry.propagate import extract, inject
-
-def traced(span_name: str):
-    def decorator(fn):
-        @functools.wraps(fn)
-        async def wrapper(*args, **kwargs):
-            parent = extract(flyte.ctx().custom_context)
-            with tracer.start_as_current_span(span_name, context=parent):
-                carrier = {}
-                inject(carrier)
-                with flyte.custom_context(**carrier):
-                    return await fn(*args, **kwargs)
-        return wrapper
-    return decorator
-
-
-@env.task
-@traced("fetch")
-async def fetch(url: str) -> int:
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(url)
-    return resp.status_code
-```
-
-## Choosing an exporter
-
-`ConsoleSpanExporter` only prints to stdout. To send spans to a real backend, replace it with the exporter that targets your collector, for example:
-
-- **OTLP** (most collectors, including the OpenTelemetry Collector): `opentelemetry-exporter-otlp`
-- **Jaeger**: `opentelemetry-exporter-jaeger`
-- **Vendor exporters**: Datadog, Honeycomb, New Relic, Splunk, etc. Each ships its own pip package.
-
-The exporter, endpoint, and credentials are configured entirely in your task code; Flyte does not mediate that connection.
+> [!NOTE] Runnable examples
+> The plugin ships [eight worked examples](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/otel/examples)
+> covering console export, custom spans, nested tasks, adopting an existing provider, joining a
+> caller's trace, HTTP auto-instrumentation, Grafana Cloud and a crash-and-resume trace. All but
+> the last run either locally or on a cluster; the crash-and-resume one needs a cluster, because
+> the replay it demonstrates comes from a platform retry.

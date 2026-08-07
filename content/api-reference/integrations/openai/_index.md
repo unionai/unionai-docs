@@ -7,7 +7,16 @@ layout: py_api
 
 # OpenAI
 
-
+> [!WARNING] Deprecated
+> `flyteplugins-openai` has been removed from the Flyte SDK and no longer publishes new
+> releases. This page is a frozen snapshot of version 2.5.8, kept for users still on an older
+> release.
+>
+> Use [`flyteplugins-agents-openai`](../agents/openai/_index) instead. Its `tool` decorator
+> replaces `function_tool`, and `run_agent` drives the OpenAI Agents SDK loop from inside a Flyte
+> task, so model turns replay on resume. See [Agent frameworks](../../../integrations/agents/_index)
+> for the full set of adapters and [OpenAI](../../../integrations/agents/openai) for the migration
+> target.
 
 ## Directory
 
