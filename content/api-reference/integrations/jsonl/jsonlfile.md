@@ -1,6 +1,6 @@
 ---
 title: JsonlFile
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -56,10 +56,10 @@ def create() -> JsonlFile:
 ```python
 class JsonlFile(
     path: str,
-    name: typing.Optional[str] = None,
-    format: str = 'jsonl',
-    hash: typing.Optional[str] = None,
-    hash_method: typing.Optional[flyte.io._hashing_io.HashMethod] = None,
+    name: typing.Optional[str],
+    format: str,
+    hash: typing.Optional[str],
+    hash_method: typing.Optional[flyte.io._hashing_io.HashMethod],
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -114,7 +114,7 @@ validated to form a valid model.
 
 ```python
 def download(
-    local_path: Optional[Union[str, Path]] = None,
+    local_path: Optional[Union[str, Path]],
 ) -> str
 ```
 Asynchronously download the file to a local path.
@@ -153,7 +153,7 @@ async def download_to_path(f: File) -> str:
 
 ```python
 def download_sync(
-    local_path: Optional[Union[str, Path]] = None,
+    local_path: Optional[Union[str, Path]],
 ) -> str
 ```
 Synchronously download the file to a local path.
@@ -239,7 +239,7 @@ def check_file_sync(f: File) -> bool:
 ```python
 def from_existing_remote(
     remote_path: str,
-    file_cache_key: Optional[str] = None,
+    file_cache_key: Optional[str],
 ) -> File[T]
 ```
 Create a File reference from an existing remote file.
@@ -269,111 +269,121 @@ async def process_existing_file() -> str:
 ```python
 def from_local(
     local_path: Union[str, Path],
-    remote_destination: Optional[str] = None,
-    hash_method: Optional[HashMethod | str] = None,
+    remote_destination: Optional[str],
+    hash_method: Optional[HashMethod | str],
 ) -> File[T]
 ```
 Asynchronously create a new File object from a local file by uploading it to remote storage.
 
-Use this in async tasks when you have a local file that needs to be uploaded to remote storage.
+        Use this in async tasks when you have a local file that needs to be uploaded to remote storage.
 
-Example (Async):
+        Example (Async):
 
-```python
-@env.task
-async def upload_local_file() -> File:
-    # Create a local file
-    async with aiofiles.open("/tmp/data.csv", "w") as f:
-        await f.write("col1,col2
+        ```python
+        @env.task
+        async def upload_local_file() -> File:
+            # Create a local file
+            async with aiofiles.open("/tmp/data.csv", "w") as f:
+                await f.write("col1,col2
 1,2
 3,4
 ")
 
-    # Upload to remote storage
-    remote_file = await File.from_local("/tmp/data.csv")
-    return remote_file
-```
+            # Upload to remote storage
+            remote_file = await File.from_local("/tmp/data.csv")
+            return remote_file
+        ```
 
-Example (With specific destination):
+        Example (With specific destination):
 
-```python
-@env.task
-async def upload_to_specific_path() -> File:
-    remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
+        ```python
+        @env.task
+        async def upload_to_specific_path() -> File:
+            remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
+            return remote_file
+        ```
 
+        Args:
+            local_path: Path to the local file
+            remote_destination: Optional remote path to store the file. If None, a path will be automatically generated.
+            hash_method: Optional HashMethod or string to use for cache key computation. If a string is provided,
+                        it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
+                        the hash during upload. If not specified, the cache key will be based on file attributes.
+
+        Returns:
+            A new File instance pointing to the uploaded remote file
+        
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
-
-**Returns**
-
-A new File instance pointing to the uploaded remote file
-
+| `local_path` | `Union[str, Path]` | |
+| `remote_destination` | `Optional[str]` | |
+| `hash_method` | `Optional[HashMethod \| str]` | |
 
 ### from_local_sync()
 
 ```python
 def from_local_sync(
     local_path: Union[str, Path],
-    remote_destination: Optional[str] = None,
-    hash_method: Optional[HashMethod | str] = None,
+    remote_destination: Optional[str],
+    hash_method: Optional[HashMethod | str],
 ) -> File[T]
 ```
 Synchronously create a new File object from a local file by uploading it to remote storage.
 
-Use this in non-async tasks when you have a local file that needs to be uploaded to remote storage.
+        Use this in non-async tasks when you have a local file that needs to be uploaded to remote storage.
 
-Example (Sync):
+        Example (Sync):
 
-```python
-@env.task
-def upload_local_file_sync() -> File:
-    # Create a local file
-    with open("/tmp/data.csv", "w") as f:
-        f.write("col1,col2
+        ```python
+        @env.task
+        def upload_local_file_sync() -> File:
+            # Create a local file
+            with open("/tmp/data.csv", "w") as f:
+                f.write("col1,col2
 1,2
 3,4
 ")
 
-    # Upload to remote storage
-    remote_file = File.from_local_sync("/tmp/data.csv")
-    return remote_file
-```
+            # Upload to remote storage
+            remote_file = File.from_local_sync("/tmp/data.csv")
+            return remote_file
+        ```
 
-Example (With specific destination):
+        Example (With specific destination):
 
-```python
-@env.task
-def upload_to_specific_path() -> File:
-    remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
+        ```python
+        @env.task
+        def upload_to_specific_path() -> File:
+            remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
+            return remote_file
+        ```
 
+        Args:
+            local_path: Path to the local file
+            remote_destination: Optional remote path to store the file. If None, a path will be automatically generated.
+            hash_method: Optional HashMethod or string to use for cache key computation. If a string is provided,
+                        it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
+                        the hash during upload. If not specified, the cache key will be based on file attributes.
+
+        Returns:
+            A new File instance pointing to the uploaded remote file
+        
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
-
-**Returns**
-
-A new File instance pointing to the uploaded remote file
-
+| `local_path` | `Union[str, Path]` | |
+| `remote_destination` | `Optional[str]` | |
+| `hash_method` | `Optional[HashMethod \| str]` | |
 
 ### iter_arrow_batches()
 
 ```python
 def iter_arrow_batches(
-    batch_size: int = 65536,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> AsyncGenerator[Any, None]
 ```
 Stream JSONL as Arrow RecordBatches.
@@ -390,8 +400,8 @@ Memory usage is bounded by batch_size.
 
 ```python
 def iter_arrow_batches_sync(
-    batch_size: int = 65536,
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    batch_size: int,
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> Generator[Any, None, None]
 ```
 Sync generator that yields Arrow RecordBatches.
@@ -408,7 +418,7 @@ Memory usage is bounded by batch_size.
 
 ```python
 def iter_records(
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> AsyncGenerator[dict[str, Any], None]
 ```
 Async generator that yields parsed dicts line by line.
@@ -422,7 +432,7 @@ Async generator that yields parsed dicts line by line.
 
 ```python
 def iter_records_sync(
-    on_error: Literal['raise', 'skip'] | ErrorHandler = 'raise',
+    on_error: Literal['raise', 'skip'] | ErrorHandler,
 ) -> Generator[dict[str, Any], None, None]
 ```
 Sync generator that yields parsed dicts line by line.
@@ -482,8 +492,8 @@ If extraction fails, the function falls back to the run base directory alone.
 
 ```python
 def new_remote(
-    file_name: Optional[str] = None,
-    hash_method: Optional[HashMethod | str] = None,
+    file_name: Optional[str],
+    hash_method: Optional[HashMethod | str],
 ) -> File[T]
 ```
 Create a new File reference for a remote file that will be written to.
@@ -515,12 +525,12 @@ async def create_csv() -> File:
 
 ```python
 def open(
-    mode: str = 'rb',
-    block_size: Optional[int] = None,
-    cache_type: str = 'readahead',
-    cache_options: Optional[dict] = None,
-    compression: Optional[str] = None,
-    **kwargs,
+    mode: str,
+    block_size: Optional[int],
+    cache_type: str,
+    cache_options: Optional[dict],
+    compression: Optional[str],
+    kwargs,
 ) -> AbstractAsyncContextManager[Union[AsyncWritableFile, AsyncReadableFile, 'HashingWriter']]
 ```
 Asynchronously open the file and return a file-like object.
@@ -572,7 +582,7 @@ async def stream_read(f: File) -> str:
 | `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
 | `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
 | `compression` | `Optional[str]` | Compression format or None for auto-detection |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 **Returns:** An async file-like object that can be used with async read/write operations
 
@@ -580,12 +590,12 @@ async def stream_read(f: File) -> str:
 
 ```python
 def open_sync(
-    mode: str = 'rb',
-    block_size: Optional[int] = None,
-    cache_type: str = 'readahead',
-    cache_options: Optional[dict] = None,
-    compression: Optional[str] = None,
-    **kwargs,
+    mode: str,
+    block_size: Optional[int],
+    cache_type: str,
+    cache_options: Optional[dict],
+    compression: Optional[str],
+    kwargs,
 ) -> Generator[IO[Any], None, None]
 ```
 Synchronously open the file and return a file-like object.
@@ -622,7 +632,7 @@ def write_file_sync() -> File:
 | `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
 | `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
 | `compression` | `Optional[str]` | Compression format or None for auto-detection |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
 **Returns:** A file-like object that can be used with standard read/write operations
 
@@ -658,8 +668,8 @@ Internal: Check if incoming schema matches File schema. Not intended for direct 
 
 ```python
 def writer(
-    flush_bytes: int = 1048576,
-    compression_level: int = 3,
+    flush_bytes: int,
+    compression_level: int,
 ) -> AsyncGenerator[JsonlWriter, None]
 ```
 Async context manager returning a `JsonlWriter` for streaming writes.
@@ -677,8 +687,8 @@ If the file path ends in `.jsonl.zst`, output is zstd-compressed.
 
 ```python
 def writer_sync(
-    flush_bytes: int = 1048576,
-    compression_level: int = 3,
+    flush_bytes: int,
+    compression_level: int,
 ) -> Generator[JsonlWriterSync, None, None]
 ```
 Sync context manager returning a `JsonlWriterSync` for streaming writes.

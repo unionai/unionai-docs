@@ -1,6 +1,6 @@
 ---
 title: SGLangAppEnvironment
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,31 +20,31 @@ This environment sets up an SGLang server with the specified model and configura
 ```python
 class SGLangAppEnvironment(
     name: str,
-    depends_on: List[Environment] = <factory>,
-    pod_template: Optional[Union[str, PodTemplate]] = None,
-    description: Optional[str] = None,
-    secrets: Optional[SecretRequest] = None,
-    env_vars: Optional[Dict[str, str]] = None,
-    resources: Optional[Resources] = None,
-    interruptible: bool = False,
-    include: Tuple[str, ...] = <factory>,
-    args: Optional[Union[List[str], str]] = None,
-    command: Optional[Union[List[str], str]] = None,
-    requires_auth: bool = True,
-    scaling: Scaling = <factory>,
-    domain: Domain | None = <factory>,
-    links: List[Link] = <factory>,
-    parameters: List[Parameter] = <factory>,
-    cluster_pool: str = 'default',
-    timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.5.19', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-12.8/bin:$PATH'))), PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu128', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(packages=('sglang==0.5.2',)), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'),))), _tag=None, _image_registry_secret=None),
-    type: str = 'SGLang',
-    port: int | Port = 8080,
-    extra_args: str | list[str] = '',
-    model_path: str | RunOutput = '',
-    model_hf_path: str = '',
-    model_id: str = '',
-    stream_model: bool = True,
+    depends_on: List[Environment],
+    pod_template: Optional[Union[str, PodTemplate]],
+    description: Optional[str],
+    secrets: Optional[SecretRequest],
+    env_vars: Optional[Dict[str, str]],
+    resources: Optional[Resources],
+    interruptible: bool,
+    include: Tuple[str, ...],
+    args: *args,
+    command: Optional[Union[List[str], str]],
+    requires_auth: bool,
+    scaling: Scaling,
+    domain: Domain | None,
+    links: List[Link],
+    parameters: List[Parameter],
+    cluster_pool: str,
+    timeouts: Timeouts,
+    image: str | Image | Literal['auto'],
+    type: str,
+    port: int | Port,
+    extra_args: str | list[str],
+    model_path: str | RunOutput,
+    model_hf_path: str,
+    model_id: str,
+    stream_model: bool,
 )
 ```
 | Parameter | Type | Description |
@@ -58,7 +58,7 @@ class SGLangAppEnvironment(
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
 | `include` | `Tuple[str, ...]` | |
-| `args` | `Optional[Union[List[str], str]]` | |
+| `args` | `*args` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | Whether the public URL requires authentication. |
 | `scaling` | `Scaling` | Scaling configuration for the app environment. |
@@ -71,10 +71,10 @@ class SGLangAppEnvironment(
 | `type` | `str` | Type of app. |
 | `port` | `int \| Port` | Port application listens to. Defaults to 8000 for SGLang. |
 | `extra_args` | `str \| list[str]` | Extra args to pass to `python -m sglang.launch_server`. See https://docs.sglang.io/advanced_features/server_arguments.html for details. |
-| `model_path` | `str \| RunOutput` | Remote path to model (e.g., s3://bucket/path/to/model). |
+| `model_path` | `str \| RunOutput` | Remote path to model (e.g., s3 |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by SGLang. |
-| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for `model_hf_path`-only apps, which use SGLang's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. |
+| `stream_model` | `bool` | When ``model_path`` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for ``model_hf_path``-only apps, which use SGLang's normal Hugging Face download path. If False with ``model_path``, the model is downloaded to the local filesystem first, then loaded. |
 
 ## Properties
 
@@ -100,7 +100,7 @@ class SGLangAppEnvironment(
 
 ```python
 def add_dependency(
-    *env: Environment,
+    env: Environment,
 )
 ```
 Add one or more environment dependencies so they are deployed together.
@@ -117,21 +117,21 @@ depend on itself.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 
 ```python
 def clone_with(
     name: str,
-    image: Optional[Union[str, Image, Literal['auto']]] = None,
-    resources: Optional[Resources] = None,
-    env_vars: Optional[dict[str, str]] = None,
-    secrets: Optional[SecretRequest] = None,
-    depends_on: Optional[list[Environment]] = None,
-    description: Optional[str] = None,
-    interruptible: Optional[bool] = None,
-    **kwargs: Any,
+    image: Optional[Union[str, Image, Literal['auto']]],
+    resources: Optional[Resources],
+    env_vars: Optional[dict[str, str]],
+    secrets: Optional[SecretRequest],
+    depends_on: Optional[list[Environment]],
+    description: Optional[str],
+    interruptible: Optional[bool],
+    kwargs: **kwargs,
 ) -> SGLangAppEnvironment
 ```
 | Parameter | Type | Description |
@@ -144,7 +144,7 @@ def clone_with(
 | `depends_on` | `Optional[list[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
-| `**kwargs` | `Any` | |
+| `kwargs` | `**kwargs` | |
 
 ### container_args()
 
@@ -165,7 +165,7 @@ Return the container arguments for SGLang.
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    parameter_overrides: list[Parameter] | None = None,
+    parameter_overrides: list[Parameter] | None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |

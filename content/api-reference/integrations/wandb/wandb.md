@@ -1,6 +1,6 @@
 ---
 title: Wandb
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,15 +17,15 @@ Generates a Weights & Biases run link.
 
 ```python
 class Wandb(
-    host: str = 'https://wandb.ai',
-    project: typing.Optional[str] = None,
-    entity: typing.Optional[str] = None,
-    run_mode: typing.Literal['auto', 'new', 'shared'] = 'auto',
-    rank_scope: typing.Literal['global', 'worker'] = 'global',
-    id: typing.Optional[str] = None,
-    name: str = 'Weights & Biases',
-    _is_distributed: bool = False,
-    _worker_index: typing.Optional[int] = None,
+    host: str,
+    project: typing.Optional[str],
+    entity: typing.Optional[str],
+    run_mode: typing.Literal['auto', 'new', 'shared'],
+    rank_scope: typing.Literal['global', 'worker'],
+    id: typing.Optional[str],
+    name: str,
+    _is_distributed: bool,
+    _worker_index: typing.Optional[int],
 )
 ```
 | Parameter | Type | Description |
@@ -58,12 +58,11 @@ def get_link(
     parent_action_name: str,
     action_name: str,
     pod_name: str,
-    **kwargs,
+    kwargs,
 ) -> str
 ```
 Returns a task log link given the action.
 Link can have template variables that are replaced by the backend.
-
 
 
 | Parameter | Type | Description |
@@ -75,7 +74,7 @@ Link can have template variables that are replaced by the backend.
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
 | `pod_name` | `str` | The name of the pod. |
-| `**kwargs` |  | Additional keyword arguments. |
+| `kwargs` | `**kwargs` | Additional keyword arguments. |
 
 **Returns:** The generated link.
 

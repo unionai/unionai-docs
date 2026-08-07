@@ -1,6 +1,6 @@
 ---
 title: ImageConfig
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,9 +16,9 @@ Configuration for Docker image building at runtime.
 
 ```python
 class ImageConfig(
-    registry: typing.Optional[str] = None,
-    registry_secret: typing.Optional[str] = None,
-    python_version: typing.Optional[tuple[int, int]] = None,
+    registry: typing.Optional[str],
+    registry_secret: typing.Optional[str],
+    python_version: typing.Optional[tuple[int, int]],
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: HeadNodeConfig
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,10 +13,10 @@ layout: py_api
 
 ```python
 class HeadNodeConfig(
-    ray_start_params: typing.Optional[typing.Dict[str, str]] = None,
-    pod_template: typing.Optional[flyte._pod.PodTemplate] = None,
-    requests: typing.Optional[flyte._resources.Resources] = None,
-    limits: typing.Optional[flyte._resources.Resources] = None,
+    ray_start_params: typing.Optional[typing.Dict[str, str]],
+    pod_template: typing.Optional[flyte._pod.PodTemplate],
+    requests: typing.Optional[flyte._resources.Resources],
+    limits: typing.Optional[flyte._resources.Resources],
 )
 ```
 | Parameter | Type | Description |

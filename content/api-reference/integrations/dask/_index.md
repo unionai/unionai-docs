@@ -1,6 +1,6 @@
 ---
 title: Dask
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---

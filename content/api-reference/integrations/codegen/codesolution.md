@@ -1,6 +1,6 @@
 ---
 title: CodeSolution
-version: 2.5.19
+version: 2.5.14
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,9 +16,9 @@ Structured code solution.
 
 ```python
 class CodeSolution(
-    language: str = 'python',
-    code: str = '',
-    system_packages: list[str] = list(),
+    language: str,
+    code: str,
+    system_packages: list[str],
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
