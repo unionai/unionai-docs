@@ -22,7 +22,7 @@ are wired up for you automatically; in other harnesses you configure them manual
 | Harness | Skills | MCP servers |
 |---------|--------|-------------|
 | Claude Code | All | Both, configured automatically |
-| Codex | All | Manual setup |
+| Codex | All | Both, configured automatically |
 | Hermes | Per-skill | Manual setup |
 | OpenCode | All | Manual setup |
 | Pi | All | Manual setup |
@@ -51,11 +51,12 @@ To pin a version, add the marketplace from a git reference:
 /plugin marketplace add https://github.com/flyteorg/flyte-agent-plugins.git#<tag-or-branch>
 ```
 
-Installing the plugin makes all of the skills available and, in Claude Code,
-wires up both bundled MCP servers automatically. In other harnesses (Codex,
-Hermes, OpenCode, Pi, …), point the harness at the same repository to load the
-skills, then configure the MCP servers manually — see the repository README for
-per-harness instructions.
+Installing the plugin makes all of the skills available. In Claude Code and Codex
+it also wires up both bundled MCP servers automatically: each reads the same
+`.mcp.json`, and neither server needs a path expanded or a checkout on disk. In
+other harnesses (Hermes, OpenCode, Pi, …), point the harness at the same
+repository to load the skills, then configure the MCP servers manually — see the
+repository README for per-harness instructions.
 
 ## Skills
 
