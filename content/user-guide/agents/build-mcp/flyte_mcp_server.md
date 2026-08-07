@@ -37,26 +37,51 @@ There are two ways to run a Flyte MCP server, suited to different stages:
 
 | Mode | When to use |
 |------|-------------|
-| **Local (stdio)** | Local development and quick experiments. The client launches the server as a subprocess on your machine, using your local Flyte config. |
-| **Remote (HTTP)** | Shared or production use. The server runs as a deployed app with a stable, authenticated URL that any client can connect to. |
+| **Local (stdio)** | One user on one machine. The client launches the server as a subprocess, using your local Flyte config and your existing login. Nothing is deployed, and no data leaves your machine. |
+| **Remote (HTTP)** | A whole team, or a client that cannot launch a subprocess (a browser-based assistant, for example). The server runs as a deployed app with a stable, authenticated URL. |
+
+Prefer stdio unless you need one of the two things only HTTP gives you: a single shared server that nobody has to install, or a URL for a client that has no local process.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE] Remote deployment is not available here
+> Deploying the server as a long-running app requires Union.ai apps, which open-source Flyte does not provide. Use the local stdio mode below. Everything else on this page — tool groups, individual tools, and allowlists — applies to both modes.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Running locally with `uvx`
 
 The `flyte[mcp]` extra ships a `flyte-mcp` CLI entrypoint. Run it with [`uvx`](https://docs.astral.sh/uv/guides/tools/) (no global install required):
 
 ```bash
-uvx --from "flyte[mcp]" flyte-mcp
+uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio
 ```
 
 `uvx` downloads `flyte[mcp]` into an isolated environment, runs `flyte-mcp`, and exits cleanly when you're done. The server reads your active Flyte config (the same one used by the `flyte` CLI or `flyte.init_from_config()`), so whichever project and cluster you're pointed at is what the tools operate on.
 
+Two parts of that command matter:
+
+- **`--transport stdio` is required.** The CLI defaults to `streamable-http`, which starts an HTTP listener instead of speaking JSON-RPC on stdin and stdout. A client that launches the process expecting stdio will not connect without this flag.
+- **`>=2.5.18` is the minimum version.** It is the first release that constrains its `mcp` dependency below 2.0. Earlier versions resolve `mcp` 2.0.0, which removed the module the server imports, and the server exits at startup reporting `mcp is not installed`.
+
 > [!TIP]
-> Pin to a specific SDK version: `uvx --from "flyte[mcp]==2.4.0" flyte-mcp`
+> Pin to an exact version instead of a floor: `uvx --from "flyte[mcp]==2.5.18" flyte-mcp --transport stdio`
+
+The server starts even when no Flyte config is present. In that case the tools fail when the assistant calls them, rather than the server failing to start.
+
+> [!NOTE] Skip the search corpus
+> The three `search_*` tools grep a local copy of the Flyte SDK examples, the docs examples, and `llms.txt`. Enabling them makes the CLI clone roughly 120 MB into `~/.flyte/mcp` on first launch. Pass `--tool-groups` without `search` to skip it:
+> ```bash
+> uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio \
+>   --tool-groups task,run,action,logs,app,trigger,project,secret,condition,identity
+> ```
 
 Once running, register it with your client as a **stdio** transport: the client manages the process lifetime. See the [connecting a client](#connecting-a-client) section below.
 
 ### Deploying remotely
 
+{{< variant union >}}
+{{< markdown >}}
 Deploy a `FlyteMCPAppEnvironment` as a long-running app to get a stable, shared HTTP endpoint:
 
 ```python
@@ -66,13 +91,30 @@ handle.activate(wait=True)
 print(f"MCP endpoint: {handle.endpoint}/flyte-mcp/mcp")
 ```
 
+The app is deployed into **your own tenant**, so the server sits in the same trust domain as the data it reads: run metadata, logs, and task inputs and outputs stay inside your account. Set `requires_auth=True` and the endpoint sits behind your organization's SSO, so each call runs as the person driving the agent, with their own permissions.
+
 See [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) for how deployment, activation, and scaling work in general.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+Deploying the server as a long-running app requires Union.ai apps, which open-source Flyte does not provide. Use the [local stdio mode](#running-locally-with-uvx) instead — it exposes the same tools.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Basic example
 
-This deploys a remote server with **all** tools enabled:
+A server with **all** tools enabled. The environment definition is the same for both modes — only the last step differs, since `flyte.serve` deploys it as an app:
 
 {{< code file="/unionai-examples/v2/user-guide/build-mcp/flyte_mcp_app.py" fragment=flyte-mcp-all-tools lang=python >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The `flyte.serve` and `activate` calls at the end of this example deploy the server as an app, which requires Union.ai. On open-source Flyte, the `FlyteMCPAppEnvironment` above is still what you configure — you run it with the [`flyte-mcp` CLI over stdio](#running-locally-with-uvx) instead of deploying it.
+{{< /markdown >}}
+{{< /variant >}}
 
 The default mount path is `/flyte-mcp`, so with the default `streamable-http` transport the MCP endpoint is `/flyte-mcp/mcp`.
 
@@ -183,11 +225,22 @@ This example combines tool groups, an allowlist, search paths, and instructions 
 Registers the `flyte-mcp` process as a locally managed stdio server. Claude Code starts and stops the `uvx` process automatically:
 
 ```bash
-claude mcp add --transport stdio flyte-mcp -- uvx --from "flyte[mcp]" flyte-mcp
+claude mcp add --transport stdio flyte-mcp -- \
+  uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio
 ```
+
+`--transport stdio` appears twice on purpose. The first tells Claude Code how to talk to the server; the second tells the server which transport to serve. Without the second, the server starts an HTTP listener and the connection fails.
 
 ### Claude Code: remote (HTTP)
 
+{{< variant flyte >}}
+{{< markdown >}}
+Remote servers require Union.ai apps. Use the stdio setup above.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 For a deployed server with a public URL:
 
 ```bash
@@ -195,6 +248,8 @@ claude mcp add --transport http \
   --header "Authorization: Bearer $TOKEN" \
   flyte-mcp-remote https://<YOUR_HOST>/flyte-mcp/mcp
 ```
+{{< /markdown >}}
+{{< /variant >}}
 
 ### OpenCode: local
 
@@ -206,7 +261,7 @@ OpenCode spawns the `uvx` command for you:
   "mcp": {
     "flyte-mcp": {
       "type": "local",
-      "command": ["uvx", "--from", "flyte[mcp]", "flyte-mcp"],
+      "command": ["uvx", "--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio"],
       "enabled": true
     }
   }
@@ -215,6 +270,14 @@ OpenCode spawns the `uvx` command for you:
 
 ### OpenCode: remote
 
+{{< variant flyte >}}
+{{< markdown >}}
+Remote servers require Union.ai apps. Use the local setup above.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -230,6 +293,8 @@ OpenCode spawns the `uvx` command for you:
   }
 }
 ```
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Best practices
 
