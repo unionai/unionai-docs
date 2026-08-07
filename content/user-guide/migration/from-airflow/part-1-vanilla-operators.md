@@ -45,7 +45,7 @@ gpu_env = flyte.TaskEnvironment(
 )
 ```
 
-Docs: [TaskEnvironment](../../core-concepts/task-environment) · [Container Images](../../task-configuration/container-images)
+Docs: [TaskEnvironment](../../get-started/core-concepts/task-environment) · [Container Images](../../tasks/task-configuration/container-images)
 
 ---
 
@@ -94,7 +94,7 @@ def generate_report(trigger_time: datetime) -> str:
     ...
 ```
 
-Multiple triggers per task and parameterized trigger inputs are supported; see the [Triggers docs](../../task-configuration/triggers).
+Multiple triggers per task and parameterized trigger inputs are supported; see the [Triggers docs](../../tasks/task-configuration/triggers).
 
 ---
 
@@ -141,14 +141,14 @@ async def driver(ds: str) -> str:
 
 A few things change in the move:
 
-- **Inputs are the function parameters.** No `**context`. If the task needs the run's date, declare it as a parameter (`ds: str`) and the driver passes it in. The driver itself can receive trigger time when a [Trigger](../../task-configuration/triggers) fires it.
+- **Inputs are the function parameters.** No `**context`. If the task needs the run's date, declare it as a parameter (`ds: str`) and the driver passes it in. The driver itself can receive trigger time when a [Trigger](../../tasks/task-configuration/triggers) fires it.
 - **Data flows through `await`, not XCom.** The value returned by `fetch_events` is the value `summarize` receives: the function call graph IS the dependency graph. No `xcom_pull` and no `t1 >> t2` to maintain separately from the data flow.
 - **Types are part of the signature.** Flyte uses the hints to serialize between tasks, but keep expectations calibrated: the runtime is more like typed JSON than a fully enforced contract. It is useful as documentation and for tooling, not as a strict static check.
 - **Async-native, sync-also-works.** Tasks are typically `async def` and invoked with `await`. Plain `def` tasks are fully supported if you'd rather stay in a sync codebase; you just give up some of the flexibility async offers.
 
 The driver above has nothing in it but task calls, for readability. It doesn't have to. A driver is just a `@env.task`, and any code that belongs in a Python function belongs in a driver: plain expressions, loops, `if`/`try`, helpers. Turn something into a `@env.task` when you want it to have its own resources, image, retries, caching, or parallelism. Otherwise leave it as regular Python and call it inline.
 
-Docs: [Tasks](../../core-concepts/tasks)
+Docs: [Tasks](../../get-started/core-concepts/tasks)
 
 ### File and Dir: for data that doesn't fit in a return value
 
@@ -187,7 +187,7 @@ The `File` object travels between tasks the same way an `int` does: as a typed a
 
 `Dir` has the same surface for directories, plus `walk()` and `list_files()` to iterate entries.
 
-Docs: [Files and directories](../../task-programming/files-and-directories)
+Docs: [Files and directories](../../tasks/task-programming/files-and-directories)
 
 ---
 
@@ -351,7 +351,7 @@ async def extract(date: str) -> int:
 | `do_xcom_push=True` (last stdout line) | `outputs={...}`, written to files in `output_data_dir` |
 | `cwd` | `cd ... && ...` inside the command |
 
-Docs: [Container Tasks](../../task-programming/container-tasks)
+Docs: [Container Tasks](../../tasks/task-programming/container-tasks)
 
 ---
 
@@ -429,7 +429,7 @@ async def load_warehouse(ds: str) -> int:
 
 You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the decorator's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
 
-Docs: [TaskEnvironment](../../core-concepts/task-environment) · [Secrets](../../task-configuration/secrets) · [PodTemplate / advanced k8s config](../../task-configuration/pod-templates)
+Docs: [TaskEnvironment](../../get-started/core-concepts/task-environment) · [Secrets](../../tasks/task-configuration/secrets) · [PodTemplate / advanced k8s config](../../tasks/task-configuration/pod-templates)
 
 ---
 
@@ -497,7 +497,7 @@ results = await asyncio.gather(
 
 If your codebase is sync, `list(flyte.map(process, shards, concurrency=20))` is the sync equivalent of the pattern above.
 
-Docs: [Controlling parallelism](../../task-programming/controlling-parallelism) · [Fanout](../../task-programming/fanout)
+Docs: [Controlling parallelism](../../tasks/task-programming/controlling-parallelism) · [Fanout](../../tasks/task-programming/fanout)
 
 ### Conditionals
 
@@ -568,7 +568,7 @@ async def driver(ds: str) -> int:
         )(ds)
 ```
 
-Docs: [Retries and timeouts](../../task-configuration/retries-and-timeouts) · [Error handling](../../task-programming/error-handling)
+Docs: [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) · [Error handling](../../tasks/task-programming/error-handling)
 
 ---
 
@@ -588,7 +588,7 @@ async def expensive(ds: str) -> Result:
 
 Airflow has no equivalent; XCom stores outputs but doesn't short-circuit on re-execution.
 
-Docs: [Caching](../../task-configuration/caching)
+Docs: [Caching](../../tasks/task-configuration/caching)
 
 ### Reusable containers
 
@@ -604,7 +604,7 @@ warm_env = flyte.TaskEnvironment(
 
 Useful when a fan-out issues many short tasks against a heavy image.
 
-Docs: [Reusable containers](../../task-configuration/reusable-containers)
+Docs: [Reusable containers](../../tasks/task-configuration/reusable-containers)
 
 ### Reports
 
@@ -620,10 +620,10 @@ async def summarize(ds: str) -> Summary:
     ...
 ```
 
-Docs: [Reports](../../task-programming/reports)
+Docs: [Reports](../../tasks/task-programming/reports)
 
 ### Apps
 
 A long-running HTTP server (FastAPI, Panel, Streamlit, a webhook endpoint) can be deployed alongside your tasks. The app has a URL and can call tasks via the Flyte API. This is the path for webhook-triggered runs, a UI on top of a pipeline, or a custom inference endpoint.
 
-Docs: [Serve and deploy apps](../../serve-and-deploy-apps/_index) · [Build apps](../../build-apps/_index)
+Docs: [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) · [Build apps](../../apps/build-apps/_index)

@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # From Flyte 1 to 2
 
-{{< llm-bundle-note >}}
-
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
 ## Pure Python execution
@@ -30,7 +28,7 @@ adaptive behavior. Flyte 2 supports:
 
 - Python's asynchronous programming model to express parallelism.
 - Python's native error handling with `try-except` to overridden configurations, like resource requests.
-- Predefined static workflows when compile-time safety is critical.
+- Python's native conditional `if`/`elif`/`else` syntax and `for`/`while` loops.
 
 ## Simplified API
 

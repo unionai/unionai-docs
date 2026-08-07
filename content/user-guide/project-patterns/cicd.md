@@ -113,7 +113,7 @@ Two files drive `flyte deploy` behavior in CI: `pyproject.toml` (or `uv.lock`) f
 
 ### `config.yaml`
 
-Save this at `.flyte/config.yaml` (or `config.yaml`) in your repo and check it in. In CI the `flyte` CLI auto-discovers config from the repo checkout: repo-relative paths (`./config.yaml`, `./.flyte/config.yaml`, `<git-root>/.flyte/config.yaml`) take precedence over any home-directory config, so it's picked up automatically after checkout with no `--config` flag needed. See [the config discovery order](../../api-reference/flyte-sdk/packages/flyte.config/_index#auto) for the full precedence; pass `--config <path>` only to point at a non-standard location.
+Save this at `.flyte/config.yaml` (or `config.yaml`) in your repo and check it in. In CI the `flyte` CLI auto-discovers config from the repo checkout: repo-relative paths (`./config.yaml`, `./.flyte/config.yaml`, `<git-root>/.flyte/config.yaml`) take precedence over any home-directory config, so it's picked up automatically after checkout with no `--config` flag needed. See [the config discovery order](../../api-reference/flyte-sdk/flyte.config/_index#auto) for the full precedence; pass `--config <path>` only to point at a non-standard location.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -148,7 +148,7 @@ task:
   domain: development
 ```
 
-The `clientId` and `endpoint` are safe to commit; only the client secret named by `clientSecretEnvVar` comes from the CI secret store. `builder: local` means images are built on the runner with Docker (Flyte OSS has no remote builder). See [Container images](../task-configuration/container-images#image-building).
+The `clientId` and `endpoint` are safe to commit; only the client secret named by `clientSecretEnvVar` comes from the CI secret store. `builder: local` means images are built on the runner with Docker (Flyte OSS has no remote builder). See [Container images](../tasks/task-configuration/container-images#image-building).
 {{< /markdown >}}
 {{< /variant >}}
 

@@ -29,7 +29,7 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Tunnel Service** maintains the outbound-only encrypted Direct-to-Data-Plane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data plane components are identical.
 
-In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details.
+In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details, and [Egress requirements](./network#egress-requirements) for the specific outbound ports and endpoints.
 
 **Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. The push model means the control plane needs no network route into the data plane at all -- a prerequisite for the Sovereign Data Plane tier.
 
@@ -37,7 +37,7 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 
 ## Object store layout
 
-Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control plane database, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control plane database, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives).
 
 ## Kubernetes security
 

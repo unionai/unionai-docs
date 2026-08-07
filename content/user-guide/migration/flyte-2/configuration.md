@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Task configuration
 
-In Flyte 1, image, resources, caching, secrets, and scheduling were configured per-task on the `@task` decorator or per-workflow on a `LaunchPlan`. In Flyte 2 most of this moves to the `flyte.TaskEnvironment`, so it's declared once and shared. See [Migration](./migration) for the overall approach.
+In Flyte 1, image, resources, caching, secrets, and scheduling were configured per-task on the `@task` decorator or per-workflow on a `LaunchPlan`. In Flyte 2 most of this moves to the `flyte.TaskEnvironment`, so it's declared once and shared. See [Migration](./overview) for the overall approach.
 
 ## Image, resources, and caching
 
@@ -78,7 +78,7 @@ image = Image.from_debian_base(
 )
 ```
 
-See [Container images](../../task-configuration/container-images) for more.
+See [Container images](../../tasks/task-configuration/container-images) for more.
 
 ## Resources
 
@@ -107,7 +107,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Supported GPU types include A10, A10G, A100, A100 80G, B200, H100, H200, L4, L40s, T4, V100, RTX PRO 6000, and GB10. See [Resources](../../task-configuration/resources) for more.
+Supported GPU types include A10, A10G, A100, A100 80G, B200, H100, H200, L4, L40s, T4, V100, RTX PRO 6000, and GB10. See [Resources](../../tasks/task-configuration/resources) for more.
 
 ## Caching
 
@@ -137,7 +137,7 @@ def advanced(x: int, debug: bool = False) -> int:
     return x * 2
 ```
 
-See [Caching](../../task-configuration/caching) for more.
+See [Caching](../../tasks/task-configuration/caching) for more.
 
 ## Secrets
 
@@ -174,7 +174,7 @@ flyte get secret
 flyte delete secret MY_SECRET_KEY
 ```
 
-See [Secrets](../../task-configuration/secrets) for more.
+See [Secrets](../../tasks/task-configuration/secrets) for more.
 
 ## Scheduling
 
@@ -189,7 +189,7 @@ A `LaunchPlan` with a `CronSchedule` (say, a nightly retraining job) becomes a `
 {{< /tab >}}
 {{< /tabs >}}
 
-Triggers support `flyte.Cron("0 9 * * *", timezone="America/New_York")` and `flyte.FixedRate(timedelta(hours=1))` as automations, plus convenience constructors like `flyte.Trigger.hourly()` and `flyte.Trigger.daily()`. See [Triggers](../../task-configuration/triggers) for more.
+Triggers support `flyte.Cron("0 9 * * *", timezone="America/New_York")` and `flyte.FixedRate(timedelta(hours=1))` as automations, plus convenience constructors like `flyte.Trigger.hourly()` and `flyte.Trigger.daily()`. See [Triggers](../../tasks/task-configuration/triggers) for more.
 
 ## Next
 

@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.5.11
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,19 +9,55 @@ layout: py_api
 
 
 
+Key features:
+
+- Parameterized SQL queries with typed inputs
+- Key-pair and password-based authentication
+- Returns query results as DataFrames
+- Automatic links to the Snowflake query dashboard in the Flyte UI
+- Query cancellation on task abort
+
+Basic usage example:
+```python
+import flyte
+from flyte.io import DataFrame
+from flyteplugins.snowflake import Snowflake, SnowflakeConfig
+
+config = SnowflakeConfig(
+    account="myorg-myaccount",
+    user="flyte_user",
+    database="ANALYTICS",
+    schema="PUBLIC",
+    warehouse="COMPUTE_WH",
+)
+
+count_users = Snowflake(
+    name="count_users",
+    query_template="SELECT COUNT(*) FROM users",
+    plugin_config=config,
+    output_dataframe_type=DataFrame,
+)
+
+flyte.TaskEnvironment.from_task("snowflake_env", count_users)
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+
+    # Run locally (connector runs in-process, requires credentials and packages locally)
+    run = flyte.with_runcontext(mode="local").run(count_users)
+
+    # Run remotely (connector runs as a service in your data plane)
+    run = flyte.with_runcontext(mode="remote").run(count_users)
+
+    print(run.url)
+```
 ## Directory
 
 ### Classes
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.snowflake.Snowflake`](packages/flyteplugins.snowflake/snowflake) |  |
-| [`flyteplugins.snowflake.SnowflakeConfig`](packages/flyteplugins.snowflake/snowflakeconfig) | Configure a Snowflake Task using a `SnowflakeConfig` object. |
-| [`flyteplugins.snowflake.SnowflakeConnector`](packages/flyteplugins.snowflake/snowflakeconnector) |  |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.snowflake`](packages/flyteplugins.snowflake/_index) | Key features:. |
+| [`Snowflake`](./snowflake) |  |
+| [`SnowflakeConfig`](./snowflakeconfig) | Configure a Snowflake Task using a `SnowflakeConfig` object. |
+| [`SnowflakeConnector`](./snowflakeconnector) |  |
 

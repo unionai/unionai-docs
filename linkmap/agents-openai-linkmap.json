@@ -1,0 +1,23 @@
+{
+  "packages": {
+    "flyteplugins.agents.openai": "/api-reference/integrations/agents/openai/"
+  },
+  "identifiers": {
+    "flyteplugins.agents.openai.FlyteModel": "/api-reference/integrations/agents/openai/flytemodel/",
+    "FlyteModel": "/api-reference/integrations/agents/openai/flytemodel/",
+    "flyteplugins.agents.openai.FlyteModelProvider": "/api-reference/integrations/agents/openai/flytemodelprovider/",
+    "FlyteModelProvider": "/api-reference/integrations/agents/openai/flytemodelprovider/",
+    "flyteplugins.agents.openai.FlyteSession": "/api-reference/integrations/agents/openai/flytesession/",
+    "FlyteSession": "/api-reference/integrations/agents/openai/flytesession/",
+    "flyteplugins.agents.openai.FlyteTracingProcessor": "/api-reference/integrations/agents/openai/flytetracingprocessor/",
+    "FlyteTracingProcessor": "/api-reference/integrations/agents/openai/flytetracingprocessor/",
+    "flyteplugins.agents.openai.FunctionTool": "/api-reference/integrations/agents/openai/functiontool/",
+    "FunctionTool": "/api-reference/integrations/agents/openai/functiontool/"
+  },
+  "methods": {
+    "flyteplugins.agents.openai.install_flyte_tracing": "/api-reference/integrations/agents/openai/#install_flyte_tracing",
+    "flyteplugins.agents.openai.run_agent": "/api-reference/integrations/agents/openai/#run_agent",
+    "flyteplugins.agents.openai.run_agent_sync": "/api-reference/integrations/agents/openai/#run_agent_sync",
+    "flyteplugins.agents.openai.tool": "/api-reference/integrations/agents/openai/#tool"
+  }
+}

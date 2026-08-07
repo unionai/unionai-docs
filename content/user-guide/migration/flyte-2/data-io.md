@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Data types and I/O
 
-Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the mental model is the same: pass lightweight references to large data between tasks. See [Migration](./migration) for the overall approach.
+Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the mental model is the same: pass lightweight references to large data between tasks. See [Migration](./overview) for the overall approach.
 
 ## Files and directories
 
@@ -21,7 +21,7 @@ Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the me
 {{< /tab >}}
 {{< /tabs >}}
 
-See [Files and directories](../../task-programming/files-and-directories) for more.
+See [Files and directories](../../tasks/task-programming/files-and-directories) for more.
 
 ## DataFrames
 
@@ -36,7 +36,7 @@ See [Files and directories](../../task-programming/files-and-directories) for mo
 {{< /tab >}}
 {{< /tabs >}}
 
-See [DataFrames](../../task-programming/dataframes) for more.
+See [DataFrames](../../tasks/task-programming/dataframes) for more.
 
 ## Dataclasses and structured types
 

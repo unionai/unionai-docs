@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.agents.langgraph": "/api-reference/integrations/agents/langgraph/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.langgraph.ai_node": "/api-reference/integrations/agents/langgraph/#ai_node",
+    "flyteplugins.agents.langgraph.run_agent": "/api-reference/integrations/agents/langgraph/#run_agent",
+    "flyteplugins.agents.langgraph.run_agent_sync": "/api-reference/integrations/agents/langgraph/#run_agent_sync",
+    "flyteplugins.agents.langgraph.tool": "/api-reference/integrations/agents/langgraph/#tool",
+    "flyteplugins.agents.langgraph.tool_node": "/api-reference/integrations/agents/langgraph/#tool_node"
+  }
+}

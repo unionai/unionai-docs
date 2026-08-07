@@ -1,12 +1,12 @@
 {
   "packages": {
-    "flyteplugins.databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/"
+    "flyteplugins.databricks": "/api-reference/integrations/databricks/"
   },
   "identifiers": {
-    "flyteplugins.databricks.Databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricks/",
-    "Databricks": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricks/",
-    "flyteplugins.databricks.DatabricksConnector": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricksconnector/",
-    "DatabricksConnector": "/api-reference/integrations/databricks/packages/flyteplugins.databricks/databricksconnector/"
+    "flyteplugins.databricks.Databricks": "/api-reference/integrations/databricks/databricks/",
+    "Databricks": "/api-reference/integrations/databricks/databricks/",
+    "flyteplugins.databricks.DatabricksConnector": "/api-reference/integrations/databricks/databricksconnector/",
+    "DatabricksConnector": "/api-reference/integrations/databricks/databricksconnector/"
   },
   "methods": {}
 }

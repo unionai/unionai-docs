@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Tutorials
 
-{{< llm-bundle-note >}}
-
 This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union. Tutorials are organized by **industry vertical** and by **technical topic**.
 
 ## Industry verticals
@@ -54,16 +52,22 @@ Prompt engineering, prompt optimization, and context construction.
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
+{{< variant union >}}
 {{< link-card target="reinforcement-learning" title="Reinforcement Learning" >}}
 RL fine-tuning of language models.
 {{< /link-card >}}
+{{< /variant >}}
 
+{{< variant union >}}
 {{< link-card target="data-processing" title="Data Processing" >}}
 Large-scale data processing and batching strategies.
 {{< /link-card >}}
+{{< /variant >}}
 
+{{< variant union >}}
 {{< link-card target="inference" title="Inference" >}}
 Serving models and building inference applications as Flyte apps.
 {{< /link-card >}}
+{{< /variant >}}
 
 {{< /grid >}}

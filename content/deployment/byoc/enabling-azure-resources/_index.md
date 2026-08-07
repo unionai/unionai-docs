@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Enabling Azure resources
 
-{{< llm-bundle-note >}}
-
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
 [Data plane setup on Azure](../data-plane-setup-on-azure) provides {{< key product_name >}} with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-{{< key product_name >}} Azure resources is subject to Azure limitations and will require additional configuration.
