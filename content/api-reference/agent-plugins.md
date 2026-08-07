@@ -127,15 +127,9 @@ migrating existing workloads to Flyte 2, and deploying Flyte clusters.
 | `flyte-migrate-slurm` | Port HPC batch workloads off Slurm: `#SBATCH` pragmas become `TaskEnvironment` config, job arrays become `flyte.map` or `asyncio.gather`, `--dependency` chains become plain Python, multi-node `srun` becomes a clustered task environment, and `--requeue` splits into retries, checkpoints, and spot capacity. |
 
 > [!NOTE]
-> This skill starts from a codebase that was never written against Flyte, so treat it as
-> a guided starting point rather than a mechanical translator and review what it
-> produces. Multi-node, multi-GPU training ports over cleanly: a clustered task
-> environment launches the replicas as a single JobSet, runs `torchrun` rendezvous across
-> them, and sets the usual `RANK`, `WORLD_SIZE`, and `MASTER_ADDR`, so existing DDP and
-> FSDP code needs no changes. The skill suggests migrating pipeline-shaped work first
-> (evals, sweeps, batch inference), then single-node training, then multi-node. What it
-> deliberately leaves on Slurm is narrow: tightly coupled MPI simulation such as CFD or
-> molecular dynamics, and jobs that need explicit InfiniBand topology control.
+> Treat this one as a starting point rather than a mechanical translator, and review what
+> it produces. Multi-node, multi-GPU training ports over cleanly; tightly coupled MPI
+> simulation is the main thing that stays on Slurm.
 
 ### Deployment
 
