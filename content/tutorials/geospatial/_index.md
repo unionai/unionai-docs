@@ -15,8 +15,10 @@ Tutorials for satellite imagery, remote sensing, and earth and atmospheric model
 Run ensemble atmospheric simulations on H200 GPUs with multi-source data ingestion and real-time extreme event detection.
 {{< /link-card >}}
 
+{{< variant union >}}
 {{< link-card target="satellite_image_classification" title="Satellite image classification" >}}
 Build a production-grade EfficientNet pipeline for land-use classification with caching, experiment tracking, and reporting.
 {{< /link-card >}}
+{{< /variant >}}
 
 {{< /grid >}}

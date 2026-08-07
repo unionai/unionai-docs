@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # CLI and configuration
 
-The command-line tool is renamed from `pyflyte` to `flyte`, and the config file is trimmed down. See [Migration](./migration) for the overall approach.
+The command-line tool is renamed from `pyflyte` to `flyte`, and the config file is trimmed down. See [Migration](./overview) for the overall approach.
 
 ## CLI command mapping
 
@@ -149,7 +149,7 @@ flyte.init(
 )
 ```
 
-For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../run-modes/running-remote).
+For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../get-started/run-modes/running-remote).
 
 ## Next
 

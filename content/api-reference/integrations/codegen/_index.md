@@ -1,6 +1,6 @@
 ---
 title: Code generation
-version: 2.5.11
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,16 +15,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.codegen.AutoCoderAgent`](packages/flyteplugins.codegen/autocoderagent) | Agent for single-file Python code generation with automatic testing and iteration. |
-| [`flyteplugins.codegen.CodeGenEvalResult`](packages/flyteplugins.codegen/codegenevalresult) | Result from code generation and evaluation. |
-| [`flyteplugins.codegen.CodePlan`](packages/flyteplugins.codegen/codeplan) | Structured plan for the code solution. |
-| [`flyteplugins.codegen.CodeSolution`](packages/flyteplugins.codegen/codesolution) | Structured code solution. |
-| [`flyteplugins.codegen.ErrorDiagnosis`](packages/flyteplugins.codegen/errordiagnosis) | Structured diagnosis of execution errors. |
-| [`flyteplugins.codegen.ImageConfig`](packages/flyteplugins.codegen/imageconfig) | Configuration for Docker image building at runtime. |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.codegen`](packages/flyteplugins.codegen/_index) |  |
+| [`AutoCoderAgent`](./autocoderagent) | Agent for single-file Python code generation with automatic testing and iteration. |
+| [`CodeGenEvalResult`](./codegenevalresult) | Result from code generation and evaluation. |
+| [`CodePlan`](./codeplan) | Structured plan for the code solution. |
+| [`CodeSolution`](./codesolution) | Structured code solution. |
+| [`ErrorDiagnosis`](./errordiagnosis) | Structured diagnosis of execution errors. |
+| [`ImageConfig`](./imageconfig) | Configuration for Docker image building at runtime. |
 

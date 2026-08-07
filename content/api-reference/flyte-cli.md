@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.11
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -17,6 +17,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `artifact` | [`create`](#flyte-create-artifact), [`get`](#flyte-get-artifact)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
@@ -39,12 +40,12 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `create` | [`artifact`](#flyte-create-artifact), [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
 | `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -65,6 +66,7 @@ This is the command line interface for Flyte.
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
+| `artifact` | [`create`](#flyte-create-artifact), [`get`](#flyte-get-artifact)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
 | `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
 | `cluster-pool` | [`create⁺`](#flyte-create-cluster-pool), [`delete⁺`](#flyte-delete-cluster-pool), [`get⁺`](#flyte-get-cluster-pool), [`update⁺`](#flyte-update-cluster-pool)  |
@@ -96,13 +98,13 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -295,6 +297,39 @@ $ flyte create api-key --name ci-pipeline --no-default-policies
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
+
+#### flyte create artifact
+
+**`flyte create artifact [OPTIONS] NAME`**
+
+Publish an artifact from the local machine.
+
+The file is uploaded to blob storage and stored in the artifact service as a
+File artifact. Primitive values (strings, numbers) are not allowed as
+artifacts: an artifact is an addressable asset, not a scalar.
+
+
+Example usage:
+
+```bash
+flyte create artifact my_model --from-file model.pt --data framework=torch
+flyte create artifact llama3 --from-file weights.bin --external-ref hf://meta-llama/Meta-Llama-3-8B
+flyte create artifact my_model --from-file model.pt --card model_card.html --card-type model
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--from-file` | `path` | `Sentinel.UNSET` | Publish a local file as a File artifact (contents upload to blob storage). |
+| `--version` | `text` |  | Version to publish. Defaults to a random version. |
+| `--description` | `text` |  | Human readable description. |
+| `--data` | `text` | `Sentinel.UNSET` | Free-form user metadata as key=value pairs. Can be specified multiple times. |
+| `--external-ref` | `text` |  | Opaque reference into an external system (a URI, model id, ...) recorded as the artifact's source. |
+| `--card` | `file` |  | Local card file (HTML by default) to upload and attach to the artifact for display in the UI. |
+| `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or 'html' when it has none. |
+| `--card-type` | `choice` | `generic` | Kind of card being attached. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1051,19 +1086,19 @@ flyte deploy hello.py --help
 
 Edit hierarchical settings interactively — or apply a YAML file directly.
 
-**Interactive mode** (default). Opens settings in your ``$EDITOR``. Three
+**Interactive mode** (default). Opens settings in your `$EDITOR`. Three
 comment tiers appear:
 
-- ``###`` section headers and the scope line
-- ``##`` per-field descriptions and inline metadata
-- ``#`` inactive settings (uncomment the single ``#`` to activate)
+- `###` section headers and the scope line
+- `##` per-field descriptions and inline metadata
+- `#` inactive settings (uncomment the single `#` to activate)
 
 If the edited YAML fails to parse, the editor reopens with an error
 header so you can fix the syntax without losing your edits. If you
 decline to reopen — or if the server rejects the update — your buffer
-is saved under ``~/.flyte/settings-edit-<timestamp>.yaml``.
+is saved under `~/.flyte/settings-edit-<timestamp>.yaml`.
 
-**Non-interactive mode**: pass ``--from-file <path>`` to skip the editor
+**Non-interactive mode**: pass `--from-file <path>` to skip the editor
 entirely. The file's contents are parsed, the diff is printed, and the
 overrides are applied without a confirmation prompt. Ideal for
 CI/automation.
@@ -1235,6 +1270,37 @@ Apps are long-running services deployed on the Flyte platform.
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of apps to fetch when listing. |
 | `--only-mine` | `boolean` | `False` | Show only apps created by the current user (you). |
+| `--status` | `choice` |  | Filter apps by deployment status. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get artifact
+
+**`flyte get artifact [OPTIONS] [NAME] [VERSION]`**
+
+Get artifacts: names, versions of a name, or one version's details.
+
+
+Example usage:
+
+```bash
+flyte get artifact                       # distinct artifact names (latest info + version count)
+flyte get artifact my_artifact           # every version of my_artifact, newest first
+flyte get artifact my_artifact 1.0       # details of a pinned version
+flyte get artifact --search model        # names containing "model"
+flyte get artifact --source-run my_run   # versions produced by a run
+flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of results to fetch when listing. |
+| `--search` | `text` |  | Substring match on the artifact name when listing names. |
+| `--created-after` | `datetime` |  | Show versions created at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--source-run` | `text` |  | Only artifact versions produced by this run. |
+| `--source-action` | `text` |  | Only artifact versions produced by this action; usually combined with --source-run. |
+| `--source-external-ref` | `text` |  | Only artifact versions imported from this external reference. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -1332,7 +1398,7 @@ List conditions (paused condition actions) for a run, optionally filtered to a
 specific parent action.
 
 Each condition corresponds to a condition action registered via
-``flyte.new_condition(...)`` from a workflow. Use ``flyte signal condition`` to
+`flyte.new_condition(...)` from a workflow. Use `flyte signal condition` to
 resolve one.
 
 | Option | Type | Default | Description |
@@ -1779,14 +1845,18 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 Re-run an existing run RUN_NAME with its original code and inputs.
 
 Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
-new run that returns the same way ``flyte run`` does. To re-run with *new* local code (reusing
-the prior run's inputs), use ``flyte run <file> <task> --rerun-from <run>``.
+new run that returns the same way `flyte run` does. `--recover` reuses the prior run's
+succeeded actions (re-running only what failed or changed); `--force-rerun-action` forces
+named actions to re-execute anyway. To re-run with *new* local code (reusing the prior run's
+inputs), use `flyte run <file> <task> --rerun-from <run>`.
 
 Examples:
 
 ```bash
 $ flyte rerun ul56wcvgqrb9vzhzz5l2
 $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
+$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover
+$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover --force-rerun-action a3 --force-rerun-action a7
 ```
 
 | Option | Type | Default | Description |
@@ -1797,6 +1867,9 @@ $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
 | `-e` `--env` | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
 | `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
 | `--follow` `-f` | `boolean` | `False` | Stream the parent action logs after launch. |
+| `--recover` | `boolean` | `False` | Recover from this run: reuse its succeeded actions, re-run only what failed or changed. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
+| `--allow-missing-outputs` | `boolean` | `False` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The inputs cannot be verified from the client — if they were deleted too, the new run fails at runtime. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte run
@@ -1913,6 +1986,8 @@ flyte run hello.py my_task --help
 | `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
+| `--recover-from` | `text` |  | Recover a fresh run from a prior run: reuse its succeeded actions and re-run only what failed or changed. Remote-only. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover-from: name of an action to re-execute even though it succeeded in the prior run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--rerun-from` | `text` |  | Re-run an existing run with THIS local code, reusing that run's inputs (no per-task input flags are needed). Remote-only. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -2031,7 +2106,7 @@ Signal a paused condition action.
 The condition's declared payload type and prompt are read from the
 backend. If VALUE is omitted the condition's prompt is displayed and a
 typed interactive prompt is shown to collect the payload. When VALUE is
-provided it's coerced to the expected type (``true``/``false`` for bool,
+provided it's coerced to the expected type (`true`/`false` for bool,
 integer literals for int, decimal literals for float, any string for str).
 
 | Option | Type | Default | Description |
@@ -2063,22 +2138,22 @@ Start a local Flyte devbox cluster.
 
 **`flyte start tui [OPTIONS]`**
 
-Launch the Flyte TUI. Install with ``pip install flyte[tui]``.
+Launch the Flyte TUI. Install with `pip install flyte[tui]`.
 
 The mode is chosen from the resolved config:
 
 * Remote (config has an endpoint, or FLYTE_API_KEY is set): browse a remote
   Flyte v2 cluster — projects, runs, actions, logs, tasks, apps, and triggers.
-  ``flyte start tui --config remote.yaml``
+  `flyte start tui --config remote.yaml`
 * Local (no endpoint): explore past local runs recorded with persistence.
-  ``flyte start tui --config local.yaml``
+  `flyte start tui --config local.yaml`
 
 Local persistence can be enabled in 2 ways:
 
 1. In the config, to record every local run:
-   ``flyte create config --endpoint ... --local-persistence``
-2. Via ``flyte.init(local_persistence=True)``, recording ``flyte.run`` runs
-   that are local and within the active ``flyte.init``.
+   `flyte create config --endpoint ... --local-persistence`
+2. Via `flyte.init(local_persistence=True)`, recording `flyte.run` runs
+   that are local and within the active `flyte.init`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

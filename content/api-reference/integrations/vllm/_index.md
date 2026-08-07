@@ -1,6 +1,6 @@
 ---
 title: vLLM
-version: 2.5.11
+version: 2.5.19
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,11 +15,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.vllm.VLLMAppEnvironment`](packages/flyteplugins.vllm/vllmappenvironment) | App environment backed by vLLM for serving large language models. |
+| [`VLLMAppEnvironment`](./vllmappenvironment) | App environment backed by vLLM for serving large language models. |
 
-### Packages
+### Variables
 
-| Package | Description |
-|-|-|
-| [`flyteplugins.vllm`](packages/flyteplugins.vllm/_index) |  |
+| Property | Type | Description |
+|-|-|-|
+| `DEFAULT_VLLM_IMAGE` | `Image` |  |
 

@@ -45,92 +45,24 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 ## Basics
 
-Learn the basics of Flyte, covering all the core concepts around tasks and apps.
+Learn the basics of Flyte, covering all the core concepts around tasks, apps, and agents.
 
 {{< grid >}}
 
-{{< link-card target="overview" icon="lightbulb" title="Flyte 2" >}}
-Build AI workflows in pure Python with built-in durability, reproducibility, and recovery.
+{{< link-card target="get-started" icon="lightbulb" title="Get started" >}}
+What Flyte 2 is, how to install it, the core concepts, and the ways to run your code.
 {{< /link-card >}}
 
-{{< link-card target="quickstart" icon="123" title="Quickstart" >}}
-Install the SDK and run your first workflow locally in a few minutes.
+{{< link-card target="tasks" icon="gear" title="Tasks" >}}
+Configure, build, and deploy the durable batch workloads that everything else is made of.
 {{< /link-card >}}
 
-{{< link-card target="core-concepts" icon="book" title="Core concepts" >}}
-The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actions, and apps.
+{{< link-card target="apps" icon="window" title="Apps" >}}
+Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
-{{< link-card target="run-modes" icon="play-circle" title="Run modes" >}}
-Run the same task code locally, on a devbox, or on a remote cluster.
-{{< /link-card >}}
-
-{{< /grid >}}
-
-## Tasks
-
-Build durable, scalable, and reproducible batch workloads.
-
-{{< grid >}}
-
-{{< link-card target="task-configuration" icon="gear" title="Configure tasks" >}}
-Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
-{{< /link-card >}}
-
-{{< link-card target="task-programming" icon="code" title="Build tasks" >}}
-Compose tasks with fanout, parallelism, error handling, traces, files, and DataFrames.
-{{< /link-card >}}
-
-{{< link-card target="task-deployment" icon="rocket" title="Run and deploy tasks" >}}
-Use `flyte run` for iteration or `flyte deploy` to register a stable task version.
-{{< /link-card >}}
-
-{{< /grid >}}
-
-## Apps
-
-Create long-running services to host dashboards, APIs, and model endpoints.
-
-{{< grid >}}
-
-{{< link-card target="configure-apps" icon="gear" title="Configure apps" >}}
-Define `AppEnvironment`s with ports, autoscaling, custom domains, and authentication.
-{{< /link-card >}}
-
-{{< link-card target="build-apps" icon="code" title="Build apps" >}}
-Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, and more.
-{{< /link-card >}}
-
-{{< link-card target="native-app-integrations" icon="plugin" title="Native app integrations" >}}
-Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, and SGLang.
-{{< /link-card >}}
-
-{{< link-card target="serve-and-deploy-apps" icon="rocket" title="Serve and deploy apps" >}}
-Use `flyte serve` for fast iteration or `flyte deploy` for production deployments.
-{{< /link-card >}}
-
-{{< /grid >}}
-
-## Agents
-
-Build durable, self-healing agents using tasks and apps as building blocks.
-
-{{< grid >}}
-
-{{< link-card target="build-agent" icon="robot" title="Build agents" >}}
-Implement ReAct, Plan-and-Execute, and other agent patterns with full observability.
-{{< /link-card >}}
-
-{{< link-card target="agent-framework-integrations" icon="plugin" title="Agent framework integrations" >}}
-Integrate with third-party agent frameworks like LangGraph, PydanticAI, and OpenAI Agents SDK.
-{{< /link-card >}}
-
-{{< link-card target="sandboxing" icon="box" title="Sandboxing" >}}
-Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
-{{< /link-card >}}
-
-{{< link-card target="build-mcp" icon="code" title="Build an MCP" >}}
-Serve Model Context Protocol servers for AI assistants to interact with, hosted on {{< key product_name >}}.
+{{< link-card target="agents" icon="robot" title="Agents" >}}
+Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -20,14 +20,14 @@ content_hash: b6eeeaa013f1cdf6a6855f7cbd6d0cfb50b9f5d4fbfbbce93cc79255d966016b
 > [!NOTE]
 > [View source on GitHub](https://github.com/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb) | [Run in Google Colab](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/tutorials/batching_patterns/batch_processing.ipynb)
 
+
 This notebook demonstrates a production-ready pattern for processing millions of items efficiently using Flyte v2's advanced features. You'll learn how to build resilient, scalable workflows that can handle failures gracefully and optimize resource consumption.
 
-## Use case
+## Use Case
 
 **The Challenge:** Processing massive datasets (100K to 1M+ items) that require external API calls or long-running operations.
 
 **Real-World Examples:**
-
 - Web scraping large lists of URLs
 - Batch inference on millions of data points
 - Processing documents through external APIs
@@ -35,8 +35,7 @@ This notebook demonstrates a production-ready pattern for processing millions of
 - Data validation against third-party services
 
 **The Problem:** When you have so many inputs that you must:
-
-1. Split them into batches
+1. Split them into batches 
 2. Submit each batch to an external service and wait for completion
 3. Handle failures without losing progress
 4. Optimize resource usage across thousands of operations
@@ -46,43 +45,36 @@ This notebook demonstrates a production-ready pattern for processing millions of
 ## Goals
 
 **Our Goals:**
-
 1. **Resilience:** Mitigate the impact of batches that take longer or fail
 2. **Determinism:** Make operations with external API dependencies predictable and resumable
 3. **Efficiency:** Optimize resource consumption through container reuse and parallel processing
 4. **Cost Savings:** Minimize wasted compute by checkpointing progress
 
-## Solution architecture
+## Solution Architecture
 
 This example demonstrates a production-ready micro-batching pattern that combines some Union features, including:
 
 ### 1. Failure transparency with @flyte.trace
-
 The `@flyte.trace` decorator creates automatic checkpoints:
-
 - **What it does:** Records inputs and outputs of decorated functions
 - **Why it matters:** If a task fails, it resumes from the last successful checkpoint
 - **Result:** No re-execution of completed work
 
-### 2. Reusable containers for efficiency
-
+### 2. Reusable Containers for Efficiency
 Instead of creating a new container for each task:
-
 - **Container pools:** Pre-warmed replicas ready to handle work
 - **Concurrent processing:** Each replica handles multiple items simultaneously
 - **Automatic scaling:** Replicas scale between min/max based on workload
 - **Resource optimization:** Dramatically reduced startup overhead
 
-### Key benefits:
-
+### Key Benefits:
 - **Automatic checkpointing** at batch and operation boundaries  
 - **Resume from last successful point** on any failure  
 - **No wasted compute** - never re-execute completed work  
 - **Massive parallelism** - process thousands of batches concurrently  
 - **Cost efficient** - container reuse minimizes cold-start overhead  
 
-### Architecture flow:
-
+### Architecture Flow:
 ```
 1M items → Split into 1,000 batches (1K each)
          ↓
@@ -93,39 +85,38 @@ Instead of creating a new container for each task:
     Aggregate results from all batches
 ```
 
-### Architecture diagram
+### Architecture Diagram
 
 ![Micro-batching Architecture](./images/micro-batching.png)
 
 **Diagram shows:**
-
 - Input data split into batches
-- Reusable container pool
-- Concurrent processing within each replica
+- Reusable container pool 
+- Concurrent processing within each replica 
 - Submit and wait phases with `@flyte.trace` checkpoints
 - Parallel execution across all batches
 
 ## Implementation
 
 ### Step 0: Set up the runtime
-
 Prepare the runtime environment for execution
+
 
 ```python
 !uv pip install --no-cache --prerelease=allow --upgrade "flyte>=2.0.0b52" "unionai-reuse>=0.1.10"
 ```
 
-### Step 1: Initialize Flyte configuration
+### Step 1: Initialize Flyte Configuration
 
 Configure your connection to the Flyte cluster. This tells Flyte where to run your workflows and how to build container images.
 
 **Configuration Options:**
-
 - `endpoint`: Your Flyte cluster URL
 - `org`: Your organization name
 - `project`: Project to organize workflows
 - `domain`: Environment (development, staging, production)
 - `image_builder`: Use "remote" to build images on the cluster (no local Docker required)
+
 
 ```python
 # Initialize connection to your Flyte cluster
@@ -142,6 +133,7 @@ flyte.init(
 )
 ```
 
+
 ```python
 # Import required libraries
 import asyncio                          # For concurrent async operations
@@ -152,6 +144,7 @@ from typing import Dict, List           # For type hints
 import flyte                            # Main Flyte SDK
 from flyte.remote import Run            # For interacting with remote executions
 ```
+
 
 ```python
 # ============================================
@@ -174,16 +167,16 @@ BATCH_SIZE = 1000
 # Each batch processes 1K items concurrently within its container
 ```
 
-### Step 2: Define container image
+### Step 2: Define Container Image
 
 Create a container image specification with all required dependencies.
 
 **Key Dependencies:**
-
 - `flyte>=2.0.0b52`: Flyte v2 SDK for workflow orchestration
 - `unionai-reuse>=0.1.10`: Required for Reusable Containers feature
 
 **Note:** You can add any additional packages your tasks need (e.g., `httpx` for API calls, `beautifulsoup4` for web scraping, etc.)
+
 
 ```python
 # Define the container image that will run our tasks
@@ -198,20 +191,20 @@ image = (
 )
 ```
 
-### Step 3: Define task environments
+### Step 3: Define Task Environments
 
 Task environments encapsulate the runtime configuration for tasks. We'll create one with **Reusable Containers** for efficient batch processing.
 
-#### What are reusable containers?
+#### What are Reusable Containers?
 
 Instead of creating a new Kubernetes Pod for every task execution, Reusable Containers maintain a pool of pre-warmed replicas that can handle multiple tasks sequentially or concurrently.
 
 **Benefits:**
-
 - **Faster execution:** No container startup overhead (can save 10-60 seconds per task)
 - **Better resource utilization:** Containers stay warm and handle multiple items
 - **Cost savings:** Especially significant for tasks with expensive initialization
 - **Concurrent processing:** Each replica can process multiple items simultaneously
+
 
 ```python
 # Create a TaskEnvironment with Reusable Containers for batch processing
@@ -252,27 +245,23 @@ batch_env = flyte.TaskEnvironment(
 # - Time to process all: ~20 rounds of execution
 ```
 
-#### Understanding TaskEnvironment parameters
+#### Understanding TaskEnvironment Parameters
 
-**name:**
-
+**name:** 
 - Used as the prefix for Kubernetes pod names
 - Example: `batch_processor-abc123`
 
-**resources:**
-
+**resources:** 
 - Compute resources allocated to *each replica*
 - Set based on your task's memory and CPU needs
 - Tip: Monitor actual usage and adjust accordingly
 
 **replicas (min, max):**
-
 - Flyte autoscales between these values based on workload
 - More replicas = more parallel processing capacity
 - Consider your cluster's capacity and quota limits
 
 **concurrency:**
-
 - Number of async operations each Python process (per pod) handles simultaneously
 - This is *within* each replica, not across replicas
 - Higher values increase throughput but require more memory
@@ -280,20 +269,19 @@ batch_env = flyte.TaskEnvironment(
 - For CPU-bound tasks, keep this lower (1-2)
 
 **idle_ttl:**
-
 - Time replicas stay alive without active work before shutdown
 - Longer TTL = faster subsequent executions, higher resource costs
 - Shorter TTL = lower costs, potential startup delays
 - Recommendation: 5-15 minutes for typical workloads
 
 **image:**
-
 - The container image specification with all dependencies
 - Built once and reused across all task executions
 
-#### Creating the orchestrator environment
+#### Creating the Orchestrator Environment
 
 The orchestrator task coordinates all batch processing but doesn't need container reuse since it only runs once per workflow execution.
+
 
 ```python
 # Create a separate environment for the orchestrator task
@@ -316,10 +304,9 @@ orchestrator_env = flyte.TaskEnvironment(
 )
 ```
 
-#### Why two environments?
+#### Why Two Environments?
 
 **Separation of Concerns:**
-
 - **Batch Environment:** Does the heavy lifting (processing items)
   - Needs reusable containers for efficiency
   - Scales horizontally (many replicas)
@@ -333,9 +320,10 @@ orchestrator_env = flyte.TaskEnvironment(
 
 This separation optimizes both cost and performance.
 
-### Step 4: Define external service interactions
+### Step 4: Define External Service Interactions
 
-These helper functions simulate interactions with external services (APIs, web scraping, etc.).
+These helper functions simulate interactions with external services (APIs, web scraping, etc.). 
+
 
 ```python
 async def submit_to_service(request_id: int) -> str:
@@ -422,28 +410,26 @@ async def poll_job_status(job_id: str, request_id: int) -> int:
 # 2. Add logging for debugging and monitoring
 ```
 
-### Step 5: Implement the batch processing task
+### Step 5: Implement the Batch Processing Task
 
 This is the heart of the pattern. The `process_batch` task processes a batch of items with automatic checkpointing using `@flyte.trace`.
 
-#### Key concepts:
+#### Key Concepts:
 
 **Two-Phase Processing:**
-
 1. **Submit Phase:** Send all items to external service concurrently
 2. **Wait Phase:** Poll for completion of all submitted jobs
 
 **Why @flyte.trace?**
-
 - Creates checkpoints at phase boundaries
 - If the task fails during wait phase, it resumes from there (doesn't re-submit)
 - Enables forward recovery without re-execution
 
 **Concurrency Pattern:**
-
 - Uses `asyncio.gather()` to process all items in a batch simultaneously
 - `return_exceptions=True` prevents one failure from stopping the batch
 - Each phase completes fully before moving to the next
+
 
 ```python
 @batch_env.task  # This task runs in the reusable container pool
@@ -590,13 +576,11 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 #### Understanding @flyte.trace
 
 **Why use it for both phases:**
-
 - Submit phase checkpoint = "These jobs were submitted successfully"
 - Wait phase checkpoint = "These results were retrieved successfully"
 - Without it: A failure in submit or wait phase would re-submit or re-poll everything
 
 **Best Practices:**
-
 - Use `@flyte.trace` for non-deterministic operations (API calls, random operations)
 - Don't use it for pure, deterministic functions (unnecessary overhead)
 - Ensure traced functions are idempotent when possible
@@ -604,16 +588,16 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 
 See the [Traces]({{< docs_home union v2 >}}/user-guide/task-programming/traces/) docs for more details on how it works
 
-### Step 6: Implement the orchestrator workflow
+### Step 6: Implement the Orchestrator Workflow
 
 The orchestrator is the top-level task that:
-
 1. Splits the total workload into batches
 2. Launches all batches in parallel
 3. Aggregates results from all batches
 4. Reports overall statistics
 
 **This is where the magic happens:** All batches run concurrently, limited only by your reusable container pool configuration.
+
 
 ```python
 @orchestrator_env.task  # Runs in the orchestrator environment (no reuse)
@@ -757,17 +741,15 @@ async def microbatch_workflow(
 # 5. Use Flyte UI to visualize execution patterns
 ```
 
-### Step 7: Execute the workflow
+### Step 7: Execute the Workflow
 
 Now let's run the entire workflow remotely on your Union cluster.
 
 **Execution Options:**
-
 - **Remote execution** (shown below): Runs on the Union cluster
 - **Local execution**: Use `flyte.with_runcontext(mode="local").run()` for testing
 
 **What happens during execution:**
-
 1. Flyte builds the container image (if needed)
 2. Creates the orchestrator pod
 3. Orchestrator calculates batches and launches batch tasks
@@ -775,6 +757,7 @@ Now let's run the entire workflow remotely on your Union cluster.
 5. Batches are distributed across available replicas
 6. Pool scales up to max replicas (10 in this example) as needed
 7. Results are aggregated and returned
+
 
 ```python
 if __name__ == "__main__":
@@ -838,25 +821,27 @@ if __name__ == "__main__":
 
 On execution, this is what this example looks like at the Kubernetes level:
 
-![Kubernetes view of the micro-batching example: 10 worker replicas plus the driver Pod running the parent task a0](./images/reusable-containers-k8s.png)
+![](./images/reusable-containers-k8s.png)
 
 This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home union v2 >}}/user-guide/considerations/#driver-pod-requirements).
 
-## Batch size selection
+## Batch Size Selection
 
 **Finding the optimal batch size:**
-
 - **Too small:** More overhead from task management, less efficient
 - **Too large:** Longer recovery time on failures, higher memory usage
 
-**Factors to consider:**
 
+**Factors to consider:**
 - Item processing time (longer = larger batches)
 - Memory consumption per item (higher = smaller batches)
 - Failure tolerance (critical = smaller batches for faster recovery)
 - Total workload size (larger total = can use larger batches)
 
-Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropriate batch size.
+Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropiate batch size.
+
+
+
 
 ## Summary
 
@@ -865,17 +850,17 @@ This notebook demonstrated a production-ready micro-batching pattern for Flyte v
 1. **Reusable Containers** for efficiency
 2. **@flyte.trace** for checkpointing and recovery
 3. **Massive parallelism** via async/await
-4. **Error handling** for resilience
+4. **Robust error handling** for resilience
 
 **Key Takeaways:**
-
 - Use `@flyte.trace` for non-deterministic operations
 - Monitor resource usage and optimize incrementally
 - Choose the right pattern for your specific use case
 
 **Next Steps:**
-
 - Adapt this pattern to your specific use case
 - Replace mock functions with real API calls
 - Test with your actual dataset
 - Monitor and optimize based on production metrics
+
+

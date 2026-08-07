@@ -8,7 +8,7 @@ variants: -flyte +union
 
 > [!NOTE]
 > This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager.
+> [{{< key product_name >}} secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager.
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
 
@@ -127,7 +127,7 @@ We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<Secret
 To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your {{< key product_name >}} data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
-See [the binding directions](.) for details. Once the binding is done, your secrets are now accessible from within your Flyte code.
+See [the binding directions](./_index) for details. Once the binding is done, your secrets are now accessible from within your Flyte code.
 
 ## Using AWS secrets in your task code
 

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Volumes
 
-[Volumes](../../../user-guide/task-programming/volumes) give tasks a durable,
+[Volumes](../../../user-guide/tasks/task-programming/volumes) give tasks a durable,
 versioned file system that they mount and read and write like a local directory.
 A Volume is mounted **inside the task pod** with [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html),
 so on a self-managed cluster the data plane must allow task pods to perform a
@@ -124,5 +124,5 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 
 Once the device plugin is enabled, no further setup is needed. Users create and
 mount Volumes directly from their task code. See the
-[Volumes user guide](../../../user-guide/task-programming/volumes) for the
+[Volumes user guide](../../../user-guide/tasks/task-programming/volumes) for the
 programming model.

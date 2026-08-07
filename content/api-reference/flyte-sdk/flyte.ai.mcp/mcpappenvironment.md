@@ -1,0 +1,299 @@
+---
+title: MCPAppEnvironment
+version: 2.5.19
+variants: +flyte +union
+layout: py_api
+---
+
+# MCPAppEnvironment
+
+**Package:** `flyte.ai.mcp`
+
+Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio.
+
+Pass a configured `FastMCP` instance and optional HTTP layout settings.
+Install extras with `pip install 'flyte[mcp]'`.
+
+**HTTP layout** (`transport="streamable-http"` or `"sse"`)
+
+- `GET /health` — liveness/readiness JSON `{"status": "healthy"}`.
+- The MCP ASGI app is mounted at `mcp_mount_path` (default `/mcp`). With
+  `transport="streamable-http"`, the session endpoint is `{mcp_mount_path}/mcp`.
+  SSE transport uses `{mcp_mount_path}/sse` instead.
+
+**stdio** (`transport="stdio"`)
+
+Speaks JSON-RPC over the current process's stdin/stdout, for MCP clients that
+launch the server as a subprocess. There is no HTTP surface at all: no Starlette
+app, no `/health` route, no links, and `mcp_mount_path` is unused.
+
+stdio is a *local* transport and cannot be deployed or served via
+`flyte.serve` — that path runs the server on a background thread and polls
+an HTTP health check, neither of which applies to a process-bound stdio stream.
+Run it directly instead:
+
+```python
+env = MCPAppEnvironment(name="my-mcp", mcp=mcp, transport="stdio")
+env.run_stdio()
+```
+
+Anything written to stdout corrupts the JSON-RPC stream, so route logging and
+diagnostics to stderr.
+
+
+## Parameters
+
+```python
+class MCPAppEnvironment(
+    name: str,
+    depends_on: List[Environment] = <factory>,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    description: Optional[str] = None,
+    secrets: Optional[SecretRequest] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    resources: Optional[Resources] = None,
+    interruptible: bool = False,
+    image: Union[str, Image, Literal['auto'], None] = 'auto',
+    include: Tuple[str, ...] = <factory>,
+    port: int | Port = 8080,
+    args: Optional[Union[List[str], str]] = None,
+    command: Optional[Union[List[str], str]] = None,
+    requires_auth: bool = True,
+    scaling: Scaling = <factory>,
+    domain: Domain | None = <factory>,
+    links: List[Link] = <factory>,
+    parameters: List[Parameter] = <factory>,
+    cluster_pool: str = 'default',
+    timeouts: Timeouts = <factory>,
+    type: str = 'MCPApp',
+    mcp: FastMCP,
+    mcp_mount_path: str = '/mcp',
+    transport: MCPTransport = 'streamable-http',
+    uvicorn_config: uvicorn.Config | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `depends_on` | `List[Environment]` | |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | |
+| `description` | `Optional[str]` | |
+| `secrets` | `Optional[SecretRequest]` | |
+| `env_vars` | `Optional[Dict[str, str]]` | |
+| `resources` | `Optional[Resources]` | |
+| `interruptible` | `bool` | |
+| `image` | `Union[str, Image, Literal['auto'], None]` | |
+| `include` | `Tuple[str, ...]` | |
+| `port` | `int \| Port` | |
+| `args` | `Optional[Union[List[str], str]]` | |
+| `command` | `Optional[Union[List[str], str]]` | |
+| `requires_auth` | `bool` | |
+| `scaling` | `Scaling` | |
+| `domain` | `Domain \| None` | |
+| `links` | `List[Link]` | |
+| `parameters` | `List[Parameter]` | |
+| `cluster_pool` | `str` | |
+| `timeouts` | `Timeouts` | |
+| `type` | `str` | |
+| `mcp` | `FastMCP` | |
+| `mcp_mount_path` | `str` | |
+| `transport` | `MCPTransport` | |
+| `uvicorn_config` | `uvicorn.Config \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `str` |  |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
+| [`clone_with()`](#clone_with) |  |
+| [`container_args()`](#container_args) |  |
+| [`container_cmd()`](#container_cmd) |  |
+| [`container_command()`](#container_command) |  |
+| [`get_port()`](#get_port) |  |
+| [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
+| [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
+| [`run_stdio()`](#run_stdio) | Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point. |
+| [`run_stdio_async()`](#run_stdio_async) | Serve MCP over this process's stdin/stdout until the client disconnects. |
+| [`server()`](#server) | Decorator to define the server function for the app environment. |
+
+
+### add_dependency()
+
+```python
+def add_dependency(
+    *env: Environment,
+)
+```
+Add one or more environment dependencies so they are deployed together.
+
+When you deploy this environment, any environments added via
+`add_dependency` will also be deployed. This is an alternative to
+passing `depends_on=[...]` at construction time, useful when the
+dependency is defined after the environment is created.
+
+Duplicate dependencies are silently ignored. An environment cannot
+depend on itself.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+
+### clone_with()
+
+```python
+def clone_with(
+    name: str,
+    image: Optional[Union[str, Image, Literal['auto']]] = None,
+    resources: Optional[Resources] = None,
+    env_vars: Optional[dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    depends_on: Optional[List[Environment]] = None,
+    description: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    **kwargs: Any,
+) -> AppEnvironment
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` | |
+| `resources` | `Optional[Resources]` | |
+| `env_vars` | `Optional[dict[str, str]]` | |
+| `secrets` | `Optional[SecretRequest]` | |
+| `depends_on` | `Optional[List[Environment]]` | |
+| `description` | `Optional[str]` | |
+| `interruptible` | `Optional[bool]` | |
+| `**kwargs` | `Any` | |
+
+### container_args()
+
+```python
+def container_args(
+    serialize_context: SerializationContext,
+) -> List[str]
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `serialize_context` | `SerializationContext` | |
+
+### container_cmd()
+
+```python
+def container_cmd(
+    serialize_context: SerializationContext,
+    parameter_overrides: list[Parameter] | None = None,
+) -> List[str]
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `serialize_context` | `SerializationContext` | |
+| `parameter_overrides` | `list[Parameter] \| None` | |
+
+### container_command()
+
+```python
+def container_command(
+    serialization_context: SerializationContext,
+) -> list[str]
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `serialization_context` | `SerializationContext` | |
+
+### get_port()
+
+```python
+def get_port()
+```
+### on_shutdown()
+
+```python
+def on_shutdown(
+    fn: F,
+) -> F
+```
+Decorator to define the shutdown function for the app environment.
+
+This function is called after the server function is called.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `F` | |
+
+### on_startup()
+
+```python
+def on_startup(
+    fn: F,
+) -> F
+```
+Decorator to define the startup function for the app environment.
+
+This function is called before the server function is called.
+
+The decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `F` | |
+
+### run_stdio()
+
+```python
+def run_stdio()
+```
+Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point.
+
+
+### run_stdio_async()
+
+```python
+def run_stdio_async()
+```
+Serve MCP over this process's stdin/stdout until the client disconnects.
+
+Validates the transport and then delegates to the wrapped `FastMCP`,
+whose method of the same name does the actual serving.
+
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `ValueError` | if `transport` is not `"stdio"`. |
+
+### server()
+
+```python
+def server(
+    fn: F,
+) -> F
+```
+Decorator to define the server function for the app environment.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `F` | |
+

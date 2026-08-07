@@ -9,7 +9,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/code_mode_agent).
 
-This tutorial builds a "chat with live market data" app on Flyte's native AI stack. You ask a question in the browser, and the app launches a Flyte run to answer it. Inside that run, `flyte.ai.agents.Agent` running in code mode has Claude write one small Python program, the program executes in Flyte's [Monty sandbox](../../../user-guide/sandboxing/code-sandboxing), and the only things it can touch are the tools you registered. It fetches daily stock prices from a Yahoo Finance server plugged in over MCP, and hands them to a DuckDB `query` (a durable Flyte task), so every query the model writes shows up as a tracked, retryable child task you can open in the UI. The cheap tools that render metrics, charts, and tables run in-process. And the web layer is not hand-built either: `flyte.ai.chat.AgentChatAppEnvironment` provides the chat UI, the streaming, and the run-per-question wiring in one declaration.
+This tutorial builds a "chat with live market data" app on Flyte's native AI stack. You ask a question in the browser, and the app launches a Flyte run to answer it. Inside that run, `flyte.ai.agents.Agent` running in code mode has Claude write one small Python program, the program executes in Flyte's [Monty sandbox](../../../user-guide/agents/sandboxing/code-sandboxing), and the only things it can touch are the tools you registered. It fetches daily stock prices from a Yahoo Finance server plugged in over MCP, and hands them to a DuckDB `query` (a durable Flyte task), so every query the model writes shows up as a tracked, retryable child task you can open in the UI. The cheap tools that render metrics, charts, and tables run in-process. And the web layer is not hand-built either: `flyte.ai.chat.AgentChatAppEnvironment` provides the chat UI, the streaming, and the run-per-question wiring in one declaration.
 
 ![Code mode analytics agent](../../../_static/images/tutorials/code_mode_agent/demo.gif)
 
@@ -17,7 +17,7 @@ This tutorial builds a "chat with live market data" app on Flyte's native AI sta
 
 Most tool-using agents call tools one at a time. The model asks for a tool, the result comes back, it reasons, it asks for the next one. For anything multi-step that turns into a lot of round-trips, and the orchestration logic lives in a loop you have to babysit.
 
-In [code mode](../../../user-guide/sandboxing/code-mode), the model writes a single program that orchestrates the tools instead, with real control flow and composition. A question like "compare three tickers, indexed to 100 at the start, then rank them by volatility" becomes one script that does a few fetches and runs one query. It doesn't glue together a dozen tools with model turns.
+In [code mode](../../../user-guide/agents/sandboxing/code-mode), the model writes a single program that orchestrates the tools instead, with real control flow and composition. A question like "compare three tickers, indexed to 100 at the start, then rank them by volatility" becomes one script that does a few fetches and runs one query. It doesn't glue together a dozen tools with model turns.
 
 The code runs inside Monty, a restricted interpreter with no imports, no filesystem access, no network access, and near-instant startup. It can only use the tools you explicitly make available to the sandbox. That means the model isn't running arbitrary Python with unrestricted access. It can only work within the boundaries you've defined.
 
@@ -66,7 +66,7 @@ Caching is scoped to `query`, not the whole environment. Given the same SQL over
 
 ## The native agent
 
-The agent is Flyte's built-in `Agent` from the [agent framework](../../../user-guide/build-agent/_index) with `code_mode=True`. On each turn the model writes a Python program, the program runs in the sandbox via `orchestrate_local`, and the render tools populate the report as a side effect. When the report is done the model writes a one-line plain-text summary; a small shim stops there so a second turn can't re-run the same queries. Sandbox errors are fed back to the model automatically, so it fixes its own code within the turn budget.
+The agent is Flyte's built-in `Agent` from the [agent framework](../../../user-guide/agents/build-agent/_index) with `code_mode=True`. On each turn the model writes a Python program, the program runs in the sandbox via `orchestrate_local`, and the render tools populate the report as a side effect. When the report is done the model writes a one-line plain-text summary; a small shim stops there so a second turn can't re-run the same queries. Sandbox errors are fed back to the model automatically, so it fixes its own code within the turn budget.
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=agent lang=python >}}
 
@@ -83,7 +83,7 @@ The LLM callback uses the official Anthropic SDK. The agent's default callback g
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=llm lang=python >}}
 
 > [!NOTE]
-> This does not have to be Claude. The `call_llm` callback is the only model-specific code; everything around it is model-agnostic. Point it at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/native-app-integrations/vllm-app) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
+> This does not have to be Claude. The `call_llm` callback is the only model-specific code; everything around it is model-agnostic. Point it at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/apps/native-app-integrations/vllm-app) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
 
 ## The report collector
 
@@ -109,13 +109,13 @@ Because `analyze` runs inside a task context, the `query` calls made by the sand
 
 ## Serving it: the native chat app
 
-The web layer is one declaration. `AgentChatAppEnvironment` from the [agent chat UI](../../../user-guide/build-agent/agent-chat-ui) provides the chat interface, the tools sidebar, progress streaming, and the chat endpoint:
+The web layer is one declaration. `AgentChatAppEnvironment` from the [agent chat UI](../../../user-guide/agents/build-agent/agent-chat-ui) provides the chat interface, the tools sidebar, progress streaming, and the chat endpoint:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/app.py" fragment=chat_app lang=python >}}
 
 Two parameters do the architectural work.
 
-`task_entrypoint=analyze` makes each question a durable run. An app's request handler has no task context, so calling a task directly from it would run the task locally in the app pod and you would lose durability and the child-task graph. With a task entrypoint, the chat endpoint launches `analyze` with `flyte.run` (passing the message and the history), streams the run's phase changes to the UI as progress, and renders the returned blocks. For more on apps and tasks calling each other, see [hybrid app-task graphs](../../../user-guide/build-apps/hybrid-graphs).
+`task_entrypoint=analyze` makes each question a durable run. An app's request handler has no task context, so calling a task directly from it would run the task locally in the app pod and you would lose durability and the child-task graph. With a task entrypoint, the chat endpoint launches `analyze` with `flyte.run` (passing the message and the history), streams the run's phase changes to the UI as progress, and renders the returned blocks. For more on apps and tasks calling each other, see [hybrid app-task graphs](../../../user-guide/apps/build-apps/hybrid-graphs).
 
 `passthrough_auth=True` forwards each caller's credentials to those runs, so the analysis executes as the signed-in user rather than as a shared service identity, and the app needs no credential plumbing of its own. Together with `requires_auth=True`, which gates the app at the platform gateway, every request is authenticated end to end, which matters because each one launches real compute and a paid LLM call.
 
