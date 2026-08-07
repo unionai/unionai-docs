@@ -133,7 +133,10 @@ ray_env = flyte.TaskEnvironment(
 
 The first task creates the shared cluster; once it is ready, every subsequent task with the same environment submits its Ray job directly to it, skipping cluster startup entirely. Each job still runs and reports under its own run identity.
 
-The cluster's identity is derived from the task environment: its name, the Ray configuration, the container image and resources, any pod template, and the reuse policy itself. Tasks with an identical environment share one cluster; changing any of these (for example deploying a new image or code version) creates a fresh cluster rather than reusing a stale one.
+The cluster's identity is derived from the task environment: its name, the Ray configuration, the container image and resources, any pod template, the security context (service account and secrets), the code bundle, and the reuse policy itself. Tasks with an identical environment share one cluster; changing any of these (for example deploying a new image or code version, or switching service account) creates a fresh cluster rather than reusing a stale one.
+
+> [!NOTE]
+> `ReusePolicy` logs a recommendation to use at least two replicas to avoid starvation. That advice applies to reusable containers, not to reusable Ray clusters, which require exactly one shared cluster and let Ray schedule work across its nodes. You can ignore the warning here.
 
 ### Reuse scope
 
@@ -151,12 +154,13 @@ reusable = flyte.ReusePolicy(replicas=1, idle_ttl=300, scope="run")
 
 ### Cleanup
 
-A shared cluster is never deleted when an individual task completes or is aborted — it is shut down automatically after it has been idle (no jobs running against it) for `idle_ttl`.
+A shared cluster is never deleted when an individual task completes or is aborted. It is shut down automatically after it has been idle (no jobs running against it) for `idle_ttl`.
 
 ### Constraints
 
-- `replicas` must be exactly `1` — one shared Ray cluster per environment.
-- `concurrency` must be `1` (the default); Ray itself handles parallelism inside the cluster.
+- `replicas` must be `1`: one shared Ray cluster per environment. An autoscaling range whose maximum is greater than `1`, such as `(1, 3)`, is rejected.
+- `concurrency` must be `1` (the default). Ray itself handles parallelism inside the cluster.
+- `shutdown_after_job_finishes` and `ttl_seconds_after_finished` must not be set on the `RayJobConfig`. The shared cluster has to outlive the individual jobs that run on it, so `idle_ttl` governs its shutdown instead. The `RayJobConfig` example under [Configuration](#configuration) above sets both, so drop them when you add a reuse policy.
 {{< /markdown >}}
 {{< /variant >}}
 
