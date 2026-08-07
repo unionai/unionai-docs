@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Flyte MCP server
 
-`FlyteMCPAppEnvironment` exposes {{< key product_name >}} operations as standardized [MCP](https://modelcontextprotocol.io) tools, so AI assistants and LLM clients can drive your cluster programmatically: running tasks, monitoring runs, managing apps and triggers, building images, running UV scripts, and searching the SDK and docs.
+`FlyteMCPAppEnvironment` exposes {{< key product_name >}} operations as standardized [MCP](https://modelcontextprotocol.io) tools, so AI assistants and LLM clients can drive your cluster programmatically: running tasks, monitoring runs, reading logs, inspecting actions, managing apps and triggers, and searching the SDK and docs.
 
 Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, this environment ships a curated set of Flyte tools out of the box. You decide which of them to expose and what they're allowed to touch.
 
@@ -78,10 +78,10 @@ The server starts even when no Flyte config is present. In that case the tools f
 
 Once running, register it with your client as a **stdio** transport: the client manages the process lifetime. See the [connecting a client](#connecting-a-client) section below.
 
-### Deploying remotely
-
 {{< variant union >}}
 {{< markdown >}}
+### Deploying remotely
+
 Deploy a `FlyteMCPAppEnvironment` as a long-running app to get a stable, shared HTTP endpoint:
 
 ```python
@@ -97,24 +97,11 @@ See [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) for how dep
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant flyte >}}
-{{< markdown >}}
-Deploying the server as a long-running app requires Union.ai apps, which open-source Flyte does not provide. Use the [local stdio mode](#running-locally-with-uvx) instead — it exposes the same tools.
-{{< /markdown >}}
-{{< /variant >}}
-
 ## Basic example
 
 A server with **all** tools enabled. The environment definition is the same for both modes — only the last step differs, since `flyte.serve` deploys it as an app:
 
 {{< code file="/unionai-examples/v2/user-guide/build-mcp/flyte_mcp_app.py" fragment=flyte-mcp-all-tools lang=python >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
-> [!NOTE]
-> The `flyte.serve` and `activate` calls at the end of this example deploy the server as an app, which requires Union.ai. On open-source Flyte, the `FlyteMCPAppEnvironment` above is still what you configure — you run it with the [`flyte-mcp` CLI over stdio](#running-locally-with-uvx) instead of deploying it.
-{{< /markdown >}}
-{{< /variant >}}
 
 The default mount path is `/flyte-mcp`, so with the default `streamable-http` transport the MCP endpoint is `/flyte-mcp/mcp`.
 
@@ -132,7 +119,7 @@ Tools are organized into groups. Pass `tool_groups` to enable only the groups yo
 ```python
 mcp_env = FlyteMCPAppEnvironment(
     name="restricted-mcp",
-    tool_groups=["task", "run", "script"],  # Only these groups
+    tool_groups=["task", "run", "logs"],  # Only these groups
 )
 ```
 
@@ -141,11 +128,15 @@ mcp_env = FlyteMCPAppEnvironment(
 | `all` | All tools (default when both `tool_groups` and `tools` are omitted) | Trusted local development |
 | `core` | No tools (only HTTP routes) | Health-check-only / building up explicitly |
 | `task` | `run_task`, `get_task`, `list_tasks` | Launching and inspecting tasks |
-| `run` | `get_run`, `get_run_io`, `abort_run`, `list_runs`, `wait_for_run` | Monitoring and controlling runs |
-| `app` | `get_app`, `activate_app`, `deactivate_app` | Managing deployed apps |
-| `trigger` | `activate_trigger`, `deactivate_trigger` | Managing triggers |
-| `build` | `build_image` | Building container images remotely |
-| `script` | `build_uv_script_image_remote`, `run_uv_script_remote`, `flyte_uv_script_format`, `flyte_uv_script_example` | Running standalone UV scripts |
+| `run` | `get_run`, `get_run_io`, `abort_run`, `list_runs`, `wait_for_run`, `rerun_run` | Monitoring and controlling runs |
+| `action` | `list_actions`, `get_action`, `abort_action` | Debugging a run step by step: phases, attempts, failure details, timing |
+| `logs` | `get_logs` | Reading task logs |
+| `app` | `get_app`, `list_apps`, `activate_app`, `deactivate_app` | Managing deployed apps |
+| `trigger` | `list_triggers`, `get_trigger`, `activate_trigger`, `deactivate_trigger` | Managing triggers |
+| `project` | `list_projects`, `get_project` | Discovering projects and domains |
+| `secret` | `list_secrets`, `create_secret`, `delete_secret` | Managing secrets (names only — values are never returned) |
+| `condition` | `list_conditions`, `signal_condition` | Answering human-in-the-loop gates |
+| `identity` | `whoami` | Confirming which identity and org the server is acting as |
 | `search` | `search_flyte_sdk_examples`, `search_flyte_docs_examples`, `search_full_docs` | Grounding answers in SDK/docs |
 
 ### 2. Individual tools
@@ -231,16 +222,10 @@ claude mcp add --transport stdio flyte-mcp -- \
 
 `--transport stdio` appears twice on purpose. The first tells Claude Code how to talk to the server; the second tells the server which transport to serve. Without the second, the server starts an HTTP listener and the connection fails.
 
-### Claude Code: remote (HTTP)
-
-{{< variant flyte >}}
-{{< markdown >}}
-Remote servers require Union.ai apps. Use the stdio setup above.
-{{< /markdown >}}
-{{< /variant >}}
-
 {{< variant union >}}
 {{< markdown >}}
+### Claude Code: remote (HTTP)
+
 For a deployed server with a public URL:
 
 ```bash
@@ -268,16 +253,10 @@ OpenCode spawns the `uvx` command for you:
 }
 ```
 
-### OpenCode: remote
-
-{{< variant flyte >}}
-{{< markdown >}}
-Remote servers require Union.ai apps. Use the local setup above.
-{{< /markdown >}}
-{{< /variant >}}
-
 {{< variant union >}}
 {{< markdown >}}
+### OpenCode: remote
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -308,24 +287,35 @@ Remote servers require Union.ai apps. Use the local setup above.
 
 | Tool | Group | Description |
 |------|-------|-------------|
-| `run_task` | `task` | Run a task with inputs; returns run URL and name |
-| `get_task` | `task` | Get task metadata (type, required args, cache settings) |
-| `list_tasks` | `task` | List tasks in a project/domain |
-| `get_run` | `run` | Get run status by name |
-| `wait_for_run` | `run` | Poll until a run completes |
-| `get_run_io` | `run` | Get a run's inputs and outputs |
-| `abort_run` | `run` | Abort a running run |
-| `list_runs` | `run` | List runs for a task |
-| `get_app` | `app` | Get app metadata |
+| `run_task` | `task` | Run a task |
+| `get_task` | `task` | Get task details |
+| `list_tasks` | `task` | List tasks |
+| `get_run` | `run` | Get a run |
+| `get_run_io` | `run` | Get run inputs and outputs |
+| `abort_run` | `run` | Abort a run |
+| `list_runs` | `run` | List runs |
+| `wait_for_run` | `run` | Wait for a run to finish |
+| `rerun_run` | `run` | Re-run a prior run |
+| `list_actions` | `action` | List the actions of a run |
+| `get_action` | `action` | Get action details and timing |
+| `abort_action` | `action` | Abort a single action |
+| `get_logs` | `logs` | Read action logs |
+| `get_app` | `app` | Get an app |
+| `list_apps` | `app` | List apps |
 | `activate_app` | `app` | Activate an app |
 | `deactivate_app` | `app` | Deactivate an app |
+| `list_triggers` | `trigger` | List triggers |
+| `get_trigger` | `trigger` | Get a trigger |
 | `activate_trigger` | `trigger` | Activate a trigger |
 | `deactivate_trigger` | `trigger` | Deactivate a trigger |
-| `build_image` | `build` | Build a container image remotely |
-| `build_uv_script_image_remote` | `script` | Build a UV script image remotely |
-| `run_uv_script_remote` | `script` | Run a UV script remotely |
-| `flyte_uv_script_format` | `script` | Get the UV script template format |
-| `flyte_uv_script_example` | `script` | Get a UV script example |
+| `list_projects` | `project` | List projects |
+| `get_project` | `project` | Get a project |
+| `list_secrets` | `secret` | List secret names |
+| `create_secret` | `secret` | Create a secret |
+| `delete_secret` | `secret` | Delete a secret |
+| `list_conditions` | `condition` | List the conditions of a run |
+| `signal_condition` | `condition` | Signal a waiting condition |
+| `whoami` | `identity` | Show the caller's identity |
 | `search_flyte_sdk_examples` | `search` | Search Flyte SDK examples |
-| `search_flyte_docs_examples` | `search` | Search Union examples |
-| `search_full_docs` | `search` | Search the full documentation |
+| `search_flyte_docs_examples` | `search` | Search Flyte docs examples |
+| `search_full_docs` | `search` | Search the full Flyte docs |
