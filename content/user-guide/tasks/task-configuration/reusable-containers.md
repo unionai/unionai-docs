@@ -68,6 +68,9 @@ Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 For complete parameter documentation, including accepted types, defaults, capacity math, and lifecycle behavior, see the [`ReusePolicy` API reference](../../../api-reference/flyte-sdk/flyte/reusepolicy).
 
+> [!NOTE]
+> The `scope` parameter, which restricts reuse to a single run, currently applies only to [reusable Ray clusters](../../../integrations/ray/_index#reusable-ray-clusters). A reusable container environment is shared across runs regardless of the value you set.
+
 ## Understanding parameter relationships
 
 The four `ReusePolicy` parameters work together to control different aspects of container management:
