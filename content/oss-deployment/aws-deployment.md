@@ -55,6 +55,10 @@ configuration:
       s3:
         region: <region>              # e.g. us-east-1
         authType: iam                 # iam (recommended) | accesskey
+        
+flyte-core-components:
+  runs:
+    storagePrefix: "s3://<bucket_name>" # object-store bucket Flyte runs read from and write to
 
 serviceAccount:
   create: true
@@ -236,6 +240,10 @@ configuration:
   inline:
     executor:
       defaultK8sServiceAccount: flyte   # task pods inherit S3 access via IRSA
+      
+flyte-core-components:
+  runs:
+    storagePrefix: "s3://<bucket_name>"      
 
 serviceAccount:
   create: true
@@ -329,16 +337,21 @@ Prefer `otlpgrpc`: the `otlphttp` metric exporter reuses the trace endpoint path
 Send to any OTLP collector (e.g. the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/),
 which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
-## Database password from a Secret
+## Configuring passwords from Secrets
 
 When you set `configuration.database.postgres.password`, the chart writes it into a
 Kubernetes Secret (kept out of the plaintext ConfigMap) and mounts it into the Flyte
 pod: the password lives only in your values file. The same applies to S3 access keys
 when `authType: accesskey`.
 
-To keep the password out of the values file too, leave
+To keep the **database password** out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
+
+To keep the **storage password** out of the values file too, leave
+`configuration.storage.providerConfig.s3.secretKey` empty and
+mount the password as a file and point 
+  `configuration.storage.providerConfig.s3.secretKeyPath` at it.
