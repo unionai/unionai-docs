@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # App Serving
 
-{{< llm-bundle-note >}}
-
 {{< key product_name >}} lets you build and serve your own web apps, enabling you to build:
 
 - **Model endpoints** with generic web frameworks like FastAPI or optimized inference frameworks like vLLM and SGLang.

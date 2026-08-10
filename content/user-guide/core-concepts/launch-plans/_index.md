@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Launch plans
 
-{{< llm-bundle-note >}}
-
 A launch plan is a template for a workflow invocation.
 It brings together:
 

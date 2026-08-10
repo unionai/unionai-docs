@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Core concepts
 
-{{< llm-bundle-note >}}
-
 {{< key product_name >}} is a platform for building and orchestrating the execution of interconnected software processes across machines in a computer cluster.
 In {{< key product_name >}} terminology, the software processes are called *tasks* and the overall organization of connections between tasks is called a *workflow*.
 The tasks in a workflow are connected to each other by their inputs and outputs. The output of one task becomes the input of another.

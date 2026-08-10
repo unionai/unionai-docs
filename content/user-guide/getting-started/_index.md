@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Getting started
 
-{{< llm-bundle-note >}}
-
 This section gives you a quick introduction to writing and running {{< key product_name >}} workflows.
 
 
