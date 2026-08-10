@@ -163,8 +163,20 @@ title = "OpenAI Agents SDK"
 name = "agents-openai"
 output_folder = "content/api-reference/integrations/agents/openai"
 
+# Pinned to 2.5.18 (DOC-1404). 2.5.19 is the only flyteplugins-* 2.5.19 that was
+# NOT yanked, so the resolver picks it -- but it imports `apply_instrumentation`
+# from flyteplugins-agents-core, whose 2.5.19 WAS yanked, so the resolver pairs it
+# with agents-core 2.5.18, which lacks that symbol. The import fails, the parser
+# only warns, and the generator then writes an 11-line stub with no API content
+# while make still exits 0. `make dist` reproduces this on every build.
+#
+# The pin restores the working pair. The advisory PyPI-drift check will keep
+# reporting this plugin as behind; that is correct and deliberate. Remove the pin
+# once a release ships in which agents-pydantic-ai and agents-core are installable
+# together.
 [[plugins]]
 package = "flyteplugins-agents-pydantic-ai"
+install = "flyteplugins-agents-pydantic-ai==2.5.18"
 plugin = "flyteplugins.agents.pydantic_ai"
 title = "Pydantic AI"
 name = "agents-pydantic-ai"
