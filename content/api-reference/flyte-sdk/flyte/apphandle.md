@@ -1,6 +1,6 @@
 ---
 title: AppHandle
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,7 +42,7 @@ protocol AppHandle()
 
 ```python
 def activate(
-    wait: bool,
+    wait: bool = False,
 ) -> AppHandle
 ```
 | Parameter | Type | Description |
@@ -53,7 +53,7 @@ def activate(
 
 ```python
 def deactivate(
-    wait: bool,
+    wait: bool = False,
 ) -> AppHandle
 ```
 | Parameter | Type | Description |

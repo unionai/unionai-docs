@@ -5,5 +5,28 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.16.3"
-enumerated = []
+stable = "v2.5.18.2"
+enumerated = [
+  "v2.5.16.3",
+]
+# Three cuts are deliberately absent from `enumerated`, so none is served.
+#
+# v2.5.19.0 -- flyte 2.5.19 was yanked on PyPI ("should be minor": it added the
+# whole flyte.artifacts package in a patch release), so the cut named after it
+# documented an API surface nobody can install.
+#
+# v2.5.18.0 -- corrected the SDK half but still carried the flyteplugins-* 2.5.19
+# API reference, which was yanked for the same reason.
+#
+# v2.5.18.1 -- rolled those plugin pages back, but by restoring the pre-regen
+# tree verbatim rather than regenerating, so it serves degraded generator output:
+# no signature defaults, an invalid `kwargs: **kwargs`, RST markup rendered
+# literally. Superseded by v2.5.18.2, which regenerates at 2.5.18. It was stable
+# for about fifteen minutes and nothing links to it, so it is withdrawn rather
+# than enumerated -- there is no reason to keep serving a known-degraded tree.
+# (DOC-1404.)
+#
+# All three git tags stay as history; leaving them out here is what stops
+# /docs/<tag> serving them. Note `manifest.py --promote` would rotate the
+# outgoing stable INTO enumerated -- correct in the normal case, wrong for a
+# withdrawal, so these edits are deliberately by hand.

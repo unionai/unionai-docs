@@ -1,6 +1,6 @@
 ---
 title: NamedDelivery
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---

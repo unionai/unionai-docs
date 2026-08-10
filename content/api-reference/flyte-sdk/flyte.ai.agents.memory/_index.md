@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.agents.memory
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,7 +33,7 @@ synchronous.
 | Class | Description |
 |-|-|
 | [`MemoryMeta`](../flyte.ai.agents.memory/memorymeta) | Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
-| [`MemoryStore`](../flyte.ai.agents.memory/memorystore) | Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
+| [`MemoryStore`](../flyte.ai.agents.memory/memorystore) | Conversation transcript + path-addressed artifact memory backed by `flyte.io.Dir`. |
 
 ### Errors
 
@@ -41,7 +41,7 @@ synchronous.
 |-|-|
 | [`AccessDenied`](../flyte.ai.agents.memory/accessdenied) | Raised when a write targets a read-only or reserved prefix. |
 | [`ConcurrencyError`](../flyte.ai.agents.memory/concurrencyerror) | Raised when an ``expected_sha`` precondition does not match the current state. |
-| [`MemoryStoreError`](../flyte.ai.agents.memory/memorystoreerror) | Base class for :class:`MemoryStore` errors. |
+| [`MemoryStoreError`](../flyte.ai.agents.memory/memorystoreerror) | Base class for `MemoryStore` errors. |
 
 ### Variables
 

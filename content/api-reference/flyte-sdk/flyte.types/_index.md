@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -62,7 +62,7 @@ It is always possible to bypass the type system and use the `FlytePickle` type t
 ```python
 def guess_interface(
     interface: flyteidl2.core.interface_pb2.TypedInterface,
-    default_inputs: typing.Optional[typing.Iterable[flyteidl2.task.common_pb2.NamedParameter]],
+    default_inputs: typing.Optional[typing.Iterable[flyteidl2.task.common_pb2.NamedParameter]] = None,
 ) -> flyte.models.NativeInterface
 ```
 Returns the interface of the task with guessed types, as types may not be present in current env.

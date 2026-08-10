@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Configure tasks
 
-{{< llm-bundle-note >}}
-
 As we saw in [**Quickstart**](../../get-started/quickstart), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 
 This allows you to run your Python code in a distributed manner, with each function running in its own container.

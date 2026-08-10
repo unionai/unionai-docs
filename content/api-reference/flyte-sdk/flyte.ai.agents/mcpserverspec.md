@@ -1,6 +1,6 @@
 ---
 title: MCPServerSpec
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,13 +43,13 @@ tool_filter:
 ```python
 class MCPServerSpec(
     name: str,
-    url: str | None,
-    command: list[str] | None,
-    headers: dict[str, str] | None,
-    env: dict[str, str] | None,
-    transport: Literal['auto', 'http', 'streamable-http', 'sse', 'stdio'],
-    tool_prefix: str,
-    tool_filter: list[str] | None,
+    url: str | None = None,
+    command: list[str] | None = None,
+    headers: dict[str, str] | None = None,
+    env: dict[str, str] | None = None,
+    transport: Literal['auto', 'http', 'streamable-http', 'sse', 'stdio'] = 'auto',
+    tool_prefix: str = '',
+    tool_filter: list[str] | None = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,7 +44,7 @@ layout: py_api
 ```python
 def exists(
     path: str,
-    kwargs,
+    **kwargs,
 ) -> bool
 ```
 Check if a path exists.
@@ -54,7 +54,7 @@ Check if a path exists.
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | Path to be checked. |
-| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+| `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
 **Returns:** True if the path exists, False otherwise.
 
@@ -63,22 +63,22 @@ Check if a path exists.
 ```python
 def exists_sync(
     path: str,
-    kwargs,
+    **kwargs,
 ) -> bool
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `str` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     from_path: str,
-    to_path: Optional[str | pathlib.Path],
-    recursive: bool,
-    kwargs,
+    to_path: Optional[str | pathlib.Path] = None,
+    recursive: bool = False,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
@@ -86,14 +86,14 @@ def get(
 | `from_path` | `str` | |
 | `to_path` | `Optional[str \| pathlib.Path]` | |
 | `recursive` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_configured_fsspec_kwargs()
 
 ```python
 def get_configured_fsspec_kwargs(
-    protocol: typing.Optional[str],
-    anonymous: bool,
+    protocol: typing.Optional[str] = None,
+    anonymous: bool = False,
 ) -> typing.Dict[str, typing.Any]
 ```
 | Parameter | Type | Description |
@@ -112,7 +112,7 @@ def get_random_local_directory()
 
 ```python
 def get_random_local_path(
-    file_path_or_file_name: pathlib.Path | str | None,
+    file_path_or_file_name: pathlib.Path | str | None = None,
 ) -> pathlib.Path
 ```
 Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name
@@ -127,8 +127,8 @@ Use file_path_or_file_name, when you want a random directory, but want to preser
 ```python
 def get_stream(
     path: str,
-    chunk_size,
-    kwargs,
+    chunk_size = 10485760,
+    **kwargs,
 ) -> AsyncGenerator[bytes, None]
 ```
 Get a stream of data from a remote location.
@@ -146,7 +146,7 @@ async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
 |-|-|-|
 | `path` | `str` | Path to the remote location where the data will be downloaded. |
 | `chunk_size` |  | Size of each chunk to be read from the file. |
-| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+| `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
 **Returns:** An async iterator that yields chunks of bytes.
 
@@ -154,10 +154,10 @@ async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
 
 ```python
 def get_underlying_filesystem(
-    protocol: typing.Optional[str],
-    anonymous: bool,
-    path: typing.Optional[str],
-    kwargs,
+    protocol: typing.Optional[str] = None,
+    anonymous: bool = False,
+    path: typing.Optional[str] = None,
+    **kwargs,
 ) -> fsspec.AbstractFileSystem
 ```
 | Parameter | Type | Description |
@@ -165,7 +165,7 @@ def get_underlying_filesystem(
 | `protocol` | `typing.Optional[str]` | |
 | `anonymous` | `bool` | |
 | `path` | `typing.Optional[str]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### is_remote()
 
@@ -185,7 +185,7 @@ Let's find a replacement
 
 ```python
 def join(
-    paths: str,
+    *paths: str,
 ) -> str
 ```
 Join multiple paths together. This is a wrapper around os.path.join.
@@ -195,15 +195,15 @@ Join multiple paths together. This is a wrapper around os.path.join.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `paths` | `str` | Paths to be joined. |
+| `*paths` | `str` | Paths to be joined. |
 
 #### open()
 
 ```python
 def open(
     path: str,
-    mode: str,
-    kwargs,
+    mode: str = 'rb',
+    **kwargs,
 ) -> AsyncReadableFile | AsyncWritableFile
 ```
 Asynchronously open a file and return an async context manager.
@@ -218,17 +218,17 @@ It will raise NotImplementedError if neither obstore nor AsyncFileSystem is supp
 |-|-|-|
 | `path` | `str` | |
 | `mode` | `str` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### put()
 
 ```python
 def put(
     from_path: str,
-    to_path: Optional[str],
-    recursive: bool,
-    batch_size: Optional[int],
-    kwargs,
+    to_path: Optional[str] = None,
+    recursive: bool = False,
+    batch_size: Optional[int] = None,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
@@ -237,16 +237,16 @@ def put(
 | `to_path` | `Optional[str]` | |
 | `recursive` | `bool` | |
 | `batch_size` | `Optional[int]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### put_stream()
 
 ```python
 def put_stream(
     data_iterable: typing.AsyncIterable[bytes] | bytes,
-    name: str | None,
-    to_path: str | None,
-    kwargs,
+    name: str | None = None,
+    to_path: str | None = None,
+    **kwargs,
 ) -> str
 ```
 Put a stream of data to a remote location. This is useful for streaming data to a remote location.
@@ -265,7 +265,7 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 | `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` | Iterable of bytes to be streamed. |
 | `name` | `str \| None` | Name of the file to be created. If not provided, a random name will be generated. |
 | `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
-| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
+| `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
 **Returns:** The path to the remote location where the data was stored.
 

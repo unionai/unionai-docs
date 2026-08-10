@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -61,7 +61,7 @@ class App(
 > `result = await <App instance>.activate.aio()`.
 ```python
 def activate(
-    wait: bool,
+    wait: bool = False,
 ) -> App
 ```
 Start the app
@@ -98,7 +98,7 @@ def create(
 > `result = await <App instance>.deactivate.aio()`.
 ```python
 def deactivate(
-    wait: bool,
+    wait: bool = False,
 ) -> App
 ```
 Stop the app
@@ -119,8 +119,8 @@ Stop the app
 def delete(
     cls,
     name: str,
-    project: str | None,
-    domain: str | None,
+    project: str | None = None,
+    domain: str | None = None,
 )
 ```
 Delete an app by name.
@@ -161,8 +161,8 @@ Context manager that activates the app and deactivates it when the context is ex
 def get(
     cls,
     name: str,
-    project: str | None,
-    domain: str | None,
+    project: str | None = None,
+    domain: str | None = None,
 ) -> App
 ```
 Get an app by name.
@@ -204,10 +204,10 @@ Check if the app is currently deactivated or stopped.
 ```python
 def listall(
     cls,
-    created_by_subject: str | None,
-    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
-    limit: int,
-    in_status: str | Tuple[str, ...] | None,
+    created_by_subject: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    limit: int = 100,
+    in_status: str | Tuple[str, ...] | None = None,
 ) -> AsyncIterator[App]
 ```
 List all apps, optionally filtered.
@@ -235,9 +235,9 @@ def replace(
     name: str,
     updated_app_spec: app_definition_pb2.Spec,
     reason: str,
-    labels: Mapping[str, str] | None,
-    project: str | None,
-    domain: str | None,
+    labels: Mapping[str, str] | None = None,
+    project: str | None = None,
+    domain: str | None = None,
 ) -> App
 ```
 Replace an existing app's that matches the given name, with a new spec and optionally labels.
@@ -306,7 +306,7 @@ def update(
 > `result = await <App instance>.watch.aio()`.
 ```python
 def watch(
-    wait_for: WaitFor,
+    wait_for: WaitFor = 'activated',
 ) -> App
 ```
 Watch for the app to reach activated or deactivated state.

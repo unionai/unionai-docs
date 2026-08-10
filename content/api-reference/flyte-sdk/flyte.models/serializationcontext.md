@@ -1,6 +1,6 @@
 ---
 title: SerializationContext
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,15 +20,15 @@ during a deployment or runtime.
 ```python
 class SerializationContext(
     version: str,
-    project: str | None,
-    domain: str | None,
-    org: str | None,
-    code_bundle: Optional[CodeBundle],
-    input_path: str,
-    output_path: str,
-    interpreter_path: str,
-    image_cache: ImageCache | None,
-    root_dir: Optional[pathlib.Path],
+    project: str | None = None,
+    domain: str | None = None,
+    org: str | None = None,
+    code_bundle: Optional[CodeBundle] = None,
+    input_path: str = '{{.input}}',
+    output_path: str = '{{.outputPrefix}}',
+    interpreter_path: str = '/opt/venv/bin/python',
+    image_cache: ImageCache | None = None,
+    root_dir: Optional[pathlib.Path] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -55,7 +55,7 @@ class SerializationContext(
 
 ```python
 def get_entrypoint_path(
-    interpreter_path: Optional[str],
+    interpreter_path: Optional[str] = None,
 ) -> str
 ```
 Get the entrypoint path for the task. This is used to determine the entrypoint for the task execution.

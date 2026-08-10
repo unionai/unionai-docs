@@ -1,6 +1,6 @@
 ---
 title: RetryStrategy
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,11 +18,11 @@ Retry strategy for a task.
 ```python
 class RetryStrategy(
     count: int,
-    backoff: typing.Optional[flyte._retry.Backoff],
+    backoff: typing.Optional[flyte._retry.Backoff] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `count` | `int` | Number of user retries. ``count=0`` disables retries. |
-| `backoff` | `typing.Optional[flyte._retry.Backoff]` | Optional When unset, retries fire immediately back-to-back. |
+| `backoff` | `typing.Optional[flyte._retry.Backoff]` | Optional `Backoff` policy applied between retries. When unset, retries fire immediately back-to-back. |
 

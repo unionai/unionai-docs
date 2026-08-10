@@ -1,6 +1,6 @@
 ---
 title: ToolFn
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.ai.agents`
 
-The tool under invocation, handed to a :data:`ToolCallHandler`.
+The tool under invocation, handed to a `ToolCallHandler`.
 
 Awaiting the instance runs the tool's *default* behavior::
 
@@ -18,12 +18,12 @@ Awaiting the instance runs the tool's *default* behavior::
 The attributes give a custom handler everything it needs to change that
 behavior without re-deriving it. The most useful are:
 
-- :attr:`target` — the underlying ``@env.task`` template, plain callable, or
+- `target` — the underlying ``@env.task`` template, plain callable, or
   ``LazyEntity`` (``None`` for custom / MCP tools). Reach into it to, e.g.,
   ``tool_fn.target.override(resources=...).aio(**kwargs)``.
-- :attr:`model` — the owning agent's model id, to pass to ``call_llm`` when
+- `model` — the owning agent's model id, to pass to ``call_llm`` when
   the handler wants to consult the LLM.
-- :attr:`name` / :attr:`description` / :attr:`parameters` — the tool's
+- `name` / `description` / `parameters` — the tool's
   LLM-facing metadata.
 
 

@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Build an agent
 
-{{< llm-bundle-note >}}
-
 This section covers how to build, deploy, and run agentic AI applications on {{< key product_name >}}.
 
 Building an agent on {{< key product_name >}} breaks down into two **orthogonal** choices:
@@ -50,5 +48,7 @@ Once you've built an agent, [**Deploy an agent as a service**](./deploy-agent-as
 
 ## Related
 
+- [**Grafana Agent Observability**](../../../integrations/grafana-agent-observability/_index): export generations, tool calls, token usage, and cost, grouped by run.
+- [**OpenTelemetry**](../../../integrations/opentelemetry/_index): export tasks and traced steps as spans, with durable runs arriving as one trace.
 - [**Sandboxing**](../sandboxing/_index): safely execute LLM-generated code.
 - [**Build an MCP server**](../build-mcp/_index): serve Model Context Protocol servers for AI assistants to interact with {{< key product_name >}}.

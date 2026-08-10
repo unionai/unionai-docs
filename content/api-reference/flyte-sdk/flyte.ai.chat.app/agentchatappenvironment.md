@@ -1,6 +1,6 @@
 ---
 title: AgentChatAppEnvironment
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,13 +9,13 @@ layout: py_api
 
 **Package:** `flyte.ai.chat.app`
 
-An :class:`~flyte.app.AppEnvironment` that spins up a FastAPI chat
-interface backed by any object satisfying the :class:`AgentProtocol`.
+An `AppEnvironment` that spins up a FastAPI chat
+interface backed by any object satisfying the `AgentProtocol`.
 
 Parameters
 ----------
 agent:
-    Any object implementing the :class:`AgentProtocol`.
+    Any object implementing the `AgentProtocol`.
 title:
     Title displayed in the UI header and browser tab. Defaults to
     the environment *name*.
@@ -27,14 +27,14 @@ prompt_nudges:
     message.  Each entry is a dict with ``"label"`` (short card
     title) and ``"prompt"`` (the query text sent when clicked).
 theme:
-    Optional :class:`CustomTheme` instance that controls the UI
+    Optional `CustomTheme` instance that controls the UI
     accent colors via human-readable attributes.  When provided,
     the theme CSS is generated automatically and prepended to any
     *custom_css*.
 custom_css:
     Optional CSS string appended **after** the default styles
     (and after theme CSS, if a *theme* is provided).  Use this
-    for fine-grained overrides beyond what :class:`CustomTheme`
+    for fine-grained overrides beyond what `CustomTheme`
     exposes.
 logo_url:
     Optional URL to an image displayed to the left of the title
@@ -65,7 +65,7 @@ task_entrypoint:
     of calling ``agent.run`` directly. This is useful for agents whose tool
     calls must run under a parent task context (e.g. an ``Agent`` in
     ``code_mode`` using durable ``@env.task`` tools). When streaming chat
-    (``stream: true``), progress lines use :meth:`~flyte.remote.Run.watch`
+    (``stream: true``), progress lines use `watch`
     on the returned run (first ``RUNNING`` → ``generating_code``, next →
     ``executing``). Fine-grained per-turn phases still require
     ``agent.run`` in the web process, or future worker-side signaling.
@@ -75,7 +75,7 @@ task_entrypoint:
     - ``(message: str, history: list[dict[str, str]])``; or
     - ``(message: str)``.
 
-    The return value may be an :class:`~flyte.ai.agents.protocol.AgentResult`,
+    The return value may be an `AgentResult`,
     a dict with keys like ``summary``/``charts``/``code``, or a plain string
     (treated as ``summary``).
 
@@ -85,37 +85,37 @@ task_entrypoint:
 ```python
 class AgentChatAppEnvironment(
     name: str,
-    depends_on: List[Environment],
-    pod_template: Optional[Union[str, PodTemplate]],
-    description: Optional[str],
-    secrets: Optional[SecretRequest],
-    env_vars: Optional[Dict[str, str]],
-    resources: Optional[Resources],
-    interruptible: bool,
-    image: Union[str, Image, Literal['auto'], None],
-    include: Tuple[str, ...],
-    port: int | Port,
-    args: *args,
-    command: Optional[Union[List[str], str]],
-    requires_auth: bool,
-    scaling: Scaling,
-    domain: Domain | None,
-    links: List[Link],
-    parameters: List[Parameter],
-    cluster_pool: str,
-    timeouts: Timeouts,
-    type: str,
-    agent: Any,
-    title: str | None,
-    subtitle: str | None,
-    prompt_nudges: list[dict[str, str]],
-    theme: CustomTheme | None,
-    custom_css: str,
-    logo_url: str | None,
-    additional_buttons: list[dict[str, str]],
-    passthrough_auth: bool,
-    passthrough_auth_excluded_paths: frozenset[str] | None,
-    task_entrypoint: Any | None,
+    depends_on: List[Environment] = <factory>,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    description: Optional[str] = None,
+    secrets: Optional[SecretRequest] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    resources: Optional[Resources] = None,
+    interruptible: bool = False,
+    image: Union[str, Image, Literal['auto'], None] = 'auto',
+    include: Tuple[str, ...] = <factory>,
+    port: int | Port = 8080,
+    args: Optional[Union[List[str], str]] = None,
+    command: Optional[Union[List[str], str]] = None,
+    requires_auth: bool = True,
+    scaling: Scaling = <factory>,
+    domain: Domain | None = <factory>,
+    links: List[Link] = <factory>,
+    parameters: List[Parameter] = <factory>,
+    cluster_pool: str = 'default',
+    timeouts: Timeouts = <factory>,
+    type: str = 'AgentChat',
+    agent: Any = None,
+    title: str | None = None,
+    subtitle: str | None = None,
+    prompt_nudges: list[dict[str, str]] = <factory>,
+    theme: CustomTheme | None = None,
+    custom_css: str = '',
+    logo_url: str | None = None,
+    additional_buttons: list[dict[str, str]] = <factory>,
+    passthrough_auth: bool = False,
+    passthrough_auth_excluded_paths: frozenset[str] | None = None,
+    task_entrypoint: Any | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -131,7 +131,7 @@ class AgentChatAppEnvironment(
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `include` | `Tuple[str, ...]` | |
 | `port` | `int \| Port` | |
-| `args` | `*args` | |
+| `args` | `Optional[Union[List[str], str]]` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | |
 | `scaling` | `Scaling` | |
@@ -179,7 +179,7 @@ class AgentChatAppEnvironment(
 
 ```python
 def add_dependency(
-    env: Environment,
+    *env: Environment,
 )
 ```
 Add one or more environment dependencies so they are deployed together.
@@ -196,7 +196,7 @@ depend on itself.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### build_fastapi_app()
 
@@ -206,7 +206,7 @@ def build_fastapi_app()
 Construct the FastAPI application (routes, HTML shell, optional auth).
 
 Useful for tests and advanced mounting; the deployed server uses this via
-:meth:`_fastapi_server`.
+`_fastapi_server`.
 
 
 ### clone_with()
@@ -214,14 +214,14 @@ Useful for tests and advanced mounting; the deployed server uses this via
 ```python
 def clone_with(
     name: str,
-    image: Optional[Union[str, Image, Literal['auto']]],
-    resources: Optional[Resources],
-    env_vars: Optional[dict[str, str]],
-    secrets: Optional[SecretRequest],
-    depends_on: Optional[List[Environment]],
-    description: Optional[str],
-    interruptible: Optional[bool],
-    kwargs: **kwargs,
+    image: Optional[Union[str, Image, Literal['auto']]] = None,
+    resources: Optional[Resources] = None,
+    env_vars: Optional[dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    depends_on: Optional[List[Environment]] = None,
+    description: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    **kwargs: Any,
 ) -> AppEnvironment
 ```
 | Parameter | Type | Description |
@@ -234,7 +234,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 ### container_args()
 
@@ -252,7 +252,7 @@ def container_args(
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    parameter_overrides: list[Parameter] | None,
+    parameter_overrides: list[Parameter] | None = None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |

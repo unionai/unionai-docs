@@ -1,6 +1,6 @@
 ---
 title: TaskContext
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,22 +21,22 @@ class TaskContext(
     action: ActionID,
     version: str,
     raw_data_path: RawDataPath,
-    input_path: str | None,
+    input_path: str | None = None,
     output_path: str,
     run_base_dir: str,
     report: Report,
-    group_data: GroupData | None,
-    checkpoint_paths: CheckpointPaths | None,
-    code_bundle: CodeBundle | None,
-    compiled_image_cache: ImageCache | None,
-    data: Dict[str, Any],
-    mode: Literal['local', 'remote', 'hybrid'],
-    interactive_mode: bool,
-    custom_context: Dict[str, str],
-    disable_run_cache: bool,
-    in_driver_literal_conversion: bool,
-    run_start_time: Optional[datetime],
-    task_action: ActionID | None,
+    group_data: GroupData | None = None,
+    checkpoint_paths: CheckpointPaths | None = None,
+    code_bundle: CodeBundle | None = None,
+    compiled_image_cache: ImageCache | None = None,
+    data: Dict[str, Any] = <factory>,
+    mode: Literal['local', 'remote', 'hybrid'] = 'remote',
+    interactive_mode: bool = False,
+    custom_context: Dict[str, str] = <factory>,
+    disable_run_cache: bool = False,
+    in_driver_literal_conversion: bool = False,
+    run_start_time: Optional[datetime] = <factory>,
+    task_action: ActionID | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -99,10 +99,10 @@ Check if the task is running in a cluster.
 
 ```python
 def replace(
-    kwargs,
+    **kwargs,
 ) -> TaskContext
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

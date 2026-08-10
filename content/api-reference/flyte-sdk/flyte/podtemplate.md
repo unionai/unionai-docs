@@ -1,6 +1,6 @@
 ---
 title: PodTemplate
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,10 +16,10 @@ Custom PodTemplate specification for a Task.
 
 ```python
 class PodTemplate(
-    pod_spec: Optional['V1PodSpec'],
-    primary_container_name: str,
-    labels: Optional[Dict[str, str]],
-    annotations: Optional[Dict[str, str]],
+    pod_spec: Optional['V1PodSpec'] = None,
+    primary_container_name: str = 'primary',
+    labels: Optional[Dict[str, str]] = None,
+    annotations: Optional[Dict[str, str]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -35,7 +35,7 @@ class PodTemplate(
 |-|-|
 | [`allow_fuse()`](#allow_fuse) | Return a copy of this template granted everything an **unprivileged**. |
 | [`allow_nested_sandboxing()`](#allow_nested_sandboxing) | Return a copy of this template granted the prerequisites for creating. |
-| [`from_spec()`](#from_spec) | Create a :class:`PodTemplate` from an existing ``V1PodSpec``. |
+| [`from_spec()`](#from_spec) | Create a `PodTemplate` from an existing ``V1PodSpec``. |
 | [`to_k8s_pod()`](#to_k8s_pod) |  |
 
 
@@ -43,7 +43,7 @@ class PodTemplate(
 
 ```python
 def allow_fuse(
-    privileged: bool,
+    privileged: bool = False,
 ) -> PodTemplate
 ```
 Return a copy of this template granted everything an **unprivileged**
@@ -139,12 +139,12 @@ for the primary container).
 ```python
 def from_spec(
     pod_spec: 'V1PodSpec',
-    primary_container_name: Optional[str],
-    labels: Optional[Dict[str, str]],
-    annotations: Optional[Dict[str, str]],
+    primary_container_name: Optional[str] = None,
+    labels: Optional[Dict[str, str]] = None,
+    annotations: Optional[Dict[str, str]] = None,
 ) -> PodTemplate
 ```
-Create a :class:`PodTemplate` from an existing ``V1PodSpec``.
+Create a `PodTemplate` from an existing ``V1PodSpec``.
 
 The spec is deep-copied, so later mutations of the input (or of the
 returned template) don't leak into each other.

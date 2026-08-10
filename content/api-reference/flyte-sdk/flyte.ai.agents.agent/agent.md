@@ -1,6 +1,6 @@
 ---
 title: Agent
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,24 +24,24 @@ model:
 tools:
     Sequence (or ``{name: tool}`` mapping) of tools the agent may call.
     Each entry can be a plain callable, a ``@flyte.trace`` helper, an
-    ``@env.task`` :class:`~flyte.TaskTemplate`, a
-    :class:`~flyte.remote._task.LazyEntity`, or a pre-built
-    :class:`AgentTool`.
+    ``@env.task`` `TaskTemplate`, a
+    `LazyEntity`, or a pre-built
+    `AgentTool`.
 mcp_servers:
     Optional remote / stdio MCP servers whose tools should be loaded into
-    the agent's tool registry on first use. See :class:`MCPServerSpec`.
+    the agent's tool registry on first use. See `MCPServerSpec`.
 skills:
     Extra context appended to the system prompt. Each entry is either a
-    string or a :class:`pathlib.Path` pointing to a local text file.
+    string or a `pathlib.Path` pointing to a local text file.
 max_turns:
     Maximum number of LLM ↔ tool turns before the loop gives up.
 call_llm:
-    Optional async callback ``(model, system, messages, tools) -&gt; LLMMessage``.
-    Defaults to :func:`_default_call_llm` (uses litellm).
+    Optional async callback ``(model, system, messages, tools) -> LLMMessage``.
+    Defaults to `_default_call_llm` (uses litellm).
 approval_callback:
-    Optional async callback ``(tool, args) -&gt; bool`` invoked when a tool
+    Optional async callback ``(tool, args) -> bool`` invoked when a tool
     with ``requires_approval=True`` is about to run. Defaults to a HITL
-    prompt via a flyte-native condition (:func:`flyte.new_condition`).
+    prompt via a flyte-native condition (`flyte.new_condition`).
 parallel_tool_calls:
     When ``True`` (default) tool calls returned in a single assistant
     message are executed concurrently. Set to ``False`` to force strict
@@ -66,17 +66,17 @@ code_mode:
 
 ```python
 class Agent(
-    name: str,
-    instructions: str,
-    model: str,
-    tools: Sequence[Any] | Mapping[str, Any],
-    mcp_servers: Sequence[MCPServerSpec],
-    skills: Sequence[str | pathlib.Path],
-    max_turns: int,
-    call_llm: LLMCallable,
-    approval_callback: ApprovalCallback,
-    parallel_tool_calls: bool,
-    code_mode: bool,
+    name: str = 'flyte-agent',
+    instructions: str = 'You are a helpful assistant.',
+    model: str = 'claude-haiku-4-5',
+    tools: Sequence[Any] | Mapping[str, Any] = <factory>,
+    mcp_servers: Sequence[MCPServerSpec] = <factory>,
+    skills: Sequence[str | pathlib.Path] = <factory>,
+    max_turns: int = 25,
+    call_llm: LLMCallable = _default_call_llm,
+    approval_callback: ApprovalCallback = _condition_approval,
+    parallel_tool_calls: bool = True,
+    code_mode: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -105,9 +105,9 @@ class Agent(
 |-|-|
 | [`add_tool()`](#add_tool) | Register an additional tool after construction. |
 | [`approval_callback()`](#approval_callback) | Default HITL approval: pause the run on a flyte-native condition. |
-| [`call_llm()`](#call_llm) | Default LLM callback that uses ``litellm. |
+| [`call_llm()`](#call_llm) | Default LLM callback that uses ``litellm.acompletion`` with tool calling. |
 | [`run()`](#run) | Drive the LLM ↔ tool loop until the assistant returns a final reply. |
-| [`tool_descriptions()`](#tool_descriptions) | Conform to :class:`~flyte. |
+| [`tool_descriptions()`](#tool_descriptions) | Conform to `Agent`. |
 
 
 ### add_tool()
@@ -115,7 +115,7 @@ class Agent(
 ```python
 def add_tool(
     obj: Any,
-    name: str | None,
+    name: str | None = None,
 ) -> AgentTool
 ```
 Register an additional tool after construction.
@@ -134,12 +134,12 @@ created inside a task).
 ```python
 def approval_callback(
     tool: AgentTool,
-    args: *args,
+    args: dict[str, Any],
 ) -> bool
 ```
 Default HITL approval: pause the run on a flyte-native condition.
 
-Registers a condition via :func:`flyte.new_condition` and blocks until a
+Registers a condition via `flyte.new_condition` and blocks until a
 human signals it — from the UI, ``flyte signal condition``, or
 ``flyte.remote.Condition.signal``. Returns ``True`` if the user approves
 the tool call. When the agent is running outside a Flyte task context
@@ -150,7 +150,7 @@ the call so that the agent can recover by trying a different approach.
 | Parameter | Type | Description |
 |-|-|-|
 | `tool` | `AgentTool` | |
-| `args` | `*args` | |
+| `args` | `dict[str, Any]` | |
 
 ### call_llm()
 
@@ -185,24 +185,24 @@ Gemini, Bedrock, local OpenAI-compatible servers, …).
 ```python
 def run(
     message: str,
-    memory: list[dict[str, Any]] | MemoryStore | None,
+    memory: list[dict[str, Any]] | MemoryStore | None = None,
 ) -> AgentResult
 ```
 Drive the LLM ↔ tool loop until the assistant returns a final reply.
 
-Implements the :class:`~flyte.ai.agents.protocol.AgentProtocol` so
+Implements the `AgentProtocol` so
 instances can be plugged directly into
-:class:`~flyte.ai.chat.AgentChatAppEnvironment`.
+`AgentChatAppEnvironment`.
 
 The agent is decoupled from any persistent state: memory is passed in
 per call rather than attached to the agent. ``memory`` may be:
 
 - ``None``: a stateless, single-shot conversation.
 - a ``list[dict]``: prior messages to prepend (e.g. a chat ``history``).
-  The returned :class:`AgentResult` carries no memory in this case.
-- a :class:`MemoryStore`: its transcript is prepended, the in-flight
+  The returned `AgentResult` carries no memory in this case.
+- a `MemoryStore`: its transcript is prepended, the in-flight
   transcript is appended back to it, and it is returned on
-  :attr:`AgentResult.memory`. Persistence is the caller's
+  `AgentResult.memory`. Persistence is the caller's
   responsibility: call ``memory.save()`` (or ``.save.aio()``) after
   ``run`` to write the updated transcript back to its keyed remote path.
 
@@ -219,9 +219,9 @@ Call synchronously via ``run(...)``; in async contexts use ``run.aio(...)``.
 ```python
 def tool_descriptions()
 ```
-Conform to :class:`~flyte.ai.agents.protocol.Agent`.
+Conform to `Agent`.
 
 MCP tools loaded lazily are only listed after the first
-:meth:`run` call.
+`run` call.
 
 

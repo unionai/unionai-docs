@@ -1,6 +1,6 @@
 ---
 title: ConditionWebhook
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,7 +23,7 @@ signal the condition.
 ```python
 class ConditionWebhook(
     url: str,
-    payload: typing.Optional[typing.Dict[str, typing.Any]],
+    payload: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |

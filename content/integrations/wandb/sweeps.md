@@ -31,7 +31,7 @@ You can stop a running sweep from the Weights & Biases UI or from the command li
 
 Flyte's distributed execution makes it easy to run multiple sweep agents in parallel, each on its own compute resources:
 
-{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/parallel_sweep.py" lang=python highlight="51-55 59" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/wandb/parallel_sweep.py" lang=python highlight="53-60 62" >}}
 
 This pattern provides:
 

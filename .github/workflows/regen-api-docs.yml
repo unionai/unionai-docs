@@ -51,6 +51,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: "true"
+          # fetch-depth: 0 -- the "Fold version promotion" step below runs
+          # manifest.py, whose z computation derives the next cut from the
+          # EXISTING v<x.y.z>.* tags. A shallow clone fetches no tags, so
+          # existing_z comes back empty and manifest.py proposes z=0 -- a tag
+          # that may already exist and may have been deliberately withdrawn.
+          # That is exactly what #1406 did: it proposed re-cutting v2.5.18.0
+          # (three tags into the 2.5.18 line) which would have restored the
+          # yanked flyteplugins 2.5.19 reference to production stable.
+          # docs-cut.yml already sets this for the same reason; this workflow
+          # folds a cut too and needs the same visibility.
+          fetch-depth: 0
 
       # Mint a short-lived installation token for the docsy-bot App so the draft
       # PR triggers CI (and is attributed to the bot). Skipped until the App

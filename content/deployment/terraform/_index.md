@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Managing Union with Terraform
 
-{{< llm-bundle-note >}}
-
 Union provides a Terraform provider that enables infrastructure-as-code management of your Union deployment. With the Union Terraform provider, you can define, deploy, and manage Union resources using declarative configuration files.
 
 ## Overview

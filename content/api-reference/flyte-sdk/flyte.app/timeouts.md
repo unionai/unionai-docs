@@ -1,6 +1,6 @@
 ---
 title: Timeouts
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,7 +17,7 @@ Timeout configuration for the application.
 
 ```python
 class Timeouts(
-    request: int | datetime.timedelta | None,
+    request: int | datetime.timedelta | None = None,
 )
 ```
 | Parameter | Type | Description |

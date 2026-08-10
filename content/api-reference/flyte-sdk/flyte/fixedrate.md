@@ -1,6 +1,6 @@
 ---
 title: FixedRate
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,7 +29,7 @@ my_trigger = flyte.Trigger(
 ```python
 class FixedRate(
     interval_minutes: int,
-    start_time: datetime | None,
+    start_time: datetime | None = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flyte.prefetch
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,18 +36,18 @@ such as HuggingFace models.
 ```python
 def hf_model(
     repo: str,
-    raw_data_path: str | None,
-    artifact_name: str | None,
-    architecture: str | None,
-    task: str,
-    modality: tuple[str, ...],
-    serial_format: str | None,
-    model_type: str | None,
-    short_description: str | None,
-    shard_config: ShardConfig | None,
-    hf_token_key: str,
-    resources: Resources,
-    force: int,
+    raw_data_path: str | None = None,
+    artifact_name: str | None = None,
+    architecture: str | None = None,
+    task: str = 'auto',
+    modality: tuple[str, ...] = ('text',),
+    serial_format: str | None = None,
+    model_type: str | None = None,
+    short_description: str | None = None,
+    shard_config: ShardConfig | None = None,
+    hf_token_key: str = 'HF_TOKEN',
+    resources: Resources = Resources(cpu='2', memory='8Gi', gpu=None, disk='50Gi', shm=None),
+    force: int = 0,
 ) -> Run
 ```
 Store a HuggingFace model to remote storage.

@@ -1,6 +1,6 @@
 ---
 title: OOMError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ This error is raised when the underlying task execution fails because of an out-
 class OOMError(
     code: str,
     message: str,
-    worker: str | None,
+    worker: str | None = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -46,7 +46,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 
 ```python
 def auth_metadata(
-    kv: typing.Tuple[str, str],
+    *kv: typing.Tuple[str, str],
 )
 ```
 This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system.
@@ -67,7 +67,7 @@ with auth_metadata((key1, value1), (key2, value2)):
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kv` | `typing.Tuple[str, str]` | |
+| `*kv` | `typing.Tuple[str, str]` | |
 
 #### upload_dir()
 
@@ -79,8 +79,8 @@ with auth_metadata((key1, value1), (key2, value2)):
 ```python
 def upload_dir(
     dir_path: pathlib.Path,
-    verify: bool,
-    prefix: str | None,
+    verify: bool = True,
+    prefix: str | None = None,
 ) -> str
 ```
 Uploads a directory to a remote location and returns the remote URI.
@@ -105,8 +105,8 @@ Uploads a directory to a remote location and returns the remote URI.
 ```python
 def upload_file(
     fp: pathlib.Path,
-    verify: bool,
-    fname: str | None,
+    verify: bool = True,
+    fname: str | None = None,
 ) -> typing.Tuple[str, str]
 ```
 Uploads a file to a remote location and returns the remote URI.

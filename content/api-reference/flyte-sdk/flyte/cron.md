@@ -1,6 +1,6 @@
 ---
 title: Cron
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ my_trigger = flyte.Trigger(
 ```python
 class Cron(
     expression: str,
-    timezone: Timezone,
+    timezone: Timezone = 'UTC',
 )
 ```
 | Parameter | Type | Description |

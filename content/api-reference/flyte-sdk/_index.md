@@ -1,6 +1,6 @@
 ---
 title: Flyte SDK
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -24,7 +24,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.Backoff`](flyte/backoff) | Exponential backoff policy applied between user retries. |
 | [`flyte.BaseCheckpoint`](flyte/basecheckpoint) | Base type for task checkpoint helpers. |
 | [`flyte.Cache`](flyte/cache) | Cache configuration for a task. |
-| [`flyte.Checkpoint`](flyte/checkpoint) | Checkpoint helper using `flyte. |
+| [`flyte.Checkpoint`](flyte/checkpoint) | Checkpoint helper using `flyte.io.File` for all checkpoint blob I/O (load/save, async and sync). |
 | [`flyte.ConditionWebhook`](flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`flyte.Cron`](flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](flyte/device) | Represents a device type, its quantity and partition if applicable. |
@@ -45,25 +45,25 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ai.agents.Agent`](flyte.ai.agents/agent) | A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.AgentEvent`](flyte.ai.agents/agentevent) | Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.AgentResult`](flyte.ai.agents/agentresult) | Outcome of a single agent invocation. |
-| [`flyte.ai.agents.AgentTool`](flyte.ai.agents/agenttool) | A normalized tool descriptor used by :class:`Agent`. |
+| [`flyte.ai.agents.AgentTool`](flyte.ai.agents/agenttool) | A normalized tool descriptor used by `Agent`. |
 | [`flyte.ai.agents.ConcurrencyError`](flyte.ai.agents/concurrencyerror) | Raised when an ``expected_sha`` precondition does not match the current state. |
-| [`flyte.ai.agents.LLMMessage`](flyte.ai.agents/llmmessage) | Provider-agnostic shape returned by :data:`LLMCallable`. |
+| [`flyte.ai.agents.LLMMessage`](flyte.ai.agents/llmmessage) | Provider-agnostic shape returned by `LLMCallable`. |
 | [`flyte.ai.agents.MCPServerSpec`](flyte.ai.agents/mcpserverspec) | Declarative spec for a remote MCP server that exposes tools. |
 | [`flyte.ai.agents.MemoryMeta`](flyte.ai.agents/memorymeta) | Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
-| [`flyte.ai.agents.MemoryStore`](flyte.ai.agents/memorystore) | Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
-| [`flyte.ai.agents.MemoryStoreError`](flyte.ai.agents/memorystoreerror) | Base class for :class:`MemoryStore` errors. |
-| [`flyte.ai.agents.ToolFn`](flyte.ai.agents/toolfn) | The tool under invocation, handed to a :data:`ToolCallHandler`. |
+| [`flyte.ai.agents.MemoryStore`](flyte.ai.agents/memorystore) | Conversation transcript + path-addressed artifact memory backed by `flyte.io.Dir`. |
+| [`flyte.ai.agents.MemoryStoreError`](flyte.ai.agents/memorystoreerror) | Base class for `MemoryStore` errors. |
+| [`flyte.ai.agents.ToolFn`](flyte.ai.agents/toolfn) | The tool under invocation, handed to a `ToolCallHandler`. |
 | [`flyte.ai.agents.agent.Agent`](flyte.ai.agents.agent/agent) | A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.agent.AgentEvent`](flyte.ai.agents.agent/agentevent) | Lightweight event emitted by the agent loop. |
 | [`flyte.ai.agents.memory.AccessDenied`](flyte.ai.agents.memory/accessdenied) | Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.memory.ConcurrencyError`](flyte.ai.agents.memory/concurrencyerror) | Raised when an ``expected_sha`` precondition does not match the current state. |
 | [`flyte.ai.agents.memory.MemoryMeta`](flyte.ai.agents.memory/memorymeta) | Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry. |
-| [`flyte.ai.agents.memory.MemoryStore`](flyte.ai.agents.memory/memorystore) | Conversation transcript + path-addressed artifact memory backed by :class:`flyte. |
-| [`flyte.ai.agents.memory.MemoryStoreError`](flyte.ai.agents.memory/memorystoreerror) | Base class for :class:`MemoryStore` errors. |
+| [`flyte.ai.agents.memory.MemoryStore`](flyte.ai.agents.memory/memorystore) | Conversation transcript + path-addressed artifact memory backed by `flyte.io.Dir`. |
+| [`flyte.ai.agents.memory.MemoryStoreError`](flyte.ai.agents.memory/memorystoreerror) | Base class for `MemoryStore` errors. |
 | [`flyte.ai.agents.protocol.AgentResult`](flyte.ai.agents.protocol/agentresult) | Outcome of a single agent invocation. |
-| [`flyte.ai.chat.AgentChatAppEnvironment`](flyte.ai.chat/agentchatappenvironment) | An :class:`~flyte. |
+| [`flyte.ai.chat.AgentChatAppEnvironment`](flyte.ai.chat/agentchatappenvironment) | An `AppEnvironment` that spins up a FastAPI chat. |
 | [`flyte.ai.chat.CustomTheme`](flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
-| [`flyte.ai.chat.app.AgentChatAppEnvironment`](flyte.ai.chat.app/agentchatappenvironment) | An :class:`~flyte. |
+| [`flyte.ai.chat.app.AgentChatAppEnvironment`](flyte.ai.chat.app/agentchatappenvironment) | An `AppEnvironment` that spins up a FastAPI chat. |
 | [`flyte.ai.chat.app.CustomTheme`](flyte.ai.chat.app/customtheme) | Declarative color theme for the Agent Chat UI. |
 | [`flyte.ai.mcp.FlyteMCPAppEnvironment`](flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
 | [`flyte.ai.mcp.MCPAppEnvironment`](flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
@@ -132,21 +132,21 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.AsyncFunctionTaskTemplate`](flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`flyte.extend.TaskTemplate`](flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
-| [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher. |
+| [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`flyte.extras.ContainerTask`](flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.extras.DynamicBatcher`](flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
 | [`flyte.extras.Prompt`](flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
 | [`flyte.extras.Sleep`](flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](flyte.extras/sleeptask) |  |
 | [`flyte.extras.TokenBatcher`](flyte.extras/tokenbatcher) | Token-aware batcher for LLM inference workloads. |
-| [`flyte.extras.shell.FlagSpec`](flyte.extras.shell/flagspec) | How to render a typed input as a CLI flag in ``{flags. |
+| [`flyte.extras.shell.FlagSpec`](flyte.extras.shell/flagspec) | How to render a typed input as a CLI flag in ``{flags.<name>}``. |
 | [`flyte.extras.shell.Glob`](flyte.extras.shell/glob) | A multi-file output bundle. |
 | [`flyte.extras.shell.Stderr`](flyte.extras.shell/stderr) | Capture the task's stderr as a typed output. |
 | [`flyte.extras.shell.Stdout`](flyte.extras.shell/stdout) | Capture the task's stdout as a typed output. |
 | [`flyte.git.GitStatus`](flyte.git/gitstatus) | A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](flyte.io/dataframe) | A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
 | [`flyte.io.Dir`](flyte.io/dir) | A generic directory class representing a directory with files of a specified format. |
-| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel :class:`Dir` representing 'no directory was produced'. |
+| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel `Dir` representing 'no directory was produced'. |
 | [`flyte.io.File`](flyte.io/file) | A generic file class representing a file with a specified format. |
 | [`flyte.io.HashFunction`](flyte.io/hashfunction) | A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](flyte.io.extend/dataframedecoder) |  |
@@ -254,8 +254,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.version()`](flyte/_index#version) | Returns the version of the Flyte SDK. |
 | [`flyte.with_runcontext()`](flyte/_index#with_runcontext) | Launch a new run with the given parameters as the context. |
 | [`flyte.with_servecontext()`](flyte/_index#with_servecontext) | Create a serve context with custom configuration. |
-| [`flyte.ai.agents.tool()`](flyte.ai.agents/_index#tool) | Wrap a task, ``@flyte. |
+| [`flyte.ai.agents.tool()`](flyte.ai.agents/_index#tool) | Wrap a task, ``@flyte.trace`` helper, plain callable, or ``LazyEntity`` as an `AgentTool`. |
 | [`flyte.ai.chat.build_chat_html()`](flyte.ai.chat/_index#build_chat_html) | Build the full chat HTML with the given *title* and optional *custom_css*. |
+| [`flyte.ai.mcp.resolve_tools()`](flyte.ai.mcp/_index#resolve_tools) | Return the set of MCP tool names to expose. |
 | [`flyte.app.ctx()`](flyte.app/_index#ctx) | Returns the current app context. |
 | [`flyte.app.get_parameter()`](flyte.app/_index#get_parameter) | Get parameters for application or endpoint. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
@@ -273,6 +274,8 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.is_initialized()`](flyte.extend/_index#is_initialized) | Check if the system has been initialized. |
 | [`flyte.extend.lazy_module()`](flyte.extend/_index#lazy_module) | This function is used to lazily import modules. |
 | [`flyte.extend.pod_spec_from_resources()`](flyte.extend/_index#pod_spec_from_resources) |  |
+| [`flyte.extras.serialize()`](flyte.extras/_index#serialize) | Translate a single task to its wire TaskSpec, offline and code-agnostic. |
+| [`flyte.extras.serialize_env()`](flyte.extras/_index#serialize_env) | Serialize every task in an environment. |
 | [`flyte.extras.shell.create()`](flyte.extras.shell/_index#create) | Wrap a CLI tool packaged in a container as a Flyte task. |
 | [`flyte.git.config_from_root()`](flyte.git/_index#config_from_root) | Get the config file from the git root directory. |
 | [`flyte.models.generate_random_name()`](flyte.models/_index#generate_random_name) | Generate a random name for the task. |
@@ -313,7 +316,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte`](flyte/_index) | Flyte SDK for authoring compound AI applications, services and workflows. |
 | [`flyte.ai.agents`](flyte.ai.agents/_index) | flyte. |
 | [`flyte.ai.agents.agent`](flyte.ai.agents.agent/_index) | Agent — a flyte-native tool-use agent harness. |
-| [`flyte.ai.agents.memory`](flyte.ai.agents.memory/_index) | Dir-backed memory for :class:`flyte. |
+| [`flyte.ai.agents.memory`](flyte.ai.agents.memory/_index) | Dir-backed memory for :class:`flyte.ai.agents.Agent`. |
 | [`flyte.ai.agents.protocol`](flyte.ai.agents.protocol/_index) | Agent protocol for the flyte. |
 | [`flyte.ai.chat`](flyte.ai.chat/_index) | flyte. |
 | [`flyte.ai.chat.app`](flyte.ai.chat.app/_index) | AgentChatAppEnvironment — FastAPI-based chat UI for any Agent. |

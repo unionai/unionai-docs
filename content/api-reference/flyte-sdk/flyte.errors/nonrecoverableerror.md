@@ -1,6 +1,6 @@
 ---
 title: NonRecoverableError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,7 +17,7 @@ Raised when an error is encountered that is not recoverable. Retries are irrelev
 ```python
 class NonRecoverableError(
     message: str,
-    code: str,
+    code: str = 'NonRecoverableError',
 )
 ```
 | Parameter | Type | Description |

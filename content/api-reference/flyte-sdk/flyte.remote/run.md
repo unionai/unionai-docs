@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,8 +18,8 @@ Union API.
 ```python
 class Run(
     pb2: run_definition_pb2.Run,
-    _details: RunDetails | None,
-    _preserve_original_types: bool,
+    _details: RunDetails | None = None,
+    _preserve_original_types: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -72,7 +72,7 @@ class Run(
 > `result = await <Run instance>.abort.aio()`.
 ```python
 def abort(
-    reason: str,
+    reason: str = 'Manually aborted from the SDK api.',
 )
 ```
 Aborts / Terminates the run.
@@ -150,9 +150,9 @@ Debugger log entry is not yet available in the action details.
 > `result = await <Run instance>.get_logs.aio()`.
 ```python
 def get_logs(
-    attempt: int | None,
-    filter_system: bool,
-    show_ts: bool,
+    attempt: int | None = None,
+    filter_system: bool = False,
+    show_ts: bool = False,
 ) -> AsyncGenerator[str, None]
 ```
 Get logs for the run as an iterator of strings.
@@ -177,8 +177,7 @@ via `.aio()` (returns `AsyncIterator[str]`).
 > `result = await <Run instance>.get_report.aio()`.
 ```python
 def get_report(
-    attempt: int | None,
-    expires_in: timedelta,
+    attempt: int | None = None,
 ) -> str
 ```
 Get the HTML report associated with this run's root action.
@@ -186,12 +185,15 @@ Get the HTML report associated with this run's root action.
 This first requests a signed download link from the data proxy for the report artifact,
 then downloads the report from that URL and returns its contents as an HTML string.
 
+To fetch the report for a specific action nested inside the run (rather than the root
+action), use `Action.get_report` on that action, e.g. via ``Action.get`` or by
+iterating ``Action.listall``.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `attempt` | `int \| None` | The attempt number to fetch the report for. Defaults to the latest attempt. |
-| `expires_in` | `timedelta` | How long the signed download link should remain valid. Defaults to 1 hour. |
 
 **Returns:** The report contents as an HTML string.
 
@@ -207,7 +209,7 @@ def input_literals()
 ```
 Raw input literals of the run's action, without reconstructing types.
 
-See :meth:`ActionDetails.input_literals`.
+See `ActionDetails.input_literals`.
 
 
 ### inputs()
@@ -233,19 +235,19 @@ Get the inputs of the run. This is a placeholder for getting the run inputs.
 ```python
 def listall(
     cls,
-    in_phase: Tuple[ActionPhase | str, ...] | None,
-    task_name: str | None,
-    task_version: str | None,
-    created_by_subject: str | None,
-    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
-    limit: int,
-    project: str | None,
-    domain: str | None,
-    created_at: TimeFilter | None,
-    updated_at: TimeFilter | None,
-    with_labels: dict[str, str] | None,
-    with_label_keys: list[str] | None,
-    paused_actions_only: bool,
+    in_phase: Tuple[ActionPhase | str, ...] | None = None,
+    task_name: str | None = None,
+    task_version: str | None = None,
+    created_by_subject: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    limit: int = 100,
+    project: str | None = None,
+    domain: str | None = None,
+    created_at: TimeFilter | None = None,
+    updated_at: TimeFilter | None = None,
+    with_labels: dict[str, str] | None = None,
+    with_label_keys: list[str] | None = None,
+    paused_actions_only: bool = False,
 ) -> AsyncIterator[Run]
 ```
 Get all runs for the current project and domain.
@@ -283,7 +285,7 @@ def output_literals()
 ```
 Raw output literals of the run's action, without reconstructing types.
 
-See :meth:`ActionDetails.output_literals`.
+See `ActionDetails.output_literals`.
 
 
 ### outputs()
@@ -308,11 +310,11 @@ Get the outputs of the run. This is a placeholder for getting the run outputs.
 > `result = await <Run instance>.show_logs.aio()`.
 ```python
 def show_logs(
-    attempt: int | None,
-    max_lines: int,
-    show_ts: bool,
-    raw: bool,
-    filter_system: bool,
+    attempt: int | None = None,
+    max_lines: int = 100,
+    show_ts: bool = False,
+    raw: bool = False,
+    filter_system: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -363,12 +365,12 @@ Convert the object to a JSON string.
 ```python
 def typed_inputs(
     types: Dict[str, type],
-    deserializers: Dict[type, Callable[[Any], Any]] | None,
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
 ) -> Dict[str, Any]
 ```
 Re-hydrate the run's requested inputs into caller-supplied types.
 
-See :meth:`ActionDetails.typed_inputs`.
+See `ActionDetails.typed_inputs`.
 
 
 | Parameter | Type | Description |
@@ -386,12 +388,12 @@ See :meth:`ActionDetails.typed_inputs`.
 ```python
 def typed_outputs(
     types: Dict[str, type],
-    deserializers: Dict[type, Callable[[Any], Any]] | None,
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
 ) -> Dict[str, Any]
 ```
 Re-hydrate the run's requested outputs into caller-supplied types.
 
-See :meth:`ActionDetails.typed_outputs`.
+See `ActionDetails.typed_outputs`.
 
 
 | Parameter | Type | Description |
@@ -408,8 +410,8 @@ See :meth:`ActionDetails.typed_outputs`.
 > `result = await <Run instance>.wait.aio()`.
 ```python
 def wait(
-    quiet: bool,
-    wait_for: Literal['terminal', 'running'],
+    quiet: bool = False,
+    wait_for: Literal['terminal', 'running'] = 'terminal',
 )
 ```
 Wait for the run to complete, displaying a rich progress panel with status transitions,
@@ -428,7 +430,7 @@ This method updates the Run's internal state, ensuring that properties like
 
 ```python
 def watch(
-    cache_data_on_done: bool,
+    cache_data_on_done: bool = False,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
 Watch the run for updates, updating the internal Run state with latest details.

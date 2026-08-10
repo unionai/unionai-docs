@@ -1,6 +1,6 @@
 ---
 title: Resource
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,10 +30,10 @@ Attributes
 ```python
 class Resource(
     phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
-    message: typing.Optional[str],
-    log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
-    outputs: typing.Optional[typing.Dict[str, typing.Any]],
-    custom_info: typing.Optional[typing.Dict[str, typing.Any]],
+    message: typing.Optional[str] = None,
+    log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]] = None,
+    outputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    custom_info: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |

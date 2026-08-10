@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Tutorials
 
-{{< llm-bundle-note >}}
-
 This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union. Tutorials are organized by **industry vertical** and by **technical topic**.
 
 ## Industry verticals

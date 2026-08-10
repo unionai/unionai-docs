@@ -1,6 +1,6 @@
 ---
 title: Storage
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,10 +16,10 @@ Data storage configuration that applies across any provider.
 
 ```python
 class Storage(
-    retries: int,
-    backoff: datetime.timedelta,
-    enable_debug: bool,
-    attach_execution_metadata: bool,
+    retries: int = 3,
+    backoff: datetime.timedelta = datetime.timedelta(seconds=5),
+    enable_debug: bool = False,
+    attach_execution_metadata: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -49,8 +49,8 @@ Construct the config object automatically from environment variables.
 
 ```python
 def get_fsspec_kwargs(
-    anonymous: bool,
-    kwargs,
+    anonymous: bool = False,
+    **kwargs,
 ) -> typing.Dict[str, typing.Any]
 ```
 Returns the configuration as kwargs for constructing an fsspec filesystem.
@@ -59,5 +59,5 @@ Returns the configuration as kwargs for constructing an fsspec filesystem.
 | Parameter | Type | Description |
 |-|-|-|
 | `anonymous` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

@@ -1,6 +1,6 @@
 ---
 title: Timeout
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,9 +17,9 @@ Timeout bounds for a task. See module docstring for semantics.
 
 ```python
 class Timeout(
-    max_runtime: datetime.timedelta | int | None,
-    max_queued_time: datetime.timedelta | int | None,
-    deadline: datetime.timedelta | int | None,
+    max_runtime: datetime.timedelta | int | None = None,
+    max_queued_time: datetime.timedelta | int | None = None,
+    deadline: datetime.timedelta | int | None = None,
 )
 ```
 | Parameter | Type | Description |

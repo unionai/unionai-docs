@@ -1,6 +1,6 @@
 ---
 title: Slack
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,8 +19,8 @@ Send Slack notifications with optional Block Kit formatting.
 class Slack(
     on_phase: typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]],
     webhook_url: str,
-    message: typing.Optional[str],
-    blocks: typing.Optional[typing.Tuple[typing.Dict[str, typing.Any], ...]],
+    message: typing.Optional[str] = None,
+    blocks: typing.Optional[typing.Tuple[typing.Dict[str, typing.Any], ...]] = None,
 )
 ```
 | Parameter | Type | Description |

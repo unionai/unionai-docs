@@ -1,6 +1,6 @@
 ---
 title: Stdout
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +16,7 @@ Capture the task's stdout as a typed output.
 
 ```python
 class Stdout(
-    type: Type,
+    type: Type = flyte.io._file.File,
 )
 ```
 | Parameter | Type | Description |

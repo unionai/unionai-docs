@@ -1,6 +1,6 @@
 ---
 title: Device
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,8 +21,8 @@ param partition: The partition of the device (e.g., "1g.5gb", "2g.10gb" for gpus
 class Device(
     quantity: int,
     device_class: typing.Literal['GPU', 'TPU', 'NEURON', 'AMD_GPU', 'HABANA_GAUDI'],
-    device: str | None,
-    partition: str | None,
+    device: str | None = None,
+    partition: str | None = None,
 )
 ```
 | Parameter | Type | Description |

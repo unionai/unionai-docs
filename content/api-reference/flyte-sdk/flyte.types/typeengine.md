@@ -1,6 +1,6 @@
 ---
 title: TypeEngine
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,7 +43,7 @@ of user objects
 ```python
 def dict_to_literal_map(
     d: typing.Dict[str, typing.Any],
-    type_hints: Optional[typing.Dict[str, type]],
+    type_hints: Optional[typing.Dict[str, type]] = None,
 ) -> LiteralMap
 ```
 Given a dictionary mapping string keys to python values and a dictionary containing guessed types for such
@@ -119,8 +119,8 @@ Only load the transformers if needed.
 ```python
 def literal_map_to_kwargs(
     lm: LiteralMap,
-    python_types: typing.Optional[typing.Dict[str, type]],
-    literal_types: typing.Optional[typing.Dict[str, interface_pb2.Variable]],
+    python_types: typing.Optional[typing.Dict[str, type]] = None,
+    literal_types: typing.Optional[typing.Dict[str, interface_pb2.Variable]] = None,
 ) -> typing.Dict[str, typing.Any]
 ```
 Given a `LiteralMap` (usually an input into a task - intermediate), convert to kwargs for the task
@@ -151,7 +151,7 @@ Converts a python-native `NamedTuple` to a flyte-specific VariableMap of named l
 ```python
 def register(
     transformer: TypeTransformer,
-    additional_types: Optional[typing.List[Type]],
+    additional_types: Optional[typing.List[Type]] = None,
 )
 ```
 This should be used for all types that respond with the right type annotation when you use type(...) function
@@ -168,7 +168,7 @@ This should be used for all types that respond with the right type annotation wh
 def register_additional_type(
     transformer: TypeTransformer[T],
     additional_type: Type[T],
-    override,
+    override = False,
 )
 ```
 | Parameter | Type | Description |

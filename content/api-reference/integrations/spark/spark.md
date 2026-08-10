@@ -1,6 +1,6 @@
 ---
 title: Spark
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,12 +18,12 @@ natively onto K8s as a distributed execution of spark
 
 ```python
 class Spark(
-    spark_conf: typing.Optional[typing.Dict[str, str]],
-    hadoop_conf: typing.Optional[typing.Dict[str, str]],
-    executor_path: typing.Optional[str],
-    applications_path: typing.Optional[str],
-    driver_pod: typing.Optional[flyte._pod.PodTemplate],
-    executor_pod: typing.Optional[flyte._pod.PodTemplate],
+    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    executor_path: typing.Optional[str] = None,
+    applications_path: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flyte._pod.PodTemplate] = None,
+    executor_pod: typing.Optional[flyte._pod.PodTemplate] = None,
 )
 ```
 | Parameter | Type | Description |

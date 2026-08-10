@@ -1,6 +1,6 @@
 ---
 title: MemoryStoreError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,6 +9,6 @@ layout: py_api
 
 **Package:** `flyte.ai.agents`
 
-Base class for :class:`MemoryStore` errors.
+Base class for `MemoryStore` errors.
 
 

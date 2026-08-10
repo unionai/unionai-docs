@@ -1,6 +1,6 @@
 ---
 title: GitStatus
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,11 +17,11 @@ A class representing the status of a git repository.
 
 ```python
 class GitStatus(
-    is_valid: bool,
-    is_tree_clean: bool,
-    remote_url: str,
-    repo_dir: pathlib.Path,
-    commit_sha: str,
+    is_valid: bool = False,
+    is_tree_clean: bool = False,
+    remote_url: str = '',
+    repo_dir: pathlib.Path = PosixPath('.'),
+    commit_sha: str = '',
 )
 ```
 | Parameter | Type | Description |

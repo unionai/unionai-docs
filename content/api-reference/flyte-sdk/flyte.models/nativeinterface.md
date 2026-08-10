@@ -1,6 +1,6 @@
 ---
 title: NativeInterface
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,8 +19,8 @@ context.
 class NativeInterface(
     inputs: Dict[str, Tuple[Type, Any]],
     outputs: Dict[str, Type],
-    docstring: Optional[Docstring],
-    _remote_defaults: Optional[Dict[str, literals_pb2.Literal]],
+    docstring: Optional[Docstring] = None,
+    _remote_defaults: Optional[Dict[str, literals_pb2.Literal]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -53,8 +53,8 @@ class NativeInterface(
 
 ```python
 def convert_to_kwargs(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> Dict[str, Any]
 ```
 Convert the given arguments to keyword arguments based on the native interface. This is used to convert the
@@ -63,8 +63,8 @@ arguments to the correct types for the task execution.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### from_callable()
 
@@ -86,7 +86,7 @@ Extract the native interface from the given function. This is used to create a n
 def from_types(
     inputs: Dict[str, Tuple[Type, Type[_has_default] | Type[inspect._empty]]],
     outputs: Dict[str, Type],
-    default_inputs: Optional[Dict[str, literals_pb2.Literal]],
+    default_inputs: Optional[Dict[str, literals_pb2.Literal]] = None,
 ) -> NativeInterface
 ```
 Create a new NativeInterface from the given types. This is used to create a native interface for the task.

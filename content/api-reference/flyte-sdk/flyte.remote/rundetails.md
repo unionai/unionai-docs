@@ -1,6 +1,6 @@
 ---
 title: RunDetails
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ Union API.
 ```python
 class RunDetails(
     pb2: run_definition_pb2.RunDetails,
-    _preserve_original_types: bool,
+    _preserve_original_types: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -70,7 +70,7 @@ run state.
 ```python
 def get(
     cls,
-    name: str | None,
+    name: str | None = None,
 ) -> RunDetails
 ```
 Get a run by its ID or name. If both are provided, the ID will take precedence.
@@ -108,7 +108,7 @@ Get the details of the run. This is a placeholder for getting the run details.
 ```python
 def input_literals()
 ```
-Raw input literals without reconstructing types. See :meth:`ActionDetails.input_literals`.
+Raw input literals without reconstructing types. See `ActionDetails.input_literals`.
 
 
 ### inputs()
@@ -124,7 +124,7 @@ Placeholder for inputs. This can be extended to handle inputs from the run conte
 ```python
 def output_literals()
 ```
-Raw output literals without reconstructing types. See :meth:`ActionDetails.output_literals`.
+Raw output literals without reconstructing types. See `ActionDetails.output_literals`.
 
 
 ### outputs()
@@ -162,10 +162,10 @@ Convert the object to a JSON string.
 ```python
 def typed_inputs(
     types: Dict[str, type],
-    deserializers: Dict[type, Callable[[Any], Any]] | None,
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
 ) -> Dict[str, Any]
 ```
-Re-hydrate requested inputs into caller-supplied types. See :meth:`ActionDetails.typed_inputs`.
+Re-hydrate requested inputs into caller-supplied types. See `ActionDetails.typed_inputs`.
 
 
 | Parameter | Type | Description |
@@ -178,10 +178,10 @@ Re-hydrate requested inputs into caller-supplied types. See :meth:`ActionDetails
 ```python
 def typed_outputs(
     types: Dict[str, type],
-    deserializers: Dict[type, Callable[[Any], Any]] | None,
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
 ) -> Dict[str, Any]
 ```
-Re-hydrate requested outputs into caller-supplied types. See :meth:`ActionDetails.typed_outputs`.
+Re-hydrate requested outputs into caller-supplied types. See `ActionDetails.typed_outputs`.
 
 
 | Parameter | Type | Description |

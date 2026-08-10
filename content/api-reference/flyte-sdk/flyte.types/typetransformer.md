@@ -1,6 +1,6 @@
 ---
 title: TypeTransformer
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ Base transformer type that should be implemented for every python native type th
 class TypeTransformer(
     name: str,
     t: Type[T],
-    enable_type_assertions: bool,
+    enable_type_assertions: bool = True,
 )
 ```
 | Parameter | Type | Description |

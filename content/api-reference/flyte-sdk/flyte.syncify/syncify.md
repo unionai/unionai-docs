@@ -1,6 +1,6 @@
 ---
 title: Syncify
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ async def main():
 
 ```python
 class Syncify(
-    name: str,
+    name: str = 'flyte_syncify',
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: DataFrameEncoder
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,8 +14,8 @@ layout: py_api
 ```python
 class DataFrameEncoder(
     python_type: Type[T],
-    protocol: Optional[str],
-    supported_format: Optional[str],
+    protocol: Optional[str] = None,
+    supported_format: Optional[str] = None,
 )
 ```
 Extend this abstract class, implement the encode function, and register your concrete class with the

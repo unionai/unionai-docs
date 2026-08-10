@@ -1,6 +1,6 @@
 ---
 title: Project
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -57,8 +57,8 @@ def create(
     cls,
     id: str,
     name: str,
-    description: str,
-    labels: Dict[str, str] | None,
+    description: str = '',
+    labels: Dict[str, str] | None = None,
 ) -> Project
 ```
 Create a new project.
@@ -105,9 +105,9 @@ Get a project by name.
 ```python
 def listall(
     cls,
-    filters: str | None,
-    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
-    archived: bool,
+    filters: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    archived: bool = False,
 ) -> Union[AsyncIterator[Project], Iterator[Project]]
 ```
 List all projects.
@@ -167,10 +167,10 @@ Unarchive (activate) this project.
 def update(
     cls,
     id: str,
-    name: str | None,
-    description: str | None,
-    labels: Dict[str, str] | None,
-    state: Literal['archived', 'active'] | None,
+    name: str | None = None,
+    description: str | None = None,
+    labels: Dict[str, str] | None = None,
+    state: Literal['archived', 'active'] | None = None,
 ) -> Project
 ```
 Update an existing project.

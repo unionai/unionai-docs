@@ -1,6 +1,6 @@
 ---
 title: CustomTheme
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,9 +32,9 @@ button_text_color:
 
 ```python
 class CustomTheme(
-    accent_color: str,
-    accent_hover_color: str,
-    button_text_color: str,
+    accent_color: str = '#6F2AEF',
+    accent_hover_color: str = '#8B52F2',
+    button_text_color: str = '#f3f4f6',
 )
 ```
 | Parameter | Type | Description |

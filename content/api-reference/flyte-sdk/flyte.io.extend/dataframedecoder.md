@@ -1,6 +1,6 @@
 ---
 title: DataFrameDecoder
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,9 +14,9 @@ layout: py_api
 ```python
 class DataFrameDecoder(
     python_type: Type[DF],
-    protocol: Optional[str],
-    supported_format: Optional[str],
-    additional_protocols: Optional[List[str]],
+    protocol: Optional[str] = None,
+    supported_format: Optional[str] = None,
+    additional_protocols: Optional[List[str]] = None,
 )
 ```
 Extend this abstract class, implement the decode function, and register your concrete class with the

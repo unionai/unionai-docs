@@ -1,6 +1,6 @@
 ---
 title: Teams
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,9 +19,9 @@ Send Microsoft Teams notifications with optional Adaptive Cards.
 class Teams(
     on_phase: typing.Union[flyte.models.ActionPhase, typing.Tuple[flyte.models.ActionPhase, ...]],
     webhook_url: str,
-    title: str,
-    message: typing.Optional[str],
-    card: typing.Optional[typing.Dict[str, typing.Any]],
+    title: str = 'Run {{.Run.Name}} {{.Phase}}',
+    message: typing.Optional[str] = None,
+    card: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |

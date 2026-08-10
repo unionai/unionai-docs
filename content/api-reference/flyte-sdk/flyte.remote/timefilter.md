@@ -1,6 +1,6 @@
 ---
 title: TimeFilter
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ Filter for time-based fields (e.g. created_at, updated_at).
 
 ```python
 class TimeFilter(
-    after: datetime.datetime | None,
-    before: datetime.datetime | None,
+    after: datetime.datetime | None = None,
+    before: datetime.datetime | None = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: ReusePolicy
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,10 +33,11 @@ env = flyte.TaskEnvironment(
 
 ```python
 class ReusePolicy(
-    replicas: typing.Union[int, typing.Tuple[int, int]],
-    idle_ttl: typing.Union[int, datetime.timedelta],
-    concurrency: int,
-    scaledown_ttl: typing.Union[int, datetime.timedelta],
+    replicas: typing.Union[int, typing.Tuple[int, int]] = 2,
+    idle_ttl: typing.Union[int, datetime.timedelta] = 30,
+    concurrency: int = 1,
+    scaledown_ttl: typing.Union[int, datetime.timedelta] = 30,
+    scope: typing.Literal['global', 'run'] = 'global',
 )
 ```
 | Parameter | Type | Description |
@@ -45,6 +46,7 @@ class ReusePolicy(
 | `idle_ttl` | `typing.Union[int, datetime.timedelta]` | Environment-level idle timeout — shuts down **all** replicas when the entire environment has been idle for this duration. Specified as seconds (`int`) or `timedelta`. Minimum 30 seconds. Default is 30 seconds. |
 | `concurrency` | `int` | Maximum concurrent tasks per replica. Values greater than 1 are only supported for `async` tasks. Default is `1`. |
 | `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` | Per-replica scale-down delay — minimum time to wait before removing an **individual** idle replica. Prevents rapid scale-down when tasks arrive in bursts. Specified as seconds (`int`) or `timedelta`. Default is 30 seconds.  Note the distinction: `idle_ttl` controls when the whole environment shuts down; `scaledown_ttl` controls when individual replicas are removed during auto-scaling. |
+| `scope` | `typing.Literal['global', 'run']` | How widely the reusable environment may be shared.  - `"global"` (default): reuse one environment across all runs. - `"run"`: restrict reuse to a single run — each run gets its own environment. |
 
 ## Properties
 

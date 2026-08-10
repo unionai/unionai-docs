@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,7 +29,7 @@ layout: py_api
 
 ```python
 def auto(
-    config_file: typing.Union[str, pathlib.Path, ConfigFile, None],
+    config_file: typing.Union[str, pathlib.Path, ConfigFile, None] = None,
 ) -> Config
 ```
 Automatically constructs the Config Object. The order of precedence is as follows

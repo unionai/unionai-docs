@@ -1,6 +1,6 @@
 ---
 title: DataFrame
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,9 +29,9 @@ flyte.io.DataFrame and this is just a reference and will not materialize till yo
 
 ```python
 class DataFrame(
-    uri: typing.Optional[str],
-    format: typing.Optional[str],
-    hash: typing.Optional[str],
+    uri: typing.Optional[str] = None,
+    format: typing.Optional[str] = '',
+    hash: typing.Optional[str] = None,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -114,8 +114,8 @@ def deserialize_dataframe(
 
 ```python
 def from_df(
-    val: typing.Optional[typing.Any],
-    uri: typing.Optional[str],
+    val: typing.Optional[typing.Any] = None,
+    uri: typing.Optional[str] = None,
 ) -> DataFrame
 ```
 Deprecated: Please use wrap_df, as that is the right name.
@@ -135,8 +135,8 @@ etc.
 ```python
 def from_existing_remote(
     remote_path: str,
-    format: typing.Optional[str],
-    kwargs,
+    format: typing.Optional[str] = None,
+    **kwargs,
 ) -> 'DataFrame'
 ```
 Create a DataFrame reference from an existing remote dataframe.
@@ -147,16 +147,16 @@ Create a DataFrame reference from an existing remote dataframe.
 |-|-|-|
 | `remote_path` | `str` | The remote path to the existing dataframe |
 | `format` | `typing.Optional[str]` | Format of the stored dataframe |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### from_local()
 
 ```python
 def from_local(
     df: typing.Any,
-    columns: typing.OrderedDict[str, type[typing.Any]] | None,
-    remote_destination: str | None,
-    hash_method: HashMethod | str | None,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None = None,
+    remote_destination: str | None = None,
+    hash_method: HashMethod | str | None = None,
 ) -> DataFrame
 ```
 This method is useful to upload the dataframe eagerly and get the actual DataFrame.
@@ -198,9 +198,9 @@ async def foo() -> DataFrame:
 ```python
 def from_local_sync(
     df: typing.Any,
-    columns: typing.OrderedDict[str, type[typing.Any]] | None,
-    remote_destination: str | None,
-    hash_method: HashMethod | str | None,
+    columns: typing.OrderedDict[str, type[typing.Any]] | None = None,
+    remote_destination: str | None = None,
+    hash_method: HashMethod | str | None = None,
 ) -> DataFrame
 ```
 This method is useful to upload the dataframe eagerly and get the actual DataFrame.
@@ -315,8 +315,8 @@ This method provides external access to the internal _set_literal method.
 
 ```python
 def wrap_df(
-    val: typing.Optional[typing.Any],
-    uri: typing.Optional[str],
+    val: typing.Optional[typing.Any] = None,
+    uri: typing.Optional[str] = None,
 ) -> DataFrame
 ```
 Wrapper to create a DataFrame from a dataframe.

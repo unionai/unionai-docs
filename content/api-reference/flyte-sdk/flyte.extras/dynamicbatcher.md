@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,20 +31,20 @@ Type Parameters:
 ```python
 class DynamicBatcher(
     process_fn: ProcessFn[RecordT, ResultT],
-    cost_estimator: CostEstimatorFn[RecordT] | None,
-    target_batch_cost: int,
-    max_batch_size: int,
-    min_batch_size: int,
-    batch_timeout_s: float,
-    max_queue_size: int,
-    prefetch_batches: int,
-    default_cost: int,
+    cost_estimator: CostEstimatorFn[RecordT] | None = None,
+    target_batch_cost: int = 32000,
+    max_batch_size: int = 256,
+    min_batch_size: int = 1,
+    batch_timeout_s: float = 0.05,
+    max_queue_size: int = 5000,
+    prefetch_batches: int = 2,
+    default_cost: int = 1,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `process_fn` | `ProcessFn[RecordT, ResultT]` | `async def f(batch: list[RecordT]) -&gt; list[ResultT]` Must return results in the **same order** as the input batch. |
-| `cost_estimator` | `CostEstimatorFn[RecordT] \| None` | Optional `(RecordT) -&gt; int` function.  When provided, it is called to estimate the cost of each submitted record. Falls back to `record.estimate_cost()` if the record implements `CostEstimator`, then to `default_cost`. |
+| `process_fn` | `ProcessFn[RecordT, ResultT]` | `async def f(batch: list[RecordT]) -> list[ResultT]` Must return results in the **same order** as the input batch. |
+| `cost_estimator` | `CostEstimatorFn[RecordT] \| None` | Optional `(RecordT) -> int` function.  When provided, it is called to estimate the cost of each submitted record. Falls back to `record.estimate_cost()` if the record implements `CostEstimator`, then to `default_cost`. |
 | `target_batch_cost` | `int` | Cost budget per batch.  The aggregator fills batches up to this limit before dispatching. |
 | `max_batch_size` | `int` | Hard cap on records per batch regardless of cost budget. |
 | `min_batch_size` | `int` | Minimum records before dispatching.  Ignored when the timeout fires or shutdown is in progress. |
@@ -100,7 +100,7 @@ Blocks until every pending future is resolved.
 ```python
 def submit(
     record: RecordT,
-    estimated_cost: int | None,
+    estimated_cost: int | None = None,
 ) -> asyncio.Future[ResultT]
 ```
 Submit a single record for batched processing.
@@ -136,7 +136,7 @@ returned by `process_fn`.
 ```python
 def submit_batch(
     records: Sequence[RecordT],
-    estimated_cost: Sequence[int] | None,
+    estimated_cost: Sequence[int] | None = None,
 ) -> list[asyncio.Future[ResultT]]
 ```
 Convenience: submit multiple records and return their futures.

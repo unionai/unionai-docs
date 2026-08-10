@@ -1,6 +1,6 @@
 ---
 title: ShardConfig
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,8 +17,8 @@ Configuration for model sharding.
 
 ```python
 class ShardConfig(
-    engine: typing.Literal['vllm'],
-    args: *args,
+    engine: typing.Literal['vllm'] = 'vllm',
+    args: flyte.prefetch._hf_model.VLLMShardArgs = VLLMShardArgs(),
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -32,5 +32,5 @@ validated to form a valid model.
 | Parameter | Type | Description |
 |-|-|-|
 | `engine` | `typing.Literal['vllm']` | The sharding engine to use (currently only "vllm" is supported). |
-| `args` | `*args` | Arguments for the sharding engine. |
+| `args` | `flyte.prefetch._hf_model.VLLMShardArgs` | Arguments for the sharding engine. |
 

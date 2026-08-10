@@ -54,21 +54,12 @@ To produce a `section.md` bundle for a documentation section:
    ---
    ```
 
-2. Add the `{{</* llm-bundle-note */>}}` shortcode in the body of the same `_index.md`,
-   right after the page title:
+That is all that is required. The bundle is generated at build time and listed in
+`llms.txt`, which is how agents discover it.
 
-   ```markdown
-   # Configure tasks
-
-   {{</* llm-bundle-note */>}}
-
-   As we saw in ...
-   ```
-
-   This renders a note on the HTML page pointing readers to the `section.md` file.
-
-Both the frontmatter parameter and the shortcode are required.
-A CI check (`check-llm-bundle-notes`) verifies they are always in sync.
+The LLM-optimized files are not surfaced as links on the pages they cover. They exist
+in the build and are reached through `llms.txt`, so there is nothing to add to the page
+body.
 
 ## The `llms-full.txt` link conversion
 

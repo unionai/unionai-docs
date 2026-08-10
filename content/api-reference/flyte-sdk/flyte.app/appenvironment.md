@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,26 +27,26 @@ app_env = flyte.app.AppEnvironment(
 ```python
 class AppEnvironment(
     name: str,
-    depends_on: List[Environment],
-    pod_template: Optional[Union[str, PodTemplate]],
-    description: Optional[str],
-    secrets: Optional[SecretRequest],
-    env_vars: Optional[Dict[str, str]],
-    resources: Optional[Resources],
-    interruptible: bool,
-    image: Union[str, Image, Literal['auto'], None],
-    include: Tuple[str, ...],
-    type: Optional[str],
-    port: int | Port,
-    args: *args,
-    command: Optional[Union[List[str], str]],
-    requires_auth: bool,
-    scaling: Scaling,
-    domain: Domain | None,
-    links: List[Link],
-    parameters: List[Parameter],
-    cluster_pool: str,
-    timeouts: Timeouts,
+    depends_on: List[Environment] = <factory>,
+    pod_template: Optional[Union[str, PodTemplate]] = None,
+    description: Optional[str] = None,
+    secrets: Optional[SecretRequest] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    resources: Optional[Resources] = None,
+    interruptible: bool = False,
+    image: Union[str, Image, Literal['auto'], None] = 'auto',
+    include: Tuple[str, ...] = <factory>,
+    type: Optional[str] = None,
+    port: int | Port = 8080,
+    args: Optional[Union[List[str], str]] = None,
+    command: Optional[Union[List[str], str]] = None,
+    requires_auth: bool = True,
+    scaling: Scaling = <factory>,
+    domain: Domain | None = <factory>,
+    links: List[Link] = <factory>,
+    parameters: List[Parameter] = <factory>,
+    cluster_pool: str = 'default',
+    timeouts: Timeouts = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -63,7 +63,7 @@ class AppEnvironment(
 | `include` | `Tuple[str, ...]` | |
 | `type` | `Optional[str]` | App type identifier (e.g., `"streamlit"`, `"fastapi"`). When set, the platform may apply framework-specific defaults. |
 | `port` | `int \| Port` | Port for the app server. Default `8080`. Ports 8012, 8022, 8112, 9090, and 9091 are reserved and cannot be used. Can also be a `Port` object for advanced configuration. |
-| `args` | `*args` | Arguments passed to the app process. Can be a list of strings or a single string. Used for script-based apps (e.g., Streamlit's `["--server.port", "8080"]`). |
+| `args` | `Optional[Union[List[str], str]]` | Arguments passed to the app process. Can be a list of strings or a single string. Used for script-based apps (e.g., Streamlit's `["--server.port", "8080"]`). |
 | `command` | `Optional[Union[List[str], str]]` | Full command to run in the container. Alternative to `args` — use when you need to override the container's entrypoint entirely. |
 | `requires_auth` | `bool` | Whether the app endpoint requires authentication. Default `True`. Set to `False` for public endpoints. |
 | `scaling` | `Scaling` | `Scaling` object controlling replicas and autoscaling behavior. Default is `Scaling()` (scale-to-zero, max 1 replica). |
@@ -97,7 +97,7 @@ class AppEnvironment(
 
 ```python
 def add_dependency(
-    env: Environment,
+    *env: Environment,
 )
 ```
 Add one or more environment dependencies so they are deployed together.
@@ -114,21 +114,21 @@ depend on itself.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `env` | `Environment` | One or more `Environment` instances to add as dependencies. |
+| `*env` | `Environment` | One or more `Environment` instances to add as dependencies. |
 
 ### clone_with()
 
 ```python
 def clone_with(
     name: str,
-    image: Optional[Union[str, Image, Literal['auto']]],
-    resources: Optional[Resources],
-    env_vars: Optional[dict[str, str]],
-    secrets: Optional[SecretRequest],
-    depends_on: Optional[List[Environment]],
-    description: Optional[str],
-    interruptible: Optional[bool],
-    kwargs: **kwargs,
+    image: Optional[Union[str, Image, Literal['auto']]] = None,
+    resources: Optional[Resources] = None,
+    env_vars: Optional[dict[str, str]] = None,
+    secrets: Optional[SecretRequest] = None,
+    depends_on: Optional[List[Environment]] = None,
+    description: Optional[str] = None,
+    interruptible: Optional[bool] = None,
+    **kwargs: Any,
 ) -> AppEnvironment
 ```
 | Parameter | Type | Description |
@@ -141,7 +141,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 ### container_args()
 
@@ -159,7 +159,7 @@ def container_args(
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    parameter_overrides: list[Parameter] | None,
+    parameter_overrides: list[Parameter] | None = None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |

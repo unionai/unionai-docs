@@ -31,8 +31,10 @@ image = (
 ```
 
 {{< variant union >}}
+{{< markdown >}}
 > [!NOTE]
-For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged//configuration/plugins#ray) to enable the Ray plugin in your data plane.
+> For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged/configuration/plugins#ray) to enable the Ray plugin in your data plane.
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Configuration
@@ -102,6 +104,65 @@ ray_config = RayJobConfig(
     address="ray://existing-cluster:10001",
 )
 ```
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Reusable Ray clusters
+
+By default, every Ray task pays the full cluster cold-start cost: a new Ray cluster is provisioned for the task and torn down when it finishes. If your workload runs many Ray jobs with the same cluster configuration, you can instead share one long-lived Ray cluster across tasks by attaching a `flyte.ReusePolicy` (see [Reusable containers](../../user-guide/tasks/task-configuration/reusable-containers)) to the Ray `TaskEnvironment`:
+
+```python
+import flyte
+from flyteplugins.ray import HeadNodeConfig, RayJobConfig, WorkerNodeConfig
+
+ray_env = flyte.TaskEnvironment(
+    name="ray_env",
+    plugin_config=RayJobConfig(
+        head_node_config=HeadNodeConfig(),
+        worker_node_config=[WorkerNodeConfig(group_name="ray-group", replicas=2)],
+    ),
+    image=image,
+    reusable=flyte.ReusePolicy(
+        replicas=1,     # one shared Ray cluster
+        idle_ttl=300,   # tear the cluster down after 5 minutes of inactivity
+        scope="global",  # share across all runs (see below)
+    ),
+)
+```
+
+The first task creates the shared cluster; once it is ready, every subsequent task with the same environment submits its Ray job directly to it, skipping cluster startup entirely. Each job still runs and reports under its own run identity.
+
+The cluster's identity is derived from the task environment: its name, the Ray configuration, the container image and resources, any pod template, the security context (service account and secrets), the code bundle, and the reuse policy itself. Tasks with an identical environment share one cluster; changing any of these (for example deploying a new image or code version, or switching service account) creates a fresh cluster rather than reusing a stale one.
+
+> [!NOTE]
+> `ReusePolicy` logs a recommendation to use at least two replicas to avoid starvation. That advice applies to reusable containers, not to reusable Ray clusters, which require exactly one shared cluster and let Ray schedule work across its nodes. You can ignore the warning here.
+
+### Reuse scope
+
+The `scope` parameter controls how widely the shared cluster is reused:
+
+| Scope | Behavior |
+|-------|----------|
+| `"global"` (default) | One cluster is shared by every run whose tasks use the same environment. The cluster survives across runs until it has been idle for `idle_ttl`. |
+| `"run"` | Reuse is restricted to a single run: each run gets its own shared cluster, and tasks within that run share it. |
+
+```python
+# Each run gets its own Ray cluster, shared by the tasks in that run.
+reusable = flyte.ReusePolicy(replicas=1, idle_ttl=300, scope="run")
+```
+
+### Cleanup
+
+A shared cluster is never deleted when an individual task completes or is aborted. It is shut down automatically after it has been idle (no jobs running against it) for `idle_ttl`.
+
+### Constraints
+
+- `replicas` must be `1`: one shared Ray cluster per environment. An autoscaling range whose maximum is greater than `1`, such as `(1, 3)`, is rejected.
+- `concurrency` must be `1` (the default). Ray itself handles parallelism inside the cluster.
+- `shutdown_after_job_finishes` and `ttl_seconds_after_finished` must not be set on the `RayJobConfig`. The shared cluster has to outlive the individual jobs that run on it, so `idle_ttl` governs its shutdown instead. The `RayJobConfig` example under [Configuration](#configuration) above sets both, so drop them when you add a reuse policy.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Examples
 

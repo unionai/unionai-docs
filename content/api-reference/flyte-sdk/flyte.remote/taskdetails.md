@@ -1,6 +1,6 @@
 ---
 title: TaskDetails
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,9 +14,9 @@ layout: py_api
 ```python
 class TaskDetails(
     pb2: task_definition_pb2.TaskDetails,
-    max_inline_io_bytes: int,
-    overriden_queue: Optional[str],
-    overridden: bool,
+    max_inline_io_bytes: int = 10485760,
+    overriden_queue: Optional[str] = None,
+    overridden: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -57,10 +57,10 @@ class TaskDetails(
 ```python
 def fetch(
     name: str,
-    project: str | None,
-    domain: str | None,
-    version: str | None,
-    auto_version: AutoVersioning | None,
+    project: str | None = None,
+    domain: str | None = None,
+    version: str | None = None,
+    auto_version: AutoVersioning | None = None,
 ) -> TaskDetails
 ```
 | Parameter | Type | Description |
@@ -78,8 +78,8 @@ def get(
     name: str,
     project: str | None,
     domain: str | None,
-    version: str | None,
-    auto_version: AutoVersioning | None,
+    version: str | None = None,
+    auto_version: AutoVersioning | None = None,
 ) -> LazyEntity
 ```
 Get a task by its ID or name. If both are provided, the ID will take precedence.
@@ -100,16 +100,16 @@ Either version or auto_version are required parameters.
 
 ```python
 def override(
-    short_name: Optional[str],
-    resources: Optional[flyte.Resources],
-    retries: Union[int, flyte.RetryStrategy],
-    timeout: Optional[flyte.TimeoutType],
-    env_vars: Optional[Dict[str, str]],
-    secrets: Optional[flyte.SecretRequest],
-    max_inline_io_bytes: Optional[int],
-    cache: Optional[flyte.Cache],
-    queue: Optional[str],
-    kwargs: **kwargs,
+    short_name: Optional[str] = None,
+    resources: Optional[flyte.Resources] = None,
+    retries: Union[int, flyte.RetryStrategy] = 0,
+    timeout: Optional[flyte.TimeoutType] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    secrets: Optional[flyte.SecretRequest] = None,
+    max_inline_io_bytes: Optional[int] = None,
+    cache: Optional[flyte.Cache] = None,
+    queue: Optional[str] = None,
+    **kwargs: Any,
 ) -> TaskDetails
 ```
 Create a new TaskDetails with overridden properties.
@@ -127,7 +127,7 @@ Create a new TaskDetails with overridden properties.
 | `max_inline_io_bytes` | `Optional[int]` | Maximum inline I/O size in bytes. |
 | `cache` | `Optional[flyte.Cache]` | Cache configuration. |
 | `queue` | `Optional[str]` | Queue name for task execution. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns:** A new TaskDetails instance with the overrides applied.
 

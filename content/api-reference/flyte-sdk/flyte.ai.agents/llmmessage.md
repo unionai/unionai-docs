@@ -1,6 +1,6 @@
 ---
 title: LLMMessage
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.ai.agents`
 
-Provider-agnostic shape returned by :data:`LLMCallable`.
+Provider-agnostic shape returned by `LLMCallable`.
 
 ``tool_calls`` follows the OpenAI tool-calling convention; provider-specific
 callers should normalize to this shape.
@@ -20,8 +20,8 @@ callers should normalize to this shape.
 ```python
 class LLMMessage(
     content: str | None,
-    tool_calls: list[dict[str, Any]],
-    raw: Any,
+    tool_calls: list[dict[str, Any]] = <factory>,
+    raw: Any = None,
 )
 ```
 | Parameter | Type | Description |

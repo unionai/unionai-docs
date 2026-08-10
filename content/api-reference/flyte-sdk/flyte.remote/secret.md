@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -51,8 +51,8 @@ def create(
     cls,
     name: str,
     value: Union[str, bytes],
-    type: SecretTypes,
-    cluster_pool: str | None,
+    type: SecretTypes = 'regular',
+    cluster_pool: str | None = None,
 )
 ```
 Create a new secret.
@@ -78,7 +78,7 @@ Create a new secret.
 def delete(
     cls,
     name,
-    cluster_pool: str | None,
+    cluster_pool: str | None = None,
 )
 ```
 Delete a secret by name.
@@ -102,7 +102,7 @@ Delete a secret by name.
 def get(
     cls,
     name: str,
-    cluster_pool: str | None,
+    cluster_pool: str | None = None,
 ) -> Secret
 ```
 Retrieve a secret by name.
@@ -127,8 +127,8 @@ Retrieve a secret by name.
 ```python
 def listall(
     cls,
-    limit: int,
-    cluster_pool: str | None,
+    limit: int = 10,
+    cluster_pool: str | None = None,
 ) -> AsyncIterator[Secret]
 ```
 List all secrets in the current project and domain.

@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,7 +30,7 @@ def get_link(
     parent_action_name: str,
     action_name: str,
     pod_name: str,
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 Returns a task log link given the action.
@@ -46,7 +46,7 @@ Link can have template variables that are replaced by the backend.
 | `parent_action_name` | `str` | The name of the parent action. |
 | `action_name` | `str` | The name of the action. |
 | `pod_name` | `str` | The name of the pod. |
-| `kwargs` | `**kwargs` | Additional keyword arguments. |
+| `**kwargs` |  | Additional keyword arguments. |
 
 **Returns:** The generated link.
 

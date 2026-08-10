@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Build tasks
 
-{{< llm-bundle-note >}}
-
 This section covers the essential programming patterns and techniques for developing robust Flyte workflows. Once you understand the basics of task configuration, these guides will help you build sophisticated, production-ready data pipelines and machine learning workflows.
 
 ## What you'll learn

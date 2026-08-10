@@ -1,6 +1,6 @@
 ---
 title: RuntimeDataValidationError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ This error is raised when the user tries to access a resource that does not exis
 class RuntimeDataValidationError(
     var: str,
     e: Exception | str,
-    task_name: str,
+    task_name: str = '',
 )
 ```
 | Parameter | Type | Description |

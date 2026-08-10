@@ -1,6 +1,6 @@
 ---
 title: BaseRuntimeError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,7 +20,7 @@ class BaseRuntimeError(
     code: str,
     kind: typing.Literal['system', 'unknown', 'user'],
     root_cause_message: str,
-    worker: str | None,
+    worker: str | None = None,
 )
 ```
 | Parameter | Type | Description |

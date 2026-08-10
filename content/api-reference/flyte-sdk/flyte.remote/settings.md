@@ -1,6 +1,6 @@
 ---
 title: Settings
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,11 +21,11 @@ supporting local overrides and inheritance from parent scopes.
 class Settings(
     effective_settings: list[EffectiveSetting],
     local_settings: list[LocalSetting],
-    domain: str | None,
-    project: str | None,
-    _version: int,
-    _parent_effective: dict[str, EffectiveSetting],
-    _map_entry_origins: dict[str, dict[str, EffectiveSetting]],
+    domain: str | None = None,
+    project: str | None = None,
+    _version: int = 0,
+    _parent_effective: dict[str, EffectiveSetting] = <factory>,
+    _map_entry_origins: dict[str, dict[str, EffectiveSetting]] = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -81,8 +81,8 @@ Return resolved effective settings as a flat dict for programmatic use.
 ```python
 def get_settings_for_edit(
     cls,
-    project: str | None,
-    domain: str | None,
+    project: str | None = None,
+    domain: str | None = None,
 ) -> Settings
 ```
 Retrieve settings at the requested scope along with parent scopes.
@@ -204,7 +204,7 @@ def to_yaml_sections()
 Return the YAML content split into labelled sections.
 
 Each tuple is ``(section_title, yaml_body)``; sections are omitted
-when they have no entries. See :meth:`to_yaml` for the comment-prefix
+when they have no entries. See `to_yaml` for the comment-prefix
 convention.
 
 Section titles: ``"Local overrides"``, ``"Inherited settings"``, ``"Available settings"``.

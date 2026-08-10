@@ -9,6 +9,11 @@ layout: py_api
 
 **Package:** `flyteplugins.anthropic`
 
+> [!WARNING] Deprecated
+> `flyteplugins-anthropic` has been removed from the Flyte SDK. This is a frozen snapshot of
+> version 2.5.8. Use [`flyteplugins-agents-claude`](../../agents/claude/_index) instead, and see
+> [Anthropic](./_index) for what changes.
+
 A Claude agent configuration.
 
 This class represents the configuration for a Claude agent, including

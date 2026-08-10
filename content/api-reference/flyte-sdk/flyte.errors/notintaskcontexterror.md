@@ -1,6 +1,6 @@
 ---
 title: NotInTaskContextError
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ This error is raised when the user tries to access the task context outside of a
 class NotInTaskContextError(
     code: str,
     message: str,
-    worker: str | None,
+    worker: str | None = None,
 )
 ```
 | Parameter | Type | Description |

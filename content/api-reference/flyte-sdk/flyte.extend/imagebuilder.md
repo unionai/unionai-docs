@@ -1,6 +1,6 @@
 ---
 title: ImageBuilder
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,8 +26,8 @@ protocol ImageBuilder()
 def build_image(
     image: Image,
     dry_run: bool,
-    wait: bool,
-    force: bool,
+    wait: bool = True,
+    force: bool = False,
 ) -> 'ImageBuild'
 ```
 | Parameter | Type | Description |

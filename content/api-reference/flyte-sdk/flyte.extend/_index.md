@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -125,10 +125,10 @@ This function is used to lazily import modules.  It is used in the following way
 
 ```python
 def pod_spec_from_resources(
-    primary_container_name: str,
-    requests: typing.Optional[flyte._resources.Resources],
-    limits: typing.Optional[flyte._resources.Resources],
-    k8s_gpu_resource_key: str,
+    primary_container_name: str = 'primary',
+    requests: typing.Optional[flyte._resources.Resources] = None,
+    limits: typing.Optional[flyte._resources.Resources] = None,
+    k8s_gpu_resource_key: str = 'nvidia.com/gpu',
 ) -> V1PodSpec
 ```
 | Parameter | Type | Description |

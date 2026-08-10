@@ -1,6 +1,6 @@
 ---
 title: Backoff
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,15 +22,15 @@ The delay before the n-th retry (0-indexed) is::
 ```python
 class Backoff(
     base: datetime.timedelta,
-    factor: float,
-    cap: typing.Optional[datetime.timedelta],
+    factor: float = 1.0,
+    cap: typing.Optional[datetime.timedelta] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `base` | `datetime.timedelta` | Initial delay before the first retry. Must be &gt;= 0. |
 | `factor` | `float` | Per-retry multiplier. ``1.0`` yields constant delay (``base`` for every retry); ``2.0`` doubles each time. Must be &gt;= 1.0. |
-| `cap` | `typing.Optional[datetime.timedelta]` | Upper bound on the computed delay. Required when ``factor &gt; 1`` to prevent unbounded growth. Must be &gt;= 0 when set. |
+| `cap` | `typing.Optional[datetime.timedelta]` | Upper bound on the computed delay. Required when ``factor > 1`` to prevent unbounded growth. Must be &gt;= 0 when set. |
 
 ## Methods
 

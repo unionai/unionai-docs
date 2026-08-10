@@ -1,6 +1,6 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -162,9 +162,9 @@ The other aspects of it - columns, external schema type, etc. can be read from a
 
 ```python
 def get_structured_dataset_type(
-    storage_format: str | None,
-    pa_schema: Optional['pa.lib.Schema'],
-    column_map: typing.OrderedDict[str, type[typing.Any]] | None,
+    storage_format: str | None = None,
+    pa_schema: Optional['pa.lib.Schema'] = None,
+    column_map: typing.OrderedDict[str, type[typing.Any]] | None = None,
 ) -> types_pb2.StructuredDatasetType
 ```
 | Parameter | Type | Description |
@@ -237,10 +237,10 @@ def open_as(
 ```python
 def register(
     h: Handlers,
-    default_for_type: bool,
-    override: bool,
-    default_format_for_type: bool,
-    default_storage_for_type: bool,
+    default_for_type: bool = False,
+    override: bool = False,
+    default_format_for_type: bool = False,
+    default_storage_for_type: bool = False,
 )
 ```
 Call this with any Encoder or Decoder to register it with the flytekit type system. If your handler does not

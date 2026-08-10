@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Enabling GCP resources
 
-{{< llm-bundle-note >}}
-
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage), [Artifact Registry](./enabling-google-artifact-registry), [BigQuery](./enabling-bigquery), and so forth.
 
 > [!NOTE] Secret management

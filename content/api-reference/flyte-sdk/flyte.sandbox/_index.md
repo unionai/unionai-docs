@@ -1,6 +1,6 @@
 ---
 title: flyte.sandbox
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -175,25 +175,25 @@ Warning: Experimental feature: alpha — APIs may change without notice.
 
 ```python
 def create(
-    name: typing.Optional[str],
-    code: typing.Optional[str],
-    inputs: typing.Optional[dict[str, type]],
-    outputs: typing.Optional[dict[str, type]],
-    command: typing.Optional[list[str]],
-    arguments: typing.Optional[list[str]],
-    packages: typing.Optional[list[str]],
-    system_packages: typing.Optional[list[str]],
-    additional_commands: typing.Optional[list[str]],
-    resources: typing.Optional[flyte._resources.Resources],
-    image_config: typing.Optional[flyte.sandbox._code_sandbox.ImageConfig],
-    image_name: typing.Optional[str],
-    image: typing.Optional[str],
-    auto_io: bool,
-    retries: int,
-    timeout: typing.Optional[int],
-    env_vars: typing.Optional[dict[str, str]],
-    secrets: typing.Optional[list],
-    cache: str,
+    name: typing.Optional[str] = None,
+    code: typing.Optional[str] = None,
+    inputs: typing.Optional[dict[str, type]] = None,
+    outputs: typing.Optional[dict[str, type]] = None,
+    command: typing.Optional[list[str]] = None,
+    arguments: typing.Optional[list[str]] = None,
+    packages: typing.Optional[list[str]] = None,
+    system_packages: typing.Optional[list[str]] = None,
+    additional_commands: typing.Optional[list[str]] = None,
+    resources: typing.Optional[flyte._resources.Resources] = None,
+    image_config: typing.Optional[flyte.sandbox._code_sandbox.ImageConfig] = None,
+    image_name: typing.Optional[str] = None,
+    image: typing.Optional[str] = None,
+    auto_io: bool = True,
+    retries: int = 0,
+    timeout: typing.Optional[int] = None,
+    env_vars: typing.Optional[dict[str, str]] = None,
+    secrets: typing.Optional[list] = None,
+    cache: str = 'auto',
 ) -> flyte.sandbox._code_sandbox._Sandbox
 ```
 Create a stateless Python code sandbox.
@@ -211,7 +211,7 @@ Three modes, mutually exclusive:
 - **Verbatim mode** (`code` provided, `auto_io=False`): run an
   arbitrary Python script as-is. CLI args for declared inputs are still
   forwarded, but the script handles all I/O itself (reading from
-  `/var/inputs/`, writing to `/var/outputs/&lt;name&gt;` manually).
+  `/var/inputs/`, writing to `/var/outputs/<name>` manually).
 - **Command mode** (`command` provided): run any shell command directly,
   e.g. a compiled binary or a shell pipeline.
 
@@ -257,8 +257,8 @@ Example — command mode::
 |-|-|-|
 | `name` | `typing.Optional[str]` | Sandbox name. Derives task and image names. |
 | `code` | `typing.Optional[str]` | Python source to run (auto-IO or verbatim mode). Mutually exclusive with `command`. |
-| `inputs` | `typing.Optional[dict[str, type]]` | Input type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (bind-mounted at `/var/inputs/&lt;name&gt;`; available as a path   string in auto-IO mode) |
-| `outputs` | `typing.Optional[dict[str, type]]` | Output type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (user code must write the file or directory to `/var/outputs/&lt;name&gt;`) |
+| `inputs` | `typing.Optional[dict[str, type]]` | Input type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime`, `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (bind-mounted at `/var/inputs/<name>`; available as a path   string in auto-IO mode) |
+| `outputs` | `typing.Optional[dict[str, type]]` | Output type declarations. Supported types: - Primitive: `int`, `float`, `str`, `bool` - Date/time: `datetime.datetime` (ISO-8601), `datetime.timedelta` - IO handles: `flyte.io.File`, `flyte.io.Dir`   (user code must write the file or directory to `/var/outputs/<name>`) |
 | `command` | `typing.Optional[list[str]]` | Entrypoint command (command mode). Mutually exclusive with `code`. |
 | `arguments` | `typing.Optional[list[str]]` | Arguments forwarded to `command` (command mode only). |
 | `packages` | `typing.Optional[list[str]]` | Python packages to install via pip. |
@@ -283,8 +283,8 @@ Example — command mode::
 def orchestrate_local(
     source: str,
     inputs: Dict[str, Any],
-    tasks: Optional[List[Any]],
-    timeout_ms: int,
+    tasks: Optional[List[Any]] = None,
+    timeout_ms: int = 30000,
 ) -> Any
 ```
 One-shot local execution of a code string in the Monty sandbox.
@@ -329,13 +329,13 @@ Warning: Experimental feature: alpha — APIs may change without notice.
 def orchestrator_from_str(
     source: str,
     inputs: Dict[str, type],
-    output: type,
-    tasks: Optional[List[Any]],
-    name: str,
-    timeout_ms: int,
-    cache: CacheRequest,
-    retries: int,
-    image: Optional[Any],
+    output: type = NoneType,
+    tasks: Optional[List[Any]] = None,
+    name: str = 'sandboxed-code',
+    timeout_ms: int = 30000,
+    cache: CacheRequest = 'disable',
+    retries: int = 0,
+    image: Optional[Any] = None,
 ) -> CodeTaskTemplate
 ```
 Create a reusable sandboxed task from a code string.

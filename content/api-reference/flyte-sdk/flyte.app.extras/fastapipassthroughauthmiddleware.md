@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,8 +31,8 @@ Thread Safety:
 ```python
 class FastAPIPassthroughAuthMiddleware(
     app,
-    header_extractors: list[HeaderExtractor] | None,
-    excluded_paths: set[str] | None,
+    header_extractors: list[HeaderExtractor] | None = None,
+    excluded_paths: set[str] | None = None,
 )
 ```
 Initialize the Flyte authentication middleware.

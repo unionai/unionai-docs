@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Build apps
 
-{{< llm-bundle-note >}}
-
 This section covers how to build different types of apps with Flyte, from single-script apps to multi-file projects, common usage patterns, and authentication.
 
 > [!TIP]

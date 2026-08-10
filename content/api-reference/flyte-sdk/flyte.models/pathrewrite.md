@@ -1,6 +1,6 @@
 ---
 title: PathRewrite
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,7 +39,7 @@ def from_str(
     pattern: str,
 ) -> PathRewrite
 ```
-Create a PathRewrite from a string pattern of the form `old_prefix-&gt;new_prefix`.
+Create a PathRewrite from a string pattern of the form `old_prefix->new_prefix`.
 
 
 | Parameter | Type | Description |

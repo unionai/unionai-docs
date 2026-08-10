@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.chat
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,7 +14,7 @@ flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents.
 
 | Class | Description |
 |-|-|
-| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An :class:`~flyte. |
+| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `AppEnvironment` that spins up a FastAPI chat. |
 | [`CustomTheme`](../flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
 
 ### Methods
@@ -38,18 +38,18 @@ flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents.
 
 ```python
 def build_chat_html(
-    title: str,
-    custom_css: str,
-    logo_url: str | None,
-    additional_buttons: list[dict[str, str]] | None,
-    subtitle: str | None,
+    title: str = 'Agent Chat',
+    custom_css: str = '',
+    logo_url: str | None = None,
+    additional_buttons: list[dict[str, str]] | None = None,
+    subtitle: str | None = None,
 ) -> str
 ```
 Build the full chat HTML with the given *title* and optional *custom_css*.
 
 The *custom_css* string is injected **after** the default styles, so it
 can override any default rule.  *logo_url*, when provided, renders an
-``&lt;img&gt;`` to the left of the title in the header bar.
+``<img>`` to the left of the title in the header bar.
 
 *subtitle*, when provided, renders a subtitle paragraph below the
 header bar.

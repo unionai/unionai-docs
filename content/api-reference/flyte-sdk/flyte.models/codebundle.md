@@ -1,6 +1,6 @@
 ---
 title: CodeBundle
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,11 +19,11 @@ The code bundle computes the version of the code using the hash of the code.
 ```python
 class CodeBundle(
     computed_version: str,
-    destination: str,
-    tgz: str | None,
-    pkl: str | None,
-    downloaded_path: pathlib.Path | None,
-    files: List[str] | None,
+    destination: str = '.',
+    tgz: str | None = None,
+    pkl: str | None = None,
+    downloaded_path: pathlib.Path | None = None,
+    files: List[str] | None = None,
 )
 ```
 | Parameter | Type | Description |

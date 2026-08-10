@@ -1,6 +1,6 @@
 ---
 title: Checkpoint
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,7 +27,7 @@ they return `flyte.Checkpoint.path` so callers can scan the restored tree (e.g. 
 ```python
 class Checkpoint(
     checkpoint_dest: str,
-    checkpoint_src: str | None,
+    checkpoint_src: str | None = None,
 )
 ```
 | Parameter | Type | Description |

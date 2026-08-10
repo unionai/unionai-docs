@@ -1,6 +1,6 @@
 ---
 title: Condition
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,10 +13,10 @@ A remote Condition registered within an action of a run.
 
 Conditions pause a run until an external signal is delivered. On the backend a condition is
 backed by a *condition action*, so a ``Condition`` simply wraps the condition
-:class:`~flyteidl2.workflow.run_definition_pb2.Action` it represents.
+`Action` it represents.
 
-Use :meth:`listall` to discover the conditions of a run, :meth:`get` to look one up by
-name, and :meth:`signal` to resolve one with a typed payload.
+Use `listall` to discover the conditions of a run, `get` to look one up by
+name, and `signal` to resolve one with a typed payload.
 
 
 ## Parameters
@@ -63,7 +63,7 @@ def get(
     cls,
     name: str,
     run_name: str,
-    action_name: str | None,
+    action_name: str | None = None,
 ) -> Condition | None
 ```
 Retrieve an existing Condition by name within a run.
@@ -93,8 +93,8 @@ and returns the first whose name matches.
 def listall(
     cls,
     run_name: str,
-    action_name: str | None,
-    limit: int,
+    action_name: str | None = None,
+    limit: int = 100,
 ) -> AsyncIterator[Condition]
 ```
 List all Conditions for a run, optionally filtered to a specific parent action.

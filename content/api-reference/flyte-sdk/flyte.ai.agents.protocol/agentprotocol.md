@@ -1,6 +1,6 @@
 ---
 title: AgentProtocol
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -10,7 +10,7 @@ layout: py_api
 **Package:** `flyte.ai.agents.protocol`
 
 Minimal protocol that any agent must satisfy to work with
-:class:`AgentChatAppEnvironment`.
+`AgentChatAppEnvironment`.
 
 
 ```python
@@ -20,7 +20,7 @@ protocol AgentProtocol()
 
 | Method | Description |
 |-|-|
-| [`run()`](#run) | Process *message* (with prior *memory*) and return an :class:`AgentResult`. |
+| [`run()`](#run) | Process *message* (with prior *memory*) and return an `AgentResult`. |
 | [`tool_descriptions()`](#tool_descriptions) | Return JSON-friendly metadata for every registered tool. |
 
 
@@ -29,13 +29,13 @@ protocol AgentProtocol()
 ```python
 def run(
     message: str,
-    memory: list[dict[str, Any]] | 'MemoryStore' | None,
+    memory: list[dict[str, Any]] | 'MemoryStore' | None = None,
 ) -> AgentResult
 ```
-Process *message* (with prior *memory*) and return an :class:`AgentResult`.
+Process *message* (with prior *memory*) and return an `AgentResult`.
 
 ``memory`` may be a ``list[dict]`` of prior messages (e.g. a chat
-``history``) or a :class:`MemoryStore` for durable, cross-run state.
+``history``) or a `MemoryStore` for durable, cross-run state.
 
 Synchronous entry point. In async contexts, use ``run.aio(...)``.
 

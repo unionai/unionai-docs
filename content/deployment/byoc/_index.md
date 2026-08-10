@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # BYOC deployment
 
-{{< llm-bundle-note >}}
-
 In a BYOC (Bring Your Own Cloud) deployment, Union.ai manages the data plane infrastructure in your cloud account.
 You provide the cloud account and network configuration; Union.ai handles Kubernetes cluster operations, upgrades, and monitoring.
 
