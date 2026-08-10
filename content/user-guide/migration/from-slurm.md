@@ -327,9 +327,10 @@ available from `flyte.ctx()` (`rank`, `local_rank`, `node_rank`, `nnodes`, `worl
 for maintenance, without spending the `max_restarts` budget you set aside for actual crashes.
 
 > [!NOTE]
-> Clustered tasks are new and currently target `torchrun` workloads. MPI applications are not a
-> supported launcher yet. For Ray, Spark, or Dask, use the corresponding integration, which brings
-> up a per-task cluster and tears it down when the task finishes.
+> Clustered tasks are new and currently target `torchrun` workloads. There is no MPI launcher yet,
+> so `mpirun`-based applications stay on Slurm for now. For Ray, Spark, or Dask, use the
+> corresponding integration, which brings up a per-task cluster and tears it down when the task
+> finishes.
 
 Docs: [Clustered task environments](../../api-reference/flyte-sdk/flyte.clustered/_index)
 
@@ -530,11 +531,14 @@ Three things Slurm's scheduler does are not available today, and if your workloa
 plan around them explicitly:
 
 - **Gang admission.** A clustered task's replicas are launched together and `torchrun` waits for the
-  full group before training starts, but scheduler-level all-or-nothing admission is not in place.
-- **Topology-aware placement.** There is no way to ask for workers on the same rack or switch.
+  full group before training starts, but scheduler-level all-or-nothing admission is in the works
+  and will be supported soon.
+- **Topology-aware placement.** There is currently no way to request workers on the same rack or
+  switch. We plan to support this soon as well.
 - **Preemption.** Nothing evicts running low-priority work to make room for high-priority work the
   way a Slurm QOS can. Priority affects the order work starts in, not what happens to work that has
-  already started.
+  already started. Preemption is something we plan to prioritize in the near future, but let us know
+  if it is a priority for you.
 
 These are gaps in the Kubernetes batch ecosystem rather than anything specific to Flyte, and the
 upstream work on JobSet, Dynamic Resource Allocation, and workload-aware scheduling is closing them.
