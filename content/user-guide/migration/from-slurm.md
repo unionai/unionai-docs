@@ -24,7 +24,7 @@ Three shifts account for most of the work:
 The rest of this guide maps Slurm constructs onto their Flyte equivalents.
 
 > [!NOTE]
-> The [`flyte-migrate-slurm` skill](../../api-reference/agent-plugins/#migration-slurm--flyte-2)
+> The [`flyte-migrate-slurm` skill](../../api-reference/agent-plugins#migration-slurm--flyte-2)
 > automates the mechanical part of this translation: `#SBATCH` directives become task environment
 > configuration, job arrays become `flyte.map` or `asyncio.gather`, and dependency chains become
 > plain Python. Treat its output as a first pass to review against this guide, not a finished port.
@@ -441,15 +441,16 @@ outputs for every action.
 
 {{< variant union >}}
 {{< markdown >}}
-`srun --pty bash` and `ssh node042` also have equivalents. A run launched with `--debug` (or
-`debug=True` from the SDK) starts a browser-based VS Code session inside the task pod, where you can
-set breakpoints and step through the code on the same hardware, against the same data and
-dependencies the run uses. Any running action can also be opened from the UI with one click, and SSH
-directly into the task pod is available in beta.
+`srun --pty bash` and `ssh node042` both have direct equivalents. You can
+[SSH into a running task](../tasks/task-deployment/debug-runs#ssh-into-the-task-beta), currently in
+beta, which is the closest match to an interactive Slurm session. A run launched with `--debug` (or
+`debug=True` from the SDK) goes further and starts a browser-based VS Code session inside the task
+pod, where you can set breakpoints and step through the code on the same hardware, against the same
+data and dependencies the run uses. Any running action can also be opened from the UI with one click.
 
-The scope is narrower than an ssh session on a Slurm node, which helps: you land inside the failing
-task's container, with the image and paths that task actually ran with, rather than on a shared node
-whose environment may not match the job.
+What differs is where you land. An interactive session on a Slurm node puts you on a shared machine
+whose environment may not match the job; here you land inside the failing task's own container, with
+the image and paths that task actually ran with.
 
 Docs: [Debug a run](../tasks/task-deployment/debug-runs) &middot; [View logs](../tasks/task-deployment/view-logs)
 {{< /markdown >}}
