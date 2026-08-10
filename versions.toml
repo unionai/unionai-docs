@@ -5,6 +5,18 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
+# indexed    = whether this line's stable tree is search-indexed. Defaults true
+#              (the stable tree is normally the line's one canonical surface).
 stable = "v1.16.26.2"
 enumerated = []
 latest = false
+# The v1 line is withheld from search so Google consolidates on v2 (DOC-1291).
+# This was already the effective state, but only by accident: the Pages
+# preview-alias emitted X-Robots-Tag: noindex (DOC-1332) while this build emitted
+# <meta name="robots" content="index,follow">, so the two directives contradicted
+# each other and the more restrictive one happened to win. Setting this makes the
+# meta tag agree, so the line stays out of the index even if that header changes.
+# Note v1 is ACTIVE, not frozen -- it still takes flytekit 1.x releases and new
+# cuts. This withholds it from Google; it stays reachable by direct link and by
+# on-site search.
+indexed = false
