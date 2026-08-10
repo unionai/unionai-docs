@@ -23,6 +23,12 @@ Three shifts account for most of the work:
 
 The rest of this guide maps Slurm constructs onto their Flyte equivalents.
 
+> [!NOTE]
+> The [`flyte-migrate-slurm` skill](../../api-reference/agent-plugins/#migration-slurm--flyte-2)
+> automates the mechanical part of this translation: `#SBATCH` directives become task environment
+> configuration, job arrays become `flyte.map` or `asyncio.gather`, and dependency chains become
+> plain Python. Treat its output as a first pass to review against this guide, not a finished port.
+
 ---
 
 ## The mapping at a glance
@@ -129,8 +135,29 @@ Two practical notes for people coming from modules:
 - **Different tasks can use different images.** There is no single cluster-wide Python environment
   to keep everyone happy. A preprocessing task on a slim CPU image and a training task on a CUDA
   image are part of the same run.
-- **Images are content-hashed and built remotely on first use.** You do not need Docker on your
-  laptop, and rerunning with an unchanged spec reuses the previous build.
+- **Images are content-hashed.** Rerunning with an unchanged spec reuses the previous build instead
+  of rebuilding.
+
+Where that build runs depends on your deployment.
+
+{{< variant union >}}
+{{< markdown >}}
+
+Set `image.builder` to `remote` in your config file to build with Union's `ImageBuilder`, which runs
+the build on the cluster and needs no Docker and no registry credentials on your machine. Set it to
+`local` to build with Docker locally and push to a registry your cluster can pull from.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+Images are built locally and pushed to a registry your cluster can pull from, so `image.builder`
+must be set to `local`, Docker must be running on your machine, and you must have run
+`docker login` against that registry.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Docs: [Container images](../tasks/task-configuration/container-images)
 
@@ -435,6 +462,9 @@ Docs: [Interacting with runs](../tasks/task-deployment/interacting-with-runs) &m
 
 ---
 
+{{< variant union >}}
+{{< markdown >}}
+
 ## Cold start and warm pools
 
 A Slurm allocation feels instant because the nodes are already yours and already running. In Flyte,
@@ -462,6 +492,9 @@ between invocations on a replica, so global state deserves care.
 Docs: [Reusable containers](../tasks/task-configuration/reusable-containers)
 
 ---
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Staging the migration
 
