@@ -39,21 +39,21 @@ install needed); set an Anthropic API key in the environment.
 ```python
 def run_agent(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: str | None,
-    instructions: str | None,
-    max_turns: int | None,
-    durable: bool,
-    observability: bool,
-    options: ClaudeAgentOptions | None,
-    server_name: str,
-    memory_key: str | None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str | None = 'claude-sonnet-4-5',
+    instructions: str | None = None,
+    max_turns: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    options: ClaudeAgentOptions | None = None,
+    server_name: str = 'flyte_tools',
+    memory_key: str | None = None,
 ) -> str
 ```
 Run a Claude agent with the given tools and prompt; return the final text.
 
 Await this from an async task as ``await run_agent(...)``; from a sync task
-use :func:`run_agent_sync` instead.
+use `run_agent_sync` instead.
 
 Call this from inside an ``@env.task`` — that task is the durable parent,
 and each tool the agent calls runs as a durable Flyte child action. Pass a
@@ -94,15 +94,15 @@ image needs no separate Node.js install — just an Anthropic API key.
 ```python
 def run_agent_sync(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: str | None,
-    instructions: str | None,
-    max_turns: int | None,
-    durable: bool,
-    observability: bool,
-    options: ClaudeAgentOptions | None,
-    server_name: str,
-    memory_key: str | None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str | None = 'claude-sonnet-4-5',
+    instructions: str | None = None,
+    max_turns: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    options: ClaudeAgentOptions | None = None,
+    server_name: str = 'flyte_tools',
+    memory_key: str | None = None,
 ) -> str
 ```
 Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop.
@@ -110,7 +110,7 @@ Synchronous variant of run_agent for use in sync tasks; runs the async implement
 Run a Claude agent with the given tools and prompt; return the final text.
 
     Await this from an async task as ``await run_agent(...)``; from a sync task
-    use :func:`run_agent_sync` instead.
+    use `run_agent_sync` instead.
 
     Call this from inside an ``@env.task`` — that task is the durable parent,
     and each tool the agent calls runs as a durable Flyte child action. Pass a
@@ -151,9 +151,9 @@ Run a Claude agent with the given tools and prompt; return the final text.
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    name: str | None,
-    description: str | None,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> SdkMcpTool | typing.Callable
 ```
 Convert a Flyte task (or plain callable) into a Claude Agent SDK tool.
@@ -161,7 +161,7 @@ Convert a Flyte task (or plain callable) into a Claude Agent SDK tool.
 - For an ``@env.task``: returns an ``SdkMcpTool`` whose handler runs the task
   as a durable Flyte child action when Claude calls it. The input schema is
   derived from the task via the Flyte type engine. The backing task is wired
-  to :class:`~flyteplugins.agents.core.ToolTaskResolver` and exposed via
+  to `ToolTaskResolver` and exposed via
   ``__wrapped_task__`` so it resolves to itself on the worker (no recursion).
 - For a plain (async) callable: returns an ``SdkMcpTool`` that runs it inline.
 

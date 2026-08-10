@@ -9,14 +9,14 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.core`
 
-A :class:`flyte.report.Timeline` that defaults to the ``Agent`` report tab.
+A `flyte.report.Timeline` that defaults to the ``Agent`` report tab.
 
 
 ## Parameters
 
 ```python
 class ReportTimeline(
-    tab_name: str,
+    tab_name: str = 'Agent',
 )
 ```
 | Parameter | Type | Description |
@@ -46,11 +46,11 @@ def heading(
 
 ```python
 def row(
-    icon: str,
-    label: typing.Any,
-    meta: str,
-    detail: str,
-    error: typing.Any,
+    icon: str = '•',
+    label: typing.Any = '',
+    meta: str = '',
+    detail: str = '',
+    error: typing.Any = None,
 )
 ```
 | Parameter | Type | Description |

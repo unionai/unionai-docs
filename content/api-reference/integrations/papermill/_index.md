@@ -1,6 +1,6 @@
 ---
 title: Papermill
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,9 +21,9 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`load_dataframe()`](#load_dataframe) | Load a ``flyte. |
-| [`load_dir()`](#load_dir) | Load a ``flyte. |
-| [`load_file()`](#load_file) | Load a ``flyte. |
+| [`load_dataframe()`](#load_dataframe) | Load a ``flyte.io.DataFrame`` from a serialized URI inside a notebook. |
+| [`load_dir()`](#load_dir) | Load a ``flyte.io.Dir`` from a serialized path inside a notebook. |
+| [`load_file()`](#load_file) | Load a ``flyte.io.File`` from a serialized path inside a notebook. |
 | [`record_outputs()`](#record_outputs) | Record output values from a notebook for use by downstream Flyte tasks. |
 
 
@@ -34,7 +34,7 @@ layout: py_api
 ```python
 def load_dataframe(
     uri: str,
-    fmt: str,
+    fmt: str = 'parquet',
 )
 ```
 Load a ``flyte.io.DataFrame`` from a serialized URI inside a notebook.
@@ -113,7 +113,7 @@ this helper to reconstruct the ``File`` object inside the notebook::
 
 ```python
 def record_outputs(
-    kwargs: **kwargs,
+    **kwargs: Any,
 ) -> str
 ```
 Record output values from a notebook for use by downstream Flyte tasks.
@@ -136,7 +136,7 @@ Example (cell tagged ``"outputs"``)::
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns**
 

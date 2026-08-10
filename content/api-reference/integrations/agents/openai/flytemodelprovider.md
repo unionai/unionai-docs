@@ -20,7 +20,7 @@ Set it on ``RunConfig.model_provider`` (``run_agent`` does this for you).
 
 ```python
 class FlyteModelProvider(
-    inner: ModelProvider | None,
+    inner: ModelProvider | None = None,
 )
 ```
 | Parameter | Type | Description |

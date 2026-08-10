@@ -1,6 +1,6 @@
 ---
 title: AutoCoderAgent
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,24 +23,24 @@ Uses Sandbox internally for isolated code execution.
 ```python
 class AutoCoderAgent(
     model: str,
-    name: str,
-    system_prompt: typing.Optional[str],
-    api_key: typing.Optional[str],
-    api_base: typing.Optional[str],
-    litellm_params: typing.Optional[dict],
-    base_packages: typing.Optional[list[str]],
-    resources: typing.Optional[flyte._resources.Resources],
-    image_config: typing.Optional[flyte.sandbox._code_sandbox.ImageConfig],
-    max_iterations: int,
-    max_sample_rows: int,
-    skip_tests: bool,
-    sandbox_retries: int,
-    timeout: typing.Optional[int],
-    env_vars: typing.Optional[dict[str, str]],
-    secrets: typing.Optional[list],
-    cache: str,
-    backend: typing.Literal['litellm', 'claude'],
-    agent_max_turns: int,
+    name: str = 'auto-coder',
+    system_prompt: typing.Optional[str] = None,
+    api_key: typing.Optional[str] = None,
+    api_base: typing.Optional[str] = None,
+    litellm_params: typing.Optional[dict] = None,
+    base_packages: typing.Optional[list[str]] = None,
+    resources: typing.Optional[flyte._resources.Resources] = None,
+    image_config: typing.Optional[flyte.sandbox._code_sandbox.ImageConfig] = None,
+    max_iterations: int = 10,
+    max_sample_rows: int = 100,
+    skip_tests: bool = False,
+    sandbox_retries: int = 0,
+    timeout: typing.Optional[int] = None,
+    env_vars: typing.Optional[dict[str, str]] = None,
+    secrets: typing.Optional[list] = None,
+    cache: str = 'auto',
+    backend: typing.Literal['litellm', 'claude'] = 'litellm',
+    agent_max_turns: int = 50,
 )
 ```
 | Parameter | Type | Description |
@@ -82,11 +82,11 @@ class AutoCoderAgent(
 ```python
 def generate(
     prompt: str,
-    schema: typing.Optional[str],
-    constraints: typing.Optional[list[str]],
-    samples: typing.Optional[dict[str, pandas.DataFrame | flyte.io._file.File]],
-    inputs: typing.Optional[dict[str, type]],
-    outputs: typing.Optional[dict[str, type]],
+    schema: typing.Optional[str] = None,
+    constraints: typing.Optional[list[str]] = None,
+    samples: typing.Optional[dict[str, pandas.DataFrame | flyte.io._file.File]] = None,
+    inputs: typing.Optional[dict[str, type]] = None,
+    outputs: typing.Optional[dict[str, type]] = None,
 ) -> flyteplugins.codegen.core.types.CodeGenEvalResult
 ```
 Generate and evaluate code in an isolated sandbox.

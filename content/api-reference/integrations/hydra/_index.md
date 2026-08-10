@@ -1,6 +1,6 @@
 ---
 title: Hydra
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -58,8 +58,8 @@ Provides three entry points for running Flyte tasks via Hydra:
 def apply_task_env(
     task: Callable,
     cfg: DictConfig | Mapping[str, Any],
-    task_env_key: str,
-    task_name: str | None,
+    task_env_key: str = 'task_env',
+    task_name: str | None = None,
 ) -> Callable
 ```
 Return task with Hydra task-env overrides applied.
@@ -81,15 +81,15 @@ before invoking the task.
 ```python
 def hydra_run(
     task: Callable,
-    config_path: str | Path | None,
-    config_name: str,
-    overrides: list[str] | None,
-    mode: str,
-    wait: bool,
-    wait_max_workers: int | None,
-    run_options: dict[str, Any] | None,
-    task_env_key: str,
-    kwargs: **kwargs,
+    config_path: str | Path | None = None,
+    config_name: str = 'config',
+    overrides: list[str] | None = None,
+    mode: str = 'remote',
+    wait: bool = True,
+    wait_max_workers: int | None = 32,
+    run_options: dict[str, Any] | None = None,
+    task_env_key: str = 'task_env',
+    **kwargs: Any,
 ) -> Any
 ```
 Run a single Flyte task with a Hydra-composed config.
@@ -107,7 +107,7 @@ Run a single Flyte task with a Hydra-composed config.
 | `wait_max_workers` | `int \| None` | Max worker threads used to wait for remote runs. |
 | `run_options` | `dict[str, Any] \| None` | Optional dict of kwargs forwarded to ``flyte.with_runcontext`` (e.g. ``service_account``, ``name``, ``copy_style``, ``raw_data_path``). |
 | `task_env_key` | `str` | Config key containing entry-task ``task.override`` kwargs, nested under the launched task's name. Child task overrides must be applied by user code. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns**
 
@@ -119,15 +119,15 @@ the resolved task output.
 ```python
 def hydra_sweep(
     task: Callable,
-    config_path: str | Path | None,
-    config_name: str,
-    overrides: list[str] | None,
-    mode: str,
-    wait: bool,
-    wait_max_workers: int | None,
-    run_options: dict[str, Any] | None,
-    task_env_key: str,
-    kwargs: **kwargs,
+    config_path: str | Path | None = None,
+    config_name: str = 'config',
+    overrides: list[str] | None = None,
+    mode: str = 'remote',
+    wait: bool = True,
+    wait_max_workers: int | None = 32,
+    run_options: dict[str, Any] | None = None,
+    task_env_key: str = 'task_env',
+    **kwargs: Any,
 ) -> list[Any]
 ```
 Run a Hydra sweep, one Flyte execution per override combination.
@@ -164,7 +164,7 @@ sweeper plugin is properly discovered and invoked.
 | `wait_max_workers` | `int \| None` | Max worker threads used to wait for remote runs. |
 | `run_options` | `dict[str, Any] \| None` | Optional dict of kwargs forwarded to ``flyte.with_runcontext`` (e.g. ``service_account``, ``name``, ``copy_style``, ``raw_data_path``). |
 | `task_env_key` | `str` | Config key containing entry-task ``task.override`` kwargs, nested under the launched task's name. Child task overrides must be applied by user code. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns**
 

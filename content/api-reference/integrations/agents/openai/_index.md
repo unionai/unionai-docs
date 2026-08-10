@@ -32,20 +32,20 @@ use them directly with ``Runner.run`` and a ``RunConfig``.
 
 | Class | Description |
 |-|-|
-| [`FlyteModel`](./flytemodel) | Wrap a :class:`~agents. |
+| [`FlyteModel`](./flytemodel) | Wrap a `Model` so each turn is durable. |
 | [`FlyteModelProvider`](./flytemodelprovider) | Wrap a ``ModelProvider`` so every model it returns produces durable turns. |
 | [`FlyteSession`](./flytesession) | An ``agents`` ``Session`` whose items live in a keyed Flyte ``MemoryStore``. |
-| [`FlyteTracingProcessor`](./flytetracingprocessor) | Map OpenAI Agents spans onto the shared :class:`ReportTimeline`. |
+| [`FlyteTracingProcessor`](./flytetracingprocessor) | Map OpenAI Agents spans onto the shared `ReportTimeline`. |
 | [`FunctionTool`](./functiontool) | An OpenAI Agents ``FunctionTool`` backed by a Flyte task. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`install_flyte_tracing()`](#install_flyte_tracing) | Install a :class:`FlyteTracingProcessor` as a global trace processor. |
+| [`install_flyte_tracing()`](#install_flyte_tracing) | Install a `FlyteTracingProcessor` as a global trace processor. |
 | [`run_agent()`](#run_agent) | Run an OpenAI Agents SDK agent with Flyte providing the runtime. |
 | [`run_agent_sync()`](#run_agent_sync) | Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop. |
-| [`tool()`](#tool) | Flyte-aware replacement for ``agents. |
+| [`tool()`](#tool) | Flyte-aware replacement for ``agents.function_tool`` — named ``tool`` for consistency. |
 
 
 ## Methods
@@ -54,11 +54,11 @@ use them directly with ``Runner.run`` and a ``RunConfig``.
 
 ```python
 def install_flyte_tracing(
-    exclusive: bool,
-    tab_name: str,
+    exclusive: bool = True,
+    tab_name: str = 'Agent',
 ) -> FlyteTracingProcessor
 ```
-Install a :class:`FlyteTracingProcessor` as a global trace processor.
+Install a `FlyteTracingProcessor` as a global trace processor.
 
 With ``exclusive=True`` (default) it replaces all processors, so traces are
 rendered only into the Flyte report and nothing is uploaded to OpenAI's
@@ -76,22 +76,22 @@ tracing backend. Set ``exclusive=False`` to keep the SDK's default processors
 ```python
 def run_agent(
     input: str | list[typing.Any],
-    agent: Agent | None,
-    tools: typing.Sequence[typing.Any],
-    model: str,
-    instructions: str | None,
-    name: str,
-    max_turns: int,
-    durable: bool,
-    observability: bool,
-    run_config: RunConfig | None,
-    memory_key: str | None,
+    agent: Agent | None = None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str = 'gpt-4.1',
+    instructions: str | None = None,
+    name: str = 'flyte-agent',
+    max_turns: int = 10,
+    durable: bool = True,
+    observability: bool = True,
+    run_config: RunConfig | None = None,
+    memory_key: str | None = None,
 ) -> str
 ```
 Run an OpenAI Agents SDK agent with Flyte providing the runtime.
 
 Await this from an async task as ``await run_agent(...)``; from a sync task
-use :func:`run_agent_sync` instead.
+use `run_agent_sync` instead.
 
 Call this from inside an ``@env.task`` — that task is the durable parent.
 Within it, each model turn is recorded via ``flyte.trace`` (replayed on
@@ -101,7 +101,7 @@ the agent timeline.
 
 Provide either a fully-built ``agent`` (keeping its handoffs/guardrails), or
 ``tools`` + ``instructions`` + ``model`` to have one built for you. ``tools``
-may be :func:`tool`-wrapped tools or bare ``@env.task`` templates
+may be `tool`-wrapped tools or bare ``@env.task`` templates
 (wrapped automatically).
 
 
@@ -127,84 +127,69 @@ may be :func:`tool`-wrapped tools or bare ``@env.task`` templates
 ```python
 def run_agent_sync(
     input: str | list[typing.Any],
-    agent: Agent | None,
-    tools: typing.Sequence[typing.Any],
-    model: str,
-    instructions: str | None,
-    name: str,
-    max_turns: int,
-    durable: bool,
-    observability: bool,
-    run_config: RunConfig | None,
-    memory_key: str | None,
+    agent: Agent | None = None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str = 'gpt-4.1',
+    instructions: str | None = None,
+    name: str = 'flyte-agent',
+    max_turns: int = 10,
+    durable: bool = True,
+    observability: bool = True,
+    run_config: RunConfig | None = None,
+    memory_key: str | None = None,
 ) -> str
 ```
 Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop.
 
 Run an OpenAI Agents SDK agent with Flyte providing the runtime.
 
-    Await this from an async task as ``await run_agent(...)``; from a sync task
-    use :func:`run_agent_sync` instead.
+Await this from an async task as ``await run_agent(...)``; from a sync task
+use `run_agent_sync` instead.
 
-    Call this from inside an ``@env.task`` — that task is the durable parent.
-    Within it, each model turn is recorded via ``flyte.trace`` (replayed on
-    retry) and each tool call runs as a durable Flyte child action. Give the
-    enclosing task ``retries=...`` for self-healing and ``report=True`` to see
-    the agent timeline.
+Call this from inside an ``@env.task`` — that task is the durable parent.
+Within it, each model turn is recorded via ``flyte.trace`` (replayed on
+retry) and each tool call runs as a durable Flyte child action. Give the
+enclosing task ``retries=...`` for self-healing and ``report=True`` to see
+the agent timeline.
 
-    Provide either a fully-built ``agent`` (keeping its handoffs/guardrails), or
-    ``tools`` + ``instructions`` + ``model`` to have one built for you. ``tools``
-    may be :func:`tool`-wrapped tools or bare ``@env.task`` templates
-    (wrapped automatically).
+Provide either a fully-built ``agent`` (keeping its handoffs/guardrails), or
+``tools`` + ``instructions`` + ``model`` to have one built for you. ``tools``
+may be `tool`-wrapped tools or bare ``@env.task`` templates
+(wrapped automatically).
 
-    Args:
-        input: The user prompt (or a list of input items).
-        agent: A pre-built ``agents.Agent``. Mutually exclusive with ``tools``.
-        tools: Tools to expose (when ``agent`` is not given).
-        model: Model name (when ``agent`` is not given).
-        instructions: System instructions (when ``agent`` is not given).
-        name: Agent name (when ``agent`` is not given).
-        max_turns: Maximum model to tool turns and vice versa before the SDK raises.
-        durable: Record/replay each model turn via ``flyte.trace``.
-        observability: Render the run timeline into the Flyte task report.
-        run_config: A custom ``RunConfig``; ``model_provider`` is wrapped for
-            durability unless ``durable=False``.
-        memory_key: Stable id (e.g. a user/thread id) for cross-run memory.
-            When set, conversation history is loaded from and saved to a durable,
-            keyed ``MemoryStore`` (via the SDK's ``Session``), so a later run with
-            the same key continues the conversation. ``None`` disables memory.
-
-    Returns:
-        The agent's final output as a string.
-    
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `input` | `str \| list[typing.Any]` | |
-| `agent` | `Agent \| None` | |
-| `tools` | `typing.Sequence[typing.Any]` | |
-| `model` | `str` | |
-| `instructions` | `str \| None` | |
-| `name` | `str` | |
-| `max_turns` | `int` | |
-| `durable` | `bool` | |
-| `observability` | `bool` | |
-| `run_config` | `RunConfig \| None` | |
-| `memory_key` | `str \| None` | |
+| `input` | `str \| list[typing.Any]` | The user prompt (or a list of input items). |
+| `agent` | `Agent \| None` | A pre-built ``agents.Agent``. Mutually exclusive with ``tools``. |
+| `tools` | `typing.Sequence[typing.Any]` | Tools to expose (when ``agent`` is not given). |
+| `model` | `str` | Model name (when ``agent`` is not given). |
+| `instructions` | `str \| None` | System instructions (when ``agent`` is not given). |
+| `name` | `str` | Agent name (when ``agent`` is not given). |
+| `max_turns` | `int` | Maximum model to tool turns and vice versa before the SDK raises. |
+| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. |
+| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `run_config` | `RunConfig \| None` | A custom ``RunConfig``; ``model_provider`` is wrapped for durability unless ``durable=False``. |
+| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, conversation history is loaded from and saved to a durable, keyed ``MemoryStore`` (via the SDK's ``Session``), so a later run with the same key continues the conversation. ``None`` disables memory. |
+
+**Returns**
+
+The agent's final output as a string.
+
 
 #### tool()
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    kwargs: **kwargs,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    **kwargs: typing.Any,
 ) -> FunctionTool | OpenAIFunctionTool
 ```
 Flyte-aware replacement for ``agents.function_tool`` — named ``tool`` for consistency.
 
 - For an ``@env.task`` (an ``AsyncFunctionTaskTemplate``): returns a
-  :class:`FunctionTool` whose invocation runs the task as a durable Flyte
+  `FunctionTool` whose invocation runs the task as a durable Flyte
   action. The tool's JSON schema, name and description are derived by the
   OpenAI Agents SDK from the task's function signature, so strict-mode tool
   calling works unchanged.
@@ -227,5 +212,5 @@ Usable as a bare decorator, a parametrized decorator, or a direct call::
 | Parameter | Type | Description |
 |-|-|-|
 | `func` | `AsyncFunctionTaskTemplate \| typing.Callable \| None` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `typing.Any` | |
 
