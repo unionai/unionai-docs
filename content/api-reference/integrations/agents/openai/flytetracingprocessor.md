@@ -1,6 +1,6 @@
 ---
 title: FlyteTracingProcessor
-version: 2.5.19
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,14 +9,14 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-Map OpenAI Agents spans onto the shared `flyteplugins.agents.core.ReportTimeline`.
+Map OpenAI Agents spans onto the shared :class:`ReportTimeline`.
 
 
 ## Parameters
 
 ```python
 class FlyteTracingProcessor(
-    tab_name: str = 'Agent',
+    tab_name: str,
 )
 ```
 | Parameter | Type | Description |

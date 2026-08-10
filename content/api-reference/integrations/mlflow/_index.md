@@ -1,6 +1,6 @@
 ---
 title: MLflow
-version: 2.5.19
+version: 2.5.16
 variants: +flyte +union
 layout: py_api
 ---
@@ -198,21 +198,21 @@ Returns None if not within an `mlflow_run` context.
 
 ```python
 def mlflow_config(
-    tracking_uri: typing.Optional[str] = None,
-    experiment_name: typing.Optional[str] = None,
-    experiment_id: typing.Optional[str] = None,
-    run_name: typing.Optional[str] = None,
-    run_id: typing.Optional[str] = None,
-    tags: typing.Optional[dict[str, str]] = None,
-    run_mode: typing.Literal['auto', 'new', 'nested'] = 'auto',
-    autolog: bool = False,
-    framework: typing.Optional[str] = None,
-    log_models: typing.Optional[bool] = None,
-    log_datasets: typing.Optional[bool] = None,
-    autolog_kwargs: typing.Optional[dict[str, typing.Any]] = None,
-    link_host: typing.Optional[str] = None,
-    link_template: typing.Optional[str] = None,
-    **kwargs: typing.Any,
+    tracking_uri: typing.Optional[str],
+    experiment_name: typing.Optional[str],
+    experiment_id: typing.Optional[str],
+    run_name: typing.Optional[str],
+    run_id: typing.Optional[str],
+    tags: typing.Optional[dict[str, str]],
+    run_mode: typing.Literal['auto', 'new', 'nested'],
+    autolog: bool,
+    framework: typing.Optional[str],
+    log_models: typing.Optional[bool],
+    log_datasets: typing.Optional[bool],
+    autolog_kwargs: typing.Optional[dict[str, typing.Any]],
+    link_host: typing.Optional[str],
+    link_template: typing.Optional[str],
+    kwargs: **kwargs,
 ) -> flyteplugins.mlflow._context._MLflowConfig
 ```
 Create MLflow configuration.
@@ -239,27 +239,27 @@ Works in two contexts:
 | `autolog_kwargs` | `typing.Optional[dict[str, typing.Any]]` | Extra parameters passed to mlflow.autolog(). |
 | `link_host` | `typing.Optional[str]` | MLflow UI host for auto-generating task links. |
 | `link_template` | `typing.Optional[str]` | Custom URL template. Defaults to standard MLflow UI format. Available placeholders: `{host}`, `{experiment_id}`, `{run_id}`. |
-| `**kwargs` | `typing.Any` | |
+| `kwargs` | `**kwargs` | |
 
 #### mlflow_run()
 
 ```python
 def mlflow_run(
-    _func: typing.Optional[~F] = None,
-    run_mode: typing.Literal['auto', 'new', 'nested'] = 'auto',
-    tracking_uri: typing.Optional[str] = None,
-    experiment_name: typing.Optional[str] = None,
-    experiment_id: typing.Optional[str] = None,
-    run_name: typing.Optional[str] = None,
-    run_id: typing.Optional[str] = None,
-    tags: typing.Optional[dict[str, str]] = None,
-    autolog: bool = False,
-    framework: typing.Optional[str] = None,
-    log_models: typing.Optional[bool] = None,
-    log_datasets: typing.Optional[bool] = None,
-    autolog_kwargs: typing.Optional[dict[str, typing.Any]] = None,
-    rank: typing.Optional[int] = None,
-    **kwargs,
+    _func: typing.Optional[~F],
+    run_mode: typing.Literal['auto', 'new', 'nested'],
+    tracking_uri: typing.Optional[str],
+    experiment_name: typing.Optional[str],
+    experiment_id: typing.Optional[str],
+    run_name: typing.Optional[str],
+    run_id: typing.Optional[str],
+    tags: typing.Optional[dict[str, str]],
+    autolog: bool,
+    framework: typing.Optional[str],
+    log_models: typing.Optional[bool],
+    log_datasets: typing.Optional[bool],
+    autolog_kwargs: typing.Optional[dict[str, typing.Any]],
+    rank: typing.Optional[int],
+    kwargs,
 ) -> ~F
 ```
 Decorator to manage MLflow runs for Flyte tasks and plain functions.
@@ -268,14 +268,13 @@ Handles both manual logging and autologging. For autologging, pass
 `autolog=True` and optionally `framework` to select a specific
 framework (e.g. `"sklearn"`).
 
-Decorator order: `@mlflow_run` must be the outermost decorator:
+Decorator Order:
+    @mlflow_run must be the outermost decorator::
 
-```python
-@mlflow_run
-@env.task
-async def my_task():
-    ...
-```
+        @mlflow_run
+        @env.task
+        async def my_task():
+            ...
 
 
 | Parameter | Type | Description |
@@ -294,5 +293,5 @@ async def my_task():
 | `log_datasets` | `typing.Optional[bool]` | Whether to log datasets automatically (requires autolog). |
 | `autolog_kwargs` | `typing.Optional[dict[str, typing.Any]]` | Extra parameters passed to `mlflow.autolog()`. |
 | `rank` | `typing.Optional[int]` | Process rank for distributed training (only rank 0 logs). |
-| `**kwargs` |  | |
+| `kwargs` | `**kwargs` | |
 
