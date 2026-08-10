@@ -1,6 +1,6 @@
 ---
 title: vLLM
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---

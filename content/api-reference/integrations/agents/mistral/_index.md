@@ -26,7 +26,7 @@ the seam below the SDK's loop) for per-turn replay on retry.
 |-|-|
 | [`run_agent()`](#run_agent) | Run a Mistral agent with the given tools and prompt; return the final text. |
 | [`run_agent_sync()`](#run_agent_sync) | Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop. |
-| [`tool()`](#tool) | Wrap a Flyte ``@env. |
+| [`tool()`](#tool) | Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default. |
 
 
 ## Methods
@@ -36,21 +36,21 @@ the seam below the SDK's loop) for per-turn replay on retry.
 ```python
 def run_agent(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: str | None,
-    instructions: str | None,
-    timeout_ms: int | None,
-    durable: bool,
-    observability: bool,
-    agent_id: str | None,
-    api_key_env_var: str,
-    memory_key: str | None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str | None = 'mistral-large-latest',
+    instructions: str | None = None,
+    timeout_ms: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    agent_id: str | None = None,
+    api_key_env_var: str = 'MISTRAL_API_KEY',
+    memory_key: str | None = None,
 ) -> str
 ```
 Run a Mistral agent with the given tools and prompt; return the final text.
 
 Await this from an async task as ``await run_agent(...)``; from a sync task
-use :func:`run_agent_sync` instead.
+use `run_agent_sync` instead.
 
 Call this from inside an ``@env.task`` — that task is the durable parent.
 The Mistral SDK runs the agent loop; each tool the agent calls runs as a
@@ -78,71 +78,52 @@ agent instead of an inline ``model``.
 ```python
 def run_agent_sync(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: str | None,
-    instructions: str | None,
-    timeout_ms: int | None,
-    durable: bool,
-    observability: bool,
-    agent_id: str | None,
-    api_key_env_var: str,
-    memory_key: str | None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str | None = 'mistral-large-latest',
+    instructions: str | None = None,
+    timeout_ms: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    agent_id: str | None = None,
+    api_key_env_var: str = 'MISTRAL_API_KEY',
+    memory_key: str | None = None,
 ) -> str
 ```
 Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop.
 
 Run a Mistral agent with the given tools and prompt; return the final text.
 
-    Await this from an async task as ``await run_agent(...)``; from a sync task
-    use :func:`run_agent_sync` instead.
+Await this from an async task as ``await run_agent(...)``; from a sync task
+use `run_agent_sync` instead.
 
-    Call this from inside an ``@env.task`` — that task is the durable parent.
-    The Mistral SDK runs the agent loop; each tool the agent calls runs as a
-    durable Flyte child action, and (with ``durable=True``) each model turn is
-    recorded for replay. Pass ``agent_id`` to drive a pre-created server-side
-    agent instead of an inline ``model``.
+Call this from inside an ``@env.task`` — that task is the durable parent.
+The Mistral SDK runs the agent loop; each tool the agent calls runs as a
+durable Flyte child action, and (with ``durable=True``) each model turn is
+recorded for replay. Pass ``agent_id`` to drive a pre-created server-side
+agent instead of an inline ``model``.
 
-    Args:
-        input: The user prompt.
-        tools: ``tool``-wrapped tools or bare ``@env.task`` templates.
-        model: Model for an inline run (when ``agent_id`` is not given).
-        instructions: System instructions.
-        timeout_ms: Per-turn request timeout (ms), applied by the SDK to each model
-            call inside its loop; ``None`` uses the SDK default. This bounds a single
-            hung turn — it is not a whole-run cap (Mistral exposes no turn-count
-            limit). To bound the entire agent run, set ``timeout=`` on the enclosing
-            ``@env.task`` (the durable parent), which caps all turns + tool calls.
-        durable: Record/replay each conversation turn via ``flyte.trace``.
-        observability: Render the run timeline into the Flyte task report.
-        agent_id: Reuse an existing server-side agent (instead of ``model``).
-        api_key_env_var: Env var holding the Mistral API key (wire as a secret).
-        memory_key: Stable id (e.g. a user/thread id) for cross-run memory.
-            When set, the thread's server-side ``conversation_id`` is persisted in a
-            keyed ``MemoryStore`` and reused, so a later run with the same key
-            continues the conversation. ``None`` disables memory.
-    
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `input` | `str` | |
-| `tools` | `typing.Sequence[typing.Any]` | |
-| `model` | `str \| None` | |
-| `instructions` | `str \| None` | |
-| `timeout_ms` | `int \| None` | |
-| `durable` | `bool` | |
-| `observability` | `bool` | |
-| `agent_id` | `str \| None` | |
-| `api_key_env_var` | `str` | |
-| `memory_key` | `str \| None` | |
+| `input` | `str` | The user prompt. |
+| `tools` | `typing.Sequence[typing.Any]` | ``tool``-wrapped tools or bare ``@env.task`` templates. |
+| `model` | `str \| None` | Model for an inline run (when ``agent_id`` is not given). |
+| `instructions` | `str \| None` | System instructions. |
+| `timeout_ms` | `int \| None` | Per-turn request timeout (ms), applied by the SDK to each model call inside its loop; ``None`` uses the SDK default. This bounds a single hung turn — it is not a whole-run cap (Mistral exposes no turn-count limit). To bound the entire agent run, set ``timeout=`` on the enclosing ``@env.task`` (the durable parent), which caps all turns + tool calls. |
+| `durable` | `bool` | Record/replay each conversation turn via ``flyte.trace``. |
+| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `agent_id` | `str \| None` | Reuse an existing server-side agent (instead of ``model``). |
+| `api_key_env_var` | `str` | Env var holding the Mistral API key (wire as a secret). |
+| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, the thread's server-side ``conversation_id`` is persisted in a keyed ``MemoryStore`` and reused, so a later run with the same key continues the conversation. ``None`` disables memory. |
 
 #### tool()
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    name: str | None,
-    description: str | None,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> typing.Callable
 ```
 Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default.
@@ -151,7 +132,7 @@ For SDKs that accept plain Python callables as tools (deriving the schema from t
 signature + docstring), this is the whole adapter ``tool``: the returned
 function carries the task's signature (``functools.wraps``), dispatches to
 ``task.aio()`` (so each call is a durable Flyte child action), exposes
-``__wrapped_task__``, and wires the backing task to :class:`ToolTaskResolver`.
+``__wrapped_task__``, and wires the backing task to `ToolTaskResolver`.
 Adapters whose SDK needs a native tool type (e.g. OpenAI's
 ``FunctionTool``, Claude's MCP ``SdkMcpTool``) provide their own instead.
 

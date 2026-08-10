@@ -9,14 +9,14 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-Map OpenAI Agents spans onto the shared :class:`ReportTimeline`.
+Map OpenAI Agents spans onto the shared `ReportTimeline`.
 
 
 ## Parameters
 
 ```python
 class FlyteTracingProcessor(
-    tab_name: str,
+    tab_name: str = 'Agent',
 )
 ```
 | Parameter | Type | Description |

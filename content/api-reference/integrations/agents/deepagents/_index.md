@@ -53,21 +53,21 @@ rendered into the Flyte task report. ``memory_key`` persists the conversation
 ```python
 def run_agent(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: typing.Any,
-    instructions: str | None,
-    agent: typing.Any,
-    name: str,
-    durable: bool,
-    observability: bool,
-    memory_key: str | None,
-    agent_kwargs: typing.Any,
+    tools: typing.Sequence[typing.Any] = (),
+    model: typing.Any = None,
+    instructions: str | None = None,
+    agent: typing.Any = None,
+    name: str = 'deep-agent',
+    durable: bool = True,
+    observability: bool = True,
+    memory_key: str | None = None,
+    **agent_kwargs: typing.Any,
 ) -> str
 ```
 Run a Deep Agent with the given tools and prompt; return the final text.
 
 Await this from an async task as ``await run_agent(...)``; from a sync task
-use :func:`run_agent_sync` instead.
+use `run_agent_sync` instead.
 
 Call this from inside an ``@env.task`` — that task is the durable parent.
 Within it, each tool call runs as a durable Flyte child action. Give the
@@ -89,10 +89,10 @@ Deep-Agents-specific options — ``subagents=``, ``skills=``, ``backend=``,
 | `instructions` | `str \| None` | System prompt for the built agent. |
 | `agent` | `typing.Any` | A pre-built deep agent (a compiled ``create_deep_agent`` graph). Mutually exclusive with ``tools``. To get durable model turns on this path, build it with ``create_deep_agent(model=DurableChatModel(inner=...))``. |
 | `name` | `str` | Agent name (for debugging/observability). |
-| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. Applies when the agent is being built — the resolved model is wrapped in :class:`DurableChatModel`. A fully pre-built compiled ``agent`` cannot be rewrapped (wrap its model yourself, see above); its tool calls remain durable regardless. |
+| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. Applies when the agent is being built — the resolved model is wrapped in `DurableChatModel`. A fully pre-built compiled ``agent`` cannot be rewrapped (wrap its model yourself, see above); its tool calls remain durable regardless. |
 | `observability` | `bool` | Render the run timeline into the Flyte task report. |
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, the conversation *and* the agent's virtual filesystem are persisted to a keyed ``MemoryStore`` and resumed on a later run with the same key. |
-| `agent_kwargs` | `typing.Any` | |
+| `**agent_kwargs` | `typing.Any` | |
 
 **Returns:** The agent's final output as a string.
 
@@ -101,83 +101,61 @@ Deep-Agents-specific options — ``subagents=``, ``skills=``, ``backend=``,
 ```python
 def run_agent_sync(
     input: str,
-    tools: typing.Sequence[typing.Any],
-    model: typing.Any,
-    instructions: str | None,
-    agent: typing.Any,
-    name: str,
-    durable: bool,
-    observability: bool,
-    memory_key: str | None,
-    agent_kwargs: typing.Any,
+    tools: typing.Sequence[typing.Any] = (),
+    model: typing.Any = None,
+    instructions: str | None = None,
+    agent: typing.Any = None,
+    name: str = 'deep-agent',
+    durable: bool = True,
+    observability: bool = True,
+    memory_key: str | None = None,
+    **agent_kwargs: typing.Any,
 ) -> str
 ```
 Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop.
 
 Run a Deep Agent with the given tools and prompt; return the final text.
 
-    Await this from an async task as ``await run_agent(...)``; from a sync task
-    use :func:`run_agent_sync` instead.
+Await this from an async task as ``await run_agent(...)``; from a sync task
+use `run_agent_sync` instead.
 
-    Call this from inside an ``@env.task`` — that task is the durable parent.
-    Within it, each tool call runs as a durable Flyte child action. Give the
-    enclosing task ``retries=...`` for self-healing and ``report=True`` to see
-    the agent timeline.
+Call this from inside an ``@env.task`` — that task is the durable parent.
+Within it, each tool call runs as a durable Flyte child action. Give the
+enclosing task ``retries=...`` for self-healing and ``report=True`` to see
+the agent timeline.
 
-    Provide either a pre-built ``agent`` (a compiled graph from
-    ``create_deep_agent``) or ``tools`` + ``model`` to have one built for you.
-    Deep-Agents-specific options — ``subagents=``, ``skills=``, ``backend=``,
-    ``interrupt_on=``, … — pass through ``**agent_kwargs`` on the builder path.
+Provide either a pre-built ``agent`` (a compiled graph from
+``create_deep_agent``) or ``tools`` + ``model`` to have one built for you.
+Deep-Agents-specific options — ``subagents=``, ``skills=``, ``backend=``,
+``interrupt_on=``, … — pass through ``**agent_kwargs`` on the builder path.
 
-    Args:
-        input: The user prompt.
-        tools: ``tool``-wrapped tools or bare ``@env.task`` templates.
-        model: A LangChain chat model instance or a ``provider:model`` string
-            (e.g. ``"anthropic:claude-sonnet-4-6"``). Required when ``agent``
-            is not given.
-        instructions: System prompt for the built agent.
-        agent: A pre-built deep agent (a compiled ``create_deep_agent`` graph).
-            Mutually exclusive with ``tools``. To get durable model turns on this
-            path, build it with ``create_deep_agent(model=DurableChatModel(inner=...))``.
-        name: Agent name (for debugging/observability).
-        durable: Record/replay each model turn via ``flyte.trace``. Applies when
-            the agent is being built — the resolved model is wrapped in
-            :class:`DurableChatModel`. A fully pre-built compiled ``agent`` cannot
-            be rewrapped (wrap its model yourself, see above); its tool calls
-            remain durable regardless.
-        observability: Render the run timeline into the Flyte task report.
-        memory_key: Stable id (e.g. a user/thread id) for cross-run memory.
-            When set, the conversation *and* the agent's virtual filesystem are
-            persisted to a keyed ``MemoryStore`` and resumed on a later run with
-            the same key.
-        **agent_kwargs: Additional kwargs forwarded to ``create_deep_agent``
-            (``subagents=``, ``skills=``, ``backend=``, ...).
-
-    Returns:
-        The agent's final output as a string.
-    
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `input` | `str` | |
-| `tools` | `typing.Sequence[typing.Any]` | |
-| `model` | `typing.Any` | |
-| `instructions` | `str \| None` | |
-| `agent` | `typing.Any` | |
-| `name` | `str` | |
-| `durable` | `bool` | |
-| `observability` | `bool` | |
-| `memory_key` | `str \| None` | |
-| `agent_kwargs` | `typing.Any` | |
+| `input` | `str` | The user prompt. |
+| `tools` | `typing.Sequence[typing.Any]` | ``tool``-wrapped tools or bare ``@env.task`` templates. |
+| `model` | `typing.Any` | A LangChain chat model instance or a ``provider:model`` string (e.g. ``"anthropic:claude-sonnet-4-6"``). Required when ``agent`` is not given. |
+| `instructions` | `str \| None` | System prompt for the built agent. |
+| `agent` | `typing.Any` | A pre-built deep agent (a compiled ``create_deep_agent`` graph). Mutually exclusive with ``tools``. To get durable model turns on this path, build it with ``create_deep_agent(model=DurableChatModel(inner=...))``. |
+| `name` | `str` | Agent name (for debugging/observability). |
+| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. Applies when the agent is being built — the resolved model is wrapped in `DurableChatModel`. A fully pre-built compiled ``agent`` cannot be rewrapped (wrap its model yourself, see above); its tool calls remain durable regardless. |
+| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, the conversation *and* the agent's virtual filesystem are persisted to a keyed ``MemoryStore`` and resumed on a later run with the same key. |
+| `**agent_kwargs` | `typing.Any` | |
+
+**Returns**
+
+The agent's final output as a string.
+
 
 #### tool()
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    name: str | None,
-    description: str | None,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> typing.Any
 ```
 Convert a Flyte task (or plain callable) into a LangChain ``StructuredTool``.
@@ -185,7 +163,7 @@ Convert a Flyte task (or plain callable) into a LangChain ``StructuredTool``.
 - For an ``@env.task``: returns a ``StructuredTool`` whose async coroutine runs
   the task as a durable Flyte child action when the agent invokes it. The input
   schema is derived from the task's typed signature. The backing task is wired to
-  :class:`~flyteplugins.agents.core.ToolTaskResolver` and exposed via
+  `ToolTaskResolver` and exposed via
   ``__wrapped_task__`` so it resolves to itself on the worker (no recursion).
 - For a plain (async) callable: returns a ``StructuredTool`` that runs it inline.
 

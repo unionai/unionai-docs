@@ -34,7 +34,7 @@ durable child action.
 
 | Class | Description |
 |-|-|
-| [`ReportTimeline`](./reporttimeline) | A :class:`flyte. |
+| [`ReportTimeline`](./reporttimeline) | A `flyte.report.Timeline` that defaults to the ``Agent`` report tab. |
 | [`ToolTaskResolver`](./tooltaskresolver) | Resolver for a task shadowed at module scope by a tool wrapper. |
 
 ### Methods
@@ -42,7 +42,7 @@ durable child action.
 | Method | Description |
 |-|-|
 | [`abbrev()`](#abbrev) | HTML-escape ``value`` for a report row. |
-| [`attach_tool_resolver()`](#attach_tool_resolver) | Point a tool-backing ``@env. |
+| [`attach_tool_resolver()`](#attach_tool_resolver) | Point a tool-backing ``@env.task`` at `ToolTaskResolver`. |
 | [`coerce_tool_args()`](#coerce_tool_args) | Coerce LLM-supplied tool args to the task's declared parameter types. |
 | [`durable_step()`](#durable_step) | Run ``run()`` once as a durable, replayable trace step keyed by ``request_key``. |
 | [`duration_ms()`](#duration_ms) | Format the gap between two ISO-8601 timestamps as ``"<n> ms"`` (best-effort). |
@@ -53,7 +53,7 @@ durable child action.
 | [`run_coro_sync()`](#run_coro_sync) | Run an async-adapter coroutine to completion from synchronous code. |
 | [`sync_variant()`](#sync_variant) | Build the synchronous companion of an async adapter entry point. |
 | [`task_json_schema()`](#task_json_schema) | The JSON schema of a Flyte task's inputs, via the Flyte type engine. |
-| [`tool()`](#tool) | Wrap a Flyte ``@env. |
+| [`tool()`](#tool) | Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default. |
 
 
 ## Methods
@@ -63,12 +63,12 @@ durable child action.
 ```python
 def abbrev(
     value: typing.Any,
-    limit: int,
+    limit: int = 300,
 ) -> str
 ```
 HTML-escape ``value`` for a report row.
 
-Short values render inline. Longer ones collapse into an expandable ``&lt;details&gt;``:
+Short values render inline. Longer ones collapse into an expandable ``<details>``:
 the row shows a ``limit``-character preview with a ``+N`` overflow marker, and
 clicking it reveals the full content (up to a hard cap). Nothing is dropped on the
 floor, so a value that trails off in the report can always be opened in place.
@@ -86,7 +86,7 @@ def attach_tool_resolver(
     task: typing.Any,
 )
 ```
-Point a tool-backing ``@env.task`` at :class:`ToolTaskResolver`.
+Point a tool-backing ``@env.task`` at `ToolTaskResolver`.
 
 No-op for anything that isn't an async-function task or that already declares
 a custom resolver, so the default resolver is left untouched elsewhere.
@@ -101,7 +101,7 @@ a custom resolver, so the default resolver is left untouched elsewhere.
 ```python
 def coerce_tool_args(
     task: AsyncFunctionTaskTemplate,
-    kwargs: **kwargs,
+    kwargs: dict[str, typing.Any],
 ) -> dict[str, typing.Any]
 ```
 Coerce LLM-supplied tool args to the task's declared parameter types.
@@ -117,7 +117,7 @@ the kwargs unchanged if the task's annotations can't be resolved.
 | Parameter | Type | Description |
 |-|-|-|
 | `task` | `AsyncFunctionTaskTemplate` | |
-| `kwargs` | `**kwargs` | |
+| `kwargs` | `dict[str, typing.Any]` | |
 
 #### durable_step()
 
@@ -125,9 +125,9 @@ the kwargs unchanged if the task's annotations can't be resolved.
 def durable_step(
     request_key: str,
     run: typing.Callable[[], typing.Awaitable[typing.Any]],
-    name: str,
-    dumps: typing.Callable[[typing.Any], str],
-    loads: typing.Callable[[str], typing.Any],
+    name: str = 'durable_step',
+    dumps: typing.Callable[[typing.Any], str] = ...,
+    loads: typing.Callable[[str], typing.Any] = ...,
 ) -> typing.Any
 ```
 Run ``run()`` once as a durable, replayable trace step keyed by ``request_key``.
@@ -158,7 +158,7 @@ def duration_ms(
     end_iso: typing.Any,
 ) -> str
 ```
-Format the gap between two ISO-8601 timestamps as ``"&lt;n&gt; ms"`` (best-effort).
+Format the gap between two ISO-8601 timestamps as ``"<n> ms"`` (best-effort).
 
 
 | Parameter | Type | Description |
@@ -214,7 +214,7 @@ Best-effort conversion of an SDK object to something JSON-dumpable.
 ```python
 def resolve_memory(
     memory_key: str | None,
-    audit: bool,
+    audit: bool = True,
 ) -> 'MemoryStore | None'
 ```
 Open (or create) the keyed agent-memory store, or ``None`` if unavailable.
@@ -264,7 +264,7 @@ Adapters use this to derive run_agent_sync from run_agent::
     run_agent_sync = sync_variant(run_agent)
 
 The wrapper keeps run_agent's signature and docstring for introspection and
-dispatches through :func:`run_coro_sync`.
+dispatches through `run_coro_sync`.
 
 
 | Parameter | Type | Description |
@@ -293,9 +293,9 @@ prefer Flyte's type-engine schema (correct ``Literal`` enums, ``File``/``Dir``
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    name: str | None,
-    description: str | None,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> typing.Callable
 ```
 Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default.
@@ -304,7 +304,7 @@ For SDKs that accept plain Python callables as tools (deriving the schema from t
 signature + docstring), this is the whole adapter ``tool``: the returned
 function carries the task's signature (``functools.wraps``), dispatches to
 ``task.aio()`` (so each call is a durable Flyte child action), exposes
-``__wrapped_task__``, and wires the backing task to :class:`ToolTaskResolver`.
+``__wrapped_task__``, and wires the backing task to `ToolTaskResolver`.
 Adapters whose SDK needs a native tool type (e.g. OpenAI's
 ``FunctionTool``, Claude's MCP ``SdkMcpTool``) provide their own instead.
 

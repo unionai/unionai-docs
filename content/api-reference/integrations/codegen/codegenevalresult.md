@@ -1,6 +1,6 @@
 ---
 title: CodeGenEvalResult
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,25 +16,25 @@ Result from code generation and evaluation.
 
 ```python
 class CodeGenEvalResult(
-    plan: typing.Optional[flyteplugins.codegen.core.types.CodePlan],
+    plan: typing.Optional[flyteplugins.codegen.core.types.CodePlan] = None,
     solution: flyteplugins.codegen.core.types.CodeSolution,
-    tests: typing.Optional[str],
+    tests: typing.Optional[str] = None,
     success: bool,
     output: str,
     exit_code: int,
-    error: typing.Optional[str],
-    attempts: int,
-    conversation_history: list[dict[str, str]],
-    detected_packages: list[str],
-    detected_system_packages: list[str],
-    image: typing.Optional[str],
-    total_input_tokens: int,
-    total_output_tokens: int,
-    declared_inputs: typing.Optional[dict[str, type]],
-    declared_outputs: typing.Optional[dict[str, type]],
-    data_context: typing.Optional[str],
-    original_samples: typing.Optional[dict[str, flyte.io._file.File]],
-    generated_schemas: typing.Optional[dict[str, str]],
+    error: typing.Optional[str] = None,
+    attempts: int = 1,
+    conversation_history: list[dict[str, str]] = list(),
+    detected_packages: list[str] = list(),
+    detected_system_packages: list[str] = list(),
+    image: typing.Optional[str] = None,
+    total_input_tokens: int = 0,
+    total_output_tokens: int = 0,
+    declared_inputs: typing.Optional[dict[str, type]] = None,
+    declared_outputs: typing.Optional[dict[str, type]] = None,
+    data_context: typing.Optional[str] = None,
+    original_samples: typing.Optional[dict[str, flyte.io._file.File]] = None,
+    generated_schemas: typing.Optional[dict[str, str]] = None,
 )
 ```
 Create a new model by parsing and validating input data from keyword arguments.
@@ -79,13 +79,13 @@ validated to form a valid model.
 
 ```python
 def as_task(
-    name: str,
-    resources: typing.Optional[flyte._resources.Resources],
-    retries: int,
-    timeout: typing.Optional[int],
-    env_vars: typing.Optional[dict[str, str]],
-    secrets: typing.Optional[list],
-    cache: str,
+    name: str = 'run_code_on_real_data',
+    resources: typing.Optional[flyte._resources.Resources] = None,
+    retries: int = 0,
+    timeout: typing.Optional[int] = None,
+    env_vars: typing.Optional[dict[str, str]] = None,
+    secrets: typing.Optional[list] = None,
+    cache: str = 'auto',
 )
 ```
 Create a sandbox that runs the generated code in an isolated sandbox.
@@ -116,14 +116,14 @@ Returns a callable wrapper that automatically provides the script file.
 > `result = await <CodeGenEvalResult instance>.run.aio()`.
 ```python
 def run(
-    name: str,
-    resources: typing.Optional[flyte._resources.Resources],
-    retries: int,
-    timeout: typing.Optional[int],
-    env_vars: typing.Optional[dict[str, str]],
-    secrets: typing.Optional[list],
-    cache: str,
-    overrides,
+    name: str = 'run_code_on_real_data',
+    resources: typing.Optional[flyte._resources.Resources] = None,
+    retries: int = 0,
+    timeout: typing.Optional[int] = None,
+    env_vars: typing.Optional[dict[str, str]] = None,
+    secrets: typing.Optional[list] = None,
+    cache: str = 'auto',
+    **overrides,
 ) -> typing.Any
 ```
 Run generated code in an isolated sandbox (one-off execution).
@@ -143,7 +143,7 @@ exist, all declared inputs must be provided via `**overrides`.
 | `env_vars` | `typing.Optional[dict[str, str]]` | Environment variables to pass to the sandbox. |
 | `secrets` | `typing.Optional[list]` | flyte.Secret objects to make available. |
 | `cache` | `str` | CacheRequest: "auto", "override", or "disable". Defaults to "auto". |
-| `overrides` |  | |
+| `**overrides` |  | |
 
 **Returns:** Tuple of typed outputs.
 

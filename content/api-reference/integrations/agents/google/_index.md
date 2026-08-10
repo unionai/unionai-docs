@@ -39,7 +39,7 @@ Gemini) — wire it as a Flyte secret.
 | [`durable_model()`](#durable_model) | Wrap ``model`` (a name string or ``BaseLlm``) so its turns are durable. |
 | [`run_agent()`](#run_agent) | Run a Google ADK agent with the given tools and prompt; return the final text. |
 | [`run_agent_sync()`](#run_agent_sync) | Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop. |
-| [`tool()`](#tool) | Wrap a Flyte ``@env. |
+| [`tool()`](#tool) | Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default. |
 
 
 ## Methods
@@ -53,7 +53,7 @@ def durable_model(
 ```
 Wrap ``model`` (a name string or ``BaseLlm``) so its turns are durable.
 
-Returns a :class:`FlyteLlm` over the resolved inner model, or ``model`` unchanged
+Returns a `FlyteLlm` over the resolved inner model, or ``model`` unchanged
 when it can't be wrapped (durability is best-effort, never fatal).
 
 
@@ -66,23 +66,23 @@ when it can't be wrapped (durability is best-effort, never fatal).
 ```python
 def run_agent(
     input: str,
-    agent: typing.Any,
-    tools: typing.Sequence[typing.Any],
-    model: str,
-    instructions: str | None,
-    name: str,
-    max_llm_calls: int | None,
-    durable: bool,
-    observability: bool,
-    memory_key: str | None,
-    app_name: str,
-    user_id: str,
+    agent: typing.Any = None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str = 'gemini-2.0-flash',
+    instructions: str | None = None,
+    name: str = 'assistant',
+    max_llm_calls: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    memory_key: str | None = None,
+    app_name: str = 'flyte-agent',
+    user_id: str = 'flyte-user',
 ) -> str
 ```
 Run a Google ADK agent with the given tools and prompt; return the final text.
 
 Await this from an async task as ``await run_agent(...)``; from a sync task
-use :func:`run_agent_sync` instead.
+use `run_agent_sync` instead.
 
 Call this from inside an ``@env.task`` — that task is the durable parent, and each
 tool the agent calls runs as a durable Flyte child action. Provide either a
@@ -111,76 +111,55 @@ pre-built ``agent`` (an ADK ``LlmAgent``/``BaseAgent``) or ``tools`` + ``model``
 ```python
 def run_agent_sync(
     input: str,
-    agent: typing.Any,
-    tools: typing.Sequence[typing.Any],
-    model: str,
-    instructions: str | None,
-    name: str,
-    max_llm_calls: int | None,
-    durable: bool,
-    observability: bool,
-    memory_key: str | None,
-    app_name: str,
-    user_id: str,
+    agent: typing.Any = None,
+    tools: typing.Sequence[typing.Any] = (),
+    model: str = 'gemini-2.0-flash',
+    instructions: str | None = None,
+    name: str = 'assistant',
+    max_llm_calls: int | None = None,
+    durable: bool = True,
+    observability: bool = True,
+    memory_key: str | None = None,
+    app_name: str = 'flyte-agent',
+    user_id: str = 'flyte-user',
 ) -> str
 ```
 Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop.
 
 Run a Google ADK agent with the given tools and prompt; return the final text.
 
-    Await this from an async task as ``await run_agent(...)``; from a sync task
-    use :func:`run_agent_sync` instead.
+Await this from an async task as ``await run_agent(...)``; from a sync task
+use `run_agent_sync` instead.
 
-    Call this from inside an ``@env.task`` — that task is the durable parent, and each
-    tool the agent calls runs as a durable Flyte child action. Provide either a
-    pre-built ``agent`` (an ADK ``LlmAgent``/``BaseAgent``) or ``tools`` + ``model`` +
-    ``instructions`` to have one built.
+Call this from inside an ``@env.task`` — that task is the durable parent, and each
+tool the agent calls runs as a durable Flyte child action. Provide either a
+pre-built ``agent`` (an ADK ``LlmAgent``/``BaseAgent``) or ``tools`` + ``model`` +
+``instructions`` to have one built.
 
-    Args:
-        input: The user prompt.
-        agent: A pre-built ADK agent. Mutually exclusive with ``tools``.
-        tools: ``tool``-wrapped tools or bare ``@env.task`` templates.
-        model: Model name for the built agent (e.g. ``gemini-2.0-flash``).
-        instructions: System instruction for the built agent.
-        name: Agent name (a valid Python identifier). ADK injects this into the system
-            prompt as the model's "internal name", so it can surface in replies — keep it
-            natural (defaults to ``"assistant"``; avoid a brand-y/internal label).
-        max_llm_calls: Cap on model (LLM) calls before ADK raises
-            ``LlmCallsLimitExceededError`` (its runaway-loop guard, via
-            ``RunConfig.max_llm_calls``); ``None`` uses ADK's default of 500. Counts LLM
-            calls, not conversational turns (a tool round is ~2 calls). For a wall-clock
-            bound on the whole run, set ``timeout=`` on the enclosing ``@env.task``.
-        durable: Wrap the model so each turn is recorded/replayed via ``flyte.trace``.
-        observability: Render the run timeline into the Flyte task report.
-        memory_key: Stable id (user/thread) for cross-run memory. When set, the session
-            transcript is persisted and restored so a later run continues the conversation.
-        app_name: ADK app name (namespacing).
-        user_id: ADK user id.
-    
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `input` | `str` | |
-| `agent` | `typing.Any` | |
-| `tools` | `typing.Sequence[typing.Any]` | |
-| `model` | `str` | |
-| `instructions` | `str \| None` | |
-| `name` | `str` | |
-| `max_llm_calls` | `int \| None` | |
-| `durable` | `bool` | |
-| `observability` | `bool` | |
-| `memory_key` | `str \| None` | |
-| `app_name` | `str` | |
-| `user_id` | `str` | |
+| `input` | `str` | The user prompt. |
+| `agent` | `typing.Any` | A pre-built ADK agent. Mutually exclusive with ``tools``. |
+| `tools` | `typing.Sequence[typing.Any]` | ``tool``-wrapped tools or bare ``@env.task`` templates. |
+| `model` | `str` | Model name for the built agent (e.g. ``gemini-2.0-flash``). |
+| `instructions` | `str \| None` | System instruction for the built agent. |
+| `name` | `str` | Agent name (a valid Python identifier). ADK injects this into the system prompt as the model's "internal name", so it can surface in replies — keep it natural (defaults to ``"assistant"``; avoid a brand-y/internal label). |
+| `max_llm_calls` | `int \| None` | Cap on model (LLM) calls before ADK raises ``LlmCallsLimitExceededError`` (its runaway-loop guard, via ``RunConfig.max_llm_calls``); ``None`` uses ADK's default of 500. Counts LLM calls, not conversational turns (a tool round is ~2 calls). For a wall-clock bound on the whole run, set ``timeout=`` on the enclosing ``@env.task``. |
+| `durable` | `bool` | Wrap the model so each turn is recorded/replayed via ``flyte.trace``. |
+| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `memory_key` | `str \| None` | Stable id (user/thread) for cross-run memory. When set, the session transcript is persisted and restored so a later run continues the conversation. |
+| `app_name` | `str` | ADK app name (namespacing). |
+| `user_id` | `str` | ADK user id. |
 
 #### tool()
 
 ```python
 def tool(
-    func: AsyncFunctionTaskTemplate | typing.Callable | None,
-    name: str | None,
-    description: str | None,
+    func: AsyncFunctionTaskTemplate | typing.Callable | None = None,
+    name: str | None = None,
+    description: str | None = None,
 ) -> typing.Callable
 ```
 Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default.
@@ -189,7 +168,7 @@ For SDKs that accept plain Python callables as tools (deriving the schema from t
 signature + docstring), this is the whole adapter ``tool``: the returned
 function carries the task's signature (``functools.wraps``), dispatches to
 ``task.aio()`` (so each call is a durable Flyte child action), exposes
-``__wrapped_task__``, and wires the backing task to :class:`ToolTaskResolver`.
+``__wrapped_task__``, and wires the backing task to `ToolTaskResolver`.
 Adapters whose SDK needs a native tool type (e.g. OpenAI's
 ``FunctionTool``, Claude's MCP ``SdkMcpTool``) provide their own instead.
 

@@ -1,6 +1,6 @@
 ---
 title: Elastic
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,15 +29,15 @@ heartbeat=60s): 1 * 120s = 2 min.
 class Elastic(
     nnodes: typing.Union[int, str],
     nproc_per_node: int,
-    rdzv_backend: typing.Literal['c10d', 'etcd', 'etcd-v2'],
-    run_policy: typing.Optional[flyteplugins.pytorch.task.RunPolicy],
-    monitor_interval: int,
-    max_restarts: int,
-    rdzv_configs: typing.Dict[str, typing.Any],
-    nccl_heartbeat_timeout_sec: typing.Optional[int],
-    nccl_async_error_handling: bool,
-    nccl_collective_timeout_sec: typing.Optional[int],
-    nccl_enable_monitoring: bool,
+    rdzv_backend: typing.Literal['c10d', 'etcd', 'etcd-v2'] = 'c10d',
+    run_policy: typing.Optional[flyteplugins.pytorch.task.RunPolicy] = None,
+    monitor_interval: int = 3,
+    max_restarts: int = 3,
+    rdzv_configs: typing.Dict[str, typing.Any] = <factory>,
+    nccl_heartbeat_timeout_sec: typing.Optional[int] = 300,
+    nccl_async_error_handling: bool = False,
+    nccl_collective_timeout_sec: typing.Optional[int] = None,
+    nccl_enable_monitoring: bool = True,
 )
 ```
 | Parameter | Type | Description |

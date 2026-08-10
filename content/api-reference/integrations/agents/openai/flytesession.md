@@ -57,7 +57,7 @@ def clear_session()
 
 ```python
 def get_items(
-    limit: int | None,
+    limit: int | None = None,
 ) -> list[dict[str, typing.Any]]
 ```
 | Parameter | Type | Description |
