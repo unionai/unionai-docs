@@ -8,16 +8,18 @@
 stable = "v2.5.18.3"
 enumerated = [
   "v2.5.16.3",
-  "v2.5.18.2",
 ]
-# v2.5.18.2 rotates in normally, unlike the three below. The distinction is
-# whether a withdrawn cut was WRONG or merely SUPERSEDED: .2 documents exactly
-# the same product state as .3 (flyte-sdk 2.5.18, flyteplugins-* 2.5.18) and is
-# correct on its own terms -- .3 only improves heading anchors (DOC-1357). There
-# is no reason to withhold it, so it is served at /docs/v2.5.18.2 like any other
-# older pin.
+# Four cuts are deliberately absent from `enumerated`, so none is served. The
+# first three were WRONG; the fourth is merely redundant.
 #
-# Three cuts are deliberately absent from `enumerated`, so none is served.
+# v2.5.18.2 -- correct on its own terms, but it documents exactly the same
+# product state as v2.5.18.3 (flyte-sdk 2.5.18, flyteplugins-* 2.5.18); .3 only
+# improves heading anchors (DOC-1357). Serving it would add a near-duplicate
+# tree against the Pages file budget for no reader benefit -- it was stable for
+# a few hours and nothing links to it. A pinned version earns its place by
+# documenting a distinct product state, which this one does not.
+#
+# The three below were withheld because their content was wrong, not redundant.
 #
 # v2.5.19.0 -- flyte 2.5.19 was yanked on PyPI ("should be minor": it added the
 # whole flyte.artifacts package in a patch release), so the cut named after it
