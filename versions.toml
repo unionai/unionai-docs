@@ -5,10 +5,18 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.18.2"
+stable = "v2.5.18.3"
 enumerated = [
   "v2.5.16.3",
+  "v2.5.18.2",
 ]
+# v2.5.18.2 rotates in normally, unlike the three below. The distinction is
+# whether a withdrawn cut was WRONG or merely SUPERSEDED: .2 documents exactly
+# the same product state as .3 (flyte-sdk 2.5.18, flyteplugins-* 2.5.18) and is
+# correct on its own terms -- .3 only improves heading anchors (DOC-1357). There
+# is no reason to withhold it, so it is served at /docs/v2.5.18.2 like any other
+# older pin.
+#
 # Three cuts are deliberately absent from `enumerated`, so none is served.
 #
 # v2.5.19.0 -- flyte 2.5.19 was yanked on PyPI ("should be minor": it added the
