@@ -26,7 +26,7 @@ The control plane:
 
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
 
-## {{< key product_name >}} operator
+## {{% key product_name %}} operator
 
 The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure.
 

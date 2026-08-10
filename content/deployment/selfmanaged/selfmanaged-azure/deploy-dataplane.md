@@ -26,7 +26,7 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Add the {{< key product_name >}} Helm repo:
 
