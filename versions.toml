@@ -5,11 +5,21 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.5.18.2"
+stable = "v2.5.18.3"
 enumerated = [
   "v2.5.16.3",
 ]
-# Three cuts are deliberately absent from `enumerated`, so none is served.
+# Four cuts are deliberately absent from `enumerated`, so none is served. The
+# first three were WRONG; the fourth is merely redundant.
+#
+# v2.5.18.2 -- correct on its own terms, but it documents exactly the same
+# product state as v2.5.18.3 (flyte-sdk 2.5.18, flyteplugins-* 2.5.18); .3 only
+# improves heading anchors (DOC-1357). Serving it would add a near-duplicate
+# tree against the Pages file budget for no reader benefit -- it was stable for
+# a few hours and nothing links to it. A pinned version earns its place by
+# documenting a distinct product state, which this one does not.
+#
+# The three below were withheld because their content was wrong, not redundant.
 #
 # v2.5.19.0 -- flyte 2.5.19 was yanked on PyPI ("should be minor": it added the
 # whole flyte.artifacts package in a patch release), so the cut named after it
