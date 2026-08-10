@@ -34,7 +34,7 @@ $ uctl create execution \
 
 See [Uctl CLI](../../../api-reference/uctl-cli) for more details.
 
-## Running a launch plan in Python with `{{< key kit_remote >}}`
+## Running a launch plan in Python with `{{% key kit_remote %}}`
 
 The following code executes a launch plan using `{{< key kit_remote >}}`:
 

@@ -40,7 +40,7 @@ The following diagram provides a summarized view of the different registration p
 {{< /markdown >}}
 {{< /variant >}}
 
-## Running a script in local Python with `{{< key cli >}} run` {#running-a-script-in-local-python}
+## Running a script in local Python with `{{% key cli %}} run` {#running-a-script-in-local-python}
 
 During the development cycle you will want to run a specific workflow or task in your local Python environment to test it.
 To quickly try out the code locally use `{{< key cli >}} run`:
@@ -65,7 +65,7 @@ For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
 {{< /markdown >}}
 {{< /variant >}}
 
-## Running a script on {{< key product_name >}} with `{{< key cli >}} run --remote`
+## Running a script on {{% key product_name %}} with `{{% key cli %}} run --remote`
 
 To quickly run a workflow on {{< key product_name >}}, use `{{< key cli >}} run --remote`:
 
@@ -111,7 +111,7 @@ For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
 {{< /markdown >}}
 {{< /variant >}}
 
-## Running tasks through {{< key ctl >}}
+## Running tasks through {{% key ctl %}}
 
 This is a multi-step process where we create an execution spec file, update the spec file, and then create the execution.
 
@@ -148,7 +148,7 @@ $ {{< key ctl >}} create execution -p flytesnacks -d development --execFile exec
 $ {{< key ctl >}} get execution -p flytesnacks -d development <execid>
 ```
 
-## Running workflows through {{< key ctl >}}
+## Running workflows through {{% key ctl %}}
 
 Workflows on their own are not runnable directly. However, a launchplan is always bound to a workflow (at least the auto-create default launch plan) and you can use
 launchplans to `launch` a workflow. The `default launchplan` for a workflow has the same name as its workflow and all argument defaults are also identical.
@@ -157,7 +157,7 @@ Tasks also can be executed using the launch command.
 One difference between running a task and a workflow via launchplans is that launchplans cannot be associated with a
 task. This is to avoid triggers and scheduling.
 
-## Running launchplans through {{< key ctl >}}
+## Running launchplans through {{% key ctl %}}
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -201,7 +201,7 @@ $ {{< key ctl >}} create execution -p flytesnacks -d development --execFile exec
 $ {{< key ctl >}} get execution -p flytesnacks -d development <execid>
 ```
 
-## Deploying your code to {{< key product_name >}} with `{{< key cli >}} register`
+## Deploying your code to {{% key product_name %}} with `{{% key cli %}} register`
 
 ```shell
 $ {{< key cli >}} register workflows --project basic-example --domain development
@@ -292,7 +292,7 @@ To see the results of the execution you can inspect the node closure outputUri i
 
 ## Deploying your code to production
 
-### Package your code with `{{< key cli >}} package`
+### Package your code with `{{% key cli %}} package`
 
 The combination of `{{< key cli >}} package` and `{{< key ctl >}} register` is the standard way of deploying your code to production.
 This method is often used in scripts to [build and deploy workflows in a CI/CD pipeline](./ci-cd-deployment).
@@ -317,7 +317,7 @@ Note that the presence of the `__init__.py` file in this directory is necessary 
 >
 > `{{< key cli >}} --pkgs <dir1> package --source ./src -f`
 
-### Register the package with `{{< key ctl >}} register`
+### Register the package with `{{% key ctl %}} register`
 
 Once the code is packaged you register it using the `{{< key ctl >}}` CLI:
 
@@ -354,7 +354,7 @@ See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index) for more det
 {{< /markdown >}}
 {{< /variant >}}
 
-## Using {{< key cli >}} register versus {{< key cli >}} package + {{< key ctl >}} register
+## Using {{% key cli %}} register versus {{% key cli %}} package + {{% key ctl %}} register
 
 As a rule of thumb, `{{< key cli >}} register` works well when you are working on a single cluster and iterating quickly on your task/workflow code.
 

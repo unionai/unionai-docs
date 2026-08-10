@@ -67,7 +67,7 @@ You can try out Flyte's technology:
 
 For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment).
 
-## {{< key product_name >}}
+## {{% key product_name %}}
 
 {{< key product_name >}} provides all the features of Flyte, plus:
 

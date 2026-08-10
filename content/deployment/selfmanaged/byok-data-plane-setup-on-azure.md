@@ -24,7 +24,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [uctl](../../api-reference/uctl-cli/_index).
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Add the {{< key product_name >}} Helm repo:
 

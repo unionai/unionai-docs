@@ -75,7 +75,7 @@ See [Workflows](./workflows) for more details.
 
 ## Registering tasks and workflows
 
-### Registering on the command line with `{{< key cli >}}` or `{{< key ctl >}}`
+### Registering on the command line with `{{% key cli %}}` or `{{% key ctl %}}`
 
 In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `{{< key cli >}}` or `{{< key ctl >}}` For example:
 
@@ -87,7 +87,7 @@ Tasks can also be registered individually, but it is more common to register alo
 
 See [Running your code](../development-cycle/running-your-code).
 
-### Registering in Python with `{{< key kit_remote >}}`
+### Registering in Python with `{{% key kit_remote %}}`
 
 As with all {{< key product_name >}} command line actions, you can also perform registration of workflows and tasks programmatically with [`{{< key kit_remote >}}`](), specifically, [`{{< key kit_remote >}}.register_script`](),
 [`{{< key kit_remote >}}.register_workflow`](), and
@@ -152,7 +152,7 @@ The sections in the task view are as follows:
 
 * **Launch Task button**: In the top right of the task view, you can click the **Launch Task** button to run the task with the default inputs.
 
-### Inspecting workflows on the command line with `{{< key ctl >}}`
+### Inspecting workflows on the command line with `{{% key ctl %}}`
 
 To view all tasks within a project and domain:
 
@@ -174,7 +174,7 @@ $ {{< key ctl >}} get workflow \
 
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
 
-### Inspecting tasks on the command line with `{{< key ctl >}}`
+### Inspecting tasks on the command line with `{{% key ctl %}}`
 
 To view all tasks within a project and domain:
 
@@ -196,7 +196,7 @@ $ {{< key ctl >}} get task \
 
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
 
-### Inspecting tasks and workflows in Python with `{{< key kit_remote >}}`
+### Inspecting tasks and workflows in Python with `{{% key kit_remote %}}`
 
 Use the method [`{{< key kit_remote >}}.fetch_workflow`]() or [`{{< key kit_remote >}}.client.get_workflow`]() to get a workflow.
 See [`{{< key kit_remote >}}`]() for more options and details.
@@ -213,7 +213,7 @@ To run a workflow in the UI, click the **Launch Workflow** button in the workflo
 
 You can also run individual tasks in the UI by clicking the **Launch Task** button in the task view.
 
-### Running a task or workflow locally on the command line with `{{< key cli >}}` or `python`
+### Running a task or workflow locally on the command line with `{{% key cli %}}` or `python`
 
 You can execute a {{< key product_name >}} workflow or task locally simply by calling it just like any regular Python function.
 For example, you can add the following to the above code:
@@ -240,7 +240,7 @@ $ {{< key cli >}} run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 This has the advantage of allowing you to specify the input values as command line arguments.
 For more details on running workflows and tasks, see [Development cycle](../development-cycle).
 
-### Running a task or workflow remotely on the command line with `{{< key cli >}}`
+### Running a task or workflow remotely on the command line with `{{% key cli %}}`
 
 To run a workflow remotely on your {{< key product_name >}} installation, use the following command (this assumes that you have your [{{<key config_env >}} set up correctly](../development-cycle/setting-up-a-project)):
 
@@ -248,7 +248,7 @@ To run a workflow remotely on your {{< key product_name >}} installation, use th
 $  {{< key cli >}} run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
-### Running a task or workflow remotely in Python with `{{< key kit_remote >}}`
+### Running a task or workflow remotely in Python with `{{% key kit_remote %}}`
 
 To run a workflow or task remotely in Python, use the method [`{{< key kit_remote >}}.execute`](). See [`{{< key kit_remote >}}`]() for more options and details.
 

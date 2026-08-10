@@ -20,7 +20,7 @@ To set up your data plane on Azure, you must allow {{< key product_name >}} to p
 {{< key product_name >}} requires permissions to manage Azure and Microsoft Entra resources to create a dataplane. This step involves
 creating a {{< key product_name >}} specific App and granting it sufficient permission to manage the dataplane.
 
-### Create a Microsoft Entra ID Application for {{< key product_name >}} Access
+### Create a Microsoft Entra ID Application for {{% key product_name %}} Access
 
 {{< key product_name >}} manages Azure resources through a [Microsoft Entra ID Application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) via [Workload Identity Federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp).
 
@@ -42,7 +42,7 @@ creating a {{< key product_name >}} specific App and granting it sufficient perm
 12. "Name" is your choice, but we recommend `union-access`
 13. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
 
-### Create Microsoft Entra ID Applications for {{< key product_name >}} cost allocation
+### Create Microsoft Entra ID Applications for {{% key product_name %}} cost allocation
 
 {{< key product_name >}} requires new roles and applications to support Union's cost allocation feature.
 This can be done by providing the `union` application additional permissions or you can choose to create the roles and applications yourself.
@@ -103,7 +103,7 @@ Provide the group `Object ID` to {{< key product_name >}}.
 
 If you decide to manage your own VNet instead of leaving it to {{< key product_name >}}, you will need to set it up yourself.
 
-### Required {{< key product_name >}} VNet permissions
+### Required {{% key product_name %}} VNet permissions
 
 {{< key product_name >}} requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying {{< key product_name >}} Kubernetes cluster.
 
@@ -160,7 +160,7 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 - `10.0.96.0/19` unallocated for Kubernetes services.
 - `10.0.96.10` for internal DNS.
 
-## {{< key product_name >}} Maintenance Windows
+## {{% key product_name %}} Maintenance Windows
 
 {{< key product_name >}} configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 

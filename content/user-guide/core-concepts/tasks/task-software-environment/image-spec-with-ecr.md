@@ -73,7 +73,7 @@ To do this, you will need to [install the AWS CLI](https://docs.aws.amazon.com/c
 
 See [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html) for details.
 
-## Register your workflow to {{< key product_name >}}
+## Register your workflow to {{% key product_name %}}
 
 You can register tasks with `ImageSpec` declarations that reference this repository.
 

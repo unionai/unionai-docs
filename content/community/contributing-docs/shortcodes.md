@@ -150,6 +150,29 @@ flyte = "Flyte"
 union = "Union.ai"
 ```
 
+#### Keys in a heading
+
+Inside a heading, write the key with the `{{%/* key ... */%}}` delimiters instead of
+`{{</* key ... */>}}`:
+
+```markdown
+## Deploy the {{%/* key product_name */%}} operator
+```
+
+Hugo resolves the percent form before it computes the heading's anchor id, so the anchor
+follows the heading text you can see (`#deploy-the-unionai-operator`). The angle-bracket
+form is resolved later, and the anchor gets computed from an internal Hugo placeholder
+whose value changes on every build. That makes the anchor unreadable and breaks every
+deep link into the heading each time the site is deployed.
+
+For a heading that needs a shortcode with no percent form, set an explicit id instead:
+
+```markdown
+## Deploy the {{</* key product_name */>}} operator {#deploy-the-operator}
+```
+
+The `Check Build Determinism` CI job rejects a heading that uses the angle-bracket form.
+
 #### List of available keys
 
 | Key               | Description                           | Example Usage (Flyte → Union)                                          |

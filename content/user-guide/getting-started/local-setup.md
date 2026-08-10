@@ -36,7 +36,7 @@ $ uv python install 3.12
 > `uv` will default to the latest version of Python available on your system.
 > If you have a version `>=3.13` installed, you will need to uninstall it since `{{< key kit >}}` requires `>=3.9,<3.13`.
 
-## Install the `{{< key cli >}}` CLI
+## Install the `{{% key cli %}}` CLI
 
 Once `uv` is installed, use it to install the `{{< key cli >}}` CLI by installing the `{{< key kit >}}` Python package:
 

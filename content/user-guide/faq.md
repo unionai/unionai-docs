@@ -6,9 +6,9 @@ variants: -flyte +union
 
 # FAQ
 
-## Onboarding my organization to {{< key product_name >}}
+## Onboarding my organization to {{% key product_name %}}
 
-### What information does {{< key product_name >}} need to set up my service?
+### What information does {{% key product_name %}} need to set up my service?
 
 When you initially onboard your organization to {{< key product_name >}} you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
@@ -21,7 +21,7 @@ To initiate the process, submit the [Node Group Configuration Change form](https
 
 ## Data storage and handling
 
-### How does {{< key product_name >}} store my data?
+### How does {{% key product_name %}} store my data?
 
 When data is passed from task to task in a workflow (and output at the end of the workflow), the workflow engine manages the transfer of these values.
 
@@ -130,7 +130,7 @@ For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-
 You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool.
 You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for {{< key product_name >}}-specific features, such as artifacts.
 
-### How do I authenticate `{{< key ctl >}}` and `{{< key cli >}}` CLIs to {{< key product_name >}}?
+### How do I authenticate `{{% key ctl %}}` and `{{% key cli %}}` CLIs to {{% key product_name %}}?
 
 The command-line tools `{{< key ctl >}}` and `{{< key cli >}}` need to authenticate in order to connect with your {{< key product_name >}} instance (for example, when registering a workflow).
 There are three ways to set up authentication.
