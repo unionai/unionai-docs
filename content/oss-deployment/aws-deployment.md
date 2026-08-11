@@ -55,10 +55,12 @@ configuration:
       s3:
         region: <region>              # e.g. us-east-1
         authType: iam                 # iam (recommended) | accesskey
-        
+
 flyte-core-components:
   runs:
-    storagePrefix: "s3://<bucket_name>" # object-store bucket Flyte runs read from and write to
+    # Base URI for run inputs and outputs. Must point into the same bucket
+    # as configuration.storage.metadataContainer above.
+    storagePrefix: "s3://<bucket-name>"
 
 serviceAccount:
   create: true
@@ -76,6 +78,7 @@ The required fields:
 | Storage bucket | `configuration.storage.metadataContainer` | The object-store bucket Flyte reads and writes. |
 | Storage provider | `configuration.storage.provider` | `s3`, `gcs`, or `azure`. |
 | Storage region | `configuration.storage.providerConfig.s3.region` | S3 region (S3 provider). |
+| Run storage prefix | `flyte-core-components.runs.storagePrefix` | Base URI for run inputs and outputs. Defaults to `s3://flyte-data`, which you almost certainly do not own, so set it. Must point into the same bucket as `metadataContainer`. |
 | Service account | `serviceAccount.annotations` | Cloud IAM binding for object-store access (step 4). |
 
 ## 3. Install
@@ -240,10 +243,10 @@ configuration:
   inline:
     executor:
       defaultK8sServiceAccount: flyte   # task pods inherit S3 access via IRSA
-      
+
 flyte-core-components:
   runs:
-    storagePrefix: "s3://<bucket_name>"      
+    storagePrefix: "s3://<flyte-bucket>"  # same bucket as metadataContainer
 
 serviceAccount:
   create: true
@@ -351,7 +354,12 @@ To keep the **database password** out of the values file too, leave
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
 
-To keep the **storage password** out of the values file too, leave
-`configuration.storage.providerConfig.s3.secretKey` empty and
-mount the password as a file and point 
+When `authType: accesskey`, keep the **S3 secret key** out of the values file the
+same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
+either:
+
+- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
+- mount the secret key as a file and point
   `configuration.storage.providerConfig.s3.secretKeyPath` at it.
+
+On the recommended `authType: iam` path there is no storage secret to manage.
