@@ -110,3 +110,30 @@ For the complete parameter interaction matrix showing which parameters can be se
 {{< /variant >}}
 
 \*When `reusable` is set, `resources`, `env_vars`, and `secrets` can only be overridden via `task.override()` with `reusable="off"` in the same call.
+
+## Distributed tasks with a clustered environment
+
+Everything above configures a task that runs in a single container. Some tasks instead need a *gang*
+of pods working together as one distributed job — the classic case being multi-node, multi-GPU model
+training. For those, use a specialized `flyte.clustered.ClusteredTaskEnvironment` instead of a plain
+`TaskEnvironment`. It inherits all the configuration above and adds a few fields that describe the
+cluster shape: `replicas` (pods) and `nproc_per_node` (worker processes per pod). When you run the
+task, the backend launches a Kubernetes JobSet of identical pods, sets up a `torchrun` rendezvous
+across them, and runs your task body once per worker.
+
+```python
+import flyte
+from flyte.clustered import ClusteredTaskEnvironment, TorchRun
+
+env = ClusteredTaskEnvironment(
+    name="ddp_env",
+    image=flyte.Image.from_debian_base().with_pip_packages("torch"),
+    resources=flyte.Resources(cpu=(2, 4), memory=("4Gi", "8Gi"), gpu="L4:1"),
+    replicas=2,            # number of pods (nodes)
+    nproc_per_node=1,      # worker processes per pod => world_size = 2 x 1
+    runtime=TorchRun(),
+)
+```
+
+See [Clustered task environment](./clustered-task-environment) for the full guide, including DDP,
+FSDP, and framework-integration examples.

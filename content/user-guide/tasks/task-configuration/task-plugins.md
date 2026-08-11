@@ -1,6 +1,6 @@
 ---
 title: Task plugins
-weight: 12
+weight: 13
 variants: +flyte +union
 ---
 

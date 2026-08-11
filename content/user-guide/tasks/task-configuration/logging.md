@@ -1,6 +1,6 @@
 ---
 title: Logging
-weight: 14
+weight: 15
 variants: +flyte +union
 ---
 

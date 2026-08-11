@@ -20,6 +20,29 @@ def extract(url: str) -> str:
 
 Tasks compose. Calling one task from another builds the graph as your code executes, so fanout, branching, and error handling are ordinary Python rather than a separate DSL.
 
+A task usually runs in a single container, but it doesn't have to. For distributed workloads such as multi-node model training, a `flyte.clustered.ClusteredTaskEnvironment` runs one task across a gang of pods at once, wiring up a `torchrun` rendezvous so your task body executes on every worker:
+
+```python
+import flyte
+from flyte.clustered import ClusteredTaskEnvironment, TorchRun
+
+env = ClusteredTaskEnvironment(
+    name="ddp_env",
+    image=flyte.Image.from_debian_base().with_pip_packages("torch"),
+    replicas=2,            # number of pods (nodes)
+    nproc_per_node=1,      # worker processes per pod
+    runtime=TorchRun(),
+)
+
+@env.task
+async def train() -> float:
+    import torch.distributed as dist
+    dist.init_process_group()  # RANK / WORLD_SIZE / MASTER_ADDR already set
+    ...
+```
+
+See [Clustered task environment](./task-configuration/clustered-task-environment) for the full guide.
+
 The three sections below follow the order you meet them in: describe the environment a task runs in, write the task logic, then get it onto a cluster.
 
 {{< grid >}}
