@@ -30,7 +30,7 @@ A common pattern is to split clusters and networking across domains as well: for
 
 ### Set per-task resource limits per project-domain pair
 
-Resource limits are configured through the [settings](../core-concepts/settings) hierarchy, which resolves through the org → domain → project chain. Set them for a whole domain, or narrow them to a single project-domain pair:
+Resource limits are configured through the [settings](../get-started/core-concepts/settings) hierarchy, which resolves through the org → domain → project chain. Set them for a whole domain, or narrow them to a single project-domain pair:
 
 ```bash
 # Domain-wide, inherited by every project in the domain
@@ -58,7 +58,7 @@ task_resource.max.memory: 32Gi
 task_resource.max.gpu: "4"
 ```
 
-See [Settings](../core-concepts/settings) for the full key list and how inheritance and overrides work.
+See [Settings](../get-started/core-concepts/settings) for the full key list and how inheritance and overrides work.
 
 ### Why limits matter
 
@@ -83,7 +83,7 @@ def my_task():
     ...
 ```
 
-If a task requests more than the `task_resource.max` ceiling set for its project-domain, the request is capped to that ceiling rather than rejected, so the task still runs but with the maximum the scope allows. Teams should know the ceilings before sizing tasks. Coordinate with whoever owns the [settings](../core-concepts/settings) for the scope so requests stay within the ceiling, or so the ceiling gets raised intentionally.
+If a task requests more than the `task_resource.max` ceiling set for its project-domain, the request is capped to that ceiling rather than rejected, so the task still runs but with the maximum the scope allows. Teams should know the ceilings before sizing tasks. Coordinate with whoever owns the [settings](../get-started/core-concepts/settings) for the scope so requests stay within the ceiling, or so the ceiling gets raised intentionally.
 
 ### Be explicit about ephemeral storage
 
@@ -119,7 +119,7 @@ Once you have ten or more projects, discoverability degrades quickly. A `<team>-
 
 ### Put shared utility tasks in a dedicated project
 
-If multiple teams need to share preprocessing tasks or model wrappers, create a `shared-utils` or `platform` project rather than duplicating code. Other teams target these without pulling in the implementation by referencing them through the [remote tasks API](../task-programming/remote-tasks):
+If multiple teams need to share preprocessing tasks or model wrappers, create a `shared-utils` or `platform` project rather than duplicating code. Other teams target these without pulling in the implementation by referencing them through the [remote tasks API](../tasks/task-programming/remote-tasks):
 
 ```python
 import flyte.remote

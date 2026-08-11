@@ -26,7 +26,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Add the {{< key product_name >}} Helm repo:
 
@@ -99,7 +99,7 @@ If you have not yet set up the required OCI resources (OKE cluster, Object Stora
    <cluster>   <org>   enabled   healthy
    ```
 
-7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+7. Follow the [Quickstart](../../../user-guide/get-started/quickstart) to run your first workflow and verify your cluster is working correctly.
 
 ## Next: manage your cluster and pools
 

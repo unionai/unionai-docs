@@ -1,15 +1,15 @@
 {
   "packages": {
-    "flyteplugins.papermill": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/"
+    "flyteplugins.papermill": "/api-reference/integrations/papermill/"
   },
   "identifiers": {
-    "flyteplugins.papermill.NotebookTask": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/notebooktask/",
-    "NotebookTask": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/notebooktask/"
+    "flyteplugins.papermill.NotebookTask": "/api-reference/integrations/papermill/notebooktask/",
+    "NotebookTask": "/api-reference/integrations/papermill/notebooktask/"
   },
   "methods": {
-    "flyteplugins.papermill.load_dataframe": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dataframe",
-    "flyteplugins.papermill.load_dir": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_dir",
-    "flyteplugins.papermill.load_file": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#load_file",
-    "flyteplugins.papermill.record_outputs": "/api-reference/integrations/papermill/packages/flyteplugins.papermill/#record_outputs"
+    "flyteplugins.papermill.load_dataframe": "/api-reference/integrations/papermill/#load_dataframe",
+    "flyteplugins.papermill.load_dir": "/api-reference/integrations/papermill/#load_dir",
+    "flyteplugins.papermill.load_file": "/api-reference/integrations/papermill/#load_file",
+    "flyteplugins.papermill.record_outputs": "/api-reference/integrations/papermill/#record_outputs"
   }
 }

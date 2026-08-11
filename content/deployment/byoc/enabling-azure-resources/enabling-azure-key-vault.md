@@ -8,7 +8,7 @@ variants: -flyte +union
 
 > [!NOTE]
 > This documentation exists for customers who must use Azure Key Vault for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../../user-guide/task-configuration/secrets) to manage secrets rather than Azure Key Vault.
+> [{{< key product_name >}} secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than Azure Key Vault.
 
 The {{< key product_name >}}-managed `userflyterole` identity must be granted permission to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets).
 
@@ -24,7 +24,7 @@ The {{< key product_name >}}-managed `userflyterole` identity must be granted pe
 > [!NOTE] {{< key product_name >}} managed user-assigned identities
 > Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user-assigned identity within the {{< key product_name >}} data plane resource group.
 
-## Accessing the secret within {{< key product_name >}}
+## Accessing the secret within {{% key product_name %}}
 
 * Define a `Secret` object where
   * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`

@@ -34,7 +34,7 @@ Worker nodes are responsible for executing your workloads. You have full control
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
 
-## {{< key product_name >}} operator
+## {{% key product_name %}} operator
 
 The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure. The component that makes this possible is the **{{< key product_name >}} operator**: a dedicated service, resident in your data plane, that acts as the primary channel through which the control plane and your data plane interact. It is designed to perform its functions with only the very minimum set of required permissions.
 
@@ -103,7 +103,7 @@ They are fetched directly from the data-plane object store via presigned URLs is
 
 These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane (inlined within the run's `inputs.pb`/`outputs.pb` payload) and the control plane stores only a URI pointer to them.
 
-For the developer-facing map of which specific records live in the control plane database versus the data plane bucket, including what "metadata" means in different contexts, see [Where your data lives](../../user-guide/core-concepts/where-data-lives).
+For the developer-facing map of which specific records live in the control plane database versus the data plane bucket, including what "metadata" means in different contexts, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives).
 
 ## Data privacy
 

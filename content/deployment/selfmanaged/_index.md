@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # Self-managed deployment
 
-{{< llm-bundle-note >}}
-
 In a self-managed deployment, you operate the data plane on your own Kubernetes infrastructure.
 Union.ai runs the control plane, but you manage the cluster, upgrades, and operational aspects of the data plane yourself.
 Union.ai has no access to your cluster, providing the highest level of data isolation.

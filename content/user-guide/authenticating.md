@@ -1,6 +1,6 @@
 ---
 title: Authenticating
-weight: 30
+weight: 5
 variants: -flyte +union
 ---
 
@@ -60,7 +60,7 @@ This will automatically open your browser to complete authentication.
 {{< /tabs >}}
 
 > [!NOTE]
-> For details on creating and managing configuration files, see [Run on a remote cluster](./run-modes/running-remote#configuration-file).
+> For details on creating and managing configuration files, see [Run on a remote cluster](./get-started/run-modes/running-remote#configuration-file).
 
 ## Authentication modes
 

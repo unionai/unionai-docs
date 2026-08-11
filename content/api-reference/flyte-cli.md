@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.16
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -1780,14 +1780,18 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 Re-run an existing run RUN_NAME with its original code and inputs.
 
 Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
-new run that returns the same way ``flyte run`` does. To re-run with *new* local code (reusing
-the prior run's inputs), use ``flyte run <file> <task> --rerun-from <run>``.
+new run that returns the same way ``flyte run`` does. ``--recover`` reuses the prior run's
+succeeded actions (re-running only what failed or changed); ``--force-rerun-action`` forces
+named actions to re-execute anyway. To re-run with *new* local code (reusing the prior run's
+inputs), use ``flyte run <file> <task> --rerun-from <run>``.
 
 Examples:
 
 ```bash
 $ flyte rerun ul56wcvgqrb9vzhzz5l2
 $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
+$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover
+$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover --force-rerun-action a3 --force-rerun-action a7
 ```
 
 | Option | Type | Default | Description |
@@ -1798,6 +1802,9 @@ $ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
 | `-e` `--env` | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
 | `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
 | `--follow` `-f` | `boolean` | `False` | Stream the parent action logs after launch. |
+| `--recover` | `boolean` | `False` | Recover from this run: reuse its succeeded actions, re-run only what failed or changed. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
+| `--allow-missing-outputs` | `boolean` | `False` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The inputs cannot be verified from the client — if they were deleted too, the new run fails at runtime. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte run
@@ -1914,6 +1921,8 @@ flyte run hello.py my_task --help
 | `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
+| `--recover-from` | `text` |  | Recover a fresh run from a prior run: reuse its succeeded actions and re-run only what failed or changed. Remote-only. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover-from: name of an action to re-execute even though it succeeded in the prior run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--rerun-from` | `text` |  | Re-run an existing run with THIS local code, reusing that run's inputs (no per-task input flags are needed). Remote-only. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
 | `--help` | `boolean` | `False` | Show this message and exit. |

@@ -1,6 +1,6 @@
 ---
 title: Cluster and workload management
-weight: 99
+weight: 7
 variants: -flyte +union
 mermaid: true
 ---
@@ -16,8 +16,8 @@ As a {{< key product_name >}} deployment grows past a single cluster, you need t
 control *where* a workload runs and *under what limits*. Three primitives do this:
 
 - **Cluster pool**: an isolation boundary. The clusters and queues inside a pool
-  share one **data plane**: the same object store, secret store, and container
-  registry. Work cannot cross from one pool to another (see
+  share one **data plane configuration**: the same object store, secret store,
+  and container registry. Work cannot cross from one pool to another (see
   [Crossing a pool boundary](#crossing-a-pool-boundary)).
 - **Cluster**: an execution cluster that lives in exactly one pool.
 - **Queue**: what you submit work to. A queue lives in one pool, **routes** work to
@@ -29,7 +29,7 @@ control *where* a workload runs and *under what limits*. Three primitives do thi
 Pools, clusters, and queues are managed with the `flyte` CLI or the
 `flyteplugins.union.remote` Python objects, and are set up by your platform
 administrator. These are administrative tasks; most workflow authors only need
-[task-side queue routing](../task-configuration/queues).
+[task-side queue routing](../tasks/task-configuration/queues).
 
 ## Standing up a self-managed cluster?
 

@@ -1,6 +1,6 @@
 ---
 title: SGLang
-version: 2.5.14
+version: 2.5.18
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,11 +15,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.sglang.SGLangAppEnvironment`](packages/flyteplugins.sglang/sglangappenvironment) | App environment backed by SGLang for serving large language models. |
+| [`SGLangAppEnvironment`](./sglangappenvironment) | App environment backed by SGLang for serving large language models. |
 
-### Packages
+### Variables
 
-| Package | Description |
-|-|-|
-| [`flyteplugins.sglang`](packages/flyteplugins.sglang/_index) |  |
+| Property | Type | Description |
+|-|-|-|
+| `DEFAULT_SGLANG_IMAGE` | `Image` |  |
 

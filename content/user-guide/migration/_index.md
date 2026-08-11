@@ -1,6 +1,6 @@
 ---
 title: Migration
-weight: 103
+weight: 11
 variants: +flyte +union
 ---
 
@@ -16,6 +16,10 @@ What's new in Flyte 2 (pure Python execution, simplified API, fine-grained repro
 
 {{< link-card target="from-airflow" icon="git-branch" title="From Airflow to Flyte" >}}
 Mapping from Airflow concepts (DAGs, operators, schedules, XCom, trigger rules) to their Flyte 2 equivalents.
+{{< /link-card >}}
+
+{{< link-card target="from-slurm" icon="cpu" title="From Slurm to Flyte" >}}
+Mapping from Slurm concepts (sbatch scripts, modules, job arrays, dependencies, partitions, requeue, multi-node jobs) to their Flyte 2 equivalents.
 {{< /link-card >}}
 
 {{< /grid >}}
