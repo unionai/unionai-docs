@@ -81,10 +81,10 @@ Finally, deploy and run the workflow programmatically:
 
 ## Configuration parameters
 
-A `ClusteredTaskEnvironment` inherits every field of a `flyte.TaskEnvironment` (`name`, `image`,
+A `flyte.clustered.ClusteredTaskEnvironment` inherits every field of a `flyte.TaskEnvironment` (`name`, `image`,
 `resources`, `env_vars`, `secrets`, `pod_template`, `cache`, and so on) and adds the following
-cluster-specific fields. For full type signatures and defaults, see the
-[`ClusteredTaskEnvironment` API reference](../../../api-reference/flyte-sdk/flyte.clustered/clusteredtaskenvironment).
+cluster-specific fields. For full type signatures and defaults, see `flyte.clustered.ClusteredTaskEnvironment`
+(API reference).
 
 | Parameter | Description |
 |-----------|-------------|
