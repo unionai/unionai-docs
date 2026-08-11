@@ -23,6 +23,7 @@ Tasks compose. Calling one task from another builds the graph as your code execu
 A task usually runs in a single container, but it doesn't have to. For distributed workloads such as multi-node model training, a `flyte.clustered.ClusteredTaskEnvironment` runs one task across a gang of pods at once, wiring up a `torchrun` rendezvous so your task body executes on every worker:
 
 ```python
+import flyte
 from flyte.clustered import ClusteredTaskEnvironment, TorchRun
 
 env = ClusteredTaskEnvironment(
