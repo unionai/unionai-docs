@@ -118,13 +118,13 @@ The `flyteplugins-lance` package adds a `lance` format to `flyte.io.DataFrame`, 
 pip install flyteplugins-lance
 ```
 
-Unlike the Parquet-backed types above, the dataset never gets materialized. The receiving task is handed a live handle and streams from it:
+Declare `lance.LanceDataset` on the receiving task and, unlike the Parquet-backed types above, nothing is materialized: the task gets a live handle and streams from it.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/lance_example.py" fragment="stream" lang="python" >}}
 
 Reach for it when a task wants scattered rows instead of all of them: shuffled training batches, point lookups by id, vector similarity search. Returning a handful of rows costs Parquet a whole row group, and costs Flyte's Parquet decoder the entire table. Lance reads the rows you asked for.
 
-One thing to know before you commit to it: a `lance` input can only arrive as a `lance.LanceDataset` or a `pyarrow.Table`. There is no lance-to-pandas handler, so declaring `pd.DataFrame` fails at the task boundary. The [Lance integration](../../../integrations/lance/_index) page has the workaround, along with multimodal and blob-encoded columns, predicate pushdown, fragment-parallel reads, and why a dataset carrying indices has to be handed off by reference.
+One thing to know before you commit to it: a `lance` input can only arrive as a `lance.LanceDataset` or a `pyarrow.Table`, and the `pyarrow.Table` decoder reads the whole dataset into memory, so streaming is the `lance.LanceDataset` path specifically. There is no lance-to-pandas handler either, so declaring `pd.DataFrame` fails at the task boundary. The [Lance integration](../../../integrations/lance/_index) page has the workaround, along with multimodal and blob-encoded columns, predicate pushdown, fragment-parallel reads, and why a dataset carrying indices has to be handed off by reference.
 
 ## See also
 

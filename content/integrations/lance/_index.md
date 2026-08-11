@@ -261,7 +261,3 @@ Same code path either way. A local run just can't show you the parts that only e
 - **Feature stores and point lookups**: fetch individual records by id out of a large table without scanning it.
 - **Multimodal datasets**: image, audio, or video bytes stored beside structured labels, where most stages read only the labels.
 - **Datasets larger than memory**: stream them in bounded batches instead of hand-partitioning them across tasks.
-
-## API reference
-
-See the [Lance API reference](../../api-reference/integrations/lance/_index) for the full list of encode and decode handlers.
