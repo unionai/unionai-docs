@@ -122,6 +122,7 @@ task, the backend launches a Kubernetes JobSet of identical pods, sets up a `tor
 across them, and runs your task body once per worker.
 
 ```python
+import flyte
 from flyte.clustered import ClusteredTaskEnvironment, TorchRun
 
 env = ClusteredTaskEnvironment(
