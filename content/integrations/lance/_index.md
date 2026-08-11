@@ -46,7 +46,7 @@ Both are formats on `flyte.io.DataFrame`, so one task can produce Parquet and an
 
 The [benchmark below](#measuring-the-difference) pulls 1,000 random rows out of 100,000, each carrying a 512-byte payload. Parquet reads 53.6 MB to answer that. Lance reads 0.54 MB.
 
-The 100x gap in bytes read is the number to trust. It doesn't depend on caching and it grows with the dataset. The 10x wall-clock speedup that came with it on local disk is much softer, since it moves with your row sizes, your batch size, and whether the bytes are on a local disk or in a bucket. Run it on your own data before quoting either figure.
+The 100x gap in bytes read is the number to trust. It doesn't depend on caching and it grows with the dataset. The wall-clock speedup is much softer: about 10x on local disk, about 3.5x on the same benchmark against object storage, and it moves with your row sizes and batch size. Run it on your own data before quoting either figure.
 
 ## Installation
 
@@ -122,7 +122,7 @@ So one gives you a copy of a directory and the other gives you a dataset reconst
 | Fragment layout           | Coalesced; fragment ids change       | Identical                  |
 
 > [!WARNING] Indices and blob columns need the reference form
-> An ANN index does not survive a handle return, and nothing warns you: the task succeeds and the copy on the other side is simply unindexed. A blob-encoded column is louder about it and fails with `Blob v2 struct input requires file version >= 2.2`, which is a limitation of the encoder today rather than something inherent to the format. Hand both kinds of dataset off with `DataFrame(uri=..., format="lance")`.
+> An ANN index does not survive a handle return, and nothing warns you: the task succeeds and the copy on the other side is simply unindexed. A blob column is louder about it. The encoder re-reads the dataset through a scanner, which for a blob column yields the `{position, size}` descriptors rather than the values, and writing those back out fails with `Blob v2 struct input requires file version >= 2.2`. Hand both kinds of dataset off with `DataFrame(uri=..., format="lance")`.
 
 Rough rule: the handle is fine when the task just built something small in memory. Reach for the reference once the dataset is large, was written in chunks, or carries indices or blob columns.
 
@@ -154,6 +154,9 @@ There's a fourth, `batch_size` on `scanner()`, in the streaming example above. I
 
 Blob encoding moves large binary values out of the regular column layout, so a scan that doesn't ask for the column doesn't pay for it. Mark the field in the schema:
 
+> [!NOTE] A blob column reads differently from every other column
+> `take()` and `scanner()` do not return a blob value. They return a `{position, size}` descriptor, and it is easy to miss, because code that treats it as bytes usually runs without complaining. Read the bytes with `take_blobs()`, which hands back file objects instead.
+
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/multimodal_streaming.py" fragment="setup" lang="python" >}}
 
 Write it in chunks and hand it off by reference, which blob columns require anyway:
@@ -162,7 +165,7 @@ Write it in chunks and hand it off by reference, which blob columns require anyw
 
 ### Streaming a shuffled epoch
 
-Draw a fresh random order each epoch, pull it in batches, straight out of object storage:
+Draw a fresh random order each epoch, pull it in batches, straight out of object storage. Labels come from `take()` and the image bytes from `take_blobs()`, both scoped to the same rows:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/multimodal_streaming.py" fragment="train" lang="python" >}}
 
@@ -176,7 +179,7 @@ The images being blob-encoded means a scan over the structured columns skips the
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/multimodal_streaming.py" fragment="metadata-scan" lang="python" >}}
 
-When you do want the bytes, `take_blobs()` returns file-like objects you can read incrementally instead of materializing every blob at once:
+A `BlobFile` is a file object, so you can also read part of a value rather than all of it, which is how you inspect headers or sample a few frames without pulling whole images across:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/multimodal_streaming.py" fragment="blob-file" lang="python" >}}
 
@@ -230,7 +233,13 @@ What it measures is bytes read, because that is the part caching can't flatter:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/parquet_vs_lance.py" fragment="compare" lang="python" >}}
 
-The gap widens as the dataset grows, since Parquet's cost tracks the dataset while Lance's tracks the batch, and it narrows as individual rows get fat relative to the batch. Expect the wall-clock win on object storage to be less than the bytes ratio implies, because scattered reads there pay per-request latency. Less, but not nothing.
+Each task publishes the result as a report on the run:
+
+![Flyte run detail showing the benchmark's report tab. Fetching 1,000 scattered rows from 100,000 read 53.6 MB from Parquet against 0.5 MB from Lance, a 100x difference, with fetch times of 775 ms and 219.9 ms.](../../_static/images/integrations/lance/parquet_vs_lance.png)
+
+That run is on a cluster, reading from object storage, and it shows the two numbers pulling apart: the bytes ratio holds at 100x, while the wall-clock gap is roughly 3.5x. On local disk the same benchmark comes out nearer 10x. Scattered reads against a bucket pay per-request latency that a local file doesn't, which eats into the advantage without erasing it.
+
+The gap widens as the dataset grows, since Parquet's cost tracks the dataset while Lance's tracks the batch, and it narrows as individual rows get fat relative to the batch.
 
 ## Running the examples
 
