@@ -120,6 +120,45 @@ Use `salt` to vary cache keys without changing function logic:
 - Temporary cache namespaces for experiments.
 - Environment-specific cache isolation.
 
+## Caching with `flyte.map`
+
+When you [map a task over a list of inputs](../task-programming/map), each item runs as its own **independent task action** with its own inputs. Caching therefore applies **per element**: configure the cache on the mapped task (via the `@env.task` decorator or the `TaskEnvironment`, exactly as above — there is no separate cache setting on the `flyte.map` call itself), and Flyte computes a cache key for each item individually.
+
+The per-element cache key is that item's mapped input(s) plus the standard components — the task name, interface hash, and cache version. Two consequences follow:
+
+- **Unchanged items are cache hits even when other items change.** If you re-run a map and only some items differ, the unchanged items are served from cache and only the changed ones recompute.
+- **Order doesn't matter.** The cache key depends on an item's own inputs, not its position, so reordering the input list (or changing the list's length) doesn't invalidate the items that are still present.
+
+For example, mapping `[1, 2, 3]` and later mapping `[3, 1, 4]` recomputes only the new item `4`; `1`, `2`, and `3` are already cached.
+
+### Excluding a bound argument from the per-element key
+
+When you bind constant arguments with `functools.partial` (see [Binding constant arguments](../task-programming/map#binding-constant-arguments-with-functoolspartial)), those bound values become part of **each element's** cache key. If a bound value changes between runs but does not affect the result — a run ID, a status flag, a timestamp — every element misses the cache. Add such volatile inputs to `ignored_inputs` on the mapped task so they're dropped from the key:
+
+```python
+from functools import partial
+
+import flyte
+
+env = flyte.TaskEnvironment(name="map-cache")
+
+
+@env.task(cache=flyte.Cache(behavior="auto", ignored_inputs=("batch_id",)))
+async def score(compound_id: str, batch_id: str) -> str:
+    ...
+
+
+@env.task
+async def main(batch_id: str) -> list[str]:
+    compounds = [str(i) for i in range(3)]
+    scorer = partial(score, batch_id=batch_id)
+    # batch_id is bound for every item but ignored for caching, so each
+    # element is keyed only on compound_id.
+    return list(flyte.map(scorer, compounds))
+```
+
+Here `batch_id` is constant across the map yet varies between runs; listing it in `ignored_inputs` keeps each element's cache keyed only on `compound_id`, so the items are reused across runs.
+
 ## Content-based caching for DataFrames, files, and directories
 
 When a task input is a DataFrame (`pandas`, `polars`, or `flyte.io.DataFrame`), a `flyte.io.File`, or a `flyte.io.Dir`, the value is passed *by reference* - the cache key is derived from the data's storage location, not its contents. As a result, a downstream task keyed on such an input does **not** get a cache hit when the underlying data is identical but lives at a new path (the common case, since each run writes to a fresh location).
