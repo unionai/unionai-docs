@@ -56,6 +56,12 @@ configuration:
         region: <region>              # e.g. us-east-1
         authType: iam                 # iam (recommended) | accesskey
 
+flyte-core-components:
+  runs:
+    # Base URI for run inputs and outputs. Must point into the same bucket
+    # as configuration.storage.metadataContainer above.
+    storagePrefix: "s3://<bucket-name>"
+
 serviceAccount:
   create: true
   annotations: {}                     # IRSA role binding — see step 4
@@ -72,6 +78,7 @@ The required fields:
 | Storage bucket | `configuration.storage.metadataContainer` | The object-store bucket Flyte reads and writes. |
 | Storage provider | `configuration.storage.provider` | `s3`, `gcs`, or `azure`. |
 | Storage region | `configuration.storage.providerConfig.s3.region` | S3 region (S3 provider). |
+| Run storage prefix | `flyte-core-components.runs.storagePrefix` | Base URI for run inputs and outputs. Defaults to `s3://flyte-data`, which you almost certainly do not own, so set it. Must point into the same bucket as `metadataContainer`. |
 | Service account | `serviceAccount.annotations` | Cloud IAM binding for object-store access (step 4). |
 
 ## 3. Install
@@ -237,6 +244,10 @@ configuration:
     executor:
       defaultK8sServiceAccount: flyte   # task pods inherit S3 access via IRSA
 
+flyte-core-components:
+  runs:
+    storagePrefix: "s3://<flyte-bucket>"  # same bucket as metadataContainer
+
 serviceAccount:
   create: true
   annotations:
@@ -329,16 +340,26 @@ Prefer `otlpgrpc`: the `otlphttp` metric exporter reuses the trace endpoint path
 Send to any OTLP collector (e.g. the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/),
 which can fan metrics out to Prometheus and traces to Jaeger/Tempo).
 
-## Database password from a Secret
+## Configuring passwords from Secrets
 
 When you set `configuration.database.postgres.password`, the chart writes it into a
 Kubernetes Secret (kept out of the plaintext ConfigMap) and mounts it into the Flyte
 pod: the password lives only in your values file. The same applies to S3 access keys
 when `authType: accesskey`.
 
-To keep the password out of the values file too, leave
+To keep the **database password** out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
+
+When `authType: accesskey`, keep the **S3 secret key** out of the values file the
+same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
+either:
+
+- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
+- mount the secret key as a file and point
+  `configuration.storage.providerConfig.s3.secretKeyPath` at it.
+
+On the recommended `authType: iam` path there is no storage secret to manage.
