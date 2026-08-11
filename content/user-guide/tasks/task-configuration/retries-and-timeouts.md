@@ -1,6 +1,6 @@
 ---
 title: Retries and timeouts
-weight: 8
+weight: 9
 variants: +flyte +union
 mermaid: true
 ---
