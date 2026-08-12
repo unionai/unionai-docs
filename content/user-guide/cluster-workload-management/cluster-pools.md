@@ -228,8 +228,9 @@ them to the pool. That route only adds: it cannot remove a cluster from a pool
 or move one elsewhere.
 
 An existing cluster can be reassigned to another pool with
-`flyte update cluster <name> --pool <pool>`, but the operation does not stop
-in-flight work and carries real risk — read
+`flyte update cluster <name> --pool <pool>`, but today the operation does not
+stop in-flight work and carries real risk (a cluster-level drain that makes the
+move safe is coming soon) — read
 [Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool)
 before running it.
 

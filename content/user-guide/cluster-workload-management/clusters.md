@@ -162,6 +162,12 @@ before you run it.
 > on the cluster is **your responsibility**. Treat this as a maintenance-window
 > operation.
 
+> [!NOTE] Coming soon: cluster draining
+> A cluster-level **drain** is in the works: it will stop new work from landing
+> on a cluster and wait for everything in flight to finish, guaranteeing the
+> cluster is idle and safe to move or [delete](#delete-a-cluster). Until it
+> ships, the checks below are how you establish that safety manually.
+
 {{< tabs "move-cluster" >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
@@ -253,6 +259,14 @@ Deleting a cluster requires the same quiescing as a
 A queue whose selector you empty this way stops routing work anywhere until you
 point it at another cluster **in its pool** (or
 [move it to another pool](./queues#move-work-to-another-pool) once drained).
+
+Note that these preconditions quiesce the *queues*, not the cluster itself:
+work routed by wildcard queues, [apps](../apps/serve-and-deploy-apps/_index),
+and legacy v1 executions can still be running when the delete goes through. A
+cluster-level **drain** — stopping new work and waiting for everything in
+flight to finish, so the cluster is provably idle and safe to delete — is
+coming soon. Until it ships, confirm out-of-band that nothing is still running
+on the cluster before deleting it.
 
 {{< tabs "delete-cluster" >}}
 {{< tab "CLI" >}}
