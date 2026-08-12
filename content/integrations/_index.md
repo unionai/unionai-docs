@@ -200,6 +200,7 @@ Data type integrations add native support for additional file and dataframe type
 | Plugin                    | Description                                                  | Common use cases                                            |
 | ------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
 | [JSONL](./jsonl/_index)   | Typed `JsonlFile` / `JsonlDir` for streaming JSON Lines data | LLM dataset pipelines, event logs, large line-delimited I/O |
+| [Lance](./lance/_index)   | `lance.LanceDataset` as a streaming, multimodal dataframe format | Shuffled training data, vector search, point lookups     |
 | [Polars](./polars/_index) | Native `pl.DataFrame` / `pl.LazyFrame` support via Parquet   | High-performance dataframe ETL, feature engineering         |
 
 ## Connectors
