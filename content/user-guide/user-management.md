@@ -1,6 +1,6 @@
 ---
 title: User management
-weight: 40
+weight: 6
 variants: -flyte +union
 ---
 

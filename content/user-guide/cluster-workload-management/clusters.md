@@ -12,7 +12,8 @@ variants: -flyte +union
 
 A **cluster** is an execution cluster registered with {{< key product_name >}}.
 Every cluster subscribes to exactly one [cluster pool](./cluster-pools), which
-determines the data plane (object store, secrets, registry) the cluster uses.
+determines the data plane configuration (object store, secret store, container
+registry) the cluster uses.
 
 Creating a cluster record registers the cluster in the control plane. It does not
 install Kubernetes resources or deploy the data plane itself. For self-managed

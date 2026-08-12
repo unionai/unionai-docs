@@ -38,7 +38,7 @@ To set up your {{< key product_name >}} instance to use Microsoft Entra ID as th
 > **Identity > Applications > Enterprise > applications** and select the app.
 > Then, on the **Properties** page, toggle **Visible to users?** to **Yes**.
 
-## Copy the values needed by the {{< key product_name >}} team
+## Copy the values needed by the {{% key product_name %}} team
 
 When registration finishes, the Microsoft Entra admin center will display the app registration's **Overview** page, from which you can copy the Application (client) ID, Directory (tenant) ID, and client secret needed by the {{< key product_name >}} team.
 
@@ -59,7 +59,7 @@ Copy the **Value** of this secret to a plain text file on your computer.
 
 ![Client secret](../../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-secret.png)
 
-## Share the client secret securely with {{< key product_name >}}
+## Share the client secret securely with {{% key product_name %}}
 
 1. Copy the public key provided by {{< key product_name >}} here: {{< download "/_static/public/public-key.txt" >}}
 
@@ -77,7 +77,7 @@ Copy the **Value** of this secret to a plain text file on your computer.
 
 8. Delete the **client secret** from the text file on your computer.
 
-## Share the IDs with {{< key product_name >}}
+## Share the IDs with {{% key product_name %}}
 
 Share the **application (client) ID** and **directory (tenant) ID** with the {{< key product_name >}} team over Slack.
 These values do not have to be encrypted.

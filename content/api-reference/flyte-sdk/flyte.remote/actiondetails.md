@@ -1,0 +1,316 @@
+---
+title: ActionDetails
+version: 2.5.18
+variants: +flyte +union
+layout: py_api
+---
+
+# ActionDetails
+
+**Package:** `flyte.remote`
+
+A class representing an action. It is used to manage the run of a task and its state on the remote Union API.
+
+
+## Parameters
+
+```python
+class ActionDetails(
+    pb2: run_definition_pb2.ActionDetails,
+    _inputs: ActionInputs | None = None,
+    _outputs: ActionOutputs | None = None,
+    _preserve_original_types: bool = False,
+    _action_data: dataproxy_service_pb2.GetActionDataResponse | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.ActionDetails` | |
+| `_inputs` | `ActionInputs \| None` | |
+| `_outputs` | `ActionOutputs \| None` | |
+| `_preserve_original_types` | `bool` | |
+| `_action_data` | `dataproxy_service_pb2.GetActionDataResponse \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `abort_info` | `run_definition_pb2.AbortInfo \| None` | Get the abort information if the action was aborted, otherwise returns None. |
+| `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
+| `attempts` | `int` | Get the number of attempts of the action. |
+| `error_info` | `run_definition_pb2.ErrorInfo \| None` | Get the error information if the action failed, otherwise returns None. |
+| `initializing_time` | `timedelta \| None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
+| `is_running` | `bool` | Check if the action is currently running. |
+| `metadata` | `run_definition_pb2.ActionMetadata` | Get the metadata of the action. |
+| `name` | `str` | Get the name of the action. |
+| `phase` | `ActionPhase` | Get the phase of the action. |
+| `phase_durations` | `Dict[ActionPhase, timedelta]` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
+| `queued_time` | `timedelta \| None` | Get the time spent in the QUEUED phase for the latest attempt. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `relation` | `None` | Provenance link (``flyteidl2.common.run_pb2.Relation``: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
+| `run_name` | `str` | Get the name of the run. |
+| `running_time` | `timedelta \| None` | Get the time spent in the RUNNING phase for the latest attempt. |
+| `runtime` | `timedelta` | Get the runtime of the action. |
+| `status` | `run_definition_pb2.ActionStatus` | Get the status of the action. |
+| `task_name` | `str \| None` | Get the name of the task. |
+| `waiting_for_resources_time` | `timedelta \| None` | Get the time spent in the WAITING_FOR_RESOURCES phase for the latest attempt. |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`done()`](#done) | Check if the action is in a terminal state (completed or failed). |
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`get_details()`](#get_details) | Get the details of the action. |
+| [`get_phase_transitions()`](#get_phase_transitions) | Get the phase transitions for a specific attempt, showing the granular breakdown. |
+| [`input_literals()`](#input_literals) | Return the action's raw input literals keyed by input name, without reconstructing types. |
+| [`inputs()`](#inputs) | Return the inputs of the action. |
+| [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
+| [`output_literals()`](#output_literals) | Return the action's raw output literals keyed by output name (``o0``, ``o1``,. |
+| [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`typed_inputs()`](#typed_inputs) | Fetch the action's inputs and re-hydrate the requested ones into caller-supplied types. |
+| [`typed_outputs()`](#typed_outputs) | Fetch the action's outputs and re-hydrate the requested ones into caller-supplied types. |
+| [`watch()`](#watch) | Watch the action for updates. |
+| [`watch_updates()`](#watch_updates) | Watch for updates to the action details, yielding each update until the action is done. |
+
+
+### done()
+
+```python
+def done()
+```
+Check if the action is in a terminal state (completed or failed). This is a placeholder for checking the
+action state.
+
+
+### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.get.aio()`.
+```python
+def get(
+    cls,
+    uri: str | None = None,
+    run_name: str | None = None,
+    name: str | None = None,
+) -> ActionDetails
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `uri` | `str \| None` | The URI of the action. |
+| `run_name` | `str \| None` | The name of the run. |
+| `name` | `str \| None` | The name of the action. |
+
+### get_details()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.get_details.aio()`.
+```python
+def get_details(
+    cls,
+    action_id: identifier_pb2.ActionIdentifier,
+) -> ActionDetails
+```
+Get the details of the action. This is a placeholder for getting the action details.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `action_id` | `identifier_pb2.ActionIdentifier` | |
+
+### get_phase_transitions()
+
+```python
+def get_phase_transitions(
+    attempt: int | None = None,
+) -> List[PhaseTransitionInfo]
+```
+Get the phase transitions for a specific attempt, showing the granular breakdown
+of time spent in each phase (queued, initializing, running, etc.).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number (1-indexed). If None, uses the latest attempt. |
+
+**Returns**
+
+List of PhaseTransitionInfo objects, one for each phase the action went through.
+
+
+### input_literals()
+
+```python
+def input_literals()
+```
+Return the action's raw input literals keyed by input name, without reconstructing types.
+The input-side equivalent of `output_literals`.
+
+
+### inputs()
+
+```python
+def inputs()
+```
+Return the inputs of the action.
+Will return instantly if inputs are available else will fetch and return.
+
+
+### logs_available()
+
+```python
+def logs_available(
+    attempt: int | None = None,
+) -> bool
+```
+Check if logs are available for the action, optionally for a specific attempt.
+If attempt is None, it checks for the latest attempt.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | |
+
+### output_literals()
+
+```python
+def output_literals()
+```
+Return the action's raw output literals keyed by output name (``o0``, ``o1``, ...) without
+reconstructing the producer's types from the stored schema.
+
+Unlike `outputs`, this never calls ``guess_python_type``, so it can't fail (or pay the
+cost) when an output's type isn't reconstructable on the client, and it returns every output
+even if a sibling's type is un-guessable. Pair it with `typed_outputs` (or
+``TypeEngine.literal_map_to_kwargs``) to decode the specific outputs you care about.
+
+
+### outputs()
+
+```python
+def outputs()
+```
+Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and
+returns. If Action is not in a terminal state, raise a RuntimeError.
+
+
+
+**Returns:** ActionOutputs
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+
+
+**Returns:** dict: A dictionary representation of the object.
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+
+
+**Returns:** str: A JSON string representation of the object.
+
+### typed_inputs()
+
+```python
+def typed_inputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
+) -> Dict[str, Any]
+```
+Fetch the action's inputs and re-hydrate the requested ones into caller-supplied types.
+The input-side equivalent of `typed_outputs`; ``deserializers`` works the same way.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
+
+### typed_outputs()
+
+```python
+def typed_outputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
+) -> Dict[str, Any]
+```
+Fetch the action's outputs and re-hydrate the requested ones into caller-supplied types.
+
+This is the supported "give me this action's ``o0`` as ``MyModel``" path:
+
+* Only the outputs named in ``types`` are converted -- sibling outputs are never
+  reconstructed, so an un-reconstructable sibling type can't fail the whole fetch.
+* Because you supply the type, the result is your real class (with its validators, methods
+  and custom (de)serializers), not a permissive schema-derived look-alike.
+
+    present in the action's outputs.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | Mapping of output name (``o0``, ``o1``, ...) to the Python type to decode into. |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | Optional mapping of Python type -&gt; a callable that builds an instance from the raw (pre-validation) payload, e.g. ``{MyModel: MyModel.load}``. When a requested output's type appears here, the raw payload is handed to the callable instead of the default decode/``model_validate`` -- the hook for versioned-schema models that must migrate historical payloads before validation. Types not listed use the normal decode. |
+
+**Returns:** Mapping of output name to decoded value, restricted to the requested names that are
+
+### watch()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.watch.aio()`.
+```python
+def watch(
+    cls,
+    action_id: identifier_pb2.ActionIdentifier,
+) -> AsyncIterator[ActionDetails]
+```
+Watch the action for updates. This is a placeholder for watching the action.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `action_id` | `identifier_pb2.ActionIdentifier` | |
+
+### watch_updates()
+
+```python
+def watch_updates(
+    cache_data_on_done: bool = False,
+) -> AsyncGenerator[ActionDetails, None]
+```
+Watch for updates to the action details, yielding each update until the action is done.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | If True, cache inputs and outputs when the action completes. |
+

@@ -88,6 +88,100 @@ output_base = "content/api-reference/integrations"
 default_include = "include/api.plugin.md"
 no_flatten = true  # v2: hierarchical output (separate class files per package)
 
+# Agent framework adapters. One package per framework on a shared core, all
+# documented as a group under content/integrations/agents/, so their API reference
+# is nested to match rather than adding eleven siblings at the top of output_base.
+# `name` stays flat (agents-<framework>) because it names the linkmap file, which
+# lives in a single flat directory; page URLs follow output_folder, not name.
+[[plugins]]
+package = "flyteplugins-agents-core"
+plugin = "flyteplugins.agents.core"
+title = "Core"
+name = "agents-core"
+output_folder = "content/api-reference/integrations/agents/core"
+
+[[plugins]]
+package = "flyteplugins-agents-claude"
+plugin = "flyteplugins.agents.claude"
+title = "Claude Agent SDK"
+name = "agents-claude"
+output_folder = "content/api-reference/integrations/agents/claude"
+
+[[plugins]]
+package = "flyteplugins-agents-crewai"
+plugin = "flyteplugins.agents.crewai"
+title = "CrewAI"
+name = "agents-crewai"
+output_folder = "content/api-reference/integrations/agents/crewai"
+
+[[plugins]]
+package = "flyteplugins-agents-deepagents"
+plugin = "flyteplugins.agents.deepagents"
+title = "Deep Agents"
+name = "agents-deepagents"
+output_folder = "content/api-reference/integrations/agents/deepagents"
+
+[[plugins]]
+package = "flyteplugins-agents-google"
+plugin = "flyteplugins.agents.google"
+title = "Google ADK"
+name = "agents-google"
+output_folder = "content/api-reference/integrations/agents/google"
+
+[[plugins]]
+package = "flyteplugins-agents-hermes"
+plugin = "flyteplugins.agents.hermes"
+title = "Hermes"
+name = "agents-hermes"
+output_folder = "content/api-reference/integrations/agents/hermes"
+
+[[plugins]]
+package = "flyteplugins-agents-langchain"
+plugin = "flyteplugins.agents.langchain"
+title = "LangChain"
+name = "agents-langchain"
+output_folder = "content/api-reference/integrations/agents/langchain"
+
+[[plugins]]
+package = "flyteplugins-agents-langgraph"
+plugin = "flyteplugins.agents.langgraph"
+title = "LangGraph"
+name = "agents-langgraph"
+output_folder = "content/api-reference/integrations/agents/langgraph"
+
+[[plugins]]
+package = "flyteplugins-agents-mistral"
+plugin = "flyteplugins.agents.mistral"
+title = "Mistral"
+name = "agents-mistral"
+output_folder = "content/api-reference/integrations/agents/mistral"
+
+[[plugins]]
+package = "flyteplugins-agents-openai"
+plugin = "flyteplugins.agents.openai"
+title = "OpenAI Agents SDK"
+name = "agents-openai"
+output_folder = "content/api-reference/integrations/agents/openai"
+
+# Pinned to 2.5.18 (DOC-1404). 2.5.19 is the only flyteplugins-* 2.5.19 that was
+# NOT yanked, so the resolver picks it -- but it imports `apply_instrumentation`
+# from flyteplugins-agents-core, whose 2.5.19 WAS yanked, so the resolver pairs it
+# with agents-core 2.5.18, which lacks that symbol. The import fails, the parser
+# only warns, and the generator then writes an 11-line stub with no API content
+# while make still exits 0. `make dist` reproduces this on every build.
+#
+# The pin restores the working pair. The advisory PyPI-drift check will keep
+# reporting this plugin as behind; that is correct and deliberate. Remove the pin
+# once a release ships in which agents-pydantic-ai and agents-core are installable
+# together.
+[[plugins]]
+package = "flyteplugins-agents-pydantic-ai"
+install = "flyteplugins-agents-pydantic-ai==2.5.18"
+plugin = "flyteplugins.agents.pydantic_ai"
+title = "Pydantic AI"
+name = "agents-pydantic-ai"
+output_folder = "content/api-reference/integrations/agents/pydantic-ai"
+
 # Frozen agentic plugins. flyteplugins-{anthropic,gemini,openai} were removed from
 # the SDK; agents now run on Flyte through the framework adapters documented under
 # content/integrations/agents/. Their API-reference dirs are retained by hand as

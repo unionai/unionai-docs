@@ -14,7 +14,7 @@ Instead of scoring a batch and exiting, you can stand up an always-on REST endpo
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/ml_model_serving.py" fragment="ml-model" lang="python" >}}
 
-See [Build apps](../../build-apps/_index) and [Serve and deploy apps](../../serve-and-deploy-apps/_index).
+See [Build apps](../../apps/build-apps/_index) and [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index).
 
 ## LLM serving
 
@@ -22,7 +22,7 @@ For serving large language models, the `flyteplugins-vllm` integration gives you
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" fragment="basic-vllm-app" lang="python" >}}
 
-See [vLLM](../../native-app-integrations/vllm-app) and the other [Native app integrations](../../native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
+See [vLLM](../../apps/native-app-integrations/vllm-app) and the other [Native app integrations](../../apps/native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
 
 ## App serving (dashboards and APIs)
 
@@ -30,7 +30,7 @@ Any web app — a Streamlit dashboard for exploring results, a Gradio demo, a Fl
 
 {{< code file="/unionai-examples/v2/user-guide/configure-apps/hello-world-app.py" fragment="app-env" lang="python" >}}
 
-See [Introducing apps](../../core-concepts/introducing-apps) and [Configure apps](../../configure-apps/_index).
+See [Introducing apps](../../get-started/core-concepts/introducing-apps) and [Configure apps](../../apps/configure-apps/_index).
 
 ## Dynamic batching for GPU inference
 
@@ -58,7 +58,7 @@ async with DynamicBatcher(
 
 {{< code file="/unionai-examples/v2/user-guide/sandboxing/code_sandbox.py" fragment="create" lang="python" >}}
 
-Call it from a task with `await sum_sandbox.run.aio(n=10, conditional=True)`. See [Code sandboxing](../../sandboxing/code-sandboxing). This also powers **code mode** (programmatic tool calling), where an agent writes a whole program instead of emitting one tool call at a time — see [Programmatic tool calling for agents](../../sandboxing/code-mode).
+Call it from a task with `await sum_sandbox.run.aio(n=10, conditional=True)`. See [Code sandboxing](../../agents/sandboxing/code-sandboxing). This also powers **code mode** (programmatic tool calling), where an agent writes a whole program instead of emitting one tool call at a time — see [Programmatic tool calling for agents](../../agents/sandboxing/code-mode).
 
 ## Next
 

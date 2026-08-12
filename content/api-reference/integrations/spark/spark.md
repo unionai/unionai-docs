@@ -1,0 +1,37 @@
+---
+title: Spark
+version: 2.5.18
+variants: +flyte +union
+layout: py_api
+---
+
+# Spark
+
+**Package:** `flyteplugins.spark`
+
+Use this to configure a SparkContext for a your task. Task's marked with this will automatically execute
+natively onto K8s as a distributed execution of spark
+
+
+
+## Parameters
+
+```python
+class Spark(
+    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    executor_path: typing.Optional[str] = None,
+    applications_path: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flyte._pod.PodTemplate] = None,
+    executor_pod: typing.Optional[flyte._pod.PodTemplate] = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `spark_conf` | `typing.Optional[typing.Dict[str, str]]` | Spark configuration dictionary. |
+| `hadoop_conf` | `typing.Optional[typing.Dict[str, str]]` | Hadoop configuration dictionary. |
+| `executor_path` | `typing.Optional[str]` | Path to the Python binary for PySpark execution. |
+| `applications_path` | `typing.Optional[str]` | Path to the main application file. |
+| `driver_pod` | `typing.Optional[flyte._pod.PodTemplate]` | Pod template for the driver pod. |
+| `executor_pod` | `typing.Optional[flyte._pod.PodTemplate]` | Pod template for the executor pods. |
+

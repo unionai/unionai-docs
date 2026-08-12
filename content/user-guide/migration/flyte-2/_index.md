@@ -7,8 +7,6 @@ llm_readable_bundle: true
 
 # From Flyte 1 to 2
 
-{{< llm-bundle-note >}}
-
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
 ## Pure Python execution

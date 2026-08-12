@@ -164,4 +164,4 @@ The plugins do not have an opinion here. Pick the framework you would have picke
 
 - [How it works](./how-it-works): the runtime model, from the durable parent down to the trace leaf.
 - Pick a framework page above for SDK-specific setup, options and limitations.
-- [Build an agent](../../user-guide/build-agent/_index): Flyte's own agent harness, if you would rather not bring a framework at all.
+- [Build an agent](../../user-guide/agents/build-agent/_index): Flyte's own agent harness, if you would rather not bring a framework at all.

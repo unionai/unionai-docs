@@ -26,7 +26,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 * Install the [Nebius CLI](https://docs.nebius.com/cli) and authenticate with `nebius profile create`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Set your `KUBECONFIG` to the Nebius MK8s cluster where you want to deploy the data plane:
 

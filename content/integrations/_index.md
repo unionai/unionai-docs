@@ -8,8 +8,6 @@ llm_readable_bundle: true
 
 # Integrations
 
-{{< llm-bundle-note >}}
-
 Flyte 2 is designed to be extensible by default. While the core platform covers the most common orchestration needs, many production workloads require specialized infrastructure, external services or execution semantics that go beyond the core runtime.
 
 Flyte 2 exposes these capabilities through integrations.
@@ -40,7 +38,7 @@ Flyte 2 integrations fall into the following categories:
 7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
 8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-10. **Observability**: Patterns for connecting tasks to external tracing and observability tooling.
+10. **Observability**: Export task and agent telemetry to external tracing and observability backends.
 
 ## Distributed compute
 
@@ -156,10 +154,10 @@ Agentic AI integrations let you run agents written in a third-party framework as
 
 ### Supported agentic AI integrations
 
-| Plugin                                  | Description                                                                                                          | Common use cases                                     |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| [Agent frameworks](./agents/_index)     | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory     |
-| [Code generation](./codegen/_index)     | LLM-driven code generation with automatic testing in sandboxes                                                       | Data processing, ETL, analysis pipelines             |
+| Plugin                              | Description                                                                                                              | Common use cases                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| [Agent frameworks](./agents/_index) | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory |
+| [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
 
 ## Experiment tracking
 
@@ -199,10 +197,11 @@ Data type integrations add native support for additional file and dataframe type
 
 ### Supported data type integrations
 
-| Plugin                    | Description                                                          | Common use cases                                            |
-| ------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [JSONL](./jsonl/_index)   | Typed `JsonlFile` / `JsonlDir` for streaming JSON Lines data         | LLM dataset pipelines, event logs, large line-delimited I/O |
-| [Polars](./polars/_index) | Native `pl.DataFrame` / `pl.LazyFrame` support via Parquet           | High-performance dataframe ETL, feature engineering         |
+| Plugin                    | Description                                                  | Common use cases                                            |
+| ------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| [JSONL](./jsonl/_index)   | Typed `JsonlFile` / `JsonlDir` for streaming JSON Lines data | LLM dataset pipelines, event logs, large line-delimited I/O |
+| [Lance](./lance/_index)   | `lance.LanceDataset` as a streaming, multimodal dataframe format | Shuffled training data, vector search, point lookups     |
+| [Polars](./polars/_index) | Native `pl.DataFrame` / `pl.LazyFrame` support via Parquet   | High-performance dataframe ETL, feature engineering         |
 
 ## Connectors
 
@@ -309,7 +308,7 @@ import os
 api_key = os.environ["MY_API_KEY"]
 ```
 
-See [Secrets](../user-guide/task-configuration/secrets) for how to store and manage secrets.
+See [Secrets](../user-guide/tasks/task-configuration/secrets) for how to store and manage secrets.
 
 ### Deploy a custom connector
 
@@ -368,12 +367,12 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 ### Supported LLM serving integrations
 
-| Plugin                                        | Description                                         | Common use cases             |
-| --------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| Plugin                                                          | Description                                         | Common use cases             |
+| --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/native-app-integrations/sglang-app) and [vLLM app](../user-guide/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
 
 ## Notebook execution
 
@@ -387,10 +386,13 @@ Notebook execution integrations let you run Jupyter notebooks as first-class Fly
 
 ## Observability
 
-Patterns for connecting Flyte tasks to external tracing and observability backends. Unlike the entries above, these are not plugins: they are usage patterns built on top of Flyte's [custom context](../user-guide/task-programming/custom-context) primitive plus the standard libraries from the relevant ecosystem.
+Observability integrations export telemetry from a Flyte run to an external backend. They understand that a durable run is several processes over time, so a run that crashes and resumes arrives as one trace rather than several, and steps replayed from the durable log are still recorded.
 
 ### Supported observability integrations
 
-| Integration                              | Description                                                                                                | Common use cases                                     |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| [OpenTelemetry](./opentelemetry/_index)  | Propagate W3C trace context across task boundaries so workflow traces unify with downstream service traces | Distributed tracing, debugging cross-service latency |
+| Plugin                                                              | Description                                                                                 | Common use cases                                                     |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [OpenTelemetry](./opentelemetry/_index)                             | Records tasks and traced steps as OpenTelemetry spans and exports them over OTLP            | Distributed tracing, debugging cross-service latency, durable traces |
+| [Grafana Agent Observability](./grafana-agent-observability/_index) | Sends agent generations, tool calls, token usage, and cost to Grafana, grouped by Flyte run | LLM cost tracking, prompt iteration, agent debugging                 |
+
+Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/tasks/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.

@@ -47,7 +47,7 @@ GPU configuration moves to the `TaskEnvironment`: the Flyte 1 `Resources(gpu="1"
 {{< /tab >}}
 {{< /tabs >}}
 
-For multi-node distributed training (PyTorch elastic, etc.), see [Resources](../../task-configuration/resources) and the plugin integrations.
+For multi-node distributed training (PyTorch elastic, etc.), see [Resources](../../tasks/task-configuration/resources) and the plugin integrations.
 
 ## Batch inference
 

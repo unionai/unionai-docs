@@ -93,7 +93,7 @@ Several Flyte 1 concepts were renamed or reshaped in Flyte 2. The table below ma
 | `StructuredDataset` | `flyte.io.DataFrame` | Offloaded tabular data. |
 | `LaunchPlan` | `flyte.Trigger` | Scheduling and parameterized entry points. |
 | `CronSchedule` | `flyte.Cron` | Cron-based scheduling, used with a `flyte.Trigger`. |
-| Decks (`enable_deck=True`) | Reports (`report=True`) | Custom HTML rendered in the UI during/after a run. See [Reports](../../task-programming/reports). |
+| Decks (`enable_deck=True`) | Reports (`report=True`) | Custom HTML rendered in the UI during/after a run. See [Reports](../../tasks/task-programming/reports). |
 
 ## Package imports
 

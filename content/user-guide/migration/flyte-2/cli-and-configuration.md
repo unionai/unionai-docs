@@ -149,7 +149,7 @@ flyte.init(
 )
 ```
 
-For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../run-modes/running-remote).
+For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../get-started/run-modes/running-remote).
 
 ## Next
 

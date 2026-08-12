@@ -71,7 +71,7 @@ Reprocessing a range of dates is a textbook `@dynamic` use case in Flyte 1, beca
 {{< /tab >}}
 {{< /tabs >}}
 
-For fine-grained concurrency control (semaphores, `as_completed`, error handling), see [Fanout](../../task-programming/fanout).
+For fine-grained concurrency control (semaphores, `as_completed`, error handling), see [Fanout](../../tasks/task-programming/fanout).
 
 ## Next
 

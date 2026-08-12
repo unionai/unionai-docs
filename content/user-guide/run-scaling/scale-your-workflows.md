@@ -26,9 +26,9 @@ Performance optimization focuses on two key dimensions:
 **Recommended approach**:
 
 - Use tasks for orchestration and parallelism
-- Use [traces](../task-programming/traces) for fine-grained checkpointing
+- Use [traces](../tasks/task-programming/traces) for fine-grained checkpointing
 - Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
-- Use [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
+- Use [reusable containers](../tasks/task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
 
 ### Throughput
 
@@ -98,7 +98,7 @@ For a detailed walkthrough of task execution, see [Life of a run](./life-of-a-ru
 
 ### 1. Use reusable containers for concurrency
 
-[Reusable containers](../task-configuration/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
+[Reusable containers](../tasks/task-configuration/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
 
 ```python
 import flyte
@@ -176,7 +176,7 @@ async def process_large_dataset(dataset: list[dict]) -> list[dict]:
 
 ### 3. Use traces for lightweight operations
 
-[Traces](../task-programming/traces) provide fine-grained checkpointing with minimal overhead:
+[Traces](../tasks/task-programming/traces) provide fine-grained checkpointing with minimal overhead:
 
 ```python
 @flyte.trace
@@ -226,6 +226,11 @@ The UI and system have limits on the number of actions per run:
 
 - **Current limit**: 50k actions per run
 - **Future**: Higher limits will be supported (contact the Union team if needed)
+
+This ceiling counts the **total** actions in the run, summed across every map and fanout. Note that
+per-map `concurrency` does **not** help here: it throttles how many actions run *at once*, not how
+many the run creates in total, so only batching reduces the count. For how the two controls compose,
+see [Per-map concurrency vs. the run-level action cap](../tasks/task-programming/controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap).
 
 **Example: Control fanout with batching**
 
@@ -286,7 +291,7 @@ See [Data flow](./data-flow) for details on data types and transport.
 
 ### 6. Use caching
 
-Enable [caching](../task-configuration/caching) to avoid redundant computation:
+Enable [caching](../tasks/task-configuration/caching) to avoid redundant computation:
 
 ```python
 @env.task(cache="auto")
@@ -310,7 +315,7 @@ async def expensive_computation(input_data: dict) -> dict:
 
 ### 7. Parallelize with `flyte.map`
 
-Use [`flyte.map`](../task-programming/fanout) for data-parallel workloads:
+Use [`flyte.map`](../tasks/task-programming/fanout) for data-parallel workloads:
 
 ```python
 @env.task
