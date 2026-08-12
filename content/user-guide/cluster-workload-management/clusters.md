@@ -209,7 +209,7 @@ differ from the cluster's current pool.
    is what the warning above is about. `flyte get cluster <name>` lists the
    queues bound to the cluster.
 3. **Check for apps and v1 executions.** A cluster does not only serve runs: it
-   can also be hosting [apps](../serve-and-deploy-apps/_index) and legacy v1
+   can also be hosting [apps](../apps/serve-and-deploy-apps/_index) and legacy v1
    executions, which {{< key product_name >}} still supports today. There is
    currently **no way to see how many apps or v1 executions are running on a
    given cluster**, and the queue preconditions above do not account for them,
