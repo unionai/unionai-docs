@@ -44,9 +44,9 @@ Both are formats on `flyte.io.DataFrame`, so one task can produce Parquet and an
 
 ### How much does it matter?
 
-The [benchmark below](#measuring-the-difference) pulls 1,000 random rows out of 100,000, each carrying a 512-byte payload. Parquet reads 53.6 MB to answer that. Lance reads 0.54 MB.
+The [benchmark below](#measuring-the-difference) pulls 1,000 random rows out of 100,000, each carrying a 512-byte payload. Parquet materializes a 53.6 MB table to answer that. Lance materializes just 0.54 MB, which is only the 1,000 rows you actually asked for.
 
-The 100x gap in bytes read is the number to trust. It doesn't depend on caching and it grows with the dataset. The wall-clock speedup is much softer: about 10x on local disk, about 3.5x on the same benchmark against object storage, and it moves with your row sizes and batch size. Run it on your own data before quoting either figure.
+The 100x gap is the more reliable number because it comes from how the data is laid out, not the machine it’s running on. Flyte’s Parquet decoder has to build the entire table before it can index into it, and a warm cache doesn’t change that. The actual wall-clock speedup is less dramatic: around 10x on local disk and 3.5x against object storage in the same benchmark. Those numbers will vary with row size and batch size though.
 
 ## Installation
 
@@ -73,14 +73,7 @@ Four handlers, against Flyte's dataframe transformer engine:
 
 ### Other dataframe types
 
-Those four are the entire surface, which is worth knowing before you design a workflow around it. The Polars plugin can hand data to pandas and PySpark because all three speak Parquet. Lance has no such common currency here, so there is no lance-to-pandas or lance-to-Polars handler. Declare `pd.DataFrame` for a `lance` input and the task fails on the way in:
-
-```text
-TypeTransformerFailedError: Failed to find a handler for
-<class 'pandas.DataFrame'>, protocol [file], fmt ['lance']
-```
-
-Do the conversion yourself inside the task. Take the Arrow table and call `to_pandas()`, or take the handle and convert a batch at a time:
+Those four are the entire surface, which is worth knowing before you design a workflow around it. The Polars plugin can hand data to pandas and PySpark because all three speak Parquet. Lance has no such common currency here, so there is no lance-to-pandas or lance-to-Polars handler. So do the conversion yourself inside the task. Take the Arrow table and call `to_pandas()`, or take the handle and convert a batch at a time:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/lance_example.py" fragment="interop" lang="python" >}}
 
@@ -229,7 +222,7 @@ and differ only in the return annotation:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/parquet_vs_lance.py" fragment="producers" lang="python" >}}
 
-What it measures is bytes read, because that is the part caching can't flatter:
+What it compares is how much each side has to materialize to answer the request, via `pa.Table.nbytes` on the result. This measures decoded size rather than I/O, which is exactly the point: Parquet's number is much larger because the decoder has to build the entire table first.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/lance/parquet_vs_lance.py" fragment="compare" lang="python" >}}
 
@@ -237,7 +230,7 @@ Each task publishes the result as a report on the run:
 
 ![Flyte run detail showing the benchmark's report tab. Fetching 1,000 scattered rows from 100,000 read 53.6 MB from Parquet against 0.5 MB from Lance, a 100x difference, with fetch times of 775 ms and 219.9 ms.](../../_static/images/integrations/lance/parquet_vs_lance.png)
 
-That run is on a cluster, reading from object storage, and it shows the two numbers pulling apart: the bytes ratio holds at 100x, while the wall-clock gap is roughly 3.5x. On local disk the same benchmark comes out nearer 10x. Scattered reads against a bucket pay per-request latency that a local file doesn't, which eats into the advantage without erasing it.
+That run is on a cluster, reading from object storage, and it shows the two numbers pulling apart: the materialized-size ratio holds at 100x, while the wall-clock gap is roughly 3.5x. On local disk the same benchmark comes out nearer 10x. Scattered reads against a bucket pay per-request latency that a local file doesn't, which eats into the advantage without erasing it.
 
 The gap widens as the dataset grows, since Parquet's cost tracks the dataset while Lance's tracks the batch, and it narrows as individual rows get fat relative to the batch.
 
