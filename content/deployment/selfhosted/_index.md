@@ -120,6 +120,10 @@ Configure identity service for User Management
 Register the image builder for automatic container image builds
 {{< /link-card >}}
 
+{{< link-card target="./app-serving" icon="globe" title="App serving" >}}
+Serve Streamlit, FastAPI, and custom apps from the data plane
+{{< /link-card >}}
+
 {{< link-card target="./operations" icon="settings" title="Operations" >}}
 Operational guides: CI/CD integration, key rotation, and more
 {{< /link-card >}}
