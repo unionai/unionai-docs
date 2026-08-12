@@ -97,10 +97,12 @@ pool's clusters can read them. That is what makes a pool an isolation boundary.
 
 ### Crossing a pool boundary
 
-Because pools don't share a data plane, they don't connect. A run or a queue can
-never move from one pool to another *in place*. A **cluster** can be reassigned to
-another pool, but only as a disruptive maintenance operation that stops nothing
-and reschedules nothing — see
+Because pools don't share a data plane, they don't connect. A run can never move
+from one pool to another. A **queue** can be reassigned to another pool only
+after it has been fully [drained](./queues#drain-and-reactivate-a-queue), so the
+move never carries in-flight work across the boundary. A **cluster** can be
+reassigned to another pool, but only as a disruptive maintenance operation that
+stops nothing and reschedules nothing — see
 [Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool).
 For work in flight, crossing a pool boundary
 means physically re-landing the workload in the destination pool's data plane:

@@ -33,10 +33,10 @@ bucket, secrets vault, and registry. Each such environment becomes its own pool.
 
 A pool's config is the data plane contract its member clusters must satisfy:
 object store, secret store, and image registry. The object store URI and secret
-store type are required here; the image registry is optional, and leaving it out
-means member clusters aren't checked against one. See
-[How a pool's config is established](#how-a-pools-config-is-established) for how
-that contract is enforced.
+store type are required here; the image registry is optional to set, but member
+clusters are still expected to match it — see
+[How a pool's config is enforced](#how-a-pools-config-is-enforced) for how
+that contract works.
 
 {{< tabs "create-cluster-pool" >}}
 {{< tab "CLI" >}}
@@ -91,7 +91,7 @@ Supported `secret_store_type` values are `AWS_SECRETS_MANAGER`,
 `GCP_SECRET_MANAGER`, `AZURE_KEY_VAULT`, `KUBERNETES`, `VAULT`, and
 `OCI_VAULT`.
 
-## How a pool's config is established
+## How a pool's config is enforced
 
 Pool config is **not** enforced at join time. Any cluster is allowed to join a
 pool, and the check happens asynchronously afterwards:
@@ -102,32 +102,19 @@ pool, and the check happens asynchronously afterwards:
 2. Once running, the cluster reports its real object store, secret store, and
    image registry to the control plane in periodic status updates.
 3. The control plane compares each reported value against the pool's config. If
-   they don't match, the cluster is marked **unhealthy**. Only healthy, enabled
-   clusters are eligible for
-   [wildcard routing](./queues#how-a-queue-routes), so queues with the `*`
-   selector stop sending new work to that cluster until it recovers — the pool's
-   other healthy clusters absorb it.
+   they don't match, the cluster is marked **unhealthy**. An unhealthy cluster
+   stops receiving new work from every queue that
+   [routes](./queues#how-a-queue-routes) to it, until it recovers — the pool's
+   other healthy clusters absorb the work.
 
 Because the comparison rides on status reporting, a misconfigured cluster is
 accepted first and only turns unhealthy a short time later. After registering a
 cluster into a custom pool, check `flyte get cluster <name>` to confirm it
 settles healthy rather than assuming the join succeeded.
 
-Two properties follow from this design:
-
-- **Image registry is optional.** Leave it unset in the pool config and the
-  control plane skips image registry validation entirely: whatever a member
-  cluster reports for its registry is accepted. Set it, and member clusters must
-  report a matching registry or go unhealthy.
-- **A pool with no config at all is populated by its first cluster.** The control
-  plane accepts a pool that declares nothing; the first cluster to join and report
-  its config then *populates* the pool config from what it reported, and every
-  cluster that joins later is validated against those values. The first reporter
-  wins, so if that cluster is misconfigured its values become the pool's contract
-  and correctly configured clusters are the ones that go unhealthy. Note that the
-  `flyte` CLI and `ClusterPool.create` both require an object store URI and a
-  secret store type, so creating a fully empty pool means calling the API
-  directly.
+Note that while the image registry is optional to *set*, it is still part of the
+contract: a member cluster must report the same registry the pool declares — or
+no registry at all, if the pool doesn't declare one — to stay healthy.
 
 ## Inspect pools
 
@@ -249,15 +236,13 @@ before running it.
 ## Delete a pool
 
 The `default` pool cannot be deleted. A custom pool can be deleted only when it
-contains **no clusters and no queues**; otherwise the request is rejected. Delete
-the member [clusters](./clusters#delete-a-cluster) first, then the pool.
+contains **no clusters and no queues**; otherwise the request is rejected. Empty
+the pool first:
 
-> [!NOTE] Queue deletion is not available yet
-> Because queues cannot currently be deleted, and registering a cluster creates a
-> [co-named queue](./clusters#the-co-named-queue) in that cluster's pool, a pool
-> that has ever had a cluster registered in it retains that queue and cannot be
-> deleted until queue deletion ships. In practice, today you can only delete a
-> custom pool that no cluster ever joined.
+1. Delete the member [clusters](./clusters#delete-a-cluster). Deleting a cluster
+   also deletes its [co-named queue](./clusters#the-co-named-queue), so the
+   queues that came with the clusters go with them.
+2. [Delete](./queues#delete-a-queue) any queue you created in the pool yourself.
 
 {{< tabs "delete-cluster-pool" >}}
 {{< tab "CLI" >}}
@@ -266,6 +251,10 @@ the member [clusters](./clusters#delete-a-cluster) first, then the pool.
 ```bash
 flyte delete cluster-pool prod
 flyte delete cluster-pool prod --yes   # skip the confirmation prompt
+
+# List deleted pools, restore one
+flyte get cluster-pool --deleted
+flyte undelete cluster-pool prod
 ```
 
 {{< /markdown >}}
@@ -277,11 +266,16 @@ flyte delete cluster-pool prod --yes   # skip the confirmation prompt
 from flyteplugins.union.remote import ClusterPool
 
 ClusterPool.delete("prod")
+ClusterPool.undelete("prod")   # restore a deleted pool
 ```
 
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+Deletion is a **soft delete**: the pool disappears from listings, but its name
+stays reserved — creating a new pool under the same name is rejected — and it
+can be restored with `flyte undelete cluster-pool <name>`.
 
 ## Next
 
