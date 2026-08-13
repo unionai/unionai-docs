@@ -9,7 +9,10 @@ on:
   pull_request:
     paths:
       - 'content/**'
-      - 'unionai-docs-infra/tools/algolia_indexer/queries.judged.json'
+      # The answer key lives inside the submodule, so from this repo it only
+      # ever changes as a pointer bump -- a path inside unionai-docs-infra/
+      # can never match here.
+      - 'unionai-docs-infra'
   push:
     branches: [main]
 
@@ -23,6 +26,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
 
       - name: Validate benchmark labels resolve to real pages
         run: make check-search-labels
