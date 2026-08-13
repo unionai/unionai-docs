@@ -41,6 +41,10 @@ before running `helm install`.
 The key holds the same `storage` block the deployment itself uses, with the credentials
 inline:
 
+{{< tabs "copilot-storage-rendered" >}}
+{{< tab "S3" >}}
+{{< markdown >}}
+
 ```yaml
 storage:
   type: stow
@@ -55,6 +59,49 @@ storage:
       secret_key: "<secret-key>"
   container: <your-bucket>
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Azure" >}}
+{{< markdown >}}
+
+```yaml
+storage:
+  type: stow
+  stow:
+    kind: azure
+    config:
+      account: <storage-account-name>
+      key: <storage-account-key>
+  container: <your-container>
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCS" >}}
+{{< markdown >}}
+The chart does not render this Secret for GCS. It sets the `json` credential to an empty
+string, which tells the storage layer to use the credentials the pod already has, so
+there is nothing to keep out of the pod spec:
+
+```yaml
+storage:
+  type: stow
+  stow:
+    kind: google
+    config:
+      json: ""
+      project_id: <gcp-project-id>
+      scopes: https://www.googleapis.com/auth/cloud-platform
+  container: <your-bucket>
+```
+
+To hand copilot a service-account key instead of workload identity, write the Secret
+yourself as described in
+[Supplying your own Secret](#supplying-your-own-secret).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 {{< note >}}
 Copilot reads the whole stow configuration from this one file or not at all, so the
@@ -148,6 +195,10 @@ Two steps are needed.
 configuration to a file, using the same `storage` block your deployment uses and
 including the credentials:
 
+{{< tabs "copilot-storage-byo" >}}
+{{< tab "S3" >}}
+{{< markdown >}}
+
 ```yaml
 # copilot-storage-config.yaml
 storage:
@@ -161,6 +212,55 @@ storage:
       secret_key: "<secret-key>"
   container: <your-bucket>
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Azure" >}}
+{{< markdown >}}
+
+```yaml
+# copilot-storage-config.yaml
+storage:
+  type: stow
+  stow:
+    kind: azure
+    config:
+      account: <storage-account-name>
+      key: <storage-account-key>
+  container: <your-container>
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCS" >}}
+{{< markdown >}}
+`json` takes the service-account key itself, not a path to it. Leave it out entirely to
+use the credentials the pod already has, in which case you do not need this Secret at
+all.
+
+```yaml
+# copilot-storage-config.yaml
+storage:
+  type: stow
+  stow:
+    kind: google
+    config:
+      json: |
+        {
+          "type": "service_account",
+          "project_id": "<gcp-project-id>",
+          "private_key_id": "<private-key-id>",
+          "private_key": "<private-key>",
+          "client_email": "<service-account>@<gcp-project-id>.iam.gserviceaccount.com"
+        }
+      project_id: <gcp-project-id>
+      scopes: https://www.googleapis.com/auth/cloud-platform
+  container: <your-bucket>
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ```bash
 kubectl create secret generic my-copilot-storage \
