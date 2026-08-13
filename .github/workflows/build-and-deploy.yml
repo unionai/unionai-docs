@@ -200,6 +200,20 @@ jobs:
           # GITHUB_SHA env var.
           command: pages deploy ./dist --project-name=docs --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
 
+      - name: Update search index
+        # After the deploy, not before: the index should describe what is now
+        # served. Scoped to the slices THIS branch built -- v1 only -- so main
+        # (v2 + latest) and this branch cannot clobber each other's records.
+        #
+        # Skips itself when the secret is absent, so forks and any repo without
+        # Algolia credentials still deploy normally.
+        if: success() && github.event_name == 'push'
+        timeout-minutes: 15
+        env:
+          ALGOLIA_DOCS_2_APPLICATION_ID: ${{ secrets.ALGOLIA_DOCS_2_APPLICATION_ID }}
+          ALGOLIA_DOCS_2_WRITE_API_KEY: ${{ secrets.ALGOLIA_DOCS_2_WRITE_API_KEY }}
+        run: make index-search
+
       - name: Deploy summary
         if: success()
         run: |
