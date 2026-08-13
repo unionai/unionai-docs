@@ -94,7 +94,8 @@ Registration additionally ensures the org-wide `default` queue exists. The
 to every healthy, enabled cluster in the `default` pool: a cluster registered
 there joins it automatically, while a cluster in any other pool never does.
 
-Both are ordinary queues — they appear in `flyte get queue`, carry the same
+Both are ordinary queues — they appear in `flyte get queue` (a co-named queue is
+flagged there as **cluster-managed**), carry the same
 concurrency, depth, priority, and fairness settings as any other, and are managed
 the same way on the [Managing queues](./queues) page. What sets the co-named
 queue apart is that its cluster selector and pool are managed by its cluster and

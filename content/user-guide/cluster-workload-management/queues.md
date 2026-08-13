@@ -100,7 +100,10 @@ co-named queue's cluster selector and pool are managed by its cluster and cannot
 be edited directly: the queue follows its cluster if the cluster is
 [reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool), and
 is deleted with it. Its other settings (concurrency, depth, priority, fairness)
-stay editable like any queue's.
+stay editable like any queue's. Listings make the distinction visible:
+cluster-managed queues are flagged in the `flyte get queue` table
+(`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
+`flyte update queue --edit` says so at the top of the edit buffer.
 
 The selector (which clusters within the pool) is mutable and can be changed at
 any time. The pool a queue lives in can only change once the queue is fully
@@ -248,6 +251,9 @@ default.
 # List all queues
 flyte get queue
 
+# List only queues in a given state: active, draining, or drained
+flyte get queue --state active
+
 # Inspect one queue's settings and status
 flyte get queue gpu-queue
 
@@ -271,6 +277,10 @@ from flyteplugins.union.remote import Queue
 
 for queue in Queue.listall(limit=100):
     print(queue.name, queue.status, queue.priority, queue.cluster_pool, queue.clusters)
+
+# Narrow the listing to one state: "active", "draining", or "drained"
+for queue in Queue.listall(state="draining"):
+    print(queue.name)
 
 queue = Queue.get("gpu-queue")
 print(queue.to_dict())
@@ -411,6 +421,10 @@ Queue.activate("gpu-queue")  # put the queue back in rotation
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+To see where things stand across the organization, filter listings by state:
+`flyte get queue --state draining` shows the queues still finishing in-flight
+work, and `--state drained` the ones that are done.
 
 Draining is the prerequisite for every disruptive queue operation: a queue must
 be `drained` before it can be [deleted](#delete-a-queue) or
