@@ -224,7 +224,7 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 
 The UI and system have limits on the number of actions per run:
 
-- **Current limit**: 50k actions per run
+- **Current limit**: 250k actions per run
 - **Future**: Higher limits will be supported (contact the Union team if needed)
 
 This ceiling counts the **total** actions in the run, summed across every map and fanout. Note that
@@ -352,7 +352,7 @@ Follow this workflow to optimize your Flyte workflows:
 5. **Reusable containers**: Enable reusable containers to eliminate `t`.
 6. **Traces**: Use traces for lightweight operations within tasks.
 7. **Cache**: Enable caching for deterministic, expensive tasks.
-8. **Limit fanout**: Keep total actions below 50k (target 10k-20k).
+8. **Limit fanout**: Keep total actions below 250k (target 10k-20k).
 9. **Monitor**: Use the UI to monitor execution and identify issues.
 10. **Iterate**: Continuously refine based on performance metrics.
 
@@ -446,7 +446,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 
 Reach out to the Union team if you:
 
-- Need more than 50k actions per run
+- Need more than 250k actions per run
 - Want to use high-performance metastores (Redis, PostgreSQL) instead of object stores
 - Have specific performance requirements or constraints
 - Need help profiling and optimizing your workflows
