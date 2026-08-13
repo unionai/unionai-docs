@@ -22,7 +22,7 @@ TARGETS := usage help clean clean-generated base dist variant dev serve \
 	check-llm-bundle-notes update-api-docs \
 	check-helm-docs update-helm-docs generate-helm-docs \
 	index-search index-search-settings check-search-labels \
-	index-search-synonyms refresh-search-popularity update-docsearch
+	index-search-synonyms refresh-search-popularity
 
 # Guard: fail fast if the infra submodule is not initialized.
 .PHONY: _check-infra
