@@ -33,4 +33,4 @@ Read these pages in order:
 5. [Enable app serving](./app-serving): running long-running apps on Knative,
    including how to install the Knative Serving prerequisite.
 6. [Plugin setup](./plugin-setup/_index): cluster-side configuration some plugins need,
-   including [co-pilot's access](./plugin-setup/copilot-storage) to your object store.
+   including [copilot's access](./plugin-setup/copilot-storage) to your object store.

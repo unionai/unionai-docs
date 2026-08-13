@@ -13,6 +13,6 @@ Most plugins need nothing here. Reach for these pages when you are changing how 
 plugin reaches something outside the cluster, an object store or a credential for
 example, rather than when you are first installing Flyte.
 
-- [Co-pilot storage configuration](./copilot-storage): how co-pilot reaches your object
+- [Flyte copilot storage configuration](./copilot-storage): how copilot reaches your object
   store to move task inputs and outputs, including the Secret the chart creates for it
   and what to do when you manage the Flyte configuration yourself.

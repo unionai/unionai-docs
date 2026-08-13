@@ -1,25 +1,25 @@
 ---
-title: Co-pilot storage configuration
+title: Flyte copilot storage configuration
 variants: +flyte -union
 weight: 1
 ---
 
-# Co-pilot storage configuration
+# Flyte copilot storage configuration
 
-Flyte's **co-pilot** containers move task inputs and outputs between your object store
+**Flyte copilot** containers move task inputs and outputs between your object store
 and the task pod. They run alongside every container task that declares inputs or
 outputs, as an init container that downloads inputs and a sidecar that uploads outputs,
 so they need their own credentials for the object store.
 
-The chart gives co-pilot those credentials through a Kubernetes Secret, which the
-plugin projects into the co-pilot containers as a file. The alternative, used when no
-Secret is configured, is to pass the storage configuration on the co-pilot command
+The chart gives copilot those credentials through a Kubernetes Secret, which the
+plugin projects into the copilot containers as a file. The alternative, used when no
+Secret is configured, is to pass the storage configuration on the copilot command
 line, where the credentials land in the pod spec of every task and are readable by
 anyone who can read pods in the task namespace.
 
 ## The Secret the chart creates
 
-With the default `values.yaml` the chart renders the Secret for you and points co-pilot
+With the default `values.yaml` the chart renders the Secret for you and points copilot
 at it. Nothing is required to enable this.
 
 | | |
@@ -28,7 +28,10 @@ at it. Nothing is required to enable this.
 | Namespace | The task-pod namespace, `flyte-core-components.actions.kubernetes.namespace` (default `flyte`) |
 | Key | `copilot-storage-config.yaml` |
 | Config key that names it | `plugins.k8s.co-pilot.storage-config-secret-name` |
-| Mount path in the co-pilot containers | `/etc/flyte/copilot` |
+| Mount path in the copilot containers | `/etc/flyte/copilot` |
+
+The configuration key is spelled `co-pilot`, with the hyphen, even though everything
+else drops it. That is the plugin's key in the Flyte configuration, so copy it exactly.
 
 The Secret is created in the **task-pod** namespace rather than the release namespace,
 because a pod can only project Secrets from its own namespace. If you set the task-pod
@@ -54,13 +57,13 @@ storage:
 ```
 
 {{< note >}}
-Co-pilot reads the whole stow configuration from this one file or not at all, so the
-file has to be complete. A partial file leaves co-pilot with no credentials rather than
+Copilot reads the whole stow configuration from this one file or not at all, so the
+file has to be complete. A partial file leaves copilot with no credentials rather than
 falling back to the rest.
 {{< /note >}}
 
 Storage settings you add through `configuration.inline` are merged into this Secret as
-well, so co-pilot and the Flyte binary always talk to the same object store. This
+well, so copilot and the Flyte binary always talk to the same object store. This
 matters for settings that have no dedicated value in `configuration.storage`, a session
 token for example:
 
@@ -78,7 +81,7 @@ configuration:
 The Secret exists to keep credentials out of task pod specs, so the chart renders it
 only when your storage configuration actually carries one:
 
-| Storage configuration | Where co-pilot reads its configuration |
+| Storage configuration | Where copilot reads its configuration |
 |---|---|
 | `s3` with `authType: accesskey` and `secretKey` | The Secret the chart creates |
 | `azure` with a `key` | The Secret the chart creates |
@@ -121,7 +124,7 @@ configuration:
 ```
 
 The whole Secret is mounted and every `.yaml` key in it is read, so it must hold
-nothing but co-pilot's configuration. You can split that configuration across several
+nothing but copilot's configuration. You can split that configuration across several
 keys if you prefer, for example `003-storage.yaml` and `013-storage-secrets.yaml`, and
 they are merged in name order. Keys that do not end in `.yaml` are mounted but ignored.
 
@@ -129,7 +132,7 @@ they are merged in name order. Keys that do not end in `.yaml` are mounted but i
 
 Setting `configuration.externalConfigMap` or `configuration.externalSecretRef` tells
 the chart that you manage the Flyte configuration yourself. The chart then renders
-neither the ConfigMap nor the Secret, which means it also does not render the co-pilot
+neither the ConfigMap nor the Secret, which means it also does not render the copilot
 Secret or the configuration key that names it.
 
 {{< warning >}}
@@ -141,7 +144,7 @@ configuration key yourself as shown below.
 
 Two steps are needed.
 
-**1. Create the Secret** in the task-pod namespace. Write co-pilot's storage
+**1. Create the Secret** in the task-pod namespace. Write copilot's storage
 configuration to a file, using the same `storage` block your deployment uses and
 including the credentials:
 
@@ -183,7 +186,7 @@ outputs to confirm.
 Check that a task pod projects the Secret and that no credentials appear in its spec:
 
 ```bash
-# The co-pilot containers should mount the config, the primary container should not
+# The copilot containers should mount the config, the primary container should not
 kubectl get pod <task-pod> -n flyte \
   -o jsonpath='{range .spec.initContainers[*]}{.name}{"\t"}{.volumeMounts[*].mountPath}{"\n"}{end}'
 
@@ -196,23 +199,23 @@ kubectl get pod <task-pod> -n flyte -o yaml | grep -i secret_key
 - **Task pods stay in `ContainerCreating` with a `FailedMount` event.** The Secret named
   by `storage-config-secret-name` does not exist in the task-pod namespace. Confirm the
   namespace: the Secret has to live where the task pods run, not where Flyte runs.
-- **Co-pilot containers exit at startup with a permissions error on the config file.**
+- **Copilot containers exit at startup with a permissions error on the config file.**
   Your task pods run as a non-root user without an `fsGroup`. Flyte projects the file
   world-readable to cover this, so check that your deployment is new enough to include
   that fix.
-- **Co-pilot fails to authenticate to the object store.** The mounted file is
-  incomplete. Co-pilot takes the stow configuration all-or-nothing, so the file needs
+- **Copilot fails to authenticate to the object store.** The mounted file is
+  incomplete. Copilot takes the stow configuration all-or-nothing, so the file needs
   the endpoint and credentials, not just some of them.
-- **Co-pilot reaches a different object store than the rest of Flyte.** You are supplying
+- **Copilot reaches a different object store than the rest of Flyte.** You are supplying
   your own Secret, and it has drifted from the deployment's storage settings. Settings
   from `configuration.storage` and `configuration.inline` are merged only into the
   Secret the chart renders itself.
 - **Storage credentials still appear in task pod specs.** No Secret is configured, so
-  co-pilot is using the command-line fallback. With external configuration, check that
+  copilot is using the command-line fallback. With external configuration, check that
   you set `plugins.k8s.co-pilot.storage-config-secret-name` yourself.
 - **`helm install` fails saying `copilotStorageSecretRef` has no effect.** You set it
   alongside `externalConfigMap` or `externalSecretRef`. Remove it and name your Secret
   through the configuration key instead, as described above.
-- **Co-pilot refuses to start after you point it at your own Secret.** The Secret holds
-  a `.yaml` key that is not co-pilot configuration. Every `.yaml` key is read, and
-  co-pilot rejects configuration sections it does not recognize.
+- **Copilot refuses to start after you point it at your own Secret.** The Secret holds
+  a `.yaml` key that is not copilot configuration. Every `.yaml` key is read, and
+  copilot rejects configuration sections it does not recognize.
