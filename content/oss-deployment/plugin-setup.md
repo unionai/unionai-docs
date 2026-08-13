@@ -80,21 +80,33 @@ configuration:
 
 ### When the chart does not create it
 
-The chart only renders the Secret when it can fill in a complete configuration:
+The Secret exists to keep credentials out of task pod specs, so the chart renders it
+only when your storage configuration actually carries one:
 
 | Storage configuration | Where co-pilot reads its configuration |
 |---|---|
-| `gcs` or `azure` | The Secret the chart creates |
-| `s3` with `authType: iam` | The Secret the chart creates |
 | `s3` with `authType: accesskey` and `secretKey` | The Secret the chart creates |
+| `azure` with a `key` | The Secret the chart creates |
+| Anything under `configuration.inline.storage` | The Secret the chart creates |
+| `s3` with `authType: iam` | Its command line |
+| `gcs` | Its command line |
+| `azure` without a `key` | Its command line |
 | `s3` with `authType: accesskey` and only `secretKeyPath` | Its command line |
 | `configuration.storage.copilotStorageSecretRef` set | The Secret you name |
 | `configuration.externalConfigMap` or `configuration.externalSecretRef` set | Whatever your own configuration says |
 
-`secretKeyPath` points at a file inside the Flyte container, which a task pod has no
-copy of, so the chart cannot turn it into a Secret that co-pilot can read. Those
-deployments keep receiving the storage configuration on the co-pilot command line. To
-close that exposure, supply your own Secret as shown below.
+The command-line rows are not an exposure. Ambient authentication puts nothing secret
+on the command line: `authType: iam` resolves credentials from the pod's IAM role, GCS
+uses workload identity, and Azure without a `key` uses a managed identity. What travels
+is a region, a bucket, and possibly an endpoint.
+
+`configuration.inline.storage` always gets the Secret, whatever it holds, because the
+chart cannot tell whether you put a session token or a service-account key in there.
+
+The one credential that stays on the command line is `secretKeyPath`. It points at a
+file inside the Flyte container, which a task pod has no copy of, so the chart cannot
+read it to build a Secret. To close that exposure, supply your own Secret as shown
+below.
 
 ### Supplying your own Secret
 
