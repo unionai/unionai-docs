@@ -1,15 +1,10 @@
 ---
-title: Plugin setup
+title: Co-pilot storage configuration
 variants: +flyte -union
-weight: 6
+weight: 1
 ---
 
-# Plugin setup
-
-Some Flyte plugins need cluster-side configuration before they can run. This page covers
-that setup.
-
-## Co-pilot storage configuration
+# Co-pilot storage configuration
 
 Flyte's **co-pilot** containers move task inputs and outputs between your object store
 and the task pod. They run alongside every container task that declares inputs or
@@ -22,7 +17,7 @@ Secret is configured, is to pass the storage configuration on the co-pilot comma
 line, where the credentials land in the pod spec of every task and are readable by
 anyone who can read pods in the task namespace.
 
-### The Secret the chart creates
+## The Secret the chart creates
 
 With the default `values.yaml` the chart renders the Secret for you and points co-pilot
 at it. Nothing is required to enable this.
@@ -78,7 +73,7 @@ configuration:
           session_token: "<session-token>"
 ```
 
-### When the chart does not create it
+## When the chart does not create it
 
 The Secret exists to keep credentials out of task pod specs, so the chart renders it
 only when your storage configuration actually carries one:
@@ -108,7 +103,7 @@ file inside the Flyte container, which a task pod has no copy of, so the chart c
 read it to build a Secret. To close that exposure, supply your own Secret as shown
 below.
 
-### Supplying your own Secret
+## Supplying your own Secret
 
 Create a Secret in the task-pod namespace holding your complete storage configuration,
 then name it in `values.yaml`:
@@ -130,7 +125,7 @@ nothing but co-pilot's configuration. You can split that configuration across se
 keys if you prefer, for example `003-storage.yaml` and `013-storage-secrets.yaml`, and
 they are merged in name order. Keys that do not end in `.yaml` are mounted but ignored.
 
-### With external configuration
+## With external configuration
 
 Setting `configuration.externalConfigMap` or `configuration.externalSecretRef` tells
 the chart that you manage the Flyte configuration yourself. The chart then renders
@@ -183,7 +178,7 @@ plugins:
 Restart the Flyte deployment so it picks up the change, then run a task with inputs or
 outputs to confirm.
 
-### Verify
+## Verify
 
 Check that a task pod projects the Secret and that no credentials appear in its spec:
 
