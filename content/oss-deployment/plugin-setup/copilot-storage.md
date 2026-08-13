@@ -19,8 +19,15 @@ anyone who can read pods in the task namespace.
 
 ## The Secret the chart creates
 
-With the default `values.yaml` the chart renders the Secret for you and points copilot
-at it. Nothing is required to enable this.
+The chart renders this Secret for you, and points copilot at it, whenever your storage
+configuration carries a credential: S3 with an `accessKey` and `secretKey`, Azure with a
+`key`, or anything you add under `configuration.inline.storage`. Nothing is required to
+enable it.
+
+Ambient authentication has no credential to keep out of pod specs, so S3 with
+`authType: iam`, GCS, and Azure without a `key` get no Secret. Copilot receives the
+storage settings on its command line instead, which carries a region and a bucket and
+nothing sensitive.
 
 | | |
 |---|---|
@@ -120,37 +127,11 @@ configuration:
           session_token: "<session-token>"
 ```
 
-## When the chart does not create it
-
-The Secret exists to keep credentials out of task pod specs, so the chart renders it
-only when your storage configuration actually carries one:
-
-| Storage configuration | Where copilot reads its configuration |
-|---|---|
-| `s3` with `authType: accesskey` and `secretKey` | The Secret the chart creates |
-| `azure` with a `key` | The Secret the chart creates |
-| Anything under `configuration.inline.storage` | The Secret the chart creates |
-| `s3` with `authType: iam` | Its command line |
-| `gcs` | Its command line |
-| `azure` without a `key` | Its command line |
-| `s3` with `authType: accesskey` and only `secretKeyPath` | Its command line |
-| `configuration.co-pilot.storageSecretRef` set | The Secret you name |
-| `configuration.externalConfigMap` or `configuration.externalSecretRef` set | Whatever your own configuration says |
-
-The command-line rows are not an exposure. Ambient authentication puts nothing secret
-on the command line: `authType: iam` resolves credentials from the pod's IAM role, GCS
-uses workload identity, and Azure without a `key` uses a managed identity. What travels
-is a region, a bucket, and possibly an endpoint.
-
-`configuration.inline.storage` always gets the Secret, whatever it holds, because the
-chart cannot tell whether you put a session token or a service-account key in there.
-
-The one credential that stays on the command line is `secretKeyPath`. It points at a
-file inside the Flyte container, which a task pod has no copy of, so the chart cannot
-read it to build a Secret. To close that exposure, supply your own Secret as shown
-below.
-
 ## Supplying your own Secret
+
+Supply your own when the chart cannot build one, most often S3 with `secretKeyPath`. That
+path names a file inside the Flyte container, which a task pod has no copy of, so the
+chart has no credential it can write and copilot falls back to the command line.
 
 Create a Secret in the task-pod namespace holding your complete storage configuration,
 then name it in `values.yaml`:
