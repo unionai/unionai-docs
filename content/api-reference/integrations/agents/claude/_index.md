@@ -1,6 +1,6 @@
 ---
 title: Claude Agent SDK
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,15 +11,15 @@ layout: py_api
 
 Claude Agent SDK adapter for Flyte.
 
-Bring your own ``claude-agent-sdk`` agent and run it durably on Flyte. Tools you
+Bring your own `claude-agent-sdk` agent and run it durably on Flyte. Tools you
 expose are Flyte tasks (so each tool call is a durable child action with its own
 container/resources, retries and caching); the agent loop itself runs in the
 Claude Code runtime, and its timeline is rendered into the Flyte task report.
 
-- :func:`tool` — turn an ``@env.task`` into a Claude in-process MCP tool.
-- :func:`run_agent` — run the agent loop inside your task and return the answer.
+- `flyteplugins.agents.claude.tool` — turn an `@env.task` into a Claude in-process MCP tool.
+- `flyteplugins.agents.claude.run_agent` — run the agent loop inside your task and return the answer.
 
-The ``claude-agent-sdk`` wheel bundles the native ``claude`` CLI (no separate Node.js
+The `claude-agent-sdk` wheel bundles the native `claude` CLI (no separate Node.js
 install needed); set an Anthropic API key in the environment.
 ## Directory
 
@@ -52,27 +52,27 @@ def run_agent(
 ```
 Run a Claude agent with the given tools and prompt; return the final text.
 
-Await this from an async task as ``await run_agent(...)``; from a sync task
-use `run_agent_sync` instead.
+Await this from an async task as `await run_agent(...)`; from a sync task
+use `flyteplugins.agents.claude.run_agent_sync` instead.
 
-Call this from inside an ``@env.task`` — that task is the durable parent,
+Call this from inside an `@env.task` — that task is the durable parent,
 and each tool the agent calls runs as a durable Flyte child action. Pass a
-fully-built ``ClaudeAgentOptions`` via ``options`` to keep SDK-native config
-(subagents, permissions, hooks, session resume); ``tools``/``model``/
-``instructions``/``max_turns`` are layered on top.
+fully-built `ClaudeAgentOptions` via `options` to keep SDK-native config
+(subagents, permissions, hooks, session resume); `tools`/`model`/
+`instructions`/`max_turns` are layered on top.
 
-With ``durable=True`` (and a checkpoint-capable task context) the SDK's session
-mirror + resume is wired onto a ``flyte.Checkpoint``, so a retry resumes the
-conversation instead of restarting it. With ``observability=True`` the run
+With `durable=True` (and a checkpoint-capable task context) the SDK's session
+mirror + resume is wired onto a `flyte.Checkpoint`, so a retry resumes the
+conversation instead of restarting it. With `observability=True` the run
 timeline — assistant turns plus per-tool outcomes (via hooks) — is rendered into
 the task report.
 
-Set ``memory_key`` (a user/thread id) for cross-run memory: the transcript is
-persisted to a durable, keyed ``MemoryStore`` and resumed on a later run with the
+Set `memory_key` (a user/thread id) for cross-run memory: the transcript is
+persisted to a durable, keyed `MemoryStore` and resumed on a later run with the
 same key (this also covers crash-resume, so it takes precedence over the per-run
-``durable`` checkpoint).
+`durable` checkpoint).
 
-The ``claude-agent-sdk`` wheel bundles the native ``claude`` CLI, so the runtime
+The `claude-agent-sdk` wheel bundles the native `claude` CLI, so the runtime
 image needs no separate Node.js install — just an Anthropic API key.
 
 
@@ -109,27 +109,27 @@ Synchronous variant of run_agent for use in sync tasks; runs the async implement
 
 Run a Claude agent with the given tools and prompt; return the final text.
 
-    Await this from an async task as ``await run_agent(...)``; from a sync task
-    use `run_agent_sync` instead.
+    Await this from an async task as `await run_agent(...)`; from a sync task
+    use `flyteplugins.agents.claude.run_agent_sync` instead.
 
-    Call this from inside an ``@env.task`` — that task is the durable parent,
+    Call this from inside an `@env.task` — that task is the durable parent,
     and each tool the agent calls runs as a durable Flyte child action. Pass a
-    fully-built ``ClaudeAgentOptions`` via ``options`` to keep SDK-native config
-    (subagents, permissions, hooks, session resume); ``tools``/``model``/
-    ``instructions``/``max_turns`` are layered on top.
+    fully-built `ClaudeAgentOptions` via `options` to keep SDK-native config
+    (subagents, permissions, hooks, session resume); `tools`/`model`/
+    `instructions`/`max_turns` are layered on top.
 
-    With ``durable=True`` (and a checkpoint-capable task context) the SDK's session
-    mirror + resume is wired onto a ``flyte.Checkpoint``, so a retry resumes the
-    conversation instead of restarting it. With ``observability=True`` the run
+    With `durable=True` (and a checkpoint-capable task context) the SDK's session
+    mirror + resume is wired onto a `flyte.Checkpoint`, so a retry resumes the
+    conversation instead of restarting it. With `observability=True` the run
     timeline — assistant turns plus per-tool outcomes (via hooks) — is rendered into
     the task report.
 
-    Set ``memory_key`` (a user/thread id) for cross-run memory: the transcript is
-    persisted to a durable, keyed ``MemoryStore`` and resumed on a later run with the
+    Set `memory_key` (a user/thread id) for cross-run memory: the transcript is
+    persisted to a durable, keyed `MemoryStore` and resumed on a later run with the
     same key (this also covers crash-resume, so it takes precedence over the per-run
-    ``durable`` checkpoint).
+    `durable` checkpoint).
 
-    The ``claude-agent-sdk`` wheel bundles the native ``claude`` CLI, so the runtime
+    The `claude-agent-sdk` wheel bundles the native `claude` CLI, so the runtime
     image needs no separate Node.js install — just an Anthropic API key.
     
 
@@ -158,18 +158,20 @@ def tool(
 ```
 Convert a Flyte task (or plain callable) into a Claude Agent SDK tool.
 
-- For an ``@env.task``: returns an ``SdkMcpTool`` whose handler runs the task
+- For an `@env.task`: returns an `SdkMcpTool` whose handler runs the task
   as a durable Flyte child action when Claude calls it. The input schema is
   derived from the task via the Flyte type engine. The backing task is wired
-  to `ToolTaskResolver` and exposed via
-  ``__wrapped_task__`` so it resolves to itself on the worker (no recursion).
-- For a plain (async) callable: returns an ``SdkMcpTool`` that runs it inline.
+  to `flyteplugins.agents.core.ToolTaskResolver` and exposed via
+  `__wrapped_task__` so it resolves to itself on the worker (no recursion).
+- For a plain (async) callable: returns an `SdkMcpTool` that runs it inline.
 
-Usable bare, parametrized, or as a direct call::
+Usable bare, parametrized, or as a direct call:
 
-    @tool
-    @env.task
-    async def get_weather(city: str) -&gt; str: ...
+```python
+@tool
+@env.task
+async def get_weather(city: str) -> str: ...
+```
 
 
 | Parameter | Type | Description |

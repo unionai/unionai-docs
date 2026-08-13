@@ -1,6 +1,6 @@
 ---
 title: TypeTransformer
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -181,6 +181,7 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `python_val` | `T` | The actual value to be transformed |
@@ -196,6 +197,7 @@ def to_python_value(
 ) -> Optional[T]
 ```
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
+
 
 
 | Parameter | Type | Description |

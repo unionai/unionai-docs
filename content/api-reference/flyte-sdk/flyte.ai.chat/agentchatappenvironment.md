@@ -1,6 +1,6 @@
 ---
 title: AgentChatAppEnvironment
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,75 +9,9 @@ layout: py_api
 
 **Package:** `flyte.ai.chat`
 
-An `AppEnvironment` that spins up a FastAPI chat
-interface backed by any object satisfying the `AgentProtocol`.
+An `flyte.app.AppEnvironment` that spins up a FastAPI chat
+interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`.
 
-Parameters
-----------
-agent:
-    Any object implementing the `AgentProtocol`.
-title:
-    Title displayed in the UI header and browser tab. Defaults to
-    the environment *name*.
-subtitle:
-    Optional short subtitle displayed below the title in the
-    header area.  Use it to explain what the agent does.
-prompt_nudges:
-    Optional list of prompt-nudge cards shown before the first
-    message.  Each entry is a dict with ``"label"`` (short card
-    title) and ``"prompt"`` (the query text sent when clicked).
-theme:
-    Optional `CustomTheme` instance that controls the UI
-    accent colors via human-readable attributes.  When provided,
-    the theme CSS is generated automatically and prepended to any
-    *custom_css*.
-custom_css:
-    Optional CSS string appended **after** the default styles
-    (and after theme CSS, if a *theme* is provided).  Use this
-    for fine-grained overrides beyond what `CustomTheme`
-    exposes.
-logo_url:
-    Optional URL to an image displayed to the left of the title
-    in the header bar.  When ``None`` (default), no logo is shown.
-additional_buttons:
-    Optional list of action-button dicts rendered to the right of
-    the *Send* button.  Each dict must have ``"button_text"`` and
-    ``"button_url"`` keys.  The first entry is displayed as a
-    prominent primary button; any extra entries appear in a
-    drop-up menu accessed via a chevron.
-passthrough_auth:
-    When ``True``, the FastAPI app initializes ``flyte.init_passthrough`` at
-    startup and adds ``FastAPIPassthroughAuthMiddleware`` so incoming
-    ``Authorization`` / cookie headers are forwarded to Flyte remote calls.
-    Enable this when using an agent with ``@env.task`` tools — nested task
-    execution needs caller credentials (same pattern as
-    ``FlyteWebhookAppEnvironment``).
-passthrough_auth_excluded_paths:
-    Paths skipped by passthrough middleware. When omitted, defaults include
-    the HTML shell (``/``), ``/api/tools``, ``/api/nudges``, health, and docs
-    routes so the sidebar and nudges load without ``Authorization`` headers;
-    ``/api/chat`` still requires credentials. Only used when ``passthrough_auth``
-    is ``True``.
-task_entrypoint:
-    Optional Flyte task used as the chat handler entrypoint.
-
-    When set, ``/api/chat`` calls the task (via ``flyte.run.aio``) instead
-    of calling ``agent.run`` directly. This is useful for agents whose tool
-    calls must run under a parent task context (e.g. an ``Agent`` in
-    ``code_mode`` using durable ``@env.task`` tools). When streaming chat
-    (``stream: true``), progress lines use `watch`
-    on the returned run (first ``RUNNING`` → ``generating_code``, next →
-    ``executing``). Fine-grained per-turn phases still require
-    ``agent.run`` in the web process, or future worker-side signaling.
-
-    The entrypoint may accept either:
-
-    - ``(message: str, history: list[dict[str, str]])``; or
-    - ``(message: str)``.
-
-    The return value may be an `AgentResult`,
-    a dict with keys like ``summary``/``charts``/``code``, or a plain string
-    (treated as ``summary``).
 
 
 ## Parameters
@@ -141,17 +75,17 @@ class AgentChatAppEnvironment(
 | `cluster_pool` | `str` | |
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
-| `agent` | `Any` | |
-| `title` | `str \| None` | |
-| `subtitle` | `str \| None` | |
-| `prompt_nudges` | `list[dict[str, str]]` | |
-| `theme` | `CustomTheme \| None` | |
-| `custom_css` | `str` | |
-| `logo_url` | `str \| None` | |
-| `additional_buttons` | `list[dict[str, str]]` | |
-| `passthrough_auth` | `bool` | |
-| `passthrough_auth_excluded_paths` | `frozenset[str] \| None` | |
-| `task_entrypoint` | `Any \| None` | |
+| `agent` | `Any` | Any object implementing the `flyte.ai.agents.AgentProtocol`. |
+| `title` | `str \| None` | Title displayed in the UI header and browser tab. Defaults to the environment *name*. |
+| `subtitle` | `str \| None` | Optional short subtitle displayed below the title in the header area.  Use it to explain what the agent does. |
+| `prompt_nudges` | `list[dict[str, str]]` | Optional list of prompt-nudge cards shown before the first message.  Each entry is a dict with `"label"` (short card title) and `"prompt"` (the query text sent when clicked). |
+| `theme` | `CustomTheme \| None` | Optional `flyte.ai.chat.CustomTheme` instance that controls the UI accent colors via human-readable attributes.  When provided, the theme CSS is generated automatically and prepended to any *custom_css*. |
+| `custom_css` | `str` | Optional CSS string appended **after** the default styles (and after theme CSS, if a *theme* is provided).  Use this for fine-grained overrides beyond what `flyte.ai.chat.CustomTheme` exposes. |
+| `logo_url` | `str \| None` | Optional URL to an image displayed to the left of the title in the header bar.  When `None` (default), no logo is shown. |
+| `additional_buttons` | `list[dict[str, str]]` | Optional list of action-button dicts rendered to the right of the *Send* button.  Each dict must have `"button_text"` and `"button_url"` keys.  The first entry is displayed as a prominent primary button; any extra entries appear in a drop-up menu accessed via a chevron. |
+| `passthrough_auth` | `bool` | When `True`, the FastAPI app initializes `flyte.init_passthrough` at startup and adds `FastAPIPassthroughAuthMiddleware` so incoming `Authorization` / cookie headers are forwarded to Flyte remote calls. Enable this when using an agent with `@env.task` tools — nested task execution needs caller credentials (same pattern as `FlyteWebhookAppEnvironment`). |
+| `passthrough_auth_excluded_paths` | `frozenset[str] \| None` | Paths skipped by passthrough middleware. When omitted, defaults include the HTML shell (`/`), `/api/tools`, `/api/nudges`, health, and docs routes so the sidebar and nudges load without `Authorization` headers; `/api/chat` still requires credentials. Only used when `passthrough_auth` is `True`. |
+| `task_entrypoint` | `Any \| None` | Optional Flyte task used as the chat handler entrypoint. When set, `/api/chat` calls the task (via `flyte.run.aio`) instead of calling `agent.run` directly. This is useful for agents whose tool calls must run under a parent task context (e.g. an `Agent` in `code_mode` using durable `@env.task` tools). When streaming chat (`stream: true`), progress lines use `flyte.remote.Run.watch` on the returned run (first `RUNNING` → `generating_code`, next → `executing`). Fine-grained per-turn phases still require `agent.run` in the web process, or future worker-side signaling. The entrypoint may accept either: - `(message: str, history: list[dict[str, str]])`; or - `(message: str)`. The return value may be a `flyte.ai.agents.protocol.AgentResult`, a dict with keys like `summary`/`charts`/`code`, or a plain string (treated as `summary`). |
 
 ## Properties
 
@@ -206,7 +140,7 @@ def build_fastapi_app()
 Construct the FastAPI application (routes, HTML shell, optional auth).
 
 Useful for tests and advanced mounting; the deployed server uses this via
-`_fastapi_server`.
+`AgentChatAppEnvironment._fastapi_server`.
 
 
 ### clone_with()

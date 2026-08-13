@@ -1,6 +1,6 @@
 ---
 title: Databricks
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,7 +27,7 @@ class Databricks(
     applications_path: typing.Optional[str] = None,
     driver_pod: typing.Optional[flyte._pod.PodTemplate] = None,
     executor_pod: typing.Optional[flyte._pod.PodTemplate] = None,
-    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]] = None,
+    databricks_conf: typing.Optional[typing.Dict[str, typing.Any]] = None,
     databricks_instance: typing.Optional[str] = None,
     databricks_token: typing.Optional[str] = None,
 )
@@ -40,7 +40,7 @@ class Databricks(
 | `applications_path` | `typing.Optional[str]` | Path to the main application file. Defaults to the task entrypoint path. |
 | `driver_pod` | `typing.Optional[flyte._pod.PodTemplate]` | Pod template applied to the Spark driver pod. |
 | `executor_pod` | `typing.Optional[flyte._pod.PodTemplate]` | Pod template applied to the Spark executor pods. |
-| `databricks_conf` | `typing.Optional[typing.Dict[str, typing.Union[str, dict]]]` | Databricks job configuration dict compliant with the Databricks Jobs API v2.1 (also supports v2.0 use cases). Typically includes `new_cluster` or `existing_cluster_id`, `run_name`, and other job settings. |
+| `databricks_conf` | `typing.Optional[typing.Dict[str, typing.Any]]` | Databricks job configuration dict compliant with the Databricks Jobs API v2.1 (also supports v2.0 use cases). Typically includes `new_cluster` or `existing_cluster_id`, `run_name`, and other job settings. |
 | `databricks_instance` | `typing.Optional[str]` | Domain name of your Databricks deployment, e.g. `"myorg.cloud.databricks.com"`. |
 | `databricks_token` | `typing.Optional[str]` | Name of the Flyte secret containing the Databricks API token used for authentication. |
 

@@ -1,6 +1,6 @@
 ---
 title: ConcurrencyError
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyte.ai.agents.memory`
 
-Raised when an ``expected_sha`` precondition does not match the current state.
+Raised when an `expected_sha` precondition does not match the current state.
 
 
 ## Parameters

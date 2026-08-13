@@ -1,6 +1,6 @@
 ---
 title: AutoCoderAgent
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,30 @@ dependencies, runs pytest-based tests, and iterates until tests pass.
 
 Uses Sandbox internally for isolated code execution.
 
+```python
+from flyte.sandbox import sandbox_environment
+from flyteplugins.codegen import AutoCoderAgent
+
+agent = AutoCoderAgent(
+    model="gpt-4.1",
+    base_packages=["pandas"],
+    resources=flyte.Resources(cpu=1, memory="1Gi"),
+)
+
+env = flyte.TaskEnvironment(
+    name="my-env",
+    depends_on=[sandbox_environment],
+)
+
+@env.task
+async def my_task(data_file: File) -> float:
+    result = await agent.generate.aio(
+        prompt="Process CSV data",
+        samples={"csv": data_file},
+        outputs={"total": float},
+    )
+    return await result.run.aio()
+```
 
 
 ## Parameters

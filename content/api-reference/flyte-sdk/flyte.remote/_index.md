@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,6 +19,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`ActionInputs`](../flyte.remote/actioninputs) | A class representing the inputs of an action. |
 | [`ActionOutputs`](../flyte.remote/actionoutputs) | A class representing the outputs of an action. |
 | [`App`](../flyte.remote/app) |  |
+| [`Artifact`](../flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as. |
 | [`Condition`](../flyte.remote/condition) | A remote Condition registered within an action of a run. |
 | [`Project`](../flyte.remote/project) | A class representing a project in the Union API. |
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
@@ -107,6 +108,7 @@ def upload_file(
     fp: pathlib.Path,
     verify: bool = True,
     fname: str | None = None,
+    content_type: str | None = None,
 ) -> typing.Tuple[str, str]
 ```
 Uploads a file to a remote location and returns the remote URI.
@@ -118,6 +120,7 @@ Uploads a file to a remote location and returns the remote URI.
 | `fp` | `pathlib.Path` | The file path to upload. |
 | `verify` | `bool` | Whether to verify the certificate for HTTPS requests. |
 | `fname` | `str \| None` | Optional file name for the remote path. |
+| `content_type` | `str \| None` | Optional MIME type to store on the uploaded object, so browsers render it inline (used for artifact cards) rather than downloading it. |
 
 **Returns:** Tuple of (MD5 digest hex string, remote native URL).
 

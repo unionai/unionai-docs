@@ -38,7 +38,7 @@ rendered into the Flyte task report.
 |-|-|
 | [`run_agent()`](#run_agent) | Run a Pydantic AI agent with the given tools and prompt; return the final text. |
 | [`run_agent_sync()`](#run_agent_sync) | Synchronous variant of run_agent for use in sync tasks; runs the async implementation on a dedicated event loop. |
-| [`tool()`](#tool) | Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default. |
+| [`tool()`](#tool) | Wrap a Flyte `@env.task` as a plain async tool function — the generic default. |
 
 
 ## Methods
@@ -149,27 +149,29 @@ def tool(
     description: str | None = None,
 ) -> typing.Callable
 ```
-Wrap a Flyte ``@env.task`` as a plain async tool function — the generic default.
+Wrap a Flyte `@env.task` as a plain async tool function — the generic default.
 
 For SDKs that accept plain Python callables as tools (deriving the schema from the
-signature + docstring), this is the whole adapter ``tool``: the returned
-function carries the task's signature (``functools.wraps``), dispatches to
-``task.aio()`` (so each call is a durable Flyte child action), exposes
-``__wrapped_task__``, and wires the backing task to `ToolTaskResolver`.
+signature + docstring), this is the whole adapter `tool`: the returned
+function carries the task's signature (`functools.wraps`), dispatches to
+`task.aio()` (so each call is a durable Flyte child action), exposes
+`__wrapped_task__`, and wires the backing task to `flyteplugins.agents.core.ToolTaskResolver`.
 Adapters whose SDK needs a native tool type (e.g. OpenAI's
-``FunctionTool``, Claude's MCP ``SdkMcpTool``) provide their own instead.
+`FunctionTool`, Claude's MCP `SdkMcpTool`) provide their own instead.
 
 Also accepts any other callable — a plain function or an instance of a callable
-class defining ``__call__`` — and returns it usable as a tool as-is, since the
+class defining `__call__` — and returns it usable as a tool as-is, since the
 plain-callable SDKs derive the schema by inspecting the callable (a class instance
-is inspected through its ``__call__``). A ``name`` or ``description`` override is
+is inspected through its `__call__`). A `name` or `description` override is
 applied to the callable best-effort.
 
-Usable bare, parametrized or as a direct call::
+Usable bare, parametrized or as a direct call:
 
-    @tool
-    @env.task
-    async def get_weather(city: str) -&gt; str: ...
+```python
+@tool
+@env.task
+async def get_weather(city: str) -> str: ...
+```
 
 
 | Parameter | Type | Description |

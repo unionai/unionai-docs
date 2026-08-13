@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,6 +26,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
+| [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for a task. |
@@ -67,7 +68,9 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
-| [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``. |
+| [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
+| [`load_interactive_ctx()`](#load_interactive_ctx) | Restore the task execution context from the config file written by a debug-mode task pod. |
+| [`load_plugin_config()`](#load_plugin_config) | Load a plugin config instance from a YAML file. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`new_condition()`](#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`rerun()`](#rerun) | Re-run a prior run, returning a new `Run`. |
@@ -86,6 +89,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 |-|-|-|
 | `TimeoutType` | `UnionType` |  |
 | `TriggerTime` | `_trigger_time` |  |
+| `TriggeredArtifact` | `_triggered_artifact` |  |
 | `__version__` | `str` |  |
 | `logger` | `Logger` |  |
 | `system_logger` | `Logger` |  |
@@ -100,6 +104,7 @@ def AMD_GPU(
 ) -> flyte._resources.Device
 ```
 Create an AMD GPU device instance.
+
 
 
 | Parameter | Type | Description |
@@ -120,6 +125,7 @@ def GPU(
 Create a GPU device instance.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
@@ -138,6 +144,7 @@ def HABANA_GAUDI(
 Create a Habana Gaudi device instance.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "Gaudi1"). |
@@ -152,6 +159,7 @@ def Neuron(
 ) -> flyte._resources.Device
 ```
 Create a Neuron device instance.
+
 
 
 | Parameter | Type | Description |
@@ -169,6 +177,7 @@ def TPU(
 )
 ```
 Create a TPU device instance.
+
 
 
 | Parameter | Type | Description |
@@ -195,14 +204,13 @@ def build(
 ```
 Build an image. The existing async context will be used.
 
-```
+```python
 import flyte
 image = flyte.Image("example_image")
 if __name__ == "__main__":
     result = asyncio.run(flyte.build.aio(image))
     print(result.uri)
 ```
-
 
 
 | Parameter | Type | Description |
@@ -212,7 +220,10 @@ if __name__ == "__main__":
 | `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
 
-**Returns:** An ImageBuild object with the image URI and remote run (if applicable).
+**Returns**
+
+An ImageBuild object containing the image URI and optionally the remote run that kicked off the build.
+
 
 #### build_images()
 
@@ -231,11 +242,12 @@ def build_images(
 Build the images for the given environment(s).
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
-| `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring ``deploy``), and the resulting image caches are merged into one. |
-| `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's ``--copy-style`` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
-| `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see ``_build_images`` for details. |
+| `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
+| `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
+| `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -247,8 +259,8 @@ def ctx()
 Returns the current flyte.models.TaskContext when running inside a task.
 
 Outside a task execution it returns a falsy null context whose fields are all None,
-so task code can read ``flyte.ctx().<field>`` without a None-guard. To detect whether
-a task context is active, rely on truthiness: ``if flyte.ctx(): ...``.
+so task code can read `flyte.ctx().<field>` without a None-guard. To detect whether
+a task context is active, rely on truthiness: `if flyte.ctx(): ...`.
 
 Note: Only use this in task code and not module level.
 
@@ -337,12 +349,13 @@ def deploy(
 Deploy the given environment or list of environments.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `*envs` | `Environment` | Environment or list of environments to deploy. |
 | `dryrun` | `bool` | dryrun mode, if True, the deployment will not be applied to the control plane. |
 | `version` | `str \| None` | version of the deployment, if None, the version will be computed from the code bundle. TODO: Support for interactive_mode |
-| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
+| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
@@ -438,6 +451,8 @@ def init(
     sync_local_sys_paths: bool = True,
     load_plugin_type_transformers: bool = True,
     local_persistence: bool = False,
+    local_tracked: bool = False,
+    local_tracked_strict: bool = False,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -474,11 +489,13 @@ remote API methods are called. Thread-safe implementation.
 | `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name. |
-| `image_registry` | `str \| None` | Optional container registry to push built images to, overriding the built-in default base registry. Equivalent to the ``image.registry`` config entry. |
+| `image_registry` | `str \| None` | Optional container registry to push built images to, overriding the built-in default base registry. Equivalent to the `image.registry` config entry. |
 | `source_config_path` | `Optional[Path]` | Optional path to the source configuration file (This is only used for documentation) |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 | `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. |
-| `local_persistence` | `bool` | Whether to enable SQLite persistence for local run metadata (default |
+| `local_persistence` | `bool` | Whether to enable SQLite persistence for local run metadata (default: False). |
+| `local_tracked` | `bool` | Whether to report tracked run state to the Flyte control plane (default: False). Requires an initialized client and a configured project/domain. |
+| `local_tracked_strict` | `bool` | Strict tracked-run reporting for debugging (default: False). Any reporting failure fails the run loudly instead of being logged and swallowed. Only takes effect when reporting is enabled. |
 
 **Returns:** None
 
@@ -646,14 +663,14 @@ def latest_checkpoint(
     key: Callable[[pathlib.Path], Any] | None = None,
 ) -> pathlib.Path | None
 ```
-Return the file under *root* matching *glob_pattern* with the largest ``key(path)``, or ``None``.
+Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`.
 
-By default *key* is ``lambda p: p.stat().st_mtime`` (newest modification time wins). Pass *key* to
+By default *key* is `lambda p: p.stat().st_mtime` (newest modification time wins). Pass *key* to
 rank matches another way (e.g. parse a step from the filename).
 
-For example, the Lightning framework would use ``**/last.ckpt`` under the tree restored by
+For example, the Lightning framework would use `**/last.ckpt` under the tree restored by
 `flyte.Checkpoint.load_sync` / `flyte.Checkpoint.load`. Pass a different *glob_pattern* for other
-layouts (e.g. ``"**/*.ckpt"``).
+layouts (e.g. `"**/*.ckpt"`).
 
 
 | Parameter | Type | Description |
@@ -661,6 +678,68 @@ layouts (e.g. ``"**/*.ckpt"``).
 | `root` | `pathlib.Path` | |
 | `glob_pattern` | `str` | |
 | `key` | `Callable[[pathlib.Path], Any] \| None` | |
+
+#### load_interactive_ctx()
+
+```python
+def load_interactive_ctx(
+    path: str | os.PathLike | None = None,
+) -> TaskContext
+```
+Restore the task execution context from the config file written by a debug-mode task pod.
+
+Use this from a debugger, REPL, or notebook attached to a live task pod: it initializes
+the SDK against the cluster and installs the task's context as the current one, so
+`flyte.ctx()` and data IO (raw data prefix, inputs/outputs paths) behave as they would
+inside the task.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str \| os.PathLike \| None` | Optional explicit path to the config file. Defaults to the well-known location `<cwd>/.flyte/run_context.json`. |
+
+**Returns**
+
+The restored and installed `flyte.models.TaskContext`.
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `FileNotFoundError` | If the config file does not exist at the given/known location. |
+| `ValueError` | If the config file is missing required fields. |
+
+#### load_plugin_config()
+
+```python
+def load_plugin_config(
+    path: 'Union[str, pathlib.Path]',
+) -> Any
+```
+Load a plugin config instance from a YAML file.
+
+The file must be a mapping with a top-level `plugin` key holding the fully qualified
+class name of the plugin config (e.g. `flyteplugins.ray.RayJobConfig`), and an optional
+`config` mapping with the constructor arguments — including nested classes, expressed as
+nested mappings/lists that mirror the plugin config's dataclass fields.
+
+```yaml
+plugin: flyteplugins.ray.RayJobConfig
+config:
+  worker_node_config:
+    - group_name: workers
+      replicas: 2
+  head_node_config:
+    ray_start_params:
+      num-cpus: "0"
+```
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `'Union[str, pathlib.Path]'` | |
 
 #### map()
 
@@ -715,15 +794,15 @@ until an external signal is received.
 
 **Condition protocol (remote execution):**
 
-When running inside a task, ``new_condition`` registers a *condition action* with the
-backend. Calling ``condition.wait()`` blocks until the condition is resolved. The backend
-delivers the result as an inline ``Literal`` (protobuf scalar/primitive) in the
-``ActionUpdate`` stream — no ``output_uri`` is involved for conditions.
+When running inside a task, `new_condition` registers a *condition action* with the
+backend. Calling `condition.wait()` blocks until the condition is resolved. The backend
+delivers the result as an inline `Literal` (protobuf scalar/primitive) in the
+`ActionUpdate` stream — no `output_uri` is involved for conditions.
 
-- On success, ``wait()`` returns the value converted to ``data_type``
-  (``True``/``False`` for bool, Python ``int``/``float``/``str`` for the others).
-- If the condition times out, ``wait()`` raises ``flyte.errors.ConditionTimedoutError``.
-- If the condition fails, ``wait()`` raises ``flyte.errors.ConditionFailedError``.
+- On success, `wait()` returns the value converted to `data_type`
+  (`True`/`False` for bool, Python `int`/`float`/`str` for the others).
+- If the condition times out, `wait()` raises `flyte.errors.ConditionTimedoutError`.
+- If the condition fails, `wait()` raises `flyte.errors.ConditionFailedError`.
 
 
 
@@ -732,10 +811,10 @@ delivers the result as an inline ``Literal`` (protobuf scalar/primitive) in the
 | `name` | `str` | Name of the condition |
 | `prompt` | `str` | Prompt message for the condition |
 | `prompt_type` | `typing.Literal['text', 'markdown']` | Type of prompt rendering - "text" or "markdown" |
-| `data_type` | `typing.Type[~ConditionType]` | Data type of the condition payload — one of ``bool``, ``int``, ``float``, ``str`` |
+| `data_type` | `typing.Type[~ConditionType]` | Data type of the condition payload — one of `bool`, `int`, `float`, `str` |
 | `description` | `str` | Description of the condition |
-| `timeout` | `typing.Union[datetime.timedelta, int, float, NoneType]` | Optional timeout as a timedelta or number of seconds. If the condition is not signaled within this duration, ``wait()`` will raise ``flyte.errors.ConditionTimedoutError``. |
-| `webhook` | `typing.Optional[flyte._condition.ConditionWebhook]` | Optional webhook configuration. When provided, the backend will POST to the given URL with the specified payload. The payload may use ``{callback_uri}`` as a template variable — the backend replaces it with the URI that can be used to signal the condition. |
+| `timeout` | `typing.Union[datetime.timedelta, int, float, NoneType]` | Optional timeout as a timedelta or number of seconds. If the condition is not signaled within this duration, `wait()` will raise `flyte.errors.ConditionTimedoutError`. |
+| `webhook` | `typing.Optional[flyte._condition.ConditionWebhook]` | Optional webhook configuration. When provided, the backend will POST to the given URL with the specified payload. The payload may use `{callback_uri}` as a template variable — the backend replaces it with the URI that can be used to signal the condition. |
 
 **Returns:** An instance of _Condition representing the created condition
 
@@ -788,6 +867,7 @@ def run(
 Run a task with the given parameters
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `task` | `TaskTemplate[P, R, F]` | task to run |
@@ -819,6 +899,13 @@ def run_python_script(
     debug: bool = False,
     output_dir: 'Optional[str]' = None,
     include_files: 'Optional[List[str]]' = None,
+    plugin_config: 'Optional[Any]' = None,
+    clustered: bool = False,
+    replicas: 'Optional[int]' = None,
+    nproc_per_node: 'Optional[int]' = None,
+    runtime: 'Optional[TorchRun]' = None,
+    failure_policy: 'Optional[ClusterFailurePolicy]' = None,
+    ttl_seconds_after_finished: 'Optional[int]' = None,
 ) -> 'Run'
 ```
 Package and run a Python script on a remote Flyte cluster.
@@ -831,18 +918,37 @@ so the task can be properly debugged with `debug=True`.
 Project and domain are read from the init config (set via `flyte.init()`
 or `flyte.init_from_config()`), consistent with `flyte.run()`.
 
+```python
+import flyte
+from pathlib import Path
 
+flyte.init(endpoint="my-cluster.example.com")
+
+# With a list of packages (auto-builds image)
+run = flyte.run_python_script(
+    Path("train.py"),
+    gpu=1,
+    gpu_type="A100",
+    memory="64Gi",
+    image=["torch", "transformers"],
+)
+print(run.url)
+
+# With a custom Image object
+img = flyte.Image.from_debian_base(name="my-img").with_pip_packages("numpy")
+run = flyte.run_python_script(Path("analysis.py"), image=img)
+```
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `script` | `pathlib.Path` | Path to the Python script to run. |
-| `cpu` | `int` | Number of CPUs to request (default |
-| `memory` | `str` | Memory to request, e.g. `"16Gi"` (default |
-| `gpu` | `int` | Number of GPUs to request (default |
-| `gpu_type` | `str` | GPU accelerator type Only used when `gpu > 0` (default: `"T4"`). |
-| `image` | `'Union[Image, List[str], None]'` | Container image to use. Accepts either  - A `flyte.Image` object for full control over the image. - A `list[str]` of pip package names to install on top of the default Debian base image (e.g. `["torch", "transformers"]`). - `None` to use a plain Debian base image (default). |
-| `timeout` | `int` | Task timeout in seconds (default |
+| `cpu` | `int` | Number of CPUs to request (default: 4). |
+| `memory` | `str` | Memory to request, e.g. `"16Gi"` (default: `"16Gi"`). |
+| `gpu` | `int` | Number of GPUs to request (default: 0). |
+| `gpu_type` | `str` | GPU accelerator type: `T4`, `A100`, `H100`, `L4`, etc. Only used when `gpu > 0` (default: `"T4"`). |
+| `image` | `'Union[Image, List[str], None]'` | Container image to use. Accepts either: - A `flyte.Image` object for full control over the image. - A `list[str]` of pip package names to install on top of the   default Debian base image (e.g. `["torch", "transformers"]`). - `None` to use a plain Debian base image (default). |
+| `timeout` | `int` | Task timeout in seconds (default: 3600). |
 | `extra_args` | `'Optional[List[str]]'` | Extra arguments passed to the script. |
 | `queue` | `'Optional[str]'` | Flyte queue / cluster override. |
 | `wait` | `bool` | If True, block until execution completes before returning. |
@@ -850,8 +956,18 @@ or `flyte.init_from_config()`), consistent with `flyte.run()`.
 | `debug` | `bool` | If True, run the task as a VS Code debug task, starting a code-server in the container so you can connect via the UI to interactively debug/run the task. |
 | `output_dir` | `'Optional[str]'` | |
 | `include_files` | `'Optional[List[str]]'` | Extra paths or glob patterns to bundle alongside the script. Relative entries anchor at the script's directory; absolute paths pass through unchanged. Example: `["*.py", "configs/settings.yaml"]`. |
+| `plugin_config` | `'Optional[Any]'` | A plugin config instance (e.g. `flyteplugins.ray.RayJobConfig`) that selects and configures the underlying task type the script runs under. Use `flyte.load_plugin_config()` to build one from a YAML file (this is what the `flyte run python-script --plugin-config` CLI flag does under the hood). Mutually exclusive with `clustered=True`, which manages its own plugin config. |
+| `clustered` | `bool` | If True, run the script under a `flyte.clustered.ClusteredTaskEnvironment` (a Kubernetes JobSet) instead of a plain `TaskEnvironment`, for distributed multi-node execution via `torchrun`. Requires `replicas` and `nproc_per_node`. |
+| `replicas` | `'Optional[int]'` | Number of pods (== nodes) in the job set. Required when `clustered=True`. |
+| `nproc_per_node` | `'Optional[int]'` | Number of processes per pod, passed to `torchrun --nproc-per-node`. Required when `clustered=True`. |
+| `runtime` | `'Optional[TorchRun]'` | Launcher configuration for clustered execution, e.g. `flyte.clustered.TorchRun(rdzv_backend="c10d")`. Only used when `clustered=True`; defaults to `TorchRun()`. |
+| `failure_policy` | `'Optional[ClusterFailurePolicy]'` | JobSet-level restart/eviction policy, e.g. `flyte.clustered.ClusterFailurePolicy(max_restarts=2)`. Only used when `clustered=True`; defaults to `ClusterFailurePolicy()`. |
+| `ttl_seconds_after_finished` | `'Optional[int]'` | Seconds to retain the JobSet after completion. Only used when `clustered=True`. |
 
-**Returns:** A `flyte.remote.Run` handle for the remote execution.
+**Returns**
+
+A `flyte.remote.Run` handle for the remote execution.
+
 
 #### serve()
 
@@ -952,6 +1068,8 @@ def with_runcontext(
     preserve_original_types: bool = False,
     debug: bool = False,
     recover: bool | str | None = False,
+    tracked: bool = False,
+    tracked_strict: bool = False,
     recover_force_rerun_actions: Sequence[str] | None = None,
     allow_missing_source_outputs: bool = False,
     _tracker: Any = None,
@@ -995,12 +1113,12 @@ if __name__ == "__main__":
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
 | `raw_data_path` | `str \| None` | Use this path to store the raw data for the run for local and remote, and can be used to store raw data in specific locations. |
 | `run_base_dir` | `str \| None` | Optional The base directory to use for the run. This is used to store the metadata for the run, that is passed between tasks. |
-| `run_start_time` | `Optional[datetime]` | Optional UTC datetime at which the run was triggered. If not provided, defaults to ``datetime.now(timezone.utc)`` at TaskContext construction. Useful for local simulation/tests that need a deterministic timestamp. Accessible inside a task via ``flyte.ctx().run_start_time``. |
+| `run_start_time` | `Optional[datetime]` | Optional UTC datetime at which the run was triggered. If not provided, defaults to `datetime.now(timezone.utc)` at TaskContext construction. Useful for local simulation/tests that need a deterministic timestamp. Accessible inside a task via `flyte.ctx().run_start_time`. |
 | `overwrite_cache` | `bool` | Optional If true, the cache will be overwritten for the run |
 | `project` | `str \| None` | Optional The project to use for the run |
 | `domain` | `str \| None` | Optional The domain to use for the run |
 | `env_vars` | `Dict[str, str] \| None` | Optional Environment variables to set for the run |
-| `labels` | `Dict[str, str] \| None` | Optional user-defined labels to attach to the run as KEY=VALUE pairs, used for filtering and organizing runs (e.g. ``flyte get run --with-label team=ml``) |
+| `labels` | `Dict[str, str] \| None` | Optional user-defined labels to attach to the run as KEY=VALUE pairs, used for filtering and organizing runs (e.g. `flyte get run --with-label team=ml`) |
 | `annotations` | `Dict[str, str] \| None` | Optional Annotations to set for the run |
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
@@ -1009,15 +1127,17 @@ if __name__ == "__main__":
 | `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
-| `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the ``run.max_action_concurrency`` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
+| `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
-| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). ``True`` recovers from the run being rerun — only valid with ``.rerun(...)``; a run-name string recovers from that named run and is the only form valid on ``.run(...)``. Remote-only. Requires a backend (and flyteidl2 build) with RunSpec.relation recovery support; raises NotImplementedError at submit otherwise. |
-| `recover_force_rerun_actions` | `Sequence[str] \| None` | Optional names of actions that must re-execute in the recovery run even if they succeeded in the source run (escape hatch). A listed parent action re-enqueues its children — list them too to force the whole subtree; a listed condition re-pauses for a new signal. Unknown names are ignored. Only valid with ``recover``. |
-| `allow_missing_source_outputs` | `bool` | Opt-in for ``rerun``/recover when the source run's outputs were cleaned up from storage: proceed using the source inputs URI instead of failing. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. |
+| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). `True` recovers from the run being rerun — only valid with `.rerun(...)`; a run-name string recovers from that named run and is the only form valid on `.run(...)`. Remote-only. Requires a backend (and flyteidl2 build) with RunSpec.relation recovery support; raises NotImplementedError at submit otherwise. |
+| `tracked` | `bool` | Local-only. If true, report tracked run state (actions, attempts, outputs, reports) to the Flyte control plane via TrackedRunService so the run shows up in the console. Requires an initialized client and a configured project/domain. Can also be enabled globally with the `local.tracked` config key. Reporting is best-effort and never fails the local run. |
+| `tracked_strict` | `bool` | Local-only, for debugging reporting itself. When true (with `tracked`), the first reporting failure — registration, an artifact upload, a rejected or undeliverable ReportActions update, or a flush timeout — fails the run loudly instead of being logged and swallowed. Can also be enabled globally with the `local.tracked_strict` config key. |
+| `recover_force_rerun_actions` | `Sequence[str] \| None` | Optional names of actions that must re-execute in the recovery run even if they succeeded in the source run (escape hatch). A listed parent action re-enqueues its children — list them too to force the whole subtree; a listed condition re-pauses for a new signal. Unknown names are ignored. Only valid with `recover`. |
+| `allow_missing_source_outputs` | `bool` | Opt-in for `rerun`/recover when the source run's outputs were cleaned up from storage: proceed using the source inputs URI instead of failing. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner
@@ -1103,8 +1223,8 @@ print(f"App URL: {app.url}")
 | `activate_timeout` | `float \| None` | Total timeout in seconds when polling the health-check endpoint during `activate(wait=True)`. Defaults to 60 s. |
 | `health_check_timeout` | `float \| None` | Per-request timeout in seconds for each health-check HTTP request. Defaults to 2 s. |
 | `health_check_interval` | `float \| None` | Interval in seconds between consecutive health-check polls. Defaults to 1 s. |
-| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. ``"/healthz"``). Defaults to ``"/health"``. |
-| `raw_data_path` | `str \| None` | Raw data path for the app. For local serving, sets ctx().raw_data_path so apps can read it. Defaults to ``/tmp/flyte/raw_data`` when mode is local. For remote serving, the backend provides this via the container command. |
+| `health_check_path` | `str \| None` | URL path used for the local health-check probe (e.g. `"/healthz"`). Defaults to `"/health"`. |
+| `raw_data_path` | `str \| None` | Raw data path for the app. For local serving, sets ctx().raw_data_path so apps can read it. Defaults to `/tmp/flyte/raw_data` when mode is local. For remote serving, the backend provides this via the container command. |
 
 **Returns**
 

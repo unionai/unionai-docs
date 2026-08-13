@@ -1,6 +1,6 @@
 ---
 title: AgentTool
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,18 +9,18 @@ layout: py_api
 
 **Package:** `flyte.ai.agents`
 
-A normalized tool descriptor used by `Agent`.
+A normalized tool descriptor used by `flyte.ai.agents.Agent`.
 
-Most users do not construct `AgentTool` directly — pass plain
-callables, ``@flyte.trace`` helpers, or ``@env.task`` templates to
-`Agent` and they will be wrapped automatically. Build one
+Most users do not construct `flyte.ai.agents.AgentTool` directly — pass plain
+callables, `@flyte.trace` helpers, or `@env.task` templates to
+`flyte.ai.agents.Agent` and they will be wrapped automatically. Build one
 explicitly when you need to:
 
 - rename a tool for the LLM,
 - override the description shown to the model,
 - require human approval before execution (HITL),
 - inject a fully custom JSON schema,
-- intercept invocation with a ``call_handler``.
+- intercept invocation with a `call_handler`.
 
 
 ## Parameters
@@ -56,7 +56,7 @@ class AgentTool(
 
 | Method | Description |
 |-|-|
-| [`aio()`](#aio) | Invoke the tool, routing through ``call_handler`` when one is registered. |
+| [`aio()`](#aio) | Invoke the tool, routing through `call_handler` when one is registered. |
 | [`to_openai_format()`](#to_openai_format) | Convert to the OpenAI / litellm tools schema. |
 
 
@@ -68,13 +68,13 @@ def aio(
     **kwargs: Any,
 ) -> Any
 ```
-Invoke the tool, routing through ``call_handler`` when one is registered.
+Invoke the tool, routing through `call_handler` when one is registered.
 
-Mirrors `aio` enough for ``flyte.map`` and
-in-task calls on ``@tool``-wrapped tasks. When a ``call_handler`` is set,
-it runs with `call_llm` and `model` (or their defaults).
-Otherwise, durable ``@env.task`` / remote-task targets delegate to their
-underlying ``.aio``; everything else goes through `execute`.
+Mirrors `flyte._task.TaskTemplate.aio` enough for `flyte.map` and
+in-task calls on `@tool`-wrapped tasks. When a `call_handler` is set,
+it runs with `AgentTool.call_llm` and `AgentTool.model` (or their defaults).
+Otherwise, durable `@env.task` / remote-task targets delegate to their
+underlying `.aio`; everything else goes through `AgentTool.execute`.
 
 
 | Parameter | Type | Description |

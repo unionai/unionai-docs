@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,6 +35,7 @@ def get_link(
 ```
 Returns a task log link given the action.
 Link can have template variables that are replaced by the backend.
+
 
 
 | Parameter | Type | Description |

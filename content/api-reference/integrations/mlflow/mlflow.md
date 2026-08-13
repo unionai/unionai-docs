@@ -1,6 +1,6 @@
 ---
 title: Mlflow
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,11 +13,13 @@ MLflow UI link for Flyte tasks.
 
 Resolves the link URL from one of two sources (in priority order):
 
-1. **Explicit link** — set at definition or override time::
+1. **Explicit link** — set at definition or override time:
 
-       @env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
+```python
+@env.task(links=[Mlflow(link="https://mlflow.example.com/...")])
 
-       task.override(links=[Mlflow(link="https://...")])()
+task.override(links=[Mlflow(link="https://...")])()
+```
 
 2. **Context link** — auto-generated from `link_host` (and optional
    `link_template`) set via `mlflow_config()`. Propagates to child
@@ -65,6 +67,7 @@ def get_link(
 ```
 Returns a task log link given the action.
 Link can have template variables that are replaced by the backend.
+
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -17,6 +17,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `artifact` | [`create`](#flyte-create-artifact), [`get`](#flyte-get-artifact)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
@@ -39,12 +40,12 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `create` | [`artifact`](#flyte-create-artifact), [`config`](#flyte-create-config), [`project`](#flyte-create-project), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
 | `delete` | [`app`](#flyte-delete-app), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -65,6 +66,7 @@ This is the command line interface for Flyte.
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
+| `artifact` | [`create`](#flyte-create-artifact), [`get`](#flyte-get-artifact)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
 | `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster), [`undelete⁺`](#flyte-undelete-cluster), [`update⁺`](#flyte-update-cluster)  |
 | `cluster-pool` | [`create⁺`](#flyte-create-cluster-pool), [`delete⁺`](#flyte-delete-cluster-pool), [`get⁺`](#flyte-get-cluster-pool), [`undelete⁺`](#flyte-undelete-cluster-pool), [`update⁺`](#flyte-update-cluster-pool)  |
@@ -96,13 +98,13 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`queue⁺`](#flyte-delete-queue), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -297,6 +299,40 @@ $ flyte create api-key --name ci-pipeline --no-default-policies
 {{< /markdown >}}
 {{< /variant >}}
 
+#### flyte create artifact
+
+**`flyte create artifact [OPTIONS] NAME`**
+
+Publish an artifact from the local machine.
+
+The file is uploaded to blob storage and stored in the artifact service as a
+File artifact. Primitive values (strings, numbers) are not allowed as
+artifacts: an artifact is an addressable asset, not a scalar.
+
+
+Example usage:
+
+```bash
+flyte create artifact my_model --from-file model.pt --kind model --attr framework=torch
+flyte create artifact llama3 --from-file weights.bin --external-ref hf://meta-llama/Meta-Llama-3-8B
+flyte create artifact my_model --from-file model.pt --card model_card.html --card-type model
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--from-file` | `path` | `Sentinel.UNSET` | Publish a local file as a File artifact (contents upload to blob storage). |
+| `--version` | `text` |  | Version to publish. Defaults to a random version. |
+| `--description` | `text` |  | Human readable description. |
+| `--attr` | `text` | `Sentinel.UNSET` | Free-form user metadata as key=value pairs. Can be specified multiple times. |
+| `--kind` | `choice` |  | What the artifact is. Recorded under the reserved 'flyte.io/kind' attr. Distinct from --card-type, which controls how an attached card renders. |
+| `--external-ref` | `text` |  | Opaque reference into an external system (a URI, model id, ...) recorded as the artifact's source. |
+| `--card` | `file` |  | Local card file (HTML by default) to upload and attach to the artifact for display in the UI. |
+| `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or 'html' when it has none. |
+| `--card-type` | `choice` | `generic` | Kind of card being attached. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 {{< variant union >}}
 {{< markdown >}}
 #### flyte create assignment
@@ -408,6 +444,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `--registry` | `text` |  | Container registry to use as the base registry when building images (e.g. 'ghcr.io/my-org'). When set, this overrides the built-in default base registry. Equivalent to the 'image.registry' config entry or the FLYTE_IMAGE_REGISTRY environment variable. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via 'flyte start tui'. |
+| `--local-tracked` | `boolean` | `False` | Report local run state to the Flyte control plane so local runs show up in the console. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -1117,19 +1154,19 @@ flyte deploy hello.py --help
 
 Edit hierarchical settings interactively — or apply a YAML file directly.
 
-**Interactive mode** (default). Opens settings in your ``$EDITOR``. Three
+**Interactive mode** (default). Opens settings in your `$EDITOR`. Three
 comment tiers appear:
 
-- ``###`` section headers and the scope line
-- ``##`` per-field descriptions and inline metadata
-- ``#`` inactive settings (uncomment the single ``#`` to activate)
+- `###` section headers and the scope line
+- `##` per-field descriptions and inline metadata
+- `#` inactive settings (uncomment the single `#` to activate)
 
 If the edited YAML fails to parse, the editor reopens with an error
 header so you can fix the syntax without losing your edits. If you
 decline to reopen — or if the server rejects the update — your buffer
-is saved under ``~/.flyte/settings-edit-<timestamp>.yaml``.
+is saved under `~/.flyte/settings-edit-<timestamp>.yaml`.
 
-**Non-interactive mode**: pass ``--from-file <path>`` to skip the editor
+**Non-interactive mode**: pass `--from-file <path>` to skip the editor
 entirely. The file's contents are parsed, the diff is printed, and the
 overrides are applied without a confirmation prompt. Ideal for
 CI/automation.
@@ -1306,6 +1343,38 @@ Apps are long-running services deployed on the Flyte platform.
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+#### flyte get artifact
+
+**`flyte get artifact [OPTIONS] [NAME] [VERSION]`**
+
+Get artifacts: names, versions of a name, or one version's details.
+
+
+Example usage:
+
+```bash
+flyte get artifact                       # distinct artifact names (latest info + version count)
+flyte get artifact my_artifact           # every version of my_artifact, newest first
+flyte get artifact my_artifact 1.0       # details of a pinned version
+flyte get artifact --search model        # names containing "model"
+flyte get artifact --source-run my_run   # versions produced by a run
+flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of results to fetch when listing. |
+| `--search` | `text` |  | Substring match on the artifact name when listing names. |
+| `--created-after` | `datetime` |  | Show versions created at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--source-run` | `text` |  | Only artifact versions produced by this run. |
+| `--source-action` | `text` |  | Only artifact versions produced by this action; usually combined with --source-run. |
+| `--source-external-ref` | `text` |  | Only artifact versions imported from this external reference. |
+| `--kind` | `choice` |  | Only artifacts of this kind. Shorthand for --attr on the reserved kind key. |
+| `--attr` | `text` | `Sentinel.UNSET` | Only artifacts whose attrs match, as key=value. Repeatable; separate keys must all match. Filtering happens server-side. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 {{< variant union >}}
 {{< markdown >}}
 #### flyte get assignment
@@ -1411,7 +1480,7 @@ List conditions (paused condition actions) for a run, optionally filtered to a
 specific parent action.
 
 Each condition corresponds to a condition action registered via
-``flyte.new_condition(...)`` from a workflow. Use ``flyte signal condition`` to
+`flyte.new_condition(...)` from a workflow. Use `flyte signal condition` to
 resolve one.
 
 | Option | Type | Default | Description |
@@ -1870,10 +1939,10 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 Re-run an existing run RUN_NAME with its original code and inputs.
 
 Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
-new run that returns the same way ``flyte run`` does. ``--recover`` reuses the prior run's
-succeeded actions (re-running only what failed or changed); ``--force-rerun-action`` forces
+new run that returns the same way `flyte run` does. `--recover` reuses the prior run's
+succeeded actions (re-running only what failed or changed); `--force-rerun-action` forces
 named actions to re-execute anyway. To re-run with *new* local code (reusing the prior run's
-inputs), use ``flyte run <file> <task> --rerun-from <run>``.
+inputs), use `flyte run <file> <task> --rerun-from <run>`.
 
 Examples:
 
@@ -2003,6 +2072,8 @@ flyte run hello.py my_task --help
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
+| `--tracked` | `boolean` | `False` | Run the task locally (implies --local) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
+| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with --tracked): any reporting failure fails the run loudly instead of being logged and swallowed. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
@@ -2054,13 +2125,13 @@ flyte serve --local examples/apps/single_script_fastapi.py env
 
 Arguments to the serve command are provided right after the `serve` command and before the file name.
 
-To follow the logs of the served app, use the `--follow` flag:
+To follow the logs of the served app, use the `--follow` flag. After the app is
+deployed and active, its logs are streamed to the terminal. Press Ctrl+C to stop
+following; the app keeps running.
 
 ```bash
 flyte serve --follow examples/apps/basic_app.py app_env
 ```
-
-Note: Log streaming is not yet fully implemented and will be added in a future release.
 
 You can provide image mappings with `--image` flag. This allows you to specify
 the image URI for the app environment during CLI execution without changing
@@ -2131,7 +2202,7 @@ Signal a paused condition action.
 The condition's declared payload type and prompt are read from the
 backend. If VALUE is omitted the condition's prompt is displayed and a
 typed interactive prompt is shown to collect the payload. When VALUE is
-provided it's coerced to the expected type (``true``/``false`` for bool,
+provided it's coerced to the expected type (`true`/`false` for bool,
 integer literals for int, decimal literals for float, any string for str).
 
 | Option | Type | Default | Description |
@@ -2163,22 +2234,22 @@ Start a local Flyte devbox cluster.
 
 **`flyte start tui [OPTIONS]`**
 
-Launch the Flyte TUI. Install with ``pip install flyte[tui]``.
+Launch the Flyte TUI. Install with `pip install flyte[tui]`.
 
 The mode is chosen from the resolved config:
 
 * Remote (config has an endpoint, or FLYTE_API_KEY is set): browse a remote
   Flyte v2 cluster — projects, runs, actions, logs, tasks, apps, and triggers.
-  ``flyte start tui --config remote.yaml``
+  `flyte start tui --config remote.yaml`
 * Local (no endpoint): explore past local runs recorded with persistence.
-  ``flyte start tui --config local.yaml``
+  `flyte start tui --config local.yaml`
 
 Local persistence can be enabled in 2 ways:
 
 1. In the config, to record every local run:
-   ``flyte create config --endpoint ... --local-persistence``
-2. Via ``flyte.init(local_persistence=True)``, recording ``flyte.run`` runs
-   that are local and within the active ``flyte.init``.
+   `flyte create config --endpoint ... --local-persistence`
+2. Via `flyte.init(local_persistence=True)`, recording `flyte.run` runs
+   that are local and within the active `flyte.init`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

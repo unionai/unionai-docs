@@ -1,6 +1,6 @@
 ---
 title: MLflow
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -268,13 +268,14 @@ Handles both manual logging and autologging. For autologging, pass
 `autolog=True` and optionally `framework` to select a specific
 framework (e.g. `"sklearn"`).
 
-Decorator Order:
-    @mlflow_run must be the outermost decorator::
+Decorator order: `@mlflow_run` must be the outermost decorator:
 
-        @mlflow_run
-        @env.task
-        async def my_task():
-            ...
+```python
+@mlflow_run
+@env.task
+async def my_task():
+    ...
+```
 
 
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flyte.app
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,6 +15,7 @@ layout: py_api
 |-|-|
 | [`AppEndpoint`](../flyte.app/appendpoint) | Embed an upstream app's endpoint as an app parameter. |
 | [`AppEnvironment`](../flyte.app/appenvironment) | Configure a long-running app environment for APIs, dashboards, or model servers. |
+| [`ArtifactValue`](../flyte.app/artifactvalue) | Use a published artifact as an app parameter value. |
 | [`ConnectorEnvironment`](../flyte.app/connectorenvironment) | Configure a connector environment for custom Flyte connectors. |
 | [`DeployedAppEnvironment`](../flyte.app/deployedappenvironment) |  |
 | [`Domain`](../flyte.app/domain) | Subdomain to use for the domain. |

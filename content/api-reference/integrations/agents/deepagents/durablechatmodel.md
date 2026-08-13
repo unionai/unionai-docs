@@ -1,6 +1,6 @@
 ---
 title: DurableChatModel
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,12 +9,12 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.deepagents`
 
-Wrap a ``BaseChatModel`` so each model turn is durable and replayable.
+Wrap a `BaseChatModel` so each model turn is durable and replayable.
 
-``_agenerate`` (async) delegates to the inner model and records the turn via
-``durable_step``. Pass an instance as the deep agent's model —
-``create_deep_agent(model=DurableChatModel(inner=model), ...)`` — or as a
-subagent's ``model``; ``bind_tools`` and other capabilities are delegated to
+`_agenerate` (async) delegates to the inner model and records the turn via
+`durable_step`. Pass an instance as the deep agent's model —
+`create_deep_agent(model=DurableChatModel(inner=model), ...)` — or as a
+subagent's `model`; `bind_tools` and other capabilities are delegated to
 the inner model so tool-calling behaves exactly as the inner model does.
 
 Durability is best-effort: if anything in the durable path raises, the turn
@@ -74,7 +74,7 @@ def bind_tools(
 Format tools via the inner model, but bind them to *this* wrapper.
 
 The inner model knows how to convert tools into its provider format; we
-reuse that, then re-bind the resulting kwargs to ``self`` so the runnable
+reuse that, then re-bind the resulting kwargs to `self` so the runnable
 the deep agent invokes still routes generation through the durable
 override (rather than the inner model directly).
 
