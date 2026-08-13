@@ -64,6 +64,20 @@ file has to be complete. A partial file leaves co-pilot with no credentials rath
 falling back to the rest.
 {{< /note >}}
 
+Storage settings you add through `configuration.inline` are merged into this Secret as
+well, so co-pilot and the Flyte binary always talk to the same object store. This
+matters for settings that have no dedicated value in `configuration.storage`, a session
+token for example:
+
+```yaml
+configuration:
+  inline:
+    storage:
+      stow:
+        config:
+          session_token: "<session-token>"
+```
+
 ### When the chart does not create it
 
 The chart only renders the Secret when it can fill in a complete configuration:
@@ -182,6 +196,10 @@ kubectl get pod <task-pod> -n flyte -o yaml | grep -i secret_key
 - **Co-pilot fails to authenticate to the object store.** The mounted file is
   incomplete. Co-pilot takes the stow configuration all-or-nothing, so the file needs
   the endpoint and credentials, not just some of them.
+- **Co-pilot reaches a different object store than the rest of Flyte.** You are supplying
+  your own Secret, and it has drifted from the deployment's storage settings. Settings
+  from `configuration.storage` and `configuration.inline` are merged only into the
+  Secret the chart renders itself.
 - **Storage credentials still appear in task pod specs.** No Secret is configured, so
   co-pilot is using the command-line fallback. With external configuration, check that
   you set `plugins.k8s.co-pilot.storage-config-secret-name` yourself.
