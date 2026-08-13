@@ -66,12 +66,12 @@ This is the command line interface for Flyte.
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
-| `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster)  |
-| `cluster-pool` | [`create⁺`](#flyte-create-cluster-pool), [`delete⁺`](#flyte-delete-cluster-pool), [`get⁺`](#flyte-get-cluster-pool), [`update⁺`](#flyte-update-cluster-pool)  |
+| `cluster` | [`create⁺`](#flyte-create-cluster), [`delete⁺`](#flyte-delete-cluster), [`get⁺`](#flyte-get-cluster), [`undelete⁺`](#flyte-undelete-cluster), [`update⁺`](#flyte-update-cluster)  |
+| `cluster-pool` | [`create⁺`](#flyte-create-cluster-pool), [`delete⁺`](#flyte-delete-cluster-pool), [`get⁺`](#flyte-get-cluster-pool), [`undelete⁺`](#flyte-undelete-cluster-pool), [`update⁺`](#flyte-update-cluster-pool)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `policy` | [`create⁺`](#flyte-create-policy), [`delete⁺`](#flyte-delete-policy), [`get⁺`](#flyte-get-policy), [`update⁺`](#flyte-update-policy)  |
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
-| `queue` | [`create⁺`](#flyte-create-queue), [`get⁺`](#flyte-get-queue), [`update⁺`](#flyte-update-queue)  |
+| `queue` | [`create⁺`](#flyte-create-queue), [`delete⁺`](#flyte-delete-queue), [`get⁺`](#flyte-get-queue), [`undelete⁺`](#flyte-undelete-queue), [`update⁺`](#flyte-update-queue)  |
 | `role` | [`create⁺`](#flyte-create-role), [`delete⁺`](#flyte-delete-role), [`get⁺`](#flyte-get-role), [`update⁺`](#flyte-update-role)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
@@ -97,7 +97,7 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
-| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`queue⁺`](#flyte-delete-queue), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
@@ -110,7 +110,8 @@ This is the command line interface for Flyte.
 | `signal` | [`condition`](#flyte-signal-condition)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
-| `update` | [`app`](#flyte-update-app), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| `undelete⁺` | [`cluster⁺`](#flyte-undelete-cluster), [`cluster-pool⁺`](#flyte-undelete-cluster-pool), [`queue⁺`](#flyte-undelete-queue)  |
+| `update` | [`app`](#flyte-update-app), [`cluster⁺`](#flyte-update-cluster), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
@@ -336,6 +337,14 @@ $ flyte --org my-org create assignment --email jane@example.com --policy admin
 
 Register a new cluster.
 
+The cluster also gets an implicit queue of the same name, in the same pool,
+routing to it and nothing else. The cluster owns that name: `flyte create
+queue` is rejected for it, and the queue's clusters/pool can no longer be
+edited directly. The name 'default' is reserved and cannot be used.
+
+Without --pool the cluster joins the pool named 'default', which is created
+on demand; any other pool must already exist.
+
 Examples:
 
 ```bash
@@ -488,7 +497,7 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
-| `--cluster-pool` | `text` |  | Cluster pool to bind the queue to (defaults to the org's default pool). Cannot be changed later. |
+| `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
 | `--project` | `text` | `` | Scope queue to a project |
 | `--domain` | `text` | `` | Scope queue to a domain |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -773,9 +782,21 @@ $ flyte --org my-org delete assignment --email jane@example.com --policy admin
 
 Delete a cluster.
 
+The delete is a soft delete: the cluster stops being routed to and drops out
+of `flyte get cluster`, but it keeps its name reserved — creating a cluster
+with the same name is rejected until it is restored with
+`flyte undelete cluster`.
+
+The cluster's co-named implicit queue is deleted with it, so that queue must
+be drained first (or have been deleted on its own already). Any other live
+queue that pins this cluster blocks the delete and has to be unpinned first;
+already-deleted queues do not block it.
+
 Examples:
 
 ```bash
+$ flyte update queue my-cluster --drain    # wait for status 'drained'
+
 $ flyte delete cluster my-cluster
 
 $ flyte delete cluster my-cluster --yes
@@ -797,6 +818,15 @@ $ flyte delete cluster my-cluster --yes
 **`flyte delete cluster-pool [OPTIONS] NAME`**
 
 Delete a cluster pool.
+
+The delete is a soft delete: the pool drops out of `flyte get cluster-pool`
+and can no longer be assigned to clusters or queues, but it keeps its name
+reserved — creating a pool with the same name is rejected until it is
+restored with `flyte undelete cluster-pool`.
+
+The pool must be empty: no member clusters and no live queues assigned to it.
+Queues that are themselves deleted do not block it, but they can only be
+undeleted once the pool is. The reserved 'default' pool cannot be deleted.
 
 Examples:
 
@@ -852,6 +882,42 @@ $ flyte --org my-org delete policy my-policy --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte delete queue
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte delete queue [OPTIONS] NAME`**
+
+Delete a queue.
+
+The delete is a soft delete: the queue stops being scheduled on and drops out
+of `flyte get queue`, but it keeps its name reserved — creating a queue with
+the same name is rejected until it is restored with `flyte undelete queue`.
+
+The queue must already be drained, so drain it first and wait for its status
+to reach 'drained'. The reserved 'default' queue cannot be deleted.
+
+Examples:
+
+```bash
+$ flyte update queue my-queue --drain    # wait for status 'drained'
+
+$ flyte delete queue my-queue
+
+$ flyte delete queue my-queue --yes
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--project` | `text` | `` | Scope to a project |
+| `--domain` | `text` | `` | Scope to a domain |
 | `--yes` | `boolean` | `False` | Skip confirmation prompt |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
@@ -1283,17 +1349,23 @@ Get a cluster or list all clusters.
 If NAME is provided, fetch that specific cluster and render a detailed view.
 Otherwise list all clusters.
 
+Deleted clusters are hidden by default; --deleted lists them instead, which
+is how you find a cluster to pass to `flyte undelete cluster`.
+
 Examples:
 
 ```bash
 $ flyte get cluster
 
 $ flyte get cluster my-cluster
+
+$ flyte get cluster --deleted
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of clusters to return. |
+| `--deleted` | `boolean` | `False` | List only soft-deleted clusters (candidates for 'flyte undelete cluster'). Cannot be combined with NAME. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -1310,17 +1382,23 @@ Get or list cluster pools.
 
 If NAME is provided, gets a specific pool. Otherwise, lists all pools.
 
+Deleted pools are hidden by default; --deleted lists them instead, which is
+how you find a pool to pass to `flyte undelete cluster-pool`.
+
 Examples:
 
 ```bash
 $ flyte get cluster-pool
 
 $ flyte get cluster-pool my-pool
+
+$ flyte get cluster-pool --deleted
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of cluster pools to list |
+| `--deleted` | `boolean` | `False` | List only soft-deleted cluster pools (candidates for 'flyte undelete cluster-pool'). Cannot be combined with NAME. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -1485,6 +1563,12 @@ If NAME is provided, fetch that specific queue with its current metrics.
 Use --watch to stream live metrics with progress bars.
 Otherwise list all queues.
 
+Deleted queues are hidden by default; --deleted lists them instead, which is
+how you find a queue to pass to `flyte undelete queue`.
+
+--state narrows the listing to queues in one state (active, draining or
+drained); the server does the filtering.
+
 Examples:
 
 ```bash
@@ -1493,6 +1577,10 @@ $ flyte get queue
 $ flyte get queue my-queue
 
 $ flyte get queue my-queue --watch
+
+$ flyte get queue --state active
+
+$ flyte get queue --deleted
 ```
 
 | Option | Type | Default | Description |
@@ -1501,6 +1589,8 @@ $ flyte get queue my-queue --watch
 | `--domain` | `text` | `` | Scope to a domain |
 | `--limit` | `integer` | `100` | Maximum number of queues to return |
 | `--watch` | `boolean` | `False` | Stream live queue metrics (requires NAME) |
+| `--deleted` | `boolean` | `False` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
+| `--state` | `choice` |  | List only queues in this state. Cannot be combined with NAME. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -2108,6 +2198,119 @@ Stop various Flyte services.
 
 Pause the local Flyte devbox cluster without removing it.
 
+{{< variant union >}}
+{{< markdown >}}
+### flyte undelete
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte undelete COMMAND [ARGS]...`**
+
+Restore soft-deleted objects.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte undelete cluster
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte undelete cluster NAME`**
+
+Restore a soft-deleted cluster.
+
+The cluster comes back with the spec, status and pool it had when it was
+deleted, and its co-named implicit queue is restored in the 'drained' state —
+activate it to let the cluster accept work again. That holds even if the
+queue had been deleted on its own earlier: undeleting the cluster is the only
+way to bring it back, since `flyte undelete queue` refuses a queue whose
+cluster is gone. List the clusters eligible for this with
+`flyte get cluster --deleted`.
+
+The cluster's pool must not itself be deleted; undelete the pool first.
+
+Examples:
+
+```bash
+$ flyte get cluster --deleted
+
+$ flyte undelete cluster my-cluster
+
+$ flyte update queue my-cluster --activate
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte undelete cluster-pool
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte undelete cluster-pool NAME`**
+
+Restore a soft-deleted cluster pool.
+
+The pool comes back with the config it had when it was deleted. Queues and
+clusters that were deleted while assigned to it stay deleted and can now be
+undeleted too. List the pools eligible for this with
+`flyte get cluster-pool --deleted`.
+
+Examples:
+
+```bash
+$ flyte get cluster-pool --deleted
+
+$ flyte undelete cluster-pool my-pool
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte undelete queue
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte undelete queue [OPTIONS] NAME`**
+
+Restore a soft-deleted queue.
+
+The queue comes back with the configuration it had when it was deleted, in
+the 'drained' state — activate it to let it accept work again. List the
+queues eligible for this with `flyte get queue --deleted`.
+
+Every cluster the queue routes to must be live and in its pool, and the pool
+must be live too. A cluster's co-named queue therefore cannot be restored on
+its own — `flyte undelete cluster NAME` brings it back with the cluster.
+
+Examples:
+
+```bash
+$ flyte get queue --deleted
+
+$ flyte undelete queue my-queue
+
+$ flyte update queue my-queue --activate
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--project` | `text` | `` | Scope to a project |
+| `--domain` | `text` | `` | Scope to a domain |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte update
 
 **`flyte update COMMAND [ARGS]...`**
@@ -2134,6 +2337,42 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte update cluster
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte update cluster [OPTIONS] NAME`**
+
+Move a cluster to a different cluster pool.
+
+That is the only thing this command changes — everything else about a cluster
+is fixed at creation or reported by its dataplane.
+
+The target pool must already exist, be live, and differ from the cluster's
+current one. The cluster's co-named implicit queue moves along with it, so
+that queue must be drained first. Any other live queue pinning this cluster
+blocks the move and has to be unpinned; already-deleted ones don't block it.
+
+Examples:
+
+```bash
+$ flyte update queue my-cluster --drain    # wait for status 'drained'
+
+$ flyte update cluster my-cluster --pool my-pool
+
+$ flyte update queue my-cluster --activate
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--pool` | `text` | `` | Cluster pool to move the cluster to. |
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}
@@ -2221,7 +2460,10 @@ Update a queue.
 
 Use --drain to begin draining (stops new submissions).
 Use --activate to re-activate a draining or drained queue.
-Use --edit to interactively modify queue configuration.
+Use --edit to interactively modify queue configuration, including moving
+the queue to a different cluster pool. A pool move is only accepted once the
+queue is fully drained, so --drain it first and wait for its status to reach
+'drained'; --activate it again after the move.
 
 Examples:
 
@@ -2231,6 +2473,15 @@ $ flyte update queue my-queue --drain
 $ flyte update queue my-queue --activate
 
 $ flyte update queue my-queue --edit
+```
+Moving a queue to another cluster pool:
+
+```bash
+$ flyte update queue my-queue --drain     # wait for status 'drained'
+
+$ flyte update queue my-queue --edit      # set cluster_pool: other-pool
+
+$ flyte update queue my-queue --activate
 ```
 
 | Option | Type | Default | Description |

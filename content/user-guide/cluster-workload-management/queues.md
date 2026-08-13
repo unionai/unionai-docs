@@ -23,9 +23,9 @@ CLI or Python. For how workflow authors *target* a queue from task code, see
 ## How a queue routes
 
 A queue lives inside one **cluster pool** and routes work to one or more clusters
-*within that pool*. By default (the `*` selector) it spreads across every healthy
-cluster in the pool; you can also pin it to specific clusters. It can never reach a
-cluster in another pool: pools are isolation boundaries.
+*within that pool*. By default (the `*` selector) it spreads across the pool's
+healthy, enabled clusters; you can also pin it to specific clusters. It can never
+reach a cluster in another pool: pools are isolation boundaries.
 
 ```mermaid
 flowchart TD
@@ -59,25 +59,71 @@ flowchart TD
 Users submit to a **queue**, never to a pool or a cluster directly. Each queue sits
 inside exactly one pool:
 
-- **`default`** spreads across all clusters in the `default` pool.
-- **`prod-queue`** spreads across all clusters in the `prod` pool.
+- **`default`** spreads across the eligible clusters in the `default` pool.
+- **`prod-queue`** spreads across the eligible clusters in the `prod` pool.
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
-The selector (which clusters within the pool) is mutable. The pool a queue lives
-in is **fixed at creation**: an update that changes it is rejected, because
-moving a queue to another pool would cross an isolation boundary. To move
-workloads to another pool, see [Move work to another pool](#move-work-to-another-pool).
+> [!NOTE] Routing skips unhealthy and disabled clusters
+> A `*` selector does not mean *every* cluster in the pool — it means every
+> cluster that is both **healthy** and **enabled**, evaluated against the pool's
+> current state. Pinned selectors are filtered the same way: an unhealthy or
+> disabled cluster receives no new work from *any* queue, wildcard or pinned.
+> Say a pool holds two clusters and the second goes unhealthy for any reason,
+> including a
+> [config mismatch with the pool](./cluster-pools#how-a-pools-config-is-enforced):
+> the queue routes new runs and actions to the first cluster only, and sends
+> nothing to the second until it becomes healthy again. This governs the placement
+> of new work; it does not move work that has already been dispatched. Check with
+> `flyte get cluster <name>`, which reports each cluster's state, health, and
+> unhealthy reasons.
 
-> [!NOTE] Queue scope
-> Queues are currently organization-scoped. Some CLI and Python surfaces expose
-> `project` and `domain` parameters for future scoped queues, but current
-> deployments reject project/domain-scoped queue creation.
+### Queues you get for free
+
+You don't have to create a queue to have one. Two exist without any action on
+your part:
+
+- The org-wide **`default`** queue, in the `default` pool with the `*` selector.
+  Anything that doesn't explicitly target a queue goes here. (If the `default`
+  queue is [drained](#drain-and-reactivate-a-queue), untargeted submissions are
+  rejected until it is reactivated.)
+- A **co-named queue** for every cluster: registering a cluster creates a queue
+  with the *same name as the cluster*, in that cluster's pool, whose selector
+  names that one cluster explicitly rather than using `*`. Register
+  `prod-us-east-1` and you get a `prod-us-east-1` queue that routes only to
+  `prod-us-east-1` — so any cluster can be targeted by name immediately, without
+  setting up a queue for it. See
+  [The co-named queue](./clusters#the-co-named-queue).
+
+Both are ordinary queues: they show up in `flyte get queue` and take the same
+settings and updates as queues you create yourself — with one exception. A
+co-named queue's cluster selector and pool are managed by its cluster and cannot
+be edited directly: the queue follows its cluster if the cluster is
+[reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool), and
+is deleted with it. Its other settings (concurrency, depth, priority, fairness)
+stay editable like any queue's. Listings make the distinction visible:
+cluster-managed queues are flagged in the `flyte get queue` table
+(`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
+`flyte update queue --edit` says so at the top of the edit buffer.
+
+The selector (which clusters within the pool) is mutable and can be changed at
+any time. The pool a queue lives in can only change once the queue is fully
+**drained**: a pool move on an `active` or `draining` queue is rejected, because
+moving a queue that still holds work would cross an isolation boundary. See
+[Move work to another pool](#move-work-to-another-pool).
+
+> [!NOTE] Queues are organization-scoped
+> Every queue is visible to the whole organization; a queue cannot yet be scoped
+> to a project or a domain. Some CLI and Python surfaces already expose `project`
+> and `domain` parameters, but project/domain-scoped queue creation is not
+> implemented yet and is rejected. Support is coming soon.
 
 ## Create a queue
 
 `run_concurrency` and `action_concurrency` are required; everything else has a
 sensible default. With no cluster selector, a queue spreads work across **all**
-healthy clusters in its pool.
+healthy clusters in its pool. The name `default` is reserved, and a queue cannot
+share a name with a cluster — every cluster already owns its
+[co-named queue](./clusters#the-co-named-queue).
 
 {{< tabs "create-queue" >}}
 {{< tab "CLI" >}}
@@ -176,7 +222,9 @@ default.
   pool.
 - **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
   Omit to use all clusters in the pool. In the API, `["*"]` means all enabled and
-  healthy clusters in the pool, and `*` must be the only entry if used.
+  healthy clusters in the pool (see
+  [Wildcard routing](#how-a-queue-routes)), and `*` must be the only entry if
+  used.
 - **`run_concurrency` / `--run-concurrency`**: maximum number of *runs* active on
   the queue at once. Children of an active run aren't counted; use this to stop a
   job from overlapping with a previous invocation of itself. `0` means no limit.
@@ -203,11 +251,17 @@ default.
 # List all queues
 flyte get queue
 
+# List only queues in a given state: active, draining, or drained
+flyte get queue --state active
+
 # Inspect one queue's settings and status
 flyte get queue gpu-queue
 
 # Stream live metrics — runs in-flight, actions in-flight, queue depth
 flyte get queue gpu-queue --watch
+
+# List soft-deleted queues
+flyte get queue --deleted
 ```
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
@@ -223,6 +277,10 @@ from flyteplugins.union.remote import Queue
 
 for queue in Queue.listall(limit=100):
     print(queue.name, queue.status, queue.priority, queue.cluster_pool, queue.clusters)
+
+# Narrow the listing to one state: "active", "draining", or "drained"
+for queue in Queue.listall(state="draining"):
+    print(queue.name)
 
 queue = Queue.get("gpu-queue")
 print(queue.to_dict())
@@ -315,6 +373,13 @@ Changing the **cluster selector within the same pool** (which clusters the queue
 pins to) takes effect immediately because every cluster in the pool shares the
 same data plane.
 
+Changing the queue's **pool** (`cluster_pool` in the YAML or Python) is allowed
+only when the queue is [drained](#drain-and-reactivate-a-queue), the destination
+pool exists, and every cluster in the queue's selector is a member of the
+destination pool — see [Move work to another pool](#move-work-to-another-pool).
+A cluster's [co-named queue](./clusters#the-co-named-queue) rejects selector and
+pool changes entirely: those are managed by its cluster.
+
 ## Drain and reactivate a queue
 
 **Draining** takes a queue out of rotation without losing in-flight work: the
@@ -331,10 +396,6 @@ active --[drain]--> draining --[in-flight work completes]--> drained
   ^                    |                                        |
   +----[activate]------+----------------[activate]-------------+
 ```
-
-> [!WARNING] Draining is not yet available
-> The drain operation is currently disabled: the control plane rejects drain
-> requests. Support is coming in a future release.
 
 {{< tabs "drain-queue" >}}
 {{< tab "CLI" >}}
@@ -361,25 +422,96 @@ Queue.activate("gpu-queue")  # put the queue back in rotation
 {{< /tab >}}
 {{< /tabs >}}
 
-The `default` queue is always active; its state cannot be changed. Note also
-that queues cannot be deleted: draining is how a queue is retired, and an idle
-queue costs nothing.
+To see where things stand across the organization, filter listings by state:
+`flyte get queue --state draining` shows the queues still finishing in-flight
+work, and `--state drained` the ones that are done.
+
+Draining is the prerequisite for every disruptive queue operation: a queue must
+be `drained` before it can be [deleted](#delete-a-queue) or
+[moved to another pool](#move-work-to-another-pool), and a cluster's
+[co-named queue](./clusters#the-co-named-queue) must be `drained` before its
+cluster can be [deleted](./clusters#delete-a-cluster) or
+[moved](./clusters#move-a-cluster-to-a-different-pool).
+
+The `default` queue can be drained like any other — since it cannot be deleted,
+draining is how you stop scheduling on it. One guard applies to any queue: a
+queue configured as the default run queue (`run.default_queue`) in your
+organization's settings cannot be drained until that setting points elsewhere.
+
+## Delete a queue
+
+A queue must be **drained** before it can be deleted; deleting an `active` or
+`draining` queue is rejected. The `default` queue cannot be deleted — drain it
+instead. A cluster's [co-named queue](./clusters#the-co-named-queue) can be
+deleted on its own while the cluster lives, and is deleted automatically when
+its [cluster is deleted](./clusters#delete-a-cluster).
+
+{{< tabs "delete-queue" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte delete queue gpu-queue
+flyte delete queue gpu-queue --yes   # skip the confirmation prompt
+
+# List deleted queues, restore one
+flyte get queue --deleted
+flyte undelete queue gpu-queue
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+from flyteplugins.union.remote import Queue
+
+Queue.delete("gpu-queue")
+Queue.undelete("gpu-queue")   # restore a deleted queue
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+Deletion is a **soft delete**: the queue disappears from `flyte get queue`, but
+its name stays reserved and it can be restored with `flyte undelete queue
+<name>`. Undeleting requires the queue's pool and its pinned clusters to still
+be live, and the restored queue comes back `drained` —
+[reactivate it](#drain-and-reactivate-a-queue) to resume routing.
 
 ## Move work to another pool
 
 Moving work to a different **pool** crosses an isolation boundary. In-flight runs
 have already landed their data, containers, code, and secrets in the old pool's
-data plane, and a different pool's clusters cannot read them. So a queue can
-never change pools in place; moving work is a drain-and-replace migration:
+data plane, and a different pool's clusters cannot read them. So work in flight
+never moves: the migration is always drain-first, in one of two shapes.
+
+**Move the queue itself.** A queue can change pools once it holds no work:
+
+1. [Drain](#drain-and-reactivate-a-queue) the queue and wait for it to reach the
+   `drained` state.
+2. Update the queue's pool — `flyte update queue <name> --edit` and change
+   `cluster_pool` in the YAML, or `Queue.update(name, cluster_pool=...)` — and
+   set its cluster selector to clusters that are members of the destination pool
+   (or `*`).
+3. [Reactivate](#drain-and-reactivate-a-queue) the queue.
+
+Anything targeting the queue by name follows it to the new pool. New submissions
+made while it is drained are rejected, so coordinate the window with the queue's
+users.
+
+**Replace the queue.** Alternatively, keep the old queue's pool binding and
+shift traffic over:
 
 1. Create a new queue in the destination pool.
 2. Update workflows, launch plans, triggers, or run overrides to target the new
    queue.
-3. Let in-flight work finish on the old queue. Once
-   [draining](#drain-and-reactivate-a-queue) is available, drain it to also
-   shut out any straggler submissions.
-4. Leave the old queue idle. Queues cannot be deleted; an idle queue costs
-   nothing.
+3. [Drain](#drain-and-reactivate-a-queue) the old queue to shut out straggler
+   submissions and let in-flight work finish.
+4. [Delete](#delete-a-queue) the drained queue, or leave it idle — an idle queue
+   costs nothing.
 
 > [!NOTE] Queue overrides stay within a pool
 > A task can override its queue at runtime
