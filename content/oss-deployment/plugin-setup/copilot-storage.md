@@ -30,9 +30,6 @@ at it. Nothing is required to enable this.
 | Config key that names it | `plugins.k8s.co-pilot.storage-config-secret-name` |
 | Mount path in the copilot containers | `/etc/flyte/copilot` |
 
-The configuration key is spelled `co-pilot`, with the hyphen, even though everything
-else drops it. That is the plugin's key in the Flyte configuration, so copy it exactly.
-
 The Secret is created in the **task-pod** namespace rather than the release namespace,
 because a pod can only project Secrets from its own namespace. If you set the task-pod
 namespace to something other than the namespace you install into, create that namespace
