@@ -1,6 +1,6 @@
 ---
 title: VLLMAppEnvironment
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,11 +37,11 @@ class VLLMAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.5.18', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu129', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.11.0',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.0', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu129', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.11.0',))), _tag=None, _image_registry_secret=None),
     type: str = 'vLLM',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
-    model_path: str | RunOutput = '',
+    model_path: str | RunOutput | ArtifactValue = '',
     model_hf_path: str = '',
     model_id: str = '',
     stream_model: bool = True,
@@ -71,10 +71,10 @@ class VLLMAppEnvironment(
 | `type` | `str` | Type of app. |
 | `port` | `int \| Port` | Port application listens to. Defaults to 8000 for vLLM. |
 | `extra_args` | `str \| list[str]` | Extra args to pass to `vllm serve`. See https://docs.vllm.ai/en/stable/configuration/engine_args or run `vllm serve --help` for details. |
-| `model_path` | `str \| RunOutput` | Remote path to model (e.g., s3 |
+| `model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to model (e.g., s3://bucket/path/to/model), or a `RunOutput`/`ArtifactValue` resolved at deploy time. |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by vllm. |
-| `stream_model` | `bool` | When ``model_path`` is set, use True to stream weights from object storage to the GPU (Flyte custom loader). Ignored for ``model_hf_path``-only apps, which always use vLLM's normal Hugging Face download path. If False with ``model_path``, the model is downloaded to the local filesystem first, then loaded. |
+| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte custom loader). Ignored for `model_hf_path`-only apps, which always use vLLM's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. |
 
 ## Properties
 

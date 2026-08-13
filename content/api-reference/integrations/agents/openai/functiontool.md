@@ -1,6 +1,6 @@
 ---
 title: FunctionTool
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-An OpenAI Agents ``FunctionTool`` backed by a Flyte task.
+An OpenAI Agents `FunctionTool` backed by a Flyte task.
 
-Behaves exactly like ``agents.FunctionTool`` from the SDK's perspective, but
+Behaves exactly like `agents.FunctionTool` from the SDK's perspective, but
 when the agent invokes it the call is dispatched to the underlying Flyte task
 — so it runs as a durable child action (its own container/resources, with
 retries and caching) rather than inline in the agent's process.

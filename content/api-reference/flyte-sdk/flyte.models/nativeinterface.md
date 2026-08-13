@@ -1,6 +1,6 @@
 ---
 title: NativeInterface
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -92,6 +92,7 @@ def from_types(
 Create a new NativeInterface from the given types. This is used to create a native interface for the task.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` | A dictionary of input names and their types and a value indicating if they have a default value. |
@@ -132,6 +133,7 @@ def required_inputs()
 ```
 Get the names of the required inputs for the task. This is used to determine which inputs are required for the
 task execution.
+
 
 
 **Returns:** A list of required input names.

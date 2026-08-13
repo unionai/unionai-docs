@@ -1,6 +1,6 @@
 ---
 title: AgentProtocol
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -10,7 +10,7 @@ layout: py_api
 **Package:** `flyte.ai.agents`
 
 Minimal protocol that any agent must satisfy to work with
-`AgentChatAppEnvironment`.
+`flyte.ai.chat.AgentChatAppEnvironment`.
 
 
 ```python
@@ -20,7 +20,7 @@ protocol AgentProtocol()
 
 | Method | Description |
 |-|-|
-| [`run()`](#run) | Process *message* (with prior *memory*) and return an `AgentResult`. |
+| [`run()`](#run) | Process *message* (with prior *memory*) and return a `flyte.ai.agents.AgentResult`. |
 | [`tool_descriptions()`](#tool_descriptions) | Return JSON-friendly metadata for every registered tool. |
 
 
@@ -32,12 +32,12 @@ def run(
     memory: list[dict[str, Any]] | 'MemoryStore' | None = None,
 ) -> AgentResult
 ```
-Process *message* (with prior *memory*) and return an `AgentResult`.
+Process *message* (with prior *memory*) and return a `flyte.ai.agents.AgentResult`.
 
-``memory`` may be a ``list[dict]`` of prior messages (e.g. a chat
-``history``) or a `MemoryStore` for durable, cross-run state.
+`memory` may be a `list[dict]` of prior messages (e.g. a chat
+`history`) or a `flyte.ai.agents.MemoryStore` for durable, cross-run state.
 
-Synchronous entry point. In async contexts, use ``run.aio(...)``.
+Synchronous entry point. In async contexts, use `run.aio(...)`.
 
 
 | Parameter | Type | Description |
@@ -52,7 +52,7 @@ def tool_descriptions()
 ```
 Return JSON-friendly metadata for every registered tool.
 
-Each dict should contain at least ``name``, ``signature``, and
-``description`` keys.
+Each dict should contain at least `name`, `signature`, and
+`description` keys.
 
 

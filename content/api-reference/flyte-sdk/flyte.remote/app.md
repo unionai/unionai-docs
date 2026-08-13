@@ -1,6 +1,6 @@
 ---
 title: App
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -46,6 +46,7 @@ class App(
 | [`is_deactivated()`](#is_deactivated) | Check if the app is currently deactivated or stopped. |
 | [`listall()`](#listall) | List all apps, optionally filtered. |
 | [`replace()`](#replace) | Replace an existing app's that matches the given name, with a new spec and optionally labels. |
+| [`show_logs()`](#show_logs) | Display logs for the app, streaming until interrupted or the stream ends. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`update()`](#update) |  |
@@ -65,6 +66,7 @@ def activate(
 ) -> App
 ```
 Start the app
+
 
 
 | Parameter | Type | Description |
@@ -102,6 +104,7 @@ def deactivate(
 ) -> App
 ```
 Stop the app
+
 
 
 | Parameter | Type | Description |
@@ -243,6 +246,7 @@ def replace(
 Replace an existing app's that matches the given name, with a new spec and optionally labels.
 
 
+
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
@@ -254,6 +258,34 @@ Replace an existing app's that matches the given name, with a new spec and optio
 | `domain` | `str \| None` | Optional domain for the new app |
 
 **Returns:** A new app
+
+### show_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <App instance>.show_logs.aio()`.
+```python
+def show_logs(
+    max_lines: int = 30,
+    show_ts: bool = False,
+    raw: bool = False,
+    filter_system: bool = False,
+    replica_name: str | None = None,
+)
+```
+Display logs for the app, streaming until interrupted or the stream ends.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `max_lines` | `int` | Maximum number of lines to keep in view when using the live viewer. |
+| `show_ts` | `bool` | Whether to show timestamps in the logs. |
+| `raw` | `bool` | If True, print raw log lines instead of using the live viewer. |
+| `filter_system` | `bool` | Whether to filter out system log lines. |
+| `replica_name` | `str \| None` | Optional replica name to restrict the stream to. |
 
 ### to_dict()
 
@@ -311,8 +343,11 @@ def watch(
 ```
 Watch for the app to reach activated or deactivated state.
 
+Returns: The app in the desired state.
+Raises: RuntimeError if the app did not reach desired state and failed!
+
 
 | Parameter | Type | Description |
 |-|-|-|
-| `wait_for` | `WaitFor` | ["activated", "deactivated"]  Returns: The app in the desired state. Raises: RuntimeError if the app did not reach desired state and failed! |
+| `wait_for` | `WaitFor` | ["activated", "deactivated"] |
 

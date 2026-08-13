@@ -1,6 +1,6 @@
 ---
 title: SnowflakeConnector
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -102,7 +102,7 @@ LogLine entries with timestamp + originator) in the returned
 GetTaskLogsResponse.
 
 Overrides may be a plain async function returning a single
-``GetTaskLogsResponse``, or an async generator yielding multiple
+`GetTaskLogsResponse`, or an async generator yielding multiple
 responses (preferred for paginated logs — the connector server
 handles both shapes).
 

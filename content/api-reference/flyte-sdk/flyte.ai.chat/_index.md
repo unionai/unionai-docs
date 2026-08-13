@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.chat
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,7 +14,7 @@ flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents.
 
 | Class | Description |
 |-|-|
-| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `AppEnvironment` that spins up a FastAPI chat. |
+| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
 | [`CustomTheme`](../flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
 
 ### Methods
@@ -49,7 +49,7 @@ Build the full chat HTML with the given *title* and optional *custom_css*.
 
 The *custom_css* string is injected **after** the default styles, so it
 can override any default rule.  *logo_url*, when provided, renders an
-``<img>`` to the left of the title in the header bar.
+`<img>` to the left of the title in the header bar.
 
 *subtitle*, when provided, renders a subtitle paragraph below the
 header bar.
