@@ -112,10 +112,10 @@ neither the ConfigMap nor the Secret, which means it also does not render the co
 Secret or the configuration key that names it.
 
 {{< warning >}}
-`configuration.storage.copilotStorageSecretRef` has no effect when external
-configuration is enabled, because the key it feeds is emitted by the chart-rendered
-ConfigMap. Set the configuration key yourself as shown below, or co-pilot keeps
-receiving the storage credentials on its command line.
+`configuration.storage.copilotStorageSecretRef` cannot be used here. The key it feeds
+lives in the chart-rendered ConfigMap, which external configuration replaces, so the
+chart fails the install rather than accepting a value it would ignore. Set the
+configuration key yourself as shown below.
 {{< /warning >}}
 
 Two steps are needed.
@@ -185,6 +185,9 @@ kubectl get pod <task-pod> -n flyte -o yaml | grep -i secret_key
 - **Storage credentials still appear in task pod specs.** No Secret is configured, so
   co-pilot is using the command-line fallback. With external configuration, check that
   you set `plugins.k8s.co-pilot.storage-config-secret-name` yourself.
+- **`helm install` fails saying `copilotStorageSecretRef` has no effect.** You set it
+  alongside `externalConfigMap` or `externalSecretRef`. Remove it and name your Secret
+  through the configuration key instead, as described above.
 - **Co-pilot refuses to start after you point it at your own Secret.** The Secret holds
   a `.yaml` key that is not co-pilot configuration. Every `.yaml` key is read, and
   co-pilot rejects configuration sections it does not recognize.
