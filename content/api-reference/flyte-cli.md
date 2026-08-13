@@ -1566,6 +1566,9 @@ Otherwise list all queues.
 Deleted queues are hidden by default; --deleted lists them instead, which is
 how you find a queue to pass to `flyte undelete queue`.
 
+--state narrows the listing to queues in one state (active, draining or
+drained); the server does the filtering.
+
 Examples:
 
 ```bash
@@ -1574,6 +1577,8 @@ $ flyte get queue
 $ flyte get queue my-queue
 
 $ flyte get queue my-queue --watch
+
+$ flyte get queue --state active
 
 $ flyte get queue --deleted
 ```
@@ -1585,6 +1590,7 @@ $ flyte get queue --deleted
 | `--limit` | `integer` | `100` | Maximum number of queues to return |
 | `--watch` | `boolean` | `False` | Stream live queue metrics (requires NAME) |
 | `--deleted` | `boolean` | `False` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
+| `--state` | `choice` |  | List only queues in this state. Cannot be combined with NAME. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
