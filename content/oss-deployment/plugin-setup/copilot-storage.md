@@ -36,14 +36,10 @@ nothing sensitive.
 | Config key that names it | `plugins.k8s.co-pilot.storage-config-secret-name` |
 | Mount path in the copilot containers | `/etc/flyte/copilot` |
 
-The Secret exists only when your storage configuration carries a credential — an S3
-`secretKey`, an Azure `key`, or a credential you add under `configuration.inline.storage`.
-With ambient authentication there is nothing to store, so no Secret is rendered.
-
-When it is rendered, it is created in the **task-pod** namespace rather than the release
-namespace, because a pod can only project Secrets from its own namespace. If you set the
-task-pod namespace to something other than the namespace you install into, create that
-namespace before running `helm install`.
+The Secret is created in the **task-pod** namespace rather than the release namespace,
+because a pod can only project Secrets from its own namespace. If you set the task-pod
+namespace to something other than the namespace you install into, create that namespace
+before running `helm install`.
 
 The key holds the same `storage` block the deployment itself uses, with the credentials
 inline:
