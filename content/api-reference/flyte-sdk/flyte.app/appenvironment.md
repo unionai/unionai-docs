@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -69,7 +69,7 @@ class AppEnvironment(
 | `scaling` | `Scaling` | `Scaling` object controlling replicas and autoscaling behavior. Default is `Scaling()` (scale-to-zero, max 1 replica). |
 | `domain` | `Domain \| None` | `Domain` object for custom domain configuration. |
 | `links` | `List[Link]` | List of `Link` objects for connecting to other environments. |
-| `parameters` | `List[Parameter]` | List of `Parameter` objects for app inputs. Use `RunOutput` to connect app parameters to task outputs, or `AppEndpoint` to reference other app endpoints. |
+| `parameters` | `List[Parameter]` | List of `Parameter` objects for app inputs. Use `RunOutput` to connect app parameters to task outputs, `ArtifactValue` to resolve a published artifact (e.g. a prefetched model), or `AppEndpoint` to reference other app endpoints. |
 | `cluster_pool` | `str` | Cluster pool for scheduling. Default `"default"`. |
 | `timeouts` | `Timeouts` | `Timeouts` object for startup/health check timeouts. |
 

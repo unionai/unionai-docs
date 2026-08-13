@@ -1,6 +1,6 @@
 ---
 title: FlyteSession
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-An ``agents`` ``Session`` whose items live in a keyed Flyte ``MemoryStore``.
+An `agents` `Session` whose items live in a keyed Flyte `MemoryStore`.
 
-The store's ``messages`` transcript is the session item list; ``add_items``
+The store's `messages` transcript is the session item list; `add_items`
 persists durably (an object-store upload) so the next run for the same key
 resumes the conversation.
 

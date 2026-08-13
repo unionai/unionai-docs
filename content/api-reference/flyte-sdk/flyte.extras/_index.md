@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -67,8 +67,8 @@ def serialize(
 ```
 Translate a single task to its wire TaskSpec, offline and code-agnostic.
 
-Reuses the same ``translate_task_to_wire`` primitive the run/deploy path uses
-(see ``_Runner._build_task_spec_from_template``), but without a client, image
+Reuses the same `translate_task_to_wire` primitive the run/deploy path uses
+(see `_Runner._build_task_spec_from_template`), but without a client, image
 cache, or code bundle, so the spec can be produced ahead of time. Pass a
 SerializationContext to override the defaults.
 

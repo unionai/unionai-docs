@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.chat.app
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,7 +14,7 @@ AgentChatAppEnvironment — FastAPI-based chat UI for any Agent.
 
 | Class | Description |
 |-|-|
-| [`AgentChatAppEnvironment`](../flyte.ai.chat.app/agentchatappenvironment) | An `AppEnvironment` that spins up a FastAPI chat. |
+| [`AgentChatAppEnvironment`](../flyte.ai.chat.app/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
 | [`CustomTheme`](../flyte.ai.chat.app/customtheme) | Declarative color theme for the Agent Chat UI. |
 
 ### Variables

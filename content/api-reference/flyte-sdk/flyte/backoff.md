@@ -1,6 +1,6 @@
 ---
 title: Backoff
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,9 +11,11 @@ layout: py_api
 
 Exponential backoff policy applied between user retries.
 
-The delay before the n-th retry (0-indexed) is::
+The delay before the n-th retry (0-indexed) is:
 
-    min(base * factor**n, cap)
+```python
+min(base * factor**n, cap)
+```
 
 
 
@@ -29,8 +31,8 @@ class Backoff(
 | Parameter | Type | Description |
 |-|-|-|
 | `base` | `datetime.timedelta` | Initial delay before the first retry. Must be &gt;= 0. |
-| `factor` | `float` | Per-retry multiplier. ``1.0`` yields constant delay (``base`` for every retry); ``2.0`` doubles each time. Must be &gt;= 1.0. |
-| `cap` | `typing.Optional[datetime.timedelta]` | Upper bound on the computed delay. Required when ``factor > 1`` to prevent unbounded growth. Must be &gt;= 0 when set. |
+| `factor` | `float` | Per-retry multiplier. `1.0` yields constant delay (`base` for every retry); `2.0` doubles each time. Must be &gt;= 1.0. |
+| `cap` | `typing.Optional[datetime.timedelta]` | Upper bound on the computed delay. Required when `factor > 1` to prevent unbounded growth. Must be &gt;= 0 when set. |
 
 ## Methods
 

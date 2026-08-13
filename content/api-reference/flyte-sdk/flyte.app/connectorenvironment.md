@@ -1,6 +1,6 @@
 ---
 title: ConnectorEnvironment
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -71,7 +71,7 @@ class ConnectorEnvironment(
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
-| `include` | `Tuple[str, ...]` | List of file paths to connector modules. Each path is converted to a Python module name and passed to the connector process via ``--modules``. For example, ``"my_connector/connector.py"`` becomes module ``"my_connector.connector"``. |
+| `include` | `Tuple[str, ...]` | List of file paths to connector modules. Each path is converted to a Python module name and passed to the connector process via `--modules`. For example, `"my_connector/connector.py"` becomes module `"my_connector.connector"`. |
 | `type` | `str` | |
 | `port` | `int \| flyte.app._types.Port` | |
 | `args` | `Optional[Union[List[str], str]]` | |

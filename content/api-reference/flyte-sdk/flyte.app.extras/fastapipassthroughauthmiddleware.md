@@ -1,6 +1,6 @@
 ---
 title: FastAPIPassthroughAuthMiddleware
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -117,6 +117,15 @@ def extract_custom_header(
 ```
 Create a header extractor for a custom header name.
 
+```python
+# Create extractor for X-API-Key header
+api_key_extractor = extract_custom_header("x-api-key")
+
+app.add_middleware(
+    FastAPIPassthroughAuthMiddleware,
+    header_extractors=[api_key_extractor],
+)
+```
 
 
 | Parameter | Type | Description |
