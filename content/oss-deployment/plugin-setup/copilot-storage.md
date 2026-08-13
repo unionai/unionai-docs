@@ -137,7 +137,7 @@ only when your storage configuration actually carries one:
 | `gcs` | Its command line |
 | `azure` without a `key` | Its command line |
 | `s3` with `authType: accesskey` and only `secretKeyPath` | Its command line |
-| `configuration.storage.copilotStorageSecretRef` set | The Secret you name |
+| `configuration.co-pilot.storageSecretRef` set | The Secret you name |
 | `configuration.externalConfigMap` or `configuration.externalSecretRef` set | Whatever your own configuration says |
 
 The command-line rows are not an exposure. Ambient authentication puts nothing secret
@@ -166,8 +166,8 @@ kubectl create secret generic my-copilot-storage \
 
 ```yaml
 configuration:
-  storage:
-    copilotStorageSecretRef: my-copilot-storage
+  co-pilot:
+    storageSecretRef: my-copilot-storage
 ```
 
 The whole Secret is mounted and every `.yaml` key in it is read, so it must hold
@@ -183,7 +183,7 @@ neither the ConfigMap nor the Secret, which means it also does not render the co
 Secret or the configuration key that names it.
 
 {{< warning >}}
-`configuration.storage.copilotStorageSecretRef` cannot be used here. The key it feeds
+`configuration.co-pilot.storageSecretRef` cannot be used here. The key it feeds
 lives in the chart-rendered ConfigMap, which external configuration replaces, so the
 chart fails the install rather than accepting a value it would ignore. Set the
 configuration key yourself as shown below.
@@ -313,7 +313,7 @@ kubectl get pod <task-pod> -n flyte -o yaml | grep -i secret_key
 - **Storage credentials still appear in task pod specs.** No Secret is configured, so
   copilot is using the command-line fallback. With external configuration, check that
   you set `plugins.k8s.co-pilot.storage-config-secret-name` yourself.
-- **`helm install` fails saying `copilotStorageSecretRef` has no effect.** You set it
+- **`helm install` fails saying `storageSecretRef` has no effect.** You set it
   alongside `externalConfigMap` or `externalSecretRef`. Remove it and name your Secret
   through the configuration key instead, as described above.
 - **Copilot refuses to start after you point it at your own Secret.** The Secret holds
