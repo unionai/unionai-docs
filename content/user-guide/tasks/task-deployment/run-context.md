@@ -63,6 +63,23 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 | `disable_run_cache` | `bool` | `False` | Skip cache lookups and writes entirely for this run. |
 | `cache_lookup_scope` | `"global"` \| ... | `"global"` | Scope for cache lookups. |
 
+{{< variant union >}}
+{{< markdown >}}
+
+### Recovery
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `recover` | `bool` \| `str` | `False` | Reuse the actions that succeeded in a prior run, re-executing only what failed or changed. A run name recovers from that run and is the only form valid on `.run()`; `True` recovers from the run being rerun and is only valid on `.rerun()`. Remote-only. |
+| `recover_force_rerun_actions` | `Sequence[str]` | `None` | Names of actions that must execute again even though they succeeded in the source run. Requires `recover`. |
+| `allow_missing_source_outputs` | `bool` | `False` | Proceed with a rerun or recovery when the source run's outputs have been cleaned up from storage, using its inputs URI directly. The new run fails at runtime if the inputs were deleted too. |
+
+Recovery is unaffected by the caching parameters above: it looks up the source run's results rather
+than the cache. See [Recover a failed run](./recover-runs).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Identity and resources
 
 | Parameter | Type | Default | Description |

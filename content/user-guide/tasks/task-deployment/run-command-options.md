@@ -201,6 +201,48 @@ flyte run --label team=ml --label env=prod my_example.py train_model
 
 Later, list or filter runs by these labels with `flyte get run --with-label team=ml` (see [Filtering runs by label](./interacting-with-runs#filtering-runs-by-label)).
 
+## `--rerun-from`
+
+**`flyte run --rerun-from <RUN_NAME> <PATH> <TASK_NAME>`**
+
+Run your current local code against the inputs of a prior run:
+
+```bash
+flyte run --rerun-from ul56wcvgqrb9vzhzz5l2 my_example.py train_model
+```
+
+The inputs come from the prior run, so no per-task input flags are needed. The option is remote-only and cannot be combined with `--local`. See [Rerun a run](./rerun-runs).
+
+{{< variant union >}}
+{{< markdown >}}
+
+## `--recover-from`
+
+**`flyte run --recover-from <RUN_NAME> <PATH> <TASK_NAME>`**
+
+Launch your current local code as a new run that reuses the actions that succeeded in a prior run, executing only what failed or changed:
+
+```bash
+flyte run --recover-from ul56wcvgqrb9vzhzz5l2 my_example.py train_model --epochs 10
+```
+
+Inputs come from the command line as they do for any `flyte run`. The option is remote-only and cannot be combined with `--local`.
+
+## `--force-rerun-action`
+
+**`flyte run --recover-from <RUN_NAME> --force-rerun-action <ACTION_NAME> <PATH> <TASK_NAME>`**
+
+Force a named action to execute again even though it succeeded in the source run. The flag is repeatable and requires `--recover-from`:
+
+```bash
+flyte run --recover-from ul56wcvgqrb9vzhzz5l2 --force-rerun-action a3 my_example.py train_model
+```
+
+See [Recover a failed run](./recover-runs).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## `--follow`
 
 **`flyte run --follow <PATH> <TASK_NAME>`**
