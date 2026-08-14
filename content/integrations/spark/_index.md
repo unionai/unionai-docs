@@ -112,8 +112,6 @@ spark_config = Spark(
 
 Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template` has to be repeated in the `driver_pod` / `executor_pod` spec.
 
-Pod templates require a cluster whose Spark operator and `SparkApplication` CRD support them. On older clusters the template is dropped and only the legacy fields (cores, memory, and the other `spark_conf` settings) take effect.
-
 ### Accessing the Spark session
 
 Inside a Spark task, the `SparkSession` is available through the task context:
