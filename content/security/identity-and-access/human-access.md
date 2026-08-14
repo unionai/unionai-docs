@@ -8,27 +8,25 @@ variants: -flyte +union
 
 ## Self-managed
 
-In self-managed deployments, Union.ai personnel access only the Union.ai-hosted control plane infrastructure. They have zero access to the customer's data plane. This access uses standard OIDC/SSO and RBAC.
+In self-managed deployments, Union.ai personnel have no infrastructure access to the customer's data plane: no IAM roles, no VPN, no SSH keys, and no `kubectl` access. They operate only the Union.ai-hosted control plane. Application-level access to the tenant is a separate matter, covered under [Customer-side support access](#customer-side-support-access) below.
 
 ## BYOC
 
 In BYOC deployments, Union.ai personnel additionally have authenticated Kubernetes cluster access for operational purposes: upgrades, node pool provisioning, Helm chart updates, health monitoring, and troubleshooting. This access uses cloud-native private connectivity (PrivateLink/PSC) and is scoped to Kubernetes cluster management. All cluster management actions are logged.
 
-## Customer-side support access (optional)
+## Customer-side support access
 
-Separately from BYOC Kubernetes cluster management, Union.ai offers an optional support service where customers can grant Union.ai staff access to the customer's tenant for troubleshooting. This is available for both self-managed and BYOC deployments.
+Separately from BYOC Kubernetes cluster management, Union.ai support staff hold an identity in the customer's tenant so that they can troubleshoot. This applies to both self-managed and BYOC deployments.
 
-When requested, Union.ai support personnel are granted access through the same RBAC framework used by the customer's own users. The customer creates a role binding for Union.ai staff, scoped to the specific projects, domains, and permission level appropriate for the troubleshooting engagement. This access can be time-limited so that it expires automatically after the support engagement concludes.
-
-This service is entirely optional. Customers must explicitly request it and configure the RBAC grants themselves. Union.ai staff cannot self-provision this access. The access is subject to the same authentication (OIDC/SSO), authorization (RBAC policies), and audit logging as any other user in the customer's organization.
+Support staff are granted access through the same RBAC framework that governs the customer's own users: an identity in the tenant, bound to a policy that determines what they can do. The access is subject to the same authentication (OIDC/SSO), authorization (RBAC policies), and audit logging as any other user in the customer's organization. Customers can list every identity-to-policy assignment in their organization, including any held by Union.ai staff, with `flyte get assignment`.
 
 This is distinct from BYOC Kubernetes cluster management access (described above), which is infrastructure-level access for platform operations. Customer-side support access operates at the application level: viewing runs, inspecting logs, diagnosing task failures, and reviewing configuration. It does not grant Kubernetes cluster access, IAM role access, or direct access to the customer's cloud account.
 
 ## Access scope
 
-When Union.ai personnel are granted access to a customer's tenant (in BYOC, or via the optional support service in self-managed), they *can*: view orchestration metadata, view logs relayed through the tunnel, perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
+When Union.ai personnel hold a role in a customer's tenant (in BYOC, or through support access in self-managed), they *can*: view orchestration metadata, view whatever their role authorizes in the console and CLI (including run inputs and outputs, logs, code bundles, and reports), perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
 
-They *cannot*: read secret values (the API is write-only), access bulk data in customer object stores (presigned URLs are per-request and not retained), or access the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced inside the customer's cluster.
+They *cannot*: read secret values (the API is write-only), or reach the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators directly. Every request for run data follows the same authenticated, RBAC-gated path as any other user's: the data plane issues a per-request presigned URL, which is not retained. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced inside the customer's cluster.
 
 All access by Union.ai personnel is authenticated and logged with caller identity, operation performed, and timestamp.
 
@@ -36,7 +34,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 ### Human access controls
 
-**Reviewer focus:** Confirm that Union.ai personnel access is appropriately scoped for each deployment model and that no path exists to access customer data or secrets.
+**Reviewer focus:** Confirm that Union.ai personnel access is appropriately scoped for each deployment model, that every grant is visible and auditable, and that no path exists to read secret values or to reach the customer's cloud account directly.
 
 **How to verify:**
 
@@ -60,14 +58,16 @@ BYOC:
 
 Customer-side support access:
 
-1. Confirm that no Union.ai support user exists in the customer's tenant unless explicitly provisioned by the customer.
-
-2. If support access has been granted, verify the RBAC binding:
+1. List every identity-to-policy assignment in the organization, which is where any Union.ai staff access appears:
 
    ```bash
-   flyte get policy
+   flyte get assignment
    ```
 
-   The Union.ai support user should appear with the scoped role and time limit configured by the customer.
+2. Inspect the policy each assignment names, to see exactly which actions it permits and which projects and domains it covers:
 
-3. After the time limit expires, repeat the query. The binding should no longer be active.
+   ```bash
+   flyte get policy <name>
+   ```
+
+3. Review the audit log for requests made by those identities. Every request is logged with caller identity, operation performed, and timestamp.
