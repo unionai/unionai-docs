@@ -1,6 +1,6 @@
 ---
 title: ReportTimeline
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.core`
 
-A `flyte.report.Timeline` that defaults to the ``Agent`` report tab.
+A `flyte.report.Timeline` that defaults to the `Agent` report tab.
 
 
 ## Parameters

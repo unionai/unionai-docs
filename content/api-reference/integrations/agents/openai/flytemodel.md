@@ -1,6 +1,6 @@
 ---
 title: FlyteModel
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.openai`
 
-Wrap a `Model` so each turn is durable.
+Wrap a `agents.models.interface.Model` so each turn is durable.
 
-``get_response`` is recorded/replayed via ``durable_step``. ``stream_response``
+`get_response` is recorded/replayed via `durable_step`. `stream_response`
 is delegated unchanged: streamed turns are not memoized in this version (tool
 calls remain durable regardless).
 

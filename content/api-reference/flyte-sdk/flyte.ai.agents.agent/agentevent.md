@@ -1,6 +1,6 @@
 ---
 title: AgentEvent
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,10 +12,10 @@ layout: py_api
 Lightweight event emitted by the agent loop.
 
 The agent stays decoupled from any specific UI: subscribe via
-`agent_progress_cb` to forward these to logs, NDJSON streams, websockets,
+`flyte.ai.agents.agent_progress_cb` to forward these to logs, NDJSON streams, websockets,
 Flyte reports, etc.
 
-``agent`` and ``run_id`` are stamped automatically on every event so that
+`agent` and `run_id` are stamped automatically on every event so that
 consumers receiving events from multiple runs in one process (concurrent
 agents, sub-agents used as tools, parallel runs of the same agent) can
 attribute each event to the run that produced it.

@@ -1,6 +1,6 @@
 ---
 title: Snowflake
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -206,6 +206,7 @@ def override(
     queue: Optional[str] = None,
     interruptible: Optional[bool] = None,
     entrypoint: Optional[bool] = None,
+    produces_artifacts: Optional[bool] = None,
     links: Tuple[Link, ...] = (),
     plugin_config: Optional[Any] = None,
     **kwargs: Any,
@@ -231,6 +232,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
 | `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
 | `entrypoint` | `Optional[bool]` | Optional override for the entrypoint flag for the task. |
+| `produces_artifacts` | `Optional[bool]` | Optional override for the produces_artifacts flag for the task. |
 | `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `plugin_config` | `Optional[Any]` | Optional override for the plugin specific configuration. Only supported by task templates that declare a `plugin_config` field. |
 | `**kwargs` | `Any` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden. |

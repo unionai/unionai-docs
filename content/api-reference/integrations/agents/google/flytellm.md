@@ -1,6 +1,6 @@
 ---
 title: FlyteLlm
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,11 +9,11 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.google`
 
-A ``BaseLlm`` that records each model turn via ``durable_step`` for replay.
+A `BaseLlm` that records each model turn via `durable_step` for replay.
 
-Wraps an inner ``BaseLlm`` (resolved from the agent's ``model``); ``model`` is set
+Wraps an inner `BaseLlm` (resolved from the agent's `model`); `model` is set
 to the inner model name so ADK behaves identically. Construct via
-`durable_model`.
+`flyteplugins.agents.google.durable_model`.
 
 
 ## Parameters

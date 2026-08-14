@@ -1,6 +1,6 @@
 ---
 title: Report
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,6 +30,7 @@ class Report(
 |-|-|
 | [`get_final_report()`](#get_final_report) | Get the final report as a string. |
 | [`get_tab()`](#get_tab) | Get a tab by name. |
+| [`has_content()`](#has_content) | Whether anything has been logged to this report. |
 
 
 ### get_final_report()
@@ -61,4 +62,18 @@ Get a tab by name. If the tab does not exist, create it.
 | `create_if_missing` | `bool` | Whether to create the tab if it does not exist. |
 
 **Returns:** The tab.
+
+### has_content()
+
+```python
+def has_content()
+```
+Whether anything has been logged to this report.
+
+`__post_init__` always creates the "main" tab, so the existence of a Report — or of
+a tab — says nothing about whether it holds content.
+
+
+
+**Returns:** True if any tab has content.
 

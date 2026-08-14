@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,7 +26,7 @@ layout: py_api
 | [`exists_sync()`](#exists_sync) |  |
 | [`get()`](#get) |  |
 | [`get_configured_fsspec_kwargs()`](#get_configured_fsspec_kwargs) |  |
-| [`get_random_local_directory()`](#get_random_local_directory) |  |
+| [`get_random_local_directory()`](#get_random_local_directory) | pathlib. |
 | [`get_random_local_path()`](#get_random_local_path) | Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name. |
 | [`get_stream()`](#get_stream) | Get a stream of data from a remote location. |
 | [`get_underlying_filesystem()`](#get_underlying_filesystem) |  |
@@ -106,7 +106,8 @@ def get_configured_fsspec_kwargs(
 ```python
 def get_random_local_directory()
 ```
-**Returns:** pathlib.Path
+pathlib.Path: a random directory
+
 
 #### get_random_local_path()
 
@@ -267,5 +268,5 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 | `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
 | `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
-**Returns:** The path to the remote location where the data was stored.
+**Returns:** str: The path to the remote location where the data was stored.
 

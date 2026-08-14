@@ -1,6 +1,6 @@
 ---
 title: Union plugin
-version: 0.5.2
+version: 0.7.1
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -20,7 +20,7 @@ This package provides Union-specific functionality on top of the open-source Fly
 | Method | Description |
 |-|-|
 | [`debug()`](#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
-| [`with_debugcontext()`](#with_debugcontext) | Like `flyte. |
+| [`with_debugcontext()`](#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
 
 
 ## Methods
@@ -30,15 +30,15 @@ This package provides Union-specific functionality on top of the open-source Fly
 ```python
 def debug(
     target: 'str | TaskTemplate',
-    args: *args,
-    action_name: str,
-    name: Optional[str],
-    ssh_host_name: Optional[str],
-    custom_context: Optional[Dict[str, str]],
-    task_template: 'Optional[TaskTemplate]',
-    inputs: Optional[Dict[str, Any]],
-    env_vars: Optional[Dict[str, str]],
-    kwargs: **kwargs,
+    *args: Any,
+    action_name: str = 'a0',
+    name: Optional[str] = None,
+    ssh_host_name: Optional[str] = None,
+    custom_context: Optional[Dict[str, str]] = None,
+    task_template: 'Optional[TaskTemplate]' = None,
+    inputs: Optional[Dict[str, Any]] = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    **kwargs: Any,
 ) -> 'Run'
 ```
 Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. Returns the `Run`.
@@ -51,7 +51,7 @@ run comes up with sshd:
   (= `with_debugcontext().rerun("run-name")`). Pass ``inputs={...}`` to change parameters or
   ``task_template=`` to substitute code.
 
-Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug &lt;run&gt;` CLI, which relaunches
+Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug <run>` CLI, which relaunches
 **and** connects in one shot).
 
 
@@ -59,7 +59,7 @@ Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug &lt;run&
 | Parameter | Type | Description |
 |-|-|-|
 | `target` | `'str \| TaskTemplate'` | a `TaskTemplate` to launch, or a prior run name (str) to relaunch. |
-| `args` | `*args` | |
+| `*args` | `Any` | |
 | `action_name` | `str` | action to source the task + inputs from (default ``a0``). |
 | `name` | `Optional[str]` | explicit name for the new run; omit to let the platform assign one. A fixed name makes the launch idempotent — relaunching with the same name re-uses the existing run. |
 | `ssh_host_name` | `Optional[str]` | record the intended ssh Host alias on the run's custom_context (``ssh-host-name``); record/propagation only (see `with_debugcontext`). |
@@ -67,7 +67,7 @@ Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug &lt;run&
 | `task_template` | `'Optional[TaskTemplate]'` | substitute task to run instead of the prior run's code. |
 | `inputs` | `Optional[Dict[str, Any]]` | native input overrides; omit to reuse the prior run's inputs. |
 | `env_vars` | `Optional[Dict[str, str]]` | extra env vars to set on the run (merged with the ssh-debug env). |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` | `Any` | |
 
 **Returns:** the new ssh-debug Run.
 
@@ -75,11 +75,11 @@ Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug &lt;run&
 
 ```python
 def with_debugcontext(
-    mode: Any,
-    env_vars: Optional[Dict[str, str]],
-    ssh_host_name: Optional[str],
-    custom_context: Optional[Dict[str, str]],
-    kwargs,
+    mode: Any = None,
+    env_vars: Optional[Dict[str, str]] = None,
+    ssh_host_name: Optional[str] = None,
+    custom_context: Optional[Dict[str, str]] = None,
+    **kwargs,
 )
 ```
 Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug.
@@ -100,5 +100,5 @@ the local ssh-config is the one threaded directly to `SSHDebug.connect`.
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `ssh_host_name` | `Optional[str]` | |
 | `custom_context` | `Optional[Dict[str, str]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

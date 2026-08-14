@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -208,7 +208,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
-| `is_empty` | `bool` | True when this is a sentinel ``Dir`` produced by `EmptyDir`/``Dir.empty()`` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with ``Optional[Dir]`` (which the type engine cannot round-trip correctly through ``SerializableType``). |
+| `is_empty` | `bool` | True when this is a sentinel `Dir` produced by `flyte.io.EmptyDir`/`Dir.empty()` — i.e. the task didn't actually produce a directory. Use this to branch on whether the upstream task emitted real data without dealing with `Optional[Dir]` (which the type engine cannot round-trip correctly through `SerializableType`). |
 | `lazy_uploader` | `Callable[[], Coroutine[Any, Any, tuple[str \| None, str]]] \| None` |  |
 
 ## Methods
@@ -217,7 +217,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
-| [`empty()`](#empty) | Return a sentinel ``Dir`` representing 'no directory was produced'. |
+| [`empty()`](#empty) | Return a sentinel `Dir` representing 'no directory was produced'. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -315,11 +315,11 @@ def download_to_path_sync(d: Dir) -> str:
 ```python
 def empty()
 ```
-Return a sentinel ``Dir`` representing 'no directory was produced'.
+Return a sentinel `Dir` representing 'no directory was produced'.
 
 Use as the return value when a task may or may not produce an output directory; the
 caller can check `Dir.is_empty` to detect the sentinel. Round-trips cleanly
-through Flyte serialization (unlike ``Optional[Dir]``).
+through Flyte serialization (unlike `Optional[Dir]`).
 
 
 ### exists()
@@ -693,6 +693,14 @@ Create a new Dir reference for a remote directory that will be written to.
 
 Use this when you want to create a new directory and write files into it
 directly without creating a local directory first.
+
+```python
+@env.task
+async def create() -> Dir:
+    d = Dir.new_remote("output")
+    # write files into d ...
+    return d
+```
 
 
 

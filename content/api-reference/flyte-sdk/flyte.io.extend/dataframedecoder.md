@@ -1,6 +1,6 @@
 ---
 title: DataFrameDecoder
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,7 +59,6 @@ def decode(
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.
 
-    of those dataframes.
 
 
 | Parameter | Type | Description |
@@ -67,5 +66,8 @@ value into a Python instance.
 | `flyte_value` | `literals_pb2.StructuredDataset` | This will be a Flyte IDL DataFrame Literal - do not confuse this with the DataFrame class defined also in this module. |
 | `current_task_metadata` | `literals_pb2.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. |
 
-**Returns:** This function can either return an instance of the dataframe that this decoder handles, or an iterator
+**Returns**
+
+This function can either return an instance of the dataframe that this decoder handles, or an iterator
+of those dataframes.
 

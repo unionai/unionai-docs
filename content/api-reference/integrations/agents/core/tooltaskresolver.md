@@ -1,6 +1,6 @@
 ---
 title: ToolTaskResolver
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,7 +11,7 @@ layout: py_api
 
 Resolver for a task shadowed at module scope by a tool wrapper.
 
-Recovers the underlying task via the wrapper's ``__wrapped_task__`` hook so
+Recovers the underlying task via the wrapper's `__wrapped_task__` hook so
 the worker runs the task's own body instead of re-dispatching the tool.
 
 

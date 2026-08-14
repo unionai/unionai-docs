@@ -1,6 +1,6 @@
 ---
 title: DynamicBatcher
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,6 +24,17 @@ Type Parameters:
     RecordT: The input record type produced by your tasks.
     ResultT: The per-record output type returned by `process_fn`.
 
+```python
+async def process(batch: list[dict]) -> list[str]:
+    ...
+
+async with DynamicBatcher(process_fn=process) as batcher:
+    futures = []
+    for record in my_records:
+        f = await batcher.submit(record)
+        futures.append(f)
+    results = await asyncio.gather(*futures)
+```
 
 
 ## Parameters
@@ -108,6 +119,10 @@ Submit a single record for batched processing.
 Returns an `asyncio.Future` that resolves once the batch
 containing this record has been processed.
 
+```python
+future = await batcher.submit(my_record, estimated_cost=128)
+result = await future
+```
 
 
 | Parameter | Type | Description |

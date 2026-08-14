@@ -1,6 +1,6 @@
 ---
 title: MCPAppEnvironment
-version: 2.5.18
+version: 2.6.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,29 +11,31 @@ layout: py_api
 
 Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio.
 
-Pass a configured ``FastMCP`` instance and optional HTTP layout settings.
-Install extras with ``pip install 'flyte[mcp]'``.
+Pass a configured `FastMCP` instance and optional HTTP layout settings.
+Install extras with `pip install 'flyte[mcp]'`.
 
-**HTTP layout** (``transport="streamable-http"`` or ``"sse"``)
+**HTTP layout** (`transport="streamable-http"` or `"sse"`)
 
-- ``GET /health`` — liveness/readiness JSON ``{"status": "healthy"}``.
-- The MCP ASGI app is mounted at ``mcp_mount_path`` (default ``/mcp``). With
-  ``transport="streamable-http"``, the session endpoint is ``{mcp_mount_path}/mcp``.
-  SSE transport uses ``{mcp_mount_path}/sse`` instead.
+- `GET /health` — liveness/readiness JSON `{"status": "healthy"}`.
+- The MCP ASGI app is mounted at `mcp_mount_path` (default `/mcp`). With
+  `transport="streamable-http"`, the session endpoint is `{mcp_mount_path}/mcp`.
+  SSE transport uses `{mcp_mount_path}/sse` instead.
 
-**stdio** (``transport="stdio"``)
+**stdio** (`transport="stdio"`)
 
 Speaks JSON-RPC over the current process's stdin/stdout, for MCP clients that
 launch the server as a subprocess. There is no HTTP surface at all: no Starlette
-app, no ``/health`` route, no links, and ``mcp_mount_path`` is unused.
+app, no `/health` route, no links, and `mcp_mount_path` is unused.
 
 stdio is a *local* transport and cannot be deployed or served via
 `flyte.serve` — that path runs the server on a background thread and polls
 an HTTP health check, neither of which applies to a process-bound stdio stream.
-Run it directly instead::
+Run it directly instead:
 
-    env = MCPAppEnvironment(name="my-mcp", mcp=mcp, transport="stdio")
-    env.run_stdio()
+```python
+env = MCPAppEnvironment(name="my-mcp", mcp=mcp, transport="stdio")
+env.run_stdio()
+```
 
 Anything written to stdout corrupts the JSON-RPC stream, so route logging and
 diagnostics to stderr.
@@ -116,7 +118,7 @@ class MCPAppEnvironment(
 | [`get_port()`](#get_port) |  |
 | [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
 | [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
-| [`run_stdio()`](#run_stdio) | Blocking wrapper around `run_stdio_async`, for use as a process entry point. |
+| [`run_stdio()`](#run_stdio) | Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point. |
 | [`run_stdio_async()`](#run_stdio_async) | Serve MCP over this process's stdin/stdout until the client disconnects. |
 | [`server()`](#server) | Decorator to define the server function for the app environment. |
 
@@ -256,7 +258,7 @@ definition.
 ```python
 def run_stdio()
 ```
-Blocking wrapper around `run_stdio_async`, for use as a process entry point.
+Blocking wrapper around `MCPAppEnvironment.run_stdio_async`, for use as a process entry point.
 
 
 ### run_stdio_async()
@@ -275,7 +277,7 @@ whose method of the same name does the actual serving.
 
 | Exception | Description |
 |-|-|
-| `ValueError` | if ``transport`` is not ``"stdio"``. |
+| `ValueError` | if `transport` is not `"stdio"`. |
 
 ### server()
 
