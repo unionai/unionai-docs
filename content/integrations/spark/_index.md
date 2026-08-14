@@ -57,6 +57,63 @@ spark_env = flyte.TaskEnvironment(
 | `driver_pod` | `PodTemplate` | Pod template for the Spark driver pod |
 | `executor_pod` | `PodTemplate` | Pod template for the Spark executor pods |
 
+### Pod templates
+
+There are two places to customize the driver and executor pods:
+
+- **`TaskEnvironment(pod_template=...)`** — the task pod spec, used as the base pod template for *both* the driver and the executor pods.
+- **`Spark(driver_pod=...)` / `Spark(executor_pod=...)`** — role-specific specs that *replace* that base template for the driver or the executor.
+
+#### On the task environment
+
+Use this when the same customization (security context, tolerations, node selector, volumes, labels) should apply to driver and executor alike. The spec must contain the primary container — the container Flyte injects the task image and command into:
+
+```python
+from kubernetes.client import V1Container, V1PodSecurityContext, V1PodSpec
+
+spark_env = flyte.TaskEnvironment(
+    name="spark_env",
+    plugin_config=spark_config,
+    pod_template=flyte.PodTemplate(
+        labels={"team": "data-eng"},
+        pod_spec=V1PodSpec(
+            containers=[V1Container(name="primary")],  # required: the primary container
+            security_context=V1PodSecurityContext(run_as_user=1000),
+        ),
+    ),
+    image=image,
+)
+```
+
+Flyte renames the primary container to `spark-kubernetes-driver` / `spark-kubernetes-executor` before handing the template to the Spark operator, so the operator's webhook patches the right container.
+
+#### On the plugin config
+
+Use `driver_pod` / `executor_pod` when the two roles need to differ. These specs are passed through to the operator verbatim — they are *not* merged with the environment's pod template, and the container you want patched must be named `spark-kubernetes-driver` or `spark-kubernetes-executor`. A container under any other name is ignored by the operator's webhook.
+
+```python
+from kubernetes.client import V1Container, V1PodSpec, V1ResourceRequirements
+
+spark_config = Spark(
+    spark_conf={...},
+    executor_pod=flyte.PodTemplate(
+        primary_container_name="spark-kubernetes-executor",
+        pod_spec=V1PodSpec(
+            containers=[
+                V1Container(
+                    name="spark-kubernetes-executor",
+                    resources=V1ResourceRequirements(requests={"ephemeral-storage": "9Gi"}),
+                )
+            ],
+        ),
+    ),
+)
+```
+
+Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template` has to be repeated in the `driver_pod` / `executor_pod` spec.
+
+Pod templates require a cluster whose Spark operator and `SparkApplication` CRD support them. On older clusters the template is dropped and only the legacy fields (cores, memory, and the other `spark_conf` settings) take effect.
+
 ### Accessing the Spark session
 
 Inside a Spark task, the `SparkSession` is available through the task context:
