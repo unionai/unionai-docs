@@ -80,6 +80,23 @@ global:
 > [!WARNING]
 > Serving apps on a domain that is **not** a subdomain of the control-plane host breaks single sign-on: the control-plane session cookie will not reach the app, and users are bounced to `/login`. Keep apps under the control-plane host unless you are deliberately configuring a separate auth flow.
 
+### Stable app URLs and multiple data planes
+
+By default the control plane builds each app's URL from the data plane that runs it, using that data plane's apps domain (above). This is what lets **more than one data plane** serve apps for the same org or cluster pool: every app is reachable at a hostname that carries its data plane's name — `<app>.apps.dp-1.<host>` on one data plane, `<app>.apps.dp-2.<host>` on another — so two data planes never collide. The trade-off is that an app's hostname **changes if it moves to a different data plane**, because the data plane name is part of the domain.
+
+If you would rather every app share one **stable URL pattern**, the control plane can instead compose app URLs from a single global pattern (`executions.apps.publicURLPattern`). To use it, set that pattern on the control plane and leave the data-plane apps domain empty, so the control plane falls back to the global pattern:
+
+```yaml
+# Data-plane values — empty apps domain, so the control plane uses its global pattern
+updateStatus:
+  connectionConfig:
+    apps:
+      domain: ""
+```
+
+> [!WARNING]
+> The global pattern works only with a **single data plane**. Every app resolves to the same wildcard hostname (`*.apps.<host>`), and one wildcard record can route to just one data plane at a time — so apps can only be served from one cluster. If you run **multiple data planes**, leave `executions.apps.publicURLPattern` unset and use the per-data-plane apps domain above. A single URL that stays stable as an app moves between data planes is not yet available.
+
 ### Expose a separate-cluster data plane
 
 For a data plane in its own cluster, enable the public LoadBalancer and annotate it with the cloud LoadBalancer scheme and the wildcard external-dns hostname. For example, on AWS:
