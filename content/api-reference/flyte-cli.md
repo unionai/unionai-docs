@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.0
+version: 2.6.1
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -433,8 +433,15 @@ Creates a configuration file for Flyte CLI.
 If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
 If the file already exists, it will raise an error unless the `--force` option is used.
 
+To point the CLI at a local devbox cluster started with `flyte start devbox`, use the `--devbox` shortcut:
+
+```bash
+$ flyte create config --devbox
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--devbox` | `boolean` | `False` | Configure for a local devbox cluster (see 'flyte start devbox'). Shortcut for '--endpoint localhost:30080 --insecure --project flytesnacks --domain development --builder local'. Mutually exclusive with --endpoint; --project/--domain may still be overridden. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | Endpoint of the Flyte backend. |
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
 | `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
