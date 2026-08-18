@@ -238,8 +238,8 @@ before running it.
 
 A pool can be deleted only when it is **empty** — it contains no clusters and no
 live queues; otherwise the request is rejected. (A queue that is itself
-soft-deleted doesn't block the deletion, but it can only be restored once the
-pool is.) Empty the pool first:
+soft-deleted doesn't block the deletion, but it can only be restored after the
+pool has been restored.) Empty the pool first:
 
 1. Delete the member [clusters](./clusters#delete-a-cluster). Deleting a cluster
    also deletes its [co-named queue](./clusters#the-co-named-queue), so the

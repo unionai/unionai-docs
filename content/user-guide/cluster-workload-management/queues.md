@@ -86,7 +86,8 @@ your part:
   Anything that doesn't explicitly target a queue goes here. (If the `default`
   queue is [drained](#drain-and-reactivate-a-queue) or
   [deleted](#delete-a-queue), untargeted submissions are rejected until it is
-  reactivated or restored.)
+  active again — a restored queue comes back `drained`, so after an undelete it
+  must also be reactivated.)
 - A **co-named queue** for every cluster: registering a cluster creates a queue
   with the *same name as the cluster*, in that cluster's pool, whose selector
   names that one cluster explicitly rather than using `*`. Register
