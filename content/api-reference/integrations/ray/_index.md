@@ -1,6 +1,6 @@
 ---
 title: Ray
-version: 2.6.0
+version: 2.6.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,6 +15,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`AutoscalerOptionsConfig`](./autoscaleroptionsconfig) | Configuration for the Ray autoscaler sidecar. |
 | [`HeadNodeConfig`](./headnodeconfig) |  |
 | [`RayJobConfig`](./rayjobconfig) |  |
 | [`WorkerNodeConfig`](./workernodeconfig) |  |

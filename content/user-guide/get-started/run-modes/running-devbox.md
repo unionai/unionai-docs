@@ -89,6 +89,14 @@ The first start may take a few minutes while Docker images are downloaded.
 Create a config file that points to the devbox:
 
 ```bash
+flyte create config --devbox
+```
+
+This creates `.flyte/config.yaml` configured to talk to your local devbox cluster.
+
+The `--devbox` flag requires flyte 2.6.1 or later. It is a shortcut for the explicit form, which you need on earlier versions:
+
+```bash
 flyte create config \
     --endpoint localhost:30080 \
     --project flytesnacks \
@@ -97,7 +105,13 @@ flyte create config \
     --insecure
 ```
 
-This creates `.flyte/config.yaml` configured to talk to your local devbox cluster.
+Both forms write the same config file. One difference: in an interactive terminal the explicit form offers to reuse a Docker login as your image registry, while `--devbox` skips that prompt, because the devbox pushes to its own in-cluster registry.
+
+`--devbox` cannot be combined with `--endpoint`, but you can still override the project and domain alongside it:
+
+```bash
+flyte create config --devbox --project my-project --domain staging
+```
 
 ## Run a workflow on the devbox
 
