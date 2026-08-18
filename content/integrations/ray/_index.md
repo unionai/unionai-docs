@@ -36,9 +36,8 @@ image = (
 > to poll the raylet and GCS health endpoints. If the image has no `wget`, both
 > probes fail permanently with `wget: command not found`, the head pod never
 > reports `Ready`, the workers stay parked in their `wait-gcs-ready` init
-> container, and the job is never submitted. The run sits in `Queued` with no
-> error message. Install it with `.with_apt_packages("wget")`, or use a base
-> image that already ships it.
+> container, and the job is never submitted. Install it with
+> `.with_apt_packages("wget")`, or use a base image that already ships it.
 
 {{< variant union >}}
 {{< markdown >}}
