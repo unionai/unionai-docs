@@ -37,16 +37,27 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy (mirrors main):
-#   - production deploys (push to v1) use one `prod` group, queued in order
-#     (never cancel), so two merges can't race on the single CF Pages project,
+#   - production deploys use one `prod` group PER LINE, queued in order (never
+#     cancel), so two merges on this line can't race on the CF Pages project,
 #     and can't race on cutting the same stable tag (the cut runs in-job, so
 #     serializing the job serializes the cut).
 #   - workflow_dispatch: own `manual` group, so manual re-runs never block or
 #     get blocked by an in-progress production deploy.
 # This workflow never runs on `pull_request` (see Triggers above), so there is
 # no PR arm here. PR previews live in build-pr.yml + deploy-pr-preview.yml.
+#
+# `github.ref_name` is what makes the group per-line. Without it this file and
+# main's evaluate to the SAME group string -- both said "one prod group", each
+# reading as though it owned its own queue, and together they formed one shared
+# queue for two lines. "Mirrors main" was the trap, not the safeguard.
+#
+# The failure that produced is silent: `cancel-in-progress: false` protects a
+# RUNNING job, but GitHub evicts a PENDING one when a newer run joins the group.
+# So a v1 deploy queued behind a main deploy was discarded the moment a second
+# main deploy arrived, reporting `cancelled` rather than `failure` -- nothing
+# turned red and this line simply did not ship. Observed 2026-08-18.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
