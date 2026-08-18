@@ -26,9 +26,19 @@ Your task image must also include a compatible version of Ray:
 ```python
 image = (
     flyte.Image.from_debian_base(name="ray")
+    .with_apt_packages("wget")
     .with_pip_packages("ray[default]==2.46.0", "flyteplugins-ray")
 )
 ```
+
+> [!WARNING] Your image must include `wget`
+> KubeRay's readiness and liveness probes for the head pod shell out to `wget`
+> to poll the raylet and GCS health endpoints. If the image has no `wget`, both
+> probes fail permanently with `wget: command not found`, the head pod never
+> reports `Ready`, the workers stay parked in their `wait-gcs-ready` init
+> container, and the job is never submitted. The run sits in `Queued` with no
+> error message. Install it with `.with_apt_packages("wget")`, or use a base
+> image that already ships it.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -93,6 +103,18 @@ ray_env = flyte.TaskEnvironment(
 | `requests` | `Resources` | Resource requests for the head node |
 | `limits` | `Resources` | Resource limits for the head node |
 | `pod_template` | `PodTemplate` | Full pod template (mutually exclusive with `requests`/`limits`) |
+
+The head node runs the Ray dashboard, which starts nine subprocess modules on
+top of GCS and the raylet. Give it at least 2 CPU and 4Gi of memory:
+
+```python
+head_node_config=HeadNodeConfig(
+    requests=flyte.Resources(cpu=2, memory="4Gi"),
+)
+```
+
+With less (1 CPU / 1000Mi, for example), `ray start --head` exits 1 and KubeRay
+recycles the head pod in a loop, so the cluster never becomes ready.
 
 ### Connecting to an existing cluster
 
