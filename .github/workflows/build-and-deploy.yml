@@ -42,7 +42,10 @@ env:
 #     and can't race on cutting the same stable tag (the cut runs in-job, so
 #     serializing the job serializes the cut).
 #   - workflow_dispatch: own `manual` group, so manual re-runs never block or
-#     get blocked by an in-progress production deploy.
+#     get blocked by an in-progress production deploy. The ref suffix applies to
+#     this arm too, so manual runs are per-line as well -- a manual v1 deploy
+#     cannot evict a manual main one, which is the same guarantee `prod` gets and
+#     the reason the suffix is unconditional rather than applied to `prod` only.
 # This workflow never runs on `pull_request` (see Triggers above), so there is
 # no PR arm here. PR previews live in build-pr.yml + deploy-pr-preview.yml.
 #
@@ -51,8 +54,12 @@ env:
 # reading as though it owned its own queue, and together they formed one shared
 # queue for two lines. "Mirrors main" was the trap, not the safeguard.
 #
-# The failure that produced is silent: `cancel-in-progress: false` protects a
-# RUNNING job, but GitHub evicts a PENDING one when a newer run joins the group.
+# The failure that produced is silent, and it is documented behaviour rather
+# than a quirk: `cancel-in-progress: false` protects a RUNNING job, but per
+# GitHub's concurrency docs, "any existing pending job or workflow in the same
+# concurrency group will be canceled and the new queued job or workflow will
+# take its place" -- newest wins, cancellation setting notwithstanding.
+# https://docs.github.com/en/actions/using-jobs/using-concurrency
 # So a v1 deploy queued behind a main deploy was discarded the moment a second
 # main deploy arrived, reporting `cancelled` rather than `failure` -- nothing
 # turned red and this line simply did not ship. Observed 2026-08-18.
