@@ -45,7 +45,10 @@ env:
 #     project — and, crucially, can't race on cutting the same stable tag (the
 #     cut runs in-job, so serializing the job serializes the cut).
 #   - workflow_dispatch: own `manual` group, so manual re-runs never block or
-#     get blocked by an in-progress production deploy.
+#     get blocked by an in-progress production deploy. The ref suffix applies to
+#     this arm too, so manual runs are per-line as well -- a manual v1 deploy
+#     cannot evict a manual main one, which is the same guarantee `prod` gets and
+#     the reason the suffix is unconditional rather than applied to `prod` only.
 #
 # `github.ref_name` is what makes the group per-line, and it is not cosmetic.
 # This policy was written when main was the only branch that deployed, so one
@@ -53,11 +56,16 @@ env:
 # (DOC-1245) made `v1` a deploying line too and nothing revisited the group,
 # which left main and v1 sharing one queue.
 #
-# The failure that produces is silent. `cancel-in-progress: false` protects a
-# RUNNING job, but GitHub still evicts a PENDING one when a newer run joins the
-# group — newest wins. So a v1 deploy queued behind a main deploy is discarded
-# the moment any second main deploy arrives, and it reports `cancelled`, not
-# `failure`: nothing turns red and nobody is told. Observed 2026-08-18, where
+# The failure that produces is silent, and it follows documented behaviour
+# rather than a quirk: `cancel-in-progress: false` protects a RUNNING job, but
+# per GitHub's concurrency docs, "any existing pending job or workflow in the
+# same concurrency group will be canceled and the new queued job or workflow
+# will take its place" — newest wins, cancellation setting notwithstanding.
+# https://docs.github.com/en/actions/using-jobs/using-concurrency
+#
+# So a v1 deploy queued behind a main deploy is discarded the moment any second
+# main deploy arrives, and it reports `cancelled`, not `failure`: nothing turns
+# red and nobody is told. Observed 2026-08-18, where
 # v1's deploy queued at 10:20:02 and was evicted at 10:20:17 by a main deploy
 # created one second earlier; the v1 line silently did not ship.
 #
