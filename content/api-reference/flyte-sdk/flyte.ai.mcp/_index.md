@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.mcp
-version: 2.6.1
+version: 2.6.2
 variants: +flyte +union
 layout: py_api
 ---
