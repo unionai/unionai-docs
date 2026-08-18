@@ -22,11 +22,11 @@ This will install the Union and Flytekit SDKs and the `union` CLI.
 {{< /markdown >}}
 {{< grid >}}
 
-{{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
+{{< link-card target="flytekit-sdk" icon="code-square" title="Flytekit SDK" >}}
 The Flytekit SDK provides the core Python API for building Union.ai workflows and apps.
 {{< /link-card >}}
 
-{{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
+{{< link-card target="union-sdk" icon="code-square" title="Union SDK" >}}
 The Union SDK provides additional Union.ai-specific capabilities, on top of the core Flytekit SDK.
 {{< /link-card >}}
 
@@ -54,7 +54,7 @@ This will install the Flytekit SDKs and the `pyflyte` CLI.
 {{< /markdown >}}
 {{< grid >}}
 
-{{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
+{{< link-card target="flytekit-sdk" icon="code-square" title="Flytekit SDK" >}}
 The Flytekit SDK provides the core Python API for building Flyte workflows.
 {{< /link-card >}}
 
