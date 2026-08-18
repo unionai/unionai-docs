@@ -1,6 +1,6 @@
 ---
 title: Project patterns
-weight: 8
+weight: 9
 variants: +flyte +union
 ---
 

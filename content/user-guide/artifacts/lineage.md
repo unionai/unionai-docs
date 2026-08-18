@@ -1,0 +1,44 @@
+---
+title: Automatic lineage tracking
+weight: 6
+variants: -flyte +union
+---
+
+# Automatic lineage tracking
+
+Every artifact version carries its history with it. Union records who produced it and everything that depends on it, without any configuration on your part. The result is a graph you can walk in either direction: from a deployed model back to the run and dataset that produced it, or from a dataset forward to every model, trigger, and app that consumes it.
+
+## What gets recorded
+
+On the producer side, each version records how it came to exist:
+
+* A task output records the run and task that produced it, with a link to that execution and its inputs and logs.
+* An upload through `flyte.remote.Artifact.create()` or `flyte create artifact` records who published it, and the `external_ref` if one was given, pointing at the original location of the data.
+* A Hugging Face prefetch records the source repo and commit.
+
+On the consumer side, Union records each place a version is bound to compute:
+
+* Runs that took the artifact as a task input.
+* Apps whose deployment resolved the artifact as a parameter, down to the exact pinned version.
+* Triggers watching the artifact name, and the runs they started.
+
+## The lineage view
+
+Each artifact in the UI has a **Lineage** tab that draws this graph around the selected version. The source action that produced the artifact sits on the left, and the dependents fan out on the right: the triggers watching the artifact, the runs those triggers started, and the apps serving it. Each node links to its own page, so you can jump from the graph to the producing run's logs or a consuming app's deployment.
+
+The neighboring tabs break out the same relationships as lists: **Versions** shows the full version history, **Triggers** and **Apps** list what depends on the artifact, and **Artifact Card** renders the attached model or data card.
+
+This gives you a birds-eye view of your data relationships. Before deleting or reworking a dataset, you can see every model trained on it and every app serving those models. When a served model misbehaves, you can walk back to the training run and the exact dataset version it consumed.
+
+You can query the same relationships from the CLI:
+
+```bash
+flyte get artifact --source-run my_run          # what a run produced
+flyte get artifact --source-external-ref s3://partner-bucket/drop/2026-08-18.csv
+```
+
+In Python, `flyte.remote.Artifact` exposes `source`, `created_by`, and `url`, which links to the artifact's page in the UI.
+
+## What is not recorded
+
+Consumption is recorded where an artifact is bound to a unit of compute: a task input at `flyte.run()`, or an app parameter at deploy. Calling `Artifact.get()` inside arbitrary code and reading the data yourself is a plain fetch, and does not create a consumer edge in the graph. If you want the dependency tracked, pass the artifact as a task input or app parameter.
