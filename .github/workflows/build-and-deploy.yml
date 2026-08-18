@@ -40,14 +40,33 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy:
-#   - production deploys (push to main) use one `prod` group, queued in order
-#     (never cancel), so two merges can't race on the single CF Pages project —
-#     and, crucially, can't race on cutting the same stable tag (the cut runs
-#     in-job, so serializing the job serializes the cut).
+#   - production deploys use one `prod` group PER LINE, queued in order (never
+#     cancel), so two merges on the same line can't race on the CF Pages
+#     project — and, crucially, can't race on cutting the same stable tag (the
+#     cut runs in-job, so serializing the job serializes the cut).
 #   - workflow_dispatch: own `manual` group, so manual re-runs never block or
 #     get blocked by an in-progress production deploy.
+#
+# `github.ref_name` is what makes the group per-line, and it is not cosmetic.
+# This policy was written when main was the only branch that deployed, so one
+# global `prod` group was the same thing as one group per line. Go-live
+# (DOC-1245) made `v1` a deploying line too and nothing revisited the group,
+# which left main and v1 sharing one queue.
+#
+# The failure that produces is silent. `cancel-in-progress: false` protects a
+# RUNNING job, but GitHub still evicts a PENDING one when a newer run joins the
+# group — newest wins. So a v1 deploy queued behind a main deploy is discarded
+# the moment any second main deploy arrives, and it reports `cancelled`, not
+# `failure`: nothing turns red and nobody is told. Observed 2026-08-18, where
+# v1's deploy queued at 10:20:02 and was evicted at 10:20:17 by a main deploy
+# created one second earlier; the v1 line silently did not ship.
+#
+# Same-line eviction stays, deliberately. Two pushes to the same branch are
+# ordered, so the newer commit already contains the older one and superseding
+# is correct. Only CROSS-line eviction is wrong, and that is exactly what
+# keying on the ref removes.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
