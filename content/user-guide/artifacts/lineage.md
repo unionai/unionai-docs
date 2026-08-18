@@ -18,7 +18,6 @@ On the producer side, each version records how it came to exist:
 
 On the consumer side, Union records each place a version is bound to compute:
 
-* Runs that took the artifact as a task input.
 * Apps whose deployment resolved the artifact as a parameter, down to the exact pinned version.
 * Triggers watching the artifact name, and the runs they started.
 
@@ -41,4 +40,4 @@ In Python, `flyte.remote.Artifact` exposes `source`, `created_by`, and `url`, wh
 
 ## What is not recorded
 
-Consumption is recorded where an artifact is bound to a unit of compute: a task input at `flyte.run()`, or an app parameter at deploy. Calling `Artifact.get()` inside arbitrary code and reading the data yourself is a plain fetch, and does not create a consumer edge in the graph. If you want the dependency tracked, pass the artifact as a task input or app parameter.
+Calling `Artifact.get()` in your own code and reading the data is a plain fetch, and does not create a consumer edge in the graph. Passing an artifact as a task input does not record a consumer edge yet either. Today the tracked dependencies are apps that declare the artifact as a parameter and the runs started by artifact triggers.

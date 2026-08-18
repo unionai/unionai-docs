@@ -82,4 +82,4 @@ data = Artifact.get("training-set", version="v3")   # pinned version
 run = flyte.run(evaluate, model=model, data=data)
 ```
 
-The task body receives a plain `File`, `Dir`, or `DataFrame` and needs no artifact-specific code. Union records the run as a consumer of those artifact versions, which is what powers [lineage tracking](lineage).
+The task body receives a plain `File`, `Dir`, or `DataFrame` and needs no artifact-specific code.
