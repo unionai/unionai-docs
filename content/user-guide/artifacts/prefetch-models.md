@@ -62,4 +62,4 @@ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --artifact-name llama2-7b --gpu
 
 The CLI accepts the same options as the Python API, including `--cpu`, `--mem`, `--disk`, `--modality`, `--format`, and `--shard-config` with a YAML file.
 
-Once prefetched, mount the model into a serving app with an artifact parameter. See [Use artifacts in apps](artifacts-in-apps).
+Once prefetched, mount the model into a serving app with an artifact parameter. See [Use artifacts in apps](./artifacts-in-apps).

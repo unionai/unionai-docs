@@ -28,7 +28,7 @@ published = Artifact.create(
 print(published.name, published.version)
 ```
 
-If you do not pass a `version`, one is generated for you. Pass `attrs`, `kind`, and `card` the same way as in task-produced [metadata](task-outputs#metadata). The call is synchronous by default; use `Artifact.create.aio(...)` from async code.
+If you do not pass a `version`, one is generated for you. Pass `attrs`, `kind`, and `card` the same way as in task-produced [metadata](./task-outputs#metadata). The call is synchronous by default; use `Artifact.create.aio(...)` from async code.
 
 The `external_ref` records where the data came from. When `Artifact.create()` runs inside a task, the producing run is stamped on the artifact automatically; outside a task, `external_ref` is the provenance you can attach.
 
