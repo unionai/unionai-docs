@@ -40,6 +40,37 @@ flowchart LR
 The parent task that issues these calls always re-executes, since it is the code that re-drives
 the graph. Its children are then matched one at a time as it calls them.
 
+## How this differs from caching
+
+Caching and recovery both skip work that has already been done, but they are keyed on different
+things, and they are not alternatives to one another.
+
+Caching is **content-addressed**. A task's cache key comes from its inputs, name, interface, and
+cache version, so a hit can be served to any run at any time, subject to the lookup scope. You opt
+in per task, in code, and `flyte.TaskEnvironment` defaults to caching disabled.
+
+Recovery is **scoped to a single run**. It reuses what one named run produced, at the position in
+the graph where that run produced it. You opt in per run, at launch, and no task has to be marked
+as anything beforehand.
+
+| | Caching | Recovery |
+|---|---|---|
+| Keyed on | inputs and task version | the source run, plus the action's position within it |
+| Reuse comes from | any prior run in the lookup scope | the one run you name |
+| Enabled | per task, in code (off by default) | per run, at launch |
+| Two identical calls in one run | the second is a cache hit | both remain distinct actions |
+
+Three practical consequences follow:
+
+- **Recovery needs no preparation.** A task that was never marked cacheable is recovered anyway,
+  which is usually the situation you are in when a long run fails.
+- **Each one makes a different claim.** Marking a task cached asserts that it is a pure function of
+  its inputs, for every future run. Recovery asserts only that one run's result at one point is
+  still good, so it can reuse output from tasks that would not be safe to cache at all.
+- **They are independent.** Caching applies on any run, including a recovery run; recovery covers
+  the actions caching does not. A recovered action is reported in its own terminal phase, distinct
+  from an action that succeeded by executing.
+
 ## Where the new run's code and inputs come from
 
 Every recovery is a new run carrying a pointer back to the run it recovers from. What differs
@@ -254,6 +285,10 @@ bundle itself, so any code change renames every action and nothing is reused.
 ## Related
 
 - [Re-run a run](./rerun-runs): launch a fresh run from a previous one, without reusing its actions.
-- [Debug a run](./debug-runs): inspect a failure before deciding how to recover from it.
 - [Interact with runs and actions](./interacting-with-runs): retrieve, monitor, and inspect runs and actions.
 - [Run command options](./run-command-options): the full set of `flyte run` options.
+{{< variant union >}}
+{{< markdown >}}
+- [Debug a run](./debug-runs): inspect a failure before deciding how to recover from it.
+{{< /markdown >}}
+{{< /variant >}}
