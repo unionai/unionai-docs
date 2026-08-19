@@ -55,7 +55,7 @@ Union records who produced each artifact version and which tasks, triggers, and 
 The unit of work that produces and consumes artifacts.
 {{< /link-card >}}
 
-{{< link-card target="../apps" icon="rocket" title="Apps" >}}
+{{< link-card target="../apps" icon="window" title="Apps" >}}
 Long-running services that serve the models and datasets artifacts hold.
 {{< /link-card >}}
 

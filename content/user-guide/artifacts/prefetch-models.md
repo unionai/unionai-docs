@@ -25,7 +25,7 @@ For the full how-to, including sharding for multi-GPU inference, resources, toke
 On success the platform records a model artifact for the stored weights:
 
 * The artifact name defaults to the last segment of the repo id, with `.` replaced by `-`, or set it with `artifact_name`. The example above registers `SmolLM2-135M-Instruct`.
-* The version is the Hugging Face commit id.
+* The version is the Hugging Face commit ID.
 * The searchable metadata carries the model facts (framework, architecture, task, modality, serialization format) plus the source repo and commit.
 * The repo's README, if it has one, is attached as the model card.
 

@@ -40,3 +40,5 @@ Union records exactly which artifact version each app deployment resolved, so th
 ## Apps can publish artifacts too
 
 An app endpoint can call `flyte.remote.Artifact.create()` to register a new version from inside the app, for example to snapshot state it has built up. That version behaves like any other: it shows up in the registry and can fire [artifact triggers](./artifact-triggers).
+
+One difference from a task output: outside a task there is no producing run to stamp on the version, so pass `external_ref` if you want the new version to record where its data came from.

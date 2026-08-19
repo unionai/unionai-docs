@@ -23,11 +23,11 @@ On the consumer side, Union records each place a version is bound to compute:
 
 ## The lineage view
 
-Each artifact in the UI has a **Lineage** tab that draws this graph around the selected version. The source action that produced the artifact sits on the left, and the dependents fan out on the right: the triggers watching the artifact, the runs those triggers started, and the apps serving it. Each node links to its own page, so you can jump from the graph to the producing run's logs or a consuming app's deployment.
+Each artifact in the UI has a **Lineage** tab that draws this graph around the selected version. The source action that produced the artifact sits on the left, and the dependents fan out on the right: the triggers watching the artifact, the runs those triggers started, and the apps serving it. App and run nodes link to their own pages, so you can jump from the graph to a consuming app's deployment or the producing run's logs. Trigger rows expand in place to reveal the runs they started.
 
-The neighboring tabs break out the same relationships as lists: **Versions** shows the full version history, **Triggers** and **Apps** list what depends on the artifact, and **Artifact Card** renders the attached model or data card.
+The neighboring tabs break out the same relationships as lists: **Versions** shows the full version history, **Triggers** and **Apps** list what depends on the artifact, and **Artifact card** renders the attached model or data card.
 
-This gives you a birds-eye view of your data relationships. Before deleting or reworking a dataset, you can see every model trained on it and every app serving those models. When a served model misbehaves, you can walk back to the training run and the exact dataset version it consumed.
+Before deleting or reworking a dataset, you can see every model trained on it and every app serving those models. When a served model misbehaves, you can walk back to the training run and the exact dataset version it consumed.
 
 You can query the same relationships from the CLI:
 
