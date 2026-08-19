@@ -115,9 +115,6 @@ spark_config = Spark(
 
 `driver_pod` / `executor_pod` replace the *pod template* only. Pod-level settings that Flyte sends to the Spark operator as explicit fields (affinity, tolerations, node selector, scheduler name, pod security context, DNS config, host network, labels, annotations, env, and image) are still derived from the task environment's pod template, and the operator applies them on top of whatever the role-specific spec sets. Use `driver_pod` / `executor_pod` for container-level differences between the two roles, such as resource requests, volume mounts, or sidecars, and keep pod-level customization on the environment's `pod_template`.
 
-> [!NOTE] Requires a `SparkApplication` CRD with pod template support
-> Pod templates require a cluster whose `SparkApplication` CRD supports `spec.driver.template`. On an older CRD, or where the platform has disabled the feature, the template is dropped: pod-level settings from the environment's `pod_template` still reach the driver and executor through the operator's own fields, but `driver_pod` / `executor_pod` do not apply at all. There is no error, the settings are silently absent.
-
 ### Accessing the Spark session
 
 Inside a Spark task, the `SparkSession` is available through the task context:
