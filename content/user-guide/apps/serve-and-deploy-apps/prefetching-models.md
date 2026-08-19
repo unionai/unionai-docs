@@ -103,7 +103,7 @@ Then run the CLI command:
 ```bash
 flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
     --shard-config shard_config.yaml \
-    --accelerator L40s:8 \
+    --gpu L40s:8 \
     --hf-token-key HF_TOKEN
 ```
 
@@ -131,8 +131,10 @@ flyte prefetch hf-model <repo> \
     --hf-token-key HF_TOKEN \
     --cpu 4 \
     --mem 16Gi \
-    --ephemeral-storage 100Gi \
-    --accelerator L40s:4 \
+    --disk 100Gi \
+    --gpu L40s:4 \
+    --shm auto \
+    --raw-data-path s3://my-bucket/models \
     --shard-config shard_config.yaml
 ```
 
@@ -141,6 +143,20 @@ flyte prefetch hf-model <repo> \
 Here's a complete example of prefetching and using a model:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=complete-example lang=python >}}
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Prefetched models are artifacts
+
+A successful prefetch registers the weights as a versioned model artifact, with the
+Hugging Face commit as its version and the repo README as its model card. For what
+that means for the registry, how to retrieve a prefetched model by name or by source
+repo, and how it appears in lineage, see
+[Prefetch Hugging Face models](../../artifacts/prefetch-models).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Best practices
 
