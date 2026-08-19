@@ -42,7 +42,7 @@ To get started with the Union Terraform provider:
 Install and configure the Union Terraform provider
 {{< /link-card >}}
 
-{{< link-card target="./management" icon="settings" title="Resource management" >}}
+{{< link-card target="./management" icon="gear" title="Resource management" >}}
 Learn about available resources and data sources
 {{< /link-card >}}
 
