@@ -20,7 +20,7 @@ Use the {{< key product_name >}} [EKS Blueprints addon](https://www.npmjs.com/pa
 
 {{< grid >}}
 
-{{< link-card target="./cdk" icon="zap" title="CDK setup" >}}
+{{< link-card target="./cdk" icon="lightning-charge" title="CDK setup" >}}
 Automate data plane provisioning with AWS CDK and EKS Blueprints
 {{< /link-card >}}
 
