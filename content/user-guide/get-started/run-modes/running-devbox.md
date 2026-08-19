@@ -86,6 +86,9 @@ The first start may take a few minutes while Docker images are downloaded.
 
 ## Check the devbox status
 
+> [!NOTE]
+> `flyte get devbox` requires flyte 2.6.2 or later.
+
 To see whether the devbox is up, and where it is:
 
 ```bash

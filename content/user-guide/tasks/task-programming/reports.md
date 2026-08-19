@@ -215,8 +215,14 @@ html = run.get_report(attempt=1)
 ```python
 from flyte.remote import Action
 
-action = Action.get(run_name="my-run-name", name="my-subtask")
+action = Action.get(run_name="my-run-name", name="6n505tdw46zu7fpmgtui1r1uw")
 html = action.get_report()
+```
+
+Nested actions are named deterministically from the parent action, the task identity, the inputs and the call sequence, so the name is a generated string rather than the task's function name. List the actions in a run to find the one you want:
+
+```bash
+flyte get action my-run-name
 ```
 
 Both are synchronous by default. From async code, call the `.aio` variant:
