@@ -19,6 +19,15 @@ You can rerun at two levels of granularity:
 And you can trigger a rerun from three places: the **UI**, the **CLI**, or **programmatically**
 with the Python SDK.
 
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> A rerun executes everything again. If the run failed late and you only want to re-execute the
+> failed or changed parts, reusing everything that already succeeded, see
+> [Recover a failed run](./recover-runs).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Rerun from the UI
 
 ### Rerun an entire run
@@ -54,8 +63,8 @@ full rerun, you can adjust the inputs in the launch form first.
 
 When you rerun a run from the UI, {{< key product_name >}} records the run you started from as the
 new run's parent. This provenance is captured automatically, so you never have to set it yourself. A
-parent link is also recorded when a run is derived from another run in other ways, such as recovering
-a failed run.
+parent link is also recorded when a run is derived from another run in other ways, such as
+[recovering a failed run](./recover-runs).
 
 Run lineage lets you trace a run back to the one it was started from.
 
@@ -129,6 +138,14 @@ flyte run --rerun-from <run-name> main.py main
 | `flyte run --rerun-from <run> <file> <task>` | local | prior run's |
 | `flyte rerun <run>` | fetched from backend | prior run's |
 
+{{< variant union >}}
+{{< markdown >}}
+Both commands re-execute the whole run. Their recovery counterparts, `flyte run --recover-from` and
+`flyte rerun --recover`, reuse the actions that already succeeded. See
+[Recover a failed run](./recover-runs).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Rerun programmatically
 
 Use `flyte.rerun()` to rerun from Python. Like the CLI, it fetches the prior run's task and inputs
@@ -166,4 +183,9 @@ flyte.with_runcontext(
 ## Related
 
 - [Interact with runs and actions](./interacting-with-runs): retrieve, monitor, and inspect runs and actions.
+{{< variant union >}}
+{{< markdown >}}
+- [Recover a failed run](./recover-runs): launch a new run that reuses the actions that already succeeded.
+{{< /markdown >}}
+{{< /variant >}}
 - [Run command options](./run-command-options): the full set of `flyte run` options.
