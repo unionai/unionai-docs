@@ -12,6 +12,21 @@ Triggers allow you to automate and parameterize an execution by scheduling its s
 In Flyte 1 these were configured with a `LaunchPlan` (the `flytekit.LaunchPlan` API) and `CronSchedule`. Flyte 2 replaces them with `flyte.Trigger` and `flyte.Cron`, described below.
 {{< /note >}}
 
+{{< variant union >}}
+{{< markdown >}}
+
+Two trigger types are available:
+
+* **Schedule triggers** run a task based on a Cron expression or a fixed-rate schedule. They are described below.
+* **Artifact triggers** run a task when a new version of a named artifact lands. See [Trigger on new versions](../../artifacts/artifact-triggers).
+
+Support is coming for webhook triggers, which will hit an API endpoint to run your task.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
 Currently, only **schedule triggers** are supported.
 This type of trigger runs a task based on a Cron expression or a fixed-rate schedule.
 
@@ -19,6 +34,9 @@ Support is coming for other trigger types, such as:
 
 * Webhook triggers: Hit an API endpoint to run your task.
 * Artifact triggers: Run a task when a specific artifact is produced.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Triggers are set in the task decorator
 

@@ -71,6 +71,22 @@ Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 
 {{< markdown >}}
 
+## Artifacts
+
+Name and version the datasets and models your tasks produce, and trace where they came from.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="artifacts" icon="box-seam" title="Artifacts" >}}
+Register task outputs and uploads as named, versioned artifacts, trigger runs on new versions, mount them into apps, and trace lineage.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< markdown >}}
+
 ## Access and identity
 
 How to authenticate and manage user permissions on your Union cluster.
