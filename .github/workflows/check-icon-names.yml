@@ -1,0 +1,33 @@
+name: Check Icon Names
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-icon-names:
+    name: "Check Icon Names"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check icon names
+        run: make check-icon-names
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::An icon name does not exist in the set its shortcode resolves against. Run 'make check-icon-names' locally for details. Bootstrap Icons: https://icons.getbootstrap.com/ — gemoji: https://api.github.com/emojis"
