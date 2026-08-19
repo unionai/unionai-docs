@@ -148,6 +148,8 @@ The chart includes pre-built recording rules for cost tracking and execution obs
 - Embedded in a ConfigMap when using `prometheus-simple`
 - Only enabled when `cost.enabled: true` and the deployment is not in low-privilege mode
 
+The chart also ships **operational** recording rules and alerts, gated by `monitoring.prometheusRules.enabled` (rules) and `monitoring.alerting.enabled` (alerts) — independent of `cost.enabled`. Alongside propeller and leaseworker health, these cover pod scheduling: `union:dp:pods_unschedulable:sum` counts task pods that cannot be scheduled, per namespace, and the `UnionDPPodsUnschedulable` alert fires when a namespace has pods stuck Pending — from insufficient node capacity or untolerated taints — for 15 minutes. This is the primary signal for answering "why are my tasks Pending?". The underlying `kube_pod_status_unschedulable` series must be scraped from kube-state-metrics (included in the default scrape config).
+
 ## Enabling cluster health monitoring
 
 To enable operational monitoring with Prometheus Operator, Alertmanager, Grafana, and node-exporter:
