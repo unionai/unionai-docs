@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,10 +37,10 @@ layout: py_api
 ```python
 def array_node_map_task(
     task_function: flytekit.core.python_function_task.PythonFunctionTask,
-    concurrency: typing.Optional[int],
-    min_success_ratio: float,
-    run_all_sub_nodes: bool,
-    kwargs,
+    concurrency: typing.Optional[int] = None,
+    min_success_ratio: float = 1.0,
+    run_all_sub_nodes: bool = False,
+    **kwargs,
 )
 ```
 Map task that uses the ``ArrayNode`` construct..
@@ -57,18 +57,18 @@ Map task that uses the ``ArrayNode`` construct..
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_success_ratio` | `float` | If specified, this determines the minimum fraction of total jobs which can complete successfully before terminating this task and marking it successful. |
 | `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### map_task()
 
 ```python
 def map_task(
     target: typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.python_function_task.PythonFunctionTask, ForwardRef('FlyteLaunchPlan')],
-    concurrency: typing.Optional[int],
-    min_successes: typing.Optional[int],
-    min_success_ratio: float,
-    run_all_sub_nodes: bool,
-    kwargs,
+    concurrency: typing.Optional[int] = None,
+    min_successes: typing.Optional[int] = None,
+    min_success_ratio: float = 1.0,
+    run_all_sub_nodes: bool = False,
+    **kwargs,
 )
 ```
 Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask
@@ -83,7 +83,7 @@ or the drop in replacement ArrayNode implementation
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
 | `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.array_node_map_task.ArrayNodeMapTask
 
@@ -92,13 +92,13 @@ or the drop in replacement ArrayNode implementation
 ```python
 class ArrayNodeMapTask(
     python_function_task: typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask, functools.partial],
-    concurrency: typing.Optional[int],
-    min_successes: typing.Optional[int],
-    min_success_ratio: typing.Optional[float],
-    bound_inputs: typing.Optional[typing.Set[str]],
-    bound_inputs_values: typing.Optional[typing.Dict[str, typing.Any]],
-    run_all_sub_nodes: bool,
-    kwargs,
+    concurrency: typing.Optional[int] = None,
+    min_successes: typing.Optional[int] = None,
+    min_success_ratio: typing.Optional[float] = None,
+    bound_inputs: typing.Optional[typing.Set[str]] = None,
+    bound_inputs_values: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    run_all_sub_nodes: bool = False,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -110,7 +110,7 @@ class ArrayNodeMapTask(
 | `bound_inputs` | `typing.Optional[typing.Set[str]]` | The set of inputs that should be bound to the map task |
 | `bound_inputs_values` | `typing.Optional[typing.Dict[str, typing.Any]]` | Inputs that are bound to the array node and will not be mapped over |
 | `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
-| `kwargs` | `**kwargs` | Additional keyword arguments to pass to the base class |
+| `**kwargs` |  | Additional keyword arguments to pass to the base class |
 
 ### Properties
 
@@ -174,8 +174,8 @@ class ArrayNodeMapTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -184,8 +184,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -221,7 +221,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -229,7 +229,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -383,7 +383,7 @@ from these individual outputs as the final output value.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -394,7 +394,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -507,14 +507,14 @@ and then at runtime reconstructs the interface with this knowledge
 
 ```python
 class ArrayNodeMapTaskResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -554,7 +554,7 @@ Future proof method. Just making it easy to access all tasks (Not required today
 ```python
 def load_task(
     loader_args: typing.List[str],
-    max_concurrency: int,
+    max_concurrency: int = 0,
 ) -> flytekit.core.array_node_map_task.ArrayNodeMapTask
 ```
 Loader args should be of the form

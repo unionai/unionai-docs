@@ -44,7 +44,7 @@ Flytekit SDK and the Union SDK docs.
 | [`union.LaunchPlan`](union#unionlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
 | [`union.PodTemplate`](union#unionpodtemplate) | Custom PodTemplate specification for a Task. |
 | [`union.Resources`](union#unionresources) | This class is used to specify both resource requests and resource limits. |
-| [`union.Secret`](union#unionsecret) | See :std:ref:`cookbook:secrets` for usage examples. |
+| [`union.Secret`](union#unionsecret) | See `cookbook:secrets` for usage examples. |
 | [`union.StructuredDataset`](union#unionstructureddataset) | This is the user facing StructuredDataset class. |
 | [`union.UnionRemote`](union#unionunionremote) |  |
 | [`union.VersionParameters`](union#unionversionparameters) | Parameters used for version hash generation. |

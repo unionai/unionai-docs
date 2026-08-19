@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -149,7 +149,7 @@ def isnested(
 ```
 Returns true if a function is local to another function and is not accessible through a module
 
-This would essentially be any function with a `.&lt;local&gt;.` (defined within a function) e.g.
+This would essentially be any function with a `.<local>.` (defined within a function) e.g.
 
 ```python
 def foo():
@@ -208,14 +208,14 @@ This functionality has two use-cases currently,
 
 ```python
 class TrackedInstance(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 

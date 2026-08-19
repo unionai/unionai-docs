@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,7 +31,7 @@ layout: py_api
 ```python
 def execute_command(
     cmd: str,
-    env: typing.Optional[typing.Dict[str, str]],
+    env: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 Execute a command in the shell.

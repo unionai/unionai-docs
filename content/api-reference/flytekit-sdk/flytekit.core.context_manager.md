@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.context_manager
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -57,9 +57,9 @@ created when walking through the workflow graph.
 ```python
 class CompilationState(
     prefix: str,
-    mode: int,
-    task_resolver: Optional[TaskResolverMixin],
-    nodes: List,
+    mode: int = 1,
+    task_resolver: Optional[TaskResolverMixin] = None,
+    nodes: List = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -93,9 +93,9 @@ def add_node(
 ```python
 def with_params(
     prefix: str,
-    mode: Optional[int],
-    resolver: Optional[TaskResolverMixin],
-    nodes: Optional[List],
+    mode: Optional[int] = None,
+    resolver: Optional[TaskResolverMixin] = None,
+    nodes: Optional[List] = None,
 ) -> CompilationState
 ```
 Create a new CompilationState where the mode and task resolver are defaulted to the current object, but they
@@ -140,12 +140,12 @@ class ExecutionParameters(
     execution_id: typing.Optional[_identifier.WorkflowExecutionIdentifier],
     logging,
     raw_output_prefix,
-    output_metadata_prefix,
-    checkpoint,
-    decks,
-    task_id: typing.Optional[_identifier.Identifier],
-    enable_deck: bool,
-    kwargs,
+    output_metadata_prefix = None,
+    checkpoint = None,
+    decks = None,
+    task_id: typing.Optional[_identifier.Identifier] = None,
+    enable_deck: bool = False,
+    **kwargs,
 )
 ```
 execution_date: Date when the execution is running
@@ -169,7 +169,7 @@ checkpoint: Checkpoint Handle to the configured checkpoint system
 | `decks` |  | |
 | `task_id` | `typing.Optional[_identifier.Identifier]` | |
 | `enable_deck` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -179,8 +179,8 @@ checkpoint: Checkpoint Handle to the configured checkpoint system
 | `decks` | `typing.List` | A list of decks of the tasks, and it will be rendered to a html at the end of the task execution. |
 | `default_deck` | `Deck` |  |
 | `enable_deck` | `bool` | Returns whether deck is enabled or not |
-| `execution_date` | `datetime` | This is a datetime representing the time at which a workflow was started.  This is consistent across all tasks executed in a workflow or sub-workflow.  &gt; [!NOTE] &gt; Do NOT use this execution_date to drive any production logic.  It might be useful as a tag for data to help     in debugging. |
-| `execution_id` | `_identifier.WorkflowExecutionIdentifier` | This is the identifier of the workflow execution within the underlying engine.  It will be consistent across all task executions in a workflow or sub-workflow execution.  &gt; [!NOTE] &gt; Do NOT use this execution_id to drive any production logic.  This execution ID should only be used as a tag     on output data to link back to the workflow run that created it. |
+| `execution_date` | `datetime` | This is a datetime representing the time at which a workflow was started.  This is consistent across all tasks executed in a workflow or sub-workflow.  > [!NOTE] > Do NOT use this execution_date to drive any production logic.  It might be useful as a tag for data to help     in debugging. |
+| `execution_id` | `_identifier.WorkflowExecutionIdentifier` | This is the identifier of the workflow execution within the underlying engine.  It will be consistent across all task executions in a workflow or sub-workflow execution.  > [!NOTE] > Do NOT use this execution_id to drive any production logic.  This execution ID should only be used as a tag     on output data to link back to the workflow run that created it. |
 | `logging` | `_logging.Logger` | A handle to a useful logging object. TODO: Usage examples |
 | `output_metadata_prefix` | `str` |  |
 | `raw_output_prefix` | `str` |  |
@@ -236,7 +236,7 @@ def has_attr(
 
 ```python
 def new_builder(
-    current: Optional[ExecutionParameters],
+    current: Optional[ExecutionParameters] = None,
 ) -> Builder
 ```
 | Parameter | Type | Description |
@@ -273,10 +273,10 @@ user etc.
 ```python
 class ExecutionState(
     working_dir: Union[os.PathLike, str],
-    mode: Optional[ExecutionState.Mode],
-    engine_dir: Optional[Union[os.PathLike, str]],
-    branch_eval_mode: Optional[BranchEvalMode],
-    user_space_params: Optional[ExecutionParameters],
+    mode: Optional[ExecutionState.Mode] = None,
+    engine_dir: Optional[Union[os.PathLike, str]] = None,
+    branch_eval_mode: Optional[BranchEvalMode] = None,
+    user_space_params: Optional[ExecutionParameters] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -324,11 +324,11 @@ Useful only in local execution mode
 
 ```python
 def with_params(
-    working_dir: Optional[os.PathLike],
-    mode: Optional[Mode],
-    engine_dir: Optional[os.PathLike],
-    branch_eval_mode: Optional[BranchEvalMode],
-    user_space_params: Optional[ExecutionParameters],
+    working_dir: Optional[os.PathLike] = None,
+    mode: Optional[Mode] = None,
+    engine_dir: Optional[os.PathLike] = None,
+    branch_eval_mode: Optional[BranchEvalMode] = None,
+    user_space_params: Optional[ExecutionParameters] = None,
 ) -> ExecutionState
 ```
 Produces a copy of the current execution state and overrides the copy's parameters with passed parameter values.
@@ -359,15 +359,15 @@ Please do not confuse this object with the `flytekit.ExecutionParameters` object
 ```python
 class FlyteContext(
     file_access: FileAccessProvider,
-    level: int,
-    flyte_client: Optional['friendly_client.SynchronousFlyteClient'],
-    compilation_state: Optional[CompilationState],
-    execution_state: Optional[ExecutionState],
-    serialization_settings: Optional[SerializationSettings],
-    in_a_condition: bool,
-    origin_stackframe: Optional[traceback.FrameSummary],
-    output_metadata_tracker: Optional[OutputMetadataTracker],
-    worker_queue: Optional[Controller],
+    level: int = 0,
+    flyte_client: Optional['friendly_client.SynchronousFlyteClient'] = None,
+    compilation_state: Optional[CompilationState] = None,
+    execution_state: Optional[ExecutionState] = None,
+    serialization_settings: Optional[SerializationSettings] = None,
+    in_a_condition: bool = False,
+    origin_stackframe: Optional[traceback.FrameSummary] = None,
+    output_metadata_tracker: Optional[OutputMetadataTracker] = None,
+    worker_queue: Optional[Controller] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -466,7 +466,7 @@ def new_builder()
 
 ```python
 def new_compilation_state(
-    prefix: str,
+    prefix: str = '',
 ) -> CompilationState
 ```
 Creates and returns a default compilation state. For most of the code this should be the entrypoint
@@ -481,7 +481,7 @@ of compilation, otherwise the code should always uses - with_compilation_state
 
 ```python
 def new_execution_state(
-    working_dir: Optional[os.PathLike],
+    working_dir: Optional[os.PathLike] = None,
 ) -> ExecutionState
 ```
 Creates and returns a new default execution state. This should be used at the entrypoint of execution,
@@ -640,7 +640,7 @@ def current_context()
 
 ```python
 def get_origin_stackframe(
-    limit,
+    limit = 2,
 ) -> traceback.FrameSummary
 ```
 | Parameter | Type | Description |
@@ -665,7 +665,7 @@ def pop_context()
 ```python
 def push_context(
     ctx: FlyteContext,
-    f: Optional[traceback.FrameSummary],
+    f: Optional[traceback.FrameSummary] = None,
 ) -> FlyteContext
 ```
 | Parameter | Type | Description |
@@ -703,8 +703,8 @@ This is a global Object that tracks various tasks and workflows that are declare
 class OutputMetadata(
     artifact: 'Artifact',
     dynamic_partitions: Optional[typing.Dict[str, str]],
-    time_partition: Optional[datetime],
-    additional_items: Optional[typing.List[SerializableToString]],
+    time_partition: Optional[datetime] = None,
+    additional_items: Optional[typing.List[SerializableToString]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -724,7 +724,7 @@ This class is for the users to set arbitrary metadata on output literals.
 
 ```python
 class OutputMetadataTracker(
-    output_metadata: typing.Dict[typing.Any, OutputMetadata],
+    output_metadata: typing.Dict[typing.Any, OutputMetadata] = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -768,7 +768,7 @@ def get(
 
 ```python
 def with_params(
-    output_metadata: Optional[TaskOutputMetadata],
+    output_metadata: Optional[TaskOutputMetadata] = None,
 ) -> OutputMetadataTracker
 ```
 Produces a copy of the current object and set new things
@@ -785,7 +785,7 @@ The resolution order is
   - Try env var first. The env var should have the configuration.SECRETS_ENV_PREFIX. The env var will be all upper
      cased
   - If not then try the file where the name matches lower case
-    ``configuration.SECRETS_DEFAULT_DIR/&lt;group&gt;/configuration.SECRETS_FILE_PREFIX&lt;key&gt;``
+    ``configuration.SECRETS_DEFAULT_DIR/<group>/configuration.SECRETS_FILE_PREFIX<key>``
 
 All configuration values can always be overridden by injecting an environment variable
 
@@ -794,7 +794,7 @@ All configuration values can always be overridden by injecting an environment va
 
 ```python
 class SecretsManager(
-    secrets_cfg: typing.Optional[SecretsConfig],
+    secrets_cfg: typing.Optional[SecretsConfig] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -814,10 +814,10 @@ class SecretsManager(
 
 ```python
 def get(
-    group: Optional[str],
-    key: Optional[str],
-    group_version: Optional[str],
-    encode_mode: str,
+    group: Optional[str] = None,
+    key: Optional[str] = None,
+    group_version: Optional[str] = None,
+    encode_mode: str = 'r',
 ) -> str
 ```
 Retrieves a secret using the resolution order -&gt; Env followed by file. If not found raises a ValueError
@@ -835,9 +835,9 @@ param encode_mode, defines the mode to open files, it can either be "r" to read 
 
 ```python
 def get_secrets_env_var(
-    group: Optional[str],
-    key: Optional[str],
-    group_version: Optional[str],
+    group: Optional[str] = None,
+    key: Optional[str] = None,
+    group_version: Optional[str] = None,
 ) -> str
 ```
 Returns a string that matches the ENV Variable to look for the secrets
@@ -853,9 +853,9 @@ Returns a string that matches the ENV Variable to look for the secrets
 
 ```python
 def get_secrets_file(
-    group: Optional[str],
-    key: Optional[str],
-    group_version: Optional[str],
+    group: Optional[str] = None,
+    key: Optional[str] = None,
+    group_version: Optional[str] = None,
 ) -> str
 ```
 Returns a path that matches the file to look for the secrets

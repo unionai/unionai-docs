@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.launch_plan
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,8 +26,8 @@ layout: py_api
 
 ```python
 class Auth(
-    assumable_iam_role,
-    kubernetes_service_account,
+    assumable_iam_role = None,
+    kubernetes_service_account = None,
 )
 ```
 DEPRECATED. Do not use. Use flytekit.models.common.AuthRole instead
@@ -98,7 +98,7 @@ class LaunchPlan(
     id,
     spec,
     closure,
-    auto_activate,
+    auto_activate = False,
 )
 ```
 | Parameter | Type | Description |
@@ -236,7 +236,7 @@ def to_flyte_idl()
 class LaunchPlanMetadata(
     schedule,
     notifications,
-    launch_conditions,
+    launch_conditions = None,
 )
 ```
 | Parameter | Type | Description |
@@ -313,10 +313,10 @@ class LaunchPlanSpec(
     annotations: flytekit.models.common.Annotations,
     auth_role: flytekit.models.common.AuthRole,
     raw_output_data_config: flytekit.models.common.RawOutputDataConfig,
-    max_parallelism: typing.Optional[int],
-    security_context: typing.Optional[flytekit.models.security.SecurityContext],
-    overwrite_cache: typing.Optional[bool],
-    concurrency_policy: typing.Optional[flytekit.models.concurrency.ConcurrencyPolicy],
+    max_parallelism: typing.Optional[int] = None,
+    security_context: typing.Optional[flytekit.models.security.SecurityContext] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    concurrency_policy: typing.Optional[flytekit.models.concurrency.ConcurrencyPolicy] = None,
 )
 ```
 The spec for a Launch Plan.

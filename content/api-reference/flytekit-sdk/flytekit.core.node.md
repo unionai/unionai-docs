@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -125,23 +125,23 @@ because that's what most users are familiar with.
 
 ```python
 def with_overrides(
-    node_name: Optional[str],
-    aliases: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    timeout: Optional[Union[int, datetime.timedelta, object]],
-    retries: Optional[int],
-    interruptible: Optional[bool],
-    name: Optional[str],
-    task_config: Optional[Any],
-    container_image: Optional[str],
-    accelerator: Optional[BaseAccelerator],
-    cache: Optional[Union[bool, Cache]],
-    shared_memory: Optional[Union[L[True], str]],
-    pod_template: Optional[PodTemplate],
-    resources: Optional[Resources],
-    args,
-    kwargs,
+    node_name: Optional[str] = None,
+    aliases: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    timeout: Optional[Union[int, datetime.timedelta, object]] = object,
+    retries: Optional[int] = None,
+    interruptible: Optional[bool] = None,
+    name: Optional[str] = None,
+    task_config: Optional[Any] = None,
+    container_image: Optional[str] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    cache: Optional[Union[bool, Cache]] = None,
+    shared_memory: Optional[Union[L[True], str]] = None,
+    pod_template: Optional[PodTemplate] = None,
+    resources: Optional[Resources] = None,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -161,6 +161,6 @@ def with_overrides(
 | `shared_memory` | `Optional[Union[L[True], str]]` | |
 | `pod_template` | `Optional[PodTemplate]` | |
 | `resources` | `Optional[Resources]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 

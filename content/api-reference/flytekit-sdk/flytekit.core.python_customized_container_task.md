@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_customized_container_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -51,13 +51,13 @@ class PythonCustomizedContainerTask(
     task_config: TC,
     container_image: str,
     executor_type: Type[ShimTaskExecutor],
-    task_resolver: Optional[TaskTemplateResolver],
-    task_type,
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    environment: Optional[Dict[str, str]],
-    secret_requests: Optional[List[Secret]],
-    kwargs,
+    task_resolver: Optional[TaskTemplateResolver] = None,
+    task_type = 'python-task',
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    environment: Optional[Dict[str, str]] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -72,7 +72,7 @@ class PythonCustomizedContainerTask(
 | `limits` | `Optional[Resources]` | custom resource limit settings. |
 | `environment` | `Optional[Dict[str, str]]` | Environment variables you want the task to have when run. |
 | `secret_requests` | `Optional[List[Secret]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -134,8 +134,8 @@ class PythonCustomizedContainerTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -144,8 +144,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -177,7 +177,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -185,7 +185,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -344,7 +344,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -355,7 +355,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.shim_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,8 +36,8 @@ has two components:
 Basically at execution time (both locally and on a Flyte cluster), the task template is given to the executor,
 which is responsible for computing and returning the results.
 
-&gt; [!NOTE]
-&gt; The interface at execution time will have to derived from the Flyte IDL interface, which means it may be lossy.
+> [!NOTE]
+> The interface at execution time will have to derived from the Flyte IDL interface, which means it may be lossy.
   This is because when a task is serialized from Python into the ``TaskTemplate`` some information is lost because
    Flyte IDL can't keep track of every single Python type (or Java type if writing in the Java flytekit).
 
@@ -51,16 +51,16 @@ that the ``entrypoint.py`` can execute, even though this class doesn't inherit f
 class ExecutableTemplateShimTask(
     tt: _task_model.TaskTemplate,
     executor_type: Type[ShimTaskExecutor],
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `_task_model.TaskTemplate` | |
 | `executor_type` | `Type[ShimTaskExecutor]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -103,7 +103,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -111,7 +111,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### post_execute()
 
@@ -149,14 +149,14 @@ This function is a stub, just here to keep dispatch_execute compatibility betwee
 
 ```python
 class ShimTaskExecutor(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -179,7 +179,7 @@ class ShimTaskExecutor(
 ```python
 def execute_from_model(
     tt: _task_model.TaskTemplate,
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
@@ -191,7 +191,7 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `_task_model.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+| `**kwargs` |  | These are the Python native input values to the task. |
 
 **Returns:** Python native output values from the task.
 

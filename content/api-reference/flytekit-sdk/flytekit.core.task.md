@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,9 +59,9 @@ Decorates the task with additional functionality if necessary.
 
 ```python
 def eager(
-    _fn,
-    args,
-    kwargs,
+    _fn = None,
+    *args,
+    **kwargs,
 ) -> Union[EagerAsyncPythonFunctionTask, partial]
 ```
 Eager workflow decorator.
@@ -138,8 +138,8 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
 | Parameter | Type | Description |
 |-|-|-|
 | `_fn` |  | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### reference_task()
 
@@ -187,34 +187,34 @@ def ref_t1(a: typing.List[str]) -> str:
 
 ```python
 def task(
-    _task_function: Optional[Callable[P, FuncOut]],
-    task_config: Optional[T],
-    cache: Union[bool, Cache],
-    retries: int,
-    interruptible: Optional[bool],
-    deprecated: str,
-    timeout: Union[datetime.timedelta, int],
-    container_image: Optional[Union[str, ImageSpec]],
-    environment: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    secret_requests: Optional[List[Secret]],
-    execution_mode: PythonFunctionTask.ExecutionBehavior,
-    node_dependency_hints: Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]],
-    task_resolver: Optional[TaskResolverMixin],
-    docs: Optional[Documentation],
-    disable_deck: Optional[bool],
-    enable_deck: Optional[bool],
-    deck_fields: Optional[Tuple[DeckField, ...]],
-    pod_template: Optional['PodTemplate'],
-    pod_template_name: Optional[str],
-    accelerator: Optional[BaseAccelerator],
-    pickle_untyped: bool,
-    shared_memory: Optional[Union[L[True], str]],
-    resources: Optional[Resources],
-    labels: Optional[dict[str, str]],
-    annotations: Optional[dict[str, str]],
-    kwargs,
+    _task_function: Optional[Callable[P, FuncOut]] = None,
+    task_config: Optional[T] = None,
+    cache: Union[bool, Cache] = False,
+    retries: int = 0,
+    interruptible: Optional[bool] = None,
+    deprecated: str = '',
+    timeout: Union[datetime.timedelta, int] = 0,
+    container_image: Optional[Union[str, ImageSpec]] = None,
+    environment: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    execution_mode: PythonFunctionTask.ExecutionBehavior = ExecutionBehavior.DEFAULT,
+    node_dependency_hints: Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]] = None,
+    task_resolver: Optional[TaskResolverMixin] = None,
+    docs: Optional[Documentation] = None,
+    disable_deck: Optional[bool] = None,
+    enable_deck: Optional[bool] = None,
+    deck_fields: Optional[Tuple[DeckField, ...]] = (<DeckField.SOURCE_CODE: 'Source Code'>, <DeckField.DEPENDENCIES: 'Dependencies'>, <DeckField.TIMELINE: 'Timeline'>, <DeckField.INPUT: 'Input'>, <DeckField.OUTPUT: 'Output'>),
+    pod_template: Optional['PodTemplate'] = None,
+    pod_template_name: Optional[str] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    pickle_untyped: bool = False,
+    shared_memory: Optional[Union[L[True], str]] = None,
+    resources: Optional[Resources] = None,
+    labels: Optional[dict[str, str]] = None,
+    annotations: Optional[dict[str, str]] = None,
+    **kwargs,
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionTask[T]], PythonFunctionTask[T]]
 ```
 This is the core decorator to use for any task type in flytekit.
@@ -242,7 +242,7 @@ For specific task types
 def my_task(x: int, y: typing.Dict[str, str]) -> str:
     ...
 ```
-Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
+Please see some cookbook `task examples` for additional information.
 
 :deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs)
       instances of this task should be executed in serial when caching is enabled. This means that given multiple
@@ -285,7 +285,7 @@ Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for add
 | `resources` | `Optional[Resources]` | Specify both the request and the limit. When the value is set to a tuple or list, the first value is the request and the second value is the limit. If the value is a single value, then both the requests and limit is set to that value. For example, the `Resource(cpu=("1", "2"), mem="1Gi")` will set the cpu request to 1, cpu limit to 2, and mem request to 1Gi. |
 | `labels` | `Optional[dict[str, str]]` | Labels to be applied to the task resource. |
 | `annotations` | `Optional[dict[str, str]]` | Annotations to be applied to the task resource. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.task.Echo
 
@@ -294,8 +294,8 @@ Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for add
 ```python
 class Echo(
     name: str,
-    inputs: Optional[Dict[str, Type]],
-    kwargs,
+    inputs: Optional[Dict[str, Type]] = None,
+    **kwargs,
 )
 ```
 A task that simply echoes the inputs back to the user.
@@ -318,7 +318,7 @@ task-plugins:
 |-|-|-|
 | `name` | `str` | The name of the task. |
 | `inputs` | `Optional[Dict[str, Type]]` | Name and type of inputs specified as a dictionary. e.g. {"a": int, "b": str}. |
-| `kwargs` | `**kwargs` | All other args required by the parent type - PythonTask. |
+| `**kwargs` |  | All other args required by the parent type - PythonTask. |
 
 ### Properties
 
@@ -371,8 +371,8 @@ task-plugins:
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -381,8 +381,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -418,7 +418,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 This method will be invoked to execute the task.
@@ -426,7 +426,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -563,7 +563,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -574,7 +574,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -658,7 +658,7 @@ task_type (str): defines a unique task-type for every new extension. If a backen
 name (str): A unique name for the task instantiation. This is unique for every instance of task.
 task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
     task
-interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+interface (Optional[Interface]): A python native typed interface ``(inputs) -> outputs`` that declares the
     signature of the task
 environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
     execution of the task. Supplied as a dictionary of key/value pairs
@@ -731,15 +731,15 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -772,12 +772,12 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -914,7 +914,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Please see the local_execute comments in the main task.
@@ -923,7 +923,7 @@ Please see the local_execute comments in the main task.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.repo
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -76,10 +76,10 @@ relative to the given project_root.
 ```python
 def package(
     serializable_entities: typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]],
-    source: str,
-    output: str,
-    deref_symlinks: bool,
-    fast_options: typing.Optional[flytekit.tools.fast_registration.FastPackageOptions],
+    source: str = '.',
+    output: str = './flyte-package.tgz',
+    deref_symlinks: bool = False,
+    fast_options: typing.Optional[flytekit.tools.fast_registration.FastPackageOptions] = None,
 )
 ```
 Package the given entities and the source code (if fast is enabled) into a package with the given name in output
@@ -98,11 +98,11 @@ Package the given entities and the source code (if fast is enabled) into a packa
 ```python
 def print_registration_status(
     i: flytekit.models.core.identifier.Identifier,
-    success: bool,
-    activation: bool,
-    dry_run: bool,
-    console_url: str,
-    verbosity: int,
+    success: bool = True,
+    activation: bool = False,
+    dry_run: bool = False,
+    console_url: str = None,
+    verbosity: int = 0,
 )
 ```
 | Parameter | Type | Description |
@@ -132,11 +132,11 @@ def register(
     copy_style: <enum 'CopyFileDetection'>,
     env: typing.Optional[typing.Dict[str, str]],
     default_resources: typing.Optional[flytekit.core.resources.ResourceSpec],
-    dry_run: bool,
-    activate_launchplans: bool,
-    skip_errors: bool,
-    show_files: bool,
-    verbosity: int,
+    dry_run: bool = False,
+    activate_launchplans: bool = False,
+    skip_errors: bool = False,
+    show_files: bool = False,
+    verbosity: int = 0,
 )
 ```
 Temporarily, for fast register, specify both the fast arg as well as copy_style.
@@ -171,11 +171,11 @@ fast == True with copy_style == None means use the old fast register tar'ring me
 def serialize_and_package(
     pkgs: typing.List[str],
     settings: flytekit.configuration.SerializationSettings,
-    source: str,
-    output: str,
-    deref_symlinks: bool,
-    options: typing.Optional[flytekit.core.options.Options],
-    fast_options: typing.Optional[flytekit.tools.fast_registration.FastPackageOptions],
+    source: str = '.',
+    output: str = './flyte-package.tgz',
+    deref_symlinks: bool = False,
+    options: typing.Optional[flytekit.core.options.Options] = None,
+    fast_options: typing.Optional[flytekit.tools.fast_registration.FastPackageOptions] = None,
 )
 ```
 Fist serialize and then package all entities
@@ -198,9 +198,9 @@ fast == True with copy_style == None means use the old fast register tar'ring me
 ```python
 def serialize_get_control_plane_entities(
     settings: flytekit.configuration.SerializationSettings,
-    local_source_root: typing.Optional[str],
-    options: typing.Optional[flytekit.core.options.Options],
-    is_registration: bool,
+    local_source_root: typing.Optional[str] = None,
+    options: typing.Optional[flytekit.core.options.Options] = None,
+    is_registration: bool = False,
 ) -> typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]
 ```
 See {{&lt; py_class_ref flytekit.models.core.identifier.ResourceType &gt;}} to match the trailing index in the file name with the
@@ -220,7 +220,7 @@ entity type.
 def serialize_load_only(
     pkgs: typing.List[str],
     settings: flytekit.configuration.SerializationSettings,
-    local_source_root: typing.Optional[str],
+    local_source_root: typing.Optional[str] = None,
 )
 ```
 See {{&lt; py_class_ref flytekit.models.core.identifier.ResourceType &gt;}} to match the trailing index in the file name with the
@@ -239,9 +239,9 @@ entity type.
 def serialize_to_folder(
     pkgs: typing.List[str],
     settings: flytekit.configuration.SerializationSettings,
-    local_source_root: typing.Optional[str],
-    folder: str,
-    options: typing.Optional[flytekit.core.options.Options],
+    local_source_root: typing.Optional[str] = None,
+    folder: str = '.',
+    options: typing.Optional[flytekit.core.options.Options] = None,
 )
 ```
 Serialize the given set of python packages to a folder

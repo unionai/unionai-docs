@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.literals
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -173,10 +173,10 @@ def to_flyte_idl()
 
 ```python
 class BindingData(
-    scalar,
-    collection,
-    promise,
-    map,
+    scalar = None,
+    collection = None,
+    promise = None,
+    map = None,
 )
 ```
 Specifies either a simple value or a reference to another output. Only one of the input arguments may be
@@ -528,12 +528,12 @@ def to_flyte_idl()
 
 ```python
 class Literal(
-    scalar: typing.Optional[flytekit.models.literals.Scalar],
-    collection: typing.Optional[flytekit.models.literals.LiteralCollection],
-    map: typing.Optional[flytekit.models.literals.LiteralMap],
-    hash: typing.Optional[str],
-    metadata: typing.Optional[typing.Dict[str, str]],
-    offloaded_metadata: typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata],
+    scalar: typing.Optional[flytekit.models.literals.Scalar] = None,
+    collection: typing.Optional[flytekit.models.literals.LiteralCollection] = None,
+    map: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    hash: typing.Optional[str] = None,
+    metadata: typing.Optional[typing.Dict[str, str]] = None,
+    offloaded_metadata: typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata] = None,
 )
 ```
 This IDL message represents a literal value in the Flyte ecosystem.
@@ -749,9 +749,9 @@ def to_flyte_idl()
 
 ```python
 class LiteralOffloadedMetadata(
-    uri: typing.Optional[str],
-    size_bytes: typing.Optional[int],
-    inferred_type: typing.Optional[flytekit.models.types.LiteralType],
+    uri: typing.Optional[str] = None,
+    size_bytes: typing.Optional[int] = None,
+    inferred_type: typing.Optional[flytekit.models.types.LiteralType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -813,12 +813,12 @@ def to_flyte_idl()
 
 ```python
 class Primitive(
-    integer: typing.Optional[int],
-    float_value: typing.Optional[float],
-    string_value: typing.Optional[str],
-    boolean: typing.Optional[bool],
-    datetime: typing.Optional[datetime.datetime],
-    duration: typing.Optional[datetime.timedelta],
+    integer: typing.Optional[int] = None,
+    float_value: typing.Optional[float] = None,
+    string_value: typing.Optional[str] = None,
+    boolean: typing.Optional[bool] = None,
+    datetime: typing.Optional[datetime.datetime] = None,
+    duration: typing.Optional[datetime.timedelta] = None,
 )
 ```
 This object proxies the primitives supported by the Flyte IDL system.  Only one value can be set.
@@ -956,15 +956,15 @@ def to_flyte_idl()
 
 ```python
 class Scalar(
-    primitive: typing.Optional[flytekit.models.literals.Primitive],
-    blob: typing.Optional[flytekit.models.literals.Blob],
-    binary: typing.Optional[flytekit.models.literals.Binary],
-    schema: typing.Optional[flytekit.models.literals.Schema],
-    union: typing.Optional[flytekit.models.literals.Union],
-    none_type: typing.Optional[flytekit.models.literals.Void],
-    error: typing.Optional[flytekit.models.types.Error],
-    generic: typing.Optional[google.protobuf.struct_pb2.Struct],
-    structured_dataset: typing.Optional[flytekit.models.literals.StructuredDataset],
+    primitive: typing.Optional[flytekit.models.literals.Primitive] = None,
+    blob: typing.Optional[flytekit.models.literals.Blob] = None,
+    binary: typing.Optional[flytekit.models.literals.Binary] = None,
+    schema: typing.Optional[flytekit.models.literals.Schema] = None,
+    union: typing.Optional[flytekit.models.literals.Union] = None,
+    none_type: typing.Optional[flytekit.models.literals.Void] = None,
+    error: typing.Optional[flytekit.models.types.Error] = None,
+    generic: typing.Optional[google.protobuf.struct_pb2.Struct] = None,
+    structured_dataset: typing.Optional[flytekit.models.literals.StructuredDataset] = None,
 )
 ```
 Scalar wrapper around Flyte types.  Only one can be specified.
@@ -1117,7 +1117,7 @@ def to_flyte_idl()
 ```python
 class StructuredDataset(
     uri: str,
-    metadata: typing.Optional[flytekit.models.literals.StructuredDatasetMetadata],
+    metadata: typing.Optional[flytekit.models.literals.StructuredDatasetMetadata] = None,
 )
 ```
 A strongly typed schema that defines the interface of data retrieved from the underlying storage medium.
@@ -1180,7 +1180,7 @@ def to_flyte_idl()
 
 ```python
 class StructuredDatasetMetadata(
-    structured_dataset_type: typing.Optional[flytekit.models.types.StructuredDatasetType],
+    structured_dataset_type: typing.Optional[flytekit.models.types.StructuredDatasetType] = None,
 )
 ```
 | Parameter | Type | Description |

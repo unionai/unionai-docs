@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.wrap_exception_interceptor
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,7 +21,7 @@ layout: py_api
 
 ```python
 class RetryExceptionWrapperInterceptor(
-    max_retries: int,
+    max_retries: int = 3,
 )
 ```
 | Parameter | Type | Description |

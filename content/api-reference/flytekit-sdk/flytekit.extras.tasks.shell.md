@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.tasks.shell
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -51,7 +51,7 @@ def get_raw_shell_task(
 ```python
 def subproc_execute(
     command: typing.Union[typing.List[str], str],
-    kwargs,
+    **kwargs,
 ) -> flytekit.extras.tasks.shell.ProcessResult
 ```
 Execute a command and capture its stdout and stderr. Useful for executing
@@ -62,7 +62,7 @@ shell commands from within a python task.
 | Parameter | Type | Description |
 |-|-|-|
 | `command` | `typing.Union[typing.List[str], str]` | The command to be executed as a list of strings. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 **Returns**
 
@@ -86,14 +86,14 @@ namespacing inputs and outputs
 
 ```python
 class AttrDict(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ## flytekit.extras.tasks.shell.OutputLocation
 
@@ -140,13 +140,13 @@ class ProcessResult(
 ```python
 class RawShellTask(
     name: str,
-    debug: bool,
-    script: typing.Optional[str],
-    script_file: typing.Optional[str],
-    task_config: ~T,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_locs: typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]],
-    kwargs,
+    debug: bool = False,
+    script: typing.Optional[str] = None,
+    script_file: typing.Optional[str] = None,
+    task_config: ~T = None,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_locs: typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]] = None,
+    **kwargs,
 )
 ```
 The `RawShellTask` is a minimal extension of the existing `ShellTask`. It's purpose is to support wrapping a
@@ -158,12 +158,12 @@ This class is not meant to be instantiated into tasks by users, but used with th
 template. The template itself will export the desired environment variables, and subsequently execute the
 desired "raw" script with the specified arguments.
 
-&gt; [!NOTE]
-&gt; This means that within your workflow, you can dynamically control the env variables, arguments, and even the
+> [!NOTE]
+> This means that within your workflow, you can dynamically control the env variables, arguments, and even the
     actual script you want to run.
 
-&gt; [!NOTE]
-&gt; The downside is that a dynamic workflow will be required. The "raw" script passed in at execution time must
+> [!NOTE]
+> The downside is that a dynamic workflow will be required. The "raw" script passed in at execution time must
     be at the specified location.
 
 These args are forwarded directly to the parent `ShellTask` constructor as behavior does not diverge
@@ -178,7 +178,7 @@ These args are forwarded directly to the parent `ShellTask` constructor as behav
 | `task_config` | `~T` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -244,8 +244,8 @@ These args are forwarded directly to the parent `ShellTask` constructor as behav
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -254,8 +254,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -291,7 +291,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 Executes the given script by substituting the inputs and outputs and extracts the outputs from the filesystem
@@ -299,7 +299,7 @@ Executes the given script by substituting the inputs and outputs and extracts th
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -479,7 +479,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -490,7 +490,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -582,7 +582,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.
@@ -616,14 +616,14 @@ task resolver. It can be useful to override the task resolver for specific cases
 ```python
 class ShellTask(
     name: str,
-    debug: bool,
-    script: typing.Optional[str],
-    script_file: typing.Optional[str],
-    task_config: ~T,
-    shell: str,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_locs: typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]],
-    kwargs,
+    debug: bool = False,
+    script: typing.Optional[str] = None,
+    script_file: typing.Optional[str] = None,
+    task_config: ~T = None,
+    shell: str = '/bin/sh',
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_locs: typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]] = None,
+    **kwargs,
 )
 ```
 name: str Name of the Task. Should be unique in the project
@@ -648,7 +648,7 @@ output_locs: A list of {{&lt; py_class_ref OutputLocations &gt;}}
 | `shell` | `str` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_locs` | `typing.Optional[typing.List[flytekit.extras.tasks.shell.OutputLocation]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -713,8 +713,8 @@ output_locs: A list of {{&lt; py_class_ref OutputLocations &gt;}}
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -723,8 +723,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -760,7 +760,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 Executes the given script by substituting the inputs and outputs and extracts the outputs from the filesystem
@@ -768,7 +768,7 @@ Executes the given script by substituting the inputs and outputs and extracts th
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -948,7 +948,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -959,7 +959,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -1032,7 +1032,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.pandera.config
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,7 +22,7 @@ Pandera validation configuration.
 
 ```python
 class ValidationConfig(
-    on_error: typing.Literal['raise', 'warn'],
+    on_error: typing.Literal['raise', 'warn'] = 'raise',
 )
 ```
 | Parameter | Type | Description |

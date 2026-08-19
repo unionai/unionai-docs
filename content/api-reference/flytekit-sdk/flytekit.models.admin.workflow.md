@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.workflow
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,7 +25,7 @@ layout: py_api
 class Workflow(
     id,
     closure,
-    short_description,
+    short_description = None,
 )
 ```
 | Parameter | Type | Description |
@@ -155,7 +155,7 @@ def to_flyte_idl()
 class WorkflowSpec(
     template: flytekit.models.core.workflow.WorkflowTemplate,
     sub_workflows: typing.List[flytekit.models.core.workflow.WorkflowTemplate],
-    docs: typing.Optional[flytekit.models.documentation.Documentation],
+    docs: typing.Optional[flytekit.models.documentation.Documentation] = None,
 )
 ```
 This object fully encapsulates the specification of a workflow

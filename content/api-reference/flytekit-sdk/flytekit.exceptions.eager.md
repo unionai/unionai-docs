@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.eager
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,7 +19,7 @@ layout: py_api
 
 Raised when a node in an eager workflow encounters an error.
 
-This exception should be used in an {{&lt; py_func_ref `@eager &lt;flytekit.core.task.eager&gt;` &gt;}} workflow function to
+This exception should be used in an {{&lt; py_func_ref `@eager <flytekit.core.task.eager>` &gt;}} workflow function to
 catch exceptions that are raised by tasks or subworkflows.
 
 ```python

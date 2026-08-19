@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,9 +33,9 @@ Base authenticator for all authentication flows
 class Authenticator(
     endpoint: str,
     header_key: str,
-    credentials: flytekit.clients.auth.keyring.Credentials,
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
+    credentials: flytekit.clients.auth.keyring.Credentials = None,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -83,10 +83,10 @@ class ClientConfig(
     authorization_endpoint: str,
     redirect_uri: str,
     client_id: str,
-    device_authorization_endpoint: typing.Optional[str],
-    scopes: typing.List[str],
-    header_key: str,
-    audience: typing.Optional[str],
+    device_authorization_endpoint: typing.Optional[str] = None,
+    scopes: typing.List[str] = None,
+    header_key: str = 'authorization',
+    audience: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -130,12 +130,12 @@ class ClientCredentialsAuthenticator(
     client_id: str,
     client_secret: str,
     cfg_store: flytekit.clients.auth.authenticator.ClientConfigStore,
-    header_key: typing.Optional[str],
-    scopes: typing.Optional[typing.List[str]],
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-    audience: typing.Optional[str],
-    session: typing.Optional[requests.sessions.Session],
+    header_key: typing.Optional[str] = None,
+    scopes: typing.Optional[typing.List[str]] = None,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
+    audience: typing.Optional[str] = None,
+    session: typing.Optional[requests.sessions.Session] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -191,7 +191,7 @@ This Authenticator retrieves access_token using the provided command
 ```python
 class CommandAuthenticator(
     command: typing.List[str],
-    header_key: str,
+    header_key: str = None,
 )
 ```
 | Parameter | Type | Description |
@@ -242,12 +242,12 @@ Examples described
 class DeviceCodeAuthenticator(
     endpoint: str,
     cfg_store: flytekit.clients.auth.authenticator.ClientConfigStore,
-    header_key: typing.Optional[str],
-    audience: typing.Optional[str],
-    scopes: typing.Optional[typing.List[str]],
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-    session: typing.Optional[requests.sessions.Session],
+    header_key: typing.Optional[str] = None,
+    audience: typing.Optional[str] = None,
+    scopes: typing.Optional[typing.List[str]] = None,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
+    session: typing.Optional[requests.sessions.Session] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -302,10 +302,10 @@ for in the POST request during the token caching process.
 class PKCEAuthenticator(
     endpoint: str,
     cfg_store: flytekit.clients.auth.authenticator.ClientConfigStore,
-    scopes: typing.Optional[typing.List[str]],
-    header_key: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-    session: typing.Optional[requests.sessions.Session],
+    scopes: typing.Optional[typing.List[str]] = None,
+    header_key: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
+    session: typing.Optional[requests.sessions.Session] = None,
 )
 ```
 Initialize with default creds from KeyStore using the endpoint name

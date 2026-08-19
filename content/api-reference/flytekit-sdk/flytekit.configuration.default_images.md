@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.default_images
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,8 +45,8 @@ def default_image()
 
 ```python
 def find_image_for(
-    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion],
-    flytekit_version: typing.Optional[str],
+    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion] = None,
+    flytekit_version: typing.Optional[str] = None,
 ) -> str
 ```
 | Parameter | Type | Description |

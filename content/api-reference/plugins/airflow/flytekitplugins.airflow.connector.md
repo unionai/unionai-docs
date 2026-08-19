@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.airflow.connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,7 +30,7 @@ layout: py_api
 ```python
 def get_log_links(
     airflow_operator: airflow.models.baseoperator.BaseOperator,
-    airflow_trigger: typing.Optional[airflow.triggers.base.BaseTrigger],
+    airflow_trigger: typing.Optional[airflow.triggers.base.BaseTrigger] = None,
 ) -> typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]]
 ```
 | Parameter | Type | Description |
@@ -88,8 +88,8 @@ def AirflowConnector()
 ```python
 def create(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekitplugins.airflow.connector.AirflowMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -99,14 +99,14 @@ Return a resource meta that can be used to get the status of the task.
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekitplugins.airflow.connector.AirflowMetadata,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -115,14 +115,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.airflow.connector.AirflowMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekitplugins.airflow.connector.AirflowMetadata,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -133,14 +133,14 @@ and the propeller will write the structured dataset to the blob store.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.airflow.connector.AirflowMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -149,14 +149,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -165,7 +165,7 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.airflow.connector.AirflowMetadata
 
@@ -177,9 +177,9 @@ This class is used to store the Airflow task configuration. It is serialized and
 ```python
 class AirflowMetadata(
     airflow_operator: flytekitplugins.airflow.task.AirflowObj,
-    airflow_trigger: flytekitplugins.airflow.task.AirflowObj,
-    airflow_trigger_callback: str,
-    job_id: typing.Optional[str],
+    airflow_trigger: flytekitplugins.airflow.task.AirflowObj = None,
+    airflow_trigger_callback: str = None,
+    job_id: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

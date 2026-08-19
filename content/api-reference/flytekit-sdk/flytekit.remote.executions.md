@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.executions
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,14 +27,14 @@ A class encapsulating a node execution being run on a Flyte remote backend.
 
 ```python
 class FlyteNodeExecution(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -114,14 +114,14 @@ A class encapsulating a task execution being run on a Flyte remote backend.
 
 ```python
 class FlyteTaskExecution(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -201,18 +201,18 @@ A class encapsulating a workflow execution being run on a Flyte remote backend.
 
 ```python
 class FlyteWorkflowExecution(
-    type_hints: Optional[Dict[str, typing.Type]],
-    remote: Optional['FlyteRemote'],
-    args,
-    kwargs,
+    type_hints: Optional[Dict[str, typing.Type]] = None,
+    remote: Optional['FlyteRemote'] = None,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `type_hints` | `Optional[Dict[str, typing.Type]]` | |
 | `remote` | `Optional['FlyteRemote']` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -262,8 +262,8 @@ def from_flyte_idl(
 ```python
 def promote_from_model(
     base_model: execution_models.Execution,
-    remote: Optional['FlyteRemote'],
-    type_hints: Optional[Dict[str, typing.Type]],
+    remote: Optional['FlyteRemote'] = None,
+    type_hints: Optional[Dict[str, typing.Type]] = None,
 ) -> 'FlyteWorkflowExecution'
 ```
 | Parameter | Type | Description |
@@ -288,7 +288,7 @@ def short_string()
 
 ```python
 def sync(
-    sync_nodes: bool,
+    sync_nodes: bool = False,
 ) -> 'FlyteWorkflowExecution'
 ```
 Sync the state of the current execution and returns a new object with the updated state.
@@ -309,9 +309,9 @@ def to_flyte_idl()
 
 ```python
 def wait(
-    timeout: Optional[Union[timedelta, int]],
-    poll_interval: Optional[Union[timedelta, int]],
-    sync_nodes: bool,
+    timeout: Optional[Union[timedelta, int]] = None,
+    poll_interval: Optional[Union[timedelta, int]] = None,
+    sync_nodes: bool = True,
 ) -> 'FlyteWorkflowExecution'
 ```
 Wait for the execution to complete. This is a blocking call.
@@ -330,14 +330,14 @@ Wait for the execution to complete. This is a blocking call.
 
 ```python
 class RemoteExecutionBase(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 

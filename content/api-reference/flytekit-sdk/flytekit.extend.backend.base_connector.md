@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,13 +40,13 @@ will look up the connector based on the task type. Every task type can only have
 ```python
 class AsyncConnectorBase(
     metadata_type: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `metadata_type` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -74,7 +74,7 @@ def create(
     output_prefix: str,
     inputs: typing.Optional[flytekit.models.literals.LiteralMap],
     task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata],
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.ResourceMeta
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -86,14 +86,14 @@ Return a resource meta that can be used to get the status of the task.
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `task_execution_metadata` | `typing.Optional[flytekit.models.task.TaskExecutionMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -102,14 +102,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -120,14 +120,14 @@ and the propeller will write the structured dataset to the blob store.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -136,14 +136,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -152,7 +152,7 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.extend.backend.base_connector.AsyncConnectorExecutorMixin
 
@@ -189,12 +189,12 @@ def connector_signal_handler(
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.extend.backend.base_connector.ConnectorBase
 
@@ -203,15 +203,15 @@ def execute(
 ```python
 class ConnectorBase(
     task_type_name: str,
-    task_type_version: int,
-    kwargs,
+    task_type_version: int = 0,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `task_type_name` | `str` | |
 | `task_type_version` | `int` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -242,7 +242,7 @@ The connector metadata service will look up the connector metadata based on the 
 ```python
 def get_agent(
     task_type_name: str,
-    task_type_version: int,
+    task_type_version: int = 0,
 ) -> typing.Union[flytekit.extend.backend.base_connector.SyncConnectorBase, flytekit.extend.backend.base_connector.AsyncConnectorBase]
 ```
 | Parameter | Type | Description |
@@ -255,7 +255,7 @@ def get_agent(
 ```python
 def get_connector(
     task_type_name: str,
-    task_type_version: int,
+    task_type_version: int = 0,
 ) -> typing.Union[flytekit.extend.backend.base_connector.SyncConnectorBase, flytekit.extend.backend.base_connector.AsyncConnectorBase]
 ```
 | Parameter | Type | Description |
@@ -284,7 +284,7 @@ def list_connectors()
 ```python
 def register(
     connector: typing.Union[flytekit.extend.backend.base_connector.AsyncConnectorBase, flytekit.extend.backend.base_connector.SyncConnectorBase],
-    override: bool,
+    override: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -315,10 +315,10 @@ Attributes
 ```python
 class Resource(
     phase: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
-    message: typing.Optional[str],
-    log_links: typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]],
-    outputs: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType],
-    custom_info: typing.Optional[typing.Dict[str, typing.Any]],
+    message: typing.Optional[str] = None,
+    log_links: typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]] = None,
+    outputs: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType] = None,
+    custom_info: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -414,15 +414,15 @@ will look up the connector based on the task type. Every task type can only have
 ```python
 class SyncConnectorBase(
     task_type_name: str,
-    task_type_version: int,
-    kwargs,
+    task_type_version: int = 0,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `task_type_name` | `str` | |
 | `task_type_version` | `int` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -443,8 +443,8 @@ class SyncConnectorBase(
 def do(
     task_template: flytekit.models.task.TaskTemplate,
     output_prefix: str,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 This is the method that the connector will run.
@@ -455,7 +455,7 @@ This is the method that the connector will run.
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.extend.backend.base_connector.SyncConnectorExecutorMixin
 
@@ -477,12 +477,12 @@ Sending a prompt to ChatGPT and getting a response, or retrieving some metadata 
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.extend.backend.base_connector.TaskCategory
 
@@ -491,7 +491,7 @@ def execute(
 ```python
 class TaskCategory(
     name: str,
-    version: int,
+    version: int = 0,
 )
 ```
 | Parameter | Type | Description |

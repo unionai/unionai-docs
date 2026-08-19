@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.ignore
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -276,7 +276,7 @@ by fed with custom ignore patterns from cli.
 ```python
 class StandardIgnore(
     root: pathlib.Path,
-    patterns: typing.Optional[typing.List[str]],
+    patterns: typing.Optional[typing.List[str]] = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.openai.chatgpt.connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,8 +47,8 @@ def ChatGPTConnector()
 ```python
 def do(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 This is the method that the connector will run.
@@ -58,5 +58,5 @@ This is the method that the connector will run.
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

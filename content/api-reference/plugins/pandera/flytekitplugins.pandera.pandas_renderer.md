@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.pandera.pandas_renderer
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,8 +38,8 @@ layout: py_api
 class PandasReport(
     summary: pandas.DataFrame,
     data_preview: pandas.DataFrame,
-    schema_error_df: typing.Optional[pandas.DataFrame],
-    data_error_df: typing.Optional[pandas.DataFrame],
+    schema_error_df: typing.Optional[pandas.DataFrame] = None,
+    data_error_df: typing.Optional[pandas.DataFrame] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -55,7 +55,7 @@ class PandasReport(
 
 ```python
 class PandasReportRenderer(
-    title: str,
+    title: str = 'Pandera Error Report',
 )
 ```
 | Parameter | Type | Description |
@@ -75,7 +75,7 @@ class PandasReportRenderer(
 def to_html(
     data: pandas.DataFrame,
     schema: pandera._pandas_deprecated.DataFrameSchema,
-    error: typing.Optional[pandera.errors.SchemaErrors],
+    error: typing.Optional[pandera.errors.SchemaErrors] = None,
 ) -> str
 ```
 | Parameter | Type | Description |

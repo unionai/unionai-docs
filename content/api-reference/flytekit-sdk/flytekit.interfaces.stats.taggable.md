@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,7 +30,7 @@ layout: py_api
 def get_stats(
     cfg: flytekit.configuration.StatsConfig,
     prefix: str,
-    tags: typing.Dict[str, str],
+    tags: typing.Dict[str, str] = None,
 ) -> flytekit.interfaces.stats.taggable.TaggableStats
 ```
 | Parameter | Type | Description |
@@ -50,8 +50,8 @@ class TaggableStats(
     client,
     full_prefix,
     cfg: flytekit.configuration.StatsConfig,
-    prefix,
-    tags,
+    prefix = None,
+    tags = None,
 )
 ```
 | Parameter | Type | Description |
@@ -99,7 +99,7 @@ def extend_tags(
 ```python
 def get_stats(
     name,
-    copy_tags,
+    copy_tags = True,
 )
 ```
 | Parameter | Type | Description |

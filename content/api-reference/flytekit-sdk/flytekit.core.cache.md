@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.cache
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,11 +44,11 @@ Cache configuration for a task.
 
 ```python
 class Cache(
-    version: typing.Optional[str],
-    serialize: bool,
-    ignored_inputs: typing.Union[typing.Tuple[str, ...], str],
-    salt: str,
-    policies: typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType],
+    version: typing.Optional[str] = None,
+    serialize: bool = False,
+    ignored_inputs: typing.Union[typing.Tuple[str, ...], str] = (),
+    salt: str = '',
+    policies: typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -123,9 +123,9 @@ param func: The function to generate a version for. This is an optional paramete
 ```python
 class VersionParameters(
     func: typing.Callable[~P, ~FuncOut],
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType],
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    pod_template_name: typing.Optional[str],
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType] = None,
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    pod_template_name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

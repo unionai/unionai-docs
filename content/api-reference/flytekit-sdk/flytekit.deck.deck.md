@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.deck
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -93,8 +93,8 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 ```python
 class Deck(
     name: str,
-    html: typing.Optional[str],
-    auto_add_to_deck: bool,
+    html: typing.Optional[str] = '',
+    auto_add_to_deck: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -143,14 +143,14 @@ DeckField is used to specify the fields that will be rendered in the deck.
 
 ```python
 class DeckField(
-    args,
-    kwds,
+    *args,
+    **kwds,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwds` |  | |
+| `*args` |  | |
+| `**kwds` |  | |
 
 ## flytekit.deck.deck.TimeLineDeck
 
@@ -165,8 +165,8 @@ Instead, the complete data set is used to create a comprehensive visualization o
 ```python
 class TimeLineDeck(
     name: str,
-    html: typing.Optional[str],
-    auto_add_to_deck: bool,
+    html: typing.Optional[str] = '',
+    auto_add_to_deck: bool = True,
 )
 ```
 | Parameter | Type | Description |

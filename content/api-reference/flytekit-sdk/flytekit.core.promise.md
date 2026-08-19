@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.promise
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -65,8 +65,8 @@ layout: py_api
 ```python
 def async_flyte_entity_call_handler(
     entity: SupportsNodeCreation,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, Tuple, None]
 ```
 This is a limited async version of the main call handler.
@@ -75,8 +75,8 @@ This is a limited async version of the main call handler.
 | Parameter | Type | Description |
 |-|-|-|
 | `entity` | `SupportsNodeCreation` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### binding_data_from_python_std()
 
@@ -122,10 +122,10 @@ def binding_from_python_std(
 def create_and_link_node(
     ctx: FlyteContext,
     entity: SupportsNodeCreation,
-    overridden_interface: Optional[Interface],
-    add_node_to_compilation_state: bool,
-    node_id: str,
-    kwargs,
+    overridden_interface: Optional[Interface] = None,
+    add_node_to_compilation_state: bool = True,
+    node_id: str = '',
+    **kwargs,
 ) -> Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 ```
 This method is used to generate a node with bindings within a flytekit workflow. this is useful to traverse the
@@ -140,7 +140,7 @@ workflow using regular python interpreter and generate nodes and promises whenev
 | `overridden_interface` | `Optional[Interface]` | utilize this interface instead of the one provided by the entity. This is useful for ArrayNode as there's a mismatch between the underlying interface and inputs |
 | `add_node_to_compilation_state` | `bool` | bool that enables for nodes to be created but not linked to the workflow. This is useful when creating nodes nested under other nodes such as ArrayNode |
 | `node_id` | `str` | str if provided, this will be used as the node id. |
-| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
+| `**kwargs` |  | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
 
 **Returns:** Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 
@@ -150,12 +150,12 @@ workflow using regular python interpreter and generate nodes and promises whenev
 def create_and_link_node_from_remote(
     ctx: FlyteContext,
     entity: HasFlyteInterface,
-    overridden_interface: Optional[_interface_models.TypedInterface],
-    add_node_to_compilation_state: bool,
-    node_id: str,
-    _inputs_not_allowed: Optional[Set[str]],
-    _ignorable_inputs: Optional[Set[str]],
-    kwargs,
+    overridden_interface: Optional[_interface_models.TypedInterface] = None,
+    add_node_to_compilation_state: bool = True,
+    node_id: str = '',
+    _inputs_not_allowed: Optional[Set[str]] = None,
+    _ignorable_inputs: Optional[Set[str]] = None,
+    **kwargs,
 ) -> Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 ```
 This method is used to generate a node with bindings especially when using remote entities, like FlyteWorkflow,
@@ -176,7 +176,7 @@ interface, so all comparisons need to happen using the Literals.
 | `node_id` | `str` | str if provided, this will be used as the node id. |
 | `_inputs_not_allowed` | `Optional[Set[str]]` | Set of all variable names that should not be provided when using this entity. Useful for Launchplans with `fixed` inputs |
 | `_ignorable_inputs` | `Optional[Set[str]]` | Set of all variable names that are optional, but if provided will be overridden. Useful for launchplans with `default` inputs |
-| `kwargs` | `**kwargs` | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
+| `**kwargs` |  | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
 
 **Returns:** Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 
@@ -205,7 +205,7 @@ by name.
 ```python
 def create_task_output(
     promises: Optional[Union[List[Promise], Promise]],
-    entity_interface: Optional[Interface],
+    entity_interface: Optional[Interface] = None,
 ) -> Optional[Union[Tuple[Promise], Promise]]
 ```
 | Parameter | Type | Description |
@@ -233,8 +233,8 @@ object information often separated by `.` in the python fully qualified notation
 ```python
 def flyte_entity_call_handler(
     entity: SupportsNodeCreation,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, Tuple, None]
 ```
 This function is the call handler for tasks, workflows, and launch plans (which redirects to the underlying
@@ -254,8 +254,8 @@ method. When one of these entities is () aka __called__, there are three things 
 | Parameter | Type | Description |
 |-|-|-|
 | `entity` | `SupportsNodeCreation` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### get_primitive_val()
 
@@ -529,13 +529,13 @@ protocol LocallyExecutable()
 ```python
 def local_execute(
     ctx: FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, None]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -550,7 +550,7 @@ def local_execution_mode()
 class NodeOutput(
     node: Node,
     var: str,
-    attr_path: Optional[List[Union[str, int]]],
+    attr_path: Optional[List[Union[str, int]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -655,7 +655,7 @@ This object is a wrapper and exists for three main reasons. Let's assume we're d
 class Promise(
     var: str,
     val: Union[NodeOutput, _literals_models.Literal],
-    type: typing.Optional[_type_models.LiteralType],
+    type: typing.Optional[_type_models.LiteralType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -728,20 +728,20 @@ def is_true()
 
 ```python
 def with_overrides(
-    node_name: Optional[str],
-    aliases: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    timeout: Optional[Union[int, datetime.timedelta, object]],
-    retries: Optional[int],
-    interruptible: Optional[bool],
-    name: Optional[str],
-    task_config: Optional[Any],
-    container_image: Optional[str],
-    accelerator: Optional[BaseAccelerator],
-    cache: Optional[Union[bool, Cache]],
-    args,
-    kwargs,
+    node_name: Optional[str] = None,
+    aliases: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    timeout: Optional[Union[int, datetime.timedelta, object]] = object,
+    retries: Optional[int] = None,
+    interruptible: Optional[bool] = None,
+    name: Optional[str] = None,
+    task_config: Optional[Any] = None,
+    container_image: Optional[str] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    cache: Optional[Union[bool, Cache]] = None,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -758,8 +758,8 @@ def with_overrides(
 | `container_image` | `Optional[str]` | |
 | `accelerator` | `Optional[BaseAccelerator]` | |
 | `cache` | `Optional[Union[bool, Cache]]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### with_var()
 
@@ -807,7 +807,7 @@ VoidPromise cannot be interacted with and does not allow comparisons or any oper
 ```python
 class VoidPromise(
     task_name: str,
-    ref: Optional[NodeOutput],
+    ref: Optional[NodeOutput] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -834,8 +834,8 @@ class VoidPromise(
 
 ```python
 def runs_before(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This is a placeholder and should do nothing. It is only here to enable local execution of workflows
@@ -844,19 +844,19 @@ where a task returns nothing.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### with_overrides()
 
 ```python
 def with_overrides(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_auto_container
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -90,14 +90,14 @@ This resolved is used when the task is defined in a notebook. It is used to load
 
 ```python
 class DefaultNotebookTaskResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -190,14 +190,14 @@ Please see the notes in the TaskResolverMixin as it describes this default behav
 
 ```python
 class DefaultTaskResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -332,19 +332,19 @@ If you are looking to extend, you might prefer to use ``PythonFunctionTask`` or 
 class PythonAutoContainerTask(
     name: str,
     task_config: T,
-    task_type,
-    container_image: Optional[Union[str, ImageSpec]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    environment: Optional[Dict[str, str]],
-    task_resolver: Optional[TaskResolverMixin],
-    secret_requests: Optional[List[Secret]],
-    pod_template: Optional[PodTemplate],
-    pod_template_name: Optional[str],
-    accelerator: Optional[BaseAccelerator],
-    shared_memory: Optional[Union[L[True], str]],
-    resources: Optional[Resources],
-    kwargs,
+    task_type = 'python-task',
+    container_image: Optional[Union[str, ImageSpec]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    environment: Optional[Dict[str, str]] = None,
+    task_resolver: Optional[TaskResolverMixin] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    pod_template: Optional[PodTemplate] = None,
+    pod_template_name: Optional[str] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    shared_memory: Optional[Union[L[True], str]] = None,
+    resources: Optional[Resources] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -363,7 +363,7 @@ class PythonAutoContainerTask(
 | `accelerator` | `Optional[BaseAccelerator]` | The accelerator to use for this task. |
 | `shared_memory` | `Optional[Union[L[True], str]]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
 | `resources` | `Optional[Resources]` | Specify both the request and the limit. When the value is set to a tuple or list, the first value is the request and the second value is the limit. If the value is a single value, then both the requests and limit is set to that value. For example, the `Resource(cpu=("1", "2"), mem="1Gi")` will set the cpu request to 1, cpu limit to 2, and mem request to 1Gi. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -425,8 +425,8 @@ class PythonAutoContainerTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -435,8 +435,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -472,7 +472,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -480,7 +480,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -660,7 +660,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -671,7 +671,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -744,7 +744,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.

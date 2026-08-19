@@ -1,6 +1,6 @@
 ---
 title: Flytekit SDK
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -253,7 +253,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.core.worker_queue.Update`](flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
 | [`flytekit.core.worker_queue.WorkItem`](flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
 | [`flytekit.core.workflow.ImperativeWorkflow`](flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) | An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is. |
-| [`flytekit.core.workflow.PythonFunctionWorkflow`](flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read :std:ref:`flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
+| [`flytekit.core.workflow.PythonFunctionWorkflow`](flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read `flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
 | [`flytekit.core.workflow.ReferenceWorkflow`](flytekit.core.workflow#flytekitcoreworkflowreferenceworkflow) | A reference workflow is a pointer to a workflow that already exists on your Flyte installation. |
 | [`flytekit.core.workflow.WorkflowBase`](flytekit.core.workflow#flytekitcoreworkflowworkflowbase) |  |
 | [`flytekit.core.workflow.WorkflowFailurePolicy`](flytekit.core.workflow#flytekitcoreworkflowworkflowfailurepolicy) | Defines the behavior for a workflow execution in the case of an observed node execution failure. |
@@ -511,7 +511,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.models.security.Identity`](flytekit.models.security#flytekitmodelssecurityidentity) |  |
 | [`flytekit.models.security.OAuth2Client`](flytekit.models.security#flytekitmodelssecurityoauth2client) |  |
 | [`flytekit.models.security.OAuth2TokenRequest`](flytekit.models.security#flytekitmodelssecurityoauth2tokenrequest) |  |
-| [`flytekit.models.security.Secret`](flytekit.models.security#flytekitmodelssecuritysecret) | See :std:ref:`cookbook:secrets` for usage examples. |
+| [`flytekit.models.security.Secret`](flytekit.models.security#flytekitmodelssecuritysecret) | See `cookbook:secrets` for usage examples. |
 | [`flytekit.models.security.SecurityContext`](flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
 | [`flytekit.models.task.CompiledTask`](flytekit.models.task#flytekitmodelstaskcompiledtask) |  |
 | [`flytekit.models.task.Container`](flytekit.models.task#flytekitmodelstaskcontainer) |  |
@@ -876,7 +876,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.tools.fast_registration.get_additional_distribution_loc()`](flytekit.tools.fast_registration#get_additional_distribution_loc) | :return Text:. |
 | [`flytekit.tools.fast_registration.print_ls_tree()`](flytekit.tools.fast_registration#print_ls_tree) |  |
 | [`flytekit.tools.interactive.ipython_check()`](flytekit.tools.interactive#ipython_check) | Check if interface is launching from iPython (not colab). |
-| [`flytekit.tools.module_loader.add_sys_path()`](flytekit.tools.module_loader#add_sys_path) | Temporarily add given path to `sys. |
+| [`flytekit.tools.module_loader.add_sys_path()`](flytekit.tools.module_loader#add_sys_path) | Temporarily add given path to `sys.path`. |
 | [`flytekit.tools.module_loader.just_load_modules()`](flytekit.tools.module_loader#just_load_modules) | This one differs from the above in that we don't yield anything, just load all the modules. |
 | [`flytekit.tools.module_loader.load_object_from_module()`](flytekit.tools.module_loader#load_object_from_module) | TODO: Handle corner cases, like where the first part is [] maybe. |
 | [`flytekit.tools.module_loader.module_load_error_handler()`](flytekit.tools.module_loader#module_load_error_handler) |  |

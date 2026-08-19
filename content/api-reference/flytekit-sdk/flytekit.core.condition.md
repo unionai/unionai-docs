@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.condition
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -110,12 +110,12 @@ https://github.com/pwwang/python-varname/issues/28, this is not currently suppor
 
 ```python
 def merge_promises(
-    args: *args,
+    *args: Optional[Promise],
 ) -> typing.List[Promise]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` | `Optional[Promise]` | |
 
 #### to_branch_node()
 
@@ -227,7 +227,7 @@ class BranchNode(
 class Case(
     cs: ConditionalSection,
     expr: Optional[Union[ComparisonExpression, ConjunctionExpression]],
-    stmt: str,
+    stmt: str = 'elif',
 )
 ```
 | Parameter | Type | Description |
@@ -318,8 +318,8 @@ ConditionalSection is used to denote a condition within a Workflow. This default
 for Compilation mode. It is advised to derive the class and re-implement the `start_branch` and `end_branch` methods
 to override the compilation behavior
 
-&gt; [!NOTE]
-&gt; Conditions can only be used within a workflow context.
+> [!NOTE]
+> Conditions can only be used within a workflow context.
 
 Usage:
 
@@ -391,7 +391,7 @@ def if_(
 ```python
 def start_branch(
     c: Case,
-    last_case: bool,
+    last_case: bool = False,
 ) -> Case
 ```
 At the start of an execution of every branch this method should be called.
@@ -470,7 +470,7 @@ def if_(
 ```python
 def start_branch(
     c: Case,
-    last_case: bool,
+    last_case: bool = False,
 ) -> Case
 ```
 At the start of an execution of every branch this method should be called.
@@ -548,7 +548,7 @@ def if_(
 ```python
 def start_branch(
     c: Case,
-    last_case: bool,
+    last_case: bool = False,
 ) -> Case
 ```
 At the start of an execution of every branch this method should be called.

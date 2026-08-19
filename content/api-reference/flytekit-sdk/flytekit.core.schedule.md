@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.schedule
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,17 +37,17 @@ in case where you are using default native scheduler using the schedule attribut
     )
 ```
 
-See the :std:ref:`User Guide &lt;cookbook:cron schedules&gt;` for further examples.
+See the `User Guide` for further examples.
 
 
 ### Parameters
 
 ```python
 class CronSchedule(
-    cron_expression: typing.Optional[str],
-    schedule: typing.Optional[str],
-    offset: typing.Optional[str],
-    kickoff_time_input_arg: typing.Optional[str],
+    cron_expression: typing.Optional[str] = None,
+    schedule: typing.Optional[str] = None,
+    offset: typing.Optional[str] = None,
+    kickoff_time_input_arg: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -120,7 +120,7 @@ from datetime import timedelta
 FixedRate(duration=timedelta(minutes=10))
 ```
 
-See the :std:ref:`fixed rate intervals` chapter in the cookbook for additional usage examples.
+See the `fixed rate intervals` chapter in the cookbook for additional usage examples.
 
 
 ### Parameters
@@ -128,7 +128,7 @@ See the :std:ref:`fixed rate intervals` chapter in the cookbook for additional u
 ```python
 class FixedRate(
     duration: datetime.timedelta,
-    kickoff_time_input_arg: typing.Optional[str],
+    kickoff_time_input_arg: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -205,14 +205,14 @@ protocol LaunchPlanTriggerBase()
 
 ```python
 def to_flyte_idl(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> google.protobuf.message.Message
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ## flytekit.core.schedule.OnSchedule
 

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.inference.nim.serve
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,17 +23,17 @@ layout: py_api
 ```python
 class NIM(
     secrets: flytekitplugins.inference.nim.serve.NIMSecrets,
-    image: str,
-    health_endpoint: str,
-    port: int,
-    cpu: int,
-    gpu: int,
-    mem: str,
-    ephemeral_storage: str,
-    shm_size: str,
-    env: typing.Optional[dict[str, str]],
-    hf_repo_ids: typing.Optional[list[str]],
-    lora_adapter_mem: typing.Optional[str],
+    image: str = 'nvcr.io/nim/meta/llama3-8b-instruct:1.0.0',
+    health_endpoint: str = 'v1/health/ready',
+    port: int = 8000,
+    cpu: int = 1,
+    gpu: int = 1,
+    mem: str = '20Gi',
+    ephemeral_storage: str = '20Gi',
+    shm_size: str = '16Gi',
+    env: typing.Optional[dict[str, str]] = None,
+    hf_repo_ids: typing.Optional[list[str]] = None,
+    lora_adapter_mem: typing.Optional[str] = None,
 )
 ```
 Initialize NIM class for managing a Kubernetes pod template.
@@ -82,10 +82,10 @@ def setup_nim_pod_template()
 class NIMSecrets(
     ngc_secret_key: str,
     secrets_prefix: str,
-    ngc_image_secret: typing.Optional[str],
-    ngc_secret_group: typing.Optional[str],
-    hf_token_group: typing.Optional[str],
-    hf_token_key: typing.Optional[str],
+    ngc_image_secret: typing.Optional[str] = None,
+    ngc_secret_group: typing.Optional[str] = None,
+    hf_token_group: typing.Optional[str] = None,
+    hf_token_key: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

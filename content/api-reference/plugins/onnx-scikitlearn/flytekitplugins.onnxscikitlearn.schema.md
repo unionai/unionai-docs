@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.onnxscikitlearn.schema
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,122 +59,12 @@ def to_onnx(
 
 ```python
 class ScikitLearn2ONNX(
-    model: sklearn.base.BaseEstimator,
+    model: sklearn.base.BaseEstimator = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `model` | `sklearn.base.BaseEstimator` | |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
-
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXConfig
 
@@ -187,19 +77,19 @@ ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX convers
 ```python
 class ScikitLearn2ONNXConfig(
     initial_types: List[Tuple[str, Type]],
-    name: Optional[str],
-    doc_string: str,
-    target_opset: Optional[int],
-    custom_conversion_functions: Dict[Callable[..., Any], Callable[..., None]],
-    custom_shape_calculators: Dict[Callable[..., Any], Callable[..., None]],
-    custom_parsers: Dict[Callable[..., Any], Callable[..., None]],
-    options: Dict[Any, Any],
-    intermediate: bool,
-    naming: Optional[Union[str, Callable[..., Any]]],
-    white_op: Optional[Set[str]],
-    black_op: Optional[Set[str]],
-    verbose: int,
-    final_types: Optional[List[Tuple[str, Type]]],
+    name: Optional[str] = None,
+    doc_string: str = '',
+    target_opset: Optional[int] = None,
+    custom_conversion_functions: Dict[Callable[..., Any], Callable[..., None]] = <factory>,
+    custom_shape_calculators: Dict[Callable[..., Any], Callable[..., None]] = <factory>,
+    custom_parsers: Dict[Callable[..., Any], Callable[..., None]] = <factory>,
+    options: Dict[Any, Any] = <factory>,
+    intermediate: bool = False,
+    naming: Optional[Union[str, Callable[..., Any]]] = None,
+    white_op: Optional[Set[str]] = None,
+    black_op: Optional[Set[str]] = None,
+    verbose: int = 0,
+    final_types: Optional[List[Tuple[str, Type]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -218,116 +108,6 @@ class ScikitLearn2ONNXConfig(
 | `black_op` | `Optional[Set[str]]` | Black list of ONNX nodes disallowed while converting a pipeline. |
 | `verbose` | `int` | Display progress while converting a model. |
 | `final_types` | `Optional[List[Tuple[str, Type]]]` | Used to overwrite the type (if type is not None) and the name of every output. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
-
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
 
 ## flytekitplugins.onnxscikitlearn.schema.ScikitLearn2ONNXTransformer
 

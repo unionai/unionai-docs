@@ -24,7 +24,7 @@ layout: py_api
 | [`LaunchPlan`](.././union#unionlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
 | [`PodTemplate`](.././union#unionpodtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](.././union#unionresources) | This class is used to specify both resource requests and resource limits. |
-| [`Secret`](.././union#unionsecret) | See :std:ref:`cookbook:secrets` for usage examples. |
+| [`Secret`](.././union#unionsecret) | See `cookbook:secrets` for usage examples. |
 | [`StructuredDataset`](.././union#unionstructureddataset) | This is the user facing StructuredDataset class. |
 | [`UnionRemote`](.././union#unionunionremote) |  |
 | [`VersionParameters`](.././union#unionversionparameters) | Parameters used for version hash generation. |
@@ -85,11 +85,11 @@ There are some special params, that should be available
 ```python
 def map(
     target: typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.python_function_task.PythonFunctionTask, ForwardRef('FlyteLaunchPlan')],
-    bound_inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    concurrency: typing.Optional[int],
-    min_successes: typing.Optional[int],
-    min_success_ratio: float,
-    kwargs,
+    bound_inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    concurrency: typing.Optional[int] = None,
+    min_successes: typing.Optional[int] = None,
+    min_success_ratio: float = 1.0,
+    **kwargs,
 )
 ```
 Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and
@@ -104,18 +104,18 @@ launch plans.
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If set to 0, this means unbounded concurrency. If left unspecified, this means the array node will inherit parallelism from the workflow |
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### map_task()
 
 ```python
 def map_task(
     target: typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.python_function_task.PythonFunctionTask, ForwardRef('FlyteLaunchPlan')],
-    concurrency: typing.Optional[int],
-    min_successes: typing.Optional[int],
-    min_success_ratio: float,
-    run_all_sub_nodes: bool,
-    kwargs,
+    concurrency: typing.Optional[int] = None,
+    min_successes: typing.Optional[int] = None,
+    min_success_ratio: float = 1.0,
+    run_all_sub_nodes: bool = False,
+    **kwargs,
 )
 ```
 Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask
@@ -130,40 +130,40 @@ or the drop in replacement ArrayNode implementation
 | `min_successes` | `typing.Optional[int]` | The minimum number of successful executions |
 | `min_success_ratio` | `float` | The minimum ratio of successful executions |
 | `run_all_sub_nodes` | `bool` | If True, all sub-nodes will run to completion even after the failure threshold is met |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### task()
 
 ```python
 def task(
-    _task_function: Optional[Callable[P, FuncOut]],
-    task_config: Optional[T],
-    cache: Union[bool, Cache],
-    retries: int,
-    interruptible: Optional[bool],
-    deprecated: str,
-    timeout: Union[datetime.timedelta, int],
-    container_image: Optional[Union[str, ImageSpec]],
-    environment: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    secret_requests: Optional[List[Secret]],
-    execution_mode: PythonFunctionTask.ExecutionBehavior,
-    node_dependency_hints: Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]],
-    task_resolver: Optional[TaskResolverMixin],
-    docs: Optional[Documentation],
-    disable_deck: Optional[bool],
-    enable_deck: Optional[bool],
-    deck_fields: Optional[Tuple[DeckField, ...]],
-    pod_template: Optional['PodTemplate'],
-    pod_template_name: Optional[str],
-    accelerator: Optional[BaseAccelerator],
-    pickle_untyped: bool,
-    shared_memory: Optional[Union[L[True], str]],
-    resources: Optional[Resources],
-    labels: Optional[dict[str, str]],
-    annotations: Optional[dict[str, str]],
-    kwargs,
+    _task_function: Optional[Callable[P, FuncOut]] = None,
+    task_config: Optional[T] = None,
+    cache: Union[bool, Cache] = False,
+    retries: int = 0,
+    interruptible: Optional[bool] = None,
+    deprecated: str = '',
+    timeout: Union[datetime.timedelta, int] = 0,
+    container_image: Optional[Union[str, ImageSpec]] = None,
+    environment: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    execution_mode: PythonFunctionTask.ExecutionBehavior = ExecutionBehavior.DEFAULT,
+    node_dependency_hints: Optional[Iterable[Union[PythonFunctionTask, _annotated_launchplan.LaunchPlan, _annotated_workflow.WorkflowBase]]] = None,
+    task_resolver: Optional[TaskResolverMixin] = None,
+    docs: Optional[Documentation] = None,
+    disable_deck: Optional[bool] = None,
+    enable_deck: Optional[bool] = None,
+    deck_fields: Optional[Tuple[DeckField, ...]] = (<DeckField.SOURCE_CODE: 'Source Code'>, <DeckField.DEPENDENCIES: 'Dependencies'>, <DeckField.TIMELINE: 'Timeline'>, <DeckField.INPUT: 'Input'>, <DeckField.OUTPUT: 'Output'>),
+    pod_template: Optional['PodTemplate'] = None,
+    pod_template_name: Optional[str] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    pickle_untyped: bool = False,
+    shared_memory: Optional[Union[L[True], str]] = None,
+    resources: Optional[Resources] = None,
+    labels: Optional[dict[str, str]] = None,
+    annotations: Optional[dict[str, str]] = None,
+    **kwargs,
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionTask[T]], PythonFunctionTask[T]]
 ```
 This is the core decorator to use for any task type in flytekit.
@@ -191,7 +191,7 @@ For specific task types
 def my_task(x: int, y: typing.Dict[str, str]) -> str:
     ...
 ```
-Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for additional information.
+Please see some cookbook `task examples` for additional information.
 
 :deprecated param cache_serialize: (deprecated - please use Cache) Boolean that indicates if identical (ie. same inputs)
       instances of this task should be executed in serial when caching is enabled. This means that given multiple
@@ -234,564 +234,562 @@ Please see some cookbook :std:ref:`task examples &lt;cookbook:tasks&gt;` for add
 | `resources` | `Optional[Resources]` | Specify both the request and the limit. When the value is set to a tuple or list, the first value is the request and the second value is the limit. If the value is a single value, then both the requests and limit is set to that value. For example, the `Resource(cpu=("1", "2"), mem="1Gi")` will set the cpu request to 1, cpu limit to 2, and mem request to 1Gi. |
 | `labels` | `Optional[dict[str, str]]` | Labels to be applied to the task resource. |
 | `annotations` | `Optional[dict[str, str]]` | Annotations to be applied to the task resource. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### workflow()
 
 ```python
 def workflow(
-    _workflow_function: Optional[Callable[P, FuncOut]],
-    failure_policy: Optional[WorkflowFailurePolicy],
-    interruptible: bool,
-    on_failure: Optional[Union[WorkflowBase, Task]],
-    docs: Optional[Documentation],
-    pickle_untyped: bool,
-    default_options: Optional[Options],
+    _workflow_function: Optional[Callable[P, FuncOut]] = None,
+    failure_policy: Optional[WorkflowFailurePolicy] = None,
+    interruptible: bool = False,
+    on_failure: Optional[Union[WorkflowBase, Task]] = None,
+    docs: Optional[Documentation] = None,
+    pickle_untyped: bool = False,
+    default_options: Optional[Options] = None,
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionWorkflow], PythonFunctionWorkflow]
 ```
 This decorator declares a function to be a Flyte workflow. Workflows are declarative entities that construct a DAG
-  of tasks using the data flow between tasks.
-
-  Unlike a task, the function body of a workflow is evaluated at serialization-time (aka compile-time). This is
-  because while we can determine the entire structure of a task by looking at the function's signature, workflows need
-  to run through the function itself because the body of the function is what expresses the workflow structure. It's
-  also important to note that, local execution notwithstanding, it is not evaluated again when the workflow runs on
-  Flyte.
-  That is, workflows should not call non-Flyte entities since they are only run once (again, this is with respect to
-  the platform, local runs notwithstanding).
-
-  Example:
-
-  &lt;!--
-  .. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
-  --&gt;
-
-  ```python
-  import os
-  import sys
-  import typing
-  from collections import OrderedDict
-  from unittest.mock import patch
-
-  import pytest
-  from typing_extensions import Annotated  # type: ignore
-
-  import flytekit.configuration
-  from flytekit import FlyteContextManager, StructuredDataset, kwtypes
-  from flytekit.configuration import Image, ImageConfig
-  from flytekit.core import context_manager
-  from flytekit.core.condition import conditional
-  from flytekit.core.task import task
-  from flytekit.core.workflow import WorkflowFailurePolicy, WorkflowMetadata, WorkflowMetadataDefaults, workflow
-  from flytekit.exceptions.user import FlyteValidationException, FlyteValueException, FlyteMissingReturnValueException
-  from flytekit.tools.translator import get_serializable
-  from flytekit.types.error.error import FlyteError
-
-  default_img = Image(name="default", fqn="test", tag="tag")
-  serialization_settings = flytekit.configuration.SerializationSettings(
-      project="project",
-      domain="domain",
-      version="version",
-      env=None,
-      image_config=ImageConfig(default_image=default_img, images=[default_img]),
-  )
-
-  def test_metadata_values():
-      with pytest.raises(FlyteValidationException):
-          WorkflowMetadata(on_failure=0)
-
-      wm = WorkflowMetadata(on_failure=WorkflowFailurePolicy.FAIL_IMMEDIATELY)
-      assert wm.on_failure == WorkflowFailurePolicy.FAIL_IMMEDIATELY
-
-
-  def test_default_metadata_values():
-      with pytest.raises(FlyteValidationException):
-          WorkflowMetadataDefaults(3)
-
-      wm = WorkflowMetadataDefaults(interruptible=False)
-      assert wm.interruptible is False
-
-
-  def test_workflow_values():
-      @task
-      def t1(a: int) -> typing.NamedTuple("OutputsBC", [("t1_int_output", int), ("c", str)]):
-          a = a + 2
-          return a, "world-" + str(a)
-
-      @workflow(interruptible=True, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-      def wf(a: int) -> typing.Tuple[str, str]:
-          x, y = t1(a=a)
-          _, v = t1(a=x)
-          return y, v
-
-      wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
-      assert wf_spec.template.metadata_defaults.interruptible
-      assert wf_spec.template.metadata.on_failure == 1
-
-  def test_default_values():
-      @task
-      def t() -> bool:
-          return True
-
-      @task
-      def f() -> bool:
-          return False
-
-      @workflow
-      def wf(a: bool = True) -> bool:
-          return conditional("bool").if_(a.is_true()).then(t()).else_().then(f())  # type: ignore
-
-      assert wf() is True
-      assert wf(a=False) is False
-
-
-  def test_list_output_wf():
-      @task
-      def t1(a: int) -> int:
-          a = a + 5
-          return a
-
-      @workflow
-      def list_output_wf() -> typing.List[int]:
-          v = []
-          for i in range(2):
-              v.append(t1(a=i))
-          return v
-
-      x = list_output_wf()
-      assert x == [5, 6]
-
-
-  def test_sub_wf_single_named_tuple():
-      nt = typing.NamedTuple("SingleNamedOutput", [("named1", int)])
-
-      @task
-      def t1(a: int) -> nt:
-          a = a + 2
-          return nt(a)
-
-      @workflow
-      def subwf(a: int) -> nt:
-          return t1(a=a)
-
-      @workflow
-      def wf(b: int) -> nt:
-          out = subwf(a=b)
-          return t1(a=out.named1)
-
-      x = wf(b=3)
-      assert x == (7,)
-
-
-  def test_sub_wf_multi_named_tuple():
-      nt = typing.NamedTuple("Multi", [("named1", int), ("named2", int)])
-
-      @task
-      def t1(a: int) -> nt:
-          a = a + 2
-          return nt(a, a)
-
-      @workflow
-      def subwf(a: int) -> nt:
-          return t1(a=a)
-
-      @workflow
-      def wf(b: int) -> nt:
-          out = subwf(a=b)
-          return t1(a=out.named1)
-
-      x = wf(b=3)
-      assert x == (7, 7)
-
-
-  def test_sub_wf_varying_types():
-      @task
-      def t1l(
-          a: typing.List[typing.Dict[str, typing.List[int]]],
-          b: typing.Dict[str, typing.List[int]],
-          c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]], int],
-          d: int,
-      ) -> str:
-          xx = ",".join([f"{k}:{v}" for d in a for k, v in d.items()])
-          yy = ",".join([f"{k}: {i}" for k, v in b.items() for i in v])
-          if isinstance(c, list):
-              zz = ",".join([f"{k}:{v}" for d in c for k, v in d.items()])
-          elif isinstance(c, dict):
-              zz = ",".join([f"{k}: {i}" for k, v in c.items() for i in v])
-          else:
-              zz = str(c)
-          return f"First: {xx} Second: {yy} Third: {zz} Int: {d}"
-
-      @task
-      def get_int() -> int:
-          return 1
-
-      @workflow
-      def subwf(
-          a: typing.List[typing.Dict[str, typing.List[int]]],
-          b: typing.Dict[str, typing.List[int]],
-          c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]]],
-          d: int,
-      ) -> str:
-          return t1l(a=a, b=b, c=c, d=d)
-
-      @workflow
-      def wf() -> str:
-          ds = [
-              {"first_map_a": [42], "first_map_b": [get_int(), 2]},
-              {
-                  "second_map_c": [33],
-                  "second_map_d": [9, 99],
-              },
-          ]
-          ll = {
-              "ll_1": [get_int(), get_int(), get_int()],
-              "ll_2": [4, 5, 6],
-          }
-          out = subwf(a=ds, b=ll, c=ds, d=get_int())
-          return out
-
-      wf.compile()
-      x = wf()
-      expected = (
-          "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-          "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-          "Third: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-          "Int: 1"
-      )
-      assert x == expected
-      wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
-      assert set(wf_spec.template.nodes[5].upstream_node_ids) == {"n2", "n1", "n0", "n4", "n3"}
-
-      @workflow
-      def wf() -> str:
-          ds = [
-              {"first_map_a": [42], "first_map_b": [get_int(), 2]},
-              {
-                  "second_map_c": [33],
-                  "second_map_d": [9, 99],
-              },
-          ]
-          ll = {
-              "ll_1": [get_int(), get_int(), get_int()],
-              "ll_2": [4, 5, 6],
-          }
-          out = subwf(a=ds, b=ll, c=ll, d=get_int())
-          return out
-
-      x = wf()
-      expected = (
-          "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
-          "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-          "Third: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
-          "Int: 1"
-      )
-      assert x == expected
-
-
-  def test_unexpected_outputs():
-      @task
-      def t1(a: int) -> int:
-          a = a + 5
-          return a
-
-      @workflow
-      def no_outputs_wf():
-          return t1(a=3)
-
-      # Should raise an exception because the workflow returns something when it shouldn't
-      with pytest.raises(FlyteValueException):
-          no_outputs_wf()
-
-  @pytest.mark.skipif(sys.version_info < (3, 10, 10), reason="inspect module does not work correctly with Python <3.10.10. https://github.com/python/cpython/issues/102647#issuecomment-1466868212")
-  def test_missing_return_value():
-      @task
-      def t1(a: int) -> int:
-          a = a + 5
-          return a
-
-      # Should raise an exception because it doesn't return something when it should
-      with pytest.raises(FlyteMissingReturnValueException):
-
-          @workflow
-          def one_output_wf() -> int:  # type: ignore
-              t1(a=3)
-
-          one_output_wf()
-
-
-  def test_custom_wrapper():
-      def our_task(
-              _task_function: typing.Optional[typing.Callable] = None,
-              **kwargs,
-      ):
-          def wrapped(_func: typing.Callable):
-              return task(_task_function=_func)
-
-          if _task_function:
-              return wrapped(_task_function)
-          else:
-              return wrapped
-
-      @our_task(
-          foo={
-              "bar1": lambda x: print(x),
-              "bar2": lambda x: print(x),
-          },
-      )
-      def missing_func_body() -> str:
-          return "foo"
-
-
-  def test_wf_no_output():
-      @task
-      def t1(a: int) -> int:
-          a = a + 5
-          return a
-
-      @workflow
-      def no_outputs_wf():
-          t1(a=3)
-
-      assert no_outputs_wf() is None
-
-
-  def test_wf_nested_comp(exec_prefix):
-      @task
-      def t1(a: int) -> int:
-          a = a + 5
-          return a
-
-      @workflow
-      def outer() -> typing.Tuple[int, int]:
-          # You should not do this. This is just here for testing.
-          @workflow
-          def wf2() -> int:
-              return t1(a=5)
-
-          return t1(a=3), wf2()
-
-      assert (8, 10) == outer()
-      entity_mapping = OrderedDict()
-
-      model_wf = get_serializable(entity_mapping, serialization_settings, outer)
-
-      assert len(model_wf.template.interface.outputs) == 2
-      assert len(model_wf.template.nodes) == 2
-      assert model_wf.template.nodes[1].workflow_node is not None
-
-      sub_wf = model_wf.sub_workflows[0]
-      assert len(sub_wf.nodes) == 1
-      assert sub_wf.nodes[0].id == "n0"
-      assert sub_wf.nodes[0].task_node.reference_id.name == f"{exec_prefix}tests.flytekit.unit.core.test_workflows.t1"
-
-
-  @task
-  def add_5(a: int) -> int:
-      a = a + 5
-      return a
-
-
-  @workflow
-  def simple_wf() -> int:
-      return add_5(a=1)
-
-  @workflow
-  def my_wf_example(a: int) -> typing.Tuple[int, int]:
-      '''example
-
-      Workflows can have inputs and return outputs of simple or complex types.
-
-      '''
-
-      x = add_5(a=a)
-
-      # You can use outputs of a previous task as inputs to other nodes.
-      z = add_5(a=x)
-
-      # You can call other workflows from within this workflow
-      d = simple_wf()
-
-      # You can add conditions that can run on primitive types and execute different branches
-      e = conditional("bool").if_(a == 5).then(add_5(a=d)).else_().then(add_5(a=z))
-
-      # Outputs of the workflow have to be outputs returned by prior nodes.
-      # No outputs and single or multiple outputs are supported
-      return x, e
-
-      def test_workflow_lhs():
-      assert my_wf_example._lhs == "my_wf_example"
-
-
-  def test_all_node_types():
-      assert my_wf_example(a=1) == (6, 16)
-      entity_mapping = OrderedDict()
-
-      model_wf = get_serializable(entity_mapping, serialization_settings, my_wf_example)
-
-      assert len(model_wf.template.interface.outputs) == 2
-      assert len(model_wf.template.nodes) == 4
-      assert model_wf.template.nodes[2].workflow_node is not None
-
-      sub_wf = model_wf.sub_workflows[0]
-      assert len(sub_wf.nodes) == 1
-      assert sub_wf.nodes[0].id == "n0"
-      assert sub_wf.nodes[0].task_node.reference_id.name == "tests.flytekit.unit.core.test_workflows.add_5"
-
-
-  def test_wf_docstring():
-      model_wf = get_serializable(OrderedDict(), serialization_settings, my_wf_example)
-
-      assert len(model_wf.template.interface.outputs) == 2
-      assert model_wf.template.interface.outputs["o0"].description == "outputs"
-      assert model_wf.template.interface.outputs["o1"].description == "outputs"
-      assert len(model_wf.template.interface.inputs) == 1
-      assert model_wf.template.interface.inputs["a"].description == "input a"
-
-
-  @pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
-  def test_structured_dataset_wf():
-      import pandas as pd
-      from pandas.testing import assert_frame_equal
-
-      from flytekit.types.schema import FlyteSchema
-
-      superset_cols = kwtypes(Name=str, Age=int, Height=int)
-      subset_cols = kwtypes(Name=str)
-      superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
-      subset_df = pd.DataFrame({"Name": ["Tom", "Joseph"]})
-
-      @task
-      def t1() -> Annotated[pd.DataFrame, superset_cols]:
-          return superset_df
-
-      @task
-      def t2(df: Annotated[pd.DataFrame, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
-          return df
-
-      @task
-      def t3(df: FlyteSchema[superset_cols]) -> FlyteSchema[superset_cols]:
-          return df
-
-      @task
-      def t4() -> FlyteSchema[superset_cols]:
-          return superset_df
-
-      @task
-      def t5(sd: Annotated[StructuredDataset, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
-          return sd.open(pd.DataFrame).all()
-
-      @workflow
-      def sd_wf() -> Annotated[pd.DataFrame, subset_cols]:
-          # StructuredDataset -> StructuredDataset
-          df = t1()
-          return t2(df=df)
-
-      @workflow
-      def sd_to_schema_wf() -> pd.DataFrame:
-          # StructuredDataset -> schema
-          df = t1()
-          return t3(df=df)
-
-      @workflow
-      def schema_to_sd_wf() -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
-          # schema -> StructuredDataset
-          df = t4()
-          return t2(df=df), t5(sd=df)  # type: ignore
-
-      assert_frame_equal(sd_wf(), subset_df)
-      assert_frame_equal(sd_to_schema_wf(), superset_df)
-      assert_frame_equal(schema_to_sd_wf()[0], subset_df)
-      assert_frame_equal(schema_to_sd_wf()[1], subset_df)
-
-
-  @pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
-  def test_compile_wf_at_compile_time():
-      import pandas as pd
-
-      from flytekit.types.schema import FlyteSchema
-
-      superset_cols = kwtypes(Name=str, Age=int, Height=int)
-      superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
-
-      ctx = FlyteContextManager.current_context()
-      with FlyteContextManager.with_context(
-          ctx.with_execution_state(
-              ctx.new_execution_state().with_params(mode=context_manager.ExecutionState.Mode.TASK_EXECUTION)
-          )
-      ):
-
-          @task
-          def t4() -> FlyteSchema[superset_cols]:
-              return superset_df
-
-          @workflow
-          def wf():
-              t4()
-
-          assert ctx.compilation_state is None
-
-
-  @pytest.mark.parametrize(
-      "error_message", [
-          "Fail!",
-          None,
-          "",
-          ("big", "boom!")
-      ]
-  )
-  @patch("builtins.print")
-  def test_failure_node_local_execution(mock_print, error_message, exec_prefix):
-      @task
-      def clean_up(name: str, err: typing.Optional[FlyteError] = None):
-          print(f"Deleting cluster {name} due to {err}")
-          print("This is err:", str(err))
-
-      @task
-      def create_cluster(name: str):
-          print(f"Creating cluster: {name}")
-
-      @task
-      def delete_cluster(name: str, err: typing.Optional[FlyteError] = None):
-          print(f"Deleting cluster {name}")
-          print(err)
-
-      @task
-      def t1(a: int, b: str):
-          print(f"{a} {b}")
-          raise ValueError(error_message)
-
-      @workflow(on_failure=clean_up)
-      def wf(name: str = "flyteorg"):
-          c = create_cluster(name=name)
-          t = t1(a=1, b="2")
-          d = delete_cluster(name=name)
-          c >> t >> d
-
-      with pytest.raises(ValueError):
-          wf()
-
-      # Adjusted the error message to match the one in the failure
-      expected_error_message = str(
-          FlyteError(message=f"Error encountered while executing '{exec_prefix}tests.flytekit.unit.core.test_workflows.t1':
+of tasks using the data flow between tasks.
+
+Unlike a task, the function body of a workflow is evaluated at serialization-time (aka compile-time). This is
+because while we can determine the entire structure of a task by looking at the function's signature, workflows need
+to run through the function itself because the body of the function is what expresses the workflow structure. It's
+also important to note that, local execution notwithstanding, it is not evaluated again when the workflow runs on
+Flyte.
+That is, workflows should not call non-Flyte entities since they are only run once (again, this is with respect to
+the platform, local runs notwithstanding).
+
+&lt;!--
+.. literalinclude:: ../../../tests/flytekit/unit/core/test_workflows.py
+--&gt;
+
+```python
+import os
+import sys
+import typing
+from collections import OrderedDict
+from unittest.mock import patch
+
+import pytest
+from typing_extensions import Annotated  # type: ignore
+
+import flytekit.configuration
+from flytekit import FlyteContextManager, StructuredDataset, kwtypes
+from flytekit.configuration import Image, ImageConfig
+from flytekit.core import context_manager
+from flytekit.core.condition import conditional
+from flytekit.core.task import task
+from flytekit.core.workflow import WorkflowFailurePolicy, WorkflowMetadata, WorkflowMetadataDefaults, workflow
+from flytekit.exceptions.user import FlyteValidationException, FlyteValueException, FlyteMissingReturnValueException
+from flytekit.tools.translator import get_serializable
+from flytekit.types.error.error import FlyteError
+
+default_img = Image(name="default", fqn="test", tag="tag")
+serialization_settings = flytekit.configuration.SerializationSettings(
+    project="project",
+    domain="domain",
+    version="version",
+    env=None,
+    image_config=ImageConfig(default_image=default_img, images=[default_img]),
+)
+
+def test_metadata_values():
+    with pytest.raises(FlyteValidationException):
+        WorkflowMetadata(on_failure=0)
+
+    wm = WorkflowMetadata(on_failure=WorkflowFailurePolicy.FAIL_IMMEDIATELY)
+    assert wm.on_failure == WorkflowFailurePolicy.FAIL_IMMEDIATELY
+
+
+def test_default_metadata_values():
+    with pytest.raises(FlyteValidationException):
+        WorkflowMetadataDefaults(3)
+
+    wm = WorkflowMetadataDefaults(interruptible=False)
+    assert wm.interruptible is False
+
+
+def test_workflow_values():
+    @task
+    def t1(a: int) -> typing.NamedTuple("OutputsBC", [("t1_int_output", int), ("c", str)]):
+        a = a + 2
+        return a, "world-" + str(a)
+
+    @workflow(interruptible=True, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+    def wf(a: int) -> typing.Tuple[str, str]:
+        x, y = t1(a=a)
+        _, v = t1(a=x)
+        return y, v
+
+    wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
+    assert wf_spec.template.metadata_defaults.interruptible
+    assert wf_spec.template.metadata.on_failure == 1
+
+def test_default_values():
+    @task
+    def t() -> bool:
+        return True
+
+    @task
+    def f() -> bool:
+        return False
+
+    @workflow
+    def wf(a: bool = True) -> bool:
+        return conditional("bool").if_(a.is_true()).then(t()).else_().then(f())  # type: ignore
+
+    assert wf() is True
+    assert wf(a=False) is False
+
+
+def test_list_output_wf():
+    @task
+    def t1(a: int) -> int:
+        a = a + 5
+        return a
+
+    @workflow
+    def list_output_wf() -> typing.List[int]:
+        v = []
+        for i in range(2):
+            v.append(t1(a=i))
+        return v
+
+    x = list_output_wf()
+    assert x == [5, 6]
+
+
+def test_sub_wf_single_named_tuple():
+    nt = typing.NamedTuple("SingleNamedOutput", [("named1", int)])
+
+    @task
+    def t1(a: int) -> nt:
+        a = a + 2
+        return nt(a)
+
+    @workflow
+    def subwf(a: int) -> nt:
+        return t1(a=a)
+
+    @workflow
+    def wf(b: int) -> nt:
+        out = subwf(a=b)
+        return t1(a=out.named1)
+
+    x = wf(b=3)
+    assert x == (7,)
+
+
+def test_sub_wf_multi_named_tuple():
+    nt = typing.NamedTuple("Multi", [("named1", int), ("named2", int)])
+
+    @task
+    def t1(a: int) -> nt:
+        a = a + 2
+        return nt(a, a)
+
+    @workflow
+    def subwf(a: int) -> nt:
+        return t1(a=a)
+
+    @workflow
+    def wf(b: int) -> nt:
+        out = subwf(a=b)
+        return t1(a=out.named1)
+
+    x = wf(b=3)
+    assert x == (7, 7)
+
+
+def test_sub_wf_varying_types():
+    @task
+    def t1l(
+        a: typing.List[typing.Dict[str, typing.List[int]]],
+        b: typing.Dict[str, typing.List[int]],
+        c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]], int],
+        d: int,
+    ) -> str:
+        xx = ",".join([f"{k}:{v}" for d in a for k, v in d.items()])
+        yy = ",".join([f"{k}: {i}" for k, v in b.items() for i in v])
+        if isinstance(c, list):
+            zz = ",".join([f"{k}:{v}" for d in c for k, v in d.items()])
+        elif isinstance(c, dict):
+            zz = ",".join([f"{k}: {i}" for k, v in c.items() for i in v])
+        else:
+            zz = str(c)
+        return f"First: {xx} Second: {yy} Third: {zz} Int: {d}"
+
+    @task
+    def get_int() -> int:
+        return 1
+
+    @workflow
+    def subwf(
+        a: typing.List[typing.Dict[str, typing.List[int]]],
+        b: typing.Dict[str, typing.List[int]],
+        c: typing.Union[typing.List[typing.Dict[str, typing.List[int]]], typing.Dict[str, typing.List[int]]],
+        d: int,
+    ) -> str:
+        return t1l(a=a, b=b, c=c, d=d)
+
+    @workflow
+    def wf() -> str:
+        ds = [
+            {"first_map_a": [42], "first_map_b": [get_int(), 2]},
+            {
+                "second_map_c": [33],
+                "second_map_d": [9, 99],
+            },
+        ]
+        ll = {
+            "ll_1": [get_int(), get_int(), get_int()],
+            "ll_2": [4, 5, 6],
+        }
+        out = subwf(a=ds, b=ll, c=ds, d=get_int())
+        return out
+
+    wf.compile()
+    x = wf()
+    expected = (
+        "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+        "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+        "Third: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+        "Int: 1"
+    )
+    assert x == expected
+    wf_spec = get_serializable(OrderedDict(), serialization_settings, wf)
+    assert set(wf_spec.template.nodes[5].upstream_node_ids) == {"n2", "n1", "n0", "n4", "n3"}
+
+    @workflow
+    def wf() -> str:
+        ds = [
+            {"first_map_a": [42], "first_map_b": [get_int(), 2]},
+            {
+                "second_map_c": [33],
+                "second_map_d": [9, 99],
+            },
+        ]
+        ll = {
+            "ll_1": [get_int(), get_int(), get_int()],
+            "ll_2": [4, 5, 6],
+        }
+        out = subwf(a=ds, b=ll, c=ll, d=get_int())
+        return out
+
+    x = wf()
+    expected = (
+        "First: first_map_a:[42],first_map_b:[1, 2],second_map_c:[33],second_map_d:[9, 99] "
+        "Second: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+        "Third: ll_1: 1,ll_1: 1,ll_1: 1,ll_2: 4,ll_2: 5,ll_2: 6 "
+        "Int: 1"
+    )
+    assert x == expected
+
+
+def test_unexpected_outputs():
+    @task
+    def t1(a: int) -> int:
+        a = a + 5
+        return a
+
+    @workflow
+    def no_outputs_wf():
+        return t1(a=3)
+
+    # Should raise an exception because the workflow returns something when it shouldn't
+    with pytest.raises(FlyteValueException):
+        no_outputs_wf()
+
+@pytest.mark.skipif(sys.version_info < (3, 10, 10), reason="inspect module does not work correctly with Python <3.10.10. https://github.com/python/cpython/issues/102647#issuecomment-1466868212")
+def test_missing_return_value():
+    @task
+    def t1(a: int) -> int:
+        a = a + 5
+        return a
+
+    # Should raise an exception because it doesn't return something when it should
+    with pytest.raises(FlyteMissingReturnValueException):
+
+        @workflow
+        def one_output_wf() -> int:  # type: ignore
+            t1(a=3)
+
+        one_output_wf()
+
+
+def test_custom_wrapper():
+    def our_task(
+            _task_function: typing.Optional[typing.Callable] = None,
+            **kwargs,
+    ):
+        def wrapped(_func: typing.Callable):
+            return task(_task_function=_func)
+
+        if _task_function:
+            return wrapped(_task_function)
+        else:
+            return wrapped
+
+    @our_task(
+        foo={
+            "bar1": lambda x: print(x),
+            "bar2": lambda x: print(x),
+        },
+    )
+    def missing_func_body() -> str:
+        return "foo"
+
+
+def test_wf_no_output():
+    @task
+    def t1(a: int) -> int:
+        a = a + 5
+        return a
+
+    @workflow
+    def no_outputs_wf():
+        t1(a=3)
+
+    assert no_outputs_wf() is None
+
+
+def test_wf_nested_comp(exec_prefix):
+    @task
+    def t1(a: int) -> int:
+        a = a + 5
+        return a
+
+    @workflow
+    def outer() -> typing.Tuple[int, int]:
+        # You should not do this. This is just here for testing.
+        @workflow
+        def wf2() -> int:
+            return t1(a=5)
+
+        return t1(a=3), wf2()
+
+    assert (8, 10) == outer()
+    entity_mapping = OrderedDict()
+
+    model_wf = get_serializable(entity_mapping, serialization_settings, outer)
+
+    assert len(model_wf.template.interface.outputs) == 2
+    assert len(model_wf.template.nodes) == 2
+    assert model_wf.template.nodes[1].workflow_node is not None
+
+    sub_wf = model_wf.sub_workflows[0]
+    assert len(sub_wf.nodes) == 1
+    assert sub_wf.nodes[0].id == "n0"
+    assert sub_wf.nodes[0].task_node.reference_id.name == f"{exec_prefix}tests.flytekit.unit.core.test_workflows.t1"
+
+
+@task
+def add_5(a: int) -> int:
+    a = a + 5
+    return a
+
+
+@workflow
+def simple_wf() -> int:
+    return add_5(a=1)
+
+@workflow
+def my_wf_example(a: int) -> typing.Tuple[int, int]:
+    '''example
+
+    Workflows can have inputs and return outputs of simple or complex types.
+
+    '''
+
+    x = add_5(a=a)
+
+    # You can use outputs of a previous task as inputs to other nodes.
+    z = add_5(a=x)
+
+    # You can call other workflows from within this workflow
+    d = simple_wf()
+
+    # You can add conditions that can run on primitive types and execute different branches
+    e = conditional("bool").if_(a == 5).then(add_5(a=d)).else_().then(add_5(a=z))
+
+    # Outputs of the workflow have to be outputs returned by prior nodes.
+    # No outputs and single or multiple outputs are supported
+    return x, e
+
+    def test_workflow_lhs():
+    assert my_wf_example._lhs == "my_wf_example"
+
+
+def test_all_node_types():
+    assert my_wf_example(a=1) == (6, 16)
+    entity_mapping = OrderedDict()
+
+    model_wf = get_serializable(entity_mapping, serialization_settings, my_wf_example)
+
+    assert len(model_wf.template.interface.outputs) == 2
+    assert len(model_wf.template.nodes) == 4
+    assert model_wf.template.nodes[2].workflow_node is not None
+
+    sub_wf = model_wf.sub_workflows[0]
+    assert len(sub_wf.nodes) == 1
+    assert sub_wf.nodes[0].id == "n0"
+    assert sub_wf.nodes[0].task_node.reference_id.name == "tests.flytekit.unit.core.test_workflows.add_5"
+
+
+def test_wf_docstring():
+    model_wf = get_serializable(OrderedDict(), serialization_settings, my_wf_example)
+
+    assert len(model_wf.template.interface.outputs) == 2
+    assert model_wf.template.interface.outputs["o0"].description == "outputs"
+    assert model_wf.template.interface.outputs["o1"].description == "outputs"
+    assert len(model_wf.template.interface.inputs) == 1
+    assert model_wf.template.interface.inputs["a"].description == "input a"
+
+
+@pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
+def test_structured_dataset_wf():
+    import pandas as pd
+    from pandas.testing import assert_frame_equal
+
+    from flytekit.types.schema import FlyteSchema
+
+    superset_cols = kwtypes(Name=str, Age=int, Height=int)
+    subset_cols = kwtypes(Name=str)
+    superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
+    subset_df = pd.DataFrame({"Name": ["Tom", "Joseph"]})
+
+    @task
+    def t1() -> Annotated[pd.DataFrame, superset_cols]:
+        return superset_df
+
+    @task
+    def t2(df: Annotated[pd.DataFrame, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
+        return df
+
+    @task
+    def t3(df: FlyteSchema[superset_cols]) -> FlyteSchema[superset_cols]:
+        return df
+
+    @task
+    def t4() -> FlyteSchema[superset_cols]:
+        return superset_df
+
+    @task
+    def t5(sd: Annotated[StructuredDataset, subset_cols]) -> Annotated[pd.DataFrame, subset_cols]:
+        return sd.open(pd.DataFrame).all()
+
+    @workflow
+    def sd_wf() -> Annotated[pd.DataFrame, subset_cols]:
+        # StructuredDataset -> StructuredDataset
+        df = t1()
+        return t2(df=df)
+
+    @workflow
+    def sd_to_schema_wf() -> pd.DataFrame:
+        # StructuredDataset -> schema
+        df = t1()
+        return t3(df=df)
+
+    @workflow
+    def schema_to_sd_wf() -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+        # schema -> StructuredDataset
+        df = t4()
+        return t2(df=df), t5(sd=df)  # type: ignore
+
+    assert_frame_equal(sd_wf(), subset_df)
+    assert_frame_equal(sd_to_schema_wf(), superset_df)
+    assert_frame_equal(schema_to_sd_wf()[0], subset_df)
+    assert_frame_equal(schema_to_sd_wf()[1], subset_df)
+
+
+@pytest.mark.skipif("pandas" not in sys.modules, reason="Pandas is not installed.")
+def test_compile_wf_at_compile_time():
+    import pandas as pd
+
+    from flytekit.types.schema import FlyteSchema
+
+    superset_cols = kwtypes(Name=str, Age=int, Height=int)
+    superset_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22], "Height": [160, 178]})
+
+    ctx = FlyteContextManager.current_context()
+    with FlyteContextManager.with_context(
+        ctx.with_execution_state(
+            ctx.new_execution_state().with_params(mode=context_manager.ExecutionState.Mode.TASK_EXECUTION)
+        )
+    ):
+
+        @task
+        def t4() -> FlyteSchema[superset_cols]:
+            return superset_df
+
+        @workflow
+        def wf():
+            t4()
+
+        assert ctx.compilation_state is None
+
+
+@pytest.mark.parametrize(
+    "error_message", [
+        "Fail!",
+        None,
+        "",
+        ("big", "boom!")
+    ]
+)
+@patch("builtins.print")
+def test_failure_node_local_execution(mock_print, error_message, exec_prefix):
+    @task
+    def clean_up(name: str, err: typing.Optional[FlyteError] = None):
+        print(f"Deleting cluster {name} due to {err}")
+        print("This is err:", str(err))
+
+    @task
+    def create_cluster(name: str):
+        print(f"Creating cluster: {name}")
+
+    @task
+    def delete_cluster(name: str, err: typing.Optional[FlyteError] = None):
+        print(f"Deleting cluster {name}")
+        print(err)
+
+    @task
+    def t1(a: int, b: str):
+        print(f"{a} {b}")
+        raise ValueError(error_message)
+
+    @workflow(on_failure=clean_up)
+    def wf(name: str = "flyteorg"):
+        c = create_cluster(name=name)
+        t = t1(a=1, b="2")
+        d = delete_cluster(name=name)
+        c >> t >> d
+
+    with pytest.raises(ValueError):
+        wf()
+
+    # Adjusted the error message to match the one in the failure
+    expected_error_message = str(
+        FlyteError(message=f"Error encountered while executing '{exec_prefix}tests.flytekit.unit.core.test_workflows.t1':
 {error_message}", failed_node_id="fn0")
-      )
+    )
 
-      assert mock_print.call_count > 0
+    assert mock_print.call_count > 0
 
-      mock_print.assert_any_call("Creating cluster: flyteorg")
-      mock_print.assert_any_call("1 2")
-      mock_print.assert_any_call(f"Deleting cluster flyteorg due to {expected_error_message}")
-      mock_print.assert_any_call("This is err:", expected_error_message)
-  ```
+    mock_print.assert_any_call("Creating cluster: flyteorg")
+    mock_print.assert_any_call("1 2")
+    mock_print.assert_any_call(f"Deleting cluster flyteorg due to {expected_error_message}")
+    mock_print.assert_any_call("This is err:", expected_error_message)
+```
 
 
-  Again, users should keep in mind that even though the body of the function looks like regular Python, it is
-  actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
-  your typical Python values. So even though you may have a task ``t1() -&gt; int``, when ``a = t1()`` is called, ``a``
-  will not be an integer so if you try to ``range(a)`` you'll get an error.
+Again, users should keep in mind that even though the body of the function looks like regular Python, it is
+actually not. When flytekit scans the workflow function, the objects being passed around between the tasks are not
+your typical Python values. So even though you may have a task ``t1() -> int``, when ``a = t1()`` is called, ``a``
+will not be an integer so if you try to ``range(a)`` you'll get an error.
 
-  Please see the :ref:`user guide &lt;cookbook:workflow&gt;` for more usage examples.
+Please see the `user guide` for more usage examples.
 
 
 
@@ -816,16 +814,16 @@ ActorEnvironment class.
 ```python
 class ActorEnvironment(
     name: str,
-    container_image: Optional[Union[str, ImageSpec]],
-    replica_count: int,
-    ttl_seconds: Optional[int],
-    environment: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    accelerator: Optional[BaseAccelerator],
-    secret_requests: Optional[List[Secret]],
-    pod_template: Optional[PodTemplate],
-    interruptible: bool,
+    container_image: Optional[Union[str, ImageSpec]] = None,
+    replica_count: int = 1,
+    ttl_seconds: Optional[int] = None,
+    environment: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    pod_template: Optional[PodTemplate] = None,
+    interruptible: bool = None,
 )
 ```
 | Parameter | Type | Description |
@@ -868,29 +866,29 @@ Note that Python fields will be missing when retrieved from the service.
 
 ```python
 class Artifact(
-    args,
-    project: Optional[str],
-    domain: Optional[str],
-    name: Optional[str],
-    version: Optional[str],
-    time_partitioned: bool,
-    time_partition: Optional[TimePartition],
-    time_partition_granularity: Optional[Granularity],
-    partition_keys: Optional[typing.List[str]],
-    partitions: Optional[Union[Partitions, typing.Dict[str, str]]],
-    python_val: Optional[typing.Any],
-    python_type: Optional[typing.Type],
-    literal: Optional[Literal],
-    literal_type: Optional[LiteralType],
-    short_description: Optional[str],
-    source: Optional[artifacts_pb2.ArtifactSource],
-    card: Optional[Card],
-    kwargs,
+    *args,
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    name: Optional[str] = None,
+    version: Optional[str] = None,
+    time_partitioned: bool = False,
+    time_partition: Optional[TimePartition] = None,
+    time_partition_granularity: Optional[Granularity] = None,
+    partition_keys: Optional[typing.List[str]] = None,
+    partitions: Optional[Union[Partitions, typing.Dict[str, str]]] = None,
+    python_val: Optional[typing.Any] = None,
+    python_type: Optional[typing.Type] = None,
+    literal: Optional[Literal] = None,
+    literal_type: Optional[LiteralType] = None,
+    short_description: Optional[str] = None,
+    source: Optional[artifacts_pb2.ArtifactSource] = None,
+    card: Optional[Card] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `project` | `Optional[str]` | Should not be directly user provided, the project/domain will come from the project/domain of the execution that produced the output. These values will be filled in automatically when retrieving however. |
 | `domain` | `Optional[str]` | See above. |
 | `name` | `Optional[str]` | The name of the Artifact. This should be user provided. |
@@ -907,7 +905,7 @@ class Artifact(
 | `short_description` | `Optional[str]` | |
 | `source` | `Optional[artifacts_pb2.ArtifactSource]` | |
 | `card` | `Optional[Card]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -939,9 +937,9 @@ class Artifact(
 ```python
 def create_from(
     o: O,
-    card: Optional[SerializableToString],
-    args: *args,
-    kwargs,
+    card: Optional[SerializableToString] = None,
+    *args: SerializableToString,
+    **kwargs,
 ) -> O
 ```
 This function allows users to declare partition values dynamically from the body of a task. Note that you'll
@@ -971,17 +969,17 @@ You can mix and match with the input syntax as well.
 |-|-|-|
 | `o` | `O` | |
 | `card` | `Optional[SerializableToString]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `SerializableToString` | |
+| `**kwargs` |  | |
 
 #### embed_as_query()
 
 ```python
 def embed_as_query(
-    partition: Optional[str],
-    bind_to_time_partition: Optional[bool],
-    expr: Optional[str],
-    op: Optional[Op],
+    partition: Optional[str] = None,
+    bind_to_time_partition: Optional[bool] = None,
+    expr: Optional[str] = None,
+    op: Optional[Op] = None,
 ) -> art_id.ArtifactQuery
 ```
 This should only be called in the context of a Trigger. The type of query this returns is different from the
@@ -1013,7 +1011,7 @@ Converts the IDL representation to this object.
 
 ```python
 def get(
-    as_type: Optional[typing.Type],
+    as_type: Optional[typing.Type] = None,
 ) -> Optional[typing.Any]
 ```
 This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an
@@ -1031,10 +1029,10 @@ Python value.
 def initialize(
     python_val: typing.Any,
     python_type: typing.Type,
-    name: Optional[str],
-    literal_type: Optional[LiteralType],
-    version: Optional[str],
-    tags: Optional[typing.List[str]],
+    name: Optional[str] = None,
+    literal_type: Optional[LiteralType] = None,
+    version: Optional[str] = None,
+    tags: Optional[typing.List[str]] = None,
 ) -> Artifact
 ```
 Use this for when you have a Python value you want to get an Artifact object out of.
@@ -1071,11 +1069,11 @@ def metadata()
 
 ```python
 def query(
-    project: Optional[str],
-    domain: Optional[str],
-    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]],
-    partitions: Optional[Union[typing.Dict[str, str], Partitions]],
-    kwargs,
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]] = None,
+    partitions: Optional[Union[typing.Dict[str, str], Partitions]] = None,
+    **kwargs,
 ) -> ArtifactQuery
 ```
 | Parameter | Type | Description |
@@ -1084,7 +1082,7 @@ def query(
 | `domain` | `Optional[str]` | |
 | `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` | |
 | `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### set_resolver()
 
@@ -1144,11 +1142,11 @@ Cache configuration for a task.
 
 ```python
 class Cache(
-    version: typing.Optional[str],
-    serialize: bool,
-    ignored_inputs: typing.Union[typing.Tuple[str, ...], str],
-    salt: str,
-    policies: typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType],
+    version: typing.Optional[str] = None,
+    serialize: bool = False,
+    ignored_inputs: typing.Union[typing.Tuple[str, ...], str] = (),
+    salt: str = '',
+    policies: typing.Union[typing.List[flytekit.core.cache.CachePolicy], flytekit.core.cache.CachePolicy, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1222,22 +1220,22 @@ class ContainerTask(
     name: str,
     image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec],
     command: typing.List[str],
-    inputs: typing.Optional[typing.OrderedDict[str, typing.Type]],
-    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata],
-    arguments: typing.Optional[typing.List[str]],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    input_data_dir: typing.Optional[str],
-    output_data_dir: typing.Optional[str],
-    metadata_format: <enum 'MetadataFormat'>,
-    io_strategy: typing.Optional[flytekit.core.container_task.ContainerTask.IOStrategy],
-    secret_requests: typing.Optional[typing.List[flytekit.models.security.Secret]],
-    pod_template: typing.Optional[ForwardRef('PodTemplate')],
-    pod_template_name: typing.Optional[str],
-    local_logs: bool,
-    resources: typing.Optional[flytekit.core.resources.Resources],
-    kwargs,
+    inputs: typing.Optional[typing.OrderedDict[str, typing.Type]] = None,
+    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata] = None,
+    arguments: typing.Optional[typing.List[str]] = None,
+    outputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    input_data_dir: typing.Optional[str] = None,
+    output_data_dir: typing.Optional[str] = None,
+    metadata_format: <enum 'MetadataFormat'> = MetadataFormat.JSON,
+    io_strategy: typing.Optional[flytekit.core.container_task.ContainerTask.IOStrategy] = None,
+    secret_requests: typing.Optional[typing.List[flytekit.models.security.Secret]] = None,
+    pod_template: typing.Optional[ForwardRef('PodTemplate')] = None,
+    pod_template_name: typing.Optional[str] = None,
+    local_logs: bool = False,
+    resources: typing.Optional[flytekit.core.resources.Resources] = None,
+    **kwargs,
 )
 ```
 task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
@@ -1245,7 +1243,7 @@ task_type (str): defines a unique task-type for every new extension. If a backen
 name (str): A unique name for the task instantiation. This is unique for every instance of task.
 task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
     task
-interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+interface (Optional[Interface]): A python native typed interface ``(inputs) -> outputs`` that declares the
     signature of the task
 environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
     execution of the task. Supplied as a dictionary of key/value pairs
@@ -1275,7 +1273,7 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 | `pod_template_name` | `typing.Optional[str]` | |
 | `local_logs` | `bool` | |
 | `resources` | `typing.Optional[flytekit.core.resources.Resources]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -1329,8 +1327,8 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -1339,8 +1337,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -1376,7 +1374,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 This method will be invoked to execute the task.
@@ -1384,7 +1382,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -1521,7 +1519,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -1532,7 +1530,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -1635,8 +1633,8 @@ def t2() -> Annotated[pd.DataFrame, TopFrameRenderer(10)]:
 ```python
 class Deck(
     name: str,
-    html: typing.Optional[str],
-    auto_add_to_deck: bool,
+    html: typing.Optional[str] = '',
+    auto_add_to_deck: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -1683,8 +1681,8 @@ def publish()
 ```python
 class FlyteDirectory(
     path: typing.Union[str, os.PathLike],
-    downloader: typing.Optional[typing.Callable],
-    remote_directory: typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]],
+    downloader: typing.Optional[typing.Callable] = None,
+    remote_directory: typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1710,27 +1708,22 @@ class FlyteDirectory(
 | [`deserialize_flyte_dir()`](#deserialize_flyte_dir) |  |
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_source()`](#from_source) | Create a new FlyteDirectory object with the remote source set to the input. |
 | [`listdir()`](#listdir) | This function will list all files and folders in the given directory, but without downloading the contents. |
 | [`new()`](#new) | Create a new FlyteDirectory object in current Flyte working directory. |
 | [`new_dir()`](#new_dir) | This will create a new folder under the current folder. |
 | [`new_file()`](#new_file) | This will create a new file under the current folder. |
 | [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i. |
-| [`schema()`](#schema) |  |
 | [`serialize_flyte_dir()`](#serialize_flyte_dir) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### crawl()
 
 ```python
 def crawl(
-    maxdepth: typing.Optional[int],
-    topdown: bool,
-    kwargs,
+    maxdepth: typing.Optional[int] = None,
+    topdown: bool = True,
+    **kwargs,
 ) -> Generator[Tuple[typing.Union[str, os.PathLike[Any]], typing.Dict[Any, Any]], None, None]
 ```
 Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory".
@@ -1742,7 +1735,7 @@ if details=True is passed, then it will return a dictionary as specified by fssp
 |-|-|-|
 | `maxdepth` | `typing.Optional[int]` | |
 | `topdown` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### deserialize_flyte_dir()
 
@@ -1765,40 +1758,6 @@ def download()
 ```python
 def extension()
 ```
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
 #### from_source()
 
 ```python
@@ -1859,7 +1818,7 @@ Create a new FlyteDirectory object in current Flyte working directory.
 
 ```python
 def new_dir(
-    name: typing.Optional[str],
+    name: typing.Optional[str] = None,
 ) -> FlyteDirectory
 ```
 This will create a new folder under the current folder.
@@ -1875,7 +1834,7 @@ Collisions are not checked.
 
 ```python
 def new_file(
-    name: typing.Optional[str],
+    name: typing.Optional[str] = None,
 ) -> FlyteFile
 ```
 This will create a new file under the current folder.
@@ -1891,8 +1850,8 @@ Collisions are not checked.
 
 ```python
 def new_remote(
-    stem: typing.Optional[str],
-    alt: typing.Optional[str],
+    stem: typing.Optional[str] = None,
+    alt: typing.Optional[str] = None,
 ) -> FlyteDirectory
 ```
 Create a new FlyteDirectory object using the currently configured default remote in the context (i.e.
@@ -1909,76 +1868,11 @@ and let flytekit handle the uploading.
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
 | `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
 #### serialize_flyte_dir()
 
 ```python
 def serialize_flyte_dir()
 ```
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
-
 ## union.FlyteFile
 
 ### Parameters
@@ -1986,9 +1880,9 @@ def to_json(
 ```python
 class FlyteFile(
     path: typing.Union[str, os.PathLike],
-    downloader: typing.Callable,
-    remote_path: typing.Optional[typing.Union[os.PathLike, str, bool]],
-    metadata: typing.Optional[dict[str, str]],
+    downloader: typing.Callable = noop,
+    remote_path: typing.Optional[typing.Union[os.PathLike, str, bool]] = None,
+    metadata: typing.Optional[dict[str, str]] = None,
 )
 ```
 FlyteFile's init method.
@@ -2018,14 +1912,12 @@ FlyteFile's init method.
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_source()`](#from_source) | Create a new FlyteFile object with the remote source set to the input. |
 | [`new()`](#new) | Create a new FlyteFile object in the current Flyte working directory. |
 | [`new_remote_file()`](#new_remote_file) | Create a new FlyteFile object with a remote path. |
 | [`open()`](#open) | Returns a streaming File handle. |
 | [`serialize_flyte_file()`](#serialize_flyte_file) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### deserialize_flyte_file()
@@ -2054,28 +1946,13 @@ def extension()
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `d` |  | |
 | `dialect` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
 
 #### from_source()
 
@@ -2109,8 +1986,8 @@ Create a new FlyteFile object in the current Flyte working directory
 
 ```python
 def new_remote_file(
-    name: typing.Optional[str],
-    alt: typing.Optional[str],
+    name: typing.Optional[str] = None,
+    alt: typing.Optional[str] = None,
 ) -> FlyteFile
 ```
 Create a new FlyteFile object with a remote path.
@@ -2127,8 +2004,8 @@ Create a new FlyteFile object with a remote path.
 ```python
 def open(
     mode: str,
-    cache_type: typing.Optional[str],
-    cache_options: typing.Optional[typing.Dict[str, typing.Any]],
+    cache_type: typing.Optional[str] = None,
+    cache_options: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 Returns a streaming File handle
@@ -2164,19 +2041,6 @@ def serialize_flyte_file()
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## union.ImageSpec
 
 This class is used to specify the docker image that will be used to run the task.
@@ -2187,35 +2051,35 @@ This class is used to specify the docker image that will be used to run the task
 
 ```python
 class ImageSpec(
-    name: str,
-    python_version: str,
-    builder: typing.Optional[str],
-    source_root: typing.Optional[str],
-    env: typing.Optional[typing.Dict[str, str]],
-    registry: typing.Optional[str],
-    packages: typing.Optional[typing.List[str]],
-    conda_packages: typing.Optional[typing.List[str]],
-    conda_channels: typing.Optional[typing.List[str]],
-    requirements: typing.Optional[str],
-    apt_packages: typing.Optional[typing.List[str]],
-    cuda: typing.Optional[str],
-    cudnn: typing.Optional[str],
-    base_image: typing.Union[str, ForwardRef('ImageSpec'), NoneType],
-    platform: typing.Optional[str],
-    pip_index: typing.Optional[str],
-    pip_extra_index_url: typing.Optional[typing.List[str]],
-    pip_secret_mounts: typing.Optional[typing.List[typing.Tuple[str, str]]],
-    pip_extra_args: typing.Optional[str],
-    registry_config: typing.Optional[str],
-    entrypoint: typing.Optional[typing.List[str]],
-    commands: typing.Optional[typing.List[str]],
-    tag_format: typing.Optional[str],
-    source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection],
-    copy: typing.Optional[typing.List[str]],
-    python_exec: typing.Optional[str],
-    runtime_packages: typing.Optional[typing.List[str]],
-    builder_options: typing.Optional[typing.Dict[str, typing.Any]],
-    builder_config: typing.Optional[typing.Dict[str, typing.Any]],
+    name: str = 'flytekit',
+    python_version: str = None,
+    builder: typing.Optional[str] = None,
+    source_root: typing.Optional[str] = None,
+    env: typing.Optional[typing.Dict[str, str]] = None,
+    registry: typing.Optional[str] = None,
+    packages: typing.Optional[typing.List[str]] = None,
+    conda_packages: typing.Optional[typing.List[str]] = None,
+    conda_channels: typing.Optional[typing.List[str]] = None,
+    requirements: typing.Optional[str] = None,
+    apt_packages: typing.Optional[typing.List[str]] = None,
+    cuda: typing.Optional[str] = None,
+    cudnn: typing.Optional[str] = None,
+    base_image: typing.Union[str, ForwardRef('ImageSpec'), NoneType] = None,
+    platform: typing.Optional[str] = None,
+    pip_index: typing.Optional[str] = None,
+    pip_extra_index_url: typing.Optional[typing.List[str]] = None,
+    pip_secret_mounts: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    pip_extra_args: typing.Optional[str] = None,
+    registry_config: typing.Optional[str] = None,
+    entrypoint: typing.Optional[typing.List[str]] = None,
+    commands: typing.Optional[typing.List[str]] = None,
+    tag_format: typing.Optional[str] = None,
+    source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection] = None,
+    copy: typing.Optional[typing.List[str]] = None,
+    python_exec: typing.Optional[str] = None,
+    runtime_packages: typing.Optional[typing.List[str]] = None,
+    builder_options: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    builder_config: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2296,8 +2160,8 @@ Builder that returns a new image spec with force push enabled.
 
 ```python
 def from_env(
-    pinned_packages: typing.Optional[typing.List[str]],
-    kwargs,
+    pinned_packages: typing.Optional[typing.List[str]] = None,
+    **kwargs,
 ) -> ImageSpec
 ```
 Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment.
@@ -2306,7 +2170,7 @@ Create ImageSpec with the environment's Python version and packages pinned to th
 | Parameter | Type | Description |
 |-|-|-|
 | `pinned_packages` | `typing.Optional[typing.List[str]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### image_name()
 
@@ -2413,7 +2277,7 @@ Builder that returns a new image spec with runtime packages. Dev packages will b
 ## union.LaunchPlan
 
 Launch Plans are one of the core constructs of Flyte. Please take a look at the discussion in the
-:std:ref:`core concepts &lt;flyte:divedeep-launchplans&gt;` if you are unfamiliar with them.
+`core concepts` if you are unfamiliar with them.
 
 Every workflow is registered with a default launch plan, which is just a launch plan with none of the additional
 attributes set - no default values, fixed values, schedules, etc. Assuming you have the following workflow
@@ -2452,17 +2316,17 @@ class LaunchPlan(
     workflow: _annotated_workflow.WorkflowBase,
     parameters: _interface_models.ParameterMap,
     fixed_inputs: _literal_models.LiteralMap,
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2523,18 +2387,18 @@ class LaunchPlan(
 ```python
 def clone_with(
     name: str,
-    parameters: Optional[_interface_models.ParameterMap],
-    fixed_inputs: Optional[_literal_models.LiteralMap],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
+    parameters: Optional[_interface_models.ParameterMap] = None,
+    fixed_inputs: Optional[_literal_models.LiteralMap] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -2564,20 +2428,20 @@ def construct_node_metadata()
 def create(
     name: str,
     workflow: _annotated_workflow.WorkflowBase,
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -2623,21 +2487,21 @@ use the default auth information supplied during serialization, with no notifica
 ```python
 def get_or_create(
     workflow: _annotated_workflow.WorkflowBase,
-    name: Optional[str],
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    name: Optional[str] = None,
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 This function offers a friendlier interface for creating launch plans. If the name for the launch plan is not
@@ -2677,10 +2541,10 @@ Custom PodTemplate specification for a Task.
 
 ```python
 class PodTemplate(
-    pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
-    primary_container_name: str,
-    labels: typing.Optional[typing.Dict[str, str]],
-    annotations: typing.Optional[typing.Dict[str, str]],
+    pod_spec: typing.Optional[ForwardRef('V1PodSpec')] = None,
+    primary_container_name: str = 'primary',
+    labels: typing.Optional[typing.Dict[str, str]] = None,
+    annotations: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2721,10 +2585,10 @@ second value is the limit. If the value is a single value, then both the request
 set to that value. For example, the `Resource(cpu=("1", "2"), mem=1024)` will set the cpu request to 1, cpu limit to 2,
 mem limit and request to 1024.
 
-&gt; [!NOTE]
-&gt; Persistent storage is not currently supported on the Flyte backend.
+> [!NOTE]
+> Persistent storage is not currently supported on the Flyte backend.
 
-Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;` for detailed examples.
+Please see the `User Guide` for detailed examples.
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
 
@@ -2732,10 +2596,10 @@ Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/confi
 
 ```python
 class Resources(
-    cpu: typing.Union[str, int, float, list, tuple, NoneType],
-    mem: typing.Union[str, int, list, tuple, NoneType],
-    gpu: typing.Union[str, int, list, tuple, NoneType],
-    ephemeral_storage: typing.Union[str, int, NoneType],
+    cpu: typing.Union[str, int, float, list, tuple, NoneType] = None,
+    mem: typing.Union[str, int, list, tuple, NoneType] = None,
+    gpu: typing.Union[str, int, list, tuple, NoneType] = None,
+    ephemeral_storage: typing.Union[str, int, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2750,9 +2614,7 @@ class Resources(
 | Method | Description |
 |-|-|
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -2760,7 +2622,7 @@ class Resources(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2768,42 +2630,14 @@ def from_dict(
 | `d` |  | |
 | `dialect` |  | |
 
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
-
 #### to_dict()
 
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## union.Secret
 
-See :std:ref:`cookbook:secrets` for usage examples.
+See `cookbook:secrets` for usage examples.
 
 
 
@@ -2811,11 +2645,11 @@ See :std:ref:`cookbook:secrets` for usage examples.
 
 ```python
 class Secret(
-    group: typing.Optional[str],
-    key: typing.Optional[str],
-    group_version: typing.Optional[str],
-    mount_requirement: <enum 'MountType'>,
-    env_var: typing.Optional[str],
+    group: typing.Optional[str] = None,
+    key: typing.Optional[str] = None,
+    group_version: typing.Optional[str] = None,
+    mount_requirement: <enum 'MountType'> = MountType.ANY,
+    env_var: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2880,10 +2714,10 @@ class (that is just a model, a Python class representation of the protobuf).
 
 ```python
 class StructuredDataset(
-    dataframe: typing.Optional[typing.Any],
-    uri: typing.Optional[str],
-    metadata: typing.Optional[literals.StructuredDatasetMetadata],
-    kwargs,
+    dataframe: typing.Optional[typing.Any] = None,
+    uri: typing.Optional[str] = None,
+    metadata: typing.Optional[literals.StructuredDatasetMetadata] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -2891,7 +2725,7 @@ class StructuredDataset(
 | `dataframe` | `typing.Optional[typing.Any]` | |
 | `uri` | `typing.Optional[str]` | |
 | `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -2910,13 +2744,11 @@ class StructuredDataset(
 | [`columns()`](#columns) |  |
 | [`deserialize_structured_dataset()`](#deserialize_structured_dataset) |  |
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`iter()`](#iter) |  |
 | [`open()`](#open) |  |
 | [`serialize_structured_dataset()`](#serialize_structured_dataset) |  |
 | [`set_literal()`](#set_literal) | A public wrapper method to set the StructuredDataset Literal. |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### all()
@@ -2950,28 +2782,13 @@ def deserialize_structured_dataset(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `d` |  | |
 | `dialect` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
 
 #### iter()
 
@@ -3017,31 +2834,18 @@ This method provides external access to the internal _set_literal method.
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## union.UnionRemote
 
 ### Parameters
 
 ```python
 class UnionRemote(
-    config: typing.Optional[Union[Config, str]],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: typing.Optional[bool],
-    kwargs,
+    config: typing.Optional[Union[Config, str]] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: typing.Optional[bool] = None,
+    **kwargs,
 )
 ```
 Initialize a FlyteRemote object.
@@ -3057,7 +2861,7 @@ Initialize a FlyteRemote object.
 | `default_domain` | `typing.Optional[str]` | default domain to use when fetching or executing flyte entities. |
 | `data_upload_location` | `str` | this is where all the default data will be uploaded when providing inputs. The default location - `s3://my-s3-bucket/data` works for sandbox/demo environment. Please override this for non-sandbox cases. |
 | `interactive_mode_enabled` | `typing.Optional[bool]` | If set to True, the FlyteRemote will pickle the task/workflow, if False, it will not. If set to None, then it will automatically detect if it is running in an interactive environment like a Jupyter notebook and enable interactive mode. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -3170,8 +2974,8 @@ Given a launchplan, activate it, all previous versions are deactivated.
 def approve(
     signal_id: str,
     execution_name: str,
-    project: str,
-    domain: str,
+    project: str = None,
+    domain: str = None,
 )
 ```
 | Parameter | Type | Description |
@@ -3185,12 +2989,12 @@ def approve(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    config_file: typing.Union[str, ConfigFile] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -3200,7 +3004,7 @@ def auto(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### close_async_channel()
 
@@ -3246,8 +3050,8 @@ Given a launchplan, deactivate it, all previous versions are deactivated.
 ```python
 def deploy_app(
     app: App,
-    project: Optional[str],
-    domain: Optional[str],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
 ) -> AppIDL
 ```
 Deploy an application.
@@ -3268,7 +3072,7 @@ Deploy an application.
 def download(
     data: typing.Union[LiteralsResolver, Literal, LiteralMap],
     download_to: str,
-    recursive: bool,
+    recursive: bool = True,
 )
 ```
 Download the data to the specified location. If the data is a LiteralsResolver, LiteralMap and if recursive is
@@ -3292,24 +3096,24 @@ configure your credentials appropriately.
 ```python
 def execute(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan, FlyteWorkflow, PythonTask, WorkflowBase, LaunchPlan, ReferenceEntity],
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a task, workflow, or launchplan, either something that's been declared locally, or a fetched entity.
@@ -3355,22 +3159,22 @@ settings for entities that have already been registered on Admin.
 ```python
 def execute_local_launch_plan(
     entity: LaunchPlan,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
     version: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    name: typing.Optional[str],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    name: typing.Optional[str] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a locally defined `LaunchPlan`.
@@ -3404,23 +3208,23 @@ Execute a locally defined `LaunchPlan`.
 ```python
 def execute_local_task(
     entity: PythonTask,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    options: typing.Optional[Options],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = 'latest',
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a @task-decorated function or TaskTemplate task.
@@ -3455,23 +3259,23 @@ Execute a @task-decorated function or TaskTemplate task.
 ```python
 def execute_local_workflow(
     entity: WorkflowBase,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    options: typing.Optional[Options],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute an @workflow decorated function.
@@ -3506,18 +3310,18 @@ Execute an @workflow decorated function.
 ```python
 def execute_reference_launch_plan(
     entity: ReferenceLaunchPlan,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceLaunchPlan.
@@ -3544,18 +3348,18 @@ Execute a ReferenceLaunchPlan.
 ```python
 def execute_reference_task(
     entity: ReferenceTask,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceTask.
@@ -3582,18 +3386,18 @@ Execute a ReferenceTask.
 ```python
 def execute_reference_workflow(
     entity: ReferenceWorkflow,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceWorkflow.
@@ -3620,20 +3424,20 @@ Execute a ReferenceWorkflow.
 ```python
 def execute_remote_task_lp(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan],
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a FlyteTask, or FlyteLaunchplan.
@@ -3664,20 +3468,20 @@ NOTE: the name and version arguments are currently not used and only there consi
 ```python
 def execute_remote_wf(
     entity: FlyteWorkflow,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a FlyteWorkflow.
@@ -3708,9 +3512,9 @@ NOTE: the name and version arguments are currently not used and only there consi
 ```python
 def fast_package(
     root: os.PathLike,
-    deref_symlinks: bool,
-    output: str,
-    options: typing.Optional[FastPackageOptions],
+    deref_symlinks: bool = True,
+    output: str = None,
+    options: typing.Optional[FastPackageOptions] = None,
 ) -> typing.Tuple[bytes, str]
 ```
 Packages the given paths into an installable zip and returns the md5_bytes and the URL of the uploaded location
@@ -3730,11 +3534,11 @@ Packages the given paths into an installable zip and returns the md5_bytes and t
 ```python
 def fast_register_workflow(
     entity: WorkflowBase,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
-    default_launch_plan: typing.Optional[bool],
-    options: typing.Optional[Options],
-    fast_package_options: typing.Optional[FastPackageOptions],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
+    default_launch_plan: typing.Optional[bool] = True,
+    options: typing.Optional[Options] = None,
+    fast_package_options: typing.Optional[FastPackageOptions] = None,
 ) -> FlyteWorkflow
 ```
 Use this method to register a workflow with zip mode.
@@ -3753,9 +3557,9 @@ Use this method to register a workflow with zip mode.
 
 ```python
 def fetch_active_launchplan(
-    project: str,
-    domain: str,
-    name: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
 ) -> typing.Optional[FlyteLaunchPlan]
 ```
 Returns the active version of the launch plan if it exists or returns None
@@ -3771,14 +3575,14 @@ Returns the active version of the launch plan if it exists or returns None
 
 ```python
 def fetch_execution(
-    project: str,
-    domain: str,
-    name: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
 ) -> FlyteWorkflowExecution
 ```
 Fetch a workflow execution entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`
+:returns: `FlyteWorkflowExecution`
 
 
 
@@ -3798,15 +3602,15 @@ Fetch a workflow execution entity from flyte admin.
 
 ```python
 def fetch_launch_plan(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteLaunchPlan
 ```
 Fetch a launchplan entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`
+:returns: `FlyteLaunchPlan`
 
 
 
@@ -3827,15 +3631,15 @@ Fetch a launchplan entity from flyte admin.
 
 ```python
 def fetch_task(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteTask
 ```
 Fetch a task entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.tasks.task.FlyteTask`
+:returns: `FlyteTask`
 
 
 
@@ -3856,10 +3660,10 @@ Fetch a task entity from flyte admin.
 
 ```python
 def fetch_task_lazy(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> LazyEntity
 ```
 Similar to fetch_task, just that it returns a LazyEntity, which will fetch the workflow lazily.
@@ -3876,10 +3680,10 @@ Similar to fetch_task, just that it returns a LazyEntity, which will fetch the w
 
 ```python
 def fetch_workflow(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteWorkflow
 ```
 Fetch a workflow entity from flyte admin.
@@ -3902,10 +3706,10 @@ Fetch a workflow entity from flyte admin.
 
 ```python
 def fetch_workflow_lazy(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> LazyEntity[FlyteWorkflow]
 ```
 Similar to fetch_workflow, just that it returns a LazyEntity, which will fetch the workflow lazily.
@@ -3949,14 +3753,14 @@ def find_launch_plan_for_node(
 ```python
 def for_endpoint(
     endpoint: str,
-    insecure: bool,
-    data_config: typing.Optional[DataConfig],
-    config_file: typing.Union[str, ConfigFile],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    insecure: bool = False,
+    data_config: typing.Optional[DataConfig] = None,
+    config_file: typing.Union[str, ConfigFile] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -3969,17 +3773,17 @@ def for_endpoint(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### for_sandbox()
 
 ```python
 def for_sandbox(
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -3988,17 +3792,17 @@ def for_sandbox(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### from_api_key()
 
 ```python
 def from_api_key(
     api_key: str,
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    kwargs,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = 'development',
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    **kwargs,
 ) -> 'UnionRemote'
 ```
 Call this if you want to directly instantiate a UnionRemote from an API key
@@ -4010,7 +3814,7 @@ Call this if you want to directly instantiate a UnionRemote from an API key
 | `default_project` | `typing.Optional[str]` | |
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### generate_console_http_domain()
 
@@ -4043,7 +3847,7 @@ and change the type automatically.
 
 ```python
 def get(
-    uri: typing.Optional[str],
+    uri: typing.Optional[str] = None,
 ) -> typing.Optional[typing.Union[LiteralsResolver, Literal, bytes]]
 ```
 General function that works with flyte tiny urls. This can return outputs (in the form of LiteralsResolver, or
@@ -4059,11 +3863,11 @@ if ipython is not available locally.
 
 ```python
 def get_artifact(
-    uri: typing.Optional[str],
-    artifact_key: typing.Optional[art_id.ArtifactKey],
-    artifact_id: typing.Optional[art_id.ArtifactID],
-    query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]],
-    get_details: bool,
+    uri: typing.Optional[str] = None,
+    artifact_key: typing.Optional[art_id.ArtifactKey] = None,
+    artifact_id: typing.Optional[art_id.ArtifactID] = None,
+    query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]] = None,
+    get_details: bool = False,
 ) -> typing.Optional[Artifact]
 ```
 Get the specified artifact.
@@ -4095,7 +3899,7 @@ Lists registered domains from flyte admin.
 ```python
 def get_execution_metrics(
     id: WorkflowExecutionIdentifier,
-    depth: int,
+    depth: int = 10,
 ) -> FlyteExecutionSpan
 ```
 Get the metrics for a given execution.
@@ -4126,14 +3930,14 @@ def launch_backfill(
     from_date: datetime,
     to_date: datetime,
     launchplan: str,
-    launchplan_version: str,
-    execution_name: str,
-    version: str,
-    dry_run: bool,
-    execute: bool,
-    parallel: bool,
-    failure_policy: typing.Optional[WorkflowFailurePolicy],
-    overwrite_cache: typing.Optional[bool],
+    launchplan_version: str = None,
+    execution_name: str = None,
+    version: str = None,
+    dry_run: bool = False,
+    execute: bool = True,
+    parallel: bool = False,
+    failure_policy: typing.Optional[WorkflowFailurePolicy] = None,
+    overwrite_cache: typing.Optional[bool] = None,
 ) -> typing.Optional[FlyteWorkflowExecution, FlyteWorkflow, WorkflowBase]
 ```
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
@@ -4173,9 +3977,9 @@ is that execute backfill is run sequentially
 
 ```python
 def list_projects(
-    limit: typing.Optional[int],
-    filters: typing.Optional[typing.List[filter_models.Filter]],
-    sort_by: typing.Optional[admin_common_models.Sort],
+    limit: typing.Optional[int] = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
+    sort_by: typing.Optional[admin_common_models.Sort] = None,
 ) -> typing.List[Project]
 ```
 Lists registered projects from flyte admin.
@@ -4200,10 +4004,10 @@ Lists registered projects from flyte admin.
 ```python
 def list_signals(
     execution_name: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: int,
-    filters: typing.Optional[typing.List[filter_models.Filter]],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: int = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
 ) -> typing.List[Signal]
 ```
 | Parameter | Type | Description |
@@ -4219,9 +4023,9 @@ def list_signals(
 ```python
 def list_tasks_by_version(
     version: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: typing.Optional[int],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: typing.Optional[int] = 100,
 ) -> typing.List[FlyteTask]
 ```
 | Parameter | Type | Description |
@@ -4238,9 +4042,9 @@ def raw_register(
     cp_entity: FlyteControlPlaneEntity,
     settings: SerializationSettings,
     version: str,
-    create_default_launchplan: bool,
-    options: Options,
-    og_entity: FlyteLocalEntity,
+    create_default_launchplan: bool = True,
+    options: Options = None,
+    og_entity: FlyteLocalEntity = None,
 ) -> typing.Optional[Identifier]
 ```
 Raw register method, can be used to register control plane entities. Usually if you have a Flyte Entity like a
@@ -4263,10 +4067,10 @@ WorkflowBase, Task, LaunchPlan then use other methods. This should be used only 
 
 ```python
 def recent_executions(
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: typing.Optional[int],
-    filters: typing.Optional[typing.List[filter_models.Filter]],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: typing.Optional[int] = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
 ) -> typing.List[FlyteWorkflowExecution]
 ```
 | Parameter | Type | Description |
@@ -4281,11 +4085,11 @@ def recent_executions(
 ```python
 def register_launch_plan(
     entity: LaunchPlan,
-    version: typing.Optional[str],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    options: typing.Optional[Options],
-    serialization_settings: typing.Optional[SerializationSettings],
+    version: typing.Optional[str] = None,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteLaunchPlan
 ```
 Register a given launchplan, possibly applying overrides from the provided options. If the underlying workflow
@@ -4308,19 +4112,19 @@ workflow does exist (with the given project/domain/version), then only the launc
 ```python
 def register_script(
     entity: typing.Union[WorkflowBase, PythonTask, LaunchPlan],
-    image_config: typing.Optional[ImageConfig],
-    version: typing.Optional[str],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    destination_dir: str,
-    copy_all: bool,
-    default_launch_plan: bool,
-    options: typing.Optional[Options],
-    source_path: typing.Optional[str],
-    module_name: typing.Optional[str],
-    envs: typing.Optional[typing.Dict[str, str]],
-    default_resources: typing.Optional[ResourceSpec],
-    fast_package_options: typing.Optional[FastPackageOptions],
+    image_config: typing.Optional[ImageConfig] = None,
+    version: typing.Optional[str] = None,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    destination_dir: str = '.',
+    copy_all: bool = False,
+    default_launch_plan: bool = True,
+    options: typing.Optional[Options] = None,
+    source_path: typing.Optional[str] = None,
+    module_name: typing.Optional[str] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    default_resources: typing.Optional[ResourceSpec] = None,
+    fast_package_options: typing.Optional[FastPackageOptions] = None,
 ) -> typing.Union[FlyteWorkflow, FlyteTask, FlyteLaunchPlan, ReferenceEntity]
 ```
 Use this method to register a workflow via script mode.
@@ -4348,8 +4152,8 @@ Use this method to register a workflow via script mode.
 ```python
 def register_task(
     entity: PythonTask,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
 ) -> FlyteTask
 ```
 Register a qualified task (PythonTask) with Remote
@@ -4368,10 +4172,10 @@ For any conflicting parameters method arguments are regarded as overrides
 ```python
 def register_workflow(
     entity: WorkflowBase,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
-    default_launch_plan: typing.Optional[bool],
-    options: typing.Optional[Options],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
+    default_launch_plan: typing.Optional[bool] = True,
+    options: typing.Optional[Options] = None,
 ) -> FlyteWorkflow
 ```
 Use this method to register a workflow.
@@ -4391,8 +4195,8 @@ Use this method to register a workflow.
 def reject(
     signal_id: str,
     execution_name: str,
-    project: str,
-    domain: str,
+    project: str = None,
+    domain: str = None,
 )
 ```
 | Parameter | Type | Description |
@@ -4414,15 +4218,15 @@ Context manager with remote-specific configuration.
 
 ```python
 def search_artifacts(
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    name: typing.Optional[str],
-    artifact_key: typing.Optional[art_id.ArtifactKey],
-    query: typing.Optional[ArtifactQuery],
-    partitions: typing.Optional[Union[Partitions, typing.Dict[str, str]]],
-    time_partition: typing.Optional[Union[datetime.datetime, TimePartition]],
-    group_by_key: bool,
-    limit: int,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    name: typing.Optional[str] = None,
+    artifact_key: typing.Optional[art_id.ArtifactKey] = None,
+    query: typing.Optional[ArtifactQuery] = None,
+    partitions: typing.Optional[Union[Partitions, typing.Dict[str, str]]] = None,
+    time_partition: typing.Optional[Union[datetime.datetime, TimePartition]] = None,
+    group_by_key: bool = False,
+    limit: int = 100,
 ) -> typing.List[Artifact]
 ```
 | Parameter | Type | Description |
@@ -4444,10 +4248,10 @@ def set_input(
     signal_id: str,
     execution_name: str,
     value: typing.Union[literal_models.Literal, typing.Any],
-    project,
-    domain,
-    python_type,
-    literal_type,
+    project = None,
+    domain = None,
+    python_type = None,
+    literal_type = None,
 )
 ```
 | Parameter | Type | Description |
@@ -4467,10 +4271,10 @@ def set_signal(
     signal_id: str,
     execution_name: str,
     value: typing.Union[literal_models.Literal, typing.Any],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    python_type: typing.Optional[typing.Type],
-    literal_type: typing.Optional[type_models.LiteralType],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    python_type: typing.Optional[typing.Type] = None,
+    literal_type: typing.Optional[type_models.LiteralType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -4488,8 +4292,8 @@ def set_signal(
 ```python
 def stop_app(
     name: str,
-    project: Optional[str],
-    domain: Optional[str],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
 )
 ```
 Stop an application.
@@ -4508,10 +4312,10 @@ Stop an application.
 
 ```python
 def stream_execution_events(
-    event_count: Optional[int],
-    include_workflow_executions: bool,
-    include_task_executions: bool,
-    include_node_executions: bool,
+    event_count: Optional[int] = None,
+    include_workflow_executions: bool = False,
+    include_task_executions: bool = False,
+    include_node_executions: bool = False,
 ) -> AsyncGenerator[Union[CloudEventWorkflowExecution, CloudEventNodeExecution, CloudEventTaskExecution], None]
 ```
 Stream execution events from the given tenant. This is a generator that yields events as they are received.
@@ -4538,8 +4342,8 @@ will be redelivered in a subsequent transmission.
 ```python
 def sync(
     execution: FlyteWorkflowExecution,
-    entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
-    sync_nodes: bool,
+    entity_definition: typing.Union[FlyteWorkflow, FlyteTask] = None,
+    sync_nodes: bool = False,
 ) -> FlyteWorkflowExecution
 ```
 This function was previously a singledispatchmethod. We've removed that but this function remains
@@ -4560,9 +4364,9 @@ so that we don't break people.
 ```python
 def sync_execution(
     execution: FlyteWorkflowExecution,
-    entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
-    sync_nodes: bool,
-    rpc_timeout: typing.Optional[typing.Union[timedelta, int]],
+    entity_definition: typing.Union[FlyteWorkflow, FlyteTask] = None,
+    sync_nodes: bool = False,
+    rpc_timeout: typing.Optional[typing.Union[timedelta, int]] = datetime.timedelta(seconds=60),
 ) -> FlyteWorkflowExecution
 ```
 Sync a FlyteWorkflowExecution object with its corresponding remote state.
@@ -4611,8 +4415,8 @@ encapsulated in this function.
 ```python
 def sync_task_execution(
     execution: FlyteTaskExecution,
-    entity_interface: typing.Optional[TypedInterface],
-    get_task_exec_data: bool,
+    entity_interface: typing.Optional[TypedInterface] = None,
+    get_task_exec_data: bool = True,
 ) -> FlyteTaskExecution
 ```
 Sync a FlyteTaskExecution object with its corresponding remote state.
@@ -4646,9 +4450,9 @@ Terminate a workflow execution.
 ```python
 def upload_file(
     to_upload: pathlib.Path,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    filename_root: typing.Optional[str],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    filename_root: typing.Optional[str] = None,
 ) -> typing.Tuple[bytes, str]
 ```
 Function will use remote's client to hash and then upload the file using Admin's data proxy service.
@@ -4669,9 +4473,9 @@ Function will use remote's client to hash and then upload the file using Admin's
 ```python
 def wait(
     execution: FlyteWorkflowExecution,
-    timeout: typing.Optional[typing.Union[timedelta, int]],
-    poll_interval: typing.Optional[typing.Union[timedelta, int]],
-    sync_nodes: bool,
+    timeout: typing.Optional[typing.Union[timedelta, int]] = None,
+    poll_interval: typing.Optional[typing.Union[timedelta, int]] = None,
+    sync_nodes: bool = True,
 ) -> FlyteWorkflowExecution
 ```
 Wait for an execution to finish.
@@ -4700,9 +4504,9 @@ param func: The function to generate a version for. This is an optional paramete
 ```python
 class VersionParameters(
     func: typing.Callable[~P, ~FuncOut],
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType],
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    pod_template_name: typing.Optional[str],
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType] = None,
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    pod_template_name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

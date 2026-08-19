@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.sklearn.native
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -238,7 +238,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 class SklearnTypeTransformer(
     name: str,
     t: Type[T],
-    enable_type_assertions: bool,
+    enable_type_assertions: bool = True,
 )
 ```
 | Parameter | Type | Description |

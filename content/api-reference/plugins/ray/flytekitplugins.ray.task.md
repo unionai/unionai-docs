@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.ray.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,12 +25,12 @@ layout: py_api
 
 ```python
 class AutoscalerOptionsConfig(
-    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')],
-    idle_timeout_seconds: typing.Optional[int],
-    env: typing.Optional[typing.Dict[str, str]],
-    image: typing.Optional[str],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
+    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')] = None,
+    idle_timeout_seconds: typing.Optional[int] = None,
+    env: typing.Optional[typing.Dict[str, str]] = None,
+    image: typing.Optional[str] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -48,10 +48,10 @@ class AutoscalerOptionsConfig(
 
 ```python
 class HeadNodeConfig(
-    ray_start_params: typing.Optional[typing.Dict[str, str]],
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
+    ray_start_params: typing.Optional[typing.Dict[str, str]] = None,
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -72,14 +72,14 @@ Actual Plugin that transforms the local python code for execution within Ray job
 class RayFunctionTask(
     task_config: flytekitplugins.ray.task.RayJobConfig,
     task_function: typing.Callable,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `task_config` | `flytekitplugins.ray.task.RayJobConfig` | |
 | `task_function` | `typing.Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -146,8 +146,8 @@ class RayFunctionTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -156,8 +156,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### compile_into_workflow()
 
@@ -165,7 +165,7 @@ Generates a node that encapsulates this task in a workflow definition.
 def compile_into_workflow(
     ctx: FlyteContext,
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Union[_dynamic_job.DynamicJobSpec, _literal_models.LiteralMap]
 ```
 In the case of dynamic workflows, this function will produce a workflow definition at execution time which will
@@ -176,7 +176,7 @@ then proceed to be executed.
 |-|-|-|
 | `ctx` | `FlyteContext` | |
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -213,7 +213,7 @@ This method is also invoked during runtime.
 ```python
 def dynamic_execute(
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte
@@ -230,13 +230,13 @@ representing that newly generated workflow, instead of executing it.
 | Parameter | Type | Description |
 |-|-|-|
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### execute()
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 This method will be invoked to execute the task. If you do decide to override this method you must also
@@ -245,7 +245,7 @@ handle dynamic tasks or you will no longer be able to use the task as a dynamic 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -425,7 +425,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -436,7 +436,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -509,7 +509,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.
@@ -543,13 +543,13 @@ task resolver. It can be useful to override the task resolver for specific cases
 ```python
 class RayJobConfig(
     worker_node_config: typing.List[flytekitplugins.ray.task.WorkerNodeConfig],
-    head_node_config: typing.Optional[flytekitplugins.ray.task.HeadNodeConfig],
-    enable_autoscaling: bool,
-    autoscaler_options: typing.Optional[flytekitplugins.ray.task.AutoscalerOptionsConfig],
-    runtime_env: typing.Optional[dict],
-    address: typing.Optional[str],
-    shutdown_after_job_finishes: bool,
-    ttl_seconds_after_finished: typing.Optional[int],
+    head_node_config: typing.Optional[flytekitplugins.ray.task.HeadNodeConfig] = None,
+    enable_autoscaling: bool = False,
+    autoscaler_options: typing.Optional[flytekitplugins.ray.task.AutoscalerOptionsConfig] = None,
+    runtime_env: typing.Optional[dict] = None,
+    address: typing.Optional[str] = None,
+    shutdown_after_job_finishes: bool = False,
+    ttl_seconds_after_finished: typing.Optional[int] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -571,12 +571,12 @@ class RayJobConfig(
 class WorkerNodeConfig(
     group_name: str,
     replicas: int,
-    min_replicas: typing.Optional[int],
-    max_replicas: typing.Optional[int],
-    ray_start_params: typing.Optional[typing.Dict[str, str]],
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
+    min_replicas: typing.Optional[int] = None,
+    max_replicas: typing.Optional[int] = None,
+    ray_start_params: typing.Optional[typing.Dict[str, str]] = None,
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.base
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,13 +22,13 @@ layout: py_api
 
 ```python
 class FlyteException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -43,13 +43,13 @@ class FlyteException(
 
 ```python
 class FlyteRecoverableException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties

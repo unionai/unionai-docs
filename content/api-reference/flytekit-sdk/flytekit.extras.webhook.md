@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,7 +29,7 @@ and processes the responses to determine the success or failure of the task.
 
 ```python
 class WebhookConnector(
-    client: typing.Optional[httpx.AsyncClient],
+    client: typing.Optional[httpx.AsyncClient] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -55,8 +55,8 @@ class WebhookConnector(
 def do(
     task_template: flytekit.models.task.TaskTemplate,
     output_prefix: str,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 This method processes the webhook task and sends an HTTP request.
@@ -69,7 +69,7 @@ It uses asyncio to send the request and process the response using the httpx lib
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.extras.webhook.WebhookTask
 
@@ -137,14 +137,14 @@ TODO Coming soon secrets support
 class WebhookTask(
     name: str,
     url: str,
-    method: str,
-    headers: typing.Optional[typing.Dict[str, str]],
-    data: typing.Optional[typing.Dict[str, typing.Any]],
-    dynamic_inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    show_data: bool,
-    show_url: bool,
-    description: typing.Optional[str],
-    timeout: typing.Union[int, datetime.timedelta],
+    method: str = 'POST',
+    headers: typing.Optional[typing.Dict[str, str]] = None,
+    data: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    dynamic_inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    show_data: bool = False,
+    show_url: bool = False,
+    description: typing.Optional[str] = None,
+    timeout: typing.Union[int, datetime.timedelta] = datetime.timedelta(seconds=10),
 )
 ```
 | Parameter | Type | Description |
@@ -217,8 +217,8 @@ class WebhookTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -227,8 +227,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -264,12 +264,12 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -406,7 +406,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -417,7 +417,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

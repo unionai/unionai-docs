@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.error.error
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -257,9 +257,7 @@ class FlyteError(
 | Method | Description |
 |-|-|
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -267,7 +265,7 @@ class FlyteError(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
@@ -275,36 +273,8 @@ def from_dict(
 | `d` |  | |
 | `dialect` |  | |
 
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
-
 #### to_dict()
 
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-

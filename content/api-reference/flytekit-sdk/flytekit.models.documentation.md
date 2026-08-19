@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.documentation
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,10 +28,10 @@ formatting.
 
 ```python
 class Description(
-    value: typing.Optional[str],
-    uri: typing.Optional[str],
-    icon_link: typing.Optional[str],
-    format: <enum 'DescriptionFormat'>,
+    value: typing.Optional[str] = None,
+    uri: typing.Optional[str] = None,
+    icon_link: typing.Optional[str] = None,
+    format: <enum 'DescriptionFormat'> = DescriptionFormat.RST,
 )
 ```
 | Parameter | Type | Description |
@@ -95,9 +95,9 @@ Documentation could provide insight into the algorithms, business use case, etc.
 
 ```python
 class Documentation(
-    short_description: typing.Optional[str],
-    long_description: typing.Optional[flytekit.models.documentation.Description],
-    source_code: typing.Optional[flytekit.models.documentation.SourceCode],
+    short_description: typing.Optional[str] = None,
+    long_description: typing.Optional[flytekit.models.documentation.Description] = None,
+    source_code: typing.Optional[flytekit.models.documentation.SourceCode] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -159,7 +159,7 @@ Link to source code used to define this task or workflow.
 
 ```python
 class SourceCode(
-    link: typing.Optional[str],
+    link: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

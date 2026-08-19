@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.keyring
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,10 +26,10 @@ Stores the credentials together
 ```python
 class Credentials(
     access_token: str,
-    refresh_token: typing.Optional[str],
-    for_endpoint: str,
-    expires_in: typing.Optional[int],
-    id_token: typing.Optional[str],
+    refresh_token: typing.Optional[str] = None,
+    for_endpoint: str = 'flyte-default',
+    expires_in: typing.Optional[int] = None,
+    id_token: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

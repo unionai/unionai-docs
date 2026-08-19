@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.errors
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,8 +26,8 @@ class ContainerError(
     message: str,
     kind: int,
     origin: int,
-    timestamp: google.protobuf.timestamp_pb2.Timestamp,
-    worker: str,
+    timestamp: google.protobuf.timestamp_pb2.Timestamp = ,
+    worker: str = '',
 )
 ```
 | Parameter | Type | Description |

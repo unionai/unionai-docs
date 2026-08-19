@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.sensor_engine
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,8 +45,8 @@ def SensorEngine()
 ```python
 def create(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwarg,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwarg,
 ) -> flytekit.sensor.base_sensor.SensorMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -56,14 +56,14 @@ Return a resource meta that can be used to get the status of the task.
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwarg` |  | |
+| `**kwarg` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekit.sensor.base_sensor.SensorMetadata,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -72,14 +72,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekit.sensor.base_sensor.SensorMetadata,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -90,14 +90,14 @@ and the propeller will write the structured dataset to the blob store.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.sensor.base_sensor.SensorMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -106,14 +106,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -122,5 +122,5 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
