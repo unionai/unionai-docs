@@ -61,6 +61,8 @@ If the model requires authentication:
 The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
 HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../../tasks/task-configuration/secrets).
 
+Public models need no token at all. Pass `hf_token_key=None` to prefetch anonymously, and no secret is attached to the prefetch task.
+
 ### With resources
 
 By default, the prefetch task uses minimal resources (2 CPUs, 8GB of memory, 50Gi of disk storage), using

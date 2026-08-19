@@ -84,6 +84,31 @@ This pulls the necessary containers and starts a local Flyte instance. Once read
 The first start may take a few minutes while Docker images are downloaded.
 {{< /note >}}
 
+## Check the devbox status
+
+> [!NOTE]
+> `flyte get devbox` requires flyte 2.6.2 or later.
+
+To see whether the devbox is up, and where it is:
+
+```bash
+flyte get devbox
+```
+
+This reports the run state, the UI and image registry endpoints, the container image version in use, and where the cluster keeps its state on disk. It is the quickest way to tell a devbox that is still starting from one that is ready.
+
+Add `--no-probes` to skip the readiness probe and the container resource sample, which makes the check faster and works offline:
+
+```bash
+flyte get devbox --no-probes
+```
+
+For a machine-readable report, pass an output format to the top-level command:
+
+```bash
+flyte -of json-raw get devbox
+```
+
 ## Configure
 
 Create a config file that points to the devbox:
