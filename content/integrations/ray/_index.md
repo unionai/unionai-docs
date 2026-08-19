@@ -76,6 +76,7 @@ ray_env = flyte.TaskEnvironment(
 | `worker_node_config` | `List[WorkerNodeConfig]` | **Required.** List of worker group configurations |
 | `head_node_config` | `HeadNodeConfig` | Head node configuration (optional) |
 | `enable_autoscaling` | `bool` | Enable Ray autoscaler (default: `False`) |
+| `autoscaler_options` | `AutoscalerOptionsConfig` | Tune the autoscaler sidecar. Has no effect unless `enable_autoscaling` is `True` |
 | `runtime_env` | `dict` | Ray runtime environment (pip packages, env vars, etc.) |
 | `address` | `str` | Connect to an existing Ray cluster instead of provisioning one |
 | `shutdown_after_job_finishes` | `bool` | Shut down the cluster after the job completes (default: `False`) |
@@ -117,6 +118,39 @@ Under-provisioning the head node is a common cause of a cluster that never becom
 ready: if the dashboard cannot start, `ray start --head` fails and KubeRay recycles
 the head pod in a loop. A head pod at 1 CPU and 1000Mi has been observed failing
 this way.
+
+### `AutoscalerOptionsConfig` parameters
+
+Setting `enable_autoscaling=True` runs the Ray autoscaler with KubeRay's defaults. Pass `autoscaler_options` to tune it:
+
+```python
+from flyteplugins.ray import AutoscalerOptionsConfig, RayJobConfig, WorkerNodeConfig
+
+ray_config = RayJobConfig(
+    worker_node_config=[
+        WorkerNodeConfig(group_name="ray-group", replicas=1, min_replicas=1, max_replicas=5)
+    ],
+    enable_autoscaling=True,
+    autoscaler_options=AutoscalerOptionsConfig(
+        upscaling_mode=AutoscalerOptionsConfig.UpscalingMode.CONSERVATIVE,
+        idle_timeout_seconds=120,
+        resources=flyte.Resources(cpu=("500m", "1"), memory=("512Mi", "1Gi")),
+    ),
+)
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `upscaling_mode` | `AutoscalerOptionsConfig.UpscalingMode` | How aggressively to add nodes. One of `DEFAULT`, `AGGRESSIVE`, `CONSERVATIVE`, `UNSPECIFIED` |
+| `idle_timeout_seconds` | `int` | Seconds a node may sit idle before the autoscaler removes it |
+| `image` | `str` | Container image for the autoscaler sidecar |
+| `env` | `Dict[str, str]` | Environment variables for the autoscaler container |
+| `resources` | `Resources` | Requests and limits for the autoscaler sidecar |
+
+Every field is optional, and any field you leave unset keeps the KubeRay default rather than being zeroed. `resources` accepts tuples to set a request and a limit together, as in `flyte.Resources(cpu=("500m", "1"))`.
+
+> [!NOTE] The options do not switch autoscaling on
+> `autoscaler_options` only configures the autoscaler sidecar, and the sidecar is created only when `enable_autoscaling` is `True`. Passing options on their own changes nothing.
 
 ### Connecting to an existing cluster
 
