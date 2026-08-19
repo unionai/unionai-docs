@@ -7,8 +7,6 @@
 #              primary line does; a secondary line (v1) sets false.
 # indexed    = whether this line's stable tree is search-indexed. Defaults true
 #              (the stable tree is normally the line's one canonical surface).
-# NOTE: comments below are NOT preserved across a promote (tomllib cannot
-#       round-trip them). Re-add any explanation the line depends on.
 stable = "v1.16.26.4"
 enumerated = [
   "v1.16.26.3",
