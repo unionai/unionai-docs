@@ -187,3 +187,40 @@ if __name__ == "__main__":
 > The report contains only what you explicitly `log()` or `replace()`. Returning a value whose type has a renderer attached does **not** by itself add it to the report — render the value and log the HTML, as shown above.
 
 Flyte's SDK also implements a few renderers of this kind internally — for pandas and PyArrow DataFrames and for Markdown strings. These aren't exposed as public API (only the `flyte.types.Renderable` protocol is), so treat them as examples of the same pattern rather than importable helpers.
+
+## Fetching a report after the run
+
+Everything above is about *writing* a report from inside a task. To *read* a finished report from outside the run, for example to embed it in a notebook or attach it to a CI job, fetch it through the remote API:
+
+```python
+import flyte
+from flyte.remote import Run
+
+flyte.init_from_config()
+
+run = Run.get("my-run-name")
+html = run.get_report()
+```
+
+`get_report()` returns the report as an HTML string. It requests a signed download link for the report artifact and downloads the contents, so the call needs an initialized client.
+
+By default it returns the report for the latest attempt. Pass `attempt` to fetch an earlier one:
+
+```python
+html = run.get_report(attempt=1)
+```
+
+`Run.get_report()` returns the report of the run's **root action**. A run whose tasks call other tasks has a report per action, so to fetch the report for a nested action, use `flyte.remote.Action.get_report()` on that action instead:
+
+```python
+from flyte.remote import Action
+
+action = Action.get(run_name="my-run-name", name="my-subtask")
+html = action.get_report()
+```
+
+Both are synchronous by default. From async code, call the `.aio` variant:
+
+```python
+html = await run.get_report.aio()
+```
