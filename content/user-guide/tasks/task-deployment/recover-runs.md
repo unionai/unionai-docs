@@ -121,6 +121,19 @@ Recover with code you have changed locally:
 flyte run --recover-from <run-name> main.py main
 ```
 
+The clearest way to see what each command ships is to fix the failing task and then run both
+against the same failed run:
+
+```bash
+# edit the body of the task that failed, then:
+
+flyte rerun <run-name> --recover                  # re-launches the stored spec: fails again
+flyte run --recover-from <run-name> main.py main  # ships your edit: the task succeeds
+```
+
+Both reuse the actions that already succeeded, and both re-execute the one that failed. Only
+the second one re-executes it with your fix.
+
 {{< /markdown >}}
 {{< /variant >}}
 
