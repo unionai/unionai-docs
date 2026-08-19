@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.gate
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -107,10 +107,10 @@ for user input to proceed or wait for a timer to complete running.
 ```python
 class Gate(
     name: str,
-    input_type: typing.Optional[typing.Type],
-    upstream_item: typing.Optional[typing.Any],
-    sleep_duration: typing.Optional[datetime.timedelta],
-    timeout: typing.Optional[datetime.timedelta],
+    input_type: typing.Optional[typing.Type] = None,
+    upstream_item: typing.Optional[typing.Any] = None,
+    sleep_duration: typing.Optional[datetime.timedelta] = None,
+    timeout: typing.Optional[datetime.timedelta] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -150,13 +150,13 @@ def construct_node_metadata()
 ```python
 def local_execute(
     ctx: FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

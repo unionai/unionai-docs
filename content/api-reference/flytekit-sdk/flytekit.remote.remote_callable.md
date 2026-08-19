@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_callable
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,14 +21,14 @@ layout: py_api
 
 ```python
 class RemoteEntity(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -54,15 +54,15 @@ class RemoteEntity(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -76,25 +76,25 @@ Used when constructing the node that encapsulates this task as part of a broader
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

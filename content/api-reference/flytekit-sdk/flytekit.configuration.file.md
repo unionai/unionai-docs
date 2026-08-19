@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.file
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -76,7 +76,7 @@ def int_transformer(
 ```python
 def read_file_if_exists(
     filename: typing.Optional[str],
-    encoding,
+    encoding = None,
 ) -> typing.Optional[str]
 ```
 Reads the contents of the file if passed a path. Otherwise, returns None.
@@ -124,8 +124,8 @@ when flytectl starts a sandbox
 ```python
 class ConfigEntry(
     legacy: LegacyConfigEntry,
-    yaml_entry: typing.Optional[YamlConfigEntry],
-    transform: typing.Optional[typing.Callable[[str], typing.Any]],
+    yaml_entry: typing.Optional[YamlConfigEntry] = None,
+    transform: typing.Optional[typing.Callable[[str], typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -145,7 +145,7 @@ class ConfigEntry(
 
 ```python
 def read(
-    cfg: typing.Optional[ConfigFile],
+    cfg: typing.Optional[ConfigFile] = None,
 ) -> typing.Optional[typing.Any]
 ```
 Reads the config Entry from the various sources in the following order,
@@ -213,7 +213,7 @@ Creates a record for the config entry. contains
 class LegacyConfigEntry(
     section: str,
     option: str,
-    type_: typing.Type,
+    type_: typing.Type = str,
 )
 ```
 | Parameter | Type | Description |
@@ -240,7 +240,7 @@ def get_env_name()
 
 ```python
 def read_from_env(
-    transform: typing.Optional[typing.Callable],
+    transform: typing.Optional[typing.Callable] = None,
 ) -> typing.Optional[typing.Any]
 ```
 Reads the config entry from environment variable, the structure of the env var is current
@@ -256,7 +256,7 @@ Reads the config entry from environment variable, the structure of the env var i
 ```python
 def read_from_file(
     cfg: ConfigFile,
-    transform: typing.Optional[typing.Callable],
+    transform: typing.Optional[typing.Callable] = None,
 ) -> typing.Optional[typing.Any]
 ```
 | Parameter | Type | Description |
@@ -274,7 +274,7 @@ Creates a record for the config entry.
 ```python
 class YamlConfigEntry(
     switch: str,
-    config_value_type: typing.Type,
+    config_value_type: typing.Type = str,
 )
 ```
 | Parameter | Type | Description |
@@ -294,7 +294,7 @@ class YamlConfigEntry(
 ```python
 def read_from_file(
     cfg: ConfigFile,
-    transform: typing.Optional[typing.Callable],
+    transform: typing.Optional[typing.Callable] = None,
 ) -> typing.Optional[typing.Any]
 ```
 | Parameter | Type | Description |

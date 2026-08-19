@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.click_types
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -156,12 +156,6 @@ def DateTimeType()
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -183,7 +177,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -193,111 +187,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> str
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.DirParamType
 
@@ -306,12 +195,6 @@ CLI structure.
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -333,7 +216,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -343,111 +226,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.DurationParamType
 
@@ -456,12 +234,6 @@ CLI structure.
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -483,7 +255,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -493,111 +265,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.EnumParamType
 
@@ -617,12 +284,6 @@ class EnumParamType(
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Complete choices that start with the incomplete value. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -644,7 +305,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -655,107 +316,6 @@ descriptive message.
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> str
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> str
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Complete choices that start with the incomplete value.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
-
 ## flytekit.interaction.click_types.FileParamType
 
 ### Methods
@@ -763,12 +323,6 @@ CLI structure.
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -790,7 +344,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -800,111 +354,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.FlyteLiteralConverter
 
@@ -969,12 +418,6 @@ def is_bool()
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -996,7 +439,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -1006,111 +449,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.JsonParamType
 
@@ -1130,12 +468,6 @@ class JsonParamType(
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -1157,7 +489,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -1167,111 +499,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.PickleParamType
 
@@ -1280,12 +507,7 @@ CLI structure.
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
 | [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -1307,7 +529,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -1318,30 +540,12 @@ descriptive message.
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
 
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
 #### get_metavar()
 
 ```python
 def get_metavar(
     param: click.core.Parameter,
-    args,
+    *args,
 ) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
@@ -1350,80 +554,7 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `click.core.Parameter` | |
-| `args` | `*args` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
+| `*args` |  | |
 
 ## flytekit.interaction.click_types.StructuredDatasetParamType
 
@@ -1435,12 +566,6 @@ TODO handle column types
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Convert the value to the correct type. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -1462,7 +587,7 @@ other compatible types.
 The ``param`` and ``ctx`` arguments may be ``None`` in certain
 situations, such as when converting prompt input.
 
-If the value cannot be converted, call :meth:`fail` with a
+If the value cannot be converted, call `fail` with a
 descriptive message.
 
 
@@ -1472,111 +597,6 @@ descriptive message.
 | `value` | `typing.Any` | The value to convert. |
 | `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
 | `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 
 ## flytekit.interaction.click_types.UnionParamType
 
@@ -1605,12 +625,6 @@ class UnionParamType(
 | Method | Description |
 |-|-|
 | [`convert()`](#convert) | Important to implement NoneType / Optional. |
-| [`fail()`](#fail) | Helper method to fail with an invalid value message. |
-| [`get_metavar()`](#get_metavar) | Returns the metavar default for this param if it provides one. |
-| [`get_missing_message()`](#get_missing_message) | Optionally might return extra information about a missing. |
-| [`shell_complete()`](#shell_complete) | Return a list of. |
-| [`split_envvar_value()`](#split_envvar_value) | Given a value from an environment variable this splits it up. |
-| [`to_info_dict()`](#to_info_dict) | Gather information that could be useful for a tool generating. |
 
 
 #### convert()
@@ -1631,109 +645,4 @@ Also could we just determine the click types from the python types
 | `value` | `typing.Any` | |
 | `param` | `typing.Optional[click.core.Parameter]` | |
 | `ctx` | `typing.Optional[click.core.Context]` | |
-
-#### fail()
-
-```python
-def fail(
-    message: str,
-    param: typing.Optional[ForwardRef('Parameter')],
-    ctx: typing.Optional[ForwardRef('Context')],
-) -> t.NoReturn
-```
-Helper method to fail with an invalid value message.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `message` | `str` | |
-| `param` | `typing.Optional[ForwardRef('Parameter')]` | |
-| `ctx` | `typing.Optional[ForwardRef('Context')]` | |
-
-#### get_metavar()
-
-```python
-def get_metavar(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Returns the metavar default for this param if it provides one.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### get_missing_message()
-
-```python
-def get_missing_message(
-    param: Parameter,
-) -> typing.Optional[str]
-```
-Optionally might return extra information about a missing
-parameter.
-
-.. versionadded:: 2.0
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `param` | `Parameter` | |
-
-#### shell_complete()
-
-```python
-def shell_complete(
-    ctx: Context,
-    param: Parameter,
-    incomplete: str,
-) -> typing.List[ForwardRef('CompletionItem')]
-```
-Return a list of
-:class:`~click.shell_completion.CompletionItem` objects for the
-incomplete value. Most types do not provide completions, but
-some do, and this allows custom types to provide custom
-completions as well.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `ctx` | `Context` | Invocation context for this command. |
-| `param` | `Parameter` | The parameter that is requesting completion. |
-| `incomplete` | `str` | Value being completed. May be empty.  .. versionadded:: 8.0 |
-
-#### split_envvar_value()
-
-```python
-def split_envvar_value(
-    rv: str,
-) -> typing.Sequence[str]
-```
-Given a value from an environment variable this splits it up
-into small chunks depending on the defined envvar list splitter.
-
-If the splitter is set to `None`, which means that whitespace splits,
-then leading and trailing whitespace is ignored.  Otherwise, leading
-and trailing splitters usually lead to empty items being included.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `rv` | `str` | |
-
-#### to_info_dict()
-
-```python
-def to_info_dict()
-```
-Gather information that could be useful for a tool generating
-user-facing documentation.
-
-Use :meth:`click.Context.to_info_dict` to traverse the entire
-CLI structure.
-
-.. versionadded:: 8.0
-
 

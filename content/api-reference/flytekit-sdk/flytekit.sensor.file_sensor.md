@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.file_sensor
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,15 +22,15 @@ layout: py_api
 ```python
 class FileSensor(
     name: str,
-    timeout: typing.Union[datetime.timedelta, int, NoneType],
-    kwargs,
+    timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -85,8 +85,8 @@ class FileSensor(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -95,8 +95,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### connector_signal_handler()
 
@@ -147,12 +147,12 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -289,7 +289,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -300,7 +300,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.mock_stats
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,8 +21,8 @@ layout: py_api
 
 ```python
 class MockStats(
-    scope,
-    tags,
+    scope = '',
+    tags = None,
 )
 ```
 Initializes a new mock stats object
@@ -73,9 +73,9 @@ def current_value(
 ```python
 def decr(
     metric,
-    count,
-    tags,
-    kwargs,
+    count = 1,
+    tags = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -83,7 +83,7 @@ def decr(
 | `metric` |  | |
 | `count` |  | |
 | `tags` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### gauge()
 
@@ -91,8 +91,8 @@ def decr(
 def gauge(
     metric,
     value,
-    tags,
-    kwargs,
+    tags = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -100,16 +100,16 @@ def gauge(
 | `metric` |  | |
 | `value` |  | |
 | `tags` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### incr()
 
 ```python
 def incr(
     metric,
-    count,
-    tags,
-    kwargs,
+    count = 1,
+    tags = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -117,22 +117,22 @@ def incr(
 | `metric` |  | |
 | `count` |  | |
 | `tags` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### timer()
 
 ```python
 def timer(
     metric,
-    tags,
-    kwargs,
+    tags = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `metric` |  | |
 | `tags` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### timing()
 

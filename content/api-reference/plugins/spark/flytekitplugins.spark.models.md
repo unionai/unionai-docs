@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.models
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,10 +28,10 @@ class SparkJob(
     spark_conf: typing.Dict[str, str],
     hadoop_conf: typing.Dict[str, str],
     executor_path: str,
-    databricks_conf: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Dict]]],
-    databricks_instance: typing.Optional[str],
-    driver_pod: typing.Optional[flytekit.models.task.K8sPod],
-    executor_pod: typing.Optional[flytekit.models.task.K8sPod],
+    databricks_conf: typing.Optional[typing.Dict[str, typing.Dict[str, typing.Dict]]] = None,
+    databricks_instance: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flytekit.models.task.K8sPod] = None,
+    executor_pod: typing.Optional[flytekit.models.task.K8sPod] = None,
 )
 ```
 This defines a SparkJob target.  It will execute the appropriate SparkJob.
@@ -114,9 +114,9 @@ def to_flyte_idl()
 
 ```python
 def with_overrides(
-    new_spark_conf: typing.Optional[typing.Dict[str, str]],
-    new_hadoop_conf: typing.Optional[typing.Dict[str, str]],
-    new_databricks_conf: typing.Optional[typing.Dict[str, typing.Dict]],
+    new_spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    new_hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    new_databricks_conf: typing.Optional[typing.Dict[str, typing.Dict]] = None,
 ) -> SparkJob
 ```
 | Parameter | Type | Description |

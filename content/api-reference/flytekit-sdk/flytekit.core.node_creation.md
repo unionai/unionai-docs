@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.node_creation
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,8 +29,8 @@ layout: py_api
 ```python
 def create_node(
     entity: Union[PythonTask, LaunchPlan, WorkflowBase, RemoteEntity],
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> Union[Node, VoidPromise]
 ```
 This is the function you want to call if you need to specify dependencies between tasks that don't consume and/or
@@ -52,7 +52,7 @@ You can still use this method to handle setting certain overrides ::
 
     t3_node = create_node(t3, in1=some_int).with_overrides(...)
 
-Outputs, if there are any, will be accessible. A `t4() -&gt; (int, str)` ::
+Outputs, if there are any, will be accessible. A `t4() -> (int, str)` ::
 
     t4_node = create_node(t4)
 
@@ -69,6 +69,6 @@ needs to be dereferenced by the output name. ::
 | Parameter | Type | Description |
 |-|-|-|
 | `entity` | `Union[PythonTask, LaunchPlan, WorkflowBase, RemoteEntity]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 

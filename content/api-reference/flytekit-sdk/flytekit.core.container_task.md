@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.container_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,22 +35,22 @@ class ContainerTask(
     name: str,
     image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec],
     command: typing.List[str],
-    inputs: typing.Optional[typing.OrderedDict[str, typing.Type]],
-    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata],
-    arguments: typing.Optional[typing.List[str]],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    input_data_dir: typing.Optional[str],
-    output_data_dir: typing.Optional[str],
-    metadata_format: <enum 'MetadataFormat'>,
-    io_strategy: typing.Optional[flytekit.core.container_task.ContainerTask.IOStrategy],
-    secret_requests: typing.Optional[typing.List[flytekit.models.security.Secret]],
-    pod_template: typing.Optional[ForwardRef('PodTemplate')],
-    pod_template_name: typing.Optional[str],
-    local_logs: bool,
-    resources: typing.Optional[flytekit.core.resources.Resources],
-    kwargs,
+    inputs: typing.Optional[typing.OrderedDict[str, typing.Type]] = None,
+    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata] = None,
+    arguments: typing.Optional[typing.List[str]] = None,
+    outputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    input_data_dir: typing.Optional[str] = None,
+    output_data_dir: typing.Optional[str] = None,
+    metadata_format: <enum 'MetadataFormat'> = MetadataFormat.JSON,
+    io_strategy: typing.Optional[flytekit.core.container_task.ContainerTask.IOStrategy] = None,
+    secret_requests: typing.Optional[typing.List[flytekit.models.security.Secret]] = None,
+    pod_template: typing.Optional[ForwardRef('PodTemplate')] = None,
+    pod_template_name: typing.Optional[str] = None,
+    local_logs: bool = False,
+    resources: typing.Optional[flytekit.core.resources.Resources] = None,
+    **kwargs,
 )
 ```
 task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
@@ -58,7 +58,7 @@ task_type (str): defines a unique task-type for every new extension. If a backen
 name (str): A unique name for the task instantiation. This is unique for every instance of task.
 task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
     task
-interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+interface (Optional[Interface]): A python native typed interface ``(inputs) -> outputs`` that declares the
     signature of the task
 environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
     execution of the task. Supplied as a dictionary of key/value pairs
@@ -88,7 +88,7 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 | `pod_template_name` | `typing.Optional[str]` | |
 | `local_logs` | `bool` | |
 | `resources` | `typing.Optional[flytekit.core.resources.Resources]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -142,8 +142,8 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -152,8 +152,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -189,7 +189,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 This method will be invoked to execute the task.
@@ -197,7 +197,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -334,7 +334,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -345,7 +345,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

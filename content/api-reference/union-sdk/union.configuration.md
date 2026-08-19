@@ -80,7 +80,7 @@ def get_remote(
     config: typing.Optional[str],
     project: str,
     domain: str,
-    data_upload_location: typing.Optional[str],
+    data_upload_location: typing.Optional[str] = None,
 ) -> UnionRemote
 ```
 | Parameter | Type | Description |

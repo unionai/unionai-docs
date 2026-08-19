@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.security
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +16,7 @@ layout: py_api
 | [`Identity`](.././flytekit.models.security#flytekitmodelssecurityidentity) |  |
 | [`OAuth2Client`](.././flytekit.models.security#flytekitmodelssecurityoauth2client) |  |
 | [`OAuth2TokenRequest`](.././flytekit.models.security#flytekitmodelssecurityoauth2tokenrequest) |  |
-| [`Secret`](.././flytekit.models.security#flytekitmodelssecuritysecret) | See :std:ref:`cookbook:secrets` for usage examples. |
+| [`Secret`](.././flytekit.models.security#flytekitmodelssecuritysecret) | See `cookbook:secrets` for usage examples. |
 | [`SecurityContext`](.././flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
 
 ## flytekit.models.security.Identity
@@ -25,10 +25,10 @@ layout: py_api
 
 ```python
 class Identity(
-    iam_role: typing.Optional[str],
-    k8s_service_account: typing.Optional[str],
-    oauth2_client: typing.Optional[flytekit.models.security.OAuth2Client],
-    execution_identity: typing.Optional[str],
+    iam_role: typing.Optional[str] = None,
+    k8s_service_account: typing.Optional[str] = None,
+    oauth2_client: typing.Optional[flytekit.models.security.OAuth2Client] = None,
+    execution_identity: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -149,9 +149,9 @@ def to_flyte_idl()
 class OAuth2TokenRequest(
     name: str,
     client: flytekit.models.security.OAuth2Client,
-    idp_discovery_endpoint: typing.Optional[str],
-    token_endpoint: typing.Optional[str],
-    type_: <enum 'Type'>,
+    idp_discovery_endpoint: typing.Optional[str] = None,
+    token_endpoint: typing.Optional[str] = None,
+    type_: <enum 'Type'> = Type.CLIENT_CREDENTIALS,
 )
 ```
 | Parameter | Type | Description |
@@ -208,7 +208,7 @@ def to_flyte_idl()
 ```
 ## flytekit.models.security.Secret
 
-See :std:ref:`cookbook:secrets` for usage examples.
+See `cookbook:secrets` for usage examples.
 
 
 
@@ -216,11 +216,11 @@ See :std:ref:`cookbook:secrets` for usage examples.
 
 ```python
 class Secret(
-    group: typing.Optional[str],
-    key: typing.Optional[str],
-    group_version: typing.Optional[str],
-    mount_requirement: <enum 'MountType'>,
-    env_var: typing.Optional[str],
+    group: typing.Optional[str] = None,
+    key: typing.Optional[str] = None,
+    group_version: typing.Optional[str] = None,
+    mount_requirement: <enum 'MountType'> = MountType.ANY,
+    env_var: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -285,9 +285,9 @@ be able to just use {{&lt; py_class_ref flytekit.Secret &gt;}} instead.
 
 ```python
 class SecurityContext(
-    run_as: typing.Optional[flytekit.models.security.Identity],
-    secrets: typing.Optional[typing.List[flytekit.models.security.Secret]],
-    tokens: typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]],
+    run_as: typing.Optional[flytekit.models.security.Identity] = None,
+    secrets: typing.Optional[typing.List[flytekit.models.security.Secret]] = None,
+    tokens: typing.Optional[typing.List[flytekit.models.security.OAuth2TokenRequest]] = None,
 )
 ```
 | Parameter | Type | Description |

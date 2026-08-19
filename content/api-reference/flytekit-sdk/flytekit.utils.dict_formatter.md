@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.dict_formatter
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,7 +27,7 @@ def format_dict(
     service: str,
     original_dict: typing.Any,
     update_dict: typing.Dict[str, typing.Any],
-    idempotence_token: typing.Optional[str],
+    idempotence_token: typing.Optional[str] = None,
 ) -> typing.Any
 ```
 Recursively update a dictionary with format strings with values from another dictionary where the keys match

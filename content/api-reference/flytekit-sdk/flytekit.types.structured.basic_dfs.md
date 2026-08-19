@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.basic_dfs
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,7 +43,7 @@ layout: py_api
 def get_pandas_storage_options(
     uri: str,
     data_config: flytekit.configuration.DataConfig,
-    anonymous: bool,
+    anonymous: bool = False,
 ) -> typing.Optional[typing.Dict]
 ```
 | Parameter | Type | Description |

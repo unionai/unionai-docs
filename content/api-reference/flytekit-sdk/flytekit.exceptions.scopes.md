@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -53,8 +53,8 @@ We will dispatch metrics and such appropriately.
 | Parameter | Type | Description |
 |-|-|-|
 | `wrapped` |  | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `args` |  | |
+| `kwargs` |  | |
 
 #### user_entry_point()
 
@@ -79,8 +79,8 @@ to the user.
 | Parameter | Type | Description |
 |-|-|-|
 | `wrapped` |  | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `args` |  | |
+| `kwargs` |  | |
 
 ## flytekit.exceptions.scopes.FlyteScopedException
 
@@ -92,9 +92,9 @@ class FlyteScopedException(
     exc_type,
     exc_value,
     exc_tb,
-    top_trim,
-    bottom_trim,
-    kind,
+    top_trim = 0,
+    bottom_trim = 0,
+    kind = None,
 )
 ```
 | Parameter | Type | Description |
@@ -127,7 +127,7 @@ class FlyteScopedSystemException(
     exc_type,
     exc_value,
     exc_tb,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -135,7 +135,7 @@ class FlyteScopedSystemException(
 | `exc_type` |  | |
 | `exc_value` |  | |
 | `exc_tb` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -157,7 +157,7 @@ class FlyteScopedUserException(
     exc_type,
     exc_value,
     exc_tb,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -165,7 +165,7 @@ class FlyteScopedUserException(
 | `exc_type` |  | |
 | `exc_value` |  | |
 | `exc_tb` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 

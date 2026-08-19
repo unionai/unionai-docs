@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.openai.batch.workflow
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,11 +24,11 @@ layout: py_api
 def create_batch(
     name: str,
     secret: flytekit.models.security.Secret,
-    openai_organization: typing.Optional[str],
-    config: typing.Optional[typing.Dict[str, typing.Any]],
-    is_json_iterator: bool,
-    file_upload_mem: str,
-    file_download_mem: str,
+    openai_organization: typing.Optional[str] = None,
+    config: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    is_json_iterator: bool = True,
+    file_upload_mem: str = '700Mi',
+    file_download_mem: str = '700Mi',
 ) -> flytekit.core.workflow.ImperativeWorkflow
 ```
 Uploads JSON data to a JSONL file, creates a batch, waits for it to complete, and downloads the output/error JSON files.

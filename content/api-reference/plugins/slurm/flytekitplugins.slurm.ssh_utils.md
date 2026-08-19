@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.slurm.ssh_utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -99,8 +99,8 @@ https://asyncssh.readthedocs.io/en/latest/api.html#asyncssh.SSHClientConnectionO
 ```python
 class SSHConfig(
     host: str,
-    username: typing.Optional[str],
-    client_keys: typing.Union[str, typing.List[str], typing.Tuple[str, ...]],
+    username: typing.Optional[str] = None,
+    client_keys: typing.Union[str, typing.List[str], typing.Tuple[str, ...]] = (),
 )
 ```
 | Parameter | Type | Description |
@@ -144,7 +144,7 @@ A Slurm cluster instance is defined by a pair of (Slurm host, username).
 ```python
 class SlurmCluster(
     host: str,
-    username: typing.Optional[str],
+    username: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

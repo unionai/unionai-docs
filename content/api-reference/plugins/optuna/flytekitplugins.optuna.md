@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.optuna
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,10 +34,10 @@ layout: py_api
 
 ```python
 def optimize(
-    objective: typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask, NoneType],
-    concurrency: int,
-    n_trials: int,
-    study: typing.Optional[optuna.study.study.Study],
+    objective: typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask, NoneType] = None,
+    concurrency: int = 1,
+    n_trials: int = 1,
+    study: typing.Optional[optuna.study.study.Study] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -56,8 +56,8 @@ class Optimizer(
     objective: typing.Union[typing.Callable[typing.Concatenate[optuna.trial._trial.Trial, ~P], typing.Union[typing.Awaitable[typing.Union[float, tuple[float, ...]]], float, tuple[float, ...]]], flytekit.core.python_function_task.AsyncPythonFunctionTask],
     concurrency: int,
     n_trials: int,
-    study: typing.Optional[optuna.study.study.Study],
-    delay: int,
+    study: typing.Optional[optuna.study.study.Study] = None,
+    delay: int = 0,
 )
 ```
 | Parameter | Type | Description |

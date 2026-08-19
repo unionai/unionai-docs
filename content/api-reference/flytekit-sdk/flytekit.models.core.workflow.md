@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.workflow
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -169,14 +169,14 @@ def to_flyte_idl()
 ```python
 class ArrayNode(
     node: Node,
-    parallelism,
-    min_successes,
-    min_success_ratio,
-    execution_mode,
-    is_original_sub_node_interface,
-    data_mode,
-    bound_inputs,
-    run_all_sub_nodes: bool,
+    parallelism = None,
+    min_successes = None,
+    min_success_ratio = None,
+    execution_mode = None,
+    is_original_sub_node_interface = False,
+    data_mode = None,
+    bound_inputs = None,
+    run_all_sub_nodes: bool = False,
 )
 ```
 TODO: docstring
@@ -310,9 +310,9 @@ def to_flyte_idl()
 
 ```python
 class GateNode(
-    signal: typing.Optional[flytekit.models.core.workflow.SignalCondition],
-    sleep: typing.Optional[flytekit.models.core.workflow.SleepCondition],
-    approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition],
+    signal: typing.Optional[flytekit.models.core.workflow.SignalCondition] = None,
+    sleep: typing.Optional[flytekit.models.core.workflow.SleepCondition] = None,
+    approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -443,9 +443,9 @@ def to_flyte_idl()
 ```python
 class IfElseBlock(
     case,
-    other,
-    else_node,
-    error,
+    other = None,
+    else_node = None,
+    error = None,
 )
 ```
 Defines a series of if/else blocks. The first branch whose condition evaluates to true is the one to execute.
@@ -521,11 +521,11 @@ class Node(
     inputs,
     upstream_node_ids,
     output_aliases,
-    task_node,
-    workflow_node,
-    branch_node,
-    gate_node: typing.Optional[flytekit.models.core.workflow.GateNode],
-    array_node: typing.Optional[flytekit.models.core.workflow.ArrayNode],
+    task_node = None,
+    workflow_node = None,
+    branch_node = None,
+    gate_node: typing.Optional[flytekit.models.core.workflow.GateNode] = None,
+    array_node: typing.Optional[flytekit.models.core.workflow.ArrayNode] = None,
 )
 ```
 A Workflow graph Node. One unit of execution in the graph. Each node can be linked to a Task,
@@ -612,12 +612,12 @@ def to_flyte_idl()
 ```python
 class NodeMetadata(
     name,
-    timeout,
-    retries,
-    interruptible: typing.Optional[bool],
-    cacheable: typing.Optional[bool],
-    cache_version: typing.Optional[str],
-    cache_serializable: typing.Optional[bool],
+    timeout = None,
+    retries = None,
+    interruptible: typing.Optional[bool] = None,
+    cacheable: typing.Optional[bool] = None,
+    cache_version: typing.Optional[str] = None,
+    cache_serializable: typing.Optional[bool] = None,
 )
 ```
 Defines extra information about the Node.
@@ -823,7 +823,7 @@ def to_flyte_idl()
 ```python
 class TaskNode(
     reference_id,
-    overrides: typing.Optional[flytekit.models.core.workflow.TaskNodeOverrides],
+    overrides: typing.Optional[flytekit.models.core.workflow.TaskNodeOverrides] = None,
 )
 ```
 Refers to the task that the Node is to execute.
@@ -895,8 +895,8 @@ def to_flyte_idl()
 class TaskNodeOverrides(
     resources: typing.Optional[flytekit.models.task.Resources],
     extended_resources: typing.Optional[flyteidl.core.tasks_pb2.ExtendedResources],
-    container_image: typing.Optional[str],
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
+    container_image: typing.Optional[str] = None,
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -960,7 +960,7 @@ def to_flyte_idl()
 
 ```python
 class WorkflowMetadata(
-    on_failure,
+    on_failure = None,
 )
 ```
 Metadata for the workflow.
@@ -1026,7 +1026,7 @@ def to_flyte_idl()
 
 ```python
 class WorkflowMetadataDefaults(
-    interruptible,
+    interruptible = None,
 )
 ```
 Metadata Defaults for the workflow.
@@ -1091,8 +1091,8 @@ def to_flyte_idl()
 
 ```python
 class WorkflowNode(
-    launchplan_ref,
-    sub_workflow_ref,
+    launchplan_ref = None,
+    sub_workflow_ref = None,
 )
 ```
 Refers to a the workflow the node is to execute. One of the references must be supplied.
@@ -1167,7 +1167,7 @@ class WorkflowTemplate(
     interface,
     nodes,
     outputs,
-    failure_node,
+    failure_node = None,
 )
 ```
 A workflow template encapsulates all the task, branch, and subworkflow nodes to run a statically analyzable,

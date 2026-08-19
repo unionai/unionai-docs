@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -228,7 +228,7 @@ Raises ValueError also if the transformer found for the raw type doesn't have a 
 class AsyncTypeTransformer(
     name: str,
     t: Type[T],
-    enable_type_assertions: bool,
+    enable_type_assertions: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -775,8 +775,8 @@ Output will look like
     '$ref': '#/definitions/TestSchema'}
 
 
-&gt; [!NOTE]
-&gt; The schema support is experimental and is useful for auto-completing in the UI/CLI
+> [!NOTE]
+> The schema support is experimental and is useful for auto-completing in the UI/CLI
 
 
 ### Parameters
@@ -2045,8 +2045,8 @@ correspond to an element of the map.
 ```python
 class LiteralsResolver(
     literals: typing.Dict[str, Literal],
-    variable_map: Optional[Dict[str, _interface_models.Variable]],
-    ctx: Optional[FlyteContext],
+    variable_map: Optional[Dict[str, _interface_models.Variable]] = None,
+    ctx: Optional[FlyteContext] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2068,19 +2068,9 @@ class LiteralsResolver(
 | Method | Description |
 |-|-|
 | [`as_python_native()`](#as_python_native) | This should return the native Python representation, compatible with unpacking. |
-| [`clear()`](#clear) | D. |
-| [`copy()`](#copy) |  |
-| [`fromkeys()`](#fromkeys) |  |
 | [`get()`](#get) | This will get the ``attr`` value from the Literal map, and invoke the TypeEngine to convert it into a Python. |
 | [`get_literal()`](#get_literal) |  |
-| [`items()`](#items) | D. |
-| [`keys()`](#keys) | D. |
-| [`pop()`](#pop) | D. |
-| [`popitem()`](#popitem) | D. |
-| [`setdefault()`](#setdefault) | D. |
-| [`update()`](#update) | D. |
 | [`update_type_hints()`](#update_type_hints) |  |
-| [`values()`](#values) | D. |
 
 
 #### as_python_native()
@@ -2099,38 +2089,12 @@ This function relies on Python interface outputs being ordered correctly.
 |-|-|-|
 | `python_interface` | `Interface` | Only outputs are used but easier to pass the whole interface. |
 
-#### clear()
-
-```python
-def clear()
-```
-D.clear() -&gt; None.  Remove all items from D.
-
-
-#### copy()
-
-```python
-def copy()
-```
-#### fromkeys()
-
-```python
-def fromkeys(
-    iterable,
-    value,
-)
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `iterable` |  | |
-| `value` |  | |
-
 #### get()
 
 ```python
 def get(
     attr: str,
-    as_type: Optional[typing.Type],
+    as_type: Optional[typing.Type] = None,
 ) -> typing.Any
 ```
 This will get the ``attr`` value from the Literal map, and invoke the TypeEngine to convert it into a Python
@@ -2157,83 +2121,6 @@ def get_literal(
 |-|-|-|
 | `key` | `str` | |
 
-#### items()
-
-```python
-def items()
-```
-D.items() -&gt; a set-like object providing a view on D's items
-
-
-#### keys()
-
-```python
-def keys()
-```
-D.keys() -&gt; a set-like object providing a view on D's keys
-
-
-#### pop()
-
-```python
-def pop(
-    key,
-    default,
-)
-```
-D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
-If key is not found, d is returned if given, otherwise KeyError is raised.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `key` |  | |
-| `default` |  | |
-
-#### popitem()
-
-```python
-def popitem()
-```
-D.popitem() -&gt; (k, v), remove and return some (key, value) pair
-as a 2-tuple; but raise KeyError if D is empty.
-
-
-#### setdefault()
-
-```python
-def setdefault(
-    key,
-    default,
-)
-```
-D.setdefault(k[,d]) -&gt; D.get(k,d), also set D[k]=d if k not in D
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `key` |  | |
-| `default` |  | |
-
-#### update()
-
-```python
-def update(
-    other,
-    kwds,
-)
-```
-D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.
-If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
-If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
-In either case, this is followed by: for k, v in F.items(): D[k] = v
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `other` |  | |
-| `kwds` |  | |
-
 #### update_type_hints()
 
 ```python
@@ -2244,14 +2131,6 @@ def update_type_hints(
 | Parameter | Type | Description |
 |-|-|-|
 | `type_hints` | `typing.Dict[str, typing.Type]` | |
-
-#### values()
-
-```python
-def values()
-```
-D.values() -&gt; an object providing a view on D's values
-
 
 ## flytekit.core.type_engine.ProtobufTransformer
 
@@ -2588,7 +2467,7 @@ This is for dataclass attribute access from input created from the Flyte Console
 
 ```python
 def get_literal_type(
-    t: Optional[Type[T]],
+    t: Optional[Type[T]] = None,
 ) -> LiteralType
 ```
 Converts the python type to a Flyte LiteralType
@@ -2814,7 +2693,7 @@ This is for dataclass attribute access from input created from the Flyte Console
 
 ```python
 def get_literal_type(
-    t: Optional[Type[T]],
+    t: Optional[Type[T]] = None,
 ) -> LiteralType
 ```
 Converts the python type to a Flyte LiteralType
@@ -3227,7 +3106,7 @@ def calculate_hash(
 def dict_to_literal_map(
     ctx: FlyteContext,
     d: typing.Dict[str, typing.Any],
-    type_hints: Optional[typing.Dict[str, type]],
+    type_hints: Optional[typing.Dict[str, type]] = None,
 ) -> LiteralMap
 ```
 | Parameter | Type | Description |
@@ -3242,7 +3121,7 @@ def dict_to_literal_map(
 def dict_to_literal_map_pb(
     ctx: FlyteContext,
     d: typing.Dict[str, typing.Any],
-    type_hints: Optional[typing.Dict[str, type]],
+    type_hints: Optional[typing.Dict[str, type]] = None,
 ) -> Optional[literals_pb2.LiteralMap]
 ```
 | Parameter | Type | Description |
@@ -3315,8 +3194,8 @@ Only load the transformers if needed.
 def literal_map_to_kwargs(
     ctx: FlyteContext,
     lm: LiteralMap,
-    python_types: typing.Optional[typing.Dict[str, type]],
-    literal_types: typing.Optional[typing.Dict[str, _interface_models.Variable]],
+    python_types: typing.Optional[typing.Dict[str, type]] = None,
+    literal_types: typing.Optional[typing.Dict[str, _interface_models.Variable]] = None,
 ) -> typing.Dict[str, typing.Any]
 ```
 | Parameter | Type | Description |
@@ -3345,7 +3224,7 @@ Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named
 ```python
 def register(
     transformer: TypeTransformer,
-    additional_types: Optional[typing.List[Type]],
+    additional_types: Optional[typing.List[Type]] = None,
 )
 ```
 This should be used for all types that respond with the right type annotation when you use type(...) function
@@ -3362,7 +3241,7 @@ This should be used for all types that respond with the right type annotation wh
 def register_additional_type(
     transformer: TypeTransformer[T],
     additional_type: Type[T],
-    override,
+    override = False,
 )
 ```
 | Parameter | Type | Description |
@@ -3492,7 +3371,7 @@ Base transformer type that should be implemented for every python native type th
 class TypeTransformer(
     name: str,
     t: Type[T],
-    enable_type_assertions: bool,
+    enable_type_assertions: bool = True,
 )
 ```
 | Parameter | Type | Description |

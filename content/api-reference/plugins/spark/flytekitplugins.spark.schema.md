@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.schema
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,23 +59,23 @@ class ClassicSparkDataFrameSchemaReader(
 
 ```python
 def all(
-    kwargs,
+    **kwargs,
 ) -> pyspark.sql.classic.dataframe.DataFrame
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### iter()
 
 ```python
 def iter(
-    kwargs,
+    **kwargs,
 ) -> typing.Generator[~T, NoneType, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaWriter
 
@@ -115,14 +115,14 @@ class ClassicSparkDataFrameSchemaWriter(
 
 ```python
 def write(
-    dfs: pyspark.sql.classic.dataframe.DataFrame,
-    kwargs,
+    *dfs: pyspark.sql.classic.dataframe.DataFrame,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `dfs` | `pyspark.sql.classic.dataframe.DataFrame` | |
-| `kwargs` | `**kwargs` | |
+| `*dfs` | `pyspark.sql.classic.dataframe.DataFrame` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.schema.ClassicSparkDataFrameTransformer
 
@@ -374,23 +374,23 @@ class SparkDataFrameSchemaReader(
 
 ```python
 def all(
-    kwargs,
+    **kwargs,
 ) -> pyspark.sql.dataframe.DataFrame
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### iter()
 
 ```python
 def iter(
-    kwargs,
+    **kwargs,
 ) -> typing.Generator[~T, NoneType, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.schema.SparkDataFrameSchemaWriter
 
@@ -430,14 +430,14 @@ class SparkDataFrameSchemaWriter(
 
 ```python
 def write(
-    dfs: pyspark.sql.dataframe.DataFrame,
-    kwargs,
+    *dfs: pyspark.sql.dataframe.DataFrame,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `dfs` | `pyspark.sql.dataframe.DataFrame` | |
-| `kwargs` | `**kwargs` | |
+| `*dfs` | `pyspark.sql.dataframe.DataFrame` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.schema.SparkDataFrameTransformer
 

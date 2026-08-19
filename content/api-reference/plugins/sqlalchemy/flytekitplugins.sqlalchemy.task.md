@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.sqlalchemy.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,8 +34,8 @@ Database can be found:
 ```python
 class SQLAlchemyConfig(
     uri: str,
-    connect_args: typing.Optional[typing.Dict[str, typing.Any]],
-    secret_connect_args: typing.Optional[typing.Dict[str, flytekit.models.security.Secret]],
+    connect_args: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    secret_connect_args: typing.Optional[typing.Dict[str, flytekit.models.security.Secret]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -79,8 +79,8 @@ def default_image()
 
 ```python
 def find_image_for(
-    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion],
-    flytekit_version: typing.Optional[str],
+    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion] = None,
+    flytekit_version: typing.Optional[str] = None,
 ) -> str
 ```
 | Parameter | Type | Description |
@@ -105,10 +105,10 @@ class SQLAlchemyTask(
     name: str,
     query_template: str,
     task_config: flytekitplugins.sqlalchemy.task.SQLAlchemyConfig,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]],
-    container_image: str,
-    kwargs,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]] = flytekit.types.schema.types.FlyteSchema,
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-sqlalchemy-1.16.28',
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -119,7 +119,7 @@ class SQLAlchemyTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
 | `container_image` | `str` | This is the external container image the task should run at platform-run-time. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -185,8 +185,8 @@ class SQLAlchemyTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -195,8 +195,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -228,7 +228,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -236,7 +236,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -348,12 +348,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -406,7 +406,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -416,14 +416,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -434,7 +434,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -504,14 +504,14 @@ def serialize_to_model(
 
 ```python
 class SQLAlchemyTaskExecutor(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -534,7 +534,7 @@ class SQLAlchemyTaskExecutor(
 ```python
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
@@ -546,7 +546,7 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+| `**kwargs` |  | These are the Python native input values to the task. |
 
 **Returns:** Python native output values from the task.
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.schedule
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,9 +22,9 @@ layout: py_api
 ```python
 class Schedule(
     kickoff_time_input_arg,
-    cron_expression,
-    rate,
-    cron_schedule,
+    cron_expression = None,
+    rate = None,
+    cron_schedule = None,
 )
 ```
 One of cron_expression or fixed rate must be specified.

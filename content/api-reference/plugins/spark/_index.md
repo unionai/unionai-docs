@@ -1,6 +1,6 @@
 ---
 title: Spark
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -17,7 +17,13 @@ layout: py_api
 |-|-|
 | [`flytekitplugins.spark.connector.DatabricksConnector`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnector) |  |
 | [`flytekitplugins.spark.connector.DatabricksConnectorV2`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
-| [`flytekitplugins.spark.connector.DatabricksJobMetadata`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) |  |
+| [`flytekitplugins.spark.connector.DatabricksJobMetadata`](flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) | Metadata persisted for a Databricks run. |
+| [`flytekitplugins.spark.databricks_auth.DatabricksAuth`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksauth) | Interface for obtaining a bearer token for Databricks API calls. |
+| [`flytekitplugins.spark.databricks_auth.DatabricksAuthError`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksautherror) | Raised when Databricks authentication cannot be obtained. |
+| [`flytekitplugins.spark.databricks_auth.OAuthM2MAuth`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoauthm2mauth) | Authenticate a Databricks service principal with client credentials. |
+| [`flytekitplugins.spark.databricks_auth.OIDCConnectorAuth`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcconnectorauth) | Exchange the connector workload's projected JWT for a Databricks token. |
+| [`flytekitplugins.spark.databricks_auth.OIDCNamespaceServiceAccountAuth`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcnamespaceserviceaccountauth) | Federate as a ServiceAccount discovered in the workflow namespace. |
+| [`flytekitplugins.spark.databricks_auth.PATAuth`](flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authpatauth) | Delegate to the connector's existing multi-tenant PAT lookup. |
 | [`flytekitplugins.spark.generic_task.GenericSparkConf`](flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparkconf) |  |
 | [`flytekitplugins.spark.generic_task.GenericSparkTask`](flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparktask) |  |
 | [`flytekitplugins.spark.models.SparkJob`](flytekitplugins.spark.models#flytekitpluginssparkmodelssparkjob) |  |
@@ -46,7 +52,11 @@ layout: py_api
 | [`flytekitplugins.spark.connector.get_databricks_token()`](flytekitplugins.spark.connector#get_databricks_token) | Get the Databricks access token with multi-tenant support. |
 | [`flytekitplugins.spark.connector.get_header()`](flytekitplugins.spark.connector#get_header) | Get the authorization header for Databricks API calls. |
 | [`flytekitplugins.spark.connector.get_secret_from_k8s()`](flytekitplugins.spark.connector#get_secret_from_k8s) | Read a secret from Kubernetes using the Kubernetes Python client. |
+| [`flytekitplugins.spark.connector.list_serviceaccounts_in_k8s()`](flytekitplugins.spark.connector#list_serviceaccounts_in_k8s) | List labelled ServiceAccounts in a workflow namespace. |
 | [`flytekitplugins.spark.connector.result_state_is_available()`](flytekitplugins.spark.connector#result_state_is_available) |  |
+| [`flytekitplugins.spark.databricks_auth.build_auth()`](flytekitplugins.spark.databricks_auth#build_auth) | Rebuild an auth strategy from persisted connector metadata. |
+| [`flytekitplugins.spark.databricks_auth.select_auth()`](flytekitplugins.spark.databricks_auth#select_auth) | Select an explicitly configured strategy, defaulting to PAT. |
+| [`flytekitplugins.spark.databricks_auth.validate_connector_config()`](flytekitplugins.spark.databricks_auth#validate_connector_config) | Validate an explicitly configured connector-wide auth type. |
 | [`flytekitplugins.spark.task.new_spark_session()`](flytekitplugins.spark.task#new_spark_session) | Optionally creates a new spark session and returns it. |
 | [`flytekitplugins.spark.utils.is_serverless_config()`](flytekitplugins.spark.utils#is_serverless_config) | Detect if the Databricks configuration is for serverless compute. |
 
@@ -55,6 +65,7 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`flytekitplugins.spark.connector`](flytekitplugins.spark.connector) |  |
+| [`flytekitplugins.spark.databricks_auth`](flytekitplugins.spark.databricks_auth) | Authentication strategies for the Databricks connector. |
 | [`flytekitplugins.spark.generic_task`](flytekitplugins.spark.generic_task) |  |
 | [`flytekitplugins.spark.models`](flytekitplugins.spark.models) |  |
 | [`flytekitplugins.spark.pyspark_transformers`](flytekitplugins.spark.pyspark_transformers) |  |

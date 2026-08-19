@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.array_job
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,10 +21,10 @@ layout: py_api
 
 ```python
 class ArrayJob(
-    parallelism,
-    size,
-    min_successes,
-    min_success_ratio,
+    parallelism = None,
+    size = None,
+    min_successes = None,
+    min_success_ratio = None,
 )
 ```
 Initializes a new ArrayJob.

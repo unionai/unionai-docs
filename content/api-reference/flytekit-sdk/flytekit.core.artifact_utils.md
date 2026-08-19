@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact_utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,7 +23,7 @@ layout: py_api
 
 ```python
 def idl_partitions_from_dict(
-    p: Optional[Dict[str, str]],
+    p: Optional[Dict[str, str]] = None,
 ) -> Optional[Partitions]
 ```
 | Parameter | Type | Description |
@@ -34,8 +34,8 @@ def idl_partitions_from_dict(
 
 ```python
 def idl_time_partition_from_datetime(
-    tp: Optional[datetime],
-    time_partition_granularity: Optional[Granularity],
+    tp: Optional[datetime] = None,
+    time_partition_granularity: Optional[Granularity] = None,
 ) -> Optional[TimePartition]
 ```
 | Parameter | Type | Description |

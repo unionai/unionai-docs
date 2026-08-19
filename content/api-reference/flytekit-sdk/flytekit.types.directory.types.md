@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.directory.types
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,8 +42,8 @@ def noop()
 This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte
 IDL literal/type of Multipart Blob. Please see the FlyteDirectory comments for additional information.
 
-&gt; [!CAUTION] caution:
-&gt; The transformer will not check if the given path is actually a directory. This is because the path could be
+> [!CAUTION] caution:
+> The transformer will not check if the given path is actually a directory. This is because the path could be
    a remote reference.
 
 
@@ -355,8 +355,8 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 ```python
 class FlyteDirectory(
     path: typing.Union[str, os.PathLike],
-    downloader: typing.Optional[typing.Callable],
-    remote_directory: typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]],
+    downloader: typing.Optional[typing.Callable] = None,
+    remote_directory: typing.Optional[typing.Union[os.PathLike, str, typing.Literal[False]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -382,27 +382,22 @@ class FlyteDirectory(
 | [`deserialize_flyte_dir()`](#deserialize_flyte_dir) |  |
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_source()`](#from_source) | Create a new FlyteDirectory object with the remote source set to the input. |
 | [`listdir()`](#listdir) | This function will list all files and folders in the given directory, but without downloading the contents. |
 | [`new()`](#new) | Create a new FlyteDirectory object in current Flyte working directory. |
 | [`new_dir()`](#new_dir) | This will create a new folder under the current folder. |
 | [`new_file()`](#new_file) | This will create a new file under the current folder. |
 | [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i. |
-| [`schema()`](#schema) |  |
 | [`serialize_flyte_dir()`](#serialize_flyte_dir) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### crawl()
 
 ```python
 def crawl(
-    maxdepth: typing.Optional[int],
-    topdown: bool,
-    kwargs,
+    maxdepth: typing.Optional[int] = None,
+    topdown: bool = True,
+    **kwargs,
 ) -> Generator[Tuple[typing.Union[str, os.PathLike[Any]], typing.Dict[Any, Any]], None, None]
 ```
 Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory".
@@ -414,7 +409,7 @@ if details=True is passed, then it will return a dictionary as specified by fssp
 |-|-|-|
 | `maxdepth` | `typing.Optional[int]` | |
 | `topdown` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### deserialize_flyte_dir()
 
@@ -437,40 +432,6 @@ def download()
 ```python
 def extension()
 ```
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
 #### from_source()
 
 ```python
@@ -531,7 +492,7 @@ Create a new FlyteDirectory object in current Flyte working directory.
 
 ```python
 def new_dir(
-    name: typing.Optional[str],
+    name: typing.Optional[str] = None,
 ) -> FlyteDirectory
 ```
 This will create a new folder under the current folder.
@@ -547,7 +508,7 @@ Collisions are not checked.
 
 ```python
 def new_file(
-    name: typing.Optional[str],
+    name: typing.Optional[str] = None,
 ) -> FlyteFile
 ```
 This will create a new file under the current folder.
@@ -563,8 +524,8 @@ Collisions are not checked.
 
 ```python
 def new_remote(
-    stem: typing.Optional[str],
-    alt: typing.Optional[str],
+    stem: typing.Optional[str] = None,
+    alt: typing.Optional[str] = None,
 ) -> FlyteDirectory
 ```
 Create a new FlyteDirectory object using the currently configured default remote in the context (i.e.
@@ -581,73 +542,8 @@ and let flytekit handle the uploading.
 | `stem` | `typing.Optional[str]` | A stem to append to the path as the final prefix "directory". |
 | `alt` | `typing.Optional[str]` | An alternate first member of the prefix to use instead of the default. |
 
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
 #### serialize_flyte_dir()
 
 ```python
 def serialize_flyte_dir()
 ```
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
-

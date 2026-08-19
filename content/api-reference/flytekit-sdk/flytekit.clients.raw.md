@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,7 +34,7 @@ SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
 ```python
 class RawSynchronousFlyteClient(
     cfg: PlatformConfig,
-    kwargs,
+    **kwargs,
 )
 ```
 Initializes a gRPC channel to the given Flyte Admin service.
@@ -44,7 +44,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -601,7 +601,7 @@ def list_node_executions_paginated(
 
 ```python
 def list_projects(
-    project_list_request: typing.Optional[ProjectListRequest],
+    project_list_request: typing.Optional[ProjectListRequest] = None,
 )
 ```
 This will return a list of the projects registered with the Flyte Admin Service

@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.structured.structured_dataset
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -95,7 +95,7 @@ If we add more things, we should put all the returned items in a dataclass inste
 ```python
 def flatten_dict(
     sub_dict: dict,
-    parent_key: str,
+    parent_key: str = '',
 ) -> typing.Dict
 ```
 | Parameter | Type | Description |
@@ -120,10 +120,10 @@ class (that is just a model, a Python class representation of the protobuf).
 
 ```python
 class StructuredDataset(
-    dataframe: typing.Optional[typing.Any],
-    uri: typing.Optional[str],
-    metadata: typing.Optional[literals.StructuredDatasetMetadata],
-    kwargs,
+    dataframe: typing.Optional[typing.Any] = None,
+    uri: typing.Optional[str] = None,
+    metadata: typing.Optional[literals.StructuredDatasetMetadata] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -131,7 +131,7 @@ class StructuredDataset(
 | `dataframe` | `typing.Optional[typing.Any]` | |
 | `uri` | `typing.Optional[str]` | |
 | `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -150,13 +150,11 @@ class StructuredDataset(
 | [`columns()`](#columns) |  |
 | [`deserialize_structured_dataset()`](#deserialize_structured_dataset) |  |
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`iter()`](#iter) |  |
 | [`open()`](#open) |  |
 | [`serialize_structured_dataset()`](#serialize_structured_dataset) |  |
 | [`set_literal()`](#set_literal) | A public wrapper method to set the StructuredDataset Literal. |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### all()
@@ -190,28 +188,13 @@ def deserialize_structured_dataset(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `d` |  | |
 | `dialect` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
 
 #### iter()
 
@@ -257,19 +240,6 @@ This method provides external access to the internal _set_literal method.
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## flytekit.types.structured.structured_dataset.StructuredDatasetDecoder
 
 ### Parameters
@@ -277,9 +247,9 @@ def to_json(
 ```python
 class StructuredDatasetDecoder(
     python_type: Type[DF],
-    protocol: Optional[str],
-    supported_format: Optional[str],
-    additional_protocols: Optional[List[str]],
+    protocol: Optional[str] = None,
+    supported_format: Optional[str] = None,
+    additional_protocols: Optional[List[str]] = None,
 )
 ```
 Extend this abstract class, implement the decode function, and register your concrete class with the
@@ -341,8 +311,8 @@ value into a Python instance.
 ```python
 class StructuredDatasetEncoder(
     python_type: Type[T],
-    protocol: Optional[str],
-    supported_format: Optional[str],
+    protocol: Optional[str] = None,
+    supported_format: Optional[str] = None,
 )
 ```
 Extend this abstract class, implement the encode function, and register your concrete class with the
@@ -750,10 +720,10 @@ def open_as(
 ```python
 def register(
     h: Handlers,
-    default_for_type: bool,
-    override: bool,
-    default_format_for_type: bool,
-    default_storage_for_type: bool,
+    default_for_type: bool = False,
+    override: bool = False,
+    default_format_for_type: bool = False,
+    default_storage_for_type: bool = False,
 )
 ```
 Call this with any Encoder or Decoder to register it with the flytekit type system. If your handler does not

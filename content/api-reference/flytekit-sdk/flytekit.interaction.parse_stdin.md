@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.parse_stdin
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,7 +25,7 @@ def parse_stdin_to_literal(
     ctx: FlyteContext,
     t: typing.Type,
     message: typing.Optional[str],
-    lt: typing.Optional[LiteralType],
+    lt: typing.Optional[LiteralType] = None,
 ) -> Literal
 ```
 Parses the user input from stdin and converts it to a literal of the given type.

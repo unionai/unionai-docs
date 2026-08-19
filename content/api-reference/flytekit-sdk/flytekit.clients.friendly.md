@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.friendly
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +24,7 @@ layout: py_api
 ## flytekit.clients.friendly.SynchronousFlyteClient
 
 This is a low-level client that users can use to make direct gRPC service calls to the control plane. See the
-:std:doc:`service spec &lt;idl:protos/docs/service/index&gt;`. This is more user-friendly interface than the
+`service spec`. This is more user-friendly interface than the
 {{&lt; py_class_ref flytekit.clients.raw.RawSynchronousFlyteClient &gt;}} so users should try to use this class
 first. Create a client by
 
@@ -39,7 +39,7 @@ SynchronousFlyteClient("your.domain:port", insecure=True)
 ```python
 class SynchronousFlyteClient(
     cfg: PlatformConfig,
-    kwargs,
+    **kwargs,
 )
 ```
 Initializes a gRPC channel to the given Flyte Admin service.
@@ -49,7 +49,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | Parameter | Type | Description |
 |-|-|-|
 | `cfg` | `PlatformConfig` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -335,8 +335,8 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
-    expires_in: datetime.timedelta,
+    artifact_type: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper = 1,
+    expires_in: datetime.timedelta = None,
 ) -> flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
 Get a signed url for an artifact.
@@ -359,7 +359,7 @@ Get a signed url for an artifact.
 ```python
 def get_download_signed_url(
     native_url: str,
-    expires_in: datetime.timedelta,
+    expires_in: datetime.timedelta = None,
 ) -> flyteidl.service.dataproxy_pb2.CreateDownloadLocationResponse
 ```
 | Parameter | Type | Description |
@@ -402,7 +402,7 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 ```python
 def get_execution_metrics(
     id,
-    depth,
+    depth = 10,
 )
 ```
 Returns metrics partitioning and categorizing the workflow execution time-series.
@@ -498,11 +498,11 @@ Returns signed URLs to LiteralMap blobs for a node execution's inputs and output
 def get_upload_signed_url(
     project: str,
     domain: str,
-    content_md5: typing.Optional[bytes],
-    filename: typing.Optional[str],
-    expires_in: typing.Optional[datetime.timedelta],
-    filename_root: typing.Optional[str],
-    add_content_md5_metadata: bool,
+    content_md5: typing.Optional[bytes] = None,
+    filename: typing.Optional[str] = None,
+    expires_in: typing.Optional[datetime.timedelta] = None,
+    filename_root: typing.Optional[str] = None,
+    add_content_md5_metadata: bool = True,
 ) -> flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
@@ -547,9 +547,9 @@ Fetches the custom attributes set for a project, domain, and workflow combinatio
 def list_active_launch_plans_paginated(
     project,
     domain,
-    limit,
-    token,
-    sort_by,
+    limit = 100,
+    token = None,
+    sort_by = None,
 ) -> typing.Tuple[typing.List[flytekit.models.launch_plan.LaunchPlan], str]
 ```
 This returns a page of currently active launch plan meta-information for launch plans in a given project and
@@ -587,10 +587,10 @@ domain.
 def list_executions_paginated(
     project,
     domain,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns a page of executions in a given project and domain.
@@ -628,9 +628,9 @@ This returns a page of executions in a given project and domain.
 def list_launch_plan_ids_paginated(
     project,
     domain,
-    limit,
-    token,
-    sort_by,
+    limit = 100,
+    token = None,
+    sort_by = None,
 )
 ```
 This returns a page of identifiers for the launch plans for a given project and domain. Filters can also be
@@ -667,10 +667,10 @@ specified.
 ```python
 def list_launch_plans_paginated(
     identifier,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns a page of launch plan meta-information for launch plans in a given project and domain.  Optionally,
@@ -721,11 +721,11 @@ Fetches all custom attributes for a resource type.
 ```python
 def list_node_executions(
     workflow_execution_identifier,
-    limit: int,
-    token: typing.Optional[str],
-    filters: typing.List[flytekit.models.filters.Filter],
-    sort_by: flytekit.models.admin.common.Sort,
-    unique_parent_id: str,
+    limit: int = 100,
+    token: typing.Optional[str] = None,
+    filters: typing.List[flytekit.models.filters.Filter] = None,
+    sort_by: flytekit.models.admin.common.Sort = None,
+    unique_parent_id: str = None,
 )
 ```
 Get node executions associated with a given workflow execution.
@@ -748,10 +748,10 @@ Get node executions associated with a given workflow execution.
 ```python
 def list_node_executions_for_task_paginated(
     task_execution_identifier,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns nodes spawned by a specific task execution.  This is generally from things like dynamic tasks.
@@ -784,7 +784,7 @@ def list_node_executions_paginated(
 
 ```python
 def list_projects(
-    project_list_request: typing.Optional[ProjectListRequest],
+    project_list_request: typing.Optional[ProjectListRequest] = None,
 )
 ```
 This will return a list of the projects registered with the Flyte Admin Service
@@ -800,10 +800,10 @@ This will return a list of the projects registered with the Flyte Admin Service
 
 ```python
 def list_projects_paginated(
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns a page of projects.
@@ -852,10 +852,10 @@ This lists signals
 ```python
 def list_task_executions_paginated(
     node_execution_identifier,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 | Parameter | Type | Description |
@@ -874,9 +874,9 @@ def list_task_executions_paginated(
 def list_task_ids_paginated(
     project,
     domain,
-    limit,
-    token,
-    sort_by,
+    limit = 100,
+    token = None,
+    sort_by = None,
 )
 ```
 This returns a page of identifiers for the tasks for a given project and domain. Filters can also be
@@ -913,10 +913,10 @@ specified.
 ```python
 def list_tasks_paginated(
     identifier,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns a page of task metadata for tasks in a given project and domain.  Optionally,
@@ -954,9 +954,9 @@ specifying a name will limit the results to only tasks with that name in the giv
 def list_workflow_ids_paginated(
     project,
     domain,
-    limit,
-    token,
-    sort_by,
+    limit = 100,
+    token = None,
+    sort_by = None,
 )
 ```
 This returns a page of identifiers for the workflows for a given project and domain. Filters can also be
@@ -993,10 +993,10 @@ specified.
 ```python
 def list_workflows_paginated(
     identifier,
-    limit,
-    token,
-    filters,
-    sort_by,
+    limit = 100,
+    token = None,
+    filters = None,
+    sort_by = None,
 )
 ```
 This returns a page of workflow meta-information for workflows in a given project and domain.  Optionally,
@@ -1033,7 +1033,7 @@ specifying a name will limit the results to only workflows with that name in the
 ```python
 def recover_execution(
     id,
-    name: str,
+    name: str = None,
 )
 ```
 Recreates a previously-run workflow execution that will only start executing from the last known failure point.
@@ -1067,7 +1067,7 @@ Registers a project.
 ```python
 def relaunch_execution(
     id,
-    name,
+    name = None,
 )
 ```
 :returns: The unique identifier for the new execution.

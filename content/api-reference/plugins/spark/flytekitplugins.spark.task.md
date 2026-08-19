@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,7 +38,7 @@ layout: py_api
 ```python
 def new_spark_session(
     name: str,
-    conf: typing.Dict[str, str],
+    conf: typing.Dict[str, str] = None,
 )
 ```
 Optionally creates a new spark session and returns it.
@@ -62,14 +62,14 @@ Deprecated. Use DatabricksV2 instead.
 
 ```python
 class Databricks(
-    spark_conf: typing.Optional[typing.Dict[str, str]],
-    hadoop_conf: typing.Optional[typing.Dict[str, str]],
-    executor_path: typing.Optional[str],
-    applications_path: typing.Optional[str],
-    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]],
-    databricks_instance: typing.Optional[str],
+    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    executor_path: typing.Optional[str] = None,
+    applications_path: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]] = None,
+    databricks_instance: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -188,18 +188,23 @@ Notebook Support:
 
 ```python
 class DatabricksV2(
-    spark_conf: typing.Optional[typing.Dict[str, str]],
-    hadoop_conf: typing.Optional[typing.Dict[str, str]],
-    executor_path: typing.Optional[str],
-    applications_path: typing.Optional[str],
-    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]],
-    databricks_instance: typing.Optional[str],
-    databricks_service_credential_provider: typing.Optional[str],
-    databricks_token_secret: typing.Optional[str],
-    notebook_path: typing.Optional[str],
-    notebook_base_parameters: typing.Optional[typing.Dict[str, str]],
+    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    executor_path: typing.Optional[str] = None,
+    applications_path: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    databricks_conf: typing.Optional[typing.Dict[str, typing.Union[str, dict]]] = None,
+    databricks_instance: typing.Optional[str] = None,
+    databricks_service_credential_provider: typing.Optional[str] = None,
+    databricks_token_secret: typing.Optional[str] = None,
+    databricks_auth_type: typing.Optional[str] = None,
+    databricks_client_id: typing.Optional[str] = None,
+    databricks_oauth_secret: typing.Optional[str] = None,
+    databricks_oidc_token_file: typing.Optional[str] = None,
+    databricks_oidc_audience: typing.Optional[str] = None,
+    notebook_path: typing.Optional[str] = None,
+    notebook_base_parameters: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -214,6 +219,11 @@ class DatabricksV2(
 | `databricks_instance` | `typing.Optional[str]` | Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com. |
 | `databricks_service_credential_provider` | `typing.Optional[str]` | Provider name for Databricks Service Credentials for S3 access. Falls back to FLYTE_DATABRICKS_SERVICE_CREDENTIAL_PROVIDER env var. |
 | `databricks_token_secret` | `typing.Optional[str]` | Custom name for the K8s secret containing the Databricks token. Defaults to 'databricks-token' if not specified. |
+| `databricks_auth_type` | `typing.Optional[str]` | Authentication mode. Supported values are ``"pat"``, ``"oauth_m2m"``, and ``"oidc_federation"``. When unset, PAT remains the default. |
+| `databricks_client_id` | `typing.Optional[str]` | Databricks service-principal client ID used for OAuth M2M. Falls back to ``DATABRICKS_CLIENT_ID`` on the connector. |
+| `databricks_oauth_secret` | `typing.Optional[str]` | Name of the namespace K8s secret containing ``client_id`` and ``client_secret``. Defaults to ``databricks-oauth``. |
+| `databricks_oidc_token_file` | `typing.Optional[str]` | Path to the connector workload's projected OIDC JWT. Falls back to ``AWS_WEB_IDENTITY_TOKEN_FILE``. |
+| `databricks_oidc_audience` | `typing.Optional[str]` | Audience associated with the projected JWT. Defaults to ``databricks``. |
 | `notebook_path` | `typing.Optional[str]` | Path to Databricks notebook (e.g., "/Users/user@example.com/notebook"). |
 | `notebook_base_parameters` | `typing.Optional[typing.Dict[str, str]]` | Parameters to pass to the notebook. |
 
@@ -236,8 +246,8 @@ Actual Plugin that transforms the local python code for execution within a spark
 class PysparkFunctionTask(
     task_config: flytekitplugins.spark.task.Spark,
     task_function: typing.Callable,
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType],
-    kwargs,
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -245,7 +255,7 @@ class PysparkFunctionTask(
 | `task_config` | `flytekitplugins.spark.task.Spark` | |
 | `task_function` | `typing.Callable` | |
 | `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, NoneType]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -314,8 +324,8 @@ class PysparkFunctionTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -324,8 +334,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### compile_into_workflow()
 
@@ -333,7 +343,7 @@ Generates a node that encapsulates this task in a workflow definition.
 def compile_into_workflow(
     ctx: FlyteContext,
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Union[_dynamic_job.DynamicJobSpec, _literal_models.LiteralMap]
 ```
 In the case of dynamic workflows, this function will produce a workflow definition at execution time which will
@@ -344,7 +354,7 @@ then proceed to be executed.
 |-|-|-|
 | `ctx` | `FlyteContext` | |
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### connector_signal_handler()
 
@@ -396,7 +406,7 @@ This method is also invoked during runtime.
 ```python
 def dynamic_execute(
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte
@@ -413,13 +423,13 @@ representing that newly generated workflow, instead of executing it.
 | Parameter | Type | Description |
 |-|-|-|
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### execute()
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task. If you do decide to override this method you must also
@@ -428,7 +438,7 @@ handle dynamic tasks or you will no longer be able to use the task as a dynamic 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -608,7 +618,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -619,7 +629,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -692,7 +702,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.
@@ -723,7 +733,7 @@ task resolver. It can be useful to override the task resolver for specific cases
 
 ```python
 def to_k8s_pod(
-    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
+    pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
 ) -> typing.Optional[flytekit.models.task.K8sPod]
 ```
 Convert the podTemplate to K8sPod
@@ -744,12 +754,12 @@ natively onto K8s as a distributed execution of spark
 
 ```python
 class Spark(
-    spark_conf: typing.Optional[typing.Dict[str, str]],
-    hadoop_conf: typing.Optional[typing.Dict[str, str]],
-    executor_path: typing.Optional[str],
-    applications_path: typing.Optional[str],
-    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
-    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate],
+    spark_conf: typing.Optional[typing.Dict[str, str]] = None,
+    hadoop_conf: typing.Optional[typing.Dict[str, str]] = None,
+    executor_path: typing.Optional[str] = None,
+    applications_path: typing.Optional[str] = None,
+    driver_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
+    executor_pod: typing.Optional[flytekit.core.pod_template.PodTemplate] = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.common
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -101,8 +101,8 @@ def to_flyte_idl()
 
 ```python
 class AuthRole(
-    assumable_iam_role,
-    kubernetes_service_account,
+    assumable_iam_role = None,
+    kubernetes_service_account = None,
 )
 ```
 Auth configuration for IAM or K8s service account.
@@ -288,31 +288,6 @@ def to_flyte_idl()
 ```
 ## flytekit.models.common.FlyteABCMeta
 
-### Methods
-
-| Method | Description |
-|-|-|
-| [`register()`](#register) | Register a virtual subclass of an ABC. |
-
-
-#### register()
-
-```python
-def register(
-    cls,
-    subclass,
-)
-```
-Register a virtual subclass of an ABC.
-
-Returns the subclass, to allow usage as a class decorator.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `subclass` |  | |
-
 ## flytekit.models.common.FlyteCustomIdlEntity
 
 ### Properties
@@ -425,7 +400,6 @@ def to_flyte_idl()
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`register()`](#register) | Register a virtual subclass of an ABC. |
 | [`short_class_string()`](#short_class_string) |  |
 | [`verbose_class_string()`](#verbose_class_string) |  |
 
@@ -442,24 +416,6 @@ def from_flyte_idl(
 |-|-|-|
 | `cls` |  | |
 | `idl_object` |  | |
-
-#### register()
-
-```python
-def register(
-    cls,
-    subclass,
-)
-```
-Register a virtual subclass of an ABC.
-
-Returns the subclass, to allow usage as a class decorator.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `subclass` |  | |
 
 #### short_class_string()
 
@@ -561,7 +517,7 @@ def to_flyte_idl()
 class NamedEntityIdentifier(
     project,
     domain,
-    name,
+    name = None,
 )
 ```
 | Parameter | Type | Description |
@@ -631,9 +587,9 @@ Stores object to a Flyte-IDL defined protobuf.
 ```python
 class Notification(
     phases,
-    email: flytekit.models.common.EmailNotification,
-    pager_duty: flytekit.models.common.PagerDutyNotification,
-    slack: flytekit.models.common.SlackNotification,
+    email: flytekit.models.common.EmailNotification = None,
+    pager_duty: flytekit.models.common.PagerDutyNotification = None,
+    slack: flytekit.models.common.SlackNotification = None,
 )
 ```
 Represents a structure for notifications based on execution status.

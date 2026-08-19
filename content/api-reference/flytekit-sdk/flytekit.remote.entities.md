@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.entities
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -198,9 +198,9 @@ def to_flyte_idl()
 
 ```python
 class FlyteGateNode(
-    signal: typing.Optional[flytekit.models.core.workflow.SignalCondition],
-    sleep: typing.Optional[flytekit.models.core.workflow.SleepCondition],
-    approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition],
+    signal: typing.Optional[flytekit.models.core.workflow.SignalCondition] = None,
+    sleep: typing.Optional[flytekit.models.core.workflow.SleepCondition] = None,
+    approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -279,15 +279,15 @@ A class encapsulating a remote Flyte launch plan.
 ```python
 class FlyteLaunchPlan(
     id,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `id` |  | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -336,15 +336,15 @@ class FlyteLaunchPlan(
 ```python
 def compile(
     ctx: FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -358,12 +358,12 @@ Used when constructing the node that encapsulates this task as part of a broader
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### from_flyte_idl()
 
@@ -383,13 +383,13 @@ def from_flyte_idl(
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -441,11 +441,11 @@ class FlyteNode(
     upstream_nodes,
     bindings,
     metadata,
-    task_node: Optional[FlyteTaskNode],
-    workflow_node: Optional[FlyteWorkflowNode],
-    branch_node: Optional[FlyteBranchNode],
-    gate_node: Optional[FlyteGateNode],
-    array_node: Optional[FlyteArrayNode],
+    task_node: Optional[FlyteTaskNode] = None,
+    workflow_node: Optional[FlyteWorkflowNode] = None,
+    branch_node: Optional[FlyteBranchNode] = None,
+    gate_node: Optional[FlyteGateNode] = None,
+    array_node: Optional[FlyteArrayNode] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -555,14 +555,14 @@ class FlyteTask(
     metadata,
     interface,
     custom,
-    container,
-    task_type_version: int,
-    security_context,
-    config,
-    k8s_pod,
-    sql,
-    extended_resources,
-    should_register: bool,
+    container = None,
+    task_type_version: int = 0,
+    security_context = None,
+    config = None,
+    k8s_pod = None,
+    sql = None,
+    extended_resources = None,
+    should_register: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -627,15 +627,15 @@ class FlyteTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -649,12 +649,12 @@ Used when constructing the node that encapsulates this task as part of a broader
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### from_flyte_idl()
 
@@ -674,13 +674,13 @@ def from_flyte_idl(
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -821,11 +821,11 @@ class FlyteWorkflow(
     output_bindings,
     metadata,
     metadata_defaults,
-    subworkflows: Optional[List[FlyteWorkflow]],
-    tasks: Optional[List[FlyteTask]],
-    launch_plans: Optional[Dict[id_models.Identifier, launch_plan_models.LaunchPlanSpec]],
-    compiled_closure: Optional[compiler_models.CompiledWorkflowClosure],
-    should_register: bool,
+    subworkflows: Optional[List[FlyteWorkflow]] = None,
+    tasks: Optional[List[FlyteTask]] = None,
+    launch_plans: Optional[Dict[id_models.Identifier, launch_plan_models.LaunchPlanSpec]] = None,
+    compiled_closure: Optional[compiler_models.CompiledWorkflowClosure] = None,
+    should_register: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -889,15 +889,15 @@ class FlyteWorkflow(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -911,12 +911,12 @@ Used when constructing the node that encapsulates this task as part of a broader
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### from_flyte_idl()
 
@@ -947,13 +947,13 @@ def get_non_system_nodes(
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -965,7 +965,7 @@ def local_execution_mode()
 ```python
 def promote_from_closure(
     closure: compiler_models.CompiledWorkflowClosure,
-    node_launch_plans: Optional[Dict[id_models, launch_plan_models.LaunchPlanSpec]],
+    node_launch_plans: Optional[Dict[id_models, launch_plan_models.LaunchPlanSpec]] = None,
 )
 ```
 Extracts out the relevant portions of a FlyteWorkflow from a closure from the control plane.
@@ -982,9 +982,9 @@ Extracts out the relevant portions of a FlyteWorkflow from a closure from the co
 ```python
 def promote_from_model(
     base_model: _workflow_models.WorkflowTemplate,
-    sub_workflows: Optional[Dict[Identifier, _workflow_models.WorkflowTemplate]],
-    tasks: Optional[Dict[Identifier, FlyteTask]],
-    node_launch_plans: Optional[Dict[Identifier, launch_plan_models.LaunchPlanSpec]],
+    sub_workflows: Optional[Dict[Identifier, _workflow_models.WorkflowTemplate]] = None,
+    tasks: Optional[Dict[Identifier, FlyteTask]] = None,
+    node_launch_plans: Optional[Dict[Identifier, launch_plan_models.LaunchPlanSpec]] = None,
 ) -> FlyteWorkflow
 ```
 | Parameter | Type | Description |
@@ -1022,8 +1022,8 @@ A class encapsulating a workflow that a Flyte node needs to execute.
 
 ```python
 class FlyteWorkflowNode(
-    flyte_workflow: FlyteWorkflow,
-    flyte_launch_plan: FlyteLaunchPlan,
+    flyte_workflow: FlyteWorkflow = None,
+    flyte_launch_plan: FlyteLaunchPlan = None,
 )
 ```
 Refers to a the workflow the node is to execute. One of the references must be supplied.

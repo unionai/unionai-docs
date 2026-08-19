@@ -1,6 +1,6 @@
 ---
 title: flytekit.image_spec.image_spec
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -84,7 +84,7 @@ def get_registry()
 def register(
     builder_type: str,
     image_spec_builder: flytekit.image_spec.image_spec.ImageSpecBuilder,
-    priority: int,
+    priority: int = 5,
 )
 ```
 | Parameter | Type | Description |
@@ -103,35 +103,35 @@ This class is used to specify the docker image that will be used to run the task
 
 ```python
 class ImageSpec(
-    name: str,
-    python_version: str,
-    builder: typing.Optional[str],
-    source_root: typing.Optional[str],
-    env: typing.Optional[typing.Dict[str, str]],
-    registry: typing.Optional[str],
-    packages: typing.Optional[typing.List[str]],
-    conda_packages: typing.Optional[typing.List[str]],
-    conda_channels: typing.Optional[typing.List[str]],
-    requirements: typing.Optional[str],
-    apt_packages: typing.Optional[typing.List[str]],
-    cuda: typing.Optional[str],
-    cudnn: typing.Optional[str],
-    base_image: typing.Union[str, ForwardRef('ImageSpec'), NoneType],
-    platform: typing.Optional[str],
-    pip_index: typing.Optional[str],
-    pip_extra_index_url: typing.Optional[typing.List[str]],
-    pip_secret_mounts: typing.Optional[typing.List[typing.Tuple[str, str]]],
-    pip_extra_args: typing.Optional[str],
-    registry_config: typing.Optional[str],
-    entrypoint: typing.Optional[typing.List[str]],
-    commands: typing.Optional[typing.List[str]],
-    tag_format: typing.Optional[str],
-    source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection],
-    copy: typing.Optional[typing.List[str]],
-    python_exec: typing.Optional[str],
-    runtime_packages: typing.Optional[typing.List[str]],
-    builder_options: typing.Optional[typing.Dict[str, typing.Any]],
-    builder_config: typing.Optional[typing.Dict[str, typing.Any]],
+    name: str = 'flytekit',
+    python_version: str = None,
+    builder: typing.Optional[str] = None,
+    source_root: typing.Optional[str] = None,
+    env: typing.Optional[typing.Dict[str, str]] = None,
+    registry: typing.Optional[str] = None,
+    packages: typing.Optional[typing.List[str]] = None,
+    conda_packages: typing.Optional[typing.List[str]] = None,
+    conda_channels: typing.Optional[typing.List[str]] = None,
+    requirements: typing.Optional[str] = None,
+    apt_packages: typing.Optional[typing.List[str]] = None,
+    cuda: typing.Optional[str] = None,
+    cudnn: typing.Optional[str] = None,
+    base_image: typing.Union[str, ForwardRef('ImageSpec'), NoneType] = None,
+    platform: typing.Optional[str] = None,
+    pip_index: typing.Optional[str] = None,
+    pip_extra_index_url: typing.Optional[typing.List[str]] = None,
+    pip_secret_mounts: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    pip_extra_args: typing.Optional[str] = None,
+    registry_config: typing.Optional[str] = None,
+    entrypoint: typing.Optional[typing.List[str]] = None,
+    commands: typing.Optional[typing.List[str]] = None,
+    tag_format: typing.Optional[str] = None,
+    source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection] = None,
+    copy: typing.Optional[typing.List[str]] = None,
+    python_exec: typing.Optional[str] = None,
+    runtime_packages: typing.Optional[typing.List[str]] = None,
+    builder_options: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    builder_config: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -212,8 +212,8 @@ Builder that returns a new image spec with force push enabled.
 
 ```python
 def from_env(
-    pinned_packages: typing.Optional[typing.List[str]],
-    kwargs,
+    pinned_packages: typing.Optional[typing.List[str]] = None,
+    **kwargs,
 ) -> ImageSpec
 ```
 Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment.
@@ -222,7 +222,7 @@ Create ImageSpec with the environment's Python version and packages pinned to th
 | Parameter | Type | Description |
 |-|-|-|
 | `pinned_packages` | `typing.Optional[typing.List[str]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### image_name()
 

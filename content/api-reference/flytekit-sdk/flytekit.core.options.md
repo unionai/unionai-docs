@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.options
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,21 +28,21 @@ in a Flyte backend, and also when registering launch plans.
 
 ```python
 class Options(
-    labels: typing.Optional[flytekit.models.common.Labels],
-    annotations: typing.Optional[flytekit.models.common.Annotations],
-    raw_output_data_config: typing.Optional[flytekit.models.common.RawOutputDataConfig],
-    security_context: typing.Optional[flytekit.models.security.SecurityContext],
-    max_parallelism: typing.Optional[int],
-    notifications: typing.Optional[typing.List[flytekit.models.common.Notification]],
-    disable_notifications: typing.Optional[bool],
-    overwrite_cache: typing.Optional[bool],
+    labels: typing.Optional[flytekit.models.common.Labels] = None,
+    annotations: typing.Optional[flytekit.models.common.Annotations] = None,
+    raw_output_data_config: typing.Optional[flytekit.models.common.RawOutputDataConfig] = None,
+    security_context: typing.Optional[flytekit.models.security.SecurityContext] = None,
+    max_parallelism: typing.Optional[int] = None,
+    notifications: typing.Optional[typing.List[flytekit.models.common.Notification]] = None,
+    disable_notifications: typing.Optional[bool] = None,
+    overwrite_cache: typing.Optional[bool] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `labels` | `typing.Optional[flytekit.models.common.Labels]` | Custom labels to be applied to the execution resource |
 | `annotations` | `typing.Optional[flytekit.models.common.Annotations]` | Custom annotations to be applied to the execution resource |
-| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` | Optional location of offloaded data for things like S3, etc. remote prefix for storage location of the form ``s3://&lt;bucket&gt;/key...`` or ``gcs://...`` or ``file://...``. If not specified will use the platform configured default. This is where the data for offloaded types is stored. |
+| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` | Optional location of offloaded data for things like S3, etc. remote prefix for storage location of the form ``s3://<bucket>/key...`` or ``gcs://...`` or ``file://...``. If not specified will use the platform configured default. This is where the data for offloaded types is stored. |
 | `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` | Indicates security context for permissions triggered with this launch plan |
 | `max_parallelism` | `typing.Optional[int]` | Controls the maximum number of tasknodes that can be run in parallel for the entire workflow. |
 | `notifications` | `typing.Optional[typing.List[flytekit.models.common.Notification]]` | List of notifications for this execution. |
@@ -60,8 +60,8 @@ class Options(
 
 ```python
 def default_from(
-    k8s_service_account: typing.Optional[str],
-    raw_data_prefix: typing.Optional[str],
+    k8s_service_account: typing.Optional[str] = None,
+    raw_data_prefix: typing.Optional[str] = None,
 ) -> Options
 ```
 | Parameter | Type | Description |

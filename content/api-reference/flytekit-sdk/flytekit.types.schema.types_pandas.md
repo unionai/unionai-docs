@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types_pandas
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -308,23 +308,23 @@ class PandasSchemaReader(
 
 ```python
 def all(
-    kwargs,
+    **kwargs,
 ) -> T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### iter()
 
 ```python
 def iter(
-    kwargs,
+    **kwargs,
 ) -> typing.Generator[T, None, None]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.types.schema.types_pandas.PandasSchemaWriter
 
@@ -361,14 +361,14 @@ class PandasSchemaWriter(
 
 ```python
 def write(
-    dfs,
-    kwargs,
+    *dfs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `dfs` |  | |
-| `kwargs` | `**kwargs` | |
+| `*dfs` |  | |
+| `**kwargs` |  | |
 
 ## flytekit.types.schema.types_pandas.ParquetIO
 
@@ -384,16 +384,16 @@ def write(
 
 ```python
 def read(
-    files: os.PathLike,
-    columns: typing.Optional[typing.List[str]],
-    kwargs,
+    *files: os.PathLike,
+    columns: typing.Optional[typing.List[str]] = None,
+    **kwargs,
 ) -> pandas.DataFrame
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `files` | `os.PathLike` | |
+| `*files` | `os.PathLike` | |
 | `columns` | `typing.Optional[typing.List[str]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### write()
 
@@ -401,9 +401,9 @@ def read(
 def write(
     df: pandas.DataFrame,
     to_file: os.PathLike,
-    coerce_timestamps: str,
-    allow_truncated_timestamps: bool,
-    kwargs,
+    coerce_timestamps: str = 'us',
+    allow_truncated_timestamps: bool = False,
+    **kwargs,
 )
 ```
 Writes data frame as a chunk to the local directory owned by the Schema object.  Will later be uploaded to s3.
@@ -415,5 +415,5 @@ Writes data frame as a chunk to the local directory owned by the Schema object. 
 | `to_file` | `os.PathLike` | Sink file to write the dataframe to |
 | `coerce_timestamps` | `str` | format to store timestamp in parquet. 'us', 'ms', 's' are allowed values. Note: if your timestamps will lose data due to the coercion, your write will fail!  Nanoseconds are problematic in the Parquet format and will not work. See allow_truncated_timestamps. |
 | `allow_truncated_timestamps` | `bool` | default False. Allow truncation when coercing timestamps to a coarser resolution. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

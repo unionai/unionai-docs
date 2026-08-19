@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracked_abc
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,29 +21,4 @@ This class exists because if you try to inherit from abc.ABC and TrackedInstance
 well-known ``TypeError: metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass
 of the metaclasses of all its bases`` error.
 
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`register()`](#register) | Register a virtual subclass of an ABC. |
-
-
-#### register()
-
-```python
-def register(
-    cls,
-    subclass,
-)
-```
-Register a virtual subclass of an ABC.
-
-Returns the subclass, to allow usage as a class decorator.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `cls` |  | |
-| `subclass` |  | |
 

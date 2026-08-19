@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.node_execution
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -156,13 +156,13 @@ class NodeExecutionClosure(
     phase,
     started_at,
     duration,
-    output_uri,
-    deck_uri,
-    error,
-    workflow_node_metadata: typing.Optional[flytekit.models.node_execution.WorkflowNodeMetadata],
-    task_node_metadata: typing.Optional[flytekit.models.node_execution.TaskNodeMetadata],
-    created_at: typing.Optional[datetime.datetime],
-    updated_at: typing.Optional[datetime.datetime],
+    output_uri = None,
+    deck_uri = None,
+    error = None,
+    workflow_node_metadata: typing.Optional[flytekit.models.node_execution.WorkflowNodeMetadata] = None,
+    task_node_metadata: typing.Optional[flytekit.models.node_execution.TaskNodeMetadata] = None,
+    created_at: typing.Optional[datetime.datetime] = None,
+    updated_at: typing.Optional[datetime.datetime] = None,
 )
 ```
 | Parameter | Type | Description |

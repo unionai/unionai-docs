@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.cloud_pickle_resolver
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,14 +36,14 @@ TODO: Replace this with a version that will upload the data to S3 or some other 
 
 ```python
 class ExperimentalNaiveCloudPickleResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 

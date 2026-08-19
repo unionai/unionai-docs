@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.spark.connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`DatabricksConnector`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnector) |  |
 | [`DatabricksConnectorV2`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
-| [`DatabricksJobMetadata`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) |  |
+| [`DatabricksJobMetadata`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) | Metadata persisted for a Databricks run. |
 
 ### Methods
 
@@ -24,6 +24,7 @@ layout: py_api
 | [`get_databricks_token()`](#get_databricks_token) | Get the Databricks access token with multi-tenant support. |
 | [`get_header()`](#get_header) | Get the authorization header for Databricks API calls. |
 | [`get_secret_from_k8s()`](#get_secret_from_k8s) | Read a secret from Kubernetes using the Kubernetes Python client. |
+| [`list_serviceaccounts_in_k8s()`](#list_serviceaccounts_in_k8s) | List labelled ServiceAccounts in a workflow namespace. |
 | [`result_state_is_available()`](#result_state_is_available) |  |
 
 
@@ -42,9 +43,9 @@ layout: py_api
 
 ```python
 def get_databricks_token(
-    namespace: typing.Optional[str],
-    task_template: typing.Optional[flytekit.models.task.TaskTemplate],
-    secret_name: typing.Optional[str],
+    namespace: typing.Optional[str] = None,
+    task_template: typing.Optional[flytekit.models.task.TaskTemplate] = None,
+    secret_name: typing.Optional[str] = None,
 ) -> str
 ```
 Get the Databricks access token with multi-tenant support.
@@ -74,8 +75,8 @@ str: The Databricks access token.
 
 ```python
 def get_header(
-    task_template: typing.Optional[flytekit.models.task.TaskTemplate],
-    auth_token: typing.Optional[str],
+    task_template: typing.Optional[flytekit.models.task.TaskTemplate] = None,
+    auth_token: typing.Optional[str] = None,
 ) -> typing.Dict[str, str]
 ```
 Get the authorization header for Databricks API calls.
@@ -109,6 +110,22 @@ Read a secret from Kubernetes using the Kubernetes Python client.
 | `namespace` | `str` | Kubernetes namespace where the secret is stored. |
 
 **Returns:** Optional[str]: The secret value as a string, or None if not found.
+
+#### list_serviceaccounts_in_k8s()
+
+```python
+def list_serviceaccounts_in_k8s(
+    namespace: str,
+    label_selector: typing.Optional[str] = None,
+) -> list
+```
+List labelled ServiceAccounts in a workflow namespace.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `namespace` | `str` | |
+| `label_selector` | `typing.Optional[str]` | |
 
 #### result_state_is_available()
 
@@ -151,9 +168,9 @@ def DatabricksConnector()
 ```python
 def create(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata] = None,
+    **kwargs,
 ) -> flytekitplugins.spark.connector.DatabricksJobMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -164,14 +181,14 @@ Return a resource meta that can be used to get the status of the task.
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `task_execution_metadata` | `typing.Optional[flytekit.models.task.TaskExecutionMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekitplugins.spark.connector.DatabricksJobMetadata,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -180,14 +197,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.spark.connector.DatabricksJobMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekitplugins.spark.connector.DatabricksJobMetadata,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -198,14 +215,14 @@ and the propeller will write the structured dataset to the blob store.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.spark.connector.DatabricksJobMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -214,14 +231,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -230,7 +247,7 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.connector.DatabricksConnectorV2
 
@@ -269,9 +286,9 @@ def DatabricksConnectorV2()
 ```python
 def create(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    task_execution_metadata: typing.Optional[flytekit.models.task.TaskExecutionMetadata] = None,
+    **kwargs,
 ) -> flytekitplugins.spark.connector.DatabricksJobMetadata
 ```
 Return a resource meta that can be used to get the status of the task.
@@ -282,14 +299,14 @@ Return a resource meta that can be used to get the status of the task.
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
 | `task_execution_metadata` | `typing.Optional[flytekit.models.task.TaskExecutionMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekitplugins.spark.connector.DatabricksJobMetadata,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
@@ -298,14 +315,14 @@ Delete the task. This call should be idempotent. It should raise an error if fai
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.spark.connector.DatabricksJobMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekitplugins.spark.connector.DatabricksJobMetadata,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs in some cases. For example, bigquery job
@@ -316,14 +333,14 @@ and the propeller will write the structured dataset to the blob store.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.spark.connector.DatabricksJobMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -332,14 +349,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -348,9 +365,16 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.spark.connector.DatabricksJobMetadata
+
+Metadata persisted for a Databricks run.
+
+OAuth metadata allows ``get`` and ``delete`` to obtain fresh short-lived
+tokens. ``auth_token`` remains populated for PAT jobs and for metadata
+written by older connector versions.
+
 
 ### Parameters
 
@@ -358,7 +382,14 @@ Return the metrics for the task.
 class DatabricksJobMetadata(
     databricks_instance: str,
     run_id: str,
-    auth_token: typing.Optional[str],
+    auth_token: typing.Optional[str] = None,
+    auth_type: typing.Optional[str] = None,
+    client_id: typing.Optional[str] = None,
+    oauth_secret_name: typing.Optional[str] = None,
+    oidc_token_file: typing.Optional[str] = None,
+    oidc_service_account: typing.Optional[str] = None,
+    oidc_audience: typing.Optional[str] = None,
+    namespace: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -366,6 +397,13 @@ class DatabricksJobMetadata(
 | `databricks_instance` | `str` | |
 | `run_id` | `str` | |
 | `auth_token` | `typing.Optional[str]` | |
+| `auth_type` | `typing.Optional[str]` | |
+| `client_id` | `typing.Optional[str]` | |
+| `oauth_secret_name` | `typing.Optional[str]` | |
+| `oidc_token_file` | `typing.Optional[str]` | |
+| `oidc_service_account` | `typing.Optional[str]` | |
+| `oidc_audience` | `typing.Optional[str]` | |
+| `namespace` | `typing.Optional[str]` | |
 
 ### Methods
 

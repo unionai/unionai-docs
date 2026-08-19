@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.array_node
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,10 +36,10 @@ layout: py_api
 ```python
 def array_node(
     target: typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.task.ReferenceTask, ForwardRef('FlyteLaunchPlan')],
-    concurrency: typing.Optional[int],
-    min_success_ratio: typing.Optional[float],
-    min_successes: typing.Optional[int],
-    run_all_sub_nodes: bool,
+    concurrency: typing.Optional[int] = None,
+    min_success_ratio: typing.Optional[float] = None,
+    min_successes: typing.Optional[int] = None,
+    run_all_sub_nodes: bool = False,
 )
 ```
 ArrayNode implementation that maps over tasks and other Flyte entities
@@ -64,12 +64,12 @@ ArrayNode implementation that maps over tasks and other Flyte entities
 ```python
 class ArrayNode(
     target: typing.Union[flytekit.core.launch_plan.LaunchPlan, flytekit.core.task.ReferenceTask, ForwardRef('FlyteLaunchPlan')],
-    bindings: typing.Optional[typing.List[flytekit.models.literals.Binding]],
-    concurrency: typing.Optional[int],
-    min_successes: typing.Optional[int],
-    min_success_ratio: typing.Optional[float],
-    metadata: typing.Optional[flytekit.models.core.workflow.NodeMetadata],
-    run_all_sub_nodes: bool,
+    bindings: typing.Optional[typing.List[flytekit.models.literals.Binding]] = None,
+    concurrency: typing.Optional[int] = None,
+    min_successes: typing.Optional[int] = None,
+    min_success_ratio: typing.Optional[float] = None,
+    metadata: typing.Optional[flytekit.models.core.workflow.NodeMetadata] = None,
+    run_all_sub_nodes: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -120,13 +120,13 @@ def construct_node_metadata()
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

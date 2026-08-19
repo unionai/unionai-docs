@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.helpers
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,8 +34,8 @@ def get_and_save_remote_with_click_context(
     ctx: click.core.Context,
     project: str,
     domain: str,
-    save: bool,
-    data_upload_location: typing.Optional[str],
+    save: bool = True,
+    data_upload_location: typing.Optional[str] = None,
 ) -> flytekit.remote.remote.FlyteRemote
 ```
 NB: This function will by default mutate the click Context.obj dictionary, adding a remote key with value

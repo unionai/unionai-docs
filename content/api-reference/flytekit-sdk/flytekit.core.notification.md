@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.notification
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -108,9 +108,9 @@ def to_flyte_idl()
 ```python
 class Notification(
     phases: typing.List[int],
-    email: flytekit.models.common.EmailNotification,
-    pager_duty: flytekit.models.common.PagerDutyNotification,
-    slack: flytekit.models.common.SlackNotification,
+    email: flytekit.models.common.EmailNotification = None,
+    pager_duty: flytekit.models.common.PagerDutyNotification = None,
+    slack: flytekit.models.common.SlackNotification = None,
 )
 ```
 | Parameter | Type | Description |

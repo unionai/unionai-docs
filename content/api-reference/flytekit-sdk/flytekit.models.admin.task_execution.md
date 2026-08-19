@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.admin.task_execution
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -99,9 +99,9 @@ class TaskExecutionClosure(
     duration,
     created_at,
     updated_at,
-    output_uri,
-    error,
-    metadata,
+    output_uri = None,
+    error = None,
+    metadata = None,
 )
 ```
 | Parameter | Type | Description |

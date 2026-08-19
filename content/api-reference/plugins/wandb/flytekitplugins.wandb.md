@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.wandb
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,14 +30,14 @@ This package contains things that are useful when extending Flytekit.
 
 ```python
 class wandb_init(
-    task_function: typing.Optional[typing.Callable],
-    project: typing.Optional[str],
-    entity: typing.Optional[str],
-    secret: typing.Union[flytekit.models.security.Secret, typing.Callable, NoneType],
-    id: typing.Optional[str],
-    host: str,
-    api_host: str,
-    init_kwargs: dict,
+    task_function: typing.Optional[typing.Callable] = None,
+    project: typing.Optional[str] = None,
+    entity: typing.Optional[str] = None,
+    secret: typing.Union[flytekit.models.security.Secret, typing.Callable, NoneType] = None,
+    id: typing.Optional[str] = None,
+    host: str = 'https://wandb.ai',
+    api_host: str = 'https://api.wandb.ai',
+    **init_kwargs: dict,
 )
 ```
 Weights and Biases plugin.
@@ -52,7 +52,7 @@ Weights and Biases plugin.
 | `id` | `typing.Optional[str]` | A unique id for this wandb run. |
 | `host` | `str` | URL to your wandb service. The default is "https://wandb.ai". |
 | `api_host` | `str` | URL to your API Host, The default is "https://api.wandb.ai". |
-| `init_kwargs` | `dict` | |
+| `**init_kwargs` | `dict` | |
 
 ### Methods
 
@@ -66,8 +66,8 @@ Weights and Biases plugin.
 
 ```python
 def execute(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This method will be called when the decorated function is called.
@@ -75,8 +75,8 @@ This method will be called when the decorated function is called.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### get_extra_config()
 

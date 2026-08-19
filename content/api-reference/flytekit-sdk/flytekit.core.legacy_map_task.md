@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,9 +38,9 @@ a reference task as well as run-time parameters that limit execution concurrency
 ```python
 def map_task(
     task_function: typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask, functools.partial],
-    concurrency: int,
-    min_success_ratio: float,
-    kwargs,
+    concurrency: int = 0,
+    min_success_ratio: float = 1.0,
+    **kwargs,
 )
 ```
 Use a map task for parallelizable tasks that run across a list of an input type. A map task can be composed of
@@ -102,7 +102,7 @@ A custom plugin can also be implemented to handle the task type.
 | `task_function` | `typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask, functools.partial]` | This argument is implicitly passed and represents the repeatable function |
 | `concurrency` | `int` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size. If the size of the input exceeds the concurrency value, then multiple batches will be run serially until all inputs are processed. If left unspecified, this means unbounded concurrency. |
 | `min_success_ratio` | `float` | If specified, this determines the minimum fraction of total jobs which can complete successfully before terminating this task and marking it successful. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.legacy_map_task.MapPythonTask
 
@@ -115,10 +115,10 @@ an inner {{&lt; py_class_ref flytekit.PythonFunctionTask &gt;}} across a range o
 ```python
 class MapPythonTask(
     python_function_task: typing.Union[flytekit.core.python_function_task.PythonFunctionTask, flytekit.core.python_function_task.PythonInstanceTask, functools.partial],
-    concurrency: typing.Optional[int],
-    min_success_ratio: typing.Optional[float],
-    bound_inputs: typing.Optional[typing.Set[str]],
-    kwargs,
+    concurrency: typing.Optional[int] = None,
+    min_success_ratio: typing.Optional[float] = None,
+    bound_inputs: typing.Optional[typing.Set[str]] = None,
+    **kwargs,
 )
 ```
 Wrapper that creates a MapPythonTask
@@ -131,7 +131,7 @@ Wrapper that creates a MapPythonTask
 | `concurrency` | `typing.Optional[int]` | If specified, this limits the number of mapped tasks than can run in parallel to the given batch size |
 | `min_success_ratio` | `typing.Optional[float]` | If specified, this determines the minimum fraction of total jobs which can complete successfully before terminating this task and marking it successful |
 | `bound_inputs` | `typing.Optional[typing.Set[str]]` | List[str] specifies a list of variable names within the interface of python_function_task, that are already bound and should not be considered as list inputs, but scalar values. This is mostly useful at runtime and is passed in by MapTaskResolver. This field is not required when a `partial` method is specified. The bound_vars will be auto-deduced from the `partial.keywords`. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -189,8 +189,8 @@ Wrapper that creates a MapPythonTask
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -199,8 +199,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -236,7 +236,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -244,7 +244,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -398,7 +398,7 @@ from these individual outputs as the final output value.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -409,7 +409,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -522,14 +522,14 @@ and then at runtime reconstructs the interface with this knowledge
 
 ```python
 class MapTaskResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -569,7 +569,7 @@ Future proof method. Just making it easy to access all tasks (Not required today
 ```python
 def load_task(
     loader_args: typing.List[str],
-    max_concurrency: int,
+    max_concurrency: int = 0,
 ) -> flytekit.core.legacy_map_task.MapPythonTask
 ```
 Loader args should be of the form

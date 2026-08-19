@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.serialize
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,15 +39,15 @@ layout: py_api
 
 ```python
 def serialize_all(
-    pkgs: typing.List[str],
-    local_source_root: typing.Optional[str],
-    folder: typing.Optional[str],
-    mode: typing.Optional[flytekit.clis.sdk_in_container.serialize.SerializationMode],
-    image_config: typing.Optional[flytekit.configuration.ImageConfig],
-    flytekit_virtualenv_root: typing.Optional[str],
-    python_interpreter: typing.Optional[str],
-    config_file: typing.Optional[str],
-    env: typing.Optional[typing.Dict[str, str]],
+    pkgs: typing.List[str] = None,
+    local_source_root: typing.Optional[str] = None,
+    folder: typing.Optional[str] = None,
+    mode: typing.Optional[flytekit.clis.sdk_in_container.serialize.SerializationMode] = None,
+    image_config: typing.Optional[flytekit.configuration.ImageConfig] = None,
+    flytekit_virtualenv_root: typing.Optional[str] = None,
+    python_interpreter: typing.Optional[str] = None,
+    config_file: typing.Optional[str] = None,
+    env: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 This function will write to the folder specified the following protobuf types

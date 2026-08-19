@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.concurrency
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -48,7 +48,7 @@ Defines the concurrency policy for a launch plan.
 ```python
 class ConcurrencyPolicy(
     max_concurrency: int,
-    behavior: flytekit.models.concurrency.ConcurrencyLimitBehavior,
+    behavior: flytekit.models.concurrency.ConcurrencyLimitBehavior = None,
 )
 ```
 | Parameter | Type | Description |
