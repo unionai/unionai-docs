@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.presto
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,10 +23,10 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 
 ```python
 class PrestoQuery(
-    routing_group,
-    catalog,
-    schema,
-    statement,
+    routing_group = None,
+    catalog = None,
+    schema = None,
+    statement = None,
 )
 ```
 Initializes a new PrestoQuery.

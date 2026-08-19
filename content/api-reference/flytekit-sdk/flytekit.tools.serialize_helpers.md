@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.serialize_helpers
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +24,7 @@ layout: py_api
 ```python
 def get_registrable_entities(
     ctx: flytekit.core.context_manager.FlyteContext,
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]
 ```
 Returns all entities that can be serialized and should be sent over to Flyte backend. This will filter any entities

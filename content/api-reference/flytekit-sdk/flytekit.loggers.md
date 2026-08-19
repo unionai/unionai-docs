@@ -1,6 +1,6 @@
 ---
 title: flytekit.loggers
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -73,9 +73,9 @@ def is_rich_logging_enabled()
 
 ```python
 def set_developer_properties(
-    handler: typing.Optional[logging.Handler],
-    filter: typing.Optional[logging.Filter],
-    level: typing.Optional[int],
+    handler: typing.Optional[logging.Handler] = None,
+    filter: typing.Optional[logging.Filter] = None,
+    level: typing.Optional[int] = None,
 )
 ```
 developer logger is only used for debugging. It is possible to selectively tune the logging for the developer.
@@ -92,9 +92,9 @@ developer logger is only used for debugging. It is possible to selectively tune 
 
 ```python
 def set_flytekit_log_properties(
-    handler: typing.Optional[logging.Handler],
-    filter: typing.Optional[logging.Filter],
-    level: typing.Optional[int],
+    handler: typing.Optional[logging.Handler] = None,
+    filter: typing.Optional[logging.Filter] = None,
+    level: typing.Optional[int] = None,
 )
 ```
 flytekit logger, refers to the framework logger. It is possible to selectively tune the logging for flytekit.
@@ -114,9 +114,9 @@ the corresponding property on the flytekit logger will not be set.
 
 ```python
 def set_user_logger_properties(
-    handler: typing.Optional[logging.Handler],
-    filter: typing.Optional[logging.Filter],
-    level: typing.Optional[int],
+    handler: typing.Optional[logging.Handler] = None,
+    filter: typing.Optional[logging.Filter] = None,
+    level: typing.Optional[int] = None,
 )
 ```
 user_space logger, refers to the user's logger. It is possible to selectively tune the logging for the user.
@@ -133,7 +133,7 @@ user_space logger, refers to the user's logger. It is possible to selectively tu
 
 ```python
 def upgrade_to_rich_logging(
-    log_level: typing.Optional[int],
+    log_level: typing.Optional[int] = 30,
 )
 ```
 | Parameter | Type | Description |

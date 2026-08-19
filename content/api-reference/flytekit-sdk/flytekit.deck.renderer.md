@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.renderer
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -88,7 +88,7 @@ PythonDependencyDeck is a deck that contains information about packages installe
 
 ```python
 class PythonDependencyRenderer(
-    title: str,
+    title: str = 'Dependencies',
 )
 ```
 | Parameter | Type | Description |
@@ -143,7 +143,7 @@ Convert Python source code to HTML, and return HTML as a unicode string.
 
 ```python
 class SourceCodeRenderer(
-    title: str,
+    title: str = 'Source Code',
 )
 ```
 | Parameter | Type | Description |
@@ -185,8 +185,8 @@ Render a DataFrame as an HTML table.
 
 ```python
 class TopFrameRenderer(
-    max_rows: int,
-    max_cols: int,
+    max_rows: int = 10,
+    max_cols: int = 100,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.papermill.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -114,7 +114,7 @@ Loads a StructuredDataset from a file.
 
 ```python
 def record_outputs(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 Use this method to record outputs from a notebook.
@@ -124,7 +124,7 @@ FlyteDirectory, or wrap up your paths in these decorators.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### save_python_val_to_file()
 
@@ -230,13 +230,13 @@ The Task produces 2 implicit outputs.
 class NotebookTask(
     name: str,
     notebook_path: str,
-    render_deck: bool,
-    stream_logs: bool,
-    task_config: ~T,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_notebooks: typing.Optional[bool],
-    kwargs,
+    render_deck: bool = False,
+    stream_logs: bool = False,
+    task_config: ~T = None,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    outputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_notebooks: typing.Optional[bool] = True,
+    **kwargs,
 )
 ```
 Please see class level documentation.
@@ -252,7 +252,7 @@ Please see class level documentation.
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_notebooks` | `typing.Optional[bool]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -319,8 +319,8 @@ Please see class level documentation.
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -329,8 +329,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -366,7 +366,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 TODO: Figure out how to share FlyteContext ExecutionParameters with the notebook kernel (as notebook kernel
@@ -377,7 +377,7 @@ For Spark, the notebooks today need to use the new_session or just getOrCreate s
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### extract_outputs()
 
@@ -572,7 +572,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -583,7 +583,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -674,7 +674,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.

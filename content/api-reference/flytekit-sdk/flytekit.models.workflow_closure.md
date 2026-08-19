@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.workflow_closure
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,7 +22,7 @@ layout: py_api
 ```python
 class WorkflowClosure(
     workflow,
-    tasks,
+    tasks = None,
 )
 ```
 | Parameter | Type | Description |

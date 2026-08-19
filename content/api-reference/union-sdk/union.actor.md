@@ -50,16 +50,16 @@ ActorEnvironment class.
 ```python
 class ActorEnvironment(
     name: str,
-    container_image: Optional[Union[str, ImageSpec]],
-    replica_count: int,
-    ttl_seconds: Optional[int],
-    environment: Optional[Dict[str, str]],
-    requests: Optional[Resources],
-    limits: Optional[Resources],
-    accelerator: Optional[BaseAccelerator],
-    secret_requests: Optional[List[Secret]],
-    pod_template: Optional[PodTemplate],
-    interruptible: bool,
+    container_image: Optional[Union[str, ImageSpec]] = None,
+    replica_count: int = 1,
+    ttl_seconds: Optional[int] = None,
+    environment: Optional[Dict[str, str]] = None,
+    requests: Optional[Resources] = None,
+    limits: Optional[Resources] = None,
+    accelerator: Optional[BaseAccelerator] = None,
+    secret_requests: Optional[List[Secret]] = None,
+    pod_template: Optional[PodTemplate] = None,
+    interruptible: bool = None,
 )
 ```
 | Parameter | Type | Description |
@@ -91,14 +91,14 @@ class ActorEnvironment(
 class ActorTask(
     task_config: ActorEnvironment,
     task_function: Callable,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `task_config` | `ActorEnvironment` | |
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -166,8 +166,8 @@ class ActorTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -176,8 +176,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### compile_into_workflow()
 
@@ -185,7 +185,7 @@ Generates a node that encapsulates this task in a workflow definition.
 def compile_into_workflow(
     ctx: FlyteContext,
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Union[_dynamic_job.DynamicJobSpec, _literal_models.LiteralMap]
 ```
 In the case of dynamic workflows, this function will produce a workflow definition at execution time which will
@@ -196,7 +196,7 @@ then proceed to be executed.
 |-|-|-|
 | `ctx` | `FlyteContext` | |
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -233,7 +233,7 @@ This method is also invoked during runtime.
 ```python
 def dynamic_execute(
     task_function: Callable,
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte
@@ -250,13 +250,13 @@ representing that newly generated workflow, instead of executing it.
 | Parameter | Type | Description |
 |-|-|-|
 | `task_function` | `Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### execute()
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 This method will be invoked to execute the task. If you do decide to override this method you must also
@@ -265,7 +265,7 @@ handle dynamic tasks or you will no longer be able to use the task as a dynamic 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -278,8 +278,8 @@ def find_lhs()
 def from_task(
     task: PythonFunctionTask,
     replica_count: int,
-    ttl_seconds: int,
-    name: Optional[str],
+    ttl_seconds: int = 60,
+    name: Optional[str] = None,
 ) -> 'ActorTask'
 ```
 Create an ActorTask from a PythonFunctionTask.
@@ -468,7 +468,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -479,7 +479,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -552,7 +552,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 def set_command_fn(
-    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]],
+    get_command_fn: Optional[Callable[[SerializationSettings], List[str]]] = None,
 )
 ```
 By default, the task will run on the Flyte platform using the pyflyte-execute command.

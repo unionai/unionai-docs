@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -142,8 +142,8 @@ def enum_to_string(
 class TaskLog(
     uri: str,
     name: str,
-    message_format: typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat],
-    ttl: typing.Optional[datetime.timedelta],
+    message_format: typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat] = None,
+    ttl: typing.Optional[datetime.timedelta] = None,
 )
 ```
 | Parameter | Type | Description |

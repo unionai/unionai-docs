@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.launch_plan
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -53,7 +53,7 @@ If at registration time the interface provided causes an issue with compilation,
 ## flytekit.core.launch_plan.LaunchPlan
 
 Launch Plans are one of the core constructs of Flyte. Please take a look at the discussion in the
-:std:ref:`core concepts &lt;flyte:divedeep-launchplans&gt;` if you are unfamiliar with them.
+`core concepts` if you are unfamiliar with them.
 
 Every workflow is registered with a default launch plan, which is just a launch plan with none of the additional
 attributes set - no default values, fixed values, schedules, etc. Assuming you have the following workflow
@@ -92,17 +92,17 @@ class LaunchPlan(
     workflow: _annotated_workflow.WorkflowBase,
     parameters: _interface_models.ParameterMap,
     fixed_inputs: _literal_models.LiteralMap,
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -163,18 +163,18 @@ class LaunchPlan(
 ```python
 def clone_with(
     name: str,
-    parameters: Optional[_interface_models.ParameterMap],
-    fixed_inputs: Optional[_literal_models.LiteralMap],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
+    parameters: Optional[_interface_models.ParameterMap] = None,
+    fixed_inputs: Optional[_literal_models.LiteralMap] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -204,20 +204,20 @@ def construct_node_metadata()
 def create(
     name: str,
     workflow: _annotated_workflow.WorkflowBase,
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -263,21 +263,21 @@ use the default auth information supplied during serialization, with no notifica
 ```python
 def get_or_create(
     workflow: _annotated_workflow.WorkflowBase,
-    name: Optional[str],
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    name: Optional[str] = None,
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 This function offers a friendlier interface for creating launch plans. If the name for the launch plan is not
@@ -383,18 +383,18 @@ class ReferenceLaunchPlan(
 ```python
 def clone_with(
     name: str,
-    parameters: Optional[_interface_models.ParameterMap],
-    fixed_inputs: Optional[_literal_models.LiteralMap],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
+    parameters: Optional[_interface_models.ParameterMap] = None,
+    fixed_inputs: Optional[_literal_models.LiteralMap] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -418,15 +418,15 @@ def clone_with(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -439,20 +439,20 @@ def construct_node_metadata()
 def create(
     name: str,
     workflow: _annotated_workflow.WorkflowBase,
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -478,12 +478,12 @@ def create(
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_default_launch_plan()
 
@@ -509,21 +509,21 @@ use the default auth information supplied during serialization, with no notifica
 ```python
 def get_or_create(
     workflow: _annotated_workflow.WorkflowBase,
-    name: Optional[str],
-    default_inputs: Optional[Dict[str, Any]],
-    fixed_inputs: Optional[Dict[str, Any]],
-    schedule: Optional[_schedule_model.Schedule],
-    notifications: Optional[List[_common_models.Notification]],
-    labels: Optional[_common_models.Labels],
-    annotations: Optional[_common_models.Annotations],
-    raw_output_data_config: Optional[_common_models.RawOutputDataConfig],
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    auth_role: Optional[_common_models.AuthRole],
-    trigger: Optional[LaunchPlanTriggerBase],
-    overwrite_cache: Optional[bool],
-    auto_activate: bool,
-    concurrency: Optional[ConcurrencyPolicy],
+    name: Optional[str] = None,
+    default_inputs: Optional[Dict[str, Any]] = None,
+    fixed_inputs: Optional[Dict[str, Any]] = None,
+    schedule: Optional[_schedule_model.Schedule] = None,
+    notifications: Optional[List[_common_models.Notification]] = None,
+    labels: Optional[_common_models.Labels] = None,
+    annotations: Optional[_common_models.Annotations] = None,
+    raw_output_data_config: Optional[_common_models.RawOutputDataConfig] = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    auth_role: Optional[_common_models.AuthRole] = None,
+    trigger: Optional[LaunchPlanTriggerBase] = None,
+    overwrite_cache: Optional[bool] = None,
+    auto_activate: bool = False,
+    concurrency: Optional[ConcurrencyPolicy] = None,
 ) -> LaunchPlan
 ```
 This function offers a friendlier interface for creating launch plans. If the name for the launch plan is not
@@ -559,7 +559,7 @@ cached version is returned
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Please see the local_execute comments in the main task.
@@ -568,7 +568,7 @@ Please see the local_execute comments in the main task.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

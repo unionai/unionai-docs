@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -57,15 +57,15 @@ Control creation parameters at task/workflow execution time ::
 
 ```python
 class Artifact(
-    project: Optional[str],
-    domain: Optional[str],
-    name: Optional[str],
-    version: Optional[str],
-    time_partitioned: bool,
-    time_partition: Optional[TimePartition],
-    time_partition_granularity: Optional[Granularity],
-    partition_keys: Optional[typing.List[str]],
-    partitions: Optional[Union[Partitions, typing.Dict[str, str]]],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    name: Optional[str] = None,
+    version: Optional[str] = None,
+    time_partitioned: bool = False,
+    time_partition: Optional[TimePartition] = None,
+    time_partition_granularity: Optional[Granularity] = None,
+    partition_keys: Optional[typing.List[str]] = None,
+    partitions: Optional[Union[Partitions, typing.Dict[str, str]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -103,9 +103,9 @@ class Artifact(
 ```python
 def create_from(
     o: O,
-    card: Optional[SerializableToString],
-    args: *args,
-    kwargs,
+    card: Optional[SerializableToString] = None,
+    *args: SerializableToString,
+    **kwargs,
 ) -> O
 ```
 This function allows users to declare partition values dynamically from the body of a task. Note that you'll
@@ -135,17 +135,17 @@ You can mix and match with the input syntax as well.
 |-|-|-|
 | `o` | `O` | |
 | `card` | `Optional[SerializableToString]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `SerializableToString` | |
+| `**kwargs` |  | |
 
 #### embed_as_query()
 
 ```python
 def embed_as_query(
-    partition: Optional[str],
-    bind_to_time_partition: Optional[bool],
-    expr: Optional[str],
-    op: Optional[Op],
+    partition: Optional[str] = None,
+    bind_to_time_partition: Optional[bool] = None,
+    expr: Optional[str] = None,
+    op: Optional[Op] = None,
 ) -> art_id.ArtifactQuery
 ```
 This should only be called in the context of a Trigger. The type of query this returns is different from the
@@ -163,11 +163,11 @@ query() function. This type of query is used to reference the triggering artifac
 
 ```python
 def query(
-    project: Optional[str],
-    domain: Optional[str],
-    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]],
-    partitions: Optional[Union[typing.Dict[str, str], Partitions]],
-    kwargs,
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]] = None,
+    partitions: Optional[Union[typing.Dict[str, str], Partitions]] = None,
+    **kwargs,
 ) -> ArtifactQuery
 ```
 | Parameter | Type | Description |
@@ -176,7 +176,7 @@ def query(
 | `domain` | `Optional[str]` | |
 | `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` | |
 | `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### to_id_idl()
 
@@ -220,14 +220,14 @@ class ArtifactIDSpecification(
 
 ```python
 def bind_partitions(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> ArtifactIDSpecification
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### to_partial_artifact_id()
 
@@ -242,11 +242,11 @@ def to_partial_artifact_id()
 class ArtifactQuery(
     artifact: Artifact,
     name: str,
-    project: Optional[str],
-    domain: Optional[str],
-    time_partition: Optional[TimePartition],
-    partitions: Optional[Partitions],
-    tag: Optional[str],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    time_partition: Optional[TimePartition] = None,
+    partitions: Optional[Partitions] = None,
+    tag: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -279,45 +279,45 @@ class ArtifactQuery(
 
 ```python
 def get_partition_str(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_str()
 
 ```python
 def get_str(
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_time_partition_str()
 
 ```python
 def get_time_partition_str(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl(
-    kwargs,
+    **kwargs,
 ) -> art_id.ArtifactQuery
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.artifact.ArtifactSerializationHandler
 
@@ -341,39 +341,39 @@ protocol ArtifactSerializationHandler()
 ```python
 def artifact_query_to_idl(
     aq: ArtifactQuery,
-    kwargs,
+    **kwargs,
 ) -> art_id.ArtifactQuery
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `aq` | `ArtifactQuery` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### partitions_to_idl()
 
 ```python
 def partitions_to_idl(
     p: Optional[Partitions],
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.Partitions]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `p` | `Optional[Partitions]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### time_partition_to_idl()
 
 ```python
 def time_partition_to_idl(
     tp: Optional[TimePartition],
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `tp` | `Optional[TimePartition]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.artifact.DefaultArtifactSerializationHandler
 
@@ -391,39 +391,39 @@ def time_partition_to_idl(
 ```python
 def artifact_query_to_idl(
     aq: ArtifactQuery,
-    kwargs,
+    **kwargs,
 ) -> art_id.ArtifactQuery
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `aq` | `ArtifactQuery` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### partitions_to_idl()
 
 ```python
 def partitions_to_idl(
     p: Optional[Partitions],
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.Partitions]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `p` | `Optional[Partitions]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### time_partition_to_idl()
 
 ```python
 def time_partition_to_idl(
     tp: Optional[TimePartition],
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `tp` | `Optional[TimePartition]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.artifact.InputsBase
 
@@ -489,12 +489,12 @@ def set_reference_artifact(
 
 ```python
 def to_flyte_idl(
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.Partitions]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.artifact.Serializer
 
@@ -513,26 +513,26 @@ def to_flyte_idl(
 ```python
 def artifact_query_to_idl(
     aq: ArtifactQuery,
-    kwargs,
+    **kwargs,
 ) -> art_id.ArtifactQuery
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `aq` | `ArtifactQuery` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### partitions_to_idl()
 
 ```python
 def partitions_to_idl(
     p: Optional[Partitions],
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.Partitions]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `p` | `Optional[Partitions]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### register_serializer()
 
@@ -550,13 +550,13 @@ def register_serializer(
 ```python
 def time_partition_to_idl(
     tp: TimePartition,
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `tp` | `TimePartition` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.artifact.TimePartition
 
@@ -565,9 +565,9 @@ def time_partition_to_idl(
 ```python
 class TimePartition(
     value: Union[art_id.LabelValue, art_id.InputBindingData, str, datetime.datetime, None],
-    op: Optional[Op],
-    other: Optional[timedelta],
-    granularity: Granularity,
+    op: Optional[Op] = None,
+    other: Optional[timedelta] = None,
+    granularity: Granularity = 3,
 )
 ```
 | Parameter | Type | Description |
@@ -588,10 +588,10 @@ class TimePartition(
 
 ```python
 def to_flyte_idl(
-    kwargs,
+    **kwargs,
 ) -> Optional[art_id.TimePartition]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.client
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -68,11 +68,11 @@ A dummy client for statsd.
 
 ```python
 class DummyStatsClient(
-    host,
-    port,
-    prefix,
-    maxudpsize,
-    ipv6,
+    host = 'localhost',
+    port = 8125,
+    prefix = None,
+    maxudpsize = 512,
+    ipv6 = False,
 )
 ```
 Create a new client.
@@ -85,140 +85,6 @@ Create a new client.
 | `prefix` |  | |
 | `maxudpsize` |  | |
 | `ipv6` |  | |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`close()`](#close) | Used to close and clean up any underlying resources. |
-| [`decr()`](#decr) | Decrement a stat by `count`. |
-| [`gauge()`](#gauge) | Set a gauge value. |
-| [`incr()`](#incr) | Increment a stat by `count`. |
-| [`pipeline()`](#pipeline) |  |
-| [`set()`](#set) | Set a set value. |
-| [`timer()`](#timer) |  |
-| [`timing()`](#timing) | Send new timing information. |
-
-
-#### close()
-
-```python
-def close()
-```
-Used to close and clean up any underlying resources.
-
-
-#### decr()
-
-```python
-def decr(
-    stat,
-    count,
-    rate,
-)
-```
-Decrement a stat by `count`.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `count` |  | |
-| `rate` |  | |
-
-#### gauge()
-
-```python
-def gauge(
-    stat,
-    value,
-    rate,
-    delta,
-)
-```
-Set a gauge value.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `value` |  | |
-| `rate` |  | |
-| `delta` |  | |
-
-#### incr()
-
-```python
-def incr(
-    stat,
-    count,
-    rate,
-)
-```
-Increment a stat by `count`.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `count` |  | |
-| `rate` |  | |
-
-#### pipeline()
-
-```python
-def pipeline()
-```
-#### set()
-
-```python
-def set(
-    stat,
-    value,
-    rate,
-)
-```
-Set a set value.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `value` |  | |
-| `rate` |  | |
-
-#### timer()
-
-```python
-def timer(
-    stat,
-    rate,
-)
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `rate` |  | |
-
-#### timing()
-
-```python
-def timing(
-    stat,
-    delta,
-    rate,
-)
-```
-Send new timing information.
-
-`delta` can be either a number of milliseconds or a timedelta.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `stat` |  | |
-| `delta` |  | |
-| `rate` |  | |
 
 ## flytekit.interfaces.stats.client.ScopeableStatsProxy
 
@@ -237,7 +103,7 @@ newer_client.incr('bad') # Metric name = a.subsystem.bad
 ```python
 class ScopeableStatsProxy(
     client,
-    prefix,
+    prefix = None,
 )
 ```
 | Parameter | Type | Description |
@@ -276,7 +142,7 @@ def pipeline()
 ```python
 class StatsClientProxy(
     client,
-    prefix,
+    prefix = None,
 )
 ```
 | Parameter | Type | Description |

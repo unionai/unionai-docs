@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -98,9 +98,9 @@ Creates a posix safe tempdir which is auto deleted once out of scope
 
 ```python
 class AutoDeletingTempDir(
-    working_dir_prefix,
-    tmp_dir,
-    cleanup,
+    working_dir_prefix = None,
+    tmp_dir = None,
+    cleanup = True,
 )
 ```
 | Parameter | Type | Description |
@@ -160,8 +160,8 @@ We can attach config on the decorator class and use it in the upper level.
 
 ```python
 class ClassDecorator(
-    task_function,
-    kwargs,
+    task_function = None,
+    **kwargs,
 )
 ```
 If the decorator is called with arguments, func will be None.
@@ -171,7 +171,7 @@ If the decorator is called without arguments, func will be function to be decora
 | Parameter | Type | Description |
 |-|-|-|
 | `task_function` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Methods
 
@@ -185,8 +185,8 @@ If the decorator is called without arguments, func will be function to be decora
 
 ```python
 def execute(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This method will be called when the decorated function is called.
@@ -194,8 +194,8 @@ This method will be called when the decorated function is called.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### get_extra_config()
 
@@ -257,7 +257,7 @@ with timeit("Wrapped code block description"):
 
 ```python
 class timeit(
-    name: str,
+    name: str = '',
 )
 ```
 | Parameter | Type | Description |

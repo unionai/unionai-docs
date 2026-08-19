@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -161,11 +161,11 @@ Any Azure Blob Storage specific configuration.
 
 ```python
 class AzureBlobStorageConfig(
-    account_name: typing.Optional[str],
-    account_key: typing.Optional[str],
-    tenant_id: typing.Optional[str],
-    client_id: typing.Optional[str],
-    client_secret: typing.Optional[str],
+    account_name: typing.Optional[str] = None,
+    account_key: typing.Optional[str] = None,
+    tenant_id: typing.Optional[str] = None,
+    client_id: typing.Optional[str] = None,
+    client_secret: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -187,7 +187,7 @@ class AzureBlobStorageConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> GCSConfig
 ```
 | Parameter | Type | Description |
@@ -209,11 +209,11 @@ this object holds all the config necessary to
 
 ```python
 class Config(
-    platform: PlatformConfig,
-    secrets: SecretsConfig,
-    stats: StatsConfig,
-    data_config: DataConfig,
-    local_sandbox_path: str,
+    platform: PlatformConfig = PlatformConfig(endpoint='localhost:30080', insecure=False, insecure_skip_verify=False, ca_cert_file_path=None, console_endpoint=None, command=None, proxy_command=None, client_id=None, client_credentials_secret=None, scopes=[], auth_mode=<AuthType.STANDARD: 'standard'>, audience=None, rpc_retries=3, http_proxy_url=None),
+    secrets: SecretsConfig = SecretsConfig(env_prefix='_FSEC_', default_dir='/etc/secrets', file_prefix=''),
+    stats: StatsConfig = StatsConfig(host='localhost', port=8125, disabled=False, disabled_tags=False),
+    data_config: DataConfig = DataConfig(s3=S3Config(enable_debug=False, endpoint=None, retries=3, backoff=datetime.timedelta(seconds=5), access_key_id=None, secret_access_key=None, adressing_style=None), gcs=GCSConfig(gsutil_parallelism=False), azure=AzureBlobStorageConfig(account_name=None, account_key=None, tenant_id=None, client_id=None, client_secret=None), generic=GenericPersistenceConfig(attach_execution_metadata=True)),
+    local_sandbox_path: str = '/tmp/flytedgwq1mom',
 )
 ```
 | Parameter | Type | Description |
@@ -230,7 +230,7 @@ class Config(
 |-|-|
 | [`auto()`](#auto) | Automatically constructs the Config Object. |
 | [`for_endpoint()`](#for_endpoint) | Creates an automatic config for the given endpoint and uses the config_file or environment variable for default. |
-| [`for_sandbox()`](#for_sandbox) | Constructs a new Config object specifically to connect to :std:ref:`deployment-deployment-sandbox`. |
+| [`for_sandbox()`](#for_sandbox) | Constructs a new Config object specifically to connect to `deployment-deployment-sandbox`. |
 | [`with_params()`](#with_params) |  |
 
 
@@ -238,7 +238,7 @@ class Config(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile, None],
+    config_file: typing.Union[str, ConfigFile, None] = None,
 ) -> Config
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
@@ -259,9 +259,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 ```python
 def for_endpoint(
     endpoint: str,
-    insecure: bool,
-    data_config: typing.Optional[DataConfig],
-    config_file: typing.Union[str, ConfigFile],
+    insecure: bool = False,
+    data_config: typing.Optional[DataConfig] = None,
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> Config
 ```
 Creates an automatic config for the given endpoint and uses the config_file or environment variable for default.
@@ -286,7 +286,7 @@ refer to fsspec documentation
 ```python
 def for_sandbox()
 ```
-Constructs a new Config object specifically to connect to :std:ref:`deployment-deployment-sandbox`.
+Constructs a new Config object specifically to connect to `deployment-deployment-sandbox`.
 If you are using a hosted Sandbox like environment, then you may need to use port-forward or ingress urls
 
 
@@ -296,11 +296,11 @@ If you are using a hosted Sandbox like environment, then you may need to use por
 
 ```python
 def with_params(
-    platform: PlatformConfig,
-    secrets: SecretsConfig,
-    stats: StatsConfig,
-    data_config: DataConfig,
-    local_sandbox_path: str,
+    platform: PlatformConfig = None,
+    secrets: SecretsConfig = None,
+    stats: StatsConfig = None,
+    data_config: DataConfig = None,
+    local_sandbox_path: str = None,
 ) -> Config
 ```
 | Parameter | Type | Description |
@@ -322,10 +322,10 @@ All DataPersistence plugins are passed all DataConfig and the plugin should corr
 
 ```python
 class DataConfig(
-    s3: S3Config,
-    gcs: GCSConfig,
-    azure: AzureBlobStorageConfig,
-    generic: GenericPersistenceConfig,
+    s3: S3Config = S3Config(enable_debug=False, endpoint=None, retries=3, backoff=datetime.timedelta(seconds=5), access_key_id=None, secret_access_key=None, adressing_style=None),
+    gcs: GCSConfig = GCSConfig(gsutil_parallelism=False),
+    azure: AzureBlobStorageConfig = AzureBlobStorageConfig(account_name=None, account_key=None, tenant_id=None, client_id=None, client_secret=None),
+    generic: GenericPersistenceConfig = GenericPersistenceConfig(attach_execution_metadata=True),
 )
 ```
 | Parameter | Type | Description |
@@ -346,7 +346,7 @@ class DataConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> DataConfig
 ```
 | Parameter | Type | Description |
@@ -363,122 +363,12 @@ This is where `pyflyte-execute` code can be found. This is useful for cases like
 
 ```python
 class EntrypointSettings(
-    path: Optional[str],
+    path: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `path` | `Optional[str]` | |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
-
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
 
 ## flytekit.configuration.FastSerializationSettings
 
@@ -489,9 +379,9 @@ This object hold information about settings necessary to serialize an object so 
 
 ```python
 class FastSerializationSettings(
-    enabled: bool,
-    destination_dir: Optional[str],
-    distribution_location: Optional[str],
+    enabled: bool = False,
+    destination_dir: Optional[str] = None,
+    distribution_location: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -499,116 +389,6 @@ class FastSerializationSettings(
 | `enabled` | `bool` | |
 | `destination_dir` | `Optional[str]` | |
 | `distribution_location` | `Optional[str]` | |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
-
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
 
 ## flytekit.configuration.GCSConfig
 
@@ -619,7 +399,7 @@ Any GCS specific configuration.
 
 ```python
 class GCSConfig(
-    gsutil_parallelism: bool,
+    gsutil_parallelism: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -637,7 +417,7 @@ class GCSConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> GCSConfig
 ```
 | Parameter | Type | Description |
@@ -653,7 +433,7 @@ Data storage configuration that applies across any provider.
 
 ```python
 class GenericPersistenceConfig(
-    attach_execution_metadata: bool,
+    attach_execution_metadata: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -671,7 +451,7 @@ class GenericPersistenceConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> GCSConfig
 ```
 | Parameter | Type | Description |
@@ -690,8 +470,8 @@ Image is a structured wrapper for task container images used in object serializa
 class Image(
     name: str,
     fqn: str,
-    tag: Optional[str],
-    digest: Optional[str],
+    tag: Optional[str] = None,
+    digest: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -712,47 +492,8 @@ class Image(
 
 | Method | Description |
 |-|-|
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`look_up_image_info()`](#look_up_image_info) | Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file. |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
 
 #### look_up_image_info()
 
@@ -760,7 +501,7 @@ def from_json(
 def look_up_image_info(
     name: str,
     image_identifier: str,
-    allow_no_tag_or_digest: bool,
+    allow_no_tag_or_digest: bool = False,
 ) -> Image
 ```
 Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file.
@@ -781,71 +522,6 @@ the latest commit.
 
 **Returns:** Image
 
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
-
 ## flytekit.configuration.ImageConfig
 
 We recommend you to use ImageConfig.auto(img_name=None) to create an ImageConfig.
@@ -860,8 +536,8 @@ along with optional additional images. Each image in the config must have a uniq
 
 ```python
 class ImageConfig(
-    default_image: Optional[Image],
-    images: Optional[List[Image]],
+    default_image: Optional[Image] = None,
+    images: Optional[List[Image]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -877,12 +553,7 @@ class ImageConfig(
 | [`auto_default_image()`](#auto_default_image) |  |
 | [`create_from()`](#create_from) |  |
 | [`find_image()`](#find_image) | Return an image, by name, if it exists. |
-| [`from_dict()`](#from_dict) |  |
 | [`from_images()`](#from_images) | Allows you to programmatically create an ImageConfig. |
-| [`from_json()`](#from_json) |  |
-| [`schema()`](#schema) |  |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 | [`validate_image()`](#validate_image) | Validates the image to match the standard format. |
 
 
@@ -890,8 +561,8 @@ class ImageConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile, None],
-    img_name: Optional[str],
+    config_file: typing.Union[str, ConfigFile, None] = None,
+    img_name: Optional[str] = None,
 ) -> ImageConfig
 ```
 Reads from config file or from img_name
@@ -915,7 +586,7 @@ def auto_default_image()
 ```python
 def create_from(
     default_image: Optional[Image],
-    other_images: typing.Optional[typing.List[Image]],
+    other_images: typing.Optional[typing.List[Image]] = None,
 ) -> ImageConfig
 ```
 | Parameter | Type | Description |
@@ -937,25 +608,12 @@ Return an image, by name, if it exists.
 |-|-|-|
 | `name` |  | |
 
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
 #### from_images()
 
 ```python
 def from_images(
     default_image: str,
-    m: typing.Optional[typing.Dict[str, str]],
+    m: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 Allows you to programmatically create an ImageConfig. Usually only the default_image is required, unless
@@ -978,92 +636,6 @@ Allows you to programmatically create an ImageConfig. Usually only the default_i
 | `default_image` | `str` | |
 | `m` | `typing.Optional[typing.Dict[str, str]]` | |
 
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
-
 #### validate_image()
 
 ```python
@@ -1074,8 +646,8 @@ def validate_image(
 ) -> ImageConfig
 ```
 Validates the image to match the standard format. Also validates that only one default image
-is provided. a default image, is one that is specified as ``default=&lt;image_uri&gt;`` or just ``&lt;image_uri&gt;``. All
-other images should be provided with a name, in the format ``name=&lt;image_uri&gt;`` This method can be used with the
+is provided. a default image, is one that is specified as ``default=<image_uri>`` or just ``<image_uri>``. All
+other images should be provided with a name, in the format ``name=<image_uri>`` This method can be used with the
 CLI
 
 
@@ -1095,8 +667,8 @@ Any configuration specific to local runs.
 
 ```python
 class LocalConfig(
-    cache_enabled: bool,
-    cache_overwrite: bool,
+    cache_enabled: bool = True,
+    cache_overwrite: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -1115,7 +687,7 @@ class LocalConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> LocalConfig
 ```
 | Parameter | Type | Description |
@@ -1132,20 +704,20 @@ This object contains the settings to talk to a Flyte backend (the DNS location o
 
 ```python
 class PlatformConfig(
-    endpoint: str,
-    insecure: bool,
-    insecure_skip_verify: bool,
-    ca_cert_file_path: typing.Optional[str],
-    console_endpoint: typing.Optional[str],
-    command: typing.Optional[typing.List[str]],
-    proxy_command: typing.Optional[typing.List[str]],
-    client_id: typing.Optional[str],
-    client_credentials_secret: typing.Optional[str],
-    scopes: List[str],
-    auth_mode: AuthType,
-    audience: typing.Optional[str],
-    rpc_retries: int,
-    http_proxy_url: typing.Optional[str],
+    endpoint: str = 'localhost:30080',
+    insecure: bool = False,
+    insecure_skip_verify: bool = False,
+    ca_cert_file_path: typing.Optional[str] = None,
+    console_endpoint: typing.Optional[str] = None,
+    command: typing.Optional[typing.List[str]] = None,
+    proxy_command: typing.Optional[typing.List[str]] = None,
+    client_id: typing.Optional[str] = None,
+    client_credentials_secret: typing.Optional[str] = None,
+    scopes: List[str] = <factory>,
+    auth_mode: AuthType = AuthType.STANDARD,
+    audience: typing.Optional[str] = None,
+    rpc_retries: int = 3,
+    http_proxy_url: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1177,7 +749,7 @@ class PlatformConfig(
 
 ```python
 def auto(
-    config_file: typing.Optional[typing.Union[str, ConfigFile]],
+    config_file: typing.Optional[typing.Union[str, ConfigFile]] = None,
 ) -> PlatformConfig
 ```
 Reads from Config file, and overrides from Environment variables. Refer to ConfigEntry for details
@@ -1192,7 +764,7 @@ Reads from Config file, and overrides from Environment variables. Refer to Confi
 ```python
 def for_endpoint(
     endpoint: str,
-    insecure: bool,
+    insecure: bool = False,
 ) -> PlatformConfig
 ```
 | Parameter | Type | Description |
@@ -1209,13 +781,13 @@ S3 specific configuration
 
 ```python
 class S3Config(
-    enable_debug: bool,
-    endpoint: typing.Optional[str],
-    retries: int,
-    backoff: datetime.timedelta,
-    access_key_id: typing.Optional[str],
-    secret_access_key: typing.Optional[str],
-    adressing_style: typing.Optional[str],
+    enable_debug: bool = False,
+    endpoint: typing.Optional[str] = None,
+    retries: int = 3,
+    backoff: datetime.timedelta = datetime.timedelta(seconds=5),
+    access_key_id: typing.Optional[str] = None,
+    secret_access_key: typing.Optional[str] = None,
+    adressing_style: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1239,7 +811,7 @@ class S3Config(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> S3Config
 ```
 Automatically configure
@@ -1261,9 +833,9 @@ Configuration for secrets.
 
 ```python
 class SecretsConfig(
-    env_prefix: str,
-    default_dir: str,
-    file_prefix: str,
+    env_prefix: str = '_FSEC_',
+    default_dir: str = '/etc/secrets',
+    file_prefix: str = '',
 )
 ```
 | Parameter | Type | Description |
@@ -1283,7 +855,7 @@ class SecretsConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> SecretsConfig
 ```
 Reads from environment variable or from config file
@@ -1305,16 +877,16 @@ runtime information at serialization time, as well as some defaults.
 ```python
 class SerializationSettings(
     image_config: ImageConfig,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    version: typing.Optional[str],
-    env: Optional[Dict[str, str]],
-    default_resources: Optional[ResourceSpec],
-    git_repo: Optional[str],
-    python_interpreter: str,
-    flytekit_virtualenv_root: Optional[str],
-    fast_serialization_settings: Optional[FastSerializationSettings],
-    source_root: Optional[str],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    version: typing.Optional[str] = None,
+    env: Optional[Dict[str, str]] = None,
+    default_resources: Optional[ResourceSpec] = None,
+    git_repo: Optional[str] = None,
+    python_interpreter: str = '/opt/venv/bin/python3',
+    flytekit_virtualenv_root: Optional[str] = None,
+    fast_serialization_settings: Optional[FastSerializationSettings] = None,
+    source_root: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1344,14 +916,9 @@ class SerializationSettings(
 |-|-|
 | [`default_entrypoint_settings()`](#default_entrypoint_settings) | Assumes the entrypoint is installed in a virtual-environment where the interpreter is. |
 | [`for_image()`](#for_image) |  |
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_transport()`](#from_transport) |  |
-| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings. |
-| [`schema()`](#schema) |  |
+| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings.Builder`` that copies the existing serialization settings parameters and. |
 | [`should_fast_serialize()`](#should_fast_serialize) | Whether or not the serialization settings specify that entities should be serialized for fast registration. |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 | [`venv_root_from_interpreter()`](#venv_root_from_interpreter) | Computes the path of the virtual environment root, based on the passed in python interpreter path. |
 | [`with_serialized_context()`](#with_serialized_context) | Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext. |
 
@@ -1376,9 +943,9 @@ Assumes the entrypoint is installed in a virtual-environment where the interpret
 def for_image(
     image: str,
     version: str,
-    project: str,
-    domain: str,
-    python_interpreter_path: str,
+    project: str = '',
+    domain: str = '',
+    python_interpreter_path: str = '/opt/venv/bin/python3',
 ) -> SerializationSettings
 ```
 | Parameter | Type | Description |
@@ -1388,40 +955,6 @@ def for_image(
 | `project` | `str` | |
 | `domain` | `str` | |
 | `python_interpreter_path` | `str` | |
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
-| `infer_missing` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-) -> ~A
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` | |
-| `parse_float` |  | |
-| `parse_int` |  | |
-| `parse_constant` |  | |
-| `infer_missing` |  | |
-| `kw` |  | |
 
 #### from_transport()
 
@@ -1443,33 +976,6 @@ Creates a ``SerializationSettings.Builder`` that copies the existing serializati
 allows for customization.
 
 
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-) -> SchemaType[A]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `infer_missing` | `bool` | |
-| `only` |  | |
-| `exclude` |  | |
-| `many` | `bool` | |
-| `context` |  | |
-| `load_only` |  | |
-| `dump_only` |  | |
-| `partial` | `bool` | |
-| `unknown` |  | |
-
 #### should_fast_serialize()
 
 ```python
@@ -1477,44 +983,6 @@ def should_fast_serialize()
 ```
 Whether or not the serialization settings specify that entities should be serialized for fast registration.
 
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encode_json` |  | |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-) -> str
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `skipkeys` | `bool` | |
-| `ensure_ascii` | `bool` | |
-| `check_circular` | `bool` | |
-| `allow_nan` | `bool` | |
-| `indent` | `typing.Union[int, str, NoneType]` | |
-| `separators` | `typing.Tuple[str, str]` | |
-| `default` | `typing.Callable` | |
-| `sort_keys` | `bool` | |
-| `kw` |  | |
 
 #### venv_root_from_interpreter()
 
@@ -1553,10 +1021,10 @@ Configuration for sending statsd.
 
 ```python
 class StatsConfig(
-    host: str,
-    port: int,
-    disabled: bool,
-    disabled_tags: bool,
+    host: str = 'localhost',
+    port: int = 8125,
+    disabled: bool = False,
+    disabled_tags: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -1577,7 +1045,7 @@ class StatsConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> StatsConfig
 ```
 Reads from environment variable, followed by ConfigFile provided
@@ -1596,9 +1064,9 @@ Any Project/Domain/Org configuration.
 
 ```python
 class TaskConfig(
-    project: Optional[str],
-    domain: Optional[str],
-    org: Optional[str],
+    project: Optional[str] = 'flytesnacks',
+    domain: Optional[str] = 'development',
+    org: Optional[str] = 'None',
 )
 ```
 | Parameter | Type | Description |
@@ -1618,7 +1086,7 @@ class TaskConfig(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
+    config_file: typing.Union[str, ConfigFile] = None,
 ) -> TaskConfig
 ```
 | Parameter | Type | Description |

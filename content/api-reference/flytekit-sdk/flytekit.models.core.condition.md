@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.condition
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,8 +24,8 @@ layout: py_api
 
 ```python
 class BooleanExpression(
-    conjunction,
-    comparison,
+    conjunction = None,
+    comparison = None,
 )
 ```
 Defines a boolean expression tree. It can be a simple or a conjunction expression.
@@ -232,9 +232,9 @@ def to_flyte_idl()
 
 ```python
 class Operand(
-    primitive,
-    var,
-    scalar,
+    primitive = None,
+    var = None,
+    scalar = None,
 )
 ```
 Defines an operand to a comparison expression.

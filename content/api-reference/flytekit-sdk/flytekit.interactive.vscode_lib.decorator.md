@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.decorator
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -50,7 +50,7 @@ layout: py_api
 ```python
 def download_file(
     url,
-    target_dir: typing.Optional[str],
+    target_dir: typing.Optional[str] = '.',
 )
 ```
 Download a file from a given URL using fsspec.
@@ -87,8 +87,8 @@ def exit_handler(
     task_function,
     args,
     kwargs,
-    max_idle_seconds: int,
-    post_execute: typing.Optional[typing.Callable],
+    max_idle_seconds: int = 180,
+    post_execute: typing.Optional[typing.Callable] = None,
 )
 ```
 1. Check the modified time of ~/.local/share/code-server/heartbeat.
@@ -102,8 +102,8 @@ def exit_handler(
 |-|-|-|
 | `child_process` | `multiprocessing.context.Process` | The process to be terminated. |
 | `task_function` |  | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `args` |  | |
+| `kwargs` |  | |
 | `max_idle_seconds` | `int` | The duration in seconds to live after no activity detected. |
 | `post_execute` | `typing.Optional[typing.Callable]` | The function to be executed before the vscode is self-terminated. |
 
@@ -206,14 +206,14 @@ Generate a Python script for users to resume the task.
 
 ```python
 class vscode(
-    task_function: typing.Optional[typing.Callable],
-    max_idle_seconds: typing.Optional[int],
-    port: int,
-    enable: bool,
-    run_task_first: bool,
-    pre_execute: typing.Optional[typing.Callable],
-    post_execute: typing.Optional[typing.Callable],
-    config: typing.Optional[flytekit.interactive.vscode_lib.config.VscodeConfig],
+    task_function: typing.Optional[typing.Callable] = None,
+    max_idle_seconds: typing.Optional[int] = 36000,
+    port: int = 8080,
+    enable: bool = True,
+    run_task_first: bool = False,
+    pre_execute: typing.Optional[typing.Callable] = None,
+    post_execute: typing.Optional[typing.Callable] = None,
+    config: typing.Optional[flytekit.interactive.vscode_lib.config.VscodeConfig] = None,
 )
 ```
 vscode decorator modifies a container to run a VSCode server:
@@ -250,8 +250,8 @@ vscode decorator modifies a container to run a VSCode server:
 
 ```python
 def execute(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This method will be called when the decorated function is called.
@@ -259,8 +259,8 @@ This method will be called when the decorated function is called.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### get_extra_config()
 

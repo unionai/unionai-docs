@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.user
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,13 +40,13 @@ layout: py_api
 
 ```python
 class FlyteAssertion(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -61,13 +61,13 @@ class FlyteAssertion(
 
 ```python
 class FlyteAuthenticationException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -83,7 +83,7 @@ class FlyteAuthenticationException(
 ```python
 class FlyteCompilationException(
     fn: typing.Callable,
-    param_name: typing.Optional[str],
+    param_name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -122,13 +122,13 @@ class FlyteDataNotFoundException(
 
 ```python
 class FlyteDisapprovalException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -143,13 +143,13 @@ class FlyteDisapprovalException(
 
 ```python
 class FlyteEntityAlreadyExistsException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -164,13 +164,13 @@ class FlyteEntityAlreadyExistsException(
 
 ```python
 class FlyteEntityNotExistException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -247,7 +247,7 @@ class FlyteInvalidInputException(
 ```python
 class FlyteMissingReturnValueException(
     fn: typing.Callable,
-    param_name: typing.Optional[str],
+    param_name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -268,7 +268,7 @@ class FlyteMissingReturnValueException(
 ```python
 class FlyteMissingTypeException(
     fn: typing.Callable,
-    param_name: typing.Optional[str],
+    param_name: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -288,13 +288,13 @@ class FlyteMissingTypeException(
 
 ```python
 class FlytePromiseAttributeResolveException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -309,13 +309,13 @@ class FlytePromiseAttributeResolveException(
 
 ```python
 class FlyteRecoverableException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -330,13 +330,13 @@ class FlyteRecoverableException(
 
 ```python
 class FlyteTimeout(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -353,8 +353,8 @@ class FlyteTimeout(
 class FlyteTypeException(
     received_type,
     expected_type,
-    additional_msg,
-    received_value,
+    additional_msg = None,
+    received_value = None,
 )
 ```
 | Parameter | Type | Description |
@@ -376,13 +376,13 @@ class FlyteTypeException(
 
 ```python
 class FlyteUserException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -398,7 +398,7 @@ class FlyteUserException(
 ```python
 class FlyteUserRuntimeException(
     exc_value: Exception,
-    timestamp: typing.Optional[float],
+    timestamp: typing.Optional[float] = None,
 )
 ```
 FlyteUserRuntimeException is thrown when a user code raises an exception.
@@ -423,13 +423,13 @@ FlyteUserRuntimeException is thrown when a user code raises an exception.
 
 ```python
 class FlyteValidationException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties

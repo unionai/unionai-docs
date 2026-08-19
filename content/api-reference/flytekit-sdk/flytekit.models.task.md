@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -103,7 +103,7 @@ class Container(
     resources,
     env,
     config,
-    data_loading_config,
+    data_loading_config = None,
 )
 ```
 This defines a container target.  It will execute the appropriate command line on the appropriate image with
@@ -116,7 +116,7 @@ the given configurations.
 |-|-|-|
 | `image` |  | |
 | `command` |  | |
-| `args` | `*args` | |
+| `args` |  | |
 | `resources` |  | |
 | `env` |  | |
 | `config` |  | |
@@ -199,9 +199,9 @@ def to_flyte_idl()
 class DataLoadingConfig(
     input_path: str,
     output_path: str,
-    enabled: bool,
-    format: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
-    io_strategy: flytekit.models.task.IOStrategy,
+    enabled: bool = True,
+    format: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper = 2,
+    io_strategy: flytekit.models.task.IOStrategy = None,
 )
 ```
 | Parameter | Type | Description |
@@ -265,8 +265,8 @@ Provides methods to manage data in and out of the Raw container using Download M
 
 ```python
 class IOStrategy(
-    download_mode: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
-    upload_mode: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper,
+    download_mode: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper = 0,
+    upload_mode: google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper = 0,
 )
 ```
 | Parameter | Type | Description |
@@ -324,8 +324,8 @@ def to_flyte_idl()
 
 ```python
 class K8sObjectMetadata(
-    labels: typing.Optional[typing.Dict[str, str]],
-    annotations: typing.Optional[typing.Dict[str, str]],
+    labels: typing.Optional[typing.Dict[str, str]] = None,
+    annotations: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 This defines additional metadata for building a kubernetes pod.
@@ -388,10 +388,10 @@ def to_flyte_idl()
 
 ```python
 class K8sPod(
-    metadata: flytekit.models.task.K8sObjectMetadata,
-    pod_spec: typing.Dict[str, typing.Any],
-    data_config: typing.Optional[flytekit.models.task.DataLoadingConfig],
-    primary_container_name: typing.Optional[str],
+    metadata: flytekit.models.task.K8sObjectMetadata = None,
+    pod_spec: typing.Dict[str, typing.Any] = None,
+    data_config: typing.Optional[flytekit.models.task.DataLoadingConfig] = None,
+    primary_container_name: typing.Optional[str] = None,
 )
 ```
 This defines a kubernetes pod target.  It will build the pod target during task execution
@@ -609,8 +609,8 @@ def to_flyte_idl()
 
 ```python
 class Sql(
-    statement: str,
-    dialect: int,
+    statement: str = None,
+    dialect: int = 0,
 )
 ```
 This defines a kubernetes pod target. It will build the pod target during task execution
@@ -675,7 +675,7 @@ def to_flyte_idl()
 class Task(
     id,
     closure,
-    short_description,
+    short_description = None,
 )
 ```
 | Parameter | Type | Description |
@@ -897,9 +897,9 @@ class TaskMetadata(
     cache_serializable,
     pod_template_name,
     cache_ignore_input_vars,
-    is_eager: bool,
-    generates_deck: bool,
-    k8s_object_metadata: typing.Optional[ForwardRef('K8sObjectMetadata')],
+    is_eager: bool = False,
+    generates_deck: bool = False,
+    k8s_object_metadata: typing.Optional[ForwardRef('K8sObjectMetadata')] = None,
 )
 ```
 Information needed at runtime to determine behavior such as whether or not outputs are discoverable, timeouts,
@@ -991,7 +991,7 @@ def to_flyte_idl()
 ```python
 class TaskSpec(
     template: flytekit.models.task.TaskTemplate,
-    docs: typing.Optional[flytekit.models.documentation.Documentation],
+    docs: typing.Optional[flytekit.models.documentation.Documentation] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1060,13 +1060,13 @@ class TaskTemplate(
     metadata,
     interface,
     custom,
-    container,
-    task_type_version,
-    security_context,
-    config,
-    k8s_pod,
-    sql,
-    extended_resources,
+    container = None,
+    task_type_version = 0,
+    security_context = None,
+    config = None,
+    k8s_pod = None,
+    sql = None,
+    extended_resources = None,
 )
 ```
 A task template represents the full set of information necessary to perform a unit of work in the Flyte system.

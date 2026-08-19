@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.docstring
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,8 +21,8 @@ layout: py_api
 
 ```python
 class Docstring(
-    docstring: typing.Optional[str],
-    callable_: typing.Optional[typing.Callable],
+    docstring: typing.Optional[str] = None,
+    callable_: typing.Optional[typing.Callable] = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.snowflake.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -60,9 +60,9 @@ class SnowflakeTask(
     name: str,
     query_template: str,
     task_config: flytekitplugins.snowflake.task.SnowflakeConfig,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_schema_type: typing.Optional[typing.Type[flytekit.types.structured.structured_dataset.StructuredDataset]],
-    kwargs,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_schema_type: typing.Optional[typing.Type[flytekit.types.structured.structured_dataset.StructuredDataset]] = None,
+    **kwargs,
 )
 ```
 To be used to query Snowflake databases.
@@ -76,7 +76,7 @@ To be used to query Snowflake databases.
 | `task_config` | `flytekitplugins.snowflake.task.SnowflakeConfig` | SnowflakeConfig object |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | Name and type of inputs specified as an ordered dictionary |
 | `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.structured.structured_dataset.StructuredDataset]]` | If some data is produced by this query, then you can specify the output schema type |
-| `kwargs` | `**kwargs` | All other args required by Parent type - SQLTask |
+| `**kwargs` |  | All other args required by Parent type - SQLTask |
 
 ### Properties
 
@@ -133,8 +133,8 @@ To be used to query Snowflake databases.
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -143,8 +143,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### connector_signal_handler()
 
@@ -195,12 +195,12 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -290,12 +290,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -348,7 +348,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -358,14 +358,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -376,7 +376,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

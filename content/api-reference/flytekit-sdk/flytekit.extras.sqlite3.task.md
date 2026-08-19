@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.sqlite3.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,7 +59,7 @@ The path to a static sqlite3 compatible database file can be
 ```python
 class SQLite3Config(
     uri: str,
-    compressed: bool,
+    compressed: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -71,8 +71,8 @@ class SQLite3Config(
 
 Run client side SQLite3 queries that optionally return a FlyteSchema object.
 
-&gt; [!NOTE]
-&gt; This is a pre-built container task. That is, your user container will not be used at task execution time.
+> [!NOTE]
+> This is a pre-built container task. That is, your user container will not be used at task execution time.
    Instead the image defined in this task definition will be used instead.
 
 &lt;!--
@@ -96,7 +96,7 @@ sql_task = SQLite3Task(
 ```
 
 
-See the :ref:`integrations guide &lt;cookbook:integrations_sql_sqlite3&gt;` for additional usage examples and
+See the `integrations guide` for additional usage examples and
 the base class {{&lt; py_class_ref flytekit.extend.PythonCustomizedContainerTask &gt;}} as well.
 
 
@@ -106,11 +106,11 @@ the base class {{&lt; py_class_ref flytekit.extend.PythonCustomizedContainerTask
 class SQLite3Task(
     name: str,
     query_template: str,
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    task_config: typing.Optional[flytekit.extras.sqlite3.task.SQLite3Config],
-    output_schema_type: typing.Optional[typing.Type[ForwardRef('FlyteSchema')]],
-    container_image: typing.Optional[str],
-    kwargs,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    task_config: typing.Optional[flytekit.extras.sqlite3.task.SQLite3Config] = None,
+    output_schema_type: typing.Optional[typing.Type[ForwardRef('FlyteSchema')]] = None,
+    container_image: typing.Optional[str] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -121,7 +121,7 @@ class SQLite3Task(
 | `task_config` | `typing.Optional[flytekit.extras.sqlite3.task.SQLite3Config]` | Configuration object for Task. Should be a unique type for that specific Task |
 | `output_schema_type` | `typing.Optional[typing.Type[ForwardRef('FlyteSchema')]]` | |
 | `container_image` | `typing.Optional[str]` | This is the external container image the task should run at platform-run-time. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -187,8 +187,8 @@ class SQLite3Task(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -197,8 +197,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -230,7 +230,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -238,7 +238,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -350,12 +350,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -408,7 +408,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -418,14 +418,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -436,7 +436,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -506,14 +506,14 @@ def serialize_to_model(
 
 ```python
 class SQLite3TaskExecutor(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -536,7 +536,7 @@ class SQLite3TaskExecutor(
 ```python
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
@@ -548,7 +548,7 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+| `**kwargs` |  | These are the Python native input values to the task. |
 
 **Returns:** Python native output values from the task.
 

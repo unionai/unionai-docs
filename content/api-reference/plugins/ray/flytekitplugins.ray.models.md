@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.ray.models
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,11 +25,11 @@ layout: py_api
 
 ```python
 class AutoscalerOptions(
-    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')],
-    idle_timeout_seconds: typing.Optional[int],
-    image: typing.Optional[str],
-    env: typing.Optional[typing.Dict[str, str]],
-    resources: typing.Optional[flytekit.models.task.Resources],
+    upscaling_mode: typing.Optional[ForwardRef('AutoscalerOptions.UpscalingMode')] = None,
+    idle_timeout_seconds: typing.Optional[int] = None,
+    image: typing.Optional[str] = None,
+    env: typing.Optional[typing.Dict[str, str]] = None,
+    resources: typing.Optional[flytekit.models.task.Resources] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -95,8 +95,8 @@ def to_flyte_idl()
 
 ```python
 class HeadGroupSpec(
-    ray_start_params: typing.Optional[typing.Dict[str, str]],
-    k8s_pod: typing.Optional[flytekit.models.task.K8sPod],
+    ray_start_params: typing.Optional[typing.Dict[str, str]] = None,
+    k8s_pod: typing.Optional[flytekit.models.task.K8sPod] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -164,9 +164,9 @@ Define RayCluster spec that will be used by KubeRay to launch the cluster.
 ```python
 class RayCluster(
     worker_group_spec: typing.List[flytekitplugins.ray.models.WorkerGroupSpec],
-    head_group_spec: typing.Optional[flytekitplugins.ray.models.HeadGroupSpec],
-    enable_autoscaling: bool,
-    autoscaler_options: typing.Optional[flytekitplugins.ray.models.AutoscalerOptions],
+    head_group_spec: typing.Optional[flytekitplugins.ray.models.HeadGroupSpec] = None,
+    enable_autoscaling: bool = False,
+    autoscaler_options: typing.Optional[flytekitplugins.ray.models.AutoscalerOptions] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -238,10 +238,10 @@ Models _ray_pb2.RayJob
 ```python
 class RayJob(
     ray_cluster: flytekitplugins.ray.models.RayCluster,
-    runtime_env: typing.Optional[str],
-    runtime_env_yaml: typing.Optional[str],
-    ttl_seconds_after_finished: typing.Optional[int],
-    shutdown_after_job_finishes: bool,
+    runtime_env: typing.Optional[str] = None,
+    runtime_env_yaml: typing.Optional[str] = None,
+    ttl_seconds_after_finished: typing.Optional[int] = None,
+    shutdown_after_job_finishes: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -309,10 +309,10 @@ def to_flyte_idl()
 class WorkerGroupSpec(
     group_name: str,
     replicas: int,
-    min_replicas: typing.Optional[int],
-    max_replicas: typing.Optional[int],
-    ray_start_params: typing.Optional[typing.Dict[str, str]],
-    k8s_pod: typing.Optional[flytekit.models.task.K8sPod],
+    min_replicas: typing.Optional[int] = None,
+    max_replicas: typing.Optional[int] = None,
+    ray_start_params: typing.Optional[typing.Dict[str, str]] = None,
+    k8s_pod: typing.Optional[flytekit.models.task.K8sPod] = None,
 )
 ```
 | Parameter | Type | Description |

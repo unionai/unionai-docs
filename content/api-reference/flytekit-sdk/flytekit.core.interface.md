@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.interface
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -48,7 +48,7 @@ layout: py_api
 
 ```python
 def default_output_name(
-    index: int,
+    index: int = 0,
 ) -> str
 ```
 | Parameter | Type | Description |
@@ -172,9 +172,9 @@ Converts an inputs and outputs to a type signature
 ```python
 def transform_function_to_interface(
     fn: typing.Callable,
-    docstring: Optional[Docstring],
-    is_reference_entity: bool,
-    pickle_untyped: bool,
+    docstring: Optional[Docstring] = None,
+    is_reference_entity: bool = False,
+    pickle_untyped: bool = False,
 ) -> Interface
 ```
 From the annotations on a task function that the user should have provided, and the output names they want to use
@@ -213,7 +213,7 @@ def transform_interface_to_list_interface(
     interface: Interface,
     bound_inputs: typing.Set[str],
     excluded_inputs: typing.Set[str],
-    optional_outputs: bool,
+    optional_outputs: bool = False,
 ) -> Interface
 ```
 Takes a single task interface and interpolates it to an array interface - to allow performing distributed python map
@@ -232,7 +232,7 @@ like functions
 ```python
 def transform_interface_to_typed_interface(
     interface: typing.Optional[Interface],
-    allow_partial_artifact_id_binding: bool,
+    allow_partial_artifact_id_binding: bool = False,
 ) -> typing.Optional[_interface_models.TypedInterface]
 ```
 Transform the given simple python native interface to FlyteIDL's interface
@@ -248,7 +248,7 @@ Transform the given simple python native interface to FlyteIDL's interface
 ```python
 def transform_type(
     x: type,
-    description: Optional[str],
+    description: Optional[str] = None,
 ) -> _interface_models.Variable
 ```
 | Parameter | Type | Description |
@@ -262,7 +262,7 @@ def transform_type(
 def transform_types_to_list_of_type(
     m: Dict[str, type],
     bound_inputs: typing.Set[str],
-    list_as_optional: bool,
+    list_as_optional: bool = False,
 ) -> Dict[str, type]
 ```
 Converts unbound inputs into the equivalent (optional) collections. This is useful for array jobs / map style code.
@@ -280,7 +280,7 @@ It will create a collection of types even if any one these types is not a collec
 ```python
 def transform_variable_map(
     variable_map: Dict[str, type],
-    descriptions: Optional[Dict[str, str]],
+    descriptions: Optional[Dict[str, str]] = None,
 ) -> Dict[str, _interface_models.Variable]
 ```
 Given a map of str (names of inputs for instance) to their Python native types, return a map of the name to a
@@ -298,7 +298,7 @@ Flyte Variable object with that type.
 def verify_outputs_artifact_bindings(
     inputs: Dict[str, type],
     outputs: Dict[str, _interface_models.Variable],
-    allow_partial_artifact_id_binding: bool,
+    allow_partial_artifact_id_binding: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -316,10 +316,10 @@ A Python native interface object, like inspect.signature but simpler.
 
 ```python
 class Interface(
-    inputs: Union[Optional[Dict[str, Type]], Optional[Dict[str, Tuple[Type, Any]]]],
-    outputs: Union[Optional[Dict[str, Type]], Optional[Dict[str, Optional[Type]]]],
-    output_tuple_name: Optional[str],
-    docstring: Optional[Docstring],
+    inputs: Union[Optional[Dict[str, Type]], Optional[Dict[str, Tuple[Type, Any]]]] = None,
+    outputs: Union[Optional[Dict[str, Type]], Optional[Dict[str, Optional[Type]]]] = None,
+    output_tuple_name: Optional[str] = None,
+    docstring: Optional[Docstring] = None,
 )
 ```
 | Parameter | Type | Description |

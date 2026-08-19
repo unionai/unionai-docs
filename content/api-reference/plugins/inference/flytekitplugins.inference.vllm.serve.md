@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.inference.vllm.serve
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +24,7 @@ layout: py_api
 class HFSecret(
     secrets_prefix: str,
     hf_token_key: str,
-    hf_token_group: typing.Optional[str],
+    hf_token_group: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -40,13 +40,13 @@ class HFSecret(
 ```python
 class VLLM(
     hf_secret: flytekitplugins.inference.vllm.serve.HFSecret,
-    arg_dict: typing.Optional[dict],
-    image: str,
-    health_endpoint: str,
-    port: int,
-    cpu: int,
-    gpu: int,
-    mem: str,
+    arg_dict: typing.Optional[dict] = None,
+    image: str = 'vllm/vllm-openai',
+    health_endpoint: str = '/health',
+    port: int = 8000,
+    cpu: int = 2,
+    gpu: int = 1,
+    mem: str = '10Gi',
 )
 ```
 Initialize NIM class for managing a Kubernetes pod template.

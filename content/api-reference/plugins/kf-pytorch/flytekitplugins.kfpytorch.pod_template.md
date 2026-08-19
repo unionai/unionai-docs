@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.kfpytorch.pod_template
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---

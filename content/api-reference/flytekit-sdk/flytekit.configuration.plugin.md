@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.plugin
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -121,7 +121,7 @@ def get_remote(
     config: typing.Optional[str],
     project: str,
     domain: str,
-    data_upload_location: typing.Optional[str],
+    data_upload_location: typing.Optional[str] = None,
 ) -> flytekit.remote.remote.FlyteRemote
 ```
 Get FlyteRemote object for CLI session.
@@ -210,7 +210,7 @@ def get_remote(
     config: typing.Optional[str],
     project: str,
     domain: str,
-    data_upload_location: typing.Optional[str],
+    data_upload_location: typing.Optional[str] = None,
 ) -> flytekit.remote.remote.FlyteRemote
 ```
 Get FlyteRemote object for CLI session.

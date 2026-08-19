@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.dynamic_job
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---

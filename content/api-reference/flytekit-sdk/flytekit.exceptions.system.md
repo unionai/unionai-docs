@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.system
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,13 +30,13 @@ layout: py_api
 
 ```python
 class FlyteAgentNotFound(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -51,13 +51,13 @@ class FlyteAgentNotFound(
 
 ```python
 class FlyteConnectorNotFound(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -72,13 +72,13 @@ class FlyteConnectorNotFound(
 
 ```python
 class FlyteDownloadDataException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -94,8 +94,8 @@ class FlyteDownloadDataException(
 ```python
 class FlyteEntrypointNotLoadable(
     task_module,
-    task_name,
-    additional_msg,
+    task_name = None,
+    additional_msg = None,
 )
 ```
 | Parameter | Type | Description |
@@ -140,13 +140,13 @@ FlyteNonRecoverableSystemException is thrown when a system code raises an except
 
 ```python
 class FlyteNotImplementedException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -161,13 +161,13 @@ class FlyteNotImplementedException(
 
 ```python
 class FlyteSystemAssertion(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -182,13 +182,13 @@ class FlyteSystemAssertion(
 
 ```python
 class FlyteSystemException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -203,13 +203,13 @@ class FlyteSystemException(
 
 ```python
 class FlyteSystemUnavailableException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
@@ -224,13 +224,13 @@ class FlyteSystemUnavailableException(
 
 ```python
 class FlyteUploadDataException(
-    args,
-    timestamp: typing.Optional[float],
+    *args,
+    timestamp: typing.Optional[float] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `timestamp` | `typing.Optional[float]` | |
 
 ### Properties

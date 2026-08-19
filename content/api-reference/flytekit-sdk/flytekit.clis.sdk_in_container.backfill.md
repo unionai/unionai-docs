@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.backfill
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,9 +22,9 @@ layout: py_api
 
 ```python
 def resolve_backfill_window(
-    from_date: datetime.datetime,
-    to_date: datetime.datetime,
-    backfill_window: datetime.timedelta,
+    from_date: datetime.datetime = None,
+    to_date: datetime.datetime = None,
+    backfill_window: datetime.timedelta = None,
 ) -> typing.Tuple[datetime.datetime, datetime.datetime]
 ```
 Resolves the from_date -&gt; to_date

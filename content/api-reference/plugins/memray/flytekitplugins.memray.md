@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.memray
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,13 +21,13 @@ layout: py_api
 
 ```python
 class memray_profiling(
-    task_function: typing.Optional[typing.Callable],
-    native_traces: bool,
-    trace_python_allocators: bool,
-    follow_fork: bool,
-    memory_interval_ms: int,
-    memray_html_reporter: str,
-    memray_reporter_args: typing.Optional[typing.List[str]],
+    task_function: typing.Optional[typing.Callable] = None,
+    native_traces: bool = False,
+    trace_python_allocators: bool = False,
+    follow_fork: bool = False,
+    memory_interval_ms: int = 10,
+    memray_html_reporter: str = 'flamegraph',
+    memray_reporter_args: typing.Optional[typing.List[str]] = None,
 )
 ```
 Memray profiling plugin.
@@ -56,8 +56,8 @@ Memray profiling plugin.
 
 ```python
 def execute(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This method will be called when the decorated function is called.
@@ -65,8 +65,8 @@ This method will be called when the decorated function is called.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### generate_flytedeck_html()
 

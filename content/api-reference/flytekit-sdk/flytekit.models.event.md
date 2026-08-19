@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.event
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,7 +21,7 @@ layout: py_api
 
 ```python
 class TaskExecutionMetadata(
-    external_resources,
+    external_resources = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.fast_registration
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -58,7 +58,7 @@ Compress code tarball using pigz if available, otherwise gzip
 ```python
 def compute_digest(
     source: Union[os.PathLike, List[os.PathLike]],
-    filter: Optional[callable],
+    filter: Optional[callable] = None,
 ) -> str
 ```
 Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents.
@@ -92,8 +92,8 @@ Downloads a remote code distribution and overwrites any local files.
 def fast_package(
     source: os.PathLike,
     output_dir: os.PathLike,
-    deref_symlinks: bool,
-    options: Optional[FastPackageOptions],
+    deref_symlinks: bool = False,
+    options: Optional[FastPackageOptions] = None,
 ) -> os.PathLike
 ```
 Takes a source directory and packages everything not covered by common ignores into a tarball
@@ -147,9 +147,9 @@ FastPackageOptions is used to set configuration options when packaging files.
 ```python
 class FastPackageOptions(
     ignores: list[Ignore],
-    keep_default_ignores: bool,
-    copy_style: Optional[CopyFileDetection],
-    show_files: bool,
+    keep_default_ignores: bool = True,
+    copy_style: Optional[CopyFileDetection] = None,
+    show_files: bool = False,
 )
 ```
 | Parameter | Type | Description |

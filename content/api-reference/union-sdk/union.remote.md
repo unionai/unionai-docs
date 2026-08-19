@@ -30,14 +30,14 @@ automatically determined from the model's config.json file. If not found, the fi
 ```python
 class HuggingFaceModelInfo(
     repo: str,
-    artifact_name: str | None,
-    model_type: str | None,
-    architecture: str | None,
-    task: str,
-    modality: typing.List[str] | None,
-    serial_format: str,
-    short_description: str | None,
-    shard_config: ShardConfig | None,
+    artifact_name: str | None = None,
+    model_type: str | None = None,
+    architecture: str | None = None,
+    task: str = 'auto',
+    modality: typing.List[str] | None = None,
+    serial_format: str = 'safetensors',
+    short_description: str | None = None,
+    shard_config: ShardConfig | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -59,13 +59,13 @@ class HuggingFaceModelInfo(
 ```python
 class ShardConfig(
     engine: str,
-    args: *args,
+    args: VLLMShardArgs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `engine` | `str` | |
-| `args` | `*args` | |
+| `args` | `VLLMShardArgs` | |
 
 ## union.remote.UnionRemote
 
@@ -73,12 +73,12 @@ class ShardConfig(
 
 ```python
 class UnionRemote(
-    config: typing.Optional[Union[Config, str]],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: typing.Optional[bool],
-    kwargs,
+    config: typing.Optional[Union[Config, str]] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: typing.Optional[bool] = None,
+    **kwargs,
 )
 ```
 Initialize a FlyteRemote object.
@@ -94,7 +94,7 @@ Initialize a FlyteRemote object.
 | `default_domain` | `typing.Optional[str]` | default domain to use when fetching or executing flyte entities. |
 | `data_upload_location` | `str` | this is where all the default data will be uploaded when providing inputs. The default location - `s3://my-s3-bucket/data` works for sandbox/demo environment. Please override this for non-sandbox cases. |
 | `interactive_mode_enabled` | `typing.Optional[bool]` | If set to True, the FlyteRemote will pickle the task/workflow, if False, it will not. If set to None, then it will automatically detect if it is running in an interactive environment like a Jupyter notebook and enable interactive mode. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -207,8 +207,8 @@ Given a launchplan, activate it, all previous versions are deactivated.
 def approve(
     signal_id: str,
     execution_name: str,
-    project: str,
-    domain: str,
+    project: str = None,
+    domain: str = None,
 )
 ```
 | Parameter | Type | Description |
@@ -222,12 +222,12 @@ def approve(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    config_file: typing.Union[str, ConfigFile] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -237,7 +237,7 @@ def auto(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### close_async_channel()
 
@@ -283,8 +283,8 @@ Given a launchplan, deactivate it, all previous versions are deactivated.
 ```python
 def deploy_app(
     app: App,
-    project: Optional[str],
-    domain: Optional[str],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
 ) -> AppIDL
 ```
 Deploy an application.
@@ -305,7 +305,7 @@ Deploy an application.
 def download(
     data: typing.Union[LiteralsResolver, Literal, LiteralMap],
     download_to: str,
-    recursive: bool,
+    recursive: bool = True,
 )
 ```
 Download the data to the specified location. If the data is a LiteralsResolver, LiteralMap and if recursive is
@@ -329,24 +329,24 @@ configure your credentials appropriately.
 ```python
 def execute(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan, FlyteWorkflow, PythonTask, WorkflowBase, LaunchPlan, ReferenceEntity],
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a task, workflow, or launchplan, either something that's been declared locally, or a fetched entity.
@@ -392,22 +392,22 @@ settings for entities that have already been registered on Admin.
 ```python
 def execute_local_launch_plan(
     entity: LaunchPlan,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
     version: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    name: typing.Optional[str],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    name: typing.Optional[str] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a locally defined `LaunchPlan`.
@@ -441,23 +441,23 @@ Execute a locally defined `LaunchPlan`.
 ```python
 def execute_local_task(
     entity: PythonTask,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    options: typing.Optional[Options],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = 'latest',
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a @task-decorated function or TaskTemplate task.
@@ -492,23 +492,23 @@ Execute a @task-decorated function or TaskTemplate task.
 ```python
 def execute_local_workflow(
     entity: WorkflowBase,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    image_config: typing.Optional[ImageConfig],
-    options: typing.Optional[Options],
-    wait: bool,
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
-    serialization_settings: typing.Optional[SerializationSettings],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    image_config: typing.Optional[ImageConfig] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute an @workflow decorated function.
@@ -543,18 +543,18 @@ Execute an @workflow decorated function.
 ```python
 def execute_reference_launch_plan(
     entity: ReferenceLaunchPlan,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceLaunchPlan.
@@ -581,18 +581,18 @@ Execute a ReferenceLaunchPlan.
 ```python
 def execute_reference_task(
     entity: ReferenceTask,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceTask.
@@ -619,18 +619,18 @@ Execute a ReferenceTask.
 ```python
 def execute_reference_workflow(
     entity: ReferenceWorkflow,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a ReferenceWorkflow.
@@ -657,20 +657,20 @@ Execute a ReferenceWorkflow.
 ```python
 def execute_remote_task_lp(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan],
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a FlyteTask, or FlyteLaunchplan.
@@ -701,20 +701,20 @@ NOTE: the name and version arguments are currently not used and only there consi
 ```python
 def execute_remote_wf(
     entity: FlyteWorkflow,
-    inputs: typing.Optional[typing.Dict[str, typing.Any]],
-    project: str,
-    domain: str,
-    execution_name: typing.Optional[str],
-    execution_name_prefix: typing.Optional[str],
-    options: typing.Optional[Options],
-    wait: bool,
-    type_hints: typing.Optional[typing.Dict[str, typing.Type]],
-    overwrite_cache: typing.Optional[bool],
-    interruptible: typing.Optional[bool],
-    envs: typing.Optional[typing.Dict[str, str]],
-    tags: typing.Optional[typing.List[str]],
-    cluster_pool: typing.Optional[str],
-    execution_cluster_label: typing.Optional[str],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    project: str = None,
+    domain: str = None,
+    execution_name: typing.Optional[str] = None,
+    execution_name_prefix: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    wait: bool = False,
+    type_hints: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    overwrite_cache: typing.Optional[bool] = None,
+    interruptible: typing.Optional[bool] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    tags: typing.Optional[typing.List[str]] = None,
+    cluster_pool: typing.Optional[str] = None,
+    execution_cluster_label: typing.Optional[str] = None,
 ) -> FlyteWorkflowExecution
 ```
 Execute a FlyteWorkflow.
@@ -745,9 +745,9 @@ NOTE: the name and version arguments are currently not used and only there consi
 ```python
 def fast_package(
     root: os.PathLike,
-    deref_symlinks: bool,
-    output: str,
-    options: typing.Optional[FastPackageOptions],
+    deref_symlinks: bool = True,
+    output: str = None,
+    options: typing.Optional[FastPackageOptions] = None,
 ) -> typing.Tuple[bytes, str]
 ```
 Packages the given paths into an installable zip and returns the md5_bytes and the URL of the uploaded location
@@ -767,11 +767,11 @@ Packages the given paths into an installable zip and returns the md5_bytes and t
 ```python
 def fast_register_workflow(
     entity: WorkflowBase,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
-    default_launch_plan: typing.Optional[bool],
-    options: typing.Optional[Options],
-    fast_package_options: typing.Optional[FastPackageOptions],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
+    default_launch_plan: typing.Optional[bool] = True,
+    options: typing.Optional[Options] = None,
+    fast_package_options: typing.Optional[FastPackageOptions] = None,
 ) -> FlyteWorkflow
 ```
 Use this method to register a workflow with zip mode.
@@ -790,9 +790,9 @@ Use this method to register a workflow with zip mode.
 
 ```python
 def fetch_active_launchplan(
-    project: str,
-    domain: str,
-    name: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
 ) -> typing.Optional[FlyteLaunchPlan]
 ```
 Returns the active version of the launch plan if it exists or returns None
@@ -808,14 +808,14 @@ Returns the active version of the launch plan if it exists or returns None
 
 ```python
 def fetch_execution(
-    project: str,
-    domain: str,
-    name: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
 ) -> FlyteWorkflowExecution
 ```
 Fetch a workflow execution entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.workflow_execution.FlyteWorkflowExecution`
+:returns: `FlyteWorkflowExecution`
 
 
 
@@ -835,15 +835,15 @@ Fetch a workflow execution entity from flyte admin.
 
 ```python
 def fetch_launch_plan(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteLaunchPlan
 ```
 Fetch a launchplan entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.launch_plan.FlyteLaunchPlan`
+:returns: `FlyteLaunchPlan`
 
 
 
@@ -864,15 +864,15 @@ Fetch a launchplan entity from flyte admin.
 
 ```python
 def fetch_task(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteTask
 ```
 Fetch a task entity from flyte admin.
 
-:returns: :class:`~flytekit.remote.tasks.task.FlyteTask`
+:returns: `FlyteTask`
 
 
 
@@ -893,10 +893,10 @@ Fetch a task entity from flyte admin.
 
 ```python
 def fetch_task_lazy(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> LazyEntity
 ```
 Similar to fetch_task, just that it returns a LazyEntity, which will fetch the workflow lazily.
@@ -913,10 +913,10 @@ Similar to fetch_task, just that it returns a LazyEntity, which will fetch the w
 
 ```python
 def fetch_workflow(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> FlyteWorkflow
 ```
 Fetch a workflow entity from flyte admin.
@@ -939,10 +939,10 @@ Fetch a workflow entity from flyte admin.
 
 ```python
 def fetch_workflow_lazy(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
+    project: str = None,
+    domain: str = None,
+    name: str = None,
+    version: str = None,
 ) -> LazyEntity[FlyteWorkflow]
 ```
 Similar to fetch_workflow, just that it returns a LazyEntity, which will fetch the workflow lazily.
@@ -986,14 +986,14 @@ def find_launch_plan_for_node(
 ```python
 def for_endpoint(
     endpoint: str,
-    insecure: bool,
-    data_config: typing.Optional[DataConfig],
-    config_file: typing.Union[str, ConfigFile],
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    insecure: bool = False,
+    data_config: typing.Optional[DataConfig] = None,
+    config_file: typing.Union[str, ConfigFile] = None,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -1006,17 +1006,17 @@ def for_endpoint(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### for_sandbox()
 
 ```python
 def for_sandbox(
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    interactive_mode_enabled: bool,
-    kwargs,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = None,
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    interactive_mode_enabled: bool = False,
+    **kwargs,
 ) -> 'FlyteRemote'
 ```
 | Parameter | Type | Description |
@@ -1025,17 +1025,17 @@ def for_sandbox(
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
 | `interactive_mode_enabled` | `bool` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### from_api_key()
 
 ```python
 def from_api_key(
     api_key: str,
-    default_project: typing.Optional[str],
-    default_domain: typing.Optional[str],
-    data_upload_location: str,
-    kwargs,
+    default_project: typing.Optional[str] = None,
+    default_domain: typing.Optional[str] = 'development',
+    data_upload_location: str = 'flyte://my-s3-bucket/',
+    **kwargs,
 ) -> 'UnionRemote'
 ```
 Call this if you want to directly instantiate a UnionRemote from an API key
@@ -1047,7 +1047,7 @@ Call this if you want to directly instantiate a UnionRemote from an API key
 | `default_project` | `typing.Optional[str]` | |
 | `default_domain` | `typing.Optional[str]` | |
 | `data_upload_location` | `str` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### generate_console_http_domain()
 
@@ -1080,7 +1080,7 @@ and change the type automatically.
 
 ```python
 def get(
-    uri: typing.Optional[str],
+    uri: typing.Optional[str] = None,
 ) -> typing.Optional[typing.Union[LiteralsResolver, Literal, bytes]]
 ```
 General function that works with flyte tiny urls. This can return outputs (in the form of LiteralsResolver, or
@@ -1096,11 +1096,11 @@ if ipython is not available locally.
 
 ```python
 def get_artifact(
-    uri: typing.Optional[str],
-    artifact_key: typing.Optional[art_id.ArtifactKey],
-    artifact_id: typing.Optional[art_id.ArtifactID],
-    query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]],
-    get_details: bool,
+    uri: typing.Optional[str] = None,
+    artifact_key: typing.Optional[art_id.ArtifactKey] = None,
+    artifact_id: typing.Optional[art_id.ArtifactID] = None,
+    query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]] = None,
+    get_details: bool = False,
 ) -> typing.Optional[Artifact]
 ```
 Get the specified artifact.
@@ -1132,7 +1132,7 @@ Lists registered domains from flyte admin.
 ```python
 def get_execution_metrics(
     id: WorkflowExecutionIdentifier,
-    depth: int,
+    depth: int = 10,
 ) -> FlyteExecutionSpan
 ```
 Get the metrics for a given execution.
@@ -1163,14 +1163,14 @@ def launch_backfill(
     from_date: datetime,
     to_date: datetime,
     launchplan: str,
-    launchplan_version: str,
-    execution_name: str,
-    version: str,
-    dry_run: bool,
-    execute: bool,
-    parallel: bool,
-    failure_policy: typing.Optional[WorkflowFailurePolicy],
-    overwrite_cache: typing.Optional[bool],
+    launchplan_version: str = None,
+    execution_name: str = None,
+    version: str = None,
+    dry_run: bool = False,
+    execute: bool = True,
+    parallel: bool = False,
+    failure_policy: typing.Optional[WorkflowFailurePolicy] = None,
+    overwrite_cache: typing.Optional[bool] = None,
 ) -> typing.Optional[FlyteWorkflowExecution, FlyteWorkflow, WorkflowBase]
 ```
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
@@ -1210,9 +1210,9 @@ is that execute backfill is run sequentially
 
 ```python
 def list_projects(
-    limit: typing.Optional[int],
-    filters: typing.Optional[typing.List[filter_models.Filter]],
-    sort_by: typing.Optional[admin_common_models.Sort],
+    limit: typing.Optional[int] = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
+    sort_by: typing.Optional[admin_common_models.Sort] = None,
 ) -> typing.List[Project]
 ```
 Lists registered projects from flyte admin.
@@ -1237,10 +1237,10 @@ Lists registered projects from flyte admin.
 ```python
 def list_signals(
     execution_name: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: int,
-    filters: typing.Optional[typing.List[filter_models.Filter]],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: int = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
 ) -> typing.List[Signal]
 ```
 | Parameter | Type | Description |
@@ -1256,9 +1256,9 @@ def list_signals(
 ```python
 def list_tasks_by_version(
     version: str,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: typing.Optional[int],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: typing.Optional[int] = 100,
 ) -> typing.List[FlyteTask]
 ```
 | Parameter | Type | Description |
@@ -1275,9 +1275,9 @@ def raw_register(
     cp_entity: FlyteControlPlaneEntity,
     settings: SerializationSettings,
     version: str,
-    create_default_launchplan: bool,
-    options: Options,
-    og_entity: FlyteLocalEntity,
+    create_default_launchplan: bool = True,
+    options: Options = None,
+    og_entity: FlyteLocalEntity = None,
 ) -> typing.Optional[Identifier]
 ```
 Raw register method, can be used to register control plane entities. Usually if you have a Flyte Entity like a
@@ -1300,10 +1300,10 @@ WorkflowBase, Task, LaunchPlan then use other methods. This should be used only 
 
 ```python
 def recent_executions(
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    limit: typing.Optional[int],
-    filters: typing.Optional[typing.List[filter_models.Filter]],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    limit: typing.Optional[int] = 100,
+    filters: typing.Optional[typing.List[filter_models.Filter]] = None,
 ) -> typing.List[FlyteWorkflowExecution]
 ```
 | Parameter | Type | Description |
@@ -1318,11 +1318,11 @@ def recent_executions(
 ```python
 def register_launch_plan(
     entity: LaunchPlan,
-    version: typing.Optional[str],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    options: typing.Optional[Options],
-    serialization_settings: typing.Optional[SerializationSettings],
+    version: typing.Optional[str] = None,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    options: typing.Optional[Options] = None,
+    serialization_settings: typing.Optional[SerializationSettings] = None,
 ) -> FlyteLaunchPlan
 ```
 Register a given launchplan, possibly applying overrides from the provided options. If the underlying workflow
@@ -1345,19 +1345,19 @@ workflow does exist (with the given project/domain/version), then only the launc
 ```python
 def register_script(
     entity: typing.Union[WorkflowBase, PythonTask, LaunchPlan],
-    image_config: typing.Optional[ImageConfig],
-    version: typing.Optional[str],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    destination_dir: str,
-    copy_all: bool,
-    default_launch_plan: bool,
-    options: typing.Optional[Options],
-    source_path: typing.Optional[str],
-    module_name: typing.Optional[str],
-    envs: typing.Optional[typing.Dict[str, str]],
-    default_resources: typing.Optional[ResourceSpec],
-    fast_package_options: typing.Optional[FastPackageOptions],
+    image_config: typing.Optional[ImageConfig] = None,
+    version: typing.Optional[str] = None,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    destination_dir: str = '.',
+    copy_all: bool = False,
+    default_launch_plan: bool = True,
+    options: typing.Optional[Options] = None,
+    source_path: typing.Optional[str] = None,
+    module_name: typing.Optional[str] = None,
+    envs: typing.Optional[typing.Dict[str, str]] = None,
+    default_resources: typing.Optional[ResourceSpec] = None,
+    fast_package_options: typing.Optional[FastPackageOptions] = None,
 ) -> typing.Union[FlyteWorkflow, FlyteTask, FlyteLaunchPlan, ReferenceEntity]
 ```
 Use this method to register a workflow via script mode.
@@ -1385,8 +1385,8 @@ Use this method to register a workflow via script mode.
 ```python
 def register_task(
     entity: PythonTask,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
 ) -> FlyteTask
 ```
 Register a qualified task (PythonTask) with Remote
@@ -1405,10 +1405,10 @@ For any conflicting parameters method arguments are regarded as overrides
 ```python
 def register_workflow(
     entity: WorkflowBase,
-    serialization_settings: typing.Optional[SerializationSettings],
-    version: typing.Optional[str],
-    default_launch_plan: typing.Optional[bool],
-    options: typing.Optional[Options],
+    serialization_settings: typing.Optional[SerializationSettings] = None,
+    version: typing.Optional[str] = None,
+    default_launch_plan: typing.Optional[bool] = True,
+    options: typing.Optional[Options] = None,
 ) -> FlyteWorkflow
 ```
 Use this method to register a workflow.
@@ -1428,8 +1428,8 @@ Use this method to register a workflow.
 def reject(
     signal_id: str,
     execution_name: str,
-    project: str,
-    domain: str,
+    project: str = None,
+    domain: str = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1451,15 +1451,15 @@ Context manager with remote-specific configuration.
 
 ```python
 def search_artifacts(
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    name: typing.Optional[str],
-    artifact_key: typing.Optional[art_id.ArtifactKey],
-    query: typing.Optional[ArtifactQuery],
-    partitions: typing.Optional[Union[Partitions, typing.Dict[str, str]]],
-    time_partition: typing.Optional[Union[datetime.datetime, TimePartition]],
-    group_by_key: bool,
-    limit: int,
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    name: typing.Optional[str] = None,
+    artifact_key: typing.Optional[art_id.ArtifactKey] = None,
+    query: typing.Optional[ArtifactQuery] = None,
+    partitions: typing.Optional[Union[Partitions, typing.Dict[str, str]]] = None,
+    time_partition: typing.Optional[Union[datetime.datetime, TimePartition]] = None,
+    group_by_key: bool = False,
+    limit: int = 100,
 ) -> typing.List[Artifact]
 ```
 | Parameter | Type | Description |
@@ -1481,10 +1481,10 @@ def set_input(
     signal_id: str,
     execution_name: str,
     value: typing.Union[literal_models.Literal, typing.Any],
-    project,
-    domain,
-    python_type,
-    literal_type,
+    project = None,
+    domain = None,
+    python_type = None,
+    literal_type = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1504,10 +1504,10 @@ def set_signal(
     signal_id: str,
     execution_name: str,
     value: typing.Union[literal_models.Literal, typing.Any],
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    python_type: typing.Optional[typing.Type],
-    literal_type: typing.Optional[type_models.LiteralType],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    python_type: typing.Optional[typing.Type] = None,
+    literal_type: typing.Optional[type_models.LiteralType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -1525,8 +1525,8 @@ def set_signal(
 ```python
 def stop_app(
     name: str,
-    project: Optional[str],
-    domain: Optional[str],
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
 )
 ```
 Stop an application.
@@ -1545,10 +1545,10 @@ Stop an application.
 
 ```python
 def stream_execution_events(
-    event_count: Optional[int],
-    include_workflow_executions: bool,
-    include_task_executions: bool,
-    include_node_executions: bool,
+    event_count: Optional[int] = None,
+    include_workflow_executions: bool = False,
+    include_task_executions: bool = False,
+    include_node_executions: bool = False,
 ) -> AsyncGenerator[Union[CloudEventWorkflowExecution, CloudEventNodeExecution, CloudEventTaskExecution], None]
 ```
 Stream execution events from the given tenant. This is a generator that yields events as they are received.
@@ -1575,8 +1575,8 @@ will be redelivered in a subsequent transmission.
 ```python
 def sync(
     execution: FlyteWorkflowExecution,
-    entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
-    sync_nodes: bool,
+    entity_definition: typing.Union[FlyteWorkflow, FlyteTask] = None,
+    sync_nodes: bool = False,
 ) -> FlyteWorkflowExecution
 ```
 This function was previously a singledispatchmethod. We've removed that but this function remains
@@ -1597,9 +1597,9 @@ so that we don't break people.
 ```python
 def sync_execution(
     execution: FlyteWorkflowExecution,
-    entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
-    sync_nodes: bool,
-    rpc_timeout: typing.Optional[typing.Union[timedelta, int]],
+    entity_definition: typing.Union[FlyteWorkflow, FlyteTask] = None,
+    sync_nodes: bool = False,
+    rpc_timeout: typing.Optional[typing.Union[timedelta, int]] = datetime.timedelta(seconds=60),
 ) -> FlyteWorkflowExecution
 ```
 Sync a FlyteWorkflowExecution object with its corresponding remote state.
@@ -1648,8 +1648,8 @@ encapsulated in this function.
 ```python
 def sync_task_execution(
     execution: FlyteTaskExecution,
-    entity_interface: typing.Optional[TypedInterface],
-    get_task_exec_data: bool,
+    entity_interface: typing.Optional[TypedInterface] = None,
+    get_task_exec_data: bool = True,
 ) -> FlyteTaskExecution
 ```
 Sync a FlyteTaskExecution object with its corresponding remote state.
@@ -1683,9 +1683,9 @@ Terminate a workflow execution.
 ```python
 def upload_file(
     to_upload: pathlib.Path,
-    project: typing.Optional[str],
-    domain: typing.Optional[str],
-    filename_root: typing.Optional[str],
+    project: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    filename_root: typing.Optional[str] = None,
 ) -> typing.Tuple[bytes, str]
 ```
 Function will use remote's client to hash and then upload the file using Admin's data proxy service.
@@ -1706,9 +1706,9 @@ Function will use remote's client to hash and then upload the file using Admin's
 ```python
 def wait(
     execution: FlyteWorkflowExecution,
-    timeout: typing.Optional[typing.Union[timedelta, int]],
-    poll_interval: typing.Optional[typing.Union[timedelta, int]],
-    sync_nodes: bool,
+    timeout: typing.Optional[typing.Union[timedelta, int]] = None,
+    poll_interval: typing.Optional[typing.Union[timedelta, int]] = None,
+    sync_nodes: bool = True,
 ) -> FlyteWorkflowExecution
 ```
 Wait for an execution to finish.
@@ -1730,12 +1730,12 @@ Wait for an execution to finish.
 class VLLMShardArgs(
     model: str,
     tensor_parallel_size: int,
-    trust_remote_code: bool,
-    revision: str | None,
-    file_pattern: str | None,
-    max_file_size: int | None,
-    gpu_memory_utilization: float,
-    extra_args: dict[str, typing.Any],
+    trust_remote_code: bool = False,
+    revision: str | None = None,
+    file_pattern: str | None = None,
+    max_file_size: int | None = 5368709120,
+    gpu_memory_utilization: float = 0.9,
+    extra_args: dict[str, typing.Any] = <factory>,
 )
 ```
 | Parameter | Type | Description |

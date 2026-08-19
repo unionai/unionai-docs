@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.translator
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -84,7 +84,7 @@ def get_serializable(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: typing.Union[flytekit.core.base_task.PythonTask, flytekit.core.condition.BranchNode, flytekit.core.node.Node, flytekit.core.launch_plan.LaunchPlan, flytekit.core.workflow.WorkflowBase, flytekit.core.workflow.ReferenceWorkflow, flytekit.core.task.ReferenceTask, flytekit.core.launch_plan.ReferenceLaunchPlan, flytekit.core.reference_entity.ReferenceEntity, flytekit.core.array_node.ArrayNode],
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]
 ```
 The flytekit authoring code produces objects representing Flyte entities (tasks, workflows, etc.). In order to
@@ -111,7 +111,7 @@ def get_serializable_array_node(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     node: typing.Union[flytekit.core.base_task.PythonTask, flytekit.core.condition.BranchNode, flytekit.core.node.Node, flytekit.core.launch_plan.LaunchPlan, flytekit.core.workflow.WorkflowBase, flytekit.core.workflow.ReferenceWorkflow, flytekit.core.task.ReferenceTask, flytekit.core.launch_plan.ReferenceLaunchPlan, flytekit.core.reference_entity.ReferenceEntity, flytekit.core.array_node.ArrayNode],
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.core.workflow.ArrayNode
 ```
 | Parameter | Type | Description |
@@ -128,7 +128,7 @@ def get_serializable_array_node_map_task(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     node: flytekit.core.node.Node,
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.core.workflow.ArrayNode
 ```
 | Parameter | Type | Description |
@@ -145,7 +145,7 @@ def get_serializable_branch_node(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: typing.Union[flytekit.core.base_task.PythonTask, flytekit.core.condition.BranchNode, flytekit.core.node.Node, flytekit.core.launch_plan.LaunchPlan, flytekit.core.workflow.WorkflowBase, flytekit.core.workflow.ReferenceWorkflow, flytekit.core.task.ReferenceTask, flytekit.core.launch_plan.ReferenceLaunchPlan, flytekit.core.reference_entity.ReferenceEntity, flytekit.core.array_node.ArrayNode],
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.core.workflow.BranchNode
 ```
 | Parameter | Type | Description |
@@ -194,8 +194,8 @@ def get_serializable_launch_plan(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: flytekit.core.launch_plan.LaunchPlan,
-    recurse_downstream: bool,
-    options: typing.Optional[flytekit.core.options.Options],
+    recurse_downstream: bool = True,
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.launch_plan.LaunchPlan
 ```
 | Parameter | Type | Description |
@@ -213,7 +213,7 @@ def get_serializable_node(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: flytekit.core.node.Node,
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.core.workflow.Node
 ```
 | Parameter | Type | Description |
@@ -230,7 +230,7 @@ def get_serializable_task(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: typing.Union[flytekit.core.base_task.PythonTask, flytekit.core.condition.BranchNode, flytekit.core.node.Node, flytekit.core.launch_plan.LaunchPlan, flytekit.core.workflow.WorkflowBase, flytekit.core.workflow.ReferenceWorkflow, flytekit.core.task.ReferenceTask, flytekit.core.launch_plan.ReferenceLaunchPlan, flytekit.core.reference_entity.ReferenceEntity, flytekit.core.array_node.ArrayNode],
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.task.TaskSpec
 ```
 | Parameter | Type | Description |
@@ -247,7 +247,7 @@ def get_serializable_workflow(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     entity: flytekit.core.workflow.WorkflowBase,
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.admin.workflow.WorkflowSpec
 ```
 | Parameter | Type | Description |
@@ -277,7 +277,7 @@ def to_serializable_case(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     c: flytekit.models.core.workflow.IfBlock,
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> flytekit.models.core.workflow.IfBlock
 ```
 | Parameter | Type | Description |
@@ -294,7 +294,7 @@ def to_serializable_cases(
     entity_mapping: collections.OrderedDict,
     settings: flytekit.configuration.SerializationSettings,
     cases: typing.List[flytekit.models.core.workflow.IfBlock],
-    options: typing.Optional[flytekit.core.options.Options],
+    options: typing.Optional[flytekit.core.options.Options] = None,
 ) -> typing.Optional[typing.List[flytekit.models.core.workflow.IfBlock]]
 ```
 | Parameter | Type | Description |

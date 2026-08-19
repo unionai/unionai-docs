@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.mmcloud.connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -55,8 +55,8 @@ Log in to Memory Machine Cloud OpCenter.
 ```python
 def create(
     task_template: flytekit.models.task.TaskTemplate,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekitplugins.mmcloud.connector.MMCloudMetadata
 ```
 Submit a Flyte task as MMCloud job to the OpCenter, and return the job UID for the task.
@@ -66,14 +66,14 @@ Submit a Flyte task as MMCloud job to the OpCenter, and return the job UID for t
 |-|-|-|
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### delete()
 
 ```python
 def delete(
     resource_meta: flytekitplugins.mmcloud.connector.MMCloudMetadata,
-    kwargs,
+    **kwargs,
 )
 ```
 Delete the task. This call should be idempotent.
@@ -82,14 +82,14 @@ Delete the task. This call should be idempotent.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.mmcloud.connector.MMCloudMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get()
 
 ```python
 def get(
     resource_meta: flytekitplugins.mmcloud.connector.MMCloudMetadata,
-    kwargs,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 Return the status of the task, and return the outputs on success.
@@ -98,14 +98,14 @@ Return the status of the task, and return the outputs on success.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekitplugins.mmcloud.connector.MMCloudMetadata` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_logs()
 
 ```python
 def get_logs(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 Return the metrics for the task.
@@ -114,14 +114,14 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_metrics()
 
 ```python
 def get_metrics(
     resource_meta: flytekit.extend.backend.base_connector.ResourceMeta,
-    kwargs,
+    **kwargs,
 ) -> flyteidl.admin.agent_pb2.GetTaskMetricsResponse
 ```
 Return the metrics for the task.
@@ -130,7 +130,7 @@ Return the metrics for the task.
 | Parameter | Type | Description |
 |-|-|-|
 | `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekitplugins.mmcloud.connector.MMCloudMetadata
 

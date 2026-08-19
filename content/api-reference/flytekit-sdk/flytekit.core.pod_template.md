@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.pod_template
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -51,10 +51,10 @@ Custom PodTemplate specification for a Task.
 
 ```python
 class PodTemplate(
-    pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
-    primary_container_name: str,
-    labels: typing.Optional[typing.Dict[str, str]],
-    annotations: typing.Optional[typing.Dict[str, str]],
+    pod_spec: typing.Optional[ForwardRef('V1PodSpec')] = None,
+    primary_container_name: str = 'primary',
+    labels: typing.Optional[typing.Dict[str, str]] = None,
+    annotations: typing.Optional[typing.Dict[str, str]] = None,
 )
 ```
 | Parameter | Type | Description |

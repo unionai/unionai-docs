@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.openai.batch.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,8 +30,8 @@ layout: py_api
 class BatchEndpointTask(
     name: str,
     config: typing.Dict[str, typing.Any],
-    openai_organization: typing.Optional[str],
-    kwargs,
+    openai_organization: typing.Optional[str] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -39,7 +39,7 @@ class BatchEndpointTask(
 | `name` | `str` | |
 | `config` | `typing.Dict[str, typing.Any]` | |
 | `openai_organization` | `typing.Optional[str]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -93,8 +93,8 @@ class BatchEndpointTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -103,8 +103,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### connector_signal_handler()
 
@@ -155,12 +155,12 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -297,7 +297,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -308,7 +308,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -374,8 +374,8 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 
 ```python
 class BatchResult(
-    output_file: typing.Optional[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass],
-    error_file: typing.Optional[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass],
+    output_file: typing.Optional[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass] = None,
+    error_file: typing.Optional[flytekit.types.file.file.FlyteFile.__class_getitem__.<locals>._SpecificFormatClass] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -388,9 +388,7 @@ class BatchResult(
 | Method | Description |
 |-|-|
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -398,7 +396,7 @@ class BatchResult(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
@@ -406,53 +404,25 @@ def from_dict(
 | `d` |  | |
 | `dialect` |  | |
 
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
-
 #### to_dict()
 
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## flytekitplugins.openai.batch.task.DownloadJSONFilesExecutor
 
 ### Parameters
 
 ```python
 class DownloadJSONFilesExecutor(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -475,7 +445,7 @@ class DownloadJSONFilesExecutor(
 ```python
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
@@ -487,7 +457,7 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+| `**kwargs` |  | These are the Python native input values to the task. |
 
 **Returns:** Python native output values from the task.
 
@@ -504,8 +474,8 @@ def find_lhs()
 class DownloadJSONFilesTask(
     name: str,
     task_config: flytekitplugins.openai.batch.task.OpenAIFileConfig,
-    container_image: str,
-    kwargs,
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.28',
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -513,7 +483,7 @@ class DownloadJSONFilesTask(
 | `name` | `str` | unique name for the task, usually the function's module and name. |
 | `task_config` | `flytekitplugins.openai.batch.task.OpenAIFileConfig` | Configuration object for Task. Should be a unique type for that specific Task |
 | `container_image` | `str` | This is the external container image the task should run at platform-run-time. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -575,8 +545,8 @@ class DownloadJSONFilesTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -585,8 +555,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -618,7 +588,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -626,7 +596,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -785,7 +755,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -796,7 +766,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -867,7 +837,7 @@ def serialize_to_model(
 ```python
 class OpenAIFileConfig(
     secret: flytekit.models.security.Secret,
-    openai_organization: typing.Optional[str],
+    openai_organization: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -898,8 +868,8 @@ def default_image()
 
 ```python
 def find_image_for(
-    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion],
-    flytekit_version: typing.Optional[str],
+    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion] = None,
+    flytekit_version: typing.Optional[str] = None,
 ) -> str
 ```
 | Parameter | Type | Description |
@@ -918,14 +888,14 @@ def get_version_suffix()
 
 ```python
 class UploadJSONLFileExecutor(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -948,7 +918,7 @@ class UploadJSONLFileExecutor(
 ```python
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
@@ -960,7 +930,7 @@ that wasn't serialized into the template.
 | Parameter | Type | Description |
 |-|-|-|
 | `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
-| `kwargs` | `**kwargs` | These are the Python native input values to the task. |
+| `**kwargs` |  | These are the Python native input values to the task. |
 
 **Returns:** Python native output values from the task.
 
@@ -977,8 +947,8 @@ def find_lhs()
 class UploadJSONLFileTask(
     name: str,
     task_config: flytekitplugins.openai.batch.task.OpenAIFileConfig,
-    container_image: str,
-    kwargs,
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.28',
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -986,7 +956,7 @@ class UploadJSONLFileTask(
 | `name` | `str` | unique name for the task, usually the function's module and name. |
 | `task_config` | `flytekitplugins.openai.batch.task.OpenAIFileConfig` | Configuration object for Task. Should be a unique type for that specific Task |
 | `container_image` | `str` | This is the external container image the task should run at platform-run-time. |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -1048,8 +1018,8 @@ class UploadJSONLFileTask(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -1058,8 +1028,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -1091,7 +1061,7 @@ classes that derive from the base ``PythonTask``.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> Any
 ```
 Rather than running here, send everything to the executor.
@@ -1099,7 +1069,7 @@ Rather than running here, send everything to the executor.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -1258,7 +1228,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -1269,7 +1239,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

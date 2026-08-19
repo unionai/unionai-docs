@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.execution
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -93,7 +93,7 @@ def to_flyte_idl()
 
 ```python
 class ClusterAssignment(
-    cluster_pool,
+    cluster_pool = None,
 )
 ```
 | Parameter | Type | Description |
@@ -226,11 +226,11 @@ class ExecutionClosure(
     phase: int,
     started_at: datetime.datetime,
     duration: datetime.timedelta,
-    error: typing.Optional[_core_execution.ExecutionError],
-    outputs: typing.Optional[LiteralMapBlob],
-    abort_metadata: typing.Optional[AbortMetadata],
-    created_at: typing.Optional[datetime.datetime],
-    updated_at: typing.Optional[datetime.datetime],
+    error: typing.Optional[_core_execution.ExecutionError] = None,
+    outputs: typing.Optional[LiteralMapBlob] = None,
+    abort_metadata: typing.Optional[AbortMetadata] = None,
+    created_at: typing.Optional[datetime.datetime] = None,
+    updated_at: typing.Optional[datetime.datetime] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -309,10 +309,10 @@ class ExecutionMetadata(
     mode: int,
     principal: str,
     nesting: int,
-    scheduled_at: Optional[datetime.datetime],
-    parent_node_execution: Optional[_identifier.NodeExecutionIdentifier],
-    reference_execution: Optional[_identifier.WorkflowExecutionIdentifier],
-    system_metadata: Optional[SystemMetadata],
+    scheduled_at: Optional[datetime.datetime] = None,
+    parent_node_execution: Optional[_identifier.NodeExecutionIdentifier] = None,
+    reference_execution: Optional[_identifier.WorkflowExecutionIdentifier] = None,
+    system_metadata: Optional[SystemMetadata] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -388,20 +388,20 @@ def to_flyte_idl()
 class ExecutionSpec(
     launch_plan,
     metadata,
-    notifications,
-    disable_all,
-    labels,
-    annotations,
-    auth_role,
-    raw_output_data_config,
-    max_parallelism: Optional[int],
-    security_context: Optional[security.SecurityContext],
-    overwrite_cache: Optional[bool],
-    interruptible: Optional[bool],
-    envs: Optional[_common_models.Envs],
-    tags: Optional[typing.List[str]],
-    cluster_assignment: Optional[ClusterAssignment],
-    execution_cluster_label: Optional[ExecutionClusterLabel],
+    notifications = None,
+    disable_all = None,
+    labels = None,
+    annotations = None,
+    auth_role = None,
+    raw_output_data_config = None,
+    max_parallelism: Optional[int] = None,
+    security_context: Optional[security.SecurityContext] = None,
+    overwrite_cache: Optional[bool] = None,
+    interruptible: Optional[bool] = None,
+    envs: Optional[_common_models.Envs] = None,
+    tags: Optional[typing.List[str]] = None,
+    cluster_assignment: Optional[ClusterAssignment] = None,
+    execution_cluster_label: Optional[ExecutionClusterLabel] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -493,8 +493,8 @@ def to_flyte_idl()
 
 ```python
 class LiteralMapBlob(
-    values,
-    uri,
+    values = None,
+    uri = None,
 )
 ```
 | Parameter | Type | Description |
@@ -558,16 +558,16 @@ def to_flyte_idl()
 
 ```python
 class NodeExecutionGetDataResponse(
-    args,
-    dynamic_workflow: typing.Optional[DynamicWorkflowNodeMetadata],
-    kwargs,
+    *args,
+    dynamic_workflow: typing.Optional[DynamicWorkflowNodeMetadata] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `dynamic_workflow` | `typing.Optional[DynamicWorkflowNodeMetadata]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 

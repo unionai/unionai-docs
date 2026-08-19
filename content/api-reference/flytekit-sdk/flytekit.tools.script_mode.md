@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.script_mode
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -116,7 +116,7 @@ Import python file with module_name in source_path and return all modules.
 def list_all_files(
     source_path: str,
     deref_symlinks,
-    ignore_group: Optional[IgnoreGroup],
+    ignore_group: Optional[IgnoreGroup] = None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |
@@ -151,8 +151,8 @@ Copies modules into destination that are in modules. The module files are copied
 def ls_files(
     source_path: str,
     copy_file_detection: CopyFileDetection,
-    deref_symlinks: bool,
-    ignore_group: Optional[IgnoreGroup],
+    deref_symlinks: bool = False,
+    ignore_group: Optional[IgnoreGroup] = None,
 ) -> Tuple[List[str], str]
 ```
 user_modules_and_packages is a list of the Python modules and packages, expressed as absolute paths, that the

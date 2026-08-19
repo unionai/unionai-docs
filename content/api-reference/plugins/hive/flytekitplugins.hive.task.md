@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.hive.task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,8 +29,8 @@ Note: A separate story is in progress to dynamically alter configuration for an 
 
 ```python
 class HiveConfig(
-    cluster_label: str,
-    tags: typing.Optional[typing.List[str]],
+    cluster_label: str = '',
+    tags: typing.Optional[typing.List[str]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -47,10 +47,10 @@ class HiveSelectTask(
     name: str,
     select_query: str,
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]],
-    config: typing.Optional[flytekitplugins.hive.task.HiveConfig],
-    stage_query: typing.Optional[str],
-    kwargs,
+    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]] = None,
+    config: typing.Optional[flytekitplugins.hive.task.HiveConfig] = None,
+    stage_query: typing.Optional[str] = None,
+    **kwargs,
 )
 ```
 select_query: Singular query that returns a Tabular dataset
@@ -66,7 +66,7 @@ stage_query: optional query that should be executed before the actual ``select_q
 | `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
 | `config` | `typing.Optional[flytekitplugins.hive.task.HiveConfig]` | |
 | `stage_query` | `typing.Optional[str]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -125,8 +125,8 @@ stage_query: optional query that should be executed before the actual ``select_q
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -135,8 +135,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -172,7 +172,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -180,7 +180,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -270,12 +270,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -328,7 +328,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -338,14 +338,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -356,7 +356,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -427,10 +427,10 @@ This is the simplest form of a Hive Task, that can be used even for tasks that d
 class HiveTask(
     name: str,
     query_template: str,
-    task_config: typing.Optional[flytekitplugins.hive.task.HiveConfig],
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]],
-    kwargs,
+    task_config: typing.Optional[flytekitplugins.hive.task.HiveConfig] = None,
+    inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]] = None,
+    **kwargs,
 )
 ```
 name: Name of this task, should be unique in the project
@@ -449,7 +449,7 @@ output_schema_type: If some data is produced by this query, then you can specify
 | `task_config` | `typing.Optional[flytekitplugins.hive.task.HiveConfig]` | |
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
 | `output_schema_type` | `typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -508,8 +508,8 @@ output_schema_type: If some data is produced by this query, then you can specify
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -518,8 +518,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -555,7 +555,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -563,7 +563,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -653,12 +653,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -711,7 +711,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -721,14 +721,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -739,7 +739,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

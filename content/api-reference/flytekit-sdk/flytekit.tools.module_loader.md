@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.module_loader
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,7 +13,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`add_sys_path()`](#add_sys_path) | Temporarily add given path to `sys. |
+| [`add_sys_path()`](#add_sys_path) | Temporarily add given path to `sys.path`. |
 | [`just_load_modules()`](#just_load_modules) | This one differs from the above in that we don't yield anything, just load all the modules. |
 | [`load_object_from_module()`](#load_object_from_module) | TODO: Handle corner cases, like where the first part is [] maybe. |
 | [`module_load_error_handler()`](#module_load_error_handler) |  |
@@ -67,12 +67,12 @@ TODO: Handle corner cases, like where the first part is [] maybe
 
 ```python
 def module_load_error_handler(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 

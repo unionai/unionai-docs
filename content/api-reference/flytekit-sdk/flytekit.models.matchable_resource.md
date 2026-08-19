@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.matchable_resource
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -263,10 +263,10 @@ def string_to_enum(
 
 ```python
 class MatchingAttributes(
-    cluster_resource_attributes,
-    execution_queue_attributes,
-    execution_cluster_label,
-    plugin_overrides,
+    cluster_resource_attributes = None,
+    execution_queue_attributes = None,
+    execution_cluster_label = None,
+    plugin_overrides = None,
 )
 ```
 At most one target from cluster_resource_attributes, execution_queue_attributes or execution_cluster_label

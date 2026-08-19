@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.checkpointer
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -113,7 +113,7 @@ TODO: Implement an async checkpoint system
 ```python
 class SyncCheckpoint(
     checkpoint_dest: str,
-    checkpoint_src: typing.Optional[str],
+    checkpoint_src: typing.Optional[str] = None,
 )
 ```
 checkpoint_src: If a previous checkpoint should exist, this path should be set to the folder that contains the checkpoint information
@@ -154,7 +154,7 @@ found, this will raise a ValueError
 
 ```python
 def restore(
-    path: typing.Union[pathlib.Path, str, NoneType],
+    path: typing.Union[pathlib.Path, str, NoneType] = None,
 ) -> typing.Optional[pathlib.Path]
 ```
 Given a path, if a previous checkpoint exists, will be downloaded to this path.

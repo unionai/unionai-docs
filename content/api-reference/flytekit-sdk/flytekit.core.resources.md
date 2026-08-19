@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.resources
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,8 +39,8 @@ layout: py_api
 
 ```python
 def construct_extended_resources(
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator] = None,
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType] = None,
 ) -> typing.Optional[flyteidl.core.tasks_pb2.ExtendedResources]
 ```
 Convert public extended resources to idl.
@@ -56,8 +56,8 @@ Convert public extended resources to idl.
 
 ```python
 def convert_resources_to_resource_model(
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
 ) -> flytekit.models.task.Resources
 ```
 Convert flytekit ``Resources`` objects to a Resources model
@@ -75,10 +75,10 @@ Convert flytekit ``Resources`` objects to a Resources model
 
 ```python
 def pod_spec_from_resources(
-    primary_container_name: typing.Optional[str],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    k8s_gpu_resource_key: str,
+    primary_container_name: typing.Optional[str] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    k8s_gpu_resource_key: str = 'nvidia.com/gpu',
 ) -> V1PodSpec
 ```
 | Parameter | Type | Description |
@@ -108,10 +108,8 @@ class ResourceSpec(
 | Method | Description |
 |-|-|
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_multiple_resource()`](#from_multiple_resource) | Convert Resources that represent both a requests and limits into a ResourceSpec. |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -119,28 +117,13 @@ class ResourceSpec(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `d` |  | |
 | `dialect` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
 
 #### from_multiple_resource()
 
@@ -161,19 +144,6 @@ Convert Resources that represent both a requests and limits into a ResourceSpec.
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## flytekit.core.resources.Resources
 
 This class is used to specify both resource requests and resource limits.
@@ -193,10 +163,10 @@ second value is the limit. If the value is a single value, then both the request
 set to that value. For example, the `Resource(cpu=("1", "2"), mem=1024)` will set the cpu request to 1, cpu limit to 2,
 mem limit and request to 1024.
 
-&gt; [!NOTE]
-&gt; Persistent storage is not currently supported on the Flyte backend.
+> [!NOTE]
+> Persistent storage is not currently supported on the Flyte backend.
 
-Please see the :std:ref:`User Guide &lt;cookbook:customizing task resources&gt;` for detailed examples.
+Please see the `User Guide` for detailed examples.
 Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes)
 
 
@@ -204,10 +174,10 @@ Also refer to the [`K8s conventions.`](https://kubernetes.io/docs/concepts/confi
 
 ```python
 class Resources(
-    cpu: typing.Union[str, int, float, list, tuple, NoneType],
-    mem: typing.Union[str, int, list, tuple, NoneType],
-    gpu: typing.Union[str, int, list, tuple, NoneType],
-    ephemeral_storage: typing.Union[str, int, NoneType],
+    cpu: typing.Union[str, int, float, list, tuple, NoneType] = None,
+    mem: typing.Union[str, int, list, tuple, NoneType] = None,
+    gpu: typing.Union[str, int, list, tuple, NoneType] = None,
+    ephemeral_storage: typing.Union[str, int, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -222,9 +192,7 @@ class Resources(
 | Method | Description |
 |-|-|
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -232,7 +200,7 @@ class Resources(
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
@@ -240,36 +208,8 @@ def from_dict(
 | `d` |  | |
 | `dialect` |  | |
 
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
-
 #### to_dict()
 
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-

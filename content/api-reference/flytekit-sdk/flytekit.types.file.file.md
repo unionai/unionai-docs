@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file.file
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,9 +44,9 @@ def noop()
 ```python
 class FlyteFile(
     path: typing.Union[str, os.PathLike],
-    downloader: typing.Callable,
-    remote_path: typing.Optional[typing.Union[os.PathLike, str, bool]],
-    metadata: typing.Optional[dict[str, str]],
+    downloader: typing.Callable = noop,
+    remote_path: typing.Optional[typing.Union[os.PathLike, str, bool]] = None,
+    metadata: typing.Optional[dict[str, str]] = None,
 )
 ```
 FlyteFile's init method.
@@ -76,14 +76,12 @@ FlyteFile's init method.
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`from_source()`](#from_source) | Create a new FlyteFile object with the remote source set to the input. |
 | [`new()`](#new) | Create a new FlyteFile object in the current Flyte working directory. |
 | [`new_remote_file()`](#new_remote_file) | Create a new FlyteFile object with a remote path. |
 | [`open()`](#open) | Returns a streaming File handle. |
 | [`serialize_flyte_file()`](#serialize_flyte_file) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### deserialize_flyte_file()
@@ -112,28 +110,13 @@ def extension()
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `d` |  | |
 | `dialect` |  | |
-
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
 
 #### from_source()
 
@@ -167,8 +150,8 @@ Create a new FlyteFile object in the current Flyte working directory
 
 ```python
 def new_remote_file(
-    name: typing.Optional[str],
-    alt: typing.Optional[str],
+    name: typing.Optional[str] = None,
+    alt: typing.Optional[str] = None,
 ) -> FlyteFile
 ```
 Create a new FlyteFile object with a remote path.
@@ -185,8 +168,8 @@ Create a new FlyteFile object with a remote path.
 ```python
 def open(
     mode: str,
-    cache_type: typing.Optional[str],
-    cache_options: typing.Optional[typing.Dict[str, typing.Any]],
+    cache_type: typing.Optional[str] = None,
+    cache_options: typing.Optional[typing.Dict[str, typing.Any]] = None,
 )
 ```
 Returns a streaming File handle
@@ -222,19 +205,6 @@ def serialize_flyte_file()
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## flytekit.types.file.file.FlyteFilePathTransformer
 
 ### Parameters

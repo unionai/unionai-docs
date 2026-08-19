@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.catalog
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---

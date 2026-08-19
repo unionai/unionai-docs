@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.connector_service
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -66,16 +66,16 @@ def record_connector_metrics(
 def CreateTask(
     request: typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest],
     context: grpc.ServicerContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `request` | `typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest]` | |
 | `context` | `grpc.ServicerContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### DeleteTask()
 
@@ -83,16 +83,16 @@ def CreateTask(
 def DeleteTask(
     request: typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest],
     context: grpc.ServicerContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `request` | `typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest]` | |
 | `context` | `grpc.ServicerContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### GetTask()
 
@@ -100,16 +100,16 @@ def DeleteTask(
 def GetTask(
     request: typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest],
     context: grpc.ServicerContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `request` | `typing.Union[flyteidl.admin.agent_pb2.CreateTaskRequest, flyteidl.admin.agent_pb2.GetTaskRequest, flyteidl.admin.agent_pb2.DeleteTaskRequest]` | |
 | `context` | `grpc.ServicerContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### GetTaskLogs()
 
@@ -154,8 +154,8 @@ Errors include
 
 | Method | Description |
 |-|-|
-| [`GetAgent()`](#getagent) | Fetch a :ref:`ref_flyteidl. |
-| [`ListAgents()`](#listagents) | Fetch a list of :ref:`ref_flyteidl. |
+| [`GetAgent()`](#getagent) | Fetch a `ref_flyteidl.admin.Agent` definition. |
+| [`ListAgents()`](#listagents) | Fetch a list of `ref_flyteidl.admin.Agent` definitions. |
 
 
 #### GetAgent()
@@ -166,7 +166,7 @@ def GetAgent(
     context: grpc.ServicerContext,
 ) -> flyteidl.admin.agent_pb2.GetAgentResponse
 ```
-Fetch a :ref:`ref_flyteidl.admin.Agent` definition.
+Fetch a `ref_flyteidl.admin.Agent` definition.
         
 
 
@@ -183,7 +183,7 @@ def ListAgents(
     context: grpc.ServicerContext,
 ) -> flyteidl.admin.agent_pb2.ListAgentsResponse
 ```
-Fetch a list of :ref:`ref_flyteidl.admin.Agent` definitions.
+Fetch a list of `ref_flyteidl.admin.Agent` definitions.
         
 
 

@@ -37,29 +37,29 @@ Note that Python fields will be missing when retrieved from the service.
 
 ```python
 class Artifact(
-    args,
-    project: Optional[str],
-    domain: Optional[str],
-    name: Optional[str],
-    version: Optional[str],
-    time_partitioned: bool,
-    time_partition: Optional[TimePartition],
-    time_partition_granularity: Optional[Granularity],
-    partition_keys: Optional[typing.List[str]],
-    partitions: Optional[Union[Partitions, typing.Dict[str, str]]],
-    python_val: Optional[typing.Any],
-    python_type: Optional[typing.Type],
-    literal: Optional[Literal],
-    literal_type: Optional[LiteralType],
-    short_description: Optional[str],
-    source: Optional[artifacts_pb2.ArtifactSource],
-    card: Optional[Card],
-    kwargs,
+    *args,
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    name: Optional[str] = None,
+    version: Optional[str] = None,
+    time_partitioned: bool = False,
+    time_partition: Optional[TimePartition] = None,
+    time_partition_granularity: Optional[Granularity] = None,
+    partition_keys: Optional[typing.List[str]] = None,
+    partitions: Optional[Union[Partitions, typing.Dict[str, str]]] = None,
+    python_val: Optional[typing.Any] = None,
+    python_type: Optional[typing.Type] = None,
+    literal: Optional[Literal] = None,
+    literal_type: Optional[LiteralType] = None,
+    short_description: Optional[str] = None,
+    source: Optional[artifacts_pb2.ArtifactSource] = None,
+    card: Optional[Card] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
+| `*args` |  | |
 | `project` | `Optional[str]` | Should not be directly user provided, the project/domain will come from the project/domain of the execution that produced the output. These values will be filled in automatically when retrieving however. |
 | `domain` | `Optional[str]` | See above. |
 | `name` | `Optional[str]` | The name of the Artifact. This should be user provided. |
@@ -76,7 +76,7 @@ class Artifact(
 | `short_description` | `Optional[str]` | |
 | `source` | `Optional[artifacts_pb2.ArtifactSource]` | |
 | `card` | `Optional[Card]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -108,9 +108,9 @@ class Artifact(
 ```python
 def create_from(
     o: O,
-    card: Optional[SerializableToString],
-    args: *args,
-    kwargs,
+    card: Optional[SerializableToString] = None,
+    *args: SerializableToString,
+    **kwargs,
 ) -> O
 ```
 This function allows users to declare partition values dynamically from the body of a task. Note that you'll
@@ -140,17 +140,17 @@ You can mix and match with the input syntax as well.
 |-|-|-|
 | `o` | `O` | |
 | `card` | `Optional[SerializableToString]` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` | `SerializableToString` | |
+| `**kwargs` |  | |
 
 #### embed_as_query()
 
 ```python
 def embed_as_query(
-    partition: Optional[str],
-    bind_to_time_partition: Optional[bool],
-    expr: Optional[str],
-    op: Optional[Op],
+    partition: Optional[str] = None,
+    bind_to_time_partition: Optional[bool] = None,
+    expr: Optional[str] = None,
+    op: Optional[Op] = None,
 ) -> art_id.ArtifactQuery
 ```
 This should only be called in the context of a Trigger. The type of query this returns is different from the
@@ -182,7 +182,7 @@ Converts the IDL representation to this object.
 
 ```python
 def get(
-    as_type: Optional[typing.Type],
+    as_type: Optional[typing.Type] = None,
 ) -> Optional[typing.Any]
 ```
 This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an
@@ -200,10 +200,10 @@ Python value.
 def initialize(
     python_val: typing.Any,
     python_type: typing.Type,
-    name: Optional[str],
-    literal_type: Optional[LiteralType],
-    version: Optional[str],
-    tags: Optional[typing.List[str]],
+    name: Optional[str] = None,
+    literal_type: Optional[LiteralType] = None,
+    version: Optional[str] = None,
+    tags: Optional[typing.List[str]] = None,
 ) -> Artifact
 ```
 Use this for when you have a Python value you want to get an Artifact object out of.
@@ -240,11 +240,11 @@ def metadata()
 
 ```python
 def query(
-    project: Optional[str],
-    domain: Optional[str],
-    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]],
-    partitions: Optional[Union[typing.Dict[str, str], Partitions]],
-    kwargs,
+    project: Optional[str] = None,
+    domain: Optional[str] = None,
+    time_partition: Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]] = None,
+    partitions: Optional[Union[typing.Dict[str, str], Partitions]] = None,
+    **kwargs,
 ) -> ArtifactQuery
 ```
 | Parameter | Type | Description |
@@ -253,7 +253,7 @@ def query(
 | `domain` | `Optional[str]` | |
 | `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` | |
 | `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### set_resolver()
 
@@ -305,7 +305,7 @@ that's exposed to the user.
 ```python
 class DataCard(
     text: str,
-    card_type: CardType,
+    card_type: CardType = 2,
 )
 ```
 | Parameter | Type | Description |
@@ -352,7 +352,7 @@ def serialize_to_string(
 ```python
 class ModelCard(
     text: str,
-    card_type: CardType,
+    card_type: CardType = 1,
 )
 ```
 | Parameter | Type | Description |
@@ -403,7 +403,7 @@ Event used to link upstream and downstream workflows together.
 ```python
 class OnArtifact(
     trigger_on: typing.Union[flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery],
-    inputs: typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]],
+    inputs: typing.Optional[typing.Dict[str, typing.Union[typing.Any, flytekit.core.artifact.Artifact, flytekit.core.artifact.ArtifactQuery]]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -443,12 +443,12 @@ that, and converts constants to Literals.
 
 ```python
 def to_flyte_idl(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> flyteidl.artifacts.artifacts_pb2.Trigger
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.helpers
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,12 +24,12 @@ layout: py_api
 ```python
 def iterate_node_executions(
     client,
-    workflow_execution_identifier,
-    task_execution_identifier,
-    limit,
-    filters,
-    sort_by,
-    unique_parent_id,
+    workflow_execution_identifier = None,
+    task_execution_identifier = None,
+    limit = None,
+    filters = None,
+    sort_by = ...,
+    unique_parent_id = None,
 )
 ```
 This returns a generator for node executions.
@@ -53,9 +53,9 @@ This returns a generator for node executions.
 def iterate_task_executions(
     client,
     node_execution_identifier,
-    limit,
-    filters,
-    sort_by,
+    limit = None,
+    filters = None,
+    sort_by = ...,
 )
 ```
 This returns a generator for task executions, given a node execution identifier

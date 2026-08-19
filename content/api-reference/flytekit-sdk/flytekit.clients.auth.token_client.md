@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.token_client
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -63,11 +63,11 @@ first URL encoded to escape illegal characters.
 def get_device_code(
     device_auth_endpoint: str,
     client_id: str,
-    audience: typing.Optional[str],
-    scope: typing.Optional[typing.List[str]],
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-    session: typing.Optional[requests.sessions.Session],
+    audience: typing.Optional[str] = None,
+    scope: typing.Optional[typing.List[str]] = None,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
+    session: typing.Optional[requests.sessions.Session] = None,
 ) -> flytekit.clients.auth.token_client.DeviceCodeResponse
 ```
 Retrieves the device Authentication code that can be done to authenticate the request using a browser on a
@@ -89,16 +89,16 @@ separate device
 ```python
 def get_token(
     token_endpoint: str,
-    scopes: typing.Optional[typing.List[str]],
-    authorization_header: typing.Optional[str],
-    client_id: typing.Optional[str],
-    device_code: typing.Optional[str],
-    audience: typing.Optional[str],
-    grant_type: <enum 'GrantType'>,
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-    session: typing.Optional[requests.sessions.Session],
-    refresh_token: typing.Optional[str],
+    scopes: typing.Optional[typing.List[str]] = None,
+    authorization_header: typing.Optional[str] = None,
+    client_id: typing.Optional[str] = None,
+    device_code: typing.Optional[str] = None,
+    audience: typing.Optional[str] = None,
+    grant_type: <enum 'GrantType'> = GrantType.CLIENT_CREDS,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
+    session: typing.Optional[requests.sessions.Session] = None,
+    refresh_token: typing.Optional[str] = None,
 ) -> typing.Tuple[str, str, int]
 ```
 retrieved from the IDP, the third is the expiration in seconds
@@ -127,10 +127,10 @@ def poll_token_endpoint(
     resp: flytekit.clients.auth.token_client.DeviceCodeResponse,
     token_endpoint: str,
     client_id: str,
-    audience: typing.Optional[str],
-    scopes: typing.Optional[typing.List[str]],
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
+    audience: typing.Optional[str] = None,
+    scopes: typing.Optional[typing.List[str]] = None,
+    http_proxy_url: typing.Optional[str] = None,
+    verify: typing.Union[bool, str, NoneType] = None,
 ) -> typing.Tuple[str, str, int]
 ```
 | Parameter | Type | Description |
@@ -196,12 +196,12 @@ def from_json_response(
 
 ```python
 class GrantType(
-    args,
-    kwds,
+    *args,
+    **kwds,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwds` |  | |
+| `*args` |  | |
+| `**kwds` |  | |
 

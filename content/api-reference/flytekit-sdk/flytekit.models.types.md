@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.types
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -91,17 +91,17 @@ def to_flyte_idl()
 
 ```python
 class LiteralType(
-    simple,
-    schema,
-    collection_type,
-    map_value_type,
-    blob,
-    enum_type,
-    union_type,
-    structured_dataset_type,
-    metadata,
-    structure,
-    annotation,
+    simple = None,
+    schema = None,
+    collection_type = None,
+    map_value_type = None,
+    blob = None,
+    enum_type = None,
+    union_type = None,
+    structured_dataset_type = None,
+    metadata = None,
+    structure = None,
+    annotation = None,
 )
 ```
 This is a oneof message, only one of the kwargs may be set, representing one of the Flyte types.
@@ -189,7 +189,7 @@ def to_flyte_idl()
 class OutputReference(
     node_id,
     var,
-    attr_path: typing.List[typing.Union[str, int]],
+    attr_path: typing.List[typing.Union[str, int]] = None,
 )
 ```
 A reference to an output produced by a node. The type can be retrieved -and validated- from
@@ -324,10 +324,10 @@ def to_flyte_idl()
 
 ```python
 class StructuredDatasetType(
-    columns: typing.List[flytekit.models.types.StructuredDatasetType.DatasetColumn],
-    format: str,
-    external_schema_type: str,
-    external_schema_bytes: bytes,
+    columns: typing.List[flytekit.models.types.StructuredDatasetType.DatasetColumn] = None,
+    format: str = '',
+    external_schema_type: str = None,
+    external_schema_bytes: bytes = None,
 )
 ```
 | Parameter | Type | Description |
@@ -395,7 +395,7 @@ Models _types_pb2.TypeStructure
 ```python
 class TypeStructure(
     tag: str,
-    dataclass_type: typing.Dict[str, ForwardRef('LiteralType')],
+    dataclass_type: typing.Dict[str, ForwardRef('LiteralType')] = None,
 )
 ```
 | Parameter | Type | Description |

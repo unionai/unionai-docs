@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.base_sql_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,12 +36,12 @@ and `flytekitplugins.athena.task.AthenaTask` for examples of how to use it as a 
 class SQLTask(
     name: str,
     query_template: str,
-    task_config: typing.Optional[~T],
-    task_type,
-    inputs: typing.Optional[typing.Dict[str, typing.Tuple[typing.Type, typing.Any]]],
-    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    kwargs,
+    task_config: typing.Optional[~T] = None,
+    task_type = 'sql_task',
+    inputs: typing.Optional[typing.Dict[str, typing.Tuple[typing.Type, typing.Any]]] = None,
+    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata] = None,
+    outputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
+    **kwargs,
 )
 ```
 This SQLTask should mostly just be used as a base class for other SQL task types and should not be used
@@ -57,7 +57,7 @@ directly. See `flytekit.extras.sqlite3.task.SQLite3Task`
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Tuple[typing.Type, typing.Any]]]` | |
 | `metadata` | `typing.Optional[flytekit.core.base_task.TaskMetadata]` | |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -113,8 +113,8 @@ directly. See `flytekit.extras.sqlite3.task.SQLite3Task`
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -123,8 +123,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -160,7 +160,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -168,7 +168,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -258,12 +258,12 @@ Returns the kubernetes pod definition (if any) that is used to run the task on h
 
 ```python
 def get_query(
-    kwargs,
+    **kwargs,
 ) -> str
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_sql()
 
@@ -316,7 +316,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def interpolate_query(
     query_template,
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This function will fill in the query template with the provided kwargs and return the interpolated query.
@@ -326,14 +326,14 @@ Please note that when SQL tasks run in Flyte, this step is done by the task exec
 | Parameter | Type | Description |
 |-|-|-|
 | `query_template` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execute()
 
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -344,7 +344,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -31,7 +31,7 @@ layout: py_api
 def annotate_exception_with_code(
     exception: flytekit.exceptions.user.FlyteUserException,
     fn: typing.Callable,
-    param_name: typing.Optional[str],
+    param_name: typing.Optional[str] = None,
 ) -> flytekit.exceptions.user.FlyteUserException
 ```
 Annotate the exception with the source code, and will be printed in the rich panel.
@@ -48,7 +48,7 @@ Annotate the exception with the source code, and will be printed in the rich pan
 ```python
 def get_source_code_from_fn(
     fn: typing.Callable,
-    param_name: typing.Optional[str],
+    param_name: typing.Optional[str] = None,
 ) -> (<class 'str'>, <class 'int'>)
 ```
 Get the source code of the function and the column offset of the parameter defined in the input signature.

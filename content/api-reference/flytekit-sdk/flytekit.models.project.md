@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.project
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +24,7 @@ class Project(
     id,
     name,
     description,
-    state,
+    state = 0,
 )
 ```
 A project represents a logical grouping used to organize entities (tasks, workflows, executions) in the Flyte

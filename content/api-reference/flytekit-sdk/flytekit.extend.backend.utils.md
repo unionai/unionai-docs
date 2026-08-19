@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -78,13 +78,13 @@ Return true if the phase is terminal.
 ```python
 def mirror_async_methods(
     func: typing.Callable,
-    kwargs,
+    **kwargs,
 ) -> typing.Coroutine
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `func` | `typing.Callable` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### render_task_template()
 

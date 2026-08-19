@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.interface
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,10 +26,10 @@ layout: py_api
 ```python
 class Parameter(
     var,
-    default,
-    required,
-    artifact_query: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery],
-    artifact_id: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID],
+    default = None,
+    required = None,
+    artifact_query: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactQuery] = None,
+    artifact_id: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID] = None,
 )
 ```
 Declares an input parameter.  A parameter is used as input to a launch plan and has
@@ -255,8 +255,8 @@ python map like functions
 class Variable(
     type,
     description,
-    artifact_partial_id: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID],
-    artifact_tag: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag],
+    artifact_partial_id: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactID] = None,
+    artifact_tag: typing.Optional[flyteidl.core.artifact_id_pb2.ArtifactTag] = None,
 )
 ```
 | Parameter | Type | Description |

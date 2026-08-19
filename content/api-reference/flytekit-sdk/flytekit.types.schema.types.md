@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,10 +59,10 @@ def generate_ordered_files(
 
 ```python
 class FlyteSchema(
-    local_path: typing.Optional[str],
-    remote_path: typing.Optional[str],
-    supported_mode: SchemaOpenMode,
-    downloader: typing.Optional[typing.Callable],
+    local_path: typing.Optional[str] = None,
+    remote_path: typing.Optional[str] = None,
+    supported_mode: SchemaOpenMode = SchemaOpenMode.WRITE,
+    downloader: typing.Optional[typing.Callable] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -89,11 +89,9 @@ class FlyteSchema(
 | [`deserialize_flyte_schema()`](#deserialize_flyte_schema) |  |
 | [`format()`](#format) |  |
 | [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
 | [`open()`](#open) | Returns a reader or writer depending on the mode of the object when created. |
 | [`serialize_flyte_schema()`](#serialize_flyte_schema) |  |
 | [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
 
 
 #### as_readonly()
@@ -132,7 +130,7 @@ def format()
 ```python
 def from_dict(
     d,
-    dialect,
+    dialect = None,
 )
 ```
 | Parameter | Type | Description |
@@ -140,27 +138,12 @@ def from_dict(
 | `d` |  | |
 | `dialect` |  | |
 
-#### from_json()
-
-```python
-def from_json(
-    data: str | bytes | bytearray,
-    decoder: collections.abc.Callable[[str | bytes | bytearray], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `data` | `str \| bytes \| bytearray` | |
-| `decoder` | `collections.abc.Callable[[str \| bytes \| bytearray], dict[typing.Any, typing.Any]]` | |
-| `from_dict_kwargs` | `typing.Any` | |
-
 #### open()
 
 ```python
 def open(
-    dataframe_fmt: typing.Optional[type],
-    override_mode: typing.Optional[SchemaOpenMode],
+    dataframe_fmt: typing.Optional[type] = None,
+    override_mode: typing.Optional[SchemaOpenMode] = None,
 ) -> typing.Union[SchemaReader, SchemaWriter]
 ```
 Returns a reader or writer depending on the mode of the object when created. This mode can be
@@ -185,19 +168,6 @@ def serialize_flyte_schema()
 ```python
 def to_dict()
 ```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], str | bytes | bytearray],
-    to_dict_kwargs: typing.Any,
-) -> str | bytes | bytearray
-```
-| Parameter | Type | Description |
-|-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], str \| bytes \| bytearray]` | |
-| `to_dict_kwargs` | `typing.Any` | |
-
 ## flytekit.types.schema.types.FlyteSchemaTransformer
 
 ### Parameters
@@ -525,23 +495,23 @@ class LocalIOSchemaReader(
 
 ```python
 def all(
-    kwargs,
+    **kwargs,
 ) -> T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### iter()
 
 ```python
 def iter(
-    kwargs,
+    **kwargs,
 ) -> typing.Generator[T, None, None]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.types.schema.types.LocalIOSchemaWriter
 
@@ -578,14 +548,14 @@ class LocalIOSchemaWriter(
 
 ```python
 def write(
-    dfs,
-    kwargs,
+    *dfs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `dfs` |  | |
-| `kwargs` | `**kwargs` | |
+| `*dfs` |  | |
+| `**kwargs` |  | |
 
 ## flytekit.types.schema.types.SchemaEngine
 
@@ -643,7 +613,7 @@ class SchemaHandler(
     object_type: Type,
     reader: Type[SchemaReader],
     writer: Type[SchemaWriter],
-    handles_remote_io: bool,
+    handles_remote_io: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -696,23 +666,23 @@ class SchemaReader(
 
 ```python
 def all(
-    kwargs,
+    **kwargs,
 ) -> T
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### iter()
 
 ```python
 def iter(
-    kwargs,
+    **kwargs,
 ) -> typing.Generator[T, None, None]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.types.schema.types.SchemaWriter
 
@@ -749,12 +719,12 @@ class SchemaWriter(
 
 ```python
 def write(
-    dfs,
-    kwargs,
+    *dfs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `dfs` |  | |
-| `kwargs` | `**kwargs` | |
+| `*dfs` |  | |
+| `**kwargs` |  | |
 

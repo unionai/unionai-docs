@@ -35,32 +35,32 @@ App specification.
 class App(
     name: str,
     container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate],
-    port: typing.Union[int, union.app._models.App.Port, NoneType],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    secrets: typing.List[flytekit.models.security.Secret],
-    args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
-    min_replicas: int,
-    max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
-    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
-    include: typing.List[str],
-    inputs: typing.List[union.app._models.Input],
-    env: dict,
-    cluster_pool: str,
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    requires_auth: bool,
-    type: typing.Optional[str],
-    description: typing.Optional[str],
-    framework_app: typing.Optional[typing.Any],
-    dependencies: typing.List[ForwardRef('App')],
-    config: typing.Optional[union.app._models.AppConfigProtocol],
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
-    links: typing.List[union.app._models.Link],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
+    port: typing.Union[int, union.app._models.App.Port, NoneType] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    secrets: typing.List[flytekit.models.security.Secret] = <factory>,
+    args: typing.Union[typing.List[str], str, NoneType] = None,
+    command: typing.Union[typing.List[str], str, NoneType] = None,
+    min_replicas: int = 0,
+    max_replicas: int = 1,
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType] = None,
+    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType] = None,
+    include: typing.List[str] = <factory>,
+    inputs: typing.List[union.app._models.Input] = <factory>,
+    env: dict = <factory>,
+    cluster_pool: str = 'default',
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator] = None,
+    requires_auth: bool = True,
+    type: typing.Optional[str] = None,
+    description: typing.Optional[str] = None,
+    framework_app: typing.Optional[typing.Any] = None,
+    dependencies: typing.List[ForwardRef('App')] = <factory>,
+    config: typing.Optional[union.app._models.AppConfigProtocol] = None,
+    subdomain: typing.Optional[str] = None,
+    custom_domain: typing.Optional[str] = None,
+    links: typing.List[union.app._models.Link] = <factory>,
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType] = None,
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -71,7 +71,7 @@ class App(
 | `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource limits for application. |
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource requests for application. |
 | `secrets` | `typing.List[flytekit.models.security.Secret]` | Secrets that are requested for application. |
-| `args` | `*args` | Entrypoint to start application. |
+| `args` | `typing.Union[typing.List[str], str, NoneType]` | Entrypoint to start application. |
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
@@ -112,7 +112,7 @@ class App(
 
 ```python
 def query_endpoint(
-    public: bool,
+    public: bool = False,
 ) -> union.app._models.URLQuery
 ```
 Query for endpoint.
@@ -141,7 +141,7 @@ class ArizeConfig(
 
 | Method | Description |
 |-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
+| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App._to_union_idl`. |
 
 
 #### before_to_union_idl()
@@ -171,32 +171,32 @@ FlyteConnector application specification that inherits from App.
 class FlyteConnectorApp(
     name: str,
     container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate],
-    port: typing.Union[int, union.app._models.App.Port],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    secrets: typing.List[flytekit.models.security.Secret],
-    args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
-    min_replicas: int,
-    max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
-    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
-    include: typing.List[str],
-    inputs: typing.List[union.app._models.Input],
-    env: dict,
-    cluster_pool: str,
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    requires_auth: bool,
-    type: str,
-    description: typing.Optional[str],
-    framework_app: typing.Optional[typing.Any],
-    dependencies: typing.List[ForwardRef('App')],
-    config: typing.Optional[union.app._models.AppConfigProtocol],
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
-    links: typing.List[union.app._models.Link],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
+    port: typing.Union[int, union.app._models.App.Port] = <factory>,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    secrets: typing.List[flytekit.models.security.Secret] = <factory>,
+    args: typing.Union[typing.List[str], str, NoneType] = None,
+    command: typing.Union[typing.List[str], str, NoneType] = None,
+    min_replicas: int = 1,
+    max_replicas: int = 1,
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType] = None,
+    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType] = None,
+    include: typing.List[str] = <factory>,
+    inputs: typing.List[union.app._models.Input] = <factory>,
+    env: dict = <factory>,
+    cluster_pool: str = 'default',
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator] = None,
+    requires_auth: bool = True,
+    type: str = 'connector',
+    description: typing.Optional[str] = None,
+    framework_app: typing.Optional[typing.Any] = None,
+    dependencies: typing.List[ForwardRef('App')] = <factory>,
+    config: typing.Optional[union.app._models.AppConfigProtocol] = None,
+    subdomain: typing.Optional[str] = None,
+    custom_domain: typing.Optional[str] = None,
+    links: typing.List[union.app._models.Link] = <factory>,
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType] = None,
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -207,7 +207,7 @@ class FlyteConnectorApp(
 | `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
 | `secrets` | `typing.List[flytekit.models.security.Secret]` | |
-| `args` | `*args` | |
+| `args` | `typing.Union[typing.List[str], str, NoneType]` | |
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | |
 | `min_replicas` | `int` | |
 | `max_replicas` | `int` | |
@@ -248,7 +248,7 @@ class FlyteConnectorApp(
 
 ```python
 def query_endpoint(
-    public: bool,
+    public: bool = False,
 ) -> union.app._models.URLQuery
 ```
 Query for endpoint.
@@ -271,12 +271,12 @@ Input for application.
 ```python
 class Input(
     value: typing.Union[str, flytekit.core.artifact.ArtifactQuery, union.app._models.URLQuery],
-    name: typing.Optional[str],
-    env_var: typing.Optional[str],
-    type: typing.Optional[union.app._models.Input.Type],
-    download: bool,
-    mount: typing.Optional[str],
-    ignore_patterns: list[str],
+    name: typing.Optional[str] = None,
+    env_var: typing.Optional[str] = None,
+    type: typing.Optional[union.app._models.Input.Type] = None,
+    download: bool = False,
+    mount: typing.Optional[str] = None,
+    ignore_patterns: list[str] = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -297,7 +297,7 @@ class Input(
 class Link(
     path: str,
     title: str,
-    is_relative: bool,
+    is_relative: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -325,7 +325,7 @@ class PhoenixConfig(
 
 | Method | Description |
 |-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
+| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App._to_union_idl`. |
 
 
 #### before_to_union_idl()
@@ -353,7 +353,7 @@ Modify app in place at the beginning of `App._to_union_idl`.
 ```python
 class URLQuery(
     name: str,
-    public: bool,
+    public: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -369,8 +369,8 @@ class URLQuery(
 class WeaveConfig(
     project: str,
     entity: str,
-    api_host: str,
-    host: str,
+    api_host: str = 'https://api.wandb.ai',
+    host: str = 'https://wandb.ai',
 )
 ```
 | Parameter | Type | Description |
@@ -384,7 +384,7 @@ class WeaveConfig(
 
 | Method | Description |
 |-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
+| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App._to_union_idl`. |
 
 
 #### before_to_union_idl()

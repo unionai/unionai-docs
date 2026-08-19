@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.class_based_resolver
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,14 +25,14 @@ loading process basically relies on the same sequence of things happening.
 
 ```python
 class ClassStorageTaskResolver(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.bin.entrypoint
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,7 +35,7 @@ layout: py_api
 
 ```python
 def get_container_error_timestamp(
-    e: typing.Optional[Exception],
+    e: typing.Optional[Exception] = None,
 ) -> google.protobuf.timestamp_pb2.Timestamp
 ```
 Get timestamp for ContainerError.
@@ -54,7 +54,7 @@ If a flyte exception is passed, use its timestamp, otherwise, use the current ti
 
 ```python
 def get_one_of(
-    args,
+    *args,
 ) -> str
 ```
 Helper function to iterate through a series of different environment variables. This function exists because for
@@ -63,7 +63,7 @@ some settings reference multiple environment variables for legacy reasons.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | List of environment variables to look for. |
+| `*args` |  | List of environment variables to look for. |
 
 **Returns:** The first defined value in the environment, or an empty string if nothing is found.
 
@@ -103,11 +103,11 @@ def normalize_inputs(
 ```python
 def setup_execution(
     raw_output_data_prefix: str,
-    output_metadata_prefix: typing.Optional[str],
-    checkpoint_path: typing.Optional[str],
-    prev_checkpoint: typing.Optional[str],
-    dynamic_addl_distro: typing.Optional[str],
-    dynamic_dest_dir: typing.Optional[str],
+    output_metadata_prefix: typing.Optional[str] = None,
+    checkpoint_path: typing.Optional[str] = None,
+    prev_checkpoint: typing.Optional[str] = None,
+    dynamic_addl_distro: typing.Optional[str] = None,
+    dynamic_dest_dir: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.inference.ollama.serve
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,9 +27,9 @@ Represents the configuration for a model used in a Kubernetes pod template.
 ```python
 class Model(
     name: str,
-    mem: str,
-    cpu: int,
-    modelfile: typing.Optional[str],
+    mem: str = '500Mi',
+    cpu: int = 1,
+    modelfile: typing.Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -46,13 +46,13 @@ class Model(
 ```python
 class Ollama(
     model: flytekitplugins.inference.ollama.serve.Model,
-    image: str,
-    port: int,
-    cpu: int,
-    gpu: int,
-    mem: str,
-    download_inputs_mem: str,
-    download_inputs_cpu: int,
+    image: str = 'ollama/ollama',
+    port: int = 11434,
+    cpu: int = 1,
+    gpu: int = 1,
+    mem: str = '15Gi',
+    download_inputs_mem: str = '500Mi',
+    download_inputs_cpu: int = 2,
 )
 ```
 Initialize Ollama class for managing a Kubernetes pod template.

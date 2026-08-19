@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.subprocess
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,11 +23,11 @@ layout: py_api
 ```python
 def check_call(
     cmd_args,
-    kwargs,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `cmd_args` |  | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

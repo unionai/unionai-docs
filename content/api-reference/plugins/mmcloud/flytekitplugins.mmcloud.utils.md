@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.mmcloud.utils
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,8 +32,8 @@ layout: py_api
 
 ```python
 def async_check_output(
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 This behaves similarly to subprocess.check_output().
@@ -41,15 +41,15 @@ This behaves similarly to subprocess.check_output().
 
 | Parameter | Type | Description |
 |-|-|-|
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### flyte_to_mmcloud_resources()
 
 ```python
 def flyte_to_mmcloud_resources(
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    limits: typing.Optional[flytekit.core.resources.Resources],
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
 ) -> typing.Tuple[int, int, int, int]
 ```
 Map Flyte (K8s) resources to MMCloud resources.

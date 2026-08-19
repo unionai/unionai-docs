@@ -36,37 +36,37 @@ App backed by FastAPI.
 ```python
 class SGLangApp(
     name: str,
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType],
-    port: int,
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    secrets: typing.List[flytekit.models.security.Secret],
-    args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
-    min_replicas: int,
-    max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
-    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
-    include: typing.List[str],
-    inputs: typing.List[union.app._models.Input],
-    env: dict,
-    cluster_pool: str,
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    requires_auth: bool,
-    type: str,
-    description: typing.Optional[str],
-    framework_app: typing.Optional[typing.Any],
-    dependencies: typing.List[ForwardRef('App')],
-    config: typing.Optional[union.app._models.AppConfigProtocol],
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
-    links: typing.List[union.app._models.Link],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
-    extra_args: typing.Union[str, typing.List[str]],
-    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
-    model_id: str,
-    stream_model: bool,
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType] = None,
+    port: int = 8000,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    secrets: typing.List[flytekit.models.security.Secret] = <factory>,
+    args: typing.Union[typing.List[str], str, NoneType] = None,
+    command: typing.Union[typing.List[str], str, NoneType] = None,
+    min_replicas: int = 0,
+    max_replicas: int = 1,
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType] = None,
+    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType] = None,
+    include: typing.List[str] = <factory>,
+    inputs: typing.List[union.app._models.Input] = <factory>,
+    env: dict = <factory>,
+    cluster_pool: str = 'default',
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator] = None,
+    requires_auth: bool = True,
+    type: str = 'SGLang',
+    description: typing.Optional[str] = None,
+    framework_app: typing.Optional[typing.Any] = None,
+    dependencies: typing.List[ForwardRef('App')] = <factory>,
+    config: typing.Optional[union.app._models.AppConfigProtocol] = None,
+    subdomain: typing.Optional[str] = None,
+    custom_domain: typing.Optional[str] = None,
+    links: typing.List[union.app._models.Link] = <factory>,
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType] = None,
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
+    extra_args: typing.Union[str, typing.List[str]] = '',
+    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery] = '',
+    model_id: str = '',
+    stream_model: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -77,7 +77,7 @@ class SGLangApp(
 | `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource limits for application. |
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource requests for application. |
 | `secrets` | `typing.List[flytekit.models.security.Secret]` | Secrets that are requested for application. |
-| `args` | `*args` | Entrypoint to start application. |
+| `args` | `typing.Union[typing.List[str], str, NoneType]` | Entrypoint to start application. |
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
@@ -122,7 +122,7 @@ class SGLangApp(
 
 ```python
 def query_endpoint(
-    public: bool,
+    public: bool = False,
 ) -> union.app._models.URLQuery
 ```
 Query for endpoint.
@@ -145,37 +145,37 @@ App backed by FastAPI.
 ```python
 class VLLMApp(
     name: str,
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType],
-    port: int,
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    secrets: typing.List[flytekit.models.security.Secret],
-    args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
-    min_replicas: int,
-    max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
-    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
-    include: typing.List[str],
-    inputs: typing.List[union.app._models.Input],
-    env: dict,
-    cluster_pool: str,
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    requires_auth: bool,
-    type: str,
-    description: typing.Optional[str],
-    framework_app: typing.Optional[typing.Any],
-    dependencies: typing.List[ForwardRef('App')],
-    config: typing.Optional[union.app._models.AppConfigProtocol],
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
-    links: typing.List[union.app._models.Link],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
-    extra_args: typing.Union[str, typing.List[str]],
-    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
-    model_id: str,
-    stream_model: bool,
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType] = None,
+    port: int = 8000,
+    limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    requests: typing.Optional[flytekit.core.resources.Resources] = None,
+    secrets: typing.List[flytekit.models.security.Secret] = <factory>,
+    args: typing.Union[typing.List[str], str, NoneType] = None,
+    command: typing.Union[typing.List[str], str, NoneType] = None,
+    min_replicas: int = 0,
+    max_replicas: int = 1,
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType] = None,
+    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType] = None,
+    include: typing.List[str] = <factory>,
+    inputs: typing.List[union.app._models.Input] = <factory>,
+    env: dict = <factory>,
+    cluster_pool: str = 'default',
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator] = None,
+    requires_auth: bool = True,
+    type: str = 'vLLM',
+    description: typing.Optional[str] = None,
+    framework_app: typing.Optional[typing.Any] = None,
+    dependencies: typing.List[ForwardRef('App')] = <factory>,
+    config: typing.Optional[union.app._models.AppConfigProtocol] = None,
+    subdomain: typing.Optional[str] = None,
+    custom_domain: typing.Optional[str] = None,
+    links: typing.List[union.app._models.Link] = <factory>,
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType] = None,
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
+    extra_args: typing.Union[str, typing.List[str]] = '',
+    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery] = '',
+    model_id: str = '',
+    stream_model: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -186,7 +186,7 @@ class VLLMApp(
 | `limits` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource limits for application. |
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` | Compute resource requests for application. |
 | `secrets` | `typing.List[flytekit.models.security.Secret]` | Secrets that are requested for application. |
-| `args` | `*args` | Entrypoint to start application. |
+| `args` | `typing.Union[typing.List[str], str, NoneType]` | Entrypoint to start application. |
 | `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to start application. |
 | `min_replicas` | `int` | Minimum number of replicas (ignore if autoscaling is set). |
 | `max_replicas` | `int` | Maximum number of replicas (ignore if autoscaling is set). |
@@ -231,7 +231,7 @@ class VLLMApp(
 
 ```python
 def query_endpoint(
-    public: bool,
+    public: bool = False,
 ) -> union.app._models.URLQuery
 ```
 Query for endpoint.

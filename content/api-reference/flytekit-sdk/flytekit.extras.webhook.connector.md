@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.webhook.connector
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -41,7 +41,7 @@ and processes the responses to determine the success or failure of the task.
 
 ```python
 class WebhookConnector(
-    client: typing.Optional[httpx.AsyncClient],
+    client: typing.Optional[httpx.AsyncClient] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -67,8 +67,8 @@ class WebhookConnector(
 def do(
     task_template: flytekit.models.task.TaskTemplate,
     output_prefix: str,
-    inputs: typing.Optional[flytekit.models.literals.LiteralMap],
-    kwargs,
+    inputs: typing.Optional[flytekit.models.literals.LiteralMap] = None,
+    **kwargs,
 ) -> flytekit.extend.backend.base_connector.Resource
 ```
 This method processes the webhook task and sends an HTTP request.
@@ -81,5 +81,5 @@ It uses asyncio to send the request and process the response using the httpx lib
 | `task_template` | `flytekit.models.task.TaskTemplate` | |
 | `output_prefix` | `str` | |
 | `inputs` | `typing.Optional[flytekit.models.literals.LiteralMap]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekitplugins.identity_aware_proxy.cli
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ layout: py_api
 def get_gcp_secret_manager_secret(
     project_id: str,
     secret_id: str,
-    version: typing.Optional[str],
+    version: typing.Optional[str] = 'latest',
 )
 ```
 Retrieve secret from GCP secret manager.
@@ -93,7 +93,7 @@ class GCPIdentityAwareProxyAuthenticator(
     audience: str,
     client_id: str,
     client_secret: str,
-    verify: typing.Union[bool, str, NoneType],
+    verify: typing.Union[bool, str, NoneType] = None,
 )
 ```
 Initialize with default creds from KeyStore using the audience name.

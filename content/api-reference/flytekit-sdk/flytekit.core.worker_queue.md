@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.worker_queue
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -97,7 +97,7 @@ Add an entity along with the requested inputs to be submitted to Admin for runni
 
 ```python
 def for_sandbox(
-    exec_prefix: typing.Optional[str],
+    exec_prefix: typing.Optional[str] = None,
 ) -> Controller
 ```
 | Parameter | Type | Description |
@@ -199,9 +199,9 @@ Render the callstack as a deck presentation to be shown after eager workflow exe
 class Update(
     work_item: WorkItem,
     idx: int,
-    status: typing.Optional[ItemStatus],
-    wf_exec: typing.Optional[FlyteWorkflowExecution],
-    error: typing.Optional[BaseException],
+    status: typing.Optional[ItemStatus] = None,
+    wf_exec: typing.Optional[FlyteWorkflowExecution] = None,
+    error: typing.Optional[BaseException] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -224,12 +224,12 @@ to run the entity with, an arbitrary map, can't make this frozen.
 class WorkItem(
     entity: RunnableEntity,
     input_kwargs: dict[str, typing.Any],
-    result: typing.Any,
-    error: typing.Optional[BaseException],
-    status: ItemStatus,
-    wf_exec: typing.Optional[FlyteWorkflowExecution],
-    python_interface: typing.Optional[Interface],
-    uuid: typing.Optional[uuid.UUID],
+    result: typing.Any = None,
+    error: typing.Optional[BaseException] = None,
+    status: ItemStatus = ItemStatus.PENDING,
+    wf_exec: typing.Optional[FlyteWorkflowExecution] = None,
+    python_interface: typing.Optional[Interface] = None,
+    uuid: typing.Optional[uuid.UUID] = None,
 )
 ```
 | Parameter | Type | Description |

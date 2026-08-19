@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.base_task
-version: 1.16.26
+version: 1.16.28
 variants: +flyte +union
 layout: py_api
 ---
@@ -67,7 +67,7 @@ Exception that can be raised to ignore task outputs.
 
 ```python
 def kwtypes(
-    kwargs,
+    **kwargs,
 ) -> typing.OrderedDict[str, typing.Type]
 ```
 This is a small helper function to convert the keyword arguments to an OrderedDict of types.
@@ -79,7 +79,7 @@ kwtypes(a=int, b=str)
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ## flytekit.core.base_task.IgnoreOutputs
 
@@ -99,13 +99,13 @@ not have a python function to be executed. Otherwise refer to {{&lt; py_class_re
 class PythonTask(
     task_type: str,
     name: str,
-    task_config: typing.Optional[~T],
-    interface: typing.Optional[flytekit.core.interface.Interface],
-    environment: typing.Optional[typing.Dict[str, str]],
-    disable_deck: typing.Optional[bool],
-    enable_deck: typing.Optional[bool],
-    deck_fields: typing.Optional[typing.Tuple[flytekit.deck.deck.DeckField, ...]],
-    kwargs,
+    task_config: typing.Optional[~T] = None,
+    interface: typing.Optional[flytekit.core.interface.Interface] = None,
+    environment: typing.Optional[typing.Dict[str, str]] = None,
+    disable_deck: typing.Optional[bool] = None,
+    enable_deck: typing.Optional[bool] = None,
+    deck_fields: typing.Optional[typing.Tuple[flytekit.deck.deck.DeckField, ...]] = (<DeckField.SOURCE_CODE: 'Source Code'>, <DeckField.DEPENDENCIES: 'Dependencies'>, <DeckField.TIMELINE: 'Timeline'>, <DeckField.INPUT: 'Input'>, <DeckField.OUTPUT: 'Output'>),
+    **kwargs,
 )
 ```
 task_type (str): defines a unique task-type for every new extension. If a backend plugin is required then
@@ -113,7 +113,7 @@ task_type (str): defines a unique task-type for every new extension. If a backen
 name (str): A unique name for the task instantiation. This is unique for every instance of task.
 task_config (T): Configuration for the task. This is used to configure the specific plugin that handles this
     task
-interface (Optional[Interface]): A python native typed interface ``(inputs) -&gt; outputs`` that declares the
+interface (Optional[Interface]): A python native typed interface ``(inputs) -> outputs`` that declares the
     signature of the task
 environment (Optional[Dict[str, str]]): Any environment variables that should be supplied during the
     execution of the task. Supplied as a dictionary of key/value pairs
@@ -133,7 +133,7 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 | `disable_deck` | `typing.Optional[bool]` | |
 | `enable_deck` | `typing.Optional[bool]` | |
 | `deck_fields` | `typing.Optional[typing.Tuple[flytekit.deck.deck.DeckField, ...]]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -186,8 +186,8 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, NoneType]
 ```
 Generates a node that encapsulates this task in a workflow definition.
@@ -196,8 +196,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### construct_node_metadata()
 
@@ -233,7 +233,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -241,7 +241,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### find_lhs()
 
@@ -378,7 +378,7 @@ Returns the python type for the specified output variable by name.
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -389,7 +389,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -463,11 +463,11 @@ class Task(
     task_type: str,
     name: str,
     interface: flytekit.models.interface.TypedInterface,
-    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata],
-    task_type_version,
-    security_ctx: typing.Optional[flytekit.models.security.SecurityContext],
-    docs: typing.Optional[flytekit.models.documentation.Documentation],
-    kwargs,
+    metadata: typing.Optional[flytekit.core.base_task.TaskMetadata] = None,
+    task_type_version = 0,
+    security_ctx: typing.Optional[flytekit.models.security.SecurityContext] = None,
+    docs: typing.Optional[flytekit.models.documentation.Documentation] = None,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
@@ -479,7 +479,7 @@ class Task(
 | `task_type_version` |  | |
 | `security_ctx` | `typing.Optional[flytekit.models.security.SecurityContext]` | |
 | `docs` | `typing.Optional[flytekit.models.documentation.Documentation]` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 ### Properties
 
@@ -521,15 +521,15 @@ class Task(
 ```python
 def compile(
     ctx: flytekit.core.context_manager.FlyteContext,
-    args,
-    kwargs,
+    *args,
+    **kwargs,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `args` | `*args` | |
-| `kwargs` | `**kwargs` | |
+| `*args` |  | |
+| `**kwargs` |  | |
 
 #### dispatch_execute()
 
@@ -552,7 +552,7 @@ This method is also invoked during runtime.
 
 ```python
 def execute(
-    kwargs,
+    **kwargs,
 ) -> typing.Any
 ```
 This method will be invoked to execute the task.
@@ -560,7 +560,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### get_config()
 
@@ -696,7 +696,7 @@ Returns the python native type for the given output variable
 ```python
 def local_execute(
     ctx: flytekit.core.context_manager.FlyteContext,
-    kwargs,
+    **kwargs,
 ) -> typing.Union[typing.Tuple[flytekit.core.promise.Promise], flytekit.core.promise.Promise, flytekit.core.promise.VoidPromise, typing.Coroutine, NoneType]
 ```
 This function is used only in the local execution path and is responsible for calling dispatch execute.
@@ -707,7 +707,7 @@ Python native values).
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` | |
-| `kwargs` | `**kwargs` | |
+| `**kwargs` |  | |
 
 #### local_execution_mode()
 
@@ -754,7 +754,7 @@ Call dispatch_execute, in the context of a local sandbox execution. Not invoked 
 Metadata for a Task. Things like retries and whether or not caching is turned on, and cache version are specified
 here.
 
-See the :std:ref:`IDL &lt;idl:protos/docs/core/core:taskmetadata&gt;` for the protobuf definition.
+See the `IDL` for the protobuf definition.
 
 
 
@@ -762,25 +762,25 @@ See the :std:ref:`IDL &lt;idl:protos/docs/core/core:taskmetadata&gt;` for the pr
 
 ```python
 class TaskMetadata(
-    cache: bool,
-    cache_serialize: bool,
-    cache_version: str,
-    cache_ignore_input_vars: typing.Tuple[str, ...],
-    interruptible: typing.Optional[bool],
-    deprecated: str,
-    retries: int,
-    timeout: typing.Union[datetime.timedelta, int, NoneType],
-    pod_template_name: typing.Optional[str],
-    generates_deck: bool,
-    is_eager: bool,
-    labels: typing.Optional[dict[str, str]],
-    annotations: typing.Optional[dict[str, str]],
+    cache: bool = False,
+    cache_serialize: bool = False,
+    cache_version: str = '',
+    cache_ignore_input_vars: typing.Tuple[str, ...] = (),
+    interruptible: typing.Optional[bool] = None,
+    deprecated: str = '',
+    retries: int = 0,
+    timeout: typing.Union[datetime.timedelta, int, NoneType] = None,
+    pod_template_name: typing.Optional[str] = None,
+    generates_deck: bool = False,
+    is_eager: bool = False,
+    labels: typing.Optional[dict[str, str]] = None,
+    annotations: typing.Optional[dict[str, str]] = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `cache` | `bool` | Indicates if caching should be enabled. See :std:ref:`Caching &lt;cookbook:caching&gt;`. |
-| `cache_serialize` | `bool` | Indicates if identical (i.e. same inputs) instances of this task should be executed in serial when caching is enabled. See :std:ref:`Caching &lt;cookbook:caching&gt;`. |
+| `cache` | `bool` | Indicates if caching should be enabled. See `Caching`. |
+| `cache_serialize` | `bool` | Indicates if identical (i.e. same inputs) instances of this task should be executed in serial when caching is enabled. See `Caching`. |
 | `cache_version` | `str` | Version to be used for the cached value. |
 | `cache_ignore_input_vars` | `typing.Tuple[str, ...]` | Input variables that should not be included when calculating hash for cache. |
 | `interruptible` | `typing.Optional[bool]` | Indicates that this task can be interrupted and/or scheduled on nodes with lower QoS guarantees that can include pre-emption. |
