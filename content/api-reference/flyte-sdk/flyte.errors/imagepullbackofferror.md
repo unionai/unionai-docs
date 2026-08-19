@@ -1,6 +1,6 @@
 ---
 title: ImagePullBackOffError
-version: 2.6.1
+version: 2.6.2
 variants: +flyte +union
 layout: py_api
 ---
