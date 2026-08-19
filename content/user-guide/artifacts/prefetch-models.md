@@ -41,12 +41,12 @@ from flyte.remote import Artifact
 model = Artifact.get("SmolLM2-135M-Instruct")
 ```
 
-Or find it by where it came from. The `hf://` source reference is recorded automatically:
+Or find it by where it came from. The source repo and commit are recorded as searchable metadata:
 
 ```bash
-flyte get artifact --source-external-ref hf://HuggingFaceTB/SmolLM2-135M-Instruct
+flyte get artifact --attr source_repo=HuggingFaceTB/SmolLM2-135M-Instruct
 ```
 
-That same reference is what makes a prefetched model traceable back to its Hub repo and commit in the [lineage view](./lineage).
+Those `source_repo` and `source_commit` attributes are what make a prefetched model traceable back to its Hub repo and commit.
 
 Once prefetched, mount the model into a serving app with an artifact parameter. See [Use artifacts in apps](./artifacts-in-apps).

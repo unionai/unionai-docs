@@ -51,7 +51,7 @@ async def train() -> tuple[File, float]:
 
 `flyte.artifacts.Metadata` carries the identity of the artifact. Only `name` is required. If you leave out `version`, the version comes from the producing run, so every execution registers a distinct version. You can also set a `description`, string-valued `attrs` for searching and filtering, a `kind` (`"model"`, `"data"`, or `"generic"`), and a card.
 
-For models there is a helper that fills in the standard fields and sets `kind="model"`:
+For models there is a helper that fills in the standard fields and records the artifact's kind as `model`:
 
 ```python
 card = artifacts.Card.create_from(content=card_html, format="html", card_type="model")
