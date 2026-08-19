@@ -32,7 +32,7 @@ async def train() -> File:
 Every run of this task registers a new version of `trained-model`. Union records the producing run on the artifact, so you can always trace a version back to the execution that created it.
 
 > [!WARNING] Both parts are required
-> Without `produces_artifacts=True`, the `flyte.artifacts.new()` wrapper is silently unwrapped and the task returns a plain value. No artifact is registered, no trigger fires, and there is nothing for an app to bind to.
+> The wrapper is stripped from the output value either way. Without `produces_artifacts=True` the platform never extracts the metadata, so no artifact is registered, no trigger fires, and there is nothing for an app to bind to. Nothing warns you.
 
 ## What can be an artifact
 

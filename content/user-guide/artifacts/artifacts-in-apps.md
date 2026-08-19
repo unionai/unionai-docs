@@ -14,7 +14,7 @@ A serving app usually needs model weights or reference data on disk before it st
 import flyte
 import flyte.app
 
-env = flyte.AppEnvironment(
+env = flyte.app.AppEnvironment(
     name="classifier-api",
     resources=flyte.Resources(cpu="2", memory="8Gi"),
     parameters=[

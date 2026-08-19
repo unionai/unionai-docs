@@ -12,6 +12,7 @@ Serving apps and training tasks should not download model weights from the Huggi
 
 ```python
 import flyte
+import flyte.prefetch
 
 flyte.init_from_config()
 
@@ -50,9 +51,14 @@ from flyte.prefetch import ShardConfig, VLLMShardArgs
 run = flyte.prefetch.hf_model(
     repo="meta-llama/Llama-2-70b-hf",
     shard_config=ShardConfig(engine="vllm", args=VLLMShardArgs(tensor_parallel_size=8)),
+    resources=flyte.Resources(cpu="8", memory="64Gi", disk="500Gi", gpu="A100:8"),
     hf_token_key="HF_TOKEN",
 )
 ```
+
+Sharding needs an accelerator, and enough disk for the weights. The default
+`resources` for `flyte.prefetch.hf_model()` are `cpu="2", memory="8Gi", disk="50Gi"`
+with no GPU, so set them explicitly to match the model you are sharding.
 
 ## From the CLI
 
