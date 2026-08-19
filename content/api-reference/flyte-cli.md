@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.0
+version: 2.6.2
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -23,7 +23,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
@@ -45,7 +45,7 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -79,7 +79,7 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `volume` | [`explore⁺`](#flyte-explore-volume)  |
@@ -104,7 +104,7 @@ This is the command line interface for Flyte.
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -378,8 +378,9 @@ routing to it and nothing else. The cluster owns that name: `flyte create
 queue` is rejected for it, and the queue's clusters/pool can no longer be
 edited directly. The name 'default' is reserved and cannot be used.
 
-Without --pool the cluster joins the pool named 'default', which is created
-on demand; any other pool must already exist.
+Without --pool the cluster joins the reserved pool named 'default'; any
+other pool must already exist and be live. When the default pool has been
+deleted, --pool is required — name a pool or undelete the default pool.
 
 Examples:
 
@@ -433,8 +434,15 @@ Creates a configuration file for Flyte CLI.
 If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
 If the file already exists, it will raise an error unless the `--force` option is used.
 
+To point the CLI at a local devbox cluster started with `flyte start devbox`, use the `--devbox` shortcut:
+
+```bash
+$ flyte create config --devbox
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--devbox` | `boolean` | `False` | Configure for a local devbox cluster (see 'flyte start devbox'). Shortcut for '--endpoint localhost:30080 --insecure --project flytesnacks --domain development --builder local'. Mutually exclusive with --endpoint; --project/--domain may still be overridden. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | Endpoint of the Flyte backend. |
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
 | `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
@@ -863,7 +871,10 @@ restored with `flyte undelete cluster-pool`.
 
 The pool must be empty: no member clusters and no live queues assigned to it.
 Queues that are themselves deleted do not block it, but they can only be
-undeleted once the pool is. The reserved 'default' pool cannot be deleted.
+undeleted once the pool is. The reserved 'default' pool follows the same
+rules: deleting it requires draining and deleting its 'default' queue first,
+and while the pool is deleted, `flyte create cluster` without --pool is
+rejected instead of falling back to it.
 
 Examples:
 
@@ -935,11 +946,16 @@ $ flyte --org my-org delete policy my-policy --yes
 Delete a queue.
 
 The delete is a soft delete: the queue stops being scheduled on and drops out
-of `flyte get queue`, but it keeps its name reserved — creating a queue with
+of the `flyte get queue` listing (fetching it by name still works and shows
+when it was deleted), but it keeps its name reserved — creating a queue with
 the same name is rejected until it is restored with `flyte undelete queue`.
 
 The queue must already be drained, so drain it first and wait for its status
-to reach 'drained'. The reserved 'default' queue cannot be deleted.
+to reach 'drained'. A queue referenced as run.default_queue in settings at
+any scope cannot be deleted until those settings are updated or unset. The
+reserved 'default' queue is no exception: it can be drained and deleted like
+any other queue, but while it is deleted, runs that name no queue (and have
+no run.default_queue setting) are rejected.
 
 Examples:
 
@@ -1264,7 +1280,8 @@ Generate documentation.
 
 Retrieve resources from a Flyte deployment.
 
-You can get information about projects, runs, tasks, actions, secrets, logs and input/output values.
+You can get information about projects, runs, tasks, actions, secrets, logs and input/output values,
+as well as the status of the local devbox cluster.
 
 Each command supports optional parameters to filter or specify the resource you want to retrieve.
 
@@ -1497,6 +1514,27 @@ Shows the automatically detected configuration to connect with the remote backen
 
 The configuration will include the endpoint, organization, and other settings that are used by the CLI.
 
+#### flyte get devbox
+
+**`flyte get devbox [OPTIONS]`**
+
+Get the status of the local Flyte devbox cluster started with `flyte start devbox`.
+
+Shows the run state, the UI and image registry endpoints, the container image
+version in use, and where the cluster keeps its state on disk.
+
+Pass an output format to the top-level command for a machine-readable report:
+
+
+```bash
+flyte -of json-raw get devbox
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--no-probes` | `boolean` | `False` | Skip the HTTP readiness probe and the container resource usage sample, for a faster, offline check. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 #### flyte get io
 
 **`flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]`**
@@ -1632,8 +1670,10 @@ If NAME is provided, fetch that specific queue with its current metrics.
 Use --watch to stream live metrics with progress bars.
 Otherwise list all queues.
 
-Deleted queues are hidden by default; --deleted lists them instead, which is
-how you find a queue to pass to `flyte undelete queue`.
+Deleted queues are hidden from the listing by default; --deleted lists them
+instead, which is how you find a queue to pass to `flyte undelete queue`.
+Fetching a queue by NAME returns it even when deleted, showing its deletion
+time.
 
 --state narrows the listing to queues in one state (active, draining or
 drained); the server does the filtering.

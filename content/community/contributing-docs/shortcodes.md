@@ -45,7 +45,7 @@ Examples:
 * A shortcode with parameters
 
 ```markdown
-{{</* link-card target="union-sdk" icon="workflow" title="Union SDK" */>}}
+{{</* link-card target="union-sdk" icon="code-square" title="Union SDK" */>}}
 The Union SDK provides the Python API for building Union workflows and apps.
 {{</* /link-card */>}}
 ```

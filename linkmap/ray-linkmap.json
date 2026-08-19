@@ -3,6 +3,8 @@
     "flyteplugins.ray": "/api-reference/integrations/ray/"
   },
   "identifiers": {
+    "flyteplugins.ray.AutoscalerOptionsConfig": "/api-reference/integrations/ray/autoscaleroptionsconfig/",
+    "AutoscalerOptionsConfig": "/api-reference/integrations/ray/autoscaleroptionsconfig/",
     "flyteplugins.ray.HeadNodeConfig": "/api-reference/integrations/ray/headnodeconfig/",
     "HeadNodeConfig": "/api-reference/integrations/ray/headnodeconfig/",
     "flyteplugins.ray.RayJobConfig": "/api-reference/integrations/ray/rayjobconfig/",

@@ -11,7 +11,7 @@ An app is a long-running service that Flyte keeps up, rather than a job that run
 Apps are declared the same way tasks are. An `AppEnvironment` names the image, the port, and the scaling behavior, and the code inside it is an ordinary web application.
 
 ```python
-app = flyte.AppEnvironment(name="dashboard", image=..., port=8080)
+app = flyte.app.AppEnvironment(name="dashboard", image=..., port=8080)
 ```
 
 Because apps and tasks live in the same project, an app can read what a task produced without moving data between systems, and a task can call an app it depends on.

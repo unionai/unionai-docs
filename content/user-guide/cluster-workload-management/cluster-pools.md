@@ -236,14 +236,22 @@ before running it.
 
 ## Delete a pool
 
-The `default` pool cannot be deleted. A custom pool can be deleted only when it
-contains **no clusters and no queues**; otherwise the request is rejected. Empty
-the pool first:
+A pool can be deleted only when it is **empty** — it contains no clusters and no
+live queues; otherwise the request is rejected. (A queue that is itself
+soft-deleted doesn't block the deletion, but it can only be restored after the
+pool has been restored.) Empty the pool first:
 
 1. Delete the member [clusters](./clusters#delete-a-cluster). Deleting a cluster
    also deletes its [co-named queue](./clusters#the-co-named-queue), so the
    queues that came with the clusters go with them.
 2. [Delete](./queues#delete-a-queue) any queue you created in the pool yourself.
+
+The `default` pool follows the same rules: it can be deleted once emptied, which
+additionally means [draining and deleting](./queues#delete-a-queue) the org-wide
+`default` queue that lives in it — nothing is deleted on the pool's behalf.
+While the `default` pool is deleted, registering a cluster without naming a pool
+is rejected instead of falling back to it: name a pool explicitly, or undelete
+`default` first.
 
 {{< tabs "delete-cluster-pool" >}}
 {{< tab "CLI" >}}
