@@ -118,7 +118,7 @@ flyte run --tracked --tracked-strict my_example.py my_task
 
 ### Naming a tracked run
 
-Tracked runs are named `local-<id>` unless you pass `--name`. A name you supply must be at most 30 characters and must not begin with `u` or `r`, both of which are reserved for runs the platform names itself. A name that breaks either rule fails before the run starts.
+Tracked runs are named `local-<id>` unless you pass `--name`. Tracking adds two rules on top of the usual `--name` behavior: the name must be at most 30 characters, and it must not begin with `u` or `r`, both of which are reserved for runs the platform names itself. A name that breaks either rule fails before the run starts.
 
 ### Tracking every local run
 
