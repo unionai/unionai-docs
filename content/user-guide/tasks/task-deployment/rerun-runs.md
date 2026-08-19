@@ -129,6 +129,10 @@ flyte run --rerun-from <run-name> main.py main
 | `flyte run --rerun-from <run> <file> <task>` | local | prior run's |
 | `flyte rerun <run>` | fetched from backend | prior run's |
 
+Both commands start the run over from the beginning. To instead keep the successful actions of a
+failed run and re-execute only what failed, add `--recover`. See
+[Recover a failed run](./recover-runs).
+
 ## Rerun programmatically
 
 Use `flyte.rerun()` to rerun from Python. Like the CLI, it fetches the prior run's task and inputs
@@ -165,5 +169,6 @@ flyte.with_runcontext(
 
 ## Related
 
+- [Recover a failed run](./recover-runs): re-run only what failed, reusing the actions that succeeded.
 - [Interact with runs and actions](./interacting-with-runs): retrieve, monitor, and inspect runs and actions.
 - [Run command options](./run-command-options): the full set of `flyte run` options.
