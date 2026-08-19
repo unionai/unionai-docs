@@ -13,5 +13,23 @@ stable = "v1.16.26.4"
 enumerated = [
   "v1.16.26.3",
 ]
+# v1.16.26.2 is deliberately not enumerated. It documents exactly the same
+# product state as .3 (flytekit 1.16.26, union 0.1.203); .3 only makes heading
+# anchors readable (DOC-1357). Serving it would add a near-duplicate tree for no
+# reader benefit. Same rule applied to v2.5.18.2 on main: a pinned version earns
+# its place by documenting a distinct product state, not by having once been
+# stable.
+# .4 IS enumerated: it is the outgoing stable, rotated in by the cut. It carries
+# the same product state as .3 but a different docs state (the icon fixes, the
+# search and CI plumbing accumulated since 2026-08-10).
 latest = false
+# The v1 line is withheld from search so Google consolidates on v2 (DOC-1291).
+# This was already the effective state, but only by accident: the Pages
+# preview-alias emitted X-Robots-Tag: noindex (DOC-1332) while this build emitted
+# <meta name="robots" content="index,follow">, so the two directives contradicted
+# each other and the more restrictive one happened to win. Setting this makes the
+# meta tag agree, so the line stays out of the index even if that header changes.
+# Note v1 is ACTIVE, not frozen -- it still takes flytekit 1.x releases and new
+# cuts. This withholds it from Google; it stays reachable by direct link and by
+# on-site search.
 indexed = false
