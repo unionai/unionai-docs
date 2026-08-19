@@ -61,12 +61,14 @@ spark_env = flyte.TaskEnvironment(
 
 There are two places to customize the driver and executor pods:
 
-- **`TaskEnvironment(pod_template=...)`** — the task pod spec, used as the base pod template for *both* the driver and the executor pods.
-- **`Spark(driver_pod=...)` / `Spark(executor_pod=...)`** — role-specific specs that *replace* that base template for the driver or the executor.
+- **`TaskEnvironment(pod_template=...)`**: the task pod spec, used as the base pod template for *both* the driver and the executor pods.
+- **`Spark(driver_pod=...)` / `Spark(executor_pod=...)`**: role-specific specs that replace that base pod template for the driver or the executor.
+
+Both use `flyte.PodTemplate`. See [Pod templates](../../user-guide/tasks/task-configuration/pod-templates) for the general rules and for the `kubernetes` package the `V1*` types below come from.
 
 #### On the task environment
 
-Use this when the same customization (security context, tolerations, node selector, volumes, labels) should apply to driver and executor alike. The spec must contain the primary container — the container Flyte injects the task image and command into:
+Use this when the same customization (security context, tolerations, node selector, volumes, labels) should apply to driver and executor alike. The spec must contain the primary container, the container Flyte injects the task image and command into, whose name defaults to `primary`:
 
 ```python
 from kubernetes.client import V1Container, V1PodSecurityContext, V1PodSpec
@@ -85,19 +87,20 @@ spark_env = flyte.TaskEnvironment(
 )
 ```
 
-Flyte renames the primary container to `spark-kubernetes-driver` / `spark-kubernetes-executor` before handing the template to the Spark operator, so the operator's webhook patches the right container.
+Flyte renames the primary container to `spark-kubernetes-driver` / `spark-kubernetes-executor` before handing the template over, so Spark configures the right container.
 
 #### On the plugin config
 
-Use `driver_pod` / `executor_pod` when the two roles need to differ. These specs are passed through to the operator verbatim — they are *not* merged with the environment's pod template, and the container you want patched must be named `spark-kubernetes-driver` or `spark-kubernetes-executor`. A container under any other name is ignored by the operator's webhook.
+Use `driver_pod` / `executor_pod` when the two roles need to differ. These specs are passed through verbatim as the driver or executor pod template; they are *not* merged with the environment's pod template.
+
+Name the container `spark-kubernetes-driver` or `spark-kubernetes-executor`. Spark selects the driver and executor container from the template by that name; if no container matches, it falls back to the first container in the list and configures that one instead, so a template with a sidecar ahead of the real container silently runs the sidecar as the driver. The canonical names are also what the Spark operator and Flyte's log links use to find the container.
 
 ```python
 from kubernetes.client import V1Container, V1PodSpec, V1ResourceRequirements
 
 spark_config = Spark(
-    spark_conf={...},
+    spark_conf={"spark.executor.instances": "2"},
     executor_pod=flyte.PodTemplate(
-        primary_container_name="spark-kubernetes-executor",
         pod_spec=V1PodSpec(
             containers=[
                 V1Container(
@@ -110,7 +113,10 @@ spark_config = Spark(
 )
 ```
 
-Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template` has to be repeated in the `driver_pod` / `executor_pod` spec.
+`driver_pod` / `executor_pod` replace the *pod template* only. Pod-level settings that Flyte sends to the Spark operator as explicit fields (affinity, tolerations, node selector, scheduler name, pod security context, DNS config, host network, labels, annotations, env, and image) are still derived from the task environment's pod template, and the operator applies them on top of whatever the role-specific spec sets. Use `driver_pod` / `executor_pod` for container-level differences between the two roles, such as resource requests, volume mounts, or sidecars, and keep pod-level customization on the environment's `pod_template`.
+
+> [!NOTE] Requires a `SparkApplication` CRD with pod template support
+> Pod templates require a cluster whose `SparkApplication` CRD supports `spec.driver.template`. On an older CRD, or where the platform has disabled the feature, the template is dropped: pod-level settings from the environment's `pod_template` still reach the driver and executor through the operator's own fields, but `driver_pod` / `executor_pod` do not apply at all. There is no error, the settings are silently absent.
 
 ### Accessing the Spark session
 
