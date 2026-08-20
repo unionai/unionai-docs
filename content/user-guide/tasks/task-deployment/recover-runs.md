@@ -15,9 +15,8 @@ consumes it.
 This is the difference between recovery and a plain [re-run](./rerun-runs): a re-run starts the
 whole run over from the beginning, while a recovery picks up where the failure left off.
 
-> [!NOTE] Version requirement
-> Recovery requires `flyte` 2.6.0 or later. It is remote-only and cannot be combined with
-> `--local`.
+Recovery is one of two behaviours of the same verb, `flyte rerun`. It is remote-only: rerun and
+recover are not supported in local mode.
 
 ## What a recovery reuses
 
@@ -71,149 +70,83 @@ Three practical consequences follow:
   the actions caching does not. A recovered action is reported in its own terminal phase, distinct
   from an action that succeeded by executing.
 
-## Where the new run's code and inputs come from
+## One verb, two behaviours
 
-Every recovery is a new run carrying a pointer back to the run it recovers from. What differs
-between the commands is whose code and whose inputs the new run gets.
+`flyte rerun` fetches the prior run's task spec and inputs from the platform. No local code is
+involved, and nothing you edit locally is picked up.
 
-{{< variant flyte >}}
-{{< markdown >}}
+| Call | What happens |
+|---|---|
+| `flyte rerun <run>` | A whole new run with the same inputs. Every action executes again, subject to global caching. |
+| `flyte rerun <run> --recover` | A whole new run with the same inputs, but actions that already succeeded are reused as-is. Only what failed or never ran executes. |
 
-`flyte rerun --recover` fetches both the task spec and the inputs from the backend, so the new run
-repeats the original code exactly:
-
-```mermaid
-flowchart LR
-    aP["Platform<br/>(the failed run)"] -- "code + inputs" --> aN["New run"]
-```
-
-| Command | Code | Inputs |
-|---|---|---|
-| `flyte rerun <run> --recover` | fetched from the backend | prior run's |
-
-Because the code comes from the backend, this is the right tool for a transient or infrastructure
-failure that simply needs another attempt. Local edits are not picked up.
-
-{{< /markdown >}}
-{{< /variant >}}
+Recovery is durability against *intermittent* failures, not a way to patch a run. It replays the
+source run's code and inputs as-is, and the run environment (`-e KEY=VALUE`) is the only lever you
+get. Combining `--recover` with changed inputs raises: change inputs on a plain rerun instead.
 
 {{< variant union >}}
 {{< markdown >}}
 
-```mermaid
-flowchart TB
-    subgraph a["flyte rerun &lt;run&gt; --recover"]
-        direction LR
-        aP["Platform<br/>(the failed run)"] -- "code + inputs" --> aN["New run"]
-    end
-    subgraph b["flyte run --recover-from &lt;run&gt; &lt;file&gt; &lt;task&gt;"]
-        direction LR
-        bL["Your machine<br/>(local code + CLI inputs)"] -- "code + inputs" --> bN["New run"]
-    end
-    subgraph c["flyte run --rerun-from &lt;run&gt; --recover-from &lt;run&gt; &lt;file&gt; &lt;task&gt;"]
-        direction LR
-        cL["Your machine<br/>(local code)"] -- "code" --> cN["New run"]
-        cP["Platform<br/>(the failed run)"] -- "inputs" --> cN
-    end
-
-    a ~~~ b ~~~ c
-```
-
-| Command | Code | Inputs | Use it when |
-|---|---|---|---|
-| `flyte rerun <run> --recover` | fetched from the backend | prior run's | the failure was transient and the same code should be retried |
-| `flyte run --recover-from <run> <file> <task>` | your local code | from the CLI | you fixed the code |
-| `flyte run --rerun-from <run> --recover-from <run> <file> <task>` | your local code | prior run's | you fixed the code and don't want to re-enter inputs |
-
-There is no separate deploy step in any of these. `flyte run` bundles and uploads your working
-directory on every launch, so "recover with my fix" is just a `flyte run` with a recovery pointer.
-
-> [!WARNING] `rerun` does not pick up your edits
-> `flyte rerun` re-launches the task spec stored on the backend, which is the code that already
-> failed. If you have changed your code locally, use `flyte run --recover-from` instead.
+To replay a run with *new* code, see [Fork a run with new code](#fork-a-run-with-new-code) below.
 
 {{< /markdown >}}
 {{< /variant >}}
 
 ## Recover from the CLI
 
-Retry a failed run, reusing everything that succeeded:
-
 ```bash
 flyte rerun <run-name> --recover --follow
 ```
 
-{{< variant union >}}
-{{< markdown >}}
-
-Recover with code you have changed locally:
-
-```bash
-flyte run --recover-from <run-name> main.py main
-```
-
-The clearest way to see what each command ships is to fix the failing task and then run both
-against the same failed run:
-
-```bash
-# edit the body of the task that failed, then:
-
-flyte rerun <run-name> --recover                  # re-launches the stored spec: fails again
-flyte run --recover-from <run-name> main.py main  # ships your edit: the task succeeds
-```
-
-Both reuse the actions that already succeeded, and both re-execute the one that failed. Only
-the second one re-executes it with your fix.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-Additional options:
-
 | Option | Description |
 |---|---|
-| `--force-rerun-action <action>` | Re-execute an action even though it succeeded in the source run. Repeatable. |
+| `--recover` | Reuse the prior run's succeeded actions, re-running only what failed or never ran. |
+| `--action-name <action>` | Re-run only this action, rooted at its task with the inputs it received. Cannot be combined with `--recover`. |
+| `--force-rerun-action <action>` | With `--recover`, re-execute an action even though it succeeded in the source run. Repeatable. |
 | `--allow-missing-outputs` | Proceed when the source run's outputs have been cleaned up from storage. |
 | `-e`, `--env KEY=VALUE` | Set an environment variable on the new run. Repeatable. |
-| `--name` | Name for the new run. |
 
-Use `flyte get action <run-name>` to list a run's actions and find the names to pass to
-`--force-rerun-action`. Naming a parent re-enqueues its children, so list those too when you want
-to force a whole subtree. Unknown names are ignored silently.
+Action names are deterministic hashes rather than positions, so list them with
+`flyte get action <run-name>` and copy the one you want. A listed parent re-enqueues its children,
+so list those too to force a whole subtree; unknown names are ignored.
+
+Reused actions land in the `RECOVERED` phase, which is terminal and success-equivalent, so
+`flyte get action <run-name>` tells you exactly what recovery skipped.
+
+Because recovery matches succeeded actions by name, and a run rooted at a single action has a
+different action tree, `--action-name` cannot be combined with `--recover`.
 
 ## Recover programmatically
 
-`flyte.with_runcontext()` exposes the same behavior. Pass `recover=True` to `rerun()` to recover
-from the run being rerun:
+`flyte.rerun()` takes the same arguments the CLI exposes:
 
 ```python
 import flyte
 
 flyte.init_from_config()
 
-# Retry a failed run with its original code, reusing succeeded actions:
-flyte.with_runcontext(recover=True).rerun("<run-name>")
+# Re-run everything with the prior run's inputs:
+flyte.rerun("<run-name>")
+
+# Reuse the succeeded actions, re-running only what failed or never ran:
+flyte.rerun("<run-name>", recover=True)
 
 # Force specific actions to re-execute even though they succeeded:
-flyte.with_runcontext(
-    recover=True,
-    recover_force_rerun_actions=["a3", "a7"],
-).rerun("<run-name>")
+flyte.rerun("<run-name>", recover=True, force_rerun_actions=["a3", "a7"])
+
+# Re-run a single action, rooted at its task with the inputs it received:
+flyte.rerun("<run-name>", action_name="a3")
 ```
-
-{{< variant union >}}
-{{< markdown >}}
-
-Passing a run name instead recovers a fresh `run()` from that run, using your local code:
-
-```python
-flyte.with_runcontext(recover="<run-name>").run(main)
-```
-
-{{< /markdown >}}
-{{< /variant >}}
 
 `allow_missing_source_outputs=True` is the programmatic equivalent of `--allow-missing-outputs`.
+Launch settings still come from `flyte.with_runcontext()`:
+
+```python
+flyte.with_runcontext(name="retry-1", env_vars={"LOG_LEVEL": "20"}).rerun("<run-name>", recover=True)
+```
+
+Task inputs share the keyword namespace with those arguments, so a task input named `run_name`,
+`action_name`, `recover` or `force_rerun_actions` cannot be passed this way.
 
 {{< variant union >}}
 {{< markdown >}}
