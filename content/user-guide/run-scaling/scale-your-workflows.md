@@ -37,7 +37,7 @@ Performance optimization focuses on two key dimensions:
 **Characteristics**:
 
 - Processing large datasets (millions of items)
-- High total action count (10k to 100k actions)
+- High total action count (10k+ actions)
 - Batch processing, large-scale batch inference and ETL workflows
 
 **Recommended approach**:
@@ -358,7 +358,7 @@ Follow this workflow to optimize your Flyte workflows:
 5. **Reusable containers**: Enable reusable containers to eliminate `t`.
 6. **Traces**: Use traces for lightweight operations within tasks.
 7. **Cache**: Enable caching for deterministic, expensive tasks.
-8. **Limit fanout**: Keep total actions below 200k, ideally under 50k-100k.
+8. **Limit fanout**: Keep total actions below 200k.
 9. **Monitor**: Use the UI to monitor execution and identify issues.
 10. **Iterate**: Continuously refine based on performance metrics.
 

@@ -94,9 +94,9 @@ limits, and they compose:
   but every item still becomes its own action; they are just submitted through a bounded worker pool
   as slots free up.
 - **The run-level action cap** bounds the *total* number of actions in the whole run. A run currently
-  supports up to **200k tracked actions**, and stays most responsive under **50k–100k**. This
-  ceiling counts **every** action across the run — summed over all maps and all fan-out — not just
-  the ones in flight at any instant. See [Scale your workflows](../../run-scaling/scale-your-workflows).
+  supports up to **200k tracked actions**. This ceiling counts **every** action across the run —
+  summed over all maps and all fan-out — not just the ones in flight at any instant. See
+  [Scale your workflows](../../run-scaling/scale-your-workflows).
 
 Because these limits are independent, **lowering `concurrency` does not help you stay under the run
 cap.** A `flyte.map` over 500,000 items creates 500,000 actions whether `concurrency` is `0` or `10` —
@@ -106,9 +106,9 @@ have each action process a batch of items, so a large input maps to far fewer ac
 
 In practice, use the two controls for different jobs:
 
-- **Batch to stay well under the run cap.** Size batches so the total number of mapped actions lands
-  under 50k–100k (comfortably below 200k), especially when a single run contains multiple maps or
-  other fan-out — they all count against the same ceiling.
+- **Batch to stay well under the run cap.** Size batches so the total number of mapped actions stays
+  below 200k, especially when a single run contains multiple maps or other fan-out — they all count
+  against the same ceiling.
 - **Set `concurrency` to protect downstream resources.** Independently of total count, cap in-flight
   actions to respect rate-limited APIs, GPU quotas, or connection limits, and to keep memory
   proportional to `concurrency` rather than to the full input size.
