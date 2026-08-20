@@ -58,9 +58,9 @@ flowchart TD
 ```
 
 A workflow always starts in the `Ready` state and ends either in `Failed`, `Succeeded`, or `Aborted` state.
-Any system error within a state causes a retry on that state. These retries are capped by `system retries <system-retry>` which eventually lead to an `Aborted` state if the failure persists.
+Any system error within a state causes a retry on that state. These retries are capped by system retries which eventually lead to an `Aborted` state if the failure persists.
 
-Every transition between states is recorded in FlyteAdmin using :std:ref:`workflowexecutionevent`.
+Every transition between states is recorded in FlyteAdmin using `workflowexecutionevent`.
 
 The phases in the above state diagram are captured in the admin database as specified here `workflowexecution.phase` and are sent as a part of the Execution event.
 
@@ -103,9 +103,9 @@ The `start node` begins by executing all its child-nodes using a modified depth 
 Nodes can be of different types as listed below, but all the nodes traverse through the same transitions:
 
 1. Start Node - Only exists during the execution and is not modeled in the core spec.
-2. :std:ref:`Task Node`
-3. :std:ref:`Branch Node`
-4. :std:ref:`Workflow Node`
+2. Task Node
+3. Branch Node
+4. Workflow Node
 5. Dynamic Node - Just a task node that does not return output but constitutes a dynamic workflow.
    When the task runs, it remains in the `RUNNING` state. Once the task completes and Flyte starts executing the dynamic workflow,
    the overarching node that contains both the original task and the dynamic workflow enters `DYNAMIC_RUNNING` state.
@@ -113,7 +113,7 @@ Nodes can be of different types as listed below, but all the nodes traverse thro
 
 Every transition between states is recorded in FlyteAdmin using `nodeexecutionevent`.
 
-Every `NodeExecutionEvent` can have any :std:ref:`nodeexecution.phase`.
+Every `NodeExecutionEvent` can have any `nodeexecution.phase`.
 
 The state machine specification for the illustration can be found [here](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoic3RhdGVEaWFncmFtLXYyXG4gICAgWypdIC0tPiBOb3RZZXRTdGFydGVkXG4gICAgWypdIC0tPiBBYm9ydGVkIDogV2lsbCBzdG9wIHRoZSBub2RlIGV4ZWN1dGlvblxuICAgIE5vdFlldFN0YXJ0ZWQgLS0-IFF1ZXVlZCA6IElmIGFsbCB1cHN0cmVhbSBub2RlcyBhcmUgcmVhZHkgaS5lLCBpbnB1dHMgYXJlIHJlYWR5XG4gICAgTm90WWV0U3RhcnRlZCAtLT4gU2tpcHBlZCA6IElmIHRoZSBicmFuY2ggd2FzIG5vdCB0YWtlblxuICAgIFF1ZXVlZCAtLT4gUnVubmluZyA6IFN0YXJ0IHRhc2sgZXhlY3V0aW9uIC0gYXR0ZW1wdCAwXG4gICAgUnVubmluZyAtLT4gVGltaW5nT3V0IDogSWYgdGFzayB0aW1lb3V0IGhhcyBlbGFwc2VkIGFuZCByZXRyeV9hdHRlbXB0cyA-PSBtYXhfcmV0cmllc1xuICAgIFRpbWluZ091dCAtLT4gVGltZWRPdXQgOiBJdCB0b3RhbCBub2RlIHRpbWVvdXQgaGFzIGVsYXBzZWRcbiAgICBSdW5uaW5nIC0tPiBSZXRyeWFibGVGYWlsdXJlIDogb24gcmV0cnlhYmxlIGZhaWx1cmVcbiAgICBSdW5uaW5nIC0tPiBEeW5hbWljUnVubmluZyA6IEZvciBkeW5hbWljIG5vZGVzIGdlbmVyYXRpbmcgd29ya2Zsb3dzXG4gICAgUmV0cnlhYmxlRmFpbHVyZSAtLT4gUnVubmluZyA6IGlmIHJldHJ5X2F0dGVtcHRzIDwgbWF4X3JldHJpZXNcbiAgICBSZXRyeWFibGVGYWlsdXJlIC0tPiBGYWlsaW5nIDogcmV0cnlfYXR0ZW1wdHMgPj0gbWF4X3JldHJpZXNcbiAgICBGYWlsaW5nIC0tPiBGYWlsZWRcbiAgICBSdW5uaW5nIC0tPiBTdWNjZWVkaW5nIDogSW50ZXJuYWwgc3RhdGVcbiAgICBEeW5hbWljUnVubmluZyAtLT4gU3VjY2VlZGluZ1xuICAgIER5bmFtaWNSdW5uaW5nIC0tPiBSZXRyeWFibGVGYWlsdXJlXG4gICAgRHluYW1pY1J1bm5pbmcgLS0-IFRpbWluZ091dFxuICAgIFN1Y2NlZWRpbmcgLS0-IFN1Y2NlZWRlZCA6IFVzZXIgb2JzZXJ2ZXMgdGhlIHRhc2sgYXMgc3VjY2VlZGVkXG4gICAgU3VjY2VlZGVkIC0tPiBbKl1cbiAgICBGYWlsZWQgLS0-IFsqXVxuIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9).
 

@@ -156,7 +156,7 @@ a. Platform default: This allows to set platform-wide defaults for maximum paral
           maxParallelism: 25
 ```
 
-b. Default for a specific launch plan. For any launch plan, the ``max_parallelism`` value can be changed using :py:meth:`flytekit.LaunchPlan.get_or_create` or the :std:ref:`ref_flyteidl.admin.LaunchPlanCreateRequest`
+b. Default for a specific launch plan. For any launch plan, the ``max_parallelism`` value can be changed using `flytekit.LaunchPlan.get_or_create` or the `flyteidl.admin.LaunchPlanCreateRequest`
 
 **Flytekit Example**
 
