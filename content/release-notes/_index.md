@@ -515,7 +515,7 @@ schema = NativeInterface.from_callable(my_func).json_schema
 assert schema["properties"]["unit"] == {"type": "string", "enum": ["C", "F"]}
 ```
 
-### :calculator: Panel Calculator Example
+### :abacus: Panel Calculator Example
 
 A new example showcases a calculator app embedded in a Panel interface using Flyte's `AppEnvironment`, demonstrating how to build interactive web-based UIs with Flyte.
 

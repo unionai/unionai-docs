@@ -84,8 +84,10 @@ your part:
 
 - The org-wide **`default`** queue, in the `default` pool with the `*` selector.
   Anything that doesn't explicitly target a queue goes here. (If the `default`
-  queue is [drained](#drain-and-reactivate-a-queue), untargeted submissions are
-  rejected until it is reactivated.)
+  queue is [drained](#drain-and-reactivate-a-queue) or
+  [deleted](#delete-a-queue), untargeted submissions are rejected until it is
+  active again — a restored queue comes back `drained`, so after an undelete it
+  must also be reactivated.)
 - A **co-named queue** for every cluster: registering a cluster creates a queue
   with the *same name as the cluster*, in that cluster's pool, whose selector
   names that one cluster explicitly rather than using `*`. Register
@@ -267,6 +269,12 @@ flyte get queue --deleted
 `--watch` renders live progress bars for run concurrency, action concurrency, and
 depth, so you can see a queue filling up or draining in real time.
 
+Fetching a queue **by name** works even after it has been
+[deleted](#delete-a-queue): `flyte get queue <name>` returns the soft-deleted
+queue carrying its deletion time instead of failing, so a queue that an old run
+once targeted stays inspectable. Only the listing hides deleted queues, unless
+you pass `--deleted`.
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Programmatic" >}}
@@ -284,7 +292,13 @@ for queue in Queue.listall(state="draining"):
 
 queue = Queue.get("gpu-queue")
 print(queue.to_dict())
+```
 
+`Queue.get` works even on a [deleted](#delete-a-queue) queue: it returns the
+soft-deleted queue carrying its deletion time instead of failing, while
+`Queue.listall` hides deleted queues.
+
+```python
 metrics = Queue.details("gpu-queue")
 print(metrics)
 ```
@@ -433,18 +447,28 @@ be `drained` before it can be [deleted](#delete-a-queue) or
 cluster can be [deleted](./clusters#delete-a-cluster) or
 [moved](./clusters#move-a-cluster-to-a-different-pool).
 
-The `default` queue can be drained like any other — since it cannot be deleted,
-draining is how you stop scheduling on it. One guard applies to any queue: a
-queue configured as the default run queue (`run.default_queue`) in your
-organization's settings cannot be drained until that setting points elsewhere.
+The `default` queue can be drained like any other — draining is how you stop
+scheduling on it, and the prerequisite for [deleting it](#delete-a-queue). One
+guard applies to any queue: a queue configured as the default run queue
+(`run.default_queue`) in your organization's settings — at any scope — cannot
+be drained or deleted until those settings are updated or unset.
 
 ## Delete a queue
 
 A queue must be **drained** before it can be deleted; deleting an `active` or
-`draining` queue is rejected. The `default` queue cannot be deleted — drain it
-instead. A cluster's [co-named queue](./clusters#the-co-named-queue) can be
-deleted on its own while the cluster lives, and is deleted automatically when
-its [cluster is deleted](./clusters#delete-a-cluster).
+`draining` queue is rejected. A queue referenced as the default run queue
+(`run.default_queue`) in settings at any scope cannot be deleted until those
+settings are updated or unset. A cluster's
+[co-named queue](./clusters#the-co-named-queue) can be deleted on its own while
+the cluster lives, and is deleted automatically when its
+[cluster is deleted](./clusters#delete-a-cluster).
+
+The `default` queue is no exception: drain it, then delete it, like any other
+queue — deleting it is also how the `default` pool is emptied of live queues so
+that [the pool itself can be deleted](./cluster-pools#delete-a-pool). While the
+`default` queue is deleted, submissions that name no queue and have no
+`run.default_queue` setting to fall back on are rejected at creation. Nothing
+re-creates it implicitly; `flyte undelete queue default` brings it back.
 
 {{< tabs "delete-queue" >}}
 {{< tab "CLI" >}}
@@ -475,11 +499,13 @@ Queue.undelete("gpu-queue")   # restore a deleted queue
 {{< /tab >}}
 {{< /tabs >}}
 
-Deletion is a **soft delete**: the queue disappears from `flyte get queue`, but
-its name stays reserved and it can be restored with `flyte undelete queue
-<name>`. Undeleting requires the queue's pool and its pinned clusters to still
-be live, and the restored queue comes back `drained` —
-[reactivate it](#drain-and-reactivate-a-queue) to resume routing.
+Deletion is a **soft delete**: the queue disappears from the `flyte get queue`
+listing and is no longer scheduled on, but its name stays reserved, and fetching
+it by name still works — `flyte get queue <name>` and `Queue.get` return the
+deleted queue carrying its deletion time (see [Inspect queues](#inspect-queues)).
+Restore it with `flyte undelete queue <name>`. Undeleting requires the queue's
+pool and its pinned clusters to still be live, and the restored queue comes back
+`drained` — [reactivate it](#drain-and-reactivate-a-queue) to resume routing.
 
 ## Move work to another pool
 

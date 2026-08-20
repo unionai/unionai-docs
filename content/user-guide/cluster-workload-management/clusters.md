@@ -24,7 +24,10 @@ the commands or Python calls here to manage the control-plane record.
 ## Register a cluster
 
 If you omit the pool, the cluster is registered into the `default` pool. To use a
-custom pool, create that pool first.
+custom pool, create that pool first. One edge case: if the `default` pool has
+been [deleted](./cluster-pools#delete-a-pool), registering without a pool is
+rejected rather than falling back to it — name a pool explicitly, or undelete
+`default`.
 
 {{< tabs "register-cluster" >}}
 {{< tab "CLI" >}}
@@ -89,10 +92,13 @@ queue setup:
 flyte.with_runcontext(queue="prod-us-east-1").run(main)
 ```
 
-Registration additionally ensures the org-wide `default` queue exists. The
-`default` queue lives in the `default` pool with the `*` selector, so it routes
-to every healthy, enabled cluster in the `default` pool: a cluster registered
-there joins it automatically, while a cluster in any other pool never does.
+Registration additionally ensures the org-wide `default` queue exists — unless
+that queue has been deliberately [deleted](./queues#delete-a-queue): nothing
+re-creates a soft-deleted `default` queue (or pool) implicitly; `flyte undelete`
+is the only way back. The `default` queue lives in the `default` pool with the
+`*` selector, so it routes to every healthy, enabled cluster in the `default`
+pool: a cluster registered there joins it automatically, while a cluster in any
+other pool never does.
 
 Both are ordinary queues — they appear in `flyte get queue` (a co-named queue is
 flagged there as **cluster-managed**), carry the same

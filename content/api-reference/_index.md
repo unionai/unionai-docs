@@ -19,7 +19,7 @@ This will install both the Flyte SDK and CLI.
 
 {{< grid >}}
 
-{{< link-card target="flyte-sdk" icon="workflow" title="Flyte SDK" >}}
+{{< link-card target="flyte-sdk" icon="code-square" title="Flyte SDK" >}}
 The Flyte SDK provides the core Python API for building workflows and apps on your Union instance.
 {{< /link-card >}}
 

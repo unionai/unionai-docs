@@ -1,6 +1,6 @@
 ---
 title: Cluster and workload management
-weight: 7
+weight: 8
 variants: -flyte +union
 mermaid: true
 ---
@@ -134,7 +134,7 @@ Group clusters that share a data plane. Create and manage pools, or stay on the 
 Register execution clusters into a pool and inspect their state, capacity, and bound queues.
 {{< /link-card >}}
 
-{{< link-card target="queues" icon="workflow" title="Managing queues" >}}
+{{< link-card target="queues" icon="list-task" title="Managing queues" >}}
 Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
 {{< /link-card >}}
 
