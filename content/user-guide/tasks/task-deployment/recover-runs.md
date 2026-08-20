@@ -151,6 +151,56 @@ Task inputs share the keyword namespace with those arguments, so a task input na
 {{< variant union >}}
 {{< markdown >}}
 
+## Fork a run with new code
+
+Recovery deliberately refuses to substitute your code. `fork` is the verb that does, and it is
+the Union half of the pair: go back to a run, change code, and replay only what that change
+affects.
+
+```bash
+flyte fork <run-name> main.py main
+```
+
+A fresh code bundle is built from your working tree, so actions whose code changed re-execute
+while everything that succeeded and is unchanged is reused.
+
+| Command | Code | Actions |
+|---|---|---|
+| `flyte rerun <run>` | the source run's | everything re-executes |
+| `flyte rerun <run> --recover` | the source run's | succeeded actions reused |
+| `flyte fork <run> <file> <task>` | **yours** | succeeded actions reused |
+
+```mermaid
+flowchart LR
+    R["Source run<br/>(failed)"] -- "same code<br/>everything re-runs" --> A["flyte rerun"]
+    R -- "same code<br/>reuse succeeded" --> B["flyte rerun --recover"]
+    R -- "reuse succeeded" --> C["flyte fork"]
+    L["Your working tree"] -- "new code" --> C
+```
+
+Inputs always come from the source run, so `flyte fork` takes no task inputs. Replaying a run
+with changed inputs is a separate feature and is not implemented. Forking is remote-only: there
+is no local equivalent.
+
+`--force-rerun-action` works here too, forcing an action to re-execute even though it succeeded:
+
+```bash
+flyte fork --force-rerun-action a3 <run-name> main.py main
+```
+
+`flyte run`'s options (image, copy-style, service account, env, labels, queue) come before the
+run name. In Python the verb is imported from the plugin:
+
+```python
+from flyteplugins.union import fork, with_forkcontext
+
+fork("<run-name>", task_template=main)
+with_forkcontext(name="fix-1").fork("<run-name>", task_template=main)
+```
+
+`with_forkcontext()` accepts the same keyword arguments as `flyte.with_runcontext()` and returns
+a runner that can also `fork()`.
+
 ## How actions are matched
 
 Recovery matches actions from the source run **by action name**, and action names are computed
