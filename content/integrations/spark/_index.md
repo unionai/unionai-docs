@@ -68,7 +68,7 @@ Both use `flyte.PodTemplate`. See [Pod templates](../../user-guide/tasks/task-co
 
 #### On the task environment
 
-Use this when the same customization (security context, tolerations, node selector, volumes, labels) should apply to driver and executor alike. The spec must contain the primary container, the container Flyte injects the task image and command into, whose name defaults to `primary`:
+Use this when the same customization (security context, tolerations, node selector, volumes) should apply to driver and executor alike. The spec must contain the primary container, the container Flyte injects the task image and command into, whose name defaults to `primary`:
 
 ```python
 from kubernetes.client import V1Container, V1PodSecurityContext, V1PodSpec
@@ -77,7 +77,6 @@ spark_env = flyte.TaskEnvironment(
     name="spark_env",
     plugin_config=spark_config,
     pod_template=flyte.PodTemplate(
-        labels={"team": "data-eng"},
         pod_spec=V1PodSpec(
             containers=[V1Container(name="primary")],  # required: the primary container
             security_context=V1PodSecurityContext(run_as_user=1000),
@@ -113,7 +112,7 @@ spark_config = Spark(
 )
 ```
 
-Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template`, such as volumes, volume mounts, or sidecars, has to be repeated in the `driver_pod` / `executor_pod` spec. The pod-level fields Flyte passes to the operator separately (affinity, tolerations, node selector, scheduler name, pod security context, DNS config, host network, labels, annotations, env, and image) still come from the environment and take precedence over the same fields in a role-specific spec.
+Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template`, such as volumes, volume mounts, or sidecars, has to be repeated in the `driver_pod` / `executor_pod` spec. Pod-level scheduling and security settings that Flyte passes to the operator separately (affinity, scheduler name, pod security context, and DNS config) come from the task environment and override the same fields in a role-specific spec. Tolerations, node selectors, and environment variables are combined rather than replaced, so values set in `driver_pod` / `executor_pod` are kept alongside the environment's.
 
 ### Accessing the Spark session
 
