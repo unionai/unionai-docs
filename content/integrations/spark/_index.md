@@ -113,7 +113,7 @@ spark_config = Spark(
 )
 ```
 
-Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template` has to be repeated in the `driver_pod` / `executor_pod` spec.
+Because a role-specific spec replaces the base template rather than merging into it, anything you still need from the environment's `pod_template`, such as volumes, volume mounts, or sidecars, has to be repeated in the `driver_pod` / `executor_pod` spec. The pod-level fields Flyte passes to the operator separately (affinity, tolerations, node selector, scheduler name, pod security context, DNS config, host network, labels, annotations, env, and image) still come from the environment and take precedence over the same fields in a role-specific spec.
 
 ### Accessing the Spark session
 
