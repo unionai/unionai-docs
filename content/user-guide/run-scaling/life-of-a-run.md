@@ -233,7 +233,9 @@ sequenceDiagram
 
 ### UI limitations
 
-- **Current limit**: The UI is currently limited to displaying 50k actions per run.
+- **Current limit**: The UI is currently limited to displaying 200k actions per run. Past that
+  point the run continues to execute, but later actions are no longer tracked and the UI shows a
+  truncation notice.
 - **Future improvements**: This limit will be increased in future releases. Contact the Union team if you need higher limits.
 
 ## Optimization opportunities
