@@ -80,9 +80,8 @@ involved, and nothing you edit locally is picked up.
 | `flyte rerun <run>` | A whole new run with the same inputs. Every action executes again, subject to global caching. |
 | `flyte rerun <run> --recover` | A whole new run with the same inputs, but actions that already succeeded are reused as-is. Only what failed or never ran executes. |
 
-Recovery is durability against *intermittent* failures, not a way to patch a run. It replays the
-source run's code and inputs as-is, and the run environment (`-e KEY=VALUE`) is the only lever you
-get. Combining `--recover` with changed inputs raises: change inputs on a plain rerun instead.
+Recovery replays the source run's code and inputs as-is, and the run environment (`-e KEY=VALUE`) is the only lever you
+get. If you plan to use `--recover` with changed inputs, launch a plain rerun instead.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -153,8 +152,7 @@ Task inputs share the keyword namespace with those arguments, so a task input na
 
 ## Fork a run with new code
 
-Recovery deliberately refuses to substitute your code. `fork` is the verb that does, and it is
-the Union half of the pair: go back to a run, change code, and replay only what that change
+Recover doesn't substitute your code. `fork` is the verb that does: go back to a run, change code, and replay only what that change
 affects.
 
 ```bash
@@ -178,9 +176,8 @@ flowchart LR
     L["Your working tree"] -- "new code" --> C
 ```
 
-Inputs always come from the source run, so `flyte fork` takes no task inputs. Replaying a run
-with changed inputs is a separate feature and is not implemented. Forking is remote-only: there
-is no local equivalent.
+- Inputs always come from the source run, so `flyte fork` takes no task inputs.   
+- Forking is remote-only: there is no local equivalent.
 
 `--force-rerun-action` works here too, forcing an action to re-execute even though it succeeded:
 
