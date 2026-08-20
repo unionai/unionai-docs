@@ -130,8 +130,18 @@ flyte run --rerun-from <run-name> main.py main
 | `flyte rerun <run>` | fetched from backend | prior run's |
 
 Both commands start the run over from the beginning. To instead keep the successful actions of a
-failed run and re-execute only what failed, add `--recover`. See
-[Recover a failed run](./recover-runs).
+failed run and re-execute only what failed:
+{{< variant flyte >}}
+{{< markdown >}}
+Use `flyte rerun <run> --recover`.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+Use `flyte rerun <run> --recover` (or `flyte run --recover-from <run> <file> <task>` when you want to ship local code).
+{{< /markdown >}}
+{{< /variant >}}
+See [Recover a failed run](./recover-runs).
 
 ## Rerun programmatically
 
