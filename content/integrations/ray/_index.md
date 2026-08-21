@@ -112,8 +112,10 @@ head_node_config=HeadNodeConfig(
 )
 ```
 
-With less (1 CPU / 1000Mi, for example), `ray start --head` exits 1 and KubeRay
-recycles the head pod in a loop, so the cluster never becomes ready.
+Under-provisioning the head node is a common cause of a cluster that never becomes
+ready: if the dashboard cannot start, `ray start --head` fails and KubeRay recycles
+the head pod in a loop. A head pod at 1 CPU and 1000Mi has been observed failing
+this way.
 
 ### Connecting to an existing cluster
 
