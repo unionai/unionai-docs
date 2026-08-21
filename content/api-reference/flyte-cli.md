@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.3
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -2087,6 +2087,12 @@ named actions to re-execute anyway.
 action's task, run with the exact inputs it received inside RUN_NAME. That is always a plain
 re-execution, so it cannot be combined with `--recover`.
 
+The task's own inputs are options too, built from RUN_NAME's interface just as `flyte run`
+builds them from local code — run `flyte rerun RUN_NAME --help` to list them. Every input left
+out keeps RUN_NAME's value. With `--recover`, the new run starts from the changed inputs but
+still reuses RUN_NAME's succeeded actions, which keep the outputs they produced under the
+*original* inputs — force the ones that must re-execute with `--force-rerun-action`.
+
 Examples:
 
 ```bash
@@ -2095,6 +2101,9 @@ $ flyte rerun rxyz --name retry-1 --follow
 $ flyte rerun rxyz --recover
 $ flyte rerun rxyz --recover --force-rerun-action a3 --force-rerun-action a7
 $ flyte rerun rxyz --action-name a3
+$ flyte rerun rxyz --help
+$ flyte rerun rxyz --n 10 --cfg '{"lr": 0.1}'
+$ flyte rerun rxyz --recover --n 10 --force-rerun-action a3
 ```
 
 | Option | Type | Default | Description |
