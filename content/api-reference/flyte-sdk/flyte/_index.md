@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.6.3
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -839,9 +839,12 @@ Re-run a prior run, returning a new `Run`.
 
 `rerun("r1")` creates a whole new run with the prior run's exact inputs (fetching its code from
 the platform); `rerun("r1", recover=True)` does the same but reuses the prior run's succeeded
-actions, re-executing only what failed or never ran. Pass keyword inputs to change parameters
-(`rerun("r1", x=2)`). Use `with_runcontext(...).rerun(...)` to apply run-context overrides
-(env_vars, labels, …). The prior run's code is always replayed as-is.
+actions, re-executing only what failed or never ran. Pass keyword inputs to change
+parameters (`rerun("r1", x=2)`); inputs left out keep the prior run's values. New inputs
+combine with recovery (`rerun("r1", recover=True, x=2)`), in which case recovered actions keep
+the outputs they produced under the original inputs unless listed in `force_rerun_actions`.
+Use `with_runcontext(...).rerun(...)` to apply run-context overrides (env_vars, labels, …).
+The prior run's code is always replayed as-is.
 
 
 
@@ -851,8 +854,8 @@ actions, re-executing only what failed or never ran. Pass keyword inputs to chan
 | `action_name` | `str` | Action within the prior run to source the task + inputs from. Defaults to `a0`, the root action — i.e. the whole run. Naming a child action instead roots the new run at that action's task, run with the exact inputs it received. Cannot be combined with `recover`. |
 | `recover` | `bool` | Reuse the prior run's succeeded actions, re-running only what failed or never ran. Remote-only; requires a backend (and flyteidl2 build) with RunSpec.relation recovery support. |
 | `force_rerun_actions` | `Sequence[str] \| None` | With `recover`, names of actions that must re-execute even though they succeeded in the source run (escape hatch). A listed parent action re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
-| `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. |
-| `**inputs` | `Any` | Optional native keyword inputs to change parameters; omit to reuse prior inputs. |
+| `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. Irrelevant when the new inputs cover every input of the task, since the source inputs are then not read at all. |
+| `**inputs` | `Any` | Optional native keyword inputs to change parameters. Any input not passed keeps the source run's value, so passing none reuses the source run's inputs wholesale. |
 
 **Returns:** the new Run.
 
