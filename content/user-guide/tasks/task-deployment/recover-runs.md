@@ -86,7 +86,7 @@ get. If you plan to use `--recover` with changed inputs, launch a plain rerun in
 {{< variant union >}}
 {{< markdown >}}
 
-To replay a run with *new* code, see [Fork a run with new code](#fork-a-run-with-new-code) below.
+To replay a prior run with code you have changed, see [Fork a run](./fork-runs).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -147,128 +147,15 @@ flyte.with_runcontext(name="retry-1", env_vars={"LOG_LEVEL": "20"}).rerun("<run-
 Task inputs share the keyword namespace with those arguments, so a task input named `run_name`,
 `action_name`, `recover` or `force_rerun_actions` cannot be passed this way.
 
-{{< variant union >}}
-{{< markdown >}}
-
-## Fork a run with new code
-
-Recover doesn't substitute your code. `fork` is the verb that does: go back to a run, change code, and replay only what that change
-affects.
-
-```bash
-flyte fork <run-name> main.py main
-```
-
-A fresh code bundle is built from your working tree, so actions whose code changed re-execute
-while everything that succeeded and is unchanged is reused.
-
-| Command | Code | Actions |
-|---|---|---|
-| `flyte rerun <run>` | the source run's | everything re-executes |
-| `flyte rerun <run> --recover` | the source run's | succeeded actions reused |
-| `flyte fork <run> <file> <task>` | **yours** | succeeded actions reused |
-
-```mermaid
-flowchart LR
-    R["Source run<br/>(failed)"] -- "same code<br/>everything re-runs" --> A["flyte rerun"]
-    R -- "same code<br/>reuse succeeded" --> B["flyte rerun --recover"]
-    R -- "reuse succeeded" --> C["flyte fork"]
-    L["Your working tree"] -- "new code" --> C
-```
-
-- Inputs always come from the source run, so `flyte fork` takes no task inputs.   
-- Forking is remote-only: there is no local equivalent.
-
-`--force-rerun-action` works here too, forcing an action to re-execute even though it succeeded:
-
-```bash
-flyte fork --force-rerun-action a3 <run-name> main.py main
-```
-
-`flyte run`'s options (image, copy-style, service account, env, labels, queue) come before the
-run name. In Python the verb is imported from the plugin:
-
-```python
-from flyteplugins.union import fork, with_forkcontext
-
-fork("<run-name>", task_template=main)
-with_forkcontext(name="fix-1").fork("<run-name>", task_template=main)
-```
-
-`with_forkcontext()` accepts the same keyword arguments as `flyte.with_runcontext()` and returns
-a runner that can also `fork()`.
-
-## How actions are matched
-
-Recovery matches actions from the source run **by action name**, and action names are computed
-rather than assigned:
-
-```mermaid
-flowchart LR
-    tn["task name"] --> TI["task identity"]
-    ih["interface hash"] --> TI
-    fb["hash of the task<br/>function's own body"] --> TI
-
-    TI --> AN["action name"]
-    pan["parent action name"] --> AN
-    inh["inputs hash"] --> AN
-    seq["call sequence"] --> AN
-    grp["group"] --> AN
-
-    ex["image · resources<br/>env vars · code bundle"] -. "not included" .-x AN
-```
-
-Two properties follow from this, and they explain nearly everything about recovery behavior:
-
-- **Deployment details are excluded on purpose.** Changing a task's resources or image does not
-  rename its action, so the rest of the run stays reusable. Raising the memory on a task that hit
-  `flyte.errors.OOMError` and recovering does exactly what you would hope: the successful upstream
-  is reused, and the failed task re-executes with its new limit.
-- **Matching follows the data.** Because a child's name folds in its inputs hash, an upstream task
-  that re-executes but produces *identical* outputs leaves its downstream actions matchable, and
-  they are still reused.
-
-### What re-runs after a code change
-
-| You change | On recovery |
-|---|---|
-| A task's function body | that task re-runs |
-| A task's signature | that task re-runs |
-| A task's docstring | that task re-runs |
-| The task function's name | that task re-runs |
-| The `flyte.TaskEnvironment` name | every task in it re-runs |
-| Comments inside a task | reused |
-| Formatting or whitespace | reused |
-| `flyte.Resources` (cpu, memory) | reused |
-| The image, or added packages | reused |
-| A module-level constant a task reads | reused (see below) |
-| A helper function a task calls | reused (see below) |
-
-> [!WARNING] Identity is the function body, and only the function body
-> A task's identity hashes only the decorated function's own source. If you edit a module-level
-> constant it reads, or a helper function it calls, the action name does not change, so a task
-> that already succeeded is reused and your change has no effect on it. Nothing warns you.
->
-> Use `--force-rerun-action` to re-execute those actions explicitly, or move the changed logic
-> into the task body.
-
-The same rule governs `flyte.trace` functions: a traced function hashes its own body, so editing it
-causes it to re-execute instead of replaying its recorded result. A helper it calls still does
-not count as a change.
-
-Runs launched from a notebook or with a pickled code bundle behave differently: they version on the
-bundle itself, so any code change renames every action and nothing is reused.
-
-{{< /markdown >}}
-{{< /variant >}}
-
 ## Related
 
 - [Re-run a run](./rerun-runs): launch a fresh run from a previous one, without reusing its actions.
 - [Interact with runs and actions](./interacting-with-runs): retrieve, monitor, and inspect runs and actions.
 - [Run command options](./run-command-options): the full set of `flyte run` options.
+
 {{< variant union >}}
 {{< markdown >}}
+- [Fork a run](./fork-runs): replay a prior run with code you have changed.
 - [Debug a run](./debug-runs): inspect a failure before deciding how to recover from it.
 {{< /markdown >}}
 {{< /variant >}}

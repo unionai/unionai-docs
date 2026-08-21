@@ -78,11 +78,6 @@ The parent is surfaced in two places in the console:
 
 ## Rerun from the CLI
 
-The CLI offers two complementary commands depending on whether you want the **original code** or
-**new local code**.
-
-### `flyte rerun`: rerun with the original code and inputs
-
 `flyte rerun` fetches the prior run's task **and** inputs from the backend and launches a new run.
 You don't need the original code checked out locally. Everything is pulled from the platform:
 
@@ -109,39 +104,24 @@ Common options:
 > `flyte rerun` reuses the prior run's inputs as-is. To change input values from the command line,
 > use the programmatic `flyte.rerun(<run-name>, key=value)` form shown below.
 
-### `flyte run --rerun-from`: rerun with new local code
-
-When you've changed your code locally but want to reuse a prior run's inputs, use `flyte run` with
-the `--rerun-from` flag. This deploys **your local code** and feeds it the inputs from the prior
-run, so you don't need to re-specify any per-task input flags:
-
-```bash
-flyte run --rerun-from <run-name> main.py main
-```
-
-`--rerun-from` is remote-only; it cannot be combined with `--local`.
-
-### Choosing between the two
+### Rerun compared with a fresh run
 
 | Command | Code | Inputs |
 |---|---|---|
 | `flyte run <file> <task>` | local | from CLI |
-| `flyte run --rerun-from <run> <file> <task>` | local | prior run's |
 | `flyte rerun <run>` | fetched from backend | prior run's |
 
-Both commands start the run over from the beginning. To instead keep the successful actions of a
-failed run and re-execute only what failed:
-{{< variant flyte >}}
-{{< markdown >}}
-Use `flyte rerun <run> --recover`.
-{{< /markdown >}}
-{{< /variant >}}
+Both start the run over from the beginning. To instead keep the successful actions of a failed
+run and re-execute only what failed, add `--recover` to `flyte rerun`. See
+[Recover a failed run](./recover-runs).
 {{< variant union >}}
 {{< markdown >}}
-Use `flyte rerun <run> --recover` (or `flyte run --recover-from <run> <file> <task>` when you want to ship local code).
+
+`flyte rerun` never substitutes local code, with or without `--recover`. To replay a prior run
+with code you have changed, see [Fork a run](./fork-runs).
+
 {{< /markdown >}}
 {{< /variant >}}
-See [Recover a failed run](./recover-runs).
 
 ## Rerun programmatically
 
@@ -159,8 +139,6 @@ flyte.rerun("ul56wcvgqrb9vzhzz5l2")
 # Change input parameters — they are converted against the prior run's interface:
 flyte.rerun("ul56wcvgqrb9vzhzz5l2", x_list=[1, 2, 3])
 
-# Substitute new code while reusing the original run's inputs:
-flyte.rerun("ul56wcvgqrb9vzhzz5l2", task_template=fixed_task)
 ```
 
 `flyte.rerun()` returns a `flyte.remote.Run`, just like `flyte.run()`, so you can monitor it, wait
