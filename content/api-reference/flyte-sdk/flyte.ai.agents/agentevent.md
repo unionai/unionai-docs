@@ -1,6 +1,6 @@
 ---
 title: AgentEvent
-version: 2.6.2
+version: 2.6.3
 variants: +flyte +union
 layout: py_api
 ---
