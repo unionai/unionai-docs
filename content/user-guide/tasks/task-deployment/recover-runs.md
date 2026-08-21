@@ -78,10 +78,10 @@ involved, and nothing you edit locally is picked up.
 | Call | What happens |
 |---|---|
 | `flyte rerun <run>` | A whole new run with the same inputs. Every action executes again, subject to global caching. |
-| `flyte rerun <run> --recover` | A whole new run with the same inputs, but actions that already succeeded are reused as-is. Only what failed or never ran executes. |
+| `flyte rerun <run> --recover` | A whole new run, but actions that already succeeded are reused as-is. Only what failed or never ran executes. |
 
-Recovery replays the source run's code and inputs as-is, and the run environment (`-e KEY=VALUE`) is the only lever you
-get. If you plan to use `--recover` with changed inputs, launch a plain rerun instead.
+Recovery always replays the source run's **code** as-is. It is durability against intermittent
+failures, not a way to patch a run.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -112,6 +112,25 @@ so list those too to force a whole subtree; unknown names are ignored.
 Reused actions land in the `RECOVERED` phase, which is terminal and success-equivalent, so
 `flyte get action <run-name>` tells you exactly what recovery skipped.
 
+### Changing inputs
+
+The source task's inputs become options on `flyte rerun`, read off the run itself rather than from
+local code. Every one is optional: an input you leave out keeps the prior run's value, so changing
+one input of a five-input task is one flag rather than five.
+
+```bash
+flyte rerun <run-name> --threshold 0.9
+flyte rerun <run-name> --recover --threshold 0.9
+```
+
+> [!WARNING] Recovered actions keep their original outputs
+> An action reused from the source run keeps the output it produced under the **original** inputs.
+> Recovery does not recompute it against the new ones. Name the actions that must re-execute in
+> `--force-rerun-action`.
+
+When the inputs you pass cover the task's whole interface, the source run's inputs are never read,
+which makes `--allow-missing-outputs` irrelevant in that case.
+
 Because recovery matches succeeded actions by name, and a run rooted at a single action has a
 different action tree, `--action-name` cannot be combined with `--recover`.
 
@@ -133,6 +152,9 @@ flyte.rerun("<run-name>", recover=True)
 # Force specific actions to re-execute even though they succeeded:
 flyte.rerun("<run-name>", recover=True, force_rerun_actions=["a3", "a7"])
 
+# Change inputs, keeping the ones you leave out, and still reuse succeeded actions:
+flyte.rerun("<run-name>", recover=True, threshold=0.9)
+
 # Re-run a single action, rooted at its task with the inputs it received:
 flyte.rerun("<run-name>", action_name="a3")
 ```
@@ -145,7 +167,8 @@ flyte.with_runcontext(name="retry-1", env_vars={"LOG_LEVEL": "20"}).rerun("<run-
 ```
 
 Task inputs share the keyword namespace with those arguments, so a task input named `run_name`,
-`action_name`, `recover` or `force_rerun_actions` cannot be passed this way.
+`action_name`, `recover`, `force_rerun_actions` or `allow_missing_source_outputs` cannot be passed
+this way.
 
 ## Related
 

@@ -7,9 +7,9 @@ mermaid: true
 
 # Fork a run
 
-Forking replays a prior run with the code you have **now**: the actions that succeeded are reused,
-and the ones whose code changed re-execute. It is time-travel debugging for a pipeline. Go back to
-a run, change a task, and re-run only what that change actually affects.
+Forking replays a prior run with the code and inputs you have **now**: the actions that succeeded
+are reused, and the ones you changed re-execute. It is time-travel debugging for a pipeline. Go
+back to a run, change a task or an input, and re-run only what that change actually affects.
 
 ```bash
 flyte fork <run-name> main.py main
@@ -19,8 +19,8 @@ A fresh code bundle is built from your working tree, so nothing about the source
 replayed except where it is unchanged.
 
 > [!NOTE] Availability
-> `flyte fork` ships in `flyteplugins-union` (`pip install flyteplugins-union`). It is remote-only:
-> forking a run has no local equivalent.
+> `flyte fork` ships in `flyteplugins-union` 0.8.1 and later (`pip install flyteplugins-union`),
+> alongside `flyte` 2.6.5. It is remote-only: forking a run has no local equivalent.
 
 ## How it relates to rerun and recover
 
@@ -42,8 +42,10 @@ flowchart LR
     L["Your working tree"] -- "new code" --> C
 ```
 
-Inputs always come from the source run, so `flyte fork` takes no task inputs. Replaying a run with
-changed inputs is a separate feature and is not implemented.
+Fork can also change the root action's inputs. In Python the substitute code is optional too:
+`fork(run, threshold=0.9)` with no `task_template` replays the source run's task spec against new
+inputs, which makes fork the way to recover a run with different inputs. On the CLI the file and
+task are always given, since the command is built from them.
 
 ## Fork from the CLI
 
@@ -64,12 +66,33 @@ flyte fork --force-rerun-action a3 <run-name> main.py main
 List action names with `flyte get action <run-name>`. A listed parent re-enqueues its children, so
 list those too to force a whole subtree; unknown names are ignored.
 
+### Changing inputs
+
+The task's inputs become options, built from the signature in your local code. They are optional
+and carry no defaults: an input you leave out keeps the source run's value, so changing one input
+of a five-input task is one flag rather than five. Booleans take `--x/--no-x` so either value stays
+expressible, and unknown input names are rejected up front.
+
+```bash
+flyte fork <run-name> main.py main --threshold 0.9
+```
+
+> [!WARNING] Recovered actions keep their original outputs
+> An action reused from the source run keeps the output it produced under the **original** inputs.
+> Fork does not recompute it against the new ones. Name the actions that must re-execute in
+> `--force-rerun-action`.
+
+When the inputs you pass cover the whole interface, the source run's inputs are never fetched, so a
+run whose inputs have been cleaned up from storage can still be forked.
+
 ## Fork programmatically
 
 ```python
 from flyteplugins.union import fork, with_forkcontext
 
-fork("<run-name>", task_template=main)
+fork("<run-name>", task_template=main)                          # new code
+fork("<run-name>", task_template=main, threshold=0.9)           # new code and inputs
+fork("<run-name>", threshold=0.9)                               # source code, new inputs
 fork("<run-name>", task_template=main, force_rerun_actions=["a3"])
 ```
 
