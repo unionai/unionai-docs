@@ -5,6 +5,8 @@
   "identifiers": {},
   "methods": {
     "flyteplugins.union.debug": "/api-reference/union-plugin/#debug",
-    "flyteplugins.union.with_debugcontext": "/api-reference/union-plugin/#with_debugcontext"
+    "flyteplugins.union.fork": "/api-reference/union-plugin/#fork",
+    "flyteplugins.union.with_debugcontext": "/api-reference/union-plugin/#with_debugcontext",
+    "flyteplugins.union.with_forkcontext": "/api-reference/union-plugin/#with_forkcontext"
   }
 }

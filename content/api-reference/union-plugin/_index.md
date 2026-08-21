@@ -1,6 +1,6 @@
 ---
 title: Union plugin
-version: 0.7.2
+version: 0.8.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -20,7 +20,9 @@ This package provides Union-specific functionality on top of the open-source Fly
 | Method | Description |
 |-|-|
 | [`debug()`](#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
+| [`fork()`](#fork) | Fork run *run_name*, replaying it with the code in *task_template*. |
 | [`with_debugcontext()`](#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
+| [`with_forkcontext()`](#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
 
 
 ## Methods
@@ -71,6 +73,38 @@ Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug <run>` C
 
 **Returns:** the new ssh-debug Run.
 
+#### fork()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await fork.aio()`.
+```python
+def fork(
+    run_name: str,
+    task_template: TaskTemplate | None = None,
+    force_rerun_actions: Sequence[str] | None = None,
+    allow_missing_source_outputs: bool = False,
+) -> Run
+```
+Fork run *run_name*, replaying it with the code in *task_template*. Returns a `Run`.
+
+Its succeeded actions are reused; the ones whose code you edited re-execute, along with
+anything downstream of them. Inputs are always the source run's. Use `with_forkcontext(...)`
+to apply run-context overrides (name, env vars, ...).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `run_name` | `str` | Name of the run to fork. |
+| `task_template` | `TaskTemplate \| None` | Substitute task to run instead of the source run's code. |
+| `force_rerun_actions` | `Sequence[str] \| None` | Names of actions that must re-execute even though they succeeded in the source run. A listed parent re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
+| `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. |
+
+**Returns:** the new Run.
+
 #### with_debugcontext()
 
 ```python
@@ -101,4 +135,47 @@ the local ssh-config is the one threaded directly to `SSHDebug.connect`.
 | `ssh_host_name` | `Optional[str]` | |
 | `custom_context` | `Optional[Dict[str, str]]` | |
 | `**kwargs` |  | |
+
+#### with_forkcontext()
+
+```python
+def with_forkcontext(
+    mode: Any = None,
+    **kwargs: Any,
+) -> _ForkRunner
+```
+Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`.
+
+**The keyword arguments are `flyte.with_runcontext`'s, one for one.** They are forwarded
+unchanged to the same underlying runner, so anything you can set on a run you can set on
+a fork — `name`, `project`, `domain`, `env_vars`, `labels`, `annotations`, `queue`,
+`service_account`, `interruptible`, `copy_style`, `raw_data_path`, `overwrite_cache`,
+`cache_lookup_scope`, `max_action_concurrency`, `notifications`, `custom_context`,
+`log_level`, `debug`, and the rest. `flyte.with_runcontext`
+is the authoritative reference for what each one does; this function deliberately does not
+restate or restrict the list, so options added to the SDK work here the day they land.
+
+They are taken as `**kwargs` rather than spelled out, which is what keeps the two in
+lockstep — at the cost of no signature help in an editor. `test_fork.py` asserts every
+`with_runcontext` parameter is still accepted here, so the claim above stays true.
+
+What to fork — the run name, substitute code, replay actions — belongs to `fork()`, not
+here, exactly as the run itself belongs to `run()` / `rerun()`.
+
+```python
+run = with_forkcontext(
+    name="fix-1",                     # any with_runcontext option
+    env_vars={"LOG_LEVEL": "debug"},
+    queue="gpu",
+).fork("ul56wcvgqrb9vzhzz5l2", task_template=my_task)
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `Any` | Run mode, as `flyte.with_runcontext`'s first argument. Forking is remote-only, so a non-remote mode is rejected by `fork()` at launch. |
+| `**kwargs` | `Any` | Any keyword argument `flyte.with_runcontext` accepts, forwarded unchanged. |
+
+**Returns:** a runner that behaves like `with_runcontext`'s, plus `fork()`.
 
