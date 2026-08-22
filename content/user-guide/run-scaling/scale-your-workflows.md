@@ -37,7 +37,7 @@ Performance optimization focuses on two key dimensions:
 **Characteristics**:
 
 - Processing large datasets (millions of items)
-- High total action count (10k to 50k actions)
+- High total action count (10k+ actions)
 - Batch processing, large-scale batch inference and ETL workflows
 
 **Recommended approach**:
@@ -222,14 +222,20 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 
 ### 4. Limit fanout for system stability
 
-The UI and system have limits on the number of actions per run:
+Flyte tracks a bounded number of actions per run for monitoring and visualization:
 
-- **Current limit**: 50k actions per run
+- **Current limit**: 200k actions per run
+- **What happens past the limit**: The run keeps executing — this is not an execution gate.
+  Actions beyond the cap are not tracked by the run service, so the UI stops showing them and
+  displays a truncation notice. Fetching a specific action directly
+  (`flyte get action <run-name> <action-name>`) still returns correct data, because it reads from
+  the run database rather than the tracked view.
 - **Future**: Higher limits will be supported (contact the Union team if needed)
 
-This ceiling counts the **total** actions in the run, summed across every map and fanout. Note that
-per-map `concurrency` does **not** help here: it throttles how many actions run *at once*, not how
-many the run creates in total, so only batching reduces the count. For how the two controls compose,
+Staying under the limit keeps the whole run observable. It counts the **total** actions in the run,
+summed across every map and fanout. Note that per-map `concurrency` does **not** help here: it
+throttles how many actions run *at once*, not how many the run creates in total, so only batching
+reduces the count. For how the two controls compose,
 see [Per-map concurrency vs. the run-level action cap](../tasks/task-programming/controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap).
 
 **Example: Control fanout with batching**
@@ -352,7 +358,7 @@ Follow this workflow to optimize your Flyte workflows:
 5. **Reusable containers**: Enable reusable containers to eliminate `t`.
 6. **Traces**: Use traces for lightweight operations within tasks.
 7. **Cache**: Enable caching for deterministic, expensive tasks.
-8. **Limit fanout**: Keep total actions below 50k (target 10k-20k).
+8. **Limit fanout**: Keep total actions below 200k.
 9. **Monitor**: Use the UI to monitor execution and identify issues.
 10. **Iterate**: Continuously refine based on performance metrics.
 
@@ -446,7 +452,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 
 Reach out to the Union team if you:
 
-- Need more than 50k actions per run
+- Need more than 200k tracked actions per run, or need full UI visibility beyond that point
 - Want to use high-performance metastores (Redis, PostgreSQL) instead of object stores
 - Have specific performance requirements or constraints
 - Need help profiling and optimizing your workflows
