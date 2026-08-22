@@ -28,7 +28,9 @@ The control plane holds orchestration metadata only (run IDs, schedules, phase t
 **[Identity and access](./identity-and-access/_index)**
 Authentication is done via OIDC/SSO, API keys, and service accounts.
 Role-based access control enforces least-privilege.
-Union.ai personnel cannot access customer data or secrets.
+No customer data transits Union.ai's control plane, and secret values cannot be read back through the API.
+Union.ai personnel who hold a role in a customer's tenant see what that role authorizes, served from the customer's data plane and subject to the same RBAC and audit logging as any other user.
+See [Human access controls](./identity-and-access/human-access) for what that access covers in each deployment model.
 
 **[Compliance and governance](./compliance/_index)**
 Union.ai is SOC 2 Type II certified for Security, Availability, and Processing Integrity, with practices aligned to ISO 27001 and CIS benchmarks.

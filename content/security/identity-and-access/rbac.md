@@ -63,6 +63,6 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    flyte get policy
    ```
 
-6. For Union.ai employee access: the customer creates an RBAC policy for Union.ai support, scoped to viewer only and time-limited.
+6. For Union.ai employee access, list every identity-to-policy assignment in the organization with `flyte get assignment` and inspect the named policies. See [Human access controls](./human-access).
 
 This verification is fully self-service.
