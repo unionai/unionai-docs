@@ -24,9 +24,11 @@ This is distinct from BYOC Kubernetes cluster management access (described above
 
 ## Access scope
 
-When Union.ai personnel hold a role in a customer's tenant (in BYOC, or through support access in self-managed), they *can*: view orchestration metadata, view whatever their role authorizes in the console and CLI (including run inputs and outputs, logs, code bundles, and reports), perform administrative operations as authorized by the customer's RBAC policy, and (in BYOC) manage the Kubernetes cluster.
+When Union.ai personnel hold a role in a customer's tenant (in BYOC, or through support access in self-managed), that role lets them: view orchestration metadata, view whatever it authorizes in the console and CLI (including run inputs and outputs, logs, code bundles, and reports), and perform administrative operations as authorized by the customer's RBAC policy.
 
-They *cannot*: read secret values (the API is write-only), or reach the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators directly. Every request for run data follows the same authenticated, RBAC-gated path as any other user's: the data plane issues a per-request presigned URL, which is not retained. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced inside the customer's cluster.
+In BYOC, Union.ai personnel also manage the Kubernetes cluster. That capability comes from the separate private-connectivity management path described above, not from any tenant role.
+
+They *cannot*: read secret values (the API is write-only), or reach the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators directly. Every request for run data follows the same authenticated, RBAC-gated path as any other user's, and the path depends on what is being fetched: bulk artifacts (files, directories, DataFrames, code bundles, and reports) are read through a per-request presigned URL that is not retained, while structured inputs and outputs and log streams are served back through the data plane's `dataproxy` service. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced inside the customer's cluster.
 
 All access by Union.ai personnel is authenticated and logged with caller identity, operation performed, and timestamp.
 
@@ -64,10 +66,16 @@ Customer-side support access:
    flyte get assignment
    ```
 
-2. Inspect the policy each assignment names, to see exactly which actions it permits and which projects and domains it covers:
+2. Inspect the policy each assignment names. A policy binds roles to resources, so this shows which role applies to which projects and domains:
 
    ```bash
    flyte get policy <name>
    ```
 
-3. Review the audit log for requests made by those identities. Every request is logged with caller identity, operation performed, and timestamp.
+3. Inspect every role those policies bind. The role carries the action list, so this is the step that shows the effective access:
+
+   ```bash
+   flyte get role <name>
+   ```
+
+4. Review the audit log for requests made by those identities. Every request is logged with caller identity, operation performed, and timestamp.
