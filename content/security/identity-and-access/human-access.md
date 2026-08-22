@@ -8,7 +8,7 @@ variants: -flyte +union
 
 ## Self-managed
 
-In self-managed deployments, Union.ai personnel have no infrastructure access to the customer's data plane: no IAM roles, no VPN, no SSH keys, and no `kubectl` access. They operate only the Union.ai-hosted control plane. Application-level access to the tenant is a separate matter, covered under [Customer-side support access](#customer-side-support-access) below.
+In self-managed deployments, Union.ai personnel have no infrastructure access to the customer's data plane: no IAM roles, no VPN, and no SSH keys. They operate only the Union.ai-hosted control plane. Application-level access to the tenant is a separate matter, covered under [Customer-side support access](#customer-side-support-access) below.
 
 ## BYOC
 
@@ -38,7 +38,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 **How to verify:**
 
-Self-managed: Union.ai has no IAM roles, no VPN, no SSH keys, and no kubectl access to the customer's cluster. Every channel between Union.ai and the customer is initiated *from* the customer's data plane. Union.ai cannot initiate connections *to* the customer's infrastructure under any tier.
+Self-managed: Union.ai has no IAM roles, no VPN, and no SSH keys for the customer's cluster. Every channel between Union.ai and the customer is initiated *from* the customer's data plane. Union.ai cannot initiate connections *to* the customer's infrastructure under any tier.
 
 BYOC:
 
