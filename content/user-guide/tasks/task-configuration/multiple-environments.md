@@ -24,11 +24,7 @@ There are, however, two additional constraints that you must take into account.
 If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then:
 
 1. `env_1` must declare a deployment-time dependency on `env_2` in the `depends_on` parameter of `TaskEnvironment` that defines `env_1`.
-2. The image used in the `TaskEnvironment` of `env_1` must include the import-time dependencies of the module that defines `task_2` (unless `task_2` is invoked as a remote task).
-
-<!-- TODO: Link to remote tasks when that page is live
 2. The image used in the `TaskEnvironment` of `env_1` must include the import-time dependencies of the module that defines `task_2` (unless [`task_2` is invoked as a remote task](../task-programming/remote-tasks)).
--->
 
 ### Task `depends_on` constraints
 
@@ -105,12 +101,8 @@ Keep at module level anything that has to resolve when the module is imported:
 
 #### Invoke the child task remotely
 
-You can also avoid the requirement by invoking a task in another environment _remotely_.
-The parent then refers to the child task by name instead of importing it, so the parent image needs nothing from the child's module.
-
-<!-- TODO: Link to remote tasks when that page is live
 You can also avoid the requirement by [invoking a task in another environment _remotely_](../task-programming/remote-tasks).
--->
+The parent then refers to the child task by name instead of importing it, so the parent image needs nothing from the child's module.
 
 ## Example
 
@@ -183,11 +175,7 @@ Finally, we define the `main` task itself:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
-Since we call them directly rather than as remote tasks, `main_image` has to be able to import the modules that define them.
-
-<!-- TODO: Link to remote tasks when that page is live
-Note that we call them directly, not as [remote tasks](../task-programming/remote-tasks), which is why `main_image` has to be able to import the modules that define them.
--->
+Since we call them directly rather than as [remote tasks](../task-programming/remote-tasks), `main_image` has to be able to import the modules that define them.
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
 
