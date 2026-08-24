@@ -1,6 +1,6 @@
 ---
 title: Union plugin
-version: 0.8.0
+version: 0.8.1
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -20,7 +20,7 @@ This package provides Union-specific functionality on top of the open-source Fly
 | Method | Description |
 |-|-|
 | [`debug()`](#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
-| [`fork()`](#fork) | Fork run *run_name*, replaying it with the code in *task_template*. |
+| [`fork()`](#fork) | Fork run *run_name*, replaying it with new code and/or inputs. |
 | [`with_debugcontext()`](#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
 | [`with_forkcontext()`](#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
 
@@ -86,13 +86,15 @@ def fork(
     task_template: TaskTemplate | None = None,
     force_rerun_actions: Sequence[str] | None = None,
     allow_missing_source_outputs: bool = False,
+    **inputs: Any,
 ) -> Run
 ```
-Fork run *run_name*, replaying it with the code in *task_template*. Returns a `Run`.
+Fork run *run_name*, replaying it with new code and/or inputs. Returns a `Run`.
 
 Its succeeded actions are reused; the ones whose code you edited re-execute, along with
-anything downstream of them. Inputs are always the source run's. Use `with_forkcontext(...)`
-to apply run-context overrides (name, env vars, ...).
+anything downstream of them. Pass keyword inputs to change the root action's parameters
+(`fork("r1", task_template=fixed, x=2)`); inputs left out keep the source run's values. Use
+`with_forkcontext(...)` to apply run-context overrides (name, env vars, ...).
 
 
 
@@ -102,6 +104,7 @@ to apply run-context overrides (name, env vars, ...).
 | `task_template` | `TaskTemplate \| None` | Substitute task to run instead of the source run's code. |
 | `force_rerun_actions` | `Sequence[str] \| None` | Names of actions that must re-execute even though they succeeded in the source run. A listed parent re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
 | `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. |
+| `**inputs` | `Any` | Native keyword inputs to change the root action's parameters; omit an input to keep the source run's value. |
 
 **Returns:** the new Run.
 
