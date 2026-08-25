@@ -228,6 +228,12 @@ name = "gemini"
 frozen = true  # see "Frozen agentic plugins" above
 
 [[plugins]]
+package = "flyteplugins-huggingface"
+plugin = "flyteplugins.huggingface"
+title = "Hugging Face"
+name = "huggingface"
+
+[[plugins]]
 package = "flyteplugins-hydra"
 plugin = "flyteplugins.hydra"
 title = "Hydra"

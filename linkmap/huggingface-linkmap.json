@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.huggingface": "/api-reference/integrations/huggingface/",
+    "flyteplugins.huggingface.datasets": "/api-reference/integrations/huggingface/"
+  },
+  "identifiers": {
+    "flyteplugins.huggingface.datasets.HFSource": "/api-reference/integrations/huggingface/hfsource/",
+    "HFSource": "/api-reference/integrations/huggingface/hfsource/"
+  },
+  "methods": {
+    "flyteplugins.huggingface.datasets.from_hf": "/api-reference/integrations/huggingface/#from_hf"
+  }
+}
