@@ -124,6 +124,7 @@ this way.
 Setting `enable_autoscaling=True` runs the Ray autoscaler with KubeRay's defaults. Pass `autoscaler_options` to tune it:
 
 ```python
+import flyte
 from flyteplugins.ray import AutoscalerOptionsConfig, RayJobConfig, WorkerNodeConfig
 
 ray_config = RayJobConfig(
@@ -142,7 +143,7 @@ ray_config = RayJobConfig(
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `upscaling_mode` | `AutoscalerOptionsConfig.UpscalingMode` | Rate limiting on adding nodes. `CONSERVATIVE` holds the number of pending worker pods to at most the current cluster size. `DEFAULT` and `AGGRESSIVE` are the same setting: no rate limit. Leaving the field unset, or passing `UNSPECIFIED`, also means no rate limit |
-| `idle_timeout_seconds` | `int` | Seconds a node may sit idle before the autoscaler removes it |
+| `idle_timeout_seconds` | `int` | Seconds a node may sit idle before the autoscaler removes it (default: 60). An explicit `0` is dropped and the default applies |
 | `image` | `str` | Container image for the autoscaler sidecar |
 | `env` | `Dict[str, str]` | Environment variables for the autoscaler container |
 | `resources` | `Resources` | Requests and limits for the autoscaler sidecar |
