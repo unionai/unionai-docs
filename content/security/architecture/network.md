@@ -36,7 +36,7 @@ In multi-cluster deployments, each data plane cluster has its own dedicated tunn
 
 ### Sovereign Data Plane
 
-Enterprise customers can replace the Direct-to-Data-Plane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This makes the data plane unreachable from any third-party network -- including Cloudflare's -- and unreachable to Union.ai employees. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
+Enterprise customers can replace the Direct-to-Data-Plane tunnel entirely with a customer-managed load balancer inside their own VPC, reachable only from the corporate VPN. This removes every third-party network, including Cloudflare's, from the client-to-data-plane path, and makes that path reachable only from inside the customer's corporate network. See [Sovereign Data Plane](./sovereign-data-plane) for the topology and trade-offs.
 
 ## Communication paths
 

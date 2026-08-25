@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -23,7 +23,7 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
@@ -45,7 +45,7 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -79,11 +79,12 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
-| `devbox` | [`delete`](#flyte-delete-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
+| `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `volume` | [`explore⁺`](#flyte-explore-volume)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
+| `cluster-config` | [`get⁺`](#flyte-get-cluster-config)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -99,12 +100,14 @@ This is the command line interface for Flyte.
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| [`debug⁺`](#flyte-debug) | - |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`queue⁺`](#flyte-delete-queue), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
+| [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
@@ -378,8 +381,9 @@ routing to it and nothing else. The cluster owns that name: `flyte create
 queue` is rejected for it, and the queue's clusters/pool can no longer be
 edited directly. The name 'default' is reserved and cannot be used.
 
-Without --pool the cluster joins the pool named 'default', which is created
-on demand; any other pool must already exist.
+Without --pool the cluster joins the reserved pool named 'default'; any
+other pool must already exist and be live. When the default pool has been
+deleted, --pool is required — name a pool or undelete the default pool.
 
 Examples:
 
@@ -870,7 +874,10 @@ restored with `flyte undelete cluster-pool`.
 
 The pool must be empty: no member clusters and no live queues assigned to it.
 Queues that are themselves deleted do not block it, but they can only be
-undeleted once the pool is. The reserved 'default' pool cannot be deleted.
+undeleted once the pool is. The reserved 'default' pool follows the same
+rules: deleting it requires draining and deleting its 'default' queue first,
+and while the pool is deleted, `flyte create cluster` without --pool is
+rejected instead of falling back to it.
 
 Examples:
 
@@ -942,11 +949,16 @@ $ flyte --org my-org delete policy my-policy --yes
 Delete a queue.
 
 The delete is a soft delete: the queue stops being scheduled on and drops out
-of `flyte get queue`, but it keeps its name reserved — creating a queue with
+of the `flyte get queue` listing (fetching it by name still works and shows
+when it was deleted), but it keeps its name reserved — creating a queue with
 the same name is rejected until it is restored with `flyte undelete queue`.
 
 The queue must already be drained, so drain it first and wait for its status
-to reach 'drained'. The reserved 'default' queue cannot be deleted.
+to reach 'drained'. A queue referenced as run.default_queue in settings at
+any scope cannot be deleted until those settings are updated or unset. The
+reserved 'default' queue is no exception: it can be drained and deleted like
+any other queue, but while it is deleted, runs that name no queue (and have
+no run.default_queue setting) are rejected.
 
 Examples:
 
@@ -1245,6 +1257,71 @@ $ flyte explore volume --from-file ./index.db --store-type sqlite
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant union >}}
+{{< markdown >}}
+### flyte fork
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte fork [OPTIONS] COMMAND [ARGS]...`**
+
+Fork a prior run: reuse its succeeded actions, but run your *current* local code.
+
+```bash
+flyte fork ul56wcvgqrb9vzhzz5l2 hello.py my_task
+```
+
+A fresh code bundle is built from your working tree, so actions (tasks and traces) whose code
+changed re-execute while everything that succeeded and is unchanged is reused. This is "time
+travel debugging": go back to a run, change code, and replay only what that change affects.
+
+How it differs from the built-in verbs:
+
+```bash
+flyte rerun <run>            # same code, same inputs, everything re-executes
+flyte rerun <run> --recover  # same code, reuse succeeded actions (failure recovery)
+flyte fork <run> ...         # NEW code, reuse succeeded actions
+```
+
+Force specific actions to re-execute even though they succeeded:
+
+```bash
+flyte fork --force-rerun-action a3 <run> hello.py my_task
+```
+
+`flyte fork` takes the run to fork first, then the file and task, with `flyte run`'s options —
+image, copy-style, service-account, env, labels, queue and the rest — before them. It takes no
+task inputs: a fork replays the ones the source run was launched with. Remote-only — forking a
+run has no local equivalent.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--local` | `boolean` | `False` | Run the task locally |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
+| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
+| `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
+| `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
+| `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
+| `--tracked` | `boolean` | `False` | Run the task locally (implies --local) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
+| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with --tracked): any reporting failure fails the run loudly instead of being logged and swallowed. |
+| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
+| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
+| `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
+| `--debug` | `boolean` | `False` | Run the task as a VSCode debug task. Starts a code-server in the container so you can connect via the UI to interactively debug/run the task. |
+| `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
+| `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
+| `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
+| `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | Name of an action to re-execute even though it succeeded in the forked run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte gen
 
 **`flyte gen COMMAND [ARGS]...`**
@@ -1271,7 +1348,8 @@ Generate documentation.
 
 Retrieve resources from a Flyte deployment.
 
-You can get information about projects, runs, tasks, actions, secrets, logs and input/output values.
+You can get information about projects, runs, tasks, actions, secrets, logs and input/output values,
+as well as the status of the local devbox cluster.
 
 Each command supports optional parameters to filter or specify the resource you want to retrieve.
 
@@ -1448,6 +1526,38 @@ $ flyte get cluster --deleted
 
 {{< variant union >}}
 {{< markdown >}}
+#### flyte get cluster-config
+
+> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+
+**`flyte get cluster-config [OPTIONS] CLUSTER_NAME`**
+
+Get the tracked ConfigMaps of a cluster.
+
+Shows the live contents of the ConfigMaps the cluster is running with, read
+from the cluster's dataplane. Values are served verbatim.
+
+Examples:
+
+```bash
+$ flyte get cluster-config my-cluster
+
+$ flyte get cluster-config my-cluster --config-map union-operator
+
+$ flyte get cluster-config my-cluster --config-map executor --key config.yaml --raw
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--config-map` | `text` |  | Only show this ConfigMap (e.g. union-operator, executor, leaseworker, flyte-propeller-config). |
+| `--key` | `text` |  | Only show this key within the ConfigMap. Requires --config-map. |
+| `--raw` | `boolean` | `False` | Print the selected value(s) unformatted, with no panels — useful for piping. Requires --config-map. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 #### flyte get cluster-pool
 
 > **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
@@ -1503,6 +1613,27 @@ resolve one.
 Shows the automatically detected configuration to connect with the remote backend.
 
 The configuration will include the endpoint, organization, and other settings that are used by the CLI.
+
+#### flyte get devbox
+
+**`flyte get devbox [OPTIONS]`**
+
+Get the status of the local Flyte devbox cluster started with `flyte start devbox`.
+
+Shows the run state, the UI and image registry endpoints, the container image
+version in use, and where the cluster keeps its state on disk.
+
+Pass an output format to the top-level command for a machine-readable report:
+
+
+```bash
+flyte -of json-raw get devbox
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--no-probes` | `boolean` | `False` | Skip the HTTP readiness probe and the container resource usage sample, for a faster, offline check. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get io
 
@@ -1639,8 +1770,10 @@ If NAME is provided, fetch that specific queue with its current metrics.
 Use --watch to stream live metrics with progress bars.
 Otherwise list all queues.
 
-Deleted queues are hidden by default; --deleted lists them instead, which is
-how you find a queue to pass to `flyte undelete queue`.
+Deleted queues are hidden from the listing by default; --deleted lists them
+instead, which is how you find a queue to pass to `flyte undelete queue`.
+Fetching a queue by NAME returns it even when deleted, showing its deletion
+time.
 
 --state narrows the listing to queues in one state (active, draining or
 drained); the server does the filtering.
@@ -1947,17 +2080,30 @@ Re-run an existing run RUN_NAME with its original code and inputs.
 
 Fetches the prior run's task + inputs from the platform (no local code needed) and launches a
 new run that returns the same way `flyte run` does. `--recover` reuses the prior run's
-succeeded actions (re-running only what failed or changed); `--force-rerun-action` forces
-named actions to re-execute anyway. To re-run with *new* local code (reusing the prior run's
-inputs), use `flyte run <file> <task> --rerun-from <run>`.
+succeeded actions, re-running only what failed or never ran; `--force-rerun-action` forces
+named actions to re-execute anyway.
+
+`--action-name` narrows the whole thing to a single action: the new run is rooted at that
+action's task, run with the exact inputs it received inside RUN_NAME. That is always a plain
+re-execution, so it cannot be combined with `--recover`.
+
+The task's own inputs are options too, built from RUN_NAME's interface just as `flyte run`
+builds them from local code — run `flyte rerun RUN_NAME --help` to list them. Every input left
+out keeps RUN_NAME's value. With `--recover`, the new run starts from the changed inputs but
+still reuses RUN_NAME's succeeded actions, which keep the outputs they produced under the
+*original* inputs — force the ones that must re-execute with `--force-rerun-action`.
 
 Examples:
 
 ```bash
-$ flyte rerun ul56wcvgqrb9vzhzz5l2
-$ flyte rerun ul56wcvgqrb9vzhzz5l2 --name retry-1 --follow
-$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover
-$ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover --force-rerun-action a3 --force-rerun-action a7
+$ flyte rerun rxyz
+$ flyte rerun rxyz --name retry-1 --follow
+$ flyte rerun rxyz --recover
+$ flyte rerun rxyz --recover --force-rerun-action a3 --force-rerun-action a7
+$ flyte rerun rxyz --action-name a3
+$ flyte rerun rxyz --help
+$ flyte rerun rxyz --n 10 --cfg '{"lr": 0.1}'
+$ flyte rerun rxyz --recover --n 10 --force-rerun-action a3
 ```
 
 | Option | Type | Default | Description |
@@ -1968,7 +2114,8 @@ $ flyte rerun ul56wcvgqrb9vzhzz5l2 --recover --force-rerun-action a3 --force-rer
 | `-e` `--env` | `text` | `Sentinel.UNSET` | Env var KEY=VALUE for the new run. Repeatable. |
 | `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
 | `--follow` `-f` | `boolean` | `False` | Stream the parent action logs after launch. |
-| `--recover` | `boolean` | `False` | Recover from this run: reuse its succeeded actions, re-run only what failed or changed. |
+| `--recover` | `boolean` | `False` | Reuse the prior run's succeeded actions, re-running only what failed or never ran. Remote-only. |
+| `--action-name` | `text` |  | Re-run only this action from the run, instead of the whole run: the new run is rooted at that action's task with the inputs it received. Cannot be combined with --recover. List names with `flyte get action <run>`. |
 | `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--allow-missing-outputs` | `boolean` | `False` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The inputs cannot be verified from the client — if they were deleted too, the new run fails at runtime. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -2089,9 +2236,6 @@ flyte run hello.py my_task --help
 | `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
-| `--recover-from` | `text` |  | Recover a fresh run from a prior run: reuse its succeeded actions and re-run only what failed or changed. Remote-only. |
-| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover-from: name of an action to re-execute even though it succeeded in the prior run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
-| `--rerun-from` | `text` |  | Re-run an existing run with THIS local code, reusing that run's inputs (no per-task input flags are needed). Remote-only. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 

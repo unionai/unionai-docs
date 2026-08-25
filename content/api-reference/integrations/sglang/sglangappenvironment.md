@@ -1,6 +1,6 @@
 ---
 title: SGLangAppEnvironment
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ class SGLangAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.1', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-12.8/bin:$PATH'))), PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu128', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(packages=('sglang==0.5.2',)), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'),))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.5', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-12.8/bin:$PATH'))), PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu128', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(packages=('sglang==0.5.2',)), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'),))), _tag=None, _image_registry_secret=None),
     type: str = 'SGLang',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',

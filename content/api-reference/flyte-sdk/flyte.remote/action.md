@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,6 +45,7 @@ class Action(
 |-|-|-|
 | `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
 | `name` | `str` | Get the name of the action. |
+| `parent_name` | `str \| None` | Name of the action this one is nested under, or None for the root action. |
 | `phase` | `ActionPhase` | Get the phase of the action. |
 | `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
 | `relation` | `None` | Provenance link (`flyteidl2.common.run_pb2.Relation`: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
@@ -196,6 +197,7 @@ def listall(
     cls,
     for_run_name: str,
     in_phase: Tuple[ActionPhase | str, ...] | None = None,
+    parent_name: str | None = None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
     created_at: TimeFilter | None = None,
     updated_at: TimeFilter | None = None,
@@ -210,7 +212,8 @@ Get all actions for a given run.
 | `cls` |  | |
 | `for_run_name` | `str` | The name of the run. |
 | `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter actions by one or more phases. |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `parent_name` | `str \| None` | Only return direct children of this action (e.g. "a0" for the root's children). |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the action list, in the format (field, order). |
 | `created_at` | `TimeFilter \| None` | Filter actions by creation time range. |
 | `updated_at` | `TimeFilter \| None` | Filter actions by last-update time range. |
 

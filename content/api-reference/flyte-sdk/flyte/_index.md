@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -829,24 +829,33 @@ delivers the result as an inline `Literal` (protobuf scalar/primitive) in the
 def rerun(
     run_name: str,
     action_name: str = 'a0',
-    task_template: TaskTemplate[P, R, F] | None = None,
+    recover: bool = False,
+    force_rerun_actions: Sequence[str] | None = None,
+    allow_missing_source_outputs: bool = False,
     **inputs: Any,
 ) -> Run
 ```
 Re-run a prior run, returning a new `Run`.
 
-`rerun("r1")` reuses the prior run's exact inputs (fetching its code from the platform);
-pass keyword inputs to change parameters (`rerun("r1", x=2)`), or `task_template=` to substitute
-code. Use `with_runcontext(...).rerun(...)` to apply run-context overrides (env_vars, recover, …).
+`rerun("r1")` creates a whole new run with the prior run's exact inputs (fetching its code from
+the platform); `rerun("r1", recover=True)` does the same but reuses the prior run's succeeded
+actions, re-executing only what failed or never ran. Pass keyword inputs to change
+parameters (`rerun("r1", x=2)`); inputs left out keep the prior run's values. New inputs
+combine with recovery (`rerun("r1", recover=True, x=2)`), in which case recovered actions keep
+the outputs they produced under the original inputs unless listed in `force_rerun_actions`.
+Use `with_runcontext(...).rerun(...)` to apply run-context overrides (env_vars, labels, …).
+The prior run's code is always replayed as-is.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `run_name` | `str` | Name of the prior run to re-run. |
-| `action_name` | `str` | Action within the prior run to source the task + inputs from (default `a0`). |
-| `task_template` | `TaskTemplate[P, R, F] \| None` | Optional task to substitute for the prior run's code. |
-| `**inputs` | `Any` | Optional native keyword inputs to change parameters; omit to reuse prior inputs. |
+| `action_name` | `str` | Action within the prior run to source the task + inputs from. Defaults to `a0`, the root action — i.e. the whole run. Naming a child action instead roots the new run at that action's task, run with the exact inputs it received. Cannot be combined with `recover`. |
+| `recover` | `bool` | Reuse the prior run's succeeded actions, re-running only what failed or never ran. Remote-only; requires a backend (and flyteidl2 build) with RunSpec.relation recovery support. |
+| `force_rerun_actions` | `Sequence[str] \| None` | With `recover`, names of actions that must re-execute even though they succeeded in the source run (escape hatch). A listed parent action re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
+| `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. Irrelevant when the new inputs cover every input of the task, since the source inputs are then not read at all. |
+| `**inputs` | `Any` | Optional native keyword inputs to change parameters. Any input not passed keeps the source run's value, so passing none reuses the source run's inputs wholesale. |
 
 **Returns:** the new Run.
 
@@ -1067,11 +1076,8 @@ def with_runcontext(
     cache_lookup_scope: CacheLookupScope = 'global',
     preserve_original_types: bool = False,
     debug: bool = False,
-    recover: bool | str | None = False,
     tracked: bool = False,
     tracked_strict: bool = False,
-    recover_force_rerun_actions: Sequence[str] | None = None,
-    allow_missing_source_outputs: bool = False,
     _tracker: Any = None,
 ) -> _Runner
 ```
@@ -1133,11 +1139,8 @@ if __name__ == "__main__":
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level). |
 | `preserve_original_types` | `bool` | Optional If true, the type engine will preserve original types (e.g., pd.DataFrame) when guessing python types from literal types. If false (default), it will return the generic flyte.io.DataFrame. This option is automatically set to True if interactive_mode is True unless overridden explicitly by this parameter. |
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
-| `recover` | `bool \| str \| None` | Recover (reuse a prior run's succeeded actions, re-running only what failed or changed). `True` recovers from the run being rerun — only valid with `.rerun(...)`; a run-name string recovers from that named run and is the only form valid on `.run(...)`. Remote-only. Requires a backend (and flyteidl2 build) with RunSpec.relation recovery support; raises NotImplementedError at submit otherwise. |
 | `tracked` | `bool` | Local-only. If true, report tracked run state (actions, attempts, outputs, reports) to the Flyte control plane via TrackedRunService so the run shows up in the console. Requires an initialized client and a configured project/domain. Can also be enabled globally with the `local.tracked` config key. Reporting is best-effort and never fails the local run. |
 | `tracked_strict` | `bool` | Local-only, for debugging reporting itself. When true (with `tracked`), the first reporting failure — registration, an artifact upload, a rejected or undeliverable ReportActions update, or a flush timeout — fails the run loudly instead of being logged and swallowed. Can also be enabled globally with the `local.tracked_strict` config key. |
-| `recover_force_rerun_actions` | `Sequence[str] \| None` | Optional names of actions that must re-execute in the recovery run even if they succeeded in the source run (escape hatch). A listed parent action re-enqueues its children — list them too to force the whole subtree; a listed condition re-pauses for a new signal. Unknown names are ignored. Only valid with `recover`. |
-| `allow_missing_source_outputs` | `bool` | Opt-in for `rerun`/recover when the source run's outputs were cleaned up from storage: proceed using the source inputs URI instead of failing. The client cannot verify the inputs still exist — if they were deleted too, the new run fails at runtime. |
 | `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner

@@ -1,6 +1,6 @@
 ---
 title: ActionAbortedError
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---

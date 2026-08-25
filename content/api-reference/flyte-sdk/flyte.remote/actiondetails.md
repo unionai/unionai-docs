@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.6.1
+version: 2.6.5
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,6 +43,7 @@ class ActionDetails(
 | `is_running` | `bool` | Check if the action is currently running. |
 | `metadata` | `run_definition_pb2.ActionMetadata` | Get the metadata of the action. |
 | `name` | `str` | Get the name of the action. |
+| `parent_name` | `str \| None` | Name of the action this one is nested under, or None for the root action. |
 | `phase` | `ActionPhase` | Get the phase of the action. |
 | `phase_durations` | `Dict[ActionPhase, timedelta]` | Get the duration spent in each phase as a dictionary.  Returns a mapping of ActionPhase to timedelta for the latest attempt. This provides an easy way to see how long was spent queued, initializing, running, etc. |
 | `queued_time` | `timedelta \| None` | Get the time spent in the QUEUED phase for the latest attempt. |

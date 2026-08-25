@@ -60,9 +60,9 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
 5. Display all active policy bindings:
 
    ```bash
-   flyte get policy
+   flyte -of json get policy
    ```
 
-6. For Union.ai employee access: the customer creates an RBAC policy for Union.ai support, scoped to viewer only and time-limited.
+6. For Union.ai employee access, list every identity-to-policy assignment in the organization with `flyte get assignment`, inspect the policies they name with `flyte get policy <name>`, then inspect the roles those policies bind with `flyte get role <name>`. The role carries the action list, so the last step is the one that shows the effective access. See [Human access controls](./human-access).
 
 This verification is fully self-service.

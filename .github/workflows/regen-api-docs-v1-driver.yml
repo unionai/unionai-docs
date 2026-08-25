@@ -1,0 +1,91 @@
+# Drive the v1 API-docs regen from the DEFAULT branch (DOC-1293).
+#
+# THE CONSTRAINT: GitHub fires `schedule` and `repository_dispatch` only from the
+# repo's default branch. `regen-api-docs.yml` exists on `v1` and works, but its
+# copy there can only declare `workflow_dispatch` — a `schedule:` on a v1-branch
+# file would never run. So v1 never auto-regenerated: its API reference sat at
+# flytekit 1.16.26 while 1.16.28 was released, and moved only when a human
+# remembered to dispatch it by hand.
+#
+# THE FIX, deliberately thin: this driver does NOT reimplement the regen. It
+# dispatches the existing v1 workflow with `ref: v1`. v1 keeps ONE implementation
+# of its own regen — its drift gate, its fold, its PR body, its concurrency group.
+# Duplicating that logic here would give the two lines two regens to keep in sync,
+# and the v1 copy is the one nobody looks at (LESSONS.md §48).
+#
+# WHY THE APP TOKEN: a workflow dispatched using GITHUB_TOKEN does not create a
+# new workflow run — GitHub suppresses event cascades from that token to prevent
+# loops. The docsy-bot App is already configured here (it authors the regen PRs),
+# so the driver mints an App token exactly as the regen does. Without the App
+# secrets this job fails loudly rather than dispatching into silence, because a
+# driver that quietly does nothing is worse than no driver: it looks handled.
+#
+# SAFE TO RUN DAILY: everything downstream of the v1 regen's `drift` gate is
+# conditioned on it, so a run with no PyPI drift regenerates nothing and opens no
+# PR. The cost of a quiet day is a few CI minutes.
+#
+# NOT DONE HERE: a flytekit-release -> repository_dispatch signal, the analogue of
+# flyte-sdk's for v2. That needs a PR against the flytekit repo to emit the
+# dispatch, which is out of this repo's control. The daily poll covers the same
+# ground with at most ~24h of latency, which is what main's own schedule calls a
+# "daily backstop poll". Add the push signal later if the latency ever matters.
+name: "Drive v1 API-docs regen"
+
+on:
+  schedule:
+    # 13:30 UTC — 30 minutes after main's own regen (13:00), so the two lines do
+    # not contend for runners or land two regen PRs in the same minute.
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log what would be dispatched; do not dispatch."
+        type: boolean
+        default: false
+
+concurrency:
+  # Distinct from the v1 workflow's own group: this only dispatches.
+  group: regen-api-docs-v1-driver
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  dispatch:
+    name: "Dispatch the v1 regen"
+    runs-on: ubuntu-latest
+    env:
+      DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
+    steps:
+      - name: Require the docsy-bot App
+        if: ${{ env.DOCSY_BOT_APP_ID == '' }}
+        run: |
+          echo "::error::DOCSY_BOT_APP_ID is not set. A workflow dispatched with GITHUB_TOKEN does not start a run, so dispatching without the App would silently do nothing. Set DOCSY_BOT_APP_ID + DOCSY_BOT_PRIVATE_KEY."
+          exit 1
+
+      - name: Mint docsy-bot App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
+
+      - name: Dispatch regen-api-docs.yml on v1
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          if [ "${DRY_RUN:-false}" = "true" ]; then
+            echo "dry_run: would dispatch regen-api-docs.yml on ref v1."
+            exit 0
+          fi
+          # Fail loudly. A driver whose dispatch silently failed would leave v1
+          # exactly as stale as having no driver, while looking healthy.
+          if ! gh workflow run regen-api-docs.yml --ref v1; then
+            echo "::error::Failed to dispatch regen-api-docs.yml on v1."
+            exit 1
+          fi
+          echo "Dispatched regen-api-docs.yml on v1. It gates on PyPI drift and opens a draft PR only when the flytekit version actually moved."
+          echo "Runs: ${GITHUB_SERVER_URL}/${GH_REPO}/actions/workflows/regen-api-docs.yml"

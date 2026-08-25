@@ -126,8 +126,30 @@ jobs:
         if: steps.drift.outputs.drift == 'true' && hashFiles('versions.toml') != ''
         run: |
           set -euo pipefail
-          eval "$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"
-          if [ "${DOCS_CUT_KIND:-}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
+          # Capture BEFORE eval. `eval "$(cmd)"` discards cmd's exit status: a crash
+          # yields empty output and `eval ""` succeeds, so the step passes and the
+          # condition below simply reads false. `set -e` cannot see it, and the `:-`
+          # defaults defeat `set -u` (docs-cut.yml uses bare ${DOCS_TAG} and so fails
+          # loudly by accident; this step defended itself into silence).
+          #
+          # 2026-08-19: manifest.py gained an `import tomlkit` whose dependency was
+          # declared only in pyproject.toml, not its PEP 723 block, so under `uv run`
+          # it died on import. This step reported "Not an SDK-release cut" -- which was
+          # false -- and the v1 regen to flytekit 1.16.28 opened with no versions.toml
+          # promote. The cut silently did not happen. (infra#269, DOC-1457)
+          if ! plan="$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"; then
+            echo "::error::manifest.py --check failed. Cannot determine whether this regen is an SDK-release cut; refusing to guess."
+            exit 1
+          fi
+          eval "$plan"
+          # A crash is not the only way to learn nothing: the script could succeed and
+          # print nothing. "Not an SDK-release cut" must mean we ASKED and the answer
+          # was no -- never that we failed to ask.
+          if [ -z "${DOCS_CUT_KIND:-}" ]; then
+            echo "::error::manifest.py --check produced no DOCS_CUT_KIND. Raw output: ${plan:-<empty>}"
+            exit 1
+          fi
+          if [ "${DOCS_CUT_KIND}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
             REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
             REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --write --variant both --out data/version-manifest.json
             echo "Folded ${DOCS_TAG} into this regen PR: versions.toml stable=${DOCS_TAG} + data/version-manifest.json (inline cut tag)."

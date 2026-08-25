@@ -120,7 +120,7 @@ full comparison of `flyte.map(concurrency=N)` against `asyncio.Semaphore`, see
 > [!NOTE]
 > `concurrency` limits how many actions run *at once*; it does not reduce the *total* number of
 > actions the map creates. A large map still counts every item against the run-level ceiling
-> (currently 50k actions per run). To keep a large fan-out under that limit, batch items so the map
+> (currently 200k actions per run). To keep a large fan-out under that limit, batch items so the map
 > produces fewer actions — see
 > [Per-map concurrency vs. the run-level action cap](./controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap)
 > and [Scale your workflows](../../run-scaling/scale-your-workflows).
