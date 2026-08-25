@@ -85,7 +85,7 @@ flyte run --local hello.py main --x-list '[1, 2, 3]'
 The TUI is an interactive split-screen dashboard. Task tree on the left, details and logs on the right.
 
 ```bash
-flyte run --local hello.py main
+flyte run --local --tui hello.py main
 ```
 
 ![TUI agent run](../../../_static/images/user-guide/quickstart/run-tui.png)
