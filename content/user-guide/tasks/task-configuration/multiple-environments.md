@@ -24,11 +24,7 @@ There are, however, two additional constraints that you must take into account.
 If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then:
 
 1. `env_1` must declare a deployment-time dependency on `env_2` in the `depends_on` parameter of `TaskEnvironment` that defines `env_1`.
-2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless `task_2` is invoked as a remote task).
-
-<!-- TODO: Link to remote tasks when that page is live
-2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task](../task-programming/remote-tasks)).
--->
+2. The image used in the `TaskEnvironment` of `env_1` must include the import-time dependencies of the module that defines `task_2` (unless [`task_2` is invoked as a remote task](../task-programming/remote-tasks)).
 
 ### Task `depends_on` constraints
 
@@ -43,18 +39,70 @@ The alternative strategy of building all environments defined in the set of depl
 
 ### Dependency inclusion constraints
 
-When a parent task invokes a child task in a different environment, the container image of the parent task environment must include all dependencies used by the child task.
-This is necessary because of the way task invocation works in Flyte:
+When a parent task invokes a child task in a different environment, the container image of the parent task environment must include the import-time dependencies of the module that defines the child task.
+This is narrower than every dependency the child task uses.
+It is what Python evaluates when the module is imported:
 
-- When a child task is invoked by function name, that function, necessarily, has to be imported into the parent tasks's Python environment.
-- This results in all the dependencies of the child task function also being imported.
-- But, nonetheless, the actual execution of the child task occurs in its own environment.
+- To invoke a child task by function name, the parent has to import the module that defines it. Importing that module runs the module's top-level statements: its module-level imports, its `Image` and `TaskEnvironment` definitions, and the `@env.task` decoration of each task in it.
+- Decorating a task builds its interface, which resolves the type annotations on the task's parameters and return value. Every name in those annotations has to be importable in the parent image.
+- The body of the child task function does not run in the parent. The child task still executes in its own environment, using its own image.
 
-To avoid this requirement, you can invoke a task in another environment _remotely_.
+So the parent image needs what the child's module imports at the top level, plus what the child task's signature refers to.
+It does not need a package that the child task imports inside its function body.
 
-<!-- TODO: Link to remote tasks when that page is live
-To avoid this requirement, you can [invoke a task in another environment _remotely_](../task-programming/remote-tasks).
--->
+You have two ways to keep a dependency out of the parent image: import it inside the task function, or invoke the child task remotely.
+
+#### Import the dependency inside the task function
+
+If a package is only used in the body of a child task, import it there rather than at module level.
+
+The child task, in `other/run.py`:
+
+```python
+import flyte
+
+other_env = flyte.TaskEnvironment(
+    name="other_env",
+    image=flyte.Image.from_debian_base().with_pip_packages("polars"),
+)
+
+@other_env.task
+async def row_count(path: str) -> int:
+    import polars as pl
+
+    return pl.read_parquet(path).height
+```
+
+The parent task, in `main.py`:
+
+```python
+import flyte
+
+from other.run import other_env, row_count
+
+env = flyte.TaskEnvironment(
+    name="main_env",
+    depends_on=[other_env],
+    image=flyte.Image.from_debian_base(),
+)
+
+@env.task
+async def main(path: str) -> int:
+    return await row_count(path)
+```
+
+The image for `main_env` does not include `polars`, because `other/run.py` imports it inside `row_count` rather than at module level.
+Importing `other/run.py` in the parent still works, and `row_count` still runs in `other_env`, where `polars` is installed.
+
+Keep at module level anything that has to resolve when the module is imported:
+
+- Names used in a task's parameter or return annotations. A name imported only in the function body raises `NameError` when the module is imported, including in a module that uses `from __future__ import annotations`.
+- Values passed to `TaskEnvironment`, `Image`, or the `@env.task` decorator, such as the package lists used to build an image.
+
+#### Invoke the child task remotely
+
+You can also avoid the requirement by [invoking a task in another environment _remotely_](../task-programming/remote-tasks).
+The parent then refers to the child task by name instead of importing it, so the parent image needs nothing from the child's module.
 
 ## Example
 
@@ -110,7 +158,12 @@ We then assemble the image and the environment:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="image_and_env" lang="python" >}}
 
 The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
-This ensures that `main_image` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
+This ensures that `main_image` can import `fold/run.py` and `msa/run.py`, whatever those modules import at the top level.
+
+{{< note >}}
+In this small example neither `msa/run.py` nor `fold/run.py` actually imports its packages at the top level, so a smaller `main_image` would also run.
+Composing the parent image from the child images is the pattern that keeps working once those modules do import their packages at module level, and it saves you working out which ones they are.
+{{< /note >}}
 
 The environment for the `main` task is defined with:
 
@@ -122,11 +175,7 @@ Finally, we define the `main` task itself:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
-Since we call them directly rather than as remote tasks, we had to ensure that `main_image` includes all dependencies needed by both tasks.
-
-<!-- TODO: Link to remote tasks when that page is live
-Note that we call them directly, not as [remote tasks](../task-programming/remote-tasks), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
--->
+Since we call them directly rather than as [remote tasks](../task-programming/remote-tasks), `main_image` has to be able to import the modules that define them.
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
 
