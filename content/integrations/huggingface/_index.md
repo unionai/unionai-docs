@@ -256,17 +256,17 @@ The driver builds both references up front and fans the CPU work out across them
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/imdb_sentiment.py" fragment="main" lang="python" >}}
 
-The first run downloads both splits into `cache_root`. Every run after that, including runs from a colleague's laptop against the same bucket, starts from Parquet already in your object store.
+The first run downloads both splits into `cache_root`. Every run after that starts from Parquet already in storage, including runs from a colleague's laptop once `HF_CACHE_ROOT` points you both at the same bucket.
 
 When you adapt this, keep one detail from `main`: evaluation scores the _shuffled_ subsample, not the head of the raw test split. IMDB's test split is ordered by label, 12,500 negatives followed by 12,500 positives, so streaming the first N rows would score a model against negatives only and report an accuracy that means nothing. Sorted splits are common enough on the Hub that you should check before taking a prefix of one.
 
-Try it against local disk first by setting `CACHE_ROOT` to a local path:
+It runs locally with no setup, because `CACHE_ROOT` falls back to a local directory when `HF_CACHE_ROOT` is unset:
 
 ```bash
 flyte run --local imdb_sentiment.py main --train_rows 200 --eval_rows 100
 ```
 
-Same code path either way; a local run just stages the cache on disk instead of in a bucket.
+Same code path either way. Only where the cache lives changes, so set `HF_CACHE_ROOT` to a bucket when you want the download shared.
 
 ## Running the examples
 
@@ -274,7 +274,7 @@ Both files are self-contained scripts. `hf_datasets.py` composes the individual 
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_datasets.py" fragment="main" lang="python" >}}
 
-Run either against a cluster with `python hf_datasets.py`, or against local disk with `flyte run --local hf_datasets.py main`. Set `CACHE_ROOT` to a local directory first if you're running locally; the default points at a bucket.
+Run either against a cluster with `python hf_datasets.py`, or against local disk with `flyte run --local hf_datasets.py main`. Both cache to a local directory unless `HF_CACHE_ROOT` names object storage, so neither needs setup to try.
 
 ## Common use cases
 
