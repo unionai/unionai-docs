@@ -1,6 +1,6 @@
 ---
 title: VLLMAppEnvironment
-version: 2.6.5
+version: 2.6.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ class VLLMAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.5', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu129', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.11.0',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.6', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.26.0',)), PipPackages(index_url='https://flashinfer.ai/whl/cu130', packages=('flashinfer-jit-cache==0.6.14',))), _tag=None, _image_registry_secret=None),
     type: str = 'vLLM',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
@@ -45,6 +45,9 @@ class VLLMAppEnvironment(
     model_hf_path: str = '',
     model_id: str = '',
     stream_model: bool = True,
+    draft_model_path: str | RunOutput | ArtifactValue = '',
+    draft_model_hf_path: str = '',
+    speculative_config: Optional[dict[str, Any]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -74,7 +77,10 @@ class VLLMAppEnvironment(
 | `model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to model (e.g., s3://bucket/path/to/model), or a `RunOutput`/`ArtifactValue` resolved at deploy time. |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by vllm. |
-| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte custom loader). Ignored for `model_hf_path`-only apps, which always use vLLM's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. |
+| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte custom loader). Ignored for `model_hf_path`-only apps, which always use vLLM's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. Also ignored when a draft model is configured -- see `draft_model_path`. |
+| `draft_model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to the draft model (speculator) used for speculative decoding, or a `RunOutput`/`ArtifactValue` resolved at deploy time. The weights are downloaded alongside the target model and passed to vLLM as the `model` key of `--speculative-config`. Requires `speculative_config`. |
+| `draft_model_hf_path` | `str` | Hugging Face path to the draft model, as an alternative to `draft_model_path` (e.g., Qwen/Qwen3-0.6B). |
+| `speculative_config` | `Optional[dict[str, Any]]` | vLLM speculative decoding configuration, serialized into the `--speculative-config` JSON blob. The `model` key is filled in from `draft_model_path`/`draft_model_hf_path` and must not be set here. Draft-model-free methods (e.g. `{"method": "ngram", "num_speculative_tokens": 5}`) need no draft model. See https://docs.vllm.ai/en/stable/features/spec_decode/. |
 
 ## Properties
 

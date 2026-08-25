@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.5
+version: 2.6.6
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -1336,7 +1336,7 @@ Generate documentation.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
+| `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown, json) |
 | `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
@@ -2038,7 +2038,7 @@ Then run:
 $ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
 ```bash
 --shard-config shard_config.yaml \
---accelerator A100:8 \
+--gpu A100:8 \
 --hf-token-key HF_TOKEN
 ```
 ```

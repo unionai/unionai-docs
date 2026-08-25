@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.6.5
+version: 2.6.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,6 +27,7 @@ image = (
 - `from_debian_base()` — Debian-based image with a specified Python version
 - `from_base()` — Any base image by name (e.g., `"python:3.12-slim"`)
 - `from_uv_script()` — Image from a `uv`-compatible script with inline dependencies
+- `from_pixi_script()` — Image from a `pixi`-compatible script with inline dependencies
 - `from_dockerfile()` — Image from a custom Dockerfile
 - `from_ref_name()` — Reference to a pre-built image by name
 
@@ -93,6 +94,7 @@ class Image(
 | [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
 | [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
+| [`from_pixi_script()`](#from_pixi_script) | Create an image from a `pixi`-compatible script, using the PEP 723 block at the top of. |
 | [`from_ref_name()`](#from_ref_name) |  |
 | [`from_uv_script()`](#from_uv_script) | Use this method to create a new image with the specified uv script. |
 | [`validate()`](#validate) |  |
@@ -229,6 +231,74 @@ context for the builder will be the directory where the dockerfile is located.
 | `registry` | `str` | registry to use for the image |
 | `name` | `str` | name of the image |
 | `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64") |
+
+### from_pixi_script()
+
+```python
+def from_pixi_script(
+    script: Path | str,
+    name: str,
+    registry: str | None = None,
+    registry_secret: Optional[str | Secret] = None,
+    environment: str = 'default',
+    extra_args: Optional[str] = None,
+    platform: Optional[Tuple[Architecture, ...]] = None,
+    secret_mounts: Optional[SecretRequest] = None,
+) -> Image
+```
+Create an image from a `pixi`-compatible script, using the PEP 723 block at the top of
+the script to determine the Python version and the conda and PyPI packages to install.
+
+A pixi script declares portable PEP 723 fields alongside pixi-specific `[tool.pixi.*]`
+tables, which is what lets it pull conda packages that `from_uv_script` cannot:
+
+```python
+#!/usr/bin/env -S pixi run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["flyte"]
+#
+# [tool.pixi.workspace]
+# channels = ["conda-forge"]
+#
+# [tool.pixi.dependencies]
+# gdal = "*"
+# ///
+```
+
+`requires-python` becomes the environment's Python (an explicit
+`[tool.pixi.dependencies].python` wins over it), `dependencies` become PyPI packages, and
+`[tool.pixi.dependencies]` become conda packages. Channels default to `conda-forge` and
+the supported platforms default to those of the image, unless `[tool.pixi.workspace]`
+declares its own. Every other `[tool.pixi.*]` table (`target`, `feature`, `activation`,
+...) is passed through to pixi untouched.
+
+If a sidecar lock file created by `pixi lock --script <script>` sits next to the script
+as `<script>.pixi.lock`, it is used and the install is run with `--locked`. Note that
+pixi locks only the platforms the workspace declares, so to lock an image built for
+`linux/amd64` the script should declare `platforms = ["linux-64"]` under
+`[tool.pixi.workspace]` before locking.
+
+Unlike `from_uv_script`, flyte is not installed for you: list `flyte` in the script's
+`dependencies` so the task can run in the resulting environment.
+
+For more information on the pixi script format, see the documentation:
+[Pixi: Python scripts](https://pixi.prefix.dev/latest/python/scripts/)
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `script` | `Path \| str` | path to the pixi script |
+| `name` | `str` | name of the image |
+| `registry` | `str \| None` | registry to use for the image |
+| `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
+| `environment` | `str` | pixi environment to install, default is "default" |
+| `extra_args` | `Optional[str]` | extra arguments to pass to `pixi install`, default is None |
+| `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
+| `secret_mounts` | `Optional[SecretRequest]` | Secret mounts to use for the image, default is None. |
+
+**Returns:** Image
 
 ### from_ref_name()
 
