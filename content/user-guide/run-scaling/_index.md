@@ -31,7 +31,7 @@ When scaling your workflows, keep these principles in mind:
 2. **Batch for throughput**: For large-scale data processing, batch multiple items into single tasks to reduce overhead.
 3. **Reusable containers**: Eliminate container startup overhead and enable concurrent execution with reusable containers.
 4. **Traces for lightweight ops**: Use traces instead of tasks for lightweight operations that need checkpointing.
-5. **Limit fanout**: Keep the total number of actions per run below 50k (target 10k-20k for best performance).
+5. **Limit fanout**: Keep the total number of actions per run below 200k.
 6. **Choose the right data types**: Use reference types (files, directories, DataFrames) for large data and inline types for small data.
 
 For detailed guidance on each of these topics, see [Scale your workflows](./scale-your-workflows).
