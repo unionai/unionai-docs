@@ -1,6 +1,6 @@
 ---
 title: SGLangAppEnvironment
-version: 2.6.5
+version: 2.6.6
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ class SGLangAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.5', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-12.8/bin:$PATH'))), PipPackages(packages=('flashinfer-python', 'flashinfer-cubin')), PipPackages(index_url='https://flashinfer.ai/whl/cu128', packages=('flashinfer-jit-cache',)), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(packages=('sglang==0.5.2',)), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-12.8'),))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.6', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-13.0'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-13.0/bin:$PATH'))), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(pre=True, packages=('sglang==0.5.16',)), PipPackages(pre=True, packages=('sglang-router==0.3.2',))), _tag=None, _image_registry_secret=None),
     type: str = 'SGLang',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
@@ -45,6 +45,10 @@ class SGLangAppEnvironment(
     model_hf_path: str = '',
     model_id: str = '',
     stream_model: bool = True,
+    draft_model_path: str | RunOutput | ArtifactValue = '',
+    draft_model_hf_path: str = '',
+    speculative_config: Optional[dict[str, Any]] = None,
+    router: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -74,7 +78,11 @@ class SGLangAppEnvironment(
 | `model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to model (e.g., s3://bucket/path/to/model), or a `RunOutput`/`ArtifactValue` resolved at deploy time. |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |
 | `model_id` | `str` | Model id that is exposed by SGLang. |
-| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for `model_hf_path`-only apps, which use SGLang's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. |
+| `stream_model` | `bool` | When `model_path` is set, use True to stream weights from object storage to the GPU (Flyte loader integration). Ignored for `model_hf_path`-only apps, which use SGLang's normal Hugging Face download path. If False with `model_path`, the model is downloaded to the local filesystem first, then loaded. Also ignored when a draft model is configured, or when `router` is True -- see below. |
+| `draft_model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to the draft model (speculator) used for speculative decoding, or a `RunOutput`/`ArtifactValue` resolved at deploy time. The weights are downloaded alongside the target model and passed as `--speculative-draft-model-path`. Requires `speculative_config`. |
+| `draft_model_hf_path` | `str` | Hugging Face path to the draft model, as an alternative to `draft_model_path` (e.g., Qwen/Qwen3-0.6B). |
+| `speculative_config` | `Optional[dict[str, Any]]` | SGLang speculative decoding configuration. Each key becomes a `--speculative-<key>` server arg, so `{"algorithm": "EAGLE3", "num_draft_tokens": 16}` renders as `--speculative-algorithm EAGLE3 --speculative-num-draft-tokens 16`. The draft model path is filled in from `draft_model_path`/`draft_model_hf_path` and must not be set here. Note that SGLang auto-selects `num_steps`, `eagle_topk` and `num_draft_tokens` per model family; override them only after reading acceptance length off `/metrics`. See https://docs.sglang.io/advanced_features/speculative_decoding.html. |
+| `router` | `bool` | Serve behind SGLang's cache-aware router (`sglang_router.launch_server`), which runs data-parallel workers in one process and routes each request to the worker most likely to already hold its prefix. Worker counts and routing policy are ordinary server args, e.g. `extra_args=["--dp-size", "4", "--router-policy", "cache_aware"]`. |
 
 ## Properties
 
