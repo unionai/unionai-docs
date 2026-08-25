@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyteplugins.huggingface.datasets`
 
-HuggingFace dataset source for task parameter defaults.
+Hugging Face dataset source for task parameter defaults.
 
 
 ## Parameters

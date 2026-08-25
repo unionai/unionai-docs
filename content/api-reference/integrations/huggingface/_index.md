@@ -15,7 +15,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HFSource`](./hfsource) | HuggingFace dataset source for task parameter defaults. |
+| [`HFSource`](./hfsource) | Hugging Face dataset source for task parameter defaults. |
 
 ### Methods
 
