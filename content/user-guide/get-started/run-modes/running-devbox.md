@@ -1,23 +1,21 @@
 ---
-title: Run locally on the devbox
+title: Run on the Devbox
 weight: 5
 variants: +flyte +union
 ---
 
 {{< variant union >}}
 
-<sl-alert open variant="primary">
-  <sl-icon slot="icon" name="info-circle"></sl-icon>
-  <strong style="font-size: 1.75rem; line-height: 2;">💻 Demo a Union.ai cluster locally</strong><br />
-  The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine.
-</sl-alert>
-
 {{< markdown >}}
 
-# Run locally on the devbox
+# Run on the Devbox
 
-The devbox is a lightweight local cluster that runs on your machine with Docker. It includes a UI preview, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
+The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
+local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test remote
+execution without deploying to a cluster in the cloud.
+
 {{< /markdown >}}
+
 
 {{< /variant >}}
 
@@ -25,11 +23,16 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 {{< markdown >}}
 
 <!-- markdownlint-disable-next-line MD024 -- same heading as the union variant block; only one renders per variant -->
-# Run locally on the devbox
+# Run on the Devbox
 
-The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment (including the UI, scheduler, and object store) so you can test remote execution without deploying to a real cluster.
+The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
 {{< /markdown >}}
 {{< /variant >}}
+
+> [!INFO] Try Devbox in your browser
+> Prefer not to install anything locally? Create a devbox on Github Codespaces
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
 
 ## What you'll need
 

@@ -19,6 +19,14 @@ If you choose a **Self-managed deployment**, your data isolation is further enha
 
 If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
 
+> [!INFO] Try Flyte Devbox in your browser
+>
+> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox.md).
+>
+> If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
+
 ## BYOC deployment
 
 The BYOC deployment offers a fully "serverless in your cloud", turnkey solution where all infrastructure management is offloaded to Union.ai:
