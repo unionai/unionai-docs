@@ -141,13 +141,13 @@ ray_config = RayJobConfig(
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `upscaling_mode` | `AutoscalerOptionsConfig.UpscalingMode` | How aggressively to add nodes. One of `DEFAULT`, `AGGRESSIVE`, `CONSERVATIVE`, `UNSPECIFIED` |
+| `upscaling_mode` | `AutoscalerOptionsConfig.UpscalingMode` | Rate limiting on adding nodes. `CONSERVATIVE` holds the number of pending worker pods to at most the current cluster size. `DEFAULT` and `AGGRESSIVE` are the same setting: no rate limit. Leaving the field unset, or passing `UNSPECIFIED`, also means no rate limit |
 | `idle_timeout_seconds` | `int` | Seconds a node may sit idle before the autoscaler removes it |
 | `image` | `str` | Container image for the autoscaler sidecar |
 | `env` | `Dict[str, str]` | Environment variables for the autoscaler container |
 | `resources` | `Resources` | Requests and limits for the autoscaler sidecar |
 
-Every field is optional, and any field you leave unset keeps the KubeRay default rather than being zeroed. `resources` accepts tuples to set a request and a limit together, as in `flyte.Resources(cpu=("500m", "1"))`.
+Every field is optional. Leaving `upscaling_mode`, `idle_timeout_seconds`, `image`, or `env` unset keeps the KubeRay default. `resources` is the exception: whenever you pass `autoscaler_options`, whatever you give for `resources` replaces the sidecar's default 500m CPU and 512Mi memory requests and limits outright. Omit it and the sidecar runs with no requests or limits at all; set only a request and it also loses the default limits. Set `resources` explicitly, on both sides. It accepts tuples to set a request and a limit together, as in `flyte.Resources(cpu=("500m", "1"))`.
 
 > [!NOTE] The options do not switch autoscaling on
 > `autoscaler_options` only configures the autoscaler sidecar, and the sidecar is created only when `enable_autoscaling` is `True`. Passing options on their own changes nothing.
