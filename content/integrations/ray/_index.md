@@ -32,7 +32,7 @@ image = (
 ```
 
 > [!WARNING] Your image must include `wget`
-> KubeRay's readiness and liveness probes for the head pod shell out to `wget`
+> KubeRay's readiness and liveness probes for the head and worker pods shell out to `wget`
 > to poll the raylet and GCS health endpoints. If the image has no `wget`, both
 > probes fail permanently with `wget: command not found`, the head pod never
 > reports `Ready`, the workers stay parked in their `wait-gcs-ready` init
@@ -104,11 +104,12 @@ ray_env = flyte.TaskEnvironment(
 | `pod_template` | `PodTemplate` | Full pod template (mutually exclusive with `requests`/`limits`) |
 
 The head node runs the Ray dashboard, which starts nine subprocess modules on
-top of GCS and the raylet. Give it at least 2 CPU and 4Gi of memory:
+top of GCS and the raylet. Give it 2 CPU and 4Gi of memory:
 
 ```python
-head_node_config=HeadNodeConfig(
-    requests=flyte.Resources(cpu=2, memory="4Gi"),
+ray_config = RayJobConfig(
+    head_node_config=HeadNodeConfig(requests=flyte.Resources(cpu=2, memory="4Gi")),
+    worker_node_config=[WorkerNodeConfig(group_name="ray-group", replicas=2)],
 )
 ```
 
