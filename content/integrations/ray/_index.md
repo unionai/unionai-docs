@@ -51,6 +51,7 @@ image = (
 Create a `RayJobConfig` and pass it as `plugin_config` to a `TaskEnvironment`:
 
 ```python
+import flyte
 from flyteplugins.ray import HeadNodeConfig, RayJobConfig, WorkerNodeConfig
 
 ray_config = RayJobConfig(
