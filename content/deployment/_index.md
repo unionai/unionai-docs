@@ -21,7 +21,7 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 
 > [!INFO] Try Flyte Devbox in your browser
 >
-> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox.md).
+> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox).
 >
 > If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
 >
