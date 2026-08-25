@@ -26,9 +26,18 @@ Your task image must also include a compatible version of Ray:
 ```python
 image = (
     flyte.Image.from_debian_base(name="ray")
+    .with_apt_packages("wget")
     .with_pip_packages("ray[default]==2.46.0", "flyteplugins-ray")
 )
 ```
+
+> [!WARNING] Your image must include `wget`
+> KubeRay's readiness and liveness probes for the head and worker pods shell out to `wget`
+> to poll the raylet and GCS health endpoints. If the image has no `wget`, both
+> probes fail permanently with `wget: command not found`, the head pod never
+> reports `Ready`, the workers stay parked in their `wait-gcs-ready` init
+> container, and the job is never submitted. Install it with
+> `.with_apt_packages("wget")`, or use a base image that already ships it.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -93,6 +102,21 @@ ray_env = flyte.TaskEnvironment(
 | `requests` | `Resources` | Resource requests for the head node |
 | `limits` | `Resources` | Resource limits for the head node |
 | `pod_template` | `PodTemplate` | Full pod template (mutually exclusive with `requests`/`limits`) |
+
+The head node runs the Ray dashboard, which starts nine subprocess modules on
+top of GCS and the raylet. Give it 2 CPU and 4Gi of memory:
+
+```python
+ray_config = RayJobConfig(
+    head_node_config=HeadNodeConfig(requests=flyte.Resources(cpu=2, memory="4Gi")),
+    worker_node_config=[WorkerNodeConfig(group_name="ray-group", replicas=2)],
+)
+```
+
+Under-provisioning the head node is a common cause of a cluster that never becomes
+ready: if the dashboard cannot start, `ray start --head` fails and KubeRay recycles
+the head pod in a loop. A head pod at 1 CPU and 1000Mi has been observed failing
+this way.
 
 ### Connecting to an existing cluster
 
