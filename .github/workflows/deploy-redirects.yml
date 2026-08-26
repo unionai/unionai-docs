@@ -6,6 +6,18 @@ on:
     branches: [main, v1]
     paths: ['unionai-docs-infra', 'versions.toml']
 
+# ONE Cloudflare list, two branches. Each run replaces the whole list, so two
+# deploys in flight together are a last-writer-wins race, and back-to-back ones
+# spend a bulk-operation budget that is shared per account, not per branch --
+# five runs in twenty minutes hit Cloudflare's rate limit twice on 2026-08-26.
+# The group is deliberately NOT keyed on the branch: serializing the two lines
+# against each other is the entire point.
+concurrency:
+  group: deploy-redirects
+  # Never cancel: each run carries a different intended list, so a cancelled one
+  # is a change that silently never reaches the edge.
+  cancel-in-progress: false
+
 jobs:
   deploy-redirects:
     name: "Deploy Redirects"
