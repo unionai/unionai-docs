@@ -255,6 +255,8 @@
     "RuntimeUserError": "/api-reference/flyte-sdk/flyte.errors/runtimeusererror/",
     "flyte.errors.SlowDownError": "/api-reference/flyte-sdk/flyte.errors/slowdownerror/",
     "SlowDownError": "/api-reference/flyte-sdk/flyte.errors/slowdownerror/",
+    "flyte.errors.SyncTaskCallInAsyncContextError": "/api-reference/flyte-sdk/flyte.errors/synctaskcallinasynccontexterror/",
+    "SyncTaskCallInAsyncContextError": "/api-reference/flyte-sdk/flyte.errors/synctaskcallinasynccontexterror/",
     "flyte.errors.TaskInterruptedError": "/api-reference/flyte-sdk/flyte.errors/taskinterruptederror/",
     "TaskInterruptedError": "/api-reference/flyte-sdk/flyte.errors/taskinterruptederror/",
     "flyte.errors.TaskTimeoutError": "/api-reference/flyte-sdk/flyte.errors/tasktimeouterror/",

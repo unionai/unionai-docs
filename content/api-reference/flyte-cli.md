@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.6
+version: 2.6.9
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -270,7 +270,7 @@ Create resources in a Flyte deployment.
 {{< markdown >}}
 #### flyte create api-key
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create api-key [OPTIONS]`**
 
@@ -340,7 +340,7 @@ flyte create artifact my_model --from-file model.pt --card model_card.html --car
 {{< markdown >}}
 #### flyte create assignment
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create assignment [OPTIONS]`**
 
@@ -370,7 +370,7 @@ $ flyte --org my-org create assignment --email jane@example.com --policy admin
 {{< markdown >}}
 #### flyte create cluster
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create cluster [OPTIONS] NAME`**
 
@@ -404,7 +404,7 @@ $ flyte create cluster my-cluster --pool my-pool
 {{< markdown >}}
 #### flyte create cluster-pool
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create cluster-pool [OPTIONS] NAME`**
 
@@ -464,7 +464,7 @@ $ flyte create config --devbox
 {{< markdown >}}
 #### flyte create policy
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create policy [OPTIONS] NAME`**
 
@@ -513,7 +513,7 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 {{< markdown >}}
 #### flyte create queue
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create queue [OPTIONS] NAME`**
 
@@ -556,7 +556,7 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 {{< markdown >}}
 #### flyte create role
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create role [OPTIONS] NAME`**
 
@@ -672,7 +672,7 @@ This will create a trigger that runs every day at midnight.
 {{< markdown >}}
 #### flyte create user
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte create user [OPTIONS]`**
 
@@ -699,7 +699,7 @@ $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@
 {{< markdown >}}
 ### flyte debug
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte debug [OPTIONS] RUN_NAME [ACTION_NAME]`**
 
@@ -754,7 +754,7 @@ Remove resources from a Flyte deployment.
 {{< markdown >}}
 #### flyte delete api-key
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete api-key [OPTIONS] CLIENT_ID`**
 
@@ -793,7 +793,7 @@ Delete apps from a Flyte deployment.
 {{< markdown >}}
 #### flyte delete assignment
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete assignment [OPTIONS]`**
 
@@ -824,7 +824,7 @@ $ flyte --org my-org delete assignment --email jane@example.com --policy admin
 {{< markdown >}}
 #### flyte delete cluster
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete cluster [OPTIONS] NAME`**
 
@@ -861,7 +861,7 @@ $ flyte delete cluster my-cluster --yes
 {{< markdown >}}
 #### flyte delete cluster-pool
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete cluster-pool [OPTIONS] NAME`**
 
@@ -918,7 +918,7 @@ run history, and task caching.
 {{< markdown >}}
 #### flyte delete policy
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete policy [OPTIONS] NAME`**
 
@@ -942,7 +942,7 @@ $ flyte --org my-org delete policy my-policy --yes
 {{< markdown >}}
 #### flyte delete queue
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete queue [OPTIONS] NAME`**
 
@@ -983,7 +983,7 @@ $ flyte delete queue my-queue --yes
 {{< markdown >}}
 #### flyte delete role
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete role [OPTIONS] NAME`**
 
@@ -1032,7 +1032,7 @@ Delete a trigger. The name of the trigger is required.
 {{< markdown >}}
 #### flyte delete user
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte delete user [OPTIONS] SUBJECT`**
 
@@ -1201,7 +1201,7 @@ CI/automation.
 {{< markdown >}}
 ### flyte explore
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte explore COMMAND [ARGS]...`**
 
@@ -1213,7 +1213,7 @@ Explore artifacts produced by Flyte runs.
 {{< markdown >}}
 #### flyte explore volume
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte explore volume [OPTIONS] [RUN_NAME] [ACTION_NAME]`**
 
@@ -1261,7 +1261,7 @@ $ flyte explore volume --from-file ./index.db --store-type sqlite
 {{< markdown >}}
 ### flyte fork
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte fork [OPTIONS] COMMAND [ARGS]...`**
 
@@ -1382,7 +1382,7 @@ Get all actions for a run or details for a specific action.
 {{< markdown >}}
 #### flyte get api-key
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get api-key [OPTIONS] [CLIENT_ID]`**
 
@@ -1464,7 +1464,7 @@ flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
 {{< markdown >}}
 #### flyte get assignment
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get assignment [OPTIONS]`**
 
@@ -1494,7 +1494,7 @@ $ flyte --org my-org get assignment --email jane@example.com
 {{< markdown >}}
 #### flyte get cluster
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get cluster [OPTIONS] [NAME]`**
 
@@ -1528,7 +1528,7 @@ $ flyte get cluster --deleted
 {{< markdown >}}
 #### flyte get cluster-config
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get cluster-config [OPTIONS] CLUSTER_NAME`**
 
@@ -1560,7 +1560,7 @@ $ flyte get cluster-config my-cluster --config-map executor --key config.yaml --
 {{< markdown >}}
 #### flyte get cluster-pool
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get cluster-pool [OPTIONS] [NAME]`**
 
@@ -1701,7 +1701,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 {{< markdown >}}
 #### flyte get member
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get member`**
 
@@ -1719,7 +1719,7 @@ $ flyte --org my-org get member
 {{< markdown >}}
 #### flyte get policy
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get policy [OPTIONS] [NAME]`**
 
@@ -1760,7 +1760,7 @@ show archived projects instead.
 {{< markdown >}}
 #### flyte get queue
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get queue [OPTIONS] [NAME]`**
 
@@ -1808,7 +1808,7 @@ $ flyte get queue --deleted
 {{< markdown >}}
 #### flyte get role
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get role [OPTIONS] [NAME]`**
 
@@ -1967,7 +1967,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 {{< markdown >}}
 #### flyte get user
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte get user [OPTIONS] [SUBJECT]`**
 
@@ -2424,7 +2424,7 @@ Pause the local Flyte devbox cluster without removing it.
 {{< markdown >}}
 ### flyte undelete
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte undelete COMMAND [ARGS]...`**
 
@@ -2436,7 +2436,7 @@ Restore soft-deleted objects.
 {{< markdown >}}
 #### flyte undelete cluster
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte undelete cluster NAME`**
 
@@ -2472,7 +2472,7 @@ $ flyte update queue my-cluster --activate
 {{< markdown >}}
 #### flyte undelete cluster-pool
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte undelete cluster-pool NAME`**
 
@@ -2501,7 +2501,7 @@ $ flyte undelete cluster-pool my-pool
 {{< markdown >}}
 #### flyte undelete queue
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte undelete queue [OPTIONS] NAME`**
 
@@ -2564,7 +2564,7 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 {{< markdown >}}
 #### flyte update cluster
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte update cluster [OPTIONS] NAME`**
 
@@ -2600,7 +2600,7 @@ $ flyte update queue my-cluster --activate
 {{< markdown >}}
 #### flyte update cluster-pool
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte update cluster-pool NAME`**
 
@@ -2624,7 +2624,7 @@ $ flyte update cluster-pool my-pool
 {{< markdown >}}
 #### flyte update policy
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte update policy NAME`**
 
@@ -2674,7 +2674,7 @@ flyte update project my_project --label team=ml --label env=prod
 {{< markdown >}}
 #### flyte update queue
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte update queue [OPTIONS] NAME`**
 
@@ -2721,7 +2721,7 @@ $ flyte update queue my-queue --activate
 {{< markdown >}}
 #### flyte update role
 
-> **Note:** This command is provided by the [`flyteplugins.union`](#plugin-commands) plugin.
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
 
 **`flyte update role NAME`**
 

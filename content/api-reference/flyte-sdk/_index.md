@@ -1,6 +1,6 @@
 ---
 title: Flyte SDK
-version: 2.6.6
+version: 2.6.9
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -129,6 +129,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.RuntimeUnknownError`](flyte.errors/runtimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
 | [`flyte.errors.RuntimeUserError`](flyte.errors/runtimeusererror) | This error is raised when the underlying task execution fails because of an error in the user's code. |
 | [`flyte.errors.SlowDownError`](flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
+| [`flyte.errors.SyncTaskCallInAsyncContextError`](flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async. |
 | [`flyte.errors.TaskInterruptedError`](flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`flyte.errors.TraceDoesNotAllowNestedTasksError`](flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |

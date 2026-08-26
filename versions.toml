@@ -5,15 +5,15 @@
 #              enumerated -- no byte-identical duplicate tree.
 # latest     = whether this line owns the global /docs/latest URL. Only the
 #              primary line does; a secondary line (v1) sets false.
-stable = "v2.6.6.0"
+stable = "v2.6.9.0"
 # Retention: Cloudflare Pages caps a deployment at 20,000 files, and every
 # entry here materializes another full site tree (~3,000 files). Seven trees
 # broke the deploy outright on 2026-08-21. Keep this list short; retiring a
 # pin is recorded in `retired` below, which is where its redirect comes from.
 enumerated = [
-  "v2.6.2.0",
   "v2.6.3.0",
   "v2.6.5.0",
+  "v2.6.6.0",
 ]
 # Pins that have been retired. A pin leaves `enumerated` and arrives here in the
 # same edit, made by `manifest.py --promote`, and its redirect is DERIVED from

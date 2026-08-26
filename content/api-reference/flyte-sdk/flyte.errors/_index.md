@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.6.6
+version: 2.6.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -50,6 +50,7 @@ unknown error.
 | [`RuntimeUnknownError`](../flyte.errors/runtimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
 | [`RuntimeUserError`](../flyte.errors/runtimeusererror) | This error is raised when the underlying task execution fails because of an error in the user's code. |
 | [`SlowDownError`](../flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
+| [`SyncTaskCallInAsyncContextError`](../flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async. |
 | [`TaskInterruptedError`](../flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`TaskTimeoutError`](../flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`TraceDoesNotAllowNestedTasksError`](../flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |
