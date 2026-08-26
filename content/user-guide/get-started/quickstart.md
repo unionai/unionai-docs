@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Quickstart
 
-> [!INFO] Try it in your browser
+> [!NOTE] Try it in your browser
 > Prefer not to install anything? Follow along with this quickstart in Google Colab.
 >
 > [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
