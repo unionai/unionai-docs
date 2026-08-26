@@ -8,6 +8,11 @@ variants: +flyte +union
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
+> [!INFO] Try it in your browser
+> Follow along with this guide in Google Colab without installing anything locally.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
+
 ## Getting started
 
 If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](../quickstart).
