@@ -1,6 +1,6 @@
 ---
 title: FixedRate
-version: 2.6.6
+version: 2.6.9
 variants: +flyte +union
 layout: py_api
 ---

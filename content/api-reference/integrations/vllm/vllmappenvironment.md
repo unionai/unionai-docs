@@ -1,6 +1,6 @@
 ---
 title: VLLMAppEnvironment
-version: 2.6.6
+version: 2.6.9
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ class VLLMAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.6', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.26.0',)), PipPackages(index_url='https://flashinfer.ai/whl/cu130', packages=('flashinfer-jit-cache==0.6.14',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.9', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.26.0',)), PipPackages(index_url='https://flashinfer.ai/whl/cu130', packages=('flashinfer-jit-cache==0.6.14',))), _tag=None, _image_registry_secret=None),
     type: str = 'vLLM',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
