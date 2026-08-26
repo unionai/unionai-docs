@@ -29,8 +29,8 @@ The Flyte devbox is a lightweight local cluster that runs on your machine with D
 {{< /markdown >}}
 {{< /variant >}}
 
-> [!INFO] Try Devbox in your browser
-> Prefer not to install anything locally? Create a devbox on Github Codespaces
+> [!NOTE] Try Devbox in your browser
+> Prefer not to install anything locally? Create a Devbox in GitHub Codespaces.
 >
 > [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
 
