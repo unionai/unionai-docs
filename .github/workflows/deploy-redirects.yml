@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, v1]
-    paths: ['unionai-docs-infra']
+    paths: ['unionai-docs-infra', 'versions.toml']
 
 jobs:
   deploy-redirects:
@@ -18,7 +18,7 @@ jobs:
           submodules: 'true'
           fetch-depth: 2  # Need previous commit to detect submodule changes
 
-      - name: Check if redirects.csv changed
+      - name: Check if the deployed redirect set changed
         id: check-redirects
         run: |
           set -euo pipefail
@@ -30,6 +30,13 @@ jobs:
           fi
           # For push events, check if the unionai-docs-infra submodule ref changed and
           # whether that change includes redirects.csv
+          # Retired-pin redirects are derived from versions.toml `retired`, so a
+          # change there changes the deployed set just as much as a CSV edit does.
+          if ! git diff --quiet HEAD~1 HEAD -- versions.toml; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "versions.toml changed, proceeding with deploy."
+            exit 0
+          fi
           OLD_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^-Subproject" | awk '{print $3}' || true)
           NEW_REF=$(git diff HEAD~1 HEAD -- unionai-docs-infra | grep "^+Subproject" | awk '{print $3}' || true)
           if [ -z "$OLD_REF" ] || [ -z "$NEW_REF" ]; then
@@ -56,6 +63,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      # deploy_redirects.py reads BOTH lines' versions.toml. The checkout has only
+      # this branch, so make the sibling ref resolvable or the deploy fails closed.
+      - name: Fetch both documentation lines
+        if: steps.check-redirects.outputs.changed == 'true'
+        run: git fetch --depth=1 origin main v1
 
       - name: Deploy redirects to Cloudflare
         if: steps.check-redirects.outputs.changed == 'true'
