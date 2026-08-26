@@ -234,6 +234,40 @@ monitoring:
 
 For the full set of configurable values, see the [kube-prometheus-stack chart documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
 
+## Dashboards and operational alerts
+
+The {{< key product_name >}} charts ship Grafana dashboards (rendered by default via `monitoring.dashboards.enabled`) and a set of alert rules that are **off by default** and enabled with `monitoring.alerting.enabled: true`. Two operational signals are worth calling out because they are easy to miss on resource-usage graphs alone: **project ResourceQuota saturation** and **stuck runs**.
+
+### ResourceQuota utilization
+
+Each {{< key product_name >}} project namespace is created with a `project-quota` `ResourceQuota` that caps `limits.cpu`, `limits.memory`, and `requests.nvidia.com/gpu`. When a namespace reaches its quota, Kubernetes rejects further pod creation with `exceeded quota`, and runs scheduled into that namespace stop starting until capacity frees up. On a shared cluster this can back-pressure execution for other projects.
+
+`kube-state-metrics` already exports the underlying `kube_resourcequota` series (labels `namespace`, `resource`, and `type`, where `type` is `hard` or `used`), so no extra configuration is required. The data plane overview dashboard includes a **ResourceQuota utilization** row showing per-namespace utilization, the most-saturated quotas, and a count of namespaces at or above 90%. Utilization for a single resource is:
+
+```promql
+kube_resourcequota{type="used"} / ignoring(type) kube_resourcequota{type="hard"}
+```
+
+When alerting is enabled, `UnionDPResourceQuotaNearSaturation` fires when any project quota stays at or above 90% for 10 minutes:
+
+```promql
+max by (namespace, resource) (
+  kube_resourcequota{type="used"} / ignoring(type) kube_resourcequota{type="hard"}
+) >= 0.9
+```
+
+> [!NOTE] Raising a saturated quota
+> ResourceQuota limits are set per project. If a project legitimately needs more capacity, raise its quota; if a single task is over-requesting, reduce its per-task CPU or memory requests. Quota saturation is a scheduling limit, not a failure — runs resume once usage drops below the cap.
+
+### Stuck-run diagnostics
+
+For deployments on the actions/leasor execution path, the control plane overview dashboard includes a **leasor stuck-run diagnostics** row. The primary signal is `leases_by_state`: run-actions waiting in `unassigned` mean the scheduler has accepted work but no worker has taken it, while a growing `sent` count means work was dispatched but is not completing. The row also surfaces the scheduler's skip reasons (`schedule_skip_total`), dispatch throughput (`dispatch_total`), per-queue run-slot saturation (`queue_active_runs` versus `queue_max_run_concurrency`), and enqueue routing rejects (`enqueue_reject_total`).
+
+When alerting is enabled, two alerts accompany this row:
+
+- `UnionCPLeasorRunsStuck` — run-actions are waiting in `unassigned` while the successful dispatch rate has been zero for 10 minutes.
+- `UnionCPLeasorEnqueueRejects` — sustained enqueue rejects, usually a client targeting a queue that is unregistered, draining, or missing a cluster selector.
+
 ## Scraping Union services from your own Prometheus
 
 If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
