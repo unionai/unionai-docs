@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.9
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -179,7 +179,7 @@ $ flyte --config /path/to/config.yaml run ...
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--version` | `boolean` | `False` | Show the version and exit. |
+| `--version` | `boolean` | `Sentinel.UNSET` | Show the version and exit. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
 | `--image-builder` `--builder` | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to 'local'. |
@@ -192,7 +192,7 @@ $ flyte --config /path/to/config.yaml run ...
 | `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
 | `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--no-progress` | `boolean` | `False` | Disable the animated progress spinner — useful in CI / non-interactive logs. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte abort
 
@@ -211,7 +211,7 @@ Abort an action associated with a run.
 | `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte abort run
 
@@ -224,7 +224,7 @@ Abort a run.
 | `--reason` | `text` | `Manually aborted from the CLI` | The reason to abort the run. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte build
 
@@ -255,10 +255,10 @@ flyte build --all --recursive ./src
 |--------|------|---------|-------------|
 | `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's --copy-style so the image content hash — and therefore the registry tag — lines up. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--recursive` `-r` | `boolean` | `False` | Recursively build all environments in the current directory and its subdirectories. |
-| `--all` | `boolean` | `False` | Build the images for all environments in the file or directory, ignoring the file name. |
-| `--ignore-load-errors` `-i` | `boolean` | `False` | Ignore errors when loading environments, especially when using --recursive or --all. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--recursive` `-r` | `boolean` | `Sentinel.UNSET` | Recursively build all environments in the current directory and its subdirectories. |
+| `--all` | `boolean` | `Sentinel.UNSET` | Build the images for all environments in the file or directory, ignoring the file name. |
+| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments, especially when using --recursive or --all. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte create
 
@@ -297,8 +297,8 @@ $ flyte create api-key --name ci-pipeline --no-default-policies
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--name` | `text` | `Sentinel.UNSET` | Name for API key |
-| `--no-default-policies` | `boolean` | `False` | Skip attaching the server's default policies. Grant access explicitly via 'flyte create assignment'. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--no-default-policies` | `boolean` | `Sentinel.UNSET` | Skip attaching the server's default policies. Grant access explicitly via 'flyte create assignment'. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -334,7 +334,7 @@ flyte create artifact my_model --from-file model.pt --card model_card.html --car
 | `--card-type` | `choice` | `generic` | Kind of card being attached. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -362,7 +362,7 @@ $ flyte --org my-org create assignment --email jane@example.com --policy admin
 | `--creds-subject` | `text` |  | Client credentials application subject |
 | `--email` | `text` |  | User email for lookup |
 | `--policy` | `text` | `Sentinel.UNSET` | Policy name to assign |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -396,7 +396,7 @@ $ flyte create cluster my-cluster --pool my-pool
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--pool` | `text` | `` | Cluster pool to associate the cluster with. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -424,8 +424,8 @@ $ flyte create cluster-pool my-pool --file pool.yaml
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--file` | `path` |  | Create pool from a YAML file |
-| `--edit` | `boolean` | `False` | Open an editor to configure the pool before creating |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to configure the pool before creating |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -447,7 +447,7 @@ $ flyte create config --devbox
 |--------|------|---------|-------------|
 | `--devbox` | `boolean` | `False` | Configure for a local devbox cluster (see 'flyte start devbox'). Shortcut for '--endpoint localhost:30080 --insecure --project flytesnacks --domain development --builder local'. Mutually exclusive with --endpoint; --project/--domain may still be overridden. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | Endpoint of the Flyte backend. |
-| `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
+| `--insecure` | `boolean` | `Sentinel.UNSET` | Use an insecure connection to the Flyte backend. |
 | `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
 | `-o` `--output` | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
@@ -458,7 +458,7 @@ $ flyte create config --devbox
 | `--local-tracked` | `boolean` | `False` | Report local run state to the Flyte control plane so local runs show up in the console. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -482,8 +482,8 @@ $ flyte --org my-org create policy my-policy --file policy.yaml
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--file` | `path` |  | Create policy from a YAML file |
-| `--edit` | `boolean` | `False` | Open an editor to configure the policy before creating |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to configure the policy before creating |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -507,7 +507,7 @@ flyte create project --id my_project_id --name "My Project" --description "My pr
 | `--name` | `text` | `Sentinel.UNSET` | Display name for the project. |
 | `--description` | `text` | `` | Description for the project. |
 | `--label` `-l` | `text` | `Sentinel.UNSET` | Labels as key=value pairs. Can be specified multiple times. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -548,7 +548,7 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
 | `--project` | `text` | `` | Scope queue to a project |
 | `--domain` | `text` | `` | Scope queue to a domain |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -574,8 +574,8 @@ $ flyte --org my-org create role my-role --file role.yaml
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--file` | `path` |  | Create role from a YAML file |
-| `--edit` | `boolean` | `False` | Open an editor to configure the role before creating |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to configure the role before creating |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -633,7 +633,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file, from_docker_config, registry. |
 | `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value, from_docker_config, registry. |
 | `--type` | `choice` | `regular` | Type of the secret. |
-| `--from-docker-config` | `boolean` | `False` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
+| `--from-docker-config` | `boolean` | `Sentinel.UNSET` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
 | `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). Requires from_docker_config. |
 | `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with --from-docker-config). |
 | `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
@@ -642,7 +642,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte create trigger
 
@@ -666,7 +666,7 @@ This will create a trigger that runs every day at midnight.
 | `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to 'trigger_time'. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -691,7 +691,7 @@ $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@
 | `--last-name` | `text` | `Sentinel.UNSET` | Last name of the user |
 | `--email` | `text` | `Sentinel.UNSET` | Email address of the user |
 | `--policy` | `text` |  | Policy to assign to the user after creation |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -736,11 +736,11 @@ $ ssh my-dbg
 | `--identity-file` | `text` |  | Private key to authenticate with. Defaults to the auto-managed ~/.flyte/ssh-debug/id_ed25519 (created for you; no ssh-keygen needed). |
 | `--name` | `text` |  | Name for this debug session — used as both the ~/.ssh/config Host alias and the remote debug run name. Re-running with the same name reconnects to the live session; a new name starts a fresh debug run (handy if the previous one died). Defaults to a name derived from RUN_NAME. |
 | `--api-key` `--no-api-key` | `boolean` | `False` | Authenticate the tunnel with a dedicated, long-lived API key (created/reused as `flyte-ssh-debug`) instead of your interactive session token. Survives re-logins and won't expire mid-session. |
-| `--refresh-token` | `boolean` | `False` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
-| `--write-config` | `boolean` | `False` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
+| `--refresh-token` | `boolean` | `Sentinel.UNSET` | Force a fresh Bearer instead of reusing the cached one (use if you hit auth errors). |
+| `--write-config` | `boolean` | `Sentinel.UNSET` | Write the Host block into ~/.ssh/config (replacing any prior block for the same name). |
 | `--wait` `--no-wait` | `boolean` | `True` | Wait for the debug run to start and its ssh route to become ready, then print the ssh-config. With --no-wait, relaunch and return immediately (don't block on the pod coming up); re-run the same command later to attach once it's running. |
 | `--timeout` | `float` | `300.0` | Seconds to wait for the debug route to become ready. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -772,8 +772,8 @@ $ flyte delete api-key my-client-id --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -787,7 +787,7 @@ Delete apps from a Flyte deployment.
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -815,8 +815,8 @@ $ flyte --org my-org delete assignment --email jane@example.com --policy admin
 | `--creds-subject` | `text` |  | Client credentials application subject |
 | `--email` | `text` |  | User email for lookup |
 | `--policy` | `text` | `Sentinel.UNSET` | Policy name to unassign |
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -852,8 +852,8 @@ $ flyte delete cluster my-cluster --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -889,8 +889,8 @@ $ flyte delete cluster-pool my-pool --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -903,7 +903,7 @@ Stop and remove the local Flyte devbox cluster container.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--volume` | `boolean` | `False` | Also delete the Docker volume used for persistent storage. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte delete local-cache
 
@@ -933,8 +933,8 @@ $ flyte --org my-org delete policy my-policy --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -974,8 +974,8 @@ $ flyte delete queue my-queue --yes
 |--------|------|---------|-------------|
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -998,8 +998,8 @@ $ flyte --org my-org delete role my-role --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1014,7 +1014,7 @@ Delete a secret. The name of the secret is required.
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte delete trigger
 
@@ -1026,7 +1026,7 @@ Delete a trigger. The name of the trigger is required.
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1047,8 +1047,8 @@ $ flyte --org my-org delete user user-subject-id --yes
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1156,12 +1156,12 @@ flyte deploy hello.py --help
 | `--dry-run` `--dryrun` | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
-| `--recursive` `-r` | `boolean` | `False` | Recursively deploy all environments in the current directory |
-| `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
-| `--ignore-load-errors` `-i` | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
+| `--recursive` `-r` | `boolean` | `Sentinel.UNSET` | Recursively deploy all environments in the current directory |
+| `--all` | `boolean` | `Sentinel.UNSET` | Deploy all environments in the current directory, ignoring the file name |
+| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments especially when using --recursive or --all. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte edit
 
@@ -1195,7 +1195,7 @@ CI/automation.
 | `--from-file` `-f` | `file` |  | Apply overrides from a YAML file and skip the editor. The file can be produced by `flyte get settings` (comment markers are honoured) or be a plain YAML mapping of flat dot-notation keys to values. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1253,7 +1253,7 @@ $ flyte explore volume --from-file ./index.db --store-type sqlite
 | `--name` | `text` |  | Display name shown in the TUI header (only meaningful with --from-file on a raw index). |
 | `--project` | `text` |  | Override the project context for resolution. Defaults to the CLI config. |
 | `--domain` | `text` |  | Override the domain context for resolution. Defaults to the CLI config. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1298,7 +1298,7 @@ run has no local equivalent.
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--local` | `boolean` | `False` | Run the task locally |
+| `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
@@ -1318,7 +1318,7 @@ run has no local equivalent.
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
 | `--force-rerun-action` | `text` | `Sentinel.UNSET` | Name of an action to re-execute even though it succeeded in the forked run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1337,10 +1337,9 @@ Generate documentation.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown, json) |
-| `--plugin-variants` | `text` |  | Hugo variant names for plugin commands (e.g., 'union'). When set, plugin command sections and index entries are wrapped in {{&lt; variant >}} shortcodes. Core commands appear unconditionally. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte get
 
@@ -1376,7 +1375,7 @@ Get all actions for a run or details for a specific action.
 | `--in-phase` | `choice` | `Sentinel.UNSET` | Filter actions by their phase. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1407,7 +1406,7 @@ $ flyte get api-key my-client-id
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of keys to list |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1426,7 +1425,7 @@ Apps are long-running services deployed on the Flyte platform.
 | `--status` | `choice` |  | Filter apps by deployment status. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get artifact
 
@@ -1458,7 +1457,7 @@ flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
 | `--attr` | `text` | `Sentinel.UNSET` | Only artifacts whose attrs match, as key=value. Repeatable; separate keys must all match. Filtering happens server-side. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1486,7 +1485,7 @@ $ flyte --org my-org get assignment --email jane@example.com
 | `--user-subject` | `text` |  | User subject identifier |
 | `--creds-subject` | `text` |  | Client credentials application subject |
 | `--email` | `text` |  | User email for lookup |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1519,8 +1518,8 @@ $ flyte get cluster --deleted
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of clusters to return. |
-| `--deleted` | `boolean` | `False` | List only soft-deleted clusters (candidates for 'flyte undelete cluster'). Cannot be combined with NAME. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--deleted` | `boolean` | `Sentinel.UNSET` | List only soft-deleted clusters (candidates for 'flyte undelete cluster'). Cannot be combined with NAME. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1551,8 +1550,8 @@ $ flyte get cluster-config my-cluster --config-map executor --key config.yaml --
 |--------|------|---------|-------------|
 | `--config-map` | `text` |  | Only show this ConfigMap (e.g. union-operator, executor, leaseworker, flyte-propeller-config). |
 | `--key` | `text` |  | Only show this key within the ConfigMap. Requires --config-map. |
-| `--raw` | `boolean` | `False` | Print the selected value(s) unformatted, with no panels — useful for piping. Requires --config-map. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--raw` | `boolean` | `Sentinel.UNSET` | Print the selected value(s) unformatted, with no panels — useful for piping. Requires --config-map. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1584,8 +1583,8 @@ $ flyte get cluster-pool --deleted
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of cluster pools to list |
-| `--deleted` | `boolean` | `False` | List only soft-deleted cluster pools (candidates for 'flyte undelete cluster-pool'). Cannot be combined with NAME. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--deleted` | `boolean` | `Sentinel.UNSET` | List only soft-deleted cluster pools (candidates for 'flyte undelete cluster-pool'). Cannot be combined with NAME. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1604,7 +1603,7 @@ resolve one.
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get config
 
@@ -1633,7 +1632,7 @@ flyte -of json-raw get devbox
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--no-probes` | `boolean` | `False` | Skip the HTTP readiness probe and the container resource usage sample, for a faster, offline check. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get io
 
@@ -1656,11 +1655,11 @@ $ flyte get io my_run my_action
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--inputs-only` `-i` | `boolean` | `False` | Show only inputs |
-| `--outputs-only` `-o` | `boolean` | `False` | Show only outputs |
+| `--inputs-only` `-i` | `boolean` | `Sentinel.UNSET` | Show only inputs |
+| `--outputs-only` `-o` | `boolean` | `Sentinel.UNSET` | Show only outputs |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get logs
 
@@ -1689,13 +1688,13 @@ $ flyte get logs my_run my_action --pretty --lines 50
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--lines` `-l` | `integer` | `30` | Number of lines to show, only useful for --pretty |
-| `--show-ts` | `boolean` | `False` | Show timestamps |
+| `--show-ts` | `boolean` | `Sentinel.UNSET` | Show timestamps |
 | `--pretty` | `boolean` | `False` | Show logs in an auto-scrolling box, where number of lines is limited to `--lines` |
 | `--attempt` `-a` | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
 | `--filter-system` | `boolean` | `False` | Filter all system logs from the output. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1738,7 +1737,7 @@ $ flyte --org my-org get policy my-policy
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of policies to list |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1754,7 +1753,7 @@ show archived projects instead.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--archived` | `boolean` | `False` | Show archived projects instead of active ones. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1797,10 +1796,10 @@ $ flyte get queue --deleted
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
 | `--limit` | `integer` | `100` | Maximum number of queues to return |
-| `--watch` | `boolean` | `False` | Stream live queue metrics (requires NAME) |
-| `--deleted` | `boolean` | `False` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
+| `--watch` | `boolean` | `Sentinel.UNSET` | Stream live queue metrics (requires NAME) |
+| `--deleted` | `boolean` | `Sentinel.UNSET` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
 | `--state` | `choice` |  | List only queues in this state. Cannot be combined with NAME. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1827,7 +1826,7 @@ $ flyte --org my-org get role my-role
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of roles to list |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -1877,7 +1876,7 @@ $ flyte get run --paused-only
 | `--with-label-key` | `text` | `()` | Filter runs that have this label key present (existence check). Can be specified multiple times. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get secret
 
@@ -1890,7 +1889,7 @@ Get a list of all secrets, or details of a specific secret by name.
 | `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get settings
 
@@ -1932,7 +1931,7 @@ Use `flyte edit settings` to interactively modify these values.
 | `--to-file` `-o` | `file` |  | Write the scope's YAML to this file instead of printing it. The file round-trips through `flyte edit settings --from-file`. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get task
 
@@ -1948,7 +1947,7 @@ Currently, both `name` and `version` are required to get a specific task.
 | `--entrypoint` | `boolean` | `False` | Show only entrypoint tasks. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get trigger
 
@@ -1961,7 +1960,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 | `--limit` | `integer` | `100` | Limit the number of triggers to fetch. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -1988,7 +1987,7 @@ $ flyte --org my-org get user --email jane@example.com
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of users to list |
 | `--email` | `text` |  | Filter by email address |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2060,7 +2059,7 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `--model-type` | `text` | `Sentinel.UNSET` | Model type, e.g., 'transformer', 'xgboost', 'custom', etc. For HuggingFace models, this is auto-determined from config.json['model_type']. |
 | `--short-description` | `text` | `Sentinel.UNSET` | Short description of the model. |
 | `--force` | `integer` | `0` | Force store of the model. Increment value (--force=1, --force=2, ...) to force a new store. |
-| `--wait` | `boolean` | `False` | Wait for the model to be stored before returning. |
+| `--wait` | `boolean` | `Sentinel.UNSET` | Wait for the model to be stored before returning. |
 | `--hf-token-key` | `text` | `HF_TOKEN` | Name of the Flyte secret containing your HuggingFace token. Note: This is not the HuggingFace token itself, but the name of the secret in the Flyte secret store. |
 | `--cpu` | `text` | `2` | CPU request for the prefetch task (e.g., '2', '4', '2,4' for 2-4 CPUs). |
 | `--mem` | `text` | `8Gi` | Memory request for the prefetch task (e.g., '16Gi', '64Gi', '16Gi,64Gi' for 16-64GB). |
@@ -2070,7 +2069,7 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have 'engine' (currently only 'vllm') and 'args' keys. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte rerun
 
@@ -2118,7 +2117,7 @@ $ flyte rerun rxyz --recover --n 10 --force-rerun-action a3
 | `--action-name` | `text` |  | Re-run only this action from the run, instead of the whole run: the new run is rooted at that action's task with the inputs it received. Cannot be combined with --recover. List names with `flyte get action <run>`. |
 | `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--allow-missing-outputs` | `boolean` | `False` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The inputs cannot be verified from the client — if they were deleted too, the new run fails at runtime. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte run
 
@@ -2218,7 +2217,7 @@ flyte run hello.py my_task --help
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--local` | `boolean` | `False` | Run the task locally |
+| `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
@@ -2237,7 +2236,7 @@ flyte run hello.py my_task --help
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte run deployed-task
 
@@ -2249,7 +2248,7 @@ Run remote task from the Flyte backend
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte serve
 
@@ -2336,7 +2335,7 @@ Serving deployed apps is not currently supported through this CLI command.
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--env-var` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
 | `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte signal
 
@@ -2360,7 +2359,7 @@ integer literals for int, decimal literals for float, any string for str).
 |--------|------|---------|-------------|
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte start
 
@@ -2379,7 +2378,7 @@ Start a local Flyte devbox cluster.
 | `--image` | `text` |  | Docker image to use for the devbox cluster. |
 | `--dev` | `boolean` | `False` | Enable dev mode inside the devbox cluster (sets FLYTE_DEV=True). |
 | `--gpu` | `boolean` | `False` | Pass host GPUs into the devbox container (adds --gpus all to docker run). Requires an NVIDIA-enabled host. Defaults --image to a GPU-capable image if --image is not explicitly set. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte start tui
 
@@ -2406,7 +2405,7 @@ Local persistence can be enabled in 2 ways:
 |--------|------|---------|-------------|
 | `-c` `--config` | `file` |  | Path to the Flyte configuration file. Defaults to ~/.flyte/config.yaml. |
 | `--poll-interval` | `float` | `2.0` | Seconds between run detail refreshes while browsing a remote run. Remote mode only. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte stop
 
@@ -2464,7 +2463,7 @@ $ flyte update queue my-cluster --activate
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2493,7 +2492,7 @@ $ flyte undelete cluster-pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2529,7 +2528,7 @@ $ flyte update queue my-queue --activate
 |--------|------|---------|-------------|
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2558,7 +2557,7 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 | `--wait` | `boolean` | `False` | Wait for the app to reach the desired state. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -2591,8 +2590,8 @@ $ flyte update queue my-cluster --activate
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--pool` | `text` | `` | Cluster pool to move the cluster to. |
-| `--yes` | `boolean` | `False` | Skip confirmation prompt |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2616,7 +2615,7 @@ $ flyte update cluster-pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2641,7 +2640,7 @@ $ flyte --org my-org update policy my-policy
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2668,7 +2667,7 @@ flyte update project my_project --label team=ml --label env=prod
 | `--description` | `text` |  | Update the project description. |
 | `--label` `-l` | `text` | `Sentinel.UNSET` | Set labels as key=value pairs. Can be specified multiple times. Replaces all existing labels. |
 | `--archive` `--unarchive` | `boolean` |  | Archive or unarchive the project. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -2710,10 +2709,10 @@ $ flyte update queue my-queue --activate
 |--------|------|---------|-------------|
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
-| `--drain` | `boolean` | `False` | Begin draining the queue |
-| `--activate` | `boolean` | `False` | Re-activate a draining or drained queue |
-| `--edit` | `boolean` | `False` | Open an editor to modify queue settings |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--drain` | `boolean` | `Sentinel.UNSET` | Begin draining the queue |
+| `--activate` | `boolean` | `Sentinel.UNSET` | Re-activate a draining or drained queue |
+| `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to modify queue settings |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2738,7 +2737,7 @@ $ flyte --org my-org update role my-role
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -2761,7 +2760,7 @@ flyte update trigger <trigger_name> <task_name> --activate | --deactivate
 | `--activate` `--deactivate` | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte whoami
 

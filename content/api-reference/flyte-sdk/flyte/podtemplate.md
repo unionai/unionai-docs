@@ -1,6 +1,6 @@
 ---
 title: PodTemplate
-version: 2.6.9
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
@@ -114,8 +114,7 @@ The copy carries exactly that:
 
 * `CAP_SYS_ADMIN` added to the primary container's capabilities;
 * `allowPrivilegeEscalation: false` (no other caps, not privileged);
-* the ``container.apparmor.security.beta.kubernetes.io/&lt;primary&gt;:
-  unconfined`` pod annotation (on K8s &gt;= 1.30 the
+* the `container.apparmor.security.beta.kubernetes.io/<primary>: unconfined` pod annotation (on K8s &gt;= 1.30 the
   `securityContext.appArmorProfile: {type: Unconfined}` field is the
   equivalent; the annotation is used here for version compatibility);
 * the `flyte.org/capability-nested-sandboxing` annotation for
