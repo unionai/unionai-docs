@@ -1,6 +1,6 @@
 ---
 title: flyte.ai.chat
-version: 2.6.9
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,8 +54,7 @@ can override any default rule.  *logo_url*, when provided, renders an
 *subtitle*, when provided, renders a subtitle paragraph below the
 header bar.
 
-*additional_buttons* is an optional list of ``{"button_text": ...,
-"button_url": ...}`` dicts.  The first entry becomes the primary
+*additional_buttons* is an optional list of `{"button_text": ..., "button_url": ...}` dicts.  The first entry becomes the primary
 (prominent) button; the rest appear in a drop-up menu behind a chevron.
 
 
