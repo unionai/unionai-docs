@@ -2,7 +2,6 @@
 title: Data plane setup on AWS
 weight: 5
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Data plane setup on AWS

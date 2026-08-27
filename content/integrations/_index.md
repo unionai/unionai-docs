@@ -3,7 +3,6 @@ title: Integrations
 weight: 5
 variants: +flyte +union
 top_menu: true
-llm_readable_bundle: true
 ---
 
 # Integrations

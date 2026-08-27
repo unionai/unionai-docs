@@ -2,7 +2,6 @@
 title: Getting started
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Getting started

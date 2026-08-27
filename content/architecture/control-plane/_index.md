@@ -2,7 +2,6 @@
 title: Control Plane
 weight: 9
 variants: +flyte -union
-llm_readable_bundle: true
 ---
 
 # Control Plane

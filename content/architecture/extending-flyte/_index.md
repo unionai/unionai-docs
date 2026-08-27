@@ -3,7 +3,6 @@ title: Extending Flyte
 weight: 10
 variants: +flyte -union
 mermaid: true
-llm_readable_bundle: true
 ---
 
 # Extending Flyte

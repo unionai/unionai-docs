@@ -2,7 +2,6 @@
 title: Data input/output
 weight: 6
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Data input/output

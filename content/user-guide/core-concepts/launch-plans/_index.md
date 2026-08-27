@@ -2,7 +2,6 @@
 title: Launch plans
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Launch plans
