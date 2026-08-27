@@ -2,7 +2,6 @@
 title: Manage Union through Terraform
 weight: 8
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Managing Union with Terraform

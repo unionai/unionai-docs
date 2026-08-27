@@ -2,7 +2,6 @@
 title: Programmatic tool calling for agents
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Programmatic tool calling for agents
