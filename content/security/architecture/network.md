@@ -84,13 +84,14 @@ Allowlist the addresses returned, and refresh the allowlist periodically. Where 
 
 | Region | Control plane load balancer (DNS) | Current IP addresses |
 |---|---|---|
-| `us-east-2` | `opta-production-lb-f6b2dc1ac0c5d1b3.elb.us-east-2.amazonaws.com` | `3.137.115.239`, `3.129.166.66`, `3.19.82.116` |
-| `us-west-2` | `opta-production-us-west-2-lb-eed1102869e8e87d.elb.us-west-2.amazonaws.com` | `44.242.13.239`, `54.202.254.106`, `34.218.20.123` |
-| `eu-west-1` | `opta-production-eu-west-1-lb-4f0b7b3ab565ae1b.elb.eu-west-1.amazonaws.com` | `52.30.110.77`, `52.51.69.225`, `54.220.70.146` |
-| `eu-west-2` | `opta-production-eu-west-2-lb-8e072fd05bfb19ae.elb.eu-west-2.amazonaws.com` | `18.169.71.70`, `3.11.48.43`, `18.134.175.75` |
-| `eu-central-1` | `opta-production-eu-central--lb-5d94314b0baac0c8.elb.eu-central-1.amazonaws.com` | `3.78.52.222`, `3.127.122.108`, `3.68.3.26` |
+| `us-east-2` | `opta-production-lb-f6b2dc1ac0c5d1b3.elb.us-east-2.amazonaws.com`, `k8s-envoygat-envoycon-298e1d7a0e-4ef24944604e2d73.elb.us-east-2.amazonaws.com` | `3.137.115.239`, `3.129.166.66`, `3.19.82.116`, `3.19.161.156`, `3.140.170.168`, `18.223.70.70` |
+| `us-west-2` | `opta-production-us-west-2-lb-eed1102869e8e87d.elb.us-west-2.amazonaws.com`, `k8s-envoygat-envoycon-cc6e164526-10a1c1aaef3a26d4.elb.us-west-2.amazonaws.com` | `44.242.13.239`, `54.202.254.106`, `34.218.20.123`, `44.225.84.86`, `16.148.152.84`, `35.81.24.183` |
+| `eu-west-2` | `opta-production-eu-west-2-lb-8e072fd05bfb19ae.elb.eu-west-2.amazonaws.com`, `k8s-envoygat-envoycon-a1db07f6a3-7b4b210de8ad8fb4.elb.eu-west-2.amazonaws.com` | `18.169.71.70`, `3.11.48.43`, `18.134.175.75`, `18.175.17.250`, `13.41.249.25`, `16.60.39.235` |
+| `eu-central-1` | `opta-production-eu-central--lb-5d94314b0baac0c8.elb.eu-central-1.amazonaws.com`, `k8s-envoygat-envoycon-898afc35ee-9eece9b023566da3.elb.eu-central-1.amazonaws.com` | `3.78.52.222`, `3.127.122.108`, `3.68.3.26`, `3.122.167.91`, `52.29.243.231`, `18.197.252.213` |
 
-These addresses are current as of July 2026 and can change; where possible allowlist by DNS (re-resolving the names above) rather than pinning the IPs, and re-verify with your Union account team.
+These addresses are current as of July 2026 and can change; where possible allowlist by DNS (re-resolving the names above) rather than pinning the IPs, and re-verify with your Union account team. 
+
+We are currently transition from ingress-nginx to envoy-gateway so please allowlist both control plane load balancers.
 
 ### VPN alternative to the tunnel
 
