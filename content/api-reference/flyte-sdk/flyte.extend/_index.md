@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.6.9
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
