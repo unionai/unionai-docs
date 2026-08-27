@@ -3,7 +3,6 @@ title: Platform deployment
 variants: +flyte -union
 weight: 5
 top_menu: true
-llm_readable_bundle: true
 ---
 
 # Platform deployment

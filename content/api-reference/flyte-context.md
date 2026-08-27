@@ -17,7 +17,7 @@ These files also follow the [`llms.txt` convention](https://llmstxt.org/),
 making them discoverable by AI search engines.
 
 These files are not linked from the pages they cover. They are addressed by convention:
-append `/page.md` to any page URL, or `/section.md` to a section URL. Start from the
+append `/page.md` to any page URL, or `/_section.md` to a section URL. Start from the
 `llms.txt` index below, which lists every page and every available bundle.
 
 All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
@@ -58,19 +58,29 @@ and its LLM-optimized version is at:
 Section landing pages include a `## Subpages` table listing child pages with their H2/H3 headings,
 making it easy to identify the right page to fetch.
 
-## Section bundles (`section.md`)
+## Section bundles (`_section.md`)
 
-For key documentation sections, a curated bundle file concatenates all pages in the section
-into a single `section.md` file.
+Every section that holds more than its own landing page also has a bundle file, which
+gathers one level of that section into a single `_section.md`. A section whose only page
+is its landing page gets no bundle, because that content already lives at its own
+`page.md` URL.
 
-These are accessible at the same URL path as the top page of the section, with `/section.md` appended.
+Bundles are addressed the same way `page.md` files are: append `/_section.md` to any
+section URL. There is no list to consult, so a section added later is reachable by the
+same rule, and `llms.txt` marks the sections that carry one.
 
-These `section.md` files are sized to fit within modern LLM context windows
-and are ideal for pasting into a prompt or adding to project context.
+A bundle holds the section's landing page and its own pages in full, then each immediate
+sub-section. It is capped at 200 KB, so a large section is abridged to fit. A child is
+abridged for one of two reasons, and the two mean different things:
 
-Available bundle files:
+* It has more beneath it, so its landing page stands in for its subtree and links onward
+  to that sub-section's own `_section.md`.
+* The bundle reached the size cap, so the child is cut to a short excerpt that links to
+  its `page.md`.
 
-{{< llm-readable-list >}}
+Every bundle opens with a manifest naming which children were abridged and under which of
+the two reasons, so you can tell whether what you are holding is the whole section and
+fetch the rest when it is not.
 
 ## Page index (`llms.txt`)
 
@@ -78,7 +88,7 @@ The `llms.txt` file is a compact index of all LLM-optimized pages, organized by 
 Each page entry includes the H2/H3 headings found on that page, so an agent can identify
 the right page to fetch without downloading it first.
 
-Sections that have a `section.md` bundle are marked in the index.
+Sections that have a `_section.md` bundle are marked in the index with a link to it.
 
 Download it and append its contents to the `AGENTS.md`, `CLAUDE.md` or similar file in your project root.
 Make sure you append the index into a file that is **loaded into context by default** by your coding tool.

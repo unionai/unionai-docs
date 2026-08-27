@@ -2,7 +2,6 @@
 title: Configure apps
 weight: 1
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Configure apps
