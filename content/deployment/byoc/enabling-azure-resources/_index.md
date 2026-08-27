@@ -2,7 +2,6 @@
 title: Enabling Azure resources
 weight: 11
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Enabling Azure resources

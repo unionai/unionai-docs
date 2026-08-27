@@ -2,7 +2,6 @@
 title: Contributing docs and examples
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Contributing docs and examples

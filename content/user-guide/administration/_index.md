@@ -2,7 +2,6 @@
 title: Administration
 weight: 7
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Administration

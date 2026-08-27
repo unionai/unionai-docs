@@ -2,7 +2,6 @@
 title: Connector setup
 weight: 15
 variants: +flyte -union
-llm_readable_bundle: true
 ---
 
 # Connector setup
