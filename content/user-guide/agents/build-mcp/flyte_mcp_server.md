@@ -13,8 +13,10 @@ Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, thi
 > [!TIP] There is a prebuilt plugin
 > [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) ships these same
 > control-plane tools as a `flyte-cluster` MCP server, plus a hosted `flyte-docs` search
-> server. Claude Code and Codex wire up both for you; Hermes, opencode, and pi take a few
-> lines of config. See [Flyte agent plugins](../../../api-reference/agent-plugins).
+> server. Claude Code wires up both for you. The official Flyte plugin in ChatGPT also
+> includes `flyte-docs`; add only the local `flyte-cluster` server for cluster access.
+> Hermes, opencode, and pi configure both servers separately. See [Flyte agent
+> plugins](../../../api-reference/agent-plugins).
 >
 > Build your own `FlyteMCPAppEnvironment` below when you need to scope the tools,
 > allowlist resources, or deploy a shared server.

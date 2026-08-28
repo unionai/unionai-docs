@@ -12,9 +12,10 @@ workflows, build and serve apps, run and inspect executions, migrate Flyte 1 cod
 Slurm batch jobs to Flyte 2, and deploy clusters, grounded in the Flyte SDK, the
 documentation, and optionally your own cluster.
 
-The same skills run in Claude Code, Codex, Hermes, opencode, pi, and any other harness
-that supports agent skills. Claude Code and Codex wire up the MCP servers for you;
-elsewhere you add them by hand.
+The same skills run in Claude Code, ChatGPT's Codex agent, Hermes, opencode, pi and any
+other harness that supports agent skills. Claude Code wires up the MCP servers for you.
+In ChatGPT, the official Flyte plugin provides `flyte-docs`; configure only the optional
+local `flyte-cluster` server separately.
 
 ## Compatibility
 
@@ -25,14 +26,15 @@ are declared in the plugin's `.mcp.json`, which only some harnesses read.
 | Harness | Skills | MCP servers | Version pinning |
 |---------|--------|-------------|-----------------|
 | Claude Code | All 21 | Both, automatically | Yes, git ref |
-| Codex CLI | All 21 | Both, automatically | Yes, `--ref` |
+| ChatGPT (Codex) | All 21 | `flyte-docs` automatic; `flyte-cluster` manual | N/A |
 | Hermes | Per-skill | Manual | No, default branch only |
 | opencode | All 21 | Manual | Yes, tag/branch/commit |
 | pi | All 21 | Manual | Yes, tag/commit |
 
-Claude Code reads `.mcp.json` by convention; Codex is pointed at the same file by
-`.codex-plugin/plugin.json`. The other three install the skills only. You can still add
-the servers by hand; [the snippets are below](#adding-the-mcp-servers-manually).
+Claude Code reads `.mcp.json` by convention. The official Flyte plugin in ChatGPT
+includes `flyte-docs`; `flyte-cluster` is separate because it runs locally with the
+user's Flyte credentials. The other harnesses configure both servers manually; [the
+configuration snippets are below](#adding-the-mcp-servers-manually).
 
 ## Installation
 
@@ -49,13 +51,21 @@ To pin a version, add the marketplace from a git reference:
 /plugin marketplace add https://github.com/flyteorg/flyte-agent-plugins.git#<tag-or-branch>
 ```
 
-### Codex CLI
+### ChatGPT
 
-```bash
-codex plugin marketplace add flyteorg/flyte-agent-plugins   # or --ref <tag-or-branch>
-```
+Open **Plugins** in ChatGPT, search for **Flyte**, and install the official Flyte plugin.
+No custom marketplace or GitHub repository is required. Installing the plugin makes the
+Flyte skills available to ChatGPT's Codex agent.
 
-Then install the plugin from `/plugins` inside Codex. Both MCP servers come with it.
+![ChatGPT Plugins Catalog](../_static/images/api-reference/chatgpt_plugins_catalog.png)
+
+The official plugin also connects `flyte-docs`, the hosted read-only search server. It
+does not install `flyte-cluster`: for local Codex tasks, add that server separately to
+`~/.codex/config.toml`. `flyte-cluster` provides optional local access to the cluster
+your Flyte CLI is logged into. See [Adding the MCP servers
+manually](#adding-the-mcp-servers-manually).
+
+![Local MCP](../_static/images/api-reference/local_mcp.png)
 
 ### Hermes
 
@@ -147,23 +157,42 @@ migrating existing workloads to Flyte 2, and deploying Flyte clusters.
 
 ## MCP servers
 
-The plugin bundles two [MCP](https://modelcontextprotocol.io) servers, split so nothing
-is duplicated between them.
+The plugin includes instructions for two optional [MCP](https://modelcontextprotocol.io)
+servers, split so nothing is duplicated between them. In ChatGPT, `flyte-docs` is
+included with the official plugin; configure only the optional local `flyte-cluster`
+server separately.
 
 | Server | Transport | Tools | Needs |
 |--------|-----------|-------|-------|
-| `flyte-docs` | Hosted HTTP | 3 search tools over Flyte SDK examples, docs examples, `llms.txt` | Nothing |
+| `flyte-docs` | Hosted HTTP | 3 search tools over Flyte SDK examples, docs examples, `llms.txt` | Nothing; automatic in ChatGPT |
 | `flyte-cluster` | Local stdio | 29 control-plane tools: tasks, runs, actions, logs, apps, triggers, projects, secrets, conditions, identity | `uv`; a Flyte login for the tools to return data |
+
+### How skills and MCP servers work together
+
+Skills and MCP servers solve different parts of the problem:
+
+- **Skills** are instructions and reusable guidance. They help the coding agent choose
+  an appropriate Flyte pattern, write or migrate code, and decide how to validate it.
+  They work without a Flyte account or a connected cluster.
+- **MCP servers** provide callable tools. `flyte-docs` grounds an answer in current SDK
+  examples and documentation; `flyte-cluster` lets the agent read or act on the Flyte
+  cluster you are authenticated to.
+
+For example, a `flyte-sdk-run` skill can guide an agent through debugging a failed run;
+with `flyte-cluster` configured, the agent can also inspect that run and retrieve its
+logs. Without the server, the skill still explains the workflow, but cannot look up the
+run. Configure only the tools and access you intend the agent to have.
 
 ### What each one does with your data
 
-`flyte-docs` is read-only, unauthenticated, and operated by Union. Search works the
-moment you install, with no corpus to download and no `uv` required. Your search queries
-do leave your machine.
+`flyte-docs` is read-only, unauthenticated, and operated by Union. In ChatGPT it is
+available with the official Flyte plugin; there is no local corpus to download or `uv`
+to install. Your search queries do leave your machine.
 
-`flyte-cluster` runs on your machine. It is the SDK's own `flyte-mcp` entry point. In
-Claude Code and Codex the harness runs it for you; `uvx` fetches it from PyPI at each
-launch. This is the command:
+`flyte-cluster` runs on your machine. It is the SDK's own `flyte-mcp` entry point.
+Claude Code runs it through the bundled plugin configuration; for local Codex tasks in
+ChatGPT, add the server configuration below. `uvx` fetches it from PyPI at each launch.
+This is the command:
 
 ```bash
 uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio \
@@ -192,11 +221,14 @@ still helps while you are deploying your first cluster.
 
 ### Adding the MCP servers manually
 
-Hermes, opencode, and pi support MCP; the plugin does not configure it for them. Both
-servers are portable: one is a URL, the other needs no checkout or path. Wiring them up
-takes a few lines.
+Hermes, opencode and pi support MCP, but need both servers configured manually. In
+ChatGPT's local Codex runtime, `flyte-docs` is already available; add only
+`flyte-cluster` for cluster access.
 
 `flyte-docs`:
+
+`flyte-docs` is already connected in ChatGPT. Use these snippets only for another
+harness:
 
 ```json
 // opencode: opencode.json
@@ -219,6 +251,19 @@ mcp_servers:
 ```
 
 `flyte-cluster`:
+
+`flyte-cluster` is a local stdio process. Its installation is separate from the Flyte
+plugin: the local Codex runtime launches `uvx`, which downloads and runs the
+`flyte[mcp]` package. It uses the same active Flyte configuration and login as the
+`flyte` CLI.
+
+```toml
+# Local Codex runtime: ~/.codex/config.toml
+[mcp_servers.flyte-cluster]
+command = "uvx"
+args = ["--from", "flyte[mcp]>=2.5.18", "flyte-mcp", "--transport", "stdio",
+        "--tool-groups", "task,run,action,logs,app,trigger,project,secret,condition,identity"]
+```
 
 ```json
 // opencode: opencode.json
@@ -246,15 +291,15 @@ mcp_servers:
            "task,run,action,logs,app,trigger,project,secret,condition,identity"] } } }
 ```
 
-If you would rather configure Claude Code or Codex globally instead of through the
-plugin, the same two entries go in their own config files: `.mcp.json` for Claude Code,
-`[mcp_servers.<name>]` in `~/.codex/config.toml` for Codex.
+Restart the local Codex runtime after changing `~/.codex/config.toml` so it starts the
+configured servers.
 
 ### Changing what is served
 
-Edit `args` in the plugin's `.mcp.json`, or in your own config above, to pass
-`--tool-groups`, `--tools`, or `--read-only`. Scope the server to one project and domain
-with the `FLYTE_MCP_PROJECT` and `FLYTE_MCP_DOMAIN` environment variables.
+For Claude Code, edit `args` in the plugin's `.mcp.json`; for local Codex and other
+manual setups, edit the server `args` in the client configuration. Pass `--tool-groups`,
+`--tools`, or `--read-only` to change what is exposed. Scope the server to one project
+and domain with the `FLYTE_MCP_PROJECT` and `FLYTE_MCP_DOMAIN` environment variables.
 
 > [!TIP]
 > `flyte-cluster` exposes the same Flyte control-plane tools you can serve yourself with a
