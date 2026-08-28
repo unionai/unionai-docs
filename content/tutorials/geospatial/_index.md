@@ -1,5 +1,6 @@
 ---
 title: Geospatial
+description: Satellite imagery, remote sensing, and earth and atmospheric modeling workloads.
 weight: 2
 variants: +flyte +union
 sidebar_expanded: true

@@ -1,5 +1,6 @@
 ---
 title: Computer vision
+description: Image and vision-language model workloads.
 weight: 5
 variants: +flyte +union
 sidebar_expanded: true

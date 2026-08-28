@@ -1,5 +1,6 @@
 ---
 title: RL for LLMs with GRPO and LoRA
+description: Train a reasoning-style RL loop for an LLM with GRPO and LoRA, orchestrated by plain Flyte async tasks on a warm vLLM pool.
 weight: 1
 variants: -flyte +union
 mermaid: true

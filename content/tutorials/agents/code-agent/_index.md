@@ -1,5 +1,6 @@
 ---
 title: Coding agent
+description: Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 weight: 3
 variants: +flyte +union
 sidebar_expanded: true

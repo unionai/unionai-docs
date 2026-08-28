@@ -1,5 +1,6 @@
 ---
 title: Data processing
+description: Large-scale data processing and batching strategies.
 weight: 9
 variants: -flyte +union
 sidebar_expanded: true

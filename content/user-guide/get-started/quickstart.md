@@ -1,5 +1,7 @@
 ---
 title: Quickstart
+description: Install the SDK and run your first workflow locally in a few minutes.
+icon: '123'
 weight: 1
 variants: +flyte +union
 ---

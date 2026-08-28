@@ -1,5 +1,6 @@
 ---
 title: Reinforcement learning
+description: RL fine-tuning of language models.
 weight: 10
 variants: -flyte +union
 sidebar_expanded: true

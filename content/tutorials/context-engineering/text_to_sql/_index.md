@@ -1,5 +1,6 @@
 ---
 title: Text-to-SQL prompt optimization
+description: Learn how to turn natural language questions into SQL queries with Flyte and LlamaIndex, and explore prompt optimization in practice.
 weight: 1
 variants: +flyte +union
 ---

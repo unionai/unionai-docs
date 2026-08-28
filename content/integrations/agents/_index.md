@@ -1,5 +1,7 @@
 ---
 title: Agent frameworks
+description: Run agents from OpenAI, Claude, LangGraph, CrewAI, and more as durable Flyte tasks.
+icon: plugin
 weight: 1
 variants: +flyte +union
 sidebar_expanded: false

@@ -1,5 +1,6 @@
 ---
 title: MLE bot
+description: An autonomous ML agent that designs, runs, and iterates on experiments using Flyte's durable sandbox for safe LLM-generated code execution.
 weight: 3
 variants: +flyte +union
 ---

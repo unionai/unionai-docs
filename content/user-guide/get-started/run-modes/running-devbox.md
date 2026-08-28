@@ -1,5 +1,7 @@
 ---
 title: Run on the Devbox
+description: Run tasks and apps in a lightweight Flyte cluster using Docker. Get the full Flyte UI and backend experience on your machine.
+icon: box
 weight: 5
 variants: +flyte +union
 ---

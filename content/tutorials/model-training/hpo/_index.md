@@ -1,5 +1,6 @@
 ---
 title: Hyperparameter optimization
+description: Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
 weight: 10
 variants: +flyte +union
 ---

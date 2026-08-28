@@ -1,5 +1,6 @@
 ---
 title: Inference
+description: Serving models and building inference applications as Flyte apps.
 weight: 11
 variants: -flyte +union
 sidebar_expanded: true

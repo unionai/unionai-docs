@@ -1,5 +1,7 @@
 ---
 title: From Airflow to Flyte
+description: Mapping from Airflow concepts (DAGs, operators, schedules, XCom, trigger rules) to their Flyte 2 equivalents.
+icon: git
 weight: 2
 variants: +flyte +union
 ---
