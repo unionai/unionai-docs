@@ -1,5 +1,6 @@
 ---
 title: Monorepo with uv
+icon: folder2-open
 description: How to structure Flyte projects with uv, from single-package setups to multi-team monorepos with shared and independent lockfiles.
 weight: 2
 variants: +flyte +union

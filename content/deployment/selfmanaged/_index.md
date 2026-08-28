@@ -1,5 +1,7 @@
 ---
 title: Self-managed deployment
+description: Run the data plane on your own Kubernetes cluster, owning the cluster and its upgrades while Union runs the control plane.
+icon: server
 weight: 2
 variants: -flyte +union
 ---

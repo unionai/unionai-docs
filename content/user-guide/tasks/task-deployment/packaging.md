@@ -1,5 +1,7 @@
 ---
 title: Packaging
+description: The two ways to get your code into the execution environment.
+icon: box
 weight: 7
 variants: +flyte +union
 ---

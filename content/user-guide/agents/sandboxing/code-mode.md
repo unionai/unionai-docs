@@ -1,5 +1,7 @@
 ---
 title: Programmatic tool calling for agents
+description: Let the model emit one block of code that calls your tools, rather than a sequence of JSON tool calls.
+icon: code-square
 weight: 3
 variants: +flyte +union
 ---

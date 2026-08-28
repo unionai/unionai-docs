@@ -1,5 +1,7 @@
 ---
 title: Reusable containers
+description: Keep a container warm across task executions instead of creating a fresh one each time.
+icon: recycle
 weight: 5
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Manage Union through Terraform
+description: Manage a Union deployment as infrastructure-as-code with the Union Terraform provider.
+icon: file-earmark-code
 weight: 8
 variants: -flyte +union
 ---

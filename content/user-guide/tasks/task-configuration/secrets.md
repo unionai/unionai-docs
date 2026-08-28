@@ -1,5 +1,7 @@
 ---
 title: Secrets
+description: Store API keys and credentials securely and read them from inside a task.
+icon: safe
 weight: 3
 variants: +flyte +union
 ---

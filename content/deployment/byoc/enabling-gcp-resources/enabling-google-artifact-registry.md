@@ -1,5 +1,7 @@
 ---
 title: Enabling Google Artifact Registry
+description: Give the data plane access to the Artifact Registry repository holding your task images.
+icon: archive
 weight: 2
 variants: -flyte +union
 ---

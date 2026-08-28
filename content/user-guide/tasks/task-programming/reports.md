@@ -1,5 +1,7 @@
 ---
 title: Reports
+description: Display and update custom output in the UI while a task runs.
+icon: file-earmark-bar-graph
 weight: 10
 variants: +flyte +union
 ---

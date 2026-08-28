@@ -1,5 +1,7 @@
 ---
 title: Clustered task environment
+description: Run one task across a gang of pods at once, for distributed training and similar workloads.
+icon: diagram-3
 weight: 8
 variants: +flyte +union
 ---

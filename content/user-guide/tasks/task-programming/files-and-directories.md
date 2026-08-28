@@ -1,5 +1,7 @@
 ---
 title: Files and directories
+description: Pass files and directories between tasks with flyte.io.File and flyte.io.Dir.
+icon: folder
 weight: 1
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Ollama app
+description: Serve open models locally with Ollama's OpenAI-compatible API.
+icon: cpu
 weight: 13
 variants: +flyte +union
 ---

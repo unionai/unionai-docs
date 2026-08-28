@@ -1,5 +1,7 @@
 ---
 title: Error handling
+description: Catch and recover from task failures, including out-of-memory errors and timeouts.
+icon: exclamation-triangle
 weight: 13
 variants: +flyte +union
 ---

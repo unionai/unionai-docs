@@ -1,5 +1,7 @@
 ---
 title: Batch inference
+description: Keep expensive GPUs busy during batch inference instead of idle and waiting.
+icon: gpu-card
 weight: 4
 variants: +flyte +union
 mermaid: true

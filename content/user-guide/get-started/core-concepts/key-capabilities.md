@@ -1,5 +1,7 @@
 ---
 title: Key capabilities
+description: An overview of what Flyte can do, once the core concepts are in place.
+icon: stars
 weight: 7
 variants: +flyte +union
 ---

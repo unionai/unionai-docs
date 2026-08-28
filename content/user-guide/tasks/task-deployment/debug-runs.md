@@ -1,5 +1,7 @@
 ---
 title: Debug a run
+description: Drop into a live session on a running action to inspect its environment, filesystem, and code.
+icon: bug
 weight: 17
 variants: -flyte +union
 ---

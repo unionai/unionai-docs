@@ -1,5 +1,7 @@
 ---
 title: Google OpenID Connect
+description: Configure Google OpenID Connect as your identity provider.
+icon: google
 weight: 2
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Triggers
+description: Schedule a run and parameterize it with input overrides.
+icon: alarm
 weight: 10
 variants: +flyte +union
 ---

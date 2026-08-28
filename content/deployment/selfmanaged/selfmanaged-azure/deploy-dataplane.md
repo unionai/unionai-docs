@@ -1,5 +1,7 @@
 ---
 title: Deploy the dataplane
+description: Install the data plane Helm chart onto your AKS cluster.
+icon: rocket-takeoff
 weight: 2
 variants: -flyte +union
 ---

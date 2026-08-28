@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the OKE cluster, Object Storage bucket, registry, and IAM access the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---
