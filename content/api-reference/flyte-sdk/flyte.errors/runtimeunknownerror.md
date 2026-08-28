@@ -1,5 +1,7 @@
 ---
 title: RuntimeUnknownError
+description: "This error is raised when the underlying task execution fails because of an unknown error."
+icon: exclamation-triangle
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

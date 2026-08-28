@@ -1,5 +1,7 @@
 ---
 title: VLLMAppEnvironment
+description: "App environment backed by vLLM for serving large language models."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

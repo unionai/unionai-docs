@@ -1,5 +1,7 @@
 ---
 title: flyte.extras
+description: "Flyte extras package."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -34,7 +36,7 @@ This package provides various utilities that make it possible to build highly cu
 |-|-|
 | [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
-| [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
+| [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through a single async processing function, maximizing resource utilization. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
 | [`Sleep`](../flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
 | [`SleepTask`](../flyte.extras/sleeptask) |  |

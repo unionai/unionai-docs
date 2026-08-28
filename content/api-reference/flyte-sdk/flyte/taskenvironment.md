@@ -1,5 +1,7 @@
 ---
 title: TaskEnvironment
+description: "Define an execution environment for a set of tasks."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -111,7 +113,7 @@ class TaskEnvironment(
 | Method | Description |
 |-|-|
 | [`add_dependency()`](#add_dependency) | Add one or more environment dependencies so they are deployed together. |
-| [`clone_with()`](#clone_with) | Create a new `TaskEnvironment` that shares most settings with this one. |
+| [`clone_with()`](#clone_with) | Create a new `TaskEnvironment` that shares most settings with this one but differs in name and selected overrides. |
 | [`from_task()`](#from_task) | Create a TaskEnvironment from a list of tasks. |
 | [`task()`](#task) | Decorate a function to be a task. |
 

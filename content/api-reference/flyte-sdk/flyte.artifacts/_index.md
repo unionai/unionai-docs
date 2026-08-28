@@ -1,5 +1,7 @@
 ---
 title: flyte.artifacts
+description: "Artifacts module."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

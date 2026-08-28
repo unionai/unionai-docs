@@ -1,5 +1,7 @@
 ---
 title: flyte.remote
+description: "Remote Entities that are accessible from the Union Server once deployed or created."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -19,7 +21,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`ActionInputs`](../flyte.remote/actioninputs) | A class representing the inputs of an action. |
 | [`ActionOutputs`](../flyte.remote/actionoutputs) | A class representing the outputs of an action. |
 | [`App`](../flyte.remote/app) |  |
-| [`Artifact`](../flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as. |
+| [`Artifact`](../flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version. |
 | [`Condition`](../flyte.remote/condition) | A remote Condition registered within an action of a run. |
 | [`Project`](../flyte.remote/project) | A class representing a project in the Union API. |
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
@@ -28,7 +30,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`Settings`](../flyte.remote/settings) | Hierarchical configuration settings with inheritance support. |
 | [`Task`](../flyte.remote/task) |  |
 | [`TaskDetails`](../flyte.remote/taskdetails) |  |
-| [`TimeFilter`](../flyte.remote/timefilter) | Filter for time-based fields (e. |
+| [`TimeFilter`](../flyte.remote/timefilter) | Filter for time-based fields (e.g. created_at, updated_at). |
 | [`Trigger`](../flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
 | [`User`](../flyte.remote/user) | Represents a user in the Flyte platform. |
 

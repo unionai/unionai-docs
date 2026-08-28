@@ -1,5 +1,7 @@
 ---
 title: HuggingFaceModelInfo
+description: "Information about a HuggingFace model to store."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

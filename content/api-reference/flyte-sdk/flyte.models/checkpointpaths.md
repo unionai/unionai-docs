@@ -1,5 +1,7 @@
 ---
 title: CheckpointPaths
+description: "Paths the platform provides for this task's checkpoint output and optional previous-attempt input."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

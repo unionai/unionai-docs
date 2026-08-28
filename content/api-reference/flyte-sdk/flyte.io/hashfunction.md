@@ -1,5 +1,7 @@
 ---
 title: HashFunction
+description: "A hash method that wraps a user-provided function to compute hashes."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

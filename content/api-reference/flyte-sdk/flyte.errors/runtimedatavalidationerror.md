@@ -1,5 +1,7 @@
 ---
 title: RuntimeDataValidationError
+description: "This error is raised when the user tries to access a resource that does not exist or is invalid."
+icon: exclamation-triangle
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

@@ -1,5 +1,6 @@
 ---
 title: flyte.config
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -20,7 +21,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`auto()`](#auto) | Automatically constructs the Config Object. |
-| [`set_if_exists()`](#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set. |
+| [`set_if_exists()`](#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 
 
 ## Methods

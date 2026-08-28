@@ -1,5 +1,7 @@
 ---
 title: ReportTimeline
+description: "A `flyte.report.Timeline` that defaults to the `Agent` report tab."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
