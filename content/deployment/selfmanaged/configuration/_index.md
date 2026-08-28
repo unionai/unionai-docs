@@ -2,7 +2,6 @@
 title: Configuration
 weight: 10
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Advanced configurations

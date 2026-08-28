@@ -3,7 +3,6 @@ title: Build an agent
 weight: 1
 variants: +flyte +serverless +union
 mermaid: true
-llm_readable_bundle: true
 ---
 
 # Build an agent

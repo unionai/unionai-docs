@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.6.6
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
@@ -453,6 +453,7 @@ def init(
     local_persistence: bool = False,
     local_tracked: bool = False,
     local_tracked_strict: bool = False,
+    scopes: List[str] | None = None,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -496,6 +497,7 @@ remote API methods are called. Thread-safe implementation.
 | `local_persistence` | `bool` | Whether to enable SQLite persistence for local run metadata (default: False). |
 | `local_tracked` | `bool` | Whether to report tracked run state to the Flyte control plane (default: False). Requires an initialized client and a configured project/domain. |
 | `local_tracked_strict` | `bool` | Strict tracked-run reporting for debugging (default: False). Any reporting failure fails the run loudly instead of being logged and swallowed. Only takes effect when reporting is enabled. |
+| `scopes` | `List[str] \| None` | OAuth scopes to request. When omitted, scopes are discovered from the auth metadata service. |
 
 **Returns:** None
 

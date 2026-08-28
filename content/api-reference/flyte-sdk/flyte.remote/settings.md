@@ -1,6 +1,6 @@
 ---
 title: Settings
-version: 2.6.6
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
@@ -193,7 +193,7 @@ readers and line-based stylers:
 * `#` — a commented-out setting. Uncomment (strip a single leading
   `#`) to activate.
 
-A bulk `# ` → `` pass safely activates every setting while leaving
+A bulk pass deleting each `# ` prefix safely activates every setting while leaving
 descriptions (`##` → `#`) and section headers (`###` → `##`)
 intact as comments.
 

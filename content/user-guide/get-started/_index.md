@@ -6,6 +6,11 @@ variants: +flyte +union
 
 # Get started
 
+> [!INFO] Try it in your browser
+> Follow along with this guide in Google Colab without installing anything locally.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
+
 This guide covers how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
 
 Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS back-end. This guide applies to both.

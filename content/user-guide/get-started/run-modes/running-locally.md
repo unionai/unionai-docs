@@ -8,6 +8,11 @@ variants: +flyte +union
 
 Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
 
+> [!INFO] Try it in your browser
+> Follow along with this guide in Google Colab without installing anything locally.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
+
 ## Getting started
 
 If you haven't already, install the SDK and configure local persistence as described in the [Quickstart](../quickstart).
@@ -85,7 +90,7 @@ flyte run --local hello.py main --x-list '[1, 2, 3]'
 The TUI is an interactive split-screen dashboard. Task tree on the left, details and logs on the right.
 
 ```bash
-flyte run --local hello.py main
+flyte run --local --tui hello.py main
 ```
 
 ![TUI agent run](../../../_static/images/user-guide/quickstart/run-tui.png)

@@ -2,7 +2,6 @@
 title: Self-managed deployment
 weight: 2
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Self-managed deployment

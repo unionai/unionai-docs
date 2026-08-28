@@ -6,14 +6,12 @@ variants: +flyte +union
 
 # Quickstart
 
-Let's get you up and running with your first workflow on your local machine.
+> [!NOTE] Try it in your browser
+> Prefer not to install anything? Follow along with this quickstart in Google Colab.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
 
-<!--
-Hidden until the in-browser demo is repaired. The linked demo
-(https://flyte2intro.apps.demo.hosted.unionai.cloud/) is currently unreachable.
-To restore: re-add a note callout reading "Want to try Flyte without installing
-anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
--->
+Let's get you up and running with your first workflow on your local machine.
 
 
 ## What you'll need
