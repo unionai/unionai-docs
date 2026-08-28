@@ -57,7 +57,7 @@ Open **Plugins** in ChatGPT, search for **Flyte**, and install the official Flyt
 No custom marketplace or GitHub repository is required. Installing the plugin makes the
 Flyte skills available to ChatGPT's Codex agent.
 
-![ChatGPT Plugins Catalog](../_static/images/api-reference/chatgpt_plugins_catalog.png)
+![ChatGPT plugin catalog showing the Flyte plugin entry](../_static/images/api-reference/chatgpt_plugins_catalog.png)
 
 The official plugin also connects `flyte-docs`, the hosted read-only search server. It
 does not install `flyte-cluster`: for local Codex tasks, add that server separately to
