@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the AKS cluster, Storage Account, and managed identities the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

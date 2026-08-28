@@ -1,5 +1,7 @@
 ---
 title: Streamlit app
+description: Deploy an interactive Streamlit dashboard as a long-running service.
+icon: bar-chart-line
 weight: 8
 variants: +flyte +union
 ---

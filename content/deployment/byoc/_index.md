@@ -1,5 +1,7 @@
 ---
 title: BYOC deployment
+description: Union manages the data plane infrastructure inside your cloud account; you supply the account and network configuration.
+icon: cloud-check
 weight: 1
 variants: -flyte +union
 ---

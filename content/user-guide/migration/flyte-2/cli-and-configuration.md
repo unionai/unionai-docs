@@ -1,5 +1,7 @@
 ---
 title: CLI and configuration
+description: pyflyte becomes flyte, and the config file gets much smaller.
+icon: terminal
 weight: 6
 variants: +flyte +union
 ---

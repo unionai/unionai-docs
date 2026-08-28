@@ -1,5 +1,6 @@
 ---
 title: Fine-tuning a VLM
+icon: image
 description: Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
 weight: 1
 variants: +flyte +union

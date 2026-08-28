@@ -1,5 +1,6 @@
 ---
 title: Agents
+icon: robot
 description: Agentic workflows and autonomous LLM-powered systems.
 weight: 6
 variants: +flyte +union

@@ -1,5 +1,7 @@
 ---
 title: Papermill
+description: Run a parameterized Jupyter notebook as a task and capture its outputs as typed values.
+icon: journal-code
 weight: 1
 variants: +flyte +union
 ---

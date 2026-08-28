@@ -1,5 +1,7 @@
 ---
 title: Overview
+description: How the Union-run control plane and your data plane divide responsibility.
+icon: diagram-3
 weight: 1
 variants: -flyte +union
 ---

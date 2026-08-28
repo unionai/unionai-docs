@@ -1,5 +1,7 @@
 ---
 title: Authentication and SSO
+description: Point Flyte at an external OIDC identity provider and enforce login at the ingress and the console.
+icon: shield-lock
 variants: +flyte -union
 weight: 4
 ---

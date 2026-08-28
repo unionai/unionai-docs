@@ -1,5 +1,6 @@
 ---
 title: Cross-species gene comparison
+icon: arrow-left-right
 description: Compare homologous genes across species with Carbon scoring, sequence alignment, and ESMFold 3D structures.
 weight: 2
 variants: +flyte +union

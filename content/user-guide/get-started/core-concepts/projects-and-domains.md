@@ -1,5 +1,7 @@
 ---
 title: Projects and domains
+description: How organizations, projects, and domains partition your work and its resources.
+icon: folder2-open
 weight: 6
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: ML workloads
+description: Everyday ML workloads as complete Flyte 1 to Flyte 2 pairs.
+icon: graph-up
 weight: 10
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Interruptible tasks
+description: Run tasks on discounted spot instances that can be reclaimed at any time.
+icon: lightning
 weight: 11
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: OpenTelemetry
+description: Turn a Flyte run into an OpenTelemetry trace, with each task and traced function a span.
+icon: activity
 weight: 1
 variants: +flyte +union
 ---

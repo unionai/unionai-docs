@@ -1,5 +1,6 @@
 ---
 title: Distributed LLM pretraining
+icon: cpu
 description: Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
 weight: 1
 variants: +flyte +union

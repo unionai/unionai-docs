@@ -1,5 +1,7 @@
 ---
 title: Mapping over inputs
+description: Apply one task across every item of an iterable, in parallel.
+icon: grid-3x3
 weight: 17
 variants: +flyte +union
 ---

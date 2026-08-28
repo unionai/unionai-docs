@@ -1,5 +1,7 @@
 ---
 title: Single-script apps
+description: Build and deploy an app from one Python file.
+icon: file-earmark-code
 weight: 1
 variants: +flyte +union
 ---

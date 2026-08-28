@@ -1,5 +1,7 @@
 ---
 title: Life of a run
+description: What actually happens when you call flyte.run, step by step.
+icon: play-circle
 weight: 2
 variants: +flyte +union
 mermaid: true

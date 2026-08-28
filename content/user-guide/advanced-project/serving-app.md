@@ -1,5 +1,7 @@
 ---
 title: Serving app
+description: Connect a serving app to a pipeline so it can display results and take input.
+icon: window
 weight: 4
 variants: +flyte +union
 ---

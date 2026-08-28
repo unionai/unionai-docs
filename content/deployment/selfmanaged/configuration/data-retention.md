@@ -1,5 +1,6 @@
 ---
 title: Data retention policies
+icon: calendar-x
 weight: 7
 variants: -flyte +union
 description: Implications of object storage retention or lifecycle policies on the data plane bucket.

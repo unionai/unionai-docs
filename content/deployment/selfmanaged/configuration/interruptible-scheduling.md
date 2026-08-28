@@ -1,5 +1,7 @@
 ---
 title: Interruptible task scheduling
+description: Let interruptible tasks run on spot instances, and handle reclamation.
+icon: lightning
 weight: 1
 variants: -flyte +union
 ---

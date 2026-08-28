@@ -1,5 +1,7 @@
 ---
 title: Deep Agents
+description: Run LangChain's Deep Agents harness on Flyte, keeping its planning todos, virtual filesystem, and subagents.
+icon: diagram-3
 weight: 8
 variants: +flyte +union
 ---

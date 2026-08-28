@@ -1,5 +1,7 @@
 ---
 title: Run command options
+description: Every option flyte run accepts, and what each overrides.
+icon: list-ul
 weight: 4
 variants: +flyte +union
 ---

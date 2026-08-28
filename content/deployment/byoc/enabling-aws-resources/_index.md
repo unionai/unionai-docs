@@ -1,5 +1,7 @@
 ---
 title: Enabling AWS resources
+description: 'Connect your data plane to the AWS services it needs: S3, ECR, and Secrets Manager.'
+icon: cloud
 weight: 9
 variants: -flyte +union
 ---

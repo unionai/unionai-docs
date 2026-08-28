@@ -1,5 +1,7 @@
 ---
 title: Migration Overview
+description: The Flyte 1 workload patterns you know, and their Flyte 2 equivalents.
+icon: map
 weight: 1
 variants: +flyte +union
 ---

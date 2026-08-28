@@ -1,5 +1,7 @@
 ---
 title: Apps
+description: Long-lived services, and how they differ from the tasks you have already met.
+icon: window
 weight: 5
 variants: +flyte +union
 ---

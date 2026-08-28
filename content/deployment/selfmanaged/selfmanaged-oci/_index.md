@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on OCI
+description: Run a self-managed data plane on OCI, using OKE, Object Storage, and Container Registry.
+icon: cloud
 weight: 6
 variants: -flyte +union
 ---

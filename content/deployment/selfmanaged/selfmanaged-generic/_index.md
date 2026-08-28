@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on generic Kubernetes
+description: Run a self-managed data plane on any Kubernetes cluster, including on-premise.
+icon: cloud
 weight: 3
 variants: -flyte +union
 ---

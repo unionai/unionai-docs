@@ -1,5 +1,7 @@
 ---
 title: Compliance and governance
+description: The certifications Union holds and the frameworks its security practices align with.
+icon: patch-check
 weight: 5
 variants: -flyte +union
 sidebar_expanded: true

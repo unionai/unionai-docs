@@ -1,5 +1,7 @@
 ---
 title: Pod templates
+description: Reach the underlying Kubernetes pod spec for anything Flyte does not expose directly.
+icon: file-earmark-code
 weight: 6
 variants: +flyte +union
 ---

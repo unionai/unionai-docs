@@ -1,5 +1,7 @@
 ---
 title: Tasks
+description: Configure, build, and deploy the durable batch workloads that everything else is made of.
+icon: gear
 weight: 2
 variants: +flyte +union
 ---

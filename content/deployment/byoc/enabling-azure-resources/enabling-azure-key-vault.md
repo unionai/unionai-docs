@@ -1,5 +1,7 @@
 ---
 title: Enabling Azure Key Vault
+description: Grant the userflyterole identity permission to read Key Vault secrets.
+icon: safe
 weight: 3
 variants: -flyte +union
 ---

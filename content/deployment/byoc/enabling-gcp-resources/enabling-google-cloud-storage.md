@@ -1,5 +1,7 @@
 ---
 title: Enabling Google Cloud Storage
+description: Grant data plane tasks access to your own Cloud Storage bucket.
+icon: bucket
 weight: 1
 variants: -flyte +union
 ---

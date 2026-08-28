@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on Nebius
+description: Run a self-managed data plane on Nebius, using Managed Kubernetes and Object Storage.
+icon: cloud
 weight: 9
 variants: -flyte +union
 ---

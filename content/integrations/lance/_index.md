@@ -1,5 +1,7 @@
 ---
 title: Lance
+description: Pass a Lance dataset between tasks as a lazy, typed DataFrame format.
+icon: database
 weight: 1
 variants: +flyte +union
 ---

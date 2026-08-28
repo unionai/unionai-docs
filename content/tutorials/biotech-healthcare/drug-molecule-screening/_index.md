@@ -1,5 +1,6 @@
 ---
 title: Drug molecule screening agent
+icon: capsule
 description: Agentic virtual screening with RDKit stage tools, Lipinski filters, and ranked drug-likeness reports.
 weight: 5
 variants: +flyte +union

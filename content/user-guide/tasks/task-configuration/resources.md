@@ -1,5 +1,7 @@
 ---
 title: Resources
+description: Set the CPU, memory, GPU, and storage a task's container gets.
+icon: cpu
 weight: 2
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Additional task settings
+description: Naming, metadata, default inputs, and environment variables, and the settings without their own page.
+icon: sliders
 weight: 14
 variants: +flyte +union
 ---

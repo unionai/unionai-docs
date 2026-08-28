@@ -1,5 +1,6 @@
 ---
 title: LLM fine-tuning with LoRA and QLoRA
+icon: layers
 description: Fine-tune a language model for SQL generation using full, LoRA, or QLoRA methods in one Flyte pipeline.
 weight: 2
 variants: +flyte +union

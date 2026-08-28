@@ -1,5 +1,7 @@
 ---
 title: How app serving works
+description: What flyte.serve does, and why its faster feedback loop suits development.
+icon: play-circle
 weight: 1
 variants: +flyte +union
 ---

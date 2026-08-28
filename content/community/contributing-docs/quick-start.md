@@ -1,5 +1,7 @@
 ---
 title: Set up a local docs dev environment
+description: Install Hugo, clone the repository with its submodules, and run the docs site live on your machine.
+icon: rocket-takeoff
 weight: 1
 variants: +flyte +union
 ---

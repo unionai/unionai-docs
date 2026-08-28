@@ -1,5 +1,7 @@
 ---
 title: Tasks
+description: The Python function that runs remotely in a container, and how it replaces the Flyte 1 task and workflow split.
+icon: code
 weight: 2
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on CoreWeave
+description: Run a self-managed data plane on CoreWeave, using CKS and AI Object Storage.
+icon: cloud
 weight: 7
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on Crusoe
+description: Run a self-managed data plane on Crusoe, using CMK and Crusoe Cloud Storage.
+icon: cloud
 weight: 8
 variants: -flyte +union
 ---

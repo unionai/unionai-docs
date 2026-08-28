@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on GCP
+description: Run a self-managed data plane on GCP, using GKE, Cloud Storage, and Workload Identity.
+icon: cloud
 weight: 4
 variants: -flyte +union
 ---
