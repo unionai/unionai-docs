@@ -1,5 +1,7 @@
 ---
 title: Plugin setup
+description: Cluster-side configuration for the few task plugins that need it.
+icon: sliders
 variants: +flyte -union
 weight: 6
 ---

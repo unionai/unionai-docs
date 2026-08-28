@@ -1,5 +1,6 @@
 ---
 title: Genomic alignment
+icon: bezier
 description: Align sequencing reads to a reference genome with a cached, parallel Bowtie 2 pipeline.
 weight: 1
 variants: +flyte +union

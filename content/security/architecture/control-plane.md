@@ -1,5 +1,7 @@
 ---
 title: Control plane
+description: What the Union-hosted control plane orchestrates, what it stores, and what it never sees.
+icon: building
 weight: 2
 variants: -flyte +union
 ---

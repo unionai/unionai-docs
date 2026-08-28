@@ -1,5 +1,6 @@
 ---
 title: Model training
+icon: sliders
 description: Training, fine-tuning, and hyperparameter optimization of models at scale.
 weight: 8
 variants: +flyte +union

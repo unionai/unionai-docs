@@ -1,5 +1,7 @@
 ---
 title: Deployment overview
+description: What the Flyte binary contains, and the cluster, database, and object store you supply yourself.
+icon: diagram-3
 variants: +flyte -union
 weight: 1
 mermaid: true

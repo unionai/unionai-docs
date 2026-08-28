@@ -1,5 +1,6 @@
 ---
 title: Multi-agent trading simulation
+icon: currency-exchange
 description: A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 weight: 1
 variants: +flyte +union

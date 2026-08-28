@@ -1,5 +1,7 @@
 ---
 title: LLM-optimized documentation
+description: The markdown twins, section bundles, and index files the build generates for AI agents and search.
+icon: robot
 weight: 9
 variants: +flyte +union
 ---

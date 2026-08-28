@@ -1,5 +1,6 @@
 ---
 title: Voice customer-service agent
+icon: mic
 description: Serve an LLM with vLLM and a browser voice UI as two composed Flyte apps, with switchable text-to-speech and a live latency comparison.
 weight: 1
 variants: +flyte +union

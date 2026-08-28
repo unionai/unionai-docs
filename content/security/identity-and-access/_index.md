@@ -1,5 +1,7 @@
 ---
 title: Identity and access
+description: How users and applications authenticate, and what each is allowed to reach.
+icon: person-check
 weight: 3
 variants: -flyte +union
 sidebar_expanded: true

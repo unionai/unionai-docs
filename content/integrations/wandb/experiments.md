@@ -1,5 +1,7 @@
 ---
 title: Experiments
+description: Start and finish a W&B run automatically around a task with the wandb_init decorator.
+icon: clipboard-data
 weight: 1
 variants: +flyte +union
 ---

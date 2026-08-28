@@ -1,5 +1,7 @@
 ---
 title: Data plane
+description: The customer-owned cluster where all computation happens and all customer data rests.
+icon: hdd-network
 weight: 3
 variants: -flyte +union
 mermaid: true

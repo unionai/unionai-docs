@@ -1,5 +1,7 @@
 ---
 title: Role-based access control
+description: The built-in roles, custom policies, and how permissions are enforced.
+icon: shield-lock-fill
 weight: 2
 variants: -flyte +union
 ---

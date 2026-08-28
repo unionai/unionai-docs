@@ -1,5 +1,7 @@
 ---
 title: Apps
+description: Long-running services for dashboards, REST APIs, and model endpoints.
+icon: window
 weight: 3
 variants: +flyte +union
 ---

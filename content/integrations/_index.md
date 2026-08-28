@@ -1,5 +1,7 @@
 ---
 title: Integrations
+description: Plugins and connectors that extend Flyte to specialized compute, data systems, agent frameworks, and observability backends.
+icon: plugin
 weight: 4
 variants: +flyte +union
 top_menu: true

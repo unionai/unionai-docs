@@ -1,5 +1,7 @@
 ---
 title: Traces across crashes and resumes
+description: Keep one coherent trace across crashes, retries, and resumes, where each attempt starts a fresh SDK.
+icon: arrow-repeat
 weight: 3
 variants: +flyte +union
 ---

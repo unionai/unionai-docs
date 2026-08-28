@@ -1,5 +1,7 @@
 ---
 title: Contributing docs and examples
+description: How the docs site is built, and how to author and submit a change to it.
+icon: file-earmark-text
 weight: 3
 variants: +flyte +union
 ---

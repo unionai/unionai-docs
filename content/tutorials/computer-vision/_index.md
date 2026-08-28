@@ -1,5 +1,6 @@
 ---
 title: Computer vision
+icon: eye
 description: Image and vision-language model workloads.
 weight: 5
 variants: +flyte +union

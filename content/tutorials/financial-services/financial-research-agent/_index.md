@@ -1,5 +1,6 @@
 ---
 title: Financial research agent
+icon: graph-up-arrow
 description: Prep equity briefings for the earnings cycle with grounded You.com Research synthesis and fresh news from the Search API.
 weight: 5
 variants: +flyte +union

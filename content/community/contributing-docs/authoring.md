@@ -1,5 +1,7 @@
 ---
 title: Authoring
+description: Create pages, control their visibility and order, add notices and links, and generate content from Python or Jupyter.
+icon: pencil
 weight: 2
 variants: +flyte +union
 ---

@@ -1,5 +1,6 @@
 ---
 title: Fraud detection with Feast
+icon: shield-exclamation
 description: Train an XGBoost fraud classifier and materialize transaction features in Feast for online scoring.
 weight: 3
 variants: +flyte +union

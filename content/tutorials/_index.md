@@ -1,5 +1,7 @@
 ---
 title: Tutorials
+description: Worked, runnable examples organized by industry vertical and by technical topic.
+icon: mortarboard
 weight: 2
 variants: +flyte +union
 top_menu: true

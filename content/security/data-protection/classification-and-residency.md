@@ -1,5 +1,7 @@
 ---
 title: Data classification and residency
+description: How each data type is classified, and where that classification requires it to be stored.
+icon: tags
 weight: 1
 variants: -flyte +union
 ---
