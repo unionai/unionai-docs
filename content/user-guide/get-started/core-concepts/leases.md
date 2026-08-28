@@ -1,5 +1,7 @@
 ---
 title: Leases
+description: How Union.ai tracks work across clusters, why you occasionally see `lease expired`, and how the system protects you from runaway compute.
+icon: key
 weight: 9
 variants: -flyte +union
 ---

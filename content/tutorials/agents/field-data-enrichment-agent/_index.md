@@ -1,5 +1,6 @@
 ---
 title: Field data enrichment agent
+description: Enrich geo-tagged operational events with real-world public context using the You.com Search API with country and freshness targeting.
 weight: 6
 variants: +flyte +union
 ---

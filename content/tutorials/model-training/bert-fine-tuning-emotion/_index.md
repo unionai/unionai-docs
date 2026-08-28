@@ -1,5 +1,6 @@
 ---
 title: BERT emotion classification
+description: Fine-tune ModernBERT on Twitter emotion labels with confusion-matrix evaluation and attention visualizations.
 weight: 3
 variants: +flyte +union
 ---

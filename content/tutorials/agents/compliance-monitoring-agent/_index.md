@@ -1,5 +1,6 @@
 ---
 title: Compliance monitoring agent
+description: Monitor trusted regulatory sources with the You.com Research API and route citation-precise findings to the right team.
 weight: 4
 variants: +flyte +union
 ---

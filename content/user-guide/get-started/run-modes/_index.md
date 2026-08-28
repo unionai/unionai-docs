@@ -1,5 +1,7 @@
 ---
 title: Run modes
+description: Run the same task code locally, on a devbox, or on a remote cluster.
+icon: play-circle
 weight: 3
 variants: +flyte +union
 ---

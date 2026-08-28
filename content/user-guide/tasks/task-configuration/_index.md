@@ -1,5 +1,7 @@
 ---
 title: Configure tasks
+description: Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
+icon: gear
 weight: 1
 variants: +flyte +union
 ---

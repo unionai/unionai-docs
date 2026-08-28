@@ -1,5 +1,6 @@
 ---
 title: Satellite image classification
+description: Build a production-grade EfficientNet pipeline for land-use classification with caching, experiment tracking, and reporting.
 weight: 2
 variants: -flyte +union
 ---

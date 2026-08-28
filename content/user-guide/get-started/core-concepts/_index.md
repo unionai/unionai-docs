@@ -1,5 +1,7 @@
 ---
 title: Core concepts
+description: 'The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actions, and apps.'
+icon: book
 weight: 2
 variants: +flyte +union
 ---

@@ -1,5 +1,6 @@
 ---
 title: Financial services & fintech
+description: Financial research, trading, and other fintech workloads.
 weight: 3
 variants: +flyte +union
 sidebar_expanded: true

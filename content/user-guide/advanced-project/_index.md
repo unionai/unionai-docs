@@ -1,5 +1,7 @@
 ---
 title: Advanced project
+description: An advanced guide for building an LLM reporting agent on Flyte.
+icon: rocket
 weight: 11
 variants: +flyte +union
 mermaid: true

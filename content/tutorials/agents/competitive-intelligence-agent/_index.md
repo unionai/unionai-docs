@@ -1,5 +1,6 @@
 ---
 title: Competitive intelligence agent
+description: Fan out across competitors, extract source-cited market deltas with the You.com Search API, and build a knowledge-graph-ready intelligence table.
 weight: 3
 variants: +flyte +union
 ---

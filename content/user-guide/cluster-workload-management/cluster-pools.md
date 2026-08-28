@@ -1,5 +1,7 @@
 ---
 title: Cluster pools
+description: Group clusters that share a data plane. Create and manage pools, or stay on the `default` pool if you only have one.
+icon: box
 weight: 1
 variants: -flyte +union
 ---

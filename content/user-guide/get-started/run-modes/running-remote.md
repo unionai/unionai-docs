@@ -1,5 +1,7 @@
 ---
 title: Run on a remote cluster
+description: Run tasks and apps on a remote cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
+icon: cloud
 weight: 6
 variants: +flyte +union
 ---

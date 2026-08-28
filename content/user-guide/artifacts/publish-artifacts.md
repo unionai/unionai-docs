@@ -1,5 +1,7 @@
 ---
 title: Publish your own artifacts
+description: Upload existing datasets and model weights from anywhere with `Artifact.create` or `flyte create artifact`, recording where they came from.
+icon: cloud-upload
 weight: 2
 variants: -flyte +union
 ---

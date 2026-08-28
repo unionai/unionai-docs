@@ -1,5 +1,7 @@
 ---
 title: Artifacts
+description: Register task outputs and uploads as named, versioned artifacts, trigger runs on new versions, mount them into apps, and trace lineage.
+icon: box-seam
 weight: 4
 variants: -flyte +union
 ---

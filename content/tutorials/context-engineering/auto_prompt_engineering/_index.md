@@ -1,5 +1,6 @@
 ---
 title: Automatic prompt engineering
+description: Easily run prompt optimization with real-time observability, traceability, and automatic recovery.
 weight: 2
 variants: +flyte +union
 ---

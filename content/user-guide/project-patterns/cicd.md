@@ -1,5 +1,6 @@
 ---
 title: CI/CD deployments
+description: How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but the building blocks (API key, `flyte deploy`, commit-pinned versions) translate to any runner.
 weight: 3
 variants: +flyte +union
 ---

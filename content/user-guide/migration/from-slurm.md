@@ -1,5 +1,7 @@
 ---
 title: From Slurm to Flyte
+description: Mapping from Slurm concepts (sbatch scripts, modules, job arrays, dependencies, partitions, requeue, multi-node jobs) to their Flyte 2 equivalents.
+icon: cpu
 weight: 3
 variants: +flyte +union
 ---

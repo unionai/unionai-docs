@@ -1,5 +1,6 @@
 ---
 title: Genomic variant effect prediction
+description: Zero-shot pathogenicity scoring with HuggingFace Carbon and interactive VEP reports.
 weight: 3
 variants: +flyte +union
 ---
