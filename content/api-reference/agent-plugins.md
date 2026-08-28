@@ -173,15 +173,18 @@ Skills and MCP servers solve different parts of the problem:
 
 - **Skills** are instructions and reusable guidance. They help the coding agent choose
   an appropriate Flyte pattern, write or migrate code, and decide how to validate it.
-  They work without a Flyte account or a connected cluster.
+  Skills do not make network calls themselves. In a local Codex session with an installed
+  and authenticated `flyte` CLI, they can guide the agent to use that CLI directly.
 - **MCP servers** provide callable tools. `flyte-docs` grounds an answer in current SDK
   examples and documentation; `flyte-cluster` lets the agent read or act on the Flyte
-  cluster you are authenticated to.
+  cluster you are authenticated to through a structured tool interface.
 
 For example, a `flyte-sdk-run` skill can guide an agent through debugging a failed run;
 with `flyte-cluster` configured, the agent can also inspect that run and retrieve its
-logs. Without the server, the skill still explains the workflow, but cannot look up the
-run. Configure only the tools and access you intend the agent to have.
+logs through MCP. Without that server, a local agent can still use an available,
+authenticated `flyte` CLI to inspect the run; otherwise, the skill can explain the
+workflow but cannot look it up. Configure only the tools and access you intend the agent
+to have.
 
 ### What each one does with your data
 
