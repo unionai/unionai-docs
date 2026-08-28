@@ -34,7 +34,7 @@ are declared in the plugin's `.mcp.json`, which only some harnesses read.
 Claude Code reads `.mcp.json` by convention. The official Flyte plugin in ChatGPT
 includes `flyte-docs`; `flyte-cluster` is separate because it runs locally with the
 user's Flyte credentials. The other harnesses configure both servers manually; [the
-configuration snippets are below](#adding-the-mcp-servers-manually).
+configuration snippets are below](#adding-mcp-servers-locally).
 
 ## Installation
 
@@ -63,7 +63,7 @@ The official plugin also connects `flyte-docs`, the hosted read-only search serv
 does not install `flyte-cluster`: for local Codex tasks, add that server separately to
 `~/.codex/config.toml`. `flyte-cluster` provides optional local access to the cluster
 your Flyte CLI is logged into. See [Adding the MCP servers
-manually](#adding-the-mcp-servers-manually).
+manually](#adding-mcp-servers-locally).
 
 ![Local MCP](../_static/images/api-reference/local_mcp.png)
 
@@ -222,13 +222,13 @@ on whichever control plane your `flyte` CLI is authenticated against. It starts 
 no Flyte config: the tools register either way and fail only when called. So the plugin
 still helps while you are deploying your first cluster.
 
-### Adding the MCP servers manually
+### Adding MCP servers locally
 
 Hermes, opencode and pi support MCP, but need both servers configured manually. In
 ChatGPT's local Codex runtime, `flyte-docs` is already available; add only
 `flyte-cluster` for cluster access.
 
-`flyte-docs`:
+#### `flyte-docs`
 
 `flyte-docs` is already connected in ChatGPT. Use these snippets only for another
 harness:
@@ -253,7 +253,7 @@ mcp_servers:
   "url": "https://flyte-mcp.apps.demo.hosted.unionai.cloud/flyte-mcp/mcp" } } }
 ```
 
-`flyte-cluster`:
+#### `flyte-cluster`
 
 `flyte-cluster` is a local stdio process. Its installation is separate from the Flyte
 plugin: the local Codex runtime launches `uvx`, which downloads and runs the
