@@ -1,5 +1,7 @@
 ---
 title: RetryStrategy
+description: "Retry strategy for a task."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

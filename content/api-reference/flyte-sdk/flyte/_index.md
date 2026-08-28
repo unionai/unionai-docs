@@ -1,5 +1,7 @@
 ---
 title: flyte
+description: "Flyte SDK for authoring compound AI applications, services and workflows."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -22,11 +24,11 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ConditionWebhook`](../flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
-| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
-| [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
+| [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
-| [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new. |
+| [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for a task. |
@@ -56,7 +58,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
 | [`build_images()`](#build_images) | Build the images for the given environment(s). |
-| [`ctx()`](#ctx) | Returns the current flyte. |
+| [`ctx()`](#ctx) | Returns the current flyte.models.TaskContext when running inside a task. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |

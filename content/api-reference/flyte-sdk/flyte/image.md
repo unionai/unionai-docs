@@ -1,5 +1,7 @@
 ---
 title: Image
+description: "Container image specification built using a fluent, two-step pattern."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -94,25 +96,25 @@ class Image(
 | [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
 | [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
-| [`from_pixi_script()`](#from_pixi_script) | Create an image from a `pixi`-compatible script, using the PEP 723 block at the top of. |
+| [`from_pixi_script()`](#from_pixi_script) | Create an image from a `pixi`-compatible script, using the PEP 723 block at the top of the script to determine the Python version and the conda and PyPI packages to install. |
 | [`from_ref_name()`](#from_ref_name) |  |
 | [`from_uv_script()`](#from_uv_script) | Use this method to create a new image with the specified uv script. |
 | [`validate()`](#validate) |  |
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
-| [`with_code_bundle()`](#with_code_bundle) | Configure this image to automatically copy source code from root_dir. |
-| [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
+| [`with_code_bundle()`](#with_code_bundle) | Configure this image to automatically copy source code from root_dir when the runner's copy_style is "none". |
+| [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image Be sure not to use RUN in your command. |
 | [`with_dockerignore()`](#with_dockerignore) |  |
-| [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
+| [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of the current image. |
 | [`with_local_rs_controller()`](#with_local_rs_controller) | Bake the locally-built flyte_controller_base wheel from rs_controller/dist into this image. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_local_v2_plugins()`](#with_local_v2_plugins) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_pixi_project()`](#with_pixi_project) | Use this method to create a new image with the specified pixi project layered on top of the current image. |
-| [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
+| [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject.toml layered on top of the current image. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
 | [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file(s) layered on top of the current image. |
 | [`with_source_folder()`](#with_source_folder) | Use this method to create a new image with the specified local directory layered on top of the current image. |
-| [`with_uv_project()`](#with_uv_project) | Use this method to create a new image with the specified uv. |
+| [`with_uv_project()`](#with_uv_project) | Use this method to create a new image with the specified uv.lock file layered on top of the current image. |
 | [`with_workdir()`](#with_workdir) | Use this method to create a new image with the specified working directory. |
 
 

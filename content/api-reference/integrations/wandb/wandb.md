@@ -1,5 +1,7 @@
 ---
 title: Wandb
+description: "Generates a Weights & Biases run link."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

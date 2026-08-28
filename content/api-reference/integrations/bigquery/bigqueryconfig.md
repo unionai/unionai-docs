@@ -1,5 +1,7 @@
 ---
 title: BigQueryConfig
+description: "Configuration for a BigQuery task."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

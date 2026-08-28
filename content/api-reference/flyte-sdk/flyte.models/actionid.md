@@ -1,5 +1,7 @@
 ---
 title: ActionID
+description: "A class representing the ID of an Action, nested within a Run."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -37,8 +39,8 @@ class ActionID(
 |-|-|
 | [`create_random()`](#create_random) |  |
 | [`new_sub_action()`](#new_sub_action) | Create a new sub-run with the given name. |
-| [`new_sub_action_from()`](#new_sub_action_from) | Make a deterministic name from the parent action name, the task identity, the inputs. |
-| [`unique_id_str()`](#unique_id_str) | Generate a unique ID string for this action in the format:. |
+| [`new_sub_action_from()`](#new_sub_action_from) | Make a deterministic name from the parent action name, the task identity, the inputs hash, the call sequence, and the group (if any). |
+| [`unique_id_str()`](#unique_id_str) | Generate a unique ID string for this action in the format: {project}-{domain}-{run_name}-{action_name}. |
 
 
 ### create_random()

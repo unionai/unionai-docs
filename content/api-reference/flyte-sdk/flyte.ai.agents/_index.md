@@ -1,5 +1,7 @@
 ---
 title: flyte.ai.agents
+description: "flyte.ai.agents — Agent abstractions for Flyte apps."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -28,7 +30,7 @@ flyte.ai.agents — Agent abstractions for Flyte apps.
 
 | Protocol | Description |
 |-|-|
-| [`AgentProtocol`](../flyte.ai.agents/agentprotocol) | Minimal protocol that any agent must satisfy to work with. |
+| [`AgentProtocol`](../flyte.ai.agents/agentprotocol) | Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`. |
 
 ### Errors
 

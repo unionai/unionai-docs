@@ -1,5 +1,7 @@
 ---
 title: Resources
+description: "Resources such as CPU, Memory, and GPU that can be allocated to a task."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

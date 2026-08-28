@@ -1,5 +1,7 @@
 ---
 title: File
+description: "A generic file class representing a file with a specified format."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

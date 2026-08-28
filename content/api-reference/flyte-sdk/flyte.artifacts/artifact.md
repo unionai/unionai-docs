@@ -1,5 +1,7 @@
 ---
 title: Artifact
+description: "Protocol for objects wrapped with Flyte metadata."
+icon: diagram-3
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

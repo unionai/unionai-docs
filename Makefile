@@ -20,7 +20,7 @@ TARGETS := usage help clean clean-generated base dist variant dev serve \
 	url-stats llm-docs update-redirects dry-run-redirects deploy-redirects \
 	check-deleted-pages check-links check-generated-content check-api-docs \
 	check-icon-names update-icon-names check-cli-variant-gating \
-	check-llm-bundle-notes update-api-docs \
+	check-llm-bundle-notes update-api-docs regen-api-docs-all \
 	check-helm-docs update-helm-docs generate-helm-docs \
 	index-search index-search-settings check-search-labels \
 	index-search-synonyms refresh-search-popularity

@@ -1,5 +1,7 @@
 ---
 title: Artifact
+description: "A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -45,7 +47,7 @@ class Artifact(
 | [`create()`](#create) | Publish an artifact from the local machine. |
 | [`delete()`](#delete) | Delete this artifact from the remote system. |
 | [`get()`](#get) | Get an artifact by its name and version. |
-| [`list_names()`](#list_names) | List distinct artifact names, one entry per name carrying the latest. |
+| [`list_names()`](#list_names) | List distinct artifact names, one entry per name carrying the latest version and the total version count, newest activity first. |
 | [`listall()`](#listall) | List artifacts, newest first. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |

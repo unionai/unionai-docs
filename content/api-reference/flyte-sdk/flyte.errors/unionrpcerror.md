@@ -1,5 +1,7 @@
 ---
 title: UnionRpcError
+description: "This error is raised when communication with the Union server fails."
+icon: exclamation-triangle
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
