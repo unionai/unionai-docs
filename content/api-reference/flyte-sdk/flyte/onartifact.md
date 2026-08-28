@@ -1,6 +1,6 @@
 ---
 title: OnArtifact
-version: 2.6.6
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---

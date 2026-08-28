@@ -1,6 +1,6 @@
 ---
 title: HFSource
-version: 2.6.2
+version: 2.6.10
 variants: +flyte +union
 layout: py_api
 ---
@@ -9,7 +9,7 @@ layout: py_api
 
 **Package:** `flyteplugins.huggingface.datasets`
 
-Hugging Face dataset source for task parameter defaults.
+HuggingFace dataset source for task parameter defaults.
 
 
 ## Parameters

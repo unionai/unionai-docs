@@ -2,7 +2,6 @@
 title: Serve and deploy apps
 weight: 4
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Serve and deploy apps

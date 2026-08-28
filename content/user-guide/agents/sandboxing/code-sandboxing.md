@@ -2,7 +2,6 @@
 title: Code sandboxing
 weight: 4
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Code sandboxing

@@ -3,7 +3,6 @@ title: Advanced project
 weight: 11
 variants: +flyte +union
 mermaid: true
-llm_readable_bundle: true
 ---
 
 # Advanced project: LLM reporting agent
