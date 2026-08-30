@@ -37,21 +37,7 @@ To get started with the Union Terraform provider:
 1. **Installation**: Set up the Terraform provider in your environment
 2. **Management**: Learn about the available resources and data sources for managing Union
 
-{{< grid >}}
-
-{{< link-card target="./installation" icon="download" title="Installation" >}}
-Install and configure the Union Terraform provider
-{{< /link-card >}}
-
-{{< link-card target="./management" icon="gear" title="Resource management" >}}
-Learn about available resources and data sources
-{{< /link-card >}}
-
-{{< link-card target="./security" icon="lock" title="Security best practices" >}}
-Securely manage API keys and credentials
-{{< /link-card >}}
-
-{{< /grid >}}
+{{< subpage-cards >}}
 
 ## Requirements
 

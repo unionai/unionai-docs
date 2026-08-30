@@ -21,6 +21,7 @@ TARGETS := usage help clean clean-generated base dist variant dev serve \
 	check-deleted-pages check-links check-generated-content check-api-docs \
 	check-generated-links \
 	check-icon-names update-icon-names check-cli-variant-gating \
+	check-subpage-cards \
 	check-llm-bundle-notes update-api-docs regen-api-docs-all \
 	check-helm-docs update-helm-docs generate-helm-docs \
 	index-search index-search-settings check-search-labels \
