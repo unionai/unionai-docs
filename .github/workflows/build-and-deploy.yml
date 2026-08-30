@@ -151,6 +151,16 @@ jobs:
           LATEST_REF=origin/main bash unionai-docs-infra/scripts/ci-build-dist.sh auto
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
+      - name: Check generated links
+        run: |
+          # The links the GENERATOR writes into dist/. `Check Internal Links`
+          # reads content/ and cannot see these: 202 of them pointed at nothing
+          # while that job stayed green (DOC-1499, DOC-1511, infra#291).
+          # Runs here rather than in its own workflow because it needs the dist
+          # this job already built, and a second full Hugo build to check links
+          # is not worth the minutes.
+          make check-generated-links
+
       - name: Emit build provenance
         if: success()
         run: |
