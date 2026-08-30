@@ -126,18 +126,4 @@ changes are rare and explicit (moving work between pools is a
 
 ## In this section
 
-{{< grid >}}
-
-{{< link-card target="cluster-pools" icon="box" title="Cluster pools" >}}
-Group clusters that share a data plane. Create and manage pools, or stay on the `default` pool if you only have one.
-{{< /link-card >}}
-
-{{< link-card target="clusters" icon="cloud" title="Clusters" >}}
-Register execution clusters into a pool and inspect their state, capacity, and bound queues.
-{{< /link-card >}}
-
-{{< link-card target="queues" icon="list-task" title="Managing queues" >}}
-Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
-{{< /link-card >}}
-
-{{< /grid >}}
+{{< subpage-cards >}}
