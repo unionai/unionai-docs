@@ -104,4 +104,18 @@ Flyte gives you the flexibility of Python scripts with the reliability of a prod
 
 ## Start here
 
-{{< subpage-cards >}}
+{{< grid >}}
+
+{{< link-card target="quickstart" icon="123" title="Quickstart" >}}
+Install the SDK and run your first workflow locally in a few minutes.
+{{< /link-card >}}
+
+{{< link-card target="core-concepts" icon="book" title="Core concepts" >}}
+The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actions, and apps.
+{{< /link-card >}}
+
+{{< link-card target="run-modes" icon="play-circle" title="Run modes" >}}
+Run the same task code locally, on a devbox, or on a remote cluster.
+{{< /link-card >}}
+
+{{< /grid >}}
