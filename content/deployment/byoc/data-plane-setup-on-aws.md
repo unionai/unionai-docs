@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on AWS
 description: Grant Union permission to provision and maintain compute resources in your AWS account.
-icon: cloud
+icon: amazon
 weight: 5
 variants: -flyte +union
 ---

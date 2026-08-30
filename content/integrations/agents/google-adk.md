@@ -1,7 +1,7 @@
 ---
 title: Google ADK
 description: Run Google Agent Development Kit agents on Flyte, with ADK's Runner driving the loop.
-icon: robot
+icon: google
 weight: 4
 variants: +flyte +union
 ---

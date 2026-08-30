@@ -1,7 +1,7 @@
 ---
 title: Mistral
 description: Run Mistral Agents on Flyte, built on the Conversations API in mistralai 2.x.
-icon: robot
+icon: wind
 weight: 5
 variants: +flyte +union
 ---

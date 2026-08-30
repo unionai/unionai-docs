@@ -1,7 +1,7 @@
 ---
 title: Polars
 description: Pass Polars DataFrame and LazyFrame values between tasks, serialized through Parquet.
-icon: table
+icon: snow2
 weight: 1
 variants: +flyte +union
 ---

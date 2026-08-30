@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on Azure
 description: Grant Union permission to provision and maintain compute resources in your Azure subscription.
-icon: cloud
+icon: microsoft
 weight: 7
 variants: -flyte +union
 ---

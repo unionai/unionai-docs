@@ -1,7 +1,7 @@
 ---
 title: Hermes
 description: Run Nous Research's Hermes agents on Flyte, with tools as durable child actions.
-icon: robot
+icon: send
 weight: 11
 variants: +flyte +union
 ---

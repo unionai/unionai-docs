@@ -1,7 +1,7 @@
 ---
 title: Weights & Biases
 description: Track experiments, visualize metrics, and run hyperparameter sweeps with Weights and Biases.
-icon: graph-up
+icon: bar-chart
 weight: 1
 variants: +flyte +union
 ---

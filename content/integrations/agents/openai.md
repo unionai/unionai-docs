@@ -1,7 +1,7 @@
 ---
 title: OpenAI
 description: Run OpenAI Agents SDK agents on Flyte, keeping handoffs, guardrails, and structured output.
-icon: robot
+icon: braces-asterisk
 weight: 2
 variants: +flyte +union
 ---

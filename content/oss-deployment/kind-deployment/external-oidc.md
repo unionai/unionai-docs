@@ -1,7 +1,7 @@
 ---
 title: Set up external OIDC provider
 description: Gate a kind deployment behind a real external identity provider instead of the throwaway in-cluster one.
-icon: key
+icon: shield-lock
 variants: +flyte -union
 weight: 2
 ---

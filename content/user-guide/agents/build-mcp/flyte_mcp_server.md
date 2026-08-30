@@ -1,7 +1,7 @@
 ---
 title: Flyte MCP server
 description: Expose Flyte operations as MCP tools so an AI assistant can drive your workloads.
-icon: plug
+icon: plug-fill
 weight: 2
 variants: +flyte +union
 ---

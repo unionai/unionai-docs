@@ -1,7 +1,7 @@
 ---
 title: How task run works
 description: The three execution modes behind flyte run, and when each applies.
-icon: gear
+icon: play-btn
 weight: 1
 variants: +flyte +union
 mermaid: true

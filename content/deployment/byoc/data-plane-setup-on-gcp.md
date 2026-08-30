@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on GCP
 description: Grant Union permission to provision and maintain compute resources in your GCP account.
-icon: cloud
+icon: google
 weight: 6
 variants: -flyte +union
 ---
