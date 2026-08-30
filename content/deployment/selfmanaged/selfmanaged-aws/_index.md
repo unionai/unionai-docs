@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on AWS
 description: Run a self-managed data plane on AWS, using EKS, S3, ECR, and IAM.
-icon: cloud
+icon: amazon
 weight: 4
 variants: -flyte +union
 ---
