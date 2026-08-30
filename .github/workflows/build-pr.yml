@@ -113,6 +113,18 @@ jobs:
           make check-generated-links
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
+      - name: Check rendered images
+        run: |
+          # The images the BUILT site serves, resolved the way a browser does --
+          # against the page's URL, not the source file's directory. `Check
+          # Images` reads content/ and cannot see this: Hugo's render hooks
+          # rebase an image src, so a path can be correct in the markdown and
+          # wrong in the HTML. unionai-docs#1529 shipped an image that 404s on
+          # its own preview while all 15 checks passed (DOC-1515, infra#295).
+          # Same reasoning as the link check above: it needs the dist this job
+          # already built.
+          make check-rendered-images
+
       - name: Emit build provenance
         if: success()
         run: |
