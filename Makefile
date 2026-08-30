@@ -19,6 +19,7 @@ TARGETS := usage help clean clean-generated base dist variant dev serve \
 	update-examples init-examples check-jupyter check-images validate-urls \
 	url-stats llm-docs update-redirects dry-run-redirects deploy-redirects \
 	check-deleted-pages check-links check-generated-content check-api-docs \
+	check-generated-links \
 	check-icon-names update-icon-names check-cli-variant-gating \
 	check-llm-bundle-notes update-api-docs regen-api-docs-all \
 	check-helm-docs update-helm-docs generate-helm-docs \
