@@ -1,5 +1,7 @@
 ---
 title: GPU-accelerated climate modeling
+icon: cloud-sun
+description: Run ensemble atmospheric simulations on H200 GPUs with multi-source data ingestion and real-time extreme event detection.
 weight: 1
 variants: +flyte +union
 ---

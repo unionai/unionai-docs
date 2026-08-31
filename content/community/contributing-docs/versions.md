@@ -1,5 +1,7 @@
 ---
 title: Versions
+description: How the docs version lines work, and how to cut and publish an archived version.
+icon: clock-history
 weight: 6
 variants: +flyte +union
 ---

@@ -1,8 +1,9 @@
 ---
 title: Contributing docs and examples
+description: How the docs site is built, and how to author and submit a change to it.
+icon: file-earmark-text
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Contributing docs and examples

@@ -1,8 +1,9 @@
 ---
 title: Build apps
+description: Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, and more.
+icon: code
 weight: 2
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Build apps

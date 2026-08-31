@@ -1,5 +1,7 @@
 ---
 title: Data protection
+description: The classification framework, residency guarantees, and encryption that protect customer data.
+icon: file-lock
 weight: 2
 variants: -flyte +union
 sidebar_expanded: true

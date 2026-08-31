@@ -1,5 +1,7 @@
 ---
 title: Resource management and multi-team scaling
+icon: people
+description: 'Projects, domains, quotas, RBAC, and secrets: the primitives to set up before you have ten teams and a noisy-neighbor problem.'
 weight: 4
 variants: -flyte +union
 ---

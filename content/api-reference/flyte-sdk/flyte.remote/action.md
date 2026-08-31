@@ -1,5 +1,7 @@
 ---
 title: Action
+description: "A class representing an action."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -68,7 +70,7 @@ class Action(
 | [`sync()`](#sync) | Sync the action with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
-| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
+| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions, time elapsed, and error details in case of failure. |
 | [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
 
 

@@ -1,5 +1,7 @@
 ---
 title: AgentProtocol
+description: "Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`."
+icon: diagram-3
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

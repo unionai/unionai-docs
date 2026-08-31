@@ -1,5 +1,7 @@
 ---
 title: Hydra
+description: Pass Hydra configuration trees into tasks as first-class typed inputs.
+icon: sliders
 weight: 1
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the GKE cluster, GCS bucket, Artifact Registry, and Workload Identity bindings.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

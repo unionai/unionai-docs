@@ -1,9 +1,10 @@
 ---
 title: Platform deployment
+description: Deploy Flyte to your own Kubernetes cluster with the flyte-binary Helm chart.
+icon: server
 variants: +flyte -union
 weight: 5
 top_menu: true
-llm_readable_bundle: true
 ---
 
 # Platform deployment

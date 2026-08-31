@@ -1,5 +1,7 @@
 ---
 title: Pydantic AI
+description: Run Pydantic AI agents on Flyte, with Agent.run owning the loop and Flyte supplying durability.
+icon: robot
 weight: 10
 variants: +flyte +union
 ---

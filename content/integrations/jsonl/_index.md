@@ -1,5 +1,7 @@
 ---
 title: JSONL
+description: Typed JSON Lines inputs and outputs, for a single file or a directory of them.
+icon: filetype-json
 weight: 1
 variants: +flyte +union
 ---

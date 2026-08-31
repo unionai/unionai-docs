@@ -1,8 +1,9 @@
 ---
 title: Configure apps
+description: Define `AppEnvironment`s with ports, autoscaling, custom domains, and authentication.
+icon: gear
 weight: 1
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Configure apps

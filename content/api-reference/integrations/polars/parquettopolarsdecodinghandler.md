@@ -1,5 +1,6 @@
 ---
 title: ParquetToPolarsDecodingHandler
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -33,7 +34,7 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 
 | Method | Description |
 |-|-|
-| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal. |
+| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal value into a Python instance. |
 
 
 ### decode()

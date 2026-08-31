@@ -1,5 +1,7 @@
 ---
 title: Platform deployment
+description: Deploy the Union platform, either as BYOC or self-managed, with your code and data staying in your own cloud.
+icon: server
 weight: 5
 variants: -flyte +union
 top_menu: true

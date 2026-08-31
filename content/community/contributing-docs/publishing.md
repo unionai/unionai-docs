@@ -1,5 +1,7 @@
 ---
 title: Production builds and troubleshooting
+description: Build the site the way production does, and diagnose what you see in the local preview.
+icon: box-arrow-up
 weight: 11
 variants: +flyte +union
 ---

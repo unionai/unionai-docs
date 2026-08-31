@@ -1,5 +1,7 @@
 ---
 title: Trigger
+description: "Represents a trigger in the Flyte platform."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

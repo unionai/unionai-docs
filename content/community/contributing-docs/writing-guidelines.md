@@ -1,5 +1,7 @@
 ---
 title: Writing guidelines
+description: 'The editorial conventions the docs follow: voice, page structure, headings, notices, and terminology.'
+icon: book
 weight: 4
 variants: +flyte +union
 ---

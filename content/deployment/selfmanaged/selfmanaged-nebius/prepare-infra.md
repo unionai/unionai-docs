@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the MK8s cluster, Object Storage bucket, and service account the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

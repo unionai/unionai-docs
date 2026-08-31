@@ -1,5 +1,6 @@
 ---
 title: Home
+icon: house
 date: 2024-02-26
 draft: false
 weight: 1

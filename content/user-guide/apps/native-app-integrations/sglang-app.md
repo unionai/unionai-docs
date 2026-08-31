@@ -1,5 +1,7 @@
 ---
 title: SGLang app
+description: Deploy an SGLang model server for fast structured generation.
+icon: cpu
 weight: 12
 variants: +flyte +union
 ---

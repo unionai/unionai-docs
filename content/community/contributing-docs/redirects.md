@@ -1,5 +1,7 @@
 ---
 title: Redirects
+description: Map a moved URL to its new location through the Cloudflare redirect lists.
+icon: signpost-split
 weight: 10
 variants: +flyte +union
 ---

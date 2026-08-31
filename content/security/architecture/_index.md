@@ -1,5 +1,7 @@
 ---
 title: Architecture
+description: How the Union-hosted control plane and the customer-hosted data plane divide the work, and what that division protects.
+icon: diagram-2
 weight: 1
 variants: -flyte +union
 sidebar_expanded: true

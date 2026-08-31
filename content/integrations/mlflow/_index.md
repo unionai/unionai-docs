@@ -1,5 +1,7 @@
 ---
 title: MLflow
+description: Track experiments with MLflow from inside a task using the mlflow_run decorator.
+icon: graph-up-arrow
 weight: 1
 variants: +flyte +union
 ---

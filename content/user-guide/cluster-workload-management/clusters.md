@@ -1,5 +1,7 @@
 ---
 title: Clusters
+description: Register execution clusters into a pool and inspect their state, capacity, and bound queues.
+icon: cloud
 weight: 2
 variants: -flyte +union
 ---

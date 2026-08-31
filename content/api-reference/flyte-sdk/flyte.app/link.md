@@ -1,5 +1,7 @@
 ---
 title: Link
+description: "Custom links to add to the app."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

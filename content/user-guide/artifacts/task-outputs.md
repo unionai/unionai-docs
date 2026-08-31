@@ -1,5 +1,7 @@
 ---
 title: Task outputs as artifacts
+description: Wrap a task's return value with `flyte.artifacts.new()` to register it as a named, versioned artifact with metadata and a model or data card.
+icon: box-seam
 weight: 1
 variants: -flyte +union
 ---

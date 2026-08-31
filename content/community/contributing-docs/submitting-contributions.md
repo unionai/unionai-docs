@@ -1,5 +1,7 @@
 ---
 title: Submit a contribution
+description: Fork, branch, sign off, and open a docs pull request against the right version branch.
+icon: git
 weight: 3
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Control flow
+description: Branching, fan-out, and failure handling become ordinary Python instead of DSL constructs.
+icon: signpost-split
 weight: 7
 variants: +flyte +union
 ---

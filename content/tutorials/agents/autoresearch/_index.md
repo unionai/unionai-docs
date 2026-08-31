@@ -1,5 +1,7 @@
 ---
 title: Autoresearch agent
+icon: search
+description: Run an autonomous research loop that drives Claude Code in a GPU container to run experiments, then commits results and opens a pull request.
 weight: 1
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Authoring
+description: Create pages, control their visibility and order, add notices and links, and generate content from Python or Jupyter.
+icon: pencil
 weight: 2
 variants: +flyte +union
 ---
@@ -71,7 +73,6 @@ weight: 3
 | `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly. By default, sections collapse and only the active path expands automatically. |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
-| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional content
 

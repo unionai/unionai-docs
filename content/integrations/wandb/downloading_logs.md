@@ -1,5 +1,7 @@
 ---
 title: Downloading logs
+description: Pull a run's metric history, summary data, and synced files back after a task completes.
+icon: download
 weight: 3
 variants: +flyte +union
 ---

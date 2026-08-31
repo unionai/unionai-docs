@@ -1,8 +1,9 @@
 ---
 title: Build tasks
+description: Compose tasks with fanout, parallelism, error handling, traces, files, and DataFrames.
+icon: code
 weight: 2
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Build tasks

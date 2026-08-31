@@ -1,5 +1,7 @@
 ---
 title: Managing queues
+description: Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
+icon: list-task
 weight: 3
 variants: -flyte +union
 mermaid: true

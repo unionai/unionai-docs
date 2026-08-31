@@ -1,5 +1,7 @@
 ---
 title: Prefetch Hugging Face models
+description: Pull model weights from the Hugging Face Hub into your own storage as a model artifact, versioned by commit, with the model card attached.
+icon: download
 weight: 3
 variants: -flyte +union
 ---

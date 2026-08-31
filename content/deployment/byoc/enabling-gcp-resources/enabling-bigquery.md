@@ -1,5 +1,7 @@
 ---
 title: Enabling BigQuery
+description: Let workflows read from BigQuery, including across projects.
+icon: table
 weight: 4
 variants: -flyte +union
 ---

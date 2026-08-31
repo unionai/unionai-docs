@@ -1,5 +1,7 @@
 ---
 title: How it works
+description: The division of labor every agent adapter follows, and why capabilities land differently across SDKs.
+icon: gear
 weight: 1
 variants: +flyte +union
 mermaid: true

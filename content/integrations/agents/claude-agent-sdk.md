@@ -1,5 +1,7 @@
 ---
 title: Claude
+description: Run Claude Agent SDK agents on Flyte, with tools as durable child actions and the run streamed into the task report.
+icon: robot
 weight: 3
 variants: +flyte +union
 ---

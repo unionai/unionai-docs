@@ -1,5 +1,7 @@
 ---
 title: Enabling Google Secret Manager
+description: Read Secret Manager secrets, whether they live in the data plane project or another one.
+icon: safe
 weight: 3
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: App environments
+description: Control an app's image, resources, secrets, startup behavior, and autoscaling through AppEnvironment.
+icon: sliders
 weight: 1
 variants: +flyte +union
 ---

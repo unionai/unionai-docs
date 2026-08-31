@@ -1,5 +1,7 @@
 ---
 title: Activating and deactivating apps
+description: Turn a deployed app on and off, and what activation means for each deploy method.
+icon: toggle-on
 weight: 5
 variants: +flyte +union
 ---

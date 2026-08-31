@@ -1,9 +1,10 @@
 ---
 title: Build an agent
+description: Implement ReAct, Plan-and-Execute, and other agent patterns with full observability.
+icon: robot
 weight: 1
 variants: +flyte +serverless +union
 mermaid: true
-llm_readable_bundle: true
 ---
 
 # Build an agent

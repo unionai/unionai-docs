@@ -1,5 +1,7 @@
 ---
 title: Monitoring
+description: The Prometheus instance the data plane deploys, and the metrics it collects.
+icon: graph-up
 weight: 5
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Resilient generation
+description: Reusable environments, traced calls, and retry strategies for LLM-powered tasks.
+icon: shield-check
 weight: 1
 variants: +flyte +union
 ---

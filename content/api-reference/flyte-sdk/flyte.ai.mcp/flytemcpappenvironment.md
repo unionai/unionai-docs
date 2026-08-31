@@ -1,5 +1,7 @@
 ---
 title: FlyteMCPAppEnvironment
+description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

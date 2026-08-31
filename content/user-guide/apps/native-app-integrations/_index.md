@@ -1,8 +1,9 @@
 ---
 title: Native app integrations
+description: Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama.
+icon: plugin
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Native app integrations

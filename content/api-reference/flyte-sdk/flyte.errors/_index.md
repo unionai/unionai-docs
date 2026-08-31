@@ -1,5 +1,7 @@
 ---
 title: flyte.errors
+description: "Exceptions raised by Union."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -34,23 +36,23 @@ unknown error.
 | [`InvalidImageNameError`](../flyte.errors/invalidimagenameerror) | This error is raised when the image name is invalid. |
 | [`InvalidPackageError`](../flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`LogsNotYetAvailableError`](../flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
-| [`ModuleLoadError`](../flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`ModuleLoadError`](../flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a syntax error. |
 | [`NonRecoverableError`](../flyte.errors/nonrecoverableerror) | Raised when an error is encountered that is not recoverable. |
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](../flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`OnlyAsyncIOSupportedError`](../flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
-| [`ParameterMaterializationError`](../flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
+| [`ParameterMaterializationError`](../flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`PrimaryContainerNotFoundError`](../flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`RemoteTaskNotFoundError`](../flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RemoteTaskUsageError`](../flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
-| [`RestrictedTypeError`](../flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
+| [`RestrictedTypeError`](../flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one value. |
 | [`RetriesExhaustedError`](../flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`RuntimeDataValidationError`](../flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`RuntimeSystemError`](../flyte.errors/runtimesystemerror) | This error is raised when the underlying task execution fails because of a system error. |
 | [`RuntimeUnknownError`](../flyte.errors/runtimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
 | [`RuntimeUserError`](../flyte.errors/runtimeusererror) | This error is raised when the underlying task execution fails because of an error in the user's code. |
 | [`SlowDownError`](../flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
-| [`SyncTaskCallInAsyncContextError`](../flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async. |
+| [`SyncTaskCallInAsyncContextError`](../flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async task. |
 | [`TaskInterruptedError`](../flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`TaskTimeoutError`](../flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`TraceDoesNotAllowNestedTasksError`](../flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |

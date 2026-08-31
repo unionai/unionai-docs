@@ -1,5 +1,7 @@
 ---
 title: Persistent logs
+description: How FluentBit collects container logs from every node and ships them for retention.
+icon: journal-text
 weight: 4
 variants: -flyte +union
 ---

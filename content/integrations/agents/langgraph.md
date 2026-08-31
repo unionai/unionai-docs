@@ -1,5 +1,7 @@
 ---
 title: LangGraph
+description: Run LangGraph graphs on Flyte, where you build the control flow and Flyte makes each node durable.
+icon: diagram-2
 weight: 7
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Runs and actions
+description: The run that tracks an execution, and the actions that make it up.
+icon: play-circle
 weight: 3
 variants: +flyte +union
 ---

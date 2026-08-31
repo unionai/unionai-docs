@@ -1,5 +1,7 @@
 ---
 title: Shortcodes
+description: 'The component library for docs pages: cards, grids, notices, variant gates, and code includes.'
+icon: puzzle
 weight: 7
 variants: +flyte +union
 ---

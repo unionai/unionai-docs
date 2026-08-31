@@ -1,5 +1,7 @@
 ---
 title: Batching strategies
+icon: boxes
+description: Process millions of items efficiently with resilient, scalable batching patterns built on Flyte v2.
 weight: 2
 variants: -flyte +union
 jupyter_notebook: /unionai-examples/v2/tutorials/batching_patterns/batch_processing.ipynb

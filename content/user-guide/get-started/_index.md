@@ -1,5 +1,7 @@
 ---
 title: Get started
+description: What Flyte 2 is, how to install it, the core concepts, and the ways to run your code.
+icon: lightbulb
 weight: 1
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: AutoSec researcher agent
+icon: shield-exclamation
+description: Fan out vulnerability analysis across C targets, hypothesize exploits with an LLM agent, and validate PoCs in an isolated sandbox.
 weight: 3
 variants: +flyte +union
 ---

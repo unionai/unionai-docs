@@ -1,5 +1,7 @@
 ---
 title: Compute plugins
+description: Enable the compute plugins that need cluster-side configuration, such as Dask, Ray, and Spark.
+icon: plugin
 weight: 8
 variants: -flyte +union
 ---

@@ -1,8 +1,9 @@
 ---
 title: Code sandboxing
+description: Run arbitrary Python or shell inside an ephemeral, stateless container with flyte.sandbox.create.
+icon: box
 weight: 4
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Code sandboxing

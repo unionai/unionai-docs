@@ -1,5 +1,7 @@
 ---
 title: Parallelized autoresearch agent
+icon: grid-3x3
+description: Scale autoresearch with a code-mode MLE agent that batches train.py edits and runs sandbox experiments in parallel via flyte.map.
 weight: 2
 variants: +flyte +union
 ---

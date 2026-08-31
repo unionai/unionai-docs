@@ -1,5 +1,7 @@
 ---
 title: HIPAA compliance
+description: How the two-plane separation supports processing protected health information.
+icon: hospital
 weight: 2
 variants: -flyte +union
 ---

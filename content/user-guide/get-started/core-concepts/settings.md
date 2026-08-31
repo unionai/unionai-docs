@@ -1,5 +1,7 @@
 ---
 title: Settings
+description: Set defaults at each level of the org, domain, and project hierarchy.
+icon: sliders
 weight: 7
 variants: -flyte +union
 ---

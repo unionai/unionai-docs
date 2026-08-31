@@ -1,8 +1,9 @@
 ---
 title: Sandboxing
+description: Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
+icon: box
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Sandboxing

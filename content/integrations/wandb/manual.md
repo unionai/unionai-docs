@@ -1,5 +1,7 @@
 ---
 title: Manual integration
+description: Call wandb.init and wandb.finish yourself using the Wandb and WandbSweep link classes.
+icon: wrench
 weight: 5
 variants: +flyte +union
 ---

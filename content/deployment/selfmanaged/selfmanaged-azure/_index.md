@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on Azure
+description: Run a self-managed data plane on Azure, using AKS, Storage Accounts, and Workload Identity.
+icon: microsoft
 weight: 5
 variants: -flyte +union
 ---

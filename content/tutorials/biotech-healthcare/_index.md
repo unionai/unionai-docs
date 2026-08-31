@@ -1,5 +1,7 @@
 ---
 title: Biotech & healthcare
+icon: heart-pulse
+description: Bioinformatics, medical imaging, and other life-sciences workloads.
 weight: 1
 variants: +flyte +union
 sidebar_expanded: true

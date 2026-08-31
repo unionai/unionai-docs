@@ -1,5 +1,7 @@
 ---
 title: Kind deployment
+description: Run a complete Flyte stack locally on a kind cluster, backed by PostgreSQL and an S3-compatible store.
+icon: box
 variants: +flyte -union
 weight: 2
 ---

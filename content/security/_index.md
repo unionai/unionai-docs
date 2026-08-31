@@ -1,5 +1,7 @@
 ---
 title: Zero Trust security
+description: Union's Zero Trust model, in which customer data, code, and secrets stay in the customer's own data plane.
+icon: shield-check
 weight: 6
 variants: -flyte +union
 top_menu: true

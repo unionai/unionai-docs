@@ -1,5 +1,7 @@
 ---
 title: Logging
+description: The two loggers Flyte uses, and how to set each level independently.
+icon: journal-text
 weight: 15
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Financial services & fintech
+icon: cash-coin
+description: Financial research, trading, and other fintech workloads.
 weight: 3
 variants: +flyte +union
 sidebar_expanded: true
