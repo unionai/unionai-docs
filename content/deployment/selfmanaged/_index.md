@@ -44,3 +44,5 @@ After initial setup, configure platform features on your cluster:
 
 - [Helm chart reference](./helm-chart-reference/_index) for available chart values
 - [Kubernetes access controls](./architecture/kubernetes-rbac) for RBAC configuration details
+
+{{< subpage-cards >}}

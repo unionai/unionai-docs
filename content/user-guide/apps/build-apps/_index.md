@@ -54,3 +54,5 @@ Apps and tasks can interact in various ways: calling each other via HTTP, webhoo
 - [**Connector app**](./connector-app): Deploy a connector as a long-running service
 {{< /markdown >}}
 {{< /variant >}}
+
+{{< subpage-cards >}}

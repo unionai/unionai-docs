@@ -122,3 +122,5 @@ To find the actual name of this GSA do the following:
 
 * Copy this name to document in an editor.
   You will need it later to configure each specific resource.
+
+{{< subpage-cards >}}
