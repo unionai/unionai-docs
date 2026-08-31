@@ -1,5 +1,7 @@
 ---
 title: Apps depending on other environments
+description: Use depends_on so one app or task environment is deployed and ready before another.
+icon: link-45deg
 weight: 6
 variants: +flyte +union
 ---

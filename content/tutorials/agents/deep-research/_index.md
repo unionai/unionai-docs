@@ -1,5 +1,7 @@
 ---
 title: Deep research
+icon: journal-richtext
+description: Build an agentic workflow for deep research with multi-step reasoning and evaluation.
 weight: 3
 variants: +flyte +union
 ---

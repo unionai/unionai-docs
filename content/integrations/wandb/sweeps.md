@@ -1,5 +1,7 @@
 ---
 title: Sweeps
+description: Run hyperparameter sweeps in parallel with the wandb_sweep decorator.
+icon: shuffle
 weight: 2
 variants: +flyte +union
 ---

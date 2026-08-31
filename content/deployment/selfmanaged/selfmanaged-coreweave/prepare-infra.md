@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the CKS cluster, AI Object Storage bucket, and access keys the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

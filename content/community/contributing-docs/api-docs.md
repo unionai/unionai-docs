@@ -1,5 +1,7 @@
 ---
 title: API docs
+description: Generate API reference pages from Python docstrings, and control how inline identifiers become links.
+icon: braces
 weight: 8
 variants: +flyte +union
 ---

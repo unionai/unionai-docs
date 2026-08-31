@@ -1,5 +1,7 @@
 ---
 title: Build an MCP
+description: Serve Model Context Protocol servers for AI assistants to interact with, hosted on {{< key product_name >}}.
+icon: code
 weight: 2
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Network architecture
+description: The outbound-only connectivity model between the two planes, and how each communication path is routed.
+icon: ethernet
 weight: 4
 variants: -flyte +union
 ---

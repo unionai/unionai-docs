@@ -1,5 +1,7 @@
 ---
 title: Run and deploy tasks
+description: Use `flyte run` for iteration or `flyte deploy` to register a stable task version.
+icon: rocket
 weight: 3
 variants: +flyte +union
 ---

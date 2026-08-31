@@ -1,5 +1,7 @@
 ---
 title: RunOutput
+description: "Use a run's output for app parameters."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

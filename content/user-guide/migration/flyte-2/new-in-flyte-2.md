@@ -1,5 +1,7 @@
 ---
 title: New in Flyte 2
+description: What Flyte 2 adds on top of batch orchestration, starting with long-running services.
+icon: stars
 weight: 11
 variants: +flyte +union
 ---

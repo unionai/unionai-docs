@@ -1,5 +1,7 @@
 ---
 title: Enabling AWS S3
+description: Grant data plane tasks access to your own S3 bucket.
+icon: bucket
 weight: 1
 variants: -flyte +union
 ---

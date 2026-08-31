@@ -1,5 +1,7 @@
 ---
 title: Recover a failed run
+description: Relaunch a failed run so it reuses the actions that already succeeded.
+icon: arrow-counterclockwise
 weight: 15
 variants: +flyte +union
 mermaid: true

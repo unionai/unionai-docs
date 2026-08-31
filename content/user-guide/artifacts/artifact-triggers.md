@@ -1,5 +1,7 @@
 ---
 title: Trigger on new versions
+description: Run a task automatically whenever a new version of an artifact lands, using `flyte.OnArtifact`. It fires no matter who published the version.
+icon: lightning-charge
 weight: 4
 variants: -flyte +union
 ---

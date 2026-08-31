@@ -1,5 +1,7 @@
 ---
 title: Code Viewer
+description: Let the console show the exact code a task ran, transferred from the code bundle.
+icon: file-code
 weight: 2
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Multiple environments
+description: Give different tasks in one workload different images, resources, and configuration.
+icon: layers
 weight: 7
 variants: +flyte +union
 ---

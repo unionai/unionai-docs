@@ -1,5 +1,7 @@
 ---
 title: flyte.ai.chat
+description: "flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents."
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -14,7 +16,7 @@ flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents.
 
 | Class | Description |
 |-|-|
-| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
+| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`. |
 | [`CustomTheme`](../flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
 
 ### Methods

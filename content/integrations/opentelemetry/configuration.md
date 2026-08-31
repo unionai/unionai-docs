@@ -1,5 +1,7 @@
 ---
 title: Exporters and configuration
+description: Swap the default OTLP exporter for any SpanExporter, or run several side by side.
+icon: sliders
 weight: 2
 variants: +flyte +union
 ---

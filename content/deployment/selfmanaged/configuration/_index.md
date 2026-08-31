@@ -1,5 +1,7 @@
 ---
 title: Configuration
+description: Configure Union features on your own cluster.
+icon: sliders
 weight: 10
 variants: -flyte +union
 ---

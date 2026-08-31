@@ -1,5 +1,7 @@
 ---
 title: InitializationError
+description: "This error is raised when the Union system is tried to access without being initialized."
+icon: exclamation-triangle
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

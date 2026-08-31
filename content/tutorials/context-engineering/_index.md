@@ -1,5 +1,7 @@
 ---
 title: Context engineering
+icon: chat-square-text
+description: Prompt engineering, prompt optimization, and context construction.
 weight: 7
 variants: +flyte +union
 sidebar_expanded: true

@@ -1,5 +1,7 @@
 ---
 title: Image Builder
+description: Build container images inside the data plane so tasks can use the remote builder.
+icon: hammer
 weight: 2
 variants: -flyte +union
 ---

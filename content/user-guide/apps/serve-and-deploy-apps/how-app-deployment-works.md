@@ -1,5 +1,7 @@
 ---
 title: How app deployment works
+description: What flyte.deploy does, and why versioned immutable deployments are the production path.
+icon: rocket-takeoff
 weight: 3
 variants: +flyte +union
 ---

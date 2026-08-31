@@ -1,5 +1,7 @@
 ---
 title: Serve and deploy apps
+description: Use `flyte serve` for fast iteration or `flyte deploy` for production deployments.
+icon: rocket
 weight: 4
 variants: +flyte +union
 ---

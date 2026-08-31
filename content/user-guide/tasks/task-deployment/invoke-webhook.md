@@ -1,5 +1,7 @@
 ---
 title: Running Tasks via Webhooks
+description: Launch deployed tasks over HTTP from an app acting as a webhook.
+icon: broadcast
 weight: 8
 variants: -flyte +union
 ---

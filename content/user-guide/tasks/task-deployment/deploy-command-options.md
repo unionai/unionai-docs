@@ -1,5 +1,7 @@
 ---
 title: Deploy command options
+description: Every option flyte deploy accepts, and what each overrides.
+icon: list-ul
 weight: 6
 variants: +flyte +union
 ---

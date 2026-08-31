@@ -1,5 +1,7 @@
 ---
 title: ShardConfig
+description: "Configuration for model sharding."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

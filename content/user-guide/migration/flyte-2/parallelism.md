@@ -1,5 +1,7 @@
 ---
 title: Parallelism and fan-out
+description: map_task becomes flyte.map, and fan-out becomes async and asyncio.gather.
+icon: distribute-horizontal
 weight: 8
 variants: +flyte +union
 ---

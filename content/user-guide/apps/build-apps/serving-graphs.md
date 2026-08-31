@@ -1,5 +1,7 @@
 ---
 title: Serving graphs
+description: Split a request across several apps that talk to each other inside the cluster.
+icon: diagram-3
 weight: 4
 variants: +flyte +union
 mermaid: true

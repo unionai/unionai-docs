@@ -1,5 +1,7 @@
 ---
 title: Interact with runs and actions
+description: Inspect, wait on, and act against a run and the actions inside it.
+icon: list-check
 weight: 2
 variants: +flyte +union
 mermaid: true

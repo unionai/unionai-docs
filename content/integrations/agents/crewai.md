@@ -1,5 +1,7 @@
 ---
 title: CrewAI
+description: Run CrewAI agents on Flyte, with tools as durable child actions and model turns recorded for replay.
+icon: people
 weight: 9
 variants: +flyte +union
 ---

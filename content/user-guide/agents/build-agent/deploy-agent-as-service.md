@@ -1,5 +1,7 @@
 ---
 title: Deploy an agent as a service
+description: Put a built agent behind a URL so other systems can call it.
+icon: rocket-takeoff
 weight: 10
 variants: +flyte +serverless +union
 mermaid: true

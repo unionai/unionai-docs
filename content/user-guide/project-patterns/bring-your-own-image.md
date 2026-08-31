@@ -1,5 +1,7 @@
 ---
 title: Bring your own image (BYOI)
+icon: box-seam
+description: Two patterns for teams that own their Docker images and want Flyte for orchestration without handing over their build pipeline.
 weight: 1
 variants: +flyte +union
 ---

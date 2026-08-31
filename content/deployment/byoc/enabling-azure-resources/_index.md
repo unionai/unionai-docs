@@ -1,5 +1,7 @@
 ---
 title: Enabling Azure resources
+description: 'Connect your data plane to the Azure services it needs: Blob Storage, ACR, and Key Vault.'
+icon: cloud
 weight: 11
 variants: -flyte +union
 ---

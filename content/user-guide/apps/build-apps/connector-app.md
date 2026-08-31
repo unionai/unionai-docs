@@ -1,5 +1,7 @@
 ---
 title: Connector app
+description: Extend Flyte with a custom task execution backend, such as an internal batch service.
+icon: plug
 weight: 14
 variants: -flyte +union
 ---

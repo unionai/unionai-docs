@@ -1,5 +1,7 @@
 ---
 title: Deployment patterns
+description: Deployment shapes for different project structures and dependency setups.
+icon: diagram-2
 weight: 9
 variants: +flyte +union
 ---

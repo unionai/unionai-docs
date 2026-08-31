@@ -1,5 +1,7 @@
 ---
 title: Contributing code
+description: Set up a Flyte SDK or backend development environment, then get a change reviewed and merged.
+icon: code-slash
 weight: 2
 variants: +flyte -union
 ---

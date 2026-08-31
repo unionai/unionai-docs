@@ -1,5 +1,7 @@
 ---
 title: From Flyte 1 to 2
+description: What's new in Flyte 2 (pure Python execution, simplified API, fine-grained reproducibility) and how to port a Flyte 1 codebase.
+icon: box-seam
 weight: 1
 variants: +flyte +union
 ---

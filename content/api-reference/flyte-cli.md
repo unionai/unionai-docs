@@ -1766,7 +1766,9 @@ show archived projects instead.
 Get a queue or list all queues.
 
 If NAME is provided, fetch that specific queue with its current metrics.
-Use --watch to stream live metrics with progress bars.
+Use --watch to stream live metrics with progress bars. Metrics are
+available for a queue in any state — a draining or drained queue can be
+watched to confirm its in-flight work has finished.
 Otherwise list all queues.
 
 Deleted queues are hidden from the listing by default; --deleted lists them
@@ -2679,7 +2681,11 @@ flyte update project my_project --label team=ml --label env=prod
 
 Update a queue.
 
-Use --drain to begin draining (stops new submissions).
+Use --drain to begin draining (stops new submissions). Any queue can be
+drained, including one referenced as run.default_queue in settings —
+runs that resolve to a queue that is not accepting work are rejected at
+creation with an actionable error. Only deleting such a queue is refused
+(see `flyte delete queue`).
 Use --activate to re-activate a draining or drained queue.
 Use --edit to interactively modify queue configuration, including moving
 the queue to a different cluster pool. A pool move is only accepted once the

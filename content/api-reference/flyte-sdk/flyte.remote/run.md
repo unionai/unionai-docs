@@ -1,5 +1,7 @@
 ---
 title: Run
+description: "A class representing a run of a task."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -59,7 +61,7 @@ class Run(
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`typed_inputs()`](#typed_inputs) | Re-hydrate the run's requested inputs into caller-supplied types. |
 | [`typed_outputs()`](#typed_outputs) | Re-hydrate the run's requested outputs into caller-supplied types. |
-| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
+| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions, time elapsed, and error details in case of failure. |
 | [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
 
 

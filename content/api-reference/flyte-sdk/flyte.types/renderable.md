@@ -1,5 +1,6 @@
 ---
 title: Renderable
+icon: diagram-3
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -16,7 +17,7 @@ protocol Renderable()
 
 | Method | Description |
 |-|-|
-| [`to_html()`](#to_html) | Convert an object(markdown, pandas. |
+| [`to_html()`](#to_html) | Convert an object(markdown, pandas.dataframe) to HTML and return HTML as a unicode string. |
 
 
 ### to_html()

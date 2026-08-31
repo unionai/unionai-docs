@@ -1,5 +1,7 @@
 ---
 title: DataFrame
+description: "A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas.DataFrame and pyarrow.Table are supported natively, just install these libraries)."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

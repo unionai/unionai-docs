@@ -1,5 +1,7 @@
 ---
 title: Volumes
+description: Configure the durable, versioned file systems tasks mount and read and write.
+icon: hdd
 weight: 9
 variants: -flyte +union
 ---

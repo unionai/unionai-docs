@@ -1,5 +1,7 @@
 ---
 title: DataFrameTransformerEngine
+description: "Think of this transformer as a higher-level meta transformer that is used for all the dataframe types."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -33,10 +35,10 @@ def DataFrameTransformerEngine()
 |-|-|
 | [`assert_type()`](#assert_type) |  |
 | [`encode()`](#encode) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
 | [`get_decoder()`](#get_decoder) |  |
 | [`get_encoder()`](#get_encoder) |  |
-| [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that. |
+| [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that special about the literal type. |
 | [`get_structured_dataset_type()`](#get_structured_dataset_type) |  |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
@@ -48,7 +50,7 @@ def DataFrameTransformerEngine()
 | [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
-| [`to_python_value()`](#to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at. |
+| [`to_python_value()`](#to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at the start of a task execution, is the column subsetting behavior. |
 
 
 ### assert_type()

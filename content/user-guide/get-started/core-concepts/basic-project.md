@@ -1,5 +1,7 @@
 ---
 title: Basic project
+description: 'A worked two-stage RAG project: an offline embedding pipeline and the app that queries it.'
+icon: folder
 weight: 8
 variants: +flyte +union
 ---

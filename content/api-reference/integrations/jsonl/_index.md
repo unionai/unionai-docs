@@ -1,5 +1,6 @@
 ---
 title: JSONL
+icon: book
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -16,5 +17,5 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`JsonlDir`](./jsonldir) | A directory of sharded JSONL files. |
-| [`JsonlFile`](./jsonlfile) | A file type for JSONL (JSON Lines) files, backed by `orjson` for fast. |
+| [`JsonlFile`](./jsonlfile) | A file type for JSONL (JSON Lines) files, backed by `orjson` for fast serialisation. |
 

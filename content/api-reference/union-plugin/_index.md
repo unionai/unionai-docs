@@ -1,6 +1,8 @@
 ---
 title: Union plugin
-version: 0.8.2
+description: "Union SDK - Proprietary extensions for Flyte."
+icon: book
+version: 0.8.3
 variants: -flyte +union
 layout: py_api
 weight: 5

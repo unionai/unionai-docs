@@ -1,5 +1,7 @@
 ---
 title: Work with local data
+description: Pass local files, directories, and DataFrames into a remote run.
+icon: folder-symlink
 weight: 3
 variants: +flyte +union
 ---

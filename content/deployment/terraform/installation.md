@@ -1,5 +1,7 @@
 ---
 title: Installation
+description: Install and configure the Union Terraform provider
+icon: download
 weight: 1
 variants: -flyte +union
 ---

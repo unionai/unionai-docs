@@ -1,5 +1,7 @@
 ---
 title: SerializationContext
+description: "This object holds serialization time contextual information, that can be used when serializing the task and various parameters of a tasktemplate."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

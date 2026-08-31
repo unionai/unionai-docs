@@ -1,5 +1,7 @@
 ---
 title: Fork a run
+description: Replay a prior run with your current code and inputs, reusing what still holds.
+icon: signpost-split
 weight: 16
 variants: -flyte +union
 mermaid: true

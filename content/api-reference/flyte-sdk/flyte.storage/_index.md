@@ -1,5 +1,6 @@
 ---
 title: flyte.storage
+icon: box-seam
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -26,7 +27,7 @@ layout: py_api
 | [`exists_sync()`](#exists_sync) |  |
 | [`get()`](#get) |  |
 | [`get_configured_fsspec_kwargs()`](#get_configured_fsspec_kwargs) |  |
-| [`get_random_local_directory()`](#get_random_local_directory) | pathlib. |
+| [`get_random_local_directory()`](#get_random_local_directory) | pathlib.Path: a random directory. |
 | [`get_random_local_path()`](#get_random_local_path) | Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name. |
 | [`get_stream()`](#get_stream) | Get a stream of data from a remote location. |
 | [`get_underlying_filesystem()`](#get_underlying_filesystem) |  |

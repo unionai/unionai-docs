@@ -1,5 +1,7 @@
 ---
 title: TypeEngine
+description: "Core Extensible TypeEngine of Flytekit."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -19,7 +21,7 @@ of user objects
 
 | Method | Description |
 |-|-|
-| [`dict_to_literal_map()`](#dict_to_literal_map) | Given a dictionary mapping string keys to python values and a dictionary containing guessed types for such. |
+| [`dict_to_literal_map()`](#dict_to_literal_map) | Given a dictionary mapping string keys to python values and a dictionary containing guessed types for such string keys, convert to a LiteralMap. |
 | [`get_available_transformers()`](#get_available_transformers) | Returns all python types for which transformers are available. |
 | [`get_transformer()`](#get_transformer) | Implements a recursive search for the transformer. |
 | [`guess_python_type()`](#guess_python_type) | Transforms a flyte-specific `LiteralType` to a regular python value. |
@@ -27,7 +29,7 @@ of user objects
 | [`lazy_import_transformers()`](#lazy_import_transformers) | Only load the transformers if needed. |
 | [`literal_map_to_kwargs()`](#literal_map_to_kwargs) | Given a `LiteralMap` (usually an input into a task - intermediate), convert to kwargs for the task. |
 | [`named_tuple_to_variable_map()`](#named_tuple_to_variable_map) | Converts a python-native `NamedTuple` to a flyte-specific VariableMap of named literals. |
-| [`register()`](#register) | This should be used for all types that respond with the right type annotation when you use type(. |
+| [`register()`](#register) | This should be used for all types that respond with the right type annotation when you use type(...) function. |
 | [`register_additional_type()`](#register_additional_type) |  |
 | [`register_restricted_type()`](#register_restricted_type) |  |
 | [`to_html()`](#to_html) |  |

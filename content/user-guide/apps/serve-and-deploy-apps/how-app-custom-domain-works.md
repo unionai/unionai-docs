@@ -1,5 +1,7 @@
 ---
 title: How app custom domains work
+description: Point a custom domain at an app.
+icon: globe
 weight: 2
 variants: +flyte +union
 ---

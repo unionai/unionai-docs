@@ -1,5 +1,7 @@
 ---
 title: Agent chat UI
+description: Serve a chat interface for your agent as a hosted app.
+icon: chat-dots
 weight: 5
 variants: +flyte +serverless +union
 mermaid: true

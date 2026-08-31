@@ -1,5 +1,7 @@
 ---
 title: Bring your own framework
+description: Adapt any agent framework to Flyte, where Flyte is the runtime and your framework owns the loop.
+icon: puzzle
 weight: 3
 variants: +flyte +serverless +union
 ---

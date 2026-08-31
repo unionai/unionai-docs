@@ -1,5 +1,7 @@
 ---
 title: Genomic variant effect prediction
+icon: funnel
+description: Zero-shot pathogenicity scoring with HuggingFace Carbon and interactive VEP reports.
 weight: 3
 variants: +flyte +union
 ---

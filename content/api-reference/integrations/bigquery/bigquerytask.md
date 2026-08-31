@@ -1,5 +1,6 @@
 ---
 title: BigQueryTask
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -51,12 +52,12 @@ To be used to query BigQuery Tables.
 | [`config()`](#config) | Returns additional configuration for the task. |
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
-| [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
+| [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system Flyte CoPilot, eliminates the needs of sdk inside the container. |
 | [`execute()`](#execute) |  |
 | [`forward()`](#forward) | Think of this as a local execute method for your task. |
 | [`override()`](#override) | Override various parameters of the task template. |
-| [`post()`](#post) | This is the postexecute function that will be. |
-| [`pre()`](#pre) | This is the preexecute function that will be. |
+| [`post()`](#post) | This is the postexecute function that will be called after the task is executed. |
+| [`pre()`](#pre) | This is the preexecute function that will be called before the task is executed. |
 | [`sql()`](#sql) | Returns the SQL for the task. |
 
 

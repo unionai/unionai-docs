@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the cluster, object storage, container registry, and credentials for an on-premise data plane.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

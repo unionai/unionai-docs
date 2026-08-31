@@ -1,5 +1,7 @@
 ---
 title: FlyteModel
+description: "Wrap a `Model` so each model turn is durable."
+icon: braces
 version: 2.5.18
 variants: +flyte +union
 layout: py_api

@@ -1,5 +1,7 @@
 ---
 title: Platform architecture
+description: The two planes a BYOC deployment is built from, and what crosses between them.
+icon: diagram-2
 weight: 1
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: ImageBuild
+description: "Result of an image build operation."
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

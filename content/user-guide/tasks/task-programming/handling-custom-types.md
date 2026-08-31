@@ -1,5 +1,7 @@
 ---
 title: Custom types
+description: Teach Flyte to serialize a type its type system does not already handle.
+icon: braces
 weight: 5
 variants: +flyte +union
 ---

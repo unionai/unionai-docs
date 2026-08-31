@@ -1,5 +1,7 @@
 ---
 title: Run locally in Python
+description: Run tasks and apps directly in your local Python process with no Kubernetes cluster or Docker required. Ideal for rapid iteration and debugging.
+icon: laptop
 weight: 4
 variants: +flyte +union
 ---

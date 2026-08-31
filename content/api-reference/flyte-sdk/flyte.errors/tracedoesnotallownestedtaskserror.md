@@ -1,5 +1,7 @@
 ---
 title: TraceDoesNotAllowNestedTasksError
+description: "This error is raised when the user tries to use a task from within a trace."
+icon: exclamation-triangle
 version: 2.6.10
 variants: +flyte +union
 layout: py_api

@@ -1,5 +1,6 @@
 ---
 title: PolarsLazyFrameToParquetEncodingHandler
+icon: braces
 version: 2.6.10
 variants: +flyte +union
 layout: py_api
@@ -34,7 +35,7 @@ the DataFrameEncoder
 
 | Method | Description |
 |-|-|
-| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the. |
+| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the incoming dataframe with defaults set for that dataframe type. |
 
 
 ### encode()
