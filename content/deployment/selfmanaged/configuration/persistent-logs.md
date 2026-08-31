@@ -12,6 +12,9 @@ Persistent logging is enabled by default. The data plane deploys [FluentBit](htt
 
 FluentBit runs under the `fluentbit-system` Kubernetes service account. This service account must have write access to the storage bucket so FluentBit can push logs. The sections below describe how to grant that access on each cloud provider.
 
+> [!NOTE] **Azure works differently.** On AKS, persisted logs come from Azure Log Analytics and
+> the chart ships with FluentBit disabled. See [Azure](#azure) below.
+
 ## AWS (IRSA)
 
 On EKS, use [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to grant the FluentBit service account permission to write to S3.
@@ -94,83 +97,95 @@ fluentbit:
       eks.amazonaws.com/role-arn: "arn:aws:iam::<ACCOUNT_ID>:role/<FLUENTBIT_ROLE_NAME>"
 ```
 
-## Azure (Workload Identity Federation)
+## Azure
 
-On AKS, use [Microsoft Entra Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to grant the FluentBit service account access to Azure Blob Storage.
+On Azure, persisted logs come from the AKS
+[Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview)
+add-on, which ships container logs into an Azure Log Analytics workspace that the Union operator
+queries directly.
 
-### Azure prerequisites
+The data plane chart's `values.azure.yaml` therefore sets `fluentbit.enabled: false`. FluentBit's
+`azure_blob` output cannot authenticate with Workload Identity, so a DaemonSet left enabled
+without a shared key lands in `CrashLoopBackOff`.
 
-- Your AKS cluster must be [enabled as an OIDC Issuer](https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer)
-- The [Azure Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) mutating webhook must be installed on your cluster
+### 1. Point the operator at the workspace
 
-### 1. Create or reuse a managed identity
-
-Create a User Assigned Managed Identity (or reuse an existing one):
-
-```bash
-az identity create \
-  --name fluentbit-identity \
-  --resource-group <RESOURCE_GROUP> \
-  --location <LOCATION>
+```yaml
+config:
+  proxy:
+    persistedLogs:
+      sourceType: AzureLogAnalytics
+      azureLogAnalytics:
+        logAnalyticsWorkspaceResourceIdTemplate: "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<WORKSPACE_RESOURCE_GROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE_NAME>"
 ```
 
-Note the `clientId` from the output.
+Nest this under `config.proxy`. A top-level `proxy:` key is silently ignored, and the operator
+then falls back to the object store default and the log pane stays empty with no error.
 
-### 2. Add a federated credential
-
-Create a federated credential that maps the `fluentbit-system` Kubernetes service account to the managed identity:
-
-```bash
-az identity federated-credential create \
-  --name fluentbit-federated-credential \
-  --identity-name fluentbit-identity \
-  --resource-group <RESOURCE_GROUP> \
-  --issuer <AKS_OIDC_ISSUER_URL> \
-  --subject "system:serviceaccount:<NAMESPACE>:fluentbit-system" \
-  --audiences "api://AzureADTokenExchange"
-```
-
-Replace:
-
-- `<RESOURCE_GROUP>` with your Azure resource group
-- `<AKS_OIDC_ISSUER_URL>` with the OIDC issuer URL of your AKS cluster
-- `<NAMESPACE>` with the namespace where the data plane is installed (default: `union`)
-
-You can retrieve the OIDC issuer URL with:
+Find the workspace Container Insights is actually shipping to with:
 
 ```bash
-az aks show --name <CLUSTER_NAME> --resource-group <RESOURCE_GROUP> \
-  --query "oidcIssuerProfile.issuerUrl" --output tsv
+az aks show --resource-group <RESOURCE_GROUP> --name <CLUSTER_NAME> \
+  --query "addonProfiles.omsagent.config.logAnalyticsWorkspaceResourceID" --output tsv
 ```
 
-### 3. Assign a storage role
+It is frequently a shared workspace in a different resource group than the cluster.
 
-Assign the `Storage Blob Data Contributor` role to the managed identity at the storage account level:
+### 2. Grant the operator identity Log Analytics Reader
+
+The backend managed identity, the one annotated with `azure.workload.identity/client-id` in
+`additionalServiceAccountAnnotations`, needs the **Log Analytics Reader** role on that workspace:
 
 ```bash
 az role assignment create \
-  --assignee <CLIENT_ID> \
-  --role "Storage Blob Data Contributor" \
-  --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Storage/storageAccounts/<STORAGE_ACCOUNT>"
+  --assignee <BACKEND_CLIENT_ID> \
+  --role "Log Analytics Reader" \
+  --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<WORKSPACE_RESOURCE_GROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE_NAME>"
 ```
 
-### 4. Configure the Azure Helm values
+Without this role the pane stays empty and the operator logs an authorization error. The scope is
+the workspace, so whoever administers the resource group that owns it may have to create the
+assignment for you.
 
-Set the Workload Identity annotation on the FluentBit service account in your data plane Helm values:
+See [Persisted task logs](../selfmanaged-azure/prepare-infra#8-persisted-task-logs-log-analytics)
+for the full Azure setup, including enabling Container Insights and verifying ingestion.
+
+### Alternative: writing to Blob Storage
+
+If you need logs in your own storage account rather than in Log Analytics, FluentBit can write to
+Azure Blob Storage, but only with a storage account shared key, since `azure_blob` has no Workload
+Identity support. Create a Kubernetes secret holding the key in the data plane namespace:
+
+```bash
+STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+  --account-name <STORAGE_ACCOUNT> \
+  --resource-group <RESOURCE_GROUP> \
+  --query "[0].value" --output tsv)
+
+kubectl create secret generic fluentbit-azure-key \
+  --namespace <NAMESPACE> \
+  --from-literal=shared_key="$STORAGE_ACCOUNT_KEY"
+
+unset STORAGE_ACCOUNT_KEY
+```
+
+Then enable FluentBit and reference the secret, so the key never lands in the rendered ConfigMap:
 
 ```yaml
 fluentbit:
-  serviceAccount:
-    annotations:
-      azure.workload.identity/client-id: "<CLIENT_ID>"
+  enabled: true
+  azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
+  env:
+    - name: AZURE_STORAGE_SHARED_KEY
+      valueFrom:
+        secretKeyRef:
+          name: fluentbit-azure-key
+          key: shared_key
 ```
 
-You must also ensure the FluentBit pods have the Workload Identity label. If you have already set `additionalPodLabels` for your data plane, confirm the following label is present:
-
-```yaml
-additionalPodLabels:
-  azure.workload.identity/use: "true"
-```
+> [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
+> schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
+> | kubectl apply -f -`) and restart the FluentBit DaemonSet.
 
 ## GCP (Workload Identity)
 

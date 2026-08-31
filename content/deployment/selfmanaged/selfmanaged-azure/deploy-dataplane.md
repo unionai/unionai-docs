@@ -76,21 +76,26 @@ If you have not yet set up the required Azure resources (AKS cluster, Storage Ac
    - Set `global.AZURE_SUBSCRIPTION_ID`, `global.AZURE_TENANT_ID`, and `global.AZURE_RESOURCE_GROUP` to the subscription, tenant, and resource group holding your Union resources.
    - Set `global.AZURE_BACKEND_CLIENT_ID` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
    - Set `global.AZURE_WORKER_CLIENT_ID` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
-   - For persisted task logs, wire FluentBit to the `${FLUENTBIT_SECRET_NAME}` secret you created in
-     [Prepare infrastructure](../selfmanaged-azure/prepare-infra#8-persisted-logs-storage-key-fluentbit).
-     FluentBit's `azure_blob` output cannot use Workload Identity, so it reads the storage key from
-     that secret at runtime (the key never lands in the rendered ConfigMap):
+   - For persisted task logs, check
+     `config.proxy.persistedLogs.azureLogAnalytics.logAnalyticsWorkspaceResourceIdTemplate`. It
+     defaults to a workspace named `union-<ORG_NAME>` in `${RESOURCE_GROUP}`. If Container
+     Insights ships somewhere else, such as a shared monitoring resource group, replace the whole
+     template with the workspace resource ID you saved in
+     [Prepare infrastructure](../selfmanaged-azure/prepare-infra#8-persisted-task-logs-log-analytics):
 
      ```yaml
-     fluentbit:
-       azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
-       env:
-         - name: AZURE_STORAGE_SHARED_KEY
-           valueFrom:
-             secretKeyRef:
-               name: ${FLUENTBIT_SECRET_NAME}
-               key: shared_key
+     config:
+       proxy:
+         persistedLogs:
+           sourceType: AzureLogAnalytics
+           azureLogAnalytics:
+             logAnalyticsWorkspaceResourceIdTemplate: "/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/<workspace-resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>"
      ```
+
+     Nest the key under `config.proxy.persistedLogs`. A top-level `proxy:` key is silently
+     ignored, and the operator then falls back to the object store default and the log pane stays
+     empty. FluentBit stays disabled on Azure; `values.azure.yaml` already sets
+     `fluentbit.enabled: false`.
 
    If using Azure Key Vault (optional):
    - Set `global.AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
