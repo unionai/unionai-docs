@@ -13,15 +13,15 @@ Tutorials for image and vision-language model workloads.
 
 {{< grid >}}
 
-{{< link-card target="qwen-vl-finetuning" title="Fine-tuning a VLM" >}}
+{{< link-card target="qwen-vl-finetuning" icon="image" title="Fine-tuning a VLM" >}}
 Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
 {{< /link-card >}}
 
-{{< link-card target="detr-object-detection" title="RT-DETR object detection" >}}
+{{< link-card target="detr-object-detection" icon="bounding-box" title="RT-DETR object detection" >}}
 Fine-tune RT-DETRv2 on a COCO dataset with live training charts, mAP evaluation, and bounding-box demos.
 {{< /link-card >}}
 
-{{< link-card target="multimodal-retrieval-evaluation" title="Multimodal retrieval evaluation" >}}
+{{< link-card target="multimodal-retrieval-evaluation" icon="images" title="Multimodal retrieval evaluation" >}}
 Benchmark ColPali, SigLIP, and OCR+BM25 visual document retrieval on ViDoRe with warm GPU containers, dynamic batching, and an interactive report.
 {{< /link-card >}}
 

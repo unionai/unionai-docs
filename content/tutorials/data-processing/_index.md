@@ -13,7 +13,7 @@ Tutorials for large-scale data processing and batching strategies.
 
 {{< grid >}}
 
-{{< link-card target="micro-batching" title="Batching strategies" >}}
+{{< link-card target="micro-batching" icon="boxes" title="Batching strategies" >}}
 Process millions of items efficiently with resilient, scalable batching patterns built on Flyte v2.
 {{< /link-card >}}
 
