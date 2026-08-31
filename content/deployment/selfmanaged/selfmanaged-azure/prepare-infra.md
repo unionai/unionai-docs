@@ -160,7 +160,7 @@ az storage container create \
 > [!NOTE] Union reads and writes this account through Workload Identity rather than the account
 > key. `--allow-shared-key-access true` is only needed if you take the optional
 > [FluentBit-to-Blob path](../configuration/persistent-logs#alternative-writing-to-blob-storage)
-> for persisted logs; set it to `false` otherwise.
+> for persisted logs.
 
 ### CORS configuration
 

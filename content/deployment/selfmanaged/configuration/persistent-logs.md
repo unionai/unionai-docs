@@ -119,8 +119,8 @@ config:
         logAnalyticsWorkspaceResourceIdTemplate: "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<WORKSPACE_RESOURCE_GROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE_NAME>"
 ```
 
-Nest this under `config.proxy`. A top-level `proxy:` key is silently ignored, and the operator
-then falls back to the object store default and the log pane stays empty with no error.
+Nest this under `config.proxy`; a top-level `proxy:` block configures the proxy deployment
+instead and leaves the workspace unchanged.
 
 Find the workspace Container Insights is actually shipping to with:
 
@@ -131,14 +131,15 @@ az aks show --resource-group <RESOURCE_GROUP> --name <CLUSTER_NAME> \
 
 It is frequently a shared workspace in a different resource group than the cluster.
 
-### 2. Grant the operator identity Log Analytics Reader
+### 2. Grant the backend identity Log Analytics Reader
 
 The backend managed identity, the one annotated with `azure.workload.identity/client-id` in
 `additionalServiceAccountAnnotations`, needs the **Log Analytics Reader** role on that workspace:
 
 ```bash
 az role assignment create \
-  --assignee <BACKEND_CLIENT_ID> \
+  --assignee-object-id <BACKEND_PRINCIPAL_ID> \
+  --assignee-principal-type ServicePrincipal \
   --role "Log Analytics Reader" \
   --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<WORKSPACE_RESOURCE_GROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE_NAME>"
 ```
@@ -169,9 +170,14 @@ kubectl create secret generic fluentbit-azure-key \
 unset STORAGE_ACCOUNT_KEY
 ```
 
-Then enable FluentBit and reference the secret, so the key never lands in the rendered ConfigMap:
+Then point the log source back at the object store, enable FluentBit, and reference the secret so
+the key never lands in the rendered ConfigMap:
 
 ```yaml
+config:
+  proxy:
+    persistedLogs:
+      sourceType: ObjectStore
 fluentbit:
   enabled: true
   azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
