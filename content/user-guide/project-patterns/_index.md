@@ -15,20 +15,20 @@ These are opinionated guides. They represent patterns we've seen work well acros
 
 {{< grid >}}
 
-{{< link-card target="bring-your-own-image" title="Bring your own image (BYOI)" >}}
+{{< link-card target="bring-your-own-image" icon="box-seam" title="Bring your own image (BYOI)" >}}
 Two patterns for teams that own their Docker images and want Flyte for orchestration without handing over their build pipeline.
 {{< /link-card >}}
 
-{{< link-card target="monorepo-with-uv" title="Monorepo with uv" >}}
+{{< link-card target="monorepo-with-uv" icon="folder2-open" title="Monorepo with uv" >}}
 How to structure Flyte projects with uv, from single-package setups to multi-team monorepos with shared and independent lockfiles.
 {{< /link-card >}}
 
-{{< link-card target="cicd" title="CI/CD deployments" >}}
+{{< link-card target="cicd" icon="arrow-repeat" title="CI/CD deployments" >}}
 How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but the building blocks (API key, `flyte deploy`, commit-pinned versions) translate to any runner.
 {{< /link-card >}}
 
 {{< variant union >}}
-{{< link-card target="resource-management" title="Resource management and multi-team scaling" >}}
+{{< link-card target="resource-management" icon="people" title="Resource management and multi-team scaling" >}}
 Projects, domains, quotas, RBAC, and secrets: the primitives to set up before you have ten teams and a noisy-neighbor problem.
 {{< /link-card >}}
 {{< /variant >}}
