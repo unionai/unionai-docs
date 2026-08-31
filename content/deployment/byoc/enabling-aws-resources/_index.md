@@ -209,3 +209,5 @@ In {{< key product_name >}}:
 Once the IAM role exists, the mapping from a project-domain pair to that role is applied in the {{< key product_name >}} control plane. Provide the {{< key product_name >}} team with the role ARN (from step 11 above) and the project-domain pairs it should apply to, and they will bind the role to those namespaces.
 
 **At this point, only code in your chosen project-domain pairs will have access to the cloud resource as defined by your custom policy.**
+
+{{< subpage-cards >}}

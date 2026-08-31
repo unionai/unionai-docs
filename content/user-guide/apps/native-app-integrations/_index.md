@@ -42,3 +42,5 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 - [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
 - [**Ollama app**](./ollama-app): Serve lightweight LLMs with Ollama
 - [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
+
+{{< subpage-cards >}}

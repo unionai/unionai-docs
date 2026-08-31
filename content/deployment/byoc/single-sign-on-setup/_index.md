@@ -24,3 +24,5 @@ To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](.
 ## Other identity providers
 
 To configure other identity providers, see [Other identity providers](./other-identity-providers).
+
+{{< subpage-cards >}}

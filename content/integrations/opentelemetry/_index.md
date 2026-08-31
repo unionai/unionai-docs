@@ -165,3 +165,5 @@ Call `init()` before the other library so everything stays on one export pipelin
 > caller's trace, HTTP auto-instrumentation, Grafana Cloud and a crash-and-resume trace. All but
 > the last run either locally or on a cluster; the crash-and-resume one needs a cluster, because
 > the replay it demonstrates comes from a platform retry.
+
+{{< subpage-cards >}}

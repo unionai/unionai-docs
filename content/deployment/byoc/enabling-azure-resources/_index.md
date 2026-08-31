@@ -68,3 +68,5 @@ Please work directly with the {{< key product_name >}} team if you have requirem
 {{< key product_name >}} creates a managed identity prefixed with `flyteuser` within the resource group that contains the other {{< key product_name >}}-managed data plane Azure resources. Navigate to [Azure portal Managed Identities](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) to find respective managed identity details.
 
 Follow [Azure's official assigned roles documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to assign an appropriate role to scope.
+
+{{< subpage-cards >}}

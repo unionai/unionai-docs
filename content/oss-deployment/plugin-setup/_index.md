@@ -18,3 +18,5 @@ example, rather than when you are first installing Flyte.
 - [Flyte copilot storage configuration](./copilot-storage): how copilot reaches your object
   store to move task inputs and outputs, including the Secret the chart creates for it
   and what to do when you manage the Flyte configuration yourself.
+
+{{< subpage-cards >}}

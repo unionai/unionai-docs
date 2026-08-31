@@ -43,3 +43,5 @@ Walk through these pages in order:
    including how to install the Knative Serving prerequisite.
 6. [Plugin setup](./plugin-setup/_index): cluster-side configuration some plugins need,
    including [copilot's access](./plugin-setup/copilot-storage) to your object store.
+
+{{< subpage-cards >}}

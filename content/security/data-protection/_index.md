@@ -15,6 +15,4 @@ Customer data never transits Union.ai's control plane. Every customer-data reque
 
 This section covers:
 
-* [Data classification and residency](./classification-and-residency): How data is classified, where it resides, and multi-cloud region support.
-* [Secrets management](./secrets): Write-only API design, backends, and secret lifecycle.
-* [Logging and audit](./logging-and-audit): Task logging, observability metrics, and audit trails.
+{{< subpage-cards >}}
