@@ -272,7 +272,8 @@ flyte get queue --deleted
 depth, so you can see a queue filling up or draining in real time. Metrics are
 available for a queue in **any state**: watching a `draining` queue is how you
 confirm its in-flight work has finished, and a `drained` queue still reports its
-(empty) metrics rather than failing.
+(empty) metrics rather than failing. A [deleted](#delete-a-queue) queue is the
+exception: watching one fails until you restore it.
 
 Fetching a queue **by name** works even after it has been
 [deleted](#delete-a-queue): `flyte get queue <name>` returns the soft-deleted
@@ -316,7 +317,8 @@ for metrics in Queue.watch("gpu-queue"):
 ```
 
 `Queue.details` and `Queue.watch` work for a queue in any state, so you can
-watch a `draining` queue to confirm its in-flight work has finished.
+watch a `draining` queue to confirm its in-flight work has finished. Unlike
+`Queue.get`, neither works on a [deleted](#delete-a-queue) queue.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -459,8 +461,8 @@ Any queue can be drained, including the `default` queue and a queue configured
 as the default run queue (`run.default_queue`) in your organization's settings
 at any scope — draining is how you stop scheduling on it, and the prerequisite
 for [deleting it](#delete-a-queue). A draining or drained queue still resolves
-as the default: runs that land on it are rejected at creation with an error
-saying the queue is not accepting work. Only [deleting](#delete-a-queue) a queue
+as the default: runs that land on it are rejected with an error saying the
+queue is not accepting work. Only [deleting](#delete-a-queue) a queue
 referenced in settings is refused.
 
 ## Delete a queue
@@ -468,9 +470,7 @@ referenced in settings is refused.
 A queue must be **drained** before it can be deleted; deleting an `active` or
 `draining` queue is rejected. A queue referenced as the default run queue
 (`run.default_queue`) in settings at any scope can be drained but not deleted:
-a drained queue still resolves and rejects runs with an actionable error, while
-a deleted one simply disappears for the runs relying on it. Update or unset
-those settings first. A cluster's
+update or unset those settings first. A cluster's
 [co-named queue](./clusters#the-co-named-queue) can be deleted on its own while
 the cluster lives, and is deleted automatically when its
 [cluster is deleted](./clusters#delete-a-cluster).
