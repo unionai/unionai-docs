@@ -73,10 +73,19 @@ def launch_dynamically():
   For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances)
   There are two kinds of retries *system retries* and *user retries*.
 
+{{< variant flyte >}}
+{{< markdown >}}
+* `secret_requests`: See [Secrets](../../../deployment/flyte-configuration/secrets)
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets)
+{{< /markdown >}}
+{{< /variant >}}
 
 * `task_config`: Configuration for a specific task type.
-  See the [{{< key product_name >}} Connectors documentation](../../integrations/connectors) and
+  See the [{{< key product_name >}} Connectors documentation](../../../integrations/connectors) and
   [{{< key product_name >}} plugins documentation]() for the right object to use.
   <!-- TODO: Add link to API -->
 

@@ -54,5 +54,5 @@ Securely manage API keys and credentials
 ## Requirements
 
 - Terraform >= 1.0
-- Union API key (generated using the [Flyte CLI](../../api-reference/flyte-cli#flyte-create-config))
+- Union API key (generated using the [Union CLI](../../api-reference/union-cli#api-key))
 - Access to a Union deployment

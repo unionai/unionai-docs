@@ -30,7 +30,11 @@ def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) ->
 ```
 
 > [!NOTE]
+{{< variant union >}}
+{{< markdown >}}
 > Map tasks can also map over launch plans. For more information and example code, see [Mapping over launch plans](../launch-plans/mapping-over-launch-plans).
+{{< /markdown >}}
+{{< /variant >}}
 
 To customize resource allocations, such as memory usage for individual map tasks, you can leverage `with_overrides`. Here’s an example using the `detect_anomalies` map task within a workflow:
 

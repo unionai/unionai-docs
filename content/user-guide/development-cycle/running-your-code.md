@@ -55,13 +55,13 @@ In addition, you are passing the named parameter `name` and its value.
 {{< variant union >}}
 {{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [{{< key cli >}} run details](./details-of-union-run).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -95,19 +95,19 @@ This command will:
 * Run the workflow on {{< key product_name >}}.
 
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](./details-of-union-run).
+For more details see [{{< key cli >}} run details](./run-details).
 
 
 {{< variant union >}}
 {{< markdown >}}
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](./details-of-union-run).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -295,7 +295,11 @@ To see the results of the execution you can inspect the node closure outputUri i
 ### Package your code with `{{% key cli %}} package`
 
 The combination of `{{< key cli >}} package` and `{{< key ctl >}} register` is the standard way of deploying your code to production.
+{{< variant union >}}
+{{< markdown >}}
 This method is often used in scripts to [build and deploy workflows in a CI/CD pipeline](./ci-cd-deployment).
+{{< /markdown >}}
+{{< /variant >}}
 
 First, package your workflows:
 
@@ -367,7 +371,7 @@ On the other hand, `{{< key cli >}} package` and `{{< key ctl >}} register` is a
 * Testing your workflows in your CI/CD infrastructure.
 
 > [!NOTE] Programmatic Python API
-> You can also perform the equivalent of the three methods of registration using a [{{< key kit_remote >}} object](../development-cycle/union-remote/_index).
+> You can also perform the equivalent of the three methods of registration using a [{{< key kit_remote >}} object](../development-cycle/remote-management/_index).
 
 ## Image management and registration method
 

@@ -12,7 +12,7 @@ variants: -flyte +union
 
 When you initially onboard your organization to {{< key product_name >}} you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
-For details, see [Configuring your data plane](../deployment/configuring-your-data-plane).
+For details, see [Configuring your data plane](../deployment/byoc/configuring-your-data-plane).
 
 ### How do I change the machine types in my cluster?
 
@@ -41,16 +41,16 @@ Yes. See [Task input and output > Changing the raw storage location](./data-inpu
 Yes. You can certainly configure your own blob storage and then use your chosen library (like `boto3`, for example) to interact with that storage within your task code.
 The only caveat is that you must ensure that your task code has access to the storage.
 
-See [Enabling AWS S3](../deployment/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/enabling-gcp-resources/enabling-google-cloud-storage), or
-[Enabling Azure Blob Storage](../deployment/enabling-azure-resources/enabling-azure-blob-storage).
+See [Enabling AWS S3](../deployment/byoc/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/byoc/enabling-gcp-resources/enabling-google-cloud-storage), or
+[Enabling Azure Blob Storage](../deployment/byoc/enabling-azure-resources/enabling-azure-blob-storage).
 
 ### Can I control access to my own blob store?
 
 Yes. As with all resources used by your task code, the storage must be accessible from within the cluster running that code on your data plane.
 However, the data plane is your own, and you have full control over access.
 
-See [Enabling AWS S3](../deployment/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/enabling-gcp-resources/enabling-google-cloud-storage), or
-[Enabling Azure Blob Storage](../deployment/enabling-azure-resources/enabling-azure-blob-storage).
+See [Enabling AWS S3](../deployment/byoc/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/byoc/enabling-gcp-resources/enabling-google-cloud-storage), or
+[Enabling Azure Blob Storage](../deployment/byoc/enabling-azure-resources/enabling-azure-blob-storage).
 
 ### Could someone maliciously delete or otherwise access my raw data?
 
@@ -74,7 +74,7 @@ However, in most cases using either `FlyteFile`/`FlyteDirectory` or a library li
 If you do need to use `s3fs`, here are the basic steps:
 
 * Set up the S3 bucket that you wish to access.
-* Enable access to the bucket from your task code by configuring an appropriate IAM policy. See [Enabling AWS S3](../deployment/enabling-aws-resources/enabling-aws-s3).
+* Enable access to the bucket from your task code by configuring an appropriate IAM policy. See [Enabling AWS S3](../deployment/byoc/enabling-aws-resources/enabling-aws-s3).
 * Specify your task container image to have `s3fs` correctly installed and configured.
 * In the task decorator, configure a `PodTemplate` to run the task container in privileged mode (see links below).
 * In your task code, invoke the `s3fs` command line tool to mount the S3-backed volume.
@@ -93,8 +93,8 @@ See also:
 ### Can I use BigQuery from within a task?
 
 If your {{< key product_name >}} data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
-For details see [Enabling GCP resources](../deployment/enabling-gcp-resources).
-If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](../deployment/enabling-gcp-resources/enabling-bigquery).
+For details see [Enabling GCP resources](../deployment/byoc/enabling-gcp-resources).
+If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](../deployment/byoc/enabling-gcp-resources/enabling-bigquery).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
 For details see [BigQuery connector](../integrations/connectors/bigquery-connector).

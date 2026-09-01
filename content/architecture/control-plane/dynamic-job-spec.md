@@ -20,10 +20,10 @@ repeated Binding outputs = 3;
 }
 ```
 ## Tasks
-Defines one or more [tasks](../../tasks)  that can then be referenced in the spec.
+Defines one or more [tasks](../../user-guide/core-concepts/tasks/_index)  that can then be referenced in the spec.
 
 ## Subworkflows
-Defines zero or more [workflows](../../workflows) that can then be referenced in the spec.
+Defines zero or more [workflows](../../user-guide/core-concepts/workflows/_index) that can then be referenced in the spec.
 
 ## Nodes
 Defines one or more nodes that can run in parallel to produce the final outputs of the spec.

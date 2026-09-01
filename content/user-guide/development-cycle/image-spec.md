@@ -104,8 +104,8 @@ For more information, see [Working with the Container registry](https://docs.git
 
 You may use another container registry if you prefer,
 such as [Docker Hub](https://hub.docker.com/),
-[Amazon Elastic Container Registry (ECR)](../integrations/enabling-aws-resources/enabling-aws-ecr),
-or [Google Artifact Registry (GAR)](../integrations/enabling-gcp-resources/enabling-google-artifact-registry).
+[Amazon Elastic Container Registry (ECR)](../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr),
+or [Google Artifact Registry (GAR)](../../deployment/byoc/enabling-gcp-resources/enabling-google-artifact-registry).
 
 You will need to set up your local Docker client to authenticate to GHCR in order for `{{< key cli >}}` to be able to push the image built according to the `ImageSpec` to GHCR.
 

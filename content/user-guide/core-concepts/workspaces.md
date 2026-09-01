@@ -338,7 +338,7 @@ task execution details page:
 You can specify:
 - Any public container image URI as long as it has `union>=0.1.166` installed
 - Images built with the Union.ai [image builder service](../development-cycle/image-spec)
-- Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry))
+- Images available in your private container registry (e.g. [AWS ECR](../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr), [GCP Artifact Registry](../../deployment/byoc/enabling-gcp-resources/enabling-google-artifact-registry), or [Azure Container Registry](../../deployment/byoc/enabling-azure-resources/enabling-azure-container-registry))
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -13,7 +13,7 @@ top_menu: true
 Flyte is designed to be highly extensible and can be customized in multiple ways.
 
 > [!NOTE]
-> Want to contribute an integration example? Check out the [contribution guide](../community/contribute/contribute-examples).
+> Want to contribute an integration example? Check out the [contribution guide](../community/contributing-code).
 
 {{< /markdown >}}
 {{< /variant >}}

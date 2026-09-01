@@ -365,7 +365,7 @@ union cache model-from-hf [OPTIONS] REPO
   **Options:**: `nvidia-l4`, `nvidia-l4-vws`, `nvidia-l40s`, `nvidia-a100`, `nvidia-a100-80gb`, `nvidia-a10g`, `nvidia-tesla-k80`, `nvidia-tesla-m60`, `nvidia-tesla-p4`, `nvidia-tesla-p100`, `nvidia-tesla-t4`, `nvidia-tesla-v100`
 
 - `--shard-config <shard_config>`
-  The engine to shard the model with. A yaml configuration file conforming to [`remote.ShardConfig`](../union-sdk/packages/union.remote#unionremoteshardconfig).
+  The engine to shard the model with. A yaml configuration file conforming to [`remote.ShardConfig`](./union-sdk/union.remote#unionremoteshardconfig).
 
 - `-p`, `--project <project>`
   Project to operate on

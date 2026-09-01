@@ -19,7 +19,11 @@ The columns in the launch plans table are defined as follows:
 * **Name**: The name of the launch plan. Click to inspect a specific launch plan in detail.
 * **Triggers**:
   * If the launch plan is active, a green **Active** badge is shown. When a launch plan is active, any attached schedule will be in effect and the launch plan will be invoked according to that schedule.
+{{< variant union >}}
+{{< markdown >}}
   * Shows whether the launch plan has a [trigger](./reactive-workflows). To filter for only those launch plans with a trigger, check the **Has Triggers** box in the top right.
+{{< /markdown >}}
+{{< /variant >}}
 * **Last Execution**: The last execution timestamp of this launch plan, irrespective of how the last execution was invoked (by schedule, by trigger, or manually).
 * **Last 10 Executions**: A visual representation of the last 10 executions of this launch plan, irrespective of how these executions were invoked (by schedule, by trigger, or manually).
 

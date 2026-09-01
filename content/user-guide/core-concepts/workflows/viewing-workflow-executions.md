@@ -67,7 +67,11 @@ Below that, you have the following tabs: **Executions**, **Inputs**, **Outputs**
 
 The **Executions** tab gives you details on the execution of this particular node as well as access to:
 
+{{< variant union >}}
+{{< markdown >}}
 * **Task level monitoring**: You can access the [task-level monitoring](../tasks/task-hardware-environment/task-level-monitoring) information by selecting **View Utilization**.
+{{< /markdown >}}
+{{< /variant >}}
 
 * **Logs**: You can access logs by clicking the text under **Logs**. See [Logging](../tasks/viewing-logs).
 

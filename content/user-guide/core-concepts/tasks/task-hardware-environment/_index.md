@@ -72,7 +72,11 @@ For details see [Configuring task pods with Kubernetes PodTemplates]().
 If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
 See [Accelerators](./accelerators) for more information.
 
+{{< variant union >}}
+{{< markdown >}}
 ## Task-level monitoring
 
 You can also monitor the hardware resources used by a task.
 See [Task-level monitoring](./task-level-monitoring) for details.
+{{< /markdown >}}
+{{< /variant >}}

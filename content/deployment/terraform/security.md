@@ -145,7 +145,7 @@ Enable state locking to prevent concurrent modifications:
 
 Implement a rotation schedule for your API keys:
 
-1. Generate a new API key using the Flyte CLI
+1. Generate a new API key using the Union CLI
 2. Update the key in your secret manager
 3. Verify Terraform can authenticate with the new key
 4. Delete the old API key
@@ -257,4 +257,4 @@ terraform:
 
 - [Terraform Security Best Practices](https://developer.hashicorp.com/terraform/tutorials/configuration-language/sensitive-variables)
 - [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault/docs)
-- [Flyte CLI Documentation](../../api-reference/flyte-cli)
+- [Union CLI Documentation](../../api-reference/union-cli)
