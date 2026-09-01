@@ -136,6 +136,26 @@ jobs:
           LATEST_REF=origin/v1 bash unionai-docs-infra/scripts/ci-build-dist.sh auto
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
 
+      - name: Check generated links
+        run: |
+          # The links the GENERATOR writes into dist/. `Check Internal Links`
+          # reads content/ and cannot see these: v1 had 1,649 of them pointing at
+          # nothing while that job stayed green (DOC-1525).
+          # Runs here rather than in its own workflow because it needs the dist
+          # this job already built, and a second full Hugo build to check links
+          # is not worth the minutes.
+          make check-generated-links
+
+      - name: Check rendered images
+        run: |
+          # The images the BUILT site serves, resolved the way a browser does --
+          # against the page's URL, not the source file's directory. `Check
+          # Images` reads content/ and cannot see this: Hugo's render hooks
+          # rebase an image src, so a path can be correct in the markdown and
+          # wrong in the HTML. Two v1 tutorials shipped images that 404 on the
+          # live site while every check passed (DOC-1525, unionai-examples#307).
+          make check-rendered-images
+
       - name: Emit build provenance
         if: success()
         run: |
