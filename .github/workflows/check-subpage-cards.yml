@@ -1,0 +1,33 @@
+name: Check Subpage Cards
+
+on:
+  pull_request:
+  push:
+    branches: [v1]
+
+jobs:
+  check-subpage-cards:
+    name: "Check Subpage Cards"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check subpage cards
+        run: make check-subpage-cards
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::A section page with children has no subpage cards. Add {{< subpage-cards >}} where they belong, or set subpage_cards: false and say why. Run 'make check-subpage-cards' locally for details."
