@@ -49,7 +49,7 @@ In most cases, launch plans are defined alongside the workflows and tasks in you
 
 ### Registering a launch plan in Python with `{{% key kit_remote %}}`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key kit_remote >}}`](../../development-cycle/union-remote), specifically, `{{< key kit_remote >}}.register_launch_plan`.
+As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key kit_remote >}}`](../../development-cycle/remote-management), specifically, `{{< key kit_remote >}}.register_launch_plan`.
 
 ### Results of registration
 

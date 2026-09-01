@@ -41,9 +41,6 @@ that is, the same configuration as would be used by the {{< key cli_name >}} CLI
 
 In the default case, as with the {{< key cli_name >}} CLI, all operations will be applied to the default project, `{{< key default_project >}}` and default domain, `development`.
 
-{{< variant flyte union >}}
-{{< markdown >}}
-
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
 ```python
@@ -64,8 +61,16 @@ In general, you have all the same options as you would when specifying a connect
 
 ### Authenticating using a client secret
 
+{{< variant flyte >}}
+{{< markdown >}}
+In some cases, you may be running a script with `{{< key kit_remote >}}` in a CI/CD pipeline or via SSH, where you don't have access to a browser for the default authentication flow. In such scenarios, you can use the [client secret](../../../deployment/flyte-configuration/configuring-authentication#client-credentials) authentication method to establish a connection to {{< key product_name >}}. After [creating a client credential](../../../deployment/flyte-configuration/configuring-authentication#client-credentials), you can initialize `{{< key kit_remote >}}` as follows:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
 In some cases, you may be running a script with `{{< key kit_remote >}}` in a CI/CD pipeline or via SSH, where you don't have access to a browser for the default authentication flow. In such scenarios, you can use the [client secret](../../development-cycle/authentication#3-clientsecret-best-for-cicd-and-automation) authentication method to establish a connection to {{< key product_name >}}. After [creating an API key](../managing-api-keys), you can initialize `{{< key kit_remote >}}` as follows:
-
+{{< /markdown >}}
+{{< /variant >}}
 ```python
 import {{< key kit_import >}}
 from flytekit.configuration import Config, PlatformConfig
@@ -84,7 +89,3 @@ remote = {{< key kit_as >}}.{{< key kit_remote >}}(
 ```
 
 For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/flytekit-sdk/flytekit.configuration#flytekitconfigurationconfig)
-
-{{< /markdown >}}
-{{< /variant >}}
-

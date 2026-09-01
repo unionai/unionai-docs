@@ -35,7 +35,11 @@ However, this location can be overridden per workflow or per execution using the
 The data in the raw data store is not accessible to the control plane and will only be surfaced in the UI if your code explicitly does so (for example, in a Deck).
 
 <!-- TODO: incorporate the referenced page here -->
+{{< variant flyte >}}
+{{< markdown >}}
 For more details, see [Understand How Flyte Handles Data](../../architecture/data-handling).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Changing the raw data storage location
 
@@ -58,7 +62,11 @@ While this bucket is located in your {{< key product_name >}} BYOC data plane an
 
 When changing the default raw data location, the target should therefore be a bucket that you set up, separate from the {{< key product_name >}}-implemented bucket.
 
-For information on setting up your own bucket and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage), or [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage), depending on your cloud provider.
+{{< variant union >}}
+{{< markdown >}}
+For information on setting up your own bucket and enabling access to it, see [Enabling AWS S3](../../deployment/byoc/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../../deployment/byoc/enabling-gcp-resources/enabling-google-cloud-storage), or [Enabling Azure Blob Storage](../../deployment/byoc/enabling-azure-resources/enabling-azure-blob-storage), depending on your cloud provider.
+{{< /markdown >}}
+{{< /variant >}}
 
 
 

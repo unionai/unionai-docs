@@ -6,7 +6,7 @@ variants: +flyte -union
 
 # Projects
 
-A project in Flyte is a group of [workflows](../../workflows) and [tasks](../../tasks) tied together to achieve a goal.
+A project in Flyte is a group of [workflows](../../user-guide/core-concepts/workflows) and [tasks](../../user-guide/core-concepts/tasks) tied together to achieve a goal.
 
 A Flyte project can map to an engineering project or everything that's owned by a team or an individual. There cannot be multiple projects with the same name in Flyte.
 

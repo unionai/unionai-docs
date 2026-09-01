@@ -59,13 +59,13 @@ export UNIONAI_API_KEY="your-api-key"
 
 ### Generating an API Key
 
-Create an API key using the Flyte CLI:
+Create an API key using the Union CLI:
 
 ```bash
 union create api-key admin --name "terraform-api-key"
 ```
 
-For more information on creating API keys, see the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte-create-config).
+For more information on creating API keys, see the [Union CLI documentation](../../api-reference/union-cli#api-key).
 
 Save the generated key securely, as it will be used to authenticate all Terraform operations against your Union deployment.
 
@@ -384,12 +384,12 @@ resource "unionai_api_key" "ci_cd" {
 
 - [Union Terraform Provider Documentation](https://registry.terraform.io/providers/unionai/unionai/latest/docs)
 - [Terraform Documentation](https://www.terraform.io/docs)
-- [Flyte CLI Documentation](../../api-reference/flyte-cli)
+- [Union CLI Documentation](../../api-reference/union-cli)
 
 ## Requirements
 
 - **Terraform**: >= 1.0
-- **Union API Key**: Generated via Flyte CLI
+- **Union API Key**: Generated via Union CLI
 - **Go**: >= 1.24 (for development only)
 
 ## Support and Contributions

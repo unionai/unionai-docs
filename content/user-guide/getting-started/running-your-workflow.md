@@ -43,7 +43,16 @@ $ source .venv/bin/activate
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
-You can run the workflow locally with the command [`{{< key cli >}} run <FILE> <WORKFLOW>`](../../api-reference/union-cli#union-cli-commands):
+{{< variant flyte >}}
+{{< markdown >}}
+You can run the workflow locally with the command [`pyflyte run <FILE> <WORKFLOW>`](../../api-reference/pyflyte-cli#pyflyte-cli-commands):
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli#union-cli-commands):
+{{< /markdown >}}
+{{< /variant >}}
 
 ```shell
 $ {{< key cli >}} run hello_world.py hello_world_wf
@@ -80,7 +89,16 @@ When task and workflow code is registered:
 * The `@{{< key kit_as >}}.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@{{< key kit_as >}}.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
+{{< variant flyte >}}
+{{< markdown >}}
+To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/pyflyte-cli#pyflyte-cli-commands) and the
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
 To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli#union-cli-commands) and the
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}

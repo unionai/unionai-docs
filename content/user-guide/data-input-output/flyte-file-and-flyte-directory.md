@@ -4,7 +4,6 @@ weight: 1
 variants: +flyte +union
 ---
 
-
 <!-- TODO: CHeck for variant accuracy  remove mention of flytesnacks-->
 
 # FlyteFile and FlyteDirectory
@@ -237,7 +236,6 @@ def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
     return {{< key kit_as >}}.FlyteDirectory(path=str(local_dir))
 ```
 
-
 > [!NOTE]
 > You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
 > For example,
@@ -455,10 +453,6 @@ def workflow():
 {{< /markdown >}}
 {{< /variant >}}
 
-
-{{< variant flyte union >}}
-{{< markdown >}}
-
 ## Changing the data upload location
 
 > With {{< key product_name >}} BYOC, the upload location is configurable.
@@ -466,12 +460,16 @@ def workflow():
 By default, {{< key product_name >}} uploads local files or directories to the default **raw data store** ({{< key product_name >}}'s dedicated internal object store).
 However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
 
+{{< variant union >}}
+{{< markdown >}}
 > [!NOTE] Setting up your own object store bucket
 > For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 >
 > * [Enabling AWS S3](../../deployment/byoc/enabling-aws-resources/enabling-aws-s3)
 > * [Enabling Google Cloud Storage](../../deployment/byoc/enabling-gcp-resources/enabling-google-cloud-storage)
 > * [Enabling Azure Blob Storage](../../deployment/byoc/enabling-azure-resources/enabling-azure-blob-storage)
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Changing the raw data prefix
 
@@ -489,9 +487,6 @@ If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDi
 > [!NOTE] Using remote_path will overwrite data
 > If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
 > If you want to use a dynamically generated path, you will have to generate it yourself.
-
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Remote examples
 

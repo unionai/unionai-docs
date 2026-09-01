@@ -68,6 +68,8 @@ When setting up workflows in {{< key product_name >}}, effective use of **projec
 allocation.  Below are best practices to consider when organizing workflows in
 {{< key product_name >}}.
 
+{{< variant union >}}
+{{< markdown >}}
 ## Projects and Domains: The Power of the Project-Domain Pair
 
 {{< key product_name >}} uses a project-domain pair to create isolated configurations for
@@ -80,6 +82,8 @@ workflows. This pairing allows for:
 * **Resource Allocations and Quotas**: By setting quotas for each project-domain pair, {{< key product_name >}} can ensure that workflows do not exceed designated limits, preventing any project or domain from unintentionally impacting resources available to others. Additionally, you can configure unique resource defaults—such as memory, CPU, and storage allocations—for each project-domain pair. This allows each pair to meet the specific requirements of its workflows, which is particularly valuable given the unique needs across different projects. More details [here](../core-concepts/tasks/task-hardware-environment/customizing-task-resources#execution-defaults-and-resource-quotas) and [here](../administration/resources).
 
 * **Configuring Secrets**: {{< key product_name >}} allows you to configure secrets at the project-domain level, ensuring sensitive information, such as API keys and tokens, is accessible only within the specific workflows that need them. This enhances security by isolating secrets according to the project and domain, reducing the risk of unauthorized access across environments. More details [here](./managing-secrets).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Domains: Clear Environment Separation
 
@@ -91,6 +95,15 @@ Projects in {{< key product_name >}} are designed to group independent workflows
 
 {{< key product_name >}}’s CLI tools and SDKs provide options to specify projects and domains easily:
 
-* **CLI Commands**: In most commands within the `{{< key cli >}}` and `uctl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/union-cli) and [here](../../api-reference/uctl-cli).
+{{< variant flyte >}}
+{{< markdown >}}
+* **CLI Commands**: In most commands within the `pyflyte` and `flytectl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/pyflyte-cli) and [here](../../api-reference/flytectl-cli).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+* **CLI Commands**: In most commands within the `union` and `uctl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/union-cli) and [here](../../api-reference/uctl-cli).
+{{< /markdown >}}
+{{< /variant >}}
 
-* **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](union-remote).
+* **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](remote-management).

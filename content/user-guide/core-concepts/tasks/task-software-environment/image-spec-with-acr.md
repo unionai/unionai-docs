@@ -8,7 +8,11 @@ variants: +flyte +union
 
 In this section we explain how to use [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/products/container-registry) to build and deploy task container images using `ImageSpec`.
 
-Before proceeding, make sure that you have [enabled Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry) for you {{< key product_name >}} installation.
+{{< variant union >}}
+{{< markdown >}}
+Before proceeding, make sure that you have [enabled Azure Container Registry](../../../../deployment/byoc/enabling-azure-resources/enabling-azure-container-registry) for you {{< key product_name >}} installation.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Authenticate to the registry
 

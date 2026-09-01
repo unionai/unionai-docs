@@ -8,12 +8,14 @@ variants: +flyte +union
 
 In {{< key product_name >}}, your work is organized in a hierarchy with the following structure:
 
-{{< variant flyte union >}}
-{{< markdown >}}
 
 * **Organization**: Your {{< key product_name >}} instance, accessible at a specific URL like `{{< key product >}}.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
-You can configure a custom set of domains to suit your needs during [onboarding](../../deployment/configuring-your-data-plane).
+{{< variant union >}}
+{{< markdown >}}
+You can configure a custom set of domains to suit your needs during [onboarding](../../deployment/byoc/configuring-your-data-plane).
+{{< /markdown >}}
+{{< /variant >}}
 * **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
@@ -24,8 +26,6 @@ As you work on successive iterations of the workflow you might promote `my_workf
 
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
 
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Terminology
 

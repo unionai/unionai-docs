@@ -18,7 +18,7 @@ If you are using GAR in the same Google Cloud Platform (GCP) project as your {{<
 Access to GAR in the same project is enabled by default.
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
-See [Enable Google Artifact Registry](../../../../deployment/enabling-gcp-resources/enabling-google-artifact-registry) for details.
+See [Enable Google Artifact Registry](../../../../deployment/byoc/enabling-gcp-resources/enabling-google-artifact-registry) for details.
 
 {{< /markdown >}}
 {{< /variant >}}

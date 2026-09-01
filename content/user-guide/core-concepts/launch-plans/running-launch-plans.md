@@ -47,7 +47,7 @@ launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-
 remote.execute(launch_plan, inputs=<inputs>)
 ```
 
-See the [{{< key kit_remote >}}](../../development-cycle/union-remote) for more details.
+See the [{{< key kit_remote >}}](../../development-cycle/remote-management) for more details.
 
 ## Sub-launch plans
 
