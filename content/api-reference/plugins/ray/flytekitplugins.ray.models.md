@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AutoscalerOptions`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) |  |
-| [`HeadGroupSpec`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) |  |
-| [`RayCluster`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
-| [`RayJob`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2. |
-| [`WorkerGroupSpec`](.././flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) |  |
+| [`AutoscalerOptions`](./flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) |  |
+| [`HeadGroupSpec`](./flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) |  |
+| [`RayCluster`](./flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
+| [`RayJob`](./flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2. |
+| [`WorkerGroupSpec`](./flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) |  |
 
 ## flytekitplugins.ray.models.AutoscalerOptions
 

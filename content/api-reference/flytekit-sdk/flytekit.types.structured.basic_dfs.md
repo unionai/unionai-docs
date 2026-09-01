@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrowToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) |  |
-| [`CSVToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) |  |
-| [`PandasToCSVEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) |  |
-| [`PandasToParquetEncodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) |  |
-| [`ParquetToArrowDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) |  |
-| [`ParquetToPandasDecodingHandler`](.././flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) |  |
+| [`ArrowToParquetEncodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsarrowtoparquetencodinghandler) |  |
+| [`CSVToPandasDecodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfscsvtopandasdecodinghandler) |  |
+| [`PandasToCSVEncodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastocsvencodinghandler) |  |
+| [`PandasToParquetEncodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfspandastoparquetencodinghandler) |  |
+| [`ParquetToArrowDecodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettoarrowdecodinghandler) |  |
+| [`ParquetToPandasDecodingHandler`](./flytekit.types.structured.basic_dfs#flytekittypesstructuredbasic_dfsparquettopandasdecodinghandler) |  |
 
 ### Methods
 

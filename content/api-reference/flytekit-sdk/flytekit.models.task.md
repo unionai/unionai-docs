@@ -13,21 +13,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CompiledTask`](.././flytekit.models.task#flytekitmodelstaskcompiledtask) |  |
-| [`Container`](.././flytekit.models.task#flytekitmodelstaskcontainer) |  |
-| [`DataLoadingConfig`](.././flytekit.models.task#flytekitmodelstaskdataloadingconfig) |  |
-| [`IOStrategy`](.././flytekit.models.task#flytekitmodelstaskiostrategy) | Provides methods to manage data in and out of the Raw container using Download Modes. |
-| [`K8sObjectMetadata`](.././flytekit.models.task#flytekitmodelstaskk8sobjectmetadata) |  |
-| [`K8sPod`](.././flytekit.models.task#flytekitmodelstaskk8spod) |  |
-| [`Resources`](.././flytekit.models.task#flytekitmodelstaskresources) |  |
-| [`RuntimeMetadata`](.././flytekit.models.task#flytekitmodelstaskruntimemetadata) |  |
-| [`Sql`](.././flytekit.models.task#flytekitmodelstasksql) |  |
-| [`Task`](.././flytekit.models.task#flytekitmodelstasktask) |  |
-| [`TaskClosure`](.././flytekit.models.task#flytekitmodelstasktaskclosure) |  |
-| [`TaskExecutionMetadata`](.././flytekit.models.task#flytekitmodelstasktaskexecutionmetadata) |  |
-| [`TaskMetadata`](.././flytekit.models.task#flytekitmodelstasktaskmetadata) |  |
-| [`TaskSpec`](.././flytekit.models.task#flytekitmodelstasktaskspec) |  |
-| [`TaskTemplate`](.././flytekit.models.task#flytekitmodelstasktasktemplate) |  |
+| [`CompiledTask`](./flytekit.models.task#flytekitmodelstaskcompiledtask) |  |
+| [`Container`](./flytekit.models.task#flytekitmodelstaskcontainer) |  |
+| [`DataLoadingConfig`](./flytekit.models.task#flytekitmodelstaskdataloadingconfig) |  |
+| [`IOStrategy`](./flytekit.models.task#flytekitmodelstaskiostrategy) | Provides methods to manage data in and out of the Raw container using Download Modes. |
+| [`K8sObjectMetadata`](./flytekit.models.task#flytekitmodelstaskk8sobjectmetadata) |  |
+| [`K8sPod`](./flytekit.models.task#flytekitmodelstaskk8spod) |  |
+| [`Resources`](./flytekit.models.task#flytekitmodelstaskresources) |  |
+| [`RuntimeMetadata`](./flytekit.models.task#flytekitmodelstaskruntimemetadata) |  |
+| [`Sql`](./flytekit.models.task#flytekitmodelstasksql) |  |
+| [`Task`](./flytekit.models.task#flytekitmodelstasktask) |  |
+| [`TaskClosure`](./flytekit.models.task#flytekitmodelstasktaskclosure) |  |
+| [`TaskExecutionMetadata`](./flytekit.models.task#flytekitmodelstasktaskexecutionmetadata) |  |
+| [`TaskMetadata`](./flytekit.models.task#flytekitmodelstasktaskmetadata) |  |
+| [`TaskSpec`](./flytekit.models.task#flytekitmodelstasktaskspec) |  |
+| [`TaskTemplate`](./flytekit.models.task#flytekitmodelstasktasktemplate) |  |
 
 ## flytekit.models.task.CompiledTask
 

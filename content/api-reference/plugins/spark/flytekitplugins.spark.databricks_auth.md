@@ -18,17 +18,17 @@ equivalent per-task setting.
 
 | Class | Description |
 |-|-|
-| [`DatabricksAuth`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksauth) | Interface for obtaining a bearer token for Databricks API calls. |
-| [`OAuthM2MAuth`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoauthm2mauth) | Authenticate a Databricks service principal with client credentials. |
-| [`OIDCConnectorAuth`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcconnectorauth) | Exchange the connector workload's projected JWT for a Databricks token. |
-| [`OIDCNamespaceServiceAccountAuth`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcnamespaceserviceaccountauth) | Federate as a ServiceAccount discovered in the workflow namespace. |
-| [`PATAuth`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authpatauth) | Delegate to the connector's existing multi-tenant PAT lookup. |
+| [`DatabricksAuth`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksauth) | Interface for obtaining a bearer token for Databricks API calls. |
+| [`OAuthM2MAuth`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoauthm2mauth) | Authenticate a Databricks service principal with client credentials. |
+| [`OIDCConnectorAuth`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcconnectorauth) | Exchange the connector workload's projected JWT for a Databricks token. |
+| [`OIDCNamespaceServiceAccountAuth`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authoidcnamespaceserviceaccountauth) | Federate as a ServiceAccount discovered in the workflow namespace. |
+| [`PATAuth`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authpatauth) | Delegate to the connector's existing multi-tenant PAT lookup. |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`DatabricksAuthError`](.././flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksautherror) | Raised when Databricks authentication cannot be obtained. |
+| [`DatabricksAuthError`](./flytekitplugins.spark.databricks_auth#flytekitpluginssparkdatabricks_authdatabricksautherror) | Raised when Databricks authentication cannot be obtained. |
 
 ### Methods
 

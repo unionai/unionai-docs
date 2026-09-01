@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`vscode`](.././flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) |  |
+| [`vscode`](./flytekit.interactive.vscode_lib.decorator#flytekitinteractivevscode_libdecoratorvscode) |  |
 
 ### Methods
 

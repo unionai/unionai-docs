@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BlobType`](.././flytekit.models.core.types#flytekitmodelscoretypesblobtype) | This type represents offloaded data and is typically used for things like files. |
-| [`EnumType`](.././flytekit.models.core.types#flytekitmodelscoretypesenumtype) | Models _types_pb2. |
+| [`BlobType`](./flytekit.models.core.types#flytekitmodelscoretypesblobtype) | This type represents offloaded data and is typically used for things like files. |
+| [`EnumType`](./flytekit.models.core.types#flytekitmodelscoretypesenumtype) | Models _types_pb2. |
 
 ## flytekit.models.core.types.BlobType
 

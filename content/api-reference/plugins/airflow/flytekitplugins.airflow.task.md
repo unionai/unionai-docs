@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AirflowContainerTask`](.././flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowcontainertask) | This python container task is used to wrap an Airflow task. |
-| [`AirflowObj`](.././flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowobj) | This class is used to store the Airflow task configuration. |
-| [`AirflowTask`](.././flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtask) | This python task is used to wrap an Airflow task. |
-| [`AirflowTaskResolver`](.././flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtaskresolver) | This class is used to resolve an Airflow task. |
+| [`AirflowContainerTask`](./flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowcontainertask) | This python container task is used to wrap an Airflow task. |
+| [`AirflowObj`](./flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowobj) | This class is used to store the Airflow task configuration. |
+| [`AirflowTask`](./flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtask) | This python task is used to wrap an Airflow task. |
+| [`AirflowTaskResolver`](./flytekitplugins.airflow.task#flytekitpluginsairflowtaskairflowtaskresolver) | This class is used to resolve an Airflow task. |
 
 ### Variables
 

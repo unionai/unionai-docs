@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Docstring`](.././flytekit.core.docstring#flytekitcoredocstringdocstring) |  |
+| [`Docstring`](./flytekit.core.docstring#flytekitcoredocstringdocstring) |  |
 
 ## flytekit.core.docstring.Docstring
 

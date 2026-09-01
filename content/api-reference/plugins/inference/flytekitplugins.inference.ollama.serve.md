@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Model`](.././flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaservemodel) | Represents the configuration for a model used in a Kubernetes pod template. |
-| [`Ollama`](.././flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaserveollama) |  |
+| [`Model`](./flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaservemodel) | Represents the configuration for a model used in a Kubernetes pod template. |
+| [`Ollama`](./flytekitplugins.inference.ollama.serve#flytekitpluginsinferenceollamaserveollama) |  |
 
 ## flytekitplugins.inference.ollama.serve.Model
 

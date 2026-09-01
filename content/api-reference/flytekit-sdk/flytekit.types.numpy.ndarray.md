@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`NumpyArrayTransformer`](.././flytekit.types.numpy.ndarray#flytekittypesnumpyndarraynumpyarraytransformer) | TypeTransformer that supports np. |
+| [`NumpyArrayTransformer`](./flytekit.types.numpy.ndarray#flytekittypesnumpyndarraynumpyarraytransformer) | TypeTransformer that supports np. |
 
 ### Methods
 

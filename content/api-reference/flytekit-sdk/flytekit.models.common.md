@@ -13,21 +13,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Annotations`](.././flytekit.models.common#flytekitmodelscommonannotations) |  |
-| [`AuthRole`](.././flytekit.models.common#flytekitmodelscommonauthrole) |  |
-| [`EmailNotification`](.././flytekit.models.common#flytekitmodelscommonemailnotification) |  |
-| [`Envs`](.././flytekit.models.common#flytekitmodelscommonenvs) |  |
-| [`FlyteABCMeta`](.././flytekit.models.common#flytekitmodelscommonflyteabcmeta) |  |
-| [`FlyteCustomIdlEntity`](.././flytekit.models.common#flytekitmodelscommonflytecustomidlentity) |  |
-| [`FlyteIdlEntity`](.././flytekit.models.common#flytekitmodelscommonflyteidlentity) |  |
-| [`FlyteType`](.././flytekit.models.common#flytekitmodelscommonflytetype) |  |
-| [`Labels`](.././flytekit.models.common#flytekitmodelscommonlabels) |  |
-| [`NamedEntityIdentifier`](.././flytekit.models.common#flytekitmodelscommonnamedentityidentifier) |  |
-| [`Notification`](.././flytekit.models.common#flytekitmodelscommonnotification) |  |
-| [`PagerDutyNotification`](.././flytekit.models.common#flytekitmodelscommonpagerdutynotification) |  |
-| [`RawOutputDataConfig`](.././flytekit.models.common#flytekitmodelscommonrawoutputdataconfig) |  |
-| [`SlackNotification`](.././flytekit.models.common#flytekitmodelscommonslacknotification) |  |
-| [`UrlBlob`](.././flytekit.models.common#flytekitmodelscommonurlblob) |  |
+| [`Annotations`](./flytekit.models.common#flytekitmodelscommonannotations) |  |
+| [`AuthRole`](./flytekit.models.common#flytekitmodelscommonauthrole) |  |
+| [`EmailNotification`](./flytekit.models.common#flytekitmodelscommonemailnotification) |  |
+| [`Envs`](./flytekit.models.common#flytekitmodelscommonenvs) |  |
+| [`FlyteABCMeta`](./flytekit.models.common#flytekitmodelscommonflyteabcmeta) |  |
+| [`FlyteCustomIdlEntity`](./flytekit.models.common#flytekitmodelscommonflytecustomidlentity) |  |
+| [`FlyteIdlEntity`](./flytekit.models.common#flytekitmodelscommonflyteidlentity) |  |
+| [`FlyteType`](./flytekit.models.common#flytekitmodelscommonflytetype) |  |
+| [`Labels`](./flytekit.models.common#flytekitmodelscommonlabels) |  |
+| [`NamedEntityIdentifier`](./flytekit.models.common#flytekitmodelscommonnamedentityidentifier) |  |
+| [`Notification`](./flytekit.models.common#flytekitmodelscommonnotification) |  |
+| [`PagerDutyNotification`](./flytekit.models.common#flytekitmodelscommonpagerdutynotification) |  |
+| [`RawOutputDataConfig`](./flytekit.models.common#flytekitmodelscommonrawoutputdataconfig) |  |
+| [`SlackNotification`](./flytekit.models.common#flytekitmodelscommonslacknotification) |  |
+| [`UrlBlob`](./flytekit.models.common#flytekitmodelscommonurlblob) |  |
 
 ## flytekit.models.common.Annotations
 

@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ParquetToPolarsDataFrameDecodingHandler`](.././flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformersparquettopolarsdataframedecodinghandler) |  |
-| [`ParquetToPolarsLazyFrameDecodingHandler`](.././flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformersparquettopolarslazyframedecodinghandler) |  |
-| [`PolarsDataFrameRenderer`](.././flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarsdataframerenderer) | The Polars DataFrame summary statistics are rendered as an HTML table. |
-| [`PolarsDataFrameToParquetEncodingHandler`](.././flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarsdataframetoparquetencodinghandler) |  |
-| [`PolarsLazyFrameToParquetEncodingHandler`](.././flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarslazyframetoparquetencodinghandler) |  |
+| [`ParquetToPolarsDataFrameDecodingHandler`](./flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformersparquettopolarsdataframedecodinghandler) |  |
+| [`ParquetToPolarsLazyFrameDecodingHandler`](./flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformersparquettopolarslazyframedecodinghandler) |  |
+| [`PolarsDataFrameRenderer`](./flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarsdataframerenderer) | The Polars DataFrame summary statistics are rendered as an HTML table. |
+| [`PolarsDataFrameToParquetEncodingHandler`](./flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarsdataframetoparquetencodinghandler) |  |
+| [`PolarsLazyFrameToParquetEncodingHandler`](./flytekitplugins.polars.sd_transformers#flytekitpluginspolarssd_transformerspolarslazyframetoparquetencodinghandler) |  |
 
 ### Variables
 

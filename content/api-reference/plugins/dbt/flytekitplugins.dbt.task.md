@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DBTFreshness`](.././flytekitplugins.dbt.task#flytekitpluginsdbttaskdbtfreshness) | Execute DBT Freshness CLI command. |
-| [`DBTRun`](.././flytekitplugins.dbt.task#flytekitpluginsdbttaskdbtrun) | Execute DBT Run CLI command. |
-| [`DBTTest`](.././flytekitplugins.dbt.task#flytekitpluginsdbttaskdbttest) | Execute DBT Test CLI command. |
+| [`DBTFreshness`](./flytekitplugins.dbt.task#flytekitpluginsdbttaskdbtfreshness) | Execute DBT Freshness CLI command. |
+| [`DBTRun`](./flytekitplugins.dbt.task#flytekitpluginsdbttaskdbtrun) | Execute DBT Run CLI command. |
+| [`DBTTest`](./flytekitplugins.dbt.task#flytekitpluginsdbttaskdbttest) | Execute DBT Test CLI command. |
 
 ### Variables
 

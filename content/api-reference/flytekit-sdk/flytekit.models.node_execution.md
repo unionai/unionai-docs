@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DynamicWorkflowNodeMetadata`](.././flytekit.models.node_execution#flytekitmodelsnode_executiondynamicworkflownodemetadata) |  |
-| [`NodeExecution`](.././flytekit.models.node_execution#flytekitmodelsnode_executionnodeexecution) |  |
-| [`NodeExecutionClosure`](.././flytekit.models.node_execution#flytekitmodelsnode_executionnodeexecutionclosure) |  |
-| [`TaskNodeMetadata`](.././flytekit.models.node_execution#flytekitmodelsnode_executiontasknodemetadata) |  |
-| [`WorkflowNodeMetadata`](.././flytekit.models.node_execution#flytekitmodelsnode_executionworkflownodemetadata) |  |
+| [`DynamicWorkflowNodeMetadata`](./flytekit.models.node_execution#flytekitmodelsnode_executiondynamicworkflownodemetadata) |  |
+| [`NodeExecution`](./flytekit.models.node_execution#flytekitmodelsnode_executionnodeexecution) |  |
+| [`NodeExecutionClosure`](./flytekit.models.node_execution#flytekitmodelsnode_executionnodeexecutionclosure) |  |
+| [`TaskNodeMetadata`](./flytekit.models.node_execution#flytekitmodelsnode_executiontasknodemetadata) |  |
+| [`WorkflowNodeMetadata`](./flytekit.models.node_execution#flytekitmodelsnode_executionworkflownodemetadata) |  |
 
 ## flytekit.models.node_execution.DynamicWorkflowNodeMetadata
 

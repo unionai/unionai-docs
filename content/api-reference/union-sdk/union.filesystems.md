@@ -14,8 +14,8 @@ Module for fsspec implementations.
 
 | Class | Description |
 |-|-|
-| [`AsyncUnionFS`](.././union.filesystems#unionfilesystemsasyncunionfs) |  |
-| [`AsyncUnionMetaFS`](.././union.filesystems#unionfilesystemsasyncunionmetafs) |  |
+| [`AsyncUnionFS`](./union.filesystems#unionfilesystemsasyncunionfs) |  |
+| [`AsyncUnionMetaFS`](./union.filesystems#unionfilesystemsasyncunionmetafs) |  |
 
 ## union.filesystems.AsyncUnionFS
 

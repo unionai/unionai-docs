@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SerializationMode`](.././flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) |  |
+| [`SerializationMode`](./flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) |  |
 
 ### Methods
 

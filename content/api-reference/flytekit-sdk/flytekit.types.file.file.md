@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteFile`](.././flytekit.types.file.file#flytekittypesfilefileflytefile) |  |
-| [`FlyteFilePathTransformer`](.././flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) |  |
+| [`FlyteFile`](./flytekit.types.file.file#flytekittypesfilefileflytefile) |  |
+| [`FlyteFilePathTransformer`](./flytekit.types.file.file#flytekittypesfilefileflytefilepathtransformer) |  |
 
 ### Methods
 

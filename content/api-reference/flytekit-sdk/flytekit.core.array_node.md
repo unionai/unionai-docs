@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrayNode`](.././flytekit.core.array_node#flytekitcorearray_nodearraynode) |  |
+| [`ArrayNode`](./flytekit.core.array_node#flytekitcorearray_nodearraynode) |  |
 
 ### Methods
 

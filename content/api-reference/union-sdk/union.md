@@ -13,27 +13,27 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ActorEnvironment`](.././union#unionactorenvironment) | ActorEnvironment class. |
-| [`Artifact`](.././union#unionartifact) | This is a wrapper around the Flytekit Artifact class. |
-| [`Cache`](.././union#unioncache) | Cache configuration for a task. |
-| [`ContainerTask`](.././union#unioncontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
-| [`Deck`](.././union#uniondeck) | Deck enable users to get customizable and default visibility into their tasks. |
-| [`FlyteDirectory`](.././union#unionflytedirectory) |  |
-| [`FlyteFile`](.././union#unionflytefile) |  |
-| [`ImageSpec`](.././union#unionimagespec) | This class is used to specify the docker image that will be used to run the task. |
-| [`LaunchPlan`](.././union#unionlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
-| [`PodTemplate`](.././union#unionpodtemplate) | Custom PodTemplate specification for a Task. |
-| [`Resources`](.././union#unionresources) | This class is used to specify both resource requests and resource limits. |
-| [`Secret`](.././union#unionsecret) | See `cookbook:secrets` for usage examples. |
-| [`StructuredDataset`](.././union#unionstructureddataset) | This is the user facing StructuredDataset class. |
-| [`UnionRemote`](.././union#unionunionremote) |  |
-| [`VersionParameters`](.././union#unionversionparameters) | Parameters used for version hash generation. |
+| [`ActorEnvironment`](./union#unionactorenvironment) | ActorEnvironment class. |
+| [`Artifact`](./union#unionartifact) | This is a wrapper around the Flytekit Artifact class. |
+| [`Cache`](./union#unioncache) | Cache configuration for a task. |
+| [`ContainerTask`](./union#unioncontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`Deck`](./union#uniondeck) | Deck enable users to get customizable and default visibility into their tasks. |
+| [`FlyteDirectory`](./union#unionflytedirectory) |  |
+| [`FlyteFile`](./union#unionflytefile) |  |
+| [`ImageSpec`](./union#unionimagespec) | This class is used to specify the docker image that will be used to run the task. |
+| [`LaunchPlan`](./union#unionlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
+| [`PodTemplate`](./union#unionpodtemplate) | Custom PodTemplate specification for a Task. |
+| [`Resources`](./union#unionresources) | This class is used to specify both resource requests and resource limits. |
+| [`Secret`](./union#unionsecret) | See `cookbook:secrets` for usage examples. |
+| [`StructuredDataset`](./union#unionstructureddataset) | This is the user facing StructuredDataset class. |
+| [`UnionRemote`](./union#unionunionremote) |  |
+| [`VersionParameters`](./union#unionversionparameters) | Parameters used for version hash generation. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`CachePolicy`](.././union#unioncachepolicy) |  |
+| [`CachePolicy`](./union#unioncachepolicy) |  |
 
 ### Methods
 

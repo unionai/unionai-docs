@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FeatureFlags`](.././flytekit.configuration.feature_flags#flytekitconfigurationfeature_flagsfeatureflags) |  |
+| [`FeatureFlags`](./flytekit.configuration.feature_flags#flytekitconfigurationfeature_flagsfeatureflags) |  |
 
 ## flytekit.configuration.feature_flags.FeatureFlags
 

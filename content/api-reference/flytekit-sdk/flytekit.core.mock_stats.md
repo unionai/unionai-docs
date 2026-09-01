@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`MockStats`](.././flytekit.core.mock_stats#flytekitcoremock_statsmockstats) |  |
+| [`MockStats`](./flytekit.core.mock_stats#flytekitcoremock_statsmockstats) |  |
 
 ## flytekit.core.mock_stats.MockStats
 

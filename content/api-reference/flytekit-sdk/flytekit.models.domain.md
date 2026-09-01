@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Domain`](.././flytekit.models.domain#flytekitmodelsdomaindomain) | Domains are fixed and unique at the global level, and provide an abstraction to isolate resources and feature configuration for different deployment environments. |
+| [`Domain`](./flytekit.models.domain#flytekitmodelsdomaindomain) | Domains are fixed and unique at the global level, and provide an abstraction to isolate resources and feature configuration for different deployment environments. |
 
 ## flytekit.models.domain.Domain
 

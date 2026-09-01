@@ -13,25 +13,25 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Binary`](.././flytekit.models.literals#flytekitmodelsliteralsbinary) |  |
-| [`Binding`](.././flytekit.models.literals#flytekitmodelsliteralsbinding) |  |
-| [`BindingData`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdata) |  |
-| [`BindingDataCollection`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatacollection) |  |
-| [`BindingDataMap`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatamap) |  |
-| [`Blob`](.././flytekit.models.literals#flytekitmodelsliteralsblob) |  |
-| [`BlobMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsblobmetadata) | This is metadata for the Blob literal. |
-| [`Literal`](.././flytekit.models.literals#flytekitmodelsliteralsliteral) |  |
-| [`LiteralCollection`](.././flytekit.models.literals#flytekitmodelsliteralsliteralcollection) |  |
-| [`LiteralMap`](.././flytekit.models.literals#flytekitmodelsliteralsliteralmap) |  |
-| [`LiteralOffloadedMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsliteraloffloadedmetadata) |  |
-| [`Primitive`](.././flytekit.models.literals#flytekitmodelsliteralsprimitive) |  |
-| [`RetryStrategy`](.././flytekit.models.literals#flytekitmodelsliteralsretrystrategy) |  |
-| [`Scalar`](.././flytekit.models.literals#flytekitmodelsliteralsscalar) |  |
-| [`Schema`](.././flytekit.models.literals#flytekitmodelsliteralsschema) |  |
-| [`StructuredDataset`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddataset) |  |
-| [`StructuredDatasetMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddatasetmetadata) |  |
-| [`Union`](.././flytekit.models.literals#flytekitmodelsliteralsunion) |  |
-| [`Void`](.././flytekit.models.literals#flytekitmodelsliteralsvoid) |  |
+| [`Binary`](./flytekit.models.literals#flytekitmodelsliteralsbinary) |  |
+| [`Binding`](./flytekit.models.literals#flytekitmodelsliteralsbinding) |  |
+| [`BindingData`](./flytekit.models.literals#flytekitmodelsliteralsbindingdata) |  |
+| [`BindingDataCollection`](./flytekit.models.literals#flytekitmodelsliteralsbindingdatacollection) |  |
+| [`BindingDataMap`](./flytekit.models.literals#flytekitmodelsliteralsbindingdatamap) |  |
+| [`Blob`](./flytekit.models.literals#flytekitmodelsliteralsblob) |  |
+| [`BlobMetadata`](./flytekit.models.literals#flytekitmodelsliteralsblobmetadata) | This is metadata for the Blob literal. |
+| [`Literal`](./flytekit.models.literals#flytekitmodelsliteralsliteral) |  |
+| [`LiteralCollection`](./flytekit.models.literals#flytekitmodelsliteralsliteralcollection) |  |
+| [`LiteralMap`](./flytekit.models.literals#flytekitmodelsliteralsliteralmap) |  |
+| [`LiteralOffloadedMetadata`](./flytekit.models.literals#flytekitmodelsliteralsliteraloffloadedmetadata) |  |
+| [`Primitive`](./flytekit.models.literals#flytekitmodelsliteralsprimitive) |  |
+| [`RetryStrategy`](./flytekit.models.literals#flytekitmodelsliteralsretrystrategy) |  |
+| [`Scalar`](./flytekit.models.literals#flytekitmodelsliteralsscalar) |  |
+| [`Schema`](./flytekit.models.literals#flytekitmodelsliteralsschema) |  |
+| [`StructuredDataset`](./flytekit.models.literals#flytekitmodelsliteralsstructureddataset) |  |
+| [`StructuredDatasetMetadata`](./flytekit.models.literals#flytekitmodelsliteralsstructureddatasetmetadata) |  |
+| [`Union`](./flytekit.models.literals#flytekitmodelsliteralsunion) |  |
+| [`Void`](./flytekit.models.literals#flytekitmodelsliteralsvoid) |  |
 
 ## flytekit.models.literals.Binary
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`UnionAIPlugin`](.././union.configuration#unionconfigurationunionaiplugin) |  |
+| [`UnionAIPlugin`](./union.configuration#unionconfigurationunionaiplugin) |  |
 
 ## union.configuration.UnionAIPlugin
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ErrorTransformer`](.././flytekit.types.error.error#flytekittypeserrorerrorerrortransformer) | Enables converting a python type FlyteError to LiteralType. |
-| [`FlyteError`](.././flytekit.types.error.error#flytekittypeserrorerrorflyteerror) | Special Task type that will be used in the failure node. |
+| [`ErrorTransformer`](./flytekit.types.error.error#flytekittypeserrorerrorerrortransformer) | Enables converting a python type FlyteError to LiteralType. |
+| [`FlyteError`](./flytekit.types.error.error#flytekittypeserrorerrorflyteerror) | Special Task type that will be used in the failure node. |
 
 ### Variables
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ExecutableTemplateShimTask`](.././flytekit.core.shim_task#flytekitcoreshim_taskexecutabletemplateshimtask) | The canonical ``@task`` decorated Python function task is pretty simple to reason about. |
-| [`ShimTaskExecutor`](.././flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) |  |
+| [`ExecutableTemplateShimTask`](./flytekit.core.shim_task#flytekitcoreshim_taskexecutabletemplateshimtask) | The canonical ``@task`` decorated Python function task is pretty simple to reason about. |
+| [`ShimTaskExecutor`](./flytekit.core.shim_task#flytekitcoreshim_taskshimtaskexecutor) |  |
 
 ### Variables
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SnowflakeConnector`](.././flytekitplugins.snowflake.connector#flytekitpluginssnowflakeconnectorsnowflakeconnector) |  |
-| [`SnowflakeJobMetadata`](.././flytekitplugins.snowflake.connector#flytekitpluginssnowflakeconnectorsnowflakejobmetadata) |  |
+| [`SnowflakeConnector`](./flytekitplugins.snowflake.connector#flytekitpluginssnowflakeconnectorsnowflakeconnector) |  |
+| [`SnowflakeJobMetadata`](./flytekitplugins.snowflake.connector#flytekitpluginssnowflakeconnectorsnowflakejobmetadata) |  |
 
 ### Methods
 

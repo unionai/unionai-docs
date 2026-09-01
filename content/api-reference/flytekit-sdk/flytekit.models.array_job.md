@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrayJob`](.././flytekit.models.array_job#flytekitmodelsarray_jobarrayjob) |  |
+| [`ArrayJob`](./flytekit.models.array_job#flytekitmodelsarray_jobarrayjob) |  |
 
 ## flytekit.models.array_job.ArrayJob
 

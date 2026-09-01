@@ -31,13 +31,13 @@ my_plugin = "my_module:MyCustomPlugin"
 
 | Class | Description |
 |-|-|
-| [`FlytekitPlugin`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitplugin) |  |
+| [`FlytekitPlugin`](./flytekit.configuration.plugin#flytekitconfigurationpluginflytekitplugin) |  |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) |  |
+| [`FlytekitPluginProtocol`](./flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) |  |
 
 ### Methods
 

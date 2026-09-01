@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Parameter`](.././flytekit.models.interface#flytekitmodelsinterfaceparameter) |  |
-| [`ParameterMap`](.././flytekit.models.interface#flytekitmodelsinterfaceparametermap) |  |
-| [`TypedInterface`](.././flytekit.models.interface#flytekitmodelsinterfacetypedinterface) |  |
-| [`Variable`](.././flytekit.models.interface#flytekitmodelsinterfacevariable) |  |
-| [`VariableMap`](.././flytekit.models.interface#flytekitmodelsinterfacevariablemap) |  |
+| [`Parameter`](./flytekit.models.interface#flytekitmodelsinterfaceparameter) |  |
+| [`ParameterMap`](./flytekit.models.interface#flytekitmodelsinterfaceparametermap) |  |
+| [`TypedInterface`](./flytekit.models.interface#flytekitmodelsinterfacetypedinterface) |  |
+| [`Variable`](./flytekit.models.interface#flytekitmodelsinterfacevariable) |  |
+| [`VariableMap`](./flytekit.models.interface#flytekitmodelsinterfacevariablemap) |  |
 
 ## flytekit.models.interface.Parameter
 

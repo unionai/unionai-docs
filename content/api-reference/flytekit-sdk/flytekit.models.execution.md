@@ -13,18 +13,18 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AbortMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionabortmetadata) |  |
-| [`ClusterAssignment`](.././flytekit.models.execution#flytekitmodelsexecutionclusterassignment) |  |
-| [`Execution`](.././flytekit.models.execution#flytekitmodelsexecutionexecution) |  |
-| [`ExecutionClosure`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionclosure) |  |
-| [`ExecutionMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionmetadata) |  |
-| [`ExecutionSpec`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionspec) |  |
-| [`LiteralMapBlob`](.././flytekit.models.execution#flytekitmodelsexecutionliteralmapblob) |  |
-| [`NodeExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) |  |
-| [`NotificationList`](.././flytekit.models.execution#flytekitmodelsexecutionnotificationlist) |  |
-| [`SystemMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionsystemmetadata) |  |
-| [`TaskExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) |  |
-| [`WorkflowExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) |  |
+| [`AbortMetadata`](./flytekit.models.execution#flytekitmodelsexecutionabortmetadata) |  |
+| [`ClusterAssignment`](./flytekit.models.execution#flytekitmodelsexecutionclusterassignment) |  |
+| [`Execution`](./flytekit.models.execution#flytekitmodelsexecutionexecution) |  |
+| [`ExecutionClosure`](./flytekit.models.execution#flytekitmodelsexecutionexecutionclosure) |  |
+| [`ExecutionMetadata`](./flytekit.models.execution#flytekitmodelsexecutionexecutionmetadata) |  |
+| [`ExecutionSpec`](./flytekit.models.execution#flytekitmodelsexecutionexecutionspec) |  |
+| [`LiteralMapBlob`](./flytekit.models.execution#flytekitmodelsexecutionliteralmapblob) |  |
+| [`NodeExecutionGetDataResponse`](./flytekit.models.execution#flytekitmodelsexecutionnodeexecutiongetdataresponse) |  |
+| [`NotificationList`](./flytekit.models.execution#flytekitmodelsexecutionnotificationlist) |  |
+| [`SystemMetadata`](./flytekit.models.execution#flytekitmodelsexecutionsystemmetadata) |  |
+| [`TaskExecutionGetDataResponse`](./flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) |  |
+| [`WorkflowExecutionGetDataResponse`](./flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) |  |
 
 ## flytekit.models.execution.AbortMetadata
 

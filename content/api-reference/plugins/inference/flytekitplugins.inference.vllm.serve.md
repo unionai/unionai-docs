@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HFSecret`](.././flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservehfsecret) |  |
-| [`VLLM`](.././flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservevllm) |  |
+| [`HFSecret`](./flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservehfsecret) |  |
+| [`VLLM`](./flytekitplugins.inference.vllm.serve#flytekitpluginsinferencevllmservevllm) |  |
 
 ## flytekitplugins.inference.vllm.serve.HFSecret
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CacheFunctionBody`](.././union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating. |
+| [`CacheFunctionBody`](./union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating. |
 
 ## union.cache.CacheFunctionBody
 

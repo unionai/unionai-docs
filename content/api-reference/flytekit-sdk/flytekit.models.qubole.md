@@ -15,9 +15,9 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 
 | Class | Description |
 |-|-|
-| [`HiveQuery`](.././flytekit.models.qubole#flytekitmodelsqubolehivequery) |  |
-| [`HiveQueryCollection`](.././flytekit.models.qubole#flytekitmodelsqubolehivequerycollection) |  |
-| [`QuboleHiveJob`](.././flytekit.models.qubole#flytekitmodelsqubolequbolehivejob) |  |
+| [`HiveQuery`](./flytekit.models.qubole#flytekitmodelsqubolehivequery) |  |
+| [`HiveQueryCollection`](./flytekit.models.qubole#flytekitmodelsqubolehivequerycollection) |  |
+| [`QuboleHiveJob`](./flytekit.models.qubole#flytekitmodelsqubolequbolehivejob) |  |
 
 ## flytekit.models.qubole.HiveQuery
 

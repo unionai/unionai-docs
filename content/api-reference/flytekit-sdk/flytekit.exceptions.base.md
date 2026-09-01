@@ -13,8 +13,8 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) |  |
-| [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) |  |
+| [`FlyteException`](./flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) |  |
+| [`FlyteRecoverableException`](./flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) |  |
 
 ## flytekit.exceptions.base.FlyteException
 

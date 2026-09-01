@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Optimizer`](.././flytekitplugins.optuna#flytekitpluginsoptunaoptimizer) |  |
+| [`Optimizer`](./flytekitplugins.optuna#flytekitpluginsoptunaoptimizer) |  |
 
 ### Methods
 

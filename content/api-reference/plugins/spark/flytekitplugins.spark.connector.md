@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DatabricksConnector`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnector) |  |
-| [`DatabricksConnectorV2`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
-| [`DatabricksJobMetadata`](.././flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) | Metadata persisted for a Databricks run. |
+| [`DatabricksConnector`](./flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnector) |  |
+| [`DatabricksConnectorV2`](./flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksconnectorv2) | Add DatabricksConnectorV2 to support running the k8s spark and databricks spark together in the same workflow. |
+| [`DatabricksJobMetadata`](./flytekitplugins.spark.connector#flytekitpluginssparkconnectordatabricksjobmetadata) | Metadata persisted for a Databricks run. |
 
 ### Methods
 

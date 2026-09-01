@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteExecutionSpan`](.././flytekit.remote.metrics#flytekitremotemetricsflyteexecutionspan) |  |
+| [`FlyteExecutionSpan`](./flytekit.remote.metrics#flytekitremotemetricsflyteexecutionspan) |  |
 
 ### Methods
 

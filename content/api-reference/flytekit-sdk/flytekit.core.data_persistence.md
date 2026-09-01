@@ -16,7 +16,7 @@ simple implementation that ships with the core.
 
 | Class | Description |
 |-|-|
-| [`FileAccessProvider`](.././flytekit.core.data_persistence#flytekitcoredata_persistencefileaccessprovider) | This is the class that is available through the FlyteContext and can be used for persisting data to the remote. |
+| [`FileAccessProvider`](./flytekit.core.data_persistence#flytekitcoredata_persistencefileaccessprovider) | This is the class that is available through the FlyteContext and can be used for persisting data to the remote. |
 
 ### Methods
 

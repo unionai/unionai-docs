@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`App`](.././union.app#unionappapp) | App specification. |
-| [`ArizeConfig`](.././union.app#unionapparizeconfig) |  |
-| [`FlyteConnectorApp`](.././union.app#unionappflyteconnectorapp) | FlyteConnector application specification that inherits from App. |
-| [`Input`](.././union.app#unionappinput) | Input for application. |
-| [`Link`](.././union.app#unionapplink) |  |
-| [`PhoenixConfig`](.././union.app#unionappphoenixconfig) |  |
-| [`ScalingMetric`](.././union.app#unionappscalingmetric) |  |
-| [`URLQuery`](.././union.app#unionappurlquery) |  |
-| [`WeaveConfig`](.././union.app#unionappweaveconfig) |  |
+| [`App`](./union.app#unionappapp) | App specification. |
+| [`ArizeConfig`](./union.app#unionapparizeconfig) |  |
+| [`FlyteConnectorApp`](./union.app#unionappflyteconnectorapp) | FlyteConnector application specification that inherits from App. |
+| [`Input`](./union.app#unionappinput) | Input for application. |
+| [`Link`](./union.app#unionapplink) |  |
+| [`PhoenixConfig`](./union.app#unionappphoenixconfig) |  |
+| [`ScalingMetric`](./union.app#unionappscalingmetric) |  |
+| [`URLQuery`](./union.app#unionappurlquery) |  |
+| [`WeaveConfig`](./union.app#unionappweaveconfig) |  |
 
 ## union.app.App
 

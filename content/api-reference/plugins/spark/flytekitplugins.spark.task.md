@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Databricks`](.././flytekitplugins.spark.task#flytekitpluginssparktaskdatabricks) | Deprecated. |
-| [`DatabricksV2`](.././flytekitplugins.spark.task#flytekitpluginssparktaskdatabricksv2) | Use this to configure a Databricks task. |
-| [`PysparkFunctionTask`](.././flytekitplugins.spark.task#flytekitpluginssparktaskpysparkfunctiontask) | Actual Plugin that transforms the local python code for execution within a spark context. |
-| [`Spark`](.././flytekitplugins.spark.task#flytekitpluginssparktaskspark) | Use this to configure a SparkContext for a your task. |
+| [`Databricks`](./flytekitplugins.spark.task#flytekitpluginssparktaskdatabricks) | Deprecated. |
+| [`DatabricksV2`](./flytekitplugins.spark.task#flytekitpluginssparktaskdatabricksv2) | Use this to configure a Databricks task. |
+| [`PysparkFunctionTask`](./flytekitplugins.spark.task#flytekitpluginssparktaskpysparkfunctiontask) | Actual Plugin that transforms the local python code for execution within a spark context. |
+| [`Spark`](./flytekitplugins.spark.task#flytekitpluginssparktaskspark) | Use this to configure a SparkContext for a your task. |
 
 ### Methods
 

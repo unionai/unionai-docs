@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ChatGPTConnector`](.././flytekitplugins.openai.chatgpt.connector#flytekitpluginsopenaichatgptconnectorchatgptconnector) |  |
+| [`ChatGPTConnector`](./flytekitplugins.openai.chatgpt.connector#flytekitpluginsopenaichatgptconnectorchatgptconnector) |  |
 
 ### Variables
 

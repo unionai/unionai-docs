@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Identity`](.././flytekit.models.security#flytekitmodelssecurityidentity) |  |
-| [`OAuth2Client`](.././flytekit.models.security#flytekitmodelssecurityoauth2client) |  |
-| [`OAuth2TokenRequest`](.././flytekit.models.security#flytekitmodelssecurityoauth2tokenrequest) |  |
-| [`Secret`](.././flytekit.models.security#flytekitmodelssecuritysecret) | See `cookbook:secrets` for usage examples. |
-| [`SecurityContext`](.././flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
+| [`Identity`](./flytekit.models.security#flytekitmodelssecurityidentity) |  |
+| [`OAuth2Client`](./flytekit.models.security#flytekitmodelssecurityoauth2client) |  |
+| [`OAuth2TokenRequest`](./flytekit.models.security#flytekitmodelssecurityoauth2tokenrequest) |  |
+| [`Secret`](./flytekit.models.security#flytekitmodelssecuritysecret) | See `cookbook:secrets` for usage examples. |
+| [`SecurityContext`](./flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
 
 ## flytekit.models.security.Identity
 

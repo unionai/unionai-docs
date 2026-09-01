@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`NIM`](.././flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenim) |  |
-| [`NIMSecrets`](.././flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenimsecrets) |  |
+| [`NIM`](./flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenim) |  |
+| [`NIMSecrets`](./flytekitplugins.inference.nim.serve#flytekitpluginsinferencenimservenimsecrets) |  |
 
 ## flytekitplugins.inference.nim.serve.NIM
 

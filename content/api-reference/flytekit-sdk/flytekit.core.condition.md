@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BranchNode`](.././flytekit.core.condition#flytekitcoreconditionbranchnode) |  |
-| [`Case`](.././flytekit.core.condition#flytekitcoreconditioncase) |  |
-| [`Condition`](.././flytekit.core.condition#flytekitcoreconditioncondition) |  |
-| [`ConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
-| [`LocalExecutedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) |  |
-| [`SkippedConditionalSection`](.././flytekit.core.condition#flytekitcoreconditionskippedconditionalsection) | This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false. |
+| [`BranchNode`](./flytekit.core.condition#flytekitcoreconditionbranchnode) |  |
+| [`Case`](./flytekit.core.condition#flytekitcoreconditioncase) |  |
+| [`Condition`](./flytekit.core.condition#flytekitcoreconditioncondition) |  |
+| [`ConditionalSection`](./flytekit.core.condition#flytekitcoreconditionconditionalsection) | ConditionalSection is used to denote a condition within a Workflow. |
+| [`LocalExecutedConditionalSection`](./flytekit.core.condition#flytekitcoreconditionlocalexecutedconditionalsection) |  |
+| [`SkippedConditionalSection`](./flytekit.core.condition#flytekitcoreconditionskippedconditionalsection) | This ConditionalSection is used for nested conditionals, when the branch has been evaluated to false. |
 
 ### Methods
 

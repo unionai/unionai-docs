@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlytePickle`](.././flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickle) | This type is only used by flytekit internally. |
-| [`FlytePickleTransformer`](.././flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickletransformer) |  |
+| [`FlytePickle`](./flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickle) | This type is only used by flytekit internally. |
+| [`FlytePickleTransformer`](./flytekit.types.pickle.pickle#flytekittypespicklepickleflytepickletransformer) |  |
 
 ### Variables
 

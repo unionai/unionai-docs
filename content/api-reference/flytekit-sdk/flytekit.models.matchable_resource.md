@@ -13,13 +13,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ClusterResourceAttributes`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceclusterresourceattributes) |  |
-| [`ExecutionClusterLabel`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceexecutionclusterlabel) |  |
-| [`ExecutionQueueAttributes`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceexecutionqueueattributes) |  |
-| [`MatchableResource`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcematchableresource) |  |
-| [`MatchingAttributes`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcematchingattributes) |  |
-| [`PluginOverride`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcepluginoverride) |  |
-| [`PluginOverrides`](.././flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcepluginoverrides) |  |
+| [`ClusterResourceAttributes`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceclusterresourceattributes) |  |
+| [`ExecutionClusterLabel`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceexecutionclusterlabel) |  |
+| [`ExecutionQueueAttributes`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourceexecutionqueueattributes) |  |
+| [`MatchableResource`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcematchableresource) |  |
+| [`MatchingAttributes`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcematchingattributes) |  |
+| [`PluginOverride`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcepluginoverride) |  |
+| [`PluginOverrides`](./flytekit.models.matchable_resource#flytekitmodelsmatchable_resourcepluginoverrides) |  |
 
 ## flytekit.models.matchable_resource.ClusterResourceAttributes
 

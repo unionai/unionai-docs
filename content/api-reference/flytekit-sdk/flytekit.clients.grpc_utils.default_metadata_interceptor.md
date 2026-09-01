@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DefaultMetadataInterceptor`](.././flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) |  |
+| [`DefaultMetadataInterceptor`](./flytekit.clients.grpc_utils.default_metadata_interceptor#flytekitclientsgrpc_utilsdefault_metadata_interceptordefaultmetadatainterceptor) |  |
 
 ## flytekit.clients.grpc_utils.default_metadata_interceptor.DefaultMetadataInterceptor
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Checkpoint`](.././flytekit.core.checkpointer#flytekitcorecheckpointercheckpoint) | Base class for Checkpoint system. |
-| [`SyncCheckpoint`](.././flytekit.core.checkpointer#flytekitcorecheckpointersynccheckpoint) | This class is NOT THREAD-SAFE!. |
+| [`Checkpoint`](./flytekit.core.checkpointer#flytekitcorecheckpointercheckpoint) | Base class for Checkpoint system. |
+| [`SyncCheckpoint`](./flytekit.core.checkpointer#flytekitcorecheckpointersynccheckpoint) | This class is NOT THREAD-SAFE!. |
 
 ## flytekit.core.checkpointer.Checkpoint
 

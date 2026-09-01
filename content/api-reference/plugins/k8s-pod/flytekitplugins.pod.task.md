@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Pod`](.././flytekitplugins.pod.task#flytekitpluginspodtaskpod) | Pod is a platform-wide configuration that uses pod templates. |
-| [`PodFunctionTask`](.././flytekitplugins.pod.task#flytekitpluginspodtaskpodfunctiontask) |  |
+| [`Pod`](./flytekitplugins.pod.task#flytekitpluginspodtaskpod) | Pod is a platform-wide configuration that uses pod templates. |
+| [`PodFunctionTask`](./flytekitplugins.pod.task#flytekitpluginspodtaskpodfunctiontask) |  |
 
 ### Variables
 

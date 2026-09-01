@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Artifact`](.././union.artifacts#unionartifactsartifact) | This is a wrapper around the Flytekit Artifact class. |
-| [`DataCard`](.././union.artifacts#unionartifactsdatacard) |  |
-| [`ModelCard`](.././union.artifacts#unionartifactsmodelcard) |  |
-| [`OnArtifact`](.././union.artifacts#unionartifactsonartifact) | Event used to link upstream and downstream workflows together. |
+| [`Artifact`](./union.artifacts#unionartifactsartifact) | This is a wrapper around the Flytekit Artifact class. |
+| [`DataCard`](./union.artifacts#unionartifactsdatacard) |  |
+| [`ModelCard`](./union.artifacts#unionartifactsmodelcard) |  |
+| [`OnArtifact`](./union.artifacts#unionartifactsonartifact) | Event used to link upstream and downstream workflows together. |
 
 ## union.artifacts.Artifact
 

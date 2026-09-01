@@ -13,13 +13,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ImperativeWorkflow`](.././flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) | An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is. |
-| [`PythonFunctionWorkflow`](.././flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read `flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
-| [`ReferenceWorkflow`](.././flytekit.core.workflow#flytekitcoreworkflowreferenceworkflow) | A reference workflow is a pointer to a workflow that already exists on your Flyte installation. |
-| [`WorkflowBase`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowbase) |  |
-| [`WorkflowFailurePolicy`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowfailurepolicy) | Defines the behavior for a workflow execution in the case of an observed node execution failure. |
-| [`WorkflowMetadata`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowmetadata) |  |
-| [`WorkflowMetadataDefaults`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowmetadatadefaults) | This class is similarly named to the one above. |
+| [`ImperativeWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) | An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is. |
+| [`PythonFunctionWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read `flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
+| [`ReferenceWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowreferenceworkflow) | A reference workflow is a pointer to a workflow that already exists on your Flyte installation. |
+| [`WorkflowBase`](./flytekit.core.workflow#flytekitcoreworkflowworkflowbase) |  |
+| [`WorkflowFailurePolicy`](./flytekit.core.workflow#flytekitcoreworkflowworkflowfailurepolicy) | Defines the behavior for a workflow execution in the case of an observed node execution failure. |
+| [`WorkflowMetadata`](./flytekit.core.workflow#flytekitcoreworkflowworkflowmetadata) |  |
+| [`WorkflowMetadataDefaults`](./flytekit.core.workflow#flytekitcoreworkflowworkflowmetadatadefaults) | This class is similarly named to the one above. |
 
 ### Methods
 

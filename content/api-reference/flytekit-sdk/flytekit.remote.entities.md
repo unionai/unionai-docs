@@ -15,15 +15,15 @@ The goal is to enable easy access, manipulation of these entities.
 
 | Class | Description |
 |-|-|
-| [`FlyteArrayNode`](.././flytekit.remote.entities#flytekitremoteentitiesflytearraynode) |  |
-| [`FlyteBranchNode`](.././flytekit.remote.entities#flytekitremoteentitiesflytebranchnode) |  |
-| [`FlyteGateNode`](.././flytekit.remote.entities#flytekitremoteentitiesflytegatenode) |  |
-| [`FlyteLaunchPlan`](.././flytekit.remote.entities#flytekitremoteentitiesflytelaunchplan) | A class encapsulating a remote Flyte launch plan. |
-| [`FlyteNode`](.././flytekit.remote.entities#flytekitremoteentitiesflytenode) | A class encapsulating a remote Flyte node. |
-| [`FlyteTask`](.././flytekit.remote.entities#flytekitremoteentitiesflytetask) | A class encapsulating a remote Flyte task. |
-| [`FlyteTaskNode`](.././flytekit.remote.entities#flytekitremoteentitiesflytetasknode) | A class encapsulating a task that a Flyte node needs to execute. |
-| [`FlyteWorkflow`](.././flytekit.remote.entities#flytekitremoteentitiesflyteworkflow) | A class encapsulating a remote Flyte workflow. |
-| [`FlyteWorkflowNode`](.././flytekit.remote.entities#flytekitremoteentitiesflyteworkflownode) | A class encapsulating a workflow that a Flyte node needs to execute. |
+| [`FlyteArrayNode`](./flytekit.remote.entities#flytekitremoteentitiesflytearraynode) |  |
+| [`FlyteBranchNode`](./flytekit.remote.entities#flytekitremoteentitiesflytebranchnode) |  |
+| [`FlyteGateNode`](./flytekit.remote.entities#flytekitremoteentitiesflytegatenode) |  |
+| [`FlyteLaunchPlan`](./flytekit.remote.entities#flytekitremoteentitiesflytelaunchplan) | A class encapsulating a remote Flyte launch plan. |
+| [`FlyteNode`](./flytekit.remote.entities#flytekitremoteentitiesflytenode) | A class encapsulating a remote Flyte node. |
+| [`FlyteTask`](./flytekit.remote.entities#flytekitremoteentitiesflytetask) | A class encapsulating a remote Flyte task. |
+| [`FlyteTaskNode`](./flytekit.remote.entities#flytekitremoteentitiesflytetasknode) | A class encapsulating a task that a Flyte node needs to execute. |
+| [`FlyteWorkflow`](./flytekit.remote.entities#flytekitremoteentitiesflyteworkflow) | A class encapsulating a remote Flyte workflow. |
+| [`FlyteWorkflowNode`](./flytekit.remote.entities#flytekitremoteentitiesflyteworkflownode) | A class encapsulating a workflow that a Flyte node needs to execute. |
 
 ## flytekit.remote.entities.FlyteArrayNode
 

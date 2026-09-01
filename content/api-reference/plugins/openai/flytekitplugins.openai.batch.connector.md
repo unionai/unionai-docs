@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BatchEndpointConnector`](.././flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorbatchendpointconnector) |  |
-| [`BatchEndpointMetadata`](.././flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorbatchendpointmetadata) |  |
-| [`State`](.././flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorstate) |  |
+| [`BatchEndpointConnector`](./flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorbatchendpointconnector) |  |
+| [`BatchEndpointMetadata`](./flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorbatchendpointmetadata) |  |
+| [`State`](./flytekitplugins.openai.batch.connector#flytekitpluginsopenaibatchconnectorstate) |  |
 
 ### Variables
 

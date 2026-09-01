@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Dask`](.././flytekitplugins.dask.task#flytekitpluginsdasktaskdask) | Configuration for the dask task. |
-| [`DaskTask`](.././flytekitplugins.dask.task#flytekitpluginsdasktaskdasktask) | Actual Plugin that transforms the local python code for execution within a dask cluster. |
-| [`Scheduler`](.././flytekitplugins.dask.task#flytekitpluginsdasktaskscheduler) | Configuration for the scheduler pod. |
-| [`WorkerGroup`](.././flytekitplugins.dask.task#flytekitpluginsdasktaskworkergroup) | Configuration for a group of dask worker pods. |
+| [`Dask`](./flytekitplugins.dask.task#flytekitpluginsdasktaskdask) | Configuration for the dask task. |
+| [`DaskTask`](./flytekitplugins.dask.task#flytekitpluginsdasktaskdasktask) | Actual Plugin that transforms the local python code for execution within a dask cluster. |
+| [`Scheduler`](./flytekitplugins.dask.task#flytekitpluginsdasktaskscheduler) | Configuration for the scheduler pod. |
+| [`WorkerGroup`](./flytekitplugins.dask.task#flytekitpluginsdasktaskworkergroup) | Configuration for a group of dask worker pods. |
 
 ## flytekitplugins.dask.task.Dask
 

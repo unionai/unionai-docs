@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`GenericSparkConf`](.././flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparkconf) |  |
-| [`GenericSparkTask`](.././flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparktask) |  |
+| [`GenericSparkConf`](./flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparkconf) |  |
+| [`GenericSparkTask`](./flytekitplugins.spark.generic_task#flytekitpluginssparkgeneric_taskgenericsparktask) |  |
 
 ## flytekitplugins.spark.generic_task.GenericSparkConf
 

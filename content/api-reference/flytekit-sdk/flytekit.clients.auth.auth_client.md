@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AuthorizationClient`](.././flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientauthorizationclient) | Authorization client that stores the credentials in keyring and uses oauth2 standard flow to retrieve the. |
-| [`AuthorizationCode`](.././flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientauthorizationcode) |  |
-| [`EndpointMetadata`](.././flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientendpointmetadata) | This class can be used to control the rendering of the page on login successful or failure. |
-| [`OAuthCallbackHandler`](.././flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientoauthcallbackhandler) | A simple wrapper around BaseHTTPServer. |
-| [`OAuthHTTPServer`](.././flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientoauthhttpserver) | A simple wrapper around the BaseHTTPServer. |
+| [`AuthorizationClient`](./flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientauthorizationclient) | Authorization client that stores the credentials in keyring and uses oauth2 standard flow to retrieve the. |
+| [`AuthorizationCode`](./flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientauthorizationcode) |  |
+| [`EndpointMetadata`](./flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientendpointmetadata) | This class can be used to control the rendering of the page on login successful or failure. |
+| [`OAuthCallbackHandler`](./flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientoauthcallbackhandler) | A simple wrapper around BaseHTTPServer. |
+| [`OAuthHTTPServer`](./flytekit.clients.auth.auth_client#flytekitclientsauthauth_clientoauthhttpserver) | A simple wrapper around the BaseHTTPServer. |
 
 ## flytekit.clients.auth.auth_client.AuthorizationClient
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) |  |
+| [`TaggableStats`](./flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) |  |
 
 ### Methods
 

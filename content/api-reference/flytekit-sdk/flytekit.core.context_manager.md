@@ -14,22 +14,22 @@ These classes provide functionality related context management.
 
 | Class | Description |
 |-|-|
-| [`BranchEvalMode`](.././flytekit.core.context_manager#flytekitcorecontext_managerbranchevalmode) | This is a 3-way class, with the None value meaning that we are not within a conditional context. |
-| [`CompilationState`](.././flytekit.core.context_manager#flytekitcorecontext_managercompilationstate) | Compilation state is used during the compilation of a workflow or task. |
-| [`ExecutionParameters`](.././flytekit.core.context_manager#flytekitcorecontext_managerexecutionparameters) | This is a run-time user-centric context object that is accessible to every @task method. |
-| [`ExecutionState`](.././flytekit.core.context_manager#flytekitcorecontext_managerexecutionstate) | This is the context that is active when executing a task or a local workflow. |
-| [`FlyteContext`](.././flytekit.core.context_manager#flytekitcorecontext_managerflytecontext) | This is an internal-facing context object, that most users will not have to deal with. |
-| [`FlyteContextManager`](.././flytekit.core.context_manager#flytekitcorecontext_managerflytecontextmanager) | FlyteContextManager manages the execution context within Flytekit. |
-| [`FlyteEntities`](.././flytekit.core.context_manager#flytekitcorecontext_managerflyteentities) | This is a global Object that tracks various tasks and workflows that are declared within a VM during the. |
-| [`OutputMetadata`](.././flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadata) |  |
-| [`OutputMetadataTracker`](.././flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadatatracker) | This class is for the users to set arbitrary metadata on output literals. |
-| [`SecretsManager`](.././flytekit.core.context_manager#flytekitcorecontext_managersecretsmanager) | This provides a secrets resolution logic at runtime. |
+| [`BranchEvalMode`](./flytekit.core.context_manager#flytekitcorecontext_managerbranchevalmode) | This is a 3-way class, with the None value meaning that we are not within a conditional context. |
+| [`CompilationState`](./flytekit.core.context_manager#flytekitcorecontext_managercompilationstate) | Compilation state is used during the compilation of a workflow or task. |
+| [`ExecutionParameters`](./flytekit.core.context_manager#flytekitcorecontext_managerexecutionparameters) | This is a run-time user-centric context object that is accessible to every @task method. |
+| [`ExecutionState`](./flytekit.core.context_manager#flytekitcorecontext_managerexecutionstate) | This is the context that is active when executing a task or a local workflow. |
+| [`FlyteContext`](./flytekit.core.context_manager#flytekitcorecontext_managerflytecontext) | This is an internal-facing context object, that most users will not have to deal with. |
+| [`FlyteContextManager`](./flytekit.core.context_manager#flytekitcorecontext_managerflytecontextmanager) | FlyteContextManager manages the execution context within Flytekit. |
+| [`FlyteEntities`](./flytekit.core.context_manager#flytekitcorecontext_managerflyteentities) | This is a global Object that tracks various tasks and workflows that are declared within a VM during the. |
+| [`OutputMetadata`](./flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadata) |  |
+| [`OutputMetadataTracker`](./flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadatatracker) | This class is for the users to set arbitrary metadata on output literals. |
+| [`SecretsManager`](./flytekit.core.context_manager#flytekitcorecontext_managersecretsmanager) | This provides a secrets resolution logic at runtime. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`SerializableToString`](.././flytekit.core.context_manager#flytekitcorecontext_managerserializabletostring) | This protocol is used by the Artifact create_from function. |
+| [`SerializableToString`](./flytekit.core.context_manager#flytekitcorecontext_managerserializabletostring) | This protocol is used by the Artifact create_from function. |
 
 ### Variables
 

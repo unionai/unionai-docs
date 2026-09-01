@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SparkJob`](.././flytekitplugins.spark.models#flytekitpluginssparkmodelssparkjob) |  |
-| [`SparkType`](.././flytekitplugins.spark.models#flytekitpluginssparkmodelssparktype) |  |
+| [`SparkJob`](./flytekitplugins.spark.models#flytekitpluginssparkmodelssparkjob) |  |
+| [`SparkType`](./flytekitplugins.spark.models#flytekitpluginssparkmodelssparktype) |  |
 
 ## flytekitplugins.spark.models.SparkJob
 

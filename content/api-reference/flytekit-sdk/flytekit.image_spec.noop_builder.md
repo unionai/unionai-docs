@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`NoOpBuilder`](.././flytekit.image_spec.noop_builder#flytekitimage_specnoop_buildernoopbuilder) | Noop image builder. |
+| [`NoOpBuilder`](./flytekit.image_spec.noop_builder#flytekitimage_specnoop_buildernoopbuilder) | Noop image builder. |
 
 ## flytekit.image_spec.noop_builder.NoOpBuilder
 

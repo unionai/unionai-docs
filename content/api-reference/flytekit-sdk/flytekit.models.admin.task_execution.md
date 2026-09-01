@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaskExecution`](.././flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecution) |  |
-| [`TaskExecutionClosure`](.././flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecutionclosure) |  |
+| [`TaskExecution`](./flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecution) |  |
+| [`TaskExecutionClosure`](./flytekit.models.admin.task_execution#flytekitmodelsadmintask_executiontaskexecutionclosure) |  |
 
 ## flytekit.models.admin.task_execution.TaskExecution
 

@@ -13,29 +13,29 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncTypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineasynctypetransformer) |  |
-| [`BatchSize`](.././flytekit.core.type_engine#flytekitcoretype_enginebatchsize) | This is used to annotate a FlyteDirectory when we want to download/upload the contents of the directory in batches. |
-| [`BinaryIOTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginebinaryiotransformer) | Handler for BinaryIO. |
-| [`DataclassTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginedataclasstransformer) | The Dataclass Transformer provides a type transformer for dataclasses. |
-| [`DictTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) | Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or. |
-| [`EnumTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) | Enables converting a python type enum. |
-| [`ListTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) | Transformer that handles a univariate typing. |
-| [`LiteralTypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) |  |
-| [`LiteralsResolver`](.././flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) | LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation. |
-| [`ProtobufTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) |  |
-| [`RestrictedTypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypetransformer) | Types registered with the RestrictedTypeTransformer are not allowed to be converted to and from literals. |
-| [`SimpleTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginesimpletransformer) | A Simple implementation of a type transformer that uses simple lambdas to transform and reduces boilerplate. |
-| [`TextIOTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginetextiotransformer) | Handler for TextIO. |
-| [`TypeEngine`](.././flytekit.core.type_engine#flytekitcoretype_enginetypeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`TypeTransformer`](.././flytekit.core.type_engine#flytekitcoretype_enginetypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`UnionTransformer`](.././flytekit.core.type_engine#flytekitcoretype_engineuniontransformer) | Transformer that handles a typing. |
+| [`AsyncTypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineasynctypetransformer) |  |
+| [`BatchSize`](./flytekit.core.type_engine#flytekitcoretype_enginebatchsize) | This is used to annotate a FlyteDirectory when we want to download/upload the contents of the directory in batches. |
+| [`BinaryIOTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginebinaryiotransformer) | Handler for BinaryIO. |
+| [`DataclassTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginedataclasstransformer) | The Dataclass Transformer provides a type transformer for dataclasses. |
+| [`DictTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) | Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or. |
+| [`EnumTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) | Enables converting a python type enum. |
+| [`ListTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) | Transformer that handles a univariate typing. |
+| [`LiteralTypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) |  |
+| [`LiteralsResolver`](./flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) | LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation. |
+| [`ProtobufTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) |  |
+| [`RestrictedTypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypetransformer) | Types registered with the RestrictedTypeTransformer are not allowed to be converted to and from literals. |
+| [`SimpleTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginesimpletransformer) | A Simple implementation of a type transformer that uses simple lambdas to transform and reduces boilerplate. |
+| [`TextIOTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginetextiotransformer) | Handler for TextIO. |
+| [`TypeEngine`](./flytekit.core.type_engine#flytekitcoretype_enginetypeengine) | Core Extensible TypeEngine of Flytekit. |
+| [`TypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginetypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`UnionTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineuniontransformer) | Transformer that handles a typing. |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`RestrictedTypeError`](.././flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypeerror) |  |
-| [`TypeTransformerFailedError`](.././flytekit.core.type_engine#flytekitcoretype_enginetypetransformerfailederror) |  |
+| [`RestrictedTypeError`](./flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypeerror) |  |
+| [`TypeTransformerFailedError`](./flytekit.core.type_engine#flytekitcoretype_enginetypetransformerfailederror) |  |
 
 ### Methods
 

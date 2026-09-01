@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CatalogArtifactTag`](.././flytekit.models.core.catalog#flytekitmodelscorecatalogcatalogartifacttag) |  |
-| [`CatalogMetadata`](.././flytekit.models.core.catalog#flytekitmodelscorecatalogcatalogmetadata) |  |
+| [`CatalogArtifactTag`](./flytekit.models.core.catalog#flytekitmodelscorecatalogcatalogartifacttag) |  |
+| [`CatalogMetadata`](./flytekit.models.core.catalog#flytekitmodelscorecatalogcatalogmetadata) |  |
 
 ## flytekit.models.core.catalog.CatalogArtifactTag
 

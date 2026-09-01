@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PandasDataFrameTransformer`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasdataframetransformer) | Transforms a pd. |
-| [`PandasSchemaReader`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) |  |
-| [`PandasSchemaWriter`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) |  |
-| [`ParquetIO`](.././flytekit.types.schema.types_pandas#flytekittypesschematypes_pandasparquetio) |  |
+| [`PandasDataFrameTransformer`](./flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasdataframetransformer) | Transforms a pd. |
+| [`PandasSchemaReader`](./flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemareader) |  |
+| [`PandasSchemaWriter`](./flytekit.types.schema.types_pandas#flytekittypesschematypes_pandaspandasschemawriter) |  |
+| [`ParquetIO`](./flytekit.types.schema.types_pandas#flytekittypesschematypes_pandasparquetio) |  |
 
 ## flytekit.types.schema.types_pandas.PandasDataFrameTransformer
 

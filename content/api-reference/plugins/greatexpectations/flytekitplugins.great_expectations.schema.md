@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`GreatExpectationsFlyteConfig`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationsflyteconfig) | Use this configuration to configure GreatExpectations Plugin. |
-| [`GreatExpectationsType`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstype) | Use this class to send the GreatExpectationsFlyteConfig. |
-| [`GreatExpectationsTypeTransformer`](.././flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer) |  |
+| [`GreatExpectationsFlyteConfig`](./flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationsflyteconfig) | Use this configuration to configure GreatExpectations Plugin. |
+| [`GreatExpectationsType`](./flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstype) | Use this class to send the GreatExpectationsFlyteConfig. |
+| [`GreatExpectationsTypeTransformer`](./flytekitplugins.great_expectations.schema#flytekitpluginsgreat_expectationsschemagreatexpectationstypetransformer) |  |
 
 ## flytekitplugins.great_expectations.schema.GreatExpectationsFlyteConfig
 

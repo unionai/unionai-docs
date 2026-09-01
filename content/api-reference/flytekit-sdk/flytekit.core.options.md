@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Options`](.././flytekit.core.options#flytekitcoreoptionsoptions) | These are options that can be configured for a launchplan during registration or overridden during an execution. |
+| [`Options`](./flytekit.core.options#flytekitcoreoptionsoptions) | These are options that can be configured for a launchplan during registration or overridden during an execution. |
 
 ## flytekit.core.options.Options
 

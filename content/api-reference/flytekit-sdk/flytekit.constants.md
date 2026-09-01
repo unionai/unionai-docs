@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CopyFileDetection`](.././flytekit.constants#flytekitconstantscopyfiledetection) |  |
+| [`CopyFileDetection`](./flytekit.constants#flytekitconstantscopyfiledetection) |  |
 
 ## flytekit.constants.CopyFileDetection
 

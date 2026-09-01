@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ClassicSparkToParquetEncodingHandler`](.././flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersclassicsparktoparquetencodinghandler) |  |
-| [`ParquetToClassicSparkDecodingHandler`](.././flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettoclassicsparkdecodinghandler) |  |
-| [`ParquetToSparkDecodingHandler`](.././flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettosparkdecodinghandler) |  |
-| [`SparkDataFrameRenderer`](.././flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparkdataframerenderer) | Render a Spark dataframe schema as an HTML table. |
-| [`SparkToParquetEncodingHandler`](.././flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparktoparquetencodinghandler) |  |
+| [`ClassicSparkToParquetEncodingHandler`](./flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersclassicsparktoparquetencodinghandler) |  |
+| [`ParquetToClassicSparkDecodingHandler`](./flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettoclassicsparkdecodinghandler) |  |
+| [`ParquetToSparkDecodingHandler`](./flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformersparquettosparkdecodinghandler) |  |
+| [`SparkDataFrameRenderer`](./flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparkdataframerenderer) | Render a Spark dataframe schema as an HTML table. |
+| [`SparkToParquetEncodingHandler`](./flytekitplugins.spark.sd_transformers#flytekitpluginssparksd_transformerssparktoparquetencodinghandler) |  |
 
 ### Variables
 

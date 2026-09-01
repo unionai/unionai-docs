@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Echo`](.././flytekit.core.task#flytekitcoretaskecho) |  |
-| [`ReferenceTask`](.././flytekit.core.task#flytekitcoretaskreferencetask) | This is a reference task, the body of the function passed in through the constructor will never be used, only the. |
-| [`TaskPlugins`](.././flytekit.core.task#flytekitcoretasktaskplugins) | This is the TaskPlugins factory for task types that are derivative of PythonFunctionTask. |
+| [`Echo`](./flytekit.core.task#flytekitcoretaskecho) |  |
+| [`ReferenceTask`](./flytekit.core.task#flytekitcoretaskreferencetask) | This is a reference task, the body of the function passed in through the constructor will never be used, only the. |
+| [`TaskPlugins`](./flytekit.core.task#flytekitcoretasktaskplugins) | This is the TaskPlugins factory for task types that are derivative of PythonFunctionTask. |
 
 ### Methods
 

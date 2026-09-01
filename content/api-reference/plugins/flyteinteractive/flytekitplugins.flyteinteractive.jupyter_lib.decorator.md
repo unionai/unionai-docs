@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`jupyter`](.././flytekitplugins.flyteinteractive.jupyter_lib.decorator#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter) |  |
+| [`jupyter`](./flytekitplugins.flyteinteractive.jupyter_lib.decorator#flytekitpluginsflyteinteractivejupyter_libdecoratorjupyter) |  |
 
 ### Methods
 

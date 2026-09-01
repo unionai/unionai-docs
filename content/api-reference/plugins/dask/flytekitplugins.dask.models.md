@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DaskJob`](.././flytekitplugins.dask.models#flytekitpluginsdaskmodelsdaskjob) | Configuration for the custom dask job to run. |
-| [`Scheduler`](.././flytekitplugins.dask.models#flytekitpluginsdaskmodelsscheduler) | Configuration for the scheduler pod. |
-| [`WorkerGroup`](.././flytekitplugins.dask.models#flytekitpluginsdaskmodelsworkergroup) | Configuration for a dask worker group. |
+| [`DaskJob`](./flytekitplugins.dask.models#flytekitpluginsdaskmodelsdaskjob) | Configuration for the custom dask job to run. |
+| [`Scheduler`](./flytekitplugins.dask.models#flytekitpluginsdaskmodelsscheduler) | Configuration for the scheduler pod. |
+| [`WorkerGroup`](./flytekitplugins.dask.models#flytekitpluginsdaskmodelsworkergroup) | Configuration for a dask worker group. |
 
 ## flytekitplugins.dask.models.DaskJob
 

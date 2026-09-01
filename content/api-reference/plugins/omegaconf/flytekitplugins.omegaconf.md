@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`OmegaConfTransformerMode`](.././flytekitplugins.omegaconf#flytekitpluginsomegaconfomegaconftransformermode) | Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the. |
+| [`OmegaConfTransformerMode`](./flytekitplugins.omegaconf#flytekitpluginsomegaconfomegaconftransformermode) | Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the. |
 
 ### Methods
 

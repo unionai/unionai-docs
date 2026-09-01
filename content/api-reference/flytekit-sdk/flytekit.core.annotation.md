@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteAnnotation`](.././flytekit.core.annotation#flytekitcoreannotationflyteannotation) | A core object to add arbitrary annotations to flyte types. |
+| [`FlyteAnnotation`](./flytekit.core.annotation#flytekitcoreannotationflyteannotation) | A core object to add arbitrary annotations to flyte types. |
 
 ## flytekit.core.annotation.FlyteAnnotation
 

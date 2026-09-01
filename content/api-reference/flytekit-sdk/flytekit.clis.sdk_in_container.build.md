@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BuildCommand`](.././flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildcommand) | A click command group for building a image for flyte workflows & tasks in a file. |
-| [`BuildParams`](.././flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildparams) |  |
-| [`BuildWorkflowCommand`](.././flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildworkflowcommand) | click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`BuildCommand`](./flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildcommand) | A click command group for building a image for flyte workflows & tasks in a file. |
+| [`BuildParams`](./flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildparams) |  |
+| [`BuildWorkflowCommand`](./flytekit.clis.sdk_in_container.build#flytekitclissdk_in_containerbuildbuildworkflowcommand) | click multicommand at the python file layer, subcommands should be all the workflows in the file. |
 
 ### Methods
 

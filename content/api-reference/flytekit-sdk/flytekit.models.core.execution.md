@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ExecutionError`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionexecutionerror) |  |
-| [`NodeExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionnodeexecutionphase) |  |
-| [`TaskExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontaskexecutionphase) |  |
-| [`TaskLog`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontasklog) |  |
-| [`WorkflowExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionworkflowexecutionphase) | This class holds enum values used for setting notifications. |
+| [`ExecutionError`](./flytekit.models.core.execution#flytekitmodelscoreexecutionexecutionerror) |  |
+| [`NodeExecutionPhase`](./flytekit.models.core.execution#flytekitmodelscoreexecutionnodeexecutionphase) |  |
+| [`TaskExecutionPhase`](./flytekit.models.core.execution#flytekitmodelscoreexecutiontaskexecutionphase) |  |
+| [`TaskLog`](./flytekit.models.core.execution#flytekitmodelscoreexecutiontasklog) |  |
+| [`WorkflowExecutionPhase`](./flytekit.models.core.execution#flytekitmodelscoreexecutionworkflowexecutionphase) | This class holds enum values used for setting notifications. |
 
 ## flytekit.models.core.execution.ExecutionError
 

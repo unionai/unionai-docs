@@ -15,16 +15,16 @@ Kubernetes. It leverages [`Pytorch Job`](https://github.com/kubeflow/pytorch-ope
 
 | Class | Description |
 |-|-|
-| [`CleanPodPolicy`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
-| [`Elastic`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelastic) | Configuration for [`torch elastic training`](https://pytorch. |
-| [`ElasticWorkerResult`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelasticworkerresult) | A named tuple representing the result of a torch elastic worker process. |
-| [`Master`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskmaster) | Configuration for master replica group. |
-| [`PyTorch`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorch) | Configuration for an executable [`PyTorch Job`](https://github. |
-| [`PyTorchFunctionTask`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchfunctiontask) | Plugin that submits a PyTorchJob (see https://github. |
-| [`PytorchElasticFunctionTask`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask) | Plugin for distributed training with torch elastic/torchrun (see. |
-| [`RestartPolicy`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
-| [`RunPolicy`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrunpolicy) | RunPolicy describes some policy to apply to the execution of a kubeflow job. |
-| [`Worker`](.././flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskworker) |  |
+| [`CleanPodPolicy`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
+| [`Elastic`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelastic) | Configuration for [`torch elastic training`](https://pytorch. |
+| [`ElasticWorkerResult`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelasticworkerresult) | A named tuple representing the result of a torch elastic worker process. |
+| [`Master`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskmaster) | Configuration for master replica group. |
+| [`PyTorch`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorch) | Configuration for an executable [`PyTorch Job`](https://github. |
+| [`PyTorchFunctionTask`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchfunctiontask) | Plugin that submits a PyTorchJob (see https://github. |
+| [`PytorchElasticFunctionTask`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask) | Plugin for distributed training with torch elastic/torchrun (see. |
+| [`RestartPolicy`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
+| [`RunPolicy`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrunpolicy) | RunPolicy describes some policy to apply to the execution of a kubeflow job. |
+| [`Worker`](./flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskworker) |  |
 
 ### Methods
 

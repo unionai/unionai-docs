@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`LaunchPlan`](.././flytekit.core.launch_plan#flytekitcorelaunch_planlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
-| [`ReferenceLaunchPlan`](.././flytekit.core.launch_plan#flytekitcorelaunch_planreferencelaunchplan) | A reference launch plan serves as a pointer to a Launch Plan that already exists on your Flyte installation. |
+| [`LaunchPlan`](./flytekit.core.launch_plan#flytekitcorelaunch_planlaunchplan) | Launch Plans are one of the core constructs of Flyte. |
+| [`ReferenceLaunchPlan`](./flytekit.core.launch_plan#flytekitcorelaunch_planreferencelaunchplan) | A reference launch plan serves as a pointer to a Launch Plan that already exists on your Flyte installation. |
 
 ### Methods
 

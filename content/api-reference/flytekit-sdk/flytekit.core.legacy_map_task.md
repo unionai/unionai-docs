@@ -15,8 +15,8 @@ a reference task as well as run-time parameters that limit execution concurrency
 
 | Class | Description |
 |-|-|
-| [`MapPythonTask`](.././flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmappythontask) | A MapPythonTask defines a {{< py_class_ref flytekit.PythonTask >}} which specifies how to run. |
-| [`MapTaskResolver`](.././flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmaptaskresolver) | Special resolver that is used for MapTasks. |
+| [`MapPythonTask`](./flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmappythontask) | A MapPythonTask defines a {{< py_class_ref flytekit.PythonTask >}} which specifies how to run. |
+| [`MapTaskResolver`](./flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmaptaskresolver) | Special resolver that is used for MapTasks. |
 
 ### Methods
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RichCallback`](.././flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |  |
+| [`RichCallback`](./flytekit.interaction.rich_utils#flytekitinteractionrich_utilsrichcallback) |  |
 
 ## flytekit.interaction.rich_utils.RichCallback
 

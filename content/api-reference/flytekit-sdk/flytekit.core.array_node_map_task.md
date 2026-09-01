@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrayNodeMapTask`](.././flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) |  |
-| [`ArrayNodeMapTaskResolver`](.././flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptaskresolver) | Special resolver that is used for ArrayNodeMapTasks. |
+| [`ArrayNodeMapTask`](./flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptask) |  |
+| [`ArrayNodeMapTaskResolver`](./flytekit.core.array_node_map_task#flytekitcorearray_node_map_taskarraynodemaptaskresolver) | Special resolver that is used for ArrayNodeMapTasks. |
 
 ### Methods
 

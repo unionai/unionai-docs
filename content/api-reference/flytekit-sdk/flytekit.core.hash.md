@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HashMethod`](.././flytekit.core.hash#flytekitcorehashhashmethod) | Flyte-specific object used to wrap the hash function for a specific type. |
-| [`HashOnReferenceMixin`](.././flytekit.core.hash#flytekitcorehashhashonreferencemixin) |  |
+| [`HashMethod`](./flytekit.core.hash#flytekitcorehashhashmethod) | Flyte-specific object used to wrap the hash function for a specific type. |
+| [`HashOnReferenceMixin`](./flytekit.core.hash#flytekitcorehashhashonreferencemixin) |  |
 
 ### Variables
 

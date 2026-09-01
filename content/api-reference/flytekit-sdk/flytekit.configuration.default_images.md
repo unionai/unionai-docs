@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DefaultImages`](.././flytekit.configuration.default_images#flytekitconfigurationdefault_imagesdefaultimages) | We may want to load the default images from remote - maybe s3 location etc?. |
-| [`PythonVersion`](.././flytekit.configuration.default_images#flytekitconfigurationdefault_imagespythonversion) |  |
+| [`DefaultImages`](./flytekit.configuration.default_images#flytekitconfigurationdefault_imagesdefaultimages) | We may want to load the default images from remote - maybe s3 location etc?. |
+| [`PythonVersion`](./flytekit.configuration.default_images#flytekitconfigurationdefault_imagespythonversion) |  |
 
 ### Variables
 

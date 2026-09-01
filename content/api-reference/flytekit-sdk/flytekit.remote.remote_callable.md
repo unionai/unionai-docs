@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RemoteEntity`](.././flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |  |
+| [`RemoteEntity`](./flytekit.remote.remote_callable#flytekitremoteremote_callableremoteentity) |  |
 
 ## flytekit.remote.remote_callable.RemoteEntity
 

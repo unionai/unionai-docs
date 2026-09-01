@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ScopedGrpcDeadlineInterceptor`](.././flytekit.clients.grpc_utils.deadline_interceptor#flytekitclientsgrpc_utilsdeadline_interceptorscopedgrpcdeadlineinterceptor) | Applies the currently scoped gRPC timeout to unary-unary calls. |
+| [`ScopedGrpcDeadlineInterceptor`](./flytekit.clients.grpc_utils.deadline_interceptor#flytekitclientsgrpc_utilsdeadline_interceptorscopedgrpcdeadlineinterceptor) | Applies the currently scoped gRPC timeout to unary-unary calls. |
 
 ### Methods
 

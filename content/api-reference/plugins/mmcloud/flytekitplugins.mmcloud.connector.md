@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`MMCloudConnector`](.././flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudconnector) |  |
-| [`MMCloudMetadata`](.././flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudmetadata) |  |
+| [`MMCloudConnector`](./flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudconnector) |  |
+| [`MMCloudMetadata`](./flytekitplugins.mmcloud.connector#flytekitpluginsmmcloudconnectormmcloudmetadata) |  |
 
 ## flytekitplugins.mmcloud.connector.MMCloudConnector
 

@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncPythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskasyncpythonfunctiontask) | This is the base task for eager tasks, as well as normal async tasks. |
-| [`EagerAsyncPythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerasyncpythonfunctiontask) | This is the base eager task (aka eager workflow) type. |
-| [`EagerFailureHandlerTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) |  |
-| [`EagerFailureTaskResolver`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) |  |
-| [`PythonFunctionTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskpythonfunctiontask) | A Python Function task should be used as the base for all extensions that have a python function. |
-| [`PythonInstanceTask`](.././flytekit.core.python_function_task#flytekitcorepython_function_taskpythoninstancetask) | This class should be used as the base class for all Tasks that do not have a user defined function body, but have. |
+| [`AsyncPythonFunctionTask`](./flytekit.core.python_function_task#flytekitcorepython_function_taskasyncpythonfunctiontask) | This is the base task for eager tasks, as well as normal async tasks. |
+| [`EagerAsyncPythonFunctionTask`](./flytekit.core.python_function_task#flytekitcorepython_function_taskeagerasyncpythonfunctiontask) | This is the base eager task (aka eager workflow) type. |
+| [`EagerFailureHandlerTask`](./flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailurehandlertask) |  |
+| [`EagerFailureTaskResolver`](./flytekit.core.python_function_task#flytekitcorepython_function_taskeagerfailuretaskresolver) |  |
+| [`PythonFunctionTask`](./flytekit.core.python_function_task#flytekitcorepython_function_taskpythonfunctiontask) | A Python Function task should be used as the base for all extensions that have a python function. |
+| [`PythonInstanceTask`](./flytekit.core.python_function_task#flytekitcorepython_function_taskpythoninstancetask) | This class should be used as the base class for all Tasks that do not have a user defined function body, but have. |
 
 ### Variables
 

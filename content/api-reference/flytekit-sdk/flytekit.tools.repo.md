@@ -13,7 +13,7 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`NoSerializableEntitiesError`](.././flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) |  |
+| [`NoSerializableEntitiesError`](./flytekit.tools.repo#flytekittoolsreponoserializableentitieserror) |  |
 
 ### Methods
 

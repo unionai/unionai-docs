@@ -13,17 +13,17 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AWS`](.././flytekit.configuration.internal#flytekitconfigurationinternalaws) |  |
-| [`AZURE`](.././flytekit.configuration.internal#flytekitconfigurationinternalazure) |  |
-| [`Credentials`](.././flytekit.configuration.internal#flytekitconfigurationinternalcredentials) |  |
-| [`GCP`](.././flytekit.configuration.internal#flytekitconfigurationinternalgcp) |  |
-| [`Images`](.././flytekit.configuration.internal#flytekitconfigurationinternalimages) |  |
-| [`Local`](.././flytekit.configuration.internal#flytekitconfigurationinternallocal) |  |
-| [`LocalSDK`](.././flytekit.configuration.internal#flytekitconfigurationinternallocalsdk) |  |
-| [`Persistence`](.././flytekit.configuration.internal#flytekitconfigurationinternalpersistence) |  |
-| [`Platform`](.././flytekit.configuration.internal#flytekitconfigurationinternalplatform) |  |
-| [`Secrets`](.././flytekit.configuration.internal#flytekitconfigurationinternalsecrets) |  |
-| [`StatsD`](.././flytekit.configuration.internal#flytekitconfigurationinternalstatsd) |  |
+| [`AWS`](./flytekit.configuration.internal#flytekitconfigurationinternalaws) |  |
+| [`AZURE`](./flytekit.configuration.internal#flytekitconfigurationinternalazure) |  |
+| [`Credentials`](./flytekit.configuration.internal#flytekitconfigurationinternalcredentials) |  |
+| [`GCP`](./flytekit.configuration.internal#flytekitconfigurationinternalgcp) |  |
+| [`Images`](./flytekit.configuration.internal#flytekitconfigurationinternalimages) |  |
+| [`Local`](./flytekit.configuration.internal#flytekitconfigurationinternallocal) |  |
+| [`LocalSDK`](./flytekit.configuration.internal#flytekitconfigurationinternallocalsdk) |  |
+| [`Persistence`](./flytekit.configuration.internal#flytekitconfigurationinternalpersistence) |  |
+| [`Platform`](./flytekit.configuration.internal#flytekitconfigurationinternalplatform) |  |
+| [`Secrets`](./flytekit.configuration.internal#flytekitconfigurationinternalsecrets) |  |
+| [`StatsD`](./flytekit.configuration.internal#flytekitconfigurationinternalstatsd) |  |
 
 ## flytekit.configuration.internal.AWS
 

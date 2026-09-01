@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SensorEngine`](.././flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) |  |
+| [`SensorEngine`](./flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) |  |
 
 ## flytekit.sensor.sensor_engine.SensorEngine
 

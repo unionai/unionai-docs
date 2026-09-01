@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DeviceCodeResponse`](.././flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) | Response from device auth flow endpoint. |
-| [`GrantType`](.././flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) |  |
+| [`DeviceCodeResponse`](./flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) | Response from device auth flow endpoint. |
+| [`GrantType`](./flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) |  |
 
 ### Methods
 

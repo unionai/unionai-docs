@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PanderaPandasTransformer`](.././flytekitplugins.pandera.pandas_transformer#flytekitpluginspanderapandas_transformerpanderapandastransformer) |  |
+| [`PanderaPandasTransformer`](./flytekitplugins.pandera.pandas_transformer#flytekitpluginspanderapandas_transformerpanderapandastransformer) |  |
 
 ### Variables
 

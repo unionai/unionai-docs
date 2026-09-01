@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DynamicJobSpec`](.././flytekit.models.dynamic_job#flytekitmodelsdynamic_jobdynamicjobspec) |  |
+| [`DynamicJobSpec`](./flytekit.models.dynamic_job#flytekitmodelsdynamic_jobdynamicjobspec) |  |
 
 ## flytekit.models.dynamic_job.DynamicJobSpec
 

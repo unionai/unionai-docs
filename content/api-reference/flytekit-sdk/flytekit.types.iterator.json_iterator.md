@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`JSONIterator`](.././flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniterator) |  |
-| [`JSONIteratorTransformer`](.././flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniteratortransformer) | A JSON iterator that handles conversion between an iterator/generator and a JSONL file. |
+| [`JSONIterator`](./flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniterator) |  |
+| [`JSONIteratorTransformer`](./flytekit.types.iterator.json_iterator#flytekittypesiteratorjson_iteratorjsoniteratortransformer) | A JSON iterator that handles conversion between an iterator/generator and a JSONL file. |
 
 ## flytekit.types.iterator.json_iterator.JSONIterator
 

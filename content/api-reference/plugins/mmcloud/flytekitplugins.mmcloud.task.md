@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`MMCloudConfig`](.././flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudconfig) | Configures MMCloudTask. |
-| [`MMCloudTask`](.././flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudtask) |  |
+| [`MMCloudConfig`](./flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudconfig) | Configures MMCloudTask. |
+| [`MMCloudTask`](./flytekitplugins.mmcloud.task#flytekitpluginsmmcloudtaskmmcloudtask) |  |
 
 ## flytekitplugins.mmcloud.task.MMCloudConfig
 

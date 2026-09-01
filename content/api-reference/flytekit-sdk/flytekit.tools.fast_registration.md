@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FastPackageOptions`](.././flytekit.tools.fast_registration#flytekittoolsfast_registrationfastpackageoptions) | FastPackageOptions is used to set configuration options when packaging files. |
+| [`FastPackageOptions`](./flytekit.tools.fast_registration#flytekittoolsfast_registrationfastpackageoptions) | FastPackageOptions is used to set configuration options when packaging files. |
 
 ### Methods
 

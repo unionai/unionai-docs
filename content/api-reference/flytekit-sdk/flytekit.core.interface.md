@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Interface`](.././flytekit.core.interface#flytekitcoreinterfaceinterface) | A Python native interface object, like inspect. |
+| [`Interface`](./flytekit.core.interface#flytekitcoreinterfaceinterface) | A Python native interface object, like inspect. |
 
 ### Methods
 

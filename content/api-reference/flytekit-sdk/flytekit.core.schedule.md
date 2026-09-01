@@ -14,15 +14,15 @@ These classes provide functionality related to schedules.
 
 | Class | Description |
 |-|-|
-| [`CronSchedule`](.././flytekit.core.schedule#flytekitcoreschedulecronschedule) | Use this when you have a launch plan that you want to run on a cron expression. |
-| [`FixedRate`](.././flytekit.core.schedule#flytekitcoreschedulefixedrate) | Use this class to schedule a fixed-rate interval for a launch plan. |
-| [`OnSchedule`](.././flytekit.core.schedule#flytekitcorescheduleonschedule) |  |
+| [`CronSchedule`](./flytekit.core.schedule#flytekitcoreschedulecronschedule) | Use this when you have a launch plan that you want to run on a cron expression. |
+| [`FixedRate`](./flytekit.core.schedule#flytekitcoreschedulefixedrate) | Use this class to schedule a fixed-rate interval for a launch plan. |
+| [`OnSchedule`](./flytekit.core.schedule#flytekitcorescheduleonschedule) |  |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`LaunchPlanTriggerBase`](.././flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) |  |
+| [`LaunchPlanTriggerBase`](./flytekit.core.schedule#flytekitcoreschedulelaunchplantriggerbase) |  |
 
 ## flytekit.core.schedule.CronSchedule
 

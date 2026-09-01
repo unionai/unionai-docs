@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PILImageTransformer`](.././flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) | TypeTransformer that supports PIL. |
+| [`PILImageTransformer`](./flytekit.types.file.image#flytekittypesfileimagepilimagetransformer) | TypeTransformer that supports PIL. |
 
 ### Variables
 

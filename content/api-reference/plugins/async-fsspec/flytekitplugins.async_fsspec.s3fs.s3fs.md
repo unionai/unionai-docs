@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncS3FileSystem`](.././flytekitplugins.async_fsspec.s3fs.s3fs#flytekitpluginsasync_fsspecs3fss3fsasyncs3filesystem) |  |
+| [`AsyncS3FileSystem`](./flytekitplugins.async_fsspec.s3fs.s3fs#flytekitpluginsasync_fsspecs3fss3fsasyncs3filesystem) |  |
 
 ### Variables
 

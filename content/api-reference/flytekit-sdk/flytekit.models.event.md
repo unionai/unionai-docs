@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaskExecutionMetadata`](.././flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) |  |
+| [`TaskExecutionMetadata`](./flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) |  |
 
 ## flytekit.models.event.TaskExecutionMetadata
 

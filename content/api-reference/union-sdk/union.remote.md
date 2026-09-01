@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HuggingFaceModelInfo`](.././union.remote#unionremotehuggingfacemodelinfo) | Captures information about a Hugging Face model. |
-| [`ShardConfig`](.././union.remote#unionremoteshardconfig) |  |
-| [`UnionRemote`](.././union.remote#unionremoteunionremote) |  |
-| [`VLLMShardArgs`](.././union.remote#unionremotevllmshardargs) |  |
+| [`HuggingFaceModelInfo`](./union.remote#unionremotehuggingfacemodelinfo) | Captures information about a Hugging Face model. |
+| [`ShardConfig`](./union.remote#unionremoteshardconfig) |  |
+| [`UnionRemote`](./union.remote#unionremoteunionremote) |  |
+| [`VLLMShardArgs`](./union.remote#unionremotevllmshardargs) |  |
 
 ## union.remote.HuggingFaceModelInfo
 

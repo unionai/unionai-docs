@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Description`](.././flytekit.models.documentation#flytekitmodelsdocumentationdescription) | Full user description with formatting preserved. |
-| [`Documentation`](.././flytekit.models.documentation#flytekitmodelsdocumentationdocumentation) | DescriptionEntity contains detailed description for the task/workflow/launch plan. |
-| [`SourceCode`](.././flytekit.models.documentation#flytekitmodelsdocumentationsourcecode) | Link to source code used to define this task or workflow. |
+| [`Description`](./flytekit.models.documentation#flytekitmodelsdocumentationdescription) | Full user description with formatting preserved. |
+| [`Documentation`](./flytekit.models.documentation#flytekitmodelsdocumentationdocumentation) | DescriptionEntity contains detailed description for the task/workflow/launch plan. |
+| [`SourceCode`](./flytekit.models.documentation#flytekitmodelsdocumentationsourcecode) | Link to source code used to define this task or workflow. |
 
 ## flytekit.models.documentation.Description
 

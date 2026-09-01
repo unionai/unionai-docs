@@ -13,21 +13,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ComparisonExpression`](.././flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
-| [`ComparisonOps`](.././flytekit.core.promise#flytekitcorepromisecomparisonops) |  |
-| [`ConjunctionExpression`](.././flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
-| [`ConjunctionOps`](.././flytekit.core.promise#flytekitcorepromiseconjunctionops) |  |
-| [`NodeOutput`](.././flytekit.core.promise#flytekitcorepromisenodeoutput) |  |
-| [`Promise`](.././flytekit.core.promise#flytekitcorepromisepromise) | This object is a wrapper and exists for three main reasons. |
-| [`VoidPromise`](.././flytekit.core.promise#flytekitcorepromisevoidpromise) | This object is returned for tasks that do not return any outputs (declared interface is empty). |
+| [`ComparisonExpression`](./flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
+| [`ComparisonOps`](./flytekit.core.promise#flytekitcorepromisecomparisonops) |  |
+| [`ConjunctionExpression`](./flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
+| [`ConjunctionOps`](./flytekit.core.promise#flytekitcorepromiseconjunctionops) |  |
+| [`NodeOutput`](./flytekit.core.promise#flytekitcorepromisenodeoutput) |  |
+| [`Promise`](./flytekit.core.promise#flytekitcorepromisepromise) | This object is a wrapper and exists for three main reasons. |
+| [`VoidPromise`](./flytekit.core.promise#flytekitcorepromisevoidpromise) | This object is returned for tasks that do not return any outputs (declared interface is empty). |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`HasFlyteInterface`](.././flytekit.core.promise#flytekitcorepromisehasflyteinterface) |  |
-| [`LocallyExecutable`](.././flytekit.core.promise#flytekitcorepromiselocallyexecutable) |  |
-| [`SupportsNodeCreation`](.././flytekit.core.promise#flytekitcorepromisesupportsnodecreation) |  |
+| [`HasFlyteInterface`](./flytekit.core.promise#flytekitcorepromisehasflyteinterface) |  |
+| [`LocallyExecutable`](./flytekit.core.promise#flytekitcorepromiselocallyexecutable) |  |
+| [`SupportsNodeCreation`](./flytekit.core.promise#flytekitcorepromisesupportsnodecreation) |  |
 
 ### Methods
 

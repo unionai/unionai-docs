@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Gate`](.././flytekit.core.gate#flytekitcoregategate) | A node type that waits for user input before proceeding with a workflow. |
+| [`Gate`](./flytekit.core.gate#flytekitcoregategate) | A node type that waits for user input before proceeding with a workflow. |
 
 ### Methods
 

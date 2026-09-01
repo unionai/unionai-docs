@@ -13,16 +13,16 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteAgentNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) |  |
-| [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) |  |
-| [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) |  |
-| [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) |  |
-| [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) |  |
-| [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) |  |
-| [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) |  |
-| [`FlyteSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) |  |
-| [`FlyteSystemUnavailableException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) |  |
-| [`FlyteUploadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) |  |
+| [`FlyteAgentNotFound`](./flytekit.exceptions.system#flytekitexceptionssystemflyteagentnotfound) |  |
+| [`FlyteConnectorNotFound`](./flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) |  |
+| [`FlyteDownloadDataException`](./flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) |  |
+| [`FlyteEntrypointNotLoadable`](./flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) |  |
+| [`FlyteNonRecoverableSystemException`](./flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) |  |
+| [`FlyteNotImplementedException`](./flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) |  |
+| [`FlyteSystemAssertion`](./flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) |  |
+| [`FlyteSystemException`](./flytekit.exceptions.system#flytekitexceptionssystemflytesystemexception) |  |
+| [`FlyteSystemUnavailableException`](./flytekit.exceptions.system#flytekitexceptionssystemflytesystemunavailableexception) |  |
+| [`FlyteUploadDataException`](./flytekit.exceptions.system#flytekitexceptionssystemflyteuploaddataexception) |  |
 
 ## flytekit.exceptions.system.FlyteAgentNotFound
 

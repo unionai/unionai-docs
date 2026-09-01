@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Error`](.././flytekit.models.types#flytekitmodelstypeserror) |  |
-| [`LiteralType`](.././flytekit.models.types#flytekitmodelstypesliteraltype) |  |
-| [`OutputReference`](.././flytekit.models.types#flytekitmodelstypesoutputreference) |  |
-| [`SchemaType`](.././flytekit.models.types#flytekitmodelstypesschematype) |  |
-| [`SimpleType`](.././flytekit.models.types#flytekitmodelstypessimpletype) |  |
-| [`StructuredDatasetType`](.././flytekit.models.types#flytekitmodelstypesstructureddatasettype) |  |
-| [`TypeStructure`](.././flytekit.models.types#flytekitmodelstypestypestructure) | Models _types_pb2. |
-| [`UnionType`](.././flytekit.models.types#flytekitmodelstypesuniontype) | Models _types_pb2. |
+| [`Error`](./flytekit.models.types#flytekitmodelstypeserror) |  |
+| [`LiteralType`](./flytekit.models.types#flytekitmodelstypesliteraltype) |  |
+| [`OutputReference`](./flytekit.models.types#flytekitmodelstypesoutputreference) |  |
+| [`SchemaType`](./flytekit.models.types#flytekitmodelstypesschematype) |  |
+| [`SimpleType`](./flytekit.models.types#flytekitmodelstypessimpletype) |  |
+| [`StructuredDatasetType`](./flytekit.models.types#flytekitmodelstypesstructureddatasettype) |  |
+| [`TypeStructure`](./flytekit.models.types#flytekitmodelstypestypestructure) | Models _types_pb2. |
+| [`UnionType`](./flytekit.models.types#flytekitmodelstypesuniontype) | Models _types_pb2. |
 
 ## flytekit.models.types.Error
 
