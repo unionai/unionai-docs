@@ -7,11 +7,11 @@
 #              primary line does; a secondary line (v1) sets false.
 # indexed    = whether this line's stable tree is search-indexed. Defaults true
 #              (the stable tree is normally the line's one canonical surface).
-stable = "v1.16.28.2"
+stable = "v1.16.28.3"
 enumerated = [
-  "v1.16.26.4",
   "v1.16.28.0",
   "v1.16.28.1",
+  "v1.16.28.2",
 ]
 # Pins that have been retired. A pin leaves `enumerated` and arrives here in the
 # same edit, made by `manifest.py --promote`, and its redirect is DERIVED from
@@ -21,6 +21,7 @@ enumerated = [
 # cut will be the first, and it will be handled without anyone doing anything.
 retired = [
   "v1.16.26.3",
+  "v1.16.26.4",
 ]
 
 # v1.16.26.2 is deliberately not enumerated. It documents exactly the same
