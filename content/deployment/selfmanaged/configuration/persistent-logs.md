@@ -104,7 +104,8 @@ On Azure, persisted logs come from the AKS
 add-on, which ships container logs into an Azure Log Analytics workspace that the Union operator
 queries directly.
 
-The data plane chart's `values.azure.yaml` therefore sets `fluentbit.enabled: false`. FluentBit's
+The data plane chart's `values.azure.yaml` therefore sets `fluentbit.enabled: false` from chart
+version 2026.8.0; on earlier charts set it yourself. FluentBit's
 `azure_blob` output cannot authenticate with Workload Identity, so a DaemonSet left enabled
 without a shared key lands in `CrashLoopBackOff`.
 

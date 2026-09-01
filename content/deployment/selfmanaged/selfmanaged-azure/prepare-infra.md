@@ -302,8 +302,9 @@ Union reads historical task logs (the logs of a task pod that has already termin
 Azure Log Analytics workspace. The AKS **Container Insights** add-on ships container logs into
 that workspace, and the Union operator queries them back out using the backend managed identity.
 
-> [!NOTE] **FluentBit is not used on Azure.** The chart's `values.azure.yaml` ships with
-> `fluentbit.enabled: false`. FluentBit's `azure_blob` output cannot authenticate with Workload
+> [!NOTE] **FluentBit is not used on Azure.** From dataplane chart 2026.8.0 the chart's
+> `values.azure.yaml` ships `fluentbit.enabled: false`; on earlier charts set it yourself.
+> FluentBit's `azure_blob` output cannot authenticate with Workload
 > Identity, so the DaemonSet lands in `CrashLoopBackOff` unless you hand it a storage account
 > shared key. See [Persistent logs](../configuration/persistent-logs) for that alternative and for
 > the object store path used on AWS and GCP.
