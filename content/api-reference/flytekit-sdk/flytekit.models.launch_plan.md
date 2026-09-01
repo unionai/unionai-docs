@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Auth`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planauth) |  |
-| [`LaunchPlan`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplan) |  |
-| [`LaunchPlanClosure`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanclosure) |  |
-| [`LaunchPlanMetadata`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanmetadata) |  |
-| [`LaunchPlanSpec`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanspec) |  |
-| [`LaunchPlanState`](.././flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanstate) |  |
+| [`Auth`](./flytekit.models.launch_plan#flytekitmodelslaunch_planauth) |  |
+| [`LaunchPlan`](./flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplan) |  |
+| [`LaunchPlanClosure`](./flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanclosure) |  |
+| [`LaunchPlanMetadata`](./flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanmetadata) |  |
+| [`LaunchPlanSpec`](./flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanspec) |  |
+| [`LaunchPlanState`](./flytekit.models.launch_plan#flytekitmodelslaunch_planlaunchplanstate) |  |
 
 ## flytekit.models.launch_plan.Auth
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`LazyEntity`](.././flytekit.remote.lazy_entity#flytekitremotelazy_entitylazyentity) | Fetches the entity when the entity is called or when the entity is retrieved. |
+| [`LazyEntity`](./flytekit.remote.lazy_entity#flytekitremotelazy_entitylazyentity) | Fetches the entity when the entity is called or when the entity is retrieved. |
 
 ### Variables
 

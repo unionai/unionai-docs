@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ClassStorageTaskResolver`](.././flytekit.core.class_based_resolver#flytekitcoreclass_based_resolverclassstoragetaskresolver) | Stores tasks inside a class variable. |
+| [`ClassStorageTaskResolver`](./flytekit.core.class_based_resolver#flytekitcoreclass_based_resolverclassstoragetaskresolver) | Stores tasks inside a class variable. |
 
 ## flytekit.core.class_based_resolver.ClassStorageTaskResolver
 

@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorbase) | This is the base class for all async connectors. |
-| [`AsyncConnectorExecutorMixin`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorexecutormixin) | This mixin class is used to run the async task locally, and it's only used for local execution. |
-| [`ConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) |  |
-| [`ConnectorRegistry`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorregistry) | This is the registry for all connectors. |
-| [`Resource`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresource) | This is the output resource of the job. |
-| [`ResourceMeta`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresourcemeta) | This is the metadata for the job. |
-| [`SyncConnectorBase`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorbase) | This is the base class for all sync connectors. |
-| [`SyncConnectorExecutorMixin`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorexecutormixin) | This mixin class is used to run the sync task locally, and it's only used for local execution. |
-| [`TaskCategory`](.././flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectortaskcategory) |  |
+| [`AsyncConnectorBase`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorbase) | This is the base class for all async connectors. |
+| [`AsyncConnectorExecutorMixin`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorasyncconnectorexecutormixin) | This mixin class is used to run the async task locally, and it's only used for local execution. |
+| [`ConnectorBase`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorbase) |  |
+| [`ConnectorRegistry`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorconnectorregistry) | This is the registry for all connectors. |
+| [`Resource`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresource) | This is the output resource of the job. |
+| [`ResourceMeta`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorresourcemeta) | This is the metadata for the job. |
+| [`SyncConnectorBase`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorbase) | This is the base class for all sync connectors. |
+| [`SyncConnectorExecutorMixin`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectorsyncconnectorexecutormixin) | This mixin class is used to run the sync task locally, and it's only used for local execution. |
+| [`TaskCategory`](./flytekit.extend.backend.base_connector#flytekitextendbackendbase_connectortaskcategory) |  |
 
 ## flytekit.extend.backend.base_connector.AsyncConnectorBase
 

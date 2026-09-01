@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HuggingFaceDatasetRenderer`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets. |
-| [`HuggingFaceDatasetToParquetEncodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) |  |
-| [`ParquetToHuggingFaceDatasetDecodingHandler`](.././flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) |  |
+| [`HuggingFaceDatasetRenderer`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets. |
+| [`HuggingFaceDatasetToParquetEncodingHandler`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) |  |
+| [`ParquetToHuggingFaceDatasetDecodingHandler`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) |  |
 
 ### Variables
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BigQueryConnector`](.././flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigqueryconnector) |  |
-| [`BigQueryMetadata`](.././flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigquerymetadata) |  |
+| [`BigQueryConnector`](./flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigqueryconnector) |  |
+| [`BigQueryMetadata`](./flytekitplugins.bigquery.connector#flytekitpluginsbigqueryconnectorbigquerymetadata) |  |
 
 ### Variables
 

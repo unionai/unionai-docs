@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WebhookTask`](.././flytekit.extras.webhook.task#flytekitextraswebhooktaskwebhooktask) | The WebhookTask is used to invoke a webhook. |
+| [`WebhookTask`](./flytekit.extras.webhook.task#flytekitextraswebhooktaskwebhooktask) | The WebhookTask is used to invoke a webhook. |
 
 ### Variables
 

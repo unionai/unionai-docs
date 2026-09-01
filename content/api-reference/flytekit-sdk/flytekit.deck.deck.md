@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Deck`](.././flytekit.deck.deck#flytekitdeckdeckdeck) | Deck enable users to get customizable and default visibility into their tasks. |
-| [`DeckField`](.././flytekit.deck.deck#flytekitdeckdeckdeckfield) | DeckField is used to specify the fields that will be rendered in the deck. |
-| [`TimeLineDeck`](.././flytekit.deck.deck#flytekitdeckdecktimelinedeck) | The TimeLineDeck class is designed to render the execution time of each part of a task. |
+| [`Deck`](./flytekit.deck.deck#flytekitdeckdeckdeck) | Deck enable users to get customizable and default visibility into their tasks. |
+| [`DeckField`](./flytekit.deck.deck#flytekitdeckdeckdeckfield) | DeckField is used to specify the fields that will be rendered in the deck. |
+| [`TimeLineDeck`](./flytekit.deck.deck#flytekitdeckdecktimelinedeck) | The TimeLineDeck class is designed to render the execution time of each part of a task. |
 
 ### Methods
 

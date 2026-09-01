@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ResourceSpec`](.././flytekit.core.resources#flytekitcoreresourcesresourcespec) |  |
-| [`Resources`](.././flytekit.core.resources#flytekitcoreresourcesresources) | This class is used to specify both resource requests and resource limits. |
+| [`ResourceSpec`](./flytekit.core.resources#flytekitcoreresourcesresourcespec) |  |
+| [`Resources`](./flytekit.core.resources#flytekitcoreresourcesresources) | This class is used to specify both resource requests and resource limits. |
 
 ### Methods
 

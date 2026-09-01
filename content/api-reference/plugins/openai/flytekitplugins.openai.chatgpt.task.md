@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ChatGPTTask`](.././flytekitplugins.openai.chatgpt.task#flytekitpluginsopenaichatgpttaskchatgpttask) | This is the simplest form of a ChatGPT Task, you can define the model and the input you want. |
+| [`ChatGPTTask`](./flytekitplugins.openai.chatgpt.task#flytekitpluginsopenaichatgpttaskchatgpttask) | This is the simplest form of a ChatGPT Task, you can define the model and the input you want. |
 
 ## flytekitplugins.openai.chatgpt.task.ChatGPTTask
 

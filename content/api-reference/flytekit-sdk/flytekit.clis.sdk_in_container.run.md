@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DynamicEntityLaunchCommand`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrundynamicentitylaunchcommand) | This is a dynamic command that is created for each launch plan. |
-| [`Entities`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunentities) | NamedTuple to group all entities in a file. |
-| [`RemoteEntityGroup`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunremoteentitygroup) | click multicommand that retrieves launchplans from a remote flyte instance and executes them. |
-| [`RunCommand`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunruncommand) | A click command group for registering and executing flyte workflows & tasks in a file. |
-| [`RunLevelComputedParams`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelcomputedparams) | This class is used to store the computed parameters that are used to run a workflow / task / launchplan. |
-| [`RunLevelParams`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelparams) | This class is used to store the parameters that are used to run a workflow / task / launchplan. |
-| [`WorkflowCommand`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunworkflowcommand) | click multicommand at the python file layer, subcommands should be all the workflows in the file. |
-| [`YamlFileReadingCommand`](.././flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunyamlfilereadingcommand) |  |
+| [`DynamicEntityLaunchCommand`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrundynamicentitylaunchcommand) | This is a dynamic command that is created for each launch plan. |
+| [`Entities`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunentities) | NamedTuple to group all entities in a file. |
+| [`RemoteEntityGroup`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunremoteentitygroup) | click multicommand that retrieves launchplans from a remote flyte instance and executes them. |
+| [`RunCommand`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunruncommand) | A click command group for registering and executing flyte workflows & tasks in a file. |
+| [`RunLevelComputedParams`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelcomputedparams) | This class is used to store the computed parameters that are used to run a workflow / task / launchplan. |
+| [`RunLevelParams`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunrunlevelparams) | This class is used to store the parameters that are used to run a workflow / task / launchplan. |
+| [`WorkflowCommand`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunworkflowcommand) | click multicommand at the python file layer, subcommands should be all the workflows in the file. |
+| [`YamlFileReadingCommand`](./flytekit.clis.sdk_in_container.run#flytekitclissdk_in_containerrunyamlfilereadingcommand) |  |
 
 ### Methods
 

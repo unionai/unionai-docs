@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`UCImageSpecBuilder`](.././union.ucimage#unionucimageucimagespecbuilder) | ImageSpec builder for UnionAI. |
+| [`UCImageSpecBuilder`](./union.ucimage#unionucimageucimagespecbuilder) | ImageSpec builder for UnionAI. |
 
 ## union.ucimage.UCImageSpecBuilder
 

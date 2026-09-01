@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`memray_profiling`](.././flytekitplugins.memray#flytekitpluginsmemraymemray_profiling) |  |
+| [`memray_profiling`](./flytekitplugins.memray#flytekitpluginsmemraymemray_profiling) |  |
 
 ## flytekitplugins.memray.memray_profiling
 

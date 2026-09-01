@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SGLangApp`](.././union.app.llm#unionappllmsglangapp) | App backed by FastAPI. |
-| [`VLLMApp`](.././union.app.llm#unionappllmvllmapp) | App backed by FastAPI. |
+| [`SGLangApp`](./union.app.llm#unionappllmsglangapp) | App backed by FastAPI. |
+| [`VLLMApp`](./union.app.llm#unionappllmvllmapp) | App backed by FastAPI. |
 
 ### Variables
 

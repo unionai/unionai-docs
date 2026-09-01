@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`InstanceTrackingMeta`](.././flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :flytekit. |
-| [`TrackedInstance`](.././flytekit.core.tracker#flytekitcoretrackertrackedinstance) | Please see the notes for the metaclass above first. |
+| [`InstanceTrackingMeta`](./flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :flytekit. |
+| [`TrackedInstance`](./flytekit.core.tracker#flytekitcoretrackertrackedinstance) | Please see the notes for the metaclass above first. |
 
 ### Methods
 

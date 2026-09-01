@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`NotebookTask`](.././flytekitplugins.papermill.task#flytekitpluginspapermilltasknotebooktask) | Simple Papermill based input output handling for a Python Jupyter notebook. |
+| [`NotebookTask`](./flytekitplugins.papermill.task#flytekitpluginspapermilltasknotebooktask) | Simple Papermill based input output handling for a Python Jupyter notebook. |
 
 ### Methods
 

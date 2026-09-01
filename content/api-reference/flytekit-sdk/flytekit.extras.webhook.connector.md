@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WebhookConnector`](.././flytekit.extras.webhook.connector#flytekitextraswebhookconnectorwebhookconnector) | WebhookConnector is responsible for handling webhook tasks. |
+| [`WebhookConnector`](./flytekit.extras.webhook.connector#flytekitextraswebhookconnectorwebhookconnector) | WebhookConnector is responsible for handling webhook tasks. |
 
 ### Variables
 

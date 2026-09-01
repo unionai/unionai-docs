@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Sort`](.././flytekit.models.admin.common#flytekitmodelsadmincommonsort) |  |
+| [`Sort`](./flytekit.models.admin.common#flytekitmodelsadmincommonsort) |  |
 
 ## flytekit.models.admin.common.Sort
 

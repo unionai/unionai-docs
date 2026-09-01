@@ -14,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteLocalFileSystem`](.././flytekit.core.local_fsspec#flytekitcorelocal_fsspecflytelocalfilesystem) | This class doesn't do anything except override the separator so that it works on windows. |
+| [`FlyteLocalFileSystem`](./flytekit.core.local_fsspec#flytekitcorelocal_fsspecflytelocalfilesystem) | This class doesn't do anything except override the separator so that it works on windows. |
 
 ## flytekit.core.local_fsspec.FlyteLocalFileSystem
 

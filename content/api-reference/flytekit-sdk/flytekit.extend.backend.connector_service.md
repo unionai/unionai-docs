@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AsyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) |  |
-| [`ConnectorMetadataService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) |  |
-| [`SyncConnectorService`](.././flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) |  |
+| [`AsyncConnectorService`](./flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceasyncconnectorservice) |  |
+| [`ConnectorMetadataService`](./flytekit.extend.backend.connector_service#flytekitextendbackendconnector_serviceconnectormetadataservice) |  |
+| [`SyncConnectorService`](./flytekit.extend.backend.connector_service#flytekitextendbackendconnector_servicesyncconnectorservice) |  |
 
 ### Methods
 

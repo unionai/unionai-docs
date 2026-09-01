@@ -13,13 +13,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`LaunchPlanReference`](.././flytekit.core.reference_entity#flytekitcorereference_entitylaunchplanreference) | A reference object containing metadata that points to a remote launch plan. |
-| [`Reference`](.././flytekit.core.reference_entity#flytekitcorereference_entityreference) |  |
-| [`ReferenceEntity`](.././flytekit.core.reference_entity#flytekitcorereference_entityreferenceentity) |  |
-| [`ReferenceSpec`](.././flytekit.core.reference_entity#flytekitcorereference_entityreferencespec) |  |
-| [`ReferenceTemplate`](.././flytekit.core.reference_entity#flytekitcorereference_entityreferencetemplate) |  |
-| [`TaskReference`](.././flytekit.core.reference_entity#flytekitcorereference_entitytaskreference) | A reference object containing metadata that points to a remote task. |
-| [`WorkflowReference`](.././flytekit.core.reference_entity#flytekitcorereference_entityworkflowreference) | A reference object containing metadata that points to a remote workflow. |
+| [`LaunchPlanReference`](./flytekit.core.reference_entity#flytekitcorereference_entitylaunchplanreference) | A reference object containing metadata that points to a remote launch plan. |
+| [`Reference`](./flytekit.core.reference_entity#flytekitcorereference_entityreference) |  |
+| [`ReferenceEntity`](./flytekit.core.reference_entity#flytekitcorereference_entityreferenceentity) |  |
+| [`ReferenceSpec`](./flytekit.core.reference_entity#flytekitcorereference_entityreferencespec) |  |
+| [`ReferenceTemplate`](./flytekit.core.reference_entity#flytekitcorereference_entityreferencetemplate) |  |
+| [`TaskReference`](./flytekit.core.reference_entity#flytekitcorereference_entitytaskreference) | A reference object containing metadata that points to a remote task. |
+| [`WorkflowReference`](./flytekit.core.reference_entity#flytekitcorereference_entityworkflowreference) | A reference object containing metadata that points to a remote workflow. |
 
 ## flytekit.core.reference_entity.LaunchPlanReference
 

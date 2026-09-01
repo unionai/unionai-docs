@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`GCPIdentityAwareProxyAuthenticator`](.././flytekitplugins.identity_aware_proxy.cli#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator) | This Authenticator encapsulates the entire OAauth 2. |
+| [`GCPIdentityAwareProxyAuthenticator`](./flytekitplugins.identity_aware_proxy.cli#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator) | This Authenticator encapsulates the entire OAauth 2. |
 
 ### Methods
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TypeAnnotation`](.././flytekit.models.annotation#flytekitmodelsannotationtypeannotation) | Python class representation of the flyteidl TypeAnnotation message. |
+| [`TypeAnnotation`](./flytekit.models.annotation#flytekitmodelsannotationtypeannotation) | Python class representation of the flyteidl TypeAnnotation message. |
 
 ## flytekit.models.annotation.TypeAnnotation
 

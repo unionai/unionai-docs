@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RawSynchronousFlyteClient`](.././flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) | This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
+| [`RawSynchronousFlyteClient`](./flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) | This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
 
 ## flytekit.clients.raw.RawSynchronousFlyteClient
 

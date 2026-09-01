@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`RetryExceptionWrapperInterceptor`](.././flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) |  |
+| [`RetryExceptionWrapperInterceptor`](./flytekit.clients.grpc_utils.wrap_exception_interceptor#flytekitclientsgrpc_utilswrap_exception_interceptorretryexceptionwrapperinterceptor) |  |
 
 ## flytekit.clients.grpc_utils.wrap_exception_interceptor.RetryExceptionWrapperInterceptor
 

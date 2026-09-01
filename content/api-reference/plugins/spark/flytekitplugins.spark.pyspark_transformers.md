@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PySparkPipelineModelTransformer`](.././flytekitplugins.spark.pyspark_transformers#flytekitpluginssparkpyspark_transformerspysparkpipelinemodeltransformer) |  |
+| [`PySparkPipelineModelTransformer`](./flytekitplugins.spark.pyspark_transformers#flytekitpluginssparkpyspark_transformerspysparkpipelinemodeltransformer) |  |
 
 ## flytekitplugins.spark.pyspark_transformers.PySparkPipelineModelTransformer
 

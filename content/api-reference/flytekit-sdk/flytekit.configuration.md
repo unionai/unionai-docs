@@ -119,23 +119,23 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 
 | Class | Description |
 |-|-|
-| [`AuthType`](.././flytekit.configuration#flytekitconfigurationauthtype) |  |
-| [`AzureBlobStorageConfig`](.././flytekit.configuration#flytekitconfigurationazureblobstorageconfig) | Any Azure Blob Storage specific configuration. |
-| [`Config`](.././flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
-| [`DataConfig`](.././flytekit.configuration#flytekitconfigurationdataconfig) | Any data storage specific configuration. |
-| [`EntrypointSettings`](.././flytekit.configuration#flytekitconfigurationentrypointsettings) | This object carries information about the path of the entrypoint command that will be invoked at runtime. |
-| [`FastSerializationSettings`](.././flytekit.configuration#flytekitconfigurationfastserializationsettings) | This object hold information about settings necessary to serialize an object so that it can be fast-registered. |
-| [`GCSConfig`](.././flytekit.configuration#flytekitconfigurationgcsconfig) | Any GCS specific configuration. |
-| [`GenericPersistenceConfig`](.././flytekit.configuration#flytekitconfigurationgenericpersistenceconfig) | Data storage configuration that applies across any provider. |
-| [`Image`](.././flytekit.configuration#flytekitconfigurationimage) | Image is a structured wrapper for task container images used in object serialization. |
-| [`ImageConfig`](.././flytekit.configuration#flytekitconfigurationimageconfig) | We recommend you to use ImageConfig. |
-| [`LocalConfig`](.././flytekit.configuration#flytekitconfigurationlocalconfig) | Any configuration specific to local runs. |
-| [`PlatformConfig`](.././flytekit.configuration#flytekitconfigurationplatformconfig) | This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically). |
-| [`S3Config`](.././flytekit.configuration#flytekitconfigurations3config) | S3 specific configuration. |
-| [`SecretsConfig`](.././flytekit.configuration#flytekitconfigurationsecretsconfig) | Configuration for secrets. |
-| [`SerializationSettings`](.././flytekit.configuration#flytekitconfigurationserializationsettings) | These settings are provided while serializing a workflow and task, before registration. |
-| [`StatsConfig`](.././flytekit.configuration#flytekitconfigurationstatsconfig) | Configuration for sending statsd. |
-| [`TaskConfig`](.././flytekit.configuration#flytekitconfigurationtaskconfig) | Any Project/Domain/Org configuration. |
+| [`AuthType`](./flytekit.configuration#flytekitconfigurationauthtype) |  |
+| [`AzureBlobStorageConfig`](./flytekit.configuration#flytekitconfigurationazureblobstorageconfig) | Any Azure Blob Storage specific configuration. |
+| [`Config`](./flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
+| [`DataConfig`](./flytekit.configuration#flytekitconfigurationdataconfig) | Any data storage specific configuration. |
+| [`EntrypointSettings`](./flytekit.configuration#flytekitconfigurationentrypointsettings) | This object carries information about the path of the entrypoint command that will be invoked at runtime. |
+| [`FastSerializationSettings`](./flytekit.configuration#flytekitconfigurationfastserializationsettings) | This object hold information about settings necessary to serialize an object so that it can be fast-registered. |
+| [`GCSConfig`](./flytekit.configuration#flytekitconfigurationgcsconfig) | Any GCS specific configuration. |
+| [`GenericPersistenceConfig`](./flytekit.configuration#flytekitconfigurationgenericpersistenceconfig) | Data storage configuration that applies across any provider. |
+| [`Image`](./flytekit.configuration#flytekitconfigurationimage) | Image is a structured wrapper for task container images used in object serialization. |
+| [`ImageConfig`](./flytekit.configuration#flytekitconfigurationimageconfig) | We recommend you to use ImageConfig. |
+| [`LocalConfig`](./flytekit.configuration#flytekitconfigurationlocalconfig) | Any configuration specific to local runs. |
+| [`PlatformConfig`](./flytekit.configuration#flytekitconfigurationplatformconfig) | This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically). |
+| [`S3Config`](./flytekit.configuration#flytekitconfigurations3config) | S3 specific configuration. |
+| [`SecretsConfig`](./flytekit.configuration#flytekitconfigurationsecretsconfig) | Configuration for secrets. |
+| [`SerializationSettings`](./flytekit.configuration#flytekitconfigurationserializationsettings) | These settings are provided while serializing a workflow and task, before registration. |
+| [`StatsConfig`](./flytekit.configuration#flytekitconfigurationstatsconfig) | Configuration for sending statsd. |
+| [`TaskConfig`](./flytekit.configuration#flytekitconfigurationtaskconfig) | Any Project/Domain/Org configuration. |
 
 ### Variables
 

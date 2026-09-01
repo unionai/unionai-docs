@@ -15,15 +15,15 @@ Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plu
 
 | Class | Description |
 |-|-|
-| [`Chief`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskchief) |  |
-| [`CleanPodPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
-| [`Evaluator`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskevaluator) |  |
-| [`PS`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskps) |  |
-| [`RestartPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
-| [`RunPolicy`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrunpolicy) | RunPolicy describes a set of policies to apply to the execution of a Kubeflow job. |
-| [`TensorflowFunctionTask`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github. |
-| [`TfJob`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github. |
-| [`Worker`](.././flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
+| [`Chief`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskchief) |  |
+| [`CleanPodPolicy`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
+| [`Evaluator`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskevaluator) |  |
+| [`PS`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskps) |  |
+| [`RestartPolicy`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
+| [`RunPolicy`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrunpolicy) | RunPolicy describes a set of policies to apply to the execution of a Kubeflow job. |
+| [`TensorflowFunctionTask`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github. |
+| [`TfJob`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github. |
+| [`Worker`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
 
 ## flytekitplugins.kftensorflow.task.Chief
 

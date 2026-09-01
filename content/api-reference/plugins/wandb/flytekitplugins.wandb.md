@@ -22,7 +22,7 @@ This package contains things that are useful when extending Flytekit.
 
 | Class | Description |
 |-|-|
-| [`wandb_init`](.././flytekitplugins.wandb#flytekitpluginswandbwandb_init) |  |
+| [`wandb_init`](./flytekitplugins.wandb#flytekitpluginswandbwandb_init) |  |
 
 ## flytekitplugins.wandb.wandb_init
 

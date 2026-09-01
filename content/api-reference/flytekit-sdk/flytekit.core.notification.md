@@ -20,10 +20,10 @@ and Pagerduty is incumbent on those email API being set-up correctly.
 
 | Class | Description |
 |-|-|
-| [`Email`](.././flytekit.core.notification#flytekitcorenotificationemail) | This notification should be used when sending regular emails to people. |
-| [`Notification`](.././flytekit.core.notification#flytekitcorenotificationnotification) |  |
-| [`PagerDuty`](.././flytekit.core.notification#flytekitcorenotificationpagerduty) | This notification should be used when sending emails to the PagerDuty service. |
-| [`Slack`](.././flytekit.core.notification#flytekitcorenotificationslack) | This notification should be used when sending emails to the Slack. |
+| [`Email`](./flytekit.core.notification#flytekitcorenotificationemail) | This notification should be used when sending regular emails to people. |
+| [`Notification`](./flytekit.core.notification#flytekitcorenotificationnotification) |  |
+| [`PagerDuty`](./flytekit.core.notification#flytekitcorenotificationpagerduty) | This notification should be used when sending emails to the PagerDuty service. |
+| [`Slack`](./flytekit.core.notification#flytekitcorenotificationslack) | This notification should be used when sending emails to the Slack. |
 
 ## flytekit.core.notification.Email
 

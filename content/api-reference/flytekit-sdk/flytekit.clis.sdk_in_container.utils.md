@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ErrorHandlingCommand`](.././flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilserrorhandlingcommand) | Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way. |
-| [`PyFlyteParams`](.././flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilspyflyteparams) |  |
+| [`ErrorHandlingCommand`](./flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilserrorhandlingcommand) | Helper class that wraps the invoke method of a click command to catch exceptions and print them in a nice way. |
+| [`PyFlyteParams`](./flytekit.clis.sdk_in_container.utils#flytekitclissdk_in_containerutilspyflyteparams) |  |
 
 ### Methods
 

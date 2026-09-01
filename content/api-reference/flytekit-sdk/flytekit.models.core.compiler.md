@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CompiledTask`](.././flytekit.models.core.compiler#flytekitmodelscorecompilercompiledtask) |  |
-| [`CompiledWorkflow`](.././flytekit.models.core.compiler#flytekitmodelscorecompilercompiledworkflow) |  |
-| [`CompiledWorkflowClosure`](.././flytekit.models.core.compiler#flytekitmodelscorecompilercompiledworkflowclosure) |  |
-| [`ConnectionSet`](.././flytekit.models.core.compiler#flytekitmodelscorecompilerconnectionset) |  |
+| [`CompiledTask`](./flytekit.models.core.compiler#flytekitmodelscorecompilercompiledtask) |  |
+| [`CompiledWorkflow`](./flytekit.models.core.compiler#flytekitmodelscorecompilercompiledworkflow) |  |
+| [`CompiledWorkflowClosure`](./flytekit.models.core.compiler#flytekitmodelscorecompilercompiledworkflowclosure) |  |
+| [`ConnectionSet`](./flytekit.models.core.compiler#flytekitmodelscorecompilerconnectionset) |  |
 
 ## flytekit.models.core.compiler.CompiledTask
 

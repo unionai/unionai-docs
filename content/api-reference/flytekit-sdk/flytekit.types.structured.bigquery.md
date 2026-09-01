@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrowToBQEncodingHandlers`](.././flytekit.types.structured.bigquery#flytekittypesstructuredbigqueryarrowtobqencodinghandlers) |  |
-| [`BQToArrowDecodingHandler`](.././flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtoarrowdecodinghandler) |  |
-| [`BQToPandasDecodingHandler`](.././flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtopandasdecodinghandler) |  |
-| [`PandasToBQEncodingHandlers`](.././flytekit.types.structured.bigquery#flytekittypesstructuredbigquerypandastobqencodinghandlers) |  |
+| [`ArrowToBQEncodingHandlers`](./flytekit.types.structured.bigquery#flytekittypesstructuredbigqueryarrowtobqencodinghandlers) |  |
+| [`BQToArrowDecodingHandler`](./flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtoarrowdecodinghandler) |  |
+| [`BQToPandasDecodingHandler`](./flytekit.types.structured.bigquery#flytekittypesstructuredbigquerybqtopandasdecodinghandler) |  |
+| [`PandasToBQEncodingHandlers`](./flytekit.types.structured.bigquery#flytekittypesstructuredbigquerypandastobqencodinghandlers) |  |
 
 ### Variables
 

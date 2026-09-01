@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SQLAlchemyConfig`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemyconfig) | Use this configuration to configure task. |
-| [`SQLAlchemyDefaultImages`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemydefaultimages) | Default images for the sqlalchemy flytekit plugin. |
-| [`SQLAlchemyTask`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask) | Makes it possible to run client side SQLAlchemy queries that optionally return a FlyteSchema object. |
-| [`SQLAlchemyTaskExecutor`](.././flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytaskexecutor) |  |
+| [`SQLAlchemyConfig`](./flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemyconfig) | Use this configuration to configure task. |
+| [`SQLAlchemyDefaultImages`](./flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemydefaultimages) | Default images for the sqlalchemy flytekit plugin. |
+| [`SQLAlchemyTask`](./flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytask) | Makes it possible to run client side SQLAlchemy queries that optionally return a FlyteSchema object. |
+| [`SQLAlchemyTaskExecutor`](./flytekitplugins.sqlalchemy.task#flytekitpluginssqlalchemytasksqlalchemytaskexecutor) |  |
 
 ## flytekitplugins.sqlalchemy.task.SQLAlchemyConfig
 

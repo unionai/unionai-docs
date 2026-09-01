@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AutoDeletingTempDir`](.././flytekit.core.utils#flytekitcoreutilsautodeletingtempdir) | Creates a posix safe tempdir which is auto deleted once out of scope. |
-| [`ClassDecorator`](.././flytekit.core.utils#flytekitcoreutilsclassdecorator) | Abstract class for class decorators. |
-| [`Directory`](.././flytekit.core.utils#flytekitcoreutilsdirectory) |  |
-| [`timeit`](.././flytekit.core.utils#flytekitcoreutilstimeit) | A context manager and a decorator that measures the execution time of the wrapped code block or functions. |
+| [`AutoDeletingTempDir`](./flytekit.core.utils#flytekitcoreutilsautodeletingtempdir) | Creates a posix safe tempdir which is auto deleted once out of scope. |
+| [`ClassDecorator`](./flytekit.core.utils#flytekitcoreutilsclassdecorator) | Abstract class for class decorators. |
+| [`Directory`](./flytekit.core.utils#flytekitcoreutilsdirectory) |  |
+| [`timeit`](./flytekit.core.utils#flytekitcoreutilstimeit) | A context manager and a decorator that measures the execution time of the wrapped code block or functions. |
 
 ### Methods
 

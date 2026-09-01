@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ConcurrencyLimitBehavior`](.././flytekit.models.concurrency#flytekitmodelsconcurrencyconcurrencylimitbehavior) |  |
-| [`ConcurrencyPolicy`](.././flytekit.models.concurrency#flytekitmodelsconcurrencyconcurrencypolicy) | Defines the concurrency policy for a launch plan. |
+| [`ConcurrencyLimitBehavior`](./flytekit.models.concurrency#flytekitmodelsconcurrencyconcurrencylimitbehavior) |  |
+| [`ConcurrencyPolicy`](./flytekit.models.concurrency#flytekitmodelsconcurrencyconcurrencypolicy) | Defines the concurrency policy for a launch plan. |
 
 ## flytekit.models.concurrency.ConcurrencyLimitBehavior
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WorkflowClosure`](.././flytekit.models.workflow_closure#flytekitmodelsworkflow_closureworkflowclosure) |  |
+| [`WorkflowClosure`](./flytekit.models.workflow_closure#flytekitmodelsworkflow_closureworkflowclosure) |  |
 
 ## flytekit.models.workflow_closure.WorkflowClosure
 

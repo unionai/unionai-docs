@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteFS`](.././flytekit.remote.remote_fs#flytekitremoteremote_fsflytefs) | Want this to behave mostly just like the HTTP file system. |
-| [`FlytePathResolver`](.././flytekit.remote.remote_fs#flytekitremoteremote_fsflytepathresolver) |  |
-| [`HttpFileWriter`](.././flytekit.remote.remote_fs#flytekitremoteremote_fshttpfilewriter) |  |
+| [`FlyteFS`](./flytekit.remote.remote_fs#flytekitremoteremote_fsflytefs) | Want this to behave mostly just like the HTTP file system. |
+| [`FlytePathResolver`](./flytekit.remote.remote_fs#flytekitremoteremote_fsflytepathresolver) |  |
+| [`HttpFileWriter`](./flytekit.remote.remote_fs#flytekitremoteremote_fshttpfilewriter) |  |
 
 ### Methods
 

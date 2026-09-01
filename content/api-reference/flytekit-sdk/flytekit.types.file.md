@@ -14,7 +14,7 @@ This module provides functionality related to FlyteFile
 
 | Class | Description |
 |-|-|
-| [`FileExt`](.././flytekit.types.file#flytekittypesfilefileext) | Used for annotating file extension types of FlyteFile. |
+| [`FileExt`](./flytekit.types.file#flytekittypesfilefileext) | Used for annotating file extension types of FlyteFile. |
 
 ## flytekit.types.file.FileExt
 

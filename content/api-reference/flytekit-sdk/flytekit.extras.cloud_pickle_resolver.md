@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ExperimentalNaiveCloudPickleResolver`](.././flytekit.extras.cloud_pickle_resolver#flytekitextrascloud_pickle_resolverexperimentalnaivecloudpickleresolver) | Please do not use this resolver, basically ever. |
+| [`ExperimentalNaiveCloudPickleResolver`](./flytekit.extras.cloud_pickle_resolver#flytekitextrascloud_pickle_resolverexperimentalnaivecloudpickleresolver) | Please do not use this resolver, basically ever. |
 
 ### Variables
 

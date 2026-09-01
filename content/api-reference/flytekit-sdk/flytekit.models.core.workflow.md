@@ -13,23 +13,23 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Alias`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowalias) |  |
-| [`ApproveCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowapprovecondition) |  |
-| [`ArrayNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowarraynode) |  |
-| [`BranchNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowbranchnode) |  |
-| [`GateNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowgatenode) |  |
-| [`IfBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifblock) |  |
-| [`IfElseBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifelseblock) |  |
-| [`Node`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownode) |  |
-| [`NodeMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownodemetadata) |  |
-| [`SignalCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsignalcondition) |  |
-| [`SleepCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsleepcondition) |  |
-| [`TaskNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknode) |  |
-| [`TaskNodeOverrides`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknodeoverrides) |  |
-| [`WorkflowMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadata) |  |
-| [`WorkflowMetadataDefaults`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadatadefaults) |  |
-| [`WorkflowNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflownode) |  |
-| [`WorkflowTemplate`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowtemplate) |  |
+| [`Alias`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowalias) |  |
+| [`ApproveCondition`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowapprovecondition) |  |
+| [`ArrayNode`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowarraynode) |  |
+| [`BranchNode`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowbranchnode) |  |
+| [`GateNode`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowgatenode) |  |
+| [`IfBlock`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowifblock) |  |
+| [`IfElseBlock`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowifelseblock) |  |
+| [`Node`](./flytekit.models.core.workflow#flytekitmodelscoreworkflownode) |  |
+| [`NodeMetadata`](./flytekit.models.core.workflow#flytekitmodelscoreworkflownodemetadata) |  |
+| [`SignalCondition`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowsignalcondition) |  |
+| [`SleepCondition`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowsleepcondition) |  |
+| [`TaskNode`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknode) |  |
+| [`TaskNodeOverrides`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknodeoverrides) |  |
+| [`WorkflowMetadata`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadata) |  |
+| [`WorkflowMetadataDefaults`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadatadefaults) |  |
+| [`WorkflowNode`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflownode) |  |
+| [`WorkflowTemplate`](./flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowtemplate) |  |
 
 ## flytekit.models.core.workflow.Alias
 

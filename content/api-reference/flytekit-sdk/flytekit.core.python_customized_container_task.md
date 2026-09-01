@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PythonCustomizedContainerTask`](.././flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_taskpythoncustomizedcontainertask) | Please take a look at the comments for {{< py_class_ref flytekit.extend.ExecutableTemplateShimTask >}} as well. |
-| [`TaskTemplateResolver`](.././flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_tasktasktemplateresolver) | This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``,. |
+| [`PythonCustomizedContainerTask`](./flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_taskpythoncustomizedcontainertask) | Please take a look at the comments for {{< py_class_ref flytekit.extend.ExecutableTemplateShimTask >}} as well. |
+| [`TaskTemplateResolver`](./flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_tasktasktemplateresolver) | This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``,. |
 
 ### Variables
 

@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ClassicSparkDataFrameSchemaReader`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemareader) | Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
-| [`ClassicSparkDataFrameSchemaWriter`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemawriter) | Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema. |
-| [`ClassicSparkDataFrameTransformer`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframetransformer) | Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped). |
-| [`SparkDataFrameSchemaReader`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemareader) | Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
-| [`SparkDataFrameSchemaWriter`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemawriter) | Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema. |
-| [`SparkDataFrameTransformer`](.././flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframetransformer) | Transforms Spark DataFrame's to and from a Schema (typed/untyped). |
+| [`ClassicSparkDataFrameSchemaReader`](./flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemareader) | Implements how Classic SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
+| [`ClassicSparkDataFrameSchemaWriter`](./flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframeschemawriter) | Implements how Classic SparkDataFrame should be written using ``open`` method of FlyteSchema. |
+| [`ClassicSparkDataFrameTransformer`](./flytekitplugins.spark.schema#flytekitpluginssparkschemaclassicsparkdataframetransformer) | Transforms Classic Spark DataFrame's to and from a Schema (typed/untyped). |
+| [`SparkDataFrameSchemaReader`](./flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemareader) | Implements how SparkDataFrame should be read using the ``open`` method of FlyteSchema. |
+| [`SparkDataFrameSchemaWriter`](./flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframeschemawriter) | Implements how SparkDataFrame should be written to using ``open`` method of FlyteSchema. |
+| [`SparkDataFrameTransformer`](./flytekitplugins.spark.schema#flytekitpluginssparkschemasparkdataframetransformer) | Transforms Spark DataFrame's to and from a Schema (typed/untyped). |
 
 ## flytekitplugins.spark.schema.ClassicSparkDataFrameSchemaReader
 

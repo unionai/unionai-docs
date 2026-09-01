@@ -13,17 +13,17 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DateTimeType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesdatetimetype) |  |
-| [`DirParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesdirparamtype) |  |
-| [`DurationParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesdurationparamtype) |  |
-| [`EnumParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesenumparamtype) |  |
-| [`FileParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesfileparamtype) |  |
-| [`FlyteLiteralConverter`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesflyteliteralconverter) |  |
-| [`JSONIteratorParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesjsoniteratorparamtype) |  |
-| [`JsonParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesjsonparamtype) |  |
-| [`PickleParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typespickleparamtype) |  |
-| [`StructuredDatasetParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesstructureddatasetparamtype) | TODO handle column types. |
-| [`UnionParamType`](.././flytekit.interaction.click_types#flytekitinteractionclick_typesunionparamtype) | A composite type that allows for multiple types to be specified. |
+| [`DateTimeType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesdatetimetype) |  |
+| [`DirParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesdirparamtype) |  |
+| [`DurationParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesdurationparamtype) |  |
+| [`EnumParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesenumparamtype) |  |
+| [`FileParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesfileparamtype) |  |
+| [`FlyteLiteralConverter`](./flytekit.interaction.click_types#flytekitinteractionclick_typesflyteliteralconverter) |  |
+| [`JSONIteratorParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesjsoniteratorparamtype) |  |
+| [`JsonParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesjsonparamtype) |  |
+| [`PickleParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typespickleparamtype) |  |
+| [`StructuredDatasetParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesstructureddatasetparamtype) | TODO handle column types. |
+| [`UnionParamType`](./flytekit.interaction.click_types#flytekitinteractionclick_typesunionparamtype) | A composite type that allows for multiple types to be specified. |
 
 ### Methods
 

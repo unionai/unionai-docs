@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SynchronousFlyteClient`](.././flytekit.clients.friendly#flytekitclientsfriendlysynchronousflyteclient) | This is a low-level client that users can use to make direct gRPC service calls to the control plane. |
+| [`SynchronousFlyteClient`](./flytekit.clients.friendly#flytekitclientsfriendlysynchronousflyteclient) | This is a low-level client that users can use to make direct gRPC service calls to the control plane. |
 
 ### Variables
 

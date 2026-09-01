@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BatchEndpointTask`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskbatchendpointtask) |  |
-| [`BatchResult`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskbatchresult) |  |
-| [`DownloadJSONFilesExecutor`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskdownloadjsonfilesexecutor) |  |
-| [`DownloadJSONFilesTask`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskdownloadjsonfilestask) |  |
-| [`OpenAIFileConfig`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskopenaifileconfig) |  |
-| [`OpenAIFileDefaultImages`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskopenaifiledefaultimages) | Default images for the openai batch plugin. |
-| [`UploadJSONLFileExecutor`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskuploadjsonlfileexecutor) |  |
-| [`UploadJSONLFileTask`](.././flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskuploadjsonlfiletask) |  |
+| [`BatchEndpointTask`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskbatchendpointtask) |  |
+| [`BatchResult`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskbatchresult) |  |
+| [`DownloadJSONFilesExecutor`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskdownloadjsonfilesexecutor) |  |
+| [`DownloadJSONFilesTask`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskdownloadjsonfilestask) |  |
+| [`OpenAIFileConfig`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskopenaifileconfig) |  |
+| [`OpenAIFileDefaultImages`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskopenaifiledefaultimages) | Default images for the openai batch plugin. |
+| [`UploadJSONLFileExecutor`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskuploadjsonlfileexecutor) |  |
+| [`UploadJSONLFileTask`](./flytekitplugins.openai.batch.task#flytekitpluginsopenaibatchtaskuploadjsonlfiletask) |  |
 
 ## flytekitplugins.openai.batch.task.BatchEndpointTask
 

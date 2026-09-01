@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ModelInferenceTemplate`](.././flytekitplugins.inference.sidecar_template#flytekitpluginsinferencesidecar_templatemodelinferencetemplate) |  |
+| [`ModelInferenceTemplate`](./flytekitplugins.inference.sidecar_template#flytekitpluginsinferencesidecar_templatemodelinferencetemplate) |  |
 
 ## flytekitplugins.inference.sidecar_template.ModelInferenceTemplate
 

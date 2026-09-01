@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BigQueryConfig`](.././flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigqueryconfig) | BigQueryConfig should be used to configure a BigQuery Task. |
-| [`BigQueryTask`](.././flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigquerytask) | This is the simplest form of a BigQuery Task, that can be used even for tasks that do not produce any output. |
+| [`BigQueryConfig`](./flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigqueryconfig) | BigQueryConfig should be used to configure a BigQuery Task. |
+| [`BigQueryTask`](./flytekitplugins.bigquery.task#flytekitpluginsbigquerytaskbigquerytask) | This is the simplest form of a BigQuery Task, that can be used even for tasks that do not produce any output. |
 
 ## flytekitplugins.bigquery.task.BigQueryConfig
 

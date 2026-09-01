@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`NamedEntityIdentifier`](.././flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentityidentifier) |  |
-| [`NamedEntityMetadata`](.././flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentitymetadata) |  |
-| [`NamedEntityState`](.././flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentitystate) |  |
+| [`NamedEntityIdentifier`](./flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentityidentifier) |  |
+| [`NamedEntityMetadata`](./flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentitymetadata) |  |
+| [`NamedEntityState`](./flytekit.models.named_entity#flytekitmodelsnamed_entitynamedentitystate) |  |
 
 ## flytekit.models.named_entity.NamedEntityIdentifier
 

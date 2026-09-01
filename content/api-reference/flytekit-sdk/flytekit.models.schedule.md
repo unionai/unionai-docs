@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Schedule`](.././flytekit.models.schedule#flytekitmodelsscheduleschedule) |  |
+| [`Schedule`](./flytekit.models.schedule#flytekitmodelsscheduleschedule) |  |
 
 ## flytekit.models.schedule.Schedule
 

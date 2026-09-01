@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BooleanExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionbooleanexpression) |  |
-| [`ComparisonExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditioncomparisonexpression) |  |
-| [`ConjunctionExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionconjunctionexpression) |  |
-| [`Operand`](.././flytekit.models.core.condition#flytekitmodelscoreconditionoperand) |  |
+| [`BooleanExpression`](./flytekit.models.core.condition#flytekitmodelscoreconditionbooleanexpression) |  |
+| [`ComparisonExpression`](./flytekit.models.core.condition#flytekitmodelscoreconditioncomparisonexpression) |  |
+| [`ConjunctionExpression`](./flytekit.models.core.condition#flytekitmodelscoreconditionconjunctionexpression) |  |
+| [`Operand`](./flytekit.models.core.condition#flytekitmodelscoreconditionoperand) |  |
 
 ## flytekit.models.core.condition.BooleanExpression
 

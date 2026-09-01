@@ -13,26 +13,26 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteAssertion`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) |  |
-| [`FlyteAuthenticationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) |  |
-| [`FlyteCompilationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) |  |
-| [`FlyteDataNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) |  |
-| [`FlyteDisapprovalException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) |  |
-| [`FlyteEntityAlreadyExistsException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) |  |
-| [`FlyteEntityNotExistException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) |  |
-| [`FlyteEntityNotFoundException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) |  |
-| [`FlyteFailureNodeInputMismatchException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) |  |
-| [`FlyteInvalidInputException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) |  |
-| [`FlyteMissingReturnValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) |  |
-| [`FlyteMissingTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) |  |
-| [`FlytePromiseAttributeResolveException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) |  |
-| [`FlyteRecoverableException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) |  |
-| [`FlyteTimeout`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) |  |
-| [`FlyteTypeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) |  |
-| [`FlyteUserException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) |  |
-| [`FlyteUserRuntimeException`](.././flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) |  |
-| [`FlyteValidationException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) |  |
-| [`FlyteValueException`](.././flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) |  |
+| [`FlyteAssertion`](./flytekit.exceptions.user#flytekitexceptionsuserflyteassertion) |  |
+| [`FlyteAuthenticationException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteauthenticationexception) |  |
+| [`FlyteCompilationException`](./flytekit.exceptions.user#flytekitexceptionsuserflytecompilationexception) |  |
+| [`FlyteDataNotFoundException`](./flytekit.exceptions.user#flytekitexceptionsuserflytedatanotfoundexception) |  |
+| [`FlyteDisapprovalException`](./flytekit.exceptions.user#flytekitexceptionsuserflytedisapprovalexception) |  |
+| [`FlyteEntityAlreadyExistsException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteentityalreadyexistsexception) |  |
+| [`FlyteEntityNotExistException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotexistexception) |  |
+| [`FlyteEntityNotFoundException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteentitynotfoundexception) |  |
+| [`FlyteFailureNodeInputMismatchException`](./flytekit.exceptions.user#flytekitexceptionsuserflytefailurenodeinputmismatchexception) |  |
+| [`FlyteInvalidInputException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteinvalidinputexception) |  |
+| [`FlyteMissingReturnValueException`](./flytekit.exceptions.user#flytekitexceptionsuserflytemissingreturnvalueexception) |  |
+| [`FlyteMissingTypeException`](./flytekit.exceptions.user#flytekitexceptionsuserflytemissingtypeexception) |  |
+| [`FlytePromiseAttributeResolveException`](./flytekit.exceptions.user#flytekitexceptionsuserflytepromiseattributeresolveexception) |  |
+| [`FlyteRecoverableException`](./flytekit.exceptions.user#flytekitexceptionsuserflyterecoverableexception) |  |
+| [`FlyteTimeout`](./flytekit.exceptions.user#flytekitexceptionsuserflytetimeout) |  |
+| [`FlyteTypeException`](./flytekit.exceptions.user#flytekitexceptionsuserflytetypeexception) |  |
+| [`FlyteUserException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteuserexception) |  |
+| [`FlyteUserRuntimeException`](./flytekit.exceptions.user#flytekitexceptionsuserflyteuserruntimeexception) |  |
+| [`FlyteValidationException`](./flytekit.exceptions.user#flytekitexceptionsuserflytevalidationexception) |  |
+| [`FlyteValueException`](./flytekit.exceptions.user#flytekitexceptionsuserflytevalueexception) |  |
 
 ## flytekit.exceptions.user.FlyteAssertion
 

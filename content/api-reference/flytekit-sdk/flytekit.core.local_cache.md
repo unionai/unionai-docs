@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`LocalTaskCache`](.././flytekit.core.local_cache#flytekitcorelocal_cachelocaltaskcache) | This class implements a persistent store able to cache the result of local task executions. |
+| [`LocalTaskCache`](./flytekit.core.local_cache#flytekitcorelocal_cachelocaltaskcache) | This class implements a persistent store able to cache the result of local task executions. |
 
 ### Variables
 

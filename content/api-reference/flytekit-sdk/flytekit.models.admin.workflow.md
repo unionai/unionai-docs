@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Workflow`](.././flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflow) |  |
-| [`WorkflowClosure`](.././flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflowclosure) |  |
-| [`WorkflowSpec`](.././flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflowspec) |  |
+| [`Workflow`](./flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflow) |  |
+| [`WorkflowClosure`](./flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflowclosure) |  |
+| [`WorkflowSpec`](./flytekit.models.admin.workflow#flytekitmodelsadminworkflowworkflowspec) |  |
 
 ## flytekit.models.admin.workflow.Workflow
 

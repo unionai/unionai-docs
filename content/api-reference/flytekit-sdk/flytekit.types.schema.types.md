@@ -13,16 +13,16 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteSchema`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschema) |  |
-| [`FlyteSchemaTransformer`](.././flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) |  |
-| [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) |  |
-| [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) |  |
-| [`SchemaEngine`](.././flytekit.types.schema.types#flytekittypesschematypesschemaengine) | This is the core Engine that handles all schema sub-systems. |
-| [`SchemaFormat`](.././flytekit.types.schema.types#flytekittypesschematypesschemaformat) | Represents the schema storage format (at rest). |
-| [`SchemaHandler`](.././flytekit.types.schema.types#flytekittypesschematypesschemahandler) |  |
-| [`SchemaOpenMode`](.././flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) |  |
-| [`SchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypesschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
-| [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) |  |
+| [`FlyteSchema`](./flytekit.types.schema.types#flytekittypesschematypesflyteschema) |  |
+| [`FlyteSchemaTransformer`](./flytekit.types.schema.types#flytekittypesschematypesflyteschematransformer) |  |
+| [`LocalIOSchemaReader`](./flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) |  |
+| [`LocalIOSchemaWriter`](./flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) |  |
+| [`SchemaEngine`](./flytekit.types.schema.types#flytekittypesschematypesschemaengine) | This is the core Engine that handles all schema sub-systems. |
+| [`SchemaFormat`](./flytekit.types.schema.types#flytekittypesschematypesschemaformat) | Represents the schema storage format (at rest). |
+| [`SchemaHandler`](./flytekit.types.schema.types#flytekittypesschematypesschemahandler) |  |
+| [`SchemaOpenMode`](./flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) |  |
+| [`SchemaReader`](./flytekit.types.schema.types#flytekittypesschematypesschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
+| [`SchemaWriter`](./flytekit.types.schema.types#flytekittypesschematypesschemawriter) |  |
 
 ### Methods
 

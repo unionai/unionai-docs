@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TypedInterface`](.././flytekit.remote.interface#flytekitremoteinterfacetypedinterface) |  |
+| [`TypedInterface`](./flytekit.remote.interface#flytekitremoteinterfacetypedinterface) |  |
 
 ## flytekit.remote.interface.TypedInterface
 

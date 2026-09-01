@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Project`](.././flytekit.models.project#flytekitmodelsprojectproject) |  |
+| [`Project`](./flytekit.models.project#flytekitmodelsprojectproject) |  |
 
 ## flytekit.models.project.Project
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`EagerException`](.././flytekit.exceptions.eager#flytekitexceptionseagereagerexception) | Raised when a node in an eager workflow encounters an error. |
+| [`EagerException`](./flytekit.exceptions.eager#flytekitexceptionseagereagerexception) | Raised when a node in an eager workflow encounters an error. |
 
 ## flytekit.exceptions.eager.EagerException
 

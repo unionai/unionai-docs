@@ -14,7 +14,7 @@ Pandera validation configuration.
 
 | Class | Description |
 |-|-|
-| [`ValidationConfig`](.././flytekitplugins.pandera.config#flytekitpluginspanderaconfigvalidationconfig) |  |
+| [`ValidationConfig`](./flytekitplugins.pandera.config#flytekitpluginspanderaconfigvalidationconfig) |  |
 
 ## flytekitplugins.pandera.config.ValidationConfig
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteDirToMultipartBlobTransformer`](.././flytekit.types.directory.types#flytekittypesdirectorytypesflytedirtomultipartblobtransformer) | This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte. |
-| [`FlyteDirectory`](.././flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) |  |
+| [`FlyteDirToMultipartBlobTransformer`](./flytekit.types.directory.types#flytekittypesdirectorytypesflytedirtomultipartblobtransformer) | This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte. |
+| [`FlyteDirectory`](./flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) |  |
 
 ### Methods
 

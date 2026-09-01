@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ImageBuildEngine`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
-| [`ImageSpec`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespec) | This class is used to specify the docker image that will be used to run the task. |
-| [`ImageSpecBuilder`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespecbuilder) |  |
+| [`ImageBuildEngine`](./flytekit.image_spec.image_spec#flytekitimage_specimage_specimagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`ImageSpec`](./flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespec) | This class is used to specify the docker image that will be used to run the task. |
+| [`ImageSpecBuilder`](./flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespecbuilder) |  |
 
 ### Methods
 

@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PandasReport`](.././flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreport) |  |
-| [`PandasReportRenderer`](.././flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreportrenderer) |  |
+| [`PandasReport`](./flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreport) |  |
+| [`PandasReportRenderer`](./flytekitplugins.pandera.pandas_renderer#flytekitpluginspanderapandas_rendererpandasreportrenderer) |  |
 
 ### Variables
 

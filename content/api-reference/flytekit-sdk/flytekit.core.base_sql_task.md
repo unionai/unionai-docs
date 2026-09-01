@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SQLTask`](.././flytekit.core.base_sql_task#flytekitcorebase_sql_tasksqltask) | Base task types for all SQL tasks. |
+| [`SQLTask`](./flytekit.core.base_sql_task#flytekitcorebase_sql_tasksqltask) | Base task types for all SQL tasks. |
 
 ### Variables
 

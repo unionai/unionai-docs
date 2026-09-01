@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ScikitLearn2ONNX`](.././flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnx) |  |
-| [`ScikitLearn2ONNXConfig`](.././flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxconfig) | ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion. |
-| [`ScikitLearn2ONNXTransformer`](.././flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxtransformer) |  |
+| [`ScikitLearn2ONNX`](./flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnx) |  |
+| [`ScikitLearn2ONNXConfig`](./flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxconfig) | ScikitLearn2ONNXConfig is the config used during the scikitlearn to ONNX conversion. |
+| [`ScikitLearn2ONNXTransformer`](./flytekitplugins.onnxscikitlearn.schema#flytekitpluginsonnxscikitlearnschemascikitlearn2onnxtransformer) |  |
 
 ### Methods
 

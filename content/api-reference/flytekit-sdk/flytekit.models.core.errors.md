@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ContainerError`](.././flytekit.models.core.errors#flytekitmodelscoreerrorscontainererror) |  |
-| [`ErrorDocument`](.././flytekit.models.core.errors#flytekitmodelscoreerrorserrordocument) |  |
+| [`ContainerError`](./flytekit.models.core.errors#flytekitmodelscoreerrorscontainererror) |  |
+| [`ErrorDocument`](./flytekit.models.core.errors#flytekitmodelscoreerrorserrordocument) |  |
 
 ## flytekit.models.core.errors.ContainerError
 

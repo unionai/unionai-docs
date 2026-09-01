@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteIterator`](.././flytekit.types.iterator.iterator#flytekittypesiteratoriteratorflyteiterator) |  |
-| [`IteratorTransformer`](.././flytekit.types.iterator.iterator#flytekittypesiteratoriteratoriteratortransformer) |  |
+| [`FlyteIterator`](./flytekit.types.iterator.iterator#flytekittypesiteratoriteratorflyteiterator) |  |
+| [`IteratorTransformer`](./flytekit.types.iterator.iterator#flytekittypesiteratoriteratoriteratortransformer) |  |
 
 ### Variables
 

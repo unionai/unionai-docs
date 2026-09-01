@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BatchRequestConfig`](.././flytekitplugins.great_expectations.task#flytekitpluginsgreat_expectationstaskbatchrequestconfig) | Use this configuration to configure Batch Request. |
-| [`GreatExpectationsTask`](.././flytekitplugins.great_expectations.task#flytekitpluginsgreat_expectationstaskgreatexpectationstask) | This task can be used to validate your data. |
+| [`BatchRequestConfig`](./flytekitplugins.great_expectations.task#flytekitpluginsgreat_expectationstaskbatchrequestconfig) | Use this configuration to configure Batch Request. |
+| [`GreatExpectationsTask`](./flytekitplugins.great_expectations.task#flytekitpluginsgreat_expectationstaskgreatexpectationstask) | This task can be used to validate your data. |
 
 ## flytekitplugins.great_expectations.task.BatchRequestConfig
 

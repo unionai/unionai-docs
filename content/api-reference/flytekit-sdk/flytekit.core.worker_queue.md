@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Controller`](.././flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
-| [`ItemStatus`](.././flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |  |
-| [`Update`](.././flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
-| [`WorkItem`](.././flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
+| [`Controller`](./flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
+| [`ItemStatus`](./flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |  |
+| [`Update`](./flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
+| [`WorkItem`](./flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
 
 ### Variables
 

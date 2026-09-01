@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SklearnEstimatorTransformer`](.././flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearnestimatortransformer) |  |
-| [`SklearnTypeTransformer`](.././flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearntypetransformer) |  |
+| [`SklearnEstimatorTransformer`](./flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearnestimatortransformer) |  |
+| [`SklearnTypeTransformer`](./flytekit.extras.sklearn.native#flytekitextrassklearnnativesklearntypetransformer) |  |
 
 ### Variables
 

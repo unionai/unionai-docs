@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BaseSensor`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorbasesensor) | Base class for all sensors. |
-| [`SensorMetadata`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensormetadata) |  |
+| [`BaseSensor`](./flytekit.sensor.base_sensor#flytekitsensorbase_sensorbasesensor) | Base class for all sensors. |
+| [`SensorMetadata`](./flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensormetadata) |  |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`SensorConfig`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) |  |
+| [`SensorConfig`](./flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) |  |
 
 ### Variables
 

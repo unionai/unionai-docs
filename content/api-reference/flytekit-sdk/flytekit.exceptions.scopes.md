@@ -13,9 +13,9 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`FlyteScopedException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) |  |
-| [`FlyteScopedSystemException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) |  |
-| [`FlyteScopedUserException`](.././flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) |  |
+| [`FlyteScopedException`](./flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedexception) |  |
+| [`FlyteScopedSystemException`](./flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopedsystemexception) |  |
+| [`FlyteScopedUserException`](./flytekit.exceptions.scopes#flytekitexceptionsscopesflytescopeduserexception) |  |
 
 ### Methods
 

@@ -13,21 +13,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Artifact`](.././flytekit.core.artifact#flytekitcoreartifactartifact) | An Artifact is effectively just a metadata layer on top of data that exists in Flyte. |
-| [`ArtifactIDSpecification`](.././flytekit.core.artifact#flytekitcoreartifactartifactidspecification) | This is a special object that helps specify how Artifacts are to be created. |
-| [`ArtifactQuery`](.././flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
-| [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |  |
-| [`InputsBase`](.././flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
-| [`Partition`](.././flytekit.core.artifact#flytekitcoreartifactpartition) |  |
-| [`Partitions`](.././flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
-| [`Serializer`](.././flytekit.core.artifact#flytekitcoreartifactserializer) |  |
-| [`TimePartition`](.././flytekit.core.artifact#flytekitcoreartifacttimepartition) |  |
+| [`Artifact`](./flytekit.core.artifact#flytekitcoreartifactartifact) | An Artifact is effectively just a metadata layer on top of data that exists in Flyte. |
+| [`ArtifactIDSpecification`](./flytekit.core.artifact#flytekitcoreartifactartifactidspecification) | This is a special object that helps specify how Artifacts are to be created. |
+| [`ArtifactQuery`](./flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
+| [`DefaultArtifactSerializationHandler`](./flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |  |
+| [`InputsBase`](./flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
+| [`Partition`](./flytekit.core.artifact#flytekitcoreartifactpartition) |  |
+| [`Partitions`](./flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
+| [`Serializer`](./flytekit.core.artifact#flytekitcoreartifactserializer) |  |
+| [`TimePartition`](./flytekit.core.artifact#flytekitcoreartifacttimepartition) |  |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`ArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
+| [`ArtifactSerializationHandler`](./flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
 
 ### Variables
 

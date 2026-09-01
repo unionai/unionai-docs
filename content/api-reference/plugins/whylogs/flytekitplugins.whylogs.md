@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WhylogsConstraintsRenderer`](.././flytekitplugins.whylogs#flytekitpluginswhylogswhylogsconstraintsrenderer) | Creates a whylogs' Constraints report from a `Constraints` object. |
-| [`WhylogsDatasetProfileTransformer`](.././flytekitplugins.whylogs#flytekitpluginswhylogswhylogsdatasetprofiletransformer) | Transforms whylogs Dataset Profile Views to and from a Schema (typed/untyped). |
-| [`WhylogsSummaryDriftRenderer`](.././flytekitplugins.whylogs#flytekitpluginswhylogswhylogssummarydriftrenderer) | Creates a whylogs' Summary Drift report from two pandas DataFrames. |
+| [`WhylogsConstraintsRenderer`](./flytekitplugins.whylogs#flytekitpluginswhylogswhylogsconstraintsrenderer) | Creates a whylogs' Constraints report from a `Constraints` object. |
+| [`WhylogsDatasetProfileTransformer`](./flytekitplugins.whylogs#flytekitpluginswhylogswhylogsdatasetprofiletransformer) | Transforms whylogs Dataset Profile Views to and from a Schema (typed/untyped). |
+| [`WhylogsSummaryDriftRenderer`](./flytekitplugins.whylogs#flytekitpluginswhylogswhylogssummarydriftrenderer) | Creates a whylogs' Summary Drift report from two pandas DataFrames. |
 
 ## flytekitplugins.whylogs.WhylogsConstraintsRenderer
 

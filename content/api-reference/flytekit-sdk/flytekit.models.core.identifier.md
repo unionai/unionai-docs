@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Identifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifieridentifier) |  |
-| [`NodeExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiernodeexecutionidentifier) |  |
-| [`ResourceType`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierresourcetype) |  |
-| [`SignalIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiersignalidentifier) |  |
-| [`TaskExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiertaskexecutionidentifier) |  |
-| [`WorkflowExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierworkflowexecutionidentifier) |  |
+| [`Identifier`](./flytekit.models.core.identifier#flytekitmodelscoreidentifieridentifier) |  |
+| [`NodeExecutionIdentifier`](./flytekit.models.core.identifier#flytekitmodelscoreidentifiernodeexecutionidentifier) |  |
+| [`ResourceType`](./flytekit.models.core.identifier#flytekitmodelscoreidentifierresourcetype) |  |
+| [`SignalIdentifier`](./flytekit.models.core.identifier#flytekitmodelscoreidentifiersignalidentifier) |  |
+| [`TaskExecutionIdentifier`](./flytekit.models.core.identifier#flytekitmodelscoreidentifiertaskexecutionidentifier) |  |
+| [`WorkflowExecutionIdentifier`](./flytekit.models.core.identifier#flytekitmodelscoreidentifierworkflowexecutionidentifier) |  |
 
 ## flytekit.models.core.identifier.Identifier
 

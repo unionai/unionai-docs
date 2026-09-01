@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SnowflakeConfig`](.././flytekitplugins.snowflake.task#flytekitpluginssnowflaketasksnowflakeconfig) | SnowflakeConfig should be used to configure a Snowflake Task. |
-| [`SnowflakeTask`](.././flytekitplugins.snowflake.task#flytekitpluginssnowflaketasksnowflaketask) | This is the simplest form of a Snowflake Task, that can be used even for tasks that do not produce any output. |
+| [`SnowflakeConfig`](./flytekitplugins.snowflake.task#flytekitpluginssnowflaketasksnowflakeconfig) | SnowflakeConfig should be used to configure a Snowflake Task. |
+| [`SnowflakeTask`](./flytekitplugins.snowflake.task#flytekitpluginssnowflaketasksnowflaketask) | This is the simplest form of a Snowflake Task, that can be used even for tasks that do not produce any output. |
 
 ## flytekitplugins.snowflake.task.SnowflakeConfig
 

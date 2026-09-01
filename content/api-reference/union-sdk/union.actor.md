@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ActorEnvironment`](.././union.actor#unionactoractorenvironment) | ActorEnvironment class. |
-| [`ActorTask`](.././union.actor#unionactoractortask) |  |
+| [`ActorEnvironment`](./union.actor#unionactoractorenvironment) | ActorEnvironment class. |
+| [`ActorTask`](./union.actor#unionactoractortask) |  |
 
 ### Methods
 

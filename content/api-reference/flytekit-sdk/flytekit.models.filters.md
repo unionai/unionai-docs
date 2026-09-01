@@ -13,18 +13,18 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Contains`](.././flytekit.models.filters#flytekitmodelsfilterscontains) |  |
-| [`Equal`](.././flytekit.models.filters#flytekitmodelsfiltersequal) |  |
-| [`Filter`](.././flytekit.models.filters#flytekitmodelsfiltersfilter) |  |
-| [`FilterList`](.././flytekit.models.filters#flytekitmodelsfiltersfilterlist) |  |
-| [`GreaterThan`](.././flytekit.models.filters#flytekitmodelsfiltersgreaterthan) |  |
-| [`GreaterThanOrEqual`](.././flytekit.models.filters#flytekitmodelsfiltersgreaterthanorequal) |  |
-| [`LessThan`](.././flytekit.models.filters#flytekitmodelsfilterslessthan) |  |
-| [`LessThanOrEqual`](.././flytekit.models.filters#flytekitmodelsfilterslessthanorequal) |  |
-| [`NotEqual`](.././flytekit.models.filters#flytekitmodelsfiltersnotequal) |  |
-| [`SetFilter`](.././flytekit.models.filters#flytekitmodelsfilterssetfilter) |  |
-| [`ValueIn`](.././flytekit.models.filters#flytekitmodelsfiltersvaluein) |  |
-| [`ValueNotIn`](.././flytekit.models.filters#flytekitmodelsfiltersvaluenotin) |  |
+| [`Contains`](./flytekit.models.filters#flytekitmodelsfilterscontains) |  |
+| [`Equal`](./flytekit.models.filters#flytekitmodelsfiltersequal) |  |
+| [`Filter`](./flytekit.models.filters#flytekitmodelsfiltersfilter) |  |
+| [`FilterList`](./flytekit.models.filters#flytekitmodelsfiltersfilterlist) |  |
+| [`GreaterThan`](./flytekit.models.filters#flytekitmodelsfiltersgreaterthan) |  |
+| [`GreaterThanOrEqual`](./flytekit.models.filters#flytekitmodelsfiltersgreaterthanorequal) |  |
+| [`LessThan`](./flytekit.models.filters#flytekitmodelsfilterslessthan) |  |
+| [`LessThanOrEqual`](./flytekit.models.filters#flytekitmodelsfilterslessthanorequal) |  |
+| [`NotEqual`](./flytekit.models.filters#flytekitmodelsfiltersnotequal) |  |
+| [`SetFilter`](./flytekit.models.filters#flytekitmodelsfilterssetfilter) |  |
+| [`ValueIn`](./flytekit.models.filters#flytekitmodelsfiltersvaluein) |  |
+| [`ValueNotIn`](./flytekit.models.filters#flytekitmodelsfiltersvaluenotin) |  |
 
 ## flytekit.models.filters.Contains
 

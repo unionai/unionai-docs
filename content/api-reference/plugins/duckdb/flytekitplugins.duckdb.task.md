@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DuckDBProvider`](.././flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskduckdbprovider) |  |
-| [`DuckDBQuery`](.././flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskduckdbquery) |  |
-| [`QueryOutput`](.././flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskqueryoutput) | QueryOutput(counter, output). |
+| [`DuckDBProvider`](./flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskduckdbprovider) |  |
+| [`DuckDBQuery`](./flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskduckdbquery) |  |
+| [`QueryOutput`](./flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskqueryoutput) | QueryOutput(counter, output). |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`MissingSecretError`](.././flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskmissingsecreterror) |  |
+| [`MissingSecretError`](./flytekitplugins.duckdb.task#flytekitpluginsduckdbtaskmissingsecreterror) |  |
 
 ### Methods
 

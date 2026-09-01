@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WebhookConnector`](.././flytekit.extras.webhook#flytekitextraswebhookwebhookconnector) | WebhookConnector is responsible for handling webhook tasks. |
-| [`WebhookTask`](.././flytekit.extras.webhook#flytekitextraswebhookwebhooktask) | The WebhookTask is used to invoke a webhook. |
+| [`WebhookConnector`](./flytekit.extras.webhook#flytekitextraswebhookwebhookconnector) | WebhookConnector is responsible for handling webhook tasks. |
+| [`WebhookTask`](./flytekit.extras.webhook#flytekitextraswebhookwebhooktask) | The WebhookTask is used to invoke a webhook. |
 
 ## flytekit.extras.webhook.WebhookConnector
 

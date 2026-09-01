@@ -72,9 +72,9 @@ def my_task() -> None:
 
 | Class | Description |
 |-|-|
-| [`BaseAccelerator`](.././flytekit.extras.accelerators#flytekitextrasacceleratorsbaseaccelerator) | Base class for all accelerator types. |
-| [`GPUAccelerator`](.././flytekit.extras.accelerators#flytekitextrasacceleratorsgpuaccelerator) | Class that represents a GPU accelerator. |
-| [`MultiInstanceGPUAccelerator`](.././flytekit.extras.accelerators#flytekitextrasacceleratorsmultiinstancegpuaccelerator) | Base class for all multi-instance GPU accelerator types. |
+| [`BaseAccelerator`](./flytekit.extras.accelerators#flytekitextrasacceleratorsbaseaccelerator) | Base class for all accelerator types. |
+| [`GPUAccelerator`](./flytekit.extras.accelerators#flytekitextrasacceleratorsgpuaccelerator) | Class that represents a GPU accelerator. |
+| [`MultiInstanceGPUAccelerator`](./flytekit.extras.accelerators#flytekitextrasacceleratorsmultiinstancegpuaccelerator) | Base class for all multi-instance GPU accelerator types. |
 
 ### Variables
 

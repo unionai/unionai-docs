@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Cache`](.././flytekit.core.cache#flytekitcorecachecache) | Cache configuration for a task. |
-| [`VersionParameters`](.././flytekit.core.cache#flytekitcorecacheversionparameters) | Parameters used for version hash generation. |
+| [`Cache`](./flytekit.core.cache#flytekitcorecachecache) | Cache configuration for a task. |
+| [`VersionParameters`](./flytekit.core.cache#flytekitcorecacheversionparameters) | Parameters used for version hash generation. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`CachePolicy`](.././flytekit.core.cache#flytekitcorecachecachepolicy) |  |
+| [`CachePolicy`](./flytekit.core.cache#flytekitcorecachecachepolicy) |  |
 
 ### Variables
 

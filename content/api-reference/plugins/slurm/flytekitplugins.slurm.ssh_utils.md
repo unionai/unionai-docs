@@ -14,8 +14,8 @@ Utilities of asyncssh connections.
 
 | Class | Description |
 |-|-|
-| [`SSHConfig`](.././flytekitplugins.slurm.ssh_utils#flytekitpluginsslurmssh_utilssshconfig) | A customized version of SSHClientConnectionOptions, tailored to specific needs. |
-| [`SlurmCluster`](.././flytekitplugins.slurm.ssh_utils#flytekitpluginsslurmssh_utilsslurmcluster) | A Slurm cluster instance is defined by a pair of (Slurm host, username). |
+| [`SSHConfig`](./flytekitplugins.slurm.ssh_utils#flytekitpluginsslurmssh_utilssshconfig) | A customized version of SSHClientConnectionOptions, tailored to specific needs. |
+| [`SlurmCluster`](./flytekitplugins.slurm.ssh_utils#flytekitpluginsslurmssh_utilsslurmcluster) | A Slurm cluster instance is defined by a pair of (Slurm host, username). |
 
 ### Methods
 

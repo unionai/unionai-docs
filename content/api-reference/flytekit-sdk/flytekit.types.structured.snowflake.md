@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`PandasToSnowflakeEncodingHandlers`](.././flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakepandastosnowflakeencodinghandlers) |  |
-| [`SnowflakeToPandasDecodingHandler`](.././flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakesnowflaketopandasdecodinghandler) |  |
+| [`PandasToSnowflakeEncodingHandlers`](./flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakepandastosnowflakeencodinghandlers) |  |
+| [`SnowflakeToPandasDecodingHandler`](./flytekit.types.structured.snowflake#flytekittypesstructuredsnowflakesnowflaketopandasdecodinghandler) |  |
 
 ### Methods
 

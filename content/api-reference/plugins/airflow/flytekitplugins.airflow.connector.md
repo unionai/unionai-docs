@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AirflowConnector`](.././flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowconnector) | It is used to run Airflow tasks. |
-| [`AirflowMetadata`](.././flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowmetadata) | This class is used to store the Airflow task configuration. |
+| [`AirflowConnector`](./flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowconnector) | It is used to run Airflow tasks. |
+| [`AirflowMetadata`](./flytekitplugins.airflow.connector#flytekitpluginsairflowconnectorairflowmetadata) | This class is used to store the Airflow task configuration. |
 
 ### Methods
 

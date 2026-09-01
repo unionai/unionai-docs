@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ContainerTask`](.././flytekit.core.container_task#flytekitcorecontainer_taskcontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`ContainerTask`](./flytekit.core.container_task#flytekitcorecontainer_taskcontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 
 ### Variables
 

@@ -13,10 +13,10 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ConfigEntry`](.././flytekit.configuration.file#flytekitconfigurationfileconfigentry) | A top level Config entry holder, that holds multiple different representations of the config. |
-| [`ConfigFile`](.././flytekit.configuration.file#flytekitconfigurationfileconfigfile) |  |
-| [`LegacyConfigEntry`](.././flytekit.configuration.file#flytekitconfigurationfilelegacyconfigentry) | Creates a record for the config entry. |
-| [`YamlConfigEntry`](.././flytekit.configuration.file#flytekitconfigurationfileyamlconfigentry) | Creates a record for the config entry. |
+| [`ConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfileconfigentry) | A top level Config entry holder, that holds multiple different representations of the config. |
+| [`ConfigFile`](./flytekit.configuration.file#flytekitconfigurationfileconfigfile) |  |
+| [`LegacyConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfilelegacyconfigentry) | Creates a record for the config entry. |
+| [`YamlConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfileyamlconfigentry) | Creates a record for the config entry. |
 
 ### Methods
 

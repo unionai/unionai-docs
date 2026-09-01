@@ -13,9 +13,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`SQLite3Config`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3config) | Use this configuration to configure if sqlite3 files that should be loaded by the task. |
-| [`SQLite3Task`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3task) | Run client side SQLite3 queries that optionally return a FlyteSchema object. |
-| [`SQLite3TaskExecutor`](.././flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) |  |
+| [`SQLite3Config`](./flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3config) | Use this configuration to configure if sqlite3 files that should be loaded by the task. |
+| [`SQLite3Task`](./flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3task) | Run client side SQLite3 queries that optionally return a FlyteSchema object. |
+| [`SQLite3TaskExecutor`](./flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) |  |
 
 ### Methods
 

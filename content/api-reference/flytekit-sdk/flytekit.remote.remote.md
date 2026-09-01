@@ -16,14 +16,14 @@ but in Python object form.
 
 | Class | Description |
 |-|-|
-| [`FlyteRemote`](.././flytekit.remote.remote#flytekitremoteremoteflyteremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
-| [`ResolvedIdentifiers`](.././flytekit.remote.remote#flytekitremoteremoteresolvedidentifiers) |  |
+| [`FlyteRemote`](./flytekit.remote.remote#flytekitremoteremoteflyteremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
+| [`ResolvedIdentifiers`](./flytekit.remote.remote#flytekitremoteremoteresolvedidentifiers) |  |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`RegistrationSkipped`](.././flytekit.remote.remote#flytekitremoteremoteregistrationskipped) | RegistrationSkipped error is raised when trying to register an entity that is not registrable. |
+| [`RegistrationSkipped`](./flytekit.remote.remote#flytekitremoteremoteregistrationskipped) | RegistrationSkipped error is raised when trying to register an entity that is not registrable. |
 
 ### Variables
 

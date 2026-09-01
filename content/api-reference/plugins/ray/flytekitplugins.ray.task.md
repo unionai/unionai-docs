@@ -13,11 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AutoscalerOptionsConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskautoscaleroptionsconfig) |  |
-| [`HeadNodeConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskheadnodeconfig) |  |
-| [`RayFunctionTask`](.././flytekitplugins.ray.task#flytekitpluginsraytaskrayfunctiontask) | Actual Plugin that transforms the local python code for execution within Ray job. |
-| [`RayJobConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskrayjobconfig) |  |
-| [`WorkerNodeConfig`](.././flytekitplugins.ray.task#flytekitpluginsraytaskworkernodeconfig) |  |
+| [`AutoscalerOptionsConfig`](./flytekitplugins.ray.task#flytekitpluginsraytaskautoscaleroptionsconfig) |  |
+| [`HeadNodeConfig`](./flytekitplugins.ray.task#flytekitpluginsraytaskheadnodeconfig) |  |
+| [`RayFunctionTask`](./flytekitplugins.ray.task#flytekitpluginsraytaskrayfunctiontask) | Actual Plugin that transforms the local python code for execution within Ray job. |
+| [`RayJobConfig`](./flytekitplugins.ray.task#flytekitpluginsraytaskrayjobconfig) |  |
+| [`WorkerNodeConfig`](./flytekitplugins.ray.task#flytekitpluginsraytaskworkernodeconfig) |  |
 
 ## flytekitplugins.ray.task.AutoscalerOptionsConfig
 

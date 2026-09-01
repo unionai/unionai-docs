@@ -13,14 +13,14 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BaseDBTInput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemabasedbtinput) | Base class for DBT Task Input. |
-| [`BaseDBTOutput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemabasedbtoutput) | Base class for output of DBT task. |
-| [`DBTFreshnessInput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtfreshnessinput) | Input to DBT Freshness task. |
-| [`DBTFreshnessOutput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtfreshnessoutput) | Output of DBT Freshness task. |
-| [`DBTRunInput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtruninput) | Input to DBT Run task. |
-| [`DBTRunOutput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtrunoutput) | Output of DBT run task. |
-| [`DBTTestInput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbttestinput) | Input to DBT Test task. |
-| [`DBTTestOutput`](.././flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbttestoutput) | Output of DBT test task. |
+| [`BaseDBTInput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemabasedbtinput) | Base class for DBT Task Input. |
+| [`BaseDBTOutput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemabasedbtoutput) | Base class for output of DBT task. |
+| [`DBTFreshnessInput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtfreshnessinput) | Input to DBT Freshness task. |
+| [`DBTFreshnessOutput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtfreshnessoutput) | Output of DBT Freshness task. |
+| [`DBTRunInput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtruninput) | Input to DBT Run task. |
+| [`DBTRunOutput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbtrunoutput) | Output of DBT run task. |
+| [`DBTTestInput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbttestinput) | Input to DBT Test task. |
+| [`DBTTestOutput`](./flytekitplugins.dbt.schema#flytekitpluginsdbtschemadbttestoutput) | Output of DBT test task. |
 
 ## flytekitplugins.dbt.schema.BaseDBTInput
 

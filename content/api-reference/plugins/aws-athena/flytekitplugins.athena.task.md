@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AthenaConfig`](.././flytekitplugins.athena.task#flytekitpluginsathenataskathenaconfig) | AthenaConfig should be used to configure a Athena Task. |
-| [`AthenaTask`](.././flytekitplugins.athena.task#flytekitpluginsathenataskathenatask) | This is the simplest form of a Athena Task, that can be used even for tasks that do not produce any output. |
+| [`AthenaConfig`](./flytekitplugins.athena.task#flytekitpluginsathenataskathenaconfig) | AthenaConfig should be used to configure a Athena Task. |
+| [`AthenaTask`](./flytekitplugins.athena.task#flytekitpluginsathenataskathenatask) | This is the simplest form of a Athena Task, that can be used even for tasks that do not produce any output. |
 
 ## flytekitplugins.athena.task.AthenaConfig
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`EnvdImageSpecBuilder`](.././flytekitplugins.envd.image_builder#flytekitpluginsenvdimage_builderenvdimagespecbuilder) | This class is used to build a docker image using envd. |
+| [`EnvdImageSpecBuilder`](./flytekitplugins.envd.image_builder#flytekitpluginsenvdimage_builderenvdimagespecbuilder) | This class is used to build a docker image using envd. |
 
 ### Methods
 

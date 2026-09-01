@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Node`](.././flytekit.core.node#flytekitcorenodenode) | This class will hold all the things necessary to make an SdkNode but we won't make one until we know things like. |
+| [`Node`](./flytekit.core.node#flytekitcorenodenode) | This class will hold all the things necessary to make an SdkNode but we won't make one until we know things like. |
 
 ### Methods
 

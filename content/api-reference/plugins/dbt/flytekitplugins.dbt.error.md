@@ -13,8 +13,8 @@ layout: py_api
 
 | Exception | Description |
 |-|-|
-| [`DBTHandledError`](.././flytekitplugins.dbt.error#flytekitpluginsdbterrordbthandlederror) | DBTHandledError wraps error logs and message from command execution that returns ``exit code 1``. |
-| [`DBTUnhandledError`](.././flytekitplugins.dbt.error#flytekitpluginsdbterrordbtunhandlederror) | DBTUnhandledError wraps error logs and message from command execution that returns ``exit code 2``. |
+| [`DBTHandledError`](./flytekitplugins.dbt.error#flytekitpluginsdbterrordbthandlederror) | DBTHandledError wraps error logs and message from command execution that returns ``exit code 1``. |
+| [`DBTUnhandledError`](./flytekitplugins.dbt.error#flytekitpluginsdbterrordbtunhandlederror) | DBTUnhandledError wraps error logs and message from command execution that returns ``exit code 2``. |
 
 ## flytekitplugins.dbt.error.DBTHandledError
 

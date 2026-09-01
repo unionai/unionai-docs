@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Environment`](.././flytekit.core.environment#flytekitcoreenvironmentenvironment) |  |
+| [`Environment`](./flytekit.core.environment#flytekitcoreenvironmentenvironment) |  |
 
 ### Methods
 

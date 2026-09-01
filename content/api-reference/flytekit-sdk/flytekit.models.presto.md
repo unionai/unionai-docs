@@ -15,7 +15,7 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 
 | Class | Description |
 |-|-|
-| [`PrestoQuery`](.././flytekit.models.presto#flytekitmodelsprestoprestoquery) |  |
+| [`PrestoQuery`](./flytekit.models.presto#flytekitmodelsprestoprestoquery) |  |
 
 ## flytekit.models.presto.PrestoQuery
 
