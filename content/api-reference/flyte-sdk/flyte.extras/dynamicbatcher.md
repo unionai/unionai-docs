@@ -2,7 +2,7 @@
 title: DynamicBatcher
 description: "Batches records from many concurrent producers and runs them through a single async processing function, maximizing resource utilization."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

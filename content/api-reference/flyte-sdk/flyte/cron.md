@@ -2,7 +2,7 @@
 title: Cron
 description: "Cron-based automation schedule for use with `Trigger`."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

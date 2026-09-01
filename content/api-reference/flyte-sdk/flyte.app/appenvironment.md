@@ -2,7 +2,7 @@
 title: AppEnvironment
 description: "Configure a long-running app environment for APIs, dashboards, or model servers."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,6 +38,7 @@ class AppEnvironment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     type: Optional[str] = None,
     port: int | Port = 8080,
     args: Optional[Union[List[str], str]] = None,
@@ -63,6 +64,7 @@ class AppEnvironment(
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Inherited from Environment. |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | |
 | `type` | `Optional[str]` | App type identifier (e.g., `"streamlit"`, `"fastapi"`). When set, the platform may apply framework-specific defaults. |
 | `port` | `int \| Port` | Port for the app server. Default `8080`. Ports 8012, 8022, 8112, 9090, and 9091 are reserved and cannot be used. Can also be a `Port` object for advanced configuration. |
 | `args` | `Optional[Union[List[str], str]]` | Arguments passed to the app process. Can be a list of strings or a single string. Used for script-based apps (e.g., Streamlit's `["--server.port", "8080"]`). |
@@ -130,6 +132,7 @@ def clone_with(
     depends_on: Optional[List[Environment]] = None,
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> AppEnvironment
 ```
@@ -143,6 +146,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
+| `service_account` | `Optional[str]` | |
 | `**kwargs` | `Any` | |
 
 ### container_args()

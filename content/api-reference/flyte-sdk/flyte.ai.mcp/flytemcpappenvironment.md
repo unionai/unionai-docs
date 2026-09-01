@@ -2,7 +2,7 @@
 title: FlyteMCPAppEnvironment
 description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -72,6 +72,7 @@ class FlyteMCPAppEnvironment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     port: int | Port = 8080,
     args: Optional[Union[List[str], str]] = None,
     command: Optional[Union[List[str], str]] = None,
@@ -113,6 +114,7 @@ class FlyteMCPAppEnvironment(
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | |
 | `port` | `int \| Port` | |
 | `args` | `Optional[Union[List[str], str]]` | |
 | `command` | `Optional[Union[List[str], str]]` | |
@@ -203,6 +205,7 @@ def clone_with(
     depends_on: Optional[List[Environment]] = None,
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> AppEnvironment
 ```
@@ -216,6 +219,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
+| `service_account` | `Optional[str]` | |
 | `**kwargs` | `Any` | |
 
 ### container_args()

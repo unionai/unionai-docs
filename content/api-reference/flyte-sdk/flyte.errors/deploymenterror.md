@@ -2,7 +2,7 @@
 title: DeploymentError
 description: "This error is raised when the deployment of a task fails, or some preconditions for deployment are not met."
 icon: exclamation-triangle
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

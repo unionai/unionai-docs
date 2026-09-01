@@ -2,7 +2,7 @@
 title: Google ADK
 description: "Google ADK (Agent Development Kit) adapter for Flyte."
 icon: book
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

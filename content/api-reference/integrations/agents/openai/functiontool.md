@@ -2,7 +2,7 @@
 title: FunctionTool
 description: "An OpenAI Agents `FunctionTool` backed by a Flyte task."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

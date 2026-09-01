@@ -2,7 +2,7 @@
 title: flyte.ai.agents
 description: "flyte.ai.agents — Agent abstractions for Flyte apps."
 icon: box-seam
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

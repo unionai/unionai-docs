@@ -2,7 +2,7 @@
 title: SGLangAppEnvironment
 description: "App environment backed by SGLang for serving large language models."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,6 +30,7 @@ class SGLangAppEnvironment(
     resources: Optional[Resources] = None,
     interruptible: bool = False,
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     args: Optional[Union[List[str], str]] = None,
     command: Optional[Union[List[str], str]] = None,
     requires_auth: bool = True,
@@ -39,7 +40,7 @@ class SGLangAppEnvironment(
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.10', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-13.0'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-13.0/bin:$PATH'))), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(pre=True, packages=('sglang==0.5.16',)), PipPackages(pre=True, packages=('sglang-router==0.3.2',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.6.13', dockerfile=None, registry=None, name='sglang-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(libnuma-dev='wget'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . $HOME/.cargo/env"), Env(env_vars=(('CUDA_HOME', '/usr/local/cuda-13.0'), ('PATH', '/root/.cargo/bin:/usr/local/cuda-13.0/bin:$PATH'))), PipPackages(pre=True, packages=('flyteplugins-sglang',)), PipPackages(pre=True, packages=('sglang==0.5.16',)), PipPackages(pre=True, packages=('sglang-router==0.3.2',))), _tag=None, _image_registry_secret=None),
     type: str = 'SGLang',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
@@ -64,6 +65,7 @@ class SGLangAppEnvironment(
 | `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | |
 | `args` | `Optional[Union[List[str], str]]` | |
 | `command` | `Optional[Union[List[str], str]]` | |
 | `requires_auth` | `bool` | Whether the public URL requires authentication. |

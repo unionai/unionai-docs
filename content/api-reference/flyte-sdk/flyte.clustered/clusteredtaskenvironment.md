@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,6 +32,7 @@ class ClusteredTaskEnvironment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     cache: CacheRequest = 'disable',
     reusable: ReusePolicy | None = None,
     plugin_config: Optional[Any] = None,
@@ -56,6 +57,7 @@ class ClusteredTaskEnvironment(
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | |
 | `cache` | `CacheRequest` | |
 | `reusable` | `ReusePolicy \| None` | |
 | `plugin_config` | `Optional[Any]` | |
@@ -121,6 +123,7 @@ def clone_with(
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
     include: Optional[Tuple[str, ...]] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> TaskEnvironment
 ```
@@ -158,6 +161,7 @@ original environment.
 | `description` | `Optional[str]` | Override the description. |
 | `interruptible` | `Optional[bool]` | Override the interruptible setting. |
 | `include` | `Optional[Tuple[str, ...]]` | |
+| `service_account` | `Optional[str]` | Override the Kubernetes service account. |
 | `**kwargs` | `Any` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
 
 ### from_task()
@@ -211,6 +215,7 @@ def task(
     interruptible: bool | None = None,
     max_inline_io_bytes: int = 10485760,
     queue: Optional[str] = None,
+    service_account: Optional[str] = None,
     triggers: Tuple[Trigger, ...] | Trigger = (),
     links: Tuple[Link, ...] | Link = (),
     task_resolver: Any | None = None,
@@ -235,6 +240,7 @@ Decorate a function to be a task.
 | `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. Default is 10 MiB. |
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
+| `service_account` | `Optional[str]` | |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |

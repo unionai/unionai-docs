@@ -2,7 +2,7 @@
 title: Sleep
 description: "Route a task to the backend `core-sleep` plugin."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

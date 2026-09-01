@@ -2,7 +2,7 @@
 title: Dir
 description: "A generic directory class representing a directory with files of a specified format."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -219,7 +219,7 @@ validated to form a valid model.
 |-|-|
 | [`download()`](#download) | Asynchronously download the entire directory to a local path. |
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
-| [`empty()`](#empty) | Return a sentinel `Dir` representing 'no directory was produced'. |
+| [`empty()`](#empty) | Return a sentinel `Dir` representing `no directory was produced`. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
 | [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
@@ -317,7 +317,7 @@ def download_to_path_sync(d: Dir) -> str:
 ```python
 def empty()
 ```
-Return a sentinel `Dir` representing 'no directory was produced'.
+Return a sentinel `Dir` representing `no directory was produced`.
 
 Use as the return value when a task may or may not produce an output directory; the
 caller can check `Dir.is_empty` to detect the sentinel. Round-trips cleanly

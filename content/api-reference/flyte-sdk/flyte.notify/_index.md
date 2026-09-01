@@ -2,7 +2,7 @@
 title: flyte.notify
 description: "Task Notifications API for Flyte 2.0."
 icon: box-seam
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

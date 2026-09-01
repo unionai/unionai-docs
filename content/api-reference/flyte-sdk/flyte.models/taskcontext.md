@@ -2,7 +2,7 @@
 title: TaskContext
 description: "A context class to hold the current task executions context."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -76,7 +76,7 @@ class TaskContext(
 | `nnodes` | `Optional[int]` |  |
 | `node_rank` | `Optional[int]` |  |
 | `rank` | `Optional[int]` |  |
-| `restart_attempt` | `Optional[int]` |  |
+| `restart_attempt` | `Optional[int]` | How many times the JobSet has restarted the whole pod set within this Flyte attempt; None outside clustered tasks. Free host-maintenance restarts count too, so treat this as a "has the set restarted" counter, not as a position within `ClusterFailurePolicy.max_restarts`. |
 | `world_size` | `Optional[int]` |  |
 
 ## Methods

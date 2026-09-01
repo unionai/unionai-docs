@@ -2,7 +2,7 @@
 title: flyte.extras
 description: "Flyte extras package."
 icon: box-seam
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

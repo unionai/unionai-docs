@@ -2,7 +2,7 @@
 title: SandboxedTaskTemplate
 description: "A task template that executes the function body in a Monty sandbox."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,6 +36,7 @@ class SandboxedTaskTemplate(
     docs: Optional[Documentation] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     timeout: Optional[TimeoutType] = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     report: bool = False,
@@ -70,6 +71,7 @@ class SandboxedTaskTemplate(
 | `docs` | `Optional[Documentation]` | |
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `secrets` | `Optional[SecretRequest]` | |
+| `service_account` | `Optional[str]` | |
 | `timeout` | `Optional[TimeoutType]` | |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | |
 | `report` | `bool` | |
@@ -249,6 +251,7 @@ def override(
     reusable: Union[ReusePolicy, Literal['off'], None] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     max_inline_io_bytes: int | None = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     queue: Optional[str] = None,
@@ -275,6 +278,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` | Optional override for the reusability policy for the task. |
 | `env_vars` | `Optional[Dict[str, str]]` | Optional override for the environment variables to set for the task. |
 | `secrets` | `Optional[SecretRequest]` | Optional override for the secrets that will be injected into the task at runtime. |
+| `service_account` | `Optional[str]` | Optional override for the Kubernetes service account to run task pods as. |
 | `max_inline_io_bytes` | `int \| None` | Optional override for the maximum allowed size (in bytes) for all inputs and outputs passed directly to the task. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |

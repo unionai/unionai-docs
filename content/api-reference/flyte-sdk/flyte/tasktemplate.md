@@ -2,7 +2,7 @@
 title: TaskTemplate
 description: "Task template is a template for a task that can be executed."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,6 +42,7 @@ class TaskTemplate(
     docs: Optional[Documentation] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     timeout: Optional[TimeoutType] = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     report: bool = False,
@@ -73,6 +74,7 @@ class TaskTemplate(
 | `docs` | `Optional[Documentation]` | Optional The documentation for the task, if not provided the function docstring will be used. |
 | `env_vars` | `Optional[Dict[str, str]]` | Optional The environment variables to set for the task. |
 | `secrets` | `Optional[SecretRequest]` | Optional The secrets that will be injected into the task at runtime. |
+| `service_account` | `Optional[str]` | Optional Kubernetes service account to run task pods as. |
 | `timeout` | `Optional[TimeoutType]` | Optional The timeout for the task. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional The pod template to use for the task. |
 | `report` | `bool` | Optional Whether to report the task execution to the Flyte console, defaults to False. |
@@ -250,6 +252,7 @@ def override(
     reusable: Union[ReusePolicy, Literal['off'], None] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     max_inline_io_bytes: int | None = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     queue: Optional[str] = None,
@@ -276,6 +279,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` | Optional override for the reusability policy for the task. |
 | `env_vars` | `Optional[Dict[str, str]]` | Optional override for the environment variables to set for the task. |
 | `secrets` | `Optional[SecretRequest]` | Optional override for the secrets that will be injected into the task at runtime. |
+| `service_account` | `Optional[str]` | Optional override for the Kubernetes service account to run task pods as. |
 | `max_inline_io_bytes` | `int \| None` | Optional override for the maximum allowed size (in bytes) for all inputs and outputs passed directly to the task. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
