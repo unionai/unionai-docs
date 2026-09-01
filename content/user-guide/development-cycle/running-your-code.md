@@ -55,13 +55,13 @@ In addition, you are passing the named parameter `name` and its value.
 {{< variant union >}}
 {{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [{{< key cli >}} run details](run-details).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [{{< key cli >}} run details](run-details).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -95,19 +95,19 @@ This command will:
 * Run the workflow on {{< key product_name >}}.
 
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](run-details).
+For more details see [{{< key cli >}} run details](./run-details).
 
 
 {{< variant union >}}
 {{< markdown >}}
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](run-details).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](run-details).
+For more details see [{{< key cli >}} run details](./run-details).
 {{< /markdown >}}
 {{< /variant >}}
 

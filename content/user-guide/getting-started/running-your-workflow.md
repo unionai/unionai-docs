@@ -45,7 +45,7 @@ Because tasks and workflows are defined as regular Python functions, they can be
 
 {{< variant flyte >}}
 {{< markdown >}}
-You can run the workflow locally with the command [`pyflyte run <FILE> <WORKFLOW>`](../../api-reference/pyflyte-cli#pyflyte-cli-commands):
+You can run the workflow locally with the command [`pyflyte run <FILE> <WORKFLOW>`](../../api-reference/pyflyte-cli):
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant union >}}
@@ -91,7 +91,7 @@ When task and workflow code is registered:
 
 {{< variant flyte >}}
 {{< markdown >}}
-To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/pyflyte-cli#pyflyte-cli-commands) and the
+To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/pyflyte-cli) and the
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant union >}}

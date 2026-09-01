@@ -14,5 +14,5 @@ Explore how features can be engineered with the power of Flyte.
 
 | Feature Engineering Task | Description |
 |---------------------------|-------------|
-| [EDA and Feature Engineering With Papermill](exploratory-data-analysis) | How to use Jupyter notebook within Flyte |
-| [Data Cleaning and Feature Serving With Feast](feast-integration) | How to use Feast to serve data in Flyte |
+| [EDA and Feature Engineering With Papermill](exploratory-data-analysis/_index) | How to use Jupyter notebook within Flyte |
+| [Data Cleaning and Feature Serving With Feast](feast-integration/_index) | How to use Feast to serve data in Flyte |

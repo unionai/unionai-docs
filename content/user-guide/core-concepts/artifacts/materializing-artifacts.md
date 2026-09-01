@@ -62,4 +62,4 @@ def wf():
 
 > [!NOTE]
 > You can also materialize an artifact by executing the `create_artifact` method of `{{< key kit_remote >}}`.
-> For more information, see the [{{< key kit_remote >}} documentation](../../development-cycle/remote-management).
+> For more information, see the [{{< key kit_remote >}} documentation](../../development-cycle/remote-management/_index).

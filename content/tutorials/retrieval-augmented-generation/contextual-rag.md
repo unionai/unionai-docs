@@ -481,7 +481,7 @@ To run the workflow remotely on a {{< key product_name >}} cluster, we start by 
 !union create login --serverless
 ```
 
-Then, we initialize a {{< key product_name >}} remote object to execute the workflow on the cluster. The [UnionRemote](../../user-guide/development-cycle/remote-management) Python API supports functionality similar to that of the Union CLI, enabling you to manage {{< key product_name >}} workflows, tasks, launch plans and artifacts from within your Python code.
+Then, we initialize a {{< key product_name >}} remote object to execute the workflow on the cluster. The [UnionRemote](../../user-guide/development-cycle/remote-management/_index) Python API supports functionality similar to that of the Union CLI, enabling you to manage {{< key product_name >}} workflows, tasks, launch plans and artifacts from within your Python code.
 
 ```python
 from union.remote import UnionRemote

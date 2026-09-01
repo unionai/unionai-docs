@@ -97,7 +97,7 @@ Projects in {{< key product_name >}} are designed to group independent workflows
 
 {{< variant flyte >}}
 {{< markdown >}}
-* **CLI Commands**: In most commands within the `pyflyte` and `flytectl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/pyflyte-cli) and [here](../../api-reference/flytectl-cli).
+* **CLI Commands**: In most commands within the `pyflyte` and `flytectl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/pyflyte-cli) and [here](../../api-reference/flytectl-cli/_index).
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant union >}}
@@ -106,4 +106,4 @@ Projects in {{< key product_name >}} are designed to group independent workflows
 {{< /markdown >}}
 {{< /variant >}}
 
-* **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](remote-management).
+* **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](remote-management/_index).
