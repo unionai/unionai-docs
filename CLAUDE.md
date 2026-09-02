@@ -247,5 +247,7 @@ For each variant the build generates a clean Markdown twin of every page at **`<
 block naming the product and version line.
 
 **One shape: `<path>.md`.** The older names `page.md`, `section.md` and `_section.md` are retired
-and no longer generated; Cloudflare 301s them to the page twin. Agents can also send
-`Accept: text/markdown` to the ordinary page URL.
+and no longer generated; Cloudflare 301s them to the page twin. Do not describe them as current.
+
+Readers and agents also reach a twin by sending `Accept: text/markdown` to the ordinary page URL.
+Details: `unionai-docs-infra/README.md` and the LLM-optimized documentation page in the docs.
