@@ -1,6 +1,6 @@
 # Flyte and Union.ai documentation
 
-- **[Flyte Docs](https://www.union.ai/docs/flyte/user-guide/)**
+- **[Flyte Docs](https://www.union.ai/docs/v2/flyte/user-guide/)**
 - **[Union Docs](https://www.union.ai/docs/v2/union/user-guide/)** (covers both BYOC and Self-managed deployments)
 
 This repository holds all documentation for the [Flyte OSS project](https://www.flyte.org) and the [Union.ai](https://www.union.ai) products.
@@ -27,7 +27,7 @@ cp hugo.local.toml~sample hugo.local.toml
 make dev
 ```
 
-Requires Hugo >= 0.145.0 (`brew install hugo`).
+Requires Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion` (`brew install hugo`). The floor equals the pin, so local dev and CI build with the same Hugo.
 
 ## Further reading
 
