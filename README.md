@@ -31,9 +31,9 @@ cp hugo.local.toml~sample hugo.local.toml
 make dev
 ```
 
-Requires Hugo >= 0.145.0 (`brew install hugo`).
+Requires Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion` (`brew install hugo`).
 
 ## Further reading
 
 - **[unionai-docs-infra/README.md](https://github.com/unionai/unionai-docs-infra/blob/main/README.md)** — comprehensive build system documentation (local dev, production builds, CI checks, Cloudflare deployment, LLM docs pipeline).
-- **[Contributing docs and examples](https://union.ai/docs/flyte/community/contributing-docs)** — authoring guide, shortcodes, variants, API docs (source at `content/community/contributing-docs/`).
+- **[Contributing docs and examples](https://www.union.ai/docs/v1/flyte/community/contributing-docs)** — authoring guide, shortcodes, variants, API docs (source at `content/community/contributing-docs/`).
