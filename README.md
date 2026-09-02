@@ -31,7 +31,7 @@ cp hugo.local.toml~sample hugo.local.toml
 make dev
 ```
 
-Requires Hugo >= 0.145.0 (`brew install hugo`).
+Requires Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion` (`brew install hugo`).
 
 ## Further reading
 

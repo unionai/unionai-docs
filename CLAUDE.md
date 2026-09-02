@@ -176,7 +176,7 @@ jupyter_notebook: /path/to/notebook.ipynb
 
 ## Development Setup
 
-1. Install Hugo >= 0.145.0: `brew install hugo`
+1. Install Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion`: `brew install hugo`
 2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
@@ -191,8 +191,8 @@ highlight_keys = true      # Show key replacements
 ## Build Constraints
 
 - Pre-build checks block absolute URLs to union.ai/docs — use `{{< docs_home {variant} >}}` instead
-- Hugo version must be >= 0.145.0
-- Python 3.8+ required for build tools
+- Hugo version must be >= the pin in `unionai-docs-infra/.hugoversion`. **The floor equals the pin** so local dev and CI build with the same Hugo
+- Python >= 3.10 required for the build tools (`requires-python` in `unionai-docs-infra/pyproject.toml`); CI runs 3.12
 
 ## API Documentation
 
@@ -203,7 +203,7 @@ Generated from Python packages using `tools/api_generator`:
 
 ## Redirects
 
-Managed in `unionai-docs-infra/redirects.csv`. Applied to CloudFlare by Union employee.
+Managed in `unionai-docs-infra/redirects.csv` and **deployed automatically** by the `deploy-redirects.yml` workflow; nobody applies them by hand. Retired version pins need no row (their redirects are derived from `versions.toml`), and the CSV cannot express patterns. See `unionai-docs-infra/ROUTING-ARCHITECTURE.md`.
 
 ## LLM Documentation Pipeline
 
