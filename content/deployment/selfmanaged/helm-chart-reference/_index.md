@@ -8,7 +8,6 @@ weight: 11
 
 # Helm chart reference
 
-A full list of Helm values available for configuration can be found here:
+The full list of Helm values available for configuration, per chart:
 
-* [Data plane chart](./dataplane)
-* [Knative Operator chart (for serving)](./knative-operator)
+{{< subpage-cards >}}

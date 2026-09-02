@@ -32,7 +32,9 @@ export ORG_NAME=<your-union-org-name>       # provided by Union
 # --- Storage ---
 export STORAGE_ACCOUNT=uniondataplane       # 3-24 lowercase alphanumeric, globally unique
 export METADATA_CONTAINER=union-metadata
-export FLUENTBIT_SECRET_NAME=fluentbit-azure-key   # k8s secret holding the storage key for persisted logs
+
+# --- Logging ---
+export LOG_ANALYTICS_WORKSPACE=union-${ORG_NAME}   # Log Analytics workspace holding persisted task logs
 
 # --- Identities ---
 export BACKEND_IDENTITY_NAME=union-backend
@@ -65,6 +67,10 @@ Three specific add-ons are required:
 | `--enable-oidc-issuer` | Enables the OIDC token issuer AKS needs for Workload Identity |
 | `--enable-workload-identity` | Allows pods to assume Azure Managed Identities without credentials |
 | `--enable-managed-identity` | AKS control plane uses a managed identity (not service principal) |
+
+A fourth add-on, Container Insights (`monitoring`), is required for historical task logs. It
+needs a Log Analytics workspace to ship to, so it is enabled separately in
+[Persisted task logs](#8-persisted-task-logs-log-analytics).
 
 ```bash
 az aks create \
@@ -150,6 +156,11 @@ az storage container create \
   --name $METADATA_CONTAINER \
   --account-name $STORAGE_ACCOUNT
 ```
+
+> [!NOTE] Union reads and writes this account through Workload Identity rather than the account
+> key. `--allow-shared-key-access true` is only needed if you take the optional
+> [FluentBit-to-Blob path](../configuration/persistent-logs#alternative-writing-to-blob-storage)
+> for persisted logs.
 
 ### CORS configuration
 
@@ -285,55 +296,87 @@ az role assignment create \
   --scope $STORAGE_ACCOUNT_ID
 ```
 
-## 8. Persisted logs storage key (FluentBit)
+## 8. Persisted task logs (Log Analytics)
 
-To display historical task logs in the Union UI, FluentBit ships container logs to your
-storage account. Because its `azure_blob` output cannot use Workload Identity (see the note in
-[Storage Account and Container](#4-storage-account-and-container)), you must provide the storage
-account shared key as a Kubernetes secret. The dataplane chart references this secret to inject
-the key into FluentBit at runtime, so the key never appears in the rendered ConfigMap.
+Union reads historical task logs (the logs of a task pod that has already terminated) from an
+Azure Log Analytics workspace. The AKS **Container Insights** add-on ships container logs into
+that workspace, and the Union operator queries them back out using the backend managed identity.
 
-> [!NOTE] This step requires cluster credentials from [AKS Cluster](#2-aks-cluster)
-> (`az aks get-credentials`).
+> [!NOTE] **FluentBit is not used on Azure.** From dataplane chart 2026.8.0 the chart's
+> `values.azure.yaml` ships `fluentbit.enabled: false`; on earlier charts set it yourself.
+> FluentBit's `azure_blob` output cannot authenticate with Workload
+> Identity, so the DaemonSet lands in `CrashLoopBackOff` unless you hand it a storage account
+> shared key. See [Persistent logs](../configuration/persistent-logs) for that alternative and for
+> the object store path used on AWS and GCP.
 
-Retrieve the storage account key and create the secret in the dataplane namespace:
+### Create the workspace and enable Container Insights
 
 ```bash
-# Ensure the dataplane namespace exists
-kubectl create namespace $DATAPLANE_NAMESPACE \
-  --dry-run=client -o yaml | kubectl apply -f -
-
-# Fetch the storage account key
-STORAGE_ACCOUNT_KEY=$(az storage account keys list \
-  --account-name $STORAGE_ACCOUNT \
+export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace create \
   --resource-group $RESOURCE_GROUP \
-  --query "[0].value" --output tsv)
+  --workspace-name $LOG_ANALYTICS_WORKSPACE \
+  --location $LOCATION \
+  --query id --output tsv)
 
-# Create the secret FluentBit reads (key name must be 'shared_key')
-kubectl create secret generic $FLUENTBIT_SECRET_NAME \
-  --namespace $DATAPLANE_NAMESPACE \
-  --from-literal=shared_key="$STORAGE_ACCOUNT_KEY"
-
-unset STORAGE_ACCOUNT_KEY
+az aks enable-addons \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME \
+  --addons monitoring \
+  --workspace-resource-id $LOG_ANALYTICS_WORKSPACE_ID
 ```
 
-The chart values will then consume this secret. **If you need to modify the secret name**, adjust this in the relevant values section:
+Container Insights is often already enabled, especially when a central platform team provisioned
+the AKS cluster. In that case it is shipping to an existing workspace, frequently a shared one in
+another resource group. Reuse that workspace instead of creating a second one, and save its
+resource ID. You will need it to override the chart default when you
+[deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
 
-```yaml
-
-fluentbit:
-  azureBlobSharedKey: "${AZURE_STORAGE_SHARED_KEY}"
-  env:
-    - name: AZURE_STORAGE_SHARED_KEY
-      valueFrom:
-        secretKeyRef:
-          name: fluentbit-azure-key # <- CHANGE THIS
-          key: shared_key
+```bash
+export LOG_ANALYTICS_WORKSPACE_ID=$(az aks show \
+  --resource-group $RESOURCE_GROUP \
+  --name $CLUSTER_NAME \
+  --query "addonProfiles.omsagent.config.logAnalyticsWorkspaceResourceID" --output tsv)
 ```
 
-> [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
-> schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
-> | kubectl apply -f -`) and restart the FluentBit DaemonSet.
+### Grant the backend identity read access
+
+The backend managed identity needs the **Log Analytics Reader** role on the workspace. Without it,
+the log pane in the UI stays empty and the operator logs an authorization error.
+
+```bash
+az role assignment create \
+  --assignee-object-id $BACKEND_PRINCIPAL_ID \
+  --assignee-principal-type ServicePrincipal \
+  --role "Log Analytics Reader" \
+  --scope $LOG_ANALYTICS_WORKSPACE_ID
+```
+
+> [!NOTE] The assignment is scoped to the workspace, which may sit in a different resource group
+> under different ownership than the AKS cluster. Creating it requires
+> `Microsoft.Authorization/roleAssignments/write` on that scope, so whoever administers that
+> resource group may have to run this command for you.
+
+### Verify
+
+Confirm the workspace is actually receiving container logs from the dataplane namespace:
+
+```bash
+WORKSPACE_GUID=$(az monitor log-analytics workspace show \
+  --ids $LOG_ANALYTICS_WORKSPACE_ID \
+  --query customerId --output tsv)
+
+az monitor log-analytics query \
+  --workspace $WORKSPACE_GUID \
+  --analytics-query "ContainerLogV2 | where TimeGenerated > ago(1h) | summarize count() by PodNamespace" \
+  --output table
+```
+
+> [!NOTE] No rows means Container Insights is not ingesting, so fixing the Union configuration
+> will not help. `az aks enable-addons` grants the cluster's Azure Monitor Agent identity the
+> **Monitoring Metrics Publisher** role automatically; check that it is present if Container
+> Insights was wired up by hand. Ingestion and query both use the public Azure Monitor endpoints.
+> Azure supports no VNet service endpoints for them, so a cluster without egress needs an Azure
+> Monitor Private Link Scope.
 
 ## 9. Azure Key Vault (optional)
 

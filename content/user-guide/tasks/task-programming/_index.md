@@ -79,3 +79,5 @@ These programming patterns become essential as your workflows grow in complexity
 - Apply **higher-order functions** to factor recurring orchestration logic — retry-on-OOM, fallback, circuit breaking, batching — into reusable wrappers that work with any task.
 
 Each guide includes practical examples and best practices to help you implement these patterns effectively in your own workflows.
+
+{{< subpage-cards >}}

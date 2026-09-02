@@ -13,6 +13,4 @@ Union.ai provides a layered identity and access management system that controls 
 
 This section covers:
 
-* [Authentication](./authentication): OIDC, API keys, service accounts, and SSO configuration.
-* [Role-based access control](./rbac): Built-in roles, custom policies, enforcement, and the least-privilege principle.
-* [Human access controls](./human-access): How Union.ai personnel access customer environments in self-managed and BYOC deployments.
+{{< subpage-cards >}}

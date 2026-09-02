@@ -40,3 +40,5 @@ uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio
 `--transport stdio` is required when a client launches the server as a subprocess. The CLI defaults to `streamable-http`, which starts an HTTP listener instead.
 
 For client setup, tool selection, allowlists, and remote deployment, see [Flyte MCP server](./flyte_mcp_server).
+
+{{< subpage-cards >}}

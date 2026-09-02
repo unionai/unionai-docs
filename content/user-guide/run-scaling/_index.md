@@ -36,3 +36,5 @@ When scaling your workflows, keep these principles in mind:
 6. **Choose the right data types**: Use reference types (files, directories, DataFrames) for large data and inline types for small data.
 
 For detailed guidance on each of these topics, see [Scale your workflows](./scale-your-workflows).
+
+{{< subpage-cards >}}
