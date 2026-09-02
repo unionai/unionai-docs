@@ -17,11 +17,25 @@ them too.
 
 There are three levels of granularity:
 
+{{< variant union >}}
+{{< markdown >}}
 | What you get | Where | Use it when |
 |---|---|---|
 | One page as Markdown | append `.md` to the page URL | an agent needs one page |
-| An index of every page | `llms.txt` | an agent needs to find the right page first |
-| The entire site in one file | `llms-full.txt` | you need everything at once |
+| An index of every page | `https://www.union.ai/docs/v2/union/llms.txt` | an agent needs to find the right page first |
+| The entire site in one file | `https://www.union.ai/docs/v2/union/llms-full.txt` | you need everything at once |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+| What you get | Where | Use it when |
+|---|---|---|
+| One page as Markdown | append `.md` to the page URL | an agent needs one page |
+| An index of every page | `https://www.union.ai/docs/v2/flyte/llms.txt` | an agent needs to find the right page first |
+| The entire site in one file | `https://www.union.ai/docs/v2/flyte/llms-full.txt` | you need everything at once |
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Open a page in Claude or ChatGPT
 
@@ -75,7 +89,10 @@ Two details worth knowing:
   and the index URL, so a model knows what it is reading even when it is handed the file with
   no other context.
 * The variant root has no Markdown version of its own. Appending `.md` to the root URL
-  redirects to that variant's `llms.txt`, which is the index for the whole tree.
+  redirects to that variant's `llms.txt`, which is the index for the whole tree:
+  {{< variant union >}}`https://www.union.ai/docs/v2/union.md` redirects to
+  `https://www.union.ai/docs/v2/union/llms.txt`.{{< /variant >}}{{< variant flyte >}}`https://www.union.ai/docs/v2/flyte.md`
+  redirects to `https://www.union.ai/docs/v2/flyte/llms.txt`.{{< /variant >}}
 
 You can also request Markdown at the page's own URL by sending an `Accept: text/markdown`
 header:
@@ -112,13 +129,13 @@ because the agent then has to decide to load it rather than always having it ava
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (about 50K tokens)
+* [`https://www.union.ai/docs/v2/union/llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (about 50K tokens)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (about 40K tokens)
+* [`https://www.union.ai/docs/v2/flyte/llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (about 40K tokens)
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -133,12 +150,12 @@ prefer `llms.txt` plus the pages it points to unless you need everything at once
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt)
+* [`https://www.union.ai/docs/v2/union/llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt)
+* [`https://www.union.ai/docs/v2/flyte/llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt)
 {{< /markdown >}}
 {{< /variant >}}
