@@ -205,7 +205,7 @@ jupyter_notebook: /path/to/notebook.ipynb
 
 ## Development Setup
 
-1. Install Hugo >= 0.145.0: `brew install hugo`
+1. Install Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion` (currently 0.161.1): `brew install hugo`
 2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
 3. Run: `make dev`
 
@@ -220,8 +220,8 @@ highlight_keys = true      # Show key replacements
 ## Build Constraints
 
 - Pre-build checks block absolute URLs to union.ai/docs — use `{{< docs_home {variant} >}}` instead
-- Hugo version must be >= 0.145.0
-- Python 3.8+ required for build tools
+- Hugo version must be >= the pin in `unionai-docs-infra/.hugoversion` (currently 0.161.1). **The floor equals the pin** so local dev and CI build with the same Hugo; `pre-flight.sh` fails below it and warns above it (brew tracks latest, so running ahead of CI is the common skew and the one a floor cannot catch)
+- Python >= 3.10 required for the build tools (`requires-python` in `unionai-docs-infra/pyproject.toml`); CI runs 3.12
 
 ## API Documentation
 
@@ -232,8 +232,20 @@ Generated from Python packages using `tools/api_generator`:
 
 ## Redirects
 
-Managed in `unionai-docs-infra/redirects.csv`. Applied to CloudFlare by Union employee.
+Managed in `unionai-docs-infra/redirects.csv` and **deployed automatically** by the
+`deploy-redirects.yml` workflow; nobody applies them by hand. Retired version pins need no row
+(their redirects are derived from `versions.toml`), and the CSV cannot express patterns, since it
+becomes a Cloudflare Bulk Redirect List. Pattern redirects are dynamic redirect rules in the
+Cloudflare dashboard. See `unionai-docs-infra/ROUTING-ARCHITECTURE.md`.
 
 ## LLM Documentation Pipeline
 
-The build generates `llms.txt` (page index) and `llms-full.txt` (complete docs) for each variant, optimized for LLM consumption.
+For each variant the build generates a clean Markdown twin of every page at **`<path>.md`**
+(served at the page's own URL with `.md` appended), plus **`llms.txt`** (the page index) and
+**`llms-full.txt`** (the whole variant in one file). A section landing page's twin ends with a
+`## Subpages` list, so it is the index for its section, and every twin opens with an identity
+block naming the product and version line.
+
+**One shape: `<path>.md`.** The older names `page.md`, `section.md` and `_section.md` are retired
+and no longer generated; Cloudflare 301s them to the page twin. Agents can also send
+`Accept: text/markdown` to the ordinary page URL.
