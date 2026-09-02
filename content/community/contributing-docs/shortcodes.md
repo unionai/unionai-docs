@@ -252,6 +252,43 @@ Example:
 [Download {{</* icon download */>}}](/download)
 ```
 
+### `{{</* subpage-cards */>}}`
+
+Renders a card grid of the pages directly beneath the current section landing page. Each card's
+title, link and one-line description come from the child page's own frontmatter `description`,
+so there is nothing to keep in sync by hand: edit the child's `description` and the card follows.
+
+```markdown
+{{</* subpage-cards */>}}
+```
+
+Takes no arguments. Used on section landing pages, and checked in CI by `check-subpage-cards`.
+
+### `{{</* badge */>}}`
+
+A small coloured label, taking a style as its first argument.
+
+```markdown
+{{</* badge "danger" */>}}Sev 1 - Urgent{{</* /badge */>}}
+{{</* badge "warning" */>}}Sev 2 - High{{</* /badge */>}}
+```
+
+### `{{</* note */>}}` and `{{</* warning */>}}` (legacy)
+
+These predate the callout syntax and still work, but **new content should use the callout form**,
+which is what the rest of the docs use:
+
+```markdown
+> [!NOTE] Title
+> Content here
+
+> [!WARNING] Title
+> Warning content
+```
+
+There are about 30 remaining `{{</* note */>}}` uses against roughly 455 callouts, so treat the
+shortcode as something you may meet while editing rather than something to reach for.
+
 ### `{{</* code */>}}`
 
 Includes a code snippet or file.
