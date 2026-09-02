@@ -11,18 +11,45 @@ variants: +flyte +union
 We use Cloudflare's Bulk Redirect to map URLs that moved to their new location,
 so the user does not get a 404 using the old link.
 
-The direct files are in CSV format, with the following structure:
+Redirects are recorded in `unionai-docs-infra/redirects.csv`, one per line, in CSV format:
 
-`<incoming_redirect>,<target_url>,302,TRUE,FALSE,TRUE,TRUE`
+`<source_url>,<target_url>,<status>,<include_subdomains>,<subpath_matching>,<preserve_query_string>,<preserve_path_suffix>`
 
-- `<incoming_redirect>`: the URL without `https://`
-- `<target_url>`: the full URL (including `https://`) to send the user to
+| Column | Meaning |
+|---|---|
+| `source_url` | the incoming URL, **without** `https://` |
+| `target_url` | the full URL to send the user to, **including** `https://` |
+| `status` | `301` for a permanent move, which is what new rows normally use |
+| `include_subdomains` | `TRUE` / `FALSE` |
+| `subpath_matching` | `TRUE` matches everything beneath the source path |
+| `preserve_query_string` | `TRUE` keeps `?a=b` on the target |
+| `preserve_path_suffix` | `TRUE` appends the matched subpath to the target. Cloudflare rejects this unless `subpath_matching` is also `TRUE` |
 
-Redirects are recorded in the `unionai-docs-infra/redirects.csv` file.
+A real row:
 
-To take effect, this file must be applied to the production environment on CloudFlare by a Union employee.
+```
+docs.union.ai/administration,https://www.union.ai/docs/v2/union/user-guide/user-management,301,TRUE,TRUE,TRUE,TRUE
+```
 
-If you need to add a new redirect, please create a pull request with the change to `redirect.csv` and a note indicating that you would like to have it applied to production.
+**Deployment is automatic.** Merging your change is enough. The `deploy-redirects.yml` workflow
+pushes the whole list to Cloudflare on any push to `main` or `v1` that touches the infra pointer
+or `versions.toml`. Nobody has to apply it by hand.
+
+To add a redirect, open a pull request changing `redirects.csv`. Two rules save review time:
+
+- **Point at the page that actually serves**, not at a URL you know will redirect again. Chains
+  are trimmed periodically and a new one undoes that work.
+- **Mind the trailing slash.** An exact-match row misses the other form and produces a soft 404.
+  Either set `subpath_matching` to `TRUE` or add both `/x` and `/x/`.
+
+**Do not add rows for retired version pins.** When a pinned version is retired its redirect is
+derived automatically from the `retired` list in that line's `versions.toml`. A test fails if a
+row for one appears in the CSV.
+
+**This file cannot express patterns.** It becomes a Cloudflare Bulk Redirect List, which has no
+regular expressions and no capture groups. A redirect that needs a pattern (for example, mapping
+every `<path>/old.md` to `<path>.md`) is a dynamic redirect rule, edited in the Cloudflare
+dashboard rather than here.
 
 ## `docs.union.ai` redirects
 

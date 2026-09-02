@@ -87,7 +87,30 @@ Look for the preview link in the pull request checks and open it to confirm your
 
 ## Review and merge
 
-A maintainer reviews your pull request.
-Continuous integration checks run automatically (for example, link and image validation).
-Address any review feedback or failing checks by pushing more commits to the same branch.
-Once the pull request is approved and all checks pass, a maintainer merges it, and your change goes live on the next production deploy.
+A maintainer reviews your pull request, and continuous integration runs about sixteen checks on it.
+
+Most **block the merge** and are worth reading the log for: internal and generated links, images,
+redirects, icon names, subpage cards, generated content, Jupyter notebooks, build determinism, and
+the developer certificate of origin sign-off described above.
+
+Four are **advisory and do not block**, so a red mark on them is information rather than a stop:
+
+| Advisory check | What it means |
+|---|---|
+| Check Markdown Lint | style nits in the Markdown source |
+| Check Spelling | unknown words, which are often product names |
+| API docs vs PyPI | the generated API reference has drifted from the released SDK |
+| Helm docs vs helm-charts | the generated Helm reference has drifted |
+
+Address review feedback or failing checks by pushing more commits to the same branch.
+
+## When your change goes live
+
+Once a maintainer merges it:
+
+- it appears on **`/docs/latest`** with the next production deploy, within minutes;
+- it appears on **`/docs/v2`**, the version most readers see, at the **next cut**, which may be
+  days later.
+
+That difference catches people out. If you are checking whether your merged change is live, look
+at `/docs/latest` first. See [Versions](./versions) for why the two differ.
