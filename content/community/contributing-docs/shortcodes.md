@@ -192,7 +192,7 @@ The `Check Build Determinism` CI job rejects a heading that uses the angle-brack
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/v1/flyte" or "/docs/v1/union"        |
+| docs_home         | Documentation home URL — **do not use; see the warning below** | `{{</* key docs_home */>}}` → "https://www.union.ai/docs/flyte" or ".../docs/union" |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
@@ -214,13 +214,21 @@ Example:
 
 ### `{{</* docs_home */>}}`
 
-Produces a link to the home page of the documentation for a specific variant.
-
-Example:
+Produces a link to the home page of the documentation for a specific variant **and version**.
+Both arguments are required: the shortcode warns at build time if either is missing.
 
 ```markdown
-[See this in Flyte]({{</* docs_home flyte>}}/wherever/you/want/to/go/in/flyte/docs)
+[See this in Flyte]({{</* docs_home flyte v1 */>}}/wherever/you/want/to/go)
+[See this in Flyte v2]({{</* docs_home flyte v2 */>}}/user-guide/)
 ```
+
+Pass `root` as the variant for a version root without a variant segment.
+
+> [!WARNING] Use this shortcode, not the `docs_home` key
+> The **key** of the same name resolves to an *unversioned* URL, and the two variants do not land
+> in the same place: `/docs/union` redirects to the **v2** union docs, while `/docs/flyte`
+> redirects to the **v1** flyte docs. A link built from the key is therefore unpredictable across
+> variants. This shortcode takes an explicit version and cannot drift.
 
 ### `{{</* py_class_docsum */>}}`, `{{</* py_class_ref */>}}`, and `{{</* py_func_ref */>}}`
 
