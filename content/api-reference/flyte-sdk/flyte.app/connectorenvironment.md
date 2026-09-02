@@ -2,7 +2,7 @@
 title: ConnectorEnvironment
 description: "Configure a connector environment for custom Flyte connectors."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -49,6 +49,7 @@ class ConnectorEnvironment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     type: str = 'connector',
     port: int | flyte.app._types.Port = Port(8080, name='h2c'),
     args: Optional[Union[List[str], str]] = None,
@@ -74,6 +75,7 @@ class ConnectorEnvironment(
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto'], None]` | |
 | `include` | `Tuple[str, ...]` | List of file paths to connector modules. Each path is converted to a Python module name and passed to the connector process via `--modules`. For example, `"my_connector/connector.py"` becomes module `"my_connector.connector"`. |
+| `service_account` | `Optional[str]` | |
 | `type` | `str` | |
 | `port` | `int \| flyte.app._types.Port` | |
 | `args` | `Optional[Union[List[str], str]]` | |
@@ -141,6 +143,7 @@ def clone_with(
     depends_on: Optional[List[Environment]] = None,
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> AppEnvironment
 ```
@@ -154,6 +157,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
+| `service_account` | `Optional[str]` | |
 | `**kwargs` | `Any` | |
 
 ### container_args()

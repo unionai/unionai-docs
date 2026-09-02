@@ -241,6 +241,8 @@
     "RemoteTaskNotFoundError": "/api-reference/flyte-sdk/flyte.errors/remotetasknotfounderror/",
     "flyte.errors.RemoteTaskUsageError": "/api-reference/flyte-sdk/flyte.errors/remotetaskusageerror/",
     "RemoteTaskUsageError": "/api-reference/flyte-sdk/flyte.errors/remotetaskusageerror/",
+    "flyte.errors.ResourceExhaustedError": "/api-reference/flyte-sdk/flyte.errors/resourceexhaustederror/",
+    "ResourceExhaustedError": "/api-reference/flyte-sdk/flyte.errors/resourceexhaustederror/",
     "flyte.errors.RestrictedTypeError": "/api-reference/flyte-sdk/flyte.errors/restrictedtypeerror/",
     "RestrictedTypeError": "/api-reference/flyte-sdk/flyte.errors/restrictedtypeerror/",
     "flyte.errors.RetriesExhaustedError": "/api-reference/flyte-sdk/flyte.errors/retriesexhaustederror/",

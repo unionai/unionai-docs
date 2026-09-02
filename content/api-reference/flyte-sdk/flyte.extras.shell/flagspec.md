@@ -2,7 +2,7 @@
 title: FlagSpec
 description: "How to render a typed input as a CLI flag in `{flags.<name>}`."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

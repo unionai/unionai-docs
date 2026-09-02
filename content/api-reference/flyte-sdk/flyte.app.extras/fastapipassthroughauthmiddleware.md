@@ -2,7 +2,7 @@
 title: FastAPIPassthroughAuthMiddleware
 description: "FastAPI middleware that automatically sets Flyte auth metadata from request headers."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: Cache
 description: "Cache configuration for a task."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,6 +37,7 @@ class Cache(
     ignored_inputs: typing.Union[typing.Tuple[str, ...], str] = <factory>,
     salt: str = '',
     policies: typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType] = None,
+    max_age: datetime.timedelta | int | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -47,6 +48,7 @@ class Cache(
 | `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | Input parameter names to exclude from the cache key. Useful when some inputs (e.g., timestamps) shouldn't affect caching. |
 | `salt` | `str` | Additional salt for cache key generation. Use to create separate cache namespaces (e.g., `salt="v2"` to invalidate all existing caches). |
 | `policies` | `typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType]` | Cache policies for version generation. Defaults to `[FunctionBodyPolicy()]` when `behavior="auto"`. Provide a custom `CachePolicy` implementation for alternative versioning strategies. |
+| `max_age` | `datetime.timedelta \| int \| None` | Maximum age of a cached result this task will reuse, as a `timedelta` or an integer number of seconds. `None` uses the platform default, zero disables age-based expiration, and negative values are invalid. |
 
 ## Methods
 

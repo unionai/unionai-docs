@@ -2,7 +2,7 @@
 title: flyte.types
 description: "The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows."
 icon: box-seam
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,23 +1,19 @@
 ---
-title: ImageBuildError
-description: "This error is raised when the image build fails."
+title: ResourceExhaustedError
 icon: exclamation-triangle
 version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
 
-# ImageBuildError
+# ResourceExhaustedError
 
 **Package:** `flyte.errors`
-
-This error is raised when the image build fails.
-
 
 ## Parameters
 
 ```python
-class ImageBuildError(
+class ResourceExhaustedError(
     message: str,
 )
 ```

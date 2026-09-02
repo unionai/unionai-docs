@@ -2,7 +2,7 @@
 title: Environment
 description: "Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,6 +34,7 @@ class Environment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -48,6 +49,7 @@ class Environment(
 | `interruptible` | `bool` | Whether the environment can be scheduled on spot/preemptible instances. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. |
 | `include` | `Tuple[str, ...]` | Extra files to bundle with the environment's code (e.g., HTML templates, config files, non-Python assets). Paths may be relative (resolved against the directory of the file where the environment is instantiated), absolute, directories (recursively included), or glob patterns. Files listed here are bundled **in addition to** the default `copy_style` discovery (`loaded_modules` or `all`), not in place of it. |
+| `service_account` | `Optional[str]` | Kubernetes service account to run task pods as. |
 
 ## Methods
 

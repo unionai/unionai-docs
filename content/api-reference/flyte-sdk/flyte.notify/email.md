@@ -2,7 +2,7 @@
 title: Email
 description: "Send email notifications."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---

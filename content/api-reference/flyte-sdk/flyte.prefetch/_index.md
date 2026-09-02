@@ -2,7 +2,7 @@
 title: flyte.prefetch
 description: "Prefetch utilities for Flyte."
 icon: box-seam
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -115,7 +115,7 @@ run.wait()
 | `shard_config` | `ShardConfig \| None` | Optional configuration for model sharding with vLLM. |
 | `hf_token_key` | `str \| None` | Name of the secret containing the HuggingFace token. Default: 'HF_TOKEN'. Pass None to prefetch public models anonymously (no secret required). |
 | `resources` | `Resources` | Resources for the prefetch task. Default: `Resources(cpu="2", memory="8Gi", disk="50Gi")`, which has no accelerator -- set this explicitly when sharding, and size `disk` for the model's weights. Accelerators go in `Resources(gpu=...)` as '{type}:{quantity}' (e.g., 'A100:8', 'L4:1'). The `flyte prefetch hf-model` CLI exposes the same settings as separate `--cpu/--mem/--disk/--gpu/--shm` flags and folds them into this one argument. |
-| `force` | `int` | Force re-prefetch. Increment to force a new prefetch. Default: 0. |
+| `force` | `int` | Force re-prefetch. Repeat calls are cached; increment to bypass the cache and download again. Default: 0. |
 
 **Returns:** A Run object representing the prefetch task execution.
 

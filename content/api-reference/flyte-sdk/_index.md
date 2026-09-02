@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -124,6 +124,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.PrimaryContainerNotFoundError`](flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`flyte.errors.RemoteTaskNotFoundError`](flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RemoteTaskUsageError`](flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.ResourceExhaustedError`](flyte.errors/resourceexhaustederror) |  |
 | [`flyte.errors.RestrictedTypeError`](flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one value. |
 | [`flyte.errors.RetriesExhaustedError`](flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RuntimeDataValidationError`](flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
@@ -153,7 +154,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.git.GitStatus`](flyte.git/gitstatus) | A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](flyte.io/dataframe) | A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas.DataFrame and pyarrow.Table are supported natively, just install these libraries). |
 | [`flyte.io.Dir`](flyte.io/dir) | A generic directory class representing a directory with files of a specified format. |
-| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel `flyte.io.Dir` representing 'no directory was produced'. |
+| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel `flyte.io.Dir` representing `no directory was produced`. |
 | [`flyte.io.File`](flyte.io/file) | A generic file class representing a file with a specified format. |
 | [`flyte.io.HashFunction`](flyte.io/hashfunction) | A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](flyte.io.extend/dataframedecoder) |  |

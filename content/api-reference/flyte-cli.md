@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -32,6 +32,7 @@ This is the command line interface for Flyte.
 | `logs` | [`get`](#flyte-get-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
+| `hello` | [`run`](#flyte-run-hello)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
 | `tui` | [`start`](#flyte-start-tui)  |
 {{< /markdown >}}
@@ -48,7 +49,7 @@ This is the command line interface for Flyte.
 | `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
-| `run` | [`deployed-task`](#flyte-run-deployed-task)  |
+| `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `signal` | [`condition`](#flyte-signal-condition)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
@@ -91,6 +92,7 @@ This is the command line interface for Flyte.
 | `member` | [`get⁺`](#flyte-get-member)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
+| `hello` | [`run`](#flyte-run-hello)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
 | `tui` | [`start`](#flyte-start-tui)  |
 {{< /markdown >}}
@@ -110,7 +112,7 @@ This is the command line interface for Flyte.
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | [`rerun`](#flyte-rerun) | - |
-| `run` | [`deployed-task`](#flyte-run-deployed-task)  |
+| `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `signal` | [`condition`](#flyte-signal-condition)  |
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
@@ -182,13 +184,13 @@ $ flyte --config /path/to/config.yaml run ...
 | `--version` | `boolean` | `Sentinel.UNSET` | Show the version and exit. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
-| `--image-builder` `--builder` | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to 'local'. |
-| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
+| `--image-builder` `--builder` | `choice` |  | Image builder to use for building images. Overrides the config file setting. If not specified, the builder from the config file (image.builder) is used, falling back to `local`. |
+| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to `pkce`. |
 | `-v` `--verbose` | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
 | `--org` | `text` | `Sentinel.UNSET` | The organization to which the command applies. |
 | `-c` `--config` | `file` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
-| `--output-format` `-of` | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
-| `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
+| `--output-format` `-of` | `choice` | `table` | Output format for commands that support it. Defaults to `table`. |
+| `--log-format` | `choice` | `console` | Formatting for logs, defaults to `console` which is meant to be human readable. `json` is meant for machine parsing. |
 | `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
 | `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--no-progress` | `boolean` | `False` | Disable the animated progress spinner — useful in CI / non-interactive logs. |
@@ -253,11 +255,11 @@ flyte build --all --recursive ./src
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's --copy-style so the image content hash — and therefore the registry tag — lines up. |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style of the eventual deploy. Must match the deploy's `--copy-style` so the image content hash — and therefore the registry tag — lines up. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--recursive` `-r` | `boolean` | `Sentinel.UNSET` | Recursively build all environments in the current directory and its subdirectories. |
 | `--all` | `boolean` | `Sentinel.UNSET` | Build the images for all environments in the file or directory, ignoring the file name. |
-| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments, especially when using --recursive or --all. |
+| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments, especially when using `--recursive` or `--all`. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte create
@@ -327,10 +329,10 @@ flyte create artifact my_model --from-file model.pt --card model_card.html --car
 | `--version` | `text` |  | Version to publish. Defaults to a random version. |
 | `--description` | `text` |  | Human readable description. |
 | `--attr` | `text` | `Sentinel.UNSET` | Free-form user metadata as key=value pairs. Can be specified multiple times. |
-| `--kind` | `choice` |  | What the artifact is. Recorded under the reserved 'flyte.io/kind' attr. Distinct from --card-type, which controls how an attached card renders. |
+| `--kind` | `choice` |  | What the artifact is. Recorded under the reserved `flyte.io/kind` attr. Distinct from `--card-type`, which controls how an attached card renders. |
 | `--external-ref` | `text` |  | Opaque reference into an external system (a URI, model id, ...) recorded as the artifact's source. |
 | `--card` | `file` |  | Local card file (HTML by default) to upload and attach to the artifact for display in the UI. |
-| `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or 'html' when it has none. |
+| `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or `html` when it has none. |
 | `--card-type` | `choice` | `generic` | Kind of card being attached. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
@@ -451,10 +453,10 @@ $ flyte create config --devbox
 | `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
 | `-o` `--output` | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
-| `--image-builder` `--builder` | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
-| `--registry` | `text` |  | Container registry to use as the base registry when building images (e.g. 'ghcr.io/my-org'). When set, this overrides the built-in default base registry. Equivalent to the 'image.registry' config entry or the FLYTE_IMAGE_REGISTRY environment variable. |
-| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
-| `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via 'flyte start tui'. |
+| `--image-builder` `--builder` | `choice` | `local` | Image builder to use for building images. Defaults to `local`. |
+| `--registry` | `text` |  | Container registry to use as the base registry when building images (e.g. `ghcr.io/my-org`). When set, this overrides the built-in default base registry. Equivalent to the `image.registry` config entry or the FLYTE_IMAGE_REGISTRY environment variable. |
+| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to `pkce`. |
+| `--local-persistence` | `boolean` | `False` | Enable SQLite persistence for local run metadata, allowing past runs to be browsed via `flyte start tui`. |
 | `--local-tracked` | `boolean` | `False` | Report local run state to the Flyte control plane so local runs show up in the console. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
@@ -633,13 +635,13 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 | `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file, from_docker_config, registry. |
 | `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value, from_docker_config, registry. |
 | `--type` | `choice` | `regular` | Type of the secret. |
-| `--from-docker-config` | `boolean` | `Sentinel.UNSET` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
+| `--from-docker-config` | `boolean` | `Sentinel.UNSET` | Create image pull secret from Docker config file (only for `--type` image_pull). Mutually exclusive with value, from_file, registry, username, password. |
 | `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). Requires from_docker_config. |
-| `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with --from-docker-config). |
-| `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
-| `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
-| `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with --registry). If not provided, will prompt. |
-| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
+| `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with `--from-docker-config`). |
+| `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for `--type` image_pull). Mutually exclusive with value, from_file, from_docker_config. |
+| `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with `--registry`). |
+| `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with `--registry`). If not provided, will prompt. |
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with `--project` and `--domain`. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -663,7 +665,7 @@ This will create a trigger that runs every day at midnight.
 | `--schedule` | `text` | `Sentinel.UNSET` | Cron schedule for the trigger. Defaults to every minute. |
 | `--description` | `text` | `` | Description of the trigger. |
 | `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
-| `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to 'trigger_time'. |
+| `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to `trigger_time`. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1011,7 +1013,7 @@ Delete a secret. The name of the secret is required.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with `--project` and `--domain`. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1158,7 +1160,7 @@ flyte deploy hello.py --help
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--recursive` `-r` | `boolean` | `Sentinel.UNSET` | Recursively deploy all environments in the current directory |
 | `--all` | `boolean` | `Sentinel.UNSET` | Deploy all environments in the current directory, ignoring the file name |
-| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments especially when using --recursive or --all. |
+| `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments especially when using `--recursive` or `--all`. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1306,8 +1308,8 @@ run has no local equivalent.
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
-| `--tracked` | `boolean` | `False` | Run the task locally (implies --local) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
-| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with --tracked): any reporting failure fails the run loudly instead of being logged and swallowed. |
+| `--tracked` | `boolean` | `False` | Run the task locally (implies `--local`) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
+| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with `--tracked`): any reporting failure fails the run loudly instead of being logged and swallowed. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
@@ -1449,11 +1451,11 @@ flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of results to fetch when listing. |
 | `--search` | `text` |  | Substring match on the artifact name when listing names. |
-| `--created-after` | `datetime` |  | Show versions created at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--created-after` | `datetime` |  | Show versions created at or after this datetime (UTC). Accepts ISO dates, `now`, `today`, or `now - 1 day`. |
 | `--source-run` | `text` |  | Only artifact versions produced by this run. |
-| `--source-action` | `text` |  | Only artifact versions produced by this action; usually combined with --source-run. |
+| `--source-action` | `text` |  | Only artifact versions produced by this action; usually combined with `--source-run`. |
 | `--source-external-ref` | `text` |  | Only artifact versions imported from this external reference. |
-| `--kind` | `choice` |  | Only artifacts of this kind. Shorthand for --attr on the reserved kind key. |
+| `--kind` | `choice` |  | Only artifacts of this kind. Shorthand for `--attr` on the reserved kind key. |
 | `--attr` | `text` | `Sentinel.UNSET` | Only artifacts whose attrs match, as key=value. Repeatable; separate keys must all match. Filtering happens server-side. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
@@ -1687,7 +1689,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--lines` `-l` | `integer` | `30` | Number of lines to show, only useful for --pretty |
+| `--lines` `-l` | `integer` | `30` | Number of lines to show, only useful for `--pretty` |
 | `--show-ts` | `boolean` | `Sentinel.UNSET` | Show timestamps |
 | `--pretty` | `boolean` | `False` | Show logs in an auto-scrolling box, where number of lines is limited to `--lines` |
 | `--attempt` `-a` | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
@@ -1870,9 +1872,9 @@ $ flyte get run --paused-only
 | `--paused-only` | `boolean` | `False` | Show only runs that have a paused action (waiting on a human in the loop). |
 | `--task-name` | `text` |  | Filter runs by task name. |
 | `--task-version` | `text` |  | Filter runs by task version. |
-| `--created-after` | `datetime` |  | Show runs created at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--created-after` | `datetime` |  | Show runs created at or after this datetime (UTC). Accepts ISO dates, `now`, `today`, or `now - 1 day`. |
 | `--created-before` | `datetime` |  | Show runs created before this datetime (UTC). |
-| `--updated-after` | `datetime` |  | Show runs updated at or after this datetime (UTC). Accepts ISO dates, 'now', 'today', or 'now - 1 day'. |
+| `--updated-after` | `datetime` |  | Show runs updated at or after this datetime (UTC). Accepts ISO dates, `now`, `today`, or `now - 1 day`. |
 | `--updated-before` | `datetime` |  | Show runs updated before this datetime (UTC). |
 | `--with-label` | `text` | `()` | Filter runs that have this label key=value. Can be specified multiple times (AND semantics). |
 | `--with-label-key` | `text` | `()` | Filter runs that have this label key present (existence check). Can be specified multiple times. |
@@ -1888,7 +1890,7 @@ Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with --project and --domain. Mutually exclusive with project, domain. |
+| `--cluster-pool` | `text` |  | Scope the secret to a cluster pool. Mutually exclusive with `--project` and `--domain`. Mutually exclusive with project, domain. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -2055,20 +2057,20 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `--raw-data-path` | `text` |  | Object store path to store the model. If not provided, the model will be stored using the default path generated by Flyte storage layer. |
 | `--artifact-name` | `text` |  | Artifact name to use for the stored model. Must only contain alphanumeric characters, underscores, and hyphens. If not provided, the repo name will be used (replacing '.' with '-'). |
 | `--architecture` | `text` | `Sentinel.UNSET` | Model architecture, as given in HuggingFace config.json. |
-| `--task` | `text` | `auto` | Model task, e.g., 'generate', 'classify', 'embed', 'score', etc. Refer to vLLM docs. 'auto' will try to discover this automatically. |
-| `--modality` | `text` | `('text',)` | Modalities supported by the model, e.g., 'text', 'image', 'audio', 'video'. Can be specified multiple times. |
+| `--task` | `text` | `auto` | Model task, e.g., `generate`, `classify`, `embed`, `score`, etc. Refer to vLLM docs. `auto` will try to discover this automatically. |
+| `--modality` | `text` | `('text',)` | Modalities supported by the model, e.g., `text`, `image`, `audio`, `video`. Can be specified multiple times. |
 | `--format` | `text` | `Sentinel.UNSET` | Model serialization format, e.g., safetensors, onnx, torchscript, joblib, etc. |
-| `--model-type` | `text` | `Sentinel.UNSET` | Model type, e.g., 'transformer', 'xgboost', 'custom', etc. For HuggingFace models, this is auto-determined from config.json['model_type']. |
+| `--model-type` | `text` | `Sentinel.UNSET` | Model type, e.g., `transformer`, `xgboost`, `custom`, etc. For HuggingFace models, this is auto-determined from config.json['model_type']. |
 | `--short-description` | `text` | `Sentinel.UNSET` | Short description of the model. |
-| `--force` | `integer` | `0` | Force store of the model. Increment value (--force=1, --force=2, ...) to force a new store. |
+| `--force` | `integer` | `0` | Force store of the model. Increment value (`--force`=1, `--force`=2, ...) to force a new store. |
 | `--wait` | `boolean` | `Sentinel.UNSET` | Wait for the model to be stored before returning. |
 | `--hf-token-key` | `text` | `HF_TOKEN` | Name of the Flyte secret containing your HuggingFace token. Note: This is not the HuggingFace token itself, but the name of the secret in the Flyte secret store. |
-| `--cpu` | `text` | `2` | CPU request for the prefetch task (e.g., '2', '4', '2,4' for 2-4 CPUs). |
-| `--mem` | `text` | `8Gi` | Memory request for the prefetch task (e.g., '16Gi', '64Gi', '16Gi,64Gi' for 16-64GB). |
-| `--gpu` | `choice` |  | The gpu to use for downloading and (optionally) sharding the model. Format: '{type}:{quantity}' (e.g., 'A100:8', 'L4:1'). |
-| `--disk` | `text` | `50Gi` | Disk storage request for the prefetch task (e.g., '100Gi', '500Gi'). |
-| `--shm` | `text` |  | Shared memory request for the prefetch task (e.g., '100Gi', 'auto'). |
-| `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have 'engine' (currently only 'vllm') and 'args' keys. |
+| `--cpu` | `text` | `2` | CPU request for the prefetch task (e.g., `2`, `4`, '2,4' for 2-4 CPUs). |
+| `--mem` | `text` | `8Gi` | Memory request for the prefetch task (e.g., `16Gi`, `64Gi`, '16Gi,64Gi' for 16-64GB). |
+| `--gpu` | `choice` |  | The gpu to use for downloading and (optionally) sharding the model. Format: '{type}:{quantity}' (e.g., `A100:8`, `L4:1`). |
+| `--disk` | `text` | `50Gi` | Disk storage request for the prefetch task (e.g., `100Gi`, `500Gi`). |
+| `--shm` | `text` |  | Shared memory request for the prefetch task (e.g., `100Gi`, `auto`). |
+| `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have `engine` (currently only `vllm`) and `args` keys. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -2116,8 +2118,8 @@ $ flyte rerun rxyz --recover --n 10 --force-rerun-action a3
 | `--label` | `text` | `Sentinel.UNSET` | Label KEY=VALUE for the new run. Repeatable. |
 | `--follow` `-f` | `boolean` | `False` | Stream the parent action logs after launch. |
 | `--recover` | `boolean` | `False` | Reuse the prior run's succeeded actions, re-running only what failed or never ran. Remote-only. |
-| `--action-name` | `text` |  | Re-run only this action from the run, instead of the whole run: the new run is rooted at that action's task with the inputs it received. Cannot be combined with --recover. List names with `flyte get action <run>`. |
-| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With --recover: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
+| `--action-name` | `text` |  | Re-run only this action from the run, instead of the whole run: the new run is rooted at that action's task with the inputs it received. Cannot be combined with `--recover`. List names with `flyte get action <run>`. |
+| `--force-rerun-action` | `text` | `Sentinel.UNSET` | With `--recover`: name of an action to re-execute even though it succeeded in the source run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--allow-missing-outputs` | `boolean` | `False` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. The inputs cannot be verified from the client — if they were deleted too, the new run fails at runtime. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
@@ -2126,6 +2128,13 @@ $ flyte rerun rxyz --recover --n 10 --force-rerun-action a3
 **`flyte run [OPTIONS] COMMAND [ARGS]...`**
 
 Run a task from a python file or deployed task.
+
+If you have never run a Flyte workflow before, start with the built-in example. It needs no files
+of your own, and prints the path to its source so you can copy it into a project:
+
+```bash
+flyte run hello
+```
 
 Example usage:
 
@@ -2227,8 +2236,8 @@ flyte run hello.py my_task --help
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--tui` | `boolean` | `False` | Show interactive TUI for local execution (requires flyte[tui]). |
-| `--tracked` | `boolean` | `False` | Run the task locally (implies --local) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
-| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with --tracked): any reporting failure fails the run loudly instead of being logged and swallowed. |
+| `--tracked` | `boolean` | `False` | Run the task locally (implies `--local`) while reporting run state to the Flyte control plane so the run shows up in the console. Requires a configured endpoint, project and domain. |
+| `--tracked-strict` | `boolean` | `False` | Strict tracked-run reporting for debugging (only valid with `--tracked`): any reporting failure fails the run loudly instead of being logged and swallowed. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
@@ -2238,6 +2247,26 @@ flyte run hello.py my_task --help
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
 | `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
+#### flyte run hello
+
+**`flyte run hello [OPTIONS]`**
+
+Run a built-in first workflow -- no files needed.
+
+The example fans a small computation out over a list of inputs with `flyte.map` and averages
+the results. Its source is written to `hello.py` in a scratch directory and the
+path is printed, so you can copy it into a project of your own.
+
+```bash
+flyte run hello
+flyte run --local hello
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--x_list` | `json list` | `[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]` |  |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte run deployed-task
@@ -2261,6 +2290,14 @@ Serve an app from a Python file using flyte.serve().
 This command allows you to serve apps defined with `flyte.app.AppEnvironment`
 in your Python files. The serve command will deploy the app to the Flyte backend
 and start it, making it accessible via a URL.
+
+If you have never served a Flyte app before, start with the built-in example. It needs no files
+of your own, and prints the path to its source so you can copy it into a project:
+
+```bash
+flyte serve hello
+flyte serve --local hello
+```
 
 Example usage:
 
@@ -2335,7 +2372,7 @@ Serving deployed apps is not currently supported through this CLI command.
 | `--follow` `-f` | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the serve. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
-| `--env-var` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
+| `--env-var` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: `--env-var` LOG_LEVEL=DEBUG `--env-var` DATABASE_URL=postgresql://... |
 | `--local` | `boolean` | `False` | Serve the app locally on localhost instead of deploying to the Flyte backend. The app will be served on the port defined in the AppEnvironment. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
@@ -2379,7 +2416,7 @@ Start a local Flyte devbox cluster.
 |--------|------|---------|-------------|
 | `--image` | `text` |  | Docker image to use for the devbox cluster. |
 | `--dev` | `boolean` | `False` | Enable dev mode inside the devbox cluster (sets FLYTE_DEV=True). |
-| `--gpu` | `boolean` | `False` | Pass host GPUs into the devbox container (adds --gpus all to docker run). Requires an NVIDIA-enabled host. Defaults --image to a GPU-capable image if --image is not explicitly set. |
+| `--gpu` | `boolean` | `False` | Pass host GPUs into the devbox container (adds `--gpus` all to docker run). Requires an NVIDIA-enabled host. Defaults `--image` to a GPU-capable image if `--image` is not explicitly set. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte start tui

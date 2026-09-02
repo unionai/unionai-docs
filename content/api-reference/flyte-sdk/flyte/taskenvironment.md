@@ -2,7 +2,7 @@
 title: TaskEnvironment
 description: "Define an execution environment for a set of tasks."
 icon: braces
-version: 2.6.10
+version: 2.6.13
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,6 +45,7 @@ async def my_task():
 | `resources` | Yes | — | Yes* |
 | `env_vars` | Yes | — | Yes* |
 | `secrets` | Yes | — | Yes* |
+| `service_account` | Yes | Yes | Yes* |
 | `cache` | Yes | Yes | Yes |
 | `pod_template` | Yes | Yes | Yes |
 | `reusable` | Yes | — | Yes |
@@ -78,6 +79,7 @@ class TaskEnvironment(
     interruptible: bool = False,
     image: Union[str, Image, Literal['auto'], None] = 'auto',
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     cache: CacheRequest = 'disable',
     reusable: ReusePolicy | None = None,
     plugin_config: Optional[Any] = None,
@@ -96,6 +98,7 @@ class TaskEnvironment(
 | `interruptible` | `bool` | Whether tasks can run on spot/preemptible instances. Also settable in `@env.task` and `task.override`. |
 | `image` | `Union[str, Image, Literal['auto'], None]` | Docker image for the environment. Can be a string (image URI), an `Image` object, or `"auto"` to use the default image. TaskEnvironment level only. |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | Kubernetes service account to run task pods as. Overridable via `@env.task(service_account=...)` or `task.override(service_account=...)` when not using reusable containers. |
 | `cache` | `CacheRequest` | Cache policy — `"auto"`, `"override"`, `"disable"`, or a `Cache` object. Also settable in `@env.task(cache=...)` and `task.override(cache=...)`. |
 | `reusable` | `ReusePolicy \| None` | `ReusePolicy` for container reuse. Also overridable via `task.override(reusable=...)`. Note: when `reusable` is set on the environment, overriding `resources`, `env_vars`, or `secrets` in `task.override()` requires passing `reusable="off"` in the same call. Additionally, `secrets` cannot be overridden at the `@env.task` decorator level when the environment has `reusable` set. |
 | `plugin_config` | `Optional[Any]` | Plugin configuration for custom task types (e.g., Ray, Spark). Cannot be combined with `reusable`. TaskEnvironment level only. |
@@ -154,6 +157,7 @@ def clone_with(
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
     include: Optional[Tuple[str, ...]] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> TaskEnvironment
 ```
@@ -191,6 +195,7 @@ original environment.
 | `description` | `Optional[str]` | Override the description. |
 | `interruptible` | `Optional[bool]` | Override the interruptible setting. |
 | `include` | `Optional[Tuple[str, ...]]` | |
+| `service_account` | `Optional[str]` | Override the Kubernetes service account. |
 | `**kwargs` | `Any` | Additional `TaskEnvironment`-specific overrides (e.g., `cache`, `reusable`, `plugin_config`). |
 
 ### from_task()
@@ -244,6 +249,7 @@ def task(
     interruptible: bool | None = None,
     max_inline_io_bytes: int = 10485760,
     queue: Optional[str] = None,
+    service_account: Optional[str] = None,
     triggers: Tuple[Trigger, ...] | Trigger = (),
     links: Tuple[Link, ...] | Link = (),
     task_resolver: Any | None = None,
@@ -268,6 +274,7 @@ Decorate a function to be a task.
 | `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. Default is 10 MiB. |
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used. |
+| `service_account` | `Optional[str]` | |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 | `task_resolver` | `Any \| None` | Optional TaskResolver protocol to load tasks using custom policy. |
