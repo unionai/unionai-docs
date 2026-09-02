@@ -195,10 +195,18 @@ The `Check Build Determinism` CI job rejects a heading that uses the angle-brack
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/v2/flyte" or "/docs/v2/union"        |
+| docs_home         | Documentation home URL — **do not use; see the warning below** | `{{</* key docs_home */>}}` → "https://www.union.ai/docs/flyte" or ".../docs/union" |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
+
+> [!WARNING] Use the `docs_home` shortcode, not the `docs_home` key
+> The **key** resolves to an *unversioned* URL, and the two variants do not land in the same
+> place: `/docs/union` redirects to the **v2** union docs, while `/docs/flyte` redirects to the
+> **v1** flyte docs. A link built from the key therefore sends Flyte readers to the old line.
+>
+> Use the shortcode instead, which takes an explicit version and cannot drift:
+> `{{</* docs_home flyte v2 */>}}`. It is documented below.
 
 ### `{{</* download */>}}`
 
