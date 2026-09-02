@@ -20,6 +20,13 @@ It assumes you have already provisioned the
 an object-store bucket) and that you have `helm` and `kubectl` configured against your
 cluster.
 
+> [!TIP] Deploy this with an AI assistant
+> [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) — a
+> portable agent harness plugin for Claude Code, Codex, OpenCode, and other
+> harnesses — includes a `flyte-deploy-aws-core` skill that provisions a Flyte v2
+> cluster on AWS end to end — EKS + S3 + RDS behind an ALB, with optional TLS and
+> Okta SSO. See [Flyte agent plugins](../../api-reference/agent-plugins).
+
 ## 1. Add the Helm repository
 
 ```bash
