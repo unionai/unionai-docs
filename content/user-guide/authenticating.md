@@ -592,7 +592,7 @@ echo $FLYTE_API_KEY
 ## Best practices
 
 1. **Local development**: Use PKCE authentication for the best experience
-2. **Remote development**: Use device flow where supported; for newly provisioned organizations, use an API key for headless environments
+2. **Remote development**: Use device flow where supported; for newly provisioned organizations, use PKCE when a browser is available or an API key for headless environments
 3. **Production/CI**: Always use API keys for automated environments
 4. **API key security**:
    - Store in secret managers (GitHub Secrets, AWS Secrets Manager, Vault)
