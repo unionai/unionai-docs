@@ -100,10 +100,16 @@ flyte run my_example.py my_task --input "test_data"
 
 **`flyte run --tracked <PATH> <TASK_NAME>`**
 
-The `--tracked` option runs the task on your machine, exactly as `--local` does, while reporting the run's progress to the control plane so that it appears in the {{< key product_name >}} console alongside your remote runs. It implies `--local`, so you do not need to pass both:
+The `--tracked` option runs the task on your machine, exactly as `--local` does, while reporting the run's progress to the control plane so that you can follow it in the {{< key product_name >}} console. It implies `--local`, so you do not need to pass both:
 
 ```bash
 flyte run --tracked my_example.py my_task --input "test_data"
+```
+
+The run appears under **Tracked Runs** in the project sidebar, a separate section from **Runs**. To try it without writing a file first, use the built-in example:
+
+```bash
+flyte run --tracked hello
 ```
 
 Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with a remote run.

@@ -127,15 +127,23 @@ flyte start tui
 
 ## Track local runs in the console
 
-A local run normally leaves no trace on the control plane. Add `--tracked` and the run still executes on your machine, but its progress is reported to {{< key product_name >}} so you can watch it in the console next to your remote runs:
+A local run normally leaves no trace on the control plane. Add `--tracked` and the run still executes on your machine, but its progress is reported to {{< key product_name >}} so you can watch it in the console:
 
 ```bash
 flyte run --tracked hello.py main
 ```
 
-The command prints a console link when the run starts. Tracking covers the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported, so `print()` output stays in your terminal.
+Tracked runs appear in the console under **Tracked Runs**, which is its own section in the project sidebar. They are not listed under **Runs**, which shows runs the platform executed for you.
+
+The command prints a link to the run when it starts. Tracking covers the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported, so `print()` output stays in your terminal.
 
 Reporting never gets in the way of the run itself: if the control plane is unreachable, the failure is logged and your local run finishes normally.
+
+If you do not have a workflow to hand yet, `hello` runs a built-in one and needs no files at all:
+
+```bash
+flyte run --tracked hello
+```
 
 Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options).
 
