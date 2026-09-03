@@ -54,6 +54,41 @@ uvx flyte get run
 
 {{< /note >}}
 
+## Run something straight away
+
+Before writing anything of your own, you can run a built-in example. It needs no files and no configuration:
+
+```bash
+flyte run --local hello
+```
+
+Flyte writes the example to a scratch directory, runs it, and prints the path to the source:
+
+```bash
+Using the built-in example from /tmp/flyte-hello-<user>/task/hello.py
+Copy it into your own project to start editing.
+Completed Local Run   Outputs: ActionOutputs(o0=14.0)
+```
+
+The example fans a small computation over a list of inputs with `flyte.map` and averages the results. Copy that file into a project of your own when you want to start editing, or carry on below to write one from scratch.
+
+{{< variant union >}}
+{{< markdown >}}
+
+> [!NOTE] Watch it in the console
+> Once you have configured an endpoint below, swap `--local` for `--tracked`. The run still executes
+> on your machine, but reports its progress to {{< key product_name >}} and appears under
+> **Tracked Runs**:
+>
+> ```bash
+> flyte run --tracked hello
+> ```
+>
+> See [Track local runs in the console](./run-modes/running-locally#track-local-runs-in-the-console).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Configure
 
 Create a config file for local execution. Runs will be persisted locally in a SQLite database.
@@ -94,7 +129,7 @@ Create `hello.py`:
 Here's what's happening:
 
 - **`TaskEnvironment`** specifies configuration for your tasks (container image, resources, etc.)
-- **`@env.task`** turns Python functions into tasks that run remotely
+- **`@env.task`** turns Python functions into tasks that can run on a cluster
 - Both tasks share the same `env`, so they'll have identical configurations
 
 ## Run it
