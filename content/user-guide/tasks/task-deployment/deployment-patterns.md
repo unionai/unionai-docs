@@ -312,7 +312,7 @@ After installation, you can run workflows without `--root-dir`:
 flyte run lib/workflows/workflow1.py process_workflow
 ```
 
-However, for deployment and remote execution, still use `--root-dir` for consistency:
+However, for deployment and on-cluster execution, still use `--root-dir` for consistency:
 
 ```bash
 flyte run --root-dir . lib/workflows/workflow1.py process_workflow
@@ -531,7 +531,7 @@ The CLI automatically:
 
 - Adds the `--root-dir` location to `sys.path`
 - Resolves all imports correctly
-- Packages files from the root directory for remote execution
+- Packages files from the root directory for on-cluster execution
 
 #### Using Python directly
 
@@ -556,7 +556,7 @@ This is because:
 
 ### Common pitfalls
 
-- **Forgetting `root_dir`**: Results in import errors during remote execution
+- **Forgetting `root_dir`**: Results in import errors during on-cluster execution
 - **Wrong `root_dir` path**: May package too many or too few files
 - **Not setting PYTHONPATH when using Python directly**: Use `flyte run --root-dir .` instead
 - **Mixing execution methods**: If you use `flyte run --root-dir .`, you don't need PYTHONPATH

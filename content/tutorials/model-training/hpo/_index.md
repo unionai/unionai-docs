@@ -70,7 +70,7 @@ Flyte is our orchestration framework. We use it to define tasks, manage resource
 
 ## Define the task environment
 
-We define a Flyte task environment called `driver`, which encapsulates metadata, compute resources, the container image context needed for remote execution, and caching behavior.
+We define a Flyte task environment called `driver`, which encapsulates metadata, compute resources, the container image context needed for on-cluster execution, and caching behavior.
 
 {{< code file="/unionai-examples/v2/tutorials/ml/optimizer.py" fragment="env" lang="python" >}}
 
