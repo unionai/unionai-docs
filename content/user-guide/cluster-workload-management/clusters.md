@@ -4,6 +4,7 @@ description: Register execution clusters into a pool and inspect their state, ca
 icon: cloud
 weight: 2
 variants: -flyte +union
+mermaid: true
 ---
 
 # Clusters
@@ -108,8 +109,10 @@ concurrency, depth, priority, and fairness settings as any other, and are manage
 the same way on the [Managing queues](./queues) page. What sets the co-named
 queue apart is that its cluster selector and pool are managed by its cluster and
 cannot be edited directly: it follows its cluster if the cluster is
-[reassigned to another pool](#move-a-cluster-to-a-different-pool), and it is
-deleted along with the cluster if the cluster is [deleted](#delete-a-cluster).
+[reassigned to another pool](#move-a-cluster-to-a-different-pool). It also
+follows the cluster through drain, activate, and delete transitions unless it
+was already deleted on its own. The system confirms the cluster and queue
+transitions separately, so they may finish at slightly different times.
 
 ## Inspect clusters
 
@@ -137,11 +140,12 @@ flyte get cluster --limit 50
 from flyteplugins.union.remote import Cluster
 
 for cluster in Cluster.listall(limit=100):
-    print(cluster.name, cluster.pool, cluster.state, cluster.health, cluster.capacity)
+    print(cluster.name, cluster.pool, cluster.drain_state, cluster.health, cluster.capacity)
 
 cluster = Cluster.get("prod-us-east-1")
 print(cluster.name)
 print(cluster.pool)
+print(cluster.drain_state)
 print(cluster.queues)
 print(cluster.health, cluster.unhealthy_reasons)
 print(cluster.capacity)
@@ -152,30 +156,79 @@ print(cluster.config_drift)
 {{< /tab >}}
 {{< /tabs >}}
 
-The detailed view shows the cluster's pool, current state, available capacity, and
-which queues are bound to it, useful when deciding where to route or pin a queue.
+The detailed view shows the cluster's pool, lifecycle state, drain progress,
+available capacity, and bound queues.
+
+## Drain and reactivate a cluster
+
+Draining is the graceful way to take a cluster out of service. It stops new work
+from reaching the cluster while work already there finishes. The cluster becomes
+`drained` after the system confirms that no run or cleanup work remains. You can
+reactivate it while it is `draining` or after it becomes `drained`.
+
+Draining a cluster also drains its [co-named queue](#the-co-named-queue), and
+reactivating the cluster reactivates that queue when it is draining or drained.
+The cluster and queue finish draining separately, so one can briefly be
+`drained` before the other. Any other live queue that explicitly names the
+cluster blocks the drain; remove the cluster from that queue first. Wildcard
+(`*`) queues do not block it.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active
+    Active --> Draining: drain
+    Draining --> Active: activate
+    Draining --> Drained: work completes
+    Drained --> Active: activate
+    Active --> Deleting: delete
+    Draining --> Deleting: delete
+    Drained --> Deleted: delete
+    Deleting --> Deleted: cleanup completes
+    Deleted --> Drained: undelete
+```
+
+{{< tabs "drain-cluster" >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte update cluster prod-us-east-1 --drain
+flyte get cluster prod-us-east-1              # wait for drain: drained
+flyte update cluster prod-us-east-1 --activate
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+from flyteplugins.union.remote import Cluster
+
+cluster = Cluster.drain("prod-us-east-1")
+print(cluster.drain_state)
+
+Cluster.activate("prod-us-east-1")
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+A `deleting` or `deleted` cluster cannot be drained or activated. To remove a
+cluster without waiting for its work to finish, [delete it](#delete-a-cluster).
 
 ## Move a cluster to a different pool
 
 A cluster can be reassigned to another pool in place, without deleting and
-re-registering it. This is a **disruptive** operation: read the warning below
-before you run it.
+re-registering it, but the cluster must be `drained` first. It remains drained
+after the move so that you can verify its new pool configuration before
+reactivating it.
 
-> [!WARNING] Moving a cluster does not stop in-flight work
-> Reassigning a cluster's pool does **not** wait for running work or reschedule
-> anything: the change takes effect immediately, switches the cluster's workloads
-> to the new pool's object store and secret store, and can break whatever is
-> currently running on the cluster. The control plane checks queue state only
-> (see the preconditions below) — it does not check for running runs, apps, or
-> v1 executions. Ensuring that no {{< key product_name >}} workload is running
-> on the cluster is **your responsibility**. Treat this as a maintenance-window
-> operation.
-
-> [!NOTE] Coming soon: cluster draining
-> A cluster-level **drain** is in the works: it will stop new work from landing
-> on a cluster and wait for everything in flight to finish, guaranteeing the
-> cluster is idle and safe to move or [delete](#delete-a-cluster). Until it
-> ships, the checks below are how you establish that safety manually.
+> [!WARNING] A pool move changes the cluster's data plane
+> The destination pool can use a different object store, secret store, and
+> container registry. Make the required data, images, and secrets available in
+> that data plane before moving the cluster.
 
 {{< tabs "move-cluster" >}}
 {{< tab "CLI" >}}
@@ -211,30 +264,26 @@ differ from the cluster's current pool.
 
 ### Before you move a cluster
 
-1. **Drain the co-named queue.** The cluster's [co-named queue](#the-co-named-queue)
-   must be in the `drained` state, or the move is rejected.
-   [Drain it](./queues#drain-and-reactivate-a-queue) and let its in-flight work
-   finish, watching with `flyte get queue <name> --watch`. The drained queue
-   moves to the destination pool with the cluster automatically; reactivate it
-   after the move.
-2. **Repoint other queues.** Any other queue that pins the cluster explicitly
-   must have the cluster removed from its selector first, or the move is
-   rejected. Wildcard (`*`) queues never block the move — but they also keep
-   routing work to the cluster right up to the moment it leaves the pool, which
-   is what the warning above is about. `flyte get cluster <name>` lists the
-   queues bound to the cluster.
-3. **Check for apps and v1 executions.** A cluster does not only serve runs: it
+1. **Repoint other queues.** Any queue other than the
+   [co-named queue](#the-co-named-queue) that explicitly names the cluster must
+   have it removed from its selector. Such a queue blocks both the cluster drain
+   and the pool move. Wildcard (`*`) queues do not block either operation.
+   `flyte get cluster <name>` lists the queues bound to the cluster.
+2. **Check for apps and v1 executions.** A cluster does not only serve runs: it
    can also be hosting [apps](../apps/serve-and-deploy-apps/_index) and legacy v1
    executions, which {{< key product_name >}} still supports today. There is
    currently **no way to see how many apps or v1 executions are running on a
-   given cluster**, and the queue preconditions above do not account for them,
-   so nothing will block the move. If any are running when you reassign the
-   cluster, the cluster can be marked unhealthy and drop out of scheduling until
-   the mismatch is resolved. Confirm out-of-band that the cluster is idle before
-   moving it.
+   given cluster**. Confirm out-of-band that they have stopped before continuing.
+3. **Drain the cluster.** Run `flyte update cluster <name> --drain`. This also
+   drains its co-named queue. Wait until `flyte get cluster <name>` reports the
+   cluster as `drained` and `flyte get queue <name>` reports the queue as
+   `drained`. The move is rejected until draining finishes.
 4. **Make sure the configs match.** The destination pool's config must match
    what the cluster reports, or the cluster goes unhealthy shortly after the
    move — see below.
+
+After the move, confirm the cluster is healthy, then run
+`flyte update cluster <name> --activate`. Its co-named queue is activated with it.
 
 ### If the cluster goes unhealthy after the move
 
@@ -254,28 +303,31 @@ whichever side is wrong:
 
 ## Delete a cluster
 
-Deleting a cluster requires the same quiescing as a
-[pool move](#move-a-cluster-to-a-different-pool):
+You can delete a cluster from any live state. What happens next depends on its
+lifecycle state:
 
-- The cluster's [co-named queue](#the-co-named-queue) must be **drained** first —
-  [draining it](./queues#drain-and-reactivate-a-queue) is also what lets
-  in-flight work finish before the cluster goes away. The co-named queue is then
-  deleted together with the cluster.
-- Any other queue that pins the cluster explicitly **blocks** the delete: remove
-  the cluster from those selectors first. Wildcard (`*`) queues never block a
-  delete.
+- A `drained` cluster becomes `deleted` immediately.
+- An `active` or `draining` cluster becomes `deleting` while the system
+  disconnects its workers, makes its running work available to other clusters,
+  and drops cluster-specific cleanup work. It becomes `deleted` when that
+  teardown finishes.
+
+Deletion does not wait for running work and cannot be canceled. It also does not
+remove Kubernetes pods that remain on the data plane. **You are responsible for
+cleaning up those pods.** To let work finish normally, first
+[drain the cluster](#drain-and-reactivate-a-cluster) and wait for `drained`, then
+delete it.
+
+The cluster's [co-named queue](#the-co-named-queue) enters deletion with the
+cluster. A drained queue becomes `deleted` immediately; an active or draining
+queue becomes `deleting` until its cleanup finishes. The cluster and queue reach
+`deleted` independently and may finish in either order. Any other live queue
+that explicitly names the cluster blocks deletion; remove the cluster from its
+selector first. Wildcard (`*`) queues do not block deletion.
 
 A queue whose selector you empty this way stops routing work anywhere until you
 point it at another cluster **in its pool** (or
 [move it to another pool](./queues#move-work-to-another-pool) once drained).
-
-Note that these preconditions quiesce the *queues*, not the cluster itself:
-work routed by wildcard queues, [apps](../apps/serve-and-deploy-apps/_index),
-and legacy v1 executions can still be running when the delete goes through. A
-cluster-level **drain** — stopping new work and waiting for everything in
-flight to finish, so the cluster is provably idle and safe to delete — is
-coming soon. Until it ships, confirm out-of-band that nothing is still running
-on the cluster before deleting it.
 
 {{< tabs "delete-cluster" >}}
 {{< tab "CLI" >}}
@@ -306,13 +358,16 @@ Cluster.undelete("prod-us-east-1")   # restore a deleted cluster
 {{< /tab >}}
 {{< /tabs >}}
 
-Deletion is a **soft delete**: the cluster disappears from listings and can no
-longer report status or heartbeat, but its record is kept and its name stays
-reserved — registering a new cluster under the same name is rejected. Restore it
-with `flyte undelete cluster <name>`, which also restores the co-named queue;
-the restored queue comes back drained, so
-[reactivate it](./queues#drain-and-reactivate-a-queue) to resume routing to the
-cluster.
+The command returns after the cluster becomes either `deleting` or `deleted`.
+A `deleting` cluster remains visible in normal listings while teardown runs.
+Once `deleted`, it disappears from normal listings and stops accepting status
+reports and heartbeats. The record is retained and its name stays reserved, so
+registering another cluster with the same name is rejected.
+
+A `deleting` cluster cannot be restored; wait for deletion to finish. Then use
+`flyte undelete cluster <name>`. The cluster and its co-named queue both return
+in the `drained` state. Run `flyte update cluster <name> --activate` to reactivate
+both.
 
 ## Next
 

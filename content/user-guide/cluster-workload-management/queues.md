@@ -102,11 +102,13 @@ Both are ordinary queues: they show up in `flyte get queue` and take the same
 settings and updates as queues you create yourself — with one exception. A
 co-named queue's cluster selector and pool are managed by its cluster and cannot
 be edited directly: the queue follows its cluster if the cluster is
-[reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool), and
-is deleted with it. Its other settings (concurrency, depth, priority, fairness)
-stay editable like any queue's. Listings make the distinction visible:
-cluster-managed queues are flagged in the `flyte get queue` table
-(`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
+[reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool). It
+also follows the cluster through drain, activate, and delete transitions. The
+cluster and queue finish their transitions separately, so they may reach their
+final states at slightly different times. Its other settings (concurrency,
+depth, priority, fairness) stay editable like any queue's. Listings make the
+distinction visible: cluster-managed queues are flagged in the `flyte get queue`
+table (`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
 `flyte update queue --edit` says so at the top of the edit buffer.
 
 The selector (which clusters within the pool) is mutable and can be changed at
@@ -255,8 +257,8 @@ default.
 # List all queues
 flyte get queue
 
-# List only queues in a given state: active, draining, or drained
-flyte get queue --state active
+# List live queues in a given state
+flyte get queue --state deleting
 
 # Inspect one queue's settings and status
 flyte get queue gpu-queue
@@ -264,16 +266,16 @@ flyte get queue gpu-queue
 # Stream live metrics — runs in-flight, actions in-flight, queue depth
 flyte get queue gpu-queue --watch
 
-# List soft-deleted queues
-flyte get queue --deleted
+# List soft-deleted queues in the deleted state
+flyte get queue --deleted --state deleted
 ```
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
 depth, so you can see a queue filling up or draining in real time. Metrics are
-available for a queue in **any state**: watching a `draining` queue is how you
-confirm its in-flight work has finished, and a `drained` queue still reports its
-(empty) metrics rather than failing. A [deleted](#delete-a-queue) queue is the
-exception: watching one fails until you restore it.
+available while a queue is `active`, `draining`, `drained`, or `deleting`.
+Watching a `draining` queue shows work finishing normally; watching a `deleting`
+queue shows its cleanup progress. A [deleted](#delete-a-queue) queue cannot be
+watched until you restore it.
 
 Fetching a queue **by name** works even after it has been
 [deleted](#delete-a-queue): `flyte get queue <name>` returns the soft-deleted
@@ -292,8 +294,12 @@ from flyteplugins.union.remote import Queue
 for queue in Queue.listall(limit=100):
     print(queue.name, queue.status, queue.priority, queue.cluster_pool, queue.clusters)
 
-# Narrow the listing to one state: "active", "draining", or "drained"
-for queue in Queue.listall(state="draining"):
+# Narrow the live listing to one lifecycle state
+for queue in Queue.listall(state="deleting"):
+    print(queue.name)
+
+# Deleted queues require the deleted filter
+for queue in Queue.listall(deleted=True, state="deleted"):
     print(queue.name)
 
 queue = Queue.get("gpu-queue")
@@ -316,9 +322,9 @@ for metrics in Queue.watch("gpu-queue"):
     print(metrics)
 ```
 
-`Queue.details` and `Queue.watch` work for a queue in any state, so you can
-watch a `draining` queue to confirm its in-flight work has finished. Unlike
-`Queue.get`, neither works on a [deleted](#delete-a-queue) queue.
+`Queue.details` and `Queue.watch` work on live queues, including `draining`,
+`drained`, and `deleting` queues. Unlike `Queue.get`, neither works on a
+[deleted](#delete-a-queue) queue.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -409,17 +415,29 @@ pool changes entirely: those are managed by its cluster.
 **Draining** takes a queue out of rotation without losing in-flight work: the
 queue stops admitting new submissions, work already in flight runs to
 completion, and once nothing is left the queue settles into the `drained` state.
-Draining is how you quiesce a queue: before deleting the cluster behind it,
-before maintenance, or as part of
+Use it before maintenance, deletion, or as part of
 [moving work to another pool](#move-work-to-another-pool).
 
-A queue is in one of three states:
+A queue has five lifecycle states:
 
+```mermaid
+stateDiagram-v2
+    [*] --> Active
+    Active --> Draining: drain
+    Draining --> Active: activate
+    Draining --> Drained: work completes
+    Drained --> Active: activate
+    Draining --> Deleting: delete
+    Drained --> Deleted: delete
+    Active --> Deleting: cluster delete (co-named only)
+    Deleting --> Deleted: cleanup completes
+    Deleted --> Drained: undelete
 ```
-active --[drain]--> draining --[in-flight work completes]--> drained
-  ^                    |                                        |
-  +----[activate]------+----------------[activate]-------------+
-```
+
+The system moves a queue to `drained` only after its work and cleanup finish.
+The same rule moves a `deleting` queue to `deleted`. The direct transition from
+`active` to `deleting` applies only when deleting a cluster carries its co-named
+queue with it; `flyte delete queue` always rejects an active queue.
 
 {{< tabs "drain-queue" >}}
 {{< tab "CLI" >}}
@@ -448,14 +466,14 @@ Queue.activate("gpu-queue")  # put the queue back in rotation
 
 To see where things stand across the organization, filter listings by state:
 `flyte get queue --state draining` shows the queues still finishing in-flight
-work, and `--state drained` the ones that are done.
+work, `--state drained` the ones that are done, and `--state deleting` the ones
+being removed.
 
-Draining is the prerequisite for every disruptive queue operation: a queue must
-be `drained` before it can be [deleted](#delete-a-queue) or
-[moved to another pool](#move-work-to-another-pool), and a cluster's
-[co-named queue](./clusters#the-co-named-queue) must be `drained` before its
-cluster can be [deleted](./clusters#delete-a-cluster) or
-[moved](./clusters#move-a-cluster-to-a-different-pool).
+An active queue must start draining before it can be [deleted](#delete-a-queue),
+but you do not have to wait for `drained`: deleting a `draining` queue begins its
+cleanup immediately. A [pool move](#move-work-to-another-pool) does require the
+queue to be fully `drained`. Deleting a cluster automatically takes its co-named
+queue into deletion, whatever state that queue is in.
 
 Any queue can be drained, including the `default` queue and a queue configured
 as the default run queue (`run.default_queue`) in your organization's settings
@@ -467,13 +485,24 @@ referenced in settings is refused.
 
 ## Delete a queue
 
-A queue must be **drained** before it can be deleted; deleting an `active` or
-`draining` queue is rejected. A queue referenced as the default run queue
-(`run.default_queue`) in settings at any scope can be drained but not deleted:
-update or unset those settings first. A cluster's
-[co-named queue](./clusters#the-co-named-queue) can be deleted on its own while
-the cluster lives, and is deleted automatically when its
-[cluster is deleted](./clusters#delete-a-cluster).
+An `active` queue cannot be deleted; start draining it first. You can then choose
+whether to wait:
+
+- Deleting a `draining` queue moves it to `deleting`. Remaining queued and
+  running actions fail, required cleanup continues, and the queue becomes
+  `deleted` when cleanup finishes.
+- Deleting a `drained` queue moves it directly to `deleted`, because no work or
+  cleanup remains.
+
+Deletion cannot be canceled. A `deleting` queue cannot be activated or restored;
+wait until it becomes `deleted` before undeleting it.
+
+A queue referenced as the default run queue (`run.default_queue`) in settings at
+any scope can be drained but not deleted: update or unset those settings first.
+A cluster's [co-named queue](./clusters#the-co-named-queue) can be deleted on its
+own while the cluster lives. Deleting the cluster also deletes its co-named queue
+and is the only operation that can take that queue directly from `active` to
+`deleting`.
 
 The `default` queue is no exception: drain it, then delete it, like any other
 queue — deleting it is also how the `default` pool is emptied of live queues so
@@ -503,7 +532,8 @@ flyte undelete queue gpu-queue
 ```python
 from flyteplugins.union.remote import Queue
 
-Queue.delete("gpu-queue")
+queue = Queue.delete("gpu-queue")
+print(queue.status)           # deleting or deleted
 Queue.undelete("gpu-queue")   # restore a deleted queue
 ```
 
@@ -511,13 +541,16 @@ Queue.undelete("gpu-queue")   # restore a deleted queue
 {{< /tab >}}
 {{< /tabs >}}
 
-Deletion is a **soft delete**: the queue disappears from the `flyte get queue`
-listing and is no longer scheduled on, but its name stays reserved, and fetching
-it by name still works — `flyte get queue <name>` and `Queue.get` return the
-deleted queue carrying its deletion time (see [Inspect queues](#inspect-queues)).
-Restore it with `flyte undelete queue <name>`. Undeleting requires the queue's
-pool and its pinned clusters to still be live, and the restored queue comes back
-`drained` — [reactivate it](#drain-and-reactivate-a-queue) to resume routing.
+A `deleting` queue remains visible in normal listings while cleanup runs, and it
+can still be inspected or watched. Once `deleted`, it is soft-deleted: it
+disappears from normal listings and is no longer scheduled on, but its name stays
+reserved. Fetching it by name still works — `flyte get queue <name>` and
+`Queue.get` return the queue with its deletion time. Use
+`flyte get queue --deleted` to list deleted queues.
+
+Restore it with `flyte undelete queue <name>`. The queue's pool and pinned
+clusters must still be live. The restored queue comes back `drained`; reactivate
+it to resume routing.
 
 ## Move work to another pool
 

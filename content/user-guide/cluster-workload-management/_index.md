@@ -99,21 +99,17 @@ pool's clusters can read them. That is what makes a pool an isolation boundary.
 
 ### Crossing a pool boundary
 
-Because pools don't share a data plane, they don't connect. A run can never move
-from one pool to another. A **queue** can be reassigned to another pool only
-after it has been fully [drained](./queues#drain-and-reactivate-a-queue), so the
-move never carries in-flight work across the boundary. A **cluster** can be
-reassigned to another pool, but today only as a disruptive maintenance operation
-that stops nothing and reschedules nothing — a cluster-level drain that
-guarantees an idle cluster before the move is coming soon. See
-[Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool).
-For work in flight, crossing a pool boundary
-means physically re-landing the workload in the destination pool's data plane:
-moving its **data, containers (images), code, and secrets** into the new pool's
-object store, registry, and secret store. This is deliberate friction: it keeps
-in-flight work from ever pointing at storage it can't read, and it's why pool
-changes are rare and explicit (moving work between pools is a
-[drain-and-replace migration](./queues#move-work-to-another-pool)).
+Each pool has a separate data plane. A running workload cannot move between
+pools because clusters in the destination pool cannot access the source pool's
+data, images, code, or secrets.
+
+A **queue** can move to another pool only after it is fully
+[drained](./queues#drain-and-reactivate-a-queue). A **cluster** must also be
+[drained](./clusters#drain-and-reactivate-a-cluster) before it can move. These
+requirements keep in-flight work from crossing the boundary. To route a
+workload through another pool, make its dependencies available in the
+destination data plane. Then move its drained queue or follow a
+[drain-and-replace migration](./queues#move-work-to-another-pool).
 
 > [!NOTE] The simple case is invisible
 > Each cluster is assigned exactly one pool. If no custom pool is specified when
