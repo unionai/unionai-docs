@@ -108,6 +108,6 @@ Everything you see here came from a run on your own machine. Union recorded it a
 
 ## Next steps
 
-- **Run your own code the same way.** Write a workflow following the [Quickstart](./quickstart), then run it with `flyte run --tracked hello.py main`. See [Track local runs in the console](./run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
+- **Run your own code the same way.** Write a workflow following the [Quickstart](./quickstart), then run it with `flyte run --tracked temperatures.py hottest`. See [Track local runs in the console](./run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
 - **Connect a cluster.** When you want Union to run your workloads for you, with GPUs and cluster-scale resources, return to the cluster pool setup in the console. See [Run on a remote cluster](./run-modes/running-remote).
 - **Learn the concepts.** [Core concepts](./core-concepts/_index) explains tasks, environments, projects, and runs.
