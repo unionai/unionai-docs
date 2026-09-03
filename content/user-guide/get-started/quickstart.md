@@ -70,7 +70,7 @@ Copy it into your own project to start editing.
 Completed Local Run   Outputs: ActionOutputs(o0=14.0)
 ```
 
-The example fans a small computation over a list of inputs with `flyte.map` and averages the results. Copy that file into a project of your own when you want to start editing, or carry on below to write one from scratch.
+The example fans a small computation over a list of inputs with `flyte.map` and averages the results. That is enough to see a workflow run. Next, write one of your own.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -122,14 +122,15 @@ Run `flyte get config` to check which configuration is currently active.
 > apps, and tests for you, plus MCP servers that ground the agent in the Flyte SDK
 > and docs. See [Flyte agent plugins](../../api-reference/agent-plugins) to get started.
 
-Create `hello.py`:
+This one converts a list of temperature readings and returns the hottest. Create `temperatures.py`:
 
-{{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/temperatures.py" lang="python" >}}
 
 Here's what's happening:
 
 - **`TaskEnvironment`** specifies configuration for your tasks (container image, resources, etc.)
 - **`@env.task`** turns Python functions into tasks that can run on a cluster
+- **`flyte.map`** calls `to_fahrenheit` once per reading, in parallel when running on a cluster
 - Both tasks share the same `env`, so they'll have identical configurations
 
 ## Run it
@@ -138,21 +139,26 @@ Create a project directory and place your files there:
 
 ```
 .
-├── hello.py
+├── temperatures.py
 └── .flyte
     └── config.yaml
 ```
 
 > [!WARNING]
-> Do not run `flyte run` from your home directory. Flyte packages the current directory when running remotely, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
+> Do not run `flyte run` from your home directory. Flyte packages the current directory when running on a cluster, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
 
-Run the workflow:
+Run the workflow, naming the file and the entrypoint task:
 
 ```bash
-flyte run --local hello.py main
+flyte run --local temperatures.py hottest
 ```
 
-This executes the workflow locally on your machine.
+This executes the workflow locally on your machine:
+
+```bash
+Completed Local Run
+Outputs: ActionOutputs(o0=75.7)
+```
 
 ## See the results
 
