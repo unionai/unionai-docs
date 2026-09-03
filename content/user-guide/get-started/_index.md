@@ -106,6 +106,12 @@ Flyte gives you the flexibility of Python scripts with the reliability of a prod
 
 {{< grid >}}
 
+{{< variant union >}}
+{{< link-card target="sign-up" icon="person-plus" title="Sign up" >}}
+Create a free Union account, then run a workflow on your own machine and watch it in the console. No cluster needed.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< link-card target="quickstart" icon="123" title="Quickstart" >}}
 Install the SDK and run your first workflow locally in a few minutes.
 {{< /link-card >}}
