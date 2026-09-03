@@ -50,7 +50,7 @@ The same task code runs unchanged across all three modes. Start with local execu
 |--------|-------------------|--------|--------|
 | **⚡️ Execution** | In-process Python | Containerized, local Docker | Containerized, cloud |
 | **🐳 Docker required** | No | Yes | No (remote build) |
-| **💻 Flyte UI** | No (TUI only) | Yes (`localhost:30080`) | Yes |
+| **💻 Flyte UI** | TUI, or the console with `--tracked` | Yes (`localhost:30080`) | Yes |
 | **📦 Container images** | Ignored | Built locally | Built locally or remotely |
 | **🔀 Parallelism** | Sequential | Cluster-level | Cluster-level |
 | **⭐️ Best for** | Fast iteration, debugging | Testing container builds, full Flyte features | Production, GPUs, scale |

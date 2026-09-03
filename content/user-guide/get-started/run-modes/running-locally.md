@@ -122,6 +122,34 @@ persists the inputs and outputs of every task run locally, so you can always go 
 flyte start tui
 ```
 
+{{< variant union >}}
+{{< markdown >}}
+
+## Track local runs in the console
+
+A local run normally leaves no trace on the control plane. Add `--tracked` and the run still executes on your machine, but its progress is reported to {{< key product_name >}} so you can watch it in the console:
+
+```bash
+flyte run --tracked hello.py main
+```
+
+Tracked runs appear in the console under **Tracked Runs**, which is its own section in the project sidebar. They are not listed under **Runs**, which shows runs the platform executed for you.
+
+The command prints a link to the run when it starts. Tracking covers the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported, so `print()` output stays in your terminal.
+
+Reporting never gets in the way of the run itself: if the control plane is unreachable, the failure is logged and your local run finishes normally.
+
+If you do not have a workflow to hand yet, `hello` runs a built-in one and needs no files at all:
+
+```bash
+flyte run --tracked hello
+```
+
+Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ---
 
 ## What works locally
@@ -136,6 +164,16 @@ Most Flyte features work in both local and remote execution. The table below sum
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) |
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
 | **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
+
+{{< variant union >}}
+{{< markdown >}}
+
+> [!NOTE] Visibility is the exception
+> With `--tracked`, a local run also reports its state to the control plane and appears in the console.
+> See [Track local runs in the console](#track-local-runs-in-the-console).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ---
 
