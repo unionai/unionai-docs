@@ -13,7 +13,7 @@ variants: +flyte +union
 # Run on the Devbox
 
 The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
-local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test remote
+local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
 execution without deploying to a cluster in the cloud.
 
 {{< /markdown >}}
@@ -27,7 +27,7 @@ execution without deploying to a cluster in the cloud.
 <!-- markdownlint-disable-next-line MD024 -- same heading as the union variant block; only one renders per variant -->
 # Run on the Devbox
 
-The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
+The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test on-cluster execution without connecting to a remote cluster.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -155,7 +155,7 @@ Run it on the devbox:
 flyte run hello.py main
 ```
 
-Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, just like they would on a remote cluster.
+Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a remote cluster.
 
 ## View results in the UI
 

@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Run locally in Python
 
-Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
+Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on-cluster, on whichever cluster your configuration points at.
 
 > [!INFO] Try it in your browser
 > Follow along with this guide in Google Colab without installing anything locally.
@@ -21,7 +21,7 @@ If you haven't already, install the SDK and configure local persistence as descr
 
 ## Running tasks locally
 
-The `--local` flag tells Flyte to execute a task in your local Python environment rather than on a remote cluster. Add `--tui` to launch the interactive Terminal UI for real-time monitoring.
+The `--local` flag tells Flyte to execute a task in your local Python environment rather than on-cluster. Add `--tui` to launch the interactive Terminal UI for real-time monitoring.
 
 Basic local execution:
 
@@ -154,7 +154,7 @@ Use `flyte create config --local-tracked` to track every local run without passi
 
 ## What works locally
 
-Most Flyte features work in both local and remote execution. The table below summarizes how each feature behaves locally.
+Most Flyte features work in both in-process and on-cluster execution. The table below summarizes how each feature behaves in-process.
 
 | Feature | Local behavior | Details |
 |---------|---------------|---------|
@@ -177,7 +177,7 @@ Most Flyte features work in both local and remote execution. The table below sum
 
 ---
 
-## Local to devbox/remote
+## From in-process to on-cluster
 
 The same code runs in both environments. Here's what changes:
 
@@ -200,7 +200,7 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant flyte >}}
 {{< markdown >}}
 
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -208,7 +208,7 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant union >}}
 {{< markdown >}}
 
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
 - [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
 
 {{< /markdown >}}
