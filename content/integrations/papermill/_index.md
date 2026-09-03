@@ -427,7 +427,7 @@ NotebookTask(
 ```
 
 > [!NOTE]
-> `request_save_on_cell_execute` is largely redundant in remote execution: the plugin always renders and uploads the partial notebook on failure, so crash diagnostics don't depend on it. Leave it on its default unless using a custom engine that requires it.
+> `request_save_on_cell_execute` is largely redundant in on-cluster execution: the plugin always renders and uploads the partial notebook on failure, so crash diagnostics don't depend on it. Leave it on its default unless using a custom engine that requires it.
 
 ## `NotebookTask` reference
 
@@ -435,7 +435,7 @@ NotebookTask(
 | ------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
 | `name`                         | -       | Task name                                                                                 |
 | `notebook_path`                | -       | Path to the `.ipynb`, relative to the calling file or absolute                            |
-| `task_environment`             | -       | `TaskEnvironment` for registration and remote execution                                   |
+| `task_environment`             | -       | `TaskEnvironment` for registration and on-cluster execution                                   |
 | `inputs`                       | `None`  | `{name: type}` dict of notebook inputs                                                    |
 | `outputs`                      | `None`  | `{name: type}` dict of notebook outputs                                                   |
 | `plugin_config`                | `None`  | Plugin config: currently only `Spark(...)` is supported. Sets the task type accordingly. |

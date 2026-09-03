@@ -80,7 +80,7 @@ The `--local` option runs tasks locally instead of submitting them to the remote
 flyte run --local my_example.py my_task --input "test_data"
 ```
 
-Compare with remote execution:
+Compare with on-cluster execution:
 
 ```bash
 flyte run my_example.py my_task --input "test_data"
@@ -145,7 +145,7 @@ This sets the `local.tracked` key, after which `flyte run --local` reports to th
 
 **`flyte run --copy-style [loaded_modules|all|none] <PATH> <TASK_NAME>`**
 
-The `--copy-style` option controls code bundling for remote execution.
+The `--copy-style` option controls code bundling for on-cluster execution.
 This applies to the ephemeral preparation step of the `flyte run` command and works similarly to `flyte deploy`:
 
 Smart bundling (default) includes only imported project modules:
@@ -323,7 +323,7 @@ flyte run \
 
 **`flyte run --no-sync-local-sys-paths <PATH> <TASK_NAME>`**
 
-Disable synchronization of local `sys.path` entries to the remote execution environment during ephemeral preparation.
+Disable synchronization of local `sys.path` entries to the on-cluster execution environment during ephemeral preparation.
 Identical to the `flyte deploy` command's `--no-sync-local-sys-paths` option:
 
 ```bash
@@ -332,7 +332,7 @@ flyte run --no-sync-local-sys-paths my_example.py my_task
 
 This advanced option works identically to the deploy command equivalent, useful for:
 
-- **Container isolation**: Prevent local development paths from affecting remote execution
+- **Container isolation**: Prevent local development paths from affecting on-cluster execution
 - **Custom environments**: When containers have pre-configured Python paths
 - **Security**: Avoiding exposure of local directory structures
 
