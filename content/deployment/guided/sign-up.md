@@ -10,6 +10,9 @@ variants: -flyte +union
 
 Create an account, then run a workflow and watch it in the {{< key product_name >}} console. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
 
+> [!NOTE] Subscribed through AWS Marketplace?
+> Your subscription needs to be claimed by the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
+
 ## What you'll need
 
 - A Google Workspace account. Sign-up uses your work email; personal Gmail addresses are not accepted.

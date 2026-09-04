@@ -29,4 +29,6 @@ Guided deployment and BYOC end in the same place. Choose guided deployment to se
 
 You do not need a cluster to start. A run on your own machine reports itself to your organization and appears in the console, which is enough to see how {{< key product_name >}} works before committing infrastructure to it.
 
+**Bought through AWS Marketplace?** Start at [Start from AWS Marketplace](./from-aws-marketplace), which covers getting from your subscription to an organization, then rejoins the path above.
+
 {{< subpage-cards >}}
