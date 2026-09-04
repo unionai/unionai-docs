@@ -85,3 +85,18 @@ run = flyte.run(evaluate, model=model, data=data)
 ```
 
 The task body receives a plain `File`, `Dir`, or `DataFrame` and needs no artifact-specific code.
+
+## Reading an artifact's value directly
+
+Outside a task — in a notebook or a local script — materialize the value with `to_python()`, passing the type the artifact holds:
+
+```python
+from flyte.io import Dir
+from flyte.remote import Artifact
+
+artifact = Artifact.get("trained-model")
+weights = await artifact.to_python(Dir)  # File or DataFrame for other artifacts
+local = await weights.download()
+```
+
+The download runs wherever you call it, so that environment needs credentials for the object store. This is a plain fetch and records no [lineage](./lineage) edge.
