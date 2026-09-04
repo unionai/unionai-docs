@@ -18,6 +18,10 @@ Deploy workflows from CI/CD pipelines using non-interactive authentication
 Configure cluster pools, queues, and per-project routing so tasks run on a data plane
 {{< /link-card >}}
 
+{{< link-card target="./artifacts/_index" icon="package" title="Artifacts" >}}
+Enable the Artifacts service: dedicated bucket, lifecycle policy, and per-cloud permissions
+{{< /link-card >}}
+
 {{< link-card target="./troubleshooting" icon="life-buoy" title="Troubleshooting" >}}
 Diagnose common control plane, data plane, and cloud-binding issues
 {{< /link-card >}}
