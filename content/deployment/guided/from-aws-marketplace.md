@@ -41,9 +41,11 @@ variants: -flyte +union
 
 # Start from AWS Marketplace
 
-You subscribed to {{< key product_name >}} through AWS Marketplace. Your subscription is the billing relationship. It does not by itself create the workspace you work in, so there are a few steps between subscribing and running something.
+You can subscribe to {{< key product_name >}} through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there.
 
-This page covers those steps. If you already have a {{< key product_name >}} organization, you do not need it. See [Sign up and run your first workflow](./sign-up) instead.
+The subscription is the billing relationship. It does not by itself create the workspace you work in, so there are a few steps between subscribing and running something. This page covers those steps.
+
+If you already have a {{< key product_name >}} organization, you do not need this page. See [Sign up and run your first workflow](./sign-up) instead.
 
 ## What you'll need
 
