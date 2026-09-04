@@ -2,7 +2,7 @@
 title: OnArtifact
 description: "Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

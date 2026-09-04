@@ -1,7 +1,7 @@
 ---
 title: flyte.storage
 icon: box-seam
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -248,6 +248,7 @@ def put_stream(
     data_iterable: typing.AsyncIterable[bytes] | bytes,
     name: str | None = None,
     to_path: str | None = None,
+    size_hint: int | None = None,
     **kwargs,
 ) -> str
 ```
@@ -267,6 +268,7 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 | `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` | Iterable of bytes to be streamed. |
 | `name` | `str \| None` | Name of the file to be created. If not provided, a random name will be generated. |
 | `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
+| `size_hint` | `int \| None` | Total number of bytes the stream is expected to yield, if known. On obstore-backed filesystems the writer uploads one multipart part per buffer, so a fixed buffer caps a single object at ~97.6 GiB (10,000 x 10 MiB). When the hint says the stream is larger than that, the part size is scaled up to stay under the limit; smaller streams are unaffected. |
 | `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
 **Returns:** str: The path to the remote location where the data was stored.

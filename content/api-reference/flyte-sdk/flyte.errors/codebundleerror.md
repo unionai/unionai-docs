@@ -2,7 +2,7 @@
 title: CodeBundleError
 description: "This error is raised when the code bundle cannot be created, for example when no files are found to bundle."
 icon: exclamation-triangle
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

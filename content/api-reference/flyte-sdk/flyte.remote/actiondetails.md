@@ -2,7 +2,7 @@
 title: ActionDetails
 description: "A class representing an action."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -41,6 +41,7 @@ class ActionDetails(
 | `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
 | `attempts` | `int` | Get the number of attempts of the action. |
 | `error_info` | `run_definition_pb2.ErrorInfo \| None` | Get the error information if the action failed, otherwise returns None. |
+| `error_message` | `str` | The error message of a failed action, or an empty string when the action did not fail (or carries no error details). |
 | `initializing_time` | `timedelta \| None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
 | `is_running` | `bool` | Check if the action is currently running. |
 | `metadata` | `run_definition_pb2.ActionMetadata` | Get the metadata of the action. |

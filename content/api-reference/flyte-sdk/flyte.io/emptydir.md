@@ -2,7 +2,7 @@
 title: EmptyDir
 description: "A sentinel `flyte.io.Dir` representing `no directory was produced`."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

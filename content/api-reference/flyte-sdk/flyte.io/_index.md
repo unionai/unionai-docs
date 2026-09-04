@@ -2,7 +2,7 @@
 title: flyte.io
 description: "This package contains additional data types beyond the primitive data types in python to abstract data flow of large datasets in Union."
 icon: box-seam
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

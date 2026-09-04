@@ -2,7 +2,7 @@
 title: ParameterMaterializationError
 description: "This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails."
 icon: exclamation-triangle
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

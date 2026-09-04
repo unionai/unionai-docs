@@ -2,7 +2,7 @@
 title: PrimaryContainerNotFoundError
 description: "This error is raised when the primary container is not found."
 icon: exclamation-triangle
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

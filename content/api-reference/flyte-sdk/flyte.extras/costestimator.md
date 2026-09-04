@@ -2,7 +2,7 @@
 title: CostEstimator
 description: "Protocol for records that can estimate their own processing cost."
 icon: diagram-3
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

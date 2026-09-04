@@ -2,7 +2,7 @@
 title: Prompt
 description: "Simple prompt record with built-in token estimation."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
