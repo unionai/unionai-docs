@@ -94,16 +94,21 @@ Attach it to a role that the Artifacts pod's service account can assume via [IRS
 
 ## 4. Values
 
-The chart's `values.aws.yaml` overlay already annotates the `artifacts` service account with the role ARN and selects the S3 object-store backend. You only set the globals and the enable toggle in your environment overrides:
+The chart's `values.aws.yaml` overlay selects the S3 object-store backend. Set the bucket and the IRSA role as **dedicated keys on the artifacts service**, plus the enable toggle, in your environment overrides:
 
 ```yaml
-global:
-  ARTIFACTS_BUCKET_NAME: "ARTIFACTS_BUCKET"
-  ARTIFACT_IAM_ROLE_ARN: "arn:aws:iam::ACCOUNT_ID:role/union-artifacts"
-
 services:
   artifacts:
     disabled: false
+    serviceAccount:
+      annotations:
+        # The pod-identity/IRSA role for the artifacts pod.
+        eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/union-artifacts"
+    configMap:
+      artifactsConfig:
+        app:
+          artifactBlobStoreConfig:
+            container: "ARTIFACTS_BUCKET"
 ```
 
 Return to the [generalized guide](./_index) for verification steps.

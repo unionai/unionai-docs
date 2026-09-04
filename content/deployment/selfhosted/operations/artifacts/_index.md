@@ -41,18 +41,24 @@ See [Infrastructure requirements → Object storage](../../infrastructure-requir
 
 ## Enable Artifacts
 
-Set the bucket and identity globals and flip the single toggle in your environment's `values.yaml` overrides:
+Set the bucket and identity as **dedicated keys on the artifacts service** and flip the single toggle in your environment's `values.yaml` overrides:
 
 ```yaml
-global:
-  # Dedicated bucket for artifacts — NOT the metadata/offloaded-data bucket.
-  ARTIFACTS_BUCKET_NAME: "my-union-artifacts"
-  # Role (AWS) or service account (GCP) the artifacts pod assumes to reach the bucket.
-  ARTIFACT_IAM_ROLE_ARN: "<artifacts-role-or-service-account>"
-
 services:
   artifacts:
     disabled: false
+    serviceAccount:
+      annotations:
+        # Cloud-specific identity annotation — the role/service account the
+        # artifacts pod assumes to reach the bucket. See the cloud sub-pages:
+        #   AWS: <pod-identity-prefix>/role-arn: "<irsa-role-arn>"
+        #   GCP: iam.gke.io/gcp-service-account: "<service-account-email>"
+    configMap:
+      artifactsConfig:
+        app:
+          artifactBlobStoreConfig:
+            # Dedicated bucket for artifacts — NOT the metadata/offloaded-data bucket.
+            container: "my-union-artifacts"
 ```
 
 `services.artifacts.disabled: false` is the **single switch** for the feature. It:

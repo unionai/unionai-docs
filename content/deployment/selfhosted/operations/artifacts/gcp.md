@@ -66,17 +66,20 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ## 4. Values
 
-The chart's `values.gcp.yaml` overlay annotates the `artifacts` service account with the Google service account (`iam.gke.io/gcp-service-account`) and selects the GCS (`stow` `google`) object-store backend. You set the globals and the enable toggle in your environment overrides:
+The chart's `values.gcp.yaml` overlay selects the GCS (`stow` `google`) object-store backend and reads the shared `global.GOOGLE_PROJECT_ID`. Set the bucket and the Google service account as **dedicated keys on the artifacts service**, plus the enable toggle, in your environment overrides:
 
 ```yaml
-global:
-  ARTIFACTS_BUCKET_NAME: "ARTIFACTS_BUCKET"
-  ARTIFACT_IAM_ROLE_ARN: "union-artifacts@PROJECT_ID.iam.gserviceaccount.com"
-  GOOGLE_PROJECT_ID: "PROJECT_ID"
-
 services:
   artifacts:
     disabled: false
+    serviceAccount:
+      annotations:
+        iam.gke.io/gcp-service-account: "union-artifacts@PROJECT_ID.iam.gserviceaccount.com"
+    configMap:
+      artifactsConfig:
+        app:
+          artifactBlobStoreConfig:
+            container: "ARTIFACTS_BUCKET"
 ```
 
 Return to the [generalized guide](./_index) for verification steps.
