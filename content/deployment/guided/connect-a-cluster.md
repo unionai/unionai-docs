@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Connect your own cluster
 
-This is the second half of a guided deployment. You have an organization; now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
+You have an organization. Now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
 
 **Nothing dials in.** You install an agent into your cluster, and the agent connects out to {{< key product_name >}}. You do not open a port, expose an endpoint, or hand over cluster credentials.
 
@@ -21,7 +21,7 @@ This is the second half of a guided deployment. You have an organization; now gi
 - An S3-compatible object store that the cluster can reach, and its access key and secret.
 - Optionally, a container registry the cluster can push to and pull from.
 
-Everything here works on a local cluster, which is the cheapest way to see the whole flow. See [Trying it on a local cluster](#trying-it-on-a-local-cluster) at the end.
+All of this works on a local cluster. See [Trying it on a local cluster](#trying-it-on-a-local-cluster).
 
 ## 1. Set up a cluster pool
 
