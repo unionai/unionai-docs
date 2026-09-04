@@ -2,7 +2,7 @@
 title: Start from AWS Marketplace
 description: You subscribed to Union through AWS Marketplace. Here is how to get from that subscription to a running workflow.
 icon: cart
-weight: 3
+weight: 1
 variants: -flyte +union
 ---
 
@@ -47,11 +47,9 @@ This page covers those steps. If you already have a {{< key product_name >}} org
 
 ## What you'll need
 
-- An AWS account that is allowed to subscribe on AWS Marketplace. Many organizations restrict this to a billing or procurement account.
-- A Google Workspace account for signing in to {{< key product_name >}}. Sign-in uses your work email, and personal Gmail addresses are not accepted.
-- Python 3.10+ in a virtual environment, for the first workflow.
+An AWS account that is allowed to subscribe on AWS Marketplace. Many organizations restrict this to a billing or procurement account.
 
-You do not need a Kubernetes cluster to get started, and you do not deploy anything into your own AWS account during this process.
+You do not deploy anything into your own AWS account during this process, and you do not need a Kubernetes cluster to get started. The next page lists what you need for your first workflow.
 
 ## 1. Subscribe on AWS Marketplace
 
@@ -68,32 +66,10 @@ Follow that handoff when you see it. It carries a short-lived token that ties yo
 > [!NOTE] One subscription, one organization
 > A marketplace subscription can only be claimed by a single {{< key product_name >}} organization. If you try to claim the same subscription from a second organization, {{< key product_name >}} refuses rather than splitting your entitlement across two workspaces.
 
-## 3. Create your organization
+## Next: create your organization
 
-The handoff lands you on the {{< key product_name >}} sign-up form. It is the same form used for ordinary sign-up, and it asks for two things:
+The handoff lands you on the {{< key product_name >}} sign-up form, and from here your path is the same as anyone else's.
 
-| Field | What it is |
-|-------|------------|
-| **Organization name** | Your organization's web address. It must be unique across {{< key product_name >}}, and it **cannot be changed later**. Use lowercase letters, digits, and hyphens. |
-| **Preferred Union region** | Where your control plane runs. If you expect to connect a cluster of your own, choose the region closest to it. Otherwise keep the default. |
+Continue with **[Sign up and run your first workflow](./sign-up)**. It covers naming your organization, choosing a region, and running something to see it work. You do not need a cluster for any of that.
 
-Select **Create Organization**. Setup takes about thirty seconds, and you'll see each step complete.
-
-For a walkthrough of this form with screenshots, see [Create your organization](./sign-up#create-your-organization).
-
-## 4. Run your first workflow
-
-You now have an organization, and you can run something in it straight away without any infrastructure of your own.
-
-Follow [Set up the CLI](./sign-up#set-up-the-cli) and [Run your first workflow](./sign-up#run-your-first-workflow). The workflow runs on your own machine and reports itself to your organization, so you can see how {{< key product_name >}} works before committing any infrastructure to it.
-
-## 5. Connect a cluster
-
-Tracked local runs are enough to learn the system, but not to do real work. When you want {{< key product_name >}} to run workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster to run them on.
-
-See [Connect your own cluster](./connect-a-cluster). Your code, data and credentials stay in that cluster, and nothing dials in to it.
-
-## Next steps
-
-- **[Connect your own cluster](./connect-a-cluster)** for on-cluster work.
-- **[Core concepts](../../user-guide/get-started/core-concepts/_index)** explains tasks, environments, projects, and runs.
+When you want {{< key product_name >}} to run real workloads for you, with GPUs and cluster-scale resources, carry on to [Connect your own cluster](./connect-a-cluster).

@@ -24,11 +24,10 @@ Guided deployment and BYOC end in the same place. Choose guided deployment to se
 
 ## The path, in order
 
-1. **[Sign up and run your first workflow](./sign-up)** — create an account and an organization, then run something and see it in the console. No cluster needed.
-2. **[Connect your own cluster](./connect-a-cluster)** — give {{< key product_name >}} a Kubernetes cluster to run workloads on.
+1. **[Start from AWS Marketplace](./from-aws-marketplace)** — only if you subscribed through AWS Marketplace. Covers claiming your subscription, then rejoins the path at step 2.
+2. **[Sign up and run your first workflow](./sign-up)** — create an account and an organization, then run something and see it in the console. No cluster needed.
+3. **[Connect your own cluster](./connect-a-cluster)** — give {{< key product_name >}} a Kubernetes cluster to run workloads on.
 
 You do not need a cluster to start. A run on your own machine reports itself to your organization and appears in the console, which is enough to see how {{< key product_name >}} works before committing infrastructure to it.
-
-**Bought through AWS Marketplace?** Start at [Start from AWS Marketplace](./from-aws-marketplace), which covers getting from your subscription to an organization, then rejoins the path above.
 
 {{< subpage-cards >}}

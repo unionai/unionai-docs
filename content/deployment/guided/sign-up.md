@@ -2,7 +2,7 @@
 title: Sign up and run your first workflow
 description: Create a free Union account, then run a workflow on your own machine and watch it in the console. No cluster needed.
 icon: person-plus
-weight: 1
+weight: 2
 variants: -flyte +union
 ---
 
