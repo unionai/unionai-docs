@@ -161,8 +161,13 @@ When the cluster is ready, it shows as **Healthy** in the cluster list, with the
      originals/cluster-healthy.png is the UNRETOUCHED capture and still shows the bug -- keep it,
      it is the evidence.
      RE-SHOOT once the label is fixed, and drop this comment with it.
-     Also note CPU Cores and Memory read "—" here. That is genuine, not a load lag: it was
-     re-checked over several minutes on a Healthy cluster. kind does not report capacity. -->
+     ⚠️ ALSO RE-SHOOT FOR A SECOND REASON. CPU Cores and Memory read "—" in this shot, and that is
+     NOT kind declining to report capacity, which is what an earlier version of this comment said.
+     It is the visible symptom of a data plane that did not fully install: union-operator-prometheus
+     was stuck Pending on "Insufficient memory", so nothing reported capacity. The console still
+     said Healthy, but the scheduler did not -- `flyte run` failed with "all enabled clusters for
+     organization my-org and cluster pool default are unhealthy". So this image shows a cluster
+     that cannot actually run a workload. Replace it with a shot of a cluster that can. -->
 
 <!-- screenshot, still open: the in-dialog Status panel showing both phases, connectivity and
      health together. It only renders while the connect dialog is open, and this session closed it
@@ -193,6 +198,9 @@ The run appears under **Runs** in your project, not under **Tracked Runs** — t
      storage secret. See the note in section 5. -->
 
 You do not need cloud infrastructure to see this working. A local Kubernetes cluster and an in-cluster object store are enough, and the endpoint field is designed for exactly this.
+
+> [!WARNING] Give Docker enough memory first
+> The data plane asks for a little over 8 GB of memory in pod requests. A Docker VM with the common 8 GB default is not quite enough: the monitoring component fails to schedule, and because nothing then reports capacity, the cluster shows as **Healthy** in the console while runs are rejected with `all enabled clusters ... are unhealthy`. Give Docker at least 12 GB before you start.
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
 
