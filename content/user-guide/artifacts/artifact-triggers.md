@@ -55,6 +55,9 @@ All other inputs must have values in the trigger definition or defaults on the t
 
 ## Firing an artifact trigger by hand
 
+> [!NOTE]
+> Firing a trigger from Python requires flyte 2.7.1 or later.
+
 An artifact trigger can also be fired on demand, from the UI or by passing it to `flyte.run()` in Python. See [Firing a trigger on demand](../tasks/task-configuration/triggers#firing-a-trigger-on-demand).
 
 No new version is being published in that case, so nothing fills the `flyte.TriggeredArtifact` input. Pass it yourself as a keyword override:

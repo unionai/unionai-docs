@@ -119,6 +119,9 @@ For a full guide on Cron syntax, refer to [Crontab Guru](https://crontab.guru/).
 
 ## Triggers without automation
 
+> [!NOTE]
+> Triggers without automation, and firing a trigger on demand from Python, require flyte 2.7.1 or later.
+
 Leave `automation` unset and the trigger has nothing that fires it.
 It becomes a saved launch configuration for the task: a name, a set of inputs, and optionally env vars, a queue, notifications and the other `flyte.Trigger` settings.
 Nothing runs until someone fires it, from the UI or from Python (see [Firing a trigger on demand](#firing-a-trigger-on-demand)).
@@ -149,6 +152,9 @@ flyte create trigger manual_trigger_example.report_on_demand ad-hoc --descriptio
 ```
 
 ## Firing a trigger on demand
+
+> [!NOTE]
+> Passing a trigger to `flyte.run()` requires flyte 2.7.1 or later.
 
 Every deployed trigger can be fired on demand, whether or not it has an automation.
 The run starts with the inputs, env vars, queue and notification rules the trigger was deployed with, and the platform records the trigger as the run's origin, exactly as it does for a scheduled fire.
