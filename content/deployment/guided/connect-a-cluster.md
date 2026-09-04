@@ -140,21 +140,26 @@ Alongside them the console reports **connectivity** and **health** for the clust
 
 Only the first phase needs you. Once the agent connects, {{< key product_name >}} applies the data plane itself, so there is nothing further to run.
 
+> [!NOTE] Where the data plane lands
+> The data plane installs into its own namespace, named `instance-` followed by an identifier, not into the `union` namespace. `union` holds only the storage secret you created in step 2. If you are checking progress with `kubectl`, list pods across all namespaces rather than looking in `union` and concluding nothing happened.
+
 Installing the data plane takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs.
 
-<!-- screenshot: STILL OPEN. The Status panel exists and was seen live on staging 2026-09-04:
-     it reads "Agent installation: installing… <elapsed>", "Union installation: waiting",
-     "connectivity: disconnected", "health: —". That is the correct pre-install state, and it
-     stays there until someone runs the section-4 command, which is the design.
-     A shot of the SUCCESSFUL state still needs the helm run to complete. It was attempted this
-     session and blocked in the sandbox: helm's request for the ghcr.io pull token returned 403
-     while the same URL returned 200 from curl, so it is an environment restriction, not a
-     product fault. The chart is public. Run the helm line outside the sandbox, then capture. -->
+<!-- screenshot: pending a re-capture. The install completed on 2026-09-04 and the Clusters list
+     reached "kind-local — Healthy — Version: v2026.8.5". The in-dialog Status panel (both phases,
+     connectivity, health) is only shown while the connect dialog is open, and this session closed
+     it before the install finished, so that specific panel was never captured in its success
+     state. Either re-register a cluster and keep the dialog open, or shoot the Clusters list
+     instead, which carries the same conclusion for the reader.
+     ⚠️ WHATEVER IS SHOT: the console labels this on-prem cluster "EKS / us-east-1" with an AWS
+     logo, though it was registered on the On-Prem tab and the console's own values carry
+     cloudProvider: byoc-onprem and cloudRegion: on-prem. That is a console bug, reported
+     separately; do not ship a screenshot showing it. -->
 
 ## 6. Run a workload on the cluster
 
-<!-- ⚠️ STILL UNVERIFIED. Blocked behind the helm run, not behind the console any more.
-     Confirm the exact command and what the reader sees before publishing. -->
+<!-- ⚠️ STILL UNVERIFIED, but no longer blocked: the cluster is Healthy as of 2026-09-04, so a
+     real on-cluster run can now be made. Confirm the exact command and what the reader sees. -->
 
 With a connected cluster, drop `--local` and the same code runs on-cluster instead of in your Python process:
 
@@ -166,18 +171,13 @@ The run appears under **Runs** in your project, not under **Tracked Runs** — t
 
 ## Trying it on a local cluster
 
-<!-- ⚠️ PARTLY VERIFIED — do not publish this section as a working path yet.
-     Proven on kind 2026-09-04 (cluster union-onprem-docs, org my-org, cluster kind-local):
-     the pool, the secret, the registration and the agent install all work, and the agent
-     connects out to the Omnistrate manager. NOT proven: the data plane. After ~15 minutes the
-     union namespace was still empty, the console still read "Unknown", and Components showed
-     Operator / Proxy / Tunnel / Prometheus all Unknown. The agent logged one
-     "relay data from the frontend connection to the api server connection failed: i/o deadline
-     reached", the manager timing out on the cluster's API server through the tunnel, which would
-     explain it -- but one occurrence is not a diagnosis.
-     So the claim below ("enough to see this working") is currently unproven at the last step.
-     Either watch it land, or ask eng whether kind can carry the tunnel at all. If it cannot,
-     this section needs rewriting, not a screenshot. -->
+<!-- VERIFIED END TO END on kind 2026-09-04: cluster union-onprem-docs, in-cluster MinIO, org
+     my-org, cluster kind-local. Pool, secret, registration, agent install, and the data plane all
+     work; the console reached Healthy at version v2026.8.5. It takes a while -- roughly 20 minutes
+     from the helm run on a laptop-sized kind cluster, most of it pulling images.
+     An earlier note here said the data plane never landed. That was wrong: it goes into an
+     Omnistrate-generated instance-<id> namespace, not into `union`, and `union` holds only the
+     storage secret. See the note in section 5. -->
 
 You do not need cloud infrastructure to see this working. A local Kubernetes cluster and an in-cluster object store are enough, and the endpoint field is designed for exactly this.
 
