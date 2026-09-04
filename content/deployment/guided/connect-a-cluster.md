@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Connect your own cluster
 
-This is the second half of getting set up. You have an organization; now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
+This is the second half of a guided deployment. You have an organization; now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
 
 **Nothing dials in.** You install an agent into your cluster, and the agent connects out to {{< key product_name >}}. You do not open a port, expose an endpoint, or hand over cluster credentials.
 
