@@ -52,3 +52,15 @@ By default any new version fires the trigger. Pass `version=` to `flyte.OnArtifa
 * `flyte.TriggerTime` cannot be combined with `flyte.OnArtifact`; it is for schedule triggers.
 
 All other inputs must have values in the trigger definition or defaults on the task, the same as [schedule triggers](../tasks/task-configuration/triggers).
+
+## Firing an artifact trigger by hand
+
+An artifact trigger can also be fired on demand, from the UI or by passing it to `flyte.run()` in Python. See [Firing a trigger on demand](../tasks/task-configuration/triggers#firing-a-trigger-on-demand).
+
+No new version is being published in that case, so nothing fills the `flyte.TriggeredArtifact` input. Pass it yourself as a keyword override:
+
+```python
+trigger = flyte.remote.Trigger.get(name="retrain-on-new-model", task_name="validation.validate")
+model = flyte.remote.Artifact.get(name="customer_model")
+run = flyte.run(trigger, model=model)
+```
