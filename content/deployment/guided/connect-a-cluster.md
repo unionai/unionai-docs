@@ -166,6 +166,19 @@ The run appears under **Runs** in your project, not under **Tracked Runs** — t
 
 ## Trying it on a local cluster
 
+<!-- ⚠️ PARTLY VERIFIED — do not publish this section as a working path yet.
+     Proven on kind 2026-09-04 (cluster union-onprem-docs, org my-org, cluster kind-local):
+     the pool, the secret, the registration and the agent install all work, and the agent
+     connects out to the Omnistrate manager. NOT proven: the data plane. After ~15 minutes the
+     union namespace was still empty, the console still read "Unknown", and Components showed
+     Operator / Proxy / Tunnel / Prometheus all Unknown. The agent logged one
+     "relay data from the frontend connection to the api server connection failed: i/o deadline
+     reached", the manager timing out on the cluster's API server through the tunnel, which would
+     explain it -- but one occurrence is not a diagnosis.
+     So the claim below ("enough to see this working") is currently unproven at the last step.
+     Either watch it land, or ask eng whether kind can carry the tunnel at all. If it cannot,
+     this section needs rewriting, not a screenshot. -->
+
 You do not need cloud infrastructure to see this working. A local Kubernetes cluster and an in-cluster object store are enough, and the endpoint field is designed for exactly this.
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
