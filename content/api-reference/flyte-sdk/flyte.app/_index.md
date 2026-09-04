@@ -1,7 +1,7 @@
 ---
 title: flyte.app
 icon: box-seam
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,6 +25,7 @@ layout: py_api
 | [`Port`](../flyte.app/port) |  |
 | [`RunOutput`](../flyte.app/runoutput) | Use a run's output for app parameters. |
 | [`Scaling`](../flyte.app/scaling) | Controls replica count and autoscaling behavior for app environments. |
+| [`Subdomain`](../flyte.app/subdomain) | A subdomain that is resolved at deploy time, when the deployment project and domain are known. |
 | [`Timeouts`](../flyte.app/timeouts) | Timeout configuration for the application. |
 
 ### Methods

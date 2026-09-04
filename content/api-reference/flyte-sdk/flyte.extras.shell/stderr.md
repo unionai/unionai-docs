@@ -2,7 +2,7 @@
 title: Stderr
 description: "Capture the task's stderr as a typed output."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

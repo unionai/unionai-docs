@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -70,6 +70,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
+| [`is_control_plane_available()`](#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
 | [`load_interactive_ctx()`](#load_interactive_ctx) | Restore the task execution context from the config file written by a debug-mode task pod. |
 | [`load_plugin_config()`](#load_plugin_config) | Load a plugin config instance from a YAML file. |
@@ -657,6 +658,42 @@ The endpoint is automatically configured from the environment if in a flyte clus
 | `insecure` | `bool` | Whether to use an insecure channel |
 
 **Returns:** Dictionary of remote kwargs used for initialization
+
+#### is_control_plane_available()
+
+```python
+def is_control_plane_available()
+```
+True when this process can submit work to a Flyte control plane — `flyte.run` launches real
+remote runs whose actions can be inspected, awaited, and replayed (recovered/forked).
+
+The answer depends on where the code is executing:
+
+* Inside a task launched on a Flyte cluster (`flyte.ctx().is_in_cluster()`): True. The
+  in-cluster runtime configures the connection before user code runs.
+* Inside a task executing locally (`flyte run --local` / `flyte.run(mode="local")`): False,
+  even when a client happens to be configured — the local dev loop is expected to stay
+  local, and a locally-orchestrated run has no control-plane actions to replay.
+* Outside any task (a driver script, a notebook): True iff a client has been configured via
+  `flyte.init` / `flyte.init_from_config` / `flyte.init_from_api_key`.
+
+Typical use is a task that adapts to where it runs — e.g. an agent that launches and forks
+real runs on a cluster, but falls back to invoking the task functions in-process when
+developed locally:
+
+```python
+@env.task
+async def agent() -> None:
+    if flyte.is_control_plane_available():
+        run = await flyte.run.aio(my_pipeline, x=1)
+        await run.wait.aio()
+    else:
+        await my_pipeline.func(x=1)
+```
+
+
+
+**Returns:** True when remote submission is available, False otherwise.
 
 #### latest_checkpoint()
 

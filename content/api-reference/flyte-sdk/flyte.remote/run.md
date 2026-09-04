@@ -2,7 +2,7 @@
 title: Run
 description: "A class representing a run of a task."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -46,6 +46,7 @@ class Run(
 | [`abort()`](#abort) | Aborts / Terminates the run. |
 | [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
+| [`first_failure()`](#first_failure) | Details of the first action that failed in this run, or None when no action failed. |
 | [`get()`](#get) | Get the current run. |
 | [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
 | [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
@@ -103,6 +104,34 @@ Get the details of the run. This is a placeholder for getting the run details.
 def done()
 ```
 Check if the run is done.
+
+
+### first_failure()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.first_failure.aio()`.
+```python
+def first_failure()
+```
+Details of the first action that failed in this run, or None when no action failed.
+
+Failed actions are considered in creation order, and a failed sub-action (a step inside
+the run) is preferred over the failed root action — the root's error usually just
+repeats the sub-action's. The root's details are returned only when it is the only
+failure recorded. Together with `ActionDetails.task_name` and
+`ActionDetails.error_message`, this answers "which step broke, and why" — the
+observation an automated repair loop (or a human) needs before patching code and
+rerunning or forking the run:
+
+```python
+run = flyte.run(my_pipeline, x=1)
+run.wait()
+if failure := run.first_failure():
+    print(f"{failure.task_name} failed: {failure.error_message}")
+```
 
 
 ### get()

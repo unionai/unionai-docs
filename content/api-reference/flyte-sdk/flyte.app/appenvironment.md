@@ -2,7 +2,7 @@
 title: AppEnvironment
 description: "Configure a long-running app environment for APIs, dashboards, or model servers."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

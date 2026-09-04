@@ -2,7 +2,7 @@
 title: JsonlDir
 description: "A directory of sharded JSONL files."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

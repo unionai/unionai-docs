@@ -2,7 +2,7 @@
 title: Mistral
 description: "Mistral Agents adapter for Flyte (mistralai 2.x)."
 icon: book
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: OnlyAsyncIOSupportedError
 description: "This error is raised when the user tries to use sync IO in an async task."
 icon: exclamation-triangle
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---

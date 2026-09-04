@@ -2,7 +2,7 @@
 title: Device
 description: "Represents a device type, its quantity and partition if applicable."
 icon: braces
-version: 2.6.13
+version: 2.7.0
 variants: +flyte +union
 layout: py_api
 ---
