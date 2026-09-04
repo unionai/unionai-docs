@@ -200,7 +200,23 @@ The run appears under **Runs** in your project, not under **Tracked Runs** — t
 You do not need cloud infrastructure to see this working. A local Kubernetes cluster and an in-cluster object store are enough, and the endpoint field is designed for exactly this.
 
 > [!WARNING] Give Docker enough memory first
-> The data plane asks for a little over 8 GB of memory in pod requests. A Docker VM with the common 8 GB default is not quite enough: the monitoring component fails to schedule, and because nothing then reports capacity, the cluster shows as **Healthy** in the console while runs are rejected with `all enabled clusters ... are unhealthy`. Give Docker at least 12 GB before you start.
+> The data plane asks for a little over 8 GB of memory in pod requests, so a Docker VM with the common 8 GB default is not enough: the monitoring component never schedules. Give Docker at least 12 GB before you start.
+
+<!-- ⚠️ THE MEMORY REQUIREMENT ABOVE IS VERIFIED. What is NOT verified is that it is sufficient.
+     Measured 2026-09-04 at 7.65 GB: running pods request 7.33 GB, union-operator-prometheus wants
+     1.00 GB more, and it sat Pending on "Insufficient memory".
+     Raising Docker to 11.67 GB fixed that specific symptom -- prometheus went 2/2 Running, and the
+     Components tab moved External dependencies and Infrastructure from Unknown to Healthy.
+     It did NOT make the cluster usable. Observability/Prometheus still reads Unknown, CPU Cores
+     and Memory still read "—", and three `flyte run` attempts still failed at the upload step with
+     "all enabled clusters for organization my-org and cluster pool default are unhealthy" -- while
+     the console header said Healthy.
+     An earlier commit message of mine called memory "the cause" of the run failure. That
+     overstates it: memory is a necessary condition that was genuinely unmet, but clearing it was
+     not sufficient, and the last link of the chain (no metrics -> no capacity -> scheduler refuses)
+     is still only a hypothesis. Do not repeat it as fact.
+     Prometheus had only been up two minutes when the last attempt ran, so scrape lag is the
+     obvious next thing to rule out before escalating. -->
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
 
