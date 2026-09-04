@@ -12,16 +12,6 @@ Set up {{< key product_name >}} yourself, from the console: create an organizati
 
 **Nothing dials in.** You never open a port, expose an endpoint, or hand over cluster credentials. The agent you install connects outwards.
 
-## Choosing between the deployment paths
-
-| Path | How you get set up | Who manages the data plane |
-|------|--------------------|----------------------------|
-| **Guided deployment** (this section) | You set it up yourself in the console. An agent you install does the work. | {{< key product_name >}} |
-| [BYOC](../byoc/_index) | You send {{< key product_name >}} your cloud account details and configuration. {{< key product_name >}} sets the data plane up and hands back your endpoints. | {{< key product_name >}} |
-| [Self-managed](../selfmanaged/_index) | You provision and install the data plane yourself, then register the cluster. | You |
-
-Guided deployment and BYOC end in the same place. Choose guided deployment to set it up yourself; choose BYOC to have {{< key product_name >}} set it up with you. Choose self-managed if you need to keep operational responsibility for the data plane, and {{< key product_name >}} to have no access to your cluster.
-
 ## Where to start
 
 There are two ways in, and they meet at the same place.
