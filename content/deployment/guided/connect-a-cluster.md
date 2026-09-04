@@ -234,8 +234,15 @@ You do not need cloud infrastructure to see this working. A local Kubernetes clu
      established. It is not, and stating it would send the next reader down a settled-looking path
      that is not settled.
 
+     BEST LEAD, found last and not chased further: the cluster detail page's COMPUTE tab reads
+       "No node groups found -- This cluster hasn't reported any node group configuration yet."
+     Node groups are the machine configuration the scheduler places work against, and they are
+     reported by a different mechanism than prometheus metrics. A cluster with none is plausibly
+     unselectable by definition, which would explain "all enabled clusters are unhealthy" without
+     involving observability at all. Untested -- it is the first thing to look at next.
+
      Fact 1 is ENG26-1184's own open question ("Identify the RBAC that the agent should have").
-     Both are raised with eng. Do not write section 6, and do not publish "trying it on a local
+     All of it is raised with eng. Do not write section 6, and do not publish "trying it on a local
      cluster" as a working path, until a run is actually observed to succeed. -->
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
