@@ -31,8 +31,11 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
      That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
      Ask Nathan which host is final rather than guessing. -->
 
-<!-- screenshot: sign-in page, frame on "Continue with Google". Capture on PRODUCTION now that it
-     serves -- staging is no longer the only surface for this shot. Crop the URL bar. -->
+![The Union sign-in page, with Continue with Google highlighted](../../_static/images/deployment/guided/sign-up/sign-in.png)
+
+<!-- Captured on signup.cloud-staging.union.ai 2026-09-04 (Peeter chose staging as the capture
+     surface). The shot carries no hostname, so it is safe to keep when the prose moves to the
+     production host. CDP captures the viewport only, so there is no URL bar to crop. -->
 
 ## Create your organization
 
@@ -40,7 +43,12 @@ An organization is your top-level workspace in {{< key product_name >}}. It is w
 
 1. **Organization name.** This becomes your organization's web address, so it must be unique across {{< key product_name >}}, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, {{< key product_name >}} checks whether the name is available.
 
-   <!-- screenshot: org form with a name typed and "Available" showing, frame on the name field + availability state. Hold for prod: the region list and the domain suffix differ on staging. -->
+   ![The organization form with a name typed and shown as available](../../_static/images/deployment/guided/sign-up/create-organization.png)
+
+   <!-- ⚠️ CAPTURED ON STAGING, so the suffix in the shot reads .cloud-staging.union.ai while the
+        prose says my-org.hosted.unionai.cloud, and the region list shows only us-east-2 and
+        us-west-2. Peeter chose staging as the capture surface (2026-09-04). Re-shoot on
+        production before this page goes live, or the reader sees a domain they cannot reach. -->
 
 2. **Preferred Union region.** This is where your control plane runs. The control plane is the {{< key product_name >}} service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
 
@@ -48,7 +56,7 @@ An organization is your top-level workspace in {{< key product_name >}}. It is w
 
 {{< key product_name >}} sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
 
-<!-- screenshot: provisioning phases mid-way, frame on the phase list. -->
+![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/guided/sign-up/setting-up-organization.png)
 
 ## Sign in to your organization
 

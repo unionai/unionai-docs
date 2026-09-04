@@ -37,7 +37,10 @@ Select your provider, then fill in the store the cluster will use:
 
 The endpoint is resolved by the agent from inside your cluster, not by {{< key product_name >}}, so an address that only exists on your cluster network is expected here.
 
-<!-- screenshot: cluster-pool form, On-Prem tab, fields filled. Frame the object-store endpoint field + its helper text, since "from inside the cluster" is the non-obvious part. Staging-safe: no region list or domain suffix on this screen. -->
+![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/guided/connect-a-cluster/cluster-pool-onprem.png)
+
+> [!NOTE] Pick the On-Prem tab
+> The form opens on **AWS**, which asks for a full set of IAM roles and ARNs. **On-Prem** is the tab this guide uses, and it asks for two fields.
 
 Select **Create cluster pool**. The console then takes you to **Clusters**, ready to connect one.
 
@@ -56,7 +59,7 @@ kubectl create secret generic storage-credentials \
   --from-literal=secret_key=<your-secret-key>
 ```
 
-You can do this before or straight after registering the cluster. The agent reads it when it connects.
+You can do this before or straight after registering the cluster. The agent reads it when it connects. The console shows this same command in the connect dialog, so you can copy it from there instead of typing it.
 
 ## 3. Register the cluster
 
@@ -68,7 +71,7 @@ Select **New Cluster** and fill in three things:
 | **Cluster pool** | The pool from step 1. It supplies the object store the cluster deploys with. |
 | **Credentials secret name** | The name of the secret you created in step 2, for example `storage-credentials`. |
 
-<!-- screenshot: "Connect your cluster" dialog with the three fields filled. Frame the whole dialog; the "Nothing dials in" line in the subhead is worth showing. -->
+![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/guided/connect-a-cluster/connect-cluster-dialog.png)
 
 Select **Register cluster**. The cluster now exists as a record, and the console moves on to installing the agent.
 
@@ -76,18 +79,35 @@ Registering does not put anything on your cluster by itself. That is the next st
 
 ## 4. Install the agent
 
-<!-- ⚠️ NOT YET REACHABLE. The console shows "Preparing the install command…" and never resolves it.
-     Blocked on ENG26-1184 "Register new clusters and return Helm install secret" (Jeev, Todo,
-     not started) — the backend does not yet mint the install secret the command needs.
-     Verified stuck on staging 2026-09-04 against org docs-coldrun-0903, cluster kind-local.
-     DO NOT PUBLISH THIS SECTION until the command has been run end to end and captured. -->
+<!-- Captured live on staging 2026-09-04: the console produced the command for org my-org,
+     cluster kind-local. Chart version 1.18.25 is read from the install kit rather than pinned in
+     our code, so treat the version below as an example, not a constant. The earlier note here
+     said this was blocked on ENG26-1184; that ticket is still Todo, but the work shipped under
+     other PRs (cloud #17954, #18059, #18094, #18139, #18162) and is live on staging.
+     STILL UNVERIFIED: the helm run itself. See the comment in section 5. -->
 
 The console shows a command to run against the cluster you want {{< key product_name >}} to use. Run it, and the agent installs itself and connects out.
 
-<!-- placeholder: the exact install command goes here, verbatim from the console, once ENG26-1184
-     lands. Do not reconstruct it from the signup app's /connect page — that is the older
-     self-managed helm path (`helm upgrade --install unionai-dataplane charts/dataplane …`) and
-     may not be what this dialog emits. Capture it, do not infer it. -->
+The command has two parts: a block that writes a `values.yaml` for your cluster, and the `helm` line that installs the agent from it.
+
+```bash
+cat <<'UNION_DP_AGENT_VALUES' > values.yaml
+# the values the console generated for your cluster
+UNION_DP_AGENT_VALUES
+
+helm upgrade --install dp-agent oci://ghcr.io/omnistrate/dataplane-agent-chart \
+  --version 1.18.25 \
+  --namespace dataplane-agent --create-namespace --values values.yaml \
+  --set nameOverride=dp-agent --timeout 10m0s --wait
+```
+
+Copy the whole thing from the console rather than retyping it. The values are generated for this one cluster, and the chart version comes from the console, so it can differ from the one shown here.
+
+> [!WARNING] The values are a credential
+> The `values.yaml` block contains the agent's client certificate and private key. Treat it like any other secret: do not paste it into a ticket, a chat message, or a shared document, and delete the file once the agent is installed.
+
+> [!NOTE] This step is yours to run, by design
+> {{< key product_name >}} cannot install the agent for you, because nothing dials in to your cluster. Running this command from inside your network is what opens the connection outwards. It is the one step that leaves the console.
 
 ## 5. Wait for the data plane
 
@@ -100,16 +120,22 @@ Installation runs in two phases, both shown in the console:
 
 Alongside them the console reports **connectivity** and **health** for the cluster.
 
+Only the first phase needs you. Once the agent connects, {{< key product_name >}} applies the data plane itself, so there is nothing further to run.
+
 Installing the data plane takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs.
 
-<!-- screenshot: the Status panel mid-install, showing both phases and connectivity. Partially
-     capturable today — the panel appears on registration and shows "Agent installation:
-     installing…" with "connectivity: disconnected" — but it never progresses without step 4,
-     so a *successful* shot needs ENG26-1184. -->
+<!-- screenshot: STILL OPEN. The Status panel exists and was seen live on staging 2026-09-04:
+     it reads "Agent installation: installing… <elapsed>", "Union installation: waiting",
+     "connectivity: disconnected", "health: —". That is the correct pre-install state, and it
+     stays there until someone runs the section-4 command, which is the design.
+     A shot of the SUCCESSFUL state still needs the helm run to complete. It was attempted this
+     session and blocked in the sandbox: helm's request for the ghcr.io pull token returned 403
+     while the same URL returned 200 from curl, so it is an environment restriction, not a
+     product fault. The chart is public. Run the helm line outside the sandbox, then capture. -->
 
 ## 6. Run a workload on the cluster
 
-<!-- ⚠️ UNVERIFIED. Plausible from the run-mode model but never observed, because step 4 blocks.
+<!-- ⚠️ STILL UNVERIFIED. Blocked behind the helm run, not behind the console any more.
      Confirm the exact command and what the reader sees before publishing. -->
 
 With a connected cluster, drop `--local` and the same code runs on-cluster instead of in your Python process:
