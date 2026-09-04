@@ -1,14 +1,14 @@
 ---
-title: Sign in and create your Union.ai organization
-description: Sign in with your work account and create the organization that is your Union.ai workspace, then run a workflow to see it working. No cluster needed.
+title: Sign up and create your Union.ai organization
+description: Create your account with your work email and set up the organization that is your Union.ai workspace, then run a workflow to see it working. No cluster needed.
 icon: person-plus
 weight: 2
 variants: -flyte +union
 ---
 
-# Sign in and create your Union.ai organization
+# Sign up and create your Union.ai organization
 
-Sign in with your work account and create an organization. Your organization is your workspace in {{< key product_name >}}: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
+Create your account and an organization. Your organization is your workspace in {{< key product_name >}}: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
 
 Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
 
@@ -17,7 +17,7 @@ Once it exists you can run a workflow straight away. Nothing runs on a cluster: 
 
 ## What you'll need
 
-- A Google Workspace account. Signing in uses your work email, and personal Gmail addresses are not accepted.
+- A Google Workspace account. Signing up uses your work email, and personal Gmail addresses are not accepted.
 - Python 3.10+ in a virtual environment.
 
 ## Create your account
@@ -36,7 +36,7 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
      That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
      Ask Nathan which host is final rather than guessing. -->
 
-![The Union sign-in page, with Continue with Google highlighted](../../_static/images/deployment/guided/sign-up/sign-in.png)
+![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/guided/sign-up/sign-in.png)
 
 <!-- Captured on signup.cloud-staging.union.ai 2026-09-04 (Peeter chose staging as the capture
      surface). The shot carries no hostname, so it is safe to keep when the prose moves to the

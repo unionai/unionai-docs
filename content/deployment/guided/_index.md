@@ -27,11 +27,11 @@ Guided deployment and BYOC end in the same place. Choose guided deployment to se
 There are two ways in, and they meet at the same place.
 
 - **Buying through AWS Marketplace?** Start at [Start from AWS Marketplace](./from-aws-marketplace). It covers the purchase and the handoff to {{< key product_name >}} that follows it, then sends you to the sign-up page below.
-- **Everyone else** starts at [Sign in and create your Union.ai organization](./sign-up).
+- **Everyone else** starts at [Sign up and create your Union.ai organization](./sign-up).
 
 ## The path
 
-1. **[Sign in and create your Union.ai organization](./sign-up).** Your organization is your workspace: it holds your projects, workflows and team. Once it exists you can run a workflow straight away, with no cluster.
+1. **[Sign up and create your Union.ai organization](./sign-up).** Your organization is your workspace: it holds your projects, workflows and team. Once it exists you can run a workflow straight away, with no cluster.
 2. **[Connect your cluster](./connect-a-cluster).** Give {{< key product_name >}} a Kubernetes cluster to run your workloads on.
 
 You do not need a cluster to start. A run on your own machine reports itself to your organization and appears in the console, which is enough to see how {{< key product_name >}} works before committing infrastructure to it.

@@ -50,7 +50,7 @@ variants: -flyte +union
 
 You can subscribe to {{< key product_name >}} through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there.
 
-This page covers the purchase itself, and the handoff to {{< key product_name >}} that follows it. Buying a subscription sets up the billing relationship. It does not create the workspace you work in, so once you have subscribed you carry on to [Sign in and create your Union.ai organization](./sign-up), which is the same path everyone else follows.
+This page covers the purchase itself, and the handoff to {{< key product_name >}} that follows it. Buying a subscription sets up the billing relationship. It does not create the workspace you work in, so once you have subscribed you carry on to [Sign up and create your Union.ai organization](./sign-up), which is the same path everyone else follows.
 
 If you already have a {{< key product_name >}} organization, you do not need this page.
 
@@ -77,4 +77,4 @@ Follow that handoff when you see it. It carries a short-lived token that ties yo
 
 ## Next steps
 
-The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's: continue with **[Sign in and create your Union.ai organization](./sign-up)**.
+The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's: continue with **[Sign up and create your Union.ai organization](./sign-up)**.
