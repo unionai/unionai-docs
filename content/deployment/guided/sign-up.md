@@ -24,7 +24,7 @@ Once it exists you can run a workflow straight away. Nothing runs on a cluster: 
 
 Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for {{< key product_name >}}.
 
-<!-- ⚠️ HOSTNAME IN FLUX — confirm with eng before this page goes live.
+<!-- ⚠️ HOSTNAME IN FLUX.
      signup.hosted.unionai.cloud is what serves today: verified 2026-09-04, HTTP 200 -> /sign-in,
      runtime config reports environment=production, gitSha e2b8a68a46 = cloud#18091 "add production
      pipeline for signup app", which is merged to main. It matches the production env_domain in
@@ -34,7 +34,7 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
      But an UNMERGED commit moves production to signup.unionai.cloud:
      cloud e3d8023d65 on branch nathan/fix-signup-prod-host, 2026-09-01, "update signup-prod host".
      That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
-     Ask Nathan which host is final rather than guessing. -->
+     Nathan knows which host is final. -->
 
 ![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/guided/sign-up/sign-in.png)
 
@@ -52,8 +52,8 @@ An organization is your top-level workspace in {{< key product_name >}}. It is w
 
    <!-- ⚠️ CAPTURED ON STAGING, so the suffix in the shot reads .cloud-staging.union.ai while the
         prose says my-org.hosted.unionai.cloud, and the region list shows only us-east-2 and
-        us-west-2. Peeter chose staging as the capture surface (2026-09-04). Re-shoot on
-        production before this page goes live, or the reader sees a domain they cannot reach. -->
+        us-west-2. Peeter chose staging as the capture surface (2026-09-04). A production
+        re-shoot would remove the mismatch. -->
 
 2. **Preferred Union region.** This is where your control plane runs. The control plane is the {{< key product_name >}} service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
 

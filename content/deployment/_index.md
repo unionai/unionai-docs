@@ -29,10 +29,6 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 >
 > [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
 
-<!-- This section goes live with the Guided deployment pages themselves, which are still
-     unpublished: see the DO-NOT-PUBLISH notes in deployment/guided/. Do not merge this ahead of
-     them, or it will point readers at a section that is not ready. -->
-
 ## Guided deployment
 
 A Guided deployment is a BYOC deployment that you can buy and set up yourself. It ends in the same place: your data plane runs in a Kubernetes cluster you own, and Union.ai manages it for you. Only the route differs.

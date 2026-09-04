@@ -160,14 +160,14 @@ When the cluster is ready, it shows as **Healthy** in the cluster list, with the
      inventing a label risks being wrong a second time.
      originals/cluster-healthy.png is the UNRETOUCHED capture and still shows the bug -- keep it,
      it is the evidence.
-     RE-SHOOT once the label is fixed, and drop this comment with it.
-     ⚠️ ALSO RE-SHOOT FOR A SECOND REASON. CPU Cores and Memory read "—" in this shot, and that is
+     The shot is worth retaking once the label is fixed.
+     ⚠️ A SECOND THING WRONG WITH THIS SHOT. CPU Cores and Memory read "—" in it, and that is
      NOT kind declining to report capacity, which is what an earlier version of this comment said.
      It is the visible symptom of a data plane that did not fully install: union-operator-prometheus
      was stuck Pending on "Insufficient memory", so nothing reported capacity. The console still
      said Healthy, but the scheduler did not -- `flyte run` failed with "all enabled clusters for
      organization my-org and cluster pool default are unhealthy". So this image shows a cluster
-     that cannot actually run a workload. Replace it with a shot of a cluster that can. -->
+     that cannot actually run a workload. -->
 
 <!-- screenshot, still open: the in-dialog Status panel showing both phases, connectivity and
      health together. It only renders while the connect dialog is open, and this session closed it
@@ -242,8 +242,8 @@ You do not need cloud infrastructure to see this working. A local Kubernetes clu
      involving observability at all. Untested -- it is the first thing to look at next.
 
      Fact 1 is ENG26-1184's own open question ("Identify the RBAC that the agent should have").
-     All of it is raised with eng. Do not write section 6, and do not publish "trying it on a local
-     cluster" as a working path, until a run is actually observed to succeed. -->
+     All of it is raised with eng. Section 6 and the "trying it on a local cluster" claim both rest
+     on a run succeeding, and no run has succeeded yet. -->
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
 

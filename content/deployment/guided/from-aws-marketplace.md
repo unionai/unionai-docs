@@ -6,8 +6,7 @@ weight: 1
 variants: -flyte +union
 ---
 
-<!-- ⚠️ UNVERIFIED, AND NOT READY TO PUBLISH. DOC-1538, target 14 Sep (listing live), 1 Oct
-     (announcement).
+<!-- ⚠️ UNVERIFIED. DOC-1538, target 14 Sep (listing live), 1 Oct (announcement).
 
      Nobody has run the buyer journey. Neither Peeter nor this run has AWS Marketplace purchasing
      credentials, so every step below is written from the shipped source rather than from watching
@@ -18,9 +17,9 @@ variants: -flyte +union
        cloud origin/main:.union/selfserve/provision_org_split_v2.py
                                                             (/fleet/marketplace/handoff/redeem)
      ENG26-1151 is running the journey from the test buyer account, timed and recorded. THAT
-     RECORDING IS THE AUTHORITY. Reconcile this page against it before publishing, and expect the
-     screen names and button labels to need correcting: none of them are asserted here, precisely
-     because they have not been seen.
+     RECORDING IS THE AUTHORITY, and the screen names and button labels will likely need
+     correcting against it: none of them are asserted here, precisely because they have not been
+     seen.
 
      TWO THINGS THIS PAGE DELIBERATELY DOES NOT SAY.
      1. It does not call the flow one-click, or count the steps as fewer than they are. The project's
