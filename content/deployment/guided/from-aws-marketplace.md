@@ -1,6 +1,6 @@
 ---
 title: Start from AWS Marketplace
-description: You subscribed to Union through AWS Marketplace. Here is how to get from that subscription to a running workflow.
+description: Subscribe to Union through AWS Marketplace and claim your subscription, so the charges appear on your AWS bill.
 icon: cart
 weight: 1
 variants: -flyte +union
@@ -33,25 +33,32 @@ variants: -flyte +union
         it is wrong in a way worth knowing before launch, so check it rather than quietly adding a
         stack step back.
 
-     OPEN QUESTION, unresolved: provisioning calls Omnistrate's /fleet/user to create a
-     "consumption user". It is not clear whether that gives a marketplace buyer compute that a
-     self-serve signup does not get. This page currently assumes it does not, which is why it ends
-     by sending the reader to connect a cluster. If marketplace buyers do get managed compute, the
-     last section is wrong. -->
+     SCOPE: this page is the PURCHASE and the handoff, nothing else. It stops at the sign-up form
+     and sends the reader to sign-up.md, which is where creating an organization and running
+     something already live. It briefly did more than that and the intro was left claiming to cover
+     "the steps between subscribing and running something", which it did not; Peeter caught it.
+     If you add to this page, check the intro still describes what is actually below it.
+
+     OPEN QUESTION, unresolved and NOT visible on the page: provisioning calls Omnistrate's
+     /fleet/user to create a "consumption user". It is not clear whether that gives a marketplace
+     buyer compute an ordinary self-serve signup does not get. Nothing here depends on the answer,
+     because the page hands off before compute is discussed. But if marketplace buyers DO get
+     managed compute, then sign-up.md and connect-a-cluster.md are the wrong onward path for them
+     and this page should say so instead. Worth asking Ryan or Jeev. -->
 
 # Start from AWS Marketplace
 
 You can subscribe to {{< key product_name >}} through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there.
 
-The subscription is the billing relationship. It does not by itself create the workspace you work in, so there are a few steps between subscribing and running something. This page covers those steps.
+This page covers the purchase itself, and the handoff to {{< key product_name >}} that follows it. Buying a subscription sets up the billing relationship. It does not create the workspace you work in, so once you have subscribed you carry on to [Sign up and run your first workflow](./sign-up), which is the same path everyone else follows.
 
-If you already have a {{< key product_name >}} organization, you do not need this page. See [Sign up and run your first workflow](./sign-up) instead.
+If you already have a {{< key product_name >}} organization, you do not need this page.
 
 ## What you'll need
 
 An AWS account that is allowed to subscribe on AWS Marketplace. Many organizations restrict this to a billing or procurement account.
 
-You do not deploy anything into your own AWS account during this process, and you do not need a Kubernetes cluster to get started. The next page lists what you need for your first workflow.
+You do not deploy anything into your own AWS account to buy a subscription, and you do not need a Kubernetes cluster.
 
 ## 1. Subscribe on AWS Marketplace
 
@@ -61,17 +68,13 @@ Your subscription is tied to the AWS account that buys it, so buy it from the ac
 
 ## 2. Continue to {{< key product_name >}}
 
-After the subscription is confirmed, AWS hands you off to {{< key product_name >}} to set up your workspace.
+After the subscription is confirmed, AWS hands you off to {{< key product_name >}}.
 
 Follow that handoff when you see it. It carries a short-lived token that ties your new organization to the subscription you just bought, and it expires, so if you leave it too long you may need to return to your AWS Marketplace subscriptions and start the handoff again.
 
 > [!NOTE] One subscription, one organization
 > A marketplace subscription can only be claimed by a single {{< key product_name >}} organization. If you try to claim the same subscription from a second organization, {{< key product_name >}} refuses rather than splitting your entitlement across two workspaces.
 
-## Next: create your organization
+## Next steps
 
-The handoff lands you on the {{< key product_name >}} sign-up form, and from here your path is the same as anyone else's.
-
-Continue with **[Sign up and run your first workflow](./sign-up)**. It covers naming your organization, choosing a region, and running something to see it work. You do not need a cluster for any of that.
-
-When you want {{< key product_name >}} to run real workloads for you, with GPUs and cluster-scale resources, carry on to [Connect your own cluster](./connect-a-cluster).
+The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's: continue with **[Sign up and run your first workflow](./sign-up)**.
