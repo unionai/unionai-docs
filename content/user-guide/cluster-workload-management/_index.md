@@ -104,9 +104,10 @@ pools because clusters in the destination pool cannot access the source pool's
 data, images, code, or secrets.
 
 A **queue** can move to another pool only after it is fully
-[drained](./queues#drain-and-reactivate-a-queue). A **cluster** must also be
-[drained](./clusters#drain-and-reactivate-a-cluster) before it can move. These
-requirements keep in-flight work from crossing the boundary. To route a
+[drained](./queues#drain-and-reactivate-a-queue). A **cluster** can move only
+once its co-named queue is drained, which
+[draining the cluster](./clusters#drain-and-reactivate-a-cluster) takes care
+of. These requirements keep in-flight work from crossing the boundary. To route a
 workload through another pool, make its dependencies available in the
 destination data plane. Then move its drained queue or follow a
 [drain-and-replace migration](./queues#move-work-to-another-pool).

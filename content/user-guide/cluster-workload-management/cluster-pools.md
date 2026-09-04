@@ -229,10 +229,11 @@ You can also list clusters under `member_clusters` in the pool manifest to add
 them to the pool. That route only adds: it cannot remove a cluster from a pool
 or move one elsewhere.
 
-An existing cluster can be reassigned to another pool, but it must first be
-[drained](./clusters#drain-and-reactivate-a-cluster). Wait for
-`flyte get cluster <name>` to report `drained`, then run
-`flyte update cluster <name> --pool <pool>`. See
+An existing cluster can be reassigned to another pool, but its co-named queue
+must be `drained` first; the simplest way to get there is to
+[drain the cluster](./clusters#drain-and-reactivate-a-cluster). Wait for
+`flyte get cluster <name>` and `flyte get queue <name>` to report `drained`,
+then run `flyte update cluster <name> --pool <pool>`. See
 [Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool)
 for the complete workflow.
 

@@ -12,6 +12,8 @@ mermaid: true
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The queue CLI commands and Python objects on this page are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+> The `deleting` and `deleted` queue states require version 0.9.0 or later; this
+> page describes release 0.10.1.
 
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
 work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
@@ -103,9 +105,12 @@ settings and updates as queues you create yourself — with one exception. A
 co-named queue's cluster selector and pool are managed by its cluster and cannot
 be edited directly: the queue follows its cluster if the cluster is
 [reassigned to another pool](./clusters#move-a-cluster-to-a-different-pool). It
-also follows the cluster through drain, activate, and delete transitions. The
-cluster and queue finish their transitions separately, so they may reach their
-final states at slightly different times. Its other settings (concurrency,
+also follows the cluster through drain, activate, and delete transitions, and
+it cannot be activated on its own while its cluster is `draining` or `drained`
+(see
+[How the co-named queue follows its cluster](./clusters#how-the-co-named-queue-follows-its-cluster)).
+The cluster and queue finish their transitions separately, so they may reach
+their final states at slightly different times. Its other settings (concurrency,
 depth, priority, fairness) stay editable like any queue's. Listings make the
 distinction visible: cluster-managed queues are flagged in the `flyte get queue`
 table (`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
@@ -257,8 +262,8 @@ default.
 # List all queues
 flyte get queue
 
-# List live queues in a given state
-flyte get queue --state deleting
+# List live queues in one state: active, draining, drained, or deleting
+flyte get queue --state draining
 
 # Inspect one queue's settings and status
 flyte get queue gpu-queue
@@ -266,8 +271,8 @@ flyte get queue gpu-queue
 # Stream live metrics — runs in-flight, actions in-flight, queue depth
 flyte get queue gpu-queue --watch
 
-# List soft-deleted queues in the deleted state
-flyte get queue --deleted --state deleted
+# List soft-deleted queues (hidden from the plain listing)
+flyte get queue --deleted
 ```
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
@@ -281,7 +286,8 @@ Fetching a queue **by name** works even after it has been
 [deleted](#delete-a-queue): `flyte get queue <name>` returns the soft-deleted
 queue carrying its deletion time instead of failing, so a queue that an old run
 once targeted stays inspectable. Only the listing hides deleted queues, unless
-you pass `--deleted`.
+you pass `--deleted`; `--state deleted` without `--deleted` returns nothing for
+the same reason.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -294,12 +300,13 @@ from flyteplugins.union.remote import Queue
 for queue in Queue.listall(limit=100):
     print(queue.name, queue.status, queue.priority, queue.cluster_pool, queue.clusters)
 
-# Narrow the live listing to one lifecycle state
-for queue in Queue.listall(state="deleting"):
+# Narrow the live listing to one lifecycle state: "active", "draining",
+# "drained", or "deleting"
+for queue in Queue.listall(state="draining"):
     print(queue.name)
 
-# Deleted queues require the deleted filter
-for queue in Queue.listall(deleted=True, state="deleted"):
+# Deleted queues are hidden from the listing unless you ask for them
+for queue in Queue.listall(deleted=True):
     print(queue.name)
 
 queue = Queue.get("gpu-queue")
@@ -410,6 +417,76 @@ destination pool — see [Move work to another pool](#move-work-to-another-pool)
 A cluster's [co-named queue](./clusters#the-co-named-queue) rejects selector and
 pool changes entirely: those are managed by its cluster.
 
+## Queue lifecycle
+
+A queue is in one of five lifecycle states. The `drain`, `activate`, `delete`,
+and `undelete` transitions are requested by you; the moves into `drained` and
+`deleted` are written by the system once the leasor confirms the queue holds
+nothing.
+
+```mermaid
+stateDiagram-v2
+    [*] --> active: create
+    active --> draining: drain
+    draining --> active: activate
+    draining --> drained: no work left (system)
+    drained --> active: activate
+    draining --> deleting: delete
+    drained --> deleted: delete
+    active --> deleting: cluster deleted (co-named queue only)
+    deleting --> deleted: cleanup done (system)
+    deleted --> drained: undelete
+```
+
+- **`active`**: accepting new submissions.
+- **`draining`**: no new submissions; in-flight work runs to completion. The
+  system moves the queue to `drained` once the leasor reports it holds no run
+  or cleanup work.
+- **`drained`**: confirmed empty. The only state from which a delete completes
+  in one step, the only state in which the queue can change pools, and the
+  state a restored queue comes back in.
+- **`deleting`**: deletion requested while the queue may still hold work. The
+  leasor terminates the queue's remaining run leases, waits for cleanup work,
+  and then reports the queue `deleted`. The queue stays listed meanwhile.
+- **`deleted`**: soft-deleted. Hidden from listings and never scheduled on; the
+  name stays reserved and `flyte get queue <name>` still returns it.
+
+What each operation does from each state:
+
+| Current state | `--drain` | `--activate` | `flyte delete queue` | `flyte undelete queue` | Pool change |
+|---|---|---|---|---|---|
+| `active` | → `draining` | no change | rejected (drain first) | rejected | rejected |
+| `draining` | no change | → `active` | → `deleting` | rejected | rejected |
+| `drained` | rejected (already drained) | → `active` | → `deleted` | rejected | allowed |
+| `deleting` | rejected | rejected | rejected | rejected | rejected |
+| `deleted` | rejected | rejected | rejected | → `drained` | rejected |
+
+A cluster's co-named queue is the one exception in the `--activate` column:
+while its cluster is `draining` or `drained`, the queue cannot be activated on
+its own. Activating the cluster activates it.
+
+Three rules follow from the table:
+
+- There is no path from `active` into deletion that you can request on a
+  queue: deleting a queue that is accepting work always takes two calls, a
+  drain and then a delete, so a single misdirected command can never take a
+  serving queue away. The one indirect path is
+  [deleting a cluster](./clusters#delete-a-cluster), which takes the cluster's
+  co-named queue into deletion whatever state it is in.
+- Deletion cannot be canceled: a `deleting` queue can only become `deleted`,
+  and only then can it be undeleted.
+- `drained` and `deleted` are never requested directly; the leasor writes them
+  once it has confirmed the queue holds nothing.
+
+Draining a cluster drains its co-named queue and activating the cluster
+activates it; see
+[How the co-named queue follows its cluster](./clusters#how-the-co-named-queue-follows-its-cluster).
+
+Every state-changing request carries the queue's **state generation**
+(`Queue.state_generation`), which the Python client reads before each request.
+A request that races another change to the same queue is rejected with a
+generation mismatch; re-read the queue and retry if the change still applies.
+
 ## Drain and reactivate a queue
 
 **Draining** takes a queue out of rotation without losing in-flight work: the
@@ -417,27 +494,6 @@ queue stops admitting new submissions, work already in flight runs to
 completion, and once nothing is left the queue settles into the `drained` state.
 Use it before maintenance, deletion, or as part of
 [moving work to another pool](#move-work-to-another-pool).
-
-A queue has five lifecycle states:
-
-```mermaid
-stateDiagram-v2
-    [*] --> Active
-    Active --> Draining: drain
-    Draining --> Active: activate
-    Draining --> Drained: work completes
-    Drained --> Active: activate
-    Draining --> Deleting: delete
-    Drained --> Deleted: delete
-    Active --> Deleting: cluster delete (co-named only)
-    Deleting --> Deleted: cleanup completes
-    Deleted --> Drained: undelete
-```
-
-The system moves a queue to `drained` only after its work and cleanup finish.
-The same rule moves a `deleting` queue to `deleted`. The direct transition from
-`active` to `deleting` applies only when deleting a cluster carries its co-named
-queue with it; `flyte delete queue` always rejects an active queue.
 
 {{< tabs "drain-queue" >}}
 {{< tab "CLI" >}}
@@ -488,14 +544,17 @@ referenced in settings is refused.
 An `active` queue cannot be deleted; start draining it first. You can then choose
 whether to wait:
 
-- Deleting a `draining` queue moves it to `deleting`. Remaining queued and
-  running actions fail, required cleanup continues, and the queue becomes
-  `deleted` when cleanup finishes.
-- Deleting a `drained` queue moves it directly to `deleted`, because no work or
-  cleanup remains.
+- Deleting a `draining` queue moves it to `deleting`. The leasor terminates the
+  queue's remaining run leases, so queued and running actions on it are
+  aborted rather than finished; cleanup work already in progress is allowed to
+  complete. The queue becomes `deleted` when the leasor holds nothing more for
+  it.
+- Deleting a `drained` queue moves it directly to `deleted`, because the leasor
+  has already confirmed that no work or cleanup remains.
 
-Deletion cannot be canceled. A `deleting` queue cannot be activated or restored;
-wait until it becomes `deleted` before undeleting it.
+Deletion cannot be canceled. A `deleting` queue rejects every further request:
+it cannot be drained, activated, deleted again, or undeleted. Wait until it
+becomes `deleted` before undeleting it.
 
 A queue referenced as the default run queue (`run.default_queue`) in settings at
 any scope can be drained but not deleted: update or unset those settings first.
