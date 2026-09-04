@@ -35,13 +35,15 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 
 ## Guided deployment
 
-The Guided deployment is the self-service route. You create your organization in the console, then connect a Kubernetes cluster of your own, and Union.ai installs and manages the data plane inside it:
+A Guided deployment is a BYOC deployment that you can buy and set up yourself. It ends in the same place: your data plane runs in a Kubernetes cluster you own, and Union.ai manages it for you. Only the route differs.
 
-* The **data plane** resides in a Kubernetes cluster you own and is managed by Union.ai. You install an agent into the cluster and the agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+* With **BYOC**, you send Union.ai your cloud account details and configuration, and Union.ai sets the data plane up and hands back your endpoints.
 
-* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai.
+* With a **Guided deployment**, you subscribe, create your organization in the console, and connect your own Kubernetes cluster. Union.ai then installs the data plane into it. You install an agent into the cluster and the agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-Guided deployment and BYOC end in the same place; the difference is the route. Choose guided deployment to set it up yourself from the console, and BYOC to send Union.ai your cloud account details and have Union.ai set it up with you. See [Guided deployment](./guided/_index).
+The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai.
+
+See [Guided deployment](./guided/_index) for the full path, from subscribing through to running work on your own cluster.
 
 ## BYOC deployment
 

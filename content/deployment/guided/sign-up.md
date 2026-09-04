@@ -134,6 +134,9 @@ Everything you see here came from a run on your own machine. {{< key product_nam
 
 ## Next steps
 
+**[Connect your cluster](./connect-a-cluster)** is the last step of the setup. Everything so far has run on your own machine. When you want {{< key product_name >}} to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it.
+
+Two things you can do without a cluster:
+
 - **Run your own code the same way.** Write a workflow following the [Quickstart](../../user-guide/get-started/quickstart), then run it with `flyte run --tracked temperatures.py hottest`. See [Track local runs in the console](../../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
-- **Connect a cluster.** When you want {{< key product_name >}} to run your workloads for you, with GPUs and cluster-scale resources, return to the cluster pool setup in the console. See [Run on a remote cluster](../../user-guide/get-started/run-modes/running-remote).
 - **Learn the concepts.** [Core concepts](../../user-guide/get-started/core-concepts/_index) explains tasks, environments, projects, and runs.

@@ -270,6 +270,10 @@ Then follow the steps above, using:
 
 ## Next steps
 
+That is the setup complete. You subscribed or signed up, created your organization, and connected a cluster, and {{< key product_name >}} is now running your workloads on your own infrastructure.
+
+From here:
+
 - **[Cluster pools](../../user-guide/cluster-workload-management/cluster-pools)**. Managing pools from the CLI, including multiple pools.
 - **[Clusters](../../user-guide/cluster-workload-management/clusters)**. Inspecting cluster state and capacity, and moving a cluster between pools.
 - **[Queues](../../user-guide/cluster-workload-management/queues)**. Routing workloads across your clusters.

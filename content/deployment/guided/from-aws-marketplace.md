@@ -77,4 +77,7 @@ Follow that handoff when you see it. It carries a short-lived token that ties yo
 
 ## Next steps
 
-The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's: continue with **[Sign up and create your Union.ai organization](./sign-up)**.
+The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's:
+
+1. **[Sign up and create your Union.ai organization](./sign-up).** Name your organization, choose a region, and run a workflow to see it working. No cluster needed.
+2. **[Connect your cluster](./connect-a-cluster).** Give {{< key product_name >}} a Kubernetes cluster to run your workloads on, and it installs the data plane into it.
