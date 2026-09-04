@@ -1,8 +1,8 @@
 ---
 title: Trigger
-description: "Specification for a scheduled trigger that can be associated with any Flyte task."
+description: "Specification for a trigger that can be associated with any Flyte task."
 icon: braces
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,11 +11,15 @@ layout: py_api
 
 **Package:** `flyte`
 
-Specification for a scheduled trigger that can be associated with any Flyte task.
+Specification for a trigger that can be associated with any Flyte task.
 
-Triggers run tasks on a schedule (cron or fixed-rate). They are set only in the
-`@env.task` decorator via the `triggers` parameter. The same `Trigger` object
-can be associated with multiple tasks.
+A trigger is a named, pre-bound launch configuration for a task (default inputs,
+queue, env vars, notifications, ...). It may optionally carry an *automation*
+that fires it on a schedule (`Cron`/`FixedRate`) or when a new artifact version
+is published (`OnArtifact`). A trigger with no automation is fired only
+on demand (for example from the UI or via the API). Triggers are set only in
+the `@env.task` decorator via the `triggers` parameter. The same `Trigger`
+object can be associated with multiple tasks.
 
 Predefined convenience constructors are available: `Trigger.hourly()`,
 `Trigger.daily()`, `Trigger.weekly()`, `Trigger.monthly()`, and
@@ -41,7 +45,7 @@ async def my_task(start_time: datetime, x: int) -> str:
 ```python
 class Trigger(
     name: str,
-    automation: Union[Cron, FixedRate, OnArtifact],
+    automation: Union[Cron, FixedRate, OnArtifact, None] = None,
     description: str = '',
     auto_activate: bool = True,
     inputs: Dict[str, Any] | None = None,
@@ -59,7 +63,7 @@ class Trigger(
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | Unique name for the trigger (required). |
-| `automation` | `Union[Cron, FixedRate, OnArtifact]` | Schedule type — `Cron(...)` or `FixedRate(...)` (required). |
+| `automation` | `Union[Cron, FixedRate, OnArtifact, None]` | What fires the trigger — `Cron(...)`, `FixedRate(...)` or `OnArtifact(...)`. `None` (default) means the trigger has no automation and is only fired on demand. |
 | `description` | `str` | Human-readable description (max 255 characters). Default `""`. |
 | `auto_activate` | `bool` | Whether to activate the trigger automatically on deployment. Default `True`. |
 | `inputs` | `Dict[str, Any] \| None` | Default input values for triggered runs. Use `flyte.TriggerTime` to bind the trigger's scheduled time to an input parameter. |

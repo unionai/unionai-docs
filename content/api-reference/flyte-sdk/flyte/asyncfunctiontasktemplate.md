@@ -2,7 +2,7 @@
 title: AsyncFunctionTaskTemplate
 description: "A task template that wraps an asynchronous functions."
 icon: braces
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

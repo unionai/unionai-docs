@@ -2,7 +2,7 @@
 title: Core
 description: "flyteplugins-agents-core — the shared contract every agent-SDK adapter implements."
 icon: book
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

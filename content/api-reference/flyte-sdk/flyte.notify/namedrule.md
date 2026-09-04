@@ -2,7 +2,7 @@
 title: NamedRule
 description: "Reference a pre-defined notification rule by name."
 icon: braces
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

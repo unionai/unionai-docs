@@ -2,7 +2,7 @@
 title: flyte.remote
 description: "Remote Entities that are accessible from the Union Server once deployed or created."
 icon: box-seam
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,6 +32,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`TaskDetails`](../flyte.remote/taskdetails) |  |
 | [`TimeFilter`](../flyte.remote/timefilter) | Filter for time-based fields (e.g. created_at, updated_at). |
 | [`Trigger`](../flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
+| [`TriggerDetails`](../flyte.remote/triggerdetails) |  |
 | [`User`](../flyte.remote/user) | Represents a user in the Flyte platform. |
 
 ### Methods

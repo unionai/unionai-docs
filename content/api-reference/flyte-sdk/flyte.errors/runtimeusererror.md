@@ -2,7 +2,7 @@
 title: RuntimeUserError
 description: "This error is raised when the underlying task execution fails because of an error in the user's code."
 icon: exclamation-triangle
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
