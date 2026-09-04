@@ -109,6 +109,24 @@ Copy the whole thing from the console rather than retyping it. The values are ge
 > [!NOTE] This step is yours to run, by design
 > {{< key product_name >}} cannot install the agent for you, because nothing dials in to your cluster. Running this command from inside your network is what opens the connection outwards. It is the one step that leaves the console.
 
+### If the install fails with `denied: denied`
+
+```
+Error: failed to perform "FetchReference" on source: ...
+GET "https://ghcr.io/token?scope=repository%3Aomnistrate%2Fdataplane-agent-chart%3Apull&service=ghcr.io":
+response status code 403: denied: denied
+```
+
+The agent chart is public, so this is almost always a stale login rather than a permissions problem. If you have signed in to `ghcr.io` before and the credential has since expired, Helm sends it anyway, and the registry rejects the expired credential instead of falling back to anonymous access.
+
+Sign out of that registry and run the command again:
+
+```bash
+docker logout ghcr.io
+```
+
+You do not need an account to pull the chart. Sign back in afterwards if you use `ghcr.io` for your own images.
+
 ## 5. Wait for the data plane
 
 Installation runs in two phases, both shown in the console:
