@@ -17,9 +17,22 @@ Create an account, then run a workflow and watch it in the {{< key product_name 
 
 ## Create your account
 
-Go to [signup.union.ai](https://signup.union.ai) and select **Continue with Google**. Choose the account you want to use for {{< key product_name >}}.
+Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for {{< key product_name >}}.
 
-<!-- screenshot: sign-in page, frame on "Continue with Google". Capture on staging; crop the URL bar. -->
+<!-- ⚠️ HOSTNAME IN FLUX — confirm with eng before this page goes live.
+     signup.hosted.unionai.cloud is what serves today: verified 2026-09-04, HTTP 200 -> /sign-in,
+     runtime config reports environment=production, gitSha e2b8a68a46 = cloud#18091 "add production
+     pipeline for signup app", which is merged to main. It matches the production env_domain in
+     cloud origin/main:signup/deploy/signup.yaml:49.
+     The page previously said signup.union.ai. That host does not resolve at all and never did --
+     it is a leftover from the Serverless era (cloud clients/website/workshop/README.md).
+     But an UNMERGED commit moves production to signup.unionai.cloud:
+     cloud e3d8023d65 on branch nathan/fix-signup-prod-host, 2026-09-01, "update signup-prod host".
+     That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
+     Ask Nathan which host is final rather than guessing. -->
+
+<!-- screenshot: sign-in page, frame on "Continue with Google". Capture on PRODUCTION now that it
+     serves -- staging is no longer the only surface for this shot. Crop the URL bar. -->
 
 ## Create your organization
 
