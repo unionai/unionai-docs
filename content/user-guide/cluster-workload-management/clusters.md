@@ -12,8 +12,6 @@ mermaid: true
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The cluster CLI commands and Python objects on this page are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
-> Cluster draining and the `deleting` lifecycle state require version 0.9.0 or
-> later; this page describes release 0.10.1.
 
 A **cluster** is an execution cluster registered with {{< key product_name >}}.
 Every cluster subscribes to exactly one [cluster pool](./cluster-pools), which
@@ -162,14 +160,12 @@ print(cluster.config_drift)
 {{< /tab >}}
 {{< /tabs >}}
 
-A cluster reports two different states, and both appear in the listing:
-
-- **`state`** (`Cluster.state`) is what the data plane reports about itself:
-  `enabled` or `disabled`. It is not something you set from the CLI.
-- **`drain`** (`Cluster.drain_state`) is the control-plane
-  [lifecycle state](#cluster-lifecycle): `active`, `draining`, `drained`,
-  `deleting`, or `deleted`. This is the state that `--drain`, `--activate`,
-  `delete`, and `undelete` move.
+The cluster's [lifecycle state](#cluster-lifecycle) is the
+`drain_status.overall_state` field of the API response: `active`, `draining`,
+`drained`, `deleting`, or `deleted`. The CLI shows it in the `drain` column and
+Python exposes it as `Cluster.drain_state`. This is the state that `--drain`,
+`--activate`, `delete`, and `undelete` move, and the one to check before any
+maintenance on the cluster.
 
 The detailed view additionally shows the drain **generation** (a counter that
 increases on every lifecycle change), the per-workload drain progress for runs
@@ -208,9 +204,9 @@ stateDiagram-v2
 - **`drained`**: confirmed idle. The only state from which a delete completes
   in one step, and the state a restored cluster comes back in.
 - **`deleting`**: deletion requested while the cluster may still hold work. The
-  leasor disconnects the cluster's workers, reschedules its runs on other
-  clusters, and drops its cleanup work, then reports it `deleted`. The cluster
-  stays listed meanwhile.
+  leasor disconnects the cluster's workers and drops its leases, so actions in
+  flight on the cluster are interrupted and may fail permanently. It then
+  reports the cluster `deleted`. The cluster stays listed meanwhile.
 - **`deleted`**: soft-deleted. The record and name are kept; the cluster is
   hidden from listings and refuses heartbeats and status reports.
 
@@ -224,10 +220,16 @@ What each operation does from each state:
 | `deleting` | rejected | rejected | rejected | rejected |
 | `deleted` | rejected | rejected | rejected | → `drained` |
 
-Two rules follow from the table. Deletion cannot be canceled: once a cluster is
-`deleting`, the only way forward is `deleted`, and only then can it be
-undeleted. And `drained` and `deleted` are never requested directly; the leasor
-writes them.
+Three rules follow from the table:
+
+- **Deleting a cluster is safe only from `drained`.** Unlike a queue, a cluster
+  can be deleted from `active` or `draining`, and that path does not wait for
+  work: actions in flight on the cluster may fail permanently. A drain
+  followed by a delete is the safe sequence, because the leasor has confirmed
+  the cluster is idle before anything is torn down.
+- Deletion cannot be canceled: once a cluster is `deleting`, the only way
+  forward is `deleted`, and only then can it be undeleted.
+- `drained` and `deleted` are never requested directly; the leasor writes them.
 
 Every lifecycle request is fenced by the cluster's drain **generation**, shown
 by `flyte get cluster <name>`. The Python client reads the current generation
@@ -413,23 +415,28 @@ whichever side is wrong:
 
 ## Delete a cluster
 
-You can delete a cluster from any live state. What happens next depends on its
-[lifecycle state](#cluster-lifecycle):
+You can delete a cluster from any live state, and the state decides whether
+the delete is safe:
 
-- A `drained` cluster becomes `deleted` immediately: the leasor has already
-  confirmed it holds no work.
-- An `active` or `draining` cluster becomes `deleting`. The leasor disconnects
-  the cluster's workers, reschedules its run leases on other clusters, drops
-  its cleanup work, and evicts any apps assigned to it, then reports the
-  cluster `deleted`. A `deleting` cluster is still listed and rejects every
-  further lifecycle request: it cannot be drained, activated, deleted again, or
+- **From `drained`, deletion is safe.** The leasor has already confirmed the
+  cluster holds no work, so the cluster becomes `deleted` immediately and
+  nothing is interrupted.
+- **From `active` or `draining`, deletion is not safe.** The cluster becomes
+  `deleting`: the leasor disconnects the cluster's workers, drops its run and
+  cleanup leases, and evicts any apps assigned to it, then reports the cluster
+  `deleted`. Actions in flight on the cluster are interrupted and may fail
+  permanently. A `deleting` cluster is still listed and rejects every further
+  lifecycle request: it cannot be drained, activated, deleted again, or
   undeleted.
 
-Deletion does not wait for running work and cannot be canceled. It also does not
-remove Kubernetes pods that remain on the data plane. **You are responsible for
-cleaning up those pods.** To let work finish normally, first
-[drain the cluster](#drain-and-reactivate-a-cluster) and wait for `drained`, then
-delete it.
+> [!WARNING] Drain before you delete
+> Deletion does not wait for running work and cannot be canceled. To take a
+> cluster out of service without losing work,
+> [drain it](#drain-and-reactivate-a-cluster) first, wait for `drained`, and
+> only then delete it.
+
+Deletion also does not remove Kubernetes pods that remain on the data plane.
+**You are responsible for cleaning up those pods.**
 
 The cluster's [co-named queue](#the-co-named-queue) enters deletion with the
 cluster. A drained queue becomes `deleted` immediately; an active or draining

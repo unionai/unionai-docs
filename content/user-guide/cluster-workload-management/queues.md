@@ -12,8 +12,6 @@ mermaid: true
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The queue CLI commands and Python objects on this page are provided by the
 > `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
-> The `deleting` and `deleted` queue states require version 0.9.0 or later; this
-> page describes release 0.10.1.
 
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
 work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
@@ -467,12 +465,15 @@ its own. Activating the cluster activates it.
 
 Three rules follow from the table:
 
-- There is no path from `active` into deletion that you can request on a
-  queue: deleting a queue that is accepting work always takes two calls, a
-  drain and then a delete, so a single misdirected command can never take a
-  serving queue away. The one indirect path is
+- **Deleting a queue is a safe archive operation.** A queue must always be
+  drained before it can be deleted: there is no path from `active` into
+  deletion that you can request on a queue, so deleting a queue that is
+  accepting work always takes two calls, a drain and then a delete. A single
+  misdirected command can never take a serving queue away, and the delete
+  itself only archives the record. The one indirect path is
   [deleting a cluster](./clusters#delete-a-cluster), which takes the cluster's
-  co-named queue into deletion whatever state it is in.
+  co-named queue into deletion whatever state it is in; that path is only as
+  safe as the cluster delete that triggers it.
 - Deletion cannot be canceled: a `deleting` queue can only become `deleted`,
   and only then can it be undeleted.
 - `drained` and `deleted` are never requested directly; the leasor writes them
@@ -541,8 +542,11 @@ referenced in settings is refused.
 
 ## Delete a queue
 
-An `active` queue cannot be deleted; start draining it first. You can then choose
-whether to wait:
+A queue must always be drained before it is deleted: an `active` queue is
+rejected, so start draining it first. This is what makes deleting a queue a
+safe archive operation, in contrast to
+[deleting a cluster](./clusters#delete-a-cluster), which can interrupt work.
+Once the queue is draining you can choose whether to wait:
 
 - Deleting a `draining` queue moves it to `deleting`. The leasor terminates the
   queue's remaining run leases, so queued and running actions on it are
