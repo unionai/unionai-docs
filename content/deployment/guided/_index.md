@@ -2,7 +2,7 @@
 title: Guided deployment
 description: "Set up Union yourself from the console, instead of sending your configuration to Union and waiting for it to be set up for you."
 icon: rocket-takeoff
-weight: 0
+weight: 1
 variants: -flyte +union
 ---
 

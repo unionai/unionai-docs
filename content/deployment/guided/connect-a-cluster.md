@@ -2,7 +2,7 @@
 title: Connect your own cluster
 description: Point Union at a Kubernetes cluster you own, so your workloads run on your infrastructure instead of your machine.
 icon: hdd-network
-weight: 1
+weight: 2
 variants: -flyte +union
 ---
 
