@@ -217,18 +217,26 @@ You do not need cloud infrastructure to see this working. A local Kubernetes clu
        ...and the same for services, endpoints and nodes.
        `kubectl auth can-i list nodes --as=<that SA>` answers "no".
 
-     The chain: no cluster-scope RBAC -> prometheus discovers nothing -> no metrics ->
-     Observability reads Unknown and CPU/Memory read "—" -> the scheduler will not select the
-     cluster -> `flyte run` fails at the upload step with "all enabled clusters for organization
-     <org> and cluster pool default are unhealthy". Meanwhile the console header says Healthy,
-     and the only dissenting signal is one tab down under Components > Observability.
+     TESTED, and the RBAC gap alone does NOT explain the failed run. Adding the missing
+     ClusterRoleBinding by hand fixed exactly what it should: `can-i list nodes` went no -> yes and
+     the forbidden errors stopped dead. Observability still reads Unknown, CPU/Memory still read
+     "—", and the run still fails the same way -- including after restarting prometheus so its
+     informers started with the permissions rather than having begun life denied.
 
-     Reproduced across five run attempts spanning ~40 minutes, with the data plane at 26 pods and
-     everything else Healthy, so it is not install lag.
+     So record these as TWO facts, not one story:
+       1. The prometheus service account is packaged with namespaced RBAC and needs cluster scope.
+          Independently verifiable in one `kubectl auth can-i`. Almost certainly a real bug.
+       2. Something keeps this cluster unschedulable while the console header says Healthy.
+          Six `flyte run` attempts over ~an hour, data plane fully up at 26 pods, everything
+          except Observability reading Healthy.
+     Whether they are the same bug is UNKNOWN. An earlier version of this comment asserted the
+     chain (no RBAC -> no metrics -> no capacity -> scheduler refuses) as though it were
+     established. It is not, and stating it would send the next reader down a settled-looking path
+     that is not settled.
 
-     This is ENG26-1184's own open question ("Identify the RBAC that the agent should have")
-     showing up in practice. Raised with eng. Do not write section 6, or publish "trying it on a
-     local cluster" as a working path, until it is fixed and a run is actually observed. -->
+     Fact 1 is ENG26-1184's own open question ("Identify the RBAC that the agent should have").
+     Both are raised with eng. Do not write section 6, and do not publish "trying it on a local
+     cluster" as a working path, until a run is actually observed to succeed. -->
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
 
