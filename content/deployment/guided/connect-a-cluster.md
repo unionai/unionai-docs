@@ -202,21 +202,33 @@ You do not need cloud infrastructure to see this working. A local Kubernetes clu
 > [!WARNING] Give Docker enough memory first
 > The data plane asks for a little over 8 GB of memory in pod requests, so a Docker VM with the common 8 GB default is not enough: the monitoring component never schedules. Give Docker at least 12 GB before you start.
 
-<!-- ⚠️ THE MEMORY REQUIREMENT ABOVE IS VERIFIED. What is NOT verified is that it is sufficient.
-     Measured 2026-09-04 at 7.65 GB: running pods request 7.33 GB, union-operator-prometheus wants
-     1.00 GB more, and it sat Pending on "Insufficient memory".
-     Raising Docker to 11.67 GB fixed that specific symptom -- prometheus went 2/2 Running, and the
-     Components tab moved External dependencies and Infrastructure from Unknown to Healthy.
-     It did NOT make the cluster usable. Observability/Prometheus still reads Unknown, CPU Cores
-     and Memory still read "—", and three `flyte run` attempts still failed at the upload step with
-     "all enabled clusters for organization my-org and cluster pool default are unhealthy" -- while
-     the console header said Healthy.
-     An earlier commit message of mine called memory "the cause" of the run failure. That
-     overstates it: memory is a necessary condition that was genuinely unmet, but clearing it was
-     not sufficient, and the last link of the chain (no metrics -> no capacity -> scheduler refuses)
-     is still only a hypothesis. Do not repeat it as fact.
-     Prometheus had only been up two minutes when the last attempt ran, so scrape lag is the
-     obvious next thing to rule out before escalating. -->
+<!-- The memory figure above is measured: at 7.65 GB, running pods request 7.33 GB and
+     union-operator-prometheus wants 1.00 GB more, so it sits Pending on "Insufficient memory".
+     Raising Docker to 11.67 GB clears that.
+
+     ⚠️ BUT MEMORY IS NOT WHY A RUN FAILS, and section 6 is still blocked by a PRODUCT BUG.
+     Root cause found 2026-09-04, with evidence, not inference:
+
+       union-operator-prometheus has a namespaced RoleBinding
+       (union-operator-prometheus-rbac) and NO ClusterRoleBinding, but its service discovery
+       needs cluster scope. Its own log repeats:
+         pods is forbidden: User "system:serviceaccount:<instance-ns>:union-operator-prometheus"
+         cannot list resource "pods" in API group "" at the cluster scope
+       ...and the same for services, endpoints and nodes.
+       `kubectl auth can-i list nodes --as=<that SA>` answers "no".
+
+     The chain: no cluster-scope RBAC -> prometheus discovers nothing -> no metrics ->
+     Observability reads Unknown and CPU/Memory read "—" -> the scheduler will not select the
+     cluster -> `flyte run` fails at the upload step with "all enabled clusters for organization
+     <org> and cluster pool default are unhealthy". Meanwhile the console header says Healthy,
+     and the only dissenting signal is one tab down under Components > Observability.
+
+     Reproduced across five run attempts spanning ~40 minutes, with the data plane at 26 pods and
+     everything else Healthy, so it is not install lag.
+
+     This is ENG26-1184's own open question ("Identify the RBAC that the agent should have")
+     showing up in practice. Raised with eng. Do not write section 6, or publish "trying it on a
+     local cluster" as a working path, until it is fixed and a run is actually observed. -->
 
 Create a cluster with [kind](https://kind.sigs.k8s.io):
 
