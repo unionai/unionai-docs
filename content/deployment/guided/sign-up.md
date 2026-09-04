@@ -1,21 +1,23 @@
 ---
-title: Sign up and run your first workflow
-description: Create a free Union account, then run a workflow on your own machine and watch it in the console. No cluster needed.
+title: Sign in and create your Union.ai organization
+description: Sign in with your work account and create the organization that is your Union.ai workspace, then run a workflow to see it working. No cluster needed.
 icon: person-plus
 weight: 2
 variants: -flyte +union
 ---
 
-# Sign up and run your first workflow
+# Sign in and create your Union.ai organization
 
-Create an account, then run a workflow and watch it in the {{< key product_name >}} console. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
+Sign in with your work account and create an organization. Your organization is your workspace in {{< key product_name >}}: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
+
+Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
 
 > [!NOTE] Subscribed through AWS Marketplace?
 > Your subscription needs to be claimed by the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
 
 ## What you'll need
 
-- A Google Workspace account. Sign-up uses your work email; personal Gmail addresses are not accepted.
+- A Google Workspace account. Signing in uses your work email, and personal Gmail addresses are not accepted.
 - Python 3.10+ in a virtual environment.
 
 ## Create your account

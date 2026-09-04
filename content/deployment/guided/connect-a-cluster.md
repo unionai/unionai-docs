@@ -1,12 +1,12 @@
 ---
-title: Connect your own cluster
+title: Connect your cluster
 description: Point Union at a Kubernetes cluster you own, so your workloads run on your infrastructure instead of your machine.
 icon: hdd-network
 weight: 3
 variants: -flyte +union
 ---
 
-# Connect your own cluster
+# Connect your cluster
 
 You have an organization. Now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
 
