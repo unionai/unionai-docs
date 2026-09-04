@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Guided deployment
 
-Set up {{< key product_name >}} yourself, from the console: create an organization, then connect a Kubernetes cluster of your own. Your data plane runs in your infrastructure, and {{< key product_name >}} manages it for you.
+Set up {{< key product_name >}} yourself, from the console: create an organization, run something to see it work, then connect a Kubernetes cluster of your own when you need one. Your data plane runs in your infrastructure, and {{< key product_name >}} manages it for you.
 
 **Nothing dials in.** You never open a port, expose an endpoint, or hand over cluster credentials. The agent you install connects outwards.
 
@@ -22,11 +22,17 @@ Set up {{< key product_name >}} yourself, from the console: create an organizati
 
 Guided deployment and BYOC end in the same place. Choose guided deployment to set it up yourself; choose BYOC to have {{< key product_name >}} set it up with you. Choose self-managed if you need to keep operational responsibility for the data plane, and {{< key product_name >}} to have no access to your cluster.
 
-## The path, in order
+## Where to start
 
-1. **[Start from AWS Marketplace](./from-aws-marketplace)** — only if you subscribed through AWS Marketplace. Covers claiming your subscription, then rejoins the path at step 2.
-2. **[Sign up and run your first workflow](./sign-up)** — create an account and an organization, then run something and see it in the console. No cluster needed.
-3. **[Connect your own cluster](./connect-a-cluster)** — give {{< key product_name >}} a Kubernetes cluster to run workloads on.
+There are two ways in, and they meet at the same place.
+
+- **Buying through AWS Marketplace?** Start at [Start from AWS Marketplace](./from-aws-marketplace). It covers the purchase and the handoff to {{< key product_name >}} that follows it, then sends you to the sign-up page below.
+- **Everyone else** starts at [Sign up and run your first workflow](./sign-up).
+
+## The path
+
+1. **[Sign up and run your first workflow](./sign-up).** Create an account and an organization, then run a workflow and watch it in the console. No cluster needed.
+2. **[Connect your own cluster](./connect-a-cluster).** Give {{< key product_name >}} a Kubernetes cluster to run your workloads on.
 
 You do not need a cluster to start. A run on your own machine reports itself to your organization and appears in the console, which is enough to see how {{< key product_name >}} works before committing infrastructure to it.
 

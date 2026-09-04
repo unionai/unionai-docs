@@ -185,7 +185,7 @@ With a connected cluster, drop `--local` and the same code runs on-cluster inste
 flyte run temperatures.py hottest
 ```
 
-The run appears under **Runs** in your project, not under **Tracked Runs** — that section is for runs that execute on your own machine. See [Run modes](../../user-guide/get-started/run-modes/_index) for how the two differ.
+The run appears under **Runs** in your project, not under **Tracked Runs**. That section is for runs that execute on your own machine. See [Run modes](../../user-guide/get-started/run-modes/_index) for how the two differ.
 
 ## Trying it on a local cluster
 
@@ -270,6 +270,6 @@ Then follow the steps above, using:
 
 ## Next steps
 
-- **[Cluster pools](../../user-guide/cluster-workload-management/cluster-pools)** — managing pools from the CLI, including multiple pools.
-- **[Clusters](../../user-guide/cluster-workload-management/clusters)** — inspecting cluster state and capacity, and moving a cluster between pools.
-- **[Queues](../../user-guide/cluster-workload-management/queues)** — routing workloads across your clusters.
+- **[Cluster pools](../../user-guide/cluster-workload-management/cluster-pools)**. Managing pools from the CLI, including multiple pools.
+- **[Clusters](../../user-guide/cluster-workload-management/clusters)**. Inspecting cluster state and capacity, and moving a cluster between pools.
+- **[Queues](../../user-guide/cluster-workload-management/queues)**. Routing workloads across your clusters.
