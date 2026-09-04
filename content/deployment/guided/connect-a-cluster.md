@@ -145,16 +145,29 @@ Only the first phase needs you. Once the agent connects, {{< key product_name >}
 
 Installing the data plane takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs.
 
-<!-- screenshot: pending a re-capture. The install completed on 2026-09-04 and the Clusters list
-     reached "kind-local — Healthy — Version: v2026.8.5". The in-dialog Status panel (both phases,
-     connectivity, health) is only shown while the connect dialog is open, and this session closed
-     it before the install finished, so that specific panel was never captured in its success
-     state. Either re-register a cluster and keep the dialog open, or shoot the Clusters list
-     instead, which carries the same conclusion for the reader.
-     ⚠️ WHATEVER IS SHOT: the console labels this on-prem cluster "EKS / us-east-1" with an AWS
-     logo, though it was registered on the On-Prem tab and the console's own values carry
-     cloudProvider: byoc-onprem and cloudRegion: on-prem. That is a console bug, reported
-     separately; do not ship a screenshot showing it. -->
+When the cluster is ready, it shows as **Healthy** in the cluster list, with the data-plane version it is running:
+
+![The cluster list showing kind-local as healthy](../../_static/images/deployment/guided/connect-a-cluster/cluster-healthy.png)
+
+<!-- ⚠️ THIS IMAGE IS RETOUCHED. Captured on staging 2026-09-04, then the AWS logo and the
+     "EKS / us-east-1" line were hidden in the DOM before the shot was taken, so the image is a
+     real render of a modified page rather than an edited bitmap.
+     Why: the console labels this on-prem cluster as EKS / us-east-1, though it was registered on
+     the On-Prem tab and the console's own generated values carry cloudProvider: byoc-onprem and
+     cloudRegion: on-prem. That is a console bug, raised with eng. Peeter's call to ship the shot
+     with the label removed rather than hold the section (2026-09-04).
+     They were REMOVED, not replaced: we do not know what the fixed console will display, and
+     inventing a label risks being wrong a second time.
+     originals/cluster-healthy.png is the UNRETOUCHED capture and still shows the bug -- keep it,
+     it is the evidence.
+     RE-SHOOT once the label is fixed, and drop this comment with it.
+     Also note CPU Cores and Memory read "—" here. That is genuine, not a load lag: it was
+     re-checked over several minutes on a Healthy cluster. kind does not report capacity. -->
+
+<!-- screenshot, still open: the in-dialog Status panel showing both phases, connectivity and
+     health together. It only renders while the connect dialog is open, and this session closed it
+     before the install finished. To get it, register a cluster and leave the dialog open. The
+     image above carries the same conclusion for the reader, so this is a nice-to-have. -->
 
 ## 6. Run a workload on the cluster
 
