@@ -187,15 +187,16 @@ no more work.
 
 ```mermaid
 stateDiagram-v2
+    direction LR
     [*] --> active: register
+    active --> deleting: delete
+    draining --> deleting: delete
+    deleting --> deleted: cleanup done (system)
     active --> draining: drain
     draining --> active: activate
     draining --> drained: no runs left (system)
     drained --> active: activate
-    active --> deleting: delete
-    draining --> deleting: delete
     drained --> deleted: delete
-    deleting --> deleted: cleanup done (system)
     deleted --> drained: undelete
 ```
 

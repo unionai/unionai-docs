@@ -424,15 +424,16 @@ nothing.
 
 ```mermaid
 stateDiagram-v2
+    direction LR
     [*] --> active: create
+    active --> deleting: cluster deleted (co-named queue only)
+    draining --> deleting: delete
+    deleting --> deleted: cleanup done (system)
     active --> draining: drain
     draining --> active: activate
     draining --> drained: no work left (system)
     drained --> active: activate
-    draining --> deleting: delete
     drained --> deleted: delete
-    active --> deleting: cluster deleted (co-named queue only)
-    deleting --> deleted: cleanup done (system)
     deleted --> drained: undelete
 ```
 
