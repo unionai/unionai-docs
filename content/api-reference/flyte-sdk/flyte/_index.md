@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,7 +37,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
 | [`TaskTemplate`](../flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
-| [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`Trigger`](../flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
 
 ### Protocols
 
@@ -77,7 +77,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`new_condition()`](#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`rerun()`](#rerun) | Re-run a prior run, returning a new `Run`. |
-| [`run()`](#run) | Run a task with the given parameters. |
+| [`run()`](#run) | Run a task with the given parameters, or fire a deployed trigger on demand. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
@@ -909,20 +909,26 @@ The prior run's code is always replayed as-is.
 > `result = await run.aio()`.
 ```python
 def run(
-    task: TaskTemplate[P, R, F],
+    task: TaskTemplate[P, R, F] | LazyEntity | RemoteTrigger | TriggerDetails,
     *args: P.args,
     **kwargs: P.kwargs,
 ) -> Run
 ```
-Run a task with the given parameters
+Run a task with the given parameters, or fire a deployed trigger on demand.
+
+```python
+trigger = flyte.remote.Trigger.get(name="full-report", task_name="reports.report")
+run = flyte.run(trigger)              # the trigger's inputs, env vars, queue, notifications
+run = flyte.run(trigger, days=7)      # override one input, keep the rest
+```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `task` | `TaskTemplate[P, R, F]` | task to run |
-| `*args` | `P.args` | args to pass to the task |
-| `**kwargs` | `P.kwargs` | kwargs to pass to the task |
+| `task` | `TaskTemplate[P, R, F] \| LazyEntity \| RemoteTrigger \| TriggerDetails` | task to run, or a deployed trigger (`flyte.remote.Trigger.get(...)`) |
+| `*args` | `P.args` | args to pass to the task (not allowed for a trigger) |
+| `**kwargs` | `P.kwargs` | kwargs to pass to the task (for a trigger: overrides of its registered inputs) |
 
 **Returns:** Run | Result of the task
 

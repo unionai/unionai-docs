@@ -2,7 +2,7 @@
 title: ModuleLoadError
 description: "This error is raised when the module cannot be loaded, either because it does not exist or because of a syntax error."
 icon: exclamation-triangle
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
