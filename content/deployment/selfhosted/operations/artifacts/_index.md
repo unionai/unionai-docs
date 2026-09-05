@@ -35,7 +35,9 @@ The dedicated bucket is what makes this possible: you can keep an aggressive exp
 
 ### Artifacts service permissions
 
-The Artifacts pod needs **read/write** access (object get, put, list, delete) scoped to the dedicated bucket, bound through the cloud's workload-identity mechanism (AWS IAM Roles for Service Accounts, or GCP Workload Identity) rather than long-lived node credentials. The `ARTIFACT_IAM_ROLE_ARN` value carries the role/service-account identity, which the chart annotates onto the Artifacts pod's Kubernetes service account.
+The Artifacts pod needs **read/write** access (object get, put, list, delete) scoped to the dedicated bucket, and no more. Grant it however your cluster grants pods access to object storage; long-lived node credentials are not required.
+
+A common option is **workload identity**: bind a cloud identity (an AWS IAM role via IRSA, or a GCP service account via Workload Identity) to the Artifacts pod's Kubernetes service account and annotate that service account. The chart does not impose an annotation — you set `services.artifacts.serviceAccount.annotations` directly, so you can use whichever identity mechanism your platform provides. The cloud sub-pages show a concrete service-account binding for each.
 
 See [Infrastructure requirements → Object storage](../../infrastructure-requirements) for the general object-store and workload-identity substrate this builds on.
 
@@ -48,11 +50,11 @@ services:
   artifacts:
     disabled: false
     serviceAccount:
-      annotations:
-        # Cloud-specific identity annotation — the role/service account the
-        # artifacts pod assumes to reach the bucket. See the cloud sub-pages:
-        #   AWS: <pod-identity-prefix>/role-arn: "<irsa-role-arn>"
-        #   GCP: iam.gke.io/gcp-service-account: "<service-account-email>"
+      # Configure the identity annotation directly (one option — see "permissions"
+      # above). The cloud sub-pages show a concrete binding:
+      #   AWS: eks.amazonaws.com/role-arn: "<irsa-role-arn>"
+      #   GCP: iam.gke.io/gcp-service-account: "<service-account-email>"
+      annotations: {}
     configMap:
       artifactsConfig:
         app:

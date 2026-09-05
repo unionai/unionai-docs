@@ -6,7 +6,10 @@ variants: -flyte +union
 
 # Artifacts on AWS
 
-Concrete example of the [generalized Artifacts setup](./_index) on AWS: a dedicated S3 bucket, a lenient lifecycle policy, and an IAM role (via IRSA) that grants the Artifacts service access to just that bucket.
+Concrete example of the [generalized Artifacts setup](./_index) on AWS: a dedicated S3 bucket, a lenient lifecycle policy, and an IAM role bound to the Artifacts pod via IRSA.
+
+> [!NOTE]
+> IRSA is **one option** for granting the pod bucket access — use whatever workload-identity mechanism your platform provides. The chart does not impose a service-account annotation; you set `services.artifacts.serviceAccount.annotations` directly.
 
 Replace the placeholders — `ARTIFACTS_BUCKET`, `ACCOUNT_ID`, `REGION`, `OIDC_PROVIDER`, `CP_NAMESPACE` — with your values.
 

@@ -6,7 +6,10 @@ variants: -flyte +union
 
 # Artifacts on GCP
 
-Concrete example of the [generalized Artifacts setup](./_index) on GCP: a dedicated GCS bucket, a lenient lifecycle policy, and a Workload Identity service account scoped to that bucket.
+Concrete example of the [generalized Artifacts setup](./_index) on GCP: a dedicated GCS bucket, a lenient lifecycle policy, and a Workload Identity service account bound to the Artifacts pod.
+
+> [!NOTE]
+> Binding a Google service account via Workload Identity is **one option** for granting the pod bucket access. The chart does not impose a service-account annotation; you set `services.artifacts.serviceAccount.annotations` directly.
 
 Replace the placeholders — `ARTIFACTS_BUCKET`, `PROJECT_ID`, `REGION`, `CP_NAMESPACE` — with your values.
 
