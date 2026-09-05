@@ -418,10 +418,13 @@ the delete is safe:
   cluster holds no work, so the cluster becomes `deleted` immediately and
   nothing is interrupted.
 - **From `active` or `draining`, deletion is not safe.** The cluster becomes
-  `deleting`: the leasor disconnects the cluster's workers, drops its run and
-  cleanup leases, and evicts any apps assigned to it, then reports the cluster
-  `deleted`. Actions in flight on the cluster are interrupted and may fail
-  permanently. A `deleting` cluster is still listed and rejects every further
+  `deleting`: the leasor disconnects the cluster's workers and drops its run
+  and cleanup leases, then reports the cluster `deleted`. Actions in flight on
+  the cluster are interrupted and may fail permanently. Apps assigned to the
+  cluster are ignored: deletion neither evicts nor reassigns them, so stop or
+  reassign them yourself. Only a [drain](#drain-and-reactivate-a-cluster) is
+  strict about apps, by refusing to start while any is assigned. A `deleting`
+  cluster is still listed and rejects every further
   lifecycle request: it cannot be drained, activated, deleted again, or
   undeleted.
 
@@ -431,8 +434,8 @@ the delete is safe:
 > [drain it](#drain-and-reactivate-a-cluster) first, wait for `drained`, and
 > only then delete it.
 
-Deletion also does not remove Kubernetes pods that remain on the data plane.
-**You are responsible for cleaning up those pods.**
+Deletion also does not remove Kubernetes pods that remain on the data plane,
+app pods included. **You are responsible for cleaning up those pods.**
 
 The cluster's [co-named queue](#the-co-named-queue) enters deletion with the
 cluster. A drained queue becomes `deleted` immediately; an active or draining
