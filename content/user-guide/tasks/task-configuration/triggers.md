@@ -69,7 +69,17 @@ The `Trigger` class allows you to define custom triggers with full control over 
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="dummy-trigger" lang="python">}}
 
+{{< variant union >}}
+{{< markdown >}}
 Only `name` is required. The `automation` parameter decides what fires the trigger: `flyte.Cron` or `flyte.FixedRate` for a schedule, `flyte.OnArtifact` for a new artifact version, or `None` (the default) for a trigger that is only fired on demand.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+Only `name` is required. The `automation` parameter decides what fires the trigger: `flyte.Cron` or `flyte.FixedRate` for a schedule, or `None` (the default) for a trigger that is only fired on demand.
+{{< /markdown >}}
+{{< /variant >}}
+
 Everything else describes the run that the trigger creates.
 
 Here's a comprehensive example showing all parameters:
@@ -161,7 +171,7 @@ The run starts with the inputs, env vars, queue and notification rules the trigg
 
 ### From the UI
 
-Open the task in the UI, go to its **Triggers** tab, and launch the trigger you want.
+Open the task in the UI, go to its **Triggers** tab, open the trigger you want, and select **Run**.
 
 ### From Python
 
