@@ -419,8 +419,7 @@ pool changes entirely: those are managed by its cluster.
 
 A queue is in one of five lifecycle states. The `drain`, `activate`, `delete`,
 and `undelete` transitions are requested by you; the moves into `drained` and
-`deleted` are written by the system once the leasor confirms the queue holds
-nothing.
+`deleted` are made by the system once it confirms the queue holds nothing.
 
 ```mermaid
 stateDiagram-v2
@@ -439,14 +438,14 @@ stateDiagram-v2
 
 - **`active`**: accepting new submissions.
 - **`draining`**: no new submissions; in-flight work runs to completion. The
-  system moves the queue to `drained` once the leasor reports it holds no run
+  system moves the queue to `drained` once it confirms the queue holds no run
   or cleanup work.
 - **`drained`**: confirmed empty. The only state from which a delete completes
   in one step, the only state in which the queue can change pools, and the
   state a restored queue comes back in.
 - **`deleting`**: deletion requested while the queue may still hold work. The
-  leasor terminates the queue's remaining run leases, waits for cleanup work,
-  and then reports the queue `deleted`. The queue stays listed meanwhile.
+  system aborts the queue's remaining run work, waits for cleanup work, and
+  then moves the queue to `deleted`. The queue stays listed meanwhile.
 - **`deleted`**: soft-deleted. Hidden from listings and never scheduled on; the
   name stays reserved and `flyte get queue <name>` still returns it.
 
@@ -477,8 +476,8 @@ Three rules follow from the table:
   safe as the cluster delete that triggers it.
 - Deletion cannot be canceled: a `deleting` queue can only become `deleted`,
   and only then can it be undeleted.
-- `drained` and `deleted` are never requested directly; the leasor writes them
-  once it has confirmed the queue holds nothing.
+- `drained` and `deleted` are never requested directly; the system transitions
+  into them once it has confirmed the queue holds nothing.
 
 Draining a cluster drains its co-named queue and activating the cluster
 activates it; see
@@ -544,12 +543,11 @@ safe archive operation, in contrast to
 [deleting a cluster](./clusters#delete-a-cluster), which can interrupt work.
 Once the queue is draining you can choose whether to wait:
 
-- Deleting a `draining` queue moves it to `deleting`. The leasor terminates the
-  queue's remaining run leases, so queued and running actions on it are
-  aborted rather than finished; cleanup work already in progress is allowed to
-  complete. The queue becomes `deleted` when the leasor holds nothing more for
-  it.
-- Deleting a `drained` queue moves it directly to `deleted`, because the leasor
+- Deleting a `draining` queue moves it to `deleting`. Queued and running
+  actions on it are aborted rather than finished; cleanup work already in
+  progress is allowed to complete. The system moves the queue to `deleted` once
+  nothing remains on it.
+- Deleting a `drained` queue moves it directly to `deleted`, because the system
   has already confirmed that no work or cleanup remains.
 
 Deletion cannot be canceled. A `deleting` queue rejects every further request:

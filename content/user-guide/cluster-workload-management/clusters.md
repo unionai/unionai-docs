@@ -182,8 +182,8 @@ is still live and appears in the normal listing.
 
 A cluster is in one of five lifecycle states. The `drain`, `activate`, `delete`,
 and `undelete` transitions are requested by you; the moves into `drained` and
-`deleted` are written by the system once the leasor confirms the cluster holds
-no more work.
+`deleted` are made by the system once it confirms the cluster holds no more
+work.
 
 ```mermaid
 stateDiagram-v2
@@ -202,14 +202,15 @@ stateDiagram-v2
 
 - **`active`**: accepting new work. Every cluster starts here.
 - **`draining`**: no new work; runs already on the cluster keep going. The
-  system moves the cluster to `drained` once the leasor reports that no run or
+  system moves the cluster to `drained` once it confirms that no run or
   cleanup work remains on it.
 - **`drained`**: confirmed idle. The only state from which a delete completes
   in one step, and the state a restored cluster comes back in.
 - **`deleting`**: deletion requested while the cluster may still hold work. The
-  leasor disconnects the cluster's workers and drops its leases, so actions in
-  flight on the cluster are interrupted and may fail permanently. It then
-  reports the cluster `deleted`. The cluster stays listed meanwhile.
+  system disconnects the cluster's workers and abandons the work assigned to
+  it, so actions in flight on the cluster are interrupted and may fail
+  permanently. It then moves the cluster to `deleted`. The cluster stays listed
+  meanwhile.
 - **`deleted`**: soft-deleted. The record and name are kept; the cluster is
   hidden from listings and refuses heartbeats and status reports.
 
@@ -228,11 +229,12 @@ Three rules follow from the table:
 - **Deleting a cluster is safe only from `drained`.** Unlike a queue, a cluster
   can be deleted from `active` or `draining`, and that path does not wait for
   work: actions in flight on the cluster may fail permanently. A drain
-  followed by a delete is the safe sequence, because the leasor has confirmed
+  followed by a delete is the safe sequence, because the system has confirmed
   the cluster is idle before anything is torn down.
 - Deletion cannot be canceled: once a cluster is `deleting`, the only way
   forward is `deleted`, and only then can it be undeleted.
-- `drained` and `deleted` are never requested directly; the leasor writes them.
+- `drained` and `deleted` are never requested directly; the system transitions
+  into them.
 
 ### How the co-named queue follows its cluster
 
@@ -247,7 +249,7 @@ the same transaction:
 | undelete | — | — | — | → `drained` |
 
 A queue that is already `deleting` is left alone by every cluster operation.
-The leasor confirms the queue's `drained` and `deleted` transitions separately
+The system confirms the queue's `drained` and `deleted` transitions separately
 from the cluster's, so the two can finish in either order.
 
 The queue also has restrictions of its own while it is cluster-managed: it
@@ -263,7 +265,7 @@ not bring a deleted queue back.
 Draining is the graceful way to take a cluster out of service: it stops new work
 from reaching the cluster while runs already there finish. A `draining` cluster
 drops out of every queue's routing, wildcard queues included. The cluster
-becomes `drained` once the leasor confirms that no run or cleanup work remains.
+becomes `drained` once the system confirms that no run or cleanup work remains.
 You can reactivate it at any point while it is `draining` or after it is
 `drained`; reactivation resets the drain progress.
 
@@ -306,7 +308,7 @@ from flyteplugins.union.remote import Cluster
 cluster = Cluster.drain("prod-us-east-1")
 print(cluster.drain_state)                 # draining
 
-# Poll until the leasor confirms the cluster is idle.
+# Poll until the system confirms the cluster is idle.
 while Cluster.get("prod-us-east-1").drain_state != "drained":
     time.sleep(10)
 
@@ -415,13 +417,13 @@ whichever side is wrong:
 You can delete a cluster from any live state, and the state decides whether
 the delete is safe:
 
-- **From `drained`, deletion is safe.** The leasor has already confirmed the
+- **From `drained`, deletion is safe.** The system has already confirmed the
   cluster holds no work, so the cluster becomes `deleted` immediately and
   nothing is interrupted.
 - **From `active` or `draining`, deletion is not safe.** The cluster becomes
-  `deleting`: the leasor disconnects the cluster's workers and drops its run
-  and cleanup leases, then reports the cluster `deleted`. Actions in flight on
-  the cluster are interrupted and may fail permanently. Apps assigned to the
+  `deleting`: the system disconnects the cluster's workers and abandons the
+  run and cleanup work assigned to it, then moves the cluster to `deleted`.
+  Actions in flight on the cluster are interrupted and may fail permanently. Apps assigned to the
   cluster are ignored: deletion neither evicts nor reassigns them, so stop or
   reassign them yourself. Only a [drain](#drain-and-reactivate-a-cluster) is
   strict about apps, by refusing to start while any is assigned. A `deleting`
