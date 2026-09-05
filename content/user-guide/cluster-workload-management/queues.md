@@ -483,11 +483,6 @@ Draining a cluster drains its co-named queue and activating the cluster
 activates it; see
 [How the co-named queue follows its cluster](./clusters#how-the-co-named-queue-follows-its-cluster).
 
-Every state-changing request carries the queue's **state generation**
-(`Queue.state_generation`), which the Python client reads before each request.
-A request that races another change to the same queue is rejected with a
-generation mismatch; re-read the queue and retry if the change still applies.
-
 ## Drain and reactivate a queue
 
 **Draining** takes a queue out of rotation without losing in-flight work: the

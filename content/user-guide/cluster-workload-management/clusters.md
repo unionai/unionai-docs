@@ -167,8 +167,7 @@ Python exposes it as `Cluster.drain_state`. This is the state that `--drain`,
 `--activate`, `delete`, and `undelete` move, and the one to check before any
 maintenance on the cluster.
 
-The detailed view additionally shows the drain **generation** (a counter that
-increases on every lifecycle change), the per-workload drain progress for runs
+The detailed view additionally shows the per-workload drain progress for runs
 and apps, available capacity, and the queues bound to the cluster.
 
 `flyte get cluster <name>` and `Cluster.get` return a not-found error once the
@@ -230,12 +229,6 @@ Three rules follow from the table:
 - Deletion cannot be canceled: once a cluster is `deleting`, the only way
   forward is `deleted`, and only then can it be undeleted.
 - `drained` and `deleted` are never requested directly; the leasor writes them.
-
-Every lifecycle request is fenced by the cluster's drain **generation**, shown
-by `flyte get cluster <name>`. The Python client reads the current generation
-before each request, so a request that races another change to the same cluster
-is rejected with a generation mismatch rather than applied to a state you never
-saw. Re-read the cluster and retry if the change still applies.
 
 ### How the co-named queue follows its cluster
 
