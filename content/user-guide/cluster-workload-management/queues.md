@@ -607,8 +607,11 @@ reserved. Fetching it by name still works — `flyte get queue <name>` and
 `flyte get queue --deleted` to list deleted queues.
 
 Restore it with `flyte undelete queue <name>`. The queue's pool and pinned
-clusters must still be live. The restored queue comes back `drained`; reactivate
-it to resume routing.
+clusters must still be live. A cluster's co-named queue undeletes like any other
+queue while its cluster is live; while the cluster is deleted, the undelete is
+refused and [undeleting the cluster](./clusters#delete-a-cluster) brings the
+queue back with it. The restored queue comes back `drained`; reactivate it to
+resume routing.
 
 ## Move work to another pool
 

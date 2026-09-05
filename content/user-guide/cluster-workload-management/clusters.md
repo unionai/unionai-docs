@@ -170,10 +170,13 @@ maintenance on the cluster.
 The detailed view additionally shows the per-workload drain progress for runs
 and apps, available capacity, and the queues bound to the cluster.
 
-`flyte get cluster <name>` and `Cluster.get` return a not-found error once the
-cluster is `deleted`; list deleted clusters with `flyte get cluster --deleted`
-or `Cluster.listall(deleted=True)` instead. A `deleting` cluster is still live
-and is returned normally.
+Fetching a cluster **by name** works in every lifecycle state, `deleted`
+included: `flyte get cluster <name>` and `Cluster.get` return a soft-deleted
+cluster with its deletion time (a `deleted at` row in the detailed view), so the
+record stays inspectable after deletion. Only the listing hides deleted
+clusters; `flyte get cluster --deleted` or `Cluster.listall(deleted=True)`
+lists them instead, which is how you find one to undelete. A `deleting` cluster
+is still live and appears in the normal listing.
 
 ## Cluster lifecycle
 
@@ -476,10 +479,11 @@ Cluster.undelete("prod-us-east-1")   # restore a deleted cluster
 The command returns after the cluster becomes either `deleting` or `deleted`,
 and says which. A `deleting` cluster remains visible in normal listings while
 teardown runs; watch it with `flyte get cluster <name>`. Once `deleted`, it
-disappears from normal listings, `flyte get cluster <name>` reports it as not
-found, and it stops accepting status reports and heartbeats. The record is
-retained and its name stays reserved, so registering another cluster with the
-same name is rejected. Find deleted clusters with `flyte get cluster --deleted`.
+disappears from normal listings and stops accepting status reports and
+heartbeats. The record is retained and its name stays reserved, so registering
+another cluster with the same name is rejected. `flyte get cluster <name>` still
+returns the deleted cluster with its deletion time, and
+`flyte get cluster --deleted` lists every deleted cluster.
 
 A `deleting` cluster cannot be restored; wait for deletion to finish. Then use
 `flyte undelete cluster <name>`. The cluster and its co-named queue both return
