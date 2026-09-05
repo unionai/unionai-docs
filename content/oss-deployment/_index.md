@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-description: Deploy Flyte to your own Kubernetes cluster with the flyte-binary Helm chart.
+description: Deploy Flyte to your own Kubernetes cluster with the flyte-binary or flyte-core Helm chart.
 icon: server
 variants: +flyte -union
 weight: 5
@@ -9,14 +9,17 @@ top_menu: true
 
 # Platform deployment
 
-This section covers how to deploy **Flyte** to your own Kubernetes cluster using the
-`flyte-binary` Helm chart.
+This section covers how to deploy **Flyte** to your own Kubernetes cluster.
 
 Flyte ships as a single unified binary that bundles the runs service, the
 task/actions controller, the data proxy, and the app service, served alongside the
 Flyte web console. You point it at three things you provision yourself (a Kubernetes
-cluster, a PostgreSQL database, and an object store) and it runs as one Deployment
-that you scale vertically.
+cluster, a PostgreSQL database, and an object store).
+
+Two Helm charts deploy that binary. The `flyte-binary` chart runs every component in
+one Deployment that you scale vertically — the right choice for most installs. The
+`flyte-core` chart runs one Deployment per component, for when you need to scale,
+schedule, or roll them out independently.
 
 > [!INFO] Try Flyte Devbox in your browser
 >
@@ -35,8 +38,10 @@ Walk through these pages in order:
    including an optional self-contained authentication setup with
    [Dex](./kind-deployment/local-oidc) (or an
    [external OIDC provider](./kind-deployment/external-oidc)).
-3. [AWS deployment](./aws-deployment): a minimal `values.yaml`, the `helm install`
-   command, object-storage access, ingress, and a worked AWS/EKS example.
+3. [AWS deployment](./aws-deployment/_index): a minimal `values.yaml`, the `helm install`
+   command, object-storage access, ingress, and a worked AWS/EKS example — for
+   [`flyte-binary`](./aws-deployment/flyte-binary) or
+   [`flyte-core`](./aws-deployment/flyte-core).
 4. [Authentication and SSO](./authentication): securing the API and putting single
    sign-on in front of the console.
 5. [Enable app serving](./app-serving): running long-running apps on Knative,

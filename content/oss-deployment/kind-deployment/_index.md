@@ -19,7 +19,7 @@ way it's a fast way to try Flyte without running a production-grade control plan
 > and the optional [auth setup](#7-add-authentication-with-a-local-idp-optional)
 > uses a self-signed cert the SDK only accepts via `insecureSkipVerify`. Use it to try
 > Flyte, not as a template for a production deployment. For that, see
-> [AWS deployment](../aws-deployment). On a cloud VM, remember the stack is reachable
+> [AWS deployment](../aws-deployment/_index). On a cloud VM, remember the stack is reachable
 > from the public internet: restrict ports `80`/`443` (and `22`) to your own IP with a
 > [cloud firewall](https://docs.digitalocean.com/products/networking/firewalls/) while
 > you evaluate.
@@ -359,7 +359,7 @@ the SDK uploads to the presigned URL directly.
 
 ## 7. Add authentication with a local IdP (optional)
 
-The cloud worked examples in [AWS deployment](../aws-deployment) gate the console with
+The cloud worked examples in [AWS deployment](../aws-deployment/_index) gate the console with
 OIDC single sign-on at the load balancer: on AWS that's the ALB, configured through
 `alb.ingress.kubernetes.io/auth-*` annotations. Those annotations are instructions to
 the *AWS Load Balancer Controller* and do nothing on kind, which has no ALB.
@@ -991,6 +991,6 @@ The hosted PostgreSQL and S3/R2 bucket are untouched; clean those up in their ow
 consoles.
 
 When you're ready to deploy to a real cluster, continue to
-[AWS deployment](../aws-deployment).
+[AWS deployment](../aws-deployment/_index).
 
 {{< subpage-cards >}}
