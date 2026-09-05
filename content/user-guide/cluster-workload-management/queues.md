@@ -26,7 +26,7 @@ CLI or Python. For how workflow authors *target* a queue from task code, see
 
 A queue lives inside one **cluster pool** and routes work to one or more clusters
 *within that pool*. By default (the `*` selector) it spreads across the pool's
-healthy, enabled clusters; you can also pin it to specific clusters. It can never
+healthy, `active` clusters; you can also pin it to specific clusters. It can never
 reach a cluster in another pool: pools are isolation boundaries.
 
 ```mermaid
@@ -65,19 +65,21 @@ inside exactly one pool:
 - **`prod-queue`** spreads across the eligible clusters in the `prod` pool.
 - **`gpu-queue`** lives in the same `prod` pool but is pinned to a single cluster.
 
-> [!NOTE] Routing skips unhealthy and disabled clusters
+> [!NOTE] Routing skips unhealthy and non-active clusters
 > A `*` selector does not mean *every* cluster in the pool — it means every
-> cluster that is both **healthy** and **enabled**, evaluated against the pool's
-> current state. Pinned selectors are filtered the same way: an unhealthy or
-> disabled cluster receives no new work from *any* queue, wildcard or pinned.
+> cluster that is both **healthy** and **`active`** in its
+> [lifecycle](./clusters#cluster-lifecycle), evaluated against the pool's
+> current state. Pinned selectors are filtered the same way: an unhealthy
+> cluster, or one that is `draining`, `drained`, or being deleted, receives no
+> new work from *any* queue, wildcard or pinned.
 > Say a pool holds two clusters and the second goes unhealthy for any reason,
 > including a
 > [config mismatch with the pool](./cluster-pools#how-a-pools-config-is-enforced):
 > the queue routes new runs and actions to the first cluster only, and sends
 > nothing to the second until it becomes healthy again. This governs the placement
 > of new work; it does not move work that has already been dispatched. Check with
-> `flyte get cluster <name>`, which reports each cluster's state, health, and
-> unhealthy reasons.
+> `flyte get cluster <name>`, which reports each cluster's lifecycle state,
+> health, and unhealthy reasons.
 
 ### Queues you get for free
 
@@ -230,7 +232,7 @@ default.
   only route to clusters in its own pool. Omit to bind the queue to the `default`
   pool.
 - **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
-  Omit to use all clusters in the pool. In the API, `["*"]` means all enabled and
+  Omit to use all clusters in the pool. In the API, `["*"]` means all `active`,
   healthy clusters in the pool (see
   [Wildcard routing](#how-a-queue-routes)), and `*` must be the only entry if
   used.

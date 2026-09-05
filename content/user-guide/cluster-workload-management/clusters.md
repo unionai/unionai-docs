@@ -99,7 +99,7 @@ Registration additionally ensures the org-wide `default` queue exists — unless
 that queue has been deliberately [deleted](./queues#delete-a-queue): nothing
 re-creates a soft-deleted `default` queue (or pool) implicitly; `flyte undelete`
 is the only way back. The `default` queue lives in the `default` pool with the
-`*` selector, so it routes to every healthy, enabled cluster in the `default`
+`*` selector, so it routes to every healthy, `active` cluster in the `default`
 pool: a cluster registered there joins it automatically, while a cluster in any
 other pool never does.
 
@@ -125,7 +125,7 @@ finish at slightly different times. See
 {{< markdown >}}
 
 ```bash
-# List all clusters (grouped by enabled / disabled)
+# List all clusters with their lifecycle state, health, and capacity
 flyte get cluster
 
 # Inspect one cluster — cloud config, state, capacity, and bound queues

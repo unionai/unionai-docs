@@ -84,7 +84,7 @@ work to one or more clusters **in its own pool**, and the three queues above sho
 the routing choices you have:
 
 - **`default`** uses the wildcard selector `*`: it spreads across every cluster in
-  its pool that is healthy and enabled, and picks up new clusters automatically as
+  its pool that is healthy and `active`, and picks up new clusters automatically as
   they join. An unhealthy cluster stops receiving new work until it recovers — see
   [Wildcard routing](./queues#how-a-queue-routes).
 - **`prod-queue`** names both clusters in its pool explicitly. The result looks
