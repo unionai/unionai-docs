@@ -19,7 +19,7 @@ Configure cluster pools, queues, and per-project routing so tasks run on a data 
 {{< /link-card >}}
 
 {{< link-card target="./artifacts/_index" icon="package" title="Artifacts" >}}
-Enable the Artifacts service: dedicated bucket, lifecycle policy, and per-cloud permissions
+Enable the Artifacts service — a DB-backed metadata layer; no dedicated bucket required
 {{< /link-card >}}
 
 {{< link-card target="./troubleshooting" icon="life-buoy" title="Troubleshooting" >}}
