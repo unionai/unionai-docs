@@ -17,4 +17,8 @@ Tutorials for frontier-model pretraining, automated experimentation, and large-s
 Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
 {{< /link-card >}}
 
+{{< link-card target="agentic-rl-skyrl" icon="arrow-repeat" title="Durable agentic RL with SkyRL and Harbor" >}}
+Make SkyRL/Harbor-style agentic RL rollouts durable — trials that survive driver crashes, judges that are never re-billed, and training steps that apply exactly once.
+{{< /link-card >}}
+
 {{< /grid >}}
