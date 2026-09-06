@@ -8,26 +8,21 @@ variants: -flyte +union
 
 Artifacts let tasks publish and consume **versioned, named** outputs — models, datasets, feature tables — with lineage back to the run that produced them, and let runs be **triggered** when a new version of an artifact appears.
 
-On a {{< key product_name >}} self-hosted deployment the Artifacts service is **off by default** and is enabled per environment with a single value. It needs **no dedicated bucket** — artifact blobs reuse the existing data bucket, and the service itself holds no object-store credentials.
-
-> [!NOTE]
-> Enable Artifacts **after** the control plane is installed and healthy — see [Getting started](../../getting-started). Turning it on is additive: it deploys one pod, with no change to existing services.
+On a {{< key product_name >}} self-hosted deployment the Artifacts service is **enabled by default**. It needs **no dedicated bucket** — artifact blobs reuse the existing data bucket, and the service itself holds no object-store credentials, so there is nothing to provision.
 
 ## No dedicated bucket required
 
 The Artifacts service is a **metadata layer** backed by the control plane's existing database. An artifact is a named, versioned **pointer** to the literal a task already produced (plus metadata: partitions, source run, cards). The bytes stay at the producing task's output path — the **same data bucket** used for task outputs and offloaded metadata, not a separate artifacts bucket — and cards are stored as URI references. The service itself does no object-store I/O (pointers only), so it needs no bucket credentials or workload-identity binding of its own — just the shared control-plane database (it creates its own `artifacts_v2` tables on first start).
 
-## Enable Artifacts
+## Enabling and disabling
 
-Set the single toggle in your environment's `values.yaml` overrides:
+Artifacts is on by default (`services.artifacts.enabled: true`) — deploying the Artifacts pod, exposing the v2 `ArtifactService` route, enabling the **Artifacts** console nav, and turning on replication of run-produced artifacts, all from one value. To turn it off for an environment, set it false in your `values.yaml` overrides:
 
 ```yaml
 services:
   artifacts:
-    disabled: false
+    enabled: false
 ```
-
-That one value deploys the Artifacts pod, exposes the v2 `ArtifactService` route on the control-plane ingress, enables the **Artifacts** navigation entry in the console, and turns on replication of run-produced artifacts into the service — all from one source of truth.
 
 ## Verify
 
