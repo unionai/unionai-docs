@@ -134,7 +134,8 @@ moving a queue that still holds work would cross an isolation boundary. See
 sensible default. With no cluster selector, a queue spreads work across **all**
 healthy clusters in its pool. The name `default` is reserved, and a queue cannot
 share a name with a cluster — every cluster already owns its
-[co-named queue](./clusters#the-co-named-queue).
+[co-named queue](./clusters#the-co-named-queue) — or with a soft-deleted queue,
+whose name stays reserved until it is [undeleted](#delete-a-queue).
 
 {{< tabs "create-queue" >}}
 {{< tab "CLI" >}}
@@ -415,7 +416,8 @@ only when the queue is [drained](#drain-and-reactivate-a-queue), the destination
 pool exists, and every cluster in the queue's selector is a member of the
 destination pool — see [Move work to another pool](#move-work-to-another-pool).
 A cluster's [co-named queue](./clusters#the-co-named-queue) rejects selector and
-pool changes entirely: those are managed by its cluster.
+pool changes entirely: those are managed by its cluster. A soft-deleted queue
+cannot be updated at all; [undelete it](#delete-a-queue) first.
 
 ## Queue lifecycle
 
@@ -561,7 +563,8 @@ any scope can be drained but not deleted: update or unset those settings first.
 A cluster's [co-named queue](./clusters#the-co-named-queue) can be deleted on its
 own while the cluster lives. Deleting the cluster also deletes its co-named queue
 and is the only operation that can take that queue directly from `active` to
-`deleting`.
+`deleting`; that cascade does not apply the `run.default_queue` check, so a
+co-named queue used as a default run queue goes away with its cluster.
 
 The `default` queue is no exception: drain it, then delete it, like any other
 queue — deleting it is also how the `default` pool is emptied of live queues so

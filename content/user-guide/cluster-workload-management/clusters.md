@@ -248,9 +248,11 @@ the same transaction:
 | delete | → `deleting` | → `deleting` | → `deleted` | unchanged |
 | undelete | — | — | — | → `drained` |
 
-A queue that is already `deleting` is left alone by every cluster operation.
-The system confirms the queue's `drained` and `deleted` transitions separately
-from the cluster's, so the two can finish in either order.
+A queue that is already `deleting` is left alone by every cluster operation,
+undelete included: it finishes deleting on its own, and once it is `deleted`
+you can restore it with `flyte undelete queue`. The system confirms the queue's
+`drained` and `deleted` transitions separately from the cluster's, so the two
+can finish in either order.
 
 The queue also has restrictions of its own while it is cluster-managed: it
 cannot be activated on its own while its cluster is `draining` or `drained`
@@ -374,11 +376,14 @@ differ from the cluster's current pool.
 
 ### Before you move a cluster
 
-1. **Repoint other queues.** Any queue other than the
+1. **Repoint other queues.** Any live queue other than the
    [co-named queue](#the-co-named-queue) that explicitly names the cluster must
    have it removed from its selector. Such a queue blocks both the cluster drain
    and the pool move. Wildcard (`*`) queues do not block either operation.
-   `flyte get cluster <name>` lists the queues bound to the cluster.
+   `flyte get cluster <name>` lists the queues bound to the cluster. A
+   soft-deleted queue that names the cluster does not block the move either;
+   the cluster is dropped from its selector, because a deleted queue cannot
+   follow the cluster into the new pool, so that the queue stays restorable.
 2. **Stop apps and check for v1 executions.** A cluster does not only serve
    runs. [Apps](../apps/serve-and-deploy-apps/_index) assigned to the cluster
    block the drain: the drain request is rejected and names them, so stop or
@@ -447,7 +452,9 @@ is the only way an `active` queue ever enters `deleting`; `flyte delete queue`
 itself rejects an active queue. The cluster and queue reach `deleted`
 independently and may finish in either order. Any other live queue
 that explicitly names the cluster blocks deletion; remove the cluster from its
-selector first. Wildcard (`*`) queues do not block deletion.
+selector first. Wildcard (`*`) queues do not block deletion, and neither does a
+soft-deleted queue that names the cluster: it keeps its reference, so it can
+only be undeleted once the cluster is.
 
 A queue whose selector you empty this way stops routing work anywhere until you
 point it at another cluster **in its pool** (or
@@ -492,13 +499,15 @@ returns the deleted cluster with its deletion time, and
 `flyte get cluster --deleted` lists every deleted cluster.
 
 A `deleting` cluster cannot be restored; wait for deletion to finish. Then use
-`flyte undelete cluster <name>`. The cluster and its co-named queue both return
-in the `drained` state, even if the queue had been deleted on its own before the
-cluster was. Undeleting the cluster is the only way to bring that queue back:
-`flyte undelete queue` refuses it while the cluster is deleted. The cluster's
-pool must itself be live; undelete the pool first if it was deleted. Run
-`flyte update cluster <name> --activate` to reactivate cluster and queue
-together.
+`flyte undelete cluster <name>`. The cluster returns in the `drained` state, and
+so does its co-named queue if that queue is `deleted`, even if it had been
+deleted on its own before the cluster was. Undeleting the cluster is the only
+way to bring that queue back: `flyte undelete queue` refuses it while the
+cluster is deleted. A co-named queue that is still `deleting` is not touched;
+it finishes deleting on its own, and you can undelete it separately afterwards.
+The cluster's pool must itself be live; undelete the pool first if it was
+deleted. Run `flyte update cluster <name> --activate` to reactivate cluster and
+queue together.
 
 ## Next
 
