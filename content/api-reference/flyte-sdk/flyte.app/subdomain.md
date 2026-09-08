@@ -2,7 +2,7 @@
 title: Subdomain
 description: "A subdomain that is resolved at deploy time, when the deployment project and domain are known."
 icon: braces
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: AgentChatAppEnvironment
 description: "An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`."
 icon: braces
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -660,11 +660,16 @@ Example:
 $ flyte create trigger my_task my_trigger --schedule "0 0 * * *"
 ```
 
-This will create a trigger that runs every day at midnight.
+This will create a trigger that runs every day at midnight. Omit `--schedule` to create a
+trigger with no automation, which is only fired on demand:
+
+```bash
+$ flyte create trigger my_task my_trigger
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--schedule` | `text` | `Sentinel.UNSET` | Cron schedule for the trigger. Defaults to every minute. |
+| `--schedule` | `text` |  | Cron schedule for the trigger. If omitted, the trigger has no automation and is only fired on demand. |
 | `--description` | `text` | `` | Description of the trigger. |
 | `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
 | `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to `trigger_time`. |

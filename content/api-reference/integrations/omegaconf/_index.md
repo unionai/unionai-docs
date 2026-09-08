@@ -2,7 +2,7 @@
 title: OmegaConf
 description: "OmegaConf DictConfig/ListConfig support for Flyte."
 icon: book
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

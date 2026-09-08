@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.7.0
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -43,7 +43,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.TaskEnvironment`](flyte/taskenvironment) | Define an execution environment for a set of tasks. |
 | [`flyte.TaskTemplate`](flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.Timeout`](flyte/timeout) | Timeout bounds for a task. |
-| [`flyte.Trigger`](flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`flyte.Trigger`](flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
 | [`flyte.ai.agents.AccessDenied`](flyte.ai.agents/accessdenied) | Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.Agent`](flyte.ai.agents/agent) | A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.AgentEvent`](flyte.ai.agents/agentevent) | Lightweight event emitted by the agent loop. |
@@ -205,6 +205,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.remote.TaskDetails`](flyte.remote/taskdetails) |  |
 | [`flyte.remote.TimeFilter`](flyte.remote/timefilter) | Filter for time-based fields (e.g. created_at, updated_at). |
 | [`flyte.remote.Trigger`](flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
+| [`flyte.remote.TriggerDetails`](flyte.remote/triggerdetails) |  |
 | [`flyte.remote.User`](flyte.remote/user) | Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](flyte.report/report) |  |
 | [`flyte.report.Timeline`](flyte.report/timeline) | Append a best-effort chronological timeline to a tab of the task report. |
@@ -269,7 +270,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.map()`](flyte/_index#map) | Map a function over the provided arguments with concurrent execution. |
 | [`flyte.new_condition()`](flyte/_index#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`flyte.rerun()`](flyte/_index#rerun) | Re-run a prior run, returning a new `Run`. |
-| [`flyte.run()`](flyte/_index#run) | Run a task with the given parameters. |
+| [`flyte.run()`](flyte/_index#run) | Run a task with the given parameters, or fire a deployed trigger on demand. |
 | [`flyte.run_python_script()`](flyte/_index#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`flyte.serve()`](flyte/_index#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`flyte.trace()`](flyte/_index#trace) | A decorator that traces function execution with timing information. |

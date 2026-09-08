@@ -410,6 +410,8 @@
     "flyte.remote.TimeFilter": "/api-reference/flyte-sdk/flyte.remote/timefilter/",
     "TimeFilter": "/api-reference/flyte-sdk/flyte.remote/timefilter/",
     "flyte.remote.Trigger": "/api-reference/flyte-sdk/flyte.remote/trigger/",
+    "flyte.remote.TriggerDetails": "/api-reference/flyte-sdk/flyte.remote/triggerdetails/",
+    "TriggerDetails": "/api-reference/flyte-sdk/flyte.remote/triggerdetails/",
     "flyte.remote.User": "/api-reference/flyte-sdk/flyte.remote/user/",
     "User": "/api-reference/flyte-sdk/flyte.remote/user/",
     "flyte.report.Report": "/api-reference/flyte-sdk/flyte.report/report/",
