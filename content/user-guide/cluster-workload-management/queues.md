@@ -548,9 +548,9 @@ safe archive operation, in contrast to
 Once the queue is draining you can choose whether to wait:
 
 - Deleting a `draining` queue moves it to `deleting`. Queued and running
-  actions on it are aborted rather than finished; cleanup work already in
-  progress is allowed to complete. The system moves the queue to `deleted` once
-  nothing remains on it.
+  actions on it are failed rather than finished, as a final attempt that is not
+  retried; cleanup work is left to run. The system moves the queue to `deleted`
+  once nothing remains on it.
 - Deleting a `drained` queue moves it directly to `deleted`, because the system
   has already confirmed that no work or cleanup remains.
 
