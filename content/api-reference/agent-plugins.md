@@ -26,7 +26,7 @@ are separate, and only some harnesses can have them configured for you.
 | Harness | Skills | MCP servers | Skill installation |
 |---------|--------|-------------|--------------------|
 | Claude Code | All 21 | Both, via `mcp install` | `--target claude` |
-| ChatGPT (Codex) | All 21, through the official Flyte plugin | `flyte-docs` automatic; `flyte-cluster` local | Plugins catalog |
+| ChatGPT (Codex) | Flyte skills, through the official Flyte plugin | `flyte-docs` automatic; `flyte-cluster` local | Plugins catalog |
 | Codex CLI | All 21 | Both, via `mcp install` | `--target agents` |
 | Hermes | All 21, or per-skill | Manual | `--target hermes` |
 | OpenCode | All 21 | Manual | `--target opencode` |
@@ -106,7 +106,7 @@ server with [`flyte-agent-plugins mcp install`](#install-mcp-servers) or [config
 manually](#adding-mcp-servers-locally). `flyte-cluster` provides optional local access to
 the cluster your Flyte CLI is logged into.
 
-![Local MCP](../_static/images/api-reference/local_mcp.png)
+![ChatGPT local MCP settings showing flyte-cluster under Servers](../_static/images/api-reference/local_mcp.png)
 
 ## Install MCP Servers
 
@@ -192,10 +192,10 @@ migrating existing workloads to Flyte 2, and deploying Flyte clusters.
 
 ## MCP servers
 
-The plugin includes instructions for two optional [MCP](https://modelcontextprotocol.io)
-servers, split so nothing is duplicated between them. In ChatGPT, `flyte-docs` is
-included with the official plugin; configure only the optional local `flyte-cluster`
-server separately.
+The plugin bundles two optional [MCP](https://modelcontextprotocol.io) servers, split so
+nothing is duplicated between them. Claude Code and Codex CLI get both from the plugin.
+In ChatGPT, only `flyte-docs` comes with the official plugin; configure the optional local
+`flyte-cluster` server separately.
 
 | Server | Transport | Tools | Needs |
 |--------|-----------|-------|-------|
@@ -262,6 +262,8 @@ on whichever control plane your `flyte` CLI is authenticated against. Set
 config: the tools register either way, and calls then report the missing target rather
 than breaking the protocol. So the plugin still helps while you are deploying your first
 cluster.
+
+<a id="adding-the-mcp-servers-manually"></a>
 
 ### Adding MCP servers locally
 
