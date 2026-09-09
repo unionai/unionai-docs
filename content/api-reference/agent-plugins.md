@@ -276,7 +276,7 @@ Use these snippets for Claude Code, Codex CLI, or another harness:
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "Codex CLI" >}}
+{{< tab "ChatGPT desktop / Codex CLI" >}}
 {{< markdown >}}
 ```toml
 # ~/.codex/config.toml
@@ -336,7 +336,7 @@ package. It uses the same active Flyte configuration and login as the `flyte` CL
 ```
 {{< /markdown >}}
 {{< /tab >}}
-{{< tab "Codex CLI" >}}
+{{< tab "ChatGPT desktop / Codex CLI" >}}
 {{< markdown >}}
 ```toml
 # ~/.codex/config.toml
