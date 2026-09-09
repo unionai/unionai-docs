@@ -210,10 +210,11 @@ stateDiagram-v2
 - **`drained`**: confirmed idle. The only state from which a delete completes
   in one step, and the state a restored cluster comes back in.
 - **`deleting`**: deletion requested while the cluster may still hold work. The
-  system disconnects the cluster's workers and abandons the work assigned to
-  it, so actions in flight on the cluster are interrupted and may fail
-  permanently. It then moves the cluster to `deleted`. The cluster stays listed
-  meanwhile.
+  system disconnects the cluster's workers, drops the cleanup work assigned to
+  it, and fails the runs on it recoverably, so the retry path can place them on
+  another eligible cluster. Runs that reached this cluster through its co-named
+  queue are the exception: that queue enters `deleting` too, and its work fails
+  for good. It then moves the cluster to `deleted`.
 - **`deleted`**: soft-deleted. The record and name are kept; the cluster is
   hidden from listings and refuses heartbeats and status reports.
 
@@ -231,9 +232,11 @@ Three rules follow from the table:
 
 - **Deleting a cluster is safe only from `drained`.** Unlike a queue, a cluster
   can be deleted from `active` or `draining`, and that path does not wait for
-  work: actions in flight on the cluster may fail permanently. A drain
-  followed by a delete is the safe sequence, because the system has confirmed
-  the cluster is idle before anything is torn down.
+  work: actions on the cluster are failed and retried elsewhere only while
+  they have retries left, and work that arrived through the co-named queue
+  fails permanently. A drain followed by a delete is the safe sequence,
+  because the system has confirmed the cluster is idle before anything is torn
+  down.
 - Deletion cannot be canceled: once a cluster is `deleting`, the only way
   forward is `deleted`, and only then can it be undeleted.
 - `drained` and `deleted` are never requested directly; the system transitions
@@ -429,10 +432,14 @@ the delete is safe:
   cluster holds no work, so the cluster becomes `deleted` immediately and
   nothing is interrupted.
 - **From `active` or `draining`, deletion is not safe.** The cluster becomes
-  `deleting`: the system disconnects the cluster's workers and abandons the
-  run and cleanup work assigned to it, then moves the cluster to `deleted`.
-  Actions in flight on the cluster are interrupted and may fail permanently. Apps assigned to the
-  cluster are ignored: deletion neither evicts nor reassigns them, so stop or
+  `deleting`: the system disconnects the cluster's workers and fails the
+  actions on that cluster, but in a recoverable manner. If there are retries
+  remaining for those actions, the system retries them on healthy clusters of
+  the queue the work was submitted on. Keep in mind, however, that actions
+  which came in through the co-named queue end up failed permanently, since
+  moving a cluster to `deleting` also moves the co-named queue to `deleting`.
+  Once nothing remains on it, the cluster moves to `deleted`. Apps assigned to
+  the cluster are ignored: deletion neither evicts nor reassigns them, so stop or
   reassign them yourself. Only a [drain](#drain-and-reactivate-a-cluster) is
   strict about apps, by refusing to start while any is assigned. A `deleting`
   cluster is still listed and rejects every further
