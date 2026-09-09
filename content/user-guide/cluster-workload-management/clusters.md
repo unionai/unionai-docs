@@ -161,9 +161,12 @@ print(cluster.config_drift)
 {{< /tabs >}}
 
 The cluster's [lifecycle state](#cluster-lifecycle) is the
-`drain_status.overall_state` field of the API response: `active`, `draining`,
-`drained`, `deleting`, or `deleted`. The CLI shows it in the `drain` column and
-Python exposes it as `Cluster.drain_state`. This is the state that `--drain`,
+`drain_status.overall_state` field of the API response, which carries
+`CLUSTER_STATE_ACTIVE`, `CLUSTER_STATE_DRAINING`, `CLUSTER_STATE_DRAINED`,
+`CLUSTER_STATE_DELETING`, or `CLUSTER_STATE_DELETED`. The CLI shows it
+lowercased in the `Drain` column and Python exposes it the same way as
+`Cluster.drain_state`; the rest of this page uses the lowercase names. This is
+the state that `--drain`,
 `--activate`, `delete`, and `undelete` move, and the one to check before any
 maintenance on the cluster.
 
@@ -327,8 +330,8 @@ cluster without waiting for its work to finish, [delete it](#delete-a-cluster).
 ## Move a cluster to a different pool
 
 A cluster can be reassigned to another pool in place, without deleting and
-re-registering it. The control plane enforces one precondition: the cluster's
-[co-named queue](#the-co-named-queue) must be `drained`, because that queue
+re-registering it. The precondition that shapes the workflow is that the
+cluster's [co-named queue](#the-co-named-queue) must be `drained`, because that queue
 moves to the new pool with the cluster and a queue can only change pools when
 it holds no work. The move does not check the cluster's own lifecycle state, so
 the recommended way to satisfy the precondition is to
