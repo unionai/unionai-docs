@@ -148,6 +148,9 @@ flyte deploy app.py
 
 **For headless or browser-restricted environments** - Uses OAuth2 device flow with code verification.
 
+> [!IMPORTANT]
+> Device flow is temporarily unavailable for newly provisioned Union organizations while we transition authentication providers. Organizations that already use device flow can continue to do so. For new organizations, use [PKCE](#pkce) when a browser is available or an [API key](#api-key) for non-interactive access.
+
 #### When to use
 
 - Remote servers without GUI/browser access
@@ -589,7 +592,7 @@ echo $FLYTE_API_KEY
 ## Best practices
 
 1. **Local development**: Use PKCE authentication for the best experience
-2. **Remote development**: Use device flow for hosted notebooks and SSH sessions
+2. **Remote development**: Use device flow where supported; for newly provisioned organizations, use PKCE when a browser is available or an API key for headless environments
 3. **Production/CI**: Always use API keys for automated environments
 4. **API key security**:
    - Store in secret managers (GitHub Secrets, AWS Secrets Manager, Vault)

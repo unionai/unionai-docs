@@ -197,7 +197,7 @@ flyte deploy --root-dir /path/to/project /path/to/project/my_example.py env
 
 1. **Code bundling**: Files are collected starting from `--root-dir` instead of the current working directory
 2. **Import resolution**: Python imports are resolved relative to the specified root directory
-3. **Path consistency**: Ensures the same directory structure in local and remote execution environments
+3. **Path consistency**: Ensures the same directory structure in local and on-cluster execution environments
 4. **Dependency packaging**: Captures all necessary modules that may be located outside the workflow file's immediate directory
 
 ### Example with complex project structure
@@ -216,7 +216,7 @@ my-project/
 flyte deploy --root-dir ./my-project ./my-project/services/ml/my_example.py env
 ```
 
-This ensures that both `services/ml/` and `shared/` directories are included in the code bundle, allowing the workflow to successfully import `shared.utils` during remote execution.
+This ensures that both `services/ml/` and `shared/` directories are included in the code bundle, allowing the workflow to successfully import `shared.utils` during on-cluster execution.
 
 ## `--image`
 

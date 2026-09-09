@@ -6,9 +6,9 @@ weight: 7
 variants: +flyte +union
 ---
 
-# Code packaging for remote execution
+# Code packaging for on-cluster execution
 
-When you run Flyte tasks remotely, your code needs to be available in the execution environment. Flyte SDK provides two main approaches for packaging your code:
+When you run Flyte tasks on-cluster, your code needs to be available in the execution environment. Flyte SDK provides two main approaches for packaging your code:
 
 1. **Code bundling** - Bundle code dynamically at runtime
 2. **Container-based deployment** - Embed code directly in container images
@@ -995,7 +995,7 @@ if __name__ == "__main__":
 
 ### Code changes not reflected
 
-**Problem:** Remote execution uses old code despite local changes
+**Problem:** On-cluster execution uses old code despite local changes
 
 > [!NOTE]
 > This is rare with code bundling - Flyte automatically versions based on content hash, so code changes should be detected automatically. This issue typically occurs with caching problems or when using `copy_style="none"`.

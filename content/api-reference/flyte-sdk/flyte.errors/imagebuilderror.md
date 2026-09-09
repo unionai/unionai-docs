@@ -2,7 +2,7 @@
 title: ImageBuildError
 description: "This error is raised when the image build fails."
 icon: exclamation-triangle
-version: 2.6.10
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

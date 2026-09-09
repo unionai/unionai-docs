@@ -2,7 +2,7 @@
 title: flyte.ai.agents.agent
 description: "Agent — a flyte-native tool-use agent harness."
 icon: box-seam
-version: 2.6.10
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

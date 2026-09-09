@@ -115,7 +115,7 @@ The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actio
 {{< /link-card >}}
 
 {{< link-card target="run-modes" icon="play-circle" title="Run modes" >}}
-Run the same task code locally, on a devbox, or on a remote cluster.
+Run the same task code in your Python process, on a devbox, or on a remote cluster.
 {{< /link-card >}}
 
 {{< /grid >}}

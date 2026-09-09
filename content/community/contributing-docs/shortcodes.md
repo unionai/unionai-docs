@@ -195,10 +195,19 @@ The `Check Build Determinism` CI job rejects a heading that uses the angle-brack
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/v2/flyte" or "/docs/v2/union"        |
+| docs_home         | Documentation home URL — **do not use; see the warning below** | `{{</* key docs_home */>}}` → an **unversioned** docs URL, `/docs/flyte` or `/docs/union` |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
+
+> [!WARNING] Use the `docs_home` shortcode, not the `docs_home` key
+> The **key** resolves to an *unversioned* docs URL, and the two variants do not land in the
+> same place: the unversioned `/docs/union` path redirects to the **v2** union docs, while
+> `/docs/flyte` redirects to the **v1** flyte docs. A link built from the key therefore sends
+> Flyte readers to the old line.
+>
+> Use the shortcode instead, which takes an explicit version and cannot drift:
+> `{{</* docs_home flyte v2 */>}}`. It is documented below.
 
 ### `{{</* download */>}}`
 
@@ -251,6 +260,43 @@ Example:
 ```markdown
 [Download {{</* icon download */>}}](/download)
 ```
+
+### `{{</* subpage-cards */>}}`
+
+Renders a card grid of the pages directly beneath the current section landing page. Each card's
+title, link and one-line description come from the child page's own frontmatter `description`,
+so there is nothing to keep in sync by hand: edit the child's `description` and the card follows.
+
+```markdown
+{{</* subpage-cards */>}}
+```
+
+Takes no arguments. Used on section landing pages, and checked in CI by `check-subpage-cards`.
+
+### `{{</* badge */>}}`
+
+A small coloured label, taking a style as its first argument.
+
+```markdown
+{{</* badge "danger" */>}}Sev 1 - Urgent{{</* /badge */>}}
+{{</* badge "warning" */>}}Sev 2 - High{{</* /badge */>}}
+```
+
+### `{{</* note */>}}` and `{{</* warning */>}}` (legacy)
+
+These predate the callout syntax and still work, but **new content should use the callout form**,
+which is what the rest of the docs use:
+
+```markdown
+> [!NOTE] Title
+> Content here
+
+> [!WARNING] Title
+> Warning content
+```
+
+There are about 30 remaining `{{</* note */>}}` uses against roughly 455 callouts, so treat the
+shortcode as something you may meet while editing rather than something to reach for.
 
 ### `{{</* code */>}}`
 

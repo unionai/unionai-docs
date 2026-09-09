@@ -85,3 +85,30 @@ run = flyte.run(evaluate, model=model, data=data)
 ```
 
 The task body receives a plain `File`, `Dir`, or `DataFrame` and needs no artifact-specific code.
+
+## Reading an artifact's value directly
+
+Outside a task — in a notebook or a local script — materialize the value with `to_python()`, passing the type the artifact holds:
+
+```python
+import asyncio
+
+import flyte
+from flyte.io import Dir
+from flyte.remote import Artifact
+
+flyte.init_from_config()
+
+
+async def load() -> str:
+    artifact = Artifact.get("trained-model")
+    weights = await artifact.to_python(Dir)  # File or DataFrame for other artifacts
+    return await weights.download()
+
+
+local = asyncio.run(load())
+```
+
+In a notebook, `await` the two calls directly instead of wrapping them in `asyncio.run()`.
+
+The download runs wherever you call it, so that environment needs credentials for the object store. This is a plain fetch and records no [lineage](./lineage) edge.

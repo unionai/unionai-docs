@@ -2,7 +2,7 @@
 title: TorchRun
 description: "TorchRun launcher configuration for a ClusteredTaskEnvironment."
 icon: braces
-version: 2.6.10
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

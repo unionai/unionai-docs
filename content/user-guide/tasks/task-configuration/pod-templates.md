@@ -235,7 +235,7 @@ pod_template = flyte.PodTemplate(
 
 ## Important notes
 
-1. **Local execution**: Pod templates only apply to remote execution. When running locally, only your task code executes.
+1. **Local execution**: Pod templates only apply to on-cluster execution. When running locally, only your task code executes.
 
 2. **Image building**: Flyte automatically builds and manages the image for your task environment. Images for sidecar containers must be pre-built and available in a registry.
 

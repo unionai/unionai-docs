@@ -40,7 +40,7 @@ Get your code running remotely.
 {{< /markdown >}}
 {{< /variant >}}
 
-- **Code packaging**: Your local code is automatically bundled and deployed to remote execution
+- **Code packaging**: Your local code is automatically bundled and deployed to on-cluster execution
   → [Packaging](../../tasks/task-deployment/packaging)
 
 - **Local testing**: Test tasks locally before deploying with `flyte run --local`

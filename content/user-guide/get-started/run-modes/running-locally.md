@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Run locally in Python
 
-Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on a remote cluster with GPUs.
+Flyte runs locally with no cluster or Docker needed. Install the SDK, write tasks, and run them on your machine. When you're ready to scale, drop the `--local` flag and the same code runs on-cluster, on whichever cluster your configuration points at.
 
 > [!INFO] Try it in your browser
 > Follow along with this guide in Google Colab without installing anything locally.
@@ -21,7 +21,7 @@ If you haven't already, install the SDK and configure local persistence as descr
 
 ## Running tasks locally
 
-The `--local` flag tells Flyte to execute a task in your local Python environment rather than on a remote cluster. Add `--tui` to launch the interactive Terminal UI for real-time monitoring.
+The `--local` flag tells Flyte to execute a task in your local Python environment rather than on-cluster. Add `--tui` to launch the interactive Terminal UI for real-time monitoring.
 
 Basic local execution:
 
@@ -122,11 +122,39 @@ persists the inputs and outputs of every task run locally, so you can always go 
 flyte start tui
 ```
 
+{{< variant union >}}
+{{< markdown >}}
+
+## Track local runs in the console
+
+A local run normally leaves no trace on the control plane. Add `--tracked` and the run still executes on your machine, but its progress is reported to {{< key product_name >}} so you can watch it in the console:
+
+```bash
+flyte run --tracked hello.py main
+```
+
+Tracked runs appear in the console under **Tracked Runs**, which is its own section in the project sidebar. They are not listed under **Runs**, which shows runs the platform executed for you.
+
+The command prints a link to the run when it starts. Tracking covers the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported, so `print()` output stays in your terminal.
+
+Reporting never gets in the way of the run itself: if the control plane is unreachable, the failure is logged and your local run finishes normally.
+
+If you do not have a workflow to hand yet, `hello` runs a built-in one and needs no files at all:
+
+```bash
+flyte run --tracked hello
+```
+
+Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ---
 
 ## What works locally
 
-Most Flyte features work in both local and remote execution. The table below summarizes how each feature behaves locally.
+Most Flyte features work in both in-process and on-cluster execution. The table below summarizes how each feature behaves in-process.
 
 | Feature | Local behavior | Details |
 |---------|---------------|---------|
@@ -137,9 +165,19 @@ Most Flyte features work in both local and remote execution. The table below sum
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
 | **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
 
+{{< variant union >}}
+{{< markdown >}}
+
+> [!NOTE] Visibility is the exception
+> With `--tracked`, a local run also reports its state to the control plane and appears in the console.
+> See [Track local runs in the console](#track-local-runs-in-the-console).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ---
 
-## Local to devbox/remote
+## From in-process to on-cluster
 
 The same code runs in both environments. Here's what changes:
 
@@ -162,7 +200,7 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant flyte >}}
 {{< markdown >}}
 
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -170,7 +208,7 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 {{< variant union >}}
 {{< markdown >}}
 
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test containerized execution before deploying remotely.
+- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
 - [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
 
 {{< /markdown >}}

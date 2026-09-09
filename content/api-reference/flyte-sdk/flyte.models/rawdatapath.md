@@ -2,7 +2,7 @@
 title: RawDataPath
 description: "A class representing the raw data path for a task."
 icon: braces
-version: 2.6.10
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
