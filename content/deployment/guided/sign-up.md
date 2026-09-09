@@ -1,6 +1,6 @@
 ---
 title: Sign up and create your Union.ai organization
-description: Sign up with your Google work account and create the organization that is your Union.ai workspace, ready to connect a cluster to.
+description: Sign up with your Google work account and create the organization that is your Union.ai workspace, then run a workflow to see it working. No cluster needed.
 icon: person-plus
 weight: 2
 variants: -flyte +union
@@ -10,9 +10,7 @@ variants: -flyte +union
 
 Create your account and an organization. Your organization is your workspace in {{< key product_name >}}: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
 
-Once it exists, [connect a Kubernetes cluster](./connect-a-cluster) so {{< key product_name >}} can run your workloads on it.
-
-If you are waiting on permission to create a cluster, you do not have to wait to start. You can run workflows on your own machine and watch them in the {{< key product_name >}} console, then connect a cluster whenever you are ready. This page covers that, and it is the rest of what follows.
+Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
 
 > [!NOTE] Subscribed through AWS Marketplace?
 > Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
@@ -74,9 +72,8 @@ When setup finishes, {{< key product_name >}} takes you to your new organization
 
 You land in the {{< key product_name >}} console. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
 
-> [!NOTE] Connect a cluster now, or come back to it
-> The console asks you to set up a cluster pool first. That is [Connect your cluster](./connect-a-cluster), and doing it now is the shortest route to running real work.
-> If you cannot create a cluster yet, skip it for the moment: select **Projects** in the sidebar. Your organization already has a `default` project, which is enough for the local runs described below.
+> [!NOTE] You don't need a cluster yet
+> The console first asks you to set up a cluster pool. That is [connecting your own cluster](./connect-a-cluster), and you can come back to it any time. For your first run, skip it: select **Projects** in the sidebar. Your organization already has a `default` project ready to use.
 
 ## Set up the CLI
 
@@ -137,9 +134,9 @@ Everything you see here came from a run on your own machine. {{< key product_nam
 
 ## Next steps
 
-**[Connect your cluster](./connect-a-cluster).** Everything on this page ran on your own machine. To have {{< key product_name >}} run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it. You can do this at any point, including before running anything locally.
+**[Connect your cluster](./connect-a-cluster)** is the next step of the setup. Everything so far has run on your own machine. When you want {{< key product_name >}} to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it.
 
-Two things you can do while you wait for a cluster:
+Two things you can do without a cluster:
 
 - **Run your own code the same way.** Write a workflow following the [Quickstart](../../user-guide/get-started/quickstart), then run it with `flyte run --tracked temperatures.py hottest`. See [Track local runs in the console](../../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
 - **Learn the concepts.** [Core concepts](../../user-guide/get-started/core-concepts/_index) explains tasks, environments, projects, and runs.
