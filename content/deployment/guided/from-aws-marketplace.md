@@ -1,6 +1,6 @@
 ---
 title: Start from AWS Marketplace
-description: Subscribe to Union through AWS Marketplace and claim your subscription, so the charges appear on your AWS bill.
+description: Subscribe to Union through AWS Marketplace and associate the subscription with your organization, so the charges appear on your AWS bill.
 icon: cart
 weight: 1
 variants: -flyte +union
@@ -72,11 +72,11 @@ After the subscription is confirmed, AWS hands you off to {{< key product_name >
 Follow that handoff when you see it. It carries a short-lived token that ties your new organization to the subscription you just bought, and it expires, so if you leave it too long you may need to return to your AWS Marketplace subscriptions and start the handoff again.
 
 > [!NOTE] One subscription, one organization
-> A marketplace subscription can only be claimed by a single {{< key product_name >}} organization. If you try to claim the same subscription from a second organization, {{< key product_name >}} refuses rather than splitting your entitlement across two workspaces.
+> A marketplace subscription can only be associated with a single {{< key product_name >}} organization. If you try to associate the same subscription with a second organization, {{< key product_name >}} refuses rather than splitting your entitlement across two workspaces.
 
 ## Next steps
 
 The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's:
 
-1. **[Sign up and create your Union.ai organization](./sign-up).** Name your organization, choose a region, and run a workflow to see it working. No cluster needed.
+1. **[Sign up and create your Union.ai organization](./sign-up).** Name your organization and choose a region.
 2. **[Connect your cluster](./connect-a-cluster).** Give {{< key product_name >}} a Kubernetes cluster to run your workloads on, and it installs the data plane into it.

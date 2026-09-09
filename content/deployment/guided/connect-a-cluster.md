@@ -179,7 +179,7 @@ When the cluster is ready, it shows as **Healthy** in the cluster list, with the
 <!-- ⚠️ STILL UNVERIFIED, but no longer blocked: the cluster is Healthy as of 2026-09-04, so a
      real on-cluster run can now be made. Confirm the exact command and what the reader sees. -->
 
-With a connected cluster, drop `--local` and the same code runs on-cluster instead of in your Python process:
+With a connected cluster, drop `--tracked` and the same code runs on-cluster instead of on your own machine:
 
 ```bash
 flyte run temperatures.py hottest
