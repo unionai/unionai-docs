@@ -541,7 +541,7 @@ referenced in settings is refused.
 
 ## Delete a queue
 
-A queue must always be drained before it is deleted: an `active` queue is
+A queue must be draining or drained before it is deleted: an `active` queue is
 rejected, so start draining it first. This is what makes deleting a queue a
 safe archive operation, in contrast to
 [deleting a cluster](./clusters#delete-a-cluster), which can interrupt work.
