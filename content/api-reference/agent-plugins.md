@@ -263,8 +263,6 @@ config: the tools register either way, and calls then report the missing target 
 than breaking the protocol. So the plugin still helps while you are deploying your first
 cluster.
 
-<a id="adding-the-mcp-servers-manually"></a>
-
 ### Adding MCP servers locally
 
 In ChatGPT's Codex agent, `flyte-docs` is already available through the official Flyte
