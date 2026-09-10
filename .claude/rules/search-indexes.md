@@ -27,8 +27,9 @@ scoping happens at query time from the URL's version/variant segments.
 
 - **`nbHits` means different things.** `union` sets `distinct` on `url_without_anchor`, so it
   counts **pages**. `union-markdown` sets no `attributeForDistinct`, so it counts **records**.
-- **Check which Algolia application you are querying.** A retired crawler wrote to a different
-  app whose stale answers look identical to live ones. The live app ID is in the page's
+- **The credential names are off by one.** `ALGOLIA_DOCS_2_*` is the **live production** app —
+  the one the site queries. `ALGOLIA_DOCS_1_*` referred to the retired Crawler's app, which has
+  been deleted; those variables are dead. The live app ID is in the page's
   `window.__SEARCH_CONFIG` — read it there rather than trusting a copy.
 
 ## No crawler
