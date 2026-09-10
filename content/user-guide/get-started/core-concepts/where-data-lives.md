@@ -106,7 +106,7 @@ run = flyte.with_runcontext(
 
 This is the supported way to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
 
-Any scheme Flyte's storage layer can resolve works here, not just `s3://`, `gs://` and local paths. `s3`, `gs`, `abfs` and `abfss` are served by the built-in obstore backend; anything else falls back to the filesystem `fsspec` has registered for that scheme. Hugging Face storage buckets are one such target, so `raw_data_path="hf://buckets/<username>/<bucket>/..."` sends offloaded values to the Hub. See [Hugging Face buckets as raw data storage](../../../integrations/huggingface/_index#hugging-face-buckets-as-raw-data-storage) for a worked example.
+Any scheme Flyte's storage layer can resolve works here, not just `s3://`, `gs://` and local paths. `s3://`, `gs://`, `abfs://` and `abfss://` are served by the built-in obstore backend; anything else falls back to the filesystem `fsspec` has registered for that scheme. Hugging Face storage buckets are one such target, so `raw_data_path="hf://buckets/<username>/<bucket>/..."` sends offloaded values to the Hub. See [Hugging Face buckets as raw data storage](../../../integrations/huggingface/_index#hugging-face-buckets-as-raw-data-storage) for a worked example.
 
 See [Run context](../../tasks/task-deployment/run-context) for the full set of `with_runcontext` options.
 
