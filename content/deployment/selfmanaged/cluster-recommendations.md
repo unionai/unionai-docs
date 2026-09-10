@@ -1,5 +1,7 @@
 ---
 title: Cluster recommendations
+description: Sizing and shaping a cluster for Union, on managed Kubernetes or your own.
+icon: rulers
 weight: 2
 variants: -flyte +union
 ---

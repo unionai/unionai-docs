@@ -1,5 +1,7 @@
 ---
 title: Other identity providers
+description: Configure a SAML or OIDC provider that has no dedicated guide here.
+icon: key
 weight: 4
 variants: -flyte +union
 ---

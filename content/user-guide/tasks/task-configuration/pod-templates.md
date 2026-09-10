@@ -1,5 +1,7 @@
 ---
 title: Pod templates
+description: Reach the underlying Kubernetes pod spec for anything Flyte does not expose directly.
+icon: file-earmark-code
 weight: 6
 variants: +flyte +union
 ---
@@ -233,7 +235,7 @@ pod_template = flyte.PodTemplate(
 
 ## Important notes
 
-1. **Local execution**: Pod templates only apply to remote execution. When running locally, only your task code executes.
+1. **Local execution**: Pod templates only apply to on-cluster execution. When running locally, only your task code executes.
 
 2. **Image building**: Flyte automatically builds and manages the image for your task environment. Images for sidecar containers must be pre-built and available in a registry.
 

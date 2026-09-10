@@ -1,6 +1,8 @@
 ---
 title: WorkerGroup
-version: 2.6.6
+description: "Configuration for a group of dask worker pods."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,5 +1,7 @@
 ---
 title: Agentic refinement
+description: Build a generate, critique, revise loop that repeats until output quality clears a threshold.
+icon: arrow-repeat
 weight: 2
 variants: +flyte +union
 mermaid: true

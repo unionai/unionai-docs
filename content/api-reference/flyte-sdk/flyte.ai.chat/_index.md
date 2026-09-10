@@ -1,6 +1,8 @@
 ---
 title: flyte.ai.chat
-version: 2.6.6
+description: "flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents."
+icon: box-seam
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,7 +16,7 @@ flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents.
 
 | Class | Description |
 |-|-|
-| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
+| [`AgentChatAppEnvironment`](../flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`. |
 | [`CustomTheme`](../flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
 
 ### Methods
@@ -54,8 +56,7 @@ can override any default rule.  *logo_url*, when provided, renders an
 *subtitle*, when provided, renders a subtitle paragraph below the
 header bar.
 
-*additional_buttons* is an optional list of ``{"button_text": ...,
-"button_url": ...}`` dicts.  The first entry becomes the primary
+*additional_buttons* is an optional list of `{"button_text": ..., "button_url": ...}` dicts.  The first entry becomes the primary
 (prominent) button; the rest appear in a drop-up menu behind a chevron.
 
 

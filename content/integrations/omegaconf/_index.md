@@ -1,5 +1,7 @@
 ---
 title: OmegaConf
+description: Pass OmegaConf hierarchical configuration objects into tasks as typed inputs.
+icon: sliders
 weight: 1
 variants: +flyte +union
 ---

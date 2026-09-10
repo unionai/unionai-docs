@@ -1,5 +1,7 @@
 ---
 title: Zero Trust security
+description: Union's Zero Trust model, in which customer data, code, and secrets stay in the customer's own data plane.
+icon: shield-check
 weight: 6
 variants: -flyte +union
 top_menu: true
@@ -50,3 +52,5 @@ The customer is responsible for all aspects of data plane management, including 
 Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 
 Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN: no third-party network on the path, and no client route into the data plane from outside the customer's corporate network.
+
+{{< subpage-cards >}}

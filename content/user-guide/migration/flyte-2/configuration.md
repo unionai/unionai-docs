@@ -1,5 +1,7 @@
 ---
 title: Task configuration
+description: Image, resources, caching, secrets, and scheduling move from the task decorator to the environment.
+icon: sliders
 weight: 5
 variants: +flyte +union
 ---

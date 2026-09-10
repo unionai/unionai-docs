@@ -1,8 +1,9 @@
 ---
 title: Run and deploy tasks
+description: Use `flyte run` for iteration or `flyte deploy` to register a stable task version.
+icon: rocket
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Run and deploy tasks
@@ -241,3 +242,5 @@ For the full parameter reference, see [Run context](./run-context).
 TODO: Add link to Flyte remote documentation when available
 For details on Flyte remote functionality, see the [Flyte remote]().
 -->
+
+{{< subpage-cards >}}

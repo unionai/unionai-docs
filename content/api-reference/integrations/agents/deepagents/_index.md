@@ -1,6 +1,8 @@
 ---
 title: Deep Agents
-version: 2.6.6
+description: "Deep Agents adapter for Flyte."
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

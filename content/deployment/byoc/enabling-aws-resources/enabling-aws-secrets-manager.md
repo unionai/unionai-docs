@@ -1,5 +1,7 @@
 ---
 title: Enabling AWS Secrets Manager
+description: Let task code read secrets from AWS Secrets Manager.
+icon: safe
 weight: 3
 variants: -flyte +union
 ---

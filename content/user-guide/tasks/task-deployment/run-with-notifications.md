@@ -1,5 +1,7 @@
 ---
 title: Run with notifications
+description: Fire a notification when a run reaches a terminal state.
+icon: bell
 weight: 13
 variants: +flyte +union
 ---

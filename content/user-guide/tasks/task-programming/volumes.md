@@ -1,5 +1,6 @@
 ---
 title: Volumes
+icon: hdd
 weight: 2
 variants: -flyte +union
 description: A durable, versioned file system that tasks mount and read and write like a local directory, with cheap copy-on-write forks.

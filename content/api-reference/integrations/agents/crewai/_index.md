@@ -1,6 +1,8 @@
 ---
 title: CrewAI
-version: 2.6.6
+description: "CrewAI adapter for Flyte."
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

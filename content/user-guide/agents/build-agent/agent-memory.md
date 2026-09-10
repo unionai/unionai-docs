@@ -1,5 +1,7 @@
 ---
 title: Agent memory
+description: Give an agent continuity across runs with MemoryStore, instead of starting each run blank.
+icon: database
 weight: 4
 variants: +flyte +serverless +union
 mermaid: true

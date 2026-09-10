@@ -1,5 +1,7 @@
 ---
 title: TaskEnvironment
+description: The container image, resources, and secrets a group of tasks runs with.
+icon: box-seam
 weight: 1
 variants: +flyte +union
 ---

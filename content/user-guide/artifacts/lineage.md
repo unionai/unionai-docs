@@ -1,5 +1,7 @@
 ---
 title: Automatic lineage tracking
+description: Union records who produced each artifact version and which tasks, triggers, and apps depend on it, and shows the graph in the UI.
+icon: diagram-3
 weight: 6
 variants: -flyte +union
 ---

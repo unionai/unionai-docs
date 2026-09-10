@@ -1,33 +1,56 @@
 ---
 title: LLM-optimized documentation
-description: LLM-optimized documentation for Union.ai and Flyte, provided at four levels of granularity and following the llms.txt convention so AI coding agents and search engines can consume the docs.
+description: How AI agents and coding tools read these docs as Markdown. Append .md to any page URL for that page, use llms.txt as the index of every page, or take the whole site as llms-full.txt. Every page also has a menu that opens it in Claude or ChatGPT.
 variants: +flyte +union
-weight: 1
+weight: 8
 ---
 
 # LLM-optimized documentation
 
-This site provides LLM-optimized documentation at four levels of granularity,
-designed for use by AI coding agents such as
+Every page on this site is also available as clean Markdown, and the whole site is indexed
+for AI coding agents such as
 [Claude Code](https://docs.anthropic.com/en/docs/claude-code),
-[Cursor](https://www.cursor.com/),
-[Windsurf](https://windsurf.com/),
-and similar tools.
-These files also follow the [`llms.txt` convention](https://llmstxt.org/),
-making them discoverable by AI search engines.
+[Cursor](https://www.cursor.com/), and
+[Windsurf](https://windsurf.com/).
+The files follow the [`llms.txt` convention](https://llmstxt.org/), so AI search engines find
+them too.
 
-These files are not linked from the pages they cover. They are addressed by convention:
-append `/page.md` to any page URL, or `/section.md` to a section URL. Start from the
-`llms.txt` index below, which lists every page and every available bundle.
+There are three levels of granularity:
 
-All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
-so files work correctly when copied locally and used outside the docs site.
+{{< variant union >}}
+{{< markdown >}}
+| What you get | Where | Use it when |
+|---|---|---|
+| One page as Markdown | append `.md` to the page URL | an agent needs one page |
+| An index of every page | `/docs/v2/union/llms.txt` | an agent needs to find the right page first |
+| The entire site in one file | `/docs/v2/union/llms-full.txt` | you need everything at once |
+{{< /markdown >}}
+{{< /variant >}}
 
-## Per-page markdown (`page.md`)
+{{< variant flyte >}}
+{{< markdown >}}
+| What you get | Where | Use it when |
+|---|---|---|
+| One page as Markdown | append `.md` to the page URL | an agent needs one page |
+| An index of every page | `/docs/v2/flyte/llms.txt` | an agent needs to find the right page first |
+| The entire site in one file | `/docs/v2/flyte/llms-full.txt` | you need everything at once |
+{{< /markdown >}}
+{{< /variant >}}
 
-Every page on this site has a parallel LLM-optimized version in clean Markdown,
-accessible at the same URL path with `/page.md` appended.
-For example, this page is at:
+## Open a page in Claude or ChatGPT
+
+Every page has a menu at the top right, on the breadcrumb row. **Open in Claude** hands the
+page's Markdown URL to Claude with a prompt asking it to read the page so you can ask questions
+about it. The dropdown beside it offers:
+
+* **Open in Claude** and **Open in ChatGPT**: the same action, for either assistant.
+* **Copy page**: copies the page's Markdown text to your clipboard, for pasting into a tool
+  that cannot fetch URLs.
+* **View as Markdown**: opens the page's Markdown version in the browser.
+
+## One page as Markdown
+
+Append `.md` to any page URL. For example, this page is at:
 
 {{< variant union >}}
 {{< markdown >}}
@@ -41,59 +64,94 @@ For example, this page is at:
 {{< /markdown >}}
 {{< /variant >}}
 
-and its LLM-optimized version is at:
+and its Markdown version is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v2 >}}/api-reference/flyte-context/page.md`](page.md)
+* [`{{< docs_home union v2 >}}/api-reference/flyte-context.md`](flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context/page.md`](page.md)
+* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context.md`](flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
-Section landing pages include a `## Subpages` table listing child pages with their H2/H3 headings,
-making it easy to identify the right page to fetch.
+The same rule applies to section landing pages: `.../user-guide/tasks/` becomes
+`.../user-guide/tasks.md`. A section landing page's Markdown ends with a **Subpages** list of
+every page directly beneath it, with each page's URL and headings, so one fetch tells an agent
+what the section contains and which page to read next.
 
-## Section bundles (`section.md`)
+Two details worth knowing:
 
-For key documentation sections, a curated bundle file concatenates all pages in the section
-into a single `section.md` file.
+* Each Markdown file starts with a short identity block naming the product, the version line,
+  and the index URL, so a model knows what it is reading even when it is handed the file with
+  no other context.
+* The variant root has no Markdown version of its own. Appending `.md` to the root URL
+  redirects to that variant's `llms.txt`, which is the index for the whole tree:
+  {{< variant union >}}`/docs/v2/union.md` redirects to
+  `/docs/v2/union/llms.txt`.{{< /variant >}}{{< variant flyte >}}`/docs/v2/flyte.md`
+  redirects to `/docs/v2/flyte/llms.txt`.{{< /variant >}}
 
-These are accessible at the same URL path as the top page of the section, with `/section.md` appended.
-
-These `section.md` files are sized to fit within modern LLM context windows
-and are ideal for pasting into a prompt or adding to project context.
-
-Available bundle files:
-
-{{< llm-readable-list >}}
-
-## Page index (`llms.txt`)
-
-The `llms.txt` file is a compact index of all LLM-optimized pages, organized by section.
-Each page entry includes the H2/H3 headings found on that page, so an agent can identify
-the right page to fetch without downloading it first.
-
-Sections that have a `section.md` bundle are marked in the index.
-
-Download it and append its contents to the `AGENTS.md`, `CLAUDE.md` or similar file in your project root.
-Make sure you append the index into a file that is **loaded into context by default** by your coding tool.
-Adding it as a skill or tool is less effective because the agent must decide to load it
-rather than having the information always available.
+You can also request Markdown at the page's own URL by sending an `Accept: text/markdown`
+header:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (~50K tokens)
+```shell
+$ curl -H "Accept: text/markdown" {{< docs_home union v2 >}}/user-guide/tasks/
+```
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (~50K tokens)
+```shell
+$ curl -H "Accept: text/markdown" {{< docs_home flyte v2 >}}/user-guide/tasks/
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+All links inside the Markdown files are absolute (`https://www.union.ai/docs/...`), so a file
+keeps working after it is copied out of the site.
+
+## An index of every page (`llms.txt`)
+
+`llms.txt` lists every page on the site, grouped by section, with the H2 and H3 headings found
+on each page. An agent can pick the right page from the index and then fetch only that page's
+Markdown.
+
+{{< variant union >}}
+{{< markdown >}}
+* [`/docs/v2/union/llms.txt`](https://www.union.ai/docs/v2/union/llms.txt) (about 50K tokens)
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+* [`/docs/v2/flyte/llms.txt`](https://www.union.ai/docs/v2/flyte/llms.txt) (about 40K tokens)
+{{< /markdown >}}
+{{< /variant >}}
+
+To give a coding agent standing access to the docs, append the index to the `AGENTS.md`,
+`CLAUDE.md`, or equivalent file in your project root. Put it in a file the tool **loads into
+context by default**. Adding it as a skill or tool works less well, because the agent then has
+to decide to load it rather than always having it available.
+
+{{< variant union >}}
+{{< markdown >}}
+```shell
+$ curl https://www.union.ai/docs/v2/union/llms.txt >> AGENTS.md
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+```shell
+$ curl https://www.union.ai/docs/v2/flyte/llms.txt >> AGENTS.md
+```
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -101,24 +159,19 @@ rather than having the information always available.
 > You are viewing the **{{< key product_full_name >}}** docs.
 > To get the `llms.txt` for a different product variant, use the variant selector at the top of the page.
 
-## Full documentation (`llms-full.txt`)
+## The entire site in one file (`llms-full.txt`)
 
-The `llms-full.txt` file contains the entire {{< key product_name >}} version 2.0 documentation as a single Markdown file.
-This file is very large and is not suitable for direct inclusion in an LLM context window,
-but it may be useful for RAG-based tools.
+`llms-full.txt` is the whole documentation set in a single file. It is several megabytes, so
+prefer `llms.txt` plus the pages it points to unless you need everything at once.
 
 {{< variant union >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt) (~2M tokens)
+* [`/docs/v2/union/llms-full.txt`](https://www.union.ai/docs/v2/union/llms-full.txt)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt) (~2M tokens)
+* [`/docs/v2/flyte/llms-full.txt`](https://www.union.ai/docs/v2/flyte/llms-full.txt)
 {{< /markdown >}}
 {{< /variant >}}
-
-> [!NOTE]
-> You are viewing the **{{< key product_full_name >}}** docs.
-> To get the `llms-full.txt` for a different product variant, use the variant selector at the top of the page.

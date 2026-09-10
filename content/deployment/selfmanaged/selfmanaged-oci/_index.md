@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on OCI
+description: Run a self-managed data plane on OCI, using OKE, Object Storage, and Container Registry.
+icon: database
 weight: 6
 variants: -flyte +union
 ---
@@ -13,3 +15,5 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 If you already have an OKE cluster, Object Storage buckets, Container Registry, and IAM access configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
 Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required OCI resources.
+
+{{< subpage-cards >}}

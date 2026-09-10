@@ -1,6 +1,8 @@
 ---
 title: Mistral
-version: 2.6.6
+description: "Mistral Agents adapter for Flyte (mistralai 2.x)."
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,8 +1,9 @@
 ---
 title: Configure tasks
+description: Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
+icon: gear
 weight: 1
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Configure tasks
@@ -137,3 +138,5 @@ env = ClusteredTaskEnvironment(
 
 See [Clustered task environment](./clustered-task-environment) for the full guide, including DDP,
 FSDP, and framework-integration examples.
+
+{{< subpage-cards >}}

@@ -1,5 +1,7 @@
 ---
 title: Cluster pools
+description: Group clusters that share a data plane. Create and manage pools, or stay on the `default` pool if you only have one.
+icon: box
 weight: 1
 variants: -flyte +union
 ---
@@ -227,28 +229,31 @@ You can also list clusters under `member_clusters` in the pool manifest to add
 them to the pool. That route only adds: it cannot remove a cluster from a pool
 or move one elsewhere.
 
-An existing cluster can be reassigned to another pool with
-`flyte update cluster <name> --pool <pool>`, but today the operation does not
-stop in-flight work and carries real risk (a cluster-level drain that makes the
-move safe is coming soon) — read
+An existing cluster can be reassigned to another pool, but its co-named queue
+must be `drained` first; the simplest way to get there is to
+[drain the cluster](./clusters#drain-and-reactivate-a-cluster). Wait for
+`flyte get cluster <name>` and `flyte get queue <name>` to report `drained`,
+then run `flyte update cluster <name> --pool <pool>`. See
 [Move a cluster to a different pool](./clusters#move-a-cluster-to-a-different-pool)
-before running it.
+for the complete workflow.
 
 ## Delete a pool
 
-A pool can be deleted only when it is **empty** — it contains no clusters and no
-live queues; otherwise the request is rejected. (A queue that is itself
-soft-deleted doesn't block the deletion, but it can only be restored after the
-pool has been restored.) Empty the pool first:
+A pool can be deleted only when it is **empty** — it contains no live clusters
+and no live queues; otherwise the request is rejected. Clusters and queues that
+are themselves soft-deleted don't block the deletion, but neither can be
+restored until the pool has been restored. Empty the pool first:
 
 1. Delete the member [clusters](./clusters#delete-a-cluster). Deleting a cluster
    also deletes its [co-named queue](./clusters#the-co-named-queue), so the
    queues that came with the clusters go with them.
 2. [Delete](./queues#delete-a-queue) any queue you created in the pool yourself.
 
-The `default` pool follows the same rules: it can be deleted once emptied, which
-additionally means [draining and deleting](./queues#delete-a-queue) the org-wide
-`default` queue that lives in it — nothing is deleted on the pool's behalf.
+The pool that holds the org-wide `default` queue (the `default` pool, unless
+your organization's first pool was created by hand and received that queue)
+follows the same rules: it can be deleted once emptied, which additionally
+means [draining and deleting](./queues#delete-a-queue) the `default` queue —
+nothing is deleted on the pool's behalf.
 While the `default` pool is deleted, registering a cluster without naming a pool
 is rejected instead of falling back to it: name a pool explicitly, or undelete
 `default` first.

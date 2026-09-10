@@ -1,5 +1,7 @@
 ---
 title: Code mode analytics agent
+icon: bar-chart-line
+description: 'Chat with a dataset in the browser: Claude writes a Python program that runs in the Monty sandbox, with the heavy DuckDB query dispatched as a durable Flyte task.'
 weight: 8
 variants: +flyte +union
 ---

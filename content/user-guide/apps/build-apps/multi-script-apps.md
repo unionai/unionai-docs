@@ -1,5 +1,7 @@
 ---
 title: Multi-script apps
+description: Build a FastAPI or Streamlit app that spans several Python files.
+icon: files
 weight: 2
 variants: +flyte +union
 ---

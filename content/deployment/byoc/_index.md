@@ -1,8 +1,9 @@
 ---
 title: BYOC deployment
+description: Union manages the data plane infrastructure inside your cloud account; you supply the account and network configuration.
+icon: cloud-check
 weight: 1
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # BYOC deployment
@@ -35,3 +36,5 @@ Connect your data plane to cloud-native services:
 - [Single sign-on setup](./single-sign-on-setup/_index) for OAuth2/OIDC-based authentication
 - [Multi-cluster and multi-cloud](./multi-cluster) for domain and project isolation
 - [Data retention policy](./data-retention-policy) for controlling stored data lifecycle
+
+{{< subpage-cards >}}

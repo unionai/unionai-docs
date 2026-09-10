@@ -1,5 +1,7 @@
 ---
 title: Run a Python script
+description: Run an arbitrary .py file remotely without wrapping it in a task.
+icon: filetype-py
 weight: 11
 variants: +flyte +union
 ---

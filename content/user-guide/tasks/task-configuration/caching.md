@@ -1,5 +1,7 @@
 ---
 title: Caching
+description: Skip recomputation by reusing a previous task result, and control when that happens.
+icon: database-check
 weight: 4
 variants: +flyte +union
 ---

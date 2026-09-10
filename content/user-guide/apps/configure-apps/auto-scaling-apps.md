@@ -1,5 +1,7 @@
 ---
 title: Autoscaling apps
+description: Scale an app up with traffic and down to nothing when idle.
+icon: arrows-angle-expand
 weight: 5
 variants: +flyte +union
 ---

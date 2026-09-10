@@ -1,6 +1,8 @@
 ---
 title: AccessDenied
-version: 2.6.6
+description: "Raised when a write targets a read-only or reserved prefix."
+icon: exclamation-triangle
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

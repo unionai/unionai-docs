@@ -1,5 +1,7 @@
 ---
 title: Task plugins
+description: Extend task execution beyond plain containers to specialized compute frameworks.
+icon: plugin
 weight: 13
 variants: +flyte +union
 ---

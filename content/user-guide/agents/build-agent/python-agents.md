@@ -1,5 +1,7 @@
 ---
 title: Pure Python agents
+description: Write the agent loop yourself in plain Python, with any LLM library you like.
+icon: code-slash
 weight: 1
 variants: +flyte +serverless +union
 mermaid: true

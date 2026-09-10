@@ -1,5 +1,7 @@
 ---
 title: LLM-optimized documentation
+description: The markdown twins and index files the build generates for AI agents and search.
+icon: robot
 weight: 9
 variants: +flyte +union
 ---
@@ -16,9 +18,8 @@ in each variant's `dist/docs/v2/{variant}/` directory:
 
 | File | Description |
 |------|-------------|
-| `page.md` | Per-page LLM-optimized Markdown, generated alongside every `index.html`. Links between pages use relative `page.md` references, then are converted to absolute URLs in a final pass. |
-| `section.md` | A single-file bundle concatenating all pages in a section. Only generated for sections with `llm_readable_bundle: true` in frontmatter. Internal links become hierarchical bold references; external links become absolute URLs. |
-| `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. Sections with bundles are marked with a "Section bundle" link. |
+| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
+| `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. |
 | `llms-full.txt` | The entire documentation for one variant as a single file, with all internal links converted to hierarchical bold references (e.g. `**Configure tasks > Resources**`). |
 
 ### Discovery hierarchy
@@ -28,44 +29,22 @@ dist/docs/llms.txt                          # Root: lists versions
 dist/docs/v2/llms.txt                       # Version: lists variants
 dist/docs/v2/{variant}/llms.txt             # Variant: page index with headings
 dist/docs/v2/{variant}/llms-full.txt        # Full consolidated doc
-dist/docs/v2/{variant}/**/page.md           # Per-page Markdown
-dist/docs/v2/{variant}/**/section.md        # Section bundles (where enabled)
+dist/docs/v2/{variant}/**/<page>.md         # Per-page Markdown, section landings index their children
 ```
 
-## How `page.md` files are generated
+## How the page twins are generated
 
 1. Hugo builds the site into `dist/` and also outputs a Markdown format into `tmp-md/`.
-2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as `page.md` alongside each `index.html`.
-3. `fix_internal_links_post_processing()` converts all internal links in `page.md` files to point to other `page.md` files using relative paths.
-4. `build_llm_docs.py` then enhances subpage listings with H2/H3 headings, generates section bundles, converts all relative links to absolute URLs, and creates the `llms.txt` and `llms-full.txt` index files.
+2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as the page's `.md` twin beside its rendered `index.html`.
+3. `fix_internal_links_post_processing()` converts all internal links in the twins to point to other twins using relative paths.
+4. `build_llm_docs.py` then enhances subpage listings with H2/H3 headings, converts all relative links to absolute URLs, and creates the `llms.txt` and `llms-full.txt` index files.
 
-## Enabling section bundles
-
-To produce a `section.md` bundle for a documentation section:
-
-1. Add `llm_readable_bundle: true` to the frontmatter of the section's `_index.md`:
-
-   ```yaml
-   ---
-   title: Configure tasks
-   weight: 8
-   variants: +flyte +union
-   llm_readable_bundle: true
-   ---
-   ```
-
-That is all that is required. The bundle is generated at build time and listed in
-`llms.txt`, which is how agents discover it.
-
-The LLM-optimized files are not surfaced as links on the pages they cover. They exist
-in the build and are reached through `llms.txt`, so there is nothing to add to the page
-body.
 
 ## The `llms-full.txt` link conversion
 
-In `llms-full.txt`, all internal `page.md` links are converted to hierarchical bold references:
+In `llms-full.txt`, all internal twin links are converted to hierarchical bold references:
 
-* Cross-page: `[Resources](../resources/page.md)` becomes `**Configure tasks > Resources**`
+* Cross-page: `[Resources](../resources.md)` becomes `**Configure tasks > Resources**`
 * Same-page anchor: `[Image building](#image-building)` becomes `**Container images > Image building**`
 * External links (`http`/`https`) are preserved unchanged.
 

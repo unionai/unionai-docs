@@ -1,5 +1,7 @@
 ---
 title: "Part 1: vanilla operators"
+icon: diagram-2
+description: PythonOperator, TaskFlow, BashOperator, KubernetesPodOperator, plus DAG schedules, the driver task model, and orchestration patterns (parallelism, conditionals, error handling).
 weight: 1
 variants: +flyte +union
 ---

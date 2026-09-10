@@ -1,5 +1,7 @@
 ---
 title: Run command options
+description: Every option flyte run accepts, and what each overrides.
+icon: list-ul
 weight: 4
 variants: +flyte +union
 ---
@@ -26,6 +28,19 @@ The `flyte run` command provides the following options:
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable synchronization of local sys.path entries.      |
 | `--run-project`             |       | text   | *from config*             | Execute deployed task in this project (`deployed-task` only). |
 | `--run-domain`              |       | text   | *from config*             | Execute deployed task in this domain (`deployed-task` only).  |
+
+{{< variant union >}}
+{{< markdown >}}
+
+These additional options are available on {{< key product_name >}}:
+
+| Option             | Short | Type | Default | Description                                                              |
+|--------------------|-------|------|---------|--------------------------------------------------------------------------|
+| `--tracked`        |       | flag | `false` | Run the task locally while reporting run state to the control plane.     |
+| `--tracked-strict` |       | flag | `false` | Fail the run if reporting fails. Requires `--tracked`.                   |
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## `--project`, `--domain`
 
@@ -65,7 +80,7 @@ The `--local` option runs tasks locally instead of submitting them to the remote
 flyte run --local my_example.py my_task --input "test_data"
 ```
 
-Compare with remote execution:
+Compare with on-cluster execution:
 
 ```bash
 flyte run my_example.py my_task --input "test_data"
@@ -78,11 +93,59 @@ flyte run my_example.py my_task --input "test_data"
 - **Resource constraints**: When remote resources are unavailable or expensive
 - **Data locality**: When working with large local datasets
 
+{{< variant union >}}
+{{< markdown >}}
+
+## `--tracked`, `--tracked-strict`
+
+**`flyte run --tracked <PATH> <TASK_NAME>`**
+
+The `--tracked` option runs the task on your machine, exactly as `--local` does, while reporting the run's progress to the control plane so that you can follow it in the {{< key product_name >}} console. It implies `--local`, so you do not need to pass both:
+
+```bash
+flyte run --tracked my_example.py my_task --input "test_data"
+```
+
+The run appears under **Tracked Runs** in the project sidebar, a separate section from **Runs**. To try it without writing a file first, use the built-in example:
+
+```bash
+flyte run --tracked hello
+```
+
+Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with a remote run.
+
+Tracking reports the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported: your task's output stays in the terminal where you launched the run.
+
+Reporting is best-effort by design. If the control plane is slow or unreachable, the failure is logged and the local run continues to completion, so tracking never blocks or fails work that would otherwise have succeeded. To debug reporting itself, add `--tracked-strict`, which turns any reporting failure into a loud run failure:
+
+```bash
+flyte run --tracked --tracked-strict my_example.py my_task
+```
+
+`--tracked-strict` is only meaningful together with `--tracked`; enabling it on its own raises an error.
+
+### Naming a tracked run
+
+Tracked runs are named `local-<id>` unless you pass `--name`. Tracking adds two rules on top of the usual `--name` behavior: the name must be at most 30 characters, and it must not begin with `u` or `r`, both of which are reserved for runs the platform names itself. A name that breaks either rule fails before the run starts.
+
+### Tracking every local run
+
+To track local runs without passing the flag each time, write the setting into your config file:
+
+```bash
+flyte create config --local-tracked
+```
+
+This sets the `local.tracked` key, after which `flyte run --local` reports to the control plane on its own. The matching key for strict mode is `local.tracked_strict`.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## `--copy-style`
 
 **`flyte run --copy-style [loaded_modules|all|none] <PATH> <TASK_NAME>`**
 
-The `--copy-style` option controls code bundling for remote execution.
+The `--copy-style` option controls code bundling for on-cluster execution.
 This applies to the ephemeral preparation step of the `flyte run` command and works similarly to `flyte deploy`:
 
 Smart bundling (default) includes only imported project modules:
@@ -260,7 +323,7 @@ flyte run \
 
 **`flyte run --no-sync-local-sys-paths <PATH> <TASK_NAME>`**
 
-Disable synchronization of local `sys.path` entries to the remote execution environment during ephemeral preparation.
+Disable synchronization of local `sys.path` entries to the on-cluster execution environment during ephemeral preparation.
 Identical to the `flyte deploy` command's `--no-sync-local-sys-paths` option:
 
 ```bash
@@ -269,7 +332,7 @@ flyte run --no-sync-local-sys-paths my_example.py my_task
 
 This advanced option works identically to the deploy command equivalent, useful for:
 
-- **Container isolation**: Prevent local development paths from affecting remote execution
+- **Container isolation**: Prevent local development paths from affecting on-cluster execution
 - **Custom environments**: When containers have pre-configured Python paths
 - **Security**: Avoiding exposure of local directory structures
 

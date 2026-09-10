@@ -1,6 +1,7 @@
 ---
 title: Hugging Face
-version: 2.6.2
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,7 +16,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HFSource`](./hfsource) | Hugging Face dataset source for task parameter defaults. |
+| [`HFSource`](./hfsource) | HuggingFace dataset source for task parameter defaults. |
 
 ### Methods
 

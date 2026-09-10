@@ -1,6 +1,8 @@
 ---
 title: flyte.sandbox
-version: 2.6.6
+description: "Sandbox utilities for running isolated code inside Flyte tasks."
+icon: box-seam
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

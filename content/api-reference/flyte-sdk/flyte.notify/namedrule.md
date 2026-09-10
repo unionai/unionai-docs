@@ -1,6 +1,8 @@
 ---
 title: NamedRule
-version: 2.6.6
+description: "Reference a pre-defined notification rule by name."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

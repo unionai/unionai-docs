@@ -1,6 +1,8 @@
 ---
 title: Scaling
-version: 2.6.6
+description: "Controls replica count and autoscaling behavior for app environments."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

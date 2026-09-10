@@ -1,5 +1,7 @@
 ---
 title: Union features
+description: Where Flyte 1's Union-specific Actors and Apps landed in Flyte 2.
+icon: stars
 weight: 12
 variants: -flyte +union
 ---

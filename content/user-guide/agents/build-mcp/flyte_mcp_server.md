@@ -1,5 +1,7 @@
 ---
 title: Flyte MCP server
+description: Expose Flyte operations as MCP tools so an AI assistant can drive your workloads.
+icon: plug
 weight: 2
 variants: +flyte +union
 ---
@@ -13,8 +15,8 @@ Unlike [`MCPAppEnvironment`](./mcp_server), where you supply your own tools, thi
 > [!TIP] There is a prebuilt plugin
 > [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) ships these same
 > control-plane tools as a `flyte-cluster` MCP server, plus a hosted `flyte-docs` search
-> server. Claude Code and Codex wire up both for you; Hermes, opencode, and pi take a few
-> lines of config. See [Flyte agent plugins](../../../api-reference/agent-plugins).
+> server. See [Flyte agent plugins](../../../api-reference/agent-plugins) for
+> harness-specific installation and configuration.
 >
 > Build your own `FlyteMCPAppEnvironment` below when you need to scope the tools,
 > allowlist resources, or deploy a shared server.

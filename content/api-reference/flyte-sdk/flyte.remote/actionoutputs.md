@@ -1,6 +1,8 @@
 ---
 title: ActionOutputs
-version: 2.6.6
+description: "A class representing the outputs of an action."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

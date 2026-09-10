@@ -1,5 +1,7 @@
 ---
 title: Remote tasks
+description: Call an already-deployed task without importing its code or dependencies.
+icon: box-arrow-up-right
 weight: 12
 variants: +flyte +union
 ---

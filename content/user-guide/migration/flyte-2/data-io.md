@@ -1,5 +1,7 @@
 ---
 title: Data types and I/O
+description: The offloaded-data types are renamed and their I/O is async, but the mental model is unchanged.
+icon: arrow-left-right
 weight: 9
 variants: +flyte +union
 ---

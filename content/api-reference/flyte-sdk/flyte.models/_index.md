@@ -1,6 +1,7 @@
 ---
 title: flyte.models
-version: 2.6.6
+icon: box-seam
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,7 +22,7 @@ layout: py_api
 | [`NativeInterface`](../flyte.models/nativeinterface) | A class representing the native interface for a task. |
 | [`PathRewrite`](../flyte.models/pathrewrite) | Configuration for rewriting paths during input loading. |
 | [`RawDataPath`](../flyte.models/rawdatapath) | A class representing the raw data path for a task. |
-| [`SerializationContext`](../flyte.models/serializationcontext) | This object holds serialization time contextual information, that can be used when serializing the task and. |
+| [`SerializationContext`](../flyte.models/serializationcontext) | This object holds serialization time contextual information, that can be used when serializing the task and various parameters of a tasktemplate. |
 | [`TaskContext`](../flyte.models/taskcontext) | A context class to hold the current task executions context. |
 
 ### Methods

@@ -1,5 +1,7 @@
 ---
 title: Ray
+description: Run Ray jobs on a transient KubeRay cluster provisioned per task execution.
+icon: broadcast
 weight: 1
 variants: +flyte +union
 ---

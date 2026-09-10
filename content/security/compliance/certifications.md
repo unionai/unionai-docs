@@ -1,5 +1,7 @@
 ---
 title: Certifications and Trust Center
+description: Union's SOC 2 Type II certification, what the audit covers, and how to verify it through the Trust Center.
+icon: clipboard-check
 weight: 1
 variants: -flyte +union
 ---

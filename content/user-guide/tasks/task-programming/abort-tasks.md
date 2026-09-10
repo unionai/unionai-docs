@@ -1,5 +1,7 @@
 ---
 title: Abort and cancel actions
+description: Stop actions that are no longer needed while a run is still going.
+icon: x-octagon
 weight: 7
 variants: +flyte +union
 ---

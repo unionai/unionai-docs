@@ -1,5 +1,7 @@
 ---
 title: Gotchas and caveats
+description: Where Flyte 2's flexibility can surprise you, and what to watch for.
+icon: exclamation-triangle
 weight: 15
 variants: +flyte +union
 ---

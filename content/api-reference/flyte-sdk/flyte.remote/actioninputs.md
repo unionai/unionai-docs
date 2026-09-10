@@ -1,6 +1,8 @@
 ---
 title: ActionInputs
-version: 2.6.6
+description: "A class representing the inputs of an action."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

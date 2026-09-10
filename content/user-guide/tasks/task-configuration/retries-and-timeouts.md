@@ -1,5 +1,7 @@
 ---
 title: Retries and timeouts
+description: 'The two controls for handling failure: retry strategies and three independent timeout bounds.'
+icon: arrow-clockwise
 weight: 9
 variants: +flyte +union
 mermaid: true

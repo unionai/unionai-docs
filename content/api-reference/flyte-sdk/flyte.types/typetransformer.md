@@ -1,6 +1,8 @@
 ---
 title: TypeTransformer
-version: 2.6.6
+description: "Base transformer type that should be implemented for every python native type that can be handled by flytekit."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,7 +42,7 @@ class TypeTransformer(
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |

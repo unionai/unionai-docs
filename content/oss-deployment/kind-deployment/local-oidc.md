@@ -1,5 +1,7 @@
 ---
 title: Set up local OIDC provider
+description: Run Dex inside the kind cluster as a throwaway identity provider, and solve the issuer URL problem.
+icon: key
 variants: +flyte -union
 weight: 1
 ---

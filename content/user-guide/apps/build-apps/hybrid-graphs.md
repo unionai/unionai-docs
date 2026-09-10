@@ -1,5 +1,7 @@
 ---
 title: Hybrid app-task graphs
+description: Have tasks call apps over HTTP and apps trigger runs through the SDK.
+icon: diagram-2
 weight: 5
 variants: +flyte +union
 mermaid: true

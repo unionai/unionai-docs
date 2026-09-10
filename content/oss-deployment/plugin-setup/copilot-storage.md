@@ -1,5 +1,7 @@
 ---
 title: Flyte copilot storage configuration
+description: Give the copilot init container and sidecar their own object-store credentials.
+icon: hdd
 variants: +flyte -union
 weight: 1
 ---

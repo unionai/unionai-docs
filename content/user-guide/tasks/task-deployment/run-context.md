@@ -1,5 +1,7 @@
 ---
 title: Run context
+description: Set where a run executes, where its outputs go, and how caching behaves.
+icon: sliders
 weight: 10
 variants: +flyte +union
 ---

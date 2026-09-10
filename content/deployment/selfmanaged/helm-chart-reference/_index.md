@@ -1,13 +1,13 @@
 ---
 title: Helm chart reference
+description: The full set of Helm values available across the Union charts.
+icon: list-columns
 variants: -flyte +union
 weight: 11
-llm_readable_bundle: true
 ---
 
 # Helm chart reference
 
-A full list of Helm values available for configuration can be found here:
+The full list of Helm values available for configuration, per chart:
 
-* [Data plane chart](./dataplane)
-* [Knative Operator chart (for serving)](./knative-operator)
+{{< subpage-cards >}}

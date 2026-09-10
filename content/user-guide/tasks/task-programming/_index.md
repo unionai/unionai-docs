@@ -1,8 +1,9 @@
 ---
 title: Build tasks
+description: Compose tasks with fanout, parallelism, error handling, traces, files, and DataFrames.
+icon: code
 weight: 2
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Build tasks
@@ -78,3 +79,5 @@ These programming patterns become essential as your workflows grow in complexity
 - Apply **higher-order functions** to factor recurring orchestration logic — retry-on-OOM, fallback, circuit breaking, batching — into reusable wrappers that work with any task.
 
 Each guide includes practical examples and best practices to help you implement these patterns effectively in your own workflows.
+
+{{< subpage-cards >}}

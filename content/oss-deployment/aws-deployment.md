@@ -1,5 +1,7 @@
 ---
 title: AWS deployment
+description: Install Flyte on AWS with the flyte-binary chart, grant object-store access, and expose it through an ingress.
+icon: cloud
 variants: +flyte -union
 weight: 3
 ---

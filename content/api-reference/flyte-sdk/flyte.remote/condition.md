@@ -1,6 +1,8 @@
 ---
 title: Condition
-version: 2.6.6
+description: "A remote Condition registered within an action of a run."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

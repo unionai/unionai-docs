@@ -1,19 +1,19 @@
 ---
 title: Quickstart
+description: Install the SDK and run your first workflow locally in a few minutes.
+icon: '123'
 weight: 1
 variants: +flyte +union
 ---
 
 # Quickstart
 
-Let's get you up and running with your first workflow on your local machine.
+> [!NOTE] Try it in your browser
+> Prefer not to install anything? Follow along with this quickstart in Google Colab.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
 
-<!--
-Hidden until the in-browser demo is repaired. The linked demo
-(https://flyte2intro.apps.demo.hosted.unionai.cloud/) is currently unreachable.
-To restore: re-add a note callout reading "Want to try Flyte without installing
-anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
--->
+Let's get you up and running with your first workflow on your local machine.
 
 
 ## What you'll need
@@ -54,6 +54,41 @@ uvx flyte get run
 
 {{< /note >}}
 
+## Run something straight away
+
+Before writing anything of your own, you can run a built-in example. It needs no files and no configuration:
+
+```bash
+flyte run --local hello
+```
+
+Flyte writes the example to a scratch directory, runs it, and prints the path to the source:
+
+```bash
+Using the built-in example from /tmp/flyte-hello-<user>/task/hello.py
+Copy it into your own project to start editing.
+Completed Local Run   Outputs: ActionOutputs(o0=14.0)
+```
+
+The example fans a small computation over a list of inputs with `flyte.map` and averages the results. That is enough to see a workflow run. Next, write one of your own.
+
+{{< variant union >}}
+{{< markdown >}}
+
+> [!NOTE] Watch it in the console
+> Once you have configured an endpoint below, swap `--local` for `--tracked`. The run still executes
+> on your machine, but reports its progress to {{< key product_name >}} and appears under
+> **Tracked Runs**:
+>
+> ```bash
+> flyte run --tracked hello
+> ```
+>
+> See [Track local runs in the console](./run-modes/running-locally#track-local-runs-in-the-console).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Configure
 
 Create a config file for local execution. Runs will be persisted locally in a SQLite database.
@@ -87,14 +122,15 @@ Run `flyte get config` to check which configuration is currently active.
 > apps, and tests for you, plus MCP servers that ground the agent in the Flyte SDK
 > and docs. See [Flyte agent plugins](../../api-reference/agent-plugins) to get started.
 
-Create `hello.py`:
+This one converts a list of temperature readings and returns the hottest. Create `temperatures.py`:
 
-{{< code file="/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
+{{< code file="/unionai-examples/v2/user-guide/getting-started/temperatures.py" lang="python" >}}
 
 Here's what's happening:
 
 - **`TaskEnvironment`** specifies configuration for your tasks (container image, resources, etc.)
-- **`@env.task`** turns Python functions into tasks that run remotely
+- **`@env.task`** turns Python functions into tasks that can run on a cluster
+- **`flyte.map`** calls `to_fahrenheit` once per reading, in parallel when running on a cluster
 - Both tasks share the same `env`, so they'll have identical configurations
 
 ## Run it
@@ -103,21 +139,26 @@ Create a project directory and place your files there:
 
 ```
 .
-├── hello.py
+├── temperatures.py
 └── .flyte
     └── config.yaml
 ```
 
 > [!WARNING]
-> Do not run `flyte run` from your home directory. Flyte packages the current directory when running remotely, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
+> Do not run `flyte run` from your home directory. Flyte packages the current directory when running on a cluster, so running from `$HOME` would attempt to bundle your entire home folder. Always work from a dedicated project directory.
 
-Run the workflow:
+Run the workflow, naming the file and the entrypoint task:
 
 ```bash
-flyte run --local hello.py main
+flyte run --local temperatures.py hottest
 ```
 
-This executes the workflow locally on your machine.
+This executes the workflow locally on your machine:
+
+```bash
+Completed Local Run
+Outputs: ActionOutputs(o0=75.7)
+```
 
 ## See the results
 
@@ -154,6 +195,6 @@ Now that you've run your first workflow:
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
 - [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
 - [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
-- [**Run on a remote cluster**](./run-modes/running-remote): Configure your environment for remote execution
+- [**Run on a remote cluster**](./run-modes/running-remote): Configure your environment to run on a cluster that is not on your machine
 {{< /markdown >}}
 {{< /variant >}}

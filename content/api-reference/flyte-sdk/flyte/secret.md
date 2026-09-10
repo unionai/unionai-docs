@@ -1,6 +1,8 @@
 ---
 title: Secret
-version: 2.6.6
+description: "Secrets are used to inject sensitive information into tasks or image build context."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

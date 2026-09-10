@@ -1,5 +1,7 @@
 ---
 title: OpenTelemetry
+description: Turn a Flyte run into an OpenTelemetry trace, with each task and traced function a span.
+icon: activity
 weight: 1
 variants: +flyte +union
 ---
@@ -163,3 +165,5 @@ Call `init()` before the other library so everything stays on one export pipelin
 > caller's trace, HTTP auto-instrumentation, Grafana Cloud and a crash-and-resume trace. All but
 > the last run either locally or on a cluster; the crash-and-resume one needs a cluster, because
 > the replay it demonstrates comes from a platform retry.
+
+{{< subpage-cards >}}

@@ -1,5 +1,7 @@
 ---
 title: Human access controls
+description: What access Union personnel have to a customer data plane, which in self-managed deployments is none.
+icon: person-badge
 weight: 4
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Secret-based authentication
+description: Protect a public FastAPI endpoint with an API key held in a Flyte secret.
+icon: key
 weight: 10
 variants: +flyte +union
 ---

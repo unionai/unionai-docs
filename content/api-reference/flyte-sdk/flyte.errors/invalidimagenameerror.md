@@ -1,6 +1,8 @@
 ---
 title: InvalidImageNameError
-version: 2.6.6
+description: "This error is raised when the image name is invalid."
+icon: exclamation-triangle
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

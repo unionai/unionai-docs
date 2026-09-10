@@ -1,5 +1,7 @@
 ---
 title: Logging and audit
+description: Where task logs, metrics, and the audit trail are collected, and who can read them.
+icon: journal-text
 weight: 7
 variants: -flyte +union
 ---

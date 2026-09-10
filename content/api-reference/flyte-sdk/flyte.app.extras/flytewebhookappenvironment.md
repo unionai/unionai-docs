@@ -1,6 +1,8 @@
 ---
 title: FlyteWebhookAppEnvironment
-version: 2.6.6
+description: "A pre-built FastAPI app environment for common Flyte webhook operations."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,6 +42,7 @@ class FlyteWebhookAppEnvironment(
     resources: Optional[Resources] = None,
     interruptible: bool = False,
     include: Tuple[str, ...] = <factory>,
+    service_account: Optional[str] = None,
     port: int | Port = 8080,
     args: Optional[Union[List[str], str]] = None,
     command: Optional[Union[List[str], str]] = None,
@@ -72,6 +75,7 @@ class FlyteWebhookAppEnvironment(
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment |
 | `interruptible` | `bool` | |
 | `include` | `Tuple[str, ...]` | |
+| `service_account` | `Optional[str]` | |
 | `port` | `int \| Port` | |
 | `args` | `Optional[Union[List[str], str]]` | |
 | `command` | `Optional[Union[List[str], str]]` | |
@@ -148,6 +152,7 @@ def clone_with(
     depends_on: Optional[List[Environment]] = None,
     description: Optional[str] = None,
     interruptible: Optional[bool] = None,
+    service_account: Optional[str] = None,
     **kwargs: Any,
 ) -> AppEnvironment
 ```
@@ -161,6 +166,7 @@ def clone_with(
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
 | `interruptible` | `Optional[bool]` | |
+| `service_account` | `Optional[str]` | |
 | `**kwargs` | `Any` | |
 
 ### container_args()

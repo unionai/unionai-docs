@@ -1,8 +1,9 @@
 ---
 title: Workflow sandboxing
+description: Run pure Python control flow in a sandboxed orchestrator while heavy work goes to container tasks.
+icon: shield-lock
 weight: 2
 variants: +flyte +union
-llm_readable_bundle: true
 mermaid: true
 ---
 

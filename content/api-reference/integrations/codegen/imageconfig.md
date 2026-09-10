@@ -1,6 +1,8 @@
 ---
 title: ImageConfig
-version: 2.6.6
+description: "Configuration for Docker image building at runtime."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

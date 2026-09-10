@@ -1,5 +1,7 @@
 ---
 title: Enable app serving
+description: Run long-running apps beside your workflows by installing Knative and enabling the app controller.
+icon: window
 variants: +flyte -union
 weight: 5
 ---

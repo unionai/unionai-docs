@@ -1,5 +1,7 @@
 ---
 title: View logs
+description: Read the logs an action emitted, live or after the fact.
+icon: journal-text
 weight: 3
 variants: +flyte +union
 ---

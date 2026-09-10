@@ -1,5 +1,7 @@
 ---
 title: Constraints and best practices
+description: Decorator ordering rules and the practices that keep W&B logging correct inside tasks and traces.
+icon: exclamation-triangle
 weight: 4
 variants: +flyte +union
 ---

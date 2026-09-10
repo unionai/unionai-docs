@@ -1,5 +1,7 @@
 ---
 title: Queues
+description: Named scheduling lanes that route and rate-limit work instead of letting everything compete.
+icon: list-task
 weight: 12
 variants: -flyte +union
 ---

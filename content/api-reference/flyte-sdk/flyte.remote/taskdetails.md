@@ -1,6 +1,7 @@
 ---
 title: TaskDetails
-version: 2.6.6
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -106,6 +107,7 @@ def override(
     timeout: Optional[flyte.TimeoutType] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[flyte.SecretRequest] = None,
+    service_account: Optional[str] = None,
     max_inline_io_bytes: Optional[int] = None,
     cache: Optional[flyte.Cache] = None,
     queue: Optional[str] = None,
@@ -124,6 +126,7 @@ Create a new TaskDetails with overridden properties.
 | `timeout` | `Optional[flyte.TimeoutType]` | Execution timeout. |
 | `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set. |
 | `secrets` | `Optional[flyte.SecretRequest]` | Secret requests for the task. |
+| `service_account` | `Optional[str]` | Kubernetes service account to run task pods as. |
 | `max_inline_io_bytes` | `Optional[int]` | Maximum inline I/O size in bytes. |
 | `cache` | `Optional[flyte.Cache]` | Cache configuration. |
 | `queue` | `Optional[str]` | Queue name for task execution. |

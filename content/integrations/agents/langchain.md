@@ -1,5 +1,7 @@
 ---
 title: LangChain
+description: Run LangChain agents on Flyte, built with create_agent and executed as durable actions.
+icon: link-45deg
 weight: 6
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Shared responsibility model
+description: Who owns which part of the stack in self-managed and BYOC deployments.
+icon: people
 weight: 5
 variants: -flyte +union
 ---

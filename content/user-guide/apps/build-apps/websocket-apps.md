@@ -1,5 +1,7 @@
 ---
 title: WebSocket apps
+description: Serve WebSocket endpoints for bidirectional, real-time communication.
+icon: arrow-left-right
 weight: 5
 variants: +flyte +union
 ---

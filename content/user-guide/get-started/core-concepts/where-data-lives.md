@@ -1,5 +1,6 @@
 ---
 title: Where your data lives
+icon: hdd
 weight: 4
 variants: +flyte +union
 description: A developer's map of what Flyte stores in the control plane database versus the data plane object store, and what "metadata," "literals," and "raw data" actually mean.

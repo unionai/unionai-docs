@@ -1,6 +1,8 @@
 ---
 title: ActionDetails
-version: 2.6.6
+description: "A class representing an action."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +41,7 @@ class ActionDetails(
 | `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
 | `attempts` | `int` | Get the number of attempts of the action. |
 | `error_info` | `run_definition_pb2.ErrorInfo \| None` | Get the error information if the action failed, otherwise returns None. |
+| `error_message` | `str` | The error message of a failed action, or an empty string when the action did not fail (or carries no error details). |
 | `initializing_time` | `timedelta \| None` | Get the time spent in the INITIALIZING phase for the latest attempt. |
 | `is_running` | `bool` | Check if the action is currently running. |
 | `metadata` | `run_definition_pb2.ActionMetadata` | Get the metadata of the action. |
@@ -63,12 +66,12 @@ class ActionDetails(
 | [`done()`](#done) | Check if the action is in a terminal state (completed or failed). |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_details()`](#get_details) | Get the details of the action. |
-| [`get_phase_transitions()`](#get_phase_transitions) | Get the phase transitions for a specific attempt, showing the granular breakdown. |
+| [`get_phase_transitions()`](#get_phase_transitions) | Get the phase transitions for a specific attempt, showing the granular breakdown of time spent in each phase (queued, initializing, running, etc.). |
 | [`input_literals()`](#input_literals) | Return the action's raw input literals keyed by input name, without reconstructing types. |
 | [`inputs()`](#inputs) | Return the inputs of the action. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
-| [`output_literals()`](#output_literals) | Return the action's raw output literals keyed by output name (`o0`, `o1`,. |
-| [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
+| [`output_literals()`](#output_literals) | Return the action's raw output literals keyed by output name (`o0`, `o1`, ...) without reconstructing the producer's types from the stored schema. |
+| [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and returns. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`typed_inputs()`](#typed_inputs) | Fetch the action's inputs and re-hydrate the requested ones into caller-supplied types. |

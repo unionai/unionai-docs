@@ -1,5 +1,7 @@
 ---
 title: vLLM app
+description: Deploy a high-throughput vLLM model server.
+icon: cpu
 weight: 11
 variants: +flyte +union
 ---

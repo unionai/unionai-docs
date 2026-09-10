@@ -1,5 +1,7 @@
 ---
 title: User-defined MCP server
+description: Deploy any FastMCP instance as a long-running app serving its tools over HTTP.
+icon: plug
 weight: 1
 variants: +flyte +union
 ---

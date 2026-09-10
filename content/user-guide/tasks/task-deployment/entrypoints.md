@@ -1,5 +1,7 @@
 ---
 title: Entrypoint tasks
+description: Mark the tasks meant to be launched directly, so the task list stays readable as a project grows.
+icon: door-open
 weight: 11
 variants: +flyte +union
 ---

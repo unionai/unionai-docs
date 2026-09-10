@@ -1,5 +1,7 @@
 ---
 title: Build a custom CLI
+description: Build your own command-line front end when the generated flyte run options are not enough.
+icon: terminal
 weight: 5
 variants: +flyte +union
 ---

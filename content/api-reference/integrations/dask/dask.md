@@ -1,6 +1,8 @@
 ---
 title: Dask
-version: 2.6.6
+description: "Configuration for the dask task."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

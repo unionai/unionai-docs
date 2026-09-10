@@ -1,5 +1,7 @@
 ---
 title: Knative Operator chart
+description: Helm values for the Knative Operator chart.
+icon: list-columns
 variants: -flyte +union
 chart_version: 2025.6.3
 weight: 2

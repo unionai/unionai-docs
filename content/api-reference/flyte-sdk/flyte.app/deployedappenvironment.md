@@ -1,6 +1,7 @@
 ---
 title: DeployedAppEnvironment
-version: 2.6.6
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

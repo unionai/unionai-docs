@@ -1,8 +1,9 @@
 ---
 title: Enabling GCP resources
+description: 'Connect your data plane to the GCP services it needs: Cloud Storage, Artifact Registry, Secret Manager, and BigQuery.'
+icon: cloud
 weight: 10
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Enabling GCP resources
@@ -121,3 +122,5 @@ To find the actual name of this GSA do the following:
 
 * Copy this name to document in an editor.
   You will need it later to configure each specific resource.
+
+{{< subpage-cards >}}

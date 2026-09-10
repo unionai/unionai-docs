@@ -1,6 +1,8 @@
 ---
 title: SnowflakeConfig
-version: 2.6.6
+description: "Configure a Snowflake Task using a `SnowflakeConfig` object."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

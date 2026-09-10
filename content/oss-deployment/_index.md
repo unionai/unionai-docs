@@ -1,9 +1,10 @@
 ---
 title: Platform deployment
+description: Deploy Flyte to your own Kubernetes cluster with the flyte-binary Helm chart.
+icon: server
 variants: +flyte -union
 weight: 5
 top_menu: true
-llm_readable_bundle: true
 ---
 
 # Platform deployment
@@ -17,7 +18,15 @@ Flyte web console. You point it at three things you provision yourself (a Kubern
 cluster, a PostgreSQL database, and an object store) and it runs as one Deployment
 that you scale vertically.
 
-Read these pages in order:
+> [!INFO] Try Flyte Devbox in your browser
+>
+> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox).
+>
+> If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
+
+Walk through these pages in order:
 
 1. [Deployment overview](./overview): architecture and the external
    dependencies you need to provision.
@@ -34,3 +43,5 @@ Read these pages in order:
    including how to install the Knative Serving prerequisite.
 6. [Plugin setup](./plugin-setup/_index): cluster-side configuration some plugins need,
    including [copilot's access](./plugin-setup/copilot-storage) to your object store.
+
+{{< subpage-cards >}}

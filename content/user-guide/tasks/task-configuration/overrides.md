@@ -1,5 +1,7 @@
 ---
 title: Overrides
+description: Change a task's configuration at invocation time rather than where it is defined.
+icon: pencil-square
 weight: 16
 variants: +flyte +union
 ---

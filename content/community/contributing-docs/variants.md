@@ -1,5 +1,7 @@
 ---
 title: Variants
+description: Show or hide content per product variant, either for a whole page or inline.
+icon: layers
 weight: 5
 variants: +flyte +union
 ---

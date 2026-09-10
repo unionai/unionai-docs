@@ -1,8 +1,9 @@
 ---
 title: Contributing docs and examples
+description: How the docs site is built, and how to author and submit a change to it.
+icon: file-earmark-text
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Contributing docs and examples
@@ -68,3 +69,5 @@ Everyone can contribute: Flyte contributors, Union customers, and Union employee
 If you are a Flyte contributor, you contribute docs related to Flyte features, and in many cases those features are also available in Union.
 Because the docs site is a single source for all the documentation, when you make a change related to Flyte that is also valid for Union, you do it in the same place.
 This is by design and is a key feature of the docs site.
+
+{{< subpage-cards >}}

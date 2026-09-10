@@ -1,5 +1,7 @@
 ---
 title: LangGraph research agent
+icon: diagram-2
+description: Combine LangGraph control flow with Flyte tasks for multi-topic web research with quality-check loops.
 weight: 3
 variants: +flyte +union
 ---

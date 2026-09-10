@@ -1,5 +1,7 @@
 ---
 title: Browser apps
+description: Serve Streamlit, Gradio, or custom dashboards that users reach directly in a browser.
+icon: browser-chrome
 weight: 6
 variants: +flyte +union
 ---

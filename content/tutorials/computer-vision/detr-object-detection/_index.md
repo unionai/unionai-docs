@@ -1,5 +1,7 @@
 ---
 title: RT-DETR object detection
+icon: bounding-box
+description: Fine-tune RT-DETRv2 on a COCO dataset with live training charts, mAP evaluation, and bounding-box demos.
 weight: 3
 variants: +flyte +union
 ---

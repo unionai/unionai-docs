@@ -1,5 +1,7 @@
 ---
 title: Rerun a run
+description: Launch a fresh run from a previous one's recorded task, code, inputs, and configuration.
+icon: arrow-repeat
 weight: 14
 variants: +flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Enabling Azure Container Registry (ACR)
+description: Give the data plane access to ACR using AKS managed identities.
+icon: archive
 weight: 2
 variants: -flyte +union
 ---

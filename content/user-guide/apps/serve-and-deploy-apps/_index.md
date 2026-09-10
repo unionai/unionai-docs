@@ -1,8 +1,9 @@
 ---
 title: Serve and deploy apps
+description: Use `flyte serve` for fast iteration or `flyte deploy` for production deployments.
+icon: rocket
 weight: 4
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Serve and deploy apps
@@ -72,3 +73,5 @@ flyte deploy path/to/app.py app_env
 - [**Activating and deactivating apps**](./activating-and-deactivating-apps): Managing app lifecycle
 - [**Basic project**](../../get-started/core-concepts/basic-project): Build a RAG embedding pipeline and semantic search app with Streamlit
 - [**Prefetching models**](./prefetching-models): Download and shard HuggingFace models for vLLM and SGLang
+
+{{< subpage-cards >}}

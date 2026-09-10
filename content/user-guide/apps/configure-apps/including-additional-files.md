@@ -1,5 +1,7 @@
 ---
 title: Including additional files
+description: Bundle utility modules, config, and data files alongside your app script with include.
+icon: folder-plus
 weight: 3
 variants: +flyte +union
 ---

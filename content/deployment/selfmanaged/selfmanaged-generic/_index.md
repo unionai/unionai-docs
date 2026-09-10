@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on generic Kubernetes
+description: Run a self-managed data plane on any Kubernetes cluster, including on-premise.
+icon: server
 weight: 3
 variants: -flyte +union
 ---
@@ -16,3 +18,5 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 If you already have a Kubernetes cluster, S3-compatible object storage, a container registry, and credentials configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
 Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required resources.
+
+{{< subpage-cards >}}

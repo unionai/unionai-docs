@@ -1,5 +1,7 @@
 ---
 title: How task deployment works
+description: What flyte deploy and flyte.deploy do under the hood.
+icon: gear
 weight: 5
 variants: +flyte +union
 ---

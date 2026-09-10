@@ -1,6 +1,8 @@
 ---
 title: MCPServerSpec
-version: 2.6.6
+description: "Declarative spec for a remote MCP server that exposes tools."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

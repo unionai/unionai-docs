@@ -1,5 +1,7 @@
 ---
 title: Node pools
+description: Separate Union services from worker pods so they do not contend for resources.
+icon: hdd-stack
 weight: 1
 variants: -flyte +union
 ---

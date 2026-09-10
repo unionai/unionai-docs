@@ -1,5 +1,7 @@
 ---
 title: Data flow
+description: How data moves between tasks, and where that movement costs you time.
+icon: arrow-left-right
 weight: 1
 variants: +flyte +union
 ---

@@ -1,6 +1,8 @@
 ---
 title: Storage
-version: 2.6.6
+description: "Data storage configuration that applies across any provider."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

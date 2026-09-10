@@ -1,5 +1,7 @@
 ---
 title: Resource management
+description: Learn about available resources and data sources
+icon: gear
 weight: 2
 variants: -flyte +union
 ---

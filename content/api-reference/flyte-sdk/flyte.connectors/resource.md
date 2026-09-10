@@ -1,6 +1,8 @@
 ---
 title: Resource
-version: 2.6.6
+description: "This is the output resource of the job."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

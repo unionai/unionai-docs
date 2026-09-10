@@ -1,5 +1,7 @@
 ---
 title: Kubernetes Access Controls
+description: The Kubernetes RBAC the Helm chart applies, and what each role can reach.
+icon: shield-lock
 weight: 4
 variants: -flyte +union
 ---

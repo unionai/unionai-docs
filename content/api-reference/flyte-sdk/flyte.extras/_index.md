@@ -1,6 +1,8 @@
 ---
 title: flyte.extras
-version: 2.6.6
+description: "Flyte extras package."
+icon: box-seam
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,7 +24,13 @@ This package provides various utilities that make it possible to build highly cu
 3. Sleep: Route a task to the backend `core-sleep` plugin, which executes in leaseworker with no
                    task pod.
 
-4. Shell: Wrap a CLI tool packaged in a container image. Designed as the foundation for
+4. Webhooks: Receive SaaS webhooks (GitHub, Slack, Jira, ...) and turn them into runs.
+             `WebhookAppEnvironment` serves a verified receiver, and `run_once`
+             launches once per event key so a redelivery is a no-op. Products plug in
+             through `Provider`; the `flyteplugins-<product>` packages ship those.
+             Serving the app needs `fastapi`, which stays an optional extra.
+
+5. Shell: Wrap a CLI tool packaged in a container image. Designed as the foundation for
                 bio module libraries (bedtools, samtools, bcftools, GATK, etc.) and any other case
                 where a user wants to call a pre-built binary in a published container with
                 typed inputs and outputs.
@@ -34,7 +42,7 @@ This package provides various utilities that make it possible to build highly cu
 |-|-|
 | [`BatchStats`](../flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`ContainerTask`](../flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
-| [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
+| [`DynamicBatcher`](../flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through a single async processing function, maximizing resource utilization. |
 | [`Prompt`](../flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
 | [`Sleep`](../flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
 | [`SleepTask`](../flyte.extras/sleeptask) |  |

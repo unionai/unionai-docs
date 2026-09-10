@@ -1,6 +1,8 @@
 ---
 title: SandboxedTaskTemplate
-version: 2.6.6
+description: "A task template that executes the function body in a Monty sandbox."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,6 +36,7 @@ class SandboxedTaskTemplate(
     docs: Optional[Documentation] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     timeout: Optional[TimeoutType] = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     report: bool = False,
@@ -68,6 +71,7 @@ class SandboxedTaskTemplate(
 | `docs` | `Optional[Documentation]` | |
 | `env_vars` | `Optional[Dict[str, str]]` | |
 | `secrets` | `Optional[SecretRequest]` | |
+| `service_account` | `Optional[str]` | |
 | `timeout` | `Optional[TimeoutType]` | |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | |
 | `report` | `bool` | |
@@ -101,12 +105,12 @@ class SandboxedTaskTemplate(
 | [`config()`](#config) | Returns additional configuration for the task. |
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
-| [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
+| [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system Flyte CoPilot, eliminates the needs of sdk inside the container. |
 | [`execute()`](#execute) | Execute the function body in a Monty sandbox. |
 | [`forward()`](#forward) | Bypass Monty and call the function directly (for local/debug execution). |
 | [`override()`](#override) | Override various parameters of the task template. |
-| [`post()`](#post) | This is the postexecute function that will be. |
-| [`pre()`](#pre) | This is the preexecute function that will be. |
+| [`post()`](#post) | This is the postexecute function that will be called after the task is executed. |
+| [`pre()`](#pre) | This is the preexecute function that will be called before the task is executed. |
 | [`sql()`](#sql) | Returns the SQL for the task. |
 
 
@@ -247,6 +251,7 @@ def override(
     reusable: Union[ReusePolicy, Literal['off'], None] = None,
     env_vars: Optional[Dict[str, str]] = None,
     secrets: Optional[SecretRequest] = None,
+    service_account: Optional[str] = None,
     max_inline_io_bytes: int | None = None,
     pod_template: Optional[Union[str, PodTemplate]] = None,
     queue: Optional[str] = None,
@@ -273,6 +278,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` | Optional override for the reusability policy for the task. |
 | `env_vars` | `Optional[Dict[str, str]]` | Optional override for the environment variables to set for the task. |
 | `secrets` | `Optional[SecretRequest]` | Optional override for the secrets that will be injected into the task at runtime. |
+| `service_account` | `Optional[str]` | Optional override for the Kubernetes service account to run task pods as. |
 | `max_inline_io_bytes` | `int \| None` | Optional override for the maximum allowed size (in bytes) for all inputs and outputs passed directly to the task. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |

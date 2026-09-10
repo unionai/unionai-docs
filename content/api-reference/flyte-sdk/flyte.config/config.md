@@ -1,6 +1,8 @@
 ---
 title: Config
-version: 2.6.6
+description: "This the parent configuration object and holds all the underlying configuration object types."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

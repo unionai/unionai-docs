@@ -1,6 +1,8 @@
 ---
 title: Parameter
-version: 2.6.6
+description: "Parameter for application."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

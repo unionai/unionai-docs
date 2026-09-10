@@ -1,5 +1,7 @@
 ---
 title: Organizational security
+description: Background checks, security training, governance, and the secure development lifecycle behind the platform.
+icon: person-badge
 weight: 6
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the EKS cluster, S3 bucket, ECR repository, and IAM roles the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---

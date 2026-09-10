@@ -1,5 +1,7 @@
 ---
 title: Scale your workflows
+description: Trade off execution overhead, data transfer, and concurrency to make a workload faster.
+icon: speedometer2
 weight: 3
 variants: +flyte +union
 ---

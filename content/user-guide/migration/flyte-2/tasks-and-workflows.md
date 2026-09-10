@@ -1,5 +1,7 @@
 ---
 title: Tasks and workflows
+description: task, workflow, and dynamic collapse into one decorator, because everything is a task.
+icon: code
 weight: 4
 variants: +flyte +union
 ---

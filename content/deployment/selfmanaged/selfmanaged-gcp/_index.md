@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on GCP
+description: Run a self-managed data plane on GCP, using GKE, Cloud Storage, and Workload Identity.
+icon: google
 weight: 4
 variants: -flyte +union
 ---
@@ -13,3 +15,5 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 If you already have a GKE cluster, GCS buckets, Artifact Registry repository, and Workload Identity configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
 Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required GCP resources.
+
+{{< subpage-cards >}}

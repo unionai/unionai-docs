@@ -1,5 +1,7 @@
 ---
 title: Flyte-native agents
+description: Build an agent with flyte.ai.agents.Agent instead of hand-rolling the tool-call loop.
+icon: robot
 weight: 2
 variants: +flyte +serverless +union
 mermaid: true

@@ -1,5 +1,7 @@
 ---
 title: Links
+description: Attach clickable URLs to a task so the UI can reach external tools.
+icon: link-45deg
 weight: 9
 variants: +flyte +union
 ---

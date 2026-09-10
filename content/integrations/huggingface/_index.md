@@ -1,5 +1,7 @@
 ---
 title: Hugging Face
+description: Pass Hugging Face datasets.Dataset and IterableDataset values between tasks as typed inputs and outputs.
+icon: emoji-smile
 weight: 1
 variants: +flyte +union
 ---

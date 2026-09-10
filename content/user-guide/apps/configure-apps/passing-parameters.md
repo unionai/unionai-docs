@@ -1,5 +1,7 @@
 ---
 title: Passing parameters into app environments
+description: Pass primitives, files, directories, and deferred values into an app at deploy time.
+icon: input-cursor-text
 weight: 4
 variants: +flyte +union
 ---

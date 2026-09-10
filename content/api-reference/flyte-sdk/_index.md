@@ -1,6 +1,8 @@
 ---
 title: Flyte SDK
-version: 2.6.6
+description: "Flyte SDK for authoring compound AI applications, services and workflows."
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -28,11 +30,11 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ConditionWebhook`](flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`flyte.Cron`](flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](flyte/device) | Represents a device type, its quantity and partition if applicable. |
-| [`flyte.Environment`](flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`flyte.Environment`](flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`flyte.FixedRate`](flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
-| [`flyte.Image`](flyte/image) | Container image specification built using a fluent, two-step pattern:. |
+| [`flyte.Image`](flyte/image) | Container image specification built using a fluent, two-step pattern. |
 | [`flyte.ImageBuild`](flyte/imagebuild) | Result of an image build operation. |
-| [`flyte.OnArtifact`](flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new. |
+| [`flyte.OnArtifact`](flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created. |
 | [`flyte.PodTemplate`](flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`flyte.RetryStrategy`](flyte/retrystrategy) | Retry strategy for a task. |
@@ -41,7 +43,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.TaskEnvironment`](flyte/taskenvironment) | Define an execution environment for a set of tasks. |
 | [`flyte.TaskTemplate`](flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.Timeout`](flyte/timeout) | Timeout bounds for a task. |
-| [`flyte.Trigger`](flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`flyte.Trigger`](flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
 | [`flyte.ai.agents.AccessDenied`](flyte.ai.agents/accessdenied) | Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.Agent`](flyte.ai.agents/agent) | A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.AgentEvent`](flyte.ai.agents/agentevent) | Lightweight event emitted by the agent loop. |
@@ -62,9 +64,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ai.agents.memory.MemoryStore`](flyte.ai.agents.memory/memorystore) | Conversation transcript + path-addressed artifact memory backed by `flyte.io.Dir`. |
 | [`flyte.ai.agents.memory.MemoryStoreError`](flyte.ai.agents.memory/memorystoreerror) | Base class for `flyte.ai.agents.MemoryStore` errors. |
 | [`flyte.ai.agents.protocol.AgentResult`](flyte.ai.agents.protocol/agentresult) | Outcome of a single agent invocation. |
-| [`flyte.ai.chat.AgentChatAppEnvironment`](flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
+| [`flyte.ai.chat.AgentChatAppEnvironment`](flyte.ai.chat/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`. |
 | [`flyte.ai.chat.CustomTheme`](flyte.ai.chat/customtheme) | Declarative color theme for the Agent Chat UI. |
-| [`flyte.ai.chat.app.AgentChatAppEnvironment`](flyte.ai.chat.app/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat. |
+| [`flyte.ai.chat.app.AgentChatAppEnvironment`](flyte.ai.chat.app/agentchatappenvironment) | An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`. |
 | [`flyte.ai.chat.app.CustomTheme`](flyte.ai.chat.app/customtheme) | Declarative color theme for the Agent Chat UI. |
 | [`flyte.ai.mcp.FlyteMCPAppEnvironment`](flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
 | [`flyte.ai.mcp.MCPAppEnvironment`](flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
@@ -79,6 +81,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app.Port`](flyte.app/port) |  |
 | [`flyte.app.RunOutput`](flyte.app/runoutput) | Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](flyte.app/scaling) | Controls replica count and autoscaling behavior for app environments. |
+| [`flyte.app.Subdomain`](flyte.app/subdomain) | A subdomain that is resolved at deploy time, when the deployment project and domain are known. |
 | [`flyte.app.Timeouts`](flyte.app/timeouts) | Timeout configuration for the application. |
 | [`flyte.app.extras.FastAPIAppEnvironment`](flyte.app.extras/fastapiappenvironment) |  |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](flyte.app.extras/fastapipassthroughauthmiddleware) | FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
@@ -113,22 +116,24 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.InvalidImageNameError`](flyte.errors/invalidimagenameerror) | This error is raised when the image name is invalid. |
 | [`flyte.errors.InvalidPackageError`](flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
-| [`flyte.errors.ModuleLoadError`](flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`flyte.errors.ModuleLoadError`](flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a syntax error. |
 | [`flyte.errors.NonRecoverableError`](flyte.errors/nonrecoverableerror) | Raised when an error is encountered that is not recoverable. |
 | [`flyte.errors.NotInTaskContextError`](flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
-| [`flyte.errors.ParameterMaterializationError`](flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
+| [`flyte.errors.ParameterMaterializationError`](flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`flyte.errors.RemoteTaskNotFoundError`](flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RemoteTaskUsageError`](flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
-| [`flyte.errors.RestrictedTypeError`](flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
+| [`flyte.errors.ResourceExhaustedError`](flyte.errors/resourceexhaustederror) |  |
+| [`flyte.errors.RestrictedTypeError`](flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one value. |
 | [`flyte.errors.RetriesExhaustedError`](flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RuntimeDataValidationError`](flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.RuntimeSystemError`](flyte.errors/runtimesystemerror) | This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](flyte.errors/runtimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
 | [`flyte.errors.RuntimeUserError`](flyte.errors/runtimeusererror) | This error is raised when the underlying task execution fails because of an error in the user's code. |
 | [`flyte.errors.SlowDownError`](flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
+| [`flyte.errors.SyncTaskCallInAsyncContextError`](flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async task. |
 | [`flyte.errors.TaskInterruptedError`](flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`flyte.errors.TraceDoesNotAllowNestedTasksError`](flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |
@@ -138,7 +143,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.TaskTemplate`](flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`flyte.extras.ContainerTask`](flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
-| [`flyte.extras.DynamicBatcher`](flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through. |
+| [`flyte.extras.DynamicBatcher`](flyte.extras/dynamicbatcher) | Batches records from many concurrent producers and runs them through a single async processing function, maximizing resource utilization. |
 | [`flyte.extras.Prompt`](flyte.extras/prompt) | Simple prompt record with built-in token estimation. |
 | [`flyte.extras.Sleep`](flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](flyte.extras/sleeptask) |  |
@@ -147,10 +152,17 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extras.shell.Glob`](flyte.extras.shell/glob) | A multi-file output bundle. |
 | [`flyte.extras.shell.Stderr`](flyte.extras.shell/stderr) | Capture the task's stderr as a typed output. |
 | [`flyte.extras.shell.Stdout`](flyte.extras.shell/stdout) | Capture the task's stdout as a typed output. |
+| [`flyte.extras.webhooks.EventType`](flyte.extras.webhooks/eventtype) | Base for event constants: a real `str`, usable anywhere a pattern is. |
+| [`flyte.extras.webhooks.Provider`](flyte.extras.webhooks/provider) | Everything core needs to accept one product's webhooks. |
+| [`flyte.extras.webhooks.RunOnceResult`](flyte.extras.webhooks/runonceresult) | The run covering a dedupe key, and whether this call created it. |
+| [`flyte.extras.webhooks.SignatureError`](flyte.extras.webhooks/signatureerror) | Raised when an inbound delivery fails verification or cannot be parsed. |
+| [`flyte.extras.webhooks.WebhookAppEnvironment`](flyte.extras.webhooks/webhookappenvironment) | Dashboard plus a verified webhook receiver for one or more providers. |
+| [`flyte.extras.webhooks.WebhookEvent`](flyte.extras.webhooks/webhookevent) | One inbound webhook, normalized across providers. |
+| [`flyte.extras.webhooks.WebhookPluginError`](flyte.extras.webhooks/webhookpluginerror) | Base class for all errors raised by this plugin. |
 | [`flyte.git.GitStatus`](flyte.git/gitstatus) | A class representing the status of a git repository. |
-| [`flyte.io.DataFrame`](flyte.io/dataframe) | A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas. |
+| [`flyte.io.DataFrame`](flyte.io/dataframe) | A Flyte meta DataFrame object, that wraps all other dataframe types (usually available as plugins, pandas.DataFrame and pyarrow.Table are supported natively, just install these libraries). |
 | [`flyte.io.Dir`](flyte.io/dir) | A generic directory class representing a directory with files of a specified format. |
-| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel `flyte.io.Dir` representing 'no directory was produced'. |
+| [`flyte.io.EmptyDir`](flyte.io/emptydir) | A sentinel `flyte.io.Dir` representing `no directory was produced`. |
 | [`flyte.io.File`](flyte.io/file) | A generic file class representing a file with a specified format. |
 | [`flyte.io.HashFunction`](flyte.io/hashfunction) | A hash method that wraps a user-provided function to compute hashes. |
 | [`flyte.io.extend.DataFrameDecoder`](flyte.io.extend/dataframedecoder) |  |
@@ -164,7 +176,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.models.NativeInterface`](flyte.models/nativeinterface) | A class representing the native interface for a task. |
 | [`flyte.models.PathRewrite`](flyte.models/pathrewrite) | Configuration for rewriting paths during input loading. |
 | [`flyte.models.RawDataPath`](flyte.models/rawdatapath) | A class representing the raw data path for a task. |
-| [`flyte.models.SerializationContext`](flyte.models/serializationcontext) | This object holds serialization time contextual information, that can be used when serializing the task and. |
+| [`flyte.models.SerializationContext`](flyte.models/serializationcontext) | This object holds serialization time contextual information, that can be used when serializing the task and various parameters of a tasktemplate. |
 | [`flyte.models.TaskContext`](flyte.models/taskcontext) | A context class to hold the current task executions context. |
 | [`flyte.notify.Email`](flyte.notify/email) | Send email notifications. |
 | [`flyte.notify.NamedDelivery`](flyte.notify/nameddelivery) | Use a pre-configured delivery channel by name. |
@@ -182,7 +194,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.remote.ActionInputs`](flyte.remote/actioninputs) | A class representing the inputs of an action. |
 | [`flyte.remote.ActionOutputs`](flyte.remote/actionoutputs) | A class representing the outputs of an action. |
 | [`flyte.remote.App`](flyte.remote/app) |  |
-| [`flyte.remote.Artifact`](flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as. |
+| [`flyte.remote.Artifact`](flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version. |
 | [`flyte.remote.Condition`](flyte.remote/condition) | A remote Condition registered within an action of a run. |
 | [`flyte.remote.Project`](flyte.remote/project) | A class representing a project in the Union API. |
 | [`flyte.remote.Run`](flyte.remote/run) | A class representing a run of a task. |
@@ -191,8 +203,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.remote.Settings`](flyte.remote/settings) | Hierarchical configuration settings with inheritance support. |
 | [`flyte.remote.Task`](flyte.remote/task) |  |
 | [`flyte.remote.TaskDetails`](flyte.remote/taskdetails) |  |
-| [`flyte.remote.TimeFilter`](flyte.remote/timefilter) | Filter for time-based fields (e. |
+| [`flyte.remote.TimeFilter`](flyte.remote/timefilter) | Filter for time-based fields (e.g. created_at, updated_at). |
 | [`flyte.remote.Trigger`](flyte.remote/trigger) | Represents a trigger in the Flyte platform. |
+| [`flyte.remote.TriggerDetails`](flyte.remote/triggerdetails) |  |
 | [`flyte.remote.User`](flyte.remote/user) | Represents a user in the Flyte platform. |
 | [`flyte.report.Report`](flyte.report/report) |  |
 | [`flyte.report.Timeline`](flyte.report/timeline) | Append a best-effort chronological timeline to a tab of the task report. |
@@ -217,13 +230,14 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.AppHandle`](flyte/apphandle) | Protocol defining the common interface between local and remote app handles. |
 | [`flyte.CachePolicy`](flyte/cachepolicy) | Protocol for custom cache version strategies. |
 | [`flyte.Link`](flyte/link) |  |
-| [`flyte.ai.agents.AgentProtocol`](flyte.ai.agents/agentprotocol) | Minimal protocol that any agent must satisfy to work with. |
-| [`flyte.ai.agents.protocol.AgentProtocol`](flyte.ai.agents.protocol/agentprotocol) | Minimal protocol that any agent must satisfy to work with. |
+| [`flyte.ai.agents.AgentProtocol`](flyte.ai.agents/agentprotocol) | Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`. |
+| [`flyte.ai.agents.protocol.AgentProtocol`](flyte.ai.agents.protocol/agentprotocol) | Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`. |
 | [`flyte.artifacts.Artifact`](flyte.artifacts/artifact) | Protocol for objects wrapped with Flyte metadata. |
 | [`flyte.extend.ImageBuilder`](flyte.extend/imagebuilder) |  |
 | [`flyte.extend.ImageChecker`](flyte.extend/imagechecker) |  |
 | [`flyte.extras.CostEstimator`](flyte.extras/costestimator) | Protocol for records that can estimate their own processing cost. |
 | [`flyte.extras.TokenEstimator`](flyte.extras/tokenestimator) | Protocol for records that can estimate their own token count. |
+| [`flyte.extras.webhooks.testing.ProviderFactory`](flyte.extras.webhooks.testing/providerfactory) | What a plugin's exported provider class must look like. |
 | [`flyte.types.Renderable`](flyte.types/renderable) |  |
 
 ### Functions
@@ -237,7 +251,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.TPU()`](flyte/_index#tpu) | Create a TPU device instance. |
 | [`flyte.build()`](flyte/_index#build) | Build an image. |
 | [`flyte.build_images()`](flyte/_index#build_images) | Build the images for the given environment(s). |
-| [`flyte.ctx()`](flyte/_index#ctx) | Returns the current flyte. |
+| [`flyte.ctx()`](flyte/_index#ctx) | Returns the current flyte.models.TaskContext when running inside a task. |
 | [`flyte.current_domain()`](flyte/_index#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`flyte.current_project()`](flyte/_index#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`flyte.custom_context()`](flyte/_index#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
@@ -249,13 +263,14 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.init_from_config()`](flyte/_index#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`flyte.init_in_cluster()`](flyte/_index#init_in_cluster) |  |
 | [`flyte.init_passthrough()`](flyte/_index#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
+| [`flyte.is_control_plane_available()`](flyte/_index#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`flyte.latest_checkpoint()`](flyte/_index#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
 | [`flyte.load_interactive_ctx()`](flyte/_index#load_interactive_ctx) | Restore the task execution context from the config file written by a debug-mode task pod. |
 | [`flyte.load_plugin_config()`](flyte/_index#load_plugin_config) | Load a plugin config instance from a YAML file. |
 | [`flyte.map()`](flyte/_index#map) | Map a function over the provided arguments with concurrent execution. |
 | [`flyte.new_condition()`](flyte/_index#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`flyte.rerun()`](flyte/_index#rerun) | Re-run a prior run, returning a new `Run`. |
-| [`flyte.run()`](flyte/_index#run) | Run a task with the given parameters. |
+| [`flyte.run()`](flyte/_index#run) | Run a task with the given parameters, or fire a deployed trigger on demand. |
 | [`flyte.run_python_script()`](flyte/_index#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`flyte.serve()`](flyte/_index#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`flyte.trace()`](flyte/_index#trace) | A decorator that traces function execution with timing information. |
@@ -269,7 +284,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app.get_parameter()`](flyte.app/_index#get_parameter) | Get parameters for application or endpoint. |
 | [`flyte.artifacts.new()`](flyte.artifacts/_index#new) | Wrap an object with Flyte metadata while preserving its type interface. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
-| [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set. |
+| [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 | [`flyte.connectors.utils.convert_to_flyte_phase()`](flyte.connectors.utils/_index#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
 | [`flyte.connectors.utils.is_terminal_phase()`](flyte.connectors.utils/_index#is_terminal_phase) | Return true if the phase is terminal. |
 | [`flyte.connectors.utils.print_metadata()`](flyte.connectors.utils/_index#print_metadata) |  |
@@ -286,6 +301,13 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extras.serialize()`](flyte.extras/_index#serialize) | Translate a single task to its wire TaskSpec, offline and code-agnostic. |
 | [`flyte.extras.serialize_env()`](flyte.extras/_index#serialize_env) | Serialize every task in an environment. |
 | [`flyte.extras.shell.create()`](flyte.extras.shell/_index#create) | Wrap a CLI tool packaged in a container as a Flyte task. |
+| [`flyte.extras.webhooks.blocking_run()`](flyte.extras.webhooks/_index#blocking_run) | Return the run that blocks this key, or None. |
+| [`flyte.extras.webhooks.constant_time_equals()`](flyte.extras.webhooks/_index#constant_time_equals) | Compare two credentials in constant time, without raising. |
+| [`flyte.extras.webhooks.hex_hmac_sha256()`](flyte.extras.webhooks/_index#hex_hmac_sha256) | Hex HMAC-SHA256 of the raw body — the scheme most products use. |
+| [`flyte.extras.webhooks.json_body()`](flyte.extras.webhooks/_index#json_body) | Parse a JSON body into a dict, raising `SignatureError` when it is not one. |
+| [`flyte.extras.webhooks.lower_headers()`](flyte.extras.webhooks/_index#lower_headers) | Lowercase header keys, since HTTP header names are case-insensitive. |
+| [`flyte.extras.webhooks.run_once()`](flyte.extras.webhooks/_index#run_once) | Launch `task` once for `key`, returning the run that covers it. |
+| [`flyte.extras.webhooks.testing.assert_provider_conforms()`](flyte.extras.webhooks.testing/_index#assert_provider_conforms) | Assert that a provider plugin implements the common webhook contract. |
 | [`flyte.git.config_from_root()`](flyte.git/_index#config_from_root) | Get the config file from the git root directory. |
 | [`flyte.models.generate_random_name()`](flyte.models/_index#generate_random_name) | Generate a random name for the task. |
 | [`flyte.prefetch.hf_model()`](flyte.prefetch/_index#hf_model) | Store a HuggingFace model to remote storage. |
@@ -306,7 +328,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.exists_sync()`](flyte.storage/_index#exists_sync) |  |
 | [`flyte.storage.get()`](flyte.storage/_index#get) |  |
 | [`flyte.storage.get_configured_fsspec_kwargs()`](flyte.storage/_index#get_configured_fsspec_kwargs) |  |
-| [`flyte.storage.get_random_local_directory()`](flyte.storage/_index#get_random_local_directory) | pathlib. |
+| [`flyte.storage.get_random_local_directory()`](flyte.storage/_index#get_random_local_directory) | pathlib.Path: a random directory. |
 | [`flyte.storage.get_random_local_path()`](flyte.storage/_index#get_random_local_path) | Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name. |
 | [`flyte.storage.get_stream()`](flyte.storage/_index#get_stream) | Get a stream of data from a remote location. |
 | [`flyte.storage.get_underlying_filesystem()`](flyte.storage/_index#get_underlying_filesystem) |  |
@@ -323,11 +345,11 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | Package | Description |
 |-|-|
 | [`flyte`](flyte/_index) | Flyte SDK for authoring compound AI applications, services and workflows. |
-| [`flyte.ai.agents`](flyte.ai.agents/_index) | flyte. |
+| [`flyte.ai.agents`](flyte.ai.agents/_index) | flyte.ai.agents — Agent abstractions for Flyte apps. |
 | [`flyte.ai.agents.agent`](flyte.ai.agents.agent/_index) | Agent — a flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.memory`](flyte.ai.agents.memory/_index) | Dir-backed memory for `flyte.ai.agents.Agent`. |
-| [`flyte.ai.agents.protocol`](flyte.ai.agents.protocol/_index) | Agent protocol for the flyte. |
-| [`flyte.ai.chat`](flyte.ai.chat/_index) | flyte. |
+| [`flyte.ai.agents.protocol`](flyte.ai.agents.protocol/_index) | Agent protocol for the flyte.ai.agents module. |
+| [`flyte.ai.chat`](flyte.ai.chat/_index) | flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents. |
 | [`flyte.ai.chat.app`](flyte.ai.chat.app/_index) | AgentChatAppEnvironment — FastAPI-based chat UI for any Agent. |
 | [`flyte.ai.mcp`](flyte.ai.mcp/_index) |  |
 | [`flyte.app`](flyte.app/_index) |  |
@@ -342,16 +364,18 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend`](flyte.extend/_index) |  |
 | [`flyte.extras`](flyte.extras/_index) | Flyte extras package. |
 | [`flyte.extras.shell`](flyte.extras.shell/_index) | Shell task — wrap a CLI tool packaged in a container image. |
+| [`flyte.extras.webhooks`](flyte.extras.webhooks/_index) | Receive SaaS webhooks in Flyte, and turn them into runs. |
+| [`flyte.extras.webhooks.testing`](flyte.extras.webhooks.testing/_index) | Conformance harness — enforce the common provider format. |
 | [`flyte.git`](flyte.git/_index) |  |
-| [`flyte.io`](flyte.io/_index) | ## IO data types. |
+| [`flyte.io`](flyte.io/_index) | This package contains additional data types beyond the primitive data types in python to abstract data flow of large datasets in Union. |
 | [`flyte.io.extend`](flyte.io.extend/_index) |  |
 | [`flyte.models`](flyte.models/_index) |  |
-| [`flyte.notify`](flyte.notify/_index) | Task Notifications API for Flyte 2. |
+| [`flyte.notify`](flyte.notify/_index) | Task Notifications API for Flyte 2.0. |
 | [`flyte.prefetch`](flyte.prefetch/_index) | Prefetch utilities for Flyte. |
 | [`flyte.remote`](flyte.remote/_index) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report/_index) |  |
 | [`flyte.sandbox`](flyte.sandbox/_index) | Sandbox utilities for running isolated code inside Flyte tasks. |
 | [`flyte.storage`](flyte.storage/_index) |  |
-| [`flyte.syncify`](flyte.syncify/_index) | # Syncify Module. |
-| [`flyte.types`](flyte.types/_index) | # Flyte Type System. |
+| [`flyte.syncify`](flyte.syncify/_index) | This module provides the `syncify` decorator and the `Syncify` class. |
+| [`flyte.types`](flyte.types/_index) | The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows. |
 

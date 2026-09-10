@@ -1,5 +1,7 @@
 ---
 title: Prefetch Hugging Face models
+description: Pull model weights from the Hugging Face Hub into your own storage as a model artifact, versioned by commit, with the model card attached.
+icon: download
 weight: 3
 variants: -flyte +union
 ---
@@ -48,5 +50,7 @@ flyte get artifact --attr source_repo=HuggingFaceTB/SmolLM2-135M-Instruct
 ```
 
 Those `source_repo` and `source_commit` attributes are what make a prefetched model traceable back to its Hub repo and commit.
+
+To load the weights yourself rather than passing them to a task, see [reading an artifact's value directly](./task-outputs#reading-an-artifacts-value-directly).
 
 Once prefetched, mount the model into a serving app with an artifact parameter. See [Use artifacts in apps](./artifacts-in-apps).

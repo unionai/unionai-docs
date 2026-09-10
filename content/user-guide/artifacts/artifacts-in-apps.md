@@ -1,5 +1,7 @@
 ---
 title: Use artifacts in apps
+description: Mount model weights and datasets into serving apps with `flyte.app.ArtifactValue`, resolved and pinned at deploy time.
+icon: window
 weight: 5
 variants: -flyte +union
 ---

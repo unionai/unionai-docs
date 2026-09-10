@@ -1,6 +1,8 @@
 ---
 title: flyte
-version: 2.6.6
+description: "Flyte SDK for authoring compound AI applications, services and workflows."
+icon: box-seam
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,11 +24,11 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ConditionWebhook`](../flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
-| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and. |
+| [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
-| [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern:. |
+| [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern. |
 | [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
-| [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new. |
+| [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](../flyte/retrystrategy) | Retry strategy for a task. |
@@ -35,7 +37,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TaskEnvironment`](../flyte/taskenvironment) | Define an execution environment for a set of tasks. |
 | [`TaskTemplate`](../flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
-| [`Trigger`](../flyte/trigger) | Specification for a scheduled trigger that can be associated with any Flyte task. |
+| [`Trigger`](../flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
 
 ### Protocols
 
@@ -56,7 +58,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
 | [`build_images()`](#build_images) | Build the images for the given environment(s). |
-| [`ctx()`](#ctx) | Returns the current flyte. |
+| [`ctx()`](#ctx) | Returns the current flyte.models.TaskContext when running inside a task. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
@@ -68,13 +70,14 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
+| [`is_control_plane_available()`](#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
 | [`load_interactive_ctx()`](#load_interactive_ctx) | Restore the task execution context from the config file written by a debug-mode task pod. |
 | [`load_plugin_config()`](#load_plugin_config) | Load a plugin config instance from a YAML file. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`new_condition()`](#new_condition) | Create a condition that can be awaited in a workflow. |
 | [`rerun()`](#rerun) | Re-run a prior run, returning a new `Run`. |
-| [`run()`](#run) | Run a task with the given parameters. |
+| [`run()`](#run) | Run a task with the given parameters, or fire a deployed trigger on demand. |
 | [`run_python_script()`](#run_python_script) | Package and run a Python script on a remote Flyte cluster. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
@@ -453,6 +456,7 @@ def init(
     local_persistence: bool = False,
     local_tracked: bool = False,
     local_tracked_strict: bool = False,
+    scopes: List[str] | None = None,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -468,7 +472,7 @@ remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
-| `reset_root_logger` | `bool` | By default, we clear out root logger handlers and set up our own. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `user_log_level` | `int \| None` | |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
@@ -496,6 +500,7 @@ remote API methods are called. Thread-safe implementation.
 | `local_persistence` | `bool` | Whether to enable SQLite persistence for local run metadata (default: False). |
 | `local_tracked` | `bool` | Whether to report tracked run state to the Flyte control plane (default: False). Requires an initialized client and a configured project/domain. |
 | `local_tracked_strict` | `bool` | Strict tracked-run reporting for debugging (default: False). Any reporting failure fails the run loudly instead of being logged and swallowed. Only takes effect when reporting is enabled. |
+| `scopes` | `List[str] \| None` | OAuth scopes to request. When omitted, scopes are discovered from the auth metadata service. |
 
 **Returns:** None
 
@@ -653,6 +658,42 @@ The endpoint is automatically configured from the environment if in a flyte clus
 | `insecure` | `bool` | Whether to use an insecure channel |
 
 **Returns:** Dictionary of remote kwargs used for initialization
+
+#### is_control_plane_available()
+
+```python
+def is_control_plane_available()
+```
+True when this process can submit work to a Flyte control plane — `flyte.run` launches real
+remote runs whose actions can be inspected, awaited, and replayed (recovered/forked).
+
+The answer depends on where the code is executing:
+
+* Inside a task launched on a Flyte cluster (`flyte.ctx().is_in_cluster()`): True. The
+  in-cluster runtime configures the connection before user code runs.
+* Inside a task executing locally (`flyte run --local` / `flyte.run(mode="local")`): False,
+  even when a client happens to be configured — the local dev loop is expected to stay
+  local, and a locally-orchestrated run has no control-plane actions to replay.
+* Outside any task (a driver script, a notebook): True iff a client has been configured via
+  `flyte.init` / `flyte.init_from_config` / `flyte.init_from_api_key`.
+
+Typical use is a task that adapts to where it runs — e.g. an agent that launches and forks
+real runs on a cluster, but falls back to invoking the task functions in-process when
+developed locally:
+
+```python
+@env.task
+async def agent() -> None:
+    if flyte.is_control_plane_available():
+        run = await flyte.run.aio(my_pipeline, x=1)
+        await run.wait.aio()
+    else:
+        await my_pipeline.func(x=1)
+```
+
+
+
+**Returns:** True when remote submission is available, False otherwise.
 
 #### latest_checkpoint()
 
@@ -868,20 +909,26 @@ The prior run's code is always replayed as-is.
 > `result = await run.aio()`.
 ```python
 def run(
-    task: TaskTemplate[P, R, F],
+    task: TaskTemplate[P, R, F] | LazyEntity | RemoteTrigger | TriggerDetails,
     *args: P.args,
     **kwargs: P.kwargs,
 ) -> Run
 ```
-Run a task with the given parameters
+Run a task with the given parameters, or fire a deployed trigger on demand.
+
+```python
+trigger = flyte.remote.Trigger.get(name="full-report", task_name="reports.report")
+run = flyte.run(trigger)              # the trigger's inputs, env vars, queue, notifications
+run = flyte.run(trigger, days=7)      # override one input, keep the rest
+```
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `task` | `TaskTemplate[P, R, F]` | task to run |
-| `*args` | `P.args` | args to pass to the task |
-| `**kwargs` | `P.kwargs` | kwargs to pass to the task |
+| `task` | `TaskTemplate[P, R, F] \| LazyEntity \| RemoteTrigger \| TriggerDetails` | task to run, or a deployed trigger (`flyte.remote.Trigger.get(...)`) |
+| `*args` | `P.args` | args to pass to the task (not allowed for a trigger) |
+| `**kwargs` | `P.kwargs` | kwargs to pass to the task (for a trigger: overrides of its registered inputs) |
 
 **Returns:** Run | Result of the task
 
@@ -1130,7 +1177,7 @@ if __name__ == "__main__":
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
 | `user_log_level` | `int \| None` | |
-| `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
 | `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |

@@ -1,10 +1,17 @@
 ---
 title: Get started
+description: What Flyte 2 is, how to install it, the core concepts, and the ways to run your code.
+icon: lightbulb
 weight: 1
 variants: +flyte +union
 ---
 
 # Get started
+
+> [!INFO] Try it in your browser
+> Follow along with this guide in Google Colab without installing anything locally.
+>
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/unionai/unionai-examples/blob/main/v2/user-guide/getting-started/ten_minutes_to_flyte.ipynb)
 
 This guide covers how to build AI applications, data pipelines, and ML workflows using the Flyte 2 SDK.
 
@@ -108,7 +115,7 @@ The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actio
 {{< /link-card >}}
 
 {{< link-card target="run-modes" icon="play-circle" title="Run modes" >}}
-Run the same task code locally, on a devbox, or on a remote cluster.
+Run the same task code in your Python process, on a devbox, or on a remote cluster.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -1,6 +1,7 @@
 ---
 title: Code generation
-version: 2.6.6
+icon: book
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

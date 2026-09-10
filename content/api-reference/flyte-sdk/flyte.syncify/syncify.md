@@ -1,6 +1,8 @@
 ---
 title: Syncify
-version: 2.6.6
+description: "A decorator to convert asynchronous functions or methods into synchronous ones."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

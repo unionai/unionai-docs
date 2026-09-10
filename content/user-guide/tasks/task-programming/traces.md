@@ -1,5 +1,7 @@
 ---
 title: Traces
+description: Make a called function observable and resumable with the flyte.trace decorator.
+icon: activity
 weight: 14
 variants: +flyte +union
 ---

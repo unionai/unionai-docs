@@ -1,8 +1,9 @@
 ---
 title: Sandboxing
+description: Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
+icon: box
 weight: 3
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # Sandboxing
@@ -76,3 +77,5 @@ This is the right choice when you need full Python capabilities: third-party pac
 - [**Workflow sandboxing**](./workflow-sandboxing-flyte): How the Monty-based sandboxed orchestrator works, with examples
 - [**Programmatic tool calling for agents**](./code-mode): The concept behind programmatic tool calling and how to build agents that use it
 - [**Code sandboxing**](./code-sandboxing): Running arbitrary code and commands in ephemeral containers with `flyte.sandbox.create()`
+
+{{< subpage-cards >}}

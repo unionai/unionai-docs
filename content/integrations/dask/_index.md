@@ -1,5 +1,7 @@
 ---
 title: Dask
+description: Run Dask jobs on a transient Kubernetes cluster provisioned per task execution.
+icon: diagram-3
 weight: 1
 variants: +flyte +union
 ---

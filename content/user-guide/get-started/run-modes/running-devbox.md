@@ -1,23 +1,23 @@
 ---
-title: Run locally on the devbox
+title: Run on the Devbox
+description: Run tasks and apps in a lightweight Flyte cluster using Docker. Get the full Flyte UI and backend experience on your machine.
+icon: box
 weight: 5
 variants: +flyte +union
 ---
 
 {{< variant union >}}
 
-<sl-alert open variant="primary">
-  <sl-icon slot="icon" name="info-circle"></sl-icon>
-  <strong style="font-size: 1.75rem; line-height: 2;">💻 Demo a Union.ai cluster locally</strong><br />
-  The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine.
-</sl-alert>
-
 {{< markdown >}}
 
-# Run locally on the devbox
+# Run on the Devbox
 
-The devbox is a lightweight local cluster that runs on your machine with Docker. It includes a UI preview, scheduler, and object store, so you can test remote execution without deploying to a real cluster.
+The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
+local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
+execution without deploying to a cluster in the cloud.
+
 {{< /markdown >}}
+
 
 {{< /variant >}}
 
@@ -25,11 +25,16 @@ The devbox is a lightweight local cluster that runs on your machine with Docker.
 {{< markdown >}}
 
 <!-- markdownlint-disable-next-line MD024 -- same heading as the union variant block; only one renders per variant -->
-# Run locally on the devbox
+# Run on the Devbox
 
-The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment (including the UI, scheduler, and object store) so you can test remote execution without deploying to a real cluster.
+The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test on-cluster execution without connecting to a remote cluster.
 {{< /markdown >}}
 {{< /variant >}}
+
+> [!NOTE] Try Devbox in your browser
+> Prefer not to install anything locally? Create a Devbox in GitHub Codespaces.
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
 
 ## What you'll need
 
@@ -150,7 +155,7 @@ Run it on the devbox:
 flyte run hello.py main
 ```
 
-Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, just like they would on a remote cluster.
+Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a remote cluster.
 
 ## View results in the UI
 

@@ -1,5 +1,7 @@
 ---
 title: User guide
+description: Everything you need to build, run, and operate workloads on Flyte, from first task to production deployment.
+icon: book
 weight: 1
 variants: +flyte +union
 top_menu: true

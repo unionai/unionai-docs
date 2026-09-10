@@ -1,6 +1,8 @@
 ---
 title: MemoryMeta
-version: 2.6.6
+description: "Per-file metadata sidecar (sha256, actor, timestamp, …) for a memory entry."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

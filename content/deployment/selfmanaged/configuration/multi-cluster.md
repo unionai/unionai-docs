@@ -1,5 +1,7 @@
 ---
 title: Multiple Clusters
+description: Attach several Kubernetes clusters to one control plane with the clusterPool abstraction.
+icon: diagram-3
 weight: 3
 variants: -flyte +union
 ---

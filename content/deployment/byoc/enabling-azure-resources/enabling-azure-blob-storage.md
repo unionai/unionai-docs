@@ -1,5 +1,7 @@
 ---
 title: Enabling Azure Blob Storage
+description: Grant data plane tasks access to your Blob Storage container through Azure Workload Identity.
+icon: bucket
 weight: 1
 variants: -flyte +union
 ---

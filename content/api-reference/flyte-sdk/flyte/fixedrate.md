@@ -1,6 +1,8 @@
 ---
 title: FixedRate
-version: 2.6.6
+description: "Fixed-rate (interval-based) automation schedule for use with `Trigger`."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---

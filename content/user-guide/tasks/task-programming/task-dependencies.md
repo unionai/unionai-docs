@@ -1,5 +1,7 @@
 ---
 title: Task dependencies and ordering
+description: How ordering comes from ordinary Python data flow rather than an explicit DAG.
+icon: arrow-down-up
 weight: 19
 variants: +flyte +union
 ---

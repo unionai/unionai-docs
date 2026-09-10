@@ -1,5 +1,7 @@
 ---
 title: Microsoft Entra ID (formerly Azure AD)
+description: Configure Microsoft Entra ID, formerly Azure AD, as your identity provider.
+icon: microsoft
 weight: 3
 variants: -flyte +union
 ---

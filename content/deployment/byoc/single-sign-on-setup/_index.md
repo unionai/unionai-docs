@@ -1,8 +1,9 @@
 ---
 title: Single sign on setup
+description: Set up SSO against any SAML or OIDC identity provider through OAuth2.
+icon: person-check
 weight: 12
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Single sign on setup
@@ -23,3 +24,5 @@ To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](.
 ## Other identity providers
 
 To configure other identity providers, see [Other identity providers](./other-identity-providers).
+
+{{< subpage-cards >}}

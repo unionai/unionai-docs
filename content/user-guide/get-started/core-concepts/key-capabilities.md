@@ -1,5 +1,7 @@
 ---
 title: Key capabilities
+description: An overview of what Flyte can do, once the core concepts are in place.
+icon: stars
 weight: 7
 variants: +flyte +union
 ---
@@ -38,7 +40,7 @@ Get your code running remotely.
 {{< /markdown >}}
 {{< /variant >}}
 
-- **Code packaging**: Your local code is automatically bundled and deployed to remote execution
+- **Code packaging**: Your local code is automatically bundled and deployed to on-cluster execution
   → [Packaging](../../tasks/task-deployment/packaging)
 
 - **Local testing**: Test tasks locally before deploying with `flyte run --local`

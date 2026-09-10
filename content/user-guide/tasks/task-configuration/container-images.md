@@ -1,5 +1,7 @@
 ---
 title: Container images
+description: Specify the container image a task runs in, and how to build one.
+icon: box-seam
 weight: 1
 variants: +flyte +union
 ---

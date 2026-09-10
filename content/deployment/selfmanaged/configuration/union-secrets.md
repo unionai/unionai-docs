@@ -1,5 +1,7 @@
 ---
 title: Secrets
+description: How Union Secrets are stored as Kubernetes secrets, and what to configure.
+icon: safe
 weight: 6
 variants: -flyte +union
 ---

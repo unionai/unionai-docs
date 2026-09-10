@@ -1,5 +1,7 @@
 ---
 title: Support resolution agent
+icon: headset
+description: Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 weight: 7
 variants: +flyte +union
 ---

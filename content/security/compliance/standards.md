@@ -1,5 +1,7 @@
 ---
 title: Standards compliance
+description: How the private data plane architecture aligns with the ISO 27001 and CIS control frameworks.
+icon: journal-text
 weight: 4
 variants: -flyte +union
 ---

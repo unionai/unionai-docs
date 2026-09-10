@@ -1,5 +1,7 @@
 ---
 title: Hybrid v1 and v2 pipelines
+description: Run Flyte 1 and Flyte 2 workloads side by side and have them call each other.
+icon: shuffle
 weight: 14
 variants: +flyte +union
 ---

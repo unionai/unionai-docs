@@ -1,6 +1,8 @@
 ---
 title: PodTemplate
-version: 2.6.6
+description: "Custom PodTemplate specification for a Task."
+icon: braces
+version: 2.7.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,8 +35,8 @@ class PodTemplate(
 
 | Method | Description |
 |-|-|
-| [`allow_fuse()`](#allow_fuse) | Return a copy of this template granted everything an **unprivileged**. |
-| [`allow_nested_sandboxing()`](#allow_nested_sandboxing) | Return a copy of this template granted the prerequisites for creating. |
+| [`allow_fuse()`](#allow_fuse) | Return a copy of this template granted everything an **unprivileged** container needs to perform an in-process FUSE mount (e.g. for `Volume` support). |
+| [`allow_nested_sandboxing()`](#allow_nested_sandboxing) | Return a copy of this template granted the prerequisites for creating nested sandboxes (e.g. the bubblewrap/`bwrap` backend of `SandboxEnvironment`) — and nothing more. |
 | [`from_spec()`](#from_spec) | Create a `flyte.PodTemplate` from an existing `V1PodSpec`. |
 | [`to_k8s_pod()`](#to_k8s_pod) |  |
 | [`with_termination_grace_period()`](#with_termination_grace_period) | Return a copy of this template with Kubernetes' `terminationGracePeriodSeconds` set. |
@@ -114,8 +116,7 @@ The copy carries exactly that:
 
 * `CAP_SYS_ADMIN` added to the primary container's capabilities;
 * `allowPrivilegeEscalation: false` (no other caps, not privileged);
-* the ``container.apparmor.security.beta.kubernetes.io/&lt;primary&gt;:
-  unconfined`` pod annotation (on K8s &gt;= 1.30 the
+* the `container.apparmor.security.beta.kubernetes.io/<primary>: unconfined` pod annotation (on K8s &gt;= 1.30 the
   `securityContext.appArmorProfile: {type: Unconfined}` field is the
   equivalent; the annotation is used here for version compatibility);
 * the `flyte.org/capability-nested-sandboxing` annotation for

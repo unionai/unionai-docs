@@ -1,5 +1,7 @@
 ---
 title: Two-plane separation
+description: Why the control plane and data plane are separated, and which risks that separation removes.
+icon: diagram-3
 weight: 1
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Weights & Biases
+description: Track experiments, visualize metrics, and run hyperparameter sweeps with Weights and Biases.
+icon: graph-up
 weight: 1
 variants: +flyte +union
 ---
@@ -53,3 +55,5 @@ This integration guide is split into focused sections, depending on how you want
 {{< note >}}
 We've included [additional examples](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/wandb/examples) developed while testing edge cases of the plugin.
 {{< /note >}}
+
+{{< subpage-cards >}}
