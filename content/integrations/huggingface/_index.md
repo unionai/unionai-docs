@@ -46,7 +46,7 @@ Because these register against the shared dataframe engine, a dataset this plugi
 
 ## Referencing a dataset on the Hub
 
-`from_hf()` names a dataset. It does not load one:
+[`from_hf()`](../../api-reference/integrations/huggingface/_index#from_hf) names a dataset. It does not load one:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_datasets.py" fragment="source" lang="python" >}}
 
@@ -82,13 +82,13 @@ A task can also accept or return the reference as a plain `flyte.io.DataFrame`. 
 
 **The annotation on the receiving parameter decides whether a download happens.** `datasets.Dataset` materializes the whole thing. `datasets.IterableDataset` materializes it and streams the rows. `flyte.io.DataFrame` does neither.
 
-It also explains something you will notice on remote runs. Ask a completed run for its outputs from your laptop and a dataset comes back as a `DataFrame` reference rather than an opened `datasets.Dataset`. Nothing went wrong; the structured-dataset literal is the transport, and no one asked for a `datasets.Dataset` yet.
+On remote runs, outputs may be represented differently when retrieved locally. For example, a dataset output can appear as a DataFrame reference instead of an opened `datasets.Dataset`. This is expected: the structured-dataset literal is used for transport, and the value is not converted to a `datasets.Dataset` until it is explicitly requested.
 
 ## Configs and splits
 
 ### Config resolution
 
-Pass `name` and the plugin uses it. Omit it, and it resolves in this order:
+Pass `name` to use it directly. If you omit it, the plugin resolves a name in the following order:
 
 1. Use the config literally named `default`, if the converted-Parquet branch has one.
 2. Otherwise, if there is exactly one config, use it.
@@ -110,9 +110,9 @@ Name the config explicitly even when resolution would succeed. It puts the real 
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_datasets.py" fragment="splits" lang="python" >}}
 
-Every converted Parquet split under the config is read and presented as one dataset. You do not get a `DatasetDict` and no column records which split a row came from.
+Every converted Parquet split under the config is read and presented as one dataset. The result is not a `DatasetDict`, and it does not include a column identifying the source split for each row.
 
-The IMDB case is a good illustration of how surprising this is: `plain_text` has `train` (25,000), `test` (25,000), and `unsupervised` (50,000), so omitting `split` hands you 100,000 rows, half of them unlabeled. Specify the split unless you genuinely want the union.
+For example, IMDB's `plain_text` configuration includes `train` (25,000 rows), `test` (25,000 rows) and `unsupervised` (50,000 rows). If you omit split, you receive all 100,000 rows, half of which are unlabeled. Specify a split unless you intentionally want the combined dataset.
 
 ## Reusing downloads across runs
 
@@ -148,9 +148,11 @@ The plugin's artifact cache and Flyte's task cache do not key on the same thing.
 - **The shard list is not part of the hash either:** If a repo's Parquet conversion is regenerated, the artifact cache notices and re-downloads, but a downstream `cache="auto"` task still hits on its old result.
 
 > [!WARNING] Pin `revision` when correctness depends on the exact bytes
-> The default `refs/convert/parquet` is a moving branch that Hugging Face regenerates when the source dataset changes. Worse, the shard fingerprint the artifact cache computes is built from what `HfFileSystem.ls` reports, which in practice is the path and byte size — the `etag` and `last_modified` fields it also looks for come back empty. A revision that changes content without changing file sizes will not invalidate either cache.
+> The default `refs/convert/parquet` is a moving branch that Hugging Face regenerates when the source dataset changes. The artifact-cache fingerprint is derived from what `HfFileSystem.ls` reports, in practice the file path and byte size. Although it also checks `etag` and `last_modified`, those fields are empty.
 >
-> For reproducible training runs, pass an explicit `revision` (a commit SHA on the converted-Parquet branch) rather than relying on cache invalidation to notice a change for you.
+> As a result, a revision that changes file contents without changing file sizes may not invalidate the cache.
+>
+> For reproducible training runs, pass an explicit `revision`, a commit SHA on the converted-Parquet branch, instead of relying on cache invalidation to detect changes.
 
 ## Reading only the columns you need
 
@@ -198,7 +200,7 @@ Serialization to Parquet is automatic in both directions. This is independent of
 > return ds.filter(lambda row: row["label"] == 1).flatten_indices()
 > ```
 >
-> A contiguous `select(range(n))` happens to work because datasets implements it as a slice rather than an index mapping. Don’t rely on that distinction. Call `flatten_indices()` on any dataset you didn’t construct row by row; when there is no index mapping, it is effectively a no-op.
+> A contiguous `select(range(n))` may work because `datasets` implements it as a slice rather than an index mapping. Do not rely on this distinction. Call `flatten_indices()` on any dataset you did not construct row by row. When no index mapping exists, it is effectively a no-op.
 >
 > This applies to `datasets.Dataset` only. A returned `IterableDataset` is written by iterating it, so its transformations are already applied.
 
@@ -222,9 +224,9 @@ Without it the plugin falls back to anonymous access and logs:
 HF_TOKEN not set, using anonymous access. Private datasets will fail.
 ```
 
-That's a warning, not an error, and it appears on _every_ materialization including public ones. A private repo then fails later, when the listing comes back empty. If a dataset you know exists reports no Parquet conversion, check the token before you check the dataset.
+This is a warning, not an error, and it appears for every materialization, including public datasets. For private repositories, the failure happens later when the listing returns no files.
 
-See [Secrets](../../user-guide/tasks/task-configuration/secrets) for how to store and mount one.
+If a dataset you know exists appears to have no Parquet conversion, check your token before investigating the dataset. See [Secrets](../../user-guide/tasks/task-configuration/secrets) for instructions on storing and mounting one.
 
 ## End-to-end: fine-tuning on IMDB
 
@@ -284,6 +286,31 @@ Run either against a cluster with `python hf_datasets.py`, or against local disk
 - **Fan-out over configs**: map one task across the configs of a multi-config benchmark by building a `from_hf()` reference per config at runtime.
 - **Mixed-backend workflows**: land Hub data as Parquet and read it downstream as pandas, Polars, or Arrow through the shared dataframe engine.
 
-## API reference
+## Hugging Face buckets as raw data storage
 
-See the [Hugging Face API reference](../../api-reference/integrations/huggingface/_index) for `from_hf()` and `HFSource`. The encode/decode handlers are internal; you never construct one yourself.
+Everything above concerns datasets flowing through the plugin. This section is a separate integration and **the plugin is not involved**: Hugging Face [storage buckets](https://huggingface.co/blog/storage-buckets) can serve as the `raw_data_path` for a run, so the bytes behind `flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame` and checkpoints land on the Hub instead of the deployment's default object store.
+
+It works because Flyte's storage layer dispatches on the URI scheme. `s3`, `gs`, `abfs` and `abfss` go through the Rust-backed obstore path; every other scheme falls back to whatever filesystem `fsspec` has registered for it. Hugging Face buckets ship an fsspec-compatible [filesystem integration](https://huggingface.co/blog/storage-buckets#filesystem-integration), so `hf://` resolves through `huggingface_hub`'s `HfFileSystem` with nothing to configure.
+
+Requirements are just the client library and a token:
+
+- A Hugging Face [token](https://huggingface.co/settings/tokens) with write access to the bucket
+- A writable bucket on the Hub
+- `huggingface_hub` in the task image, and `HF_TOKEN` in the task environment
+
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_storage.py" fragment="env" lang="python" >}}
+
+Task code is unchanged. Nothing in it names a backend; `File.from_local()` and `File.download()` are the same calls they would be against S3:
+
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_storage.py" fragment="tasks" lang="python" >}}
+
+The bucket is named once, on the run:
+
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/hf_storage.py" fragment="main" lang="python" >}}
+
+`HF_TOKEN` is read automatically by `huggingface_hub`'s fsspec integration, which is why no credential is passed to `with_runcontext()`. Locally it comes from your shell; on a remote run, inject it with `flyte.Secret` as the environment above does.
+
+**Only offloaded raw data moves.** The run's `inputs.pb`, `outputs.pb` and Reports still land in the deployment's configured bucket. See [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path) for the full split, and [Run context](../../user-guide/tasks/task-deployment/run-context#storage) for the other `with_runcontext()` options.
+
+> [!NOTE] `hf://` does not take the obstore fast path
+> The multipart part-size tuning Flyte applies on S3, GCS and Azure lives behind the obstore branch, which `hf://` does not reach. Transfers go through generic `fsspec` calls instead. It is correct, but do not expect the throughput profile of a cloud object store for large files.
