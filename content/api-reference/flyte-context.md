@@ -6,7 +6,7 @@ weight: 1
 
 # LLM-optimized documentation
 
-This site provides LLM-optimized documentation at four levels of granularity,
+This site provides LLM-optimized documentation at three levels of granularity,
 designed for use by AI coding agents such as
 [Claude Code](https://docs.anthropic.com/en/docs/claude-code),
 [Cursor](https://www.cursor.com/),
@@ -16,17 +16,21 @@ These files also follow the [`llms.txt` convention](https://llmstxt.org/),
 making them discoverable by AI search engines.
 
 These files are not linked from the pages they cover. They are addressed by convention:
-append `/page.md` to any page URL, or `/_section.md` to a section URL. Start from the
-`llms.txt` index below, which lists every page and every available bundle.
+append `.md` to any page URL. Start from the `llms.txt` index below, which lists every page.
+
+> [!NOTE] One shape: `<path>.md`
+> The older names `page.md`, `section.md` and `_section.md` are **retired and no longer
+> generated**. All three now redirect to the page's Markdown version. If you have an older
+> note or script that appends `/page.md`, update it to append `.md` to the page URL instead.
 
 All links within LLM-optimized files use absolute URLs (`https://www.union.ai/docs/...`),
 so files work correctly when copied locally and used outside the docs site.
 
-## Per-page Markdown (`page.md`)
+## Per-page Markdown (`<path>.md`)
 
 Every page on this site has a parallel LLM-optimized version in clean Markdown,
-accessible at the same URL path with `/page.md` appended.
-For example, this page is at:
+accessible at the page's own URL with `.md` appended. Note that the file sits *beside* the
+page's directory rather than inside it. For example, this page is at:
 
 {{< variant union >}}
 {{< markdown >}}
@@ -44,50 +48,38 @@ and its LLM-optimized version is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v1 >}}/api-reference/flyte-context/page.md`](page.md)
+* [`{{< docs_home union v1 >}}/api-reference/flyte-context.md`](../flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context/page.md`](page.md)
+* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context.md`](../flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
-Section landing pages include a `## Subpages` table listing child pages with their H2/H3 headings,
-making it easy to identify the right page to fetch.
+A section landing page's Markdown ends with a `## Subpages` list of every page directly beneath
+it, with each child's URL, description and its own H2/H3 headings. One fetch therefore tells an
+agent what the section contains and which page to read next.
 
-## Section bundles (`_section.md`)
+Two more details worth knowing:
 
-Every section that holds more than its own landing page also has a bundle file, which
-gathers one level of that section into a single `_section.md`. A section whose only page
-is its landing page gets no bundle, because that content already lives at its own
-`page.md` URL.
+* Each Markdown file opens with a short identity block naming the product and the version line,
+  so a model knows what it is reading when handed the file with no other context.
+* The variant root has no Markdown version of its own. Appending `.md` there redirects to that
+  variant's `llms.txt`, which indexes the whole tree.
 
-Bundles are addressed the same way `page.md` files are: append `/_section.md` to any
-section URL. There is no list to consult, so a section added later is reachable by the
-same rule, and `llms.txt` marks the sections that carry one.
+You can also request Markdown at the page's own URL by sending an `Accept: text/markdown` header:
 
-A bundle holds the section's landing page and its own pages in full, then each immediate
-sub-section. It is capped at 200 KB, so a large section is abridged to fit. A child is
-abridged for one of two reasons, and the two mean different things:
-
-* It has more beneath it, so its landing page stands in for its subtree and links onward
-  to that sub-section's own `_section.md`.
-* The bundle reached the size cap, so the child is cut to a short excerpt that links to
-  its `page.md`.
-
-Every bundle opens with a manifest naming which children were abridged and under which of
-the two reasons, so you can tell whether what you are holding is the whole section and
-fetch the rest when it is not.
+```shell
+$ curl -H "Accept: text/markdown" {{< docs_home union v1 >}}/user-guide/
+```
 
 ## Page index (`llms.txt`)
 
 The `llms.txt` file is a compact index of all LLM-optimized pages, organized by section.
 Each page entry includes the H2/H3 headings found on that page, so an agent can identify
 the right page to fetch without downloading it first.
-
-Sections that have a `_section.md` bundle are marked in the index with a link to it.
 
 Download it and append its contents to the `AGENTS.md`, `CLAUDE.md` or similar file in your project root.
 Make sure you append the index into a file that is **loaded into context by default** by your coding tool.

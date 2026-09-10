@@ -33,7 +33,17 @@ scripts/e2e_workspace/
 scripts/.e2e-keys/
 
 # AI assistant
-.claude/
+# Claude Code splits shared from personal BY FILENAME, not by directory:
+# `.claude/settings.json` is meant to be committed, `settings.local.json` is not.
+# So share the project-scoped config and keep only the per-person files local.
+.claude/*
+!.claude/rules/
+!.claude/skills/
+!.claude/commands/
+!.claude/agents/
+!.claude/hooks/
+!.claude/settings.json
+# .codex/ stays fully ignored until there is something shareable in it.
 .codex/
 
 **/.flyte
