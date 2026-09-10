@@ -2,7 +2,7 @@
 title: NonRecoverableError
 description: "Raised when an error is encountered that is not recoverable."
 icon: exclamation-triangle
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

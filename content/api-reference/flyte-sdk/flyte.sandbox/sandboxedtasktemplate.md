@@ -2,7 +2,7 @@
 title: SandboxedTaskTemplate
 description: "A task template that executes the function body in a Monty sandbox."
 icon: braces
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,9 +13,11 @@ layout: py_api
 
 A task template that executes the function body in a Monty sandbox.
 
-For pure Python functions (no external calls), Monty executes the
-entire body without pausing. For functions that call other tasks or
-durable operations, `run_monty_async` handles async dispatch.
+Execution happens on a pooled Monty worker (see `_runtime`). For pure
+Python functions (no external calls) the body runs to completion in one
+feed. For functions that call other tasks or durable operations,
+`ExternalFunctionBridge` drives the snapshot/resume loop so each external
+call is awaited on the host before the sandbox continues.
 
 
 ## Parameters

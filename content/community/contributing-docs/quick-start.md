@@ -13,12 +13,17 @@ Once it is running, you can edit content and see your changes live.
 
 ## Prerequisites
 
-The site is built with the [Hugo](https://gohugo.io/) static site generator.
-Install Hugo version 0.145.0 or later:
+The site is built with the [Hugo](https://gohugo.io/) static site generator, **extended
+edition**. The required version is pinned in `unionai-docs-infra/.hugoversion` (currently
+`0.161.1`), and the build fails below it:
 
 ```bash
 brew install hugo
 ```
+
+The floor equals the pin, so local dev and CI build with the same Hugo. If `make dev` reports a
+FATAL version error, check your version against `.hugoversion` — that file is the single source
+of truth, and this page can lag it.
 
 For other platforms, see [Hugo installation](https://gohugo.io/getting-started/installing/).
 You also need `git` and `make`.
