@@ -22,6 +22,12 @@ in each variant's `dist/docs/v2/{variant}/` directory:
 | `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. |
 | `llms-full.txt` | The entire documentation for one variant as a single file, with all internal links converted to hierarchical bold references (e.g. `**Configure tasks > Resources**`). |
 
+> **One shape: `<page>.md`.** The earlier names `page.md`, `section.md` and `_section.md` are
+> retired and are no longer generated; Cloudflare 301-redirects all three to the page twin, or to
+> that tree's `llms.txt` at a variant root. Do not reintroduce them, and do not describe them as
+> current. If you find one referenced in older content or a code comment, it describes nothing the
+> build does.
+
 ### Discovery hierarchy
 
 ```
@@ -60,3 +66,10 @@ make llm-docs
 ```
 
 New pages are included automatically if linked via `## Subpages` in their parent's Hugo output.
+
+## What readers see
+
+The reader-facing description of this surface — including the `Accept: text/markdown` header as an
+alternative to appending `.md`, and the identity block every twin opens with — is on the
+[LLM-optimized documentation](../../api-reference/flyte-context) page in the API reference. Keep
+the two consistent when you change the pipeline.
