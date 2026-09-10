@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -68,7 +68,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
 | [`init_from_api_key()`](#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
-| [`init_in_cluster()`](#init_in_cluster) |  |
+| [`init_in_cluster()`](#init_in_cluster) | Initialize the Flyte system from inside a task pod, and return the kwargs used to build the controller that enqueues and watches child actions. |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`is_control_plane_available()`](#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
@@ -120,7 +120,7 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType] = None,
 ) -> flyte._resources.Device
@@ -131,7 +131,7 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). |
 
@@ -615,14 +615,51 @@ def init_in_cluster(
     insecure: bool = False,
 ) -> dict[str, typing.Any]
 ```
+Initialize the Flyte system from inside a task pod, and return the kwargs used to build
+the controller that enqueues and watches child actions.
+
+Credentials are resolved in this order:
+
+1. An explicit `api_key` argument.
+2. A mounted config file, when the pod has `UCTL_CONFIG` or `FLYTECTL_CONFIG` set.
+3. Auth env vars set on the pod (see below).
+4. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
+
+Deployments that do not want to hand task pods a long-lived API key can skip issuing one
+entirely and set the standard credentials config env vars as default env vars on the pod:
+
+```
+FLYTE_AUTH_TYPE=ExternalCommand
+FLYTE_AUTH_COMMAND="/usr/local/bin/mint-token --audience flyte"
+```
+
+`FLYTE_AUTH_COMMAND` takes a shell-quoted command line or a JSON array of arguments; the
+command's stdout is used as the access token and is re-run whenever the token needs
+refreshing. Setting `FLYTE_AUTH_TYPE` disables the injected-api-key fallback, so the
+two can never disagree. The endpoint still comes from the injected `_U_EP_OVERRIDE`, and can
+also be set explicitly with `FLYTE_ADMIN_ENDPOINT` (the endpoint is a platform setting, not
+an auth one, so it keeps the derived name). `FLYTE_AUTH_PROXY_COMMAND` configures a token
+command for an authenticating proxy in front of Flyte, independently of the auth type.
+
+`FLYTE_AUTH_TYPE` / `FLYTE_AUTH_COMMAND` / `FLYTE_AUTH_PROXY_COMMAND` are the preferred
+names; the ones derived from the config keys (`FLYTE_ADMIN_AUTHTYPE`, `FLYTE_ADMIN_COMMAND`,
+`FLYTE_ADMIN_PROXYCOMMAND`) remain accepted.
+
+Note: the opt-in Rust controller (`_F_USE_RUST_CONTROLLER=1`) reads the injected api key
+directly and does not support these env vars.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `org` | `str \| None` | |
-| `project` | `str \| None` | |
-| `domain` | `str \| None` | |
-| `api_key` | `str \| None` | |
-| `endpoint` | `str \| None` | |
-| `insecure` | `bool` | |
+| `org` | `str \| None` | Optional org override; defaults to the `_U_ORG_NAME` env var. |
+| `project` | `str \| None` | Optional project override; defaults to the `FLYTE_INTERNAL_EXECUTION_PROJECT` env var. |
+| `domain` | `str \| None` | Optional domain override; defaults to the `FLYTE_INTERNAL_EXECUTION_DOMAIN` env var. |
+| `api_key` | `str \| None` | Optional api key, taking precedence over every env-var and config-file source. |
+| `endpoint` | `str \| None` | Optional endpoint override, taking precedence over `_U_EP_OVERRIDE`. |
+| `insecure` | `bool` | Whether to use a plaintext channel. |
+
+**Returns:** The kwargs used to initialize the client, to be spread into `create_remote_controller`.
 
 #### init_passthrough()
 

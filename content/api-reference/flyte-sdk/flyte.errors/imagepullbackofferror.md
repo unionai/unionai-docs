@@ -2,7 +2,7 @@
 title: ImagePullBackOffError
 description: "This error is raised when the image cannot be pulled."
 icon: exclamation-triangle
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

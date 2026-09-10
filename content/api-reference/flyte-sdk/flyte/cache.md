@@ -2,7 +2,7 @@
 title: Cache
 description: "Cache configuration for a task."
 icon: braces
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

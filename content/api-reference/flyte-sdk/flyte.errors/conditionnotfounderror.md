@@ -2,7 +2,7 @@
 title: ConditionNotFoundError
 description: "This error is raised when the user tries to access a condition that does not exist."
 icon: exclamation-triangle
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

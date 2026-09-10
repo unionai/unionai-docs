@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -261,7 +261,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.init()`](flyte/_index#init) | Initialize the Flyte system with the given configuration. |
 | [`flyte.init_from_api_key()`](flyte/_index#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`flyte.init_from_config()`](flyte/_index#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
-| [`flyte.init_in_cluster()`](flyte/_index#init_in_cluster) |  |
+| [`flyte.init_in_cluster()`](flyte/_index#init_in_cluster) | Initialize the Flyte system from inside a task pod, and return the kwargs used to build the controller that enqueues and watches child actions. |
 | [`flyte.init_passthrough()`](flyte/_index#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`flyte.is_control_plane_available()`](flyte/_index#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`flyte.latest_checkpoint()`](flyte/_index#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |

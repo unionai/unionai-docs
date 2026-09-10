@@ -2,7 +2,7 @@
 title: NamedDelivery
 description: "Use a pre-configured delivery channel by name."
 icon: braces
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

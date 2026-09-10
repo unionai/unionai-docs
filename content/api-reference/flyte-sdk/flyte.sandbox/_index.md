@@ -2,7 +2,7 @@
 title: flyte.sandbox
 description: "Sandbox utilities for running isolated code inside Flyte tasks."
 icon: box-seam
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,14 +19,16 @@ Warning: Experimental feature: alpha — APIs may change without notice.
 
 **1. Orchestration sandbox** — powered by Monty
 Runs pure Python *orchestration logic* (control flow, routing, aggregation)
-with zero overhead. The Monty runtime enforces strong restrictions:
-no imports, no IO, no network access, microsecond startup.  Used via
+with negligible overhead. The Monty runtime enforces strong restrictions:
+no filesystem, network or OS access and only a small pure-Python subset of
+the standard library.  Used via
 `@env.sandbox.orchestrator` or `flyte.sandbox.orchestrator_from_str()`.
 
 Sandboxed orchestrators are:
 
 - **Side-effect free**: No filesystem, network, or OS access
-- **Microsecond startup**: No container spin-up — runs in the same process
+- **Near-instant startup**: No container spin-up — code runs on a pooled
+  Monty worker subprocess that is spawned once and reused
 - **Multiplexable**: Many orchestrators run safely on the same Python process
 
 Example:
@@ -362,5 +364,5 @@ result = flyte.run(pipeline, x=1, y=2)  # → 6
 | `timeout_ms` | `int` | Sandbox execution timeout in milliseconds. |
 | `cache` | `CacheRequest` | Cache policy for the task. |
 | `retries` | `int` | Number of retries on failure. |
-| `image` | `Optional[Any]` | Docker image to use. If not provided, a default Debian image with `pydantic-monty` is created automatically. |
+| `image` | `Optional[Any]` | Docker image to use. If not provided, a default Debian image with the `flyte[sandbox]` extra is created automatically. |
 
