@@ -1,0 +1,41 @@
+# Exclusions for check_api_names.py (make check-api-names).
+#
+# Each line is a regex searched in "page:name", where page is relative to
+# content/. Use it for names that are not Python at all, and for findings that
+# predate the check. Anything under "Known defects" is wrong on the page: fix
+# the page, then delete the line. The check reports lines that match nothing.
+
+# --- Not Python names ---
+
+# OpenTelemetry attribute keys and MLflow tag names that Flyte sets
+:flyte\.(run_name|action_name|task_name|task_action_name|step_name|project|domain|org|replayed)$
+
+# The logger name for user logs; the Python object is flyte.logger
+:flyte\.user$
+
+# Hostname used by the local kind deployment
+^oss-deployment/kind-deployment/.*:flyte\.local$
+
+# Entry-point group names that plugins register under
+:flyte\.plugins\.(types|cli\.commands)$
+
+# A Helm values path
+^deployment/selfmanaged/configuration/authentication\.md:flyte\.configmap\.
+
+# Pages that document the [[...]] link sigil itself
+^community/contributing-docs/(api-docs|authoring)\.md:(X|…)$
+
+# A migration page that renders each variant's Flyte 1 names on purpose
+^user-guide/migration/flyte-2/hybrid-pipelines\.md:\{\{< key kit(_remote)? >\}\}$
+
+# --- Known defects: fix the page, then delete the line ---
+
+# Flyte 1 SDK code on v2 pages; renders `import union`
+^deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager\.md:\{\{< key kit_(as|import) >\}\}$
+^deployment/byoc/enabling-azure-resources/enabling-azure-key-vault\.md:\{\{< key kit_(as|import) >\}\}$
+^deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager\.md:\{\{< key kit_(as|import) >\}\}$
+
+# Wrong module: the classes are flyte.io.File, flyte.io.Dir and flyte.io.DataFrame
+^user-guide/get-started/core-concepts/tasks\.md:flyte\.(File|Directory)$
+^user-guide/tasks/task-configuration/additional-task-settings\.md:flyte\.DataFrame$
+^user-guide/tasks/task-programming/dataframes\.md:flyte\.io\.dataframe$

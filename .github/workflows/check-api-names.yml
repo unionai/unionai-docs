@@ -1,0 +1,39 @@
+name: Check API Names
+
+# Every backticked API name on a hand-written page must exist: in the API
+# reference, or else in the released SDK the reference was generated from.
+# Runs on every pull request, including the automated API regeneration, which
+# is when an SDK release that removes or renames something first meets the
+# pages that still use the old name.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-api-names:
+    name: "Check API Names"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Check API names
+        run: make check-api-names
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::A page names an API that does not exist. Correct the name, or if it is not a Python name at all (a log attribute, a logger, a hostname), add a line to .api-names-exclude. Run 'make check-api-names' locally for details."
