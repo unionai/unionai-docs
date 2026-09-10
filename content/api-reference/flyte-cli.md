@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -536,9 +536,6 @@ $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
 
 $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
     --depth 5000 --priority max
-
-$ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 \
-    --project my-project --domain production
 ```
 
 | Option | Type | Default | Description |
@@ -548,10 +545,10 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 | `--depth` | `integer` | `10000` | Max queue depth |
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
-| `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
+| `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
-| `--project` | `text` | `` | Scope queue to a project |
-| `--domain` | `text` | `` | Scope queue to a domain |
+| `--project` | `text` | `` | Scope queue to a project (currently rejected by the server: only organization-scoped queues can be created). |
+| `--domain` | `text` | `` | Scope queue to a domain (currently rejected by the server: only organization-scoped queues can be created). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -849,14 +846,17 @@ responsibility to clean up. To let running work finish first, drain the
 cluster and wait for 'drained' before deleting.
 
 The delete is a soft delete: the cluster stops being routed to and drops out
-of `flyte get cluster`, but it keeps its name reserved — creating a cluster
-with the same name is rejected until it is restored with
+of the `flyte get cluster` listing (fetching it by name still works and
+shows when it was deleted), but it keeps its name reserved — creating a
+cluster with the same name is rejected until it is restored with
 `flyte undelete cluster`.
 
 The cluster's co-named implicit queue is deleted with it, whatever state
-that queue is in. Any other live queue that pins this cluster blocks the
-delete and has to be unpinned first; already-deleted queues do not block
-it. Apps assigned to the cluster are evicted.
+that queue is in (one already deleted on its own is left as is). Any other
+live queue that pins this cluster blocks the delete and has to be unpinned
+first; already-deleted queues do not block it, but can only be undeleted
+once the cluster is. Apps assigned to the cluster are neither evicted nor
+reassigned — their pods on the dataplane are yours to clean up too.
 
 Examples:
 
@@ -888,12 +888,13 @@ and can no longer be assigned to clusters or queues, but it keeps its name
 reserved — creating a pool with the same name is rejected until it is
 restored with `flyte undelete cluster-pool`.
 
-The pool must be empty: no member clusters and no live queues assigned to it.
-Queues that are themselves deleted do not block it, but they can only be
-undeleted once the pool is. The reserved 'default' pool follows the same
-rules: deleting it requires draining and deleting its 'default' queue first,
-and while the pool is deleted, `flyte create cluster` without --pool is
-rejected instead of falling back to it.
+The pool must be empty: no live member clusters and no live queues assigned
+to it. Clusters and queues that are themselves deleted do not block it, but
+neither can be undeleted until the pool is. The pool holding the
+organization's 'default' queue follows the same rules: deleting it requires
+draining and deleting that queue first, and while the default pool is
+deleted, `flyte create cluster` without --pool is rejected instead of
+falling back to it.
 
 Examples:
 
@@ -1525,8 +1526,10 @@ Get a cluster or list all clusters.
 If NAME is provided, fetch that specific cluster and render a detailed view.
 Otherwise list all clusters.
 
-Deleted clusters are hidden by default; --deleted lists them instead, which
-is how you find a cluster to pass to `flyte undelete cluster`.
+Deleted clusters are hidden from the listing by default; --deleted lists
+them instead, which is how you find a cluster to pass to
+`flyte undelete cluster`. Fetching a cluster by NAME returns it even when
+deleted, showing its deletion time.
 
 Examples:
 
@@ -2591,13 +2594,15 @@ Restore a soft-deleted cluster.
 
 The cluster comes back with the spec, status and pool it had when it was
 deleted, always in the 'drained' state — activate it to let it accept work
-again; its co-named implicit queue is restored with it, also drained, and
-is activated with the cluster. That holds even if the queue had been
-deleted on its own earlier: undeleting the cluster is the only way to bring
-it back, since `flyte undelete queue` refuses a queue whose cluster is
-gone. A cluster that is still 'deleting' cannot be undeleted — its deletion
-has to finish first. List the clusters eligible for this with
-`flyte get cluster --deleted`.
+again. Its co-named implicit queue, if deleted, is restored with it, also
+drained, and activating the cluster then activates the queue too. The queue
+is restored even if it had been deleted on its own before the cluster was:
+while the cluster is deleted, undeleting the cluster is the only way to
+bring that queue back, since `flyte undelete queue` refuses a queue whose
+cluster is gone. A co-named queue still 'deleting' is not touched — it
+finishes deleting on its own. A cluster that is still 'deleting' cannot be
+undeleted either; its deletion has to finish first. List the clusters
+eligible for this with `flyte get cluster --deleted`.
 
 The cluster's pool must not itself be deleted; undelete the pool first.
 
@@ -2662,8 +2667,10 @@ queue still 'deleting' cannot be undeleted; its deletion has to finish
 first. List the queues eligible for this with `flyte get queue --deleted`.
 
 Every cluster the queue routes to must be live and in its pool, and the pool
-must be live too. A cluster's co-named queue therefore cannot be restored on
-its own — `flyte undelete cluster NAME` brings it back with the cluster.
+must be live too. A cluster's co-named queue therefore cannot be restored
+while its cluster is deleted — `flyte undelete cluster NAME` brings it back
+with the cluster; while the cluster is live, it undeletes like any other
+queue.
 
 Examples:
 
@@ -2722,15 +2729,18 @@ Update a cluster: drain it, re-activate it, or move it to another pool.
 
 Use --drain to begin draining: the cluster stops receiving new work while
 work already on it keeps running, and its co-named implicit queue is set to
-draining with it. Draining requires that no apps are assigned to the
-cluster and that no other queue explicitly pins it. The drain completes
-asynchronously — watch `flyte get cluster NAME` until the drain state
-reaches 'drained'. To take a cluster out of service without waiting for
-its work, use `flyte delete cluster` instead.
+draining with it (a queue already deleted on its own is left as is).
+Draining requires that no apps are assigned to the cluster and that no
+other queue explicitly pins it. The drain completes asynchronously — watch
+`flyte get cluster NAME` until the drain state reaches 'drained'. To take
+a cluster out of service without waiting for its work, use
+`flyte delete cluster` instead.
 
 Use --activate to re-activate a draining or drained cluster. Its co-named
 queue is activated with it — even when the queue had been drained on its
-own. A deleting or deleted cluster cannot be drained or activated.
+own — but a queue deleted on its own stays deleted (`flyte undelete queue`
+brings it back). A deleting or deleted cluster cannot be drained or
+activated.
 
 Use --pool to move the cluster to a different cluster pool. The target pool
 must already exist, be live, and differ from the cluster's current one. The

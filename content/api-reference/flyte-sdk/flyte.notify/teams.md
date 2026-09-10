@@ -2,7 +2,7 @@
 title: Teams
 description: "Send Microsoft Teams notifications with optional Adaptive Cards."
 icon: braces
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

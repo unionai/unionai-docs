@@ -2,7 +2,7 @@
 title: TypeTransformer
 description: "Base transformer type that should be implemented for every python native type that can be handled by flytekit."
 icon: braces
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

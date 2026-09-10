@@ -2,7 +2,7 @@
 title: SignatureError
 description: "Raised when an inbound delivery fails verification or cannot be parsed."
 icon: exclamation-triangle
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

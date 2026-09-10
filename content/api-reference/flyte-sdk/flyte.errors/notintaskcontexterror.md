@@ -2,7 +2,7 @@
 title: NotInTaskContextError
 description: "This error is raised when the user tries to access the task context outside of a task."
 icon: exclamation-triangle
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---

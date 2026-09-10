@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.7.1
+version: 2.7.2
 variants: +flyte +union
 layout: py_api
 ---
