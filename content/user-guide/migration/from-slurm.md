@@ -263,8 +263,7 @@ async def train(cfg: TrainConfig) -> flyte.io.File: ...
 
 **Spot capacity** is a flag. `interruptible=True` schedules the task on spot or preemptible
 instances. Preemptions are recorded as system failures rather than task failures, so they do not
-consume the retry budget, and the last attempt falls back to on-demand so a task cannot loop
-forever on reclaimed capacity.
+consume the retry budget.
 
 **Checkpoints** make the retry cheap. `flyte.ctx().checkpoint` writes to object storage rather than
 a shared filesystem, so the next attempt resumes on whatever node it lands on:
