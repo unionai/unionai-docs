@@ -131,3 +131,5 @@ One thing to know before you commit to it: a `lance` input can only arrive as a 
 ## See also
 
 To display a DataFrame as an HTML table in a task report, define a `flyte.types.Renderable` for it — see [Rendering a custom type](./reports#rendering-a-custom-type) on the Reports page.
+
+THROWAWAY, reverted in the next commit: `flyte.Nope` and `flyte.GPU.count`.
