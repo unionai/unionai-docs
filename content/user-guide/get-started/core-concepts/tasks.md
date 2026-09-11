@@ -45,7 +45,7 @@ Supported types include:
 - Primitives: `int`, `float`, `str`, `bool`
 - Collections: `list`, `dict`, `tuple`
 - DataFrames: `pandas.DataFrame`, `polars.DataFrame`
-- Files: `flyte.File`, `flyte.Directory`
+- Files: `flyte.io.File`, `flyte.io.Dir`
 - Custom: dataclasses, Pydantic models
 
 See [Data classes and structures](../../tasks/task-programming/dataclasses-and-structures) for complex types.

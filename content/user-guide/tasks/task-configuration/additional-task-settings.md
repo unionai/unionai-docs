@@ -154,7 +154,7 @@ Data exceeding this threshold raises an `InlineIOMaxBytesBreached` error.
 The default value is 10 MiB (`10 * 1024 * 1024` bytes).
 
 This setting does **not** affect [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories),
-or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures),
+or [`flyte.io.DataFrame`](../task-programming/dataframes),
 which are always offloaded to object storage regardless of size.
 
 ```python
