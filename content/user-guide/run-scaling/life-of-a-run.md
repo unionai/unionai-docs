@@ -60,14 +60,16 @@ By default, all Python modules referenced by the invoked tasks through module-le
 Skip bundling by setting `copy_style="none"` in `flyte.with_runcontext()` and adding all code into `flyte.Image`:
 
 ```python
+import pathlib
+
 # Add code to image
-image = flyte.Image().with_source_code("/path/to/code")
+image = flyte.Image.from_debian_base().with_source_folder(pathlib.Path("/path/to/code"))
 
 # Or use Dockerfile
-image = flyte.Image.from_dockerfile("Dockerfile")
+image = flyte.Image.from_dockerfile(pathlib.Path("Dockerfile"), registry="myregistry.com/my-org", name="my-image")
 
 # Skip bundling
-run = flyte.with_runcontext(copy_style="none").run(my_task, input_data=data)
+run = flyte.with_runcontext(copy_style="none", version="v1.0.0").run(my_task, input_data=data)
 ```
 
 For more details on code packaging, see [Packaging](../tasks/task-deployment/packaging).

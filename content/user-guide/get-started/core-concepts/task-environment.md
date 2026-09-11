@@ -44,12 +44,12 @@ A TaskEnvironment specifies two things:
 
 ## Configuring resources
 
-Use the `limits` parameter to specify compute resources:
+Use the `resources` parameter to specify compute resources:
 
 ```python
 env = flyte.TaskEnvironment(
     name="compute_heavy",
-    limits=flyte.Resources(cpu="4", mem="16Gi"),
+    resources=flyte.Resources(cpu="4", memory="16Gi"),
 )
 ```
 
@@ -58,8 +58,7 @@ For GPU workloads:
 ```python
 env = flyte.TaskEnvironment(
     name="gpu_training",
-    limits=flyte.Resources(cpu="8", mem="32Gi", gpu="1"),
-    accelerator=flyte.GPUAccelerator.NVIDIA_A10G,
+    resources=flyte.Resources(cpu="8", memory="32Gi", gpu="A10G:1"),
 )
 ```
 
@@ -85,7 +84,7 @@ All tasks decorated with the same `@env.task` share that environment's configura
 ```python
 env = flyte.TaskEnvironment(
     name="data_processing",
-    limits=flyte.Resources(cpu="2", mem="8Gi"),
+    resources=flyte.Resources(cpu="2", memory="8Gi"),
 )
 
 @env.task
@@ -108,12 +107,12 @@ When tasks have different requirements, create separate environments:
 ```python
 light_env = flyte.TaskEnvironment(
     name="light",
-    limits=flyte.Resources(cpu="1", mem="2Gi"),
+    resources=flyte.Resources(cpu="1", memory="2Gi"),
 )
 
 heavy_env = flyte.TaskEnvironment(
     name="heavy",
-    limits=flyte.Resources(cpu="8", mem="32Gi"),
+    resources=flyte.Resources(cpu="8", memory="32Gi"),
 )
 
 @light_env.task

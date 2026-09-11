@@ -83,7 +83,7 @@ flyte deploy path/to/app.py app \
 3. **Test first**: Test with serve before deploying to production.
 4. **Manage dependencies**: Use `depends_on` to manage app dependencies.
 5. **Activation strategy**: Have a strategy for activating/deactivating apps.
-7. **Use dry-run**: Test deployments with `dry_run=True` first.
+7. **Use dry-run**: Test deployments with `dryrun=True` first (`--dry-run` on the CLI).
 8. **Separate environments**: Use different projects/domains for different environments.
 9. **Parameter management**: Consider using environment-specific parameter values.
 
