@@ -32,4 +32,5 @@
 
 # Flyte 1 SDK code on a v2 page; renders `import union`. Not a translation:
 # the v2 SDK cannot send the secret version the GCP integration requires.
+# Tracked in DOC-1552.
 ^deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager\.md:\{\{< key kit_(as|import) >\}\}$
