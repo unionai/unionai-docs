@@ -87,8 +87,12 @@ Objective functions passed to `wandb.agent()` should:
 
 ## Error handling
 
-The plugin raises standard exceptions:
+`download_wandb_run_dir()` and `download_wandb_sweep_dirs()` raise `RuntimeError` when they fail, with the underlying W&B error as its cause where there is one. This includes when:
 
-- `RuntimeError`: When `download_wandb_run_dir()` is called without a run ID and no active run exists
-- `wandb.errors.AuthenticationError`: When `WANDB_API_KEY` is not set or invalid
-- `wandb.errors.CommError`: When a run cannot be found in the W&B cloud
+- No run or sweep ID is given and there is no active run or sweep
+- `download_wandb_sweep_dirs()` has no entity and project to query (set them with `wandb_config()`)
+- Authentication fails because `WANDB_API_KEY` is not set or is invalid
+- The run or sweep can't be found in the W&B cloud, or you don't have access to it
+- Every run in a sweep fails to download. If only some fail, `download_wandb_sweep_dirs()` logs a warning and returns the paths that succeeded
+
+Errors from `wandb.init()` when a `@wandb_init` task starts, such as an authentication failure, are raised by `wandb` itself and are not wrapped.
