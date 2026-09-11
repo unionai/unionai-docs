@@ -26,7 +26,7 @@ Serving first, then turn app serving on in the `flyte-binary` chart.
 
 ## Prerequisites
 
-- A running Flyte deployment (see [AWS deployment](./aws-deployment)).
+- A running Flyte deployment (see [AWS deployment](./aws-deployment/_index)).
 - Cluster-admin access to install Knative (CRDs and controllers).
 - A **wildcard DNS record** and a **TLS certificate** for the app base domain (details
   in steps 2 to 3).
