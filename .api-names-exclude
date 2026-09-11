@@ -30,12 +30,7 @@
 
 # --- Known defects: fix the page, then delete the line ---
 
-# Flyte 1 SDK code on v2 pages; renders `import union`
-^deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager\.md:\{\{< key kit_(as|import) >\}\}$
-^deployment/byoc/enabling-azure-resources/enabling-azure-key-vault\.md:\{\{< key kit_(as|import) >\}\}$
+# Flyte 1 SDK code on a v2 page; renders `import union`. Not a translation:
+# the v2 SDK cannot send the secret version the GCP integration requires.
+# Tracked in DOC-1552.
 ^deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager\.md:\{\{< key kit_(as|import) >\}\}$
-
-# Wrong module: the classes are flyte.io.File, flyte.io.Dir and flyte.io.DataFrame
-^user-guide/get-started/core-concepts/tasks\.md:flyte\.(File|Directory)$
-^user-guide/tasks/task-configuration/additional-task-settings\.md:flyte\.DataFrame$
-^user-guide/tasks/task-programming/dataframes\.md:flyte\.io\.dataframe$
