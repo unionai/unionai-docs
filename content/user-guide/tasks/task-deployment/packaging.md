@@ -144,11 +144,15 @@ Control exactly what gets bundled by configuring the copy style.
 
 #### Copy styles
 
-Three options available:
+Four values are accepted:
 
-1. **`"auto"`** (default) - Bundle loaded modules only
+1. **`"loaded_modules"`** (default) - Bundle only the Python modules from your project that the process has imported
 2. **`"all"`** - Bundle everything in the working directory
 3. **`"none"`** - Skip bundling entirely (requires code in container)
+4. **`"custom"`** - Used by the CLI to bundle a file list it has already worked out. `flyte.with_runcontext()` rejects it
+
+> [!NOTE]
+> Earlier versions of this page gave the default as `"auto"`. That is not a valid value, but the SDK accepts it without complaint and bundles every file, exactly as `"all"` does. If your code sets `copy_style="auto"`, change it to `"loaded_modules"`.
 
 #### Using `copy_style="all"`
 
@@ -768,13 +772,11 @@ def process(x: int) -> int:
     return x * 2
 
 if __name__ == "__main__":
-    flyte.init_from_config()
+    # Map the reference name to the actual image URI
+    flyte.init_from_config(images=("my-app-image=myregistry.com/my-app:v1.2.3",))
 
-    # Pass actual image URI at deploy/run time
-    run = flyte.with_runcontext(
-        copy_style="none",
-        images={"my-app-image": "myregistry.com/my-app:v1.2.3"}
-    ).run(process, x=10)
+    # copy_style="none" requires an explicit version
+    run = flyte.with_runcontext(copy_style="none", version="v1.2.3").run(process, x=10)
 ```
 
 Or via CLI:
@@ -819,8 +821,6 @@ def api_call(endpoint: str) -> dict:
     return {"status": "success"}
 
 if __name__ == "__main__":
-    flyte.init_from_config()
-
     # Determine image based on environment
     environment = os.getenv("ENV", "dev")
     image_uri = {
@@ -829,9 +829,13 @@ if __name__ == "__main__":
         "prod": "myregistry.com/api-service:v1.2.3"
     }[environment]
 
+    # Map the reference name to that image before anything runs
+    flyte.init_from_config(images=(f"api-service={image_uri}",))
+
+    # copy_style="none" requires an explicit version; the image tag serves as one
     run = flyte.with_runcontext(
         copy_style="none",
-        images={"api-service": image_uri}
+        version=image_uri.rsplit(":", 1)[-1],
     ).run(api_call, endpoint="/health")
 ```
 
