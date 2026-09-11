@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-description: Deploy the Union platform, either as BYOC or self-managed, with your code and data staying in your own cloud.
+description: Deploy the Union platform as a guided deployment, as BYOC, or self-managed, with your code and data staying in your own cloud.
 icon: server
 weight: 5
 variants: -flyte +union
@@ -13,7 +13,7 @@ secondary_topnav: -flyte +union
 
 The Union.ai platform uses a split-plane model with separate control and data planes.
 
-In both BYOC and Self-managed deployments, your code, input and output data, container images and logs reside entirely on the **data plane**, which runs in your cloud account, while the **control plane** runs on Union.ai's cloud account, providing the workflow orchestration logic.
+In every deployment model, your code, input and output data, container images and logs reside entirely on the **data plane**, which runs in your cloud account, while the **control plane** runs on Union.ai's cloud account, providing the workflow orchestration logic.
 
 The **control plane** does not have access to the code, data, images, or logs in the **data plane**.
 
@@ -28,6 +28,18 @@ If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in 
 > If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
 >
 > [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
+
+## Guided deployment
+
+A Guided deployment is a BYOC deployment that you can buy and set up yourself. It ends in the same place: your data plane runs in a Kubernetes cluster you own, and Union.ai manages it for you. Only the route differs.
+
+* With **BYOC**, you send Union.ai your cloud account details and configuration, and Union.ai sets the data plane up and hands back your endpoints.
+
+* With a **Guided deployment**, you subscribe, create your organization in the console, and connect your own Kubernetes cluster. Union.ai then installs the data plane into it. You install an agent into the cluster and the agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+
+The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai.
+
+See [Guided deployment](./guided/_index) for the full path, from subscribing through to running work on your own cluster.
 
 ## BYOC deployment
 
