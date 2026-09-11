@@ -42,12 +42,16 @@ Here's a simple example:
 
 ```python
 import flyte
+from fastapi import FastAPI
 from flyte.app.extras import FastAPIAppEnvironment
+
+app = FastAPI()
 
 env = FastAPIAppEnvironment(
     name="my-app",
+    app=app,
     image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn"),
-    limits=flyte.Resources(cpu="1", mem="2Gi"),
+    resources=flyte.Resources(cpu="1", memory="2Gi"),
 )
 ```
 

@@ -333,6 +333,6 @@ Verify:
 
 If tasks aren't respecting the caller's permissions:
 
-- Verify `init_passthrough()` is called with `auth_type="Passthrough"`
+- Verify the app initializes with `flyte.init_passthrough()`, which is what enables passthrough authentication
 - Ensure auth headers are being extracted and forwarded correctly
 - Check that the middleware is added before route handlers
