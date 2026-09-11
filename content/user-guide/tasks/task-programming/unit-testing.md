@@ -41,7 +41,6 @@ result = run.outputs()
 
 - Type transformations and serialization
 - Data validation
-- Type checking (raises `flyte.errors` if types are not supported or restricted)
 
 This allows you to test Flyte-specific behavior like serialization and caching.
 
@@ -105,29 +104,6 @@ async def test_add_with_flyte_run():
     assert run.outputs() == 8
 ```
 
-### Testing type restrictions
-
-Some types may not be supported or may be restricted. Use `flyte.run()` to test that these restrictions are enforced:
-
-```python
-from typing import Tuple
-import flyte.errors
-
-@env.task
-def not_supported_types(x: Tuple[str, str]) -> str:
-    return x[0]
-
-@pytest.mark.asyncio
-async def test_not_supported_types():
-    # Direct invocation works fine
-    result = not_supported_types(x=("a", "b"))
-    assert result == "a"
-
-    # flyte.run enforces type restrictions
-    with pytest.raises(flyte.errors.RestrictedTypeError):
-        flyte.run(not_supported_types, x=("a", "b"))
-```
-
 ### Testing nested tasks with serialization
 
 You can also test nested task execution with Flyte's full machinery:
@@ -162,7 +138,6 @@ async def test_traced_multiply():
    - Type transformations work correctly
    - Data serialization/deserialization
    - Caching behavior
-   - Type restrictions are enforced
 
 3. **Use standard testing frameworks**: Flyte tasks work with pytest, unittest, and other Python testing frameworks.
 
@@ -179,7 +154,6 @@ async def test_traced_multiply():
 | Type transformations | `flyte.run()` | `r = flyte.run(task, x=10)` |
 | Data serialization | `flyte.run()` | `r = flyte.run(task, x=10)` |
 | Caching behavior | `flyte.run()` | `r = flyte.run(task, x=10)` |
-| Type restrictions | `flyte.run()` + pytest.raises | `pytest.raises(flyte.errors.RestrictedTypeError)` |
 
 ## Example test suite
 
