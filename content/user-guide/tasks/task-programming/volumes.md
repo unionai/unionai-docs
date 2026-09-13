@@ -88,46 +88,40 @@ commits it and hands the next task an `ROVolume`.
 ## Setup
 
 Volumes are mounted inside the task pod, so the task environment needs two
-things: an **image** with the volume client (`flyteplugins-union`) and the FUSE
-tools, and a **pod template** that grants the mount capability.
+things: an **image** with the volume client (`flyteplugins-union`), and a **pod
+template** that lets the pod reach the mount.
 
 ```python
 import flyte
-from flyteplugins.union.io import Volume, ROVolume
+from flyteplugins.union.io import Volume, ROVolume, allow_volumes
 
 image = (
     flyte.Image.from_debian_base()
     .with_pip_packages("flyteplugins-union")  # volume client (bundles the mount binary)
-    .with_apt_packages("fuse3")               # FUSE userspace tools needed to mount
 )
 
 env = flyte.TaskEnvironment(
     name="volumes-demo",
     image=image,
-    # grant the pod what it needs to mount a Volume
-    pod_template=flyte.PodTemplate().allow_fuse(),
+    # let the pod mount Volumes (no privileges required)
+    pod_template=allow_volumes(),
     resources=flyte.Resources(cpu="1", memory="2Gi"),
 )
 ```
 
-Two pieces make a mount possible, and you need both:
-
 > [!NOTE]
-> **`flyte.PodTemplate.allow_fuse()`** grants the *kernel* side: it requests the
-> FUSE device resource and adds the capability the mount needs, without running
-> the container as privileged. Your cluster must run a FUSE device plugin for
-> this. The Union data plane ships an opt-in one. (For clusters without it,
-> `allow_fuse(privileged=True)` is a fallback that runs the container
-> privileged.)
+> **`allow_volumes()`** (from `flyteplugins.union.io`) is the only pod-level
+> setup a Volume needs. It attaches an ephemeral CSI volume served by the
+> cluster's **mount broker**: the broker premounts a FUSE channel on the node
+> and the in-pod client *adopts its file descriptor* over a socket, so your pod
+> never calls `mount(2)`. That means **no `CAP_SYS_ADMIN`, no `/dev/fuse`, no
+> `hostPath`, and no `fuse3` package**. The mount happens without the pod
+> holding any privilege at all. `Volume.mount()` detects the channel and uses it
+> automatically; your task code is unchanged.
 >
-> **The `fuse3` apt package** provides the *userspace* side: the `fusermount3`
-> helper that the mount client invokes (the package's post-install makes it
-> setuid-root, which is what lets an unprivileged task mount). The default
-> minimal images don't include it, so without it the mount fails with
-> `fusermount: not found`. If you bring your own image, see
-> [Custom images](#custom-images).
->
-> A task missing either piece cannot mount a Volume.
+> It needs the **mount-broker DaemonSet** on the cluster. The Union data plane
+> ships it; on a self-managed cluster an administrator enables it (see
+> [Volumes: data plane configuration](../../../deployment/selfmanaged/configuration/volumes)).
 
 ## Get started
 
@@ -304,7 +298,7 @@ image = with_high_throughput_volume_deps(
 env = flyte.TaskEnvironment(
     name="high-throughput-volumes",
     image=image,
-    pod_template=flyte.PodTemplate().allow_fuse(),
+    pod_template=allow_volumes(),
 )
 ```
 
@@ -339,27 +333,20 @@ data = await vol.mount(
 
 ## Custom images
 
-The two-package setup above (`flyteplugins-union` + `fuse3`) works on top of any
-image built from `flyte.Image.from_debian_base()`. If you bring a **fully custom
-image** (your own Dockerfile / base), it must satisfy the same two requirements:
-
-1. **The volume client**: `pip install flyteplugins-union`. The wheel bundles
-   the mount binary, so there's nothing else to fetch.
-2. **FUSE userspace tools**: the `fuse3` package. The mount runs unprivileged,
-   so `fusermount3` **must be setuid-root**; the Debian package's post-install
-   sets that bit, so install it with the package manager (don't just copy the
-   binary in; a copy loses the setuid bit and the mount fails with `EPERM`).
+The setup above works on top of any image built from
+`flyte.Image.from_debian_base()`. If you bring a **fully custom image** (your own
+Dockerfile / base), it needs one thing: **the volume client**,
+`pip install flyteplugins-union`. The wheel bundles the mount binary, so
+there's nothing else to fetch.
 
 In a Dockerfile that's:
 
 ```dockerfile
-RUN apt-get update && apt-get install -y --no-install-recommends fuse3 \
-    && pip install flyteplugins-union
+RUN pip install flyteplugins-union
 ```
 
-Beyond the image, the same runtime prerequisites apply as for the default setup:
-the pod must use `flyte.PodTemplate().allow_fuse()` (FUSE device + capability),
-and the cluster must run a FUSE device plugin (the Union data plane ships one).
+That is the whole image contract: the pod adopts a file descriptor instead of
+mounting, so the image needs no FUSE userspace tools.
 
 > [!NOTE]
 > The container also needs to run as a user that can write the volume's
@@ -447,7 +434,8 @@ so batch those or keep them on local scratch. Mounting stays sub-second even at
 
 ## Reference
 
-- API: `Volume`, `RWVolume`, `ROVolume`, and
+- API: `Volume`, `RWVolume`, `ROVolume`,
+  `flyteplugins.union.io.allow_volumes`, and
   `flyteplugins.union.io.with_high_throughput_volume_deps`.
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
