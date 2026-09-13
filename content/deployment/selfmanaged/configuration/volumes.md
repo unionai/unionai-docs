@@ -57,17 +57,23 @@ helm upgrade <release> <chart> -n <namespace> \
 
 > [!WARNING]
 > The broker's default `nodeSelector` is `flyte.org/node-role: worker`, and it
-> **must cover every node a volume-using task pod can land on**. Task pods carry
-> no matching selector of their own, so a pod that lands on a node without the
-> broker fails to start with `driver volumes.union.ai not found`. If your task
-> pods are not confined to nodes carrying that label, widen the selector or
-> empty it:
+> **must cover every node a volume-using task pod can land on**. A pod that
+> lands on a node without the broker fails to start with
+> `driver volumes.union.ai not found`. If your task pods are not confined to
+> nodes carrying that label, widen the selector or remove it:
 >
 > ```yaml
 > uvolMountBroker:
 >   enabled: true
->   nodeSelector: {}   # run on every node
+>   nodeSelector: null   # run on every node
 > ```
+>
+> Use `null`, not `{}`. Helm merges your values over the chart's, and an empty
+> map contributes nothing to that merge, so `nodeSelector: {}` leaves the
+> default `flyte.org/node-role: worker` in place. Only an explicit `null`
+> removes the key. This one fails quietly: the DaemonSet stays pinned to the
+> labeled nodes while you believe it is running everywhere, which is the
+> failure this warning is about.
 
 ### Verify the broker
 
@@ -93,7 +99,7 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 |---|---|---|
 | `uvolMountBroker.enabled` | `false` | Enable the mount-broker DaemonSet and its `CSIDriver`. |
 | `uvolMountBroker.driverName` | `volumes.union.ai` | CSI driver name. Task pods reference it; change it only if it collides. |
-| `uvolMountBroker.nodeSelector` | `{"flyte.org/node-role": "worker"}` | Nodes to run on. Must cover every node a volume task pod can schedule to. |
+| `uvolMountBroker.nodeSelector` | `{"flyte.org/node-role": "worker"}` | Nodes to run on. Must cover every node a volume task pod can schedule to. Set it to `null` (not `{}`) to run on every node. |
 | `uvolMountBroker.tolerations` | `[{ effect: NoSchedule, operator: Exists }]` | Tolerate `NoSchedule` taints so it reaches tainted worker nodes. |
 | `uvolMountBroker.kubeletDir` | `/var/lib/kubelet` | Kubelet root. Change it if your kubelet uses a non-standard directory. |
 | `uvolMountBroker.socketDir` | `/run/uvol` | Host directory for the per-volume unix sockets. |
