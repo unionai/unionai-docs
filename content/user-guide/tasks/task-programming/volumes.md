@@ -276,30 +276,6 @@ The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
 committed yet: there's no published version to point at.
 
-### High-throughput mode
-
-The default configuration suits most workloads. For workloads that create or
-update **very large numbers of files** (package installs, build trees, code
-generation), switch on high-throughput mode by preparing the image with
-`flyteplugins.union.io.with_high_throughput_volume_deps`:
-
-```python
-from flyteplugins.union.io import with_high_throughput_volume_deps
-
-image = with_high_throughput_volume_deps(
-    flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union")
-)
-
-env = flyte.TaskEnvironment(
-    name="high-throughput-volumes",
-    image=image,
-    pod_template=allow_volumes(),
-)
-```
-
-Volumes created in this environment automatically use the faster metadata path.
-No change to your task code is required.
-
 ### Tuning the mount
 
 `mount()` accepts options to match the I/O profile of your workload: where to
@@ -384,8 +360,8 @@ differently from a local disk. Know the trade-offs before reaching for one:
 - **Per-file work dominates with many small files.** Mounting itself stays fast
   even with tens of thousands of files, but operations that touch every file
   (creating or traversing them) are bounded by per-file metadata cost. The
-  metadata cache TTLs and [high-throughput mode](#high-throughput-mode) exist to
-  absorb this; reach for them on file-count-heavy workloads.
+  [metadata cache TTLs](#tuning-the-mount) exist to absorb this; reach for them
+  on file-count-heavy workloads.
 - **Versions are retained.** Every commit keeps an immutable version, so commit
   on a deliberate cadence and prune versions you no longer need.
 
@@ -396,40 +372,30 @@ Numbers from a single run on AWS (S3 storage, `us-east-2` region) on a
 cloud provider, region, file sizes, and instance type, so treat them as ballpark
 and re-run the benchmark for your own environment.
 
-Head-to-head against a local disk (the pod's container filesystem), in the
-default mode and in [high-throughput mode](#high-throughput-mode):
+Head-to-head against a local disk (the pod's container filesystem):
 
-| Operation | Local disk | Volume (default) | Volume (high-throughput) |
-|---|---|---|---|
-| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s | ~930 MB/s |
-| Create small files | ~21,500 files/s | ~1,750 files/s | ~2,960 files/s |
-| Stat / traverse files | ~235,000 files/s | ~34,000 files/s | ~132,000 files/s |
-
-Volume-specific costs (no local-disk equivalent):
-
-| Operation | Default | High-throughput |
+| Operation | Local disk | Volume |
 |---|---|---|
-| Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s | ~0.75 s → ~0.99 s |
-| Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) | ~3.3 s (~160 MB/s) |
+| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s |
+| Commit 512 MB to durable storage | n/a | ~3.3 s (~160 MB/s) |
+| Mount time, 100 → 50,000 files | n/a | ~0.55 s → ~0.63 s |
 
-High-throughput mode only changes **metadata** operations: writes and commits
-are identical (same data path). It speeds those up sharply (here, `stat` ~4×,
-create ~1.7×) by keeping the volume's whole namespace **resident in memory**, so
-its RAM grows with file count and the mount is a touch slower (it loads that
-namespace at startup). Reach for it on metadata-heavy workloads; the default
-mode's lower memory and faster mount win otherwise.
+A Volume trades raw speed for durability and sharing. Sequential writes run
+~0.4× local disk: even though uploads are async, each write still passes
+through the FUSE layer and the client's chunking/hashing into the cache.
+Mounting stays sub-second even at 50k files, and making 512 MB durable adds a
+few seconds at `commit()`.
 
-In other words, a Volume trades raw speed for durability and sharing. Sequential
-writes run ~0.4× local disk: even though uploads are async, each write still
-passes through the FUSE layer and the client's chunking/hashing into the cache.
-The gap is widest for **many small files** (create ~12× slower, stat ~7× slower),
-so batch those or keep them on local scratch. Mounting stays sub-second even at
-50k files, and making 512 MB durable adds a few seconds at `commit()`.
+> [!NOTE]
+> The per-file metadata figures from this run are not reproduced here: they were
+> measured against the metadata store that used to be the default, and the
+> current one is substantially faster for creates and stats. Re-run the
+> benchmark in your own environment if file-count-heavy throughput is what you
+> are sizing for.
 
 ## Reference
 
-- API: `Volume`, `RWVolume`, `ROVolume`,
-  `flyteplugins.union.io.allow_volumes`, and
-  `flyteplugins.union.io.with_high_throughput_volume_deps`.
+- API: `Volume`, `RWVolume`, `ROVolume`, and
+  `flyteplugins.union.io.allow_volumes`.
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
