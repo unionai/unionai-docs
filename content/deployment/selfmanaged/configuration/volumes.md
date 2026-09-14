@@ -59,7 +59,7 @@ helm upgrade <release> <chart> -n <namespace> \
 > The broker's default `nodeSelector` is `flyte.org/node-role: worker`, and it
 > **must cover every node a volume-using task pod can land on**. A pod that
 > lands on a node without the broker fails to start with
-> `driver volumes.union.ai not found`. If your task pods are not confined to
+> `driver volumes.union.ai not found` (or whatever `driverName` you set). If your task pods are not confined to
 > nodes carrying that label, widen the selector or remove it:
 >
 > ```yaml
@@ -85,7 +85,8 @@ kubectl get daemonset union-uvol-broker -n <namespace>
 
 Readiness means kubelet has actually registered the CSI driver, not merely that
 the process started, so a ready pod is a node that can serve a mount. Confirm
-the driver is registered cluster-wide:
+the driver is registered cluster-wide, using whatever you set
+`uvolMountBroker.driverName` to (the default is `volumes.union.ai`):
 
 ```bash
 kubectl get csidriver volumes.union.ai
