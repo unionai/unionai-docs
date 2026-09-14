@@ -111,17 +111,12 @@ env = flyte.TaskEnvironment(
 
 > [!NOTE]
 > **`allow_volumes()`** (from `flyteplugins.union.io`) is the only pod-level
-> setup a Volume needs. It attaches an ephemeral CSI volume served by the
-> cluster's **mount broker**: the broker premounts a FUSE channel on the node
-> and the in-pod client *adopts its file descriptor* over a socket, so your pod
-> never calls `mount(2)`. That means **no `CAP_SYS_ADMIN`, no `/dev/fuse`, no
-> `hostPath`, and no `fuse3` package**. The mount happens without the pod
-> holding any privilege at all. `Volume.mount()` detects the channel and uses it
-> automatically; your task code is unchanged.
+> setup a Volume needs, and the mount runs fully **unprivileged**: no
+> `CAP_SYS_ADMIN`, no `/dev/fuse`, no `fuse3` package.
 >
-> It needs the **mount-broker DaemonSet** on the cluster. The Union data plane
-> ships it; on a self-managed cluster an administrator enables it (see
-> [Volumes: data plane configuration](../../../deployment/selfmanaged/configuration/volumes)).
+> It relies on a mount broker running on the cluster. The Union data plane ships
+> one; on a self-managed cluster an administrator
+> [enables it](../../../deployment/selfmanaged/configuration/volumes).
 
 ## Get started
 
@@ -345,8 +340,7 @@ In a Dockerfile that's:
 RUN pip install flyteplugins-union
 ```
 
-That is the whole image contract: the pod adopts a file descriptor instead of
-mounting, so the image needs no FUSE userspace tools.
+That is the whole image contract: no FUSE userspace tools are needed.
 
 > [!NOTE]
 > The container also needs to run as a user that can write the volume's
