@@ -88,46 +88,35 @@ commits it and hands the next task an `ROVolume`.
 ## Setup
 
 Volumes are mounted inside the task pod, so the task environment needs two
-things: an **image** with the volume client (`flyteplugins-union`) and the FUSE
-tools, and a **pod template** that grants the mount capability.
+things: an **image** with the volume client (`flyteplugins-union`), and a **pod
+template** that lets the pod reach the mount.
 
 ```python
 import flyte
-from flyteplugins.union.io import Volume, ROVolume
+from flyteplugins.union.io import Volume, ROVolume, allow_volumes
 
 image = (
     flyte.Image.from_debian_base()
     .with_pip_packages("flyteplugins-union")  # volume client (bundles the mount binary)
-    .with_apt_packages("fuse3")               # FUSE userspace tools needed to mount
 )
 
 env = flyte.TaskEnvironment(
     name="volumes-demo",
     image=image,
-    # grant the pod what it needs to mount a Volume
-    pod_template=flyte.PodTemplate().allow_fuse(),
+    # let the pod mount Volumes (no privileges required)
+    pod_template=allow_volumes(),
     resources=flyte.Resources(cpu="1", memory="2Gi"),
 )
 ```
 
-Two pieces make a mount possible, and you need both:
-
 > [!NOTE]
-> **`flyte.PodTemplate.allow_fuse()`** grants the *kernel* side: it requests the
-> FUSE device resource and adds the capability the mount needs, without running
-> the container as privileged. Your cluster must run a FUSE device plugin for
-> this. The Union data plane ships an opt-in one. (For clusters without it,
-> `allow_fuse(privileged=True)` is a fallback that runs the container
-> privileged.)
+> **`allow_volumes()`** (from `flyteplugins.union.io`) is the only pod-level
+> setup a Volume needs, and the mount runs fully **unprivileged**: no
+> `CAP_SYS_ADMIN`, no `/dev/fuse`, no `fuse3` package.
 >
-> **The `fuse3` apt package** provides the *userspace* side: the `fusermount3`
-> helper that the mount client invokes (the package's post-install makes it
-> setuid-root, which is what lets an unprivileged task mount). The default
-> minimal images don't include it, so without it the mount fails with
-> `fusermount: not found`. If you bring your own image, see
-> [Custom images](#custom-images).
->
-> A task missing either piece cannot mount a Volume.
+> It relies on a mount broker running on the cluster. The Union data plane ships
+> one; on a self-managed cluster an administrator
+> [enables it](../../../deployment/selfmanaged/configuration/volumes).
 
 ## Get started
 
@@ -287,30 +276,6 @@ The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
 committed yet: there's no published version to point at.
 
-### High-throughput mode
-
-The default configuration suits most workloads. For workloads that create or
-update **very large numbers of files** (package installs, build trees, code
-generation), switch on high-throughput mode by preparing the image with
-`flyteplugins.union.io.with_high_throughput_volume_deps`:
-
-```python
-from flyteplugins.union.io import with_high_throughput_volume_deps
-
-image = with_high_throughput_volume_deps(
-    flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union")
-)
-
-env = flyte.TaskEnvironment(
-    name="high-throughput-volumes",
-    image=image,
-    pod_template=flyte.PodTemplate().allow_fuse(),
-)
-```
-
-Volumes created in this environment automatically use the faster metadata path.
-No change to your task code is required.
-
 ### Tuning the mount
 
 `mount()` accepts options to match the I/O profile of your workload: where to
@@ -339,27 +304,19 @@ data = await vol.mount(
 
 ## Custom images
 
-The two-package setup above (`flyteplugins-union` + `fuse3`) works on top of any
-image built from `flyte.Image.from_debian_base()`. If you bring a **fully custom
-image** (your own Dockerfile / base), it must satisfy the same two requirements:
-
-1. **The volume client**: `pip install flyteplugins-union`. The wheel bundles
-   the mount binary, so there's nothing else to fetch.
-2. **FUSE userspace tools**: the `fuse3` package. The mount runs unprivileged,
-   so `fusermount3` **must be setuid-root**; the Debian package's post-install
-   sets that bit, so install it with the package manager (don't just copy the
-   binary in; a copy loses the setuid bit and the mount fails with `EPERM`).
+The setup above works on top of any image built from
+`flyte.Image.from_debian_base()`. If you bring a **fully custom image** (your own
+Dockerfile / base), it needs one thing: **the volume client**,
+`pip install flyteplugins-union`. The wheel bundles the mount binary, so
+there's nothing else to fetch.
 
 In a Dockerfile that's:
 
 ```dockerfile
-RUN apt-get update && apt-get install -y --no-install-recommends fuse3 \
-    && pip install flyteplugins-union
+RUN pip install flyteplugins-union
 ```
 
-Beyond the image, the same runtime prerequisites apply as for the default setup:
-the pod must use `flyte.PodTemplate().allow_fuse()` (FUSE device + capability),
-and the cluster must run a FUSE device plugin (the Union data plane ships one).
+That is the whole image contract: no FUSE userspace tools are needed.
 
 > [!NOTE]
 > The container also needs to run as a user that can write the volume's
@@ -403,8 +360,8 @@ differently from a local disk. Know the trade-offs before reaching for one:
 - **Per-file work dominates with many small files.** Mounting itself stays fast
   even with tens of thousands of files, but operations that touch every file
   (creating or traversing them) are bounded by per-file metadata cost. The
-  metadata cache TTLs and [high-throughput mode](#high-throughput-mode) exist to
-  absorb this; reach for them on file-count-heavy workloads.
+  [metadata cache TTLs](#tuning-the-mount) exist to absorb this; reach for them
+  on file-count-heavy workloads.
 - **Versions are retained.** Every commit keeps an immutable version, so commit
   on a deliberate cadence and prune versions you no longer need.
 
@@ -415,39 +372,30 @@ Numbers from a single run on AWS (S3 storage, `us-east-2` region) on a
 cloud provider, region, file sizes, and instance type, so treat them as ballpark
 and re-run the benchmark for your own environment.
 
-Head-to-head against a local disk (the pod's container filesystem), in the
-default mode and in [high-throughput mode](#high-throughput-mode):
+Head-to-head against a local disk (the pod's container filesystem):
 
-| Operation | Local disk | Volume (default) | Volume (high-throughput) |
-|---|---|---|---|
-| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s | ~930 MB/s |
-| Create small files | ~21,500 files/s | ~1,750 files/s | ~2,960 files/s |
-| Stat / traverse files | ~235,000 files/s | ~34,000 files/s | ~132,000 files/s |
-
-Volume-specific costs (no local-disk equivalent):
-
-| Operation | Default | High-throughput |
+| Operation | Local disk | Volume |
 |---|---|---|
-| Mount time, 100 → 50,000 files | ~0.55 s → ~0.63 s | ~0.75 s → ~0.99 s |
-| Commit 512 MB to durable storage | ~3.3 s (~160 MB/s) | ~3.3 s (~160 MB/s) |
+| Sequential write (512 MB) | ~2,200 MB/s | ~930 MB/s |
+| Commit 512 MB to durable storage | n/a | ~3.3 s (~160 MB/s) |
+| Mount time, 100 → 50,000 files | n/a | ~0.55 s → ~0.63 s |
 
-High-throughput mode only changes **metadata** operations: writes and commits
-are identical (same data path). It speeds those up sharply (here, `stat` ~4×,
-create ~1.7×) by keeping the volume's whole namespace **resident in memory**, so
-its RAM grows with file count and the mount is a touch slower (it loads that
-namespace at startup). Reach for it on metadata-heavy workloads; the default
-mode's lower memory and faster mount win otherwise.
+A Volume trades raw speed for durability and sharing. Sequential writes run
+~0.4× local disk: even though uploads are async, each write still passes
+through the FUSE layer and the client's chunking/hashing into the cache.
+Mounting stays sub-second even at 50k files, and making 512 MB durable adds a
+few seconds at `commit()`.
 
-In other words, a Volume trades raw speed for durability and sharing. Sequential
-writes run ~0.4× local disk: even though uploads are async, each write still
-passes through the FUSE layer and the client's chunking/hashing into the cache.
-The gap is widest for **many small files** (create ~12× slower, stat ~7× slower),
-so batch those or keep them on local scratch. Mounting stays sub-second even at
-50k files, and making 512 MB durable adds a few seconds at `commit()`.
+> [!NOTE]
+> The per-file metadata figures from this run are not reproduced here: they were
+> measured against the metadata store that used to be the default, and the
+> current one is substantially faster for creates and stats. Re-run the
+> benchmark in your own environment if file-count-heavy throughput is what you
+> are sizing for.
 
 ## Reference
 
 - API: `Volume`, `RWVolume`, `ROVolume`, and
-  `flyteplugins.union.io.with_high_throughput_volume_deps`.
+  `flyteplugins.union.io.allow_volumes`.
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
