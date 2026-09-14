@@ -2,7 +2,7 @@
 title: Resources
 description: "Resources such as CPU, Memory, and GPU that can be allocated to a task."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,7 +54,7 @@ class Resources(
 
 | Method | Description |
 |-|-|
-| [`get_device()`](#get_device) | Get the accelerator string for the task. |
+| [`get_device()`](#get_device) | Get the accelerator device for the task. |
 | [`get_shared_memory()`](#get_shared_memory) | Get the shared memory string for the task. |
 
 
@@ -63,14 +63,16 @@ class Resources(
 ```python
 def get_device()
 ```
-Get the accelerator string for the task.
+Get the accelerator device for the task.
 
 
 
 **Returns**
 
-If GPUs are requested, return a tuple of the device name, and potentially a partition string.
-Default cloud provider labels typically use the following values: `1g.5gb`, `2g.10gb`, etc.
+A `Device` carrying the quantity, device class and -- for an accelerator string or an
+explicit `GPU()`/`TPU()`/`Device()` -- the device name and partition. `None` when no
+accelerator is requested, which includes `gpu=0`. Partition values follow the default
+cloud provider labels, typically `1g.5gb`, `2g.10gb`, etc.
 
 ### get_shared_memory()
 

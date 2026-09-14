@@ -2,7 +2,7 @@
 title: Run
 description: "A class representing a run of a task."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,8 +44,10 @@ class Run(
 | Method | Description |
 |-|-|
 | [`abort()`](#abort) | Aborts / Terminates the run. |
+| [`code_bundle()`](#code_bundle) | The code bundle this run executed, or None when it ran from code baked into its image. |
 | [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
+| [`download_code()`](#download_code) | Download the code this run executed — the source shown in the console's "Code" tab. |
 | [`first_failure()`](#first_failure) | Details of the first action that failed in this run, or None when no action failed. |
 | [`get()`](#get) | Get the current run. |
 | [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
@@ -85,6 +87,22 @@ Aborts / Terminates the run.
 |-|-|-|
 | `reason` | `str` | |
 
+### code_bundle()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.code_bundle.aio()`.
+```python
+def code_bundle()
+```
+The code bundle this run executed, or None when it ran from code baked into its image.
+
+Metadata only — where the bundle lives, which version it is, and whether it is a tarball
+or a pickle. Use `Run.download_code` to fetch the source itself.
+
+
 ### details()
 
 
@@ -105,6 +123,50 @@ def done()
 ```
 Check if the run is done.
 
+
+### download_code()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.download_code.aio()`.
+```python
+def download_code(
+    dest: str | pathlib.Path | None = None,
+    extract: bool = True,
+    attempt: int | None = None,
+) -> pathlib.Path
+```
+Download the code this run executed — the source shown in the console's "Code" tab.
+
+The code is whatever `flyte run` / `flyte deploy` packaged and uploaded for this run: a
+tarball of the source tree, or a cloudpickle of the task when it was launched from a
+notebook or REPL. Runs whose task ran from code baked into its image carry no bundle,
+and raise.
+
+```python
+run = flyte.remote.Run.get("my-run")
+src = run.download_code()
+print((src / "workflows" / "main.py").read_text())
+```
+
+This fetches the bundle of the run's root action. A nested action can be packaged
+differently (a task from another environment, deployed separately) — use
+`Action.download_code` on that action to fetch its own code.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `dest` | `str \| pathlib.Path \| None` | Directory to download into, created if missing. Defaults to a directory named after the run, under the current working directory. |
+| `extract` | `bool` | Unpack the tarball into `dest`. Set False to keep the archive as-is. Pickled bundles are never unpacked. |
+| `attempt` | `int \| None` | Attempt to fetch the bundle for. Defaults to the latest attempt. |
+
+**Returns**
+
+The directory the source was extracted into, or the path of the downloaded archive
+when `extract` is False or the bundle is a pickle.
 
 ### first_failure()
 

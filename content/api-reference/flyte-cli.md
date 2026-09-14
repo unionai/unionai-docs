@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -22,11 +22,12 @@ This is the command line interface for Flyte.
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
-| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`proxy`](#flyte-proxy-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
+| `code` | [`get`](#flyte-get-code)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -46,8 +47,9 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -79,13 +81,14 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
-| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`proxy`](#flyte-proxy-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `volume` | [`explore⁺`](#flyte-explore-volume)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster-config` | [`get⁺`](#flyte-get-cluster-config)  |
+| `code` | [`get`](#flyte-get-code)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -111,8 +114,9 @@ This is the command line interface for Flyte.
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -531,11 +535,17 @@ $ flyte create queue my-queue --run-concurrency 100 --action-concurrency 1000
 $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
     --priority min --cluster gpu-cluster-1
 
+$ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
+    --max-resources gpu=8 --max-resources memory=512Gi
+
 $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
     --cluster-pool gpu-pool
 
 $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
     --depth 5000 --priority max
+
+$ flyte create queue gangs --run-concurrency 50 --action-concurrency 500 \
+    --max-resources gpu=64 --scheduling greedy_capacity
 ```
 
 | Option | Type | Default | Description |
@@ -547,6 +557,8 @@ $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Cap the summed resource request of the queue's dispatched, not-yet-completed actions. Repeat per resource: --max-resources gpu=8 --max-resources memory=512Gi. NAME is one of cpu, gpu, memory, ephemeral_storage; QUANTITY is a Kubernetes quantity (8, 0.5, 100m, 512Gi). A resource not named is unlimited — 0 is a hard cap that forbids every request on it, not 'unset'. Omit the option entirely for no cap. |
+| `--scheduling` | `choice` | `strict_fifo` | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
 | `--project` | `text` | `` | Scope queue to a project (currently rejected by the server: only organization-scoped queues can be created). |
 | `--domain` | `text` | `` | Scope queue to a domain (currently rejected by the server: only organization-scoped queues can be created). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1324,6 +1336,7 @@ run has no local equivalent.
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--version` | `text` |  | Version to use for the run. If not provided, it is computed from the code bundle. Required with `--copy-style none`. Not used with `deployed-task`: use `env.task:version` there. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
@@ -1614,6 +1627,43 @@ $ flyte get cluster-pool --deleted
 {{< /markdown >}}
 {{< /variant >}}
 
+#### flyte get code
+
+**`flyte get code [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+Get the code a run executed — the source shown in the console's "Code" tab.
+
+Without `--dest` the bundle is listed and then discarded:
+
+```bash
+$ flyte get code my_run
+```
+
+With `--dest` the source is unpacked there and kept:
+
+```bash
+$ flyte get code my_run --dest ./my_run_code
+```
+
+If only the run name is given, the code of the run's root action is fetched. Pass an action
+name to fetch the code of a specific action inside the run, which may have been packaged
+separately:
+
+```bash
+$ flyte get code my_run my_action
+```
+
+Tasks that run from code baked into their image have no bundle to download.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--dest` `-o` | `directory` |  | Directory to download the code into. Without it, the code is only listed, not kept. |
+| `--no-extract` | `boolean` | `False` | Keep the downloaded archive instead of unpacking it. Requires `--dest`. |
+| `--attempt` `-a` | `integer` |  | Attempt to fetch the code for, defaults to the latest attempt. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
 #### flyte get condition
 
 **`flyte get condition [OPTIONS] RUN_NAME [ACTION_NAME]`**
@@ -1860,6 +1910,10 @@ $ flyte get queue my-queue
 
 $ flyte get queue my-queue --watch
 
+$ flyte get queue --watch                  # dashboard: every live queue
+
+$ flyte get queue --watch --pool gpu-pool
+
 $ flyte get queue --state active
 
 $ flyte get queue --deleted
@@ -1870,7 +1924,8 @@ $ flyte get queue --deleted
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
 | `--limit` | `integer` | `100` | Maximum number of queues to return |
-| `--watch` | `boolean` | `Sentinel.UNSET` | Stream live queue metrics (requires NAME) |
+| `--watch` | `boolean` | `Sentinel.UNSET` | Stream live metrics: one queue's utilization panel with NAME, or the dashboard of every live queue without it (resource caps, utilization, head-of-line blocks). |
+| `--pool` | `text` | `Sentinel.UNSET` | With --watch and no NAME: restrict the dashboard to these cluster pool(s). Repeatable. |
 | `--deleted` | `boolean` | `Sentinel.UNSET` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
 | `--state` | `choice` |  | List only queues in this state. Cannot be combined with NAME. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -2187,6 +2242,35 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
+### flyte proxy
+
+**`flyte proxy COMMAND [ARGS]...`**
+
+Proxy a local port into a Flyte App through the authenticated app edge.
+
+#### flyte proxy app
+
+**`flyte proxy app [OPTIONS] [NAME]`**
+
+Open an authenticated localhost proxy into a no-auth Flyte App.
+
+Reuses the same Union auth (with auto-refresh) the CLI uses, injecting a fresh bearer on every
+request, so a local HTTP client — a Grafana/Prometheus MCP, curl, a browser — reaches an
+edge-gated app with no token handling. Think: kubectl port-forward for Flyte Apps.
+
+Foreground; Ctrl-C to stop.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--url` | `text` |  | Proxy this app URL directly; skip name resolution. |
+| `--port` | `integer` | `8600` | Local port to listen on (0 = pick a free port). |
+| `--address` | `text` | `127.0.0.1` | Local bind address; non-loopback triggers a warning. |
+| `--emit-mcp-config` | `boolean` | `False` | Print a generic HTTP-MCP config block for the local endpoint. |
+| `-v` `--verbose` | `boolean` | `False` | Log each proxied request (never the token). |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
 ### flyte rerun
 
 **`flyte rerun [OPTIONS] RUN_NAME`**
@@ -2342,6 +2426,7 @@ flyte run hello.py my_task --help
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--version` | `text` |  | Version to use for the run. If not provided, it is computed from the code bundle. Required with `--copy-style none`. Not used with `deployed-task`: use `env.task:version` there. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
@@ -2888,6 +2973,15 @@ $ flyte update queue my-queue --edit      # set cluster_pool: other-pool
 
 $ flyte update queue my-queue --activate
 ```
+Set or lift the resource cap without opening an editor:
+
+```bash
+$ flyte update queue gpu-gangs --max-resources gpu=64 --max-resources cpu=512
+
+$ flyte update queue gpu-gangs --clear-max-resources
+
+$ flyte update queue gpu-gangs --scheduling greedy_capacity
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2896,6 +2990,9 @@ $ flyte update queue my-queue --activate
 | `--drain` | `boolean` | `Sentinel.UNSET` | Begin draining the queue |
 | `--activate` | `boolean` | `Sentinel.UNSET` | Re-activate a draining or drained queue |
 | `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to modify queue settings |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Set the queue's resource cap, NAME=QUANTITY, repeatable per dimension (cpu, memory, gpu, ephemeral_storage). Replaces the whole cap: dimensions not named here become unbounded. |
+| `--clear-max-resources` | `boolean` | `Sentinel.UNSET` | Lift the queue's resource cap entirely (every dimension unlimited). |
+| `--scheduling` | `choice` |  | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}

@@ -2,7 +2,7 @@
 title: WebhookAppEnvironment
 description: "Dashboard plus a verified webhook receiver for one or more providers."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -202,7 +202,8 @@ def get_port()
 
 ```python
 def on_event(
-    event_type: str = '',
+    event_type: str | type[EventType] = '',
+    action: str | None = None,
 ) -> Callable[[EventHandler], EventHandler]
 ```
 Register an async handler for webhook events.
@@ -211,7 +212,8 @@ Register an async handler for webhook events.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `event_type` | `str` | The event to match. Prefer the typed constants in `flyteplugins.webhooks.events` — `events.github.PullRequest.OPENED` for one action, `events.github.PullRequest.ANY` for every action on that type. Raw strings still work, which is the escape hatch for events the constants do not cover yet. An empty string matches every event from every configured provider. |
+| `event_type` | `str \| type[EventType]` | The event to match. Prefer the typed constants in the provider plugin's `events` module — `events.PullRequest.OPENED` for one action, `events.PullRequest.ANY` for every action on that type. An `EventType` class works too and means its `ANY`. Raw strings still work, which is the escape hatch for events the constants do not cover yet. An empty string matches every event from every configured provider. |
+| `action` | `str \| None` | The user-defined half of an event, for providers that split type and action but cannot enumerate the actions — a Slack button's `action_id`, a shortcut's `callback_id`, a slash command's name. `on_event(Interaction.BLOCK_ACTIONS, action="approve")` matches exactly one button where the bare constant matches them all. A leading `/` is dropped, so a slash command reads the way Slack displays it: `on_event(events.Command, action="/deploy")`. |
 
 **Returns:** A decorator that registers the handler and returns it unchanged.
 

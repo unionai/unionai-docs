@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -29,6 +29,9 @@ unknown error.
 | [`ConditionTimedoutError`](../flyte.errors/conditiontimedouterror) | This error is raised when a condition is not signaled within its specified timeout. |
 | [`CustomError`](../flyte.errors/customerror) | This error is raised when the user raises a custom error. |
 | [`DeploymentError`](../flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`GPUFaultError`](../flyte.errors/gpufaulterror) | This error is raised when the backend attributed the task failure to a GPU or NVSwitch fault that the GPU health daemon observed on the node, such as an Xid 31 (a GPU memory page fault) or an Xid 79 (the GPU fell off the bus). |
+| [`GPUFaultSystemError`](../flyte.errors/gpufaultsystemerror) | This error is raised when the GPU fault the backend attributed the failure to condemned the device or the node, for example an uncorrectable ECC error or a GPU that fell off the bus. |
+| [`GPUFaultUserError`](../flyte.errors/gpufaultusererror) | This error is raised when the GPU fault the backend attributed the failure to was the workload's own doing, for example an out-of-bounds access that the driver reported as an Xid 31. |
 | [`ImageBuildError`](../flyte.errors/imagebuilderror) | This error is raised when the image build fails. |
 | [`ImagePullBackOffError`](../flyte.errors/imagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`InitializationError`](../flyte.errors/initializationerror) | This error is raised when the Union system is tried to access without being initialized. |
@@ -65,6 +68,12 @@ unknown error.
 |-|-|
 | [`silence_polling_error()`](#silence_polling_error) | Suppress specific polling errors in the event loop. |
 
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `GPU_FAULT_CODES` | `tuple` |  |
 
 ## Methods
 
