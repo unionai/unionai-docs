@@ -2,7 +2,7 @@
 title: ReusePolicy
 description: "Configure a task environment for container reuse across multiple task invocations."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

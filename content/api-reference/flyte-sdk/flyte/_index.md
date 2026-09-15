@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,6 +24,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ConditionWebhook`](../flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
+| [`Documentation`](../flyte/documentation) | This class is used to store the documentation of a task. |
 | [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern. |
@@ -175,8 +176,8 @@ Create a Neuron device instance.
 
 ```python
 def TPU(
-    device: typing.Literal['V5P', 'V6E'],
-    partition: typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType] = None,
+    device: typing.Literal['V5E', 'V5P', 'V6E'],
+    partition: typing.Union[typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], NoneType] = None,
 )
 ```
 Create a TPU device instance.
@@ -185,8 +186,8 @@ Create a TPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['V5P', 'V6E']` | Device type (e.g., "V5P", "V6E"). |
-| `partition` | `typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType]` | Partition of the TPU (e.g., "1x1", "2x2", ...). |
+| `device` | `typing.Literal['V5E', 'V5P', 'V6E']` | Device type (e.g., "V5E", "V5P", "V6E"). |
+| `partition` | `typing.Union[typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], NoneType]` | Partition of the TPU (e.g., "1x1", "2x2", ...). |
 
 **Returns:** Device instance.
 
@@ -343,10 +344,11 @@ def main():
 ```python
 def deploy(
     *envs: Environment,
-    dryrun: bool = False,
+    dry_run: bool = False,
     version: str | None = None,
     interactive_mode: bool | None = None,
     copy_style: CopyFiles = 'loaded_modules',
+    dryrun: bool | None = None,
 ) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
@@ -356,10 +358,11 @@ Deploy the given environment or list of environments.
 | Parameter | Type | Description |
 |-|-|-|
 | `*envs` | `Environment` | Environment or list of environments to deploy. |
-| `dryrun` | `bool` | dryrun mode, if True, the deployment will not be applied to the control plane. |
+| `dry_run` | `bool` | dry run mode, if True, the deployment will not be applied to the control plane. |
 | `version` | `str \| None` | version of the deployment, if None, the version will be computed from the code bundle. TODO: Support for interactive_mode |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
+| `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
 

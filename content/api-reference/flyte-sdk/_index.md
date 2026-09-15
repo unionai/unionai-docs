@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -30,6 +30,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ConditionWebhook`](flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`flyte.Cron`](flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`flyte.Device`](flyte/device) | Represents a device type, its quantity and partition if applicable. |
+| [`flyte.Documentation`](flyte/documentation) | This class is used to store the documentation of a task. |
 | [`flyte.Environment`](flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`flyte.FixedRate`](flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](flyte/image) | Container image specification built using a fluent, two-step pattern. |
@@ -109,6 +110,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.ConditionTimedoutError`](flyte.errors/conditiontimedouterror) | This error is raised when a condition is not signaled within its specified timeout. |
 | [`flyte.errors.CustomError`](flyte.errors/customerror) | This error is raised when the user raises a custom error. |
 | [`flyte.errors.DeploymentError`](flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`flyte.errors.GPUFaultError`](flyte.errors/gpufaulterror) | This error is raised when the backend attributed the task failure to a GPU or NVSwitch fault that the GPU health daemon observed on the node, such as an Xid 31 (a GPU memory page fault) or an Xid 79 (the GPU fell off the bus). |
+| [`flyte.errors.GPUFaultSystemError`](flyte.errors/gpufaultsystemerror) | This error is raised when the GPU fault the backend attributed the failure to condemned the device or the node, for example an uncorrectable ECC error or a GPU that fell off the bus. |
+| [`flyte.errors.GPUFaultUserError`](flyte.errors/gpufaultusererror) | This error is raised when the GPU fault the backend attributed the failure to was the workload's own doing, for example an out-of-bounds access that the driver reported as an Xid 31. |
 | [`flyte.errors.ImageBuildError`](flyte.errors/imagebuilderror) | This error is raised when the image build fails. |
 | [`flyte.errors.ImagePullBackOffError`](flyte.errors/imagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](flyte.errors/initializationerror) | This error is raised when the Union system is tried to access without being initialized. |

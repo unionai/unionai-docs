@@ -2,7 +2,7 @@
 title: flyte.ai.chat.app
 description: "AgentChatAppEnvironment — FastAPI-based chat UI for any Agent."
 icon: box-seam
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: DurableChatModel
 description: "Wrap a `BaseChatModel` so each model turn is durable and replayable."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

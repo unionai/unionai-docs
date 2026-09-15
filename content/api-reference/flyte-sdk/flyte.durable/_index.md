@@ -2,7 +2,7 @@
 title: flyte.durable
 description: "Flyte durable utilities."
 icon: box-seam
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: FlyteModel
 description: "Wrap a `agents.models.interface.Model` so each turn is durable."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

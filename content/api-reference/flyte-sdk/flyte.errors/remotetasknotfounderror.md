@@ -2,7 +2,7 @@
 title: RemoteTaskNotFoundError
 description: "This error is raised when the user tries to access a task that does not exist."
 icon: exclamation-triangle
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.7.2
+version: 2.8.0
 variants: +flyte +union
 layout: py_api
 ---
