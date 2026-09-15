@@ -54,6 +54,43 @@ When you decorate a function with a clustered environment's `@env.task` and run 
 Because every worker runs the same task body, you branch on the rank when you need to (for example,
 only rank 0 saves checkpoints or returns outputs).
 
+## Prerequisites
+
+Clustered tasks run on the Kubernetes [JobSet](https://jobset.sigs.k8s.io/) controller, which is not
+part of a default installation. If a clustered run fails with
+`required env var 'JOBSET_NAME' is not set`, the task ran as a plain pod instead of a JobSet: the
+controller is missing or the `clustered-task` plugin is not enabled.
+
+{{< variant union >}}
+{{< markdown >}}
+
+- **Union-hosted and Union-managed data planes:** clustered tasks are enabled per tenant. Contact
+  Union support to turn them on; nothing needs to be installed on your side.
+- **Self-managed data planes:** install the JobSet controller and enable the plugin, as for the other
+  [compute plugins](../../../deployment/selfmanaged/configuration/plugins):
+
+  1. Install the controller (the `jobsets.jobset.x-k8s.io` CRD and the controller in `jobset-system`):
+
+     ```bash
+     helm install jobset oci://registry.k8s.io/jobset/charts/jobset \
+       --version 0.12.0 -n jobset-system --create-namespace
+     ```
+
+  2. Add `clustered-task` to `config.enabled_plugins.tasks.task-plugins.enabled-plugins` in your data
+     plane Helm values. The list replaces the default rather than extending it, so keep your existing
+     plugins when you add it.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+The JobSet controller must be installed on the cluster, and `clustered-task` must be in the backend's
+`tasks.task-plugins.enabled-plugins` list. That list replaces the default rather than extending it, so
+keep the existing plugins when you add it.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Basic usage
 
 The example below trains a tiny model with PyTorch `DistributedDataParallel` across the cluster.
