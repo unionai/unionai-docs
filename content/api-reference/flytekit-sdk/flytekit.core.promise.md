@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.promise
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,9 +14,9 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ComparisonExpression`](./flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands. |
+| [`ComparisonExpression`](./flytekit.core.promise#flytekitcorepromisecomparisonexpression) | ComparisonExpression refers to an expression of the form (lhs operator rhs), where lhs and rhs are operands and operator can be any comparison expression like <, >, <=, >=, ==, !=. |
 | [`ComparisonOps`](./flytekit.core.promise#flytekitcorepromisecomparisonops) |  |
-| [`ConjunctionExpression`](./flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). |
+| [`ConjunctionExpression`](./flytekit.core.promise#flytekitcorepromiseconjunctionexpression) | A Conjunction Expression is an expression of the form either (A and B) or (A or B). where A, B are two expressions (comparison or conjunctions) and (and, or) are logical truth operators. |
 | [`ConjunctionOps`](./flytekit.core.promise#flytekitcorepromiseconjunctionops) |  |
 | [`NodeOutput`](./flytekit.core.promise#flytekitcorepromisenodeoutput) |  |
 | [`Promise`](./flytekit.core.promise#flytekitcorepromisepromise) | This object is a wrapper and exists for three main reasons. |
@@ -36,19 +37,19 @@ layout: py_api
 | [`async_flyte_entity_call_handler()`](#async_flyte_entity_call_handler) | This is a limited async version of the main call handler. |
 | [`binding_data_from_python_std()`](#binding_data_from_python_std) |  |
 | [`binding_from_python_std()`](#binding_from_python_std) |  |
-| [`create_and_link_node()`](#create_and_link_node) | This method is used to generate a node with bindings within a flytekit workflow. |
-| [`create_and_link_node_from_remote()`](#create_and_link_node_from_remote) | This method is used to generate a node with bindings especially when using remote entities, like FlyteWorkflow,. |
-| [`create_native_named_tuple()`](#create_native_named_tuple) | Creates and returns a Named tuple with all variables that match the expected named outputs. |
+| [`create_and_link_node()`](#create_and_link_node) |  |
+| [`create_and_link_node_from_remote()`](#create_and_link_node_from_remote) | This method is used to generate a node with bindings especially when using remote entities, like FlyteWorkflow, FlyteTask and FlyteLaunchplan. |
+| [`create_native_named_tuple()`](#create_native_named_tuple) | Creates and returns a Named tuple with all variables that match the expected named outputs. this makes it possible to run things locally and expect a more native behavior, i.e. address elements of a named tuple by name. |
 | [`create_task_output()`](#create_task_output) |  |
 | [`extract_obj_name()`](#extract_obj_name) | Generates a shortened name, without the module information. |
-| [`flyte_entity_call_handler()`](#flyte_entity_call_handler) | This function is the call handler for tasks, workflows, and launch plans (which redirects to the underlying. |
+| [`flyte_entity_call_handler()`](#flyte_entity_call_handler) | This function is the call handler for tasks, workflows, and launch plans (which redirects to the underlying workflow). |
 | [`get_primitive_val()`](#get_primitive_val) |  |
 | [`resolve_attr_path_in_dict()`](#resolve_attr_path_in_dict) |  |
-| [`resolve_attr_path_in_pb_struct()`](#resolve_attr_path_in_pb_struct) | Resolves the protobuf struct (e. |
-| [`resolve_attr_path_in_promise()`](#resolve_attr_path_in_promise) | resolve_attr_path_in_promise resolves the attribute path in a promise and returns a new promise with the resolved value. |
+| [`resolve_attr_path_in_pb_struct()`](#resolve_attr_path_in_pb_struct) | Resolves the protobuf struct (e.g. dataclass) with attribute path. |
+| [`resolve_attr_path_in_promise()`](#resolve_attr_path_in_promise) | resolve_attr_path_in_promise resolves the attribute path in a promise and returns a new promise with the resolved value This is for local execution only. |
 | [`resolve_attr_path_recursively()`](#resolve_attr_path_recursively) | This function resolves the attribute path in a nested structure recursively. |
 | [`to_binding()`](#to_binding) |  |
-| [`translate_inputs_to_literals()`](#translate_inputs_to_literals) | The point of this function is to extract out Literals from a collection of either Python native values (which would. |
+| [`translate_inputs_to_literals()`](#translate_inputs_to_literals) | The point of this function is to extract out Literals from a collection of either Python native values (which would be converted into Flyte literals) or Promises (the literals in which would just get extracted). |
 | [`translate_inputs_to_native()`](#translate_inputs_to_native) |  |
 
 

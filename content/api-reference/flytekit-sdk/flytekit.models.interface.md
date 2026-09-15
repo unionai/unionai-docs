@@ -1,5 +1,6 @@
 ---
 title: flytekit.models.interface
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -199,7 +200,7 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
+| [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed python map like functions. |
 
 
 #### from_flyte_idl()

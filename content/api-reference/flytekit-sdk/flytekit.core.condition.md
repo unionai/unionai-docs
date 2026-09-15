@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.condition
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -350,7 +351,7 @@ class ConditionalSection(
 
 | Method | Description |
 |-|-|
-| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have. |
+| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have been registered. |
 | [`end_branch()`](#end_branch) | This should be invoked after every branch has been visited. |
 | [`if_()`](#if_) |  |
 | [`start_branch()`](#start_branch) | At the start of an execution of every branch this method should be called. |
@@ -426,7 +427,7 @@ class LocalExecutedConditionalSection(
 
 | Method | Description |
 |-|-|
-| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have. |
+| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have been registered. |
 | [`end_branch()`](#end_branch) | This should be invoked after every branch has been visited. |
 | [`if_()`](#if_) |  |
 | [`start_branch()`](#start_branch) | At the start of an execution of every branch this method should be called. |
@@ -509,7 +510,7 @@ class SkippedConditionalSection(
 
 | Method | Description |
 |-|-|
-| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have. |
+| [`compute_output_vars()`](#compute_output_vars) | Computes and returns the minimum set of outputs for this conditional block, based on all the cases that have been registered. |
 | [`end_branch()`](#end_branch) | This should be invoked after every branch has been visited. |
 | [`if_()`](#if_) |  |
 | [`start_branch()`](#start_branch) | At the start of an execution of every branch this method should be called. |

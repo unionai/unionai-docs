@@ -1,5 +1,6 @@
 ---
 title: flytekit.types.error.error
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ErrorTransformer`](./flytekit.types.error.error#flytekittypeserrorerrorerrortransformer) | Enables converting a python type FlyteError to LiteralType. |
+| [`ErrorTransformer`](./flytekit.types.error.error#flytekittypeserrorerrorerrortransformer) | Enables converting a python type FlyteError to LiteralType.Error. |
 | [`FlyteError`](./flytekit.types.error.error#flytekittypeserrorerrorflyteerror) | Special Task type that will be used in the failure node. |
 
 ### Variables
@@ -46,7 +47,7 @@ def ErrorTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |

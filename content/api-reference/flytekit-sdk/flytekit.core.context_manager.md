@@ -1,5 +1,7 @@
 ---
 title: flytekit.core.context_manager
+description: "These classes provide functionality related context management."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -20,7 +22,7 @@ These classes provide functionality related context management.
 | [`ExecutionState`](./flytekit.core.context_manager#flytekitcorecontext_managerexecutionstate) | This is the context that is active when executing a task or a local workflow. |
 | [`FlyteContext`](./flytekit.core.context_manager#flytekitcorecontext_managerflytecontext) | This is an internal-facing context object, that most users will not have to deal with. |
 | [`FlyteContextManager`](./flytekit.core.context_manager#flytekitcorecontext_managerflytecontextmanager) | FlyteContextManager manages the execution context within Flytekit. |
-| [`FlyteEntities`](./flytekit.core.context_manager#flytekitcorecontext_managerflyteentities) | This is a global Object that tracks various tasks and workflows that are declared within a VM during the. |
+| [`FlyteEntities`](./flytekit.core.context_manager#flytekitcorecontext_managerflyteentities) | This is a global Object that tracks various tasks and workflows that are declared within a VM during the registration process. |
 | [`OutputMetadata`](./flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadata) |  |
 | [`OutputMetadataTracker`](./flytekit.core.context_manager#flytekitcorecontext_manageroutputmetadatatracker) | This class is for the users to set arbitrary metadata on output literals. |
 | [`SecretsManager`](./flytekit.core.context_manager#flytekitcorecontext_managersecretsmanager) | This provides a secrets resolution logic at runtime. |
@@ -74,7 +76,7 @@ class CompilationState(
 | Method | Description |
 |-|-|
 | [`add_node()`](#add_node) |  |
-| [`with_params()`](#with_params) | Create a new CompilationState where the mode and task resolver are defaulted to the current object, but they. |
+| [`with_params()`](#with_params) | Create a new CompilationState where the mode and task resolver are defaulted to the current object, but they and all other args are taken if explicitly provided as an argument. |
 
 
 #### add_node()

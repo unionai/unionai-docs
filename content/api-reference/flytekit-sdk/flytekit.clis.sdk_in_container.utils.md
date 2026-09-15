@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.utils
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -167,7 +168,7 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`invoke()`](#invoke) | Given a context, this invokes the attached callback (if it exists). |
+| [`invoke()`](#invoke) | Given a context, this invokes the attached callback (if it exists) in the right way. |
 
 
 #### invoke()

@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.helpers
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`get_and_save_remote_with_click_context()`](#get_and_save_remote_with_click_context) | NB: This function will by default mutate the click Context. |
+| [`get_and_save_remote_with_click_context()`](#get_and_save_remote_with_click_context) | NB: This function will by default mutate the click Context.obj dictionary, adding a remote key with value of the created FlyteRemote object. |
 | [`parse_copy()`](#parse_copy) | Helper function to parse cmd line args into enum. |
 | [`patch_image_config()`](#patch_image_config) | Merge ImageConfig object with images defined in config file. |
 

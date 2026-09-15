@@ -1,5 +1,6 @@
 ---
 title: flytekit.deck.renderer
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -116,7 +117,7 @@ protocol Renderable()
 
 | Method | Description |
 |-|-|
-| [`to_html()`](#to_html) | Convert an object(markdown, pandas. |
+| [`to_html()`](#to_html) | Convert an object(markdown, pandas.dataframe) to HTML and return HTML as a unicode string. |
 
 
 #### to_html()

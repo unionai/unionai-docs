@@ -1,5 +1,6 @@
 ---
 title: flytekit.tools.translator
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -16,7 +17,7 @@ layout: py_api
 | [`gather_dependent_entities()`](#gather_dependent_entities) | The ``get_serializable`` function above takes in an ``OrderedDict`` that helps keep track of dependent entities. |
 | [`get_command_prefix_for_fast_execute()`](#get_command_prefix_for_fast_execute) |  |
 | [`get_reference_spec()`](#get_reference_spec) |  |
-| [`get_serializable()`](#get_serializable) | The flytekit authoring code produces objects representing Flyte entities (tasks, workflows, etc. |
+| [`get_serializable()`](#get_serializable) | The flytekit authoring code produces objects representing Flyte entities (tasks, workflows, etc.). |
 | [`get_serializable_array_node()`](#get_serializable_array_node) |  |
 | [`get_serializable_array_node_map_task()`](#get_serializable_array_node_map_task) |  |
 | [`get_serializable_branch_node()`](#get_serializable_branch_node) |  |

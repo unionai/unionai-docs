@@ -1,5 +1,6 @@
 ---
 title: flytekit.types.directory.types
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteDirToMultipartBlobTransformer`](./flytekit.types.directory.types#flytekittypesdirectorytypesflytedirtomultipartblobtransformer) | This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte. |
+| [`FlyteDirToMultipartBlobTransformer`](./flytekit.types.directory.types#flytekittypesdirectorytypesflytedirtomultipartblobtransformer) | This transformer handles conversion between the Python native FlyteDirectory class defined above, and the Flyte IDL literal/type of Multipart Blob. |
 | [`FlyteDirectory`](./flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) |  |
 
 ### Methods
@@ -69,8 +70,8 @@ def FlyteDirToMultipartBlobTransformer()
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
 | [`dict_to_flyte_directory()`](#dict_to_flyte_directory) |  |
-| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows:. |
-| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows:. |
+| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows. |
+| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows. |
 | [`get_format()`](#get_format) |  |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -378,7 +379,7 @@ class FlyteDirectory(
 
 | Method | Description |
 |-|-|
-| [`crawl()`](#crawl) | Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory". |
+| [`crawl()`](#crawl) | Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory". if details=True is passed, then it will return a dictionary as specified by fsspec. |
 | [`deserialize_flyte_dir()`](#deserialize_flyte_dir) |  |
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
@@ -387,7 +388,7 @@ class FlyteDirectory(
 | [`new()`](#new) | Create a new FlyteDirectory object in current Flyte working directory. |
 | [`new_dir()`](#new_dir) | This will create a new folder under the current folder. |
 | [`new_file()`](#new_file) | This will create a new file under the current folder. |
-| [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i. |
+| [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i.e. the raw_output_prefix configured in the current FileAccessProvider object in the context). |
 | [`serialize_flyte_dir()`](#serialize_flyte_dir) |  |
 
 

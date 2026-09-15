@@ -1,5 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -21,7 +22,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`system_entry_point()`](#system_entry_point) | The reason these two (see the user one below) decorators exist is to categorize non-Flyte exceptions at arbitrary. |
+| [`system_entry_point()`](#system_entry_point) | The reason these two (see the user one below) decorators exist is to categorize non-Flyte exceptions at arbitrary locations. |
 | [`user_entry_point()`](#user_entry_point) | See the comment for the system_entry_point above as well. |
 
 

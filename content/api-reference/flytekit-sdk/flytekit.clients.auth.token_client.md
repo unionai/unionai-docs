@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.auth.token_client
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DeviceCodeResponse`](./flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) | Response from device auth flow endpoint. |
+| [`DeviceCodeResponse`](./flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientdevicecoderesponse) | Response from device auth flow endpoint {'device_code': 'code', 'user_code': 'BNDJJFXL', 'verification_uri': 'url', 'expires_in': 600, 'interval': 5}. |
 | [`GrantType`](./flytekit.clients.auth.token_client#flytekitclientsauthtoken_clientgranttype) |  |
 
 ### Methods
@@ -21,7 +22,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`get_basic_authorization_header()`](#get_basic_authorization_header) | This function transforms the client id and the client secret into a header that conforms with http basic auth. |
-| [`get_device_code()`](#get_device_code) | Retrieves the device Authentication code that can be done to authenticate the request using a browser on a. |
+| [`get_device_code()`](#get_device_code) | Retrieves the device Authentication code that can be done to authenticate the request using a browser on a separate device. |
 | [`get_token()`](#get_token) | retrieved from the IDP, the third is the expiration in seconds. |
 | [`poll_token_endpoint()`](#poll_token_endpoint) |  |
 

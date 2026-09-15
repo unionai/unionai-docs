@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -15,7 +16,7 @@ layout: py_api
 |-|-|
 | [`Authenticator`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorauthenticator) | Base authenticator for all authentication flows. |
 | [`ClientConfig`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientconfig) | Client Configuration that is needed by the authenticator. |
-| [`ClientConfigStore`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientconfigstore) | Client Config store retrieve client config. |
+| [`ClientConfigStore`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientconfigstore) | Client Config store retrieve client config. this can be done in multiple ways. |
 | [`ClientCredentialsAuthenticator`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientcredentialsauthenticator) | This Authenticator uses ClientId and ClientSecret to authenticate. |
 | [`CommandAuthenticator`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcommandauthenticator) | This Authenticator retrieves access_token using the provided command. |
 | [`DeviceCodeAuthenticator`](./flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatordevicecodeauthenticator) | This Authenticator implements the Device Code authorization flow useful for headless user authentication. |

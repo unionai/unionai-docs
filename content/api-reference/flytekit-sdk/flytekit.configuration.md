@@ -1,5 +1,7 @@
 ---
 title: flytekit.configuration
+description: "There are multiple ways to configure flytekit settings."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -128,7 +130,7 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 | [`GCSConfig`](./flytekit.configuration#flytekitconfigurationgcsconfig) | Any GCS specific configuration. |
 | [`GenericPersistenceConfig`](./flytekit.configuration#flytekitconfigurationgenericpersistenceconfig) | Data storage configuration that applies across any provider. |
 | [`Image`](./flytekit.configuration#flytekitconfigurationimage) | Image is a structured wrapper for task container images used in object serialization. |
-| [`ImageConfig`](./flytekit.configuration#flytekitconfigurationimageconfig) | We recommend you to use ImageConfig. |
+| [`ImageConfig`](./flytekit.configuration#flytekitconfigurationimageconfig) | We recommend you to use ImageConfig.auto(img_name=None) to create an ImageConfig. |
 | [`LocalConfig`](./flytekit.configuration#flytekitconfigurationlocalconfig) | Any configuration specific to local runs. |
 | [`PlatformConfig`](./flytekit.configuration#flytekitconfigurationplatformconfig) | This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically). |
 | [`S3Config`](./flytekit.configuration#flytekitconfigurations3config) | S3 specific configuration. |
@@ -213,7 +215,7 @@ class Config(
     secrets: SecretsConfig = SecretsConfig(env_prefix='_FSEC_', default_dir='/etc/secrets', file_prefix=''),
     stats: StatsConfig = StatsConfig(host='localhost', port=8125, disabled=False, disabled_tags=False),
     data_config: DataConfig = DataConfig(s3=S3Config(enable_debug=False, endpoint=None, retries=3, backoff=datetime.timedelta(seconds=5), access_key_id=None, secret_access_key=None, adressing_style=None), gcs=GCSConfig(gsutil_parallelism=False), azure=AzureBlobStorageConfig(account_name=None, account_key=None, tenant_id=None, client_id=None, client_secret=None), generic=GenericPersistenceConfig(attach_execution_metadata=True)),
-    local_sandbox_path: str = '/tmp/flyte0e6633jx',
+    local_sandbox_path: str = '/tmp/flyteou0jt1oz',
 )
 ```
 | Parameter | Type | Description |
@@ -549,7 +551,7 @@ class ImageConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from config file or from img_name. |
+| [`auto()`](#auto) | Reads from config file or from img_name Note that this function does not take into account the flytekit default images (see the Dockerfiles at the base of this repo). |
 | [`auto_default_image()`](#auto_default_image) |  |
 | [`create_from()`](#create_from) |  |
 | [`find_image()`](#find_image) | Return an image, by name, if it exists. |
@@ -917,10 +919,10 @@ class SerializationSettings(
 | [`default_entrypoint_settings()`](#default_entrypoint_settings) | Assumes the entrypoint is installed in a virtual-environment where the interpreter is. |
 | [`for_image()`](#for_image) |  |
 | [`from_transport()`](#from_transport) |  |
-| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings.Builder`` that copies the existing serialization settings parameters and. |
+| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings.Builder`` that copies the existing serialization settings parameters and allows for customization. |
 | [`should_fast_serialize()`](#should_fast_serialize) | Whether or not the serialization settings specify that entities should be serialized for fast registration. |
-| [`venv_root_from_interpreter()`](#venv_root_from_interpreter) | Computes the path of the virtual environment root, based on the passed in python interpreter path. |
-| [`with_serialized_context()`](#with_serialized_context) | Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext. |
+| [`venv_root_from_interpreter()`](#venv_root_from_interpreter) | Computes the path of the virtual environment root, based on the passed in python interpreter path for example /opt/venv/bin/python3 -> /opt/venv. |
+| [`with_serialized_context()`](#with_serialized_context) | Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext This is useful in transporting SerializedContext to serialized and registered tasks. |
 
 
 #### default_entrypoint_settings()

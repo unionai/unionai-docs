@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.tracker
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`InstanceTrackingMeta`](./flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :flytekit. |
+| [`InstanceTrackingMeta`](./flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :flytekit.common.mixins.registerable._InstanceTracker` also and also look at the tests in the ``tests/flytekit/unit/core/tracker/test_tracking/`` folder to see how it's used. |
 | [`TrackedInstance`](./flytekit.core.tracker#flytekitcoretrackertrackedinstance) | Please see the notes for the metaclass above first. |
 
 ### Methods
@@ -23,7 +24,7 @@ layout: py_api
 | [`extract_task_module()`](#extract_task_module) | Returns the task-name, absolute module and the string name of the callable. |
 | [`get_full_module_path()`](#get_full_module_path) |  |
 | [`import_module_from_file()`](#import_module_from_file) |  |
-| [`is_functools_wrapped_module_level()`](#is_functools_wrapped_module_level) | Returns true if the function is a functools. |
+| [`is_functools_wrapped_module_level()`](#is_functools_wrapped_module_level) | Returns true if the function is a functools.wraps-updated function that is defined in the module-level scope. |
 | [`is_ipython_or_pickle_exists()`](#is_ipython_or_pickle_exists) | Returns true if the code is running in an IPython notebook or if a pickle file exists. |
 | [`isnested()`](#isnested) | Returns true if a function is local to another function and is not accessible through a module. |
 | [`istestfunction()`](#istestfunction) | Return true if the function is defined in a test module. |

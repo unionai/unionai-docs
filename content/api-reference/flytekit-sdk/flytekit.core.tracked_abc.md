@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.tracked_abc
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlyteTrackedABC`](./flytekit.core.tracked_abc#flytekitcoretracked_abcflytetrackedabc) | This class exists because if you try to inherit from abc. |
+| [`FlyteTrackedABC`](./flytekit.core.tracked_abc#flytekitcoretracked_abcflytetrackedabc) | This class exists because if you try to inherit from abc.ABC and TrackedInstance by itself, you'll get the well-known ``TypeError: metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass of the metaclasses of all its bases`` error. |
 
 ## flytekit.core.tracked_abc.FlyteTrackedABC
 

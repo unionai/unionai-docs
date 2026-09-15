@@ -1,5 +1,6 @@
 ---
 title: flytekit.configuration.internal
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -39,7 +40,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`get_specified_images()`](#get_specified_images) | This section should contain options, where the option name is the friendly name of the image and the corresponding. |
+| [`get_specified_images()`](#get_specified_images) | This section should contain options, where the option name is the friendly name of the image and the corresponding value is actual FQN of the image. |
 
 
 #### get_specified_images()
