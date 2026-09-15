@@ -1,24 +1,29 @@
 ---
-title: AWS deployment
-description: Install Flyte on AWS with the flyte-binary chart, grant object-store access, and expose it through an ingress.
-icon: cloud
+title: flyte-binary deployment
+description: Install Flyte on AWS as a single Deployment with the flyte-binary chart, grant object-store access, and expose it through an ingress.
+icon: box-seam
 variants: +flyte -union
-weight: 3
+weight: 1
 ---
 
-# AWS deployment
+# flyte-binary deployment
 
-This guide installs Flyte with the `flyte-binary` Helm chart. It assumes you have
-already provisioned the [external dependencies](./overview) (a Kubernetes cluster, a
-PostgreSQL database, and an object-store bucket) and that you have `helm` and
-`kubectl` configured against your cluster.
+This guide installs Flyte with the `flyte-binary` Helm chart, which runs every Flyte
+component in a **single Deployment**. It is the right choice for most installs; if you
+need to scale components independently, use
+[`flyte-core`](./flyte-core) instead.
+
+It assumes you have already provisioned the
+[external dependencies](../overview) (a Kubernetes cluster, a PostgreSQL database, and
+an object-store bucket) and that you have `helm` and `kubectl` configured against your
+cluster.
 
 > [!TIP] Deploy this with an AI assistant
 > [`flyte-agent-plugins`](https://github.com/flyteorg/flyte-agent-plugins) — a
 > portable agent harness plugin for Claude Code, Codex, OpenCode, and other
 > harnesses — includes a `flyte-deploy-aws` skill that provisions a Flyte v2
 > cluster on AWS end to end — EKS + S3 + RDS behind an ALB, with optional TLS and
-> Okta SSO. See [Flyte agent plugins](../api-reference/agent-plugins).
+> Okta SSO. See [Flyte agent plugins](../../api-reference/agent-plugins).
 
 ## 1. Add the Helm repository
 
@@ -153,7 +158,7 @@ configuration:
 By default the chart only creates `ClusterIP` Services. To reach Flyte from outside
 the cluster, enable the ingress. A **single HTTP ingress** serves the console and the
 API. There is no separate gRPC ingress (see the
-[Deployment overview](./overview)).
+[Deployment overview](../overview)).
 
 ```yaml
 ingress:
@@ -170,7 +175,7 @@ the **same ingress host**: always expose them together.
 
 For provider-specific ingress annotations (TLS, ALB scheme, health checks), add them
 under `ingress.httpAnnotations`. See the AWS/EKS example below and the
-[Authentication and SSO](./authentication) page.
+[Authentication and SSO](../authentication) page.
 
 ## 6. Verify the installation
 
@@ -206,15 +211,12 @@ Uninstalling the release removes the ingress resource, which prompts the ingress
 controller (e.g. the AWS Load Balancer Controller) to delete the load balancer it
 provisioned.
 
-{{< WARNING >}}
-Confirm the ALB is gone in the AWS console so it stops billing.
-{{< /WARNING >}}
+> [!WARNING] Confirm the load balancer is gone
+> Check the AWS console that the ALB was actually deleted, so it stops billing.
 
 The external dependencies (the RDS database, the S3 bucket, and the EKS cluster
 itself) are untouched. Delete those separately in the AWS console (or with the tool
 you provisioned them with) if you no longer need them.
-
-Next: secure the deployment with [Authentication and SSO](./authentication).
 
 ## Full Values File Example
 
@@ -365,3 +367,5 @@ either:
   `configuration.storage.providerConfig.s3.secretKeyPath` at it.
 
 On the recommended `authType: iam` path there is no storage secret to manage.
+
+Next: secure the deployment with [Authentication and SSO](../authentication).
