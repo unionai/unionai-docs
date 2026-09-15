@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.friendly
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -64,7 +65,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 |-|-|
 | [`create_download_link()`](#create_download_link) |  |
 | [`create_download_location()`](#create_download_location) |  |
-| [`create_execution()`](#create_execution) | This will create an execution for the given execution spec. |
+| [`create_execution()`](#create_execution) | This will create an execution for the given execution spec. :returns: The unique identifier for the execution. |
 | [`create_launch_plan()`](#create_launch_plan) | This will create a launch plan definition in the Admin database. |
 | [`create_task()`](#create_task) | This will create a task definition in the Admin database. |
 | [`create_upload_location()`](#create_upload_location) | Get a signed url to be used during fast registration. |
@@ -85,7 +86,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`get_task_execution_data()`](#get_task_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available). |
 | [`get_upload_signed_url()`](#get_upload_signed_url) | Get a signed url to be used during fast registration. |
 | [`get_workflow_attributes()`](#get_workflow_attributes) | Fetches the custom attributes set for a project, domain, and workflow combination. |
-| [`list_active_launch_plans_paginated()`](#list_active_launch_plans_paginated) | This returns a page of currently active launch plan meta-information for launch plans in a given project and. |
+| [`list_active_launch_plans_paginated()`](#list_active_launch_plans_paginated) | This returns a page of currently active launch plan meta-information for launch plans in a given project and domain. |
 | [`list_executions_paginated()`](#list_executions_paginated) | This returns a page of executions in a given project and domain. |
 | [`list_launch_plan_ids_paginated()`](#list_launch_plan_ids_paginated) | This returns a page of identifiers for the launch plans for a given project and domain. |
 | [`list_launch_plans_paginated()`](#list_launch_plans_paginated) | This returns a page of launch plan meta-information for launch plans in a given project and domain. |

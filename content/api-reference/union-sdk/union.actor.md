@@ -1,6 +1,7 @@
 ---
 title: union.actor
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -132,14 +133,14 @@ class ActorTask(
 | Method | Description |
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
-| [`compile_into_workflow()`](#compile_into_workflow) | In the case of dynamic workflows, this function will produce a workflow definition at execution time which will. |
+| [`compile_into_workflow()`](#compile_into_workflow) | In the case of dynamic workflows, this function will produce a workflow definition at execution time which will then proceed to be executed. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
-| [`dynamic_execute()`](#dynamic_execute) | By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
+| [`dynamic_execute()`](#dynamic_execute) | By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte literal wrappers so that the kwargs we are working with here are now Python native literal values. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`from_task()`](#from_task) | Create an ActorTask from a PythonFunctionTask. |
-| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task. |
+| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task registered on a hosted Flyte platform. |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
 | [`get_container()`](#get_container) | Returns the container definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_custom()`](#get_custom) | Serialize the `ActorTask` config into a dict. |
@@ -153,8 +154,8 @@ class ActorTask(
 | [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python type for the specified output variable by name. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`reset_command_fn()`](#reset_command_fn) | Resets the command which should be used in the container definition of this task to the default arguments. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 | [`set_command_fn()`](#set_command_fn) | By default, the task will run on the Flyte platform using the pyflyte-execute command. |

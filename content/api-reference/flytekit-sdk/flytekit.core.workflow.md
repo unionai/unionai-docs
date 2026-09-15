@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.workflow
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ImperativeWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) | An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is. |
+| [`ImperativeWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowimperativeworkflow) | An imperative workflow is a programmatic analogue to the typical ``@workflow`` function-based workflow and is better suited to programmatic applications. |
 | [`PythonFunctionWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read `flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
 | [`ReferenceWorkflow`](./flytekit.core.workflow#flytekitcoreworkflowreferenceworkflow) | A reference workflow is a pointer to a workflow that already exists on your Flyte installation. |
 | [`WorkflowBase`](./flytekit.core.workflow#flytekitcoreworkflowworkflowbase) |  |
@@ -799,7 +800,7 @@ class ImperativeWorkflow(
 |-|-|
 | [`add_entity()`](#add_entity) | Anytime you add an entity, all the inputs to the entity must be bound. |
 | [`add_launch_plan()`](#add_launch_plan) |  |
-| [`add_on_failure_handler()`](#add_on_failure_handler) | This is a special function that mimics the add_entity function, but this is only used. |
+| [`add_on_failure_handler()`](#add_on_failure_handler) | This is a special function that mimics the add_entity function, but this is only used to add the failure node. |
 | [`add_subwf()`](#add_subwf) |  |
 | [`add_task()`](#add_task) |  |
 | [`add_workflow_input()`](#add_workflow_input) | Adds an input to the workflow. |

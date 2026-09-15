@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.interface
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,26 +14,26 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Interface`](./flytekit.core.interface#flytekitcoreinterfaceinterface) | A Python native interface object, like inspect. |
+| [`Interface`](./flytekit.core.interface#flytekitcoreinterfaceinterface) | A Python native interface object, like inspect.signature but simpler. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`default_output_name()`](#default_output_name) |  |
-| [`detect_artifact()`](#detect_artifact) | If the user wishes to control how Artifacts are created (i. |
-| [`extract_return_annotation()`](#extract_return_annotation) | The purpose of this function is to sort out whether a function is returning one thing, or multiple things, and to. |
+| [`detect_artifact()`](#detect_artifact) | If the user wishes to control how Artifacts are created (i.e. naming them, etc.) this is where we pick it up and store it in the interface. |
+| [`extract_return_annotation()`](#extract_return_annotation) | The purpose of this function is to sort out whether a function is returning one thing, or multiple things, and to name the outputs accordingly, either by using our default name function, or from a typing.NamedTuple. |
 | [`output_name_generator()`](#output_name_generator) |  |
 | [`remap_shared_output_descriptions()`](#remap_shared_output_descriptions) | Deals with mixed styles of return value descriptions used in docstrings. |
 | [`repr_kv()`](#repr_kv) |  |
 | [`repr_type_signature()`](#repr_type_signature) | Converts an inputs and outputs to a type signature. |
-| [`transform_function_to_interface()`](#transform_function_to_interface) | From the annotations on a task function that the user should have provided, and the output names they want to use. |
+| [`transform_function_to_interface()`](#transform_function_to_interface) | From the annotations on a task function that the user should have provided, and the output names they want to use for each output parameter, construct the TypedInterface object. |
 | [`transform_inputs_to_parameters()`](#transform_inputs_to_parameters) | Transforms the given interface (with inputs) to a Parameter Map with defaults set. |
-| [`transform_interface_to_list_interface()`](#transform_interface_to_list_interface) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed python map. |
+| [`transform_interface_to_list_interface()`](#transform_interface_to_list_interface) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed python map like functions. |
 | [`transform_interface_to_typed_interface()`](#transform_interface_to_typed_interface) | Transform the given simple python native interface to FlyteIDL's interface. |
 | [`transform_type()`](#transform_type) |  |
 | [`transform_types_to_list_of_type()`](#transform_types_to_list_of_type) | Converts unbound inputs into the equivalent (optional) collections. |
-| [`transform_variable_map()`](#transform_variable_map) | Given a map of str (names of inputs for instance) to their Python native types, return a map of the name to a. |
+| [`transform_variable_map()`](#transform_variable_map) | Given a map of str (names of inputs for instance) to their Python native types, return a map of the name to a Flyte Variable object with that type. |
 | [`verify_outputs_artifact_bindings()`](#verify_outputs_artifact_bindings) |  |
 
 
@@ -346,7 +347,7 @@ class Interface(
 
 | Method | Description |
 |-|-|
-| [`remove_inputs()`](#remove_inputs) | This method is useful in removing some variables from the Flyte backend inputs specification, as these are. |
+| [`remove_inputs()`](#remove_inputs) | This method is useful in removing some variables from the Flyte backend inputs specification, as these are implicit local only inputs or will be supplied by the library at runtime. |
 | [`with_inputs()`](#with_inputs) | Use this to add additional inputs to the interface. |
 | [`with_outputs()`](#with_outputs) | This method allows addition of extra outputs are expected from a task specification. |
 

@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.helpers
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,8 +15,8 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`display_help_with_error()`](#display_help_with_error) |  |
-| [`hydrate_registration_parameters()`](#hydrate_registration_parameters) | This is called at registration time to fill out identifier fields (e. |
-| [`parse_args_into_dict()`](#parse_args_into_dict) | Takes a tuple like (u'input_b=mystr', u'input_c=18') and returns a dictionary of input name to the. |
+| [`hydrate_registration_parameters()`](#hydrate_registration_parameters) | This is called at registration time to fill out identifier fields (e.g. project, domain, version) that are mutable. |
+| [`parse_args_into_dict()`](#parse_args_into_dict) | Takes a tuple like (u'input_b=mystr', u'input_c=18') and returns a dictionary of input name to the original string value. |
 | [`str2bool()`](#str2bool) | bool('False') is True in Python, so we need to do some string parsing. |
 
 

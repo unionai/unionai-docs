@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.artifact
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -17,7 +18,7 @@ layout: py_api
 | [`ArtifactIDSpecification`](./flytekit.core.artifact#flytekitcoreartifactartifactidspecification) | This is a special object that helps specify how Artifacts are to be created. |
 | [`ArtifactQuery`](./flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
 | [`DefaultArtifactSerializationHandler`](./flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) |  |
-| [`InputsBase`](./flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
+| [`InputsBase`](./flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics Used for invoking an Artifact to bind partition keys to input values. |
 | [`Partition`](./flytekit.core.artifact#flytekitcoreartifactpartition) |  |
 | [`Partitions`](./flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
 | [`Serializer`](./flytekit.core.artifact#flytekitcoreartifactserializer) |  |

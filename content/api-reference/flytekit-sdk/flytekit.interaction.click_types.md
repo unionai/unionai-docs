@@ -1,5 +1,6 @@
 ---
 title: flytekit.interaction.click_types
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -32,7 +33,7 @@ layout: py_api
 | [`is_pydantic_basemodel()`](#is_pydantic_basemodel) | Checks if the python type is a pydantic BaseModel. |
 | [`key_value_callback()`](#key_value_callback) | Callback for click to parse key-value pairs. |
 | [`labels_callback()`](#labels_callback) | Callback for click to parse labels. |
-| [`literal_type_to_click_type()`](#literal_type_to_click_type) | Converts a Flyte LiteralType given a python_type to a click. |
+| [`literal_type_to_click_type()`](#literal_type_to_click_type) | Converts a Flyte LiteralType given a python_type to a click.ParamType. |
 | [`modify_literal_uris()`](#modify_literal_uris) | Modifies the literal object recursively to replace the URIs with the native paths. |
 | [`resource_callback()`](#resource_callback) | Click callback to parse resource strings like 'cpu=1,mem=2Gi' into a Resources object. |
 
@@ -283,7 +284,7 @@ class EnumParamType(
 
 | Method | Description |
 |-|-|
-| [`convert()`](#convert) | Convert the value to the correct type. |
+| [`convert()`](#convert) | For a given value from the parser, normalize it and find its matching normalized value in the list of choices. |
 
 
 #### convert()
@@ -295,26 +296,16 @@ def convert(
     ctx: typing.Optional[click.core.Context],
 ) -> <enum 'Enum'>
 ```
-Convert the value to the correct type. This is not called if
-the value is ``None`` (the missing value).
-
-This must accept string values from the command line, as well as
-values that are already the correct type. It may also convert
-other compatible types.
-
-The ``param`` and ``ctx`` arguments may be ``None`` in certain
-situations, such as when converting prompt input.
-
-If the value cannot be converted, call `fail` with a
-descriptive message.
-
+For a given value from the parser, normalize it and find its
+matching normalized value in the list of choices. Then return the
+matched "original" choice.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `value` | `typing.Any` | The value to convert. |
-| `param` | `typing.Optional[click.core.Parameter]` | The parameter that is using this type to convert its value. May be ``None``. |
-| `ctx` | `typing.Optional[click.core.Context]` | The current context that arrived at this value. May be ``None``. |
+| `value` | `typing.Any` | |
+| `param` | `typing.Optional[click.core.Parameter]` | |
+| `ctx` | `typing.Optional[click.core.Context]` | |
 
 ## flytekit.interaction.click_types.FileParamType
 
@@ -545,7 +536,7 @@ descriptive message.
 ```python
 def get_metavar(
     param: click.core.Parameter,
-    *args,
+    ctx: click.core.Context,
 ) -> typing.Optional[str]
 ```
 Returns the metavar default for this param if it provides one.
@@ -554,7 +545,7 @@ Returns the metavar default for this param if it provides one.
 | Parameter | Type | Description |
 |-|-|-|
 | `param` | `click.core.Parameter` | |
-| `*args` |  | |
+| `ctx` | `click.core.Context` | |
 
 ## flytekit.interaction.click_types.StructuredDatasetParamType
 

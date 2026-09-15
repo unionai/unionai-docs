@@ -1,5 +1,6 @@
 ---
 title: flytekit.interactive.utils
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,7 +15,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`execute_command()`](#execute_command) | Execute a command in the shell. |
-| [`get_task_inputs()`](#get_task_inputs) | Read task input data from inputs. |
+| [`get_task_inputs()`](#get_task_inputs) | Read task input data from inputs.pb for a specific task function and convert it into Python types and structures. |
 | [`load_module_from_path()`](#load_module_from_path) | Imports a Python module from a specified file path. |
 
 

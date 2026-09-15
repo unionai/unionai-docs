@@ -1,5 +1,7 @@
 ---
 title: flytekit.core.notification
+description: "Notifications are primarily used when defining Launch Plans (also can be used when launching executions) and will trigger the Flyte platform to send emails when a workflow run reaches certain stages (fails or succeeds, etc.)."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api

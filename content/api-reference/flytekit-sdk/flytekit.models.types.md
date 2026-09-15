@@ -1,5 +1,6 @@
 ---
 title: flytekit.models.types
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -19,8 +20,8 @@ layout: py_api
 | [`SchemaType`](./flytekit.models.types#flytekitmodelstypesschematype) |  |
 | [`SimpleType`](./flytekit.models.types#flytekitmodelstypessimpletype) |  |
 | [`StructuredDatasetType`](./flytekit.models.types#flytekitmodelstypesstructureddatasettype) |  |
-| [`TypeStructure`](./flytekit.models.types#flytekitmodelstypestypestructure) | Models _types_pb2. |
-| [`UnionType`](./flytekit.models.types#flytekitmodelstypesuniontype) | Models _types_pb2. |
+| [`TypeStructure`](./flytekit.models.types#flytekitmodelstypestypestructure) | Models _types_pb2.TypeStructure. |
+| [`UnionType`](./flytekit.models.types#flytekitmodelstypesuniontype) | Models _types_pb2.UnionType. |
 
 ## flytekit.models.types.Error
 

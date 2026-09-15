@@ -1,6 +1,7 @@
 ---
 title: union.artifacts
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -93,7 +94,7 @@ class Artifact(
 | [`create_from()`](#create_from) | This function allows users to declare partition values dynamically from the body of a task. |
 | [`embed_as_query()`](#embed_as_query) | This should only be called in the context of a Trigger. |
 | [`from_flyte_idl()`](#from_flyte_idl) | Converts the IDL representation to this object. |
-| [`get()`](#get) | This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an. |
+| [`get()`](#get) | This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an execution, leveraging the LiteralsResolver (and underneath that the TypeEngine) to turn the literal into a Python value. |
 | [`initialize()`](#initialize) | Use this for when you have a Python value you want to get an Artifact object out of. |
 | [`metadata()`](#metadata) |  |
 | [`query()`](#query) |  |

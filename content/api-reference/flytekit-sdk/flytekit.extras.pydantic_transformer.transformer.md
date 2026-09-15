@@ -1,5 +1,6 @@
 ---
 title: flytekit.extras.pydantic_transformer.transformer
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -45,7 +46,7 @@ def PydanticTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -54,7 +55,7 @@ def PydanticTransformer()
 | [`to_generic_literal()`](#to_generic_literal) | Note: This is deprecated and will be removed in the future. |
 | [`to_html()`](#to_html) | Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div. |
 | [`to_literal()`](#to_literal) | For pydantic basemodel, we have to go through json first. |
-| [`to_python_value()`](#to_python_value) | There will have 2 kinds of literal values:. |
+| [`to_python_value()`](#to_python_value) | There will have 2 kinds of literal values: 1. protobuf Struct (From Flyte Console) 2. binary scalar (Others) Hence we have to handle 2 kinds of cases. |
 
 
 #### assert_type()

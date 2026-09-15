@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.python_auto_container
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -15,9 +16,9 @@ layout: py_api
 |-|-|
 | [`DefaultNotebookTaskResolver`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaultnotebooktaskresolver) | This resolved is used when the task is defined in a notebook. |
 | [`DefaultTaskResolver`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaulttaskresolver) | Please see the notes in the TaskResolverMixin as it describes this default behavior. |
-| [`PickledEntity`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) | Represents the structure of the pickled object stored in the. |
+| [`PickledEntity`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) | Represents the structure of the pickled object stored in the .pkl file for interactive mode. |
 | [`PickledEntityMetadata`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentitymetadata) | Metadata for a pickled entity containing version information. |
-| [`PythonAutoContainerTask`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerpythonautocontainertask) | A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the. |
+| [`PythonAutoContainerTask`](./flytekit.core.python_auto_container#flytekitcorepython_auto_containerpythonautocontainertask) | A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the container and the container information to be automatically captured. |
 
 ### Methods
 
@@ -395,10 +396,10 @@ class PythonAutoContainerTask(
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
-| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task. |
+| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task registered on a hosted Flyte platform. |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
 | [`get_container()`](#get_container) | Returns the container definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_custom()`](#get_custom) | Return additional plugin-specific custom data (if any) as a serializable dictionary. |
@@ -412,8 +413,8 @@ class PythonAutoContainerTask(
 | [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python type for the specified output variable by name. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`reset_command_fn()`](#reset_command_fn) | Resets the command which should be used in the container definition of this task to the default arguments. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 | [`set_command_fn()`](#set_command_fn) | By default, the task will run on the Flyte platform using the pyflyte-execute command. |

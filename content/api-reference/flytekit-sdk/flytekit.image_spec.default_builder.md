@@ -1,5 +1,6 @@
 ---
 title: flytekit.image_spec.default_builder
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api

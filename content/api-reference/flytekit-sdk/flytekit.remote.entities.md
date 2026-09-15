@@ -1,5 +1,7 @@
 ---
 title: flytekit.remote.entities
+description: "This module contains shadow entities for all Flyte entities as represented in Flyte Admin / Control Plane."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -753,7 +755,7 @@ This code should be updated when more options are available.
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`promote_from_model()`](#promote_from_model) | Takes the idl wrapper for a TaskNode,. |
+| [`promote_from_model()`](#promote_from_model) | Takes the idl wrapper for a TaskNode, and returns the hydrated Flytekit object for it by fetching it with the FlyteTask control plane. |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |

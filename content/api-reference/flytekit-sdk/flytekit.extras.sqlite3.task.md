@@ -1,5 +1,6 @@
 ---
 title: flytekit.extras.sqlite3.task
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -158,7 +159,7 @@ class SQLite3Task(
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python. |
+| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python interface before executing. |
 | [`execute()`](#execute) | Rather than running here, send everything to the executor. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_command()`](#get_command) |  |
