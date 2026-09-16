@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.run
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -33,7 +34,7 @@ layout: py_api
 | [`options_from_run_params()`](#options_from_run_params) |  |
 | [`run_command()`](#run_command) | Returns a function that is used to implement WorkflowCommand and execute a flyte workflow. |
 | [`run_remote()`](#run_remote) | Helper method that executes the given remote FlyteLaunchplan, FlyteWorkflow or FlyteTask. |
-| [`to_click_option()`](#to_click_option) | This handles converting workflow input types to supported click parameters with callbacks to initialize. |
+| [`to_click_option()`](#to_click_option) | This handles converting workflow input types to supported click parameters with callbacks to initialize the input values to their expected types. |
 
 
 ## Methods
@@ -299,8 +300,8 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`get_command()`](#get_command) | Given a context and a command name, this returns a. |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`get_command()`](#get_command) | Given a context and a command name, this returns a `Command` object if it exists or returns ``None``. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
 
 #### get_command()
@@ -311,8 +312,8 @@ def get_command(
     name,
 )
 ```
-Given a context and a command name, this returns a
-`Command` object if it exists or returns `None`.
+Given a context and a command name, this returns a `Command`
+object if it exists or returns ``None``.
 
 
 | Parameter | Type | Description |
@@ -327,8 +328,7 @@ def list_commands(
     ctx,
 )
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |
@@ -360,8 +360,8 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`get_command()`](#get_command) | Given a context and a command name, this returns a. |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`get_command()`](#get_command) | Given a context and a command name, this returns a `Command` object if it exists or returns ``None``. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
 
 #### get_command()
@@ -372,8 +372,8 @@ def get_command(
     filename,
 )
 ```
-Given a context and a command name, this returns a
-`Command` object if it exists or returns `None`.
+Given a context and a command name, this returns a `Command`
+object if it exists or returns ``None``.
 
 
 | Parameter | Type | Description |
@@ -389,8 +389,7 @@ def list_commands(
     add_remote: bool = True,
 )
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |
@@ -444,14 +443,14 @@ class RunLevelParams(
     overwrite_cache: bool = False,
     interruptible: typing.Optional[bool] = None,
     envvars: typing.Dict[str, str] = <factory>,
-    resource_requests: typing.Optional[flytekit.core.resources.Resources] = None,
-    resource_limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    resource_requests: typing.Optional[flytekit.core.resources.Resources] = Sentinel.UNSET,
+    resource_limits: typing.Optional[flytekit.core.resources.Resources] = Sentinel.UNSET,
     tags: typing.List[str] = <factory>,
-    name: str = None,
+    name: str = Sentinel.UNSET,
     labels: typing.Dict[str, str] = <factory>,
     annotations: typing.Dict[str, str] = <factory>,
-    raw_output_data_prefix: str = None,
-    max_parallelism: int = None,
+    raw_output_data_prefix: str = Sentinel.UNSET,
+    max_parallelism: int = Sentinel.UNSET,
     disable_notifications: bool = False,
     remote: bool = False,
     limit: int = 50,
@@ -561,8 +560,8 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`get_command()`](#get_command) | This command uses the filename with which this command was created, and the string name of the entity passed. |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`get_command()`](#get_command) | This command uses the filename with which this command was created, and the string name of the entity passed after the Python filename on the command line, to load the Python object, and then return the Command that click should run. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
 
 #### get_command()
@@ -590,8 +589,7 @@ def list_commands(
     ctx,
 )
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |
@@ -624,7 +622,7 @@ Create Rich Command instance.
 
 | Method | Description |
 |-|-|
-| [`parse_args()`](#parse_args) | Given a context and a list of arguments this creates the parser. |
+| [`parse_args()`](#parse_args) |  |
 
 
 #### parse_args()
@@ -635,11 +633,6 @@ def parse_args(
     args: typing.List[str],
 ) -> typing.List[str]
 ```
-Given a context and a list of arguments this creates the parser
-and parses the arguments, then modifies the context as necessary.
-This is automatically invoked by `make_context`.
-
-
 | Parameter | Type | Description |
 |-|-|-|
 | `ctx` | `click.core.Context` | |

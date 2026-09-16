@@ -1,5 +1,6 @@
 ---
 title: flytekit.tools.serialize_helpers
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,7 +15,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`get_registrable_entities()`](#get_registrable_entities) | Returns all entities that can be serialized and should be sent over to Flyte backend. |
-| [`persist_registrable_entities()`](#persist_registrable_entities) | For protobuf serializable list of entities, writes a file with the name if the entity and. |
+| [`persist_registrable_entities()`](#persist_registrable_entities) | For protobuf serializable list of entities, writes a file with the name if the entity and enumeration order to the specified folder. |
 
 
 ## Methods

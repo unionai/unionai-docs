@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.type_engine
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -17,18 +18,18 @@ layout: py_api
 | [`BatchSize`](./flytekit.core.type_engine#flytekitcoretype_enginebatchsize) | This is used to annotate a FlyteDirectory when we want to download/upload the contents of the directory in batches. |
 | [`BinaryIOTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginebinaryiotransformer) | Handler for BinaryIO. |
 | [`DataclassTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginedataclasstransformer) | The Dataclass Transformer provides a type transformer for dataclasses. |
-| [`DictTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) | Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or. |
-| [`EnumTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) | Enables converting a python type enum. |
-| [`ListTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) | Transformer that handles a univariate typing. |
+| [`DictTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginedicttransformer) | Transformer that transforms an univariate dictionary Dict[str, T] to a Literal Map or transforms an untyped dictionary to a Binary Scalar Literal with a Struct Literal Type. |
+| [`EnumTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineenumtransformer) | Enables converting a python type enum.Enum to LiteralType.EnumType. |
+| [`ListTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginelisttransformer) | Transformer that handles a univariate typing.List[T]. |
 | [`LiteralTypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineliteraltypetransformer) |  |
-| [`LiteralsResolver`](./flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) | LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation. |
+| [`LiteralsResolver`](./flytekit.core.type_engine#flytekitcoretype_engineliteralsresolver) | LiteralsResolver is a helper class meant primarily for use with the FlyteRemote experience or any other situation where you might be working with LiteralMaps. |
 | [`ProtobufTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineprotobuftransformer) |  |
 | [`RestrictedTypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginerestrictedtypetransformer) | Types registered with the RestrictedTypeTransformer are not allowed to be converted to and from literals. |
 | [`SimpleTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginesimpletransformer) | A Simple implementation of a type transformer that uses simple lambdas to transform and reduces boilerplate. |
 | [`TextIOTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginetextiotransformer) | Handler for TextIO. |
 | [`TypeEngine`](./flytekit.core.type_engine#flytekitcoretype_enginetypeengine) | Core Extensible TypeEngine of Flytekit. |
 | [`TypeTransformer`](./flytekit.core.type_engine#flytekitcoretype_enginetypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`UnionTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineuniontransformer) | Transformer that handles a typing. |
+| [`UnionTransformer`](./flytekit.core.type_engine#flytekitcoretype_engineuniontransformer) | Transformer that handles a typing.Union[T1, T2, ...] |
 
 ### Errors
 
@@ -49,7 +50,7 @@ layout: py_api
 | [`get_batch_size()`](#get_batch_size) |  |
 | [`get_underlying_type()`](#get_underlying_type) | Return the underlying type for annotated types or the type itself. |
 | [`is_annotated()`](#is_annotated) |  |
-| [`modify_literal_uris()`](#modify_literal_uris) | Modifies the literal object recursively to replace the URIs with the native paths in case they are of. |
+| [`modify_literal_uris()`](#modify_literal_uris) | Modifies the literal object recursively to replace the URIs with the native paths in case they are of type "flyte://". |
 | [`strict_type_hint_matching()`](#strict_type_hint_matching) | Try to be smarter about guessing the type of the input (and hence the transformer). |
 
 
@@ -253,7 +254,7 @@ class AsyncTypeTransformer(
 | [`assert_type()`](#assert_type) |  |
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -539,7 +540,7 @@ def BinaryIOTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -798,7 +799,7 @@ def DataclassTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Extracts the Literal type definition for a Dataclass and returns a type Struct. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
@@ -1022,9 +1023,9 @@ def DictTransformer()
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
 | [`dict_to_binary_literal()`](#dict_to_binary_literal) | Converts a Python dictionary to a Flyte-specific ``Literal`` using MessagePack encoding. |
-| [`dict_to_generic_literal()`](#dict_to_generic_literal) | This is deprecated from flytekit 1. |
+| [`dict_to_generic_literal()`](#dict_to_generic_literal) | This is deprecated from flytekit 1.14.0. |
 | [`extract_types()`](#extract_types) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Transforms a native python dictionary to a flyte-specific ``LiteralType``. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -1342,7 +1343,7 @@ def EnumTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -1555,7 +1556,7 @@ def ListTransformer()
 | [`assert_type()`](#assert_type) |  |
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Only univariate Lists are supported in Flyte. |
 | [`get_sub_type()`](#get_sub_type) | Return the generic Type T of the List. |
@@ -1834,7 +1835,7 @@ def LiteralTypeTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_base_type()`](#get_base_type) |  |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
@@ -2068,7 +2069,7 @@ class LiteralsResolver(
 | Method | Description |
 |-|-|
 | [`as_python_native()`](#as_python_native) | This should return the native Python representation, compatible with unpacking. |
-| [`get()`](#get) | This will get the ``attr`` value from the Literal map, and invoke the TypeEngine to convert it into a Python. |
+| [`get()`](#get) | This will get the ``attr`` value from the Literal map, and invoke the TypeEngine to convert it into a Python native value. |
 | [`get_literal()`](#get_literal) |  |
 | [`update_type_hints()`](#update_type_hints) |  |
 
@@ -2153,7 +2154,7 @@ def ProtobufTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -2394,7 +2395,7 @@ class RestrictedTypeTransformer(
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -2620,7 +2621,7 @@ class SimpleTransformer(
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -2831,7 +2832,7 @@ def TextIOTransformer()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -3041,11 +3042,11 @@ of user objects
 | [`lazy_import_transformers()`](#lazy_import_transformers) | Only load the transformers if needed. |
 | [`literal_map_to_kwargs()`](#literal_map_to_kwargs) |  |
 | [`named_tuple_to_variable_map()`](#named_tuple_to_variable_map) | Converts a python-native ``NamedTuple`` to a flyte-specific VariableMap of named literals. |
-| [`register()`](#register) | This should be used for all types that respond with the right type annotation when you use type(. |
+| [`register()`](#register) | This should be used for all types that respond with the right type annotation when you use type(...) function. |
 | [`register_additional_type()`](#register_additional_type) |  |
 | [`register_restricted_type()`](#register_restricted_type) |  |
 | [`to_html()`](#to_html) |  |
-| [`to_literal()`](#to_literal) | The current dance is because we are allowing users to call from an async function, this synchronous. |
+| [`to_literal()`](#to_literal) | The current dance is because we are allowing users to call from an async function, this synchronous to_literal function, and allowing this to_literal function, to then invoke yet another async function, namely an async transformer. |
 | [`to_literal_checks()`](#to_literal_checks) |  |
 | [`to_literal_type()`](#to_literal_type) | Converts a python type into a flyte specific ``LiteralType``. |
 | [`to_python_value()`](#to_python_value) | Converts a Literal value with an expected python type into a python value. |
@@ -3394,7 +3395,7 @@ class TypeTransformer(
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
@@ -3609,7 +3610,7 @@ def UnionTransformer()
 | [`assert_type()`](#assert_type) |  |
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`get_sub_type_in_optional()`](#get_sub_type_in_optional) | Return the generic Type T of the Optional type. |

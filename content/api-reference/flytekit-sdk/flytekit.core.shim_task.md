@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.shim_task
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -75,7 +76,7 @@ class ExecutableTemplateShimTask(
 
 | Method | Description |
 |-|-|
-| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python. |
+| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python interface before executing. |
 | [`execute()`](#execute) | Rather than running here, send everything to the executor. |
 | [`post_execute()`](#post_execute) | This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask. |
 | [`pre_execute()`](#pre_execute) | This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask. |

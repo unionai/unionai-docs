@@ -1,5 +1,7 @@
 ---
 title: flytekit.core.data_persistence
+description: "The Data persistence module is used by core flytekit and most of the core TypeTransformers to manage data fetch & store, between the durable backend store and the runtime environment."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -16,7 +18,7 @@ simple implementation that ships with the core.
 
 | Class | Description |
 |-|-|
-| [`FileAccessProvider`](./flytekit.core.data_persistence#flytekitcoredata_persistencefileaccessprovider) | This is the class that is available through the FlyteContext and can be used for persisting data to the remote. |
+| [`FileAccessProvider`](./flytekit.core.data_persistence#flytekitcoredata_persistencefileaccessprovider) | This is the class that is available through the FlyteContext and can be used for persisting data to the remote durable store. |
 
 ### Methods
 
@@ -141,7 +143,7 @@ data_config:
 | Method | Description |
 |-|-|
 | [`async_get_data()`](#async_get_data) |  |
-| [`async_put_data()`](#async_put_data) | The implication here is that we're always going to put data to the remote location, so we. |
+| [`async_put_data()`](#async_put_data) | The implication here is that we're always going to put data to the remote location, so we .remote to ensure we don't use the true local proxy if the remote path is a file://. |
 | [`async_put_raw_data()`](#async_put_raw_data) | This is a more flexible version of put that accepts a file-like object or a string path. |
 | [`download()`](#download) | Downloads from remote to local. |
 | [`download_directory()`](#download_directory) | Downloads directory from given remote to local path. |
@@ -160,7 +162,7 @@ data_config:
 | [`get_random_string()`](#get_random_string) |  |
 | [`is_remote()`](#is_remote) | Deprecated. |
 | [`join()`](#join) |  |
-| [`put_data()`](#put_data) | The implication here is that we're always going to put data to the remote location, so we. |
+| [`put_data()`](#put_data) | The implication here is that we're always going to put data to the remote location, so we .remote to ensure we don't use the true local proxy if the remote path is a file://. |
 | [`put_raw_data()`](#put_raw_data) | This is a more flexible version of put that accepts a file-like object or a string path. |
 | [`recursive_paths()`](#recursive_paths) |  |
 | [`sep()`](#sep) |  |

@@ -1,5 +1,6 @@
 ---
 title: flytekit.types.pickle.pickle
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -89,7 +90,7 @@ def FlytePickleTransformer()
 | [`assert_type()`](#assert_type) |  |
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
-| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and attribute access.｀. |
 | [`from_generic_idl()`](#from_generic_idl) | TODO: Support all Flyte Types. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |

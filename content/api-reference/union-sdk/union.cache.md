@@ -1,6 +1,7 @@
 ---
 title: union.cache
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CacheFunctionBody`](./union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating. |
+| [`CacheFunctionBody`](./union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating a SHA-256 hash of the function's source code combined with a salt. |
 
 ## union.cache.CacheFunctionBody
 
@@ -25,7 +26,7 @@ a SHA-256 hash of the function's source code combined with a salt.
 
 | Method | Description |
 |-|-|
-| [`get_version()`](#get_version) | This method generates a version string for a function by hashing the function's source code. |
+| [`get_version()`](#get_version) | This method generates a version string for a function by hashing the function's source code combined with a salt. |
 
 
 #### get_version()

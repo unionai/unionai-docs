@@ -1,6 +1,8 @@
 ---
 title: union.filesystems
-version: 0.1.203
+description: "Module for fsspec implementations."
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---

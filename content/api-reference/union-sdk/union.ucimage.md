@@ -1,6 +1,7 @@
 ---
 title: union.ucimage
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---

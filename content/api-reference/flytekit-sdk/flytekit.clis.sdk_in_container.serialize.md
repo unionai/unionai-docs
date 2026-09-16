@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.serialize
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -19,7 +20,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`serialize_all()`](#serialize_all) | This function will write to the folder specified the following protobuf types. |
+| [`serialize_all()`](#serialize_all) | flyteidl.admin.launch_plan_pb2.LaunchPlan flyteidl.admin.workflow_pb2.WorkflowSpec flyteidl.admin.task_pb2.TaskSpec ```. |
 
 
 ### Variables

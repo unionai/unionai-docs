@@ -1,5 +1,7 @@
 ---
 title: flytekit.remote.remote
+description: "This module provides the ``FlyteRemote`` object, which is the end-user's main starting point for interacting with a Flyte backend in an interactive and programmatic way."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api

@@ -1,5 +1,6 @@
 ---
 title: flytekit.models.core.types
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,7 +15,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`BlobType`](./flytekit.models.core.types#flytekitmodelscoretypesblobtype) | This type represents offloaded data and is typically used for things like files. |
-| [`EnumType`](./flytekit.models.core.types#flytekitmodelscoretypesenumtype) | Models _types_pb2. |
+| [`EnumType`](./flytekit.models.core.types#flytekitmodelscoretypesenumtype) | Models _types_pb2.EnumType. |
 
 ## flytekit.models.core.types.BlobType
 

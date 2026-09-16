@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.checkpointer
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,7 +15,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Checkpoint`](./flytekit.core.checkpointer#flytekitcorecheckpointercheckpoint) | Base class for Checkpoint system. |
-| [`SyncCheckpoint`](./flytekit.core.checkpointer#flytekitcorecheckpointersynccheckpoint) | This class is NOT THREAD-SAFE!. |
+| [`SyncCheckpoint`](./flytekit.core.checkpointer#flytekitcorecheckpointersynccheckpoint) | This class is NOT THREAD-SAFE! |
 
 ## flytekit.core.checkpointer.Checkpoint
 
@@ -29,7 +30,7 @@ scripts
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) | Usage: If you have a io. |
+| [`save()`](#save) | Usage: If you have a io.BufferedReader then the following should work. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -132,7 +133,7 @@ checkpoint_dest: Location where the new checkpoint should be copied to
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) | Usage: If you have a io. |
+| [`save()`](#save) | Usage: If you have a io.BufferedReader then the following should work. |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
