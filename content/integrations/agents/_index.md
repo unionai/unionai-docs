@@ -149,17 +149,17 @@ The adapters share a contract but the underlying SDKs differ, so durability land
 | [Deep Agents](./deepagents) | Per turn, built agents | `StructuredTool` | Transcript and virtual filesystem | 3.11+ |
 | [CrewAI](./crewai) | Per turn, built agents | `BaseTool` | Conversation transcript | 3.10+ |
 | [Pydantic AI](./pydantic-ai) | Per turn | Plain callable | Message history | 3.10+ |
-| [Hermes](./hermes) | Not available | Registry tool | Conversation transcript | 3.11+ |
+| [Hermes](./hermes) | Per turn, via `llm_execution` middleware | Registry tool | Conversation transcript | 3.11+ |
 
 "Built agents" means durability applies when `run_agent` constructs the agent for you. If you hand it a fully pre-built agent, Flyte cannot reach inside to wrap the model, so you wrap it yourself. Each page says exactly how.
 
-Tool calls are durable in every case, including Hermes, regardless of the `durable` setting.
+Tool calls are durable in every case, regardless of the `durable` setting.
 
 ## Choosing a framework
 
 The plugins do not have an opinion here. Pick the framework you would have picked anyway. The two things worth knowing:
 
-- If you want per-turn replay and you are starting fresh, everything except Hermes gives it to you on the builder path.
+- If you want per-turn replay and you are starting fresh, every adapter gives it to you on the builder path.
 - If you already own a compiled graph or a configured agent object, check the framework's page for how durability is applied on the pre-built path. LangGraph is designed around this case: you build the `StateGraph`, and `ai_node` and `tool_node` supply the durable pieces.
 
 ## Next steps
