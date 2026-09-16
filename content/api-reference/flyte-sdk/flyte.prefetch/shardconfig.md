@@ -2,7 +2,7 @@
 title: ShardConfig
 description: "Configuration for model sharding."
 icon: braces
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

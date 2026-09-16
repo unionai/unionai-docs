@@ -2,7 +2,7 @@
 title: Snowflake
 description: "Key features."
 icon: book
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

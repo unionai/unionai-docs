@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -92,6 +92,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.clustered.ClusterFailurePolicy`](flyte.clustered/clusterfailurepolicy) | Failure and restart policy for the JobSet as a whole. |
 | [`flyte.clustered.ClusteredTaskEnvironment`](flyte.clustered/clusteredtaskenvironment) | A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training. |
 | [`flyte.clustered.ClusteredTaskTemplate`](flyte.clustered/clusteredtasktemplate) | Task template for `ClusteredTaskEnvironment`. |
+| [`flyte.clustered.JaxRun`](flyte.clustered/jaxrun) | JAX multi-process runtime for a ClusteredTaskEnvironment. |
 | [`flyte.clustered.TorchRun`](flyte.clustered/torchrun) | TorchRun launcher configuration for a ClusteredTaskEnvironment. |
 | [`flyte.config.Config`](flyte.config/config) | This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](flyte.connectors/asyncconnector) | This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
@@ -287,6 +288,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app.ctx()`](flyte.app/_index#ctx) | Returns the current app context. |
 | [`flyte.app.get_parameter()`](flyte.app/_index#get_parameter) | Get parameters for application or endpoint. |
 | [`flyte.artifacts.new()`](flyte.artifacts/_index#new) | Wrap an object with Flyte metadata while preserving its type interface. |
+| [`flyte.clustered.jax_initialize()`](flyte.clustered/_index#jax_initialize) | Initialize `jax.distributed` for this clustered task's process topology. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
 | [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 | [`flyte.connectors.utils.convert_to_flyte_phase()`](flyte.connectors.utils/_index#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
@@ -314,6 +316,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extras.webhooks.testing.assert_provider_conforms()`](flyte.extras.webhooks.testing/_index#assert_provider_conforms) | Assert that a provider plugin implements the common webhook contract. |
 | [`flyte.git.config_from_root()`](flyte.git/_index#config_from_root) | Get the config file from the git root directory. |
 | [`flyte.models.generate_random_name()`](flyte.models/_index#generate_random_name) | Generate a random name for the task. |
+| [`flyte.models.is_clustered_worker_env()`](flyte.models/_index#is_clustered_worker_env) | True for any worker process of a clustered/jobset task, regardless of which launcher started it. |
 | [`flyte.prefetch.hf_model()`](flyte.prefetch/_index#hf_model) | Store a HuggingFace model to remote storage. |
 | [`flyte.remote.auth_metadata()`](flyte.remote/_index#auth_metadata) | This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system. |
 | [`flyte.remote.upload_dir()`](flyte.remote/_index#upload_dir) | Uploads a directory to a remote location and returns the remote URI. |

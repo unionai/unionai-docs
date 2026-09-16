@@ -2,7 +2,7 @@
 title: Artifact
 description: "A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version."
 icon: braces
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -35,6 +35,8 @@ class Artifact(
 | `kind` | `Kind` | What this artifact is: "model", "data", or "generic".  Read from the reserved `flyte.io/kind` attr. Artifacts published before that key existed fall back to the card's type, which was the closest thing to a discriminator at the time -- so an older model with a card still classifies. Anything with neither marker is "generic": callers get a usable answer rather than None, since "unlabelled" and "not a model" are the same thing here. |
 | `name` | `str` |  |
 | `source` | `str` | Best-effort display string for the artifact's provenance (ArtifactSource). |
+| `source_action_url` | `str \| None` | Console URL of the action that produced this artifact, or None if no task produced it. |
+| `source_run_url` | `str \| None` | Console URL of the run that produced this artifact, or None if no task produced it. |
 | `tracker` | `str` | The artifact's id as a tracking string: org/project/domain/name@version. |
 | `url` | `str` | Get the console URL for viewing this artifact. |
 | `version` | `str` |  |
