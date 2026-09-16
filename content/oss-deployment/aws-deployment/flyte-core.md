@@ -303,6 +303,12 @@ Uninstalling the release removes the ingress resource, which prompts the ingress
 controller (e.g. the AWS Load Balancer Controller) to delete the load balancer it
 provisioned.
 
+> [!WARNING] Uninstalling deletes the TaskAction CRD
+> The chart templates `taskactions.flyte.org` as an ordinary resource rather than a
+> `crds/` entry, so Helm owns it. `helm uninstall` therefore deletes the CRD, and
+> Kubernetes cascades that to every `TaskAction` in the cluster — including any
+> outside the release's namespace.
+
 > [!WARNING] Confirm the load balancer is gone
 > Check the AWS console that the ALB was actually deleted, so it stops billing.
 
@@ -555,14 +561,16 @@ On the recommended `authType: iam` path there is no storage secret to manage.
 ## Values differences from flyte-binary
 
 The two charts configure the same platform but organize their values differently. A
-`values.yaml` written for one will not install the other. The settings that move:
+`values.yaml` written for `flyte-core` fails loudly on `flyte-binary`, but one written
+for `flyte-binary` installs here and silently ignores every setting in the middle column
+below. The settings that move:
 
 | Setting | `flyte-binary` | `flyte-core` |
 |---|---|---|
 | Run storage prefix | `flyte-core-components.runs.storagePrefix` | `configuration.runs.storagePrefix` |
 | Task-pod namespace | `flyte-core-components.actions.kubernetes.namespace` | `configuration.kubernetes.namespace` |
 | Data proxy upload/download | `flyte-core-components.dataproxy.*` | `configuration.dataproxy.*` |
-| Task service account | `configuration.inline.executor.defaultK8sServiceAccount` | `configuration.executor.defaultK8sServiceAccount` (a real values key) |
+| Task service account | `configuration.inline.executor.defaultK8sServiceAccount` | `configuration.executor.defaultK8sServiceAccount` (a pass-through, not in `values.yaml`) |
 | Enabled task plugins | `enabled_plugins` | `enabledPlugins` |
 | Co-pilot image | `configuration.co-pilot.image` | `configuration.coPilot.image` |
 | Log plugins (CloudWatch, Stackdriver, …) | `configuration.logging.plugins` | not templated — set under `configuration.inline` |

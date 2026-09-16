@@ -20,14 +20,19 @@ Pick one:
 | [`flyte-binary`](./flyte-binary) | One Deployment running every Flyte component | Most installs. Fewest moving parts, one pod to watch, one config to reason about. |
 | [`flyte-core`](./flyte-core) | The same components split into one Deployment each — runs, actions, events, cache, dataproxy, secret, executor | You need to scale, schedule, or roll out components independently: a hot control plane, a large event volume, per-component node pools or resource limits. |
 
-Both charts read the same underlying Flyte configuration and expose the same API, so
-the choice is about operations, not features. The `flyte-core` guide is written to
-mirror the `flyte-binary` one step for step, so you can compare them side by side.
+Both charts read the same underlying Flyte configuration and run the same binary image,
+so the choice is mostly about operations. The API surfaces are close but not identical:
+`flyte-core`'s ingress routes neither `RunLogsService` nor `SettingsService`, and the
+bundled connector is enabled by default only on `flyte-binary`. The `flyte-core` guide
+is written to mirror the `flyte-binary` one step-for-step, so you can compare them side
+by side.
 
 > [!NOTE] The values schemas are not interchangeable
 > The two charts organize their values differently — `flyte-binary` nests service
 > settings under `flyte-core-components`, `flyte-core` under `configuration` and
-> `components`. A `values.yaml` written for one chart will not install the other.
+> `components`. A `values.yaml` written for `flyte-core` fails loudly on `flyte-binary`,
+> but one written for `flyte-binary` installs on `flyte-core` and silently ignores every
+> `flyte-core-components`, `deployment` and `enabled_plugins` setting in it.
 > The [`flyte-core` page](./flyte-core#values-differences-from-flyte-binary) lists
 > the differences.
 
