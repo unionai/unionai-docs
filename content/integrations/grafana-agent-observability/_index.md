@@ -30,7 +30,7 @@ env = flyte.TaskEnvironment(
         .with_apt_packages("git")
         .with_pip_packages(
             "flyteplugins-agents-openai",
-            "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y",
+            "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y",
         )
     ),
     secrets=[flyte.Secret(key="openai_api_key", as_env_var="OPENAI_API_KEY")],
@@ -75,12 +75,12 @@ Install the plugin from the [`flyte-sdk` repository](https://github.com/flyteorg
 | `pydantic-ai` | `flyteplugins-agents-pydantic-ai` | `agento11y-pydantic-ai`       |
 
 ```bash
-pip install "flyteplugins-agento11y[langchain] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
-pip install "flyteplugins-agento11y[langgraph] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
-pip install "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
-pip install "flyteplugins-agento11y[claude] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
-pip install "flyteplugins-agento11y[google] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
-pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[langchain] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[langgraph] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[claude] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[google] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
 ```
 
 To instrument more than one framework, list several extras, as in `[openai,langgraph]`. The same string works in `with_pip_packages()`. Installing from Git needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
