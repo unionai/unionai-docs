@@ -206,6 +206,10 @@ ingress:
   # Your cloud's native ingress class, e.g. alb (EKS), gce (GKE),
   # azure-application-gateway (AKS). See the Deployment overview for the options.
   ingressClassName: <ingress-class>
+  httpAnnotations:
+    # Components serve /healthz, not /. Without this the ALB probes / and marks
+    # every API target group unhealthy.
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
 ```
 
 That renders one `Ingress` named `flyte-http` carrying fifteen path prefixes (two
@@ -273,9 +277,11 @@ curl -s -X POST \
 A JSON response (rather than a connection error) confirms `flyte-runs` is up and
 talking to its database.
 
-Every component serves `/healthz` and `/readyz` on its own port 8080, and the chart
-wires both into the pod's liveness and readiness probes — so `Running` **and** ready
-across all of them is the health check:
+Seven of the eight components serve `/healthz` and `/readyz` on their API port (8080 by
+default). The executor is a controller with no API port: it serves both on
+`configuration.executor.healthProbePort`, default 8081. The chart wires them into each
+pod's liveness and readiness probes, so `Running` **and** ready across all of them is
+the health check:
 
 ```bash
 kubectl -n flyte get pods -o wide
@@ -526,7 +532,11 @@ S3 access keys when `authType: accesskey`.
 To keep the **database password** out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
-- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
+- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
+  (the Secret is projected whole into `/etc/flyte/config.d` and loaded as `*.yaml`, so
+  its key must end in `.yaml` and hold a config fragment, for example a key
+  `012-db-secret.yaml` setting `database.postgres.password`; a key named `password` is
+  never read), or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
 
@@ -534,7 +544,9 @@ When `authType: accesskey`, keep the **S3 secret key** out of the values file th
 same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
 either:
 
-- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
+- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
+  (same `.yaml`-key requirement as above — the fragment sets
+  `storage.providerConfig.s3.secretKey`), or
 - mount the secret key as a file and point
   `configuration.storage.providerConfig.s3.secretKeyPath` at it.
 
