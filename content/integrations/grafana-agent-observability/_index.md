@@ -70,7 +70,7 @@ This plugin builds on [`flyteplugins-otel`](../opentelemetry/_index), which it i
 pip install "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
 ```
 
-Pin a release tag rather than a branch so the build is reproducible. Installing from a Git URL needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
+Swap `[openai]` for the extra that matches your adapter from the table below, or list several, as in `[openai,langgraph]`. The same pattern applies to the other quarantined plugins; see [Integrations](../_index). Pin a release tag rather than a branch so the build is reproducible. Installing from a Git URL needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
 The extra is what makes your framework's instrumentor available. Install the one matching the agent adapter you use:
 

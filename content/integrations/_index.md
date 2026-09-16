@@ -26,6 +26,18 @@ This page covers:
 
 If you need functionality that doesn't exist yet, Flyte 2's plugin system is intentionally open-ended. You can build and register your own integrations using the same architecture described here.
 
+> [!WARNING] Some plugins must be installed from GitHub
+> Four plugin names are quarantined on PyPI and do not install from there: [`flyteplugins-agento11y`](https://pypi.org/project/flyteplugins-agento11y), [`flyteplugins-echo`](https://pypi.org/project/flyteplugins-echo), [`flyteplugins-nsight`](https://pypi.org/project/flyteplugins-nsight) and [`flyteplugins-redis`](https://pypi.org/project/flyteplugins-redis). Until they are available again, install them from their source in the [`flyte-sdk` repository](https://github.com/flyteorg/flyte-sdk/tree/main/plugins), pinned to a release tag.
+
+```bash
+pip install "flyteplugins-agento11y @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
+pip install "flyteplugins-echo @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/echo"
+pip install "flyteplugins-nsight @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/nsight"
+pip install "flyteplugins-redis @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/redis"
+```
+
+To add extras, put them after the package name, as in `flyteplugins-agento11y[openai] @ git+...`. The same strings work in `with_pip_packages()`. Add `.with_apt_packages("git")` to the image too, because the default Debian base image does not include `git`.
+
 ## Integration categories
 
 Flyte 2 integrations fall into the following categories:
