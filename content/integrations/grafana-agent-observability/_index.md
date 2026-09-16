@@ -14,7 +14,7 @@ It instruments agents built with the [agent framework plugins](../agents/_index)
 
 One call at module scope is the whole integration. Your agent code does not change:
 
-```python{hl_lines=[3,7]}
+```python{hl_lines=[3,7,13,16]}
 import flyte
 from flyteplugins.agents.openai import run_agent, tool
 from flyteplugins.agento11y import init
@@ -25,9 +25,13 @@ init(service_name="my-agent")
 
 env = flyte.TaskEnvironment(
     name="agent_env",
-    image=flyte.Image.from_debian_base().with_pip_packages(
-        "flyteplugins-agents-openai",
-        "flyteplugins-agento11y[openai]",
+    image=(
+        flyte.Image.from_debian_base()
+        .with_apt_packages("git")
+        .with_pip_packages(
+            "flyteplugins-agents-openai",
+            "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y",
+        )
     ),
     secrets=[flyte.Secret(key="openai_api_key", as_env_var="OPENAI_API_KEY")],
 )
@@ -59,9 +63,14 @@ This plugin builds on [`flyteplugins-otel`](../opentelemetry/_index), which it i
 
 ## Installation
 
+> [!WARNING] Install from GitHub, not PyPI
+> The `flyteplugins-agento11y` name on PyPI is quarantined and does not install. Until it is available again, install the plugin from its source in the [`flyte-sdk` repository](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/agento11y), pinned to a release tag:
+
 ```bash
-pip install "flyteplugins-agento11y[openai]"
+pip install "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git@v2.8.1#subdirectory=plugins/agento11y"
 ```
+
+Pin a release tag rather than a branch so the build is reproducible. Installing from a Git URL needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
 The extra is what makes your framework's instrumentor available. Install the one matching the agent adapter you use:
 
