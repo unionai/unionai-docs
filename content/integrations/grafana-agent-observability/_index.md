@@ -14,7 +14,7 @@ It instruments agents built with the [agent framework plugins](../agents/_index)
 
 One call at module scope is the whole integration. Your agent code does not change:
 
-```python{hl_lines=[3,7]}
+```python{hl_lines=[3,7,13,16]}
 import flyte
 from flyteplugins.agents.openai import run_agent, tool
 from flyteplugins.agento11y import init
@@ -25,9 +25,13 @@ init(service_name="my-agent")
 
 env = flyte.TaskEnvironment(
     name="agent_env",
-    image=flyte.Image.from_debian_base().with_pip_packages(
-        "flyteplugins-agents-openai",
-        "flyteplugins-agento11y[openai]",
+    image=(
+        flyte.Image.from_debian_base()
+        .with_apt_packages("git")
+        .with_pip_packages(
+            "flyteplugins-agents-openai",
+            "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y",
+        )
     ),
     secrets=[flyte.Secret(key="openai_api_key", as_env_var="OPENAI_API_KEY")],
 )
@@ -59,11 +63,7 @@ This plugin builds on [`flyteplugins-otel`](../opentelemetry/_index), which it i
 
 ## Installation
 
-```bash
-pip install "flyteplugins-agento11y[openai]"
-```
-
-The extra is what makes your framework's instrumentor available. Install the one matching the agent adapter you use:
+Install the plugin from the [`flyte-sdk` repository](https://github.com/flyteorg/flyte-sdk/tree/main/plugins/agento11y) with the extra that matches the agent adapter you use. The extra is what makes your framework's instrumentor available:
 
 | Extra         | Agent adapter                     | agento11y integration package |
 | ------------- | --------------------------------- | ----------------------------- |
@@ -73,6 +73,17 @@ The extra is what makes your framework's instrumentor available. Install the one
 | `claude`      | `flyteplugins-agents-claude`      | `agento11y-claude-agent-sdk`  |
 | `google`      | `flyteplugins-agents-google`      | `agento11y-google-adk`        |
 | `pydantic-ai` | `flyteplugins-agents-pydantic-ai` | `agento11y-pydantic-ai`       |
+
+```bash
+pip install "flyteplugins-agento11y[langchain] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[langgraph] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[openai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[claude] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[google] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteorg/flyte-sdk.git#subdirectory=plugins/agento11y"
+```
+
+To instrument more than one framework, list several extras, as in `[openai,langgraph]`. The same string works in `with_pip_packages()`. Installing from Git needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
 Nothing else has to be configured: `init()` registers an instrumentor for every framework whose integration package it finds. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
 
