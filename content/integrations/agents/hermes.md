@@ -56,7 +56,7 @@ async def city_agent(question: str) -> str:
 
 Hermes normally reads credentials from its own `hermes setup` configuration, which a fresh container does not have. To make the common case work, `run_agent` fills in the gap: when none of `api_key`, `base_url` or `provider` are passed and `OPENAI_API_KEY` is set in the environment, the built agent is pointed at OpenAI with that key and set to `api_mode="chat_completions"`.
 
-The API mode matters. Hermes routes a direct `api.openai.com` URL to its Responses API mode, which always sends a reasoning effort, and a non-reasoning model such as `gpt-4.1` rejects that with an HTTP 400. Chat completions is also the mode the replay and report paths are verified against. Pass `api_mode="codex_responses"` explicitly if you want the Responses API with a reasoning model; an explicit `api_mode` always wins over the default.
+The API mode matters. Hermes routes a direct `api.openai.com` URL to its Responses API mode, which always sends a reasoning effort, and a non-reasoning model such as `gpt-4.1` rejects that with an HTTP 400. Pass `api_mode="codex_responses"` explicitly if you want the Responses API with a reasoning model; an explicit `api_mode` always wins over the default.
 
 For any other provider, pass the credentials explicitly. They go through `**agent_kwargs` to the `AIAgent` constructor.
 
