@@ -1,5 +1,6 @@
 ---
 title: flytekit.tools.fast_registration
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -20,10 +21,10 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`compress_tarball()`](#compress_tarball) | Compress code tarball using pigz if available, otherwise gzip. |
-| [`compute_digest()`](#compute_digest) | Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents. |
+| [`compute_digest()`](#compute_digest) | Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents. :return Text. |
 | [`download_distribution()`](#download_distribution) | Downloads a remote code distribution and overwrites any local files. |
-| [`fast_package()`](#fast_package) | Takes a source directory and packages everything not covered by common ignores into a tarball. |
-| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) | :return Text:. |
+| [`fast_package()`](#fast_package) | Takes a source directory and packages everything not covered by common ignores into a tarball named after a hexdigest of the included files. :return os.PathLike. |
+| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) | :return Text. |
 | [`print_ls_tree()`](#print_ls_tree) |  |
 
 

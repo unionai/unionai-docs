@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.node_creation
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`create_node()`](#create_node) | This is the function you want to call if you need to specify dependencies between tasks that don't consume and/or. |
+| [`create_node()`](#create_node) | This is the function you want to call if you need to specify dependencies between tasks that don't consume and/or don't produce outputs. |
 
 
 ### Variables

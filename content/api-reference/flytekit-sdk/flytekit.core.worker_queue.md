@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.worker_queue
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Controller`](./flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint. |
+| [`Controller`](./flytekit.core.worker_queue#flytekitcoreworker_queuecontroller) | This controller object is responsible for kicking off and monitoring executions against a Flyte Admin endpoint using a FlyteRemote object. |
 | [`ItemStatus`](./flytekit.core.worker_queue#flytekitcoreworker_queueitemstatus) |  |
 | [`Update`](./flytekit.core.worker_queue#flytekitcoreworker_queueupdate) |  |
 | [`WorkItem`](./flytekit.core.worker_queue#flytekitcoreworker_queueworkitem) | This is a class to keep track of what the user requested. |
@@ -70,8 +71,8 @@ class Controller(
 | [`for_sandbox()`](#for_sandbox) |  |
 | [`get_env()`](#get_env) | In order for downstream tasks to correctly set the root label, this needs to pass down that information. |
 | [`get_execution_name()`](#get_execution_name) | Make a deterministic name. |
-| [`get_labels()`](#get_labels) | These labels keep track of the current and root (in case of nested) eager execution, that is responsible for. |
-| [`get_signal_handler()`](#get_signal_handler) | TODO: At some point, this loop would be ideally managed by the loop manager, and the signal handler should. |
+| [`get_labels()`](#get_labels) | These labels keep track of the current and root (in case of nested) eager execution, that is responsible for kicking off this execution. |
+| [`get_signal_handler()`](#get_signal_handler) |  |
 | [`launch_execution()`](#launch_execution) | This function launches executions. |
 | [`reconcile_one()`](#reconcile_one) | This is responsible for processing one work item. |
 | [`render_html()`](#render_html) | Render the callstack as a deck presentation to be shown after eager workflow execution. |

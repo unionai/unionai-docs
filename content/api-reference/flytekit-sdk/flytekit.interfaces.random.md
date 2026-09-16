@@ -1,5 +1,6 @@
 ---
 title: flytekit.interfaces.random
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`seed_flyte_random()`](#seed_flyte_random) | If one wants to influence the pseudo-random behavior of flytekit, this function can be used to seed the flytekit. |
+| [`seed_flyte_random()`](#seed_flyte_random) | If one wants to influence the pseudo-random behavior of flytekit, this function can be used to seed the flytekit generator. |
 
 
 ## Methods

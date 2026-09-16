@@ -1,5 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.build
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -67,8 +68,8 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`get_command()`](#get_command) | Given a context and a command name, this returns a. |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`get_command()`](#get_command) | Given a context and a command name, this returns a `Command` object if it exists or returns ``None``. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
 
 #### get_command()
@@ -79,8 +80,8 @@ def get_command(
     filename,
 )
 ```
-Given a context and a command name, this returns a
-`Command` object if it exists or returns `None`.
+Given a context and a command name, this returns a `Command`
+object if it exists or returns ``None``.
 
 
 | Parameter | Type | Description |
@@ -97,8 +98,7 @@ def list_commands(
     **kwargs,
 )
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |
@@ -129,14 +129,14 @@ class BuildParams(
     overwrite_cache: bool = False,
     interruptible: typing.Optional[bool] = None,
     envvars: typing.Dict[str, str] = <factory>,
-    resource_requests: typing.Optional[flytekit.core.resources.Resources] = None,
-    resource_limits: typing.Optional[flytekit.core.resources.Resources] = None,
+    resource_requests: typing.Optional[flytekit.core.resources.Resources] = Sentinel.UNSET,
+    resource_limits: typing.Optional[flytekit.core.resources.Resources] = Sentinel.UNSET,
     tags: typing.List[str] = <factory>,
-    name: str = None,
+    name: str = Sentinel.UNSET,
     labels: typing.Dict[str, str] = <factory>,
     annotations: typing.Dict[str, str] = <factory>,
-    raw_output_data_prefix: str = None,
-    max_parallelism: int = None,
+    raw_output_data_prefix: str = Sentinel.UNSET,
+    max_parallelism: int = Sentinel.UNSET,
     disable_notifications: bool = False,
     remote: bool = False,
     limit: int = 50,
@@ -248,8 +248,8 @@ Create RichGroup instance.
 
 | Method | Description |
 |-|-|
-| [`get_command()`](#get_command) | This command uses the filename with which this command was created, and the string name of the entity passed. |
-| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should. |
+| [`get_command()`](#get_command) | This command uses the filename with which this command was created, and the string name of the entity passed after the Python filename on the command line, to load the Python object, and then return the Command that click should run. |
+| [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
 
 #### get_command()
@@ -277,8 +277,7 @@ def list_commands(
     ctx,
 )
 ```
-Returns a list of subcommand names in the order they should
-appear.
+Returns a list of subcommand names in the order they should appear.
 
 
 | Parameter | Type | Description |

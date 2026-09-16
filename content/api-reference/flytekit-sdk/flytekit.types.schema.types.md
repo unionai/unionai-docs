@@ -1,5 +1,6 @@
 ---
 title: flytekit.types.schema.types
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -192,8 +193,8 @@ def FlyteSchemaTransformer()
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
 | [`async_to_python_value()`](#async_to_python_value) | Converts the given Literal to a Python Type. |
 | [`dict_to_flyte_schema()`](#dict_to_flyte_schema) |  |
-| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows:. |
-| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows:. |
+| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows. |
+| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows. |
 | [`get_literal_type()`](#get_literal_type) | Converts the python type to a Flyte LiteralType. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |

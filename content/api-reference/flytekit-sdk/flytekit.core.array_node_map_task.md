@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.array_node_map_task
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -20,8 +21,8 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`array_node_map_task()`](#array_node_map_task) | Map task that uses the ``ArrayNode`` construct. |
-| [`map_task()`](#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask. |
+| [`array_node_map_task()`](#array_node_map_task) | Map task that uses the ``ArrayNode`` construct.. |
+| [`map_task()`](#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask or the drop in replacement ArrayNode implementation. |
 
 
 ### Variables
@@ -147,7 +148,7 @@ class ArrayNodeMapTask(
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | This returns metadata for the parent ArrayNode, not the sub-node getting mapped over. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_command()`](#get_command) | TODO ADD bound variables to the resolver. |
@@ -159,11 +160,11 @@ class ArrayNodeMapTask(
 | [`get_k8s_pod()`](#get_k8s_pod) | Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_sql()`](#get_sql) | Returns the Sql definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_type_for_input_var()`](#get_type_for_input_var) | Returns the python type for an input variable by name. |
-| [`get_type_for_output_var()`](#get_type_for_output_var) | We override this method from flytekit. |
+| [`get_type_for_output_var()`](#get_type_for_output_var) | We override this method from flytekit.core.base_task Task because the dispatch_execute method uses this interface to construct outputs. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`prepare_target()`](#prepare_target) | Alters the underlying run_task command to modify it for map task execution and then resets it after. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 | [`set_command_prefix()`](#set_command_prefix) |  |
@@ -530,7 +531,7 @@ class ArrayNodeMapTaskResolver(
 |-|-|
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_all_tasks()`](#get_all_tasks) | Future proof method. |
-| [`load_task()`](#load_task) | Loader args should be of the form. |
+| [`load_task()`](#load_task) | Loader args should be of the form vars "var1,var2,.." resolver "resolver" [resolver_args]. |
 | [`loader_args()`](#loader_args) | Return a list of strings that can help identify the parameter Task. |
 | [`name()`](#name) |  |
 | [`task_name()`](#task_name) | Overridable function that can optionally return a custom name for a given task. |

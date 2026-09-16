@@ -1,5 +1,6 @@
 ---
 title: flytekit.configuration.file
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -15,7 +16,7 @@ layout: py_api
 |-|-|
 | [`ConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfileconfigentry) | A top level Config entry holder, that holds multiple different representations of the config. |
 | [`ConfigFile`](./flytekit.configuration.file#flytekitconfigurationfileconfigfile) |  |
-| [`LegacyConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfilelegacyconfigentry) | Creates a record for the config entry. |
+| [`LegacyConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfilelegacyconfigentry) | Creates a record for the config entry. contains. |
 | [`YamlConfigEntry`](./flytekit.configuration.file#flytekitconfigurationfileyamlconfigentry) | Creates a record for the config entry. |
 
 ### Methods
@@ -26,7 +27,7 @@ layout: py_api
 | [`comma_list_transformer()`](#comma_list_transformer) |  |
 | [`int_transformer()`](#int_transformer) |  |
 | [`read_file_if_exists()`](#read_file_if_exists) | Reads the contents of the file if passed a path. |
-| [`set_if_exists()`](#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set. |
+| [`set_if_exists()`](#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set and return the updated dictionary. |
 
 
 ### Variables
@@ -138,7 +139,7 @@ class ConfigEntry(
 
 | Method | Description |
 |-|-|
-| [`read()`](#read) | Reads the config Entry from the various sources in the following order,. |
+| [`read()`](#read) | Reads the config Entry from the various sources in the following order, #. |
 
 
 #### read()
@@ -227,7 +228,7 @@ class LegacyConfigEntry(
 | Method | Description |
 |-|-|
 | [`get_env_name()`](#get_env_name) |  |
-| [`read_from_env()`](#read_from_env) | Reads the config entry from environment variable, the structure of the env var is current. |
+| [`read_from_env()`](#read_from_env) | Reads the config entry from environment variable, the structure of the env var is current ``FLYTE_{SECTION}_{OPTION}`` all upper cased. |
 | [`read_from_file()`](#read_from_file) |  |
 
 

@@ -1,5 +1,6 @@
 ---
 title: flytekit.interactive.vscode_lib.decorator
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -26,7 +27,7 @@ layout: py_api
 | [`get_installed_extensions()`](#get_installed_extensions) | Get the list of installed extensions. |
 | [`is_extension_installed()`](#is_extension_installed) |  |
 | [`prepare_interactive_python()`](#prepare_interactive_python) | 1. |
-| [`prepare_launch_json()`](#prepare_launch_json) | Generate the launch. |
+| [`prepare_launch_json()`](#prepare_launch_json) | Generate the launch.json and settings.json for users to easily launch interactive debugging and task resumption. |
 | [`prepare_resume_task_python()`](#prepare_resume_task_python) | Generate a Python script for users to resume the task. |
 
 

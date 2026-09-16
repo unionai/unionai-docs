@@ -1,5 +1,6 @@
 ---
 title: flytekit.remote.remote_fs
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -103,7 +104,7 @@ cache_type, cache_options: defaults used in open()
 | [`exists()`](#exists) | Is there a file at the given path. |
 | [`extract_common()`](#extract_common) | This function that will take a list of strings and return the longest prefix that they all have in common. |
 | [`get_filename_root()`](#get_filename_root) | Given a dictionary of file paths to hashes and content lengths, return a consistent filename root. |
-| [`get_hashes_and_lengths()`](#get_hashes_and_lengths) | Returns a flat list of absolute file paths to their hashes and content lengths. |
+| [`get_hashes_and_lengths()`](#get_hashes_and_lengths) | Returns a flat list of absolute file paths to their hashes and content lengths this output is used both for the file upload request, and to create consistently a filename root for uploaded folders. |
 
 
 #### exists()

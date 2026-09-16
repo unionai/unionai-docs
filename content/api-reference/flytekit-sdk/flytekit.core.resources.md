@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.resources
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -177,7 +178,7 @@ class Resources(
     cpu: typing.Union[str, int, float, list, tuple, NoneType] = None,
     mem: typing.Union[str, int, list, tuple, NoneType] = None,
     gpu: typing.Union[str, int, list, tuple, NoneType] = None,
-    ephemeral_storage: typing.Union[str, int, NoneType] = None,
+    ephemeral_storage: typing.Union[int, str, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -185,7 +186,7 @@ class Resources(
 | `cpu` | `typing.Union[str, int, float, list, tuple, NoneType]` | |
 | `mem` | `typing.Union[str, int, list, tuple, NoneType]` | |
 | `gpu` | `typing.Union[str, int, list, tuple, NoneType]` | |
-| `ephemeral_storage` | `typing.Union[str, int, NoneType]` | |
+| `ephemeral_storage` | `typing.Union[int, str, NoneType]` | |
 
 ### Methods
 

@@ -1,6 +1,7 @@
 ---
 title: union.map
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`map()`](#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and. |
+| [`map()`](#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and launch plans. |
 
 
 ## Methods

@@ -1,6 +1,7 @@
 ---
 title: Union SDK
-version: 0.1.203
+icon: book
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -65,7 +66,7 @@ Flytekit SDK and the Union SDK docs.
 | [`union.artifacts.DataCard`](union.artifacts#unionartifactsdatacard) |  |
 | [`union.artifacts.ModelCard`](union.artifacts#unionartifactsmodelcard) |  |
 | [`union.artifacts.OnArtifact`](union.artifacts#unionartifactsonartifact) | Event used to link upstream and downstream workflows together. |
-| [`union.cache.CacheFunctionBody`](union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating. |
+| [`union.cache.CacheFunctionBody`](union.cache#unioncachecachefunctionbody) | A class that implements a versioning mechanism for functions by generating a SHA-256 hash of the function's source code combined with a salt. |
 | [`union.configuration.UnionAIPlugin`](union.configuration#unionconfigurationunionaiplugin) |  |
 | [`union.filesystems.AsyncUnionFS`](union.filesystems#unionfilesystemsasyncunionfs) |  |
 | [`union.filesystems.AsyncUnionMetaFS`](union.filesystems#unionfilesystemsasyncunionmetafs) |  |
@@ -87,12 +88,12 @@ Flytekit SDK and the Union SDK docs.
 |-|-|
 | [`union.actor_cache()`](union#actor_cache) | Cache function between actor executions. |
 | [`union.current_context()`](union#current_context) | Use this method to get a handle of specific parameters available in a flyte task. |
-| [`union.map()`](union#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and. |
-| [`union.map_task()`](union#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask. |
+| [`union.map()`](union#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and launch plans. |
+| [`union.map_task()`](union#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask or the drop in replacement ArrayNode implementation. |
 | [`union.task()`](union#task) | This is the core decorator to use for any task type in flytekit. |
 | [`union.workflow()`](union#workflow) | This decorator declares a function to be a Flyte workflow. |
 | [`union.actor.actor_cache()`](union.actor#actor_cache) | Cache function between actor executions. |
-| [`union.map.map()`](union.map#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and. |
+| [`union.map.map()`](union.map#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and launch plans. |
 
 ### Packages
 

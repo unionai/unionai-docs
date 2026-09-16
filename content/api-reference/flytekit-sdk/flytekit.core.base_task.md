@@ -1,5 +1,7 @@
 ---
 title: flytekit.core.base_task
+description: "This module provides the core task-related functionality in Flytekit."
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -162,7 +164,7 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
@@ -176,8 +178,8 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 | [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python type for the specified output variable by name. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 
 
@@ -499,7 +501,7 @@ class Task(
 | Method | Description |
 |-|-|
 | [`compile()`](#compile) |  |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
 | [`get_container()`](#get_container) | Returns the container definition (if any) that is used to run the task on hosted Flyte. |
@@ -508,11 +510,11 @@ class Task(
 | [`get_input_types()`](#get_input_types) | Returns python native types for inputs. |
 | [`get_k8s_pod()`](#get_k8s_pod) | Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_sql()`](#get_sql) | Returns the Sql definition (if any) that is used to run the task on hosted Flyte. |
-| [`get_type_for_input_var()`](#get_type_for_input_var) | Returns the python native type for the given input variable. |
-| [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python native type for the given output variable. |
+| [`get_type_for_input_var()`](#get_type_for_input_var) | Returns the python native type for the given input variable # TODO we could use literal type to determine this. |
+| [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python native type for the given output variable # TODO we could use literal type to determine this. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 
 
@@ -803,7 +805,7 @@ class TaskMetadata(
 
 | Method | Description |
 |-|-|
-| [`to_taskmetadata_model()`](#to_taskmetadata_model) | Converts to _task_model. |
+| [`to_taskmetadata_model()`](#to_taskmetadata_model) | Converts to _task_model.TaskMetadata. |
 
 
 #### to_taskmetadata_model()

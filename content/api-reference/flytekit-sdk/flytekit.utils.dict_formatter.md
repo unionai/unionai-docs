@@ -1,5 +1,6 @@
 ---
 title: flytekit.utils.dict_formatter
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`format_dict()`](#format_dict) | Recursively update a dictionary with format strings with values from another dictionary where the keys match. |
+| [`format_dict()`](#format_dict) | Recursively update a dictionary with format strings with values from another dictionary where the keys match the format string. |
 | [`get_nested_value()`](#get_nested_value) | Retrieve the nested value from a dictionary based on a list of keys. |
 | [`replace_placeholder()`](#replace_placeholder) | Replace a placeholder in the original string and handle the specific logic for the sagemaker service and idempotence token. |
 

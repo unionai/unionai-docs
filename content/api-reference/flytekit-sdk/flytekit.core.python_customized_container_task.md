@@ -1,5 +1,6 @@
 ---
 title: flytekit.core.python_customized_container_task
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -14,7 +15,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`PythonCustomizedContainerTask`](./flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_taskpythoncustomizedcontainertask) | Please take a look at the comments for {{< py_class_ref flytekit.extend.ExecutableTemplateShimTask >}} as well. |
-| [`TaskTemplateResolver`](./flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_tasktasktemplateresolver) | This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``,. |
+| [`TaskTemplateResolver`](./flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_tasktasktemplateresolver) | This is a special resolver that resolves the task above at execution time, using only the ``TaskTemplate``, meaning it should only be used for tasks that contain all pertinent information within the template itself. |
 
 ### Variables
 
@@ -107,7 +108,7 @@ class PythonCustomizedContainerTask(
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python. |
+| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python interface before executing. |
 | [`execute()`](#execute) | Rather than running here, send everything to the executor. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_command()`](#get_command) |  |

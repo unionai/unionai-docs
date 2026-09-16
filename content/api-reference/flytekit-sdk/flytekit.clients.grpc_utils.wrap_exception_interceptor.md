@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.wrap_exception_interceptor
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api

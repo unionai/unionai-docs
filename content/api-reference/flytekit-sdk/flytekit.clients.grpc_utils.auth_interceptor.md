@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`AuthUnaryInterceptor`](./flytekit.clients.grpc_utils.auth_interceptor#flytekitclientsgrpc_utilsauth_interceptorauthunaryinterceptor) | This Interceptor can be used to automatically add Auth Metadata for every call - lazily in case authentication. |
+| [`AuthUnaryInterceptor`](./flytekit.clients.grpc_utils.auth_interceptor#flytekitclientsgrpc_utilsauth_interceptorauthunaryinterceptor) | This Interceptor can be used to automatically add Auth Metadata for every call - lazily in case authentication is needed. |
 
 ## flytekit.clients.grpc_utils.auth_interceptor.AuthUnaryInterceptor
 

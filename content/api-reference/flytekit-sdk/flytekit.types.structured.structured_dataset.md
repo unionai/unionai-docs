@@ -1,5 +1,6 @@
 ---
 title: flytekit.types.structured.structured_dataset
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -29,7 +30,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`convert_schema_type_to_structured_dataset_type()`](#convert_schema_type_to_structured_dataset_type) |  |
-| [`extract_cols_and_format()`](#extract_cols_and_format) | Helper function, just used to iterate through Annotations and extract out the following information:. |
+| [`extract_cols_and_format()`](#extract_cols_and_format) | Helper function, just used to iterate through Annotations and extract out the following information. |
 | [`flatten_dict()`](#flatten_dict) |  |
 | [`get_supported_types()`](#get_supported_types) |  |
 
@@ -278,7 +279,7 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Method | Description |
 |-|-|
-| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal. |
+| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal value into a Python instance. |
 
 
 #### decode()
@@ -341,7 +342,7 @@ the StructuredDatasetEncoder
 
 | Method | Description |
 |-|-|
-| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the. |
+| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the incoming dataframe with defaults set for that dataframe type. |
 
 
 #### encode()
@@ -398,14 +399,14 @@ def StructuredDatasetTransformerEngine()
 |-|-|
 | [`assert_type()`](#assert_type) |  |
 | [`async_to_literal()`](#async_to_literal) | Converts a given python_val to a Flyte Literal, assuming the given python_val matches the declared python_type. |
-| [`async_to_python_value()`](#async_to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at. |
+| [`async_to_python_value()`](#async_to_python_value) | The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at the start of a task execution, is the column subsetting behavior. |
 | [`dict_to_structured_dataset()`](#dict_to_structured_dataset) |  |
 | [`encode()`](#encode) |  |
-| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows:. |
-| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows:. |
+| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows. |
+| [`from_generic_idl()`](#from_generic_idl) | If the input is from Flyte Console, the Life Cycle will be as follows. |
 | [`get_decoder()`](#get_decoder) |  |
 | [`get_encoder()`](#get_encoder) |  |
-| [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that. |
+| [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that special about the literal type. |
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
 | [`iter_as()`](#iter_as) |  |

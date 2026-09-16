@@ -1,5 +1,6 @@
 ---
 title: flytekit.tools.script_mode
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -18,7 +19,7 @@ layout: py_api
 | [`get_all_modules()`](#get_all_modules) | Import python file with module_name in source_path and return all modules. |
 | [`list_all_files()`](#list_all_files) |  |
 | [`list_imported_modules_as_files()`](#list_imported_modules_as_files) | Copies modules into destination that are in modules. |
-| [`ls_files()`](#ls_files) | user_modules_and_packages is a list of the Python modules and packages, expressed as absolute paths, that the. |
+| [`ls_files()`](#ls_files) | user_modules_and_packages is a list of the Python modules and packages, expressed as absolute paths, that the user has run this pyflyte command with. |
 | [`tar_strip_file_attributes()`](#tar_strip_file_attributes) |  |
 
 

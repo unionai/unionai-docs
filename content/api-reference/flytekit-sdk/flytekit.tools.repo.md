@@ -1,5 +1,6 @@
 ---
 title: flytekit.tools.repo
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -19,14 +20,14 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`find_common_root()`](#find_common_root) | Given an arbitrary list of folders and files, this function will use the script mode function to walk up. |
-| [`list_packages_and_modules()`](#list_packages_and_modules) | This is a helper function that returns the input list of python packages/modules as a dot delinated list. |
+| [`find_common_root()`](#find_common_root) | Given an arbitrary list of folders and files, this function will use the script mode function to walk up the filesystem to find the first folder without an init file. |
+| [`list_packages_and_modules()`](#list_packages_and_modules) | This is a helper function that returns the input list of python packages/modules as a dot delinated list relative to the given project_root. |
 | [`package()`](#package) | Package the given entities and the source code (if fast is enabled) into a package with the given name in output. |
 | [`print_registration_status()`](#print_registration_status) |  |
-| [`register()`](#register) | Temporarily, for fast register, specify both the fast arg as well as copy_style. |
-| [`serialize_and_package()`](#serialize_and_package) | Fist serialize and then package all entities. |
-| [`serialize_get_control_plane_entities()`](#serialize_get_control_plane_entities) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the. |
-| [`serialize_load_only()`](#serialize_load_only) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the. |
+| [`register()`](#register) | Temporarily, for fast register, specify both the fast arg as well as copy_style. fast == True with copy_style == None means use the old fast register tar'ring method. |
+| [`serialize_and_package()`](#serialize_and_package) | Fist serialize and then package all entities Temporarily for fast package, specify both the fast arg as well as copy_style. fast == True with copy_style == None means use the old fast register tar'ring method. |
+| [`serialize_get_control_plane_entities()`](#serialize_get_control_plane_entities) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the entity type. |
+| [`serialize_load_only()`](#serialize_load_only) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the entity type. |
 | [`serialize_to_folder()`](#serialize_to_folder) | Serialize the given set of python packages to a folder. |
 
 

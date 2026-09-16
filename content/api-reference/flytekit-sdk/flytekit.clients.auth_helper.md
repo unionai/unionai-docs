@@ -1,5 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
+icon: box-seam
 version: 1.16.28
 variants: +flyte +union
 layout: py_api
@@ -20,16 +21,16 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`bootstrap_creds_from_server()`](#bootstrap_creds_from_server) | Retrieves the SSL cert from the remote and uses that. |
+| [`bootstrap_creds_from_server()`](#bootstrap_creds_from_server) | Retrieves the SSL cert from the remote and uses that. should be used only if insecure-skip-verify. |
 | [`get_authenticated_channel()`](#get_authenticated_channel) | Returns a new channel for the given config that is authenticated. |
 | [`get_authenticator()`](#get_authenticator) | Returns a new authenticator based on the platform config. |
-| [`get_channel()`](#get_channel) | Creates a new grpc. |
+| [`get_channel()`](#get_channel) | Creates a new grpc.Channel given a platformConfig. |
 | [`get_proxy_authenticator()`](#get_proxy_authenticator) |  |
 | [`get_session()`](#get_session) | Return a new session for the given platform config. |
 | [`register_authenticator_plugin()`](#register_authenticator_plugin) | Register an authenticator factory by name. |
-| [`upgrade_channel_to_authenticated()`](#upgrade_channel_to_authenticated) | Given a grpc. |
-| [`upgrade_channel_to_proxy_authenticated()`](#upgrade_channel_to_proxy_authenticated) | If activated in the platform config, given a grpc. |
-| [`upgrade_session_to_proxy_authenticated()`](#upgrade_session_to_proxy_authenticated) | Given a requests. |
+| [`upgrade_channel_to_authenticated()`](#upgrade_channel_to_authenticated) | Given a grpc.Channel, preferably a secure channel, it returns a composed channel that uses Interceptor to perform an Oauth2.0 Auth flow. |
+| [`upgrade_channel_to_proxy_authenticated()`](#upgrade_channel_to_proxy_authenticated) | If activated in the platform config, given a grpc.Channel, preferably a secure channel, it returns a composed channel that uses Interceptor to perform authentication with a proxy in front of Flyte. |
+| [`upgrade_session_to_proxy_authenticated()`](#upgrade_session_to_proxy_authenticated) | Given a requests.Session, it returns a new session that uses a custom HTTPAdapter to perform authentication with a proxy in front of Flyte. |
 | [`wrap_exceptions_channel()`](#wrap_exceptions_channel) | Wraps the input channel with RetryExceptionWrapperInterceptor. |
 
 
@@ -344,7 +345,7 @@ class RemoteClientConfigStore(
 
 | Method | Description |
 |-|-|
-| [`get_client_config()`](#get_client_config) | Retrieves the ClientConfig from the given grpc. |
+| [`get_client_config()`](#get_client_config) | Retrieves the ClientConfig from the given grpc.Channel assuming AuthMetadataService is available. |
 
 
 #### get_client_config()

@@ -1,6 +1,7 @@
 ---
 title: union
-version: 0.1.203
+icon: box-seam
+version: 0.1.204
 variants: -flyte +union
 layout: py_api
 ---
@@ -41,8 +42,8 @@ layout: py_api
 |-|-|
 | [`actor_cache()`](#actor_cache) | Cache function between actor executions. |
 | [`current_context()`](#current_context) | Use this method to get a handle of specific parameters available in a flyte task. |
-| [`map()`](#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and. |
-| [`map_task()`](#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask. |
+| [`map()`](#map) | Use to map over tasks, actors, launch plans, reference tasks and launch plans, and remote tasks and launch plans. |
+| [`map_task()`](#map_task) | Wrapper that creates a map task utilizing either the existing ArrayNodeMapTask or the drop in replacement ArrayNode implementation. |
 | [`task()`](#task) | This is the core decorator to use for any task type in flytekit. |
 | [`workflow()`](#workflow) | This decorator declares a function to be a Flyte workflow. |
 
@@ -922,7 +923,7 @@ class Artifact(
 | [`create_from()`](#create_from) | This function allows users to declare partition values dynamically from the body of a task. |
 | [`embed_as_query()`](#embed_as_query) | This should only be called in the context of a Trigger. |
 | [`from_flyte_idl()`](#from_flyte_idl) | Converts the IDL representation to this object. |
-| [`get()`](#get) | This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an. |
+| [`get()`](#get) | This function is supposed to mimic the get() behavior inputs/outputs as returned by FlyteRemote for an execution, leveraging the LiteralsResolver (and underneath that the TypeEngine) to turn the literal into a Python value. |
 | [`initialize()`](#initialize) | Use this for when you have a Python value you want to get an Artifact object out of. |
 | [`metadata()`](#metadata) |  |
 | [`query()`](#query) |  |
@@ -1303,7 +1304,7 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
@@ -1317,8 +1318,8 @@ deck_fields (Tuple[DeckField]): Tuple of decks to be
 | [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python type for the specified output variable by name. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 
 
@@ -1704,7 +1705,7 @@ class FlyteDirectory(
 
 | Method | Description |
 |-|-|
-| [`crawl()`](#crawl) | Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory". |
+| [`crawl()`](#crawl) | Crawl returns a generator of all files prefixed by any sub-folders under the given "FlyteDirectory". if details=True is passed, then it will return a dictionary as specified by fsspec. |
 | [`deserialize_flyte_dir()`](#deserialize_flyte_dir) |  |
 | [`download()`](#download) |  |
 | [`extension()`](#extension) |  |
@@ -1713,7 +1714,7 @@ class FlyteDirectory(
 | [`new()`](#new) | Create a new FlyteDirectory object in current Flyte working directory. |
 | [`new_dir()`](#new_dir) | This will create a new folder under the current folder. |
 | [`new_file()`](#new_file) | This will create a new file under the current folder. |
-| [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i. |
+| [`new_remote()`](#new_remote) | Create a new FlyteDirectory object using the currently configured default remote in the context (i.e. the raw_output_prefix configured in the current FileAccessProvider object in the context). |
 | [`serialize_flyte_dir()`](#serialize_flyte_dir) |  |
 
 
@@ -2599,7 +2600,7 @@ class Resources(
     cpu: typing.Union[str, int, float, list, tuple, NoneType] = None,
     mem: typing.Union[str, int, list, tuple, NoneType] = None,
     gpu: typing.Union[str, int, list, tuple, NoneType] = None,
-    ephemeral_storage: typing.Union[str, int, NoneType] = None,
+    ephemeral_storage: typing.Union[int, str, NoneType] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -2607,7 +2608,7 @@ class Resources(
 | `cpu` | `typing.Union[str, int, float, list, tuple, NoneType]` | |
 | `mem` | `typing.Union[str, int, list, tuple, NoneType]` | |
 | `gpu` | `typing.Union[str, int, list, tuple, NoneType]` | |
-| `ephemeral_storage` | `typing.Union[str, int, NoneType]` | |
+| `ephemeral_storage` | `typing.Union[int, str, NoneType]` | |
 
 ### Methods
 
