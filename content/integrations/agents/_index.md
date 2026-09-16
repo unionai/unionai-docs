@@ -159,7 +159,7 @@ Tool calls are durable in every case, regardless of the `durable` setting.
 
 The plugins do not have an opinion here. Pick the framework you would have picked anyway. The two things worth knowing:
 
-- If you want per-turn replay and you are starting fresh, every adapter gives it to you on the builder path.
+- If you want per-turn replay and you are starting fresh, every adapter except Claude gives it to you on the builder path. The Claude SDK runs its loop in a subprocess, so its durability is per session via resume.
 - If you already own a compiled graph or a configured agent object, check the framework's page for how durability is applied on the pre-built path. LangGraph is designed around this case: you build the `StateGraph`, and `ai_node` and `tool_node` supply the durable pieces.
 
 ## Next steps
