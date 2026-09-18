@@ -112,11 +112,11 @@ Configure OIDC/OAuth2 authentication for your deployment
 Configure authorization mode (Noop, External, or Union built-in RBAC)
 {{< /link-card >}}
 
-{{< link-card target="./identity" icon="users" title="Identity" >}}
+{{< link-card target="./identity" icon="people" title="Identity" >}}
 Configure identity service for User Management
 {{< /link-card >}}
 
-{{< link-card target="./image-builder" icon="package" title="Image builder" >}}
+{{< link-card target="./image-builder" icon="box-seam" title="Image builder" >}}
 Register the image builder for automatic container image builds
 {{< /link-card >}}
 
@@ -124,7 +124,7 @@ Register the image builder for automatic container image builds
 Serve Streamlit, FastAPI, and custom apps from the data plane
 {{< /link-card >}}
 
-{{< link-card target="./operations" icon="settings" title="Operations" >}}
+{{< link-card target="./operations" icon="gear" title="Operations" >}}
 Operational guides: CI/CD integration, key rotation, and more
 {{< /link-card >}}
 
