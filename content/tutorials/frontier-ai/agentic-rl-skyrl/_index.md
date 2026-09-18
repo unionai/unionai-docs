@@ -242,7 +242,7 @@ In the measured fork, step-0 rollouts were re-scored from 1.62 to 2.41 mean rewa
 
 Here the reuse comes from **caching** rather than run recovery: `build_world` and `generate` are cached with `cache="auto"`, worlds and initial weights are deterministic, so a new run with a new rubric hits the cache for every step-0 rollout — identical spec, weights, and world — and reuses it. Judging re-runs (its rubric input changed), the new rewards change the weights after step 0, so later steps' `generate` inputs differ, miss the cache, and regenerate. Same invalidation frontier, found by cache-key identity instead of fork recovery.
 
-(A Union backend adds [run forking]({{< docs_home union v2 >}}/user-guide/tasks/task-deployment/fork-runs) — `flyte.rerun(recover=True, rubric=new)` — which reuses *non-cached* actions too and links the fork to its parent run in the UI.)
+(A Union backend adds [run forking]({{< docs_home union v2 >}}/user-guide/tasks/task-deployment/fork-runs) — `flyte.rerun(run_name, recover=True, rubric=new)` — which reuses *non-cached* actions too and links the fork to its parent run in the UI.)
 
 {{< /markdown >}}
 {{< /variant >}}
