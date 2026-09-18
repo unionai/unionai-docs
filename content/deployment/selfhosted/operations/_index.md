@@ -18,8 +18,8 @@ Deploy workflows from CI/CD pipelines using non-interactive authentication
 Configure cluster pools, queues, and per-project routing so tasks run on a data plane
 {{< /link-card >}}
 
-{{< link-card target="./artifacts/_index" icon="package" title="Artifacts" >}}
-Enable the Artifacts service — a DB-backed metadata layer; no dedicated bucket required
+{{< link-card target="./artifacts" icon="package" title="Artifacts" >}}
+Artifacts service configuration — on by default, DB-backed, no dedicated bucket
 {{< /link-card >}}
 
 {{< link-card target="./troubleshooting" icon="life-buoy" title="Troubleshooting" >}}
