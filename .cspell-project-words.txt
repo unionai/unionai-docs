@@ -4,6 +4,16 @@
 # shared allow-list used by cspell in CI.
 
 # --- Products / brands / orgs ---
+Enroot
+Pyxis
+sacct
+sbatch
+scancel
+slurmrestd
+Soperator
+squashfs
+squeue
+srun
 Union.ai
 unionai
 Flyte
