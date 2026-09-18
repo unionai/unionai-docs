@@ -247,4 +247,3 @@ For more information, see the following resources:
 
 - [Crusoe Managed Kubernetes overview](https://docs.crusoecloud.com/kubernetes/overview/)
 - [Crusoe Cloud Storage overview](https://docs.crusoecloud.com/storage/object-storage/overview)
-

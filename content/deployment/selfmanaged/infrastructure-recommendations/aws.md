@@ -58,8 +58,8 @@ Union supports Autoscaling and the use of spot (interruptible) instances.
 ## Networking and IP capacity
 
 The AWS VPC CNI assigns one VPC IP per pod from the **node's subnet**, so pod-IP exhaustion is
-the most common scale blocker. Completed/terminating pods hold their IPs until garbage-collected,
-so high-churn workloads compound subnet pressure. Size the VPC greedily up front — adding VPC
+the most common scale blocker. Every running pod holds an IP, and so does each node's warm pool
+of spare IPs, so bursty, high-churn workloads compound subnet pressure. Size the VPC greedily up front — adding VPC
 CIDR blocks later works, but resizing existing subnets does not.
 
 Suggested defaults for a production-scale data plane:
@@ -67,7 +67,7 @@ Suggested defaults for a production-scale data plane:
 | Component | Setting |
 | --- | --- |
 | VPC CIDR | `10.0.0.0/16` |
-| Private subnets | 3× `/18` (`10.0.64.0/18`, `10.0.128.0/18`, `10.0.192.0/18`) — ~16,376 IPs per AZ |
+| Private subnets | 3× `/18` (`10.0.64.0/18`, `10.0.128.0/18`, `10.0.192.0/18`) — 16,379 usable IPs per AZ (16,384 minus the 5 AWS reserves in every subnet) |
 | Public subnets | 3× `/24` — only NAT gateways and internet-facing load balancers live here |
 | NAT gateways | 1 (cost-optimized) or per-AZ (production resilience) |
 
@@ -82,8 +82,24 @@ CIDRs.
   immediately.
 - Enable VPC CNI **prefix delegation** — allocates `/28` prefixes (16 IPs) per ENI attachment
   instead of individual IPs.
-- Reduce the pod-GC timer for completed pods (default 24 h → 1 h) so IPs return to the pool
-  faster.
+- Trim the VPC CNI **warm pool** on large, bursty clusters (for example, big GPU array jobs
+  that scale out many nodes at once). By default (`WARM_ENI_TARGET=1`) each node keeps a whole
+  spare ENI's worth of IPs free, which across thousands of nodes can leave tens of thousands of
+  subnet IPs idle. Setting `WARM_IP_TARGET` together with `MINIMUM_IP_TARGET` in the VPC CNI
+  add-on configuration holds a fixed number of free IPs per node instead (`WARM_IP_TARGET`
+  overrides `WARM_ENI_TARGET`). The trade-off: the CNI calls the EC2 API much more often, and AWS
+  warns that on large or high-churn clusters this can hit API throttling. With prefix delegation
+  enabled, tune `WARM_PREFIX_TARGET` instead. See the
+  [VPC CNI configuration reference](https://github.com/aws/amazon-vpc-cni-k8s#warm_ip_target).
+
+{{< key product_name >}} deletes each task pod as soon as its task finishes, so completed pods do
+not hold IPs and there is no retention timer to tune.
+
+**Monitoring IP usage**: scrape the VPC CNI metrics that the `aws-node` DaemonSet exposes on
+port `61678` (`/metrics`) to see subnet pressure before pods fail with `FailedCreatePodSandBox`.
+The key series are `awscni_assigned_ip_addresses` (IPs in use by pods),
+`awscni_total_ip_addresses` (all allocated IPs, including the warm pool), and
+`awscni_no_available_ip_addresses` (IP exhaustion events).
 
 For the full set of per-cluster scaling ceilings (vCPU quotas, image pull rate, conntrack,
 etcd), see [Scaling constraints](../infrastructure-recommendations/scaling-constraints).

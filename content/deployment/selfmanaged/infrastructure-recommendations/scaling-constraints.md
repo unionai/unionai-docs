@@ -23,9 +23,9 @@ The most common scale blocker. Each pod consumes a routable IP, and the pool dra
 on the data plane during workload bursts. How the pod CIDR is allocated to nodes — and
 therefore what runs out first — differs by cloud:
 
-- **AWS (VPC CNI)** assigns one IP per pod from the node's subnet; completed/terminating pods
-  hold their IPs until garbage-collected. Relief comes from adding VPC CIDR blocks, enabling
-  prefix delegation, and shortening the pod-GC timer.
+- **AWS (VPC CNI)** assigns one IP per pod from the node's subnet, and each node also holds a
+  warm pool of spare IPs. Relief comes from adding VPC CIDR blocks, enabling prefix delegation,
+  and trimming the warm pool.
 - **GKE** preallocates a per-node CIDR block sized by `max_pods_per_node`, which caps the
   cluster's node count for a given pod range. Tuning `max_pods_per_node` per nodepool is the
   primary lever.
