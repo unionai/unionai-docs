@@ -136,6 +136,42 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 | `queue:queue_client:free_threads` | Gauge | Idle worker goroutines in the queue-client pool. |
 | `queue:state_client:free_threads` | Gauge | Idle worker goroutines in the state-client pool. |
 
+### Leasor (V2 lease scheduler)
+
+The leasor is the V2 lease-based scheduler: it receives actions, assigns them to dataplane leaseworkers, and drives the full lease lifecycle. These metrics only appear on deployments running the V2 actions/leasor execution path. Counter metrics only emit series once there is activity, so an idle deployment reports fewer series than a busy one.
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `leasor:leases_by_state` | Gauge | Lease count by `state` (`unassigned`, `sent`, `pending_completion`, `pending_finalize`, `pending_retry`, `pending_abort_cascade`) and `type` (`run_action`, `finalize`). The primary health signal: growing `unassigned` = scheduling is bottlenecked; growing `sent` = workers are stuck. |
+| `leasor:workers_connected` | Gauge | Leaseworkers with an active lease stream. A sudden drop means workers disconnected. |
+| `leasor:active_runs` | Gauge | Active runs in memory, by `org`. |
+| `leasor:active_actions` | Gauge | Active actions in memory, by `org`. |
+| `leasor:queue_depth` | Gauge | RunAction queue depth, by `org` and `queue`. |
+| `leasor:queue_active_runs` | Gauge | Root runs holding queue run-concurrency capacity, by `org`/`queue`. |
+| `leasor:queue_max_run_concurrency` | Gauge | Configured per-queue run-concurrency limit. Zero means unlimited. |
+| `leasor:schedule_skip_total` | Counter | Leases the scheduler saw but could not place, by `reason` (e.g. `no_workers`, `queue_at_run_concurrency`, `queue_no_cluster_workers`, `orphaned_lease`). |
+| `leasor:dispatch_total` | Counter | Lease dispatch attempts, by `result` (`ok`, `worker_gone`, `persist_failed`, ...). `ok` dropping to zero while leases wait indicates a dispatch outage. |
+| `leasor:enqueue_total` | Counter | EnqueueAction results, by `result` (`ok`, `backpressure`, `error`) and `org`. |
+| `leasor:enqueue_reject_total` | Counter | Enqueues rejected before the store on a routing precondition, by `reason` (`unknown_queue`, `queue_not_active`, `cross_cluster_pool`, ...). |
+| `leasor:queue_enqueue_reject_total` | Counter | Queue-attributed enqueue rejects, by `org`, `queue`, `reason`. |
+| `leasor:terminal_total` | Counter | Actions reaching a terminal state, by `phase` (`succeeded`, `failed`, `aborted`, `timed_out`). |
+| `leasor:expirations_total` | Counter | Leases expired because the worker stopped heartbeating, by `type`. |
+| `leasor:enqueue_to_dispatch_seconds_bucket` | Histogram | Time from enqueue (action enters `unassigned`) to dispatch delivery — the core "waiting for work" latency. |
+| `leasor:queue_wait_seconds_bucket` | Histogram | Time a lease waited in `unassigned` before dispatch. |
+| `leasor:leaseworker_active` | Gauge | Reported active worker slots, by `org`, `worker_cluster`, `worker`. |
+| `leasor:leaseworker_available` | Gauge | Available scheduling slots on connected leaseworkers. |
+| `leasor:leaseworker_capacity` | Gauge | Reported leaseworker capacity. |
+
+### Actions (V2 action store)
+
+The actions service is the sharded V2 front door for CreateRun: it stores actions and streams them to the leasor.
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `actions:actions_in_memory` | Gauge | Actions currently held in the action store. |
+| `actions:active_watchers` | Gauge | Active action watchers (streaming consumers). |
+| `actions:archive_queue_depth` | Gauge | Depth of the archive/drain queue. Growing values indicate archival backpressure. |
+
 ### Cluster service
 
 | Metric | Type | Description |
@@ -317,6 +353,7 @@ Recording rules are prefixed with `union:cp:` (controlplane) or `union:dp:` (dat
 |--------|------|-------------|
 | `container_cpu_usage_seconds_total` | Counter | Cumulative CPU time consumed per DP container. |
 | `container_memory_working_set_bytes` | Gauge | Working set memory per DP container. Watch for values approaching resource limits. |
+| `kube_resourcequota` | Gauge | Per-project `ResourceQuota` usage from kube-state-metrics, by `namespace`, `resource`, and `type` (`hard`/`used`). Backs the ResourceQuota utilization panels and the `UnionDPResourceQuotaNearSaturation` alert. Filter on `resourcequota="project-quota"` to exclude cluster/system quotas. |
 
 ---
 
@@ -394,6 +431,8 @@ Enabled when `monitoring.alerting.enabled: true`.
 | `UnionCPAuthorizerExternalErrors` | warning | `error rate > 0.1/s` | 5m | External authorization backend returning errors. |
 | `UnionCPAuthorizerFailOpenActive` | critical | `fail_open rate > 0` | 1m | Authorization bypass due to unreachable external backend. |
 | `UnionCPAuthorizerHighDenyRate` | warning | `deny rate > 50%` | 10m | Possible authorization policy misconfiguration. |
+| `UnionCPLeasorRunsStuck` | critical | `unassigned run-actions > 0 and dispatch ok rate == 0` | 10m | Runs are waiting in the leasor while dispatch has stalled — runs are stuck. |
+| `UnionCPLeasorEnqueueRejects` | warning | `enqueue_reject rate > 0` | 15m | Sustained enqueue routing rejects (unknown/draining queue, or a queue missing a cluster selector). |
 
 ### Controlplane SLO alerts
 
@@ -414,6 +453,7 @@ Enabled when `monitoring.alerting.enabled: true`.
 | `UnionDPServiceDown` | critical | `replicas_available == 0` | 5m | A DP deployment has zero available replicas. |
 | `UnionDPHighRestartRate` | warning | `restarts > 5 in 1h` | 5m | A pod is restarting frequently (crash loop). |
 | `UnionDPHandlerPanic` | critical | `executor panic > 0 in 1h` | 0m | Handler panic detected in DP executor. |
+| `UnionDPResourceQuotaNearSaturation` | warning | `project-quota used/hard >= 0.9` | 10m | A project `ResourceQuota` is near saturation; at 100% Kubernetes rejects pod creation and runs in that namespace stall. |
 
 ### Dataplane SLO alerts
 
