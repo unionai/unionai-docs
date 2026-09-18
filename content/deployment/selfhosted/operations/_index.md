@@ -10,15 +10,15 @@ Guides for operating a {{< key product_name >}} self-hosted deployment after ini
 
 {{< grid >}}
 
-{{< link-card target="./cicd" icon="git-merge" title="CI/CD integration" >}}
+{{< link-card target="./cicd" icon="git" title="CI/CD integration" >}}
 Deploy workflows from CI/CD pipelines using non-interactive authentication
 {{< /link-card >}}
 
-{{< link-card target="./task-routing" icon="route" title="Task routing" >}}
+{{< link-card target="./task-routing" icon="signpost-split" title="Task routing" >}}
 Configure cluster pools, queues, and per-project routing so tasks run on a data plane
 {{< /link-card >}}
 
-{{< link-card target="./troubleshooting" icon="life-buoy" title="Troubleshooting" >}}
+{{< link-card target="./troubleshooting" icon="life-preserver" title="Troubleshooting" >}}
 Diagnose common control plane, data plane, and cloud-binding issues
 {{< /link-card >}}
 
