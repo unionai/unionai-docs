@@ -1,5 +1,7 @@
 ---
 title: Support resolution agent
+icon: headset
+description: Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 weight: 7
 variants: +flyte +union
 ---
@@ -7,9 +9,9 @@ variants: +flyte +union
 # Support resolution agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/support_resolution_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/support_resolution_agent).
 
-This example demonstrates how to build a customer-support and field-service resolution agent on Flyte. The agent resolves tickets that need current public information — return policies, weather advisories, product recalls, manufacturer specs — and drafts a customer-ready reply with sources a human agent can verify before sending.
+This example demonstrates how to build a customer-support and field-service resolution agent on Flyte. The agent resolves tickets that need current public information (return policies, weather advisories, product recalls, manufacturer specs) and drafts a customer-ready reply with sources a human agent can verify before sending.
 
 The [You.com Research API](https://you.com/docs/research/overview) grounds each ticket in fresh, citable sources. [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) turns that research into a reply draft. With `research_effort="lite"`, the research step stays fast enough for human-in-the-loop support flows.
 
@@ -90,7 +92,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

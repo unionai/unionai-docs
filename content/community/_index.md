@@ -1,5 +1,7 @@
 ---
 title: Community
+description: How the Flyte open source community works, and how to contribute code, docs, or examples.
+icon: people
 weight: 7
 variants: +flyte +union
 top_menu: true
@@ -48,3 +50,5 @@ Both the Flyte and Union documentation are open source.
 Flyte community members and Union customers are both welcome to contribute to the documentation.
 
 If you are interested, see [Contributing documentation and examples](./contributing-docs/_index).
+
+{{< subpage-cards >}}

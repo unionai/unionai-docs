@@ -1,5 +1,7 @@
 ---
 title: Enabling AWS ECR
+description: Give the data plane access to the ECR registry holding your task images.
+icon: archive
 weight: 2
 variants: -flyte +union
 ---

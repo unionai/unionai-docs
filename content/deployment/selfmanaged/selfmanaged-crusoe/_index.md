@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on Crusoe
+description: Run a self-managed data plane on Crusoe, using CMK and Crusoe Cloud Storage.
+icon: lightning
 weight: 8
 variants: -flyte +union
 ---
@@ -13,3 +15,5 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 If you already have a Crusoe Managed Kubernetes (CMK) cluster and Crusoe Cloud Storage (bucket, access keys, IAM policy) configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
 Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required Crusoe Cloud resources.
+
+{{< subpage-cards >}}

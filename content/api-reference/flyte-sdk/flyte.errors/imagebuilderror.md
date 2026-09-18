@@ -1,0 +1,27 @@
+---
+title: ImageBuildError
+description: "This error is raised when the image build fails."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# ImageBuildError
+
+**Package:** `flyte.errors`
+
+This error is raised when the image build fails.
+
+
+## Parameters
+
+```python
+class ImageBuildError(
+    message: str,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+

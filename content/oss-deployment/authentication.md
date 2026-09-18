@@ -1,5 +1,7 @@
 ---
 title: Authentication and SSO
+description: Point Flyte at an external OIDC identity provider and enforce login at the ingress and the console.
+icon: shield-lock
 variants: +flyte -union
 weight: 4
 ---
@@ -9,10 +11,10 @@ weight: 4
 Flyte delegates authentication to an **external OIDC identity provider** (Okta,
 Google, Auth0, …). Two things are involved:
 
-1. **Auth metadata** — the runs service advertises *which* IdP to use, so SDK/CLI and
+1. **Auth metadata**: the runs service advertises *which* IdP to use, so SDK/CLI and
    browser clients can discover where to log in and get tokens. Configured under
    `flyte-core-components.runs.authMetadata`.
-2. **Enforcement at the ingress** — the load balancer validates those tokens (and
+2. **Enforcement at the ingress**: the load balancer validates those tokens (and
    challenges browsers with SSO) *before* requests reach Flyte. Configured with ingress
    annotations.
 
@@ -51,17 +53,17 @@ PKCE callback and must be registered as a redirect URI on the IdP application.
 ## Enforce auth at the ingress
 
 Browsers and machine clients authenticate differently, and on a controller like AWS
-ALB a single ingress can't combine cookie-OIDC (browser) and JWT (token) auth — so the
+ALB a single ingress can't combine cookie-OIDC (browser) and JWT (token) auth, so the
 chart can render up to **three ingresses**:
 
 | Ingress (values key) | Purpose |
 |---|---|
 | `ingress` (`httpAnnotations`) | Serves the console (`/v2`) and API; challenges **browsers** with cookie-OIDC SSO ([walkthrough below](#single-sign-on-for-the-console-at-the-alb)). |
 | `ingress.apiJwtIngress` | **JWT-validates** the `flyteidl2.*` API paths for requests carrying `Authorization: Bearer` (SDK / CLI / machine clients). Give it higher controller precedence than the http ingress so Bearer requests match it first. |
-| `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`) — clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
+| `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`). Clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
 
 Enable the JWT and discovery ingresses and supply your controller/JWT config via their
-`annotations` — e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
+`annotations`, e.g. on ALB: the ACM `certificate-arn`, the JWT-validation config, the
 `Authorization: Bearer*` match condition, and `group.order` values (lower = evaluated
 first) that put `wellknownIngress` first, then `apiJwtIngress`, then the http ingress:
 
@@ -81,7 +83,7 @@ ingress:
 
 ## Single sign-on for the console at the ALB
 
-This is the browser cookie-OIDC SSO referenced above — it goes on the main http
+This is the browser cookie-OIDC SSO referenced above. It goes on the main http
 ingress's `httpAnnotations`. You can put OIDC single sign-on **in front of the console**
 at the ALB, so that
 hitting `https://<host>/v2` challenges the user to log in at your IdP before the
@@ -100,7 +102,7 @@ Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
 ### Prerequisites
 
 - The **AWS Load Balancer Controller** managing your ingress (`ingressClassName: alb`).
-- An **HTTPS listener** with an ACM certificate covering your host — OIDC auth only
+- An **HTTPS listener** with an ACM certificate covering your host. OIDC auth only
   applies to HTTPS rules.
 - An **OIDC application** at your IdP (confidential client, Authorization Code flow)
   with a client ID and secret.
@@ -109,10 +111,12 @@ Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
 
 On the IdP application:
 
-- Add the **sign-in / redirect URI** exactly (note the path — ALB's callback is fixed):
+- Add the **sign-in / redirect URI** exactly (note the path: ALB's callback is fixed):
+
   ```
   https://<your-host>/oauth2/idpresponse
   ```
+
 - Grant type **Authorization Code**; scopes at least `openid email`.
 - Assign the users/groups allowed into the console.
 
@@ -143,7 +147,7 @@ kubectl create secret generic flyte-console-oidc -n flyte \
 
 The AWS Load Balancer Controller's service account must be able to `get`/`list`/
 `watch` Secrets in the ingress namespace. The upstream Helm chart usually grants this
-cluster-wide, but hardened installs may not — if yours doesn't, add a namespaced Role
+cluster-wide, but hardened installs may not. If yours doesn't, add a namespaced Role
 and RoleBinding:
 
 ```yaml
@@ -205,7 +209,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST \
   -H 'Content-Type: application/json' -d '{}'
 ```
 
-Then open `https://<host>/v2` in a browser — you should be bounced through the IdP and
+Then open `https://<host>/v2` in a browser. You should be bounced through the IdP and
 back into the console.
 
 ### Troubleshooting
@@ -214,7 +218,7 @@ back into the console.
 |---|---|
 | `FailedBuildModel … secrets "…" is forbidden` on the ingress | The LB controller can't read the Secret. Apply the RBAC in step 3. |
 | Browser: `'redirect_uri' parameter must be a Login redirect URI` | The exact callback isn't registered. Add `https://<host>/oauth2/idpresponse` (with that path) to the IdP app's redirect URIs. |
-| `401 Authorization Required` *after* a successful login | The token exchange failed — almost always a wrong client **secret** or **client_id**. A trailing `%` on a secret copied from a terminal is the shell's no-newline marker, not part of the secret; strip it. |
+| `401 Authorization Required` *after* a successful login | The token exchange failed: almost always a wrong client **secret** or **client_id**. A trailing `%` on a secret copied from a terminal is the shell's no-newline marker, not part of the secret; strip it. |
 
 ### Annotation reference
 
@@ -229,17 +233,85 @@ back into the console.
 The ALB callback path is fixed at `/oauth2/idpresponse`, and auth applies only to the
 annotated ingress's HTTPS listener rules.
 
+## Sign out
+
+The console's user menu has a **Sign out** action. The session lives at the proxy and
+at your IdP, not in Flyte, so signing out takes two steps. The console serves both
+from `/v2/logout`:
+
+1. Expire the proxy's session cookies, so the browser stops presenting a valid session.
+2. Redirect to a logout endpoint (typically your IdP's; for some proxies, the proxy's sign-out endpoint), so the IdP session ends too.
+
+Step 2 is the one you configure. Without it, only the proxy session is cleared: the
+next request bounces to the IdP, which still has a live session, signs the user back in
+silently, and sign out appears not to have worked.
+
+Both settings are environment variables on the console container:
+
+```yaml
+console:
+  env:
+    # Logout endpoint to redirect to after clearing cookies. Typically your IdP's,
+    # but on some proxies their own sign-out endpoint (see below). Without this,
+    # sign out clears the proxy session only and the IdP signs the user back in.
+    - name: OIDC_LOGOUT_URL
+      value: https://<your-idp>/oauth2/<id>/v1/logout?client_id=<client-id>&post_logout_redirect_uri=https%3A%2F%2F<your-host>%2Fv2%2Fprojects
+    # Session cookies to expire. Defaults to ALB's; see below.
+    # - name: LOGOUT_CLEAR_COOKIES
+    #   value: ""
+```
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `OIDC_LOGOUT_URL` | *(unset)* | Where to send the browser after clearing cookies. Unset means sign out only clears cookies and returns to the console. |
+| `LOGOUT_CLEAR_COOKIES` | `AWSELBAuthSessionCookie-0,…-1,…-2,…-3` | Comma-separated session cookies to expire. Set to `""` to expire none. |
+
+The `post_logout_redirect_uri` must be registered on the IdP application as a
+**sign-out redirect URI** (Okta calls it that; the OIDC spec calls it a post-logout
+redirect URI). If it isn't registered, the IdP rejects the logout request, typically
+with a bare `400 Bad Request` and no explanation.
+
+### Cookies to expire
+
+The default targets AWS ALB, which is the proxy that needs this most: it has **no
+logout endpoint of its own**, so the application has to expire its cookies. ALB splits
+its session cookie at 4 KB and supports 16 KB total, so `-0` through `-3` covers every
+shard it can produce. Override the list if the listener rule sets a custom
+`SessionCookieName`.
+
+Expiring a cookie that was never set is a no-op, so the default is harmless on other
+platforms. But most other proxies expose a sign-out endpoint that clears their own
+cookie. Point `OIDC_LOGOUT_URL` at it and expire nothing yourself:
+
+| Proxy | `OIDC_LOGOUT_URL` | `LOGOUT_CLEAR_COOKIES` |
+|---|---|---|
+| AWS ALB | IdP logout endpoint | *(default)* |
+| oauth2-proxy | `https://<host>/oauth2/sign_out?rd=<idp-logout>` | `""` |
+| GCP IAP | `https://<host>/_gcp_iap/clear_login_cookie` | `""` |
+| Cloudflare Access | `https://<host>/cdn-cgi/access/logout` | `""` |
+
+Pointing straight at the IdP's logout endpoint on these platforms leaves the proxy's
+own cookie alive, and the user stays signed in.
+
+### Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| Signed out, but a new tab is still signed in | The IdP session is still live. Set `OIDC_LOGOUT_URL`, and check you didn't sign in again on the IdP's page after being signed out. |
+| The proxy's session cookie is still in the browser afterwards | The cookie names don't match what your proxy sets. Check `LOGOUT_CLEAR_COOKIES` against the cookies in your browser's dev tools (ALB's are `HttpOnly`, so they appear under Application → Cookies, not in `document.cookie`). |
+| The IdP returns `400 Bad Request` on logout | The post-logout redirect URI isn't registered on the IdP application. |
+
 ## Run attribution (`executed_by`)
 
 Once authentication happens at the edge, Flyte records **who created each run**
 (surfaced as `executed_by` in run metadata). The runs service does not re-validate
-tokens itself — it reads the identity from the headers the proxy forwards. After ALB
+tokens itself. It reads the identity from the headers the proxy forwards. After ALB
 `authenticate-oidc` those are:
 
-- `X-Amzn-Oidc-Data` — a signed JWT carrying the full claims (`sub`, `email`,
+- `X-Amzn-Oidc-Data`: a signed JWT carrying the full claims (`sub`, `email`,
   `given_name`, `family_name`); used on the browser/cookie path.
-- `X-Amzn-Oidc-Identity` — the subject only; used when the data header is absent.
-- `Authorization: Bearer <jwt>` — the SDK/CLI path (proxy-agnostic, always honored).
+- `X-Amzn-Oidc-Identity`: the subject only; used when the data header is absent.
+- `Authorization: Bearer <jwt>`: the SDK/CLI path (proxy-agnostic, always honored).
   This token carries only the subject, so name and email are filled from the IdP's
   `userinfo` endpoint when `runs.authMetadata.externalAuthServerBaseUrl` is set.
 

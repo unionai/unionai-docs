@@ -1,0 +1,31 @@
+---
+title: UnionRpcError
+description: "This error is raised when communication with the Union server fails."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# UnionRpcError
+
+**Package:** `flyte.errors`
+
+This error is raised when communication with the Union server fails.
+
+
+## Parameters
+
+```python
+class UnionRpcError(
+    code: str,
+    message: str,
+    worker: str | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
+

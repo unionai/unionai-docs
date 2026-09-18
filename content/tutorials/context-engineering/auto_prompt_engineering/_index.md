@@ -1,5 +1,7 @@
 ---
 title: Automatic prompt engineering
+icon: magic
+description: Easily run prompt optimization with real-time observability, traceability, and automatic recovery.
 weight: 2
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Automatic prompt engineering
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/auto_prompt_engineering).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/auto_prompt_engineering).
 
 When building with LLMs and agents, the first prompt almost never works. We usually need several iterations before results are useful. Doing this manually is slow, inconsistent, and hard to reproduce.
 
@@ -157,7 +159,7 @@ Most prompt engineering pipelines start as quick scripts or notebooks. They're f
 
 With Flyte 2, we get a more reliable setup:
 
-- Run many evaluations in parallel with [async Python](../../../user-guide/migration/flyte-2/async#true-parallelism-for-all-workloads) or [native DSL](../../../user-guide/migration/flyte-2/async#the-flytemap-function-familiar-patterns).
+- Run many evaluations in parallel with [async Python](../../../user-guide/migration/flyte-2/overview#true-parallelism-for-all-workloads) or [native DSL](../../../user-guide/migration/flyte-2/overview#the-flytemap-function-familiar-patterns).
 - Watch accuracy improve in real time and link results back to the exact dataset, prompt, and model config used.
 - Resume cleanly after failures without rerunning everything from scratch.
 - Reuse the same pattern to tune other parameters like temperature, retrieval depth, or agent strategies, not just prompts.

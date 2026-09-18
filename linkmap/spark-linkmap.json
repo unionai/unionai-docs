@@ -1,14 +1,14 @@
 {
   "packages": {
-    "flyteplugins.spark": "/api-reference/integrations/spark/packages/flyteplugins.spark/"
+    "flyteplugins.spark": "/api-reference/integrations/spark/"
   },
   "identifiers": {
-    "flyteplugins.spark.ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/parquettosparkdecoder/",
-    "ParquetToSparkDecoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/parquettosparkdecoder/",
-    "flyteplugins.spark.Spark": "/api-reference/integrations/spark/packages/flyteplugins.spark/spark/",
-    "Spark": "/api-reference/integrations/spark/packages/flyteplugins.spark/spark/",
-    "flyteplugins.spark.SparkToParquetEncoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/sparktoparquetencoder/",
-    "SparkToParquetEncoder": "/api-reference/integrations/spark/packages/flyteplugins.spark/sparktoparquetencoder/"
+    "flyteplugins.spark.ParquetToSparkDecoder": "/api-reference/integrations/spark/parquettosparkdecoder/",
+    "ParquetToSparkDecoder": "/api-reference/integrations/spark/parquettosparkdecoder/",
+    "flyteplugins.spark.Spark": "/api-reference/integrations/spark/spark/",
+    "Spark": "/api-reference/integrations/spark/spark/",
+    "flyteplugins.spark.SparkToParquetEncoder": "/api-reference/integrations/spark/sparktoparquetencoder/",
+    "SparkToParquetEncoder": "/api-reference/integrations/spark/sparktoparquetencoder/"
   },
   "methods": {}
 }

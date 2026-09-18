@@ -1,5 +1,7 @@
 ---
 title: LLM fine-tuning with LoRA and QLoRA
+icon: layers
+description: Fine-tune a language model for SQL generation using full, LoRA, or QLoRA methods in one Flyte pipeline.
 weight: 2
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # LLM fine-tuning with LoRA and QLoRA
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/llm_fine_tuning_lora_qlora).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/llm_fine_tuning_lora_qlora).
 
 This tutorial fine-tunes a language model for SQL generation using three methods in one workflow: **full** fine-tuning, **LoRA** adapters, and **QLoRA** (4-bit quantized base + LoRA). The pipeline prepares an instruction dataset from HuggingFace, trains with [TRL](https://huggingface.co/docs/trl) `SFTTrainer`, evaluates against a base-model baseline, and streams training charts into Flyte reports.
 

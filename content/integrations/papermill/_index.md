@@ -1,5 +1,7 @@
 ---
 title: Papermill
+description: Run a parameterized Jupyter notebook as a task and capture its outputs as typed values.
+icon: journal-code
 weight: 1
 variants: +flyte +union
 ---
@@ -290,7 +292,7 @@ if __name__ == "__main__":
 
 ### HTML report (default)
 
-Every `NotebookTask` execution renders the executed notebook to HTML and logs it to the Flyte Report tab for that task. This happens whether the notebook succeeds or fails — see [Failure reports](#failure-reports) below. The report is on by default and requires no configuration.
+Every `NotebookTask` execution renders the executed notebook to HTML and logs it to the Flyte Report tab for that task. This happens whether the notebook succeeds or fails; see [Failure reports](#failure-reports) below. The report is on by default and requires no configuration.
 
 ![HTML Report](../../_static/images/integrations/papermill/default_report.png)
 
@@ -425,18 +427,18 @@ NotebookTask(
 ```
 
 > [!NOTE]
-> `request_save_on_cell_execute` is largely redundant in remote execution: the plugin always renders and uploads the partial notebook on failure, so crash diagnostics don't depend on it. Leave it on its default unless using a custom engine that requires it.
+> `request_save_on_cell_execute` is largely redundant in on-cluster execution: the plugin always renders and uploads the partial notebook on failure, so crash diagnostics don't depend on it. Leave it on its default unless using a custom engine that requires it.
 
 ## `NotebookTask` reference
 
 | Parameter                      | Default | Description                                                                               |
 | ------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
-| `name`                         | —       | Task name                                                                                 |
-| `notebook_path`                | —       | Path to the `.ipynb`, relative to the calling file or absolute                            |
-| `task_environment`             | —       | `TaskEnvironment` for registration and remote execution                                   |
+| `name`                         | -       | Task name                                                                                 |
+| `notebook_path`                | -       | Path to the `.ipynb`, relative to the calling file or absolute                            |
+| `task_environment`             | -       | `TaskEnvironment` for registration and on-cluster execution                                   |
 | `inputs`                       | `None`  | `{name: type}` dict of notebook inputs                                                    |
 | `outputs`                      | `None`  | `{name: type}` dict of notebook outputs                                                   |
-| `plugin_config`                | `None`  | Plugin config — currently only `Spark(...)` is supported. Sets the task type accordingly. |
+| `plugin_config`                | `None`  | Plugin config: currently only `Spark(...)` is supported. Sets the task type accordingly. |
 | `kernel_name`                  | `None`  | Jupyter kernel name; `None` uses the kernel from notebook metadata                        |
 | `engine_name`                  | `None`  | Papermill engine; `None` uses the default `nbclient` engine                               |
 | `log_output`                   | `False` | Stream cell output to the task log                                                        |

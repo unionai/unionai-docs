@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the cluster, object storage, container registry, and credentials for an on-premise data plane.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---
@@ -16,9 +18,9 @@ You need a Kubernetes cluster running one of the most recent three minor Kuberne
 
 If you don't already have a cluster, common options for provisioning one include:
 
-- [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/) — the standard Kubernetes bootstrap tool
-- [k3s](https://k3s.io/) — lightweight Kubernetes distribution
-- [RKE2](https://docs.rke2.io/) — Rancher's hardened Kubernetes distribution
+- [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/): the standard Kubernetes bootstrap tool
+- [k3s](https://k3s.io/): lightweight Kubernetes distribution
+- [RKE2](https://docs.rke2.io/): Rancher's hardened Kubernetes distribution
 
 Regardless of how you create your cluster, verify the following requirements are met:
 
@@ -100,11 +102,11 @@ docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 > [!NOTE] This runs an unauthenticated registry suitable for testing. For production, configure TLS and authentication. See the [Docker Registry documentation](https://docs.docker.com/registry/deploying/) for details.
 
-Note the registry URL (e.g. `registry.example.com:5000/union`) — you will configure it in your Helm values.
+Note the registry URL (e.g. `registry.example.com:5000/union`); you will configure it in your Helm values.
 
 ## Identity & access
 
-On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the generated values file during deployment.
+On generic Kubernetes, Union authenticates to object storage and the container registry using static credentials (access key and secret key). These are configured in the Helm values file during deployment.
 
 ### Storage credentials
 

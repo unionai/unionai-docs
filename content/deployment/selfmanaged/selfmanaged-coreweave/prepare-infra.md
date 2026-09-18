@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the CKS cluster, AI Object Storage bucket, and access keys the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---
@@ -16,7 +18,7 @@ For instructions on creating a cluster, see [Create a CKS cluster](https://docs.
 
 ## CoreWeave AI Object Storage
 
-Union uses S3-compatible object storage to store workflow data and artifacts. CoreWeave AI Object Storage is supported, but requires virtual-hosted style S3 URLs (the default Union configuration uses path-style URLs, which CoreWeave doesn't support — you'll set the relevant overrides during deployment).
+Union uses S3-compatible object storage to store workflow data and artifacts. CoreWeave AI Object Storage is supported, but requires virtual-hosted style S3 URLs (the default Union configuration uses path-style URLs, which CoreWeave doesn't support; you'll set the relevant overrides during deployment).
 
 ### Create a bucket
 

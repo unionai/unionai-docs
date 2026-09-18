@@ -1,5 +1,7 @@
 ---
 title: Cross-species gene comparison
+icon: arrow-left-right
+description: Compare homologous genes across species with Carbon scoring, sequence alignment, and ESMFold 3D structures.
 weight: 2
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Cross-species gene comparison
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_gene_comparison).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_gene_comparison).
 
 This tutorial builds a bioinformatics pipeline that compares homologous genes across species. The workflow loads curated gene sequences (insulin, hemoglobin, or p53 by default), scores each sequence with the [Carbon](https://huggingface.co/HuggingFaceBio/Carbon-3B) genomic language model, aligns DNA and translated protein sequences, folds proteins with [ESMFold](https://github.com/facebookresearch/esm), and renders interactive HTML reports with identity heatmaps, phylogenetic trees, and 3D structure viewers.
 

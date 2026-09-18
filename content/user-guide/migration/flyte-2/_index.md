@@ -1,13 +1,12 @@
 ---
 title: From Flyte 1 to 2
+description: What's new in Flyte 2 (pure Python execution, simplified API, fine-grained reproducibility) and how to port a Flyte 1 codebase.
+icon: box-seam
 weight: 1
 variants: +flyte +union
-llm_readable_bundle: true
 ---
 
 # From Flyte 1 to 2
-
-{{< llm-bundle-note >}}
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
@@ -30,7 +29,7 @@ adaptive behavior. Flyte 2 supports:
 
 - Python's asynchronous programming model to express parallelism.
 - Python's native error handling with `try-except` to overridden configurations, like resource requests.
-- Predefined static workflows when compile-time safety is critical.
+- Python's native conditional `if`/`elif`/`else` syntax and `for`/`while` loops.
 
 ## Simplified API
 
@@ -104,3 +103,5 @@ This UI improves the visualization of workflow execution and monitoring, simplif
 
 {{< /markdown >}}
 {{< /variant >}}
+
+{{< subpage-cards >}}

@@ -1,5 +1,7 @@
 ---
 title: Node pools
+description: Separate Union services from worker pods so they do not contend for resources.
+icon: hdd-stack
 weight: 1
 variants: -flyte +union
 ---
@@ -19,6 +21,7 @@ The nodes for Union services should be tainted with:
 ```bash
 kubectl taint nodes <node-name> union.ai/node-role=services:NoSchedule
 ```
+
 The nodes for execution workers should be tainted with:
 
 ```bash

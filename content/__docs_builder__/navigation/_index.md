@@ -5,4 +5,4 @@ variants: -flyte -union
 
 # Navigation Tests
 
-[Start Here](./test1)
+[Start Here](./test1/_index)

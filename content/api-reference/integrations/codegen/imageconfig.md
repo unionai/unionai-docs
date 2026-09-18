@@ -1,0 +1,31 @@
+---
+title: ImageConfig
+description: "Configuration for Docker image building at runtime."
+icon: braces
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# ImageConfig
+
+**Package:** `flyteplugins.codegen`
+
+Configuration for Docker image building at runtime.
+
+
+## Parameters
+
+```python
+class ImageConfig(
+    registry: typing.Optional[str] = None,
+    registry_secret: typing.Optional[str] = None,
+    python_version: typing.Optional[tuple[int, int]] = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `registry` | `typing.Optional[str]` | |
+| `registry_secret` | `typing.Optional[str]` | |
+| `python_version` | `typing.Optional[tuple[int, int]]` | |
+

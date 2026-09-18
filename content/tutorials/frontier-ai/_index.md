@@ -1,5 +1,7 @@
 ---
 title: Frontier AI
+icon: stars
+description: Frontier-model pretraining, automated experimentation, and large-scale AI workloads.
 weight: 4
 variants: +flyte +union
 sidebar_expanded: true
@@ -11,7 +13,7 @@ Tutorials for frontier-model pretraining, automated experimentation, and large-s
 
 {{< grid >}}
 
-{{< link-card target="distributed-pretraining" title="Distributed LLM pretraining" >}}
+{{< link-card target="distributed-pretraining" icon="cpu" title="Distributed LLM pretraining" >}}
 Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
 {{< /link-card >}}
 

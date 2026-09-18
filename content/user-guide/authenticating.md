@@ -1,6 +1,8 @@
 ---
 title: Authenticating
-weight: 30
+description: Authenticate with Union.ai using OAuth2, API keys, and service accounts.
+icon: key
+weight: 6
 variants: -flyte +union
 ---
 
@@ -15,6 +17,7 @@ For most users getting started with Union:
 {{< tabs "auth-quickstart" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 
@@ -29,21 +32,26 @@ import flyte
 
 flyte.init_from_config()
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 1. Create a configuration file:
+
     ```bash
       flyte create config --endpoint https://your-endpoint.unionai.cloud
     ```
 
     Optionally, you can also add a default project and domain.
+
     ```bash
       flyte create config --endpoint http://your-endpoint.unionai.cloud --project flytesnacks --domain development
     ```
 
 2. Run any command to authenticate:
+
    ```bash
    flyte get project
    ```
@@ -54,7 +62,7 @@ This will automatically open your browser to complete authentication.
 {{< /tabs >}}
 
 > [!NOTE]
-> For details on creating and managing configuration files, see [Run on a remote cluster](./run-modes/running-remote#configuration-file).
+> For details on creating and managing configuration files, see [Run on a remote cluster](./get-started/run-modes/running-remote#configuration-file).
 
 ## Authentication modes
 
@@ -71,6 +79,7 @@ This will automatically open your browser to complete authentication.
 #### How it works
 
 When you run any Flyte command, Union automatically:
+
 1. Opens your default web browser
 2. Prompts you to authenticate
 3. Stores credentials securely in your system's keyring that auto-refresh every few hours
@@ -83,6 +92,7 @@ When you run any Flyte command, Union automatically:
 {{< tabs "pkce-usage" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 import flyte.remote as remote
@@ -106,6 +116,7 @@ Or omitting the path to pick up from the default locations:
 ```python
 flyte.init_from_config()
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -128,6 +139,7 @@ flyte get project
 flyte run app.py main
 flyte deploy app.py
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -135,6 +147,9 @@ flyte deploy app.py
 ### Device flow authentication {#device-flow}
 
 **For headless or browser-restricted environments** - Uses OAuth2 device flow with code verification.
+
+> [!IMPORTANT]
+> Device flow is temporarily unavailable for newly provisioned Union organizations while we transition authentication providers. Organizations that already use device flow can continue to do so. For new organizations, use [PKCE](#pkce) when a browser is available or an [API key](#api-key) for non-interactive access.
 
 #### When to use
 
@@ -146,6 +161,7 @@ flyte deploy app.py
 #### How it works
 
 When you run a command, Union displays a URL and user code. You:
+
 1. Open the URL on any browser (on any device)
 2. Enter the displayed code
 3. Complete authentication
@@ -195,6 +211,7 @@ env = flyte.TaskEnvironment("my-project")
 def process_data(data: str) -> str:
     return f"Processed: {data}"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -249,6 +266,7 @@ Union encodes OAuth2 client credentials (client ID and client secret) into a sin
 
 > [!NOTE]
 > **Security Note:** API keys are sensitive credentials. Treat them like passwords:
+>
 > - Store them in secret management systems (GitHub Secrets, AWS Secrets Manager, etc.)
 > - Never commit them to version control
 > - Rotate them regularly
@@ -291,6 +309,9 @@ tasks = remote.Task.listall(project="flytesnacks", domain="development")
 ```
 
 Both methods work identically. The `init_from_api_key()` method is a convenience function specifically designed for API key authentication. If no `api_key` parameter is provided, it automatically reads from the `FLYTE_API_KEY` environment variable.
+
+> [!NOTE]
+> Use `flyte.init_from_api_key()` or `flyte.init(api_key=...)` for API key authentication, **not** `flyte.init_from_config()`. `init_from_config()` reads its auth settings from a `config.yaml` file, which has no API key field, so it cannot authenticate with an API key.
 
 > [!NOTE]
 > The API key is a base64-encoded string containing endpoint, client_id, client_secret, and org information. The SDK automatically decodes this and uses OAuth2 client credentials flow for authentication.
@@ -339,10 +360,12 @@ tasks = remote.Task.listall(project="flytesnacks", domain="development")
 for task in tasks:
     print(f"Task: {task.name}")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
+
 1. Install the Union plugin:
 
    ```bash
@@ -360,6 +383,7 @@ for task in tasks:
 **Managing API keys**
 
 Create a key:
+
 ```bash
 flyte create api-key --name my-ci-key
 ```
@@ -367,14 +391,17 @@ flyte create api-key --name my-ci-key
 This creates OAuth application credentials and prints an `export FLYTE_API_KEY="..."` command to use the key. OAuth applications should not be confused with Union Apps, which are a different construct entirely.
 
 List existing keys:
+
 ```bash
 flyte get api-key
 ```
 
 Delete a key:
+
 ```bash
 flyte delete api-key my-ci-key
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -416,6 +443,7 @@ The `/profile` endpoint (or similar identity endpoints in your app) returns info
 
 > [!TIP]
 > Different Union Apps may expose different endpoints. Common patterns include:
+>
 > - `/profile` or `/me` - Returns the authenticated user/bot identity
 > - `/health` - Health check endpoint
 > - Custom application endpoints specific to your workflow
@@ -462,17 +490,19 @@ Flyte stores authentication tokens securely using your system's native keyring. 
 ### How it works
 
 When you authenticate using PKCE or device flow, Flyte stores your OAuth tokens in:
+
 - **macOS**: Keychain Access
 - **Windows**: Windows Credential Manager
 - **Linux**: Secret Service API (GNOME Keyring, KWallet, etc.)
 
-These tokens are automatically refreshed as needed, providing a seamless experience across multiple commands and sessions.
+These tokens are automatically refreshed as needed across multiple commands and sessions.
 
 ### Systems without keyring support
 
 Some environments, particularly headless Linux systems like remote desktops, Docker containers, or minimal server installations, may not have a keyring service available.
 
 **Symptoms:**
+
 - You are prompted to re-authenticate every time you run a Flyte command
 - You need to authenticate again each time you start a new interactive Python session
 - You see warnings about keyring access failures
@@ -522,6 +552,7 @@ print(keyring.get_keyring())
 ```
 
 You should see output indicating which keyring backend is active:
+
 - Native keyring: `keyring.backends.OS_X.Keyring` (macOS), `keyring.backends.Windows.WinVaultKeyring` (Windows), etc.
 - Alternative keyring: `keyrings.alt.file.PlaintextKeyring` or similar
 
@@ -530,6 +561,7 @@ You should see output indicating which keyring backend is active:
 ### Browser doesn't open for PKCE
 
 If the browser doesn't open automatically:
+
 1. Copy the URL shown in your terminal
 2. Open it manually in your browser
 3. Complete the authentication flow
@@ -539,17 +571,20 @@ Alternatively, switch to device flow if you're in a headless environment.
 ### Device flow code expires
 
 Device flow codes typically expire after a few minutes. If your code expires:
+
 1. Run the command again to get a new code
 2. Authenticate more quickly
 
 ### API key doesn't work
 
 Ensure you've installed the required plugin:
+
 ```bash
 pip install flyteplugins-union
 ```
 
 Verify your API key is set correctly:
+
 ```bash
 echo $FLYTE_API_KEY
 ```
@@ -557,7 +592,7 @@ echo $FLYTE_API_KEY
 ## Best practices
 
 1. **Local development**: Use PKCE authentication for the best experience
-2. **Remote development**: Use device flow for hosted notebooks and SSH sessions
+2. **Remote development**: Use device flow where supported; for newly provisioned organizations, use PKCE when a browser is available or an API key for headless environments
 3. **Production/CI**: Always use API keys for automated environments
 4. **API key security**:
    - Store in secret managers (GitHub Secrets, AWS Secrets Manager, Vault)

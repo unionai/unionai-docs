@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "flyteplugins.agents.mistral": "/api-reference/integrations/agents/mistral/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.mistral.run_agent": "/api-reference/integrations/agents/mistral/#run_agent",
+    "flyteplugins.agents.mistral.run_agent_sync": "/api-reference/integrations/agents/mistral/#run_agent_sync",
+    "flyteplugins.agents.mistral.tool": "/api-reference/integrations/agents/mistral/#tool"
+  }
+}

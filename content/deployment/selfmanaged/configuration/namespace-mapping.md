@@ -1,5 +1,7 @@
 ---
 title: Namespace mapping
+description: Change how project and domain pairs map onto Kubernetes namespaces.
+icon: folder2-open
 weight: 8
 variants: -flyte +union
 ---
@@ -14,8 +16,8 @@ You can customize this mapping by setting the `namespace_mapping.template` value
 
 The template uses Go template syntax with two variables:
 
-- `{{ project }}` — the project name
-- `{{ domain }}` — the domain name (e.g., `development`, `staging`, `production`)
+- `{{ project }}`: the project name
+- `{{ domain }}`: the domain name (e.g., `development`, `staging`, `production`)
 
 ### Examples
 

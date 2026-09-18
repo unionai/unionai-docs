@@ -1,18 +1,17 @@
 ---
 title: Enabling GCP resources
+description: 'Connect your data plane to the GCP services it needs: Cloud Storage, Artifact Registry, Secret Manager, and BigQuery.'
+icon: cloud
 weight: 10
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Enabling GCP resources
 
-{{< llm-bundle-note >}}
-
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage), [Artifact Registry](./enabling-google-artifact-registry), [BigQuery](./enabling-bigquery), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../../user-guide/task-configuration/secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.
@@ -123,3 +122,5 @@ To find the actual name of this GSA do the following:
 
 * Copy this name to document in an editor.
   You will need it later to configure each specific resource.
+
+{{< subpage-cards >}}

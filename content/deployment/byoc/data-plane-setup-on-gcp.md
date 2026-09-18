@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on GCP
+description: Grant Union permission to provision and maintain compute resources in your GCP account.
+icon: cloud
 weight: 6
 variants: -flyte +union
 ---
@@ -36,15 +38,17 @@ For more details see the Google Cloud guide for [setting up workload identity fe
 If you have not done so already, you will be guided to [enable the required APIs](https://console.cloud.google.com/flows/enableapi?apiid=iam.googleapis.com,cloudresourcemanager.googleapis.com,iamcredentials.googleapis.com,sts.googleapis.com).
 2. **Pool Name**: `unionai` (you can also fill in the description if you like).
 3. Under **Add a provider to pool**:
-  * For **Select a provider**, choose **AWS**.
-  * For **Provider name**, enter `unionai-aws`.
-  * The **Provider ID** should be automatically set to `unionai-aws` as well. If not, select **EDIT** and enter it manually.
+
+* For **Select a provider**, choose **AWS**.
+* For **Provider name**, enter `unionai-aws`.
+* The **Provider ID** should be automatically set to `unionai-aws` as well. If not, select **EDIT** and enter it manually.
+
 4. For **AWS Account ID**, enter `479331373192` ({{< key product_name >}}'s management account ID)
 5. **Continue** with the default attribute mappings and conditions.
 
 ### On the command line using `gcloud`
 
-Assuming you have the [`gcloud` tool ](https://cloud.google.com/sdk/gcloud)installed locally and are logged into `<UnionDataPlaneProjectID>`, you can check the existing workflow identity pools in your project with:
+Assuming you have the [`gcloud` tool](https://cloud.google.com/sdk/gcloud)installed locally and are logged into `<UnionDataPlaneProjectID>`, you can check the existing workflow identity pools in your project with:
 
 ```bash
 gcloud iam workload-identity-pools list --location="global"
@@ -68,7 +72,7 @@ gcloud iam workload-identity-pools providers create-aws unionai-aws \
     --account-id="479331373192"
 ```
 
-## Create a role for {{< key product_name >}} admin
+## Create a role for {{% key product_name %}} admin
 
 To ensure that the {{< key product_name >}} team has all the privileges needed to deploy the data plane, _but no more than strictly necessary_, you will need to create a custom role that the {{< key product_name >}} service account will assume.
 
@@ -87,7 +91,7 @@ gcloud iam roles create UnionaiAdministrator \
     --file=union-ai-admin-role.yaml
 ```
 
-## Create the {{< key product_name >}} admin service account
+## Create the {{% key product_name %}} admin service account
 
 ### In the GCP web console
 
