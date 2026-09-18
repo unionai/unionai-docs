@@ -84,7 +84,7 @@ Where `app` is the variable name of the `AppEnvironment` object.
 
 - Verify parameter names match exactly
 - Check that parameters are defined in the app environment
-- Ensure you're using the `input_values` parameter correctly
+- Ensure you're using the `parameter_values` parameter correctly
 
 **Slow serving:**
 

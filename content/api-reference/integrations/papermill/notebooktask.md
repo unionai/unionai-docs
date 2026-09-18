@@ -2,7 +2,7 @@
 title: NotebookTask
 description: "A Flyte task that executes a Jupyter notebook via Papermill."
 icon: braces
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,6 +24,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`ConditionWebhook`](../flyte/conditionwebhook) | Webhook configuration for a condition notification. |
 | [`Cron`](../flyte/cron) | Cron-based automation schedule for use with `Trigger`. |
 | [`Device`](../flyte/device) | Represents a device type, its quantity and partition if applicable. |
+| [`Documentation`](../flyte/documentation) | This class is used to store the documentation of a task. |
 | [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern. |
@@ -68,7 +69,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
 | [`init_from_api_key()`](#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
-| [`init_in_cluster()`](#init_in_cluster) |  |
+| [`init_in_cluster()`](#init_in_cluster) | Initialize the Flyte system from inside a task pod, and return the kwargs used to build the controller that enqueues and watches child actions. |
 | [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`is_control_plane_available()`](#is_control_plane_available) | True when this process can submit work to a Flyte control plane — `flyte.run` launches real remote runs whose actions can be inspected, awaited, and replayed (recovered/forked). |
 | [`latest_checkpoint()`](#latest_checkpoint) | Return the file under *root* matching *glob_pattern* with the largest `key(path)`, or `None`. |
@@ -120,7 +121,7 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType] = None,
 ) -> flyte._resources.Device
@@ -131,7 +132,7 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). |
 
@@ -175,8 +176,8 @@ Create a Neuron device instance.
 
 ```python
 def TPU(
-    device: typing.Literal['V5P', 'V6E'],
-    partition: typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType] = None,
+    device: typing.Literal['V5E', 'V5P', 'V6E'],
+    partition: typing.Union[typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], NoneType] = None,
 )
 ```
 Create a TPU device instance.
@@ -185,8 +186,8 @@ Create a TPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['V5P', 'V6E']` | Device type (e.g., "V5P", "V6E"). |
-| `partition` | `typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType]` | Partition of the TPU (e.g., "1x1", "2x2", ...). |
+| `device` | `typing.Literal['V5E', 'V5P', 'V6E']` | Device type (e.g., "V5E", "V5P", "V6E"). |
+| `partition` | `typing.Union[typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], NoneType]` | Partition of the TPU (e.g., "1x1", "2x2", ...). |
 
 **Returns:** Device instance.
 
@@ -343,10 +344,11 @@ def main():
 ```python
 def deploy(
     *envs: Environment,
-    dryrun: bool = False,
+    dry_run: bool = False,
     version: str | None = None,
     interactive_mode: bool | None = None,
     copy_style: CopyFiles = 'loaded_modules',
+    dryrun: bool | None = None,
 ) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
@@ -356,10 +358,11 @@ Deploy the given environment or list of environments.
 | Parameter | Type | Description |
 |-|-|-|
 | `*envs` | `Environment` | Environment or list of environments to deploy. |
-| `dryrun` | `bool` | dryrun mode, if True, the deployment will not be applied to the control plane. |
+| `dry_run` | `bool` | dry run mode, if True, the deployment will not be applied to the control plane. |
 | `version` | `str \| None` | version of the deployment, if None, the version will be computed from the code bundle. TODO: Support for interactive_mode |
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
+| `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
 
@@ -615,14 +618,51 @@ def init_in_cluster(
     insecure: bool = False,
 ) -> dict[str, typing.Any]
 ```
+Initialize the Flyte system from inside a task pod, and return the kwargs used to build
+the controller that enqueues and watches child actions.
+
+Credentials are resolved in this order:
+
+1. An explicit `api_key` argument.
+2. A mounted config file, when the pod has `UCTL_CONFIG` or `FLYTECTL_CONFIG` set.
+3. Auth env vars set on the pod (see below).
+4. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
+
+Deployments that do not want to hand task pods a long-lived API key can skip issuing one
+entirely and set the standard credentials config env vars as default env vars on the pod:
+
+```
+FLYTE_AUTH_TYPE=ExternalCommand
+FLYTE_AUTH_COMMAND="/usr/local/bin/mint-token --audience flyte"
+```
+
+`FLYTE_AUTH_COMMAND` takes a shell-quoted command line or a JSON array of arguments; the
+command's stdout is used as the access token and is re-run whenever the token needs
+refreshing. Setting `FLYTE_AUTH_TYPE` disables the injected-api-key fallback, so the
+two can never disagree. The endpoint still comes from the injected `_U_EP_OVERRIDE`, and can
+also be set explicitly with `FLYTE_ADMIN_ENDPOINT` (the endpoint is a platform setting, not
+an auth one, so it keeps the derived name). `FLYTE_AUTH_PROXY_COMMAND` configures a token
+command for an authenticating proxy in front of Flyte, independently of the auth type.
+
+`FLYTE_AUTH_TYPE` / `FLYTE_AUTH_COMMAND` / `FLYTE_AUTH_PROXY_COMMAND` are the preferred
+names; the ones derived from the config keys (`FLYTE_ADMIN_AUTHTYPE`, `FLYTE_ADMIN_COMMAND`,
+`FLYTE_ADMIN_PROXYCOMMAND`) remain accepted.
+
+Note: the opt-in Rust controller (`_F_USE_RUST_CONTROLLER=1`) reads the injected api key
+directly and does not support these env vars.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `org` | `str \| None` | |
-| `project` | `str \| None` | |
-| `domain` | `str \| None` | |
-| `api_key` | `str \| None` | |
-| `endpoint` | `str \| None` | |
-| `insecure` | `bool` | |
+| `org` | `str \| None` | Optional org override; defaults to the `_U_ORG_NAME` env var. |
+| `project` | `str \| None` | Optional project override; defaults to the `FLYTE_INTERNAL_EXECUTION_PROJECT` env var. |
+| `domain` | `str \| None` | Optional domain override; defaults to the `FLYTE_INTERNAL_EXECUTION_DOMAIN` env var. |
+| `api_key` | `str \| None` | Optional api key, taking precedence over every env-var and config-file source. |
+| `endpoint` | `str \| None` | Optional endpoint override, taking precedence over `_U_EP_OVERRIDE`. |
+| `insecure` | `bool` | Whether to use a plaintext channel. |
+
+**Returns:** The kwargs used to initialize the client, to be spread into `create_remote_controller`.
 
 #### init_passthrough()
 
@@ -959,7 +999,7 @@ def run_python_script(
     clustered: bool = False,
     replicas: 'Optional[int]' = None,
     nproc_per_node: 'Optional[int]' = None,
-    runtime: 'Optional[TorchRun]' = None,
+    runtime: 'Optional[Runtime]' = None,
     failure_policy: 'Optional[ClusterFailurePolicy]' = None,
     ttl_seconds_after_finished: 'Optional[int]' = None,
 ) -> 'Run'
@@ -1016,7 +1056,7 @@ run = flyte.run_python_script(Path("analysis.py"), image=img)
 | `clustered` | `bool` | If True, run the script under a `flyte.clustered.ClusteredTaskEnvironment` (a Kubernetes JobSet) instead of a plain `TaskEnvironment`, for distributed multi-node execution via `torchrun`. Requires `replicas` and `nproc_per_node`. |
 | `replicas` | `'Optional[int]'` | Number of pods (== nodes) in the job set. Required when `clustered=True`. |
 | `nproc_per_node` | `'Optional[int]'` | Number of processes per pod, passed to `torchrun --nproc-per-node`. Required when `clustered=True`. |
-| `runtime` | `'Optional[TorchRun]'` | Launcher configuration for clustered execution, e.g. `flyte.clustered.TorchRun(rdzv_backend="c10d")`. Only used when `clustered=True`; defaults to `TorchRun()`. |
+| `runtime` | `'Optional[Runtime]'` | Launcher configuration for clustered execution, e.g. `flyte.clustered.TorchRun(rdzv_backend="c10d")`. Only used when `clustered=True`; defaults to `TorchRun()`. |
 | `failure_policy` | `'Optional[ClusterFailurePolicy]'` | JobSet-level restart/eviction policy, e.g. `flyte.clustered.ClusterFailurePolicy(max_restarts=2)`. Only used when `clustered=True`; defaults to `ClusterFailurePolicy()`. |
 | `ttl_seconds_after_finished` | `'Optional[int]'` | Seconds to retain the JobSet after completion. Only used when `clustered=True`. |
 

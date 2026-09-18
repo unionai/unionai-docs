@@ -2,7 +2,7 @@
 title: ActionDetails
 description: "A class representing an action."
 icon: braces
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,6 +40,7 @@ class ActionDetails(
 | `abort_info` | `run_definition_pb2.AbortInfo \| None` | Get the abort information if the action was aborted, otherwise returns None. |
 | `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
 | `attempts` | `int` | Get the number of attempts of the action. |
+| `code_bundle` | `CodeBundle \| None` | The code bundle this action ran, or None when the task ran from code baked into its image.  This is metadata only — where the bundle lives and which version it is. Use `Action.download_code` or `Run.download_code` to fetch the source itself. |
 | `error_info` | `run_definition_pb2.ErrorInfo \| None` | Get the error information if the action failed, otherwise returns None. |
 | `error_message` | `str` | The error message of a failed action, or an empty string when the action did not fail (or carries no error details). |
 | `initializing_time` | `timedelta \| None` | Get the time spent in the INITIALIZING phase for the latest attempt. |

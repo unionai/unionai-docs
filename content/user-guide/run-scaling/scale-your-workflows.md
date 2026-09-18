@@ -109,7 +109,7 @@ from datetime import timedelta
 # Define reusable environment
 env = flyte.TaskEnvironment(
     name="high-throughput",
-    reuse_policy=flyte.ReusePolicy(
+    reusable=flyte.ReusePolicy(
         replicas=(2, 10),           # Auto-scale from 2 to 10 replicas
         concurrency=5,              # 5 tasks per replica = 50 max concurrent
         scaledown_ttl=timedelta(minutes=10),
@@ -265,7 +265,7 @@ Minimize data transfer overhead by choosing appropriate data types:
 **Use reference types for large data**:
 
 ```python
-from flyte.io import File, Directory, DataFrame
+from flyte.io import File, Dir, DataFrame
 
 @env.task
 async def process_large_file(input_file: File) -> File:
@@ -292,8 +292,8 @@ async def process_metadata(metadata: dict) -> dict:
 **Guideline**:
 
 - **< 10 MB**: Use inline types (primitives, small dicts, lists)
-- **> 10 MB**: Use reference types (File, Directory, DataFrame)
-- **Adjust**: Use `max_inline_io` in `TaskEnvironment` to change the threshold
+- **> 10 MB**: Use reference types (File, Dir, DataFrame)
+- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` to change the threshold
 
 See [Data flow](./data-flow) for details on data types and transport.
 
@@ -420,7 +420,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 # Use reusable containers
 env = flyte.TaskEnvironment(
     name="optimized-pipeline",
-    reuse_policy=flyte.ReusePolicy(
+    reusable=flyte.ReusePolicy(
         replicas=(5, 20),
         concurrency=10,
         scaledown_ttl=timedelta(minutes=10),

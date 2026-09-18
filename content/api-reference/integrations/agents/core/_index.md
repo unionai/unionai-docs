@@ -2,7 +2,7 @@
 title: Core
 description: "flyteplugins-agents-core — the shared contract every agent-SDK adapter implements."
 icon: book
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -242,6 +242,11 @@ def flush_report()
 Flush the active Flyte report — a best-effort no-op when there is none.
 
 Adapters call this once after a run so the rendered timeline is published.
+
+`flyte.report.flush` is syncified, so the async entry point is `.aio()`.
+Calling the sync form from here returned None, and awaiting None raised a
+TypeError that the guard below swallowed, which made every adapter's
+mid-run flush a silent no-op.
 
 
 #### instrumented_frameworks()

@@ -2,7 +2,7 @@
 title: Action
 description: "A class representing an action."
 icon: braces
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -62,6 +62,7 @@ class Action(
 | [`abort()`](#abort) | Aborts / Terminates the action. |
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
+| [`download_code()`](#download_code) | Download the code this action ran — the source shown in the console's "Code" tab. |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_logs()`](#get_logs) | Get logs for the action as an iterator of strings. |
 | [`get_report()`](#get_report) | Get the HTML report associated with this action. |
@@ -108,6 +109,46 @@ def done()
 ```
 Check if the action is done.
 
+
+### download_code()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.download_code.aio()`.
+```python
+def download_code(
+    dest: str | pathlib.Path | None = None,
+    extract: bool = True,
+    attempt: int | None = None,
+) -> pathlib.Path
+```
+Download the code this action ran — the source shown in the console's "Code" tab.
+
+The code is whatever `flyte run` / `flyte deploy` packaged and uploaded for this task: a
+tarball of the source tree, or a cloudpickle of the task when it was launched from a
+notebook or REPL. Tasks that run from code baked into their image carry no bundle, and
+raise.
+
+```python
+action = flyte.remote.Action.get(run_name="my-run", name="n0")
+src = action.download_code(dest="./n0-code")
+print((src / "workflows" / "main.py").read_text())
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `dest` | `str \| pathlib.Path \| None` | Directory to download into, created if missing. Defaults to a directory named after the run, under the current working directory. |
+| `extract` | `bool` | Unpack the tarball into `dest`. Set False to keep the archive as-is. Pickled bundles are never unpacked. |
+| `attempt` | `int \| None` | Attempt to fetch the bundle for. Defaults to the latest attempt. |
+
+**Returns**
+
+The directory the source was extracted into, or the path of the downloaded archive
+when `extract` is False or the bundle is a pickle.
 
 ### get()
 

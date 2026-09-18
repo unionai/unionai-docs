@@ -1,7 +1,7 @@
 ---
 title: flyte.models
 icon: box-seam
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,12 +30,14 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`generate_random_name()`](#generate_random_name) | Generate a random name for the task. |
+| [`is_clustered_worker_env()`](#is_clustered_worker_env) | True for any worker process of a clustered/jobset task, regardless of which launcher started it. |
 
 
 ### Variables
 
 | Property | Type | Description |
 |-|-|-|
+| `CLUSTERED_WORKER_ENV` | `str` |  |
 | `MAX_INLINE_IO_BYTES` | `int` |  |
 | `NULL_TASK_CONTEXT` | `_NullTaskContext` |  |
 | `TYPE_CHECKING` | `bool` |  |
@@ -50,4 +52,18 @@ def generate_random_name()
 Generate a random name for the task. This is used to create unique names for tasks.
 TODO we can use unique-namer in the future, for now its just guids
 
+
+#### is_clustered_worker_env()
+
+```python
+def is_clustered_worker_env(
+    env: Mapping[str, str],
+) -> bool
+```
+True for any worker process of a clustered/jobset task, regardless of which launcher started it.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Mapping[str, str]` | |
 

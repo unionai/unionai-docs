@@ -63,7 +63,7 @@ Flyte uses efficient MessagePack serialization for most types, providing compact
 When a task starts:
 
 1. **Inline inputs download**: The task downloads inline inputs from the configured Flyte object store.
-2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using `flyte.TaskEnvironment`'s `max_inline_io` parameter.
+2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using the `max_inline_io_bytes` parameter of `@env.task`.
 3. **Memory consideration**: Inline data is materialized in memory, so adjust your task resources accordingly.
 4. **Raw data materialization**: Raw data (files, directories) is passed using special types in `flyte.io`. Dataframes are automatically materialized if using `pd.DataFrame`. Use `flyte.io.DataFrame` to avoid automatic materialization.
 

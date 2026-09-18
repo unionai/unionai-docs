@@ -107,7 +107,7 @@ You can prefetch and shard models for multi-GPU inference:
 # Prefetch with sharding configuration
 run = flyte.prefetch.hf_model(
     repo="meta-llama/Llama-2-70b-hf",
-    accelerator="L40s:4",
+    resources=flyte.Resources(gpu="L40s:4"),
     shard_config=flyte.prefetch.ShardConfig(
         engine="vllm",
         args=flyte.prefetch.VLLMShardArgs(

@@ -2,7 +2,7 @@
 title: Notification
 description: "Base notification class."
 icon: braces
-version: 2.7.1
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

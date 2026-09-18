@@ -48,9 +48,8 @@ If your organization spans multiple cluster pools, see [Org-wide secrets in a mu
 {{< /markdown >}}
 {{< /variant >}}
 
-You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
+You can optionally specify `--domain`, or both `--project` and `--domain`, to restrict the scope of the secret to:
 
-* A specific project (across all domains)
 * A specific domain (across all projects)
 * A specific project and a specific domain.
 
@@ -110,7 +109,7 @@ For example, the following command will list all secrets in the organization:
 flyte get secret
 ```
 
-Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** available in that project and/or domain.
+Specifying `--domain`, or both `--project` and `--domain`, will list the secrets that are **only** available in that domain, or in that project and domain.
 
 For example, to list the secrets that are only available in `my_project` and domain `development`, you would run:
 

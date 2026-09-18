@@ -131,7 +131,7 @@ As you develop, keep the following in mind. These conventions come from the SDK'
 - **Keep the core small.** Extensions and extra functionality belong in **plugins**,
   not core, so that module loading stays fast.
 - **Respect the module structure.** `flyte.*` is the task-authoring surface,
-  `flyte.apps.*` is for apps, and `flyte.io.*` holds the special I/O types.
+  `flyte.app.*` is for apps, and `flyte.io.*` holds the special I/O types.
   Anything under `_internal` (or an underscore-prefixed module) is private.
   Users should never need to import it.
 - **Manage the public API** with `__all__` and `__init__.py`, and never expose
