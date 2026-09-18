@@ -149,7 +149,7 @@ Without this role the pane stays empty and the operator logs an authorization er
 the workspace, so whoever administers the resource group that owns it may have to create the
 assignment for you.
 
-See [Persisted task logs](../selfmanaged-azure/prepare-infra#8-persisted-task-logs-log-analytics)
+See [Persisted task logs](../infrastructure-recommendations/azure#8-persisted-task-logs-log-analytics)
 for the full Azure setup, including enabling Container Insights and verifying ingestion.
 
 ### Alternative: writing to Blob Storage

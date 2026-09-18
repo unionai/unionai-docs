@@ -1,14 +1,14 @@
 ---
-title: Prepare infrastructure
-description: Create the AKS cluster, Storage Account, and managed identities the data plane needs.
-icon: tools
-weight: 1
+title: Azure
+description: Create the AKS cluster, Storage Account, managed identities, and Log Analytics access the data plane needs.
+icon: microsoft
+weight: 3
 variants: -flyte +union
 ---
 
-# Prepare infrastructure
+# Azure infrastructure
 
-This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE] **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
 
@@ -58,7 +58,7 @@ az group create \
 
 ## 2. AKS cluster
 
-You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Cluster Recommendations](../cluster-recommendations) for networking and node pool guidance.
+You need an AKS cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
 Three specific add-ons are required:
 
@@ -329,7 +329,7 @@ Container Insights is often already enabled, especially when a central platform 
 the AKS cluster. In that case it is shipping to an existing workspace, frequently a shared one in
 another resource group. Reuse that workspace instead of creating a second one, and save its
 resource ID. You will need it to override the chart default when you
-[deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+[set the deploy configuration](#deploy-configuration).
 
 ```bash
 export LOG_ANALYTICS_WORKSPACE_ID=$(az aks show \
@@ -404,4 +404,44 @@ az role assignment create \
 
 The Key Vault URI (`https://${KEY_VAULT_NAME}.vault.azure.net/`) maps to `AZURE_KEY_VAULT_URI` in the chart values.
 
-Once your infrastructure is ready, proceed to [Deploy the dataplane](../selfmanaged-azure/deploy-dataplane).
+Once your infrastructure is ready, proceed to [Deploy the dataplane](../deploy/_index).
+
+## Deploy configuration
+
+When you [deploy the data plane](../deploy/_index), download the Azure values file and set the Azure-specific keys below. The shared `global` keys (`UNION_CONTROL_PLANE_HOST`, `CLUSTER_NAME`, `ORG_NAME`) are covered in the deploy walkthrough.
+
+```bash
+curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/values.azure.yaml
+```
+
+Using the [environment variables](#environment-variables) from above, set the following keys under `global`. The rest of the file (Blob storage, service account annotations, Workload Identity) is templated from these values, so you do not need to edit it:
+
+- Set `global.METADATA_CONTAINER` to `${METADATA_CONTAINER}`.
+- Set `global.AZURE_STORAGE_ACCOUNT` to `${STORAGE_ACCOUNT}`.
+- Set `global.AZURE_SUBSCRIPTION_ID`, `global.AZURE_TENANT_ID`, and `global.AZURE_RESOURCE_GROUP` to the subscription, tenant, and resource group holding your Union resources.
+- Set `global.AZURE_BACKEND_CLIENT_ID` to `${BACKEND_CLIENT_ID}` (the backend managed identity client ID).
+- Set `global.AZURE_WORKER_CLIENT_ID` to `${WORKER_CLIENT_ID}` (the worker managed identity client ID).
+- For persisted task logs, check
+  `config.proxy.persistedLogs.azureLogAnalytics.logAnalyticsWorkspaceResourceIdTemplate`. It
+  defaults to a workspace named `union-<ORG_NAME>` in `${RESOURCE_GROUP}`. If Container
+  Insights ships somewhere else, such as a shared monitoring resource group, replace the whole
+  template with the workspace resource ID you saved in
+  [Persisted task logs](#8-persisted-task-logs-log-analytics):
+
+  ```yaml
+  config:
+    proxy:
+      persistedLogs:
+        sourceType: AzureLogAnalytics
+        azureLogAnalytics:
+          logAnalyticsWorkspaceResourceIdTemplate: "/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/<workspace-resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>"
+  ```
+
+  Nest the key under `config.proxy.persistedLogs`; a top-level `proxy:` block configures the
+  proxy deployment instead and leaves the workspace unchanged. FluentBit stays disabled on
+  Azure: from dataplane chart 2026.8.0 `values.azure.yaml` sets `fluentbit.enabled: false`, and
+  on earlier charts you set it yourself.
+
+If using Azure Key Vault (optional):
+
+- Set `global.AZURE_KEY_VAULT_URI` to `https://${KEY_VAULT_NAME}.vault.azure.net/`.
