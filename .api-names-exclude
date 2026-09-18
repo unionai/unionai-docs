@@ -19,8 +19,8 @@
 # Entry-point group names that plugins register under
 :flyte\.plugins\.(types|cli\.commands)$
 
-# A Helm values path
-^deployment/selfmanaged/configuration/authentication\.md:flyte\.configmap\.
+# Helm values paths
+^deployment/(selfmanaged/configuration|selfhosted)/authentication\.md:flyte\.configmap\.
 
 # Pages that document the [[...]] link sigil itself
 ^community/contributing-docs/(api-docs|authoring)\.md:(X|…)$
