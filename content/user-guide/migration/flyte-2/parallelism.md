@@ -1,5 +1,7 @@
 ---
 title: Parallelism and fan-out
+description: map_task becomes flyte.map, and fan-out becomes async and asyncio.gather.
+icon: distribute-horizontal
 weight: 8
 variants: +flyte +union
 ---
@@ -71,7 +73,7 @@ Reprocessing a range of dates is a textbook `@dynamic` use case in Flyte 1, beca
 {{< /tab >}}
 {{< /tabs >}}
 
-For fine-grained concurrency control (semaphores, `as_completed`, error handling), see [Fanout](../../task-programming/fanout).
+For fine-grained concurrency control (semaphores, `as_completed`, error handling), see [Fanout](../../tasks/task-programming/fanout).
 
 ## Next
 

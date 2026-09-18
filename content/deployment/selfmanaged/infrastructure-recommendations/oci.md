@@ -1,5 +1,7 @@
 ---
 title: OCI
+description: Create the OKE cluster, Object Storage bucket, registry, and IAM access the data plane needs.
+icon: database
 weight: 4
 variants: -flyte +union
 ---

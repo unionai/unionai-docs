@@ -1,5 +1,7 @@
 ---
 title: Sovereign Data Plane
+description: An Enterprise option that replaces the management tunnel with a load balancer reachable only from the customer network.
+icon: bank
 weight: 5
 variants: -flyte +union
 ---

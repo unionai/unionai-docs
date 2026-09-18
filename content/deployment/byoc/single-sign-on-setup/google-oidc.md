@@ -1,5 +1,7 @@
 ---
 title: Google OpenID Connect
+description: Configure Google OpenID Connect as your identity provider.
+icon: google
 weight: 2
 variants: -flyte +union
 ---
@@ -35,7 +37,7 @@ Next, retrieve your credentials: Click on your configured client and copy the va
 
 ![OAuth 2.0 credentials](../../../_static/images/user-guide/data-plane-setup/single-sign-on-setup/google-oidc/oauth-credentials.png)
 
-## Share the client ID and client secret securely with {{< key product_name >}}
+## Share the client ID and client secret securely with {{% key product_name %}}
 
 Finally, you will need to share the client ID and client secret securely with {{< key product_name >}}:
 

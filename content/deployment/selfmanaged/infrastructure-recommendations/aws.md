@@ -1,5 +1,7 @@
 ---
 title: AWS
+description: Create the EKS cluster, S3 bucket, ECR repository, and IAM roles the data plane needs.
+icon: amazon
 weight: 1
 variants: -flyte +union
 ---

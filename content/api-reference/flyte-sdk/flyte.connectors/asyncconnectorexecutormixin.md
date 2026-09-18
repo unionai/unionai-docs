@@ -1,0 +1,35 @@
+---
+title: AsyncConnectorExecutorMixin
+description: "This mixin class is used to run the connector task locally, and it's only used for local execution."
+icon: braces
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# AsyncConnectorExecutorMixin
+
+**Package:** `flyte.connectors`
+
+This mixin class is used to run the connector task locally, and it's only used for local execution.
+Task should inherit from this class if the task can be run in the connector.
+
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`execute()`](#execute) |  |
+
+
+### execute()
+
+```python
+def execute(
+    **kwargs,
+) -> typing.Any
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `**kwargs` |  | |
+

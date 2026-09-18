@@ -1,5 +1,7 @@
 ---
 title: Platform deployment
+description: Deploy the Union platform, either as BYOC or self-managed, with your code and data staying in your own cloud.
+icon: server
 weight: 5
 variants: -flyte +union
 top_menu: true
@@ -18,6 +20,14 @@ The **control plane** does not have access to the code, data, images, or logs in
 If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
 
 If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
+
+> [!INFO] Try Flyte Devbox in your browser
+>
+> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox).
+>
+> If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
 
 ## BYOC deployment
 
@@ -65,3 +75,5 @@ The control plane has access to:
 * Names of tasks and other deployed entities
 * Pointers to object storage locations in the data plane (but not any user data)
 * Union.ai IDP
+
+{{< subpage-cards >}}

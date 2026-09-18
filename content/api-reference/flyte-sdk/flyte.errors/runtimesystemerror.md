@@ -1,0 +1,32 @@
+---
+title: RuntimeSystemError
+description: "This error is raised when the underlying task execution fails because of a system error."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# RuntimeSystemError
+
+**Package:** `flyte.errors`
+
+This error is raised when the underlying task execution fails because of a system error. This could be a bug in the
+Union system or a bug in the user's code.
+
+
+## Parameters
+
+```python
+class RuntimeSystemError(
+    code: str,
+    message: str,
+    worker: str | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
+

@@ -1,5 +1,7 @@
 ---
 title: Nebius
+description: Install the data plane Helm chart onto your Nebius MK8s cluster.
+icon: boxes
 weight: 3
 variants: -flyte +union
 ---
@@ -26,7 +28,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 * Install the [Nebius CLI](https://docs.nebius.com/cli) and authenticate with `nebius profile create`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Set your `KUBECONFIG` to the Nebius MK8s cluster where you want to deploy the data plane:
 
@@ -303,8 +305,9 @@ user guide:
 - [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
 - [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, priority, and fairness.
 
-Every organization is provisioned with a `default` pool that new clusters join
-automatically, so a single-cluster deployment needs no extra pool setup.
+Each cluster is assigned exactly one pool. If no custom pool is specified when the
+cluster is created, it joins the `default` pool that every organization is
+provisioned with, so a single-cluster deployment needs no extra pool setup.
 
 ## Additional resources
 

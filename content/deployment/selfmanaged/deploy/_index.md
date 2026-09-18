@@ -1,5 +1,7 @@
 ---
 title: Deploy the data plane
+description: Install the data plane Helm chart on AWS, GCP, Azure, OCI, or generic Kubernetes.
+icon: rocket-takeoff
 weight: 3
 variants: -flyte +union
 ---
@@ -38,7 +40,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{< key product_name >}} operator
+## Deploy the {{% key product_name %}} operator
 
 1. Add the {{< key product_name >}} Helm repo:
 
@@ -108,7 +110,7 @@ Before you start, provision your cloud infrastructure using the matching page an
    <cluster>   <org>   enabled   healthy
    ```
 
-7. Follow the [Quickstart](../../../user-guide/quickstart) to run your first workflow and verify your cluster is working correctly.
+7. Follow the [Quickstart](../../../user-guide/get-started/quickstart) to run your first workflow and verify your cluster is working correctly.
 
 ## Next: manage your cluster and pools
 
@@ -122,5 +124,12 @@ user guide:
 - [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
 - [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, priority, and fairness.
 
-Every organization is provisioned with a `default` pool that new clusters join
-automatically, so a single-cluster deployment needs no extra pool setup.
+Each cluster is assigned exactly one pool. If no custom pool is specified when the
+cluster is created, it joins the `default` pool that every organization is
+provisioned with, so a single-cluster deployment needs no extra pool setup.
+
+## GPU cloud deployment guides
+
+CoreWeave, Crusoe, and Nebius have their own deployment guides, with provider-specific GPU, storage, and registry steps:
+
+{{< subpage-cards >}}

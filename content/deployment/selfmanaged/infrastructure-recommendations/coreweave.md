@@ -1,5 +1,7 @@
 ---
 title: CoreWeave
+description: Create the CKS cluster, AI Object Storage bucket, and access keys the data plane needs.
+icon: gpu-card
 weight: 6
 variants: -flyte +union
 ---

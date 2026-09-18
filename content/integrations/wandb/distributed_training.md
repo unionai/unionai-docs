@@ -1,5 +1,7 @@
 ---
 title: Distributed training
+description: How wandb_init detects a distributed job and coordinates logging across ranks.
+icon: diagram-3
 weight: 2
 variants: +flyte +union
 ---

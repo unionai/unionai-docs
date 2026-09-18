@@ -1,5 +1,7 @@
 ---
 title: Parallel outputs
+description: Produce several output formats at once with asyncio.gather.
+icon: distribute-horizontal
 weight: 3
 variants: +flyte +union
 ---

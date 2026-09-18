@@ -1,5 +1,7 @@
 ---
 title: Versions
+description: How the docs version lines work, and how to cut and publish an archived version.
+icon: clock-history
 weight: 6
 variants: +flyte +union
 ---
@@ -18,34 +20,66 @@ while the URL for version `v1` of the same page is:
 
 `{{< docs_home flyte v1 >}}/community/contributing-docs/versions`
 
-## Versions are branches
+## What a version contains (and what it does not)
 
-The versioning system is based on long-lived Git branches in the `unionai/unionai-docs` GitHub repository:
+A docs version is a snapshot of **content** — the pages, examples and generated API
+reference as they stood against a given SDK release. The site's **look and
+navigation** (the theme, built from the shared `unionai-docs-infra` submodule) is
+*not* part of the snapshot: every published version, however old, is always served
+with the **current** site UI. This is deliberate — the content you are reading has a
+version; the reading experience should always be the best available.
 
-- The `main` branch contains the latest version of the documentation. Currently, `v2`.
-- Other versions of the docs are contained in branches named `vX`, where `X` is the major version number. Currently, there is one other version, `v1`.
+Two practical consequences for contributors:
 
-## How to create an archive version
+- **Theme or build-system changes never require a new docs version.** They reach
+  every published version automatically when the infra submodule pointer is bumped
+  on the docs branch.
+- **Content changes reach `latest` immediately** on merge, and reach the stable
+  version at the next cut.
 
-An "archive version" is a static snapshot of the site at a given point in time.
+## Lines are branches; versions are cuts
 
-It is meant to freeze a specific version of the site for historical purposes,
-such as preserving the content and structure of the site at a specific point in time.
+Each major line lives on its own long-lived branch in `unionai/unionai-docs`:
 
-### How to create an archive version
+- `main` carries the current line, **v2**.
+- `v1` carries the previous line. It is **active, not frozen**: new flytekit 1.x releases still
+  produce new v1 versions.
 
-1. Create a new branch from `main` named `vX`, e.g. `v3`.
-2. Add the version to the `VERSION` field in the `makefile.inc` file, e.g. `VERSION := v3`.
-3. Add the version to the `versions` field in the `hugo.ver.toml` file, e.g. `versions = [ "v1", "v2", "v3" ]`.
+Within a line, a **version** is a *cut*: an immutable snapshot of the content against an SDK
+release, tagged `vN.x.y.z`. `N.x.y` is the SDK release the docs were built against, and `z` is a
+docs patch counter for when a secondary component releases but the SDK triple has not moved.
 
-> [!NOTE]
-> **Important:** You must update the `versions` field in **ALL** published and archived versions of the site.
+### Which URL serves what
 
-### Publishing an archive version
+| URL | Serves | Indexed |
+|---|---|---|
+| `/docs/latest` | the tip of `main`, rebuilt on every merge | no |
+| `/docs/v2` | the newest v2 cut, the canonical surface | **yes** |
+| `/docs/v2.x.y.z` | an older, superseded cut | no |
+| `/docs/v1` | the newest v1 cut | yes |
+| `/docs/stable` | redirects to `/docs/v2` | n/a |
 
-> [!NOTE]
-> This step can only be done by a Union employee.
+The newest cut is served **once**, at `/docs/<line>`. It only gets its own numbered URL when a
+newer cut supersedes it, so there is never a duplicate copy of the same tree.
 
-1. Update the `docs_archive_versions` in the `docs_archive_locals.tf` Terraform file
-2. Create a PR for the changes
-3. Once the PR is merged, run the production pipeline to activate the new version
+### What this means when you contribute
+
+- **Your merged page appears on `/docs/latest` immediately**, and on `/docs/v2` at the next cut.
+  If you are checking whether a change is live, look at `/docs/latest` first.
+- **Theme and build changes need no cut.** They reach every version at once when the infra
+  submodule pointer is bumped, as described above.
+
+## Cutting a version
+
+A cut is **one merge**, and it is normally automatic. When the SDK releases, CI regenerates the
+API reference and opens a draft pull request that bumps `versions.toml`. Merging that PR is the
+cut: the build materializes the tag and rebuilds.
+
+You can also start one by hand from the Actions tab, by running **Regenerate API docs** (when the
+SDK changed) or **Cut a docs version** (when only a secondary component moved). Both open a draft
+PR rather than publishing directly.
+
+**Nothing auto-merges.** Every path ends in a pull request that a maintainer reviews.
+
+Maintainer detail, including how many pinned versions are retained and how a retired pin gets its
+redirect, lives in `unionai-docs-infra/VERSIONING.md` and `CUTTING-A-DOCS-VERSION.md`.

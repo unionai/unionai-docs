@@ -51,6 +51,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: "true"
+          # fetch-depth: 0 -- the "Fold version promotion" step below runs
+          # manifest.py, whose z computation derives the next cut from the
+          # EXISTING v<x.y.z>.* tags. A shallow clone fetches no tags, so
+          # existing_z comes back empty and manifest.py proposes z=0 -- a tag
+          # that may already exist and may have been deliberately withdrawn.
+          # That is exactly what #1406 did: it proposed re-cutting v2.5.18.0
+          # (three tags into the 2.5.18 line) which would have restored the
+          # yanked flyteplugins 2.5.19 reference to production stable.
+          # docs-cut.yml already sets this for the same reason; this workflow
+          # folds a cut too and needs the same visibility.
+          fetch-depth: 0
 
       # Mint a short-lived installation token for the docsy-bot App so the draft
       # PR triggers CI (and is attributed to the bot). Skipped until the App
@@ -103,6 +114,48 @@ jobs:
       - name: Regenerate API docs
         if: steps.drift.outputs.drift == 'true'
         run: make update-api-docs < /dev/null
+
+      # One-merge fold (DOC-1245): if versioning is live (versions.toml present) and
+      # this regen is an SDK-release cut (a new flyte-sdk triple, PyPI-published),
+      # promote the new tag into versions.toml IN THIS PR. Then merging the regen both
+      # updates the API reference AND advances /docs/v2 to the new stable in a single
+      # human action; the tag itself is minted at merge by build-and-deploy. Inert
+      # until go-live (no versions.toml → skipped); a non-SDK-release regen (a manual
+      # cut's z-bump) is a maintainer decision, not folded here.
+      - name: Fold version promotion (SDK-release cut)
+        if: steps.drift.outputs.drift == 'true' && hashFiles('versions.toml') != ''
+        run: |
+          set -euo pipefail
+          # Capture BEFORE eval. `eval "$(cmd)"` discards cmd's exit status: a crash
+          # yields empty output and `eval ""` succeeds, so the step passes and the
+          # condition below simply reads false. `set -e` cannot see it, and the `:-`
+          # defaults defeat `set -u` (docs-cut.yml uses bare ${DOCS_TAG} and so fails
+          # loudly by accident; this step defended itself into silence).
+          #
+          # 2026-08-19: manifest.py gained an `import tomlkit` whose dependency was
+          # declared only in pyproject.toml, not its PEP 723 block, so under `uv run`
+          # it died on import. This step reported "Not an SDK-release cut" -- which was
+          # false -- and the v1 regen to flytekit 1.16.28 opened with no versions.toml
+          # promote. The cut silently did not happen. (infra#269, DOC-1457)
+          if ! plan="$(REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --check --format shell)"; then
+            echo "::error::manifest.py --check failed. Cannot determine whether this regen is an SDK-release cut; refusing to guess."
+            exit 1
+          fi
+          eval "$plan"
+          # A crash is not the only way to learn nothing: the script could succeed and
+          # print nothing. "Not an SDK-release cut" must mean we ASKED and the answer
+          # was no -- never that we failed to ask.
+          if [ -z "${DOCS_CUT_KIND:-}" ]; then
+            echo "::error::manifest.py --check produced no DOCS_CUT_KIND. Raw output: ${plan:-<empty>}"
+            exit 1
+          fi
+          if [ "${DOCS_CUT_KIND}" = "sdk-release" ] && [ "${DOCS_SDK_ON_PYPI:-}" = "true" ]; then
+            REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --promote
+            REPO_ROOT=$PWD uv run --quiet unionai-docs-infra/tools/api_generator/manifest.py --write --variant both --out data/version-manifest.json
+            echo "Folded ${DOCS_TAG} into this regen PR: versions.toml stable=${DOCS_TAG} + data/version-manifest.json (inline cut tag)."
+          else
+            echo "Not an SDK-release cut (kind=${DOCS_CUT_KIND:-none}, on_pypi=${DOCS_SDK_ON_PYPI:-?}) → no promotion."
+          fi
 
       # Deterministic surface-delta classifier (NO AI runs in CI). Decides whether
       # this regen moved the public API surface (material) or is only version-string
@@ -217,6 +270,8 @@ jobs:
           add-paths: |
             content/api-reference/**
             linkmap/*-linkmap.json
+            versions.toml
+            data/version-manifest.json
           commit-message: "docs(api-reference): regenerate API docs (automated)"
           # DCO: "Check DCO" is a required status check on main (DOC-1244), so the
           # automated regen commit must carry a Signed-off-by trailer or the PR

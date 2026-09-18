@@ -1,5 +1,7 @@
 ---
 title: Joining the community
+description: 'Where the Flyte community meets: Slack, GitHub discussions, community syncs, and the newsletter.'
+icon: chat-dots
 weight: 1
 variants: +flyte -union
 ---

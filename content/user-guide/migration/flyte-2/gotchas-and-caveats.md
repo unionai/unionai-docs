@@ -1,5 +1,7 @@
 ---
 title: Gotchas and caveats
+description: Where Flyte 2's flexibility can surprise you, and what to watch for.
+icon: exclamation-triangle
 weight: 15
 variants: +flyte +union
 ---
@@ -67,7 +69,7 @@ In the earlier scenario, if `t1` crashes unexpectedly, and Flyte retries the exe
 
 As a developer, the best way to manage non-deterministic behavior (if it is unavoidable) is to be able to observe it and see exactly what is happening in your code. Flyte 2 provides precisely the tool needed to enable this: Traces.
 
-With this feature you decorate the sub-task functions in your code with `@trace`, enabling checkpointing, reproducibility and recovery at a fine-grained level. See [Traces](../../task-programming/traces) for more details.
+With this feature you decorate the sub-task functions in your code with `@trace`, enabling checkpointing, reproducibility and recovery at a fine-grained level. See [Traces](../../tasks/task-programming/traces) for more details.
 
 ## Type safety
 

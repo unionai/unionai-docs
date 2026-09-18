@@ -1,5 +1,7 @@
 ---
 title: Configuring your data plane
+description: The infrastructure details to send Union so it can provision your data plane.
+icon: sliders
 weight: 3
 variants: -flyte +union
 ---

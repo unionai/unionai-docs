@@ -1,5 +1,7 @@
 ---
 title: Infrastructure recommendations
+description: Size the data plane, check prerequisites, and plan control plane connectivity before you install.
+icon: rulers
 weight: 2
 variants: -flyte +union
 sidebar_expanded: true
@@ -312,14 +314,7 @@ Each page below covers the concrete resource-creation commands and the data-plan
 for one provider — the cloud-specific realization of the requirements on this page. Pick yours
 after working through the requirements above, then follow [Deploy the data plane](../deploy/_index).
 
-- [AWS](./aws)
-- [GCP](./gcp)
-- [Azure](./azure)
-- [OCI](./oci)
-- [Generic Kubernetes](./generic) (on-premise or any S3-compatible environment)
-- [CoreWeave](./coreweave)
-- [Crusoe](./crusoe)
-- [Nebius](./nebius)
+{{< subpage-cards >}}
 
 ## Next
 

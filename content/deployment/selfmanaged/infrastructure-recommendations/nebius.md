@@ -1,5 +1,7 @@
 ---
 title: Nebius
+description: Create the MK8s cluster, Object Storage bucket, and service account the data plane needs.
+icon: boxes
 weight: 8
 variants: -flyte +union
 ---

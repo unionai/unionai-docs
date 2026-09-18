@@ -1,5 +1,7 @@
 ---
 title: Namespace mapping
+description: Change how project and domain pairs map onto Kubernetes namespaces.
+icon: folder2-open
 weight: 8
 variants: -flyte +union
 ---

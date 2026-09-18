@@ -1,5 +1,7 @@
 ---
 title: GCP
+description: Create the GKE cluster, GCS bucket, Artifact Registry, and Workload Identity bindings.
+icon: google
 weight: 2
 variants: -flyte +union
 ---

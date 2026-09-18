@@ -1,13 +1,12 @@
 ---
 title: Manage Union through Terraform
+description: Manage a Union deployment as infrastructure-as-code with the Union Terraform provider.
+icon: file-earmark-code
 weight: 8
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Managing Union with Terraform
-
-{{< llm-bundle-note >}}
 
 Union provides a Terraform provider that enables infrastructure-as-code management of your Union deployment. With the Union Terraform provider, you can define, deploy, and manage Union resources using declarative configuration files.
 
@@ -44,7 +43,7 @@ To get started with the Union Terraform provider:
 Install and configure the Union Terraform provider
 {{< /link-card >}}
 
-{{< link-card target="./management" icon="settings" title="Resource management" >}}
+{{< link-card target="./management" icon="gear" title="Resource management" >}}
 Learn about available resources and data sources
 {{< /link-card >}}
 

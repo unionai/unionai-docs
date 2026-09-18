@@ -61,6 +61,7 @@ Kustomize
 Argo
 Prometheus
 Grafana
+agento11y
 Terraform
 autoscaling
 autoscaler
@@ -131,6 +132,7 @@ Colab
 Conv
 convolutional
 cpus
+crewai
 crio
 cubin
 Dask

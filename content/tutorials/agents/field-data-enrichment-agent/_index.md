@@ -1,5 +1,7 @@
 ---
 title: Field data enrichment agent
+icon: geo-alt
+description: Enrich geo-tagged operational events with real-world public context using the You.com Search API with country and freshness targeting.
 weight: 6
 variants: +flyte +union
 ---
@@ -78,7 +80,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

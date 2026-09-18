@@ -1,5 +1,7 @@
 ---
 title: Generic Kubernetes
+description: Create the cluster, object storage, container registry, and credentials for an on-premise data plane.
+icon: server
 weight: 5
 variants: -flyte +union
 ---

@@ -1,5 +1,7 @@
 ---
 title: Scaling constraints
+description: Limits the data plane hits as it grows (pod IPs, vCPU quota, etcd, image pulls, conntrack) and how to detect and fix each.
+icon: speedometer2
 weight: 9
 variants: -flyte +union
 ---

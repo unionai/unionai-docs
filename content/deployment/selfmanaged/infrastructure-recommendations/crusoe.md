@@ -1,5 +1,7 @@
 ---
 title: Crusoe
+description: Create the CMK cluster, Cloud Storage bucket, and access keys the data plane needs.
+icon: lightning
 weight: 7
 variants: -flyte +union
 ---

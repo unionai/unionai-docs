@@ -1,5 +1,7 @@
 ---
 title: Autoresearch agent
+icon: search
+description: Run an autonomous research loop that drives Claude Code in a GPU container to run experiments, then commits results and opens a pull request.
 weight: 1
 variants: +flyte +union
 ---
@@ -78,7 +80,7 @@ flyte create secret github_token <YOUR_GITHUB_TOKEN>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Prepare the research repository
 

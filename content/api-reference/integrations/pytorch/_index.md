@@ -1,6 +1,7 @@
 ---
 title: PyTorch
-version: 2.5.12
+icon: book
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,11 +16,5 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.pytorch.Elastic`](packages/flyteplugins.pytorch/elastic) | Elastic defines the configuration for running a PyTorch elastic job using torch. |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.pytorch`](packages/flyteplugins.pytorch/_index) |  |
+| [`Elastic`](./elastic) | Elastic defines the configuration for running a PyTorch elastic job using torch.distributed. |
 
