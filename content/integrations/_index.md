@@ -220,6 +220,7 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 | [Snowflake](./snowflake/_index)   | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
 | [BigQuery](./bigquery/_index)     | Run SQL queries on Google BigQuery          | Data warehousing, ETL, analytics queries |
 | [Databricks](./databricks/_index) | Run PySpark jobs on Databricks clusters     | Large-scale data processing, Spark ETL   |
+| [Slurm](./slurm/_index)           | Run tasks as jobs on an existing Slurm cluster | HPC and GPU model training on Slurm-managed clusters |
 
 ### Creating a new connector
 
