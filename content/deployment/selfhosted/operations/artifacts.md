@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Artifacts
 
-Artifacts let tasks publish and consume **versioned, named** outputs — models, datasets, feature tables — with lineage back to the run that produced them, and let runs be **triggered** when a new version of an artifact appears.
+Artifacts let tasks publish and consume **versioned, named** outputs — models, datasets, feature tables — with lineage back to the run that produced them, and let runs be **triggered** when a new version of an artifact appears. For how to use them, see [Artifacts](../../../user-guide/artifacts/_index) in the user guide.
 
 On a {{< key product_name >}} self-hosted deployment the Artifacts service is **enabled by default** and needs nothing provisioned: no dedicated bucket, no object-store credentials, no workload-identity binding.
 
@@ -35,7 +35,7 @@ After the control-plane chart rolls out:
    ```
 
 2. The **Artifacts** tab appears in the console left navigation.
-3. Run a task that returns an artifact and confirm it appears in the console with its source-run lineage. The task needs `produces_artifacts=True`, and its return value (a `flyte.io.File`, `flyte.io.Dir`, or `flyte.io.DataFrame`) must be wrapped with `flyte.artifacts.new()`:
+3. Run a task that returns an artifact and confirm it appears in the console with its source-run lineage (see [Task outputs as artifacts](../../../user-guide/artifacts/task-outputs)). The task needs `produces_artifacts=True`, and its return value (a `flyte.io.File`, `flyte.io.Dir`, or `flyte.io.DataFrame`) must be wrapped with `flyte.artifacts.new()`:
 
    ```python
    @env.task(produces_artifacts=True)
