@@ -1,5 +1,7 @@
 ---
 title: Enabling Azure Blob Storage
+description: Grant data plane tasks access to your Blob Storage container through Azure Workload Identity.
+icon: bucket
 weight: 1
 variants: -flyte +union
 ---
@@ -10,7 +12,7 @@ For {{< key product_name >}} customers whose data plane is in Azure, we walk thr
 
 > [!NOTE] Azure Blob Storage in the {{< key product_name >}} environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are a number of Azure Storage containers used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
+> Among these are several Azure Storage containers used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the Azure Blob Storage containers we are talking about in this section.**
 >
@@ -20,7 +22,7 @@ For {{< key product_name >}} customers whose data plane is in Azure, we walk thr
 
 {{< key product_name >}} data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Blob Storage containers requires updating permissions to permit this {{< key product_name >}}-managed user-assigned identity.
 
-### {{< key product_name >}}-managed permissions
+### {{% key product_name %}}-managed permissions
 
 The simplest, most flexible approach is to provide {{< key product_name >}} the ability to add roles assignments against the blob storage container. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow {{< key product_name >}} to assign roles to the blob storage container. These permissions should be scoped to the target container. Follow these steps to set up the required access:
 
@@ -28,12 +30,14 @@ The simplest, most flexible approach is to provide {{< key product_name >}} the 
 2. In the storage container's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the {{< key product_name >}} application's service principal.
 4. For the 'Role' field, you have two options:
-  * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
-  * Advanced approach: Create a custom role with the following specific permissions:
-    * `Microsoft.Authorization/roleAssignments/write`
-    * `Microsoft.Authorization/roleAssignments/delete`
-    * `Microsoft.Authorization/roleAssignments/read`
-    * `Microsoft.Authorization/roleDefinitions/read`
+
+* Simplest approach: Assign the built-in Azure role `User Access Administrator`.
+* Advanced approach: Create a custom role with the following specific permissions:
+  * `Microsoft.Authorization/roleAssignments/write`
+  * `Microsoft.Authorization/roleAssignments/delete`
+  * `Microsoft.Authorization/roleAssignments/read`
+  * `Microsoft.Authorization/roleDefinitions/read`
+
 5. Ensure the 'Scope' is set to the target blob storage container.
 6. Complete the role assignment process.
 7. Provide the blob storage container [resource ID](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.storage.models.resource.id) to {{< key product_name >}} support.

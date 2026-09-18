@@ -1,5 +1,7 @@
 ---
 title: Resilient generation
+description: Reusable environments, traced calls, and retry strategies for LLM-powered tasks.
+icon: shield-check
 weight: 1
 variants: +flyte +union
 ---
@@ -45,7 +47,7 @@ Both `scaledown_ttl` and `idle_ttl` must be at least 30 seconds.
 
 ### Standard environment for orchestration
 
-The driver environment doesn't need container reuse—it just coordinates work.
+The driver environment doesn't need container reuse; it just coordinates work.
 The `depends_on` parameter declares that tasks in this environment call tasks
 in `llm_env`, ensuring both environments are deployed together:
 
@@ -69,11 +71,13 @@ instead of re-executing.
 ### When to use @flyte.trace
 
 Use `@flyte.trace` for:
+
 - LLM API calls (OpenAI, Anthropic, etc.)
 - External API requests
 - Any expensive operation you don't want to repeat on retry
 
 Don't use `@flyte.trace` for:
+
 - Simple computations (overhead outweighs benefit)
 - Operations with side effects that shouldn't be skipped
 
@@ -144,6 +148,7 @@ you get structured, validated data:
 {{< code file="/unionai-examples/v2/user-guide/advanced-project/prompts.py" lang="python" fragment="critique-model" >}}
 
 The `Critique` model validates that:
+
 - `score` is an integer between 1 and 10
 - `strengths` and `improvements` are lists of strings
 - All required fields are present

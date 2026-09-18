@@ -1,5 +1,7 @@
 ---
 title: Authentication
+description: The three authentication methods, single sign-on, and the credential lifecycle behind each.
+icon: key-fill
 weight: 1
 variants: -flyte +union
 ---

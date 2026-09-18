@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "flyteplugins.agents.hermes": "/api-reference/integrations/agents/hermes/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.hermes.run_agent": "/api-reference/integrations/agents/hermes/#run_agent",
+    "flyteplugins.agents.hermes.run_agent_sync": "/api-reference/integrations/agents/hermes/#run_agent_sync",
+    "flyteplugins.agents.hermes.tool": "/api-reference/integrations/agents/hermes/#tool"
+  }
+}

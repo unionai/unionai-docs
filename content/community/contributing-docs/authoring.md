@@ -1,48 +1,33 @@
 ---
 title: Authoring
-weight: 4
+description: Create pages, control their visibility and order, add notices and links, and generate content from Python or Jupyter.
+icon: pencil
+weight: 2
 variants: +flyte +union
 ---
 
 # Authoring
 
+This page covers how to write and structure docs pages: creating files, controlling page visibility, linking, notices, and generating content from Python or Jupyter.
+Before you start, [set up a local docs dev environment](./quick-start) so you can preview your changes.
+For the editorial conventions to follow, see the [writing guidelines](./writing-guidelines); when you are ready to open a pull request, see [Submit a contribution](./submitting-contributions).
+
 ## Getting started
 
 Content is located in the `content` folder.
 
-To create a new page, simply create a new Markdown file in the appropriate folder and start writing it!
-
-## Target the right branch
-
-Remember that there are two production branches in the docs: `main` and `v1`.
-
-* **For Flyte or Union 1, create a branch off of `v1` and target your pull request to `v1`**
-* **For Flyte or Union 2, create a branch off of `main` and target your pull request to `main`**
+To create a new page, create a new Markdown file in the appropriate folder and start writing.
 
 ## Live preview
 
-While editing, you can use Hugo's local live preview capabilities.
-Simply execute
-
-```bash
-make dev
-```
-
-This will build the site and launch a local server at `http://localhost:1313`.
-Go to that URL to the live preview. Leave the server running.
-As you edit the preview will update automatically.
-
-See [Publishing](./publishing) for how to set up your machine.
-
-## Pull requests + site preview
-
-Pull requests will create a preview build of the site on CloudFlare.
-Check the pull request for a dynamic link to the site changes within that PR.
+While editing, use Hugo's live preview: run `make dev` and open `http://localhost:1313`.
+The preview updates automatically as you edit.
+See [Set up a local docs dev environment](./quick-start) for the full setup.
 
 ## Page visibility
 
 This site uses variants, which means different "flavors" of the content.
-For a given -age, its variant visibility is governed by the `variants:` field in the front matter of the page source.
+For a given page, its variant visibility is governed by the `variants:` field in the front matter of the page source.
 For each variant you specify `+<variant>` to include or `-<variant>` to exclude it.
 For example:
 
@@ -85,35 +70,34 @@ weight: 3
 | Setting            | Type | Description                                                                       |
 | ------------------ | ---- | --------------------------------------------------------------------------------- |
 | `top_menu`         | bool | If `true` the item becomes a tab at the top and its hierarchy goes to the sidebar |
-| `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly — by default sections collapse and only the active path expands automatically. |
+| `sidebar_expanded` | bool | If `true`, force this section to render expanded in the sidebar even when it is not on the active path. Use sparingly. By default, sections collapse and only the active path expands automatically. |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
-| `llm_readable_bundle` | bool | If `true`, generates a `section.md` bundle for this section. Requires `{{</* llm-bundle-note */>}}` shortcode. See [LLM-optimized documentation](./llm-docs). |
 
 ## Conditional content
 
-The site has "flavors" of the documentation. We leverage the `{{</* variant */>}}` tag to control
+The site has "flavors" of the documentation. We use the `{{</* variant */>}}` tag to control
 which content is rendered on which flavor.
 
 Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
 
 ## Linking to the API reference
 
-API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically — you don't need to write explicit Markdown links for them.
+API identifiers and methods that you mention in prose or in Python code blocks are linked to the API reference automatically. You don't need to write explicit Markdown links for them.
 
 ```markdown
 ✅  A `flyte.io.File` is a reference to an offloaded file.
 ✅  A `Trigger` defines when an environment's tasks should run.
 ✅  Call `flyte.init()` before submitting a run.
 
-❌  A [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) …
-❌  Call [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte/_index#init) …
+❌  A [`flyte.io.File`](../../api-reference/flyte-sdk/flyte.io/file) …
+❌  Call [`flyte.init()`](../../api-reference/flyte-sdk/flyte/_index#init) …
 ```
 
 What gets linked:
 
 - **Class names** in inline code, in either fully-qualified or short form: `` `flyte.io.File` ``, `` `File` ``, `` `flyte.Trigger` ``, `` `Trigger` ``.
-- **Method names** in inline code, only when fully qualified: `` `flyte.init()` ``, `` `flyte.report.log()` ``. Bare `` `init` ``, `` `log` ``, `` `run` `` are not linked — those names are too generic.
+- **Method names** in inline code, only when fully qualified: `` `flyte.init()` ``, `` `flyte.report.log()` ``. Bare `` `init` ``, `` `log` ``, `` `run` `` are not linked: those names are too generic.
 - **Python identifiers in fenced code blocks** when they resolve through one of the block's `import` statements.
 
 Trailing `()` and a leading `@` are stripped before lookup, so `` `flyte.init()` ``, `` `flyte.init` ``, and `` `@flyte.trace` `` all match.

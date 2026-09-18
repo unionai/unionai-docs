@@ -1,5 +1,7 @@
 ---
 title: MLflow
+description: Track experiments with MLflow from inside a task using the mlflow_run decorator.
+icon: graph-up-arrow
 weight: 1
 variants: +flyte +union
 ---
@@ -94,7 +96,7 @@ async def train_sklearn():
     model.fit(X_train, y_train)
 ```
 
-Supported frameworks include any framework with an `mlflow.{framework}.autolog()` function. You can find the full list of supported frameworks [here](https://mlflow.org/docs/latest/ml/tracking/autolog/#supported-libraries).
+Supported frameworks include any framework with an `mlflow.{framework}.autolog()` function. You can find the [full list of supported frameworks](https://mlflow.org/docs/latest/ml/tracking/autolog/#supported-libraries) in the MLflow documentation.
 
 You can pass additional autolog parameters via `autolog_kwargs`:
 
@@ -248,7 +250,7 @@ async def distributed_train():
     ...
 ```
 
-On non-rank-0 workers, no MLflow run is created and `get_mlflow_run()` returns `None`. The task function still executes normally — only the MLflow instrumentation is skipped.
+On non-rank-0 workers, no MLflow run is created and `get_mlflow_run()` returns `None`. The task function still executes normally; only the MLflow instrumentation is skipped.
 
 ![Distributed training](../../_static/images/integrations/mlflow/distributed_training.png)
 

@@ -1,0 +1,31 @@
+---
+title: RuntimeDataValidationError
+description: "This error is raised when the user tries to access a resource that does not exist or is invalid."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# RuntimeDataValidationError
+
+**Package:** `flyte.errors`
+
+This error is raised when the user tries to access a resource that does not exist or is invalid.
+
+
+## Parameters
+
+```python
+class RuntimeDataValidationError(
+    var: str,
+    e: Exception | str,
+    task_name: str = '',
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `var` | `str` | |
+| `e` | `Exception \| str` | |
+| `task_name` | `str` | |
+

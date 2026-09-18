@@ -1,15 +1,17 @@
 ---
 title: Data flow
+description: How data moves between tasks, and where that movement costs you time.
+icon: arrow-left-right
 weight: 1
 variants: +flyte +union
 ---
 
 # Data flow
 
-Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing seamlessly through your workflow using an efficient transport layer.
+Understanding how data flows between tasks is critical for optimizing workflow performance in Flyte. Tasks take inputs and produce outputs, with data flowing through your workflow using an efficient transport layer.
 
 > [!NOTE]
-> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store — including what *metadata*, *literals*, and *raw data* mean — see [Where your data lives](../core-concepts/where-data-lives).
+> This page focuses on **how** data moves at runtime. For the static map of **what** lives in the control plane database versus the data plane object store (including what *metadata*, *literals*, and *raw data* mean), see [Where your data lives](../get-started/core-concepts/where-data-lives).
 
 ## Overview
 
@@ -33,7 +35,7 @@ These types are not copied but passed as references to storage locations. That o
 - **Directories**: `flyte.io.Dir`
 - **Dataframes**: `flyte.io.DataFrame`, `pd.DataFrame`, `pl.DataFrame`, etc.
 
-Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../../user-guide/task-programming/dataframes)
+Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../tasks/task-programming/dataframes)
 
 ### Passed by value (inline I/O)
 
@@ -54,7 +56,6 @@ Flyte uses efficient MessagePack serialization for most types, providing compact
 > [!NOTE]
 > If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, pickled objects smaller than 10KB are passed inline, while larger pickled objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
 
-
 ## Task execution and data flow
 
 ### Input download
@@ -62,7 +63,7 @@ Flyte uses efficient MessagePack serialization for most types, providing compact
 When a task starts:
 
 1. **Inline inputs download**: The task downloads inline inputs from the configured Flyte object store.
-2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using `flyte.TaskEnvironment`'s `max_inline_io` parameter.
+2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using the `max_inline_io_bytes` parameter of `@env.task`.
 3. **Memory consideration**: Inline data is materialized in memory, so adjust your task resources accordingly.
 4. **Raw data materialization**: Raw data (files, directories) is passed using special types in `flyte.io`. Dataframes are automatically materialized if using `pd.DataFrame`. Use `flyte.io.DataFrame` to avoid automatic materialization.
 
@@ -105,7 +106,7 @@ All inline data is cached using a consistent hashing system. The cache key is de
 
 ### Raw data hashing
 
-Raw data (DataFrames, files, directories) is hashed shallowly by default using the hash of the storage location, so a downstream task does not cache-hit on identical content stored at a new path. To cache on content instead, attach a content hash at production time with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
+Raw data (DataFrames, files, directories) is hashed shallowly by default using the hash of the storage location, so a downstream task does not cache-hit on identical content stored at a new path. To cache on content instead, attach a content hash at production time with `flyte.io.HashFunction`. See [Content-based caching for DataFrames, files, and directories](../tasks/task-configuration/caching#content-based-caching-for-dataframes-files-and-directories).
 
 ### Cache control
 
@@ -114,11 +115,11 @@ Control caching behavior using `flyte.with_runcontext`:
 - **Scope**: Set `cache_lookup_scope` to `"global"` or `"project/domain"`.
 - **Disable cache**: Set `overwrite_cache=True` to force re-execution.
 
-For more details on caching configuration, see [Caching](../task-configuration/caching).
+For more details on caching configuration, see [Caching](../tasks/task-configuration/caching).
 
 ## Traces and data flow
 
-When using [traces](../task-programming/traces), the data flow behavior is different:
+When using [traces](../tasks/task-programming/traces), the data flow behavior is different:
 
 1. **Full execution first**: The trace is fully executed before inputs and outputs are recorded.
 2. **Checkpoint behavior**: Recording happens like a checkpoint at the end of trace execution.
@@ -153,4 +154,4 @@ run = flyte.with_runcontext(
 ).run(my_task, input_data=data)
 ```
 
-This allows you to control where raw data (files, directories, DataFrames) is stored for specific runs. See [Run context](../task-deployment/run-context) for the full set of options.
+This allows you to control where raw data (files, directories, DataFrames) is stored for specific runs. See [Run context](../tasks/task-deployment/run-context) for the full set of options.

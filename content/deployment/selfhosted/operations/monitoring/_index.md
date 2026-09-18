@@ -8,6 +8,8 @@ mermaid: true
 
 {{< key product_name >}} provides built-in monitoring with Prometheus, Grafana dashboards, alerting rules, and SLO tracking. The monitoring stack is deployed and configured through the Helm charts.
 
+{{< subpage-cards >}}
+
 ## Architecture
 
 ### Self-hosted intra-cluster

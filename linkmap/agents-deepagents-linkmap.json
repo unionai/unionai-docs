@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "flyteplugins.agents.deepagents": "/api-reference/integrations/agents/deepagents/"
+  },
+  "identifiers": {
+    "flyteplugins.agents.deepagents.DurableChatModel": "/api-reference/integrations/agents/deepagents/durablechatmodel/",
+    "DurableChatModel": "/api-reference/integrations/agents/deepagents/durablechatmodel/"
+  },
+  "methods": {
+    "flyteplugins.agents.deepagents.run_agent": "/api-reference/integrations/agents/deepagents/#run_agent",
+    "flyteplugins.agents.deepagents.run_agent_sync": "/api-reference/integrations/agents/deepagents/#run_agent_sync",
+    "flyteplugins.agents.deepagents.tool": "/api-reference/integrations/agents/deepagents/#tool"
+  }
+}

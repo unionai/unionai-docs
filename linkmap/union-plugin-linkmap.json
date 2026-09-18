@@ -1,10 +1,12 @@
 {
   "packages": {
-    "flyteplugins.union": "/api-reference/union-plugin/packages/flyteplugins.union/"
+    "flyteplugins.union": "/api-reference/union-plugin/"
   },
   "identifiers": {},
   "methods": {
-    "flyteplugins.union.debug": "/api-reference/union-plugin/packages/flyteplugins.union/#debug",
-    "flyteplugins.union.with_debugcontext": "/api-reference/union-plugin/packages/flyteplugins.union/#with_debugcontext"
+    "flyteplugins.union.debug": "/api-reference/union-plugin/#debug",
+    "flyteplugins.union.fork": "/api-reference/union-plugin/#fork",
+    "flyteplugins.union.with_debugcontext": "/api-reference/union-plugin/#with_debugcontext",
+    "flyteplugins.union.with_forkcontext": "/api-reference/union-plugin/#with_forkcontext"
   }
 }

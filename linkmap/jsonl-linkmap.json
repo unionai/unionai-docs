@@ -1,12 +1,12 @@
 {
   "packages": {
-    "flyteplugins.jsonl": "/api-reference/integrations/jsonl/packages/flyteplugins.jsonl/"
+    "flyteplugins.jsonl": "/api-reference/integrations/jsonl/"
   },
   "identifiers": {
-    "flyteplugins.jsonl.JsonlDir": "/api-reference/integrations/jsonl/packages/flyteplugins.jsonl/jsonldir/",
-    "JsonlDir": "/api-reference/integrations/jsonl/packages/flyteplugins.jsonl/jsonldir/",
-    "flyteplugins.jsonl.JsonlFile": "/api-reference/integrations/jsonl/packages/flyteplugins.jsonl/jsonlfile/",
-    "JsonlFile": "/api-reference/integrations/jsonl/packages/flyteplugins.jsonl/jsonlfile/"
+    "flyteplugins.jsonl.JsonlDir": "/api-reference/integrations/jsonl/jsonldir/",
+    "JsonlDir": "/api-reference/integrations/jsonl/jsonldir/",
+    "flyteplugins.jsonl.JsonlFile": "/api-reference/integrations/jsonl/jsonlfile/",
+    "JsonlFile": "/api-reference/integrations/jsonl/jsonlfile/"
   },
   "methods": {}
 }

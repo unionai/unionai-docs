@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "flyteplugins.agents.google": "/api-reference/integrations/agents/google/"
+  },
+  "identifiers": {
+    "flyteplugins.agents.google.FlyteLlm": "/api-reference/integrations/agents/google/flytellm/",
+    "FlyteLlm": "/api-reference/integrations/agents/google/flytellm/"
+  },
+  "methods": {
+    "flyteplugins.agents.google.durable_model": "/api-reference/integrations/agents/google/#durable_model",
+    "flyteplugins.agents.google.run_agent": "/api-reference/integrations/agents/google/#run_agent",
+    "flyteplugins.agents.google.run_agent_sync": "/api-reference/integrations/agents/google/#run_agent_sync",
+    "flyteplugins.agents.google.tool": "/api-reference/integrations/agents/google/#tool"
+  }
+}

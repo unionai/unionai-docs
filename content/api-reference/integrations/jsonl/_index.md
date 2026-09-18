@@ -1,6 +1,7 @@
 ---
 title: JSONL
-version: 2.5.8
+icon: book
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,12 +16,6 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.jsonl.JsonlDir`](packages/flyteplugins.jsonl/jsonldir) | A directory of sharded JSONL files. |
-| [`flyteplugins.jsonl.JsonlFile`](packages/flyteplugins.jsonl/jsonlfile) | A file type for JSONL (JSON Lines) files, backed by `orjson` for fast. |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.jsonl`](packages/flyteplugins.jsonl/_index) |  |
+| [`JsonlDir`](./jsonldir) | A directory of sharded JSONL files. |
+| [`JsonlFile`](./jsonlfile) | A file type for JSONL (JSON Lines) files, backed by `orjson` for fast serialisation. |
 

@@ -1,0 +1,46 @@
+name: Check Search Benchmark Labels
+
+# The search-quality benchmark (DOC-1397) scores search against an answer key
+# of real content URLs. A PR that renames or deletes a labelled page rots that
+# key silently -- the next eval then reports a ranking regression that is
+# really labelling decay. Catch it here instead, at the PR that caused it.
+
+on:
+  pull_request:
+    paths:
+      - 'content/**'
+      # The answer key lives inside the submodule, so from this repo it only
+      # ever changes as a pointer bump -- a path inside unionai-docs-infra/
+      # can never match here.
+      - 'unionai-docs-infra'
+  push:
+    branches: [main]
+
+jobs:
+  check-search-labels:
+    name: "Check Search Benchmark Labels"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Validate benchmark labels resolve to real pages
+        run: make check-search-labels
+
+      - name: Report status
+        if: ${{ failure() }}
+        run: |
+          echo "::error::A page referenced by the search-quality benchmark no longer exists."
+          echo "::error::If you renamed or removed a page, update the ideal URL(s) in"
+          echo "::error::unionai-docs-infra/tools/algolia_indexer/queries.judged.json to match."

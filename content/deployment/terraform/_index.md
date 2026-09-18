@@ -1,13 +1,12 @@
 ---
 title: Manage Union through Terraform
+description: Manage a Union deployment as infrastructure-as-code with the Union Terraform provider.
+icon: file-earmark-code
 weight: 8
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Managing Union with Terraform
-
-{{< llm-bundle-note >}}
 
 Union provides a Terraform provider that enables infrastructure-as-code management of your Union deployment. With the Union Terraform provider, you can define, deploy, and manage Union resources using declarative configuration files.
 
@@ -16,16 +15,16 @@ Union provides a Terraform provider that enables infrastructure-as-code manageme
 The Union Terraform provider allows you to manage Union resources programmatically, including:
 
 - **Projects**: Create and manage Union projects
-- **Access Control**: Configure users, roles, and policies
-- **API Keys**: Generate and manage API keys for automation
-- **OAuth Applications**: Set up OAuth applications for external integrations
-- **Access Assignments**: Assign users and applications to resources
+- **Access control**: Configure users, roles, and policies
+- **API keys**: Generate and manage API keys for automation
+- **OAuth applications**: Set up OAuth applications for external integrations
+- **Access assignments**: Assign users and applications to resources
 
 ## Why use Terraform?
 
 Using Terraform to manage Union provides several benefits:
 
-- **Version Control**: Track changes to your Union configuration over time
+- **Version control**: Track changes to your Union configuration over time
 - **Reproducibility**: Easily replicate configurations across environments
 - **Automation**: Integrate Union management into your CI/CD pipelines
 - **Consistency**: Ensure consistent configuration across your organization
@@ -44,11 +43,11 @@ To get started with the Union Terraform provider:
 Install and configure the Union Terraform provider
 {{< /link-card >}}
 
-{{< link-card target="./management" icon="settings" title="Resource Management" >}}
+{{< link-card target="./management" icon="gear" title="Resource management" >}}
 Learn about available resources and data sources
 {{< /link-card >}}
 
-{{< link-card target="./security" icon="lock" title="Security Best Practices" >}}
+{{< link-card target="./security" icon="lock" title="Security best practices" >}}
 Securely manage API keys and credentials
 {{< /link-card >}}
 
@@ -57,5 +56,5 @@ Securely manage API keys and credentials
 ## Requirements
 
 - Terraform >= 1.0
-- Union API key (generated using the [Flyte CLI](../../api-reference/flyte-cli#flyte-create-config))
+- Union API key (generated using the [Flyte CLI](../../api-reference/flyte-cli#flyte-create-api-key))
 - Access to a Union deployment

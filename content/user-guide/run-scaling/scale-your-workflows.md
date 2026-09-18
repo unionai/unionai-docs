@@ -1,5 +1,7 @@
 ---
 title: Scale your workflows
+description: Trade off execution overhead, data transfer, and concurrency to make a workload faster.
+icon: speedometer2
 weight: 3
 variants: +flyte +union
 ---
@@ -17,27 +19,31 @@ Performance optimization focuses on two key dimensions:
 **Goal**: Minimize end-to-end execution time for individual workflows.
 
 **Characteristics**:
+
 - Fast individual actions (milliseconds to seconds)
 - Total action count typically less than 1,000
 - Critical for interactive applications and real-time processing
 - Multi-step inference, with reusing model or data in memory (use reusable containers with [@alru.cache](https://pypi.org/project/async-lru/))
 
 **Recommended approach**:
+
 - Use tasks for orchestration and parallelism
-- Use [traces](../task-programming/traces) for fine-grained checkpointing
+- Use [traces](../tasks/task-programming/traces) for fine-grained checkpointing
 - Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
-- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
+- Use [reusable containers](../tasks/task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
 
 ### Throughput
 
 **Goal**: Maximize the number of items processed per unit time.
 
 **Characteristics**:
+
 - Processing large datasets (millions of items)
-- High total action count (10k to 50k actions)
+- High total action count (10k+ actions)
 - Batch processing, large-scale batch inference and ETL workflows
 
 **Recommended approach**:
+
 - Batch workloads to reduce overhead
 - Limit fanout to manage system load
 - Use reusable containers with concurrency for maximum utilization
@@ -57,6 +63,7 @@ Understanding task overhead is critical for performance optimization. When you i
 **Total overhead per task**: `2u + 2d + e + t`
 
 This overhead includes:
+
 - Uploading inputs from the parent task (`u`)
 - Downloading inputs in the child task (`d`)
 - Uploading outputs from the child task (`u`)
@@ -73,6 +80,7 @@ Total overhead (2u + 2d + e + t) << Task runtime
 ```
 
 If task runtime is comparable to or less than overhead, consider:
+
 1. **Batching**: Combine multiple work items into a single task
 2. **Traces**: Use traces instead of tasks for lightweight operations
 3. **Reusable containers**: Eliminate container creation overhead (`t`)
@@ -92,7 +100,7 @@ For a detailed walkthrough of task execution, see [Life of a run](./life-of-a-ru
 
 ### 1. Use reusable containers for concurrency
 
-[Reusable containers](../task-configuration/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
+[Reusable containers](../tasks/task-configuration/reusable-containers) eliminate the container creation overhead (`t`) and enable concurrent task execution:
 
 ```python
 import flyte
@@ -101,7 +109,7 @@ from datetime import timedelta
 # Define reusable environment
 env = flyte.TaskEnvironment(
     name="high-throughput",
-    reuse_policy=flyte.ReusePolicy(
+    reusable=flyte.ReusePolicy(
         replicas=(2, 10),           # Auto-scale from 2 to 10 replicas
         concurrency=5,              # 5 tasks per replica = 50 max concurrent
         scaledown_ttl=timedelta(minutes=10),
@@ -116,12 +124,14 @@ async def process_item(item: dict) -> dict:
 ```
 
 **Benefits**:
+
 - Eliminates container startup overhead (`t ≈ 0`)
 - Supports concurrent execution (multiple tasks per container)
 - Auto-scales based on demand
 - Reuses Python environment and loaded dependencies
 
 **Limitations**:
+
 - Concurrency is limited by CPU and I/O resources in the container
 - Memory requirements scale with total working set size
 - Best for I/O-bound tasks or async operations
@@ -154,11 +164,13 @@ async def process_large_dataset(dataset: list[dict]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Reduces total number of tasks (e.g., 1000 tasks instead of 1M)
 - Amortizes overhead across multiple items
 - Lower load on Queue Service and object storage
 
 **Choosing batch size**:
+
 1. Calculate overhead: `overhead = 2u + 2d + e + t`
 2. Target task runtime: `runtime > 10 × overhead` (rule of thumb)
 3. Adjust batch size to achieve target runtime
@@ -166,7 +178,7 @@ async def process_large_dataset(dataset: list[dict]) -> list[dict]:
 
 ### 3. Use traces for lightweight operations
 
-[Traces](../task-programming/traces) provide fine-grained checkpointing with minimal overhead:
+[Traces](../tasks/task-programming/traces) provide fine-grained checkpointing with minimal overhead:
 
 ```python
 @flyte.trace
@@ -192,27 +204,41 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Only storage overhead (no task orchestration overhead)
 - Runs in the same Python process with asyncio parallelism
 - Provides checkpointing and resumption
 - Visible in execution logs and UI
 
 **Trade-offs**:
+
 - No caching (use tasks for cacheable operations)
 - Shares resources with the parent task (CPU, memory)
 - Storage writes may still be slow due to object store latency
 
 **When to use traces**:
+
 - API calls and external service interactions
 - Deterministic transformations that need checkpointing
 - Operations taking more than 1 second (to amortize storage overhead)
 
 ### 4. Limit fanout for system stability
 
-The UI and system have limits on the number of actions per run:
+Flyte tracks a bounded number of actions per run for monitoring and visualization:
 
-- **Current limit**: 50k actions per run
+- **Current limit**: 200k actions per run
+- **What happens past the limit**: The run keeps executing — this is not an execution gate.
+  Actions beyond the cap are not tracked by the run service, so the UI stops showing them and
+  displays a truncation notice. Fetching a specific action directly
+  (`flyte get action <run-name> <action-name>`) still returns correct data, because it reads from
+  the run database rather than the tracked view.
 - **Future**: Higher limits will be supported (contact the Union team if needed)
+
+Staying under the limit keeps the whole run observable. It counts the **total** actions in the run,
+summed across every map and fanout. Note that per-map `concurrency` does **not** help here: it
+throttles how many actions run *at once*, not how many the run creates in total, so only batching
+reduces the count. For how the two controls compose,
+see [Per-map concurrency vs. the run-level action cap](../tasks/task-programming/controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap).
 
 **Example: Control fanout with batching**
 
@@ -237,8 +263,9 @@ async def process_million_items(items: list[dict]) -> list[dict]:
 Minimize data transfer overhead by choosing appropriate data types:
 
 **Use reference types for large data**:
+
 ```python
-from flyte.io import File, Directory, DataFrame
+from flyte.io import File, Dir, DataFrame
 
 @env.task
 async def process_large_file(input_file: File) -> File:
@@ -254,6 +281,7 @@ async def process_large_file(input_file: File) -> File:
 ```
 
 **Use inline types for small data**:
+
 ```python
 @env.task
 async def process_metadata(metadata: dict) -> dict:
@@ -262,15 +290,16 @@ async def process_metadata(metadata: dict) -> dict:
 ```
 
 **Guideline**:
+
 - **< 10 MB**: Use inline types (primitives, small dicts, lists)
-- **> 10 MB**: Use reference types (File, Directory, DataFrame)
-- **Adjust**: Use `max_inline_io` in `TaskEnvironment` to change the threshold
+- **> 10 MB**: Use reference types (File, Dir, DataFrame)
+- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` to change the threshold
 
 See [Data flow](./data-flow) for details on data types and transport.
 
-### 6. Leverage caching
+### 6. Use caching
 
-Enable [caching](../task-configuration/caching) to avoid redundant computation:
+Enable [caching](../tasks/task-configuration/caching) to avoid redundant computation:
 
 ```python
 @env.task(cache="auto")
@@ -281,18 +310,20 @@ async def expensive_computation(input_data: dict) -> dict:
 ```
 
 **Benefits**:
+
 - Skips re-execution for identical inputs
 - Reduces overall workflow runtime
 - Preserves resources for new computations
 
 **When to use**:
+
 - Deterministic tasks (same inputs → same outputs)
 - Expensive computations (model training, large data processing)
 - Stable intermediate results
 
 ### 7. Parallelize with `flyte.map`
 
-Use [`flyte.map`](../task-programming/fanout) for data-parallel workloads:
+Use [`flyte.map`](../tasks/task-programming/fanout) for data-parallel workloads:
 
 ```python
 @env.task
@@ -307,11 +338,13 @@ async def parallel_processing(items: list[dict]) -> list[dict]:
 ```
 
 **Benefits**:
+
 - Automatic parallelization
 - Dynamic scaling based on available resources
 - Built-in error handling and retries
 
 **Best practices**:
+
 - Combine with batching to control fanout
 - Use with reusable containers for maximum throughput
 - Consider memory and resource limits
@@ -327,13 +360,13 @@ Follow this workflow to optimize your Flyte workflows:
 5. **Reusable containers**: Enable reusable containers to eliminate `t`.
 6. **Traces**: Use traces for lightweight operations within tasks.
 7. **Cache**: Enable caching for deterministic, expensive tasks.
-8. **Limit fanout**: Keep total actions below 50k (target 10k-20k).
+8. **Limit fanout**: Keep total actions below 200k.
 9. **Monitor**: Use the UI to monitor execution and identify issues.
 10. **Iterate**: Continuously refine based on performance metrics.
 
 ## Real-world example: PyIceberg batch processing
 
-For a comprehensive example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
+For an example of efficient data processing with Flyte, see the [PyIceberg parallel batch aggregation example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/data_processing/pyiceberg_example.py). This example demonstrates:
 
 - **Zero-copy data passing**: Pass file paths instead of data between tasks
 - **Reusable containers with concurrency**: Maximize CPU utilization across workers
@@ -376,6 +409,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 ```
 
 **Issues**:
+
 - 1M tasks created (exceeds UI limit)
 - Task overhead >> task runtime (100ms task, seconds of overhead)
 - High load on Queue Service and object storage
@@ -386,7 +420,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 # Use reusable containers
 env = flyte.TaskEnvironment(
     name="optimized-pipeline",
-    reuse_policy=flyte.ReusePolicy(
+    reusable=flyte.ReusePolicy(
         replicas=(5, 20),
         concurrency=10,
         scaledown_ttl=timedelta(minutes=10),
@@ -410,6 +444,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 ```
 
 **Improvements**:
+
 - 1000 tasks instead of 1M (within limits)
 - Batch runtime ~100 seconds (100ms × 1000 items)
 - Reusable containers eliminate startup overhead
@@ -419,7 +454,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 
 Reach out to the Union team if you:
 
-- Need more than 50k actions per run
+- Need more than 200k tracked actions per run, or need full UI visibility beyond that point
 - Want to use high-performance metastores (Redis, PostgreSQL) instead of object stores
 - Have specific performance requirements or constraints
 - Need help profiling and optimizing your workflows

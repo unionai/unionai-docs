@@ -1,0 +1,27 @@
+---
+title: TaskTimeoutError
+description: "This error is raised when the underlying task execution runs for longer than the specified timeout."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# TaskTimeoutError
+
+**Package:** `flyte.errors`
+
+This error is raised when the underlying task execution runs for longer than the specified timeout.
+
+
+## Parameters
+
+```python
+class TaskTimeoutError(
+    message: str,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+

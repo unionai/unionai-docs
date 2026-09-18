@@ -1,5 +1,7 @@
 ---
 title: Autoresearch agent
+icon: search
+description: Run an autonomous research loop that drives Claude Code in a GPU container to run experiments, then commits results and opens a pull request.
 weight: 1
 variants: +flyte +union
 ---
@@ -7,9 +9,9 @@ variants: +flyte +union
 # Autoresearch agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/autoresearch).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/autoresearch).
 
-This tutorial wraps an autonomous AI research loop in a single Flyte task. The task spins up a GPU container, installs the [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) CLI, clones a research repository, and points Claude Code at a `program.md` brief. The agent runs experiments to improve a model, writes results to disk, and the task then commits the changes and opens a pull request — with a progress plot rendered both in the PR and in the Flyte UI.
+This tutorial wraps an autonomous AI research loop in a single Flyte task. The task spins up a GPU container, installs the [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) CLI, clones a research repository, and points Claude Code at a `program.md` brief. The agent runs experiments to improve a model, writes results to disk, and the task then commits the changes and opens a pull request, with a progress plot rendered both in the PR and in the Flyte UI.
 
 It's an example of using Flyte as durable infrastructure for long-running, autonomous agent work:
 
@@ -78,7 +80,7 @@ flyte create secret github_token <YOUR_GITHUB_TOKEN>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Prepare the research repository
 

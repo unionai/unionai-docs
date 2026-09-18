@@ -1,5 +1,7 @@
 ---
 title: Pandera
+description: Validate dataframes against a Pandera DataFrameModel schema at task boundaries.
+icon: check2-square
 weight: 1
 variants: +flyte +union
 ---
@@ -15,7 +17,7 @@ Pandera supports multiple dataframe backends. The `flyteplugins-pandera` plugin 
 
 | Pandera typing module | DataFrame library | Additional plugin |
 |-|-|-|
-| `pandera.typing.pandas` | pandas | — |
+| `pandera.typing.pandas` | pandas | - |
 | `pandera.typing.polars` | Polars (eager and lazy) | `flyteplugins-polars` |
 | `pandera.typing.pyspark_sql` | PySpark SQL | `flyteplugins-spark` |
 
@@ -84,7 +86,7 @@ class EmployeeSchemaWithStatus(EmployeeSchema):
 Schemas compose through inheritance: `EmployeeSchemaWithStatus` includes all columns from `EmployeeSchema` plus the
 `status` column.
 
-For full details on schema definition—including custom checks, regex column matching, and `Config` options—see the
+For full details on schema definition, including custom checks, regex column matching, and `Config` options, see the
 [pandera DataFrameModel documentation](https://pandera.readthedocs.io/en/latest/dataframe_models.html).
 
 ## Using schemas in tasks

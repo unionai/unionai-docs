@@ -1,10 +1,10 @@
 {
   "packages": {
-    "flyteplugins.pytorch": "/api-reference/integrations/pytorch/packages/flyteplugins.pytorch/"
+    "flyteplugins.pytorch": "/api-reference/integrations/pytorch/"
   },
   "identifiers": {
-    "flyteplugins.pytorch.Elastic": "/api-reference/integrations/pytorch/packages/flyteplugins.pytorch/elastic/",
-    "Elastic": "/api-reference/integrations/pytorch/packages/flyteplugins.pytorch/elastic/"
+    "flyteplugins.pytorch.Elastic": "/api-reference/integrations/pytorch/elastic/",
+    "Elastic": "/api-reference/integrations/pytorch/elastic/"
   },
   "methods": {}
 }

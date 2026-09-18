@@ -7,4 +7,4 @@ variants: -flyte -union
 
 | Link                 | Destination                           |
 | -------------------- | ------------------------------------- |
-| [../test1](../test1) | `/__docs_builder__/navigation/test1/` |
+| [../test1](../test1/_index) | `/__docs_builder__/navigation/test1/` |

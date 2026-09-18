@@ -1,5 +1,7 @@
 ---
 title: Voice customer-service agent
+icon: mic
+description: Serve an LLM with vLLM and a browser voice UI as two composed Flyte apps, with switchable text-to-speech and a live latency comparison.
 weight: 1
 variants: +flyte +union
 mermaid: true
@@ -8,7 +10,7 @@ mermaid: true
 # Voice customer-service agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/voice_customer_service).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/voice_customer_service).
 
 Talk to a customer-support agent in your browser and hear it answer back. This tutorial builds that agent as two Flyte apps: a small Qwen model served with vLLM on a GPU, and a web app that serves a single-page voice UI and proxies the model. Speech recognition runs in the browser, the reply streams back as text, and the text is spoken aloud. Once Union is set up, bringing the whole thing online is two `python` commands.
 

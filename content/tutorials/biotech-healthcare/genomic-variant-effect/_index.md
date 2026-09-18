@@ -1,5 +1,7 @@
 ---
 title: Genomic variant effect prediction
+icon: funnel
+description: Zero-shot pathogenicity scoring with HuggingFace Carbon and interactive VEP reports.
 weight: 3
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Genomic variant effect prediction
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_variant_effect).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/genomic_variant_effect).
 
 This tutorial demonstrates zero-shot variant effect prediction (VEP) with HuggingFace [Carbon](https://huggingface.co/HuggingFaceBio/Carbon-3B). The pipeline loads clinically relevant variants across genes such as BRCA2, TP53, CFTR, KRAS, and HBB, scores each mutation with a log-likelihood ratio, and produces rich HTML reports with DNA tracks, lollipop plots, confusion matrices, and ranked pathogenicity tables.
 
@@ -55,4 +57,4 @@ Use a smaller Carbon model for faster iteration:
 flyte run genomic_variant_effect.py pipeline --model_name HuggingFaceBio/Carbon-500M
 ```
 
-Negative VEP scores indicate the model prefers the reference allele over the alternate — a signal correlated with pathogenicity in this zero-shot setup.
+Negative VEP scores indicate the model prefers the reference allele over the alternate, a signal correlated with pathogenicity in this zero-shot setup.

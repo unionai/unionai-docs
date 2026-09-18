@@ -8,4 +8,4 @@ variants: -flyte -union
 | Link                | Destination                                 |
 | ------------------- | ------------------------------------------- |
 | [./page2](./page2)  | `/__docs_builder__/navigation/test1/page2/` |
-| [. (just a dot)](.) | `/__docs_builder__/navigation/test1/`       |
+| [. (just a dot)](./_index) | `/__docs_builder__/navigation/test1/`       |
