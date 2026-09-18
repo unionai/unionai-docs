@@ -1,5 +1,7 @@
 ---
 title: RL for LLMs with GRPO and LoRA
+icon: trophy
+description: Train a reasoning-style RL loop for an LLM with GRPO and LoRA, orchestrated by plain Flyte async tasks on a warm vLLM pool.
 weight: 1
 variants: -flyte +union
 mermaid: true
@@ -8,7 +10,7 @@ mermaid: true
 # Reinforcement learning for LLMs with GRPO and LoRA
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/rl_grpo_lora).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/rl_grpo_lora).
 
 This tutorial builds a reinforcement learning loop for an LLM, the same shape of loop the major labs use to train reasoning models, and runs it entirely on the Flyte SDK. Flyte orchestrates the tasks and supplies the pieces that make the loop fast and reliable: a warm pool of reusable GPU containers for generation, right-sized environments for each stage, automatic recovery after failures, and a live report you can watch as training moves. Once you have Union and the Flyte SDK installed, running the whole thing is a single `python` command.
 
@@ -287,7 +289,7 @@ The example is deliberately the smallest thing that runs end to end. Because it 
 - **A real task and a bigger policy.** Swap `BASE_MODEL_REPO` and `DATASET` for a larger model and a real verifiable-reward dataset (math, code, or tool use). The loop code is unchanged.
 - **Model-based reward.** Replace the rule in `score_group` with a call to a second warm vLLM environment (an LLM judge), the same warm-pool pattern as the generator.
 - **Multi-GPU rollouts.** Raise `tensor_parallel_size` and prefetch a vLLM-sharded copy for the generator, keeping a plain copy for the trainer.
-- **Multi-node training.** When the policy outgrows one GPU, move `train_step` to a [clustered task environment](../../../api-reference/flyte-sdk/packages/flyte.clustered/clusteredtaskenvironment) with `TorchRun`. The body stays nearly the same.
+- **Multi-node training.** When the policy outgrows one GPU, move `train_step` to a [clustered task environment](../../../api-reference/flyte-sdk/flyte.clustered/clusteredtaskenvironment) with `TorchRun`. The body stays nearly the same.
 - **Full-weight RL.** If LoRA capacity is not enough, train all parameters and hand off the full model directory instead of an adapter.
 - **Serving the result.** Merge the final adapter into the base with `merge_and_unload()` and serve it with a vLLM app environment.
 - **The full GRPO objective.** Add the PPO-style clipped ratio and a KL penalty against a reference model for stability over many steps.

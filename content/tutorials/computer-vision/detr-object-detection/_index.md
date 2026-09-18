@@ -1,5 +1,7 @@
 ---
 title: RT-DETR object detection
+icon: bounding-box
+description: Fine-tune RT-DETRv2 on a COCO dataset with live training charts, mAP evaluation, and bounding-box demos.
 weight: 3
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # RT-DETR object detection
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/detr_object_detection).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/detr_object_detection).
 
 This tutorial fine-tunes [RT-DETRv2](https://huggingface.co/PekingU/rtdetr_v2_r18vd) on a custom COCO-format dataset from HuggingFace. The pipeline downloads and splits the data, fine-tunes the detector with live training charts in Flyte reports, evaluates COCO mAP on a validation split, and renders a side-by-side inference demo with ground-truth and predicted bounding boxes.
 

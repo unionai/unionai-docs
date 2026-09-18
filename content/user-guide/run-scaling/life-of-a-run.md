@@ -1,5 +1,7 @@
 ---
 title: Life of a run
+description: What actually happens when you call flyte.run, step by step.
+icon: play-circle
 weight: 2
 variants: +flyte +union
 mermaid: true
@@ -22,7 +24,7 @@ When you execute `flyte.run()`, the system goes through several phases:
 7. **State management**: Track and persist execution state
 
 > [!NOTE]
-> This walkthrough follows a run's *control flow*. For what the inputs and outputs actually are — **literals**, stored inline or offloaded as **raw data** — and where each lives, see [Where your data lives](../core-concepts/where-data-lives).
+> This walkthrough follows a run's *control flow*. For what the inputs and outputs actually are (**literals**, stored inline or offloaded as **raw data**) and where each lives, see [Where your data lives](../get-started/core-concepts/where-data-lives).
 
 ## Phase 1: Code analysis and preparation
 
@@ -43,7 +45,7 @@ Container images provide the runtime environment for your tasks:
 - **Caching**: Previously built images are reused when possible.
 - **Parallel builds**: Multiple images can be built concurrently.
 
-For more details on container images, see [Container Images](../task-configuration/container-images).
+For more details on container images, see [Container Images](../tasks/task-configuration/container-images).
 
 ## Phase 3: Code bundling
 
@@ -58,17 +60,19 @@ By default, all Python modules referenced by the invoked tasks through module-le
 Skip bundling by setting `copy_style="none"` in `flyte.with_runcontext()` and adding all code into `flyte.Image`:
 
 ```python
+import pathlib
+
 # Add code to image
-image = flyte.Image().with_source_code("/path/to/code")
+image = flyte.Image.from_debian_base().with_source_folder(pathlib.Path("/path/to/code"))
 
 # Or use Dockerfile
-image = flyte.Image.from_dockerfile("Dockerfile")
+image = flyte.Image.from_dockerfile(pathlib.Path("Dockerfile"), registry="myregistry.com/my-org", name="my-image")
 
 # Skip bundling
-run = flyte.with_runcontext(copy_style="none").run(my_task, input_data=data)
+run = flyte.with_runcontext(copy_style="none", version="v1.0.0").run(my_task, input_data=data)
 ```
 
-For more details on code packaging, see [Packaging](../task-deployment/packaging).
+For more details on code packaging, see [Packaging](../tasks/task-deployment/packaging).
 
 ## Phase 4: Upload code bundle
 
@@ -174,7 +178,7 @@ When downstream tasks are invoked:
 
 ## Reusable containers
 
-When using [reusable containers](../task-configuration/reusable-containers), the execution model changes:
+When using [reusable containers](../tasks/task-configuration/reusable-containers), the execution model changes:
 
 1. **Environment spin-up**: The container environment is first spun up with configured replicas.
 2. **Task allocation**: Tasks are allocated to available replicas in the environment.
@@ -233,7 +237,9 @@ sequenceDiagram
 
 ### UI limitations
 
-- **Current limit**: The UI is currently limited to displaying 50k actions per run.
+- **Current limit**: The UI is currently limited to displaying 200k actions per run. Past that
+  point the run continues to execute, but later actions are no longer tracked and the UI shows a
+  truncation notice.
 - **Future improvements**: This limit will be increased in future releases. Contact the Union team if you need higher limits.
 
 ## Optimization opportunities

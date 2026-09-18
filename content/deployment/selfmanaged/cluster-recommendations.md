@@ -1,5 +1,7 @@
 ---
 title: Cluster recommendations
+description: Sizing and shaping a cluster for Union, on managed Kubernetes or your own.
+icon: rulers
 weight: 2
 variants: -flyte +union
 ---
@@ -30,7 +32,7 @@ We recommend using at least a `/16` CIDR range (65,536 addresses) for the overal
 
 | Subnet type | Recommended size | Purpose |
 |-------------|-----------------|---------|
-| **Private subnets** (worker nodes) | `/18` per AZ (16,384 addresses) | Pods receive IPs from these subnets. Size for your peak concurrent task count — each running task pod consumes at least one IP. |
+| **Private subnets** (worker nodes) | `/18` per AZ (16,384 addresses) | Pods receive IPs from these subnets. Size for your peak concurrent task count. Each running task pod consumes at least one IP. |
 | **Public subnets** (load balancers) | `/24` per AZ (256 addresses) | Only needed for internet-facing load balancers and NAT Gateways. Minimal IP consumption. |
 
 As a rule of thumb, you should have at least 1 available IP address for each task you expect to run concurrently.
@@ -59,22 +61,26 @@ Worker nodes in private subnets need outbound internet access to pull container 
 
 > [!NOTE] If you use a fully private cluster with no outbound internet access, you must configure private endpoints or mirrors for all container registries and the Union control plane.
 
+### Control plane egress
+
+Data plane nodes reach the Union control plane over **outbound gRPC-over-TLS (TCP 443)** and, under the default tier, the Cloudflare Tunnel over **TCP 7844**. All connectivity is outbound-only; no inbound firewall rules are required. For the full list of outbound destinations and ports, and guidance on allowlisting by IP address, see [Egress requirements](../../security/architecture/network#egress-requirements).
+
 ## Service accounts
 
 The {{< key product_name >}} data plane uses a single Kubernetes service account, `union-system`, shared by all platform components (operator, executor, webhook, proxy, and FluentBit). This service account needs cloud provider credentials to access:
 
-- **Object storage** (S3, GCS, or Azure Blob Storage) — read/write workflow execution data (task inputs/outputs, bundled code -in fast registration bucket-).
-- **Container registry** (ECR, Artifact Registry, or ACR) — pull task container images; push images when Image Builder is enabled.
+- **Object storage** (S3, GCS, or Azure Blob Storage): read/write workflow execution data (task inputs/outputs, bundled code -in fast registration bucket-).
+- **Container registry** (ECR, Artifact Registry, or ACR): pull task container images; push images when Image Builder is enabled.
 
 See the cloud-specific setup pages for details on configuring this service account:
 [AWS](./selfmanaged-aws/_index), [GCP](./selfmanaged-gcp/_index), [Azure](./selfmanaged-azure/_index).
 
 > [!NOTE] Common service account
-> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration — you only need to bind cloud permissions to a single identity.
+> In previous versions, each component had its own service account. The consolidated `union-system` service account simplifies IAM configuration: you only need to bind cloud permissions to a single identity.
 
-# Performance recommendations
+## Performance recommendations
 
-## Node pools
+### Node pools
 
 It is recommended but not required to use separate node pools for the Union services and the Union worker pods.  This allows you to
 guard against resource contention between Union services and other tasks running in your cluster.  You can find additional information

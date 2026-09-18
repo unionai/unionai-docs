@@ -1,5 +1,7 @@
 ---
 title: Enabling Google Cloud Storage
+description: Grant data plane tasks access to your own Cloud Storage bucket.
+icon: bucket
 weight: 1
 variants: -flyte +union
 ---
@@ -10,11 +12,11 @@ For {{< key product_name >}} customers whose data plane is in GCP, we walk throu
 
 > [!NOTE] Google Cloud Storage in the {{< key product_name >}} environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are a number of Google Cloud Storage (GCS) buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
+> Among these are several Google Cloud Storage (GCS) buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the GCS buckets we are talking about in this section.**
 >
-> **We are discussing the case where you have **_**your own GCS bucket**_** that you set up to store input and output data used by your workflows.**
+> **We are discussing the case where you have _your own GCS bucket_ that you set up to store input and output data used by your workflows.**
 
 ## Grant `<UserFlyteGSA>` access to the bucket
 

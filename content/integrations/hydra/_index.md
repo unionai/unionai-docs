@@ -1,12 +1,14 @@
 ---
 title: Hydra
+description: Pass Hydra configuration trees into tasks as first-class typed inputs.
+icon: sliders
 weight: 1
 variants: +flyte +union
 ---
 
 # Hydra
 
-[Hydra](https://hydra.cc) is a framework for composing and overriding configuration trees from YAML files, dataclasses and the command line. The `flyteplugins-hydra` plugin makes Hydra a first-class submission layer for Flyte, so you can compose a config exactly as you would in any other Hydra app and have each composed run executed as a Flyte task, locally or as a remote execution on a {{< key product_name >}} cluster.
+[Hydra](https://hydra.cc) is a framework for composing and overriding configuration trees from YAML files, dataclasses and the command line. The `flyteplugins-hydra` plugin makes Hydra a first-class submission layer for Flyte, so you can compose a config exactly as you would in any other Hydra app and have each composed run executed as a Flyte task, either in-process or on a {{< key product_name >}} cluster.
 
 The plugin offers three complementary entry points that share a single launcher implementation:
 
@@ -114,7 +116,7 @@ The same `pipeline` task is the target of every example below.
 
 ## Execution mode
 
-Remote execution is the default. Every entry point exposes an explicit knob:
+On-cluster execution is the default. Every entry point exposes an explicit knob:
 
 | Surface                | Local                       | Remote                                 |
 | ---------------------- | --------------------------- | -------------------------------------- |

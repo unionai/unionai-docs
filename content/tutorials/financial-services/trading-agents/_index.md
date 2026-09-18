@@ -1,5 +1,7 @@
 ---
 title: Multi-agent trading simulation
+icon: currency-exchange
+description: A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 weight: 1
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Multi-agent trading simulation
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
@@ -17,7 +19,7 @@ _Trading agents execution visualization_
 ## TL;DR
 
 - You'll build a trading firm made up of agents that analyze, argue, and act, modeled with Python functions.
-- You'll use the Flyte SDK to orchestrate this world — giving you visibility, retries, caching, and durability.
+- You'll use the Flyte SDK to orchestrate this world, giving you visibility, retries, caching, and durability.
 - You'll learn how to plug in tools, structure conversations, and track decisions across agents.
 - You'll see how agents debate, use context, generate reports, and retain memory via vector DBs.
 
@@ -69,13 +71,13 @@ This task accepts several inputs:
 
 The most interesting parameter here is the list of analysts to run. It determines which analyst agents will be invoked and shapes the overall structure of the simulation. Based on this input, the task dynamically launches agent tasks, running them in parallel.
 
-The `main` task is written as a regular asynchronous Python function wrapped with Flyte's task decorator. No domain-specific language or orchestration glue is needed — just idiomatic Python, optionally using async for better performance. The task environment is configured once and shared across all tasks for consistency.
+The `main` task is written as a regular asynchronous Python function wrapped with Flyte's task decorator. No domain-specific language or orchestration glue is needed: just idiomatic Python, optionally using async for better performance. The task environment is configured once and shared across all tasks for consistency.
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/flyte_env.py" fragment=env lang=python >}}
 
 ### Analyst agents
 
-Each analyst agent comes equipped with a set of tools and a carefully designed prompt tailored to its specific domain. These tools are modular Flyte tasks — for example, downloading financial reports or computing technical indicators — and benefit from Flyte's built-in caching to avoid redundant computation.
+Each analyst agent comes equipped with a set of tools and a carefully designed prompt tailored to its specific domain. These tools are modular Flyte tasks (for example, downloading financial reports or computing technical indicators) and benefit from Flyte's built-in caching to avoid redundant computation.
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/tools/toolkit.py" fragment=get_stockstats_indicators_report_online lang=python >}}
 
@@ -113,7 +115,7 @@ Risk agents comprise agents with different risk tolerances: a risky debater, a n
 
 {{< code file="/unionai-examples/v2/tutorials/trading_agents/agents/risk_debators.py" fragment=risk_debator lang=python >}}
 
-The outcome of the risk manager — whether to proceed with the trade or not — is considered the final decision of the trading simulation.
+The outcome of the risk manager, whether to proceed with the trade or not, is considered the final decision of the trading simulation.
 
 You can visualize this full pipeline in the Flyte/Union UI, where every step is logged.
 You’ll see input/output metadata for each tool and agent task.
@@ -170,7 +172,7 @@ uv run main.py
 You might now be wondering: can't I just build all this with Python and LangChain?
 Absolutely. But as your project grows, you'll likely run into these challenges:
 
-1.  **Observability**: Agent workflows can feel opaque. You send a prompt, get a response, but what happened in between?
+1. **Observability**: Agent workflows can feel opaque. You send a prompt, get a response, but what happened in between?
 
     - Were the right tools used?
     - Were correct arguments passed?
@@ -179,16 +181,16 @@ Absolutely. But as your project grows, you'll likely run into these challenges:
 
     Flyte gives you a window into each of these stages.
 
-2.  **Multi-agent coordination**: Real-world applications often require multiple agents with distinct roles and responsibilities. In such cases, you'll need:
+2. **Multi-agent coordination**: Real-world applications often require multiple agents with distinct roles and responsibilities. In such cases, you'll need:
 
     - Isolated state per agent,
     - Shared context where needed,
-    - And coordination — sequential or parallel.
+    - And coordination: sequential or parallel.
 
     Managing this manually gets fragile, fast. Flyte handles it for you.
 
-3.  **Scalability**: Agents and tools might need to run in isolated or containerized environments. Whether you're scaling out to more agents or more powerful hardware, Flyte lets you scale without taxing your local machine or racking up unnecessary cloud bills.
-4.  **Durability & recovery**: LLM-based workflows are often long-running and expensive. If something fails halfway:
+3. **Scalability**: Agents and tools might need to run in isolated or containerized environments. Whether you're scaling out to more agents or more powerful hardware, Flyte lets you scale without taxing your local machine or racking up unnecessary cloud bills.
+4. **Durability & recovery**: LLM-based workflows are often long-running and expensive. If something fails halfway:
 
     - Do you lose all progress?
     - Replay everything from scratch?

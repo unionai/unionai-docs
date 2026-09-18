@@ -1,5 +1,7 @@
 ---
 title: Financial research agent
+icon: graph-up-arrow
+description: Prep equity briefings for the earnings cycle with grounded You.com Research synthesis and fresh news from the Search API.
 weight: 5
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Financial research agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/financial_research_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/financial_research_agent).
 
 This example demonstrates how to build a financial research and earnings-cycle agent on Flyte. For each company, the agent runs grounded, source-cited research and fresh news, then synthesizes an analyst-ready equity briefing.
 
@@ -51,8 +53,8 @@ Each `Briefing` carries a thesis, recent developments, risks, watch items, and a
 
 The agent uses both You.com APIs in parallel for each company:
 
-- **Research API** (`https://api.you.com/v1/research`) — grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API reference](https://you.com/docs/api-reference/research/v1-research).
-- **Search API** (`https://ydc-index.io/v1/search`) — fresh news headlines with `freshness` filtering. See the [Search API reference](https://you.com/docs/api-reference/search/v1-search).
+- **Research API** (`https://api.you.com/v1/research`): grounded, citation-backed analysis with configurable `research_effort` (`lite`, `standard`, `deep`, `exhaustive`). See the [Research API reference](https://you.com/docs/api-reference/research/v1-research).
+- **Search API** (`https://ydc-index.io/v1/search`): fresh news headlines with `freshness` filtering. See the [Search API reference](https://you.com/docs/api-reference/search/v1-search).
 
 {{< code file="/unionai-examples/v2/tutorials/financial_research_agent/main.py" fragment=you_apis lang=python >}}
 
@@ -87,7 +89,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

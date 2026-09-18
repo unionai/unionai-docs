@@ -1,5 +1,7 @@
 ---
 title: Prepare infrastructure
+description: Create the EKS cluster, S3 bucket, ECR repository, and IAM roles the data plane needs.
+icon: tools
 weight: 1
 variants: -flyte +union
 ---
@@ -40,9 +42,10 @@ eksctl create cluster \
 > [!NOTE] The `--with-oidc` flag creates an IAM OIDC provider for the cluster, which is required for [IRSA](#iam) below.
 
 The following EKS add-ons are required and come pre-installed on managed clusters created with `eksctl`:
-  - CoreDNS
-  - Amazon VPC CNI
-  - Kube-proxy
+
+- CoreDNS
+- Amazon VPC CNI
+- Kube-proxy
 
 If you created your cluster through other means, verify they are installed:
 
@@ -120,7 +123,7 @@ aws ecr create-repository \
   --image-scanning-configuration scanOnPush=true
 ```
 
-Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`) — you will reference it when configuring IAM permissions below.
+Note the repository URI from the output (e.g. `<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/${ECR_REPO_NAME}`). You will reference it when configuring IAM permissions below.
 
 ## IAM
 

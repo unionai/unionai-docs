@@ -1,5 +1,7 @@
 ---
 title: GDPR alignment
+description: How the data residency model keeps EU customer data in the EU, and which control plane endpoints serve it.
+icon: flag
 weight: 3
 variants: -flyte +union
 ---

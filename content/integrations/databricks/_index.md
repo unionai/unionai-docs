@@ -1,5 +1,7 @@
 ---
 title: Databricks
+description: Submit PySpark jobs written in a Flyte task to a Databricks cluster.
+icon: lightning-charge
 weight: 1
 variants: +flyte +union
 ---

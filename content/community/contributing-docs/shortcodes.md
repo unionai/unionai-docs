@@ -1,6 +1,8 @@
 ---
 title: Shortcodes
-weight: 5
+description: 'The component library for docs pages: cards, grids, notices, variant gates, and code includes.'
+icon: puzzle
+weight: 7
 variants: +flyte +union
 ---
 
@@ -14,7 +16,7 @@ This site has special blocks that can be used to generate code for Union.
 > Note that this page is only visible locally. It does not appear in the menus or in the production build.
 >
 > If you need instructions on how to create the local environment and get the
-> `localhost:1313` server running, please refer to the [local development guide](./publishing).
+> `localhost:1313` server running, please refer to [Set up a local docs dev environment](./quick-start).
 
 ## How to specify a "shortcode"
 
@@ -45,13 +47,14 @@ Examples:
 * A shortcode with parameters
 
 ```markdown
-{{</* link-card target="union-sdk" icon="workflow" title="Union SDK" */>}}
+{{</* link-card target="union-sdk" icon="code-square" title="Union SDK" */>}}
 The Union SDK provides the Python API for building Union workflows and apps.
 {{</* /link-card */>}}
 ```
 
 > [!NOTE]
 > If you're wondering why we have a `{{</* markdown */>}}` when we can generate markdown at the top level, it is due to a quirk in Hugo:
+>
 > * At the top level of the page, Hugo can render markdown directly, interspersed with shortcodes.
 > * However, *inside* a container shortcode, Hugo can only render *either* other shortcodes *or* Markdown.
 > * The `{{</* markdown */>}}` shortcode is designed to contain only Markdown (not other shortcodes).
@@ -150,6 +153,29 @@ flyte = "Flyte"
 union = "Union.ai"
 ```
 
+#### Keys in a heading
+
+Inside a heading, write the key with the `{{%/* key ... */%}}` delimiters instead of
+`{{</* key ... */>}}`:
+
+```markdown
+## Deploy the {{%/* key product_name */%}} operator
+```
+
+Hugo resolves the percent form before it computes the heading's anchor id, so the anchor
+follows the heading text you can see (`#deploy-the-unionai-operator`). The angle-bracket
+form is resolved later, and the anchor gets computed from an internal Hugo placeholder
+whose value changes on every build. That makes the anchor unreadable and breaks every
+deep link into the heading each time the site is deployed.
+
+For a heading that needs a shortcode with no percent form, set an explicit id instead:
+
+```markdown
+## Deploy the {{</* key product_name */>}} operator {#deploy-the-operator}
+```
+
+The `Check Build Determinism` CI job rejects a heading that uses the angle-bracket form.
+
 #### List of available keys
 
 | Key               | Description                           | Example Usage (Flyte → Union)                                          |
@@ -169,16 +195,26 @@ union = "Union.ai"
 | ctl               | Lowercase control tool identifier     | `{{</* key ctl */>}}` → "flytectl" or "uctl"                               |
 | config_env        | Configuration environment variable    | `{{</* key config_env */>}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
 | env_prefix        | Environment variable prefix           | `{{</* key env_prefix */>}}` → "FLYTE" or "UNION"                          |
-| docs_home         | Documentation home URL                | `{{</* key docs_home */>}}` → "/docs/v2/flyte" or "/docs/v2/union"        |
+| docs_home         | Documentation home URL — **do not use; see the warning below** | `{{</* key docs_home */>}}` → an **unversioned** docs URL, `/docs/flyte` or `/docs/union` |
 | map_func          | Map function name                     | `{{</* key map_func */>}}` → "map_task" or "map"                           |
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
+
+> [!WARNING] Use the `docs_home` shortcode, not the `docs_home` key
+> The **key** resolves to an *unversioned* docs URL, and the two variants do not land in the
+> same place: the unversioned `/docs/union` path redirects to the **v2** union docs, while
+> `/docs/flyte` redirects to the **v1** flyte docs. A link built from the key therefore sends
+> Flyte readers to the old line.
+>
+> Use the shortcode instead, which takes an explicit version and cannot drift:
+> `{{</* docs_home flyte v2 */>}}`. It is documented below.
 
 ### `{{</* download */>}}`
 
 Generates a download link.
 
 Parameters:
+
 - `url`: The URL to download from
 - `filename`: The filename to save the file as
 - `text`: The text to display for the download link
@@ -205,6 +241,7 @@ Helper functions to track Python classes in Flyte documentation, so we can link 
 the appropriate documentation.
 
 Parameters:
+
 - name of the class
 - text to add to the link
 
@@ -224,11 +261,49 @@ Example:
 [Download {{</* icon download */>}}](/download)
 ```
 
+### `{{</* subpage-cards */>}}`
+
+Renders a card grid of the pages directly beneath the current section landing page. Each card's
+title, link and one-line description come from the child page's own frontmatter `description`,
+so there is nothing to keep in sync by hand: edit the child's `description` and the card follows.
+
+```markdown
+{{</* subpage-cards */>}}
+```
+
+Takes no arguments. Used on section landing pages, and checked in CI by `check-subpage-cards`.
+
+### `{{</* badge */>}}`
+
+A small coloured label, taking a style as its first argument.
+
+```markdown
+{{</* badge "danger" */>}}Sev 1 - Urgent{{</* /badge */>}}
+{{</* badge "warning" */>}}Sev 2 - High{{</* /badge */>}}
+```
+
+### `{{</* note */>}}` and `{{</* warning */>}}` (legacy)
+
+These predate the callout syntax and still work, but **new content should use the callout form**,
+which is what the rest of the docs use:
+
+```markdown
+> [!NOTE] Title
+> Content here
+
+> [!WARNING] Title
+> Warning content
+```
+
+There are about 30 remaining `{{</* note */>}}` uses against roughly 455 callouts, so treat the
+shortcode as something you may meet while editing rather than something to reach for.
+
 ### `{{</* code */>}}`
 
 Includes a code snippet or file.
 
 Parameters:
+
 - `file`: The path to the file to include.
 - `fragment`: The name of the fragment to include.
 - `from`: The line number to start including from.
@@ -240,7 +315,7 @@ Parameters:
 The examples in this section uses this file as base:
 
 {{< code file="/_static/__docs_builder__/sample.py" show_fragments=true lang=python >}}
-Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
+Link to [/_static/__docs_builder__/sample.py](../../_static/__docs_builder__/sample.py)
 
 #### Including a section of a file: `{{docs-fragment}}`
 
@@ -276,4 +351,3 @@ Simply specify no filters, just the `file` attribute:
 Effect:
 
 {{< code file="/_static/__docs_builder__/sample.py" >}}
-

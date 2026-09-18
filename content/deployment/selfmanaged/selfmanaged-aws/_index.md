@@ -1,5 +1,7 @@
 ---
 title: Data plane setup on AWS
+description: Run a self-managed data plane on AWS, using EKS, S3, ECR, and IAM.
+icon: amazon
 weight: 4
 variants: -flyte +union
 ---
@@ -13,3 +15,5 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 If you already have an EKS cluster, S3 buckets, ECR repository, and IAM role configured, skip directly to [Deploy the dataplane](./deploy-dataplane).
 
 Otherwise, start with [Prepare infrastructure](./prepare-infra) to set up the required AWS resources.
+
+{{< subpage-cards >}}

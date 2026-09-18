@@ -39,11 +39,13 @@ jobs:
         with:
           files: |
             content/**/*.md
-          # Generated API reference and prds-owned release notes are excluded:
-          # they are machine-authored / owned by another pipeline.
+          # Generated API reference, generated Helm-chart reference, and
+          # prds-owned release notes are excluded: they are machine-authored /
+          # owned by another pipeline.
           files_ignore: |
             content/api-reference/**
             content/release-notes/**
+            content/deployment/selfmanaged/helm-chart-reference/**
 
       - name: Run markdownlint-cli2 on changed files
         if: steps.changed.outputs.any_changed == 'true'

@@ -1,5 +1,7 @@
 ---
 title: Competitive intelligence agent
+icon: binoculars
+description: Fan out across competitors, extract source-cited market deltas with the You.com Search API, and build a knowledge-graph-ready intelligence table.
 weight: 3
 variants: +flyte +union
 ---
@@ -7,9 +9,9 @@ variants: +flyte +union
 # Competitive intelligence agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/competitive_intelligence_agent).
 
-This example demonstrates how to build a continuous competitive and market intelligence agent on Flyte. The agent fans out across a list of competitors, pulls fresh, source-cited web and news results from the [You.com Search API](https://you.com/docs/search/overview), and uses [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) to extract structured **deltas** — pricing changes, product launches, funding events, leadership moves, and more — into a knowledge-graph-ready table.
+This example demonstrates how to build a continuous competitive and market intelligence agent on Flyte. The agent fans out across a list of competitors, pulls fresh, source-cited web and news results from the [You.com Search API](https://you.com/docs/search/overview), and uses [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) to extract structured **deltas** (pricing changes, product launches, funding events, leadership moves, and more) into a knowledge-graph-ready table.
 
 You.com returns ranked web and news results with snippets and publication timestamps, giving the LLM attributable sources to cite. Flyte orchestrates the rest:
 
@@ -41,7 +43,7 @@ The Python packages are declared at the top of the file using the `uv` script st
 
 ## Data types
 
-The agent models search hits, deltas, and the final report as dataclasses. Each `Delta` links back to a `SearchHit` that preserves You.com metadata — domain, publication date, author, and snippet.
+The agent models search hits, deltas, and the final report as dataclasses. Each `Delta` links back to a `SearchHit` that preserves You.com metadata: domain, publication date, author, and snippet.
 
 {{< code file="/unionai-examples/v2/tutorials/competitive_intelligence_agent/main.py" fragment=data_types lang=python >}}
 
@@ -87,7 +89,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

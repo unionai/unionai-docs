@@ -1,5 +1,7 @@
 ---
 title: Multi-cluster and multi-cloud
+description: Map each project or domain to its own cloud account or project, including across providers.
+icon: diagram-3
 weight: 4
 variants: -flyte +union
 ---

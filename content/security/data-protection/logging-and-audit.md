@@ -1,5 +1,7 @@
 ---
 title: Logging and audit
+description: Where task logs, metrics, and the audit trail are collected, and who can read them.
+icon: journal-text
 weight: 7
 variants: -flyte +union
 ---
@@ -54,7 +56,7 @@ This verification is fully self-service.
 
 Audit data is available from the following sources:
 
-- Control plane execution and lifecycle events: `uctl get execution --all -o json`, filtered by time window.
+- Control plane run and action lifecycle events: `flyte get run --created-after <ts> --created-before <ts>` for run-level events; for per-action lifecycle detail use `flyte get action <run-name>`.
 - Authentication events: the configured identity provider's audit log (e.g., Okta).
 - Cluster operations: the Kubernetes audit log on the data plane.
 - Cloud IAM activity: CloudTrail (AWS), Cloud Audit Logs (GCP), or Azure Monitor activity logs.

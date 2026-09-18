@@ -1,5 +1,7 @@
 ---
 title: Distributed training
+description: How wandb_init detects a distributed job and coordinates logging across ranks.
+icon: diagram-3
 weight: 2
 variants: +flyte +union
 ---
@@ -72,6 +74,7 @@ Where `N` = number of workers/nodes, `M` = processes per worker.
 - **`new`**: Use when you need completely separate runs per GPU, for example to track GPU-specific metrics or compare training dynamics across devices.
 
 For multi-node training:
+
 - Use **`rank_scope="global"`** (default) for most cases. A single consolidated run across all nodes is sufficient since metrics like loss and accuracy converge after gradient synchronization.
 - Use **`rank_scope="worker"`** for debugging and per-node analysis. This is useful when you need to inspect data distribution across nodes, compare predictions from different workers, or track metrics on individual batches outside the main node.
 

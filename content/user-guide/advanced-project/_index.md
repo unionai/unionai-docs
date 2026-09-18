@@ -1,14 +1,13 @@
 ---
 title: Advanced project
-weight: 102
+description: An advanced guide for building an LLM reporting agent on Flyte.
+icon: rocket
+weight: 11
 variants: +flyte +union
 mermaid: true
-llm_readable_bundle: true
 ---
 
 # Advanced project: LLM reporting agent
-
-{{< llm-bundle-note >}}
 
 This example demonstrates a resilient agentic report generator that showcases
 Flyte 2.0's advanced features for building production-grade AI workflows.
@@ -16,6 +15,7 @@ Flyte 2.0's advanced features for building production-grade AI workflows.
 ## What you'll build
 
 A batch report generator that:
+
 1. Processes multiple topics in parallel
 2. Iteratively critiques and refines each report until it meets a quality threshold
 3. Produces multiple output formats (Markdown, HTML, summary) for each report
@@ -110,3 +110,5 @@ flyte secret create openai-api-key
 
 4. **Parallel fan-out**: `asyncio.gather` processes multiple topics concurrently,
    maximizing throughput by running refinement tasks in parallel across the batch.
+
+{{< subpage-cards >}}

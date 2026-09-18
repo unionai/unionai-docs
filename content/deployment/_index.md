@@ -1,5 +1,7 @@
 ---
 title: Platform deployment
+description: Deploy the Union platform, either as BYOC or self-managed, with your code and data staying in your own cloud.
+icon: server
 weight: 5
 variants: -flyte +union
 top_menu: true
@@ -19,6 +21,14 @@ If you choose a **Self-managed deployment**, your data isolation is further enha
 
 If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
 
+> [!INFO] Try Flyte Devbox in your browser
+>
+> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox).
+>
+> If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
+>
+> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
+
 ## BYOC deployment
 
 The BYOC deployment offers a fully "serverless in your cloud", turnkey solution where all infrastructure management is offloaded to Union.ai:
@@ -31,7 +41,7 @@ The BYOC deployment offers a fully "serverless in your cloud", turnkey solution 
 
 The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
 
-* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure and Oracle Compute Infrastructure (OCI).
+* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure, and Oracle Cloud Infrastructure (OCI); on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment. See [Set up your data plane](./selfmanaged/_index) for the full list of supported providers.
 
 * The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
 
@@ -79,3 +89,5 @@ The control plane has access to:
 * Names of tasks and other deployed entities
 * Pointers to object storage locations in the data plane (but not any user data)
 * Union.ai IDP
+
+{{< subpage-cards >}}

@@ -1,0 +1,27 @@
+---
+title: RemoteTaskNotFoundError
+description: "This error is raised when the user tries to access a task that does not exist."
+icon: exclamation-triangle
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# RemoteTaskNotFoundError
+
+**Package:** `flyte.errors`
+
+This error is raised when the user tries to access a task that does not exist.
+
+
+## Parameters
+
+```python
+class RemoteTaskNotFoundError(
+    message: str,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
+

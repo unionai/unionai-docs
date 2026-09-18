@@ -1,6 +1,8 @@
 ---
 title: User management
-weight: 40
+description: Manage users, roles, and policies for your Union cluster.
+icon: person
+weight: 7
 variants: -flyte +union
 ---
 
@@ -24,7 +26,7 @@ Union ships with three built-in policies:
 | **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory` | Register and run workflows |
 | **Viewer** | `view_flyte_executions`, `view_flyte_inventory` | Read-only access |
 
-Users can hold multiple policies — permissions are the union of all assigned policies.
+Users can hold multiple policies: permissions are the union of all assigned policies.
 
 ## Custom roles and policies
 
@@ -48,6 +50,7 @@ bind it to the production domain of a specific project, and assign it to a user.
 {{< tabs "walkthrough-create" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Role, Policy, Assignment
 
@@ -80,11 +83,12 @@ Policy.create(
 # Step 3 — Assign the policy to a user
 Assignment.create(email="jane@example.com", policy="Team Prod Access")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
 {{< markdown >}}
-**Step 1 — Create the role**
+**Step 1: Create the role**
 
 Use `--edit` to open an interactive editor (no YAML file needed):
 
@@ -103,9 +107,9 @@ actions:
   - create_flyte_executions
 ```
 
-Save and close — the role is created.
+Save and close. The role is created.
 
-**Step 2 — Create the policy**
+**Step 2: Create the policy**
 
 ```bash
 flyte create policy "Team Prod Access" --edit
@@ -123,7 +127,7 @@ bindings:
       domain: production
 ```
 
-**Step 3 — Assign the policy to a user**
+**Step 3: Assign the policy to a user**
 
 ```bash
 flyte create assignment --email jane@example.com --policy "Team Prod Access"
@@ -135,6 +139,7 @@ You can also assign by user subject or application credentials subject:
 flyte create assignment --user-subject user-123 --policy "Team Prod Access"
 flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -144,6 +149,7 @@ flyte create assignment --creds-subject app-456 --policy "Team Prod Access"
 {{< tabs "walkthrough-update" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
+
 ```python
 from flyteplugins.union.remote import Role, Policy
 
@@ -168,6 +174,7 @@ new_bindings = policy.bindings + [
 ]
 Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new_bindings)
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "CLI" >}}
@@ -178,6 +185,7 @@ Policy.update("Team Prod Access", old_bindings=policy.bindings, new_bindings=new
 flyte update role "Production Runner"
 flyte update policy "Team Prod Access"
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -186,10 +194,10 @@ flyte update policy "Team Prod Access"
 
 Navigate to **Settings > User Management** to:
 
-* **View users** — see all users and their assigned policies.
-* **Add a user** — specify name, email, and policies. The user receives an email invite.
-* **Change policies** — select a user and edit their assignments.
-* **Remove a user** — select a user and remove them.
+* **View users**: see all users and their assigned policies.
+* **Add a user**: specify name, email, and policies. The user receives an email invite.
+* **Change policies**: select a user and edit their assignments.
+* **Remove a user**: select a user and remove them.
 
 ## Available actions
 

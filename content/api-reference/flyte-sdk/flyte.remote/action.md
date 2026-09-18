@@ -1,0 +1,358 @@
+---
+title: Action
+description: "A class representing an action."
+icon: braces
+version: 2.8.1
+variants: +flyte +union
+layout: py_api
+---
+
+# Action
+
+**Package:** `flyte.remote`
+
+A class representing an action. It is used to manage the "execution" of a task and its state on the remote API.
+
+From a datamodel perspective, a Run consists of actions. All actions are linearly nested under a parent action.
+ Actions have unique auto-generated identifiers, that are unique within a parent action.
+
+ &lt;pre&gt;
+ run
+  - a0
+    - action1 under a0
+    - action2 under a0
+        - action1 under action2 under a0
+        - action2 under action1 under action2 under a0
+        - ...
+    - ...
+&lt;/pre&gt;
+
+
+## Parameters
+
+```python
+class Action(
+    pb2: run_definition_pb2.Action,
+    _details: ActionDetails | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.Action` | |
+| `_details` | `ActionDetails \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `identifier_pb2.ActionIdentifier` | Get the action ID. |
+| `name` | `str` | Get the name of the action. |
+| `parent_name` | `str \| None` | Name of the action this one is nested under, or None for the root action. |
+| `phase` | `ActionPhase` | Get the phase of the action. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the action. |
+| `relation` | `None` | Provenance link (`flyteidl2.common.run_pb2.Relation`: related_to + relation_type) if this run was derived from another (rerun/recover), otherwise None. Only set on root actions; requires a flyteidl2 build that ships ActionMetadata.relation. |
+| `run_name` | `str` | Get the name of the run. |
+| `start_time` | `datetime` | Get the start time of the action. |
+| `task_name` | `str \| None` | Get the name of the task. |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`abort()`](#abort) | Aborts / Terminates the action. |
+| [`details()`](#details) | Get the details of the action. |
+| [`done()`](#done) | Check if the action is done. |
+| [`download_code()`](#download_code) | Download the code this action ran — the source shown in the console's "Code" tab. |
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`get_logs()`](#get_logs) | Get logs for the action as an iterator of strings. |
+| [`get_report()`](#get_report) | Get the HTML report associated with this action. |
+| [`listall()`](#listall) | Get all actions for a given run. |
+| [`show_logs()`](#show_logs) | Display logs for the action. |
+| [`sync()`](#sync) | Sync the action with the remote server. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions, time elapsed, and error details in case of failure. |
+| [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
+
+
+### abort()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.abort.aio()`.
+```python
+def abort(
+    reason: str = 'Manually aborted from the SDK.',
+)
+```
+Aborts / Terminates the action.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
+
+### details()
+
+```python
+def details()
+```
+Get the details of the action. This is a placeholder for getting the action details.
+
+
+### done()
+
+```python
+def done()
+```
+Check if the action is done.
+
+
+### download_code()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.download_code.aio()`.
+```python
+def download_code(
+    dest: str | pathlib.Path | None = None,
+    extract: bool = True,
+    attempt: int | None = None,
+) -> pathlib.Path
+```
+Download the code this action ran — the source shown in the console's "Code" tab.
+
+The code is whatever `flyte run` / `flyte deploy` packaged and uploaded for this task: a
+tarball of the source tree, or a cloudpickle of the task when it was launched from a
+notebook or REPL. Tasks that run from code baked into their image carry no bundle, and
+raise.
+
+```python
+action = flyte.remote.Action.get(run_name="my-run", name="n0")
+src = action.download_code(dest="./n0-code")
+print((src / "workflows" / "main.py").read_text())
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `dest` | `str \| pathlib.Path \| None` | Directory to download into, created if missing. Defaults to a directory named after the run, under the current working directory. |
+| `extract` | `bool` | Unpack the tarball into `dest`. Set False to keep the archive as-is. Pickled bundles are never unpacked. |
+| `attempt` | `int \| None` | Attempt to fetch the bundle for. Defaults to the latest attempt. |
+
+**Returns**
+
+The directory the source was extracted into, or the path of the downloaded archive
+when `extract` is False or the bundle is a pickle.
+
+### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Action.get.aio()`.
+```python
+def get(
+    cls,
+    uri: str | None = None,
+    run_name: str | None = None,
+    name: str | None = None,
+) -> Action
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `uri` | `str \| None` | The URI of the action. |
+| `run_name` | `str \| None` | The name of the action. |
+| `name` | `str \| None` | The name of the action. |
+
+### get_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.get_logs.aio()`.
+```python
+def get_logs(
+    attempt: int | None = None,
+    filter_system: bool = False,
+    show_ts: bool = False,
+) -> AsyncGenerator[str, None]
+```
+Get logs for the action as an iterator of strings.
+
+Can be called synchronously (returns `Iterator[str]`) or asynchronously
+via `.aio()` (returns `AsyncIterator[str]`).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to retrieve logs for (defaults to latest attempt). |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
+| `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
+
+### get_report()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.get_report.aio()`.
+```python
+def get_report(
+    attempt: int | None = None,
+) -> str
+```
+Get the HTML report associated with this action.
+
+This first requests a signed download link from the data proxy for the report artifact,
+then downloads the report from that URL and returns its contents as an HTML string.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to fetch the report for. Defaults to the latest attempt. |
+
+**Returns:** The report contents as an HTML string.
+
+### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Action.listall.aio()`.
+```python
+def listall(
+    cls,
+    for_run_name: str,
+    in_phase: Tuple[ActionPhase | str, ...] | None = None,
+    parent_name: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    created_at: TimeFilter | None = None,
+    updated_at: TimeFilter | None = None,
+) -> Union[Iterator[Action], AsyncIterator[Action]]
+```
+Get all actions for a given run.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `for_run_name` | `str` | The name of the run. |
+| `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter actions by one or more phases. |
+| `parent_name` | `str \| None` | Only return direct children of this action (e.g. "a0" for the root's children). |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the action list, in the format (field, order). |
+| `created_at` | `TimeFilter \| None` | Filter actions by creation time range. |
+| `updated_at` | `TimeFilter \| None` | Filter actions by last-update time range. |
+
+**Returns:** An iterator of actions.
+
+### show_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.show_logs.aio()`.
+```python
+def show_logs(
+    attempt: int | None = None,
+    max_lines: int = 30,
+    show_ts: bool = False,
+    raw: bool = False,
+    filter_system: bool = False,
+)
+```
+Display logs for the action.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to show logs for (defaults to latest attempt). |
+| `max_lines` | `int` | Maximum number of log lines to display in the viewer. |
+| `show_ts` | `bool` | Whether to show timestamps with each log line. |
+| `raw` | `bool` | If True, print logs directly without the interactive viewer. |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
+
+### sync()
+
+```python
+def sync()
+```
+Sync the action with the remote server. This is a placeholder for syncing the action.
+
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+
+
+**Returns:** dict: A dictionary representation of the object.
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+
+
+**Returns:** str: A JSON string representation of the object.
+
+### wait()
+
+```python
+def wait(
+    quiet: bool = False,
+    wait_for: WaitFor = 'terminal',
+)
+```
+Wait for the run to complete, displaying a rich progress panel with status transitions,
+time elapsed, and error details in case of failure.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `quiet` | `bool` | |
+| `wait_for` | `WaitFor` | |
+
+### watch()
+
+```python
+def watch(
+    cache_data_on_done: bool = False,
+    wait_for: WaitFor = 'terminal',
+) -> AsyncGenerator[ActionDetails, None]
+```
+Watch the action for updates, updating the internal Action state with latest details.
+
+This method updates both the cached details and the protobuf representation,
+ensuring that properties like `phase` reflect the current state.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | |
+| `wait_for` | `WaitFor` | |
+

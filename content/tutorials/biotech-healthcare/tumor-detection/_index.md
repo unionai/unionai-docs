@@ -1,5 +1,7 @@
 ---
 title: Brain tumor MRI classification
+icon: hospital
+description: Classify brain MRI scans with a two-phase EfficientNet-B4 pipeline featuring resumable GPU checkpointing and in-UI reports.
 weight: 2
 variants: +flyte +union
 ---
@@ -7,17 +9,17 @@ variants: +flyte +union
 # Brain tumor MRI classification
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/tumor_detection).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/tumor_detection).
 
-This tutorial builds a medical-imaging pipeline that classifies brain MRI scans into four categories — Glioma, Meningioma, No Tumor, and Pituitary — using a two-phase EfficientNet-B4 transfer-learning strategy. The pipeline downloads the dataset, trains on a GPU with fault-tolerant checkpointing, and renders training curves and a confusion matrix directly in the {{< key product_name >}} UI.
+This tutorial builds a medical-imaging pipeline that classifies brain MRI scans into four categories (Glioma, Meningioma, No Tumor, and Pituitary) using a two-phase EfficientNet-B4 transfer-learning strategy. The pipeline downloads the dataset, trains on a GPU with fault-tolerant checkpointing, and renders training curves and a confusion matrix directly in the {{< key product_name >}} UI.
 
 The example is split into focused modules:
 
-- `config.py` — container image, task environments, and the `TrainingConfig` hyperparameters.
-- `dataset.py` — downloads the Hugging Face dataset, builds class-balanced data loaders.
-- `model.py` / `training.py` — the Lightning module and the two-phase training loop.
-- `utils.py` — plotting helpers for the report.
-- `run.py` — the three Flyte tasks and the pipeline driver.
+- `config.py`: container image, task environments, and the `TrainingConfig` hyperparameters.
+- `dataset.py`: downloads the Hugging Face dataset, builds class-balanced data loaders.
+- `model.py` / `training.py`: the Lightning module and the two-phase training loop.
+- `utils.py`: plotting helpers for the report.
+- `run.py`: the three Flyte tasks and the pipeline driver.
 
 Flyte handles the production concerns:
 
@@ -80,7 +82,7 @@ The driver task wires the three steps together.
 
 ## Run the pipeline
 
-This example has no secrets — the dataset is public. Because the pipeline imports sibling modules and uses `with_source_folder`, run it from inside the example directory so the local files are picked up.
+This example has no secrets: the dataset is public. Because the pipeline imports sibling modules and uses `with_source_folder`, run it from inside the example directory so the local files are picked up.
 
 From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/tumor_detection):
 

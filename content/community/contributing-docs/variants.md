@@ -1,6 +1,8 @@
 ---
 title: Variants
-weight: 2
+description: Show or hide content per product variant, either for a whole page or inline.
+icon: layers
+weight: 5
 variants: +flyte +union
 ---
 
@@ -21,7 +23,7 @@ Currently, the docs site supports two variants:
 Each variant is referenced in the page logic using its respective code name: `flyte` or `union`.
 
 > [!NOTE]
-> The previous code names `byoc`, `selfmanaged`, and `serverless` are no longer valid. They all map to the current `union` variant — Union.ai now ships as a single docs variant covering BYOC and Self-managed deployments. The `flyte` variant covers open-source Flyte. If you encounter any of the retired names in older content, frontmatter, or shortcodes, replace `byoc`, `selfmanaged`, or `serverless` with `union`.
+> The previous code names `byoc`, `selfmanaged`, and `serverless` are no longer valid. They all map to the current `union` variant. Union.ai now ships as a single docs variant covering BYOC and Self-managed deployments. The `flyte` variant covers open-source Flyte. If you encounter any of the retired names in older content, frontmatter, or shortcodes, replace `byoc`, `selfmanaged`, or `serverless` with `union`.
 
 The available set of variants are defined in the `config.<code_name>.toml` files in the `unionai-docs-infra/` directory.
 
@@ -34,12 +36,12 @@ In the public website, if you are on page in one variant, and you change to a di
 If it does not exist, you will see a message indicating that the page is not available in the selected variant.
 
 In the source Markdown, the presence or absence of a page in a given variant is governed by  `variants` field in the front matter parameter of the page.
-For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/main/content/community/contributing-docs.md), you will see the following front matter:
+For example, if you look at the Markdown source for [this page (the page you are currently viewing)](https://github.com/unionai/unionai-docs/blob/main/content/community/contributing-docs/variants.md), you will see the following front matter:
 
 ```markdown
 ---
-title: Platform overview
-weight: 1
+title: Variants
+weight: 5
 variants: +flyte +union
 ---
 ```
@@ -67,6 +69,7 @@ As you can see, the `variants` field expects a space-separated list of keywords:
 Content can also differ *within a page* based on the selected variant.
 This is done with conditional rendering using the `{{</* variant */>}}` and `{{</* key */>}}` [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/).
 
+<!-- markdownlint-disable-next-line MD037 -- Hugo escaped-shortcode syntax, not emphasis -->
 ### {{</* variant */>}}
 
 The syntax for the `{{</* variant */>}}` shortcode is:
@@ -93,6 +96,7 @@ This content is only visible in the `union` variant.
 
 For more details on the `{{</* variant */>}}` shortcode, see the [Shortcodes > `variant`](./shortcodes#variant).
 
+<!-- markdownlint-disable-next-line MD037 -- Hugo escaped-shortcode syntax, not emphasis -->
 ### {{</* key */>}}
 
 The syntax for the `{{</* key */>}}` shortcode is:
@@ -107,6 +111,7 @@ For example, if you want to render the product name keyword, you would use:
 ```markdown
 {{</* key product_name */>}}
 ```
+
 The available key names are defined in the [params.key] section of the `hugo.site.toml` configuration file in the root of the repository.
 
 For example the `product_name` used above is defined in that file as
@@ -118,7 +123,6 @@ union = "Union.ai"
 ```
 
 Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `union` variant, it will be replaced with `Union.ai`.
-
 
 For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`](./shortcodes#key)
 

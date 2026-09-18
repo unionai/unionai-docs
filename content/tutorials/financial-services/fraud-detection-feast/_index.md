@@ -1,5 +1,7 @@
 ---
 title: Fraud detection with Feast
+icon: shield-exclamation
+description: Train an XGBoost fraud classifier and materialize transaction features in Feast for online scoring.
 weight: 3
 variants: +flyte +union
 ---
@@ -7,7 +9,7 @@ variants: +flyte +union
 # Fraud detection with Feast
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/fraud_detection_feast).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/fraud_detection_feast).
 
 This tutorial builds a credit-card fraud detection pipeline that combines [Feast](https://feast.dev/) feature store materialization with an XGBoost classifier on the Sparkov simulated transactions dataset. The workflow engineers transaction and user-level features, trains a model, registers features in Feast, and materializes online feature values for low-latency scoring.
 
@@ -15,7 +17,7 @@ Flyte provides:
 
 - **Cached data preparation** for the Kaggle dataset download and feature engineering.
 - **Report-backed training** with confusion matrix and ROC-style metrics in the UI.
-- **Durable artifacts** — the trained model and Feast repo are returned as `flyte.io.File` and `flyte.io.Dir`.
+- **Durable artifacts**: the trained model and Feast repo are returned as `flyte.io.File` and `flyte.io.Dir`.
 
 ## Define the task environment
 

@@ -1,13 +1,12 @@
 ---
 title: Self-managed deployment
+description: Run the data plane on your own Kubernetes cluster, owning the cluster and its upgrades while Union runs the control plane.
+icon: server
 weight: 2
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Self-managed deployment
-
-{{< llm-bundle-note >}}
 
 In a self-managed deployment, you operate the data plane on your own Kubernetes infrastructure.
 Union.ai runs the control plane, but you manage the cluster, upgrades, and operational aspects of the data plane yourself.
@@ -24,6 +23,8 @@ Union.ai has no access to your cluster, providing the highest level of data isol
    - [Azure](./selfmanaged-azure/_index)
    - [OCI](./selfmanaged-oci/_index)
    - [CoreWeave](./selfmanaged-coreweave/_index)
+   - [Crusoe](./selfmanaged-crusoe/_index)
+   - [Nebius](./selfmanaged-nebius/_index)
 
 ## Configuration
 
@@ -43,3 +44,5 @@ After initial setup, configure platform features on your cluster:
 
 - [Helm chart reference](./helm-chart-reference/_index) for available chart values
 - [Kubernetes access controls](./architecture/kubernetes-rbac) for RBAC configuration details
+
+{{< subpage-cards >}}

@@ -1,5 +1,7 @@
 ---
 title: Field data enrichment agent
+icon: geo-alt
+description: Enrich geo-tagged operational events with real-world public context using the You.com Search API with country and freshness targeting.
 weight: 6
 variants: +flyte +union
 ---
@@ -7,9 +9,9 @@ variants: +flyte +union
 # Field data enrichment agent
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/field_data_enrichment_agent).
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/field_data_enrichment_agent).
 
-This example demonstrates how to build an autonomous systems and field-data enrichment agent on Flyte. The agent enriches geo-tagged operational events — from autonomous vehicles, aircraft, satellites, or field sensors — with **real-world public context**: road closures, weather events, airspace changes, or local incidents tied to a geofence.
+This example demonstrates how to build an autonomous systems and field-data enrichment agent on Flyte. The agent enriches geo-tagged operational events (from autonomous vehicles, aircraft, satellites, or field sensors) with **real-world public context**: road closures, weather events, airspace changes, or local incidents tied to a geofence.
 
 Operational data stays in your environment while public-web grounding queries go to the [You.com Search API](https://you.com/docs/search/overview). The API provides unified web and news results with `freshness` and `country` targeting, and [Claude](https://docs.anthropic.com/) via [LiteLLM](https://docs.litellm.ai/) summarizes the relevant context for each geo-tagged event.
 
@@ -55,7 +57,7 @@ The `you_search` helper calls the [You.com Search API](https://you.com/docs/sear
 
 ## Enrich one event
 
-The `enrich_event` task builds a location- and type-scoped query, calls the You.com Search API, and asks Claude to summarize relevant real-world context, extract discrete incidents, and assign an operational severity — all grounded in the returned sources.
+The `enrich_event` task builds a location- and type-scoped query, calls the You.com Search API, and asks Claude to summarize relevant real-world context, extract discrete incidents, and assign an operational severity, all grounded in the returned sources.
 
 {{< code file="/unionai-examples/v2/tutorials/field_data_enrichment_agent/main.py" fragment=enrich_event lang=python >}}
 
@@ -78,7 +80,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

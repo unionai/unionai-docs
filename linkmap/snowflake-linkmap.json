@@ -1,14 +1,14 @@
 {
   "packages": {
-    "flyteplugins.snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/"
+    "flyteplugins.snowflake": "/api-reference/integrations/snowflake/"
   },
   "identifiers": {
-    "flyteplugins.snowflake.Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
-    "Snowflake": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflake/",
-    "flyteplugins.snowflake.SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
-    "SnowflakeConfig": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconfig/",
-    "flyteplugins.snowflake.SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/",
-    "SnowflakeConnector": "/api-reference/integrations/snowflake/packages/flyteplugins.snowflake/snowflakeconnector/"
+    "flyteplugins.snowflake.Snowflake": "/api-reference/integrations/snowflake/snowflake/",
+    "Snowflake": "/api-reference/integrations/snowflake/snowflake/",
+    "flyteplugins.snowflake.SnowflakeConfig": "/api-reference/integrations/snowflake/snowflakeconfig/",
+    "SnowflakeConfig": "/api-reference/integrations/snowflake/snowflakeconfig/",
+    "flyteplugins.snowflake.SnowflakeConnector": "/api-reference/integrations/snowflake/snowflakeconnector/",
+    "SnowflakeConnector": "/api-reference/integrations/snowflake/snowflakeconnector/"
   },
   "methods": {}
 }
