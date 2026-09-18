@@ -10,6 +10,12 @@ name: "Regenerate API docs"
 # Triggers:
 #   repository_dispatch(sdk-release) — the cross-repo signal from flyteorg/flyte-sdk
 #                                      (Part B; harmless until that side is wired up).
+#   repository_dispatch(plugin-release) — the same signal from a plugin repo that
+#                                      releases on its own schedule (today:
+#                                      unionai/flyteplugins-union). Payload carries
+#                                      `package` + `version`. A plugin release is not an
+#                                      SDK release, so the fold below does not cut; the
+#                                      PR lands on /docs/latest until the next cut.
 #   schedule                         — daily backstop poll (catches drift even if the
 #                                      signal misfires, and makes this useful pre-Part-B).
 #   workflow_dispatch                — manual / on-demand.
@@ -25,7 +31,7 @@ name: "Regenerate API docs"
 
 on:
   repository_dispatch:
-    types: [sdk-release]
+    types: [sdk-release, plugin-release]
   schedule:
     - cron: "0 13 * * *"   # daily 13:00 UTC
   workflow_dispatch:
@@ -87,12 +93,21 @@ jobs:
       # (the regen installs from PyPI). No-op for schedule/manual runs.
       - name: Wait for PyPI availability (dispatch only)
         if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
+        env:
+          # Via env, not inline ${{ }}, so a payload value cannot inject shell.
+          # `package` is sent by plugin-release; sdk-release omits it and means flyte.
+          PACKAGE: ${{ github.event.client_payload.package || 'flyte' }}
+          VERSION: ${{ github.event.client_payload.version }}
         run: |
-          VERSION="${{ github.event.client_payload.version }}"
-          LINK="https://pypi.org/project/flyte/${VERSION}/"
+          if ! [[ "$PACKAGE" =~ ^[A-Za-z0-9._-]+$ && "$VERSION" =~ ^[A-Za-z0-9._+-]+$ ]]; then
+            echo "::error::unexpected dispatch payload: package='$PACKAGE' version='$VERSION'"; exit 1
+          fi
+          # The JSON API, not the HTML page: pypi.org/project/<pkg>/<ver>/ answers
+          # 200 for versions that do not exist, so polling it never waited at all.
+          LINK="https://pypi.org/pypi/${PACKAGE}/${VERSION}/json"
           echo "Waiting for $LINK"
           for i in $(seq 1 60); do
-            if curl -L -I -s -f "$LINK" >/dev/null; then
+            if curl -L -s -f -o /dev/null "$LINK"; then
               echo "Found on PyPI: $LINK"; exit 0
             fi
             echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
