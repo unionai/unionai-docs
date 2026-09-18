@@ -41,7 +41,7 @@ jobs:
       DOCSY_BOT_APP_ID: ${{ secrets.DOCSY_BOT_APP_ID }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: true   # need unionai-docs-infra (the resolver tool)
           fetch-depth: 0     # need all tags for the z computation
@@ -51,18 +51,18 @@ jobs:
       - name: Mint docsy-bot App token
         id: app-token
         if: ${{ env.DOCSY_BOT_APP_ID != '' }}
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
           private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v10
 
       - name: Resolve next version
         id: resolve
@@ -110,7 +110,7 @@ jobs:
 
       - name: Open draft PR
         if: ${{ ! inputs.dry_run }}
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           branch: docsy/v2-cut-${{ steps.resolve.outputs.tag }}
