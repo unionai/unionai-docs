@@ -2,7 +2,7 @@
 title: ActionAbortedError
 description: "This error is raised when an action was aborted, externally."
 icon: exclamation-triangle
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

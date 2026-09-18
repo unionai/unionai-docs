@@ -2,7 +2,7 @@
 title: CustomTheme
 description: "Declarative color theme for the Agent Chat UI."
 icon: braces
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

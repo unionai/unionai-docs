@@ -2,7 +2,7 @@
 title: TaskTimeoutError
 description: "This error is raised when the underlying task execution runs for longer than the specified timeout."
 icon: exclamation-triangle
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---

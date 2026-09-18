@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.8.0
+version: 2.8.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -999,7 +999,7 @@ def run_python_script(
     clustered: bool = False,
     replicas: 'Optional[int]' = None,
     nproc_per_node: 'Optional[int]' = None,
-    runtime: 'Optional[TorchRun]' = None,
+    runtime: 'Optional[Runtime]' = None,
     failure_policy: 'Optional[ClusterFailurePolicy]' = None,
     ttl_seconds_after_finished: 'Optional[int]' = None,
 ) -> 'Run'
@@ -1056,7 +1056,7 @@ run = flyte.run_python_script(Path("analysis.py"), image=img)
 | `clustered` | `bool` | If True, run the script under a `flyte.clustered.ClusteredTaskEnvironment` (a Kubernetes JobSet) instead of a plain `TaskEnvironment`, for distributed multi-node execution via `torchrun`. Requires `replicas` and `nproc_per_node`. |
 | `replicas` | `'Optional[int]'` | Number of pods (== nodes) in the job set. Required when `clustered=True`. |
 | `nproc_per_node` | `'Optional[int]'` | Number of processes per pod, passed to `torchrun --nproc-per-node`. Required when `clustered=True`. |
-| `runtime` | `'Optional[TorchRun]'` | Launcher configuration for clustered execution, e.g. `flyte.clustered.TorchRun(rdzv_backend="c10d")`. Only used when `clustered=True`; defaults to `TorchRun()`. |
+| `runtime` | `'Optional[Runtime]'` | Launcher configuration for clustered execution, e.g. `flyte.clustered.TorchRun(rdzv_backend="c10d")`. Only used when `clustered=True`; defaults to `TorchRun()`. |
 | `failure_policy` | `'Optional[ClusterFailurePolicy]'` | JobSet-level restart/eviction policy, e.g. `flyte.clustered.ClusterFailurePolicy(max_restarts=2)`. Only used when `clustered=True`; defaults to `ClusterFailurePolicy()`. |
 | `ttl_seconds_after_finished` | `'Optional[int]'` | Seconds to retain the JobSet after completion. Only used when `clustered=True`. |
 
