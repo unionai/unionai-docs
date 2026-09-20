@@ -82,22 +82,13 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      # Belt-and-suspenders: when triggered by the release signal, make sure the
-      # announced version is actually installable on PyPI before regenerating
-      # (the regen installs from PyPI). No-op for schedule/manual runs.
-      - name: Wait for PyPI availability (dispatch only)
-        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
-        run: |
-          VERSION="${{ github.event.client_payload.version }}"
-          LINK="https://pypi.org/project/flytekit/${VERSION}/"
-          echo "Waiting for $LINK"
-          for i in $(seq 1 60); do
-            if curl -L -I -s -f "$LINK" >/dev/null; then
-              echo "Found on PyPI: $LINK"; exit 0
-            fi
-            echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
-          done
-          echo "ERROR: timed out waiting for PyPI ($LINK)"; exit 1
+      # NO PyPI WAIT HERE. This workflow cannot receive repository_dispatch: GitHub
+      # fires that event only from the default branch, so v1 is always reached as a
+      # workflow_dispatch from main's regen-api-docs-v1-driver.yml. The step that used
+      # to sit here was therefore dead, and it was also wrong: it polled
+      # pypi.org/project/<pkg>/<ver>/, which answers 200 for versions that do not
+      # exist, so it never waited (LESSONS.md 67). The wait now lives in the driver,
+      # which is where the flytekit-release signal actually lands.
 
       # Gate: check-api-docs exits non-zero on drift. Capture, don't fail the job.
       - name: Check API docs freshness
