@@ -1,5 +1,5 @@
 ---
-title: System One datatypes
+title: System one datatypes
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
 weight: 6
@@ -7,7 +7,7 @@ mermaid: true
 variants: +flyte +union
 ---
 
-# System One datatypes
+# System one datatypes
 
 Most of what a program asks a model is not open-ended. "Is this request hostile?", "which of these five intents is it?", "does this record mention a deadline?", "is there enough information to answer yet?" — a knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
 

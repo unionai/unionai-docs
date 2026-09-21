@@ -48,7 +48,7 @@ Run agents from OpenAI, Claude, LangGraph, CrewAI, and more as durable Flyte tas
 The unit each reasoning step is built from.
 {{< /link-card >}}
 
-{{< link-card target="../system-one-datatypes" icon="sliders" title="System One datatypes" >}}
+{{< link-card target="../system-one-datatypes" icon="sliders" title="System one datatypes" >}}
 Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 

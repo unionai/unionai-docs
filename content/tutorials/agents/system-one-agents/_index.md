@@ -25,7 +25,7 @@ Flyte     ── durable, observable, fans tools out ───▶  the runtime u
 
 It ships three pipelines in increasing order of how much the model decides, and a benchmark that runs the **same battery, the same cases and the same routing code** with and without the System One half, so the comparison is about where the answers come from rather than about how much each arm was asked to produce.
 
-Uses [TypeSafe](https://docs.typesafe.ai/introduction)'s System One model through the [TypeSafe AI plugin](../../../integrations/typesafe-ai/_index). For the pattern on its own, without the benchmark, see [System One datatypes](../../../user-guide/system-one-datatypes/_index) in the user guide.
+Uses [TypeSafe](https://docs.typesafe.ai/introduction)'s System One model through the [TypeSafe AI plugin](../../../integrations/typesafe-ai/_index). For the pattern on its own, without the benchmark, see [System one datatypes](../../../user-guide/system-one-datatypes/_index) in the user guide.
 
 ## The four patterns it is built around
 
@@ -191,6 +191,6 @@ When you do, keep the discipline that makes it work: one question per symptom, t
 
 ## Related
 
-- [System One datatypes](../../../user-guide/system-one-datatypes/_index): the pattern on its own.
+- [System one datatypes](../../../user-guide/system-one-datatypes/_index): the pattern on its own.
 - [TypeSafe AI integration](../../../integrations/typesafe-ai/_index): installation, the full API, and how the answer types cross task boundaries.
 - [Agent frameworks](../../../integrations/agents/_index): making a framework's own generative loop durable.
