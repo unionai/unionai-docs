@@ -179,6 +179,17 @@ A `slurm` task runs the Flyte entrypoint inside the job, which reads inputs and 
 Outputs land in exactly the same place they would for a Kubernetes pod task, which is what allows a Slurm task to hand results to a task running elsewhere:
 
 ```python
+slurm_env = flyte.TaskEnvironment(
+    name="train",
+    plugin_config=Slurm(partition="main", gres="gpu:8"),
+    image=image,
+)
+
+# The environment holding the task you invoke must declare the environments its
+# tasks call into, so that their images are built and deployed too.
+k8s_env = flyte.TaskEnvironment(name="pipeline", image=image, depends_on=[slurm_env])
+
+
 @k8s_env.task
 async def prepare(rows: int) -> Dir: ...
 
@@ -192,6 +203,17 @@ async def evaluate(model: File) -> dict[str, str]: ...
 async def pipeline() -> dict[str, str]:
     return await evaluate(await train(await prepare(1000)))
 ```
+
+> [!WARNING] `depends_on` points from the caller to the environments it calls
+> Only the invoked environment and its `depends_on` closure are built and deployed, so an
+> environment that nothing depends on never gets an image. Declaring the dependency the
+> wrong way round builds cleanly and then fails at run time:
+>
+> ```
+> Environment 'train' not found in image cache.
+> ```
+>
+> The give-away is in the build output just above it — only one image is built.
 
 > [!WARNING] Return `File` or `Dir`, not a cluster filesystem path
 > Returning a path such as `"/data/model.pt"` as a `str` satisfies the type system and then fails when a task on another cluster opens it — the Slurm cluster's filesystem does not exist there. Return `flyte.io.File` or `flyte.io.Dir` so the contents are uploaded. Path references are valid only between tasks that share a filesystem.
