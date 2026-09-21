@@ -41,13 +41,25 @@ These are what you coerce *into*. Each is a plain dataclass carrying the answer 
 
 ## Declare the target type
 
-The dataclass is the schema, and the vocabulary documents itself — an enum's **class docstring** is the question and its **member docstrings** are the criteria, so a well-documented enum needs nothing at the call site. A `Noul` has no vocabulary to document itself with, so it always carries its own question.
+The dataclass is the schema. Where each question comes from depends on the field's type, and the split is worth knowing before you write your first battery:
+
+| Field | Question | Criteria |
+|---|---|---|
+| `Choice[YourEnum]` | inferred — the enum's **class docstring** | inferred — each **member's docstring** |
+| `Score[YourIntEnum]` | inferred — the enum's **class docstring** | inferred — each **rung's docstring**, in order |
+| `Noul` | **field metadata, required** | field metadata, optional |
+
+`Choice` and `Score` are parameterized by an `enum.Enum` and an `enum.IntEnum` respectively, and that enum *is* the vocabulary. The plugin reads the question off the class docstring and the criteria off the member docstrings, so a well-documented enum needs nothing at the call site — no metadata, no repetition of what the enum already says.
+
+A `Noul` has no enum to read. It is a bare yes/no, so there is nothing to infer a question from, and the question must be supplied in `dataclasses.field(metadata=...)`. A `Noul` declared without one is an error that names the offending field rather than silently asking something vague. Criteria are optional there but worth adding when "yes" is ambiguous — pinning down what counts is what keeps a one-line question calibrated.
 
 {{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=vocabulary lang=python >}}
 
 {{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=battery lang=python >}}
 
-Thirteen fields, three of which decide what happens. The rest ride along because they are nearly free in the same call, and a real support desk wants them for queue priority and compliance flags. A generative model would have to emit all thirteen one token at a time.
+Notice which fields carry metadata and which do not: `intent` and `severity` say nothing beyond their type, because `Intent` and `Severity` above already document themselves, while every `Noul` spells out its question. Two fields route the ticket, two guard it, and the rest are the symptoms the tool choice is composed from.
+
+Adding another question would be another field and still one request — the [tutorial battery](../../tutorials/agents/system-one-agents/_index) pushes the same shape to nineteen fields, eight of which are never read, because in one call they cost almost nothing.
 
 ## Coerce
 

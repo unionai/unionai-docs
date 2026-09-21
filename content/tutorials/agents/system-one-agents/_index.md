@@ -31,7 +31,7 @@ Uses [TypeSafe](https://docs.typesafe.ai/introduction)'s System One model throug
 
 | Pattern | What it means here |
 |---|---|
-| **Speculative fan-out** | Every question goes in one call, including the ones the verdict never reads. Ten of the eighteen questions below exist because a real reviewer wants them and they cost almost nothing. |
+| **Speculative fan-out** | Every question goes in one call, including the ones the verdict never reads. Eight of the nineteen questions below are never read by the verdict; they exist because a real reviewer wants them and they cost almost nothing. |
 | **Atomic decomposition, verdict in code** | The model is never asked "what is the verdict?". It is asked one question per symptom, and a precedence rule in Python composes the verdict. |
 | **Composite scoring** | Severity and the tool plan are both derived from the symptoms — a dependency audit only runs if a dependency actually changed. |
 | **Confidence-gated routing** | `auto` / `review` / `escalate`, with thresholds that scale with risk. Escalation is a real abstention: the pipeline stops and never spends a generation. |
@@ -50,7 +50,7 @@ An enum's class docstring is the question and its member docstrings are the crit
 
 ## The battery
 
-Eighteen questions in one request. Note what is *not* here: there is no `verdict` question. Every entry is a single symptom, evaluated in isolation — which also avoids the context rot you get from asking one model to weigh eighteen facts at once.
+Nineteen questions in one request. Note what is *not* here: there is no `verdict` question. Every entry is a single symptom, evaluated in isolation — which also avoids the context rot you get from asking one model to weigh nineteen facts at once.
 
 {{< code file="/unionai-examples/v2/tutorials/typesafe_ai/battery.py" fragment=battery lang=python >}}
 
@@ -130,7 +130,7 @@ flyte run agents.py durable_review --case_id c4
 
 ## The benchmark
 
-The interesting comparison is not "typed answers versus a verdict string". It is **the same deliverable, produced two ways**. Both arms owe the whole battery — eighteen typed answers — and both are composed and routed by the identical code in `battery.py`. The only thing that changes is where the answers come from.
+The interesting comparison is not "typed answers versus a verdict string". It is **the same deliverable, produced two ways**. Both arms owe the whole battery — nineteen typed answers — and both are composed and routed by the identical code in `battery.py`. The only thing that changes is where the answers come from.
 
 The baseline arm's JSON schema is derived from the same dataclass, so the two arms cannot drift:
 
@@ -169,7 +169,7 @@ Two honest caveats to keep in mind when you read your own numbers:
 
 ### Why the baseline has to owe the whole battery
 
-It is tempting to benchmark against a one-shot call that returns four fields. Don't — it measures the wrong thing. Producing eighteen typed answers autoregressively is exactly what a generative model is bad at: every field costs tokens and latency, and a model loaded with eighteen fields to emit tends to drop precision on the ones it used to get right. Asking the baseline for less structure hides the effect that motivates using a System One model in the first place.
+It is tempting to benchmark against a one-shot call that returns four fields. Don't — it measures the wrong thing. Producing nineteen typed answers autoregressively is exactly what a generative model is bad at: every field costs tokens and latency, and a model loaded with nineteen fields to emit tends to drop precision on the ones it used to get right. Asking the baseline for less structure hides the effect that motivates using a System One model in the first place.
 
 ## Secrets
 
