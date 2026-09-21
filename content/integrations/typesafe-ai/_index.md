@@ -12,7 +12,7 @@ The `flyteplugins-typesafe-ai` plugin runs [TypeSafe](https://docs.typesafe.ai/i
 
 Jev does not write text. It answers typed questions — in parallel, in isolation, and with calibrated confidence attached to every answer. The documented property worth building around is that *adding questions barely changes the response time*, so the right move is to ask many small questions in one call and compose the result in code you can read and change.
 
-The plugin supplies the two things that takes on Flyte: a shape for the answers that survives a task boundary, and a way to ask a whole battery at once.
+The plugin supplies the two things that Flyte needs: a shape for the answers that survives a task boundary, and a way to ask a whole battery at once.
 
 ```bash
 pip install flyteplugins-typesafe-ai
