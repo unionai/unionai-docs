@@ -1,12 +1,12 @@
 ---
-title: AI-powered type coercion with Jev
+title: Typed decisions with Jev
 description: Coerce unstructured state into a typed Python object with TypeSafe's System One model, and branch on the result.
 icon: magic
 weight: 1
 variants: +flyte +union
 ---
 
-# AI-powered type coercion with Jev
+# Typed decisions with Jev
 
 [TypeSafe](https://docs.typesafe.ai/introduction)'s System One model ("Jev") is reached through the `flyteplugins-typesafe-ai` plugin. The shape it gives you is worth naming precisely: **type coercion**.
 

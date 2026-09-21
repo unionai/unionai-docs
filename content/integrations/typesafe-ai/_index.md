@@ -26,6 +26,8 @@ pip install flyteplugins-typesafe-ai
 
 For the pattern in full — composing verdicts from atomic questions, confidence-gated routing, and typed agent loops — see [System One AI](../../user-guide/system-one-ai/_index) in the user guide.
 
+For a complete pipeline built on this plugin — three patterns and a measured A/B against a one-shot generative baseline — see [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index).
+
 ## The three answer types
 
 | Type | Holds | Useful members |

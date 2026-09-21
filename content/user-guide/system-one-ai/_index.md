@@ -3,6 +3,7 @@ title: System One AI
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
 weight: 6
+mermaid: true
 variants: +flyte +union
 ---
 
@@ -18,9 +19,10 @@ The property worth designing around is that **adding questions barely changes th
 
 A generative model is the System 2 half: open-ended reasoning, and prose a person reads. It is expensive, sequential, and has to emit every field one token at a time. Pointing it at a yes/no question means paying for a generation plus a parser to get the answer back out.
 
-```text
-System One  ── typed answers, in parallel ──▶  guards, routing, labels, thresholds, stop conditions
-System 2    ── open-ended reasoning ───────▶  the answer, the review, the reply
+```mermaid
+flowchart LR
+    S1["System One"] -->|"typed answers, in parallel"| A["guards, routing, labels,<br/>thresholds, stop conditions"]
+    S2["System 2"] -->|"open-ended reasoning"| B["the answer, the review, the reply"]
 ```
 
 Splitting them along that line usually does three things at once: the decisions get cheaper and faster, they get *reproducible* — the same input yields the same typed answer, where free-text classification drifts between runs — and the expensive half runs less often, because a confident abstention means no generation happens at all.
@@ -31,6 +33,16 @@ This is not only an agent technique. Anywhere a program currently asks a generat
 
 ### In a data pipeline
 
+```mermaid
+flowchart LR
+    IN["backlog of records"] --> S1["System One<br/>the whole battery, one call per record"]
+    S1 --> LBL["labels and facets<br/>on every record"]
+    S1 --> SEV["severity as an ordered rubric:<br/>a number you can sort and threshold"]
+    S1 --> GATE{"quality gate"}
+    GATE -->|"consistent"| NEXT["next pipeline stage"]
+    GATE -->|"inconsistent"| HOLD["hold for review"]
+```
+
 | Use case | The questions |
 |---|---|
 | **Labeling and enrichment at volume** | Twenty facets of one record, at once. Per-item latency barely moves as the battery grows, so scoring a whole backlog stays affordable. |
@@ -38,6 +50,18 @@ This is not only an agent technique. Anywhere a program currently asks a generat
 | **Triage and prioritization** | Severity as an ordered rubric, plus the symptoms behind it — so the queue is sorted on a number you can threshold, not a sentence you have to read. |
 
 ### In an agent loop
+
+```mermaid
+flowchart LR
+    REQ["request"] --> GUARD{"guard:<br/>hostile? asks for credentials?"}
+    GUARD -->|"unsafe"| STOP["refuse or escalate"]
+    GUARD -->|"safe"| ROUTE["intent, and how confident"]
+    ROUTE --> PLAN["tool plan:<br/>one question per tool"]
+    PLAN --> RUN["run the selected tools"]
+    RUN --> MORE{"enough to answer?<br/>still making progress?"}
+    MORE -->|"no"| PLAN
+    MORE -->|"yes"| GEN["System 2 writes the answer"]
+```
 
 | Use case | The questions |
 |---|---|
@@ -47,6 +71,17 @@ This is not only an agent technique. Anywhere a program currently asks a generat
 | **Loop control** | Is there enough to answer? Did the last step add anything? Is this action safe? "Did the loop stop making progress" is otherwise the failure you discover from the bill. |
 
 ### In an app or service
+
+```mermaid
+flowchart LR
+    REQ["incoming request"] --> RT["route:<br/>handler, model tier, queue"]
+    RT --> MOD{"moderation:<br/>publishable? how harmful?"}
+    MOD -->|"blocked"| REJ["reject or hold"]
+    MOD -->|"allowed"| WORK["the expensive path"]
+    WORK --> CHK{"output check:<br/>grounded? contradicted?"}
+    CHK -->|"fails"| FIX["revise or hand over"]
+    CHK -->|"passes"| OUT["respond"]
+```
 
 | Use case | The questions |
 |---|---|
@@ -74,8 +109,20 @@ Three rules, and they matter more than which model you use:
 
 {{< grid >}}
 
-{{< link-card target="type-coercion-with-jev" icon="magic" title="AI-powered type coercion with Jev" >}}
+{{< link-card target="typed-decisions-with-jev" icon="magic" title="Typed decisions with Jev" >}}
 Coerce unstructured state into a typed Python object with TypeSafe's System One model, and branch on the result.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+## Worked example
+
+Everything on this page — the battery, the composition rule, the confidence gate — wired together three ways and measured against a one-shot generative baseline.
+
+{{< grid >}}
+
+{{< link-card target="../../tutorials/agents/system-one-agents" icon="mortarboard" title="Typed decisions for agentic pipelines" >}}
+Interleave a System One model with a generative one — typed guards, tool fan-out, a durable loop, and an A/B that prices both arms.
 {{< /link-card >}}
 
 {{< /grid >}}

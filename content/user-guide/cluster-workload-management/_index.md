@@ -2,7 +2,7 @@
 title: Cluster and workload management
 description: Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 icon: cloud
-weight: 8
+weight: 9
 variants: -flyte +union
 mermaid: true
 ---
