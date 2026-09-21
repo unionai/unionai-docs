@@ -67,7 +67,7 @@ Long-running services for dashboards, REST APIs, and model endpoints.
 Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 {{< /link-card >}}
 
-{{< link-card target="system-one-datatypes" icon="sliders" title="System one datatypes" >}}
+{{< link-card target="system-one-types" icon="sliders" title="System one types" >}}
 Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 

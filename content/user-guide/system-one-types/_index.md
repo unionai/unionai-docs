@@ -1,5 +1,5 @@
 ---
-title: System one datatypes
+title: System one types
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
 weight: 6
@@ -7,7 +7,7 @@ mermaid: true
 variants: +flyte +union
 ---
 
-# System one datatypes
+# System one types
 
 Most of what a program asks a model is not open-ended. "Is this request hostile?", "which of these five intents is it?", "does this record mention a deadline?", "is there enough information to answer yet?" — a knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
 
@@ -15,11 +15,11 @@ A **System One model** is built for exactly that shape. You give it some state a
 
 The property worth designing around is that **adding questions barely changes the response time**. The eleventh question costs almost nothing, so the right move is to ask everything at once — including the questions you will not branch on — and compose the result in ordinary Python.
 
-## The datatypes
+## The types
 
-Those answers arrive as three datatypes, each carrying its value *and* the model's calibrated confidence in it. They are ordinary Python objects: you declare them in a dataclass, get real instances back, and branch on them directly.
+Those answers arrive as three types, each carrying its value *and* the model's calibrated confidence in it. They are ordinary Python objects: you declare them in a dataclass, get real instances back, and branch on them directly.
 
-| Datatype | Holds | You branch with |
+| Type | Holds | You branch with |
 |---|---|---|
 | `Choice[SomeEnum]` | the picked enum member, plus the whole probability distribution | `.certain(threshold)` |
 | `Score[SomeIntEnum]` | the picked rung of an ordered rubric, plus where on the scale it actually landed | `.at_least(rung)` |
@@ -36,13 +36,13 @@ flowchart LR
     S1(["System One"]) -->|"typed answers,<br/>in parallel"| A["guards, routing, labels,<br/>thresholds, stop conditions"]
     S2(["System 2"]) -->|"open-ended<br/>reasoning"| B["the answer,<br/>the review, the reply"]
 
-    classDef s1 fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
-    classDef s1out fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,color:#1e3a8a
-    classDef s2 fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
-    classDef s2out fill:#fff7ed,stroke:#fdba74,stroke-width:1px,color:#7c2d12
-    classDef io fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef gate fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px,color:#713f12
-    classDef stop fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+    classDef s1 fill:#3b82f633,stroke:#3b82f6,stroke-width:1.5px
+    classDef s1out fill:#3b82f61a,stroke:#60a5fa,stroke-width:1px
+    classDef s2 fill:#f9731633,stroke:#f97316,stroke-width:1.5px
+    classDef s2out fill:#f973161a,stroke:#fb923c,stroke-width:1px
+    classDef io fill:#94a3b826,stroke:#94a3b8,stroke-width:1px
+    classDef gate fill:#eab30833,stroke:#eab308,stroke-width:1.5px
+    classDef stop fill:#ef444433,stroke:#ef4444,stroke-width:1.5px
 
     class S1 s1
     class A s1out
@@ -59,7 +59,7 @@ This is not only an agent technique. Anywhere a program currently asks a generat
 ### In a data pipeline
 
 ```mermaid
-flowchart LR
+flowchart TD
     IN["backlog of records"] --> S1(["System One<br/>the whole battery, one call per record"])
     S1 --> LBL["labels and facets<br/>on every record"]
     S1 --> SEV["severity as an ordered rubric:<br/>a number you can sort and threshold"]
@@ -67,13 +67,13 @@ flowchart LR
     GATE -->|"consistent"| NEXT["next pipeline stage"]
     GATE -->|"inconsistent"| HOLD["hold for review"]
 
-    classDef s1 fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
-    classDef s1out fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,color:#1e3a8a
-    classDef s2 fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
-    classDef s2out fill:#fff7ed,stroke:#fdba74,stroke-width:1px,color:#7c2d12
-    classDef io fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef gate fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px,color:#713f12
-    classDef stop fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+    classDef s1 fill:#3b82f633,stroke:#3b82f6,stroke-width:1.5px
+    classDef s1out fill:#3b82f61a,stroke:#60a5fa,stroke-width:1px
+    classDef s2 fill:#f9731633,stroke:#f97316,stroke-width:1.5px
+    classDef s2out fill:#f973161a,stroke:#fb923c,stroke-width:1px
+    classDef io fill:#94a3b826,stroke:#94a3b8,stroke-width:1px
+    classDef gate fill:#eab30833,stroke:#eab308,stroke-width:1.5px
+    classDef stop fill:#ef444433,stroke:#ef4444,stroke-width:1.5px
 
     class IN io
     class S1 s1
@@ -92,28 +92,27 @@ flowchart LR
 ### In an agent loop
 
 ```mermaid
-flowchart LR
+flowchart TD
     REQ["request"] --> GUARD{"guard:<br/>hostile? asks for credentials?"}
     GUARD -->|"unsafe"| STOP["refuse or escalate"]
-    GUARD -->|"safe"| ROUTE(["intent, and how confident"])
-    ROUTE --> PLAN(["tool plan:<br/>one question per tool"])
+    GUARD -->|"safe"| PLAN(["route, then pick tools:<br/>one question per tool"])
     PLAN --> RUN["run the selected tools"]
     RUN --> MORE{"enough to answer?<br/>still making progress?"}
     MORE -->|"no"| PLAN
     MORE -->|"yes"| GEN["System 2 writes the answer"]
 
-    classDef s1 fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
-    classDef s1out fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,color:#1e3a8a
-    classDef s2 fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
-    classDef s2out fill:#fff7ed,stroke:#fdba74,stroke-width:1px,color:#7c2d12
-    classDef io fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef gate fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px,color:#713f12
-    classDef stop fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+    classDef s1 fill:#3b82f633,stroke:#3b82f6,stroke-width:1.5px
+    classDef s1out fill:#3b82f61a,stroke:#60a5fa,stroke-width:1px
+    classDef s2 fill:#f9731633,stroke:#f97316,stroke-width:1.5px
+    classDef s2out fill:#f973161a,stroke:#fb923c,stroke-width:1px
+    classDef io fill:#94a3b826,stroke:#94a3b8,stroke-width:1px
+    classDef gate fill:#eab30833,stroke:#eab308,stroke-width:1.5px
+    classDef stop fill:#ef444433,stroke:#ef4444,stroke-width:1.5px
 
     class REQ io
     class GUARD,MORE gate
     class STOP stop
-    class ROUTE,PLAN s1
+    class PLAN s1
     class RUN io
     class GEN s2
 ```
@@ -128,7 +127,7 @@ flowchart LR
 ### In an app or service
 
 ```mermaid
-flowchart LR
+flowchart TD
     REQ["incoming request"] --> RT(["route:<br/>handler, model tier, queue"])
     RT --> MOD{"moderation:<br/>publishable? how harmful?"}
     MOD -->|"blocked"| REJ["reject or hold"]
@@ -137,13 +136,13 @@ flowchart LR
     CHK -->|"fails"| FIX["revise or hand over"]
     CHK -->|"passes"| OUT["respond"]
 
-    classDef s1 fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
-    classDef s1out fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,color:#1e3a8a
-    classDef s2 fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
-    classDef s2out fill:#fff7ed,stroke:#fdba74,stroke-width:1px,color:#7c2d12
-    classDef io fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef gate fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px,color:#713f12
-    classDef stop fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+    classDef s1 fill:#3b82f633,stroke:#3b82f6,stroke-width:1.5px
+    classDef s1out fill:#3b82f61a,stroke:#60a5fa,stroke-width:1px
+    classDef s2 fill:#f9731633,stroke:#f97316,stroke-width:1.5px
+    classDef s2out fill:#f973161a,stroke:#fb923c,stroke-width:1px
+    classDef io fill:#94a3b826,stroke:#94a3b8,stroke-width:1px
+    classDef gate fill:#eab30833,stroke:#eab308,stroke-width:1.5px
+    classDef stop fill:#ef444433,stroke:#ef4444,stroke-width:1.5px
 
     class REQ io
     class RT s1
