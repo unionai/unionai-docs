@@ -108,7 +108,7 @@ These fields map one-to-one onto `sbatch` options.
 | `nodes` | `int` | Number of nodes to allocate |
 | `ntasks` | `int` | Number of tasks (`--ntasks`) |
 | `cpus_per_task` | `int` | CPUs per task |
-| `gres` | `str` | Generic resources, for example `"gpu:8"` |
+| `gres` | `str` | Generic resources, for example `"gpu:8"`. Requires GRES configured on the cluster — see the warning below |
 | `gpus_per_node` | `int` or `str` | GPUs per node, for example `8` or `"h100:8"` |
 | `mem` | `str` | Memory per node, for example `"64G"` |
 | `time_limit` | `str` | Wall-clock limit in Slurm format, for example `"4:00:00"` |
@@ -128,6 +128,21 @@ These fields map one-to-one onto `sbatch` options.
 | `srun_args` | `List[str]` | Extra arguments inserted before the command on the `srun` line |
 | `env` | `Dict[str, str]` | Environment variables exported into the job |
 | `working_dir` | `str` | Directory for generated scripts and logs. Relative paths are under the SSH user's home. Defaults to `.flyte/jobs` |
+
+> [!WARNING] `gres` and `gpus_per_node` require GRES on the cluster
+> Generic resources are opt-in per cluster: the controller needs `GresTypes` set and each
+> node needs its own `Gres` entry. On a cluster without them, any GPU request is rejected
+> at submission and the task never starts:
+>
+> ```
+> sbatch: error: Invalid generic resource (gres) specification.
+> ```
+>
+> Check what a cluster actually offers before asking for it:
+>
+> ```bash
+> sinfo -N -o "%N %G"        # per-node GRES; "(null)" means none configured
+> ```
 
 > [!WARNING] Never put secrets in `env`
 > Values in `env` are written into the generated `sbatch` script in plain text, and that script stays on the cluster filesystem. Mount credentials from the cluster's shared filesystem and reference the path instead.
