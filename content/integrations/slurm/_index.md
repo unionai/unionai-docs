@@ -299,7 +299,9 @@ kubectl -n <namespace> exec deploy/flyteconnector -- \
              s.connect(('<login-host>', 22)); print(s.recv(64))"
 ```
 
-The connector keeps one SSH connection per cluster and batches status queries, so it opens one login-node session per poll rather than one per job.
+The connector keeps one SSH connection per cluster, reused across calls and re-established if it drops, so tracking many jobs costs one login-node session rather than one per job. It does still issue one `squeue` per job per poll, because a connector's `get` is called once per resource.
+
+Each job also leaves a `.sbatch`, `.out` and `.err` file in `working_dir`, and nothing removes them — they are the first thing to read when a job fails. On a busy cluster they accumulate in the submitting user's home, so prune them on whatever schedule suits the site.
 
 ## Limitations
 
