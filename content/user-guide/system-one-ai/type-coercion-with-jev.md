@@ -23,7 +23,7 @@ pip install flyteplugins-typesafe-ai
 ```
 
 > [!NOTE]
-> This page is the how-to. For the category — what a System One model is, where it belongs in an agent, and the discipline that makes it pay off — see [System One models](./_index). For installation detail and the full API, see the [TypeSafe AI integration](../../../integrations/typesafe-ai/_index).
+> This page is the how-to. For the category — what a System One model is, where it fits, and the discipline that makes it pay off — see [System One AI](./_index). For installation detail and the full API, see the [TypeSafe AI integration](../../integrations/typesafe-ai/_index).
 
 ## The three field types
 
@@ -105,7 +105,7 @@ The caller gets a real `Choice` back, with the picked member, its confidence, an
 
 ## Related
 
-- [System One models](./_index): the category, the use cases, and when not to reach for one.
-- [TypeSafe AI integration](../../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
-- [Typed decisions for agentic pipelines](../../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
-- [Build an agent](../build-agent/_index): the loop this slots into.
+- [System One AI](./_index): the category, the use cases, and when not to reach for one.
+- [TypeSafe AI integration](../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
+- [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
+- [Build an agent](../agents/build-agent/_index): the loop this slots into.

@@ -34,10 +34,6 @@ Serve Model Context Protocol servers for AI assistants to interact with, hosted 
 Safely execute LLM-generated code with workflow sandboxes or ephemeral containers.
 {{< /link-card >}}
 
-{{< link-card target="system_one" icon="sliders" title="System One models" >}}
-Answer many typed questions in one call, with calibrated confidence, and decide what the agent does next in code.
-{{< /link-card >}}
-
 {{< /grid >}}
 
 ## Related
@@ -50,6 +46,10 @@ Run agents from OpenAI, Claude, LangGraph, CrewAI, and more as durable Flyte tas
 
 {{< link-card target="../tasks" icon="gear" title="Tasks" >}}
 The unit each reasoning step is built from.
+{{< /link-card >}}
+
+{{< link-card target="../system-one-ai" icon="sliders" title="System One AI" >}}
+Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 
 {{< /grid >}}

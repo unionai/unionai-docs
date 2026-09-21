@@ -24,7 +24,7 @@ pip install flyteplugins-typesafe-ai
 - Your agent's control flow is a set of small decisions (which intent, which tool, is there enough to answer) that you would rather branch on directly than fish back out of prose.
 - You want the routing thresholds in reviewable Python, and the answers to carry calibrated confidence so abstention is a real option.
 
-For the pattern in full — composing verdicts from atomic questions, confidence-gated routing, and typed agent loops — see [System One models](../../user-guide/agents/system_one/_index) in the user guide.
+For the pattern in full — composing verdicts from atomic questions, confidence-gated routing, and typed agent loops — see [System One AI](../../user-guide/system-one-ai/_index) in the user guide.
 
 ## The three answer types
 
@@ -134,6 +134,6 @@ A parameterized dataclass such as `Choice[Intent]` is a generic *alias*, which `
 
 ## Next steps
 
-- [System One models](../../user-guide/agents/system_one/_index): the guard, composition and confidence-gating patterns, end to end.
+- [System One AI](../../user-guide/system-one-ai/_index): the guard, composition and confidence-gating patterns, end to end.
 - [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index): three pipelines built on this plugin, plus a measured A/B against a one-shot generative baseline.
 - [Agent frameworks](../agents/_index): running a framework's own agent loop as durable Flyte tasks.

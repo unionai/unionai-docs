@@ -1,14 +1,14 @@
 ---
-title: System One models
-description: Answer many typed questions in one call, with calibrated confidence, and decide what the agent does next in code.
+title: System One AI
+description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
-weight: 4
+weight: 6
 variants: +flyte +union
 ---
 
-# System One models
+# System One AI
 
-Most of what an agent decides is not open-ended. "Is this request hostile?", "which of these five intents is it?", "should I run the dependency audit?", "is there enough information to answer yet?" — a knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
+Most of what a program asks a model is not open-ended. "Is this request hostile?", "which of these five intents is it?", "does this record mention a deadline?", "is there enough information to answer yet?" — a knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
 
 A **System One model** is built for exactly that shape. You give it some state and a set of typed questions; it answers them in parallel, in isolation from each other, and attaches a calibrated probability to every answer. It never writes text.
 
@@ -19,23 +19,40 @@ The property worth designing around is that **adding questions barely changes th
 A generative model is the System 2 half: open-ended reasoning, and prose a person reads. It is expensive, sequential, and has to emit every field one token at a time. Pointing it at a yes/no question means paying for a generation plus a parser to get the answer back out.
 
 ```text
-System One  ── typed answers, in parallel ──▶  guards, routing, tool plans, stop conditions
+System One  ── typed answers, in parallel ──▶  guards, routing, labels, thresholds, stop conditions
 System 2    ── open-ended reasoning ───────▶  the answer, the review, the reply
 ```
 
 Splitting them along that line usually does three things at once: the decisions get cheaper and faster, they get *reproducible* — the same input yields the same typed answer, where free-text classification drifts between runs — and the expensive half runs less often, because a confident abstention means no generation happens at all.
 
-## Where it fits in an agent
+## Where it fits
 
-| Use case | The questions | Why typed beats generated |
-|---|---|---|
-| **Input guard** | Is this hostile? Does it ask for credentials? Does it contain instructions aimed at the assistant? | Runs before anything expensive. A guard that costs a generation is a guard you will be tempted to skip. |
-| **Intent routing** | Which of these N intents is it? How confident? | The answer is an enum member you branch on, not a string a typo breaks. Confidence gives you a review tier. |
-| **Tool selection** | One question per tool: would this one help here? | Because each tool gets its own question, one request can select several — and the plan is composed from symptoms, so a lookup only runs when its input is actually present. |
-| **Loop control** | Is there enough to answer? Did the last step add anything? Is this action safe? | A stop condition you can threshold. "Did the loop stop making progress" is otherwise the failure you discover from the bill. |
-| **Extraction and enrichment** | Twenty facets of one record, at once | Queue priority, compliance flags, routing hints. A generative model has to write all twenty out; here they ride along with the one you needed. |
-| **Output checks** | Is the draft grounded in the tool output? Does anything contradict it? | A cheap gate between generating an answer and returning it. |
-| **Triage at volume** | The same battery over a backlog | Per-item latency barely moves as the battery grows, so scoring a queue stays affordable. |
+This is not only an agent technique. Anywhere a program currently asks a generative model a narrow question and parses the answer back out, a typed call does the same job for less.
+
+### In a data pipeline
+
+| Use case | The questions |
+|---|---|
+| **Labeling and enrichment at volume** | Twenty facets of one record, at once. Per-item latency barely moves as the battery grows, so scoring a whole backlog stays affordable. |
+| **Quality gates between stages** | Is this row internally consistent? Does the extracted field match the source text? A gate that costs a generation is a gate you will be tempted to skip. |
+| **Triage and prioritization** | Severity as an ordered rubric, plus the symptoms behind it — so the queue is sorted on a number you can threshold, not a sentence you have to read. |
+
+### In an agent loop
+
+| Use case | The questions |
+|---|---|
+| **Input guard** | Is this hostile? Does it ask for credentials? Does it contain instructions aimed at the assistant? |
+| **Intent routing** | Which of these N intents is it, and how confident? The answer is an enum member you branch on, not a string a typo breaks. |
+| **Tool selection** | One question per tool: would this one help here? Because each tool gets its own question, one request can select several. |
+| **Loop control** | Is there enough to answer? Did the last step add anything? Is this action safe? "Did the loop stop making progress" is otherwise the failure you discover from the bill. |
+
+### In an app or service
+
+| Use case | The questions |
+|---|---|
+| **Request routing** | Which handler, which model tier, which queue — decided in milliseconds, before the expensive path is chosen. |
+| **Moderation** | Is this publishable? How harmful, on an ordered scale? Directed at a specific person? |
+| **Output checks** | Is the draft grounded in the retrieved context? Does anything contradict it? A cheap gate between generating an answer and returning it. |
 
 ## The discipline that makes it work
 
@@ -65,7 +82,7 @@ Coerce unstructured state into a typed Python object with TypeSafe's System One 
 
 ## Related
 
-- [TypeSafe AI integration](../../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
-- [Typed decisions for agentic pipelines](../../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
-- [Build an agent](../build-agent/_index): the loop this slots into.
-- [Agent frameworks](../../../integrations/agents/_index): running a framework's agent loop as durable tasks.
+- [TypeSafe AI integration](../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
+- [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
+- [Agents](../agents/_index): the loop these decisions most often sit inside.
+- [Tasks](../tasks/_index): the unit each call runs in.

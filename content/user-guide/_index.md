@@ -47,7 +47,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 ## Basics
 
-Learn the basics of Flyte, covering all the core concepts around tasks, apps, and agents.
+Learn the basics of Flyte, covering all the core concepts around tasks, apps, agents, and typed model calls.
 
 {{< grid >}}
 
@@ -65,6 +65,10 @@ Long-running services for dashboards, REST APIs, and model endpoints.
 
 {{< link-card target="agents" icon="robot" title="Agents" >}}
 Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
+{{< /link-card >}}
+
+{{< link-card target="system-one-ai" icon="sliders" title="System One AI" >}}
+Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 
 {{< /grid >}}
