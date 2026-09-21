@@ -31,8 +31,8 @@ These are what you coerce *into*. Each is a plain dataclass carrying the answer 
 
 | Type | Holds | Useful members |
 |---|---|---|
-| `Choice[SomeEnum]` | the picked enum member, `confidence`, the whole `probabilities` distribution | `.certain(threshold)`, `.runner_up()` |
-| `Score[SomeIntEnum]` | the picked rung, the unrounded `position` on the scale, `confidence` | `.at_least(rung)` |
+| `Choice` | the picked member of your enum, `confidence`, the whole `probabilities` distribution | `.certain(threshold)`, `.runner_up()` |
+| `Score` | the picked rung of your `IntEnum`, the unrounded `position` on the scale, `confidence` | `.at_least(rung)` |
 | `Noul` | truthfulness in 0..1 | `.at(threshold)` |
 
 `Choice` comes back as the **enum member**, not a string, so you branch on `t.intent.value is Intent.REFUND` rather than on a string comparison that a typo silently breaks. `Score` keeps both representations on purpose: `value` is the rung you branch on, `position` is where on the scale the answer actually landed, which is what you sort and threshold by.

@@ -9,7 +9,14 @@ variants: +flyte +union
 
 # System one types
 
-Most of what a program asks a model is not open-ended. "Is this request hostile?", "which of these five intents is it?", "does this record mention a deadline?", "is there enough information to answer yet?" — a knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
+Most of what a program asks a model is not open-ended:
+
+- "Is this request hostile?"
+- "Which of these five intents is it?"
+- "Does this record mention a deadline?"
+- "Is there enough information to answer yet?"
+
+A knowledgeable person answers each of those in a couple of seconds, and none of them need prose.
 
 A **System One model** is built for exactly that shape. You give it some state and a set of typed questions; it answers them in parallel, in isolation from each other, and attaches a calibrated probability to every answer. It never writes text.
 
@@ -21,8 +28,8 @@ Those answers arrive as three types, each carrying its value *and* the model's c
 
 | Type | Holds | You branch with |
 |---|---|---|
-| `Choice[SomeEnum]` | the picked enum member, plus the whole probability distribution | `.certain(threshold)` |
-| `Score[SomeIntEnum]` | the picked rung of an ordered rubric, plus where on the scale it actually landed | `.at_least(rung)` |
+| `Choice` | the picked member of your enum, plus the whole probability distribution | `.certain(threshold)` |
+| `Score` | the picked rung of your ordered `IntEnum`, plus where on the scale it actually landed | `.at_least(rung)` |
 | `Noul` | truthfulness in 0..1 | `.at(threshold)` |
 
 They register with Flyte's type engine, so they also work as task inputs and outputs — a classification step can be its own cached, retryable task. [Typed decisions with Jev](./typed-decisions-with-jev) covers all three in full.
@@ -38,6 +45,51 @@ The distinction worth holding onto is that a battery is **a type, not a prompt**
 - **It is the unit of one request.** One battery is one call no matter how many fields it has, which is exactly why the eleventh question is nearly free.
 
 That last point leaves two axes of parallelism in play, and they are worth telling apart: the battery fans out *inside* one call, while Flyte fans out *across* calls — one durable task per record, each asking its own battery once. Widening the battery costs almost nothing; widening the fan-out costs more containers.
+
+Concretely, with [Jev](./typed-decisions-with-jev):
+
+```python
+import enum
+from dataclasses import dataclass, field
+
+from flyteplugins.typesafe_ai import Choice, Noul, Score, ask
+
+
+class Intent(enum.Enum):
+    """What is this customer asking for?"""
+
+    REFUND = "refund"
+    """they want money back for something already paid for"""
+    DELIVERY = "delivery status"
+    """they are asking where an order is"""
+
+
+class Severity(enum.IntEnum):
+    """How badly is this customer blocked?"""
+
+    NONE = 0
+    MINOR = 1
+    BLOCKING = 2
+
+
+@dataclass
+class Triage:
+    """The battery. Each field is one question; the whole class is one request."""
+
+    intent: Choice[Intent]
+    severity: Score[Severity]
+    hostile: Noul = field(metadata={"question": "Is the customer hostile?"})
+
+
+t: Triage = await ask(Triage, {"ticket": ticket})
+
+if t.hostile.at(0.8):                                   # a threshold you chose
+    route = "escalate"
+elif t.intent.value is Intent.REFUND:                   # a real enum member
+    route = "refunds" if t.severity.at_least(Severity.BLOCKING) else "queue"
+```
+
+The enums carry their own questions — a class docstring is the question, a member docstring is the criterion — so only `hostile` needs metadata, because a yes/no has no vocabulary to describe itself with. Adding a fourth field would add a fourth answer and still be one call.
 
 ## Two models, two jobs
 
@@ -62,7 +114,11 @@ flowchart LR
     class B s2out
 ```
 
-Splitting them along that line usually does three things at once: the decisions get cheaper and faster, they get *reproducible* — the same input yields the same typed answer, where free-text classification drifts between runs — and the expensive half runs less often, because a confident abstention means no generation happens at all.
+Splitting them along that line usually does three things at once:
+
+- **Cheaper and faster.** The decision costs one short call instead of a generation plus a parser.
+- **Reproducible.** The same input yields the same typed answer, where free-text classification drifts between runs.
+- **Less generation overall.** A confident abstention means the expensive half never runs at all.
 
 ## Where it fits
 

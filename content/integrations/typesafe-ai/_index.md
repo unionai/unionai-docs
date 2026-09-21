@@ -32,8 +32,8 @@ For a complete pipeline built on this plugin — three patterns and a measured A
 
 | Type | Holds | Useful members |
 |---|---|---|
-| `Choice[SomeEnum]` | the picked enum member, `confidence`, `probabilities` | `.certain(threshold)`, `.runner_up()` |
-| `Score[SomeIntEnum]` | the picked rung, the unrounded `position`, `confidence` | `.at_least(rung)` |
+| `Choice` | the picked member of your enum, `confidence`, `probabilities` | `.certain(threshold)`, `.runner_up()` |
+| `Score` | the picked rung of your `IntEnum`, the unrounded `position`, `confidence` | `.at_least(rung)` |
 | `Noul` | truthfulness in 0..1 | `.at(threshold)` |
 
 `Choice` comes back as the **enum member**, not a string, and `Score` keeps both representations on purpose: `value` is the rung you branch on, `position` is where on the scale the answer actually landed, which is what you sort and threshold by.
