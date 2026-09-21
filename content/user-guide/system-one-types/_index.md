@@ -27,6 +27,18 @@ Those answers arrive as three types, each carrying its value *and* the model's c
 
 They register with Flyte's type engine, so they also work as task inputs and outputs — a classification step can be its own cached, retryable task. [Typed decisions with Jev](./typed-decisions-with-jev) covers all three in full.
 
+## The battery
+
+Those types are the fields. A **battery** is the whole set of questions you ask in one call, declared as one dataclass — the word borrowed from psychometrics, where a test battery is a set of tests administered together in a single sitting. Here the sitting is a single request.
+
+The distinction worth holding onto is that a battery is **a type, not a prompt**. That is what makes it behave like the rest of your Flyte code:
+
+- **It is an ordinary dataclass**, so it crosses a task boundary as a struct. A task can return a battery, take one as an input, and pass it to the next step with nothing registered and nothing to parse.
+- **Its fields are the questions.** Adding one is adding a field, so it lands in the task's interface and in the diff, where a reviewer sees it — not in an edited string that nothing type-checks.
+- **It is the unit of one request.** One battery is one call no matter how many fields it has, which is exactly why the eleventh question is nearly free.
+
+That last point leaves two axes of parallelism in play, and they are worth telling apart: the battery fans out *inside* one call, while Flyte fans out *across* calls — one durable task per record, each asking its own battery once. Widening the battery costs almost nothing; widening the fan-out costs more containers.
+
 ## Two models, two jobs
 
 A generative model is the System 2 half: open-ended reasoning, and prose a person reads. It is expensive, sequential, and has to emit every field one token at a time. Pointing it at a yes/no question means paying for a generation plus a parser to get the answer back out.
