@@ -88,7 +88,7 @@ train = SlurmScriptTask(
 env = flyte.TaskEnvironment.from_task("legacy-train", train)
 ```
 
-The plugin's `#SBATCH` directives are emitted first, so the script's own directives are preserved but lose where they conflict, and a leading shebang in the script is dropped. Because the script drives `srun` itself, this is the task type to use for multi-node work.
+The script's own leading `#SBATCH` directives are hoisted above the generated `export` lines and the plugin's directives follow them, so non-conflicting options are kept and the plugin's win on a duplicate — `sbatch` applies options in order and takes the last. Both blocks must sit above any executable line, because `sbatch` stops reading directives there. A leading shebang in the script is dropped. Because the script drives `srun` itself, this is the task type to use for multi-node work.
 
 > [!NOTE] Script tasks must belong to an environment
 > A task has to be attached to a `TaskEnvironment` before it can be serialized. `flyte.TaskEnvironment.from_task` does that for a standalone task.
