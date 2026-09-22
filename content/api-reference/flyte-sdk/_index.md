@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -45,6 +45,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.TaskTemplate`](flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.Timeout`](flyte/timeout) | Timeout bounds for a task. |
 | [`flyte.Trigger`](flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
+| [`flyte.TriggeredPartition`](flyte/triggeredpartition) | Bind one partition value of the triggering artifact version to a task input of an artifact trigger: `inputs={"day": flyte.TriggeredPartition("date")}` supplies the new version's `date` partition (a datetime for the time partition, a string for a string partition). |
 | [`flyte.ai.agents.AccessDenied`](flyte.ai.agents/accessdenied) | Raised when a write targets a read-only or reserved prefix. |
 | [`flyte.ai.agents.Agent`](flyte.ai.agents/agent) | A flyte-native tool-use agent harness. |
 | [`flyte.ai.agents.AgentEvent`](flyte.ai.agents/agentevent) | Lightweight event emitted by the agent loop. |
@@ -87,8 +88,11 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app.extras.FastAPIAppEnvironment`](flyte.app.extras/fastapiappenvironment) |  |
 | [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](flyte.app.extras/fastapipassthroughauthmiddleware) | FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
 | [`flyte.app.extras.FlyteWebhookAppEnvironment`](flyte.app.extras/flytewebhookappenvironment) | A pre-built FastAPI app environment for common Flyte webhook operations. |
+| [`flyte.artifacts.ArtifactKey`](flyte.artifacts/artifactkey) |  |
+| [`flyte.artifacts.ArtifactVersionId`](flyte.artifacts/artifactversionid) |  |
 | [`flyte.artifacts.Card`](flyte.artifacts/card) |  |
 | [`flyte.artifacts.Metadata`](flyte.artifacts/metadata) | Structured metadata for Flyte artifacts. |
+| [`flyte.artifacts.TimePartition`](flyte.artifacts/timepartition) | A time partition value with an explicit granularity. |
 | [`flyte.clustered.ClusterFailurePolicy`](flyte.clustered/clusterfailurepolicy) | Failure and restart policy for the JobSet as a whole. |
 | [`flyte.clustered.ClusteredTaskEnvironment`](flyte.clustered/clusteredtaskenvironment) | A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training. |
 | [`flyte.clustered.ClusteredTaskTemplate`](flyte.clustered/clusteredtasktemplate) | Task template for `ClusteredTaskEnvironment`. |
@@ -201,6 +205,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.remote.App`](flyte.remote/app) |  |
 | [`flyte.remote.Artifact`](flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version. |
 | [`flyte.remote.Condition`](flyte.remote/condition) | A remote Condition registered within an action of a run. |
+| [`flyte.remote.PartitionSchema`](flyte.remote/partitionschema) | The partition keys fixed for an artifact name: at most one time key with its granularity, plus string keys in declaration order. |
 | [`flyte.remote.Project`](flyte.remote/project) | A class representing a project in the Union API. |
 | [`flyte.remote.Run`](flyte.remote/run) | A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](flyte.remote/rundetails) | A class representing a run of a task. |
@@ -237,7 +242,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.Link`](flyte/link) |  |
 | [`flyte.ai.agents.AgentProtocol`](flyte.ai.agents/agentprotocol) | Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`. |
 | [`flyte.ai.agents.protocol.AgentProtocol`](flyte.ai.agents.protocol/agentprotocol) | Minimal protocol that any agent must satisfy to work with `flyte.ai.chat.AgentChatAppEnvironment`. |
-| [`flyte.artifacts.Artifact`](flyte.artifacts/artifact) | Protocol for objects wrapped with Flyte metadata. |
+| [`flyte.artifacts.Artifact`](flyte.artifacts/artifact) | Anything that can declare itself an artifact. |
 | [`flyte.extend.ImageBuilder`](flyte.extend/imagebuilder) |  |
 | [`flyte.extend.ImageChecker`](flyte.extend/imagechecker) |  |
 | [`flyte.extras.CostEstimator`](flyte.extras/costestimator) | Protocol for records that can estimate their own processing cost. |
@@ -288,6 +293,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app.ctx()`](flyte.app/_index#ctx) | Returns the current app context. |
 | [`flyte.app.get_parameter()`](flyte.app/_index#get_parameter) | Get parameters for application or endpoint. |
 | [`flyte.artifacts.new()`](flyte.artifacts/_index#new) | Wrap an object with Flyte metadata while preserving its type interface. |
+| [`flyte.artifacts.produces()`](flyte.artifacts/_index#produces) | Declare that outputs of the task called inside this block are artifacts. |
 | [`flyte.clustered.jax_initialize()`](flyte.clustered/_index#jax_initialize) | Initialize `jax.distributed` for this clustered task's process topology. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
 | [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |

@@ -2,7 +2,7 @@
 title: GPUFaultSystemError
 description: "This error is raised when the GPU fault the backend attributed the failure to condemned the device or the node, for example an uncorrectable ECC error or a GPU that fell off the bus."
 icon: exclamation-triangle
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---

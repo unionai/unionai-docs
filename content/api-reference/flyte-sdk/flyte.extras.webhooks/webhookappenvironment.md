@@ -2,7 +2,7 @@
 title: WebhookAppEnvironment
 description: "Dashboard plus a verified webhook receiver for one or more providers."
 icon: braces
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -1480,6 +1480,8 @@ flyte get artifact my_artifact 1.0       # details of a pinned version
 flyte get artifact --search model        # names containing "model"
 flyte get artifact --source-run my_run   # versions produced by a run
 flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
+flyte get artifact raw_events --partition date=2026-09-17 --partition region=us   # latest of a partition
+flyte get artifact raw_events --partition date=2026-08-01..2026-08-31 --latest-per-partition
 ```
 
 | Option | Type | Default | Description |
@@ -1492,6 +1494,8 @@ flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
 | `--source-external-ref` | `text` |  | Only artifact versions imported from this external reference. |
 | `--kind` | `choice` |  | Only artifacts of this kind. Shorthand for `--attr` on the reserved kind key. |
 | `--attr` | `text` | `Sentinel.UNSET` | Only artifacts whose attrs match, as key=value. Repeatable; separate keys must all match. Filtering happens server-side. |
+| `--partition` | `text` | `Sentinel.UNSET` | Select by partition, as key=value. Repeatable. `date=2026-08-01..2026-08-31` is a range on the time partition, `region=us,eu` matches any of the values. With one value per key and no range, prints the latest version of that partition. |
+| `--latest-per-partition` | `boolean` | `False` | Only the newest version of each distinct partition; needs an artifact name. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |

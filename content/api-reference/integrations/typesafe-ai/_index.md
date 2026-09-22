@@ -2,7 +2,7 @@
 title: TypeSafe AI
 description: "Run TypeSafe's System One model (Jev) inside durable Flyte tasks."
 icon: book
-version: 2.9.0
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -72,7 +72,7 @@ async def triage(ticket: str) -> Triage:
 
 | Class | Description |
 |-|-|
-| [`CallInfo`](./callinfo) | What one `system_one` call cost, for the report and for cost accounting. |
+| [`CallInfo`](./callinfo) | What one `system_one` call cost, plus the calibration a plain field dropped. |
 | [`Choice`](./choice) | One pick from a fixed vocabulary, carrying the calibration it came with. |
 | [`Noul`](./noul) | Truthfulness in 0..1. |
 | [`Score`](./score) | A position on a rubric. |
@@ -92,6 +92,7 @@ async def triage(ticket: str) -> Triage:
 | [`ask_with_info()`](#ask_with_info) | Answer everything in one call, and report what the call cost. |
 | [`client()`](#client) | An `AsyncTypeSafeClient`, or a message that says exactly what to do. |
 | [`compile_questions()`](#compile_questions) | Build the SDK's question objects from any accepted form. |
+| [`thresholds()`](#thresholds) | Where each `bool` field cuts its 0..1 answer. |
 
 
 ### Variables
@@ -101,6 +102,7 @@ async def triage(ticket: str) -> Triage:
 | `API_KEY_ENV` | `str` |  |
 | `CRITERIA_KEY` | `str` |  |
 | `QUESTION_KEY` | `str` |  |
+| `THRESHOLD_KEY` | `str` |  |
 
 ## Methods
 
@@ -112,6 +114,7 @@ def ask(
     state: Any,
     model: Optional[str] = None,
     client: Any = None,
+    threshold: Optional[float] = None,
 ) -> Any
 ```
 Answer a battery, a single question, or a mapping of them -- in one call.
@@ -129,6 +132,7 @@ both = await ask({"intent": Choice[Intent], "hot": Noul}, s)  # -> dict
 | `state` | `Any` | |
 | `model` | `Optional[str]` | |
 | `client` | `Any` | |
+| `threshold` | `Optional[float]` | |
 
 #### ask_with_info()
 
@@ -138,9 +142,13 @@ def ask_with_info(
     state: Any,
     model: Optional[str] = None,
     client: Any = None,
+    threshold: Optional[float] = None,
 ) -> Tuple[Any, CallInfo]
 ```
 Answer everything in one call, and report what the call cost.
+
+`threshold` cuts every `bool` field that does not declare its own. It is checked
+before the request, so a battery missing one fails without spending a call.
 
 
 | Parameter | Type | Description |
@@ -149,6 +157,7 @@ Answer everything in one call, and report what the call cost.
 | `state` | `Any` | |
 | `model` | `Optional[str]` | |
 | `client` | `Any` | |
+| `threshold` | `Optional[float]` | |
 
 #### client()
 
@@ -184,4 +193,25 @@ Build the SDK's question objects from any accepted form.
 | Parameter | Type | Description |
 |-|-|-|
 | `askable` | `Askable` | |
+
+#### thresholds()
+
+```python
+def thresholds(
+    specs: list[_Spec],
+    default: Optional[float] = None,
+) -> Dict[str, float]
+```
+Where each `bool` field cuts its 0..1 answer.
+
+A `bool` has to be cut somewhere, and that decision belongs in the caller's code
+rather than in this plugin, so there is no implicit default: the field says it,
+the call says it, or this raises. Requiring it also makes a misspelled metadata
+key loud instead of silently meaning 0.5.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `specs` | `list[_Spec]` | |
+| `default` | `Optional[float]` | |
 

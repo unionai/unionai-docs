@@ -2,7 +2,7 @@
 title: Hydra
 description: "flyteplugins-hydra — Hydra launcher plugin for Flyte."
 icon: book
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
