@@ -2,7 +2,7 @@
 title: Secret
 description: "Secrets are used to inject sensitive information into tasks or image build context."
 icon: braces
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---

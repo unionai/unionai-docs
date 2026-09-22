@@ -2,7 +2,7 @@
 title: flyte.remote
 description: "Remote Entities that are accessible from the Union Server once deployed or created."
 icon: box-seam
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -23,6 +23,7 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`App`](../flyte.remote/app) |  |
 | [`Artifact`](../flyte.remote/artifact) | A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version. |
 | [`Condition`](../flyte.remote/condition) | A remote Condition registered within an action of a run. |
+| [`PartitionSchema`](../flyte.remote/partitionschema) | The partition keys fixed for an artifact name: at most one time key with its granularity, plus string keys in declaration order. |
 | [`Project`](../flyte.remote/project) | A class representing a project in the Union API. |
 | [`Run`](../flyte.remote/run) | A class representing a run of a task. |
 | [`RunDetails`](../flyte.remote/rundetails) | A class representing a run of a task. |

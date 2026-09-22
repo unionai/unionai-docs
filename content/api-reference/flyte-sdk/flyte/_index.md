@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TaskTemplate`](../flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
 | [`Trigger`](../flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
+| [`TriggeredPartition`](../flyte/triggeredpartition) | Bind one partition value of the triggering artifact version to a task input of an artifact trigger: `inputs={"day": flyte.TriggeredPartition("date")}` supplies the new version's `date` partition (a datetime for the time partition, a string for a string partition). |
 
 ### Protocols
 

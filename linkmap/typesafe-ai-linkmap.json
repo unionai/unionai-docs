@@ -20,6 +20,7 @@
     "flyteplugins.typesafe_ai.ask": "/api-reference/integrations/typesafe-ai/#ask",
     "flyteplugins.typesafe_ai.ask_with_info": "/api-reference/integrations/typesafe-ai/#ask_with_info",
     "flyteplugins.typesafe_ai.client": "/api-reference/integrations/typesafe-ai/#client",
-    "flyteplugins.typesafe_ai.compile_questions": "/api-reference/integrations/typesafe-ai/#compile_questions"
+    "flyteplugins.typesafe_ai.compile_questions": "/api-reference/integrations/typesafe-ai/#compile_questions",
+    "flyteplugins.typesafe_ai.thresholds": "/api-reference/integrations/typesafe-ai/#thresholds"
   }
 }
