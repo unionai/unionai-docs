@@ -122,7 +122,8 @@ These fields map one-to-one onto `sbatch` options.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| `container_image` | `str` | Override the image given to Pyxis, for example a pre-imported squashfs path. Defaults to the task's image |
+| `container_runtime` | `str` | How the image is launched: `"pyxis"` (default) or `"apptainer"`. See [Container runtimes](#container-runtimes) |
+| `container_image` | `str` | Override the image given to the runtime, for example a pre-imported `.sqsh` or `.sif` path. Defaults to the task's image |
 | `container_mounts` | `List[str]` | `--container-mounts` entries, for example `["/data:/data"]` |
 | `container_workdir` | `str` | `--container-workdir` |
 | `srun_args` | `List[str]` | Extra arguments inserted before the command on the `srun` line |
@@ -162,6 +163,37 @@ Each of these may be set per task, or once for the whole cluster on the connecto
 
 Task configuration takes precedence over the connector's environment. Setting the connection once on the connector is usually what you want: tasks then carry only scheduling options and stay portable.
 
+## Container runtimes
+
+A native `slurm` task runs your image on the compute node, which needs a container
+runtime on the cluster. `container_runtime` selects it:
+
+| | `pyxis` (default) | `apptainer` |
+|---|---|---|
+| How it launches | flags on `srun` | a command the job runs |
+| Image reference | `ghcr.io#org/img:tag` | `docker://ghcr.io/org/img:tag` |
+| Mounts | `--container-mounts` | `--bind` |
+| Working directory | `--container-workdir` | `--pwd` |
+| Local image | `.sqsh` path | `.sif` path |
+
+```python
+Slurm(partition="main", container_runtime="apptainer")
+```
+
+Pyxis is the default because it ships with NVIDIA-shaped GPU clusters; Apptainer is more
+common at traditional HPC sites. Nothing else about the job changes — the directives,
+exports and entrypoint are identical — so a task moves between clusters by changing this
+one field. Check which the cluster has before you start:
+
+```bash
+scontrol show config | grep -i plugstack   # Pyxis: look for spank_pyxis.so
+command -v apptainer                       # the alternative
+```
+
+A cluster with neither cannot run native tasks; use `slurm_script` and invoke whatever
+the site provides from inside the script. An unknown value is rejected where the task is
+defined, not at submission.
+
 ## Container images
 
 Enroot addresses registries as `REGISTRY#IMAGE:TAG` rather than `REGISTRY/IMAGE:TAG`. The plugin rewrites references automatically and leaves Docker Hub shorthand and absolute paths untouched:
@@ -200,8 +232,6 @@ slurm_env = flyte.TaskEnvironment(
     image=image,
 )
 
-# The environment holding the task you invoke must declare the environments its
-# tasks call into, so that their images are built and deployed too.
 k8s_env = flyte.TaskEnvironment(name="pipeline", image=image, depends_on=[slurm_env])
 
 
@@ -219,17 +249,6 @@ async def pipeline() -> dict[str, str]:
     return await evaluate(await train(await prepare(1000)))
 ```
 
-> [!WARNING] `depends_on` points from the caller to the environments it calls
-> Only the invoked environment and its `depends_on` closure are built and deployed, so an
-> environment that nothing depends on never gets an image. Declaring the dependency the
-> wrong way round builds cleanly and then fails at run time:
->
-> ```
-> Environment 'train' not found in image cache.
-> ```
->
-> The give-away is in the build output just above it — only one image is built.
-
 > [!WARNING] Return `File` or `Dir`, not a cluster filesystem path
 > Returning a path such as `"/data/model.pt"` as a `str` satisfies the type system and then fails when a task on another cluster opens it — the Slurm cluster's filesystem does not exist there. Return `flyte.io.File` or `flyte.io.Dir` so the contents are uploaded. Path references are valid only between tasks that share a filesystem.
 
@@ -245,7 +264,7 @@ Only the first token of the Slurm state is matched, so `CANCELLED by 1234` behav
 | `RUNNING`, `COMPLETING` | `RUNNING` | — |
 | `COMPLETED` | `SUCCEEDED` | Outputs are read from object storage as usual |
 | `FAILED`, `NODE_FAIL`, `OUT_OF_MEMORY`, `TIMEOUT`, `DEADLINE`, `BOOT_FAIL` | `FAILED` | The message carries Slurm's reason and the tail of stderr |
-| `PREEMPTED` | `RETRYABLE_FAILED` | Consumes a retry rather than failing the run |
+| `PREEMPTED` | `RETRYABLE_FAILED` | Consumes a retry rather than failing the run — but only if the task sets `retries`, which defaults to 0 |
 | `CANCELLED` | `ABORTED` | Aborting the Flyte run runs `scancel` |
 
 State is polled with `squeue`, falling back to `sacct` for jobs that have already left the queue, so **accounting must be working for the submitting user** or finished jobs are reported as unknown.
