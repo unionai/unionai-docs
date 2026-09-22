@@ -1,7 +1,7 @@
 ---
 title: TaskDetails
 icon: braces
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -111,6 +111,7 @@ def override(
     max_inline_io_bytes: Optional[int] = None,
     cache: Optional[flyte.Cache] = None,
     queue: Optional[str] = None,
+    produces_artifacts: Optional[bool] = None,
     **kwargs: Any,
 ) -> TaskDetails
 ```
@@ -130,6 +131,7 @@ Create a new TaskDetails with overridden properties.
 | `max_inline_io_bytes` | `Optional[int]` | Maximum inline I/O size in bytes. |
 | `cache` | `Optional[flyte.Cache]` | Cache configuration. |
 | `queue` | `Optional[str]` | Queue name for task execution. |
+| `produces_artifacts` | `Optional[bool]` | Whether the platform publishes this call's declared outputs as artifacts (see `flyte.artifacts.produces`). |
 | `**kwargs` | `Any` | |
 
 **Returns:** A new TaskDetails instance with the overrides applied.

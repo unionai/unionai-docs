@@ -159,6 +159,7 @@ Agentic AI integrations let you run agents written in a third-party framework as
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
 | [Agent frameworks](./agents/_index) | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
+| [TypeSafe AI](./typesafe-ai/_index)  | Typed, confidence-scored answers from a System One model, as task inputs and outputs                                     | Model-based I/O guards, intent routing, typed agent control flow |
 
 ## Experiment tracking
 

@@ -245,3 +245,14 @@ xgboost
 Yunikorn
 zstd
 Kubeflow
+
+# --- TypeSafe System One plugin (flyteplugins-typesafe-ai) ---
+TypeSafe
+typesafe
+Jev
+Noul
+Nouls
+mashumaro
+agenticness
+autoregressively
+typosquatted

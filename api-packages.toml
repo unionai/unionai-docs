@@ -335,3 +335,9 @@ package = "flyteplugins-snowflake"
 plugin = "flyteplugins.snowflake"
 title = "Snowflake"
 name = "snowflake"
+
+[[plugins]]
+package = "flyteplugins-typesafe-ai"
+plugin = "flyteplugins.typesafe_ai"
+title = "TypeSafe AI"
+name = "typesafe-ai"

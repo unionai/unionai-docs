@@ -2,7 +2,7 @@
 title: flyte.extras.webhooks
 description: "Receive SaaS webhooks in Flyte, and turn them into runs."
 icon: box-seam
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---

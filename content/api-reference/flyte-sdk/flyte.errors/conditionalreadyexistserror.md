@@ -2,7 +2,7 @@
 title: ConditionAlreadyExistsError
 description: "This error is raised when the user tries to create a condition that already exists within the action."
 icon: exclamation-triangle
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.8.1
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -255,8 +255,5 @@ Decorate a function to be a task.
 def to_custom_dict()
 ```
 Serialize this environment to the dict shape expected by ClusteredTaskSpec proto.
-
-Imported lazily so the heavy clustered_pb2 module is only loaded at serialization
-time rather than on every `flyte.clustered` import.
 
 
