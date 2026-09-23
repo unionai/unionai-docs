@@ -275,5 +275,5 @@ original problem.
  
 Learn more about the Union features used in this tutorial:
 
-- [Triggers](../../../user-guide/triggers/artifact-triggers.md) for schedule and artifact automation
-- [Apps](../../../user-guide/apps/build-apps/_index.md/) for the subscriber runtime
+- [Triggers](../../../user-guide/triggers/artifact-triggers) for schedule and artifact automation
+- [Apps](../../../user-guide/apps/build-apps/_index) for the subscriber runtime
