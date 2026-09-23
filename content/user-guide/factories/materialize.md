@@ -15,16 +15,6 @@ Once a factory is [declared](./declare-a-factory), there is one verb for running
 Deploy the tasks, then the factory:
 
 {{< tabs "deploy" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte deploy analytics.py env
-flyte factory deploy analytics.py
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
@@ -39,6 +29,16 @@ analytics.deploy()      # the factory
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte deploy analytics.py env
+flyte factory deploy analytics.py
+```
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 `flyte factory deploy` checks every build against its deployed task, including argument names, required parameters, partition mappings, and the number of outputs. It checks every source against the registry, then registers the factory as a task of type `factory`. Mistakes fail here, with a message per build, instead of halfway through a backfill. Add `--dry-run` (or `analytics.deploy(dryrun=True)`) to validate without registering.
@@ -46,21 +46,21 @@ analytics.deploy()      # the factory
 ## One partition
 
 {{< tabs "one-partition" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory materialize analytics daily_report --partition date=2026-08-02 --wait
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 run = analytics.materialize(daily_report, date="2026-08-02")
 run.wait()
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory materialize analytics daily_report --partition date=2026-08-02 --wait
 ```
 
 {{< /markdown >}}
@@ -76,20 +76,20 @@ In Python, `materialize` returns an ordinary `flyte.remote.Run`.
 A backfill is the same command over a range:
 
 {{< tabs "range" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31
 ```
 
 {{< /markdown >}}
@@ -105,21 +105,21 @@ run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
 ## Preview the plan
 
 {{< tabs "plan" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory plan analytics daily_report --partition date=2026-08-01..2026-08-31
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31", plan_only=True)
 run.wait()
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory plan analytics daily_report --partition date=2026-08-01..2026-08-31
 ```
 
 {{< /markdown >}}
@@ -148,19 +148,6 @@ A partition is fresh if calling its task with the same inputs is a cache hit. Th
 To force work anyway:
 
 {{< tabs "rebuild" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-# Treat every partition of one build as stale.
-flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31 --rebuild events
-
-# Ignore the cache everywhere.
-flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31 --rebuild-all
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
@@ -174,19 +161,32 @@ analytics.materialize(daily_report, date="2026-08-01..2026-08-31", rebuild_all=T
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+# Treat every partition of one build as stale.
+flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31 --rebuild events
+
+# Ignore the cache everywhere.
+flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31 --rebuild-all
+```
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 `--rebuild` names a build by an artifact it makes, since the same task can back several builds. A task name also works.
 
 ## Other options
 
-| CLI | Python | Effect |
+| Python | CLI | Effect |
 |---|---|---|
-| `--param events.min_quality=20` | `params={"events": {"min_quality": 20}}` | Override a build's constant for this materialization only |
-| `--concurrency 50` | `concurrency=50` | Limit how many partitions build at once |
-| `--queue gpu` | `queue="gpu"` | Run the materialization and every build on this queue |
-| `--downstream` | `downstream=True` | Also refresh downstream partitions that become stale |
-| `--wait` | `run.wait()` | Wait for the run to finish. The CLI also prints the plan with results |
+| `params={"events": {"min_quality": 20}}` | `--param events.min_quality=20` | Override a build's constant for this materialization only |
+| `concurrency=50` | `--concurrency 50` | Limit how many partitions build at once |
+| `queue="gpu"` | `--queue gpu` | Run the materialization and every build on this queue |
+| `downstream=True` | `--downstream` | Also refresh downstream partitions that become stale |
+| `run.wait()` | `--wait` | Wait for the run to finish. The CLI also prints the plan with results |
 
 ## What gets published
 
@@ -195,22 +195,22 @@ Every artifact built during a materialization is published as a version with its
 ## Inspect factories
 
 {{< tabs "inspect" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory get                      # factories in this project and domain
-flyte factory get analytics --graph    # one factory's definition, as Mermaid
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 print(analytics.graph())       # the definition, as Mermaid
 print(analytics.validate())    # structural problems, if any
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory get                      # factories in this project and domain
+flyte factory get analytics --graph    # one factory's definition, as Mermaid
 ```
 
 {{< /markdown >}}

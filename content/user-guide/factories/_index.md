@@ -28,20 +28,20 @@ On September 1, a bug fix lands in `clean`, and someone asks for the August repo
 A factory replaces that script with a declaration. You describe once how each artifact is made from the others. Then you ask for the artifact you want:
 
 {{< tabs "why-materialize" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31
 ```
 
 {{< /markdown >}}

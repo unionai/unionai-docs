@@ -71,21 +71,21 @@ Nothing runs here. `source` and `build` only declare.
 To check the definition without registering anything, validate it and print the graph as Mermaid:
 
 {{< tabs "check-graph" >}}
-{{< tab "CLI" >}}
-{{< markdown >}}
-
-```bash
-flyte factory deploy analytics.py --dry-run
-```
-
-{{< /markdown >}}
-{{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
 
 ```python
 print(analytics.validate())   # structural problems, if any
 print(analytics.graph())
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte factory deploy analytics.py --dry-run
 ```
 
 {{< /markdown >}}
