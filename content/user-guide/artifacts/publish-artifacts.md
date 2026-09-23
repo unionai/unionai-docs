@@ -59,6 +59,6 @@ flyte get artifact --source-run my_run    # versions produced by a run
 flyte get artifact --kind model --attr framework=torch
 ```
 
-The same queries are available in Python. `Artifact.get(name)` returns the latest version by default, `Artifact.listall()` iterates versions newest first with server-side filtering, and `Artifact.list_names()` lists distinct names with their version counts.
+The same queries are available in Python. `Artifact.get(name)` returns the latest version by default, `Artifact.listall()` iterates versions newest first with server-side filtering, and `Artifact.list_names()` lists distinct names with their version counts. For partitions, ranges, and more filters, see [Find and retrieve artifacts](./retrieving-artifacts).
 
 Artifacts are scoped to a project and domain. All of these calls accept `project` and `domain` arguments, and default to the ones in your config.

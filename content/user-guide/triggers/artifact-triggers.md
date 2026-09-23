@@ -1,12 +1,12 @@
 ---
-title: Trigger on new versions
+title: Trigger on new artifact versions
 description: Run a task automatically whenever a new version of an artifact lands, using `flyte.OnArtifact`. It fires no matter who published the version.
 icon: lightning-charge
-weight: 4
+weight: 5
 variants: -flyte +union
 ---
 
-# Trigger on new versions
+# Trigger on new artifact versions
 
 An artifact trigger runs a task automatically whenever a new version of a named artifact lands. Use it to validate every new model, retrain when a dataset is refreshed, or kick off batch inference when fresh data arrives.
 
@@ -43,22 +43,23 @@ From then on, every new version of `customer_model` in the task's project and do
 
 The trigger fires no matter how the version was published: a task output wrapped with `flyte.artifacts.new()`, an upload through `flyte.remote.Artifact.create()` or `flyte create artifact`, or a Hugging Face prefetch. This makes triggers a clean handoff point between external processes and your pipelines: a partner drops a dataset, publishes it as an artifact, and your processing task starts on its own.
 
-By default any new version fires the trigger. Pass `version=` to `flyte.OnArtifact` to fire only when that exact version is published.
+By default any new version fires the trigger. Pass `version=` to `flyte.OnArtifact` to fire only when that exact version is published. For partitioned artifacts, you can also fire only for matching partitions and receive the partition values as inputs. See [Trigger on partitions](./partition-triggers).
 
 ## Rules
 
 * At most one input can be `flyte.TriggeredArtifact`.
 * `flyte.TriggeredArtifact` requires the automation to be `flyte.OnArtifact`.
 * `flyte.TriggerTime` cannot be combined with `flyte.OnArtifact`; it is for schedule triggers.
+* `flyte.TriggeredPartition` also requires `flyte.OnArtifact`.
 
-All other inputs must have values in the trigger definition or defaults on the task, the same as [schedule triggers](../tasks/task-configuration/triggers).
+All other inputs must have values in the trigger definition or defaults on the task, the same as [schedule triggers](./configure-triggers#the-inputs-parameter).
 
 ## Firing an artifact trigger by hand
 
 > [!NOTE]
 > Firing a trigger from Python requires flyte 2.7.1 or later. Passing an `Artifact` object as an input override requires flyte 2.7.2 or later; on 2.7.1 the trigger path does not bind artifacts and raises a `TypeError`.
 
-An artifact trigger can also be fired on demand, from the UI or by passing it to `flyte.run()` in Python. See [Firing a trigger on demand](../tasks/task-configuration/triggers#firing-a-trigger-on-demand).
+An artifact trigger can also be fired on demand, from the UI or by passing it to `flyte.run()` in Python. See [Firing a trigger on demand](./manual-triggers#firing-a-trigger-on-demand).
 
 No new version is being published in that case, so nothing fills the `flyte.TriggeredArtifact` input. Pass it yourself as a keyword override. This needs a remote client, so initialize one first:
 

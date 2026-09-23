@@ -191,7 +191,7 @@ A `LaunchPlan` with a `CronSchedule` (say, a nightly retraining job) becomes a `
 {{< /tab >}}
 {{< /tabs >}}
 
-Triggers support `flyte.Cron("0 9 * * *", timezone="America/New_York")` and `flyte.FixedRate(timedelta(hours=1))` as automations, plus convenience constructors like `flyte.Trigger.hourly()` and `flyte.Trigger.daily()`. See [Triggers](../../tasks/task-configuration/triggers) for more.
+Triggers support `flyte.Cron("0 9 * * *", timezone="America/New_York")` and `flyte.FixedRate(timedelta(hours=1))` as automations, plus convenience constructors like `flyte.Trigger.hourly()` and `flyte.Trigger.daily()`. See [Triggers](../../triggers/_index) for more.
 
 ## Next
 

@@ -22,7 +22,7 @@ Instead, they are simply a result of the task being invoked in a specific way:
 * User with `flyte run`
 * User via the UI
 * Other code calling `flyte.run()`
-* [Trigger](../task-configuration/triggers)
+* [Trigger](../../triggers/_index)
 
 When a task is invoked in one of these ways, it creates a run to represent the execution of that task and all its nested tasks, considered together.
 Each task execution within that run is represented by an **action**.

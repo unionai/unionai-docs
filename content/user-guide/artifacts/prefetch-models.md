@@ -31,7 +31,7 @@ On success the platform records a model artifact for the stored weights:
 * The searchable metadata carries the model facts (framework, architecture, task, modality, serialization format) plus the source repo and commit.
 * The repo's README, if it has one, is attached as the model card.
 
-Because the version is the upstream commit, a prefetch is idempotent. Re-running it for a model that has not moved republishes the same version instead of filling the registry with duplicates, and a genuine upstream change arrives as a new version you can [trigger on](./artifact-triggers).
+Because the version is the upstream commit, a prefetch is idempotent. Re-running it for a model that has not moved republishes the same version instead of filling the registry with duplicates, and a genuine upstream change arrives as a new version you can [trigger on](../triggers/artifact-triggers).
 
 ## Finding a prefetched model
 
