@@ -81,9 +81,9 @@ Answer many typed questions in one call, with calibrated confidence, and decide 
 
 {{< markdown >}}
 
-## Artifacts
+## Artifacts and factories
 
-Name and version the datasets and models your tasks produce, and trace where they came from.
+Name and version the datasets and models your tasks produce, trace where they came from, and build them on demand with factories.
 
 {{< /markdown >}}
 
@@ -91,6 +91,10 @@ Name and version the datasets and models your tasks produce, and trace where the
 
 {{< link-card target="artifacts" icon="box-seam" title="Artifacts" >}}
 Register task outputs and uploads as named, versioned artifacts, trigger runs on new versions, mount them into apps, and trace lineage.
+{{< /link-card >}}
+
+{{< link-card target="factories" icon="diagram-3" title="Factories" >}}
+Declare how artifacts are made from other artifacts, then ask for any artifact for a partition or a range and let Union build only what is missing or stale.
 {{< /link-card >}}
 
 {{< /grid >}}

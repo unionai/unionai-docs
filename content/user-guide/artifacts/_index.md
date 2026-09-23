@@ -73,4 +73,8 @@ The unit of work that produces and consumes artifacts.
 Long-running services that serve the models and datasets artifacts hold.
 {{< /link-card >}}
 
+{{< link-card target="../factories" icon="diagram-3" title="Factories" >}}
+Declare how artifacts are made from other artifacts, and build any of them for a partition or a range on demand.
+{{< /link-card >}}
+
 {{< /grid >}}
