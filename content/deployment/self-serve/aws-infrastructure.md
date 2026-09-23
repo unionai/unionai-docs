@@ -1,23 +1,14 @@
 ---
 title: Provision your AWS resources
-description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-service cluster pool on AWS needs.
+description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
 icon: amazon
 weight: 3
 variants: -flyte +union
 ---
 
-<!-- Source: MANUAL_SETUP.md from the self-serve Terraform module (engineering-owned), confirmed
-     correct by Peeter 2026-09-23. That doc presents this CLI route as the alternative to a
-     Terraform root (its README.md). Whether Terraform should be the primary route is still to be
-     confirmed; until then this manual route is documented as the main one.
-     This page is SELF-SERVICE ONLY. It is not a replacement for
-     selfmanaged/infrastructure-recommendations/aws.md: it uses one bucket (not metadata +
-     fast-reg), AWS Secrets Manager for runtime secrets, and IRSA trust scoped to a wildcard
-     namespace because the agent picks the release namespace. -->
-
 # Provision your AWS resources
 
-The self-service setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
+The self-serve setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
 
 - an EKS cluster in Auto Mode
 - one S3 bucket
@@ -27,7 +18,7 @@ The self-service setup installs the data plane into your cluster for you, but th
 At the end you have the six values the AWS cluster-pool form asks for in [Connect your cluster](./connect-a-cluster).
 
 > [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: a single bucket, AWS Secrets Manager for runtime secrets, and IAM trust that follows the namespace the agent chooses. Use this page for self-service setup only.
+> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: a single bucket, AWS Secrets Manager for runtime secrets, and IAM trust that follows the namespace the agent chooses. Use this page for self-serve setup only.
 
 ## Prerequisites
 

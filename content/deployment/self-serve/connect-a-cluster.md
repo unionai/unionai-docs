@@ -58,7 +58,7 @@ Select the **On-Prem** tab, then fill in the store the cluster will use:
 
 The endpoint is resolved by the agent from inside your cluster, not by Union.ai, so an address that only exists on your cluster network is expected here.
 
-![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/self-service/connect-a-cluster/cluster-pool-onprem.png)
+![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/self-serve/connect-a-cluster/cluster-pool-onprem.png)
 
 Select **Create cluster pool**. The console then takes you to **Clusters**, ready to connect one.
 
@@ -97,7 +97,7 @@ Go to **Settings → Clusters → New Cluster** and fill in the dialog:
 | **Cluster pool** | The pool from step 1. It supplies the object store the cluster deploys with. |
 | **Credentials secret name** | On-Prem pools only. The name of the secret you created in step 2, for example `storage-credentials`. |
 
-![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/self-service/connect-a-cluster/connect-cluster-dialog.png)
+![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/self-serve/connect-a-cluster/connect-cluster-dialog.png)
 
 Select **Register cluster**. The cluster now exists as a record, and the console moves on to installing the agent.
 
@@ -173,7 +173,7 @@ Installing the data plane takes a few minutes on a new cluster, mostly spent pul
 
 When the cluster is ready, it shows as **Healthy** in the cluster list, with the data-plane version it is running:
 
-![The cluster list showing kind-local as healthy](../../_static/images/deployment/self-service/connect-a-cluster/cluster-healthy.png)
+![The cluster list showing kind-local as healthy](../../_static/images/deployment/self-serve/connect-a-cluster/cluster-healthy.png)
 
 <!-- ⚠️ THIS IMAGE IS RETOUCHED. Captured on staging 2026-09-04, then the AWS logo and the
      "EKS / us-east-1" line were hidden in the DOM before the shot was taken, so the image is a

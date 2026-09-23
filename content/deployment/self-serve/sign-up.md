@@ -8,39 +8,24 @@ variants: -flyte +union
 
 # Sign up and create your Union.ai organization
 
-Create your account and an organization. Your organization is your workspace in Union.ai: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
+Create your account and an organization. Your organization is your workspace in Union.ai: it holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
-Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to Union.ai, so you can see how Union.ai works before connecting any infrastructure.
+Once it exists you can test it by running a workflow on your local machine but connected to the Union.ai control plane, so you can see the system running even without a cluster.
+Your first workflow executes on your own machine and reports its progress to Union.ai, so you can see how Union.ai works before connecting any infrastructure.
 
 > [!NOTE] Subscribed through AWS Marketplace?
 > Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
 
 ## What you'll need
 
-- A Google account for work. Signing up is through Google only; there is no email and password option.
+- A Google or Microsoft account for work. Signing up is currently onlu availbelt though through these providers.
 - Python 3.10+ in a virtual environment.
 
 ## Create your account
 
 Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for Union.ai.
 
-<!-- ⚠️ HOSTNAME IN FLUX.
-     signup.hosted.unionai.cloud is what serves today: verified 2026-09-04, HTTP 200 -> /sign-in,
-     runtime config reports environment=production, gitSha e2b8a68a46 = cloud#18091 "add production
-     pipeline for signup app", which is merged to main. It matches the production env_domain in
-     cloud origin/main:signup/deploy/signup.yaml:49.
-     The page previously said signup.union.ai. That host does not resolve at all and never did --
-     it is a leftover from the Serverless era (cloud clients/website/workshop/README.md).
-     But an UNMERGED commit moves production to signup.unionai.cloud:
-     cloud e3d8023d65 on branch nathan/fix-signup-prod-host, 2026-09-01, "update signup-prod host".
-     That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
-     Nathan knows which host is final. -->
-
-![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/self-service/sign-up/sign-in.png)
-
-<!-- Captured on signup.cloud-staging.union.ai 2026-09-04 (Peeter chose staging as the capture
-     surface). The shot carries no hostname, so it is safe to keep when the prose moves to the
-     production host. CDP captures the viewport only, so there is no URL bar to crop. -->
+![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/self-serve/sign-up/sign-in.png)
 
 ## Create your organization
 
@@ -48,12 +33,7 @@ An organization is your top-level workspace in Union.ai. It is where your projec
 
 1. **Organization name.** This becomes your organization's web address, so it must be unique across Union.ai, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, Union.ai checks whether the name is available.
 
-   ![The organization form with a name typed and shown as available](../../_static/images/deployment/self-service/sign-up/create-organization.png)
-
-   <!-- ⚠️ CAPTURED ON STAGING, so the suffix in the shot reads .cloud-staging.union.ai while the
-        prose says my-org.hosted.unionai.cloud, and the region list shows only us-east-2 and
-        us-west-2. Peeter chose staging as the capture surface (2026-09-04). A production
-        re-shoot would remove the mismatch. -->
+   ![The organization form with a name typed and shown as available](../../_static/images/deployment/self-serve/sign-up/create-organization.png)
 
 2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
 
@@ -61,16 +41,13 @@ An organization is your top-level workspace in Union.ai. It is where your projec
 
 Union.ai sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
 
-![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-service/sign-up/setting-up-organization.png)
+![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-organization.png)
 
 ## Sign in to your organization
 
 When setup finishes, Union.ai takes you to your new organization's sign-in page. Select **Continue with Google** and choose the same account again.
 
-> [!NOTE]
-> You may be asked to choose your Google account more than once during sign-up. This is expected: your account, your organization, and the console each confirm who you are.
-
-You land in the Union.ai console. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
+You land in the Union.ai UI. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
 
 > [!NOTE] You don't need a cluster yet
 > The console first asks you to set up a cluster pool. That is [connecting your own cluster](./connect-a-cluster), and you can come back to it any time. For your first run, skip it: select **Projects** in the sidebar. Your organization already has a `default` project ready to use.
