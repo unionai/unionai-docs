@@ -7,6 +7,13 @@ This file provides guidance for working with the Union.ai documentation reposito
 For selfhosted or selfmanaged context, refer to the Notion guide:
 https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
 
+## Path-scoped rules
+
+`.claude/rules/` carries subsystem knowledge that loads only when you touch the matching files —
+search indexes, routing and redirects, generated content, the LLM surface, variants and versions,
+and authoring. `contributing.md` there loads always: **sign off every commit (`git commit -s`)**,
+since "Check DCO" is a required status check.
+
 ## Project Overview
 
 Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates two variants:
@@ -48,10 +55,8 @@ The repo separates **version-specific content/config** (top level) from **shared
 - `content/`, `data/`, `linkmap/`, `include/` — Content and generated data
 
 **`unionai-docs-infra/`** — shared build infrastructure (identical across branches).
-**Policy (DOC-1329): content is versioned; chrome is promoted.** Cut tags snapshot content only;
-builds wrap every version tree (latest, stable, all pins) in the infra named by the *branch tip's*
-submodule pointer. Infra/theme changes ship via a pointer bump — never a cut; the pin inside a tag
-is provenance only. Details: `unionai-docs-infra/VERSIONING.md`.
+**Policy (DOC-1329): content is versioned; chrome is promoted.** Infra/theme changes ship via a
+submodule pointer bump, never a cut. Details: `unionai-docs-infra/VERSIONING.md`.
 - `Makefile` — Real build logic (top-level Makefile forwards to this)
 - `hugo.toml`, `hugo.site.toml`, `hugo.ver.toml`, `config.{variant}.toml` — Hugo config
 - `static/` — Shared static assets (CSS, JS, images)
@@ -72,22 +77,10 @@ Configs merge in order:
 
 ## Variant System
 
-### Page-level variants
+Every page MUST declare its variants in frontmatter — `variants: +flyte +union`. `+` includes,
+`-` excludes, and **all variants must be listed explicitly**; there is no default.
 
-Every page MUST declare which variants it appears in via frontmatter:
-
-```yaml
----
-title: My Page
-weight: 3
-variants: +flyte +union
----
-```
-
-- `+` includes, `-` excludes
-- All variants must be explicitly listed (no defaults)
-
-### Content-level variants
+Block-level gating uses a different syntax — a bare list of the variants that may see the block:
 
 ```markdown
 {{< variant union >}}
@@ -97,7 +90,10 @@ This appears only in the Union variant.
 {{< /variant >}}
 ```
 
-**Hugo quirk**: Inside container shortcodes, wrap Markdown content with `{{< markdown >}}`.
+**Hugo quirk:** inside container shortcodes, wrap Markdown content with `{{< markdown >}}`.
+
+Gating traps (naming every variant guards nothing; blocks do not nest) are in
+`.claude/rules/variants-and-versions.md`.
 
 ### Variant keys
 
@@ -107,7 +103,8 @@ For inline text that varies by variant:
 The {{< key product_name >}} platform...
 ```
 
-Keys defined in `hugo.site.toml` under `[params.key]`. Common keys: `product_name`, `product_full_name`, `cli`, `kit_name`, `kit_remote`, `docs_home`.
+Keys are defined in `hugo.site.toml` under `[params.key]`. Common keys: `product_name`,
+`product_full_name`, `cli`, `kit_name`, `kit_remote`, `docs_home`.
 
 ## Key Shortcodes
 
@@ -148,74 +145,24 @@ Navigation: lower `weight` = higher position. `weight: 0` or missing = alphabeti
 
 ### API-reference autolinking
 
-Inline `` `code` `` and Python code blocks are automatically linked to their API reference at runtime by `inline-code-linker.js` and `codeblock-linker.js` (loaded for every page; data comes from `linkmap/*-linkmap.json`).
+Inline `` `code` `` and Python code blocks are linked to their API reference at runtime by
+`inline-code-linker.js` / `codeblock-linker.js`, using `linkmap/*-linkmap.json`.
 
-**Do not write explicit Markdown links for identifiers the autolinker already handles.** Write the bare backticked identifier and let the linker wrap it.
+**Do not write explicit Markdown links for identifiers the autolinker already handles.** Write the
+bare backticked identifier — `` `flyte.io.File` ``, `` `flyte.init()` `` — and let the linker wrap
+it. Keep an explicit link only when the link text isn't a single backticked identifier, the name
+isn't fully qualified, or the target isn't the canonical API page.
 
-```markdown
-✅  A `flyte.io.File` is a reference to an offloaded file.
-✅  Call `flyte.init()` before submitting a run.
-
-❌  A [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) is a reference …
-❌  Call [`flyte.init()`](../../api-reference/flyte-sdk/packages/flyte/_index#init) …
-```
-
-What the linker matches (in inline code, exact `<code>` text):
-- Fully-qualified identifiers from any loaded linkmap: `flyte.io.File`, `flyte.report.log()`, `flyte.errors.OOMError`, `flyteplugins.bigquery.BigQueryConfig`, …
-- A trailing `()` is stripped before lookup, so `` `flyte.init()` `` and `` `flyte.init` `` both link.
-- A leading `@` is stripped (decorator form).
-- `ClassName.method` falls back to `<class-url>#method` when the class is in the linkmap.
-
-What it does **not** match — keep an explicit link in these cases:
-- Link text that isn't a pure single backticked identifier (e.g. `` [`Resources` API reference](…) ``, `` [`Trigger` and `Cron`](…) ``).
-- Bare short names (e.g. `` `Trigger` ``, `` `Resources` ``) — the SDK linkmap only emits fully-qualified keys. Prefer `` `flyte.Trigger` ``. (Plugin linkmaps do emit both forms.)
-- Links to specific anchors that aren't `#methodname` (e.g. arbitrary `#section-ids`).
-- Cross-page links (`./other-page`) and non-API-ref URLs.
-
-To check whether an identifier is autolinkable, grep `linkmap/*.json` for it. If it's there, drop the explicit `[...](…)` wrapper.
-
-### Notices
-
-```markdown
-> [!NOTE] Title
-> Content here
-
-> [!WARNING] Title
-> Warning content
-```
-
-### Python example pages
-
-```yaml
----
-layout: py_example
-example_file: /path/to/file.py
-run_command: union run --remote path/to/file.py main
-source_location: https://github.com/unionai/unionai-examples/tree/main/path
----
-```
-
-### Jupyter notebooks
-
-```yaml
----
-jupyter_notebook: /path/to/notebook.ipynb
----
-```
+Full matcher rules, notices, Python example pages and Jupyter frontmatter:
+`.claude/rules/authoring.md` (loads automatically when you edit content).
 
 ## Development Setup
 
-1. Install Hugo (extended) at the pinned version in `unionai-docs-infra/.hugoversion` (currently 0.161.1): `brew install hugo`
-2. Copy config: `cp hugo.local.toml~sample hugo.local.toml`
-3. Run: `make dev`
+1. Install Hugo **extended** at the pin in `unionai-docs-infra/.hugoversion` — `brew install hugo`
+2. `cp hugo.local.toml~sample hugo.local.toml`
+3. `make dev`
 
-Dev settings in `hugo.local.toml`:
-```toml
-variant = "union"          # Active variant
-show_inactive = true       # Show other variants grayed out
-highlight_active = true    # Highlight active variant content
-highlight_keys = true      # Show key replacements
-```
+`hugo.local.toml` keys: `variant`, `show_inactive`, `highlight_active`, `highlight_keys`.
 
 ## Build Constraints
 
@@ -225,29 +172,21 @@ highlight_keys = true      # Show key replacements
 
 ## API Documentation
 
-Generated from Python packages using `tools/api_generator`:
-- Build with `make -f unionai-docs-infra/Makefile.api.sdk` or `Makefile.api.plugins`
-- Respects `__all__` in packages
-- Ignores `_` prefixed items and imports (unless in `__all__`)
+Generated from Python docstrings by `tools/api_generator` (respects `__all__`; ignores `_`-prefixed
+items and imports). **Never hand-edit `content/api-reference/`** — fix the docstring upstream.
+See `.claude/rules/generated-content.md` and `unionai-docs-infra/tools/api_generator/README.md`.
 
 ## Redirects
 
-Managed in `unionai-docs-infra/redirects.csv` and **deployed automatically** by the
-`deploy-redirects.yml` workflow; nobody applies them by hand. Retired version pins need no row
-(their redirects are derived from `versions.toml`), and the CSV cannot express patterns, since it
-becomes a Cloudflare Bulk Redirect List. Pattern redirects are dynamic redirect rules in the
-Cloudflare dashboard. See `unionai-docs-infra/ROUTING-ARCHITECTURE.md`.
+Managed in `unionai-docs-infra/redirects.csv`, deployed automatically by `deploy-redirects.yml`.
+The CSV cannot express patterns and retired pins need no row.
+See `.claude/rules/routing-redirects.md` and `unionai-docs-infra/ROUTING-ARCHITECTURE.md`.
 
 ## LLM Documentation Pipeline
 
-For each variant the build generates a clean Markdown twin of every page at **`<path>.md`**
-(served at the page's own URL with `.md` appended), plus **`llms.txt`** (the page index) and
-**`llms-full.txt`** (the whole variant in one file). A section landing page's twin ends with a
-`## Subpages` list, so it is the index for its section, and every twin opens with an identity
-block naming the product and version line.
+Every page gets a clean Markdown twin at **`<path>.md`**, plus `llms.txt` and `llms-full.txt` per
+variant. **One shape only** — `page.md`, `section.md` and `_section.md` are retired and no longer
+generated.
 
-**One shape: `<path>.md`.** The older names `page.md`, `section.md` and `_section.md` are retired
-and no longer generated; Cloudflare 301s them to the page twin. Do not describe them as current.
-
-Readers and agents also reach a twin by sending `Accept: text/markdown` to the ordinary page URL.
-Details: `unionai-docs-infra/README.md` and the LLM-optimized documentation page in the docs.
+See `.claude/rules/llm-surface.md`, `unionai-docs-infra/README.md`, and the LLM-optimized
+documentation page in the docs.

@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout docs repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout helm-charts repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: unionai/helm-charts
           ref: ${{ github.event.inputs.helm_charts_ref }}
@@ -34,7 +34,7 @@ jobs:
         run: ./unionai-docs-infra/tools/helm_generator/generate_helm_docs.sh ./helm-charts
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: 'Update Helm chart reference docs from helm-charts@${{ github.event.inputs.helm_charts_ref }}'
           title: 'Update Helm chart reference docs'

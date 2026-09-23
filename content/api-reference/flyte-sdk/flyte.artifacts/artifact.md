@@ -1,8 +1,8 @@
 ---
 title: Artifact
-description: "Protocol for objects wrapped with Flyte metadata."
+description: "Anything that can declare itself an artifact."
 icon: diagram-3
-version: 2.6.13
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,7 +11,15 @@ layout: py_api
 
 **Package:** `flyte.artifacts`
 
-Protocol for objects wrapped with Flyte metadata.
+Anything that can declare itself an artifact.
+
+Deliberately method-only. A `runtime_checkable` protocol's `isinstance`
+checks data members as well as methods, so declaring the wrapper's private
+`_flyte_metadata` here would make `isinstance` reject every value that
+implements the method without being an `ArtifactWrapper` -- which is the
+whole point of the protocol. `ArtifactWrapper` still has the attribute;
+the protocol simply does not require it, and nothing read it through this
+type.
 
 
 ```python
@@ -21,14 +29,19 @@ protocol Artifact()
 
 | Method | Description |
 |-|-|
-| [`get_flyte_metadata()`](#get_flyte_metadata) | Get the Flyte metadata associated with this artifact. |
+| [`get_artifact_metadata()`](#get_artifact_metadata) | Metadata to publish for this value, or None to publish nothing. |
 
 
-### get_flyte_metadata()
+### get_artifact_metadata()
 
 ```python
-def get_flyte_metadata()
+def get_artifact_metadata()
 ```
-Get the Flyte metadata associated with this artifact.
+Metadata to publish for this value, or None to publish nothing.
+
+`None` is a normal answer, not an error: a type can participate in the
+protocol while a given instance declares nothing (a volume with no
+artifact identity, say). Callers must handle it -- `convert.py` and
+`Artifact.create` both check before publishing.
 
 

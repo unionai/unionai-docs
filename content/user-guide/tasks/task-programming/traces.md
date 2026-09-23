@@ -73,7 +73,7 @@ Understanding how traces work with Flyte's other execution features:
 
 | Feature | Scope | Purpose | Default Behavior |
 |---------|-------|---------|------------------|
-| **Task Caching** | Entire task execution (`@env.task`) | Skip re-running tasks with same inputs | Enabled (`cache="auto"`) |
+| **Task Caching** | Entire task execution (`@env.task`) | Skip re-running tasks with same inputs | Disabled (enable with `cache="auto"`) |
 | **Traces** | Individual helper functions | Observability and fine-grained resumption | Manual (requires `@flyte.trace`) |
 | **Checkpointing** | Workflow state | Resume workflows from failure points | Automatic when traces are used |
 

@@ -2,7 +2,7 @@
 title: Hermes
 description: "Hermes agent adapter for Flyte."
 icon: book
-version: 2.6.13
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,8 +22,10 @@ run it durably on Flyte. The adapter provides:
 - `flyteplugins.agents.hermes.run_agent` — run the Hermes agent loop inside your task and return the
   final answer.
 
-Each tool call runs as a durable Flyte child action, and the run timeline is
-rendered into the Flyte task report.
+Each tool call runs as a durable Flyte child action, each model turn is
+recorded for replay via `flyte.trace` (through Hermes's `llm_execution`
+middleware, hermes-agent >= 0.17), and the run timeline is rendered into the
+Flyte task report.
 ## Directory
 
 ### Methods
@@ -82,8 +84,8 @@ Provide either a pre-built `agent` (an `AIAgent` with its own
 | `instructions` | `str \| None` | System prompt. On the builder path this becomes the agent's `ephemeral_system_prompt`; with a pre-built agent it is passed as this run's `system_message`. |
 | `agent` | `typing.Any` | A pre-built Hermes `AIAgent`. Mutually exclusive with `tools`. |
 | `name` | `str` | Agent name (used for the scoped toolset and observability). |
-| `durable` | `bool` | Accepted for the shared adapter contract, but currently a no-op for Hermes: `hermes-agent` exposes no per-model-turn hook (the model client is buried inside `AIAgent`), so completed model turns cannot be recorded/replayed via `flyte.trace` the way the openai/langchain adapters do. Tool calls are durable regardless — each runs as a Flyte child action with retries and caching — so a retried task still self-heals at tool granularity. |
-| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `durable` | `bool` | Record each model turn via `flyte.trace` so a crashed or retried run replays completed turns instead of re-calling (and re-billing) the model. The seam is Hermes's own `llm_execution` middleware (hermes-agent &gt;= 0.17), which wraps every provider call below the agent loop. A streamed turn is recorded once it is fully drained, so replay returns the completed turn and does not re-emit deltas to display or TTS consumers. Tool calls are durable regardless of this flag: each runs as a Flyte child action with retries and caching. |
+| `observability` | `bool` | Render the run timeline (one row per model turn and per tool call, plus the final answer) into the Agent tab of the Flyte task report. Give the enclosing task `report=True` for the tab to exist. On a retried attempt the model turns replayed from their trace records get a row too, marked replayed and carrying neither a duration nor a token count, since on that attempt they cost neither. See `flyteplugins.agents.hermes._observability`. |
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, conversation history is persisted to a keyed `MemoryStore` and resumed on a later run with the same key (passed to Hermes as `conversation_history`). |
 | `**agent_kwargs` | `typing.Any` | |
 
@@ -130,8 +132,8 @@ Provide either a pre-built `agent` (an `AIAgent` with its own
 | `instructions` | `str \| None` | System prompt. On the builder path this becomes the agent's `ephemeral_system_prompt`; with a pre-built agent it is passed as this run's `system_message`. |
 | `agent` | `typing.Any` | A pre-built Hermes `AIAgent`. Mutually exclusive with `tools`. |
 | `name` | `str` | Agent name (used for the scoped toolset and observability). |
-| `durable` | `bool` | Accepted for the shared adapter contract, but currently a no-op for Hermes: `hermes-agent` exposes no per-model-turn hook (the model client is buried inside `AIAgent`), so completed model turns cannot be recorded/replayed via `flyte.trace` the way the openai/langchain adapters do. Tool calls are durable regardless — each runs as a Flyte child action with retries and caching — so a retried task still self-heals at tool granularity. |
-| `observability` | `bool` | Render the run timeline into the Flyte task report. |
+| `durable` | `bool` | Record each model turn via `flyte.trace` so a crashed or retried run replays completed turns instead of re-calling (and re-billing) the model. The seam is Hermes's own `llm_execution` middleware (hermes-agent &gt;= 0.17), which wraps every provider call below the agent loop. A streamed turn is recorded once it is fully drained, so replay returns the completed turn and does not re-emit deltas to display or TTS consumers. Tool calls are durable regardless of this flag: each runs as a Flyte child action with retries and caching. |
+| `observability` | `bool` | Render the run timeline (one row per model turn and per tool call, plus the final answer) into the Agent tab of the Flyte task report. Give the enclosing task `report=True` for the tab to exist. On a retried attempt the model turns replayed from their trace records get a row too, marked replayed and carrying neither a duration nor a token count, since on that attempt they cost neither. See `flyteplugins.agents.hermes._observability`. |
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, conversation history is persisted to a keyed `MemoryStore` and resumed on a later run with the same key (passed to Hermes as `conversation_history`). |
 | `**agent_kwargs` | `typing.Any` | |
 

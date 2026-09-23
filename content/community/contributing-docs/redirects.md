@@ -55,8 +55,8 @@ dashboard rather than here.
 
 For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` site, we use the original request URL. For example:
 
-|
-|-|-|
+| | |
+|---|---|
 | Request URL | `https://docs.union.ai/administration` |
 | Target URL | `{{< docs_home union v1 >}}/user-guide/administration` |
 | Redirect Entry | `docs.union.ai/administration,{{< docs_home union v1 >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
@@ -65,8 +65,8 @@ For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` s
 
 For directs from the old `docs.flyte.org` to the new `www.union.ai/docs`, we replace the `docs.flyte.org` in the request URL with the special prefix `www.union.ai/_r_/flyte`. For example:
 
-|
-|-|-|
+| | |
+|---|---|
 | Request URL | `https://docs.flyte.org/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
 | Converted request URL | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
 | Target URL | `{{< docs_home flyte v1 >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/` |

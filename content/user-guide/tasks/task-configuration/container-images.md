@@ -394,11 +394,10 @@ For example:
 ```python
 # Add registry credentials so the Union remote builder can pull the base image
 # and push the resulting image to your private registry.
-image=flyte.Image.from_debian_base(
+image = flyte.Image.from_base("registry.example.com/my-org/my-private-image:latest").clone(
     name="my-image",
-    base_image="registry.example.com/my-org/my-private-image:latest",
-    registry="registry.example.com/my-org"
-    registry_secret="my-secret"
+    registry="registry.example.com/my-org",
+    registry_secret="my-secret",
 )
 
 # Reference the same secret in the TaskEnvironment so Flyte can pull the image at runtime.

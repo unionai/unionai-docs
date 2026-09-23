@@ -104,7 +104,7 @@ env = flyte.TaskEnvironment(
         memory="32Gi",
         gpu="A100:2",              # Type:count
         # gpu="A100 80G:1"         # 80GB variant
-        # gpu=flyte.GPU("A100", count=1, partition="1g.5gb")   # MIG partition
+        # gpu=flyte.GPU("A100", quantity=1, partition="1g.5gb")   # MIG partition
     ),
 )
 ```

@@ -2,7 +2,7 @@
 title: Metadata
 description: "Structured metadata for Flyte artifacts."
 icon: braces
-version: 2.6.13
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,6 +24,9 @@ class Metadata(
     attrs: Optional[typing.Mapping[str, str]] = None,
     card: Optional[Card] = None,
     kind: Optional[Kind] = None,
+    partitions: Optional[typing.Mapping[str, Any]] = None,
+    parents: Optional[Tuple[typing.Union[str, artifact_id_pb2.ArtifactVersionId], ...]] = None,
+    version_from_content: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -34,6 +37,9 @@ class Metadata(
 | `attrs` | `Optional[typing.Mapping[str, str]]` | |
 | `card` | `Optional[Card]` | |
 | `kind` | `Optional[Kind]` | |
+| `partitions` | `Optional[typing.Mapping[str, Any]]` | |
+| `parents` | `Optional[Tuple[typing.Union[str, artifact_id_pb2.ArtifactVersionId], ...]]` | |
+| `version_from_content` | `bool` | |
 
 ## Methods
 
@@ -57,6 +63,7 @@ def create_model_metadata(
     modality: Tuple[str, ...] = ('text',),
     serial_format: str = 'safetensors',
     attrs: Optional[typing.Mapping[str, str]] = None,
+    partitions: Optional[typing.Mapping[str, Any]] = None,
 ) -> Metadata
 ```
 Helper method to create ModelMetadata. This method sets the attrs keys specific to models.
@@ -79,4 +86,5 @@ without depending on the shape of the key set or on a card being attached.
 | `modality` | `Tuple[str, ...]` | |
 | `serial_format` | `str` | |
 | `attrs` | `Optional[typing.Mapping[str, str]]` | |
+| `partitions` | `Optional[typing.Mapping[str, Any]]` | |
 

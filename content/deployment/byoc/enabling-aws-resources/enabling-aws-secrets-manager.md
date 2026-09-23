@@ -135,29 +135,29 @@ See [the binding directions](./_index) for details. Once the binding is done, yo
 
 To use an AWS secret in your task code, do the following:
 
-* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
-* Inside the task code, retrieve the value of the secret with a call to\
-  `{{< key kit_as >}}.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
+* Declare a `flyte.Secret` in the `secrets` of your `TaskEnvironment`, with `group` set to the `SECRET_GROUP` and `key` set to the `SECRET_KEY` derived from the secret ARN, above.
+* Set `mount="/etc/flyte/secrets"`. AWS secrets can only be delivered as files. Without `mount`, `flyte.Secret` tries to deliver the secret as an environment variable named after the group and key, and raises an error because an ARN is not a valid variable name.
+* Inside the task, read the secret from the file `/etc/flyte/secrets/<SECRET_GROUP>/<SECRET_KEY>`, with both parts in lower case.
 
 Here is an example:
 
 ```python
-import {{< key kit_import >}}
+import pathlib
+
+import flyte
 
 SECRET_GROUP = "arn:aws:secretsmanager:<Region>:<AccountId>:secret:"
 SECRET_KEY = "<SecretName>-<SixRandomCharacters>"
-SECRET_REQUEST = {{< key kit_as >}}.Secret(
-  group=SECRET_GROUP,
-  key=SECRET_KEY,
-  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
+
+env = flyte.TaskEnvironment(
+    name="aws-secrets",
+    secrets=[flyte.Secret(key=SECRET_KEY, group=SECRET_GROUP, mount="/etc/flyte/secrets")],
 )
 
-@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
+@env.task
 def t1():
-    secret_val = {{< key kit_as >}}.current_context().secrets.get(
-        SECRET_GROUP,
-        group_version=SECRET_GROUP_VERSION
-    )
+    secret_file = pathlib.Path("/etc/flyte/secrets") / SECRET_GROUP.lower() / SECRET_KEY.lower()
+    secret_val = secret_file.read_text()
     # do something with the secret. For example, communication with an external API.
     ...
 ```

@@ -61,4 +61,8 @@ An autonomous ML agent that designs, runs, and iterates on experiments using Fly
 Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 {{< /link-card >}}
 
+{{< link-card target="system-one-agents" icon="sliders" title="Typed decisions for agentic pipelines" >}}
+Interleave a System One model with a generative one — typed guards, tool fan-out, a durable loop, and an A/B that prices both arms.
+{{< /link-card >}}
+
 {{< /grid >}}

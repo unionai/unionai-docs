@@ -2,7 +2,7 @@
 title: Authenticating
 description: Authenticate with Union.ai using OAuth2, API keys, and service accounts.
 icon: key
-weight: 6
+weight: 7
 variants: -flyte +union
 ---
 

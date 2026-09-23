@@ -58,10 +58,10 @@ With explicit project and domain:
 flyte run --project my-project --domain development my_example.py my_task --name "World"
 ```
 
-With deployment options:
+Bundling every file in the working directory, not only the imported modules:
 
 ```bash
-flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
+flyte run --copy-style all my_example.py my_task --name "World"
 ```
 
 {{< /markdown >}}

@@ -28,47 +28,33 @@ The {{< key product_name >}}-managed `userflyterole` identity must be granted pe
 
 ## Accessing the secret within {{% key product_name %}}
 
-* Define a `Secret` object where
-  * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
-  * `Secret.group_version` can be omitted to retrieve the latest version or set to an explicit secret version
-  * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
-* Inside the task code, retrieve the value of the secret with:
-  * `{{< key kit_as >}}.current_context().secrets.get(<SECRET_NAME>)` if `Secret.group_version` was omitted.
-  * `{{< key kit_as >}}.current_context().secrets.get(<SECRET_NAME>, group_version=SECRET_GROUP_VERSION)` if `Secret.group_version` was specified.
+* Declare a `flyte.Secret` in the `secrets` of your `TaskEnvironment`, where
+  * `group` is the HTTP URI of the secret, in the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
+  * `key` is the secret name, `<SECRET_NAME>`
+  * `mount` is `"/etc/flyte/secrets"`. Azure Key Vault secrets can only be delivered as files.
+* Inside the task, read the secret from the file `/etc/flyte/secrets/<SECRET_NAME>`, with the name in lower case.
 
-Here are examples:
+The latest version of the secret is always retrieved: `flyte.Secret` has no parameter for a secret version.
+
+Here is an example:
 
 ```python
-import {{< key kit_import >}}
+import pathlib
+
+import flyte
 
 VAULT_NAME = "examplevault"
 SECRET_NAME = "example-secret"
-
 SECRET_GROUP = f"https://{VAULT_NAME}.vault.azure.net/secrets/{SECRET_NAME}"
-SECRET_GROUP_VERSION = "12345"
 
-SECRET_REQUEST_WITH_VERSION = {{< key kit_as >}}.Secret(
-  group=SECRET_GROUP,
-  group_version=SECRET_GROUP_VERSION,
-  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
+env = flyte.TaskEnvironment(
+    name="azure-key-vault",
+    secrets=[flyte.Secret(key=SECRET_NAME, group=SECRET_GROUP, mount="/etc/flyte/secrets")],
 )
 
-@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
-def task_with_versioned_secret():
-    secret_val = {{< key kit_as >}}.current_context().secrets.get(
-        SECRET_NAME,
-        group_version=SECRET_GROUP_VERSION
-    )
-
-SECRET_REQUEST_FOR_LATEST = union.Secret(
-  group=SECRET_GROUP,
-  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
-)
-
-@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
-def task_with_latest_secret():
-    secret_val = {{< key kit_as >}}.current_context().secrets.get(
-        SECRET_NAME
-    )
+@env.task
+def task_with_secret():
+    secret_val = (pathlib.Path("/etc/flyte/secrets") / SECRET_NAME.lower()).read_text()
+    # do something with the secret. For example, communication with an external API.
+    ...
 ```

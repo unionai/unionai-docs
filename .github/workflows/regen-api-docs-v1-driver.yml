@@ -24,14 +24,21 @@
 # conditioned on it, so a run with no PyPI drift regenerates nothing and opens no
 # PR. The cost of a quiet day is a few CI minutes.
 #
-# NOT DONE HERE: a flytekit-release -> repository_dispatch signal, the analogue of
-# flyte-sdk's for v2. That needs a PR against the flytekit repo to emit the
-# dispatch, which is out of this repo's control. The daily poll covers the same
-# ground with at most ~24h of latency, which is what main's own schedule calls a
-# "daily backstop poll". Add the push signal later if the latency ever matters.
+# THE RELEASE SIGNAL (added 2026-09-20): flyteorg/flytekit's pythonpublish.yml now
+# sends repository_dispatch(flytekit-release) here after a release reaches PyPI, the
+# analogue of flyte-sdk's sdk-release signal for v2. It arrives on THIS branch,
+# because GitHub only fires repository_dispatch from the default branch, and this
+# driver forwards it to v1 exactly as the schedule does. The daily poll stays as the
+# backstop for a missed or unsent signal.
+#
+# WHY THE SIGNAL LANDS HERE AND NOT ON main's regen-api-docs.yml: that workflow
+# regenerates v2 against the flyte SDK. A flytekit release must reach the v1 line
+# instead, so it needs its own event type and this driver as its handler.
 name: "Drive v1 API-docs regen"
 
 on:
+  repository_dispatch:
+    types: [flytekit-release]
   schedule:
     # 13:30 UTC — 30 minutes after main's own regen (13:00), so the two lines do
     # not contend for runners or land two regen PRs in the same minute.
@@ -65,16 +72,43 @@ jobs:
 
       - name: Mint docsy-bot App token
         id: app-token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
           private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
+
+      # The signal can beat PyPI's index. v1's regen installs flytekit FROM PyPI, so
+      # forwarding too early regenerates the old version and opens nothing. The JSON
+      # API, not pypi.org/project/<pkg>/<ver>/, which answers 200 for versions that do
+      # not exist and so never waits at all (LESSONS.md 67).
+      - name: Wait for PyPI availability (dispatch only)
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
+        env:
+          # Via env, not inline ${{ }}, so a payload value cannot inject shell.
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$VERSION" =~ ^[A-Za-z0-9._+-]+$ ]]; then
+            echo "::error::unexpected dispatch payload: version='$VERSION'"; exit 1
+          fi
+          LINK="https://pypi.org/pypi/flytekit/${VERSION}/json"
+          echo "Waiting for $LINK"
+          for i in $(seq 1 60); do
+            if curl -L -s -f -o /dev/null "$LINK"; then
+              echo "Found on PyPI: $LINK"; exit 0
+            fi
+            echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
+          done
+          echo "::error::timed out waiting for PyPI ($LINK)"; exit 1
 
       - name: Dispatch regen-api-docs.yml on v1
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           GH_REPO: ${{ github.repository }}
+          # inputs.dry_run is empty on a repository_dispatch run.
           DRY_RUN: ${{ inputs.dry_run }}
+          TRIGGER: ${{ github.event_name }}
+          PAYLOAD_VERSION: ${{ github.event.client_payload.version }}
         run: |
           set -euo pipefail
           if [ "${DRY_RUN:-false}" = "true" ]; then
@@ -87,5 +121,6 @@ jobs:
             echo "::error::Failed to dispatch regen-api-docs.yml on v1."
             exit 1
           fi
+          echo "Trigger: ${TRIGGER}${PAYLOAD_VERSION:+ (flytekit ${PAYLOAD_VERSION})}."
           echo "Dispatched regen-api-docs.yml on v1. It gates on PyPI drift and opens a draft PR only when the flytekit version actually moved."
           echo "Runs: ${GITHUB_SERVER_URL}/${GH_REPO}/actions/workflows/regen-api-docs.yml"

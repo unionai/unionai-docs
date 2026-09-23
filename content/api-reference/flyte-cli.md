@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.6.13
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -22,11 +22,12 @@ This is the command line interface for Flyte.
 | `project` | [`create`](#flyte-create-project), [`get`](#flyte-get-project), [`update`](#flyte-update-project)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
-| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`proxy`](#flyte-proxy-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
+| `code` | [`get`](#flyte-get-code)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
@@ -46,8 +47,9 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -79,17 +81,20 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
-| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
+| `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`proxy`](#flyte-proxy-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `volume` | [`explore⁺`](#flyte-explore-volume)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster-config` | [`get⁺`](#flyte-get-cluster-config)  |
+| `code` | [`get`](#flyte-get-code)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
+| `metrics` | [`get⁺`](#flyte-get-metrics)  |
+| `system-logs` | [`get⁺`](#flyte-get-system-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `hello` | [`run`](#flyte-run-hello)  |
@@ -109,8 +114,9 @@ This is the command line interface for Flyte.
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
+| `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
 | `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
@@ -529,14 +535,17 @@ $ flyte create queue my-queue --run-concurrency 100 --action-concurrency 1000
 $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
     --priority min --cluster gpu-cluster-1
 
+$ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
+    --max-resources gpu=8 --max-resources memory=512Gi
+
 $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
     --cluster-pool gpu-pool
 
 $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
     --depth 5000 --priority max
 
-$ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 \
-    --project my-project --domain production
+$ flyte create queue gangs --run-concurrency 50 --action-concurrency 500 \
+    --max-resources gpu=64 --scheduling greedy_capacity
 ```
 
 | Option | Type | Default | Description |
@@ -546,10 +555,12 @@ $ flyte create queue team-queue --run-concurrency 100 --action-concurrency 1000 
 | `--depth` | `integer` | `10000` | Max queue depth |
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
-| `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. |
+| `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
-| `--project` | `text` | `` | Scope queue to a project |
-| `--domain` | `text` | `` | Scope queue to a domain |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Cap the summed resource request of the queue's dispatched, not-yet-completed actions. Repeat per resource: --max-resources gpu=8 --max-resources memory=512Gi. NAME is one of cpu, gpu, memory, ephemeral_storage; QUANTITY is a Kubernetes quantity (8, 0.5, 100m, 512Gi). A resource not named is unlimited — 0 is a hard cap that forbids every request on it, not 'unset'. Omit the option entirely for no cap. |
+| `--scheduling` | `choice` | `strict_fifo` | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
+| `--project` | `text` | `` | Scope queue to a project (currently rejected by the server: only organization-scoped queues can be created). |
+| `--domain` | `text` | `` | Scope queue to a domain (currently rejected by the server: only organization-scoped queues can be created). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -658,11 +669,16 @@ Example:
 $ flyte create trigger my_task my_trigger --schedule "0 0 * * *"
 ```
 
-This will create a trigger that runs every day at midnight.
+This will create a trigger that runs every day at midnight. Omit `--schedule` to create a
+trigger with no automation, which is only fired on demand:
+
+```bash
+$ flyte create trigger my_task my_trigger
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--schedule` | `text` | `Sentinel.UNSET` | Cron schedule for the trigger. Defaults to every minute. |
+| `--schedule` | `text` |  | Cron schedule for the trigger. If omitted, the trigger has no automation and is only fired on demand. |
 | `--description` | `text` | `` | Description of the trigger. |
 | `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
 | `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to `trigger_time`. |
@@ -832,21 +848,31 @@ $ flyte --org my-org delete assignment --email jane@example.com --policy admin
 
 Delete a cluster.
 
+A cluster can be deleted from any live state. A drained cluster — already
+confirmed empty — is soft-deleted right away. An active or draining
+cluster enters the 'deleting' state instead: it stops receiving work, its
+workers are disconnected, and its running work is rescheduled on other
+clusters, after which it becomes 'deleted'. Deletion does not wait for
+running work and cannot be cancelled; pods left on the dataplane are your
+responsibility to clean up. To let running work finish first, drain the
+cluster and wait for 'drained' before deleting.
+
 The delete is a soft delete: the cluster stops being routed to and drops out
-of `flyte get cluster`, but it keeps its name reserved — creating a cluster
-with the same name is rejected until it is restored with
+of the `flyte get cluster` listing (fetching it by name still works and
+shows when it was deleted), but it keeps its name reserved — creating a
+cluster with the same name is rejected until it is restored with
 `flyte undelete cluster`.
 
-The cluster's co-named implicit queue is deleted with it, so that queue must
-be drained first (or have been deleted on its own already). Any other live
-queue that pins this cluster blocks the delete and has to be unpinned first;
-already-deleted queues do not block it.
+The cluster's co-named implicit queue is deleted with it, whatever state
+that queue is in (one already deleted on its own is left as is). Any other
+live queue that pins this cluster blocks the delete and has to be unpinned
+first; already-deleted queues do not block it, but can only be undeleted
+once the cluster is. Apps assigned to the cluster are neither evicted nor
+reassigned — their pods on the dataplane are yours to clean up too.
 
 Examples:
 
 ```bash
-$ flyte update queue my-cluster --drain    # wait for status 'drained'
-
 $ flyte delete cluster my-cluster
 
 $ flyte delete cluster my-cluster --yes
@@ -874,12 +900,13 @@ and can no longer be assigned to clusters or queues, but it keeps its name
 reserved — creating a pool with the same name is rejected until it is
 restored with `flyte undelete cluster-pool`.
 
-The pool must be empty: no member clusters and no live queues assigned to it.
-Queues that are themselves deleted do not block it, but they can only be
-undeleted once the pool is. The reserved 'default' pool follows the same
-rules: deleting it requires draining and deleting its 'default' queue first,
-and while the pool is deleted, `flyte create cluster` without --pool is
-rejected instead of falling back to it.
+The pool must be empty: no live member clusters and no live queues assigned
+to it. Clusters and queues that are themselves deleted do not block it, but
+neither can be undeleted until the pool is. The pool holding the
+organization's 'default' queue follows the same rules: deleting it requires
+draining and deleting that queue first, and while the default pool is
+deleted, `flyte create cluster` without --pool is rejected instead of
+falling back to it.
 
 Examples:
 
@@ -950,22 +977,29 @@ $ flyte --org my-org delete policy my-policy --yes
 
 Delete a queue.
 
+The queue must not be accepting work: an active queue is rejected and has
+to be drained first (`flyte update queue NAME --drain`), so deleting a
+serving queue always takes two deliberate steps. A drained queue — already
+confirmed empty — is soft-deleted right away. A queue still draining
+enters the 'deleting' state instead: it stays listed, and becomes
+'deleted' once its remaining work is cleaned up. Deletion cannot be
+cancelled; a deleted queue can be restored with `flyte undelete queue`.
+
 The delete is a soft delete: the queue stops being scheduled on and drops out
 of the `flyte get queue` listing (fetching it by name still works and shows
 when it was deleted), but it keeps its name reserved — creating a queue with
 the same name is rejected until it is restored with `flyte undelete queue`.
 
-The queue must already be drained, so drain it first and wait for its status
-to reach 'drained'. A queue referenced as run.default_queue in settings at
-any scope cannot be deleted until those settings are updated or unset. The
-reserved 'default' queue is no exception: it can be drained and deleted like
-any other queue, but while it is deleted, runs that name no queue (and have
-no run.default_queue setting) are rejected.
+A queue referenced as run.default_queue in settings at any scope cannot be
+deleted until those settings are updated or unset. The reserved 'default'
+queue is no exception: it can be drained and deleted like any other queue,
+but while it is deleted, runs that name no queue (and have no
+run.default_queue setting) are rejected.
 
 Examples:
 
 ```bash
-$ flyte update queue my-queue --drain    # wait for status 'drained'
+$ flyte update queue my-queue --drain
 
 $ flyte delete queue my-queue
 
@@ -1302,6 +1336,7 @@ run has no local equivalent.
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--version` | `text` |  | Version to use for the run. If not provided, it is computed from the code bundle. Required with `--copy-style none`. Not used with `deployed-task`: use `env.task:version` there. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
@@ -1445,6 +1480,8 @@ flyte get artifact my_artifact 1.0       # details of a pinned version
 flyte get artifact --search model        # names containing "model"
 flyte get artifact --source-run my_run   # versions produced by a run
 flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
+flyte get artifact raw_events --partition date=2026-09-17 --partition region=us   # latest of a partition
+flyte get artifact raw_events --partition date=2026-08-01..2026-08-31 --latest-per-partition
 ```
 
 | Option | Type | Default | Description |
@@ -1457,6 +1494,8 @@ flyte get artifact --source-external-ref hf://meta-llama/Meta-Llama-3-8B
 | `--source-external-ref` | `text` |  | Only artifact versions imported from this external reference. |
 | `--kind` | `choice` |  | Only artifacts of this kind. Shorthand for `--attr` on the reserved kind key. |
 | `--attr` | `text` | `Sentinel.UNSET` | Only artifacts whose attrs match, as key=value. Repeatable; separate keys must all match. Filtering happens server-side. |
+| `--partition` | `text` | `Sentinel.UNSET` | Select by partition, as key=value. Repeatable. `date=2026-08-01..2026-08-31` is a range on the time partition, `region=us,eu` matches any of the values. With one value per key and no range, prints the latest version of that partition. |
+| `--latest-per-partition` | `boolean` | `False` | Only the newest version of each distinct partition; needs an artifact name. |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1504,8 +1543,10 @@ Get a cluster or list all clusters.
 If NAME is provided, fetch that specific cluster and render a detailed view.
 Otherwise list all clusters.
 
-Deleted clusters are hidden by default; --deleted lists them instead, which
-is how you find a cluster to pass to `flyte undelete cluster`.
+Deleted clusters are hidden from the listing by default; --deleted lists
+them instead, which is how you find a cluster to pass to
+`flyte undelete cluster`. Fetching a cluster by NAME returns it even when
+deleted, showing its deletion time.
 
 Examples:
 
@@ -1589,6 +1630,43 @@ $ flyte get cluster-pool --deleted
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
+
+#### flyte get code
+
+**`flyte get code [OPTIONS] RUN_NAME [ACTION_NAME]`**
+
+Get the code a run executed — the source shown in the console's "Code" tab.
+
+Without `--dest` the bundle is listed and then discarded:
+
+```bash
+$ flyte get code my_run
+```
+
+With `--dest` the source is unpacked there and kept:
+
+```bash
+$ flyte get code my_run --dest ./my_run_code
+```
+
+If only the run name is given, the code of the run's root action is fetched. Pass an action
+name to fetch the code of a specific action inside the run, which may have been packaged
+separately:
+
+```bash
+$ flyte get code my_run my_action
+```
+
+Tasks that run from code baked into their image have no bundle to download.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--dest` `-o` | `directory` |  | Directory to download the code into. Without it, the code is only listed, not kept. |
+| `--no-extract` | `boolean` | `False` | Keep the downloaded archive instead of unpacking it. Requires `--dest`. |
+| `--attempt` `-a` | `integer` |  | Attempt to fetch the code for, defaults to the latest attempt. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte get condition
 
@@ -1718,6 +1796,50 @@ $ flyte --org my-org get member
 
 {{< variant union >}}
 {{< markdown >}}
+#### flyte get metrics
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get metrics [OPTIONS] [RUN_NAME] [ACTION_NAME]`**
+
+Get pod metrics for a task's action attempt or an app.
+
+Metrics (CPU, memory, GPU utilization and health, app request metrics) are
+collected from the pods an execution ran on and answered by the cluster's
+dataplane, as shown in the Union UI.
+
+Examples:
+
+```bash
+# Metrics of a run's root action (its task pod)
+$ flyte get metrics my-run
+
+# Metrics of a specific action attempt, restricted to two metrics
+$ flyte get metrics my-run a1 --attempt 2 -m cpu_utilization -m memory_utilization
+
+# Metrics of an app's pods over the last 6 hours
+$ flyte get metrics --app my-app --since 6h
+
+# Full prometheus time series, as JSON
+$ flyte get metrics my-run --output json
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--app` | `text` |  | Get metrics for this app instead of a run's action. |
+| `--attempt` `-a` | `integer` |  | Attempt number to get metrics for, defaults to the latest attempt. |
+| `--metric` `-m` | `choice` | `Sentinel.UNSET` | Metric to query; repeat for several. Defaults to the server's default set for the queried object. |
+| `--since` | `text` |  | Only with --app: start of the time window as a duration before now, e.g. 6h, 2d. Defaults to 24h. |
+| `--since-time` | `text` |  | Only with --app: start of the time window as an RFC3339 time, e.g. 2026-08-20T10:00:00Z. |
+| `--end-time` | `text` |  | Only with --app: end of the time window as an RFC3339 time. Defaults to now. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 #### flyte get policy
 
 > **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
@@ -1778,8 +1900,10 @@ instead, which is how you find a queue to pass to `flyte undelete queue`.
 Fetching a queue by NAME returns it even when deleted, showing its deletion
 time.
 
---state narrows the listing to queues in one state (active, draining or
-drained); the server does the filtering.
+--state narrows the listing to queues in one state (active, draining,
+drained, deleting or deleted); the server does the filtering. A deleting
+queue is still live and listed; deleted queues only show up under
+--deleted.
 
 Examples:
 
@@ -1789,6 +1913,10 @@ $ flyte get queue
 $ flyte get queue my-queue
 
 $ flyte get queue my-queue --watch
+
+$ flyte get queue --watch                  # dashboard: every live queue
+
+$ flyte get queue --watch --pool gpu-pool
 
 $ flyte get queue --state active
 
@@ -1800,7 +1928,8 @@ $ flyte get queue --deleted
 | `--project` | `text` | `` | Scope to a project |
 | `--domain` | `text` | `` | Scope to a domain |
 | `--limit` | `integer` | `100` | Maximum number of queues to return |
-| `--watch` | `boolean` | `Sentinel.UNSET` | Stream live queue metrics (requires NAME) |
+| `--watch` | `boolean` | `Sentinel.UNSET` | Stream live metrics: one queue's utilization panel with NAME, or the dashboard of every live queue without it (resource caps, utilization, head-of-line blocks). |
+| `--pool` | `text` | `Sentinel.UNSET` | With --watch and no NAME: restrict the dashboard to these cluster pool(s). Repeatable. |
 | `--deleted` | `boolean` | `Sentinel.UNSET` | List only soft-deleted queues (candidates for 'flyte undelete queue'). Cannot be combined with NAME. |
 | `--state` | `choice` |  | List only queues in this state. Cannot be combined with NAME. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -1937,6 +2066,48 @@ Use `flyte edit settings` to interactively modify these values.
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get system-logs
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get system-logs [OPTIONS] CLUSTER_NAME`**
+
+Stream the system logs of a cluster's dataplane components.
+
+Tails the logs of the Union infrastructure running on a cluster (the union
+operator, flytepropeller, the lease worker), read from the cluster's
+dataplane. The stream ends when the dataplane closes it.
+
+Examples:
+
+```bash
+$ flyte get system-logs my-cluster -n my-namespace
+
+$ flyte get system-logs my-cluster -n my-namespace --application flytepropeller --since 5m
+
+$ flyte get system-logs my-cluster -n my-ns --pod-label-selector "app.kubernetes.io/name=flyte-pod-webhook"
+
+$ flyte get system-logs my-cluster -n my-namespace --source persistedonly --since-time 2026-08-20T10:00:00Z
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--namespace` `-n` | `text` | `Sentinel.UNSET` | Kubernetes namespace the components run in. |
+| `--application` | `choice` |  | Component to tail. Defaults to unionoperator. Cannot be combined with --pod-label-selector. |
+| `--pod-label-selector` | `text` |  | Tail the pods matching this Kubernetes label selector instead of a named application. |
+| `--node` | `text` |  | Only tail pods running on this Kubernetes node. |
+| `--since` | `text` |  | Show logs newer than this duration, e.g. 5m, 1h30m. Cannot be combined with --since-time. |
+| `--since-time` | `text` |  | Show logs newer than this RFC3339 time, e.g. 2026-08-20T10:00:00Z. |
+| `--source` | `choice` | `liveorpersisted` | Where to read logs from: live pods, the persisted backend, or (default) live falling back to persisted. |
+| `--lines` `-l` | `integer` | `30` | Number of lines to keep in view, only useful for --pretty. |
+| `--show-ts` | `boolean` | `Sentinel.UNSET` | Show timestamps. |
+| `--pretty` | `boolean` | `False` | Show logs in an auto-scrolling box, where number of lines is limited to `--lines`. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte get task
 
 **`flyte get task [OPTIONS] [NAME] [VERSION]`**
@@ -2071,6 +2242,35 @@ $ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
 | `--disk` | `text` | `50Gi` | Disk storage request for the prefetch task (e.g., `100Gi`, `500Gi`). |
 | `--shm` | `text` |  | Shared memory request for the prefetch task (e.g., `100Gi`, `auto`). |
 | `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have `engine` (currently only `vllm`) and `args` keys. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
+### flyte proxy
+
+**`flyte proxy COMMAND [ARGS]...`**
+
+Proxy a local port into a Flyte App through the authenticated app edge.
+
+#### flyte proxy app
+
+**`flyte proxy app [OPTIONS] [NAME]`**
+
+Open an authenticated localhost proxy into a no-auth Flyte App.
+
+Reuses the same Union auth (with auto-refresh) the CLI uses, injecting a fresh bearer on every
+request, so a local HTTP client — a Grafana/Prometheus MCP, curl, a browser — reaches an
+edge-gated app with no token handling. Think: kubectl port-forward for Flyte Apps.
+
+Foreground; Ctrl-C to stop.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--url` | `text` |  | Proxy this app URL directly; skip name resolution. |
+| `--port` | `integer` | `8600` | Local port to listen on (0 = pick a free port). |
+| `--address` | `text` | `127.0.0.1` | Local bind address; non-loopback triggers a warning. |
+| `--emit-mcp-config` | `boolean` | `False` | Print a generic HTTP-MCP config block for the local endpoint. |
+| `-v` `--verbose` | `boolean` | `False` | Log each proxied request (never the token). |
 | `-p` `--project` | `text` |  | Project to which this command applies. |
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -2230,6 +2430,7 @@ flyte run hello.py my_task --help
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `Sentinel.UNSET` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--version` | `text` |  | Version to use for the run. If not provided, it is computed from the code bundle. Required with `--copy-style none`. Not used with `deployed-task`: use `env.task:version` there. |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
 | `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
@@ -2481,12 +2682,16 @@ Restore soft-deleted objects.
 Restore a soft-deleted cluster.
 
 The cluster comes back with the spec, status and pool it had when it was
-deleted, and its co-named implicit queue is restored in the 'drained' state —
-activate it to let the cluster accept work again. That holds even if the
-queue had been deleted on its own earlier: undeleting the cluster is the only
-way to bring it back, since `flyte undelete queue` refuses a queue whose
-cluster is gone. List the clusters eligible for this with
-`flyte get cluster --deleted`.
+deleted, always in the 'drained' state — activate it to let it accept work
+again. Its co-named implicit queue, if deleted, is restored with it, also
+drained, and activating the cluster then activates the queue too. The queue
+is restored even if it had been deleted on its own before the cluster was:
+while the cluster is deleted, undeleting the cluster is the only way to
+bring that queue back, since `flyte undelete queue` refuses a queue whose
+cluster is gone. A co-named queue still 'deleting' is not touched — it
+finishes deleting on its own. A cluster that is still 'deleting' cannot be
+undeleted either; its deletion has to finish first. List the clusters
+eligible for this with `flyte get cluster --deleted`.
 
 The cluster's pool must not itself be deleted; undelete the pool first.
 
@@ -2497,7 +2702,7 @@ $ flyte get cluster --deleted
 
 $ flyte undelete cluster my-cluster
 
-$ flyte update queue my-cluster --activate
+$ flyte update cluster my-cluster --activate
 ```
 
 | Option | Type | Default | Description |
@@ -2545,13 +2750,16 @@ $ flyte undelete cluster-pool my-pool
 
 Restore a soft-deleted queue.
 
-The queue comes back with the configuration it had when it was deleted, in
-the 'drained' state — activate it to let it accept work again. List the
-queues eligible for this with `flyte get queue --deleted`.
+The queue comes back with the configuration it had when it was deleted,
+always in the 'drained' state — activate it to let it accept work again. A
+queue still 'deleting' cannot be undeleted; its deletion has to finish
+first. List the queues eligible for this with `flyte get queue --deleted`.
 
 Every cluster the queue routes to must be live and in its pool, and the pool
-must be live too. A cluster's co-named queue therefore cannot be restored on
-its own — `flyte undelete cluster NAME` brings it back with the cluster.
+must be live too. A cluster's co-named queue therefore cannot be restored
+while its cluster is deleted — `flyte undelete cluster NAME` brings it back
+with the cluster; while the cluster is live, it undeletes like any other
+queue.
 
 Examples:
 
@@ -2606,17 +2814,37 @@ flyte update app <app_name> --activate | --deactivate [--wait] [--project <proje
 
 **`flyte update cluster [OPTIONS] NAME`**
 
-Move a cluster to a different cluster pool.
+Update a cluster: drain it, re-activate it, or move it to another pool.
 
-That is the only thing this command changes — everything else about a cluster
-is fixed at creation or reported by its dataplane.
+Use --drain to begin draining: the cluster stops receiving new work while
+work already on it keeps running, and its co-named implicit queue is set to
+draining with it (a queue already deleted on its own is left as is).
+Draining requires that no apps are assigned to the cluster and that no
+other queue explicitly pins it. The drain completes asynchronously — watch
+`flyte get cluster NAME` until the drain state reaches 'drained'. To take
+a cluster out of service without waiting for its work, use
+`flyte delete cluster` instead.
 
-The target pool must already exist, be live, and differ from the cluster's
-current one. The cluster's co-named implicit queue moves along with it, so
-that queue must be drained first. Any other live queue pinning this cluster
-blocks the move and has to be unpinned; already-deleted ones don't block it.
+Use --activate to re-activate a draining or drained cluster. Its co-named
+queue is activated with it — even when the queue had been drained on its
+own — but a queue deleted on its own stays deleted (`flyte undelete queue`
+brings it back). A deleting or deleted cluster cannot be drained or
+activated.
+
+Use --pool to move the cluster to a different cluster pool. The target pool
+must already exist, be live, and differ from the cluster's current one. The
+cluster's co-named implicit queue moves along with it, so that queue must be
+drained first. Any other live queue pinning this cluster blocks the move and
+has to be unpinned; already-deleted ones don't block it.
 
 Examples:
+
+```bash
+$ flyte update cluster my-cluster --drain
+
+$ flyte update cluster my-cluster --activate
+```
+Moving a cluster to another pool:
 
 ```bash
 $ flyte update queue my-cluster --drain    # wait for status 'drained'
@@ -2629,6 +2857,8 @@ $ flyte update queue my-cluster --activate
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--pool` | `text` | `` | Cluster pool to move the cluster to. |
+| `--drain` | `boolean` | `Sentinel.UNSET` | Begin draining the cluster (it stops receiving new work) |
+| `--activate` | `boolean` | `Sentinel.UNSET` | Re-activate a draining or drained cluster |
 | `--yes` | `boolean` | `Sentinel.UNSET` | Skip confirmation prompt |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
@@ -2747,6 +2977,15 @@ $ flyte update queue my-queue --edit      # set cluster_pool: other-pool
 
 $ flyte update queue my-queue --activate
 ```
+Set or lift the resource cap without opening an editor:
+
+```bash
+$ flyte update queue gpu-gangs --max-resources gpu=64 --max-resources cpu=512
+
+$ flyte update queue gpu-gangs --clear-max-resources
+
+$ flyte update queue gpu-gangs --scheduling greedy_capacity
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2755,6 +2994,9 @@ $ flyte update queue my-queue --activate
 | `--drain` | `boolean` | `Sentinel.UNSET` | Begin draining the queue |
 | `--activate` | `boolean` | `Sentinel.UNSET` | Re-activate a draining or drained queue |
 | `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to modify queue settings |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Set the queue's resource cap, NAME=QUANTITY, repeatable per dimension (cpu, memory, gpu, ephemeral_storage). Replaces the whole cap: dimensions not named here become unbounded. |
+| `--clear-max-resources` | `boolean` | `Sentinel.UNSET` | Lift the queue's resource cap entirely (every dimension unlimited). |
+| `--scheduling` | `choice` |  | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}

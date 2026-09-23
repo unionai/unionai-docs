@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "flyteplugins.typesafe_ai": "/api-reference/integrations/typesafe-ai/"
+  },
+  "identifiers": {
+    "flyteplugins.typesafe_ai.BatteryError": "/api-reference/integrations/typesafe-ai/batteryerror/",
+    "BatteryError": "/api-reference/integrations/typesafe-ai/batteryerror/",
+    "flyteplugins.typesafe_ai.CallInfo": "/api-reference/integrations/typesafe-ai/callinfo/",
+    "CallInfo": "/api-reference/integrations/typesafe-ai/callinfo/",
+    "flyteplugins.typesafe_ai.Choice": "/api-reference/integrations/typesafe-ai/choice/",
+    "Choice": "/api-reference/integrations/typesafe-ai/choice/",
+    "flyteplugins.typesafe_ai.MissingAPIKey": "/api-reference/integrations/typesafe-ai/missingapikey/",
+    "MissingAPIKey": "/api-reference/integrations/typesafe-ai/missingapikey/",
+    "flyteplugins.typesafe_ai.Noul": "/api-reference/integrations/typesafe-ai/noul/",
+    "Noul": "/api-reference/integrations/typesafe-ai/noul/",
+    "flyteplugins.typesafe_ai.Score": "/api-reference/integrations/typesafe-ai/score/",
+    "Score": "/api-reference/integrations/typesafe-ai/score/"
+  },
+  "methods": {
+    "flyteplugins.typesafe_ai.ask": "/api-reference/integrations/typesafe-ai/#ask",
+    "flyteplugins.typesafe_ai.ask_with_info": "/api-reference/integrations/typesafe-ai/#ask_with_info",
+    "flyteplugins.typesafe_ai.client": "/api-reference/integrations/typesafe-ai/#client",
+    "flyteplugins.typesafe_ai.compile_questions": "/api-reference/integrations/typesafe-ai/#compile_questions",
+    "flyteplugins.typesafe_ai.thresholds": "/api-reference/integrations/typesafe-ai/#thresholds"
+  }
+}

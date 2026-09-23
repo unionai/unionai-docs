@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.6.13
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -63,8 +63,8 @@ class ClusteredTaskEnvironment(
 | `plugin_config` | `Optional[Any]` | |
 | `queue` | `Optional[str]` | |
 | `replicas` | `int` | Number of pods (== number of nodes). Required. |
-| `nproc_per_node` | `int` | Number of processes per pod, passed to `torchrun --nproc-per-node`. Must be &gt;= 1 and, when resources.gpu is set, &lt;= resources.gpu. Required. |
-| `runtime` | `Runtime` | Launcher configuration. Phase 1 supports only TorchRun(). |
+| `nproc_per_node` | `int` | Number of processes per pod. For TorchRun it is passed as `torchrun --nproc-per-node` (typically one per GPU); must be &gt;= 1 and, when resources.gpu is set, &lt;= resources.gpu. JaxRun runs one process per pod, so it must be 1. Required. |
+| `runtime` | `Runtime` | Launcher configuration: TorchRun() (default) or JaxRun(). |
 | `interconnect` | `Literal['tcp']` | Network fabric. Currently only "tcp" is supported. |
 | `failure_policy` | `ClusterFailurePolicy` | JobSet-level restart and eviction policy. |
 | `ttl_seconds_after_finished` | `Optional[int]` | Seconds to retain the JobSet after completion. |
@@ -255,8 +255,5 @@ Decorate a function to be a task.
 def to_custom_dict()
 ```
 Serialize this environment to the dict shape expected by ClusteredTaskSpec proto.
-
-Imported lazily so the heavy clustered_pb2 module is only loaded at serialization
-time rather than on every `flyte.clustered` import.
 
 

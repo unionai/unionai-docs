@@ -143,7 +143,7 @@ Two cases, both called out on the relevant framework pages:
 
 **Pre-built agents:** If you construct the agent object yourself and pass it as `run_agent(agent=...)`, Flyte often cannot reach the model inside it to wrap it. The LangChain family exposes `DurableChatModel` for this; Pydantic AI applies the wrapper through `Agent.override`. Tool calls stay durable either way.
 
-**Subprocess loops:** The Claude Agent SDK runs its loop in the Claude Code runtime, a subprocess Flyte does not intercept, so a turn cannot be a trace leaf. That adapter uses the SDK's own session resume against a `flyte.Checkpoint` instead. It is coarser, whole-session rather than per-turn, but it is real. Hermes exposes no per-turn hook at all, so `durable=` is accepted and ignored there.
+**Subprocess loops:** The Claude Agent SDK runs its loop in the Claude Code runtime, a subprocess Flyte does not intercept, so a turn cannot be a trace leaf. That adapter uses the SDK's own session resume against a `flyte.Checkpoint` instead. It is coarser, whole-session rather than per-turn, but it is real. Hermes runs its loop in-process and exposes an `llm_execution` middleware below it, so there each turn is a trace leaf like anywhere else.
 
 ## Cross-run memory
 

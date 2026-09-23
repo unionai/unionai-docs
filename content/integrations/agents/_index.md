@@ -15,6 +15,10 @@ The Flyte agent plugins cover that half. You keep writing agents in your framewo
 
 Ten frameworks are supported, each as a separate package on a shared core. The call shape is identical across all of them, so switching frameworks is mostly a change of import.
 
+> [!NOTE] Not every decision needs a generative model
+> The plugins on this page make a framework's *generative* loop durable. Many of the decisions inside that loop — is this input hostile, which of five intents is it, is there enough information to answer yet — are narrow enough to answer with a typed question instead, in one call and with calibrated confidence.
+> See [System one types](../../user-guide/system-one-types/_index) for the pattern, and the [TypeSafe AI integration](../typesafe-ai/_index) for the plugin that supplies it.
+
 ## Supported frameworks
 
 | Framework | Page | Package |
@@ -149,23 +153,24 @@ The adapters share a contract but the underlying SDKs differ, so durability land
 | [Deep Agents](./deepagents) | Per turn, built agents | `StructuredTool` | Transcript and virtual filesystem | 3.11+ |
 | [CrewAI](./crewai) | Per turn, built agents | `BaseTool` | Conversation transcript | 3.10+ |
 | [Pydantic AI](./pydantic-ai) | Per turn | Plain callable | Message history | 3.10+ |
-| [Hermes](./hermes) | Not available | Registry tool | Conversation transcript | 3.11+ |
+| [Hermes](./hermes) | Per turn, via `llm_execution` middleware | Registry tool | Conversation transcript | 3.11+ |
 
 "Built agents" means durability applies when `run_agent` constructs the agent for you. If you hand it a fully pre-built agent, Flyte cannot reach inside to wrap the model, so you wrap it yourself. Each page says exactly how.
 
-Tool calls are durable in every case, including Hermes, regardless of the `durable` setting.
+Tool calls are durable in every case, regardless of the `durable` setting.
 
 ## Choosing a framework
 
 The plugins do not have an opinion here. Pick the framework you would have picked anyway. The two things worth knowing:
 
-- If you want per-turn replay and you are starting fresh, everything except Hermes gives it to you on the builder path.
+- If you want per-turn replay and you are starting fresh, every adapter except Claude gives it to you on the builder path. The Claude SDK runs its loop in a subprocess, so its durability is per session via resume.
 - If you already own a compiled graph or a configured agent object, check the framework's page for how durability is applied on the pre-built path. LangGraph is designed around this case: you build the `StateGraph`, and `ai_node` and `tool_node` supply the durable pieces.
 
 ## Next steps
 
 - [How it works](./how-it-works): the runtime model, from the durable parent down to the trace leaf.
 - Pick a framework page above for SDK-specific setup, options and limitations.
+- [System one types](../../user-guide/system-one-types/_index): typed guards, routing and control flow to put in front of the generative loop — and the [TypeSafe AI integration](../typesafe-ai/_index) behind it.
 - [Build an agent](../../user-guide/agents/build-agent/_index): Flyte's own agent harness, if you would rather not bring a framework at all.
 
 {{< subpage-cards >}}

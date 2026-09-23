@@ -47,20 +47,22 @@ It is used for organizational purposes and can be viewed in the UI.
 
 ### `docs`
 
-The `docs` parameter on `@env.task` accepts a `Documentation` object.
-If not set explicitly, the documentation is auto-extracted from the task function's docstring.
+A task's description, shown in the UI, comes from the task function's docstring:
 
 ```python
 import flyte
-from flyte import Documentation
 
 env = flyte.TaskEnvironment(name="my_env")
 
-@env.task(docs=Documentation(description="Trains a model on the given dataset."))
+@env.task
 def train(data: list) -> dict:
-    """This docstring is used if docs is not set explicitly."""
+    """Trains a model on the given dataset."""
     return {"accuracy": 0.95}
 ```
+
+> [!NOTE]
+> `@env.task` also accepts a `docs` parameter. In the current SDK it sets only the help text that
+> `flyte run` shows for the task; it does not change the description shown in the UI. Use the docstring.
 
 ### `report`
 
@@ -154,7 +156,7 @@ Data exceeding this threshold raises an `InlineIOMaxBytesBreached` error.
 The default value is 10 MiB (`10 * 1024 * 1024` bytes).
 
 This setting does **not** affect [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories),
-or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures),
+or [`flyte.io.DataFrame`](../task-programming/dataframes),
 which are always offloaded to object storage regardless of size.
 
 ```python

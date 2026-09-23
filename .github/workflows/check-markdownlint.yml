@@ -28,14 +28,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Full history so changed-files can diff against the PR base.
           fetch-depth: 0
 
       - name: Get changed Markdown files
         id: changed
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v47
         with:
           files: |
             content/**/*.md
@@ -51,7 +51,7 @@ jobs:
         if: steps.changed.outputs.any_changed == 'true'
         # Advisory during rollout — annotate, don't block. See header TODO.
         continue-on-error: true
-        uses: DavidAnson/markdownlint-cli2-action@v19
+        uses: DavidAnson/markdownlint-cli2-action@v24
         with:
           globs: ${{ steps.changed.outputs.all_changed_files }}
 

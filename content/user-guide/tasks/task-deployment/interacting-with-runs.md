@@ -121,7 +121,7 @@ flyte get run --with-label-key team
 {{< /tab >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-`flyte.remote.Run.listall()` accepts the same filters and returns an async iterator of runs:
+`flyte.remote.Run.listall()` accepts the same filters and returns an iterator of runs:
 
 ```python
 import flyte
@@ -129,13 +129,15 @@ import flyte
 flyte.init_from_config()
 
 # Runs that carry BOTH labels (AND semantics)
-async for run in flyte.remote.Run.listall(with_labels={"team": "ml", "env": "prod"}):
+for run in flyte.remote.Run.listall(with_labels={"team": "ml", "env": "prod"}):
     print(run.name)
 
 # Runs that have the "team" label key set to any value
-async for run in flyte.remote.Run.listall(with_label_keys=["team"]):
+for run in flyte.remote.Run.listall(with_label_keys=["team"]):
     print(run.name)
 ```
+
+In async code, use `flyte.remote.Run.listall.aio(...)` with `async for` instead.
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "UI" >}}
