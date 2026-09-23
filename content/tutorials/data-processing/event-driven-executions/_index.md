@@ -9,7 +9,7 @@ variants: -flyte +union
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/event_driven_executions).
 
-Something happens outside Flyte — a file lands in a bucket, a partner drops a batch, an
+An event happens outside Flyte — a file lands in a bucket, a partner drops a batch, an
 upstream service finishes a job — and a task should run. This tutorial builds that with
 AWS SQS, then with Google Cloud Pub/Sub, then shows the version that needs no queue at
 all, and ends with how to choose.
@@ -33,7 +33,24 @@ immediate production change with no way to pin or roll back.
 ## Reading from SQS
 
 A subscriber reads the queue and launches a run per message. It runs as a Union app, so
-there is no cluster resource to operate — `flyte deploy` and the platform keeps it alive.
+there is no cluster resource to operate — deploy it and the platform keeps it alive:
+
+```bash
+flyte deploy sqs_subscriber.py app_env
+```
+
+The app calls back into Union to launch runs, so it needs credentials of its own. Mint an
+[API key](../../../user-guide/authenticating#api-key) and store it as the secret the app
+mounts:
+
+```bash
+flyte create api-key --name sqs-subscriber
+flyte create secret flyte-api-key <the-key-value>
+```
+
+The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It also
+inherits the permissions of whoever minted it — scope it to the project and domain the
+subscriber launches into rather than reusing a personal key.
 
 Two settings matter. Apps scale to zero by default and autoscale on request volume, and a
 subscriber serves no requests, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
@@ -76,6 +93,13 @@ The same design with a different client. Pub/Sub manages the polling threads, so
 handler is a callback rather than a loop:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/pubsub_subscriber.py" fragment=pubsub_app lang=python >}}
+
+Deploy it the same way, with its own [API key](../../../user-guide/authenticating#api-key)
+stored as the `flyte-api-key` secret:
+
+```bash
+flyte deploy pubsub_subscriber.py app_env
+```
 
 `flow_control` bounds how much work is in flight, which decides whether draining a backlog
 launches a controlled number of runs or a flood.
