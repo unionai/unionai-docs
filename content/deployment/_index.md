@@ -20,12 +20,7 @@ In both cases, the control plane runs in Union.ai's cloud account, but due to Un
 
 ## The fastest way to get started: Union.ai Teams on AWS Marketplace
 
-The quickest route to a working Union.ai deployment is **Union.ai Teams**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone:
-
-1. **Subscribe on AWS Marketplace.** The charges appear on your existing AWS bill, so there is no separate procurement process.
-2. **Create your organization in the console.** You can run a workflow straight away, even before setting up your cluster.
-3. **Provision your AWS resources.** Create an EKS cluster, an S3 bucket, an ECR repository and two IAM roles with the AWS CLI and `eksctl`.
-4. **Connect your Kubernetes cluster.** Install the agent in your cluster and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+The quickest route to a working Union.ai deployment is **Union.ai Teams**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process. You can run a workflow as soon as your organization exists, before you set up any infrastructure. When you are ready, you connect an EKS cluster in your own AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
 See [Self-service setup](./self-service/_index) for the step-by-step path.
 

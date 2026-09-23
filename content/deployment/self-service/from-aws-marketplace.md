@@ -43,7 +43,14 @@ variants: -flyte +union
      buyer compute an ordinary self-serve signup does not get. Nothing here depends on the answer,
      because the page hands off before compute is discussed. But if marketplace buyers DO get
      managed compute, then sign-up.md and connect-a-cluster.md are the wrong onward path for them
-     and this page should say so instead. Worth asking Ryan or Jeev. -->
+     and this page should say so instead. Worth asking Ryan or Jeev.
+
+     PROBABLY WRONG: "If you already have a Union.ai organization, you do not need this page."
+     ClaimMarketplaceContract binds a purchase to "the Union organization selected during signup",
+     before provisioning (cloud origin/main:idl/signup/marketplace_payload.proto,
+     marketplace_service.proto). Nothing on origin/main attaches a subscription to an existing org,
+     so someone with a free org who wants AWS billing likely cannot get there from this page.
+     Confirm against ENG26-1151 before launch. -->
 
 # Start from AWS Marketplace
 
