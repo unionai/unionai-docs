@@ -8,9 +8,9 @@ variants: -flyte +union
 
 # Sign up and create your Union.ai organization
 
-Create your account and an organization. Your organization is your workspace in {{< key product_name >}}: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
+Create your account and an organization. Your organization is your workspace in Union.ai: it holds your projects, workflows, resources and team members, and everything you do afterwards happens inside it.
 
-Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to {{< key product_name >}}, so you can see how {{< key product_name >}} works before connecting any infrastructure.
+Once it exists you can run a workflow straight away. Nothing runs on a cluster: your first workflow executes on your own machine and reports its progress to Union.ai, so you can see how Union.ai works before connecting any infrastructure.
 
 > [!NOTE] Subscribed through AWS Marketplace?
 > Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
@@ -22,7 +22,7 @@ Once it exists you can run a workflow straight away. Nothing runs on a cluster: 
 
 ## Create your account
 
-Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for {{< key product_name >}}.
+Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for Union.ai.
 
 <!-- ⚠️ HOSTNAME IN FLUX.
      signup.hosted.unionai.cloud is what serves today: verified 2026-09-04, HTTP 200 -> /sign-in,
@@ -36,7 +36,7 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
      That host currently returns 530. So the front door may move before the 1 Oct launch (DOC-1538).
      Nathan knows which host is final. -->
 
-![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/guided/sign-up/sign-in.png)
+![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/self-service/sign-up/sign-in.png)
 
 <!-- Captured on signup.cloud-staging.union.ai 2026-09-04 (Peeter chose staging as the capture
      surface). The shot carries no hostname, so it is safe to keep when the prose moves to the
@@ -44,33 +44,33 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 
 ## Create your organization
 
-An organization is your top-level workspace in {{< key product_name >}}. It is where your projects, workflows, resources, and team members live.
+An organization is your top-level workspace in Union.ai. It is where your projects, workflows, resources, and team members live.
 
-1. **Organization name.** This becomes your organization's web address, so it must be unique across {{< key product_name >}}, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, {{< key product_name >}} checks whether the name is available.
+1. **Organization name.** This becomes your organization's web address, so it must be unique across Union.ai, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, Union.ai checks whether the name is available.
 
-   ![The organization form with a name typed and shown as available](../../_static/images/deployment/guided/sign-up/create-organization.png)
+   ![The organization form with a name typed and shown as available](../../_static/images/deployment/self-service/sign-up/create-organization.png)
 
    <!-- ⚠️ CAPTURED ON STAGING, so the suffix in the shot reads .cloud-staging.union.ai while the
         prose says my-org.hosted.unionai.cloud, and the region list shows only us-east-2 and
         us-west-2. Peeter chose staging as the capture surface (2026-09-04). A production
         re-shoot would remove the mismatch. -->
 
-2. **Preferred Union region.** This is where your control plane runs. The control plane is the {{< key product_name >}} service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
+2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
 
 3. Select **Create Organization**.
 
-{{< key product_name >}} sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
+Union.ai sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
 
-![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/guided/sign-up/setting-up-organization.png)
+![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-service/sign-up/setting-up-organization.png)
 
 ## Sign in to your organization
 
-When setup finishes, {{< key product_name >}} takes you to your new organization's sign-in page. Select **Continue with Google** and choose the same account again.
+When setup finishes, Union.ai takes you to your new organization's sign-in page. Select **Continue with Google** and choose the same account again.
 
 > [!NOTE]
 > You may be asked to choose your Google account more than once during sign-up. This is expected: your account, your organization, and the console each confirm who you are.
 
-You land in the {{< key product_name >}} console. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
+You land in the Union.ai console. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
 
 > [!NOTE] You don't need a cluster yet
 > The console first asks you to set up a cluster pool. That is [connecting your own cluster](./connect-a-cluster), and you can come back to it any time. For your first run, skip it: select **Projects** in the sidebar. Your organization already has a `default` project ready to use.
@@ -116,7 +116,7 @@ Path: https://my-org.hosted.unionai.cloud/v2/domain/development/project/default/
 Outputs: ActionOutputs(o0=14.0)
 ```
 
-The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path {{< key product_name >}} prints is the run's page in the console.
+The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path Union.ai prints is the run's page in the console.
 
 ## See your run in the console
 
@@ -130,11 +130,11 @@ The run's page shows:
 - The environment the task belongs to.
 - Under **Summary**, the inputs the run received and the outputs it produced.
 
-Everything you see here came from a run on your own machine. {{< key product_name >}} recorded it as it happened.
+Everything you see here came from a run on your own machine. Union.ai recorded it as it happened.
 
 ## Next steps
 
-**[Connect your cluster](./connect-a-cluster)** is the next step of the setup. Everything so far has run on your own machine. When you want {{< key product_name >}} to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it.
+**[Connect your cluster](./connect-a-cluster)** is the next step of the setup. Everything so far has run on your own machine. When you want Union.ai to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it.
 
 Two things you can do without a cluster:
 

@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Deploy the data plane
 
-This walkthrough installs the {{< key product_name >}} data plane operator on AWS, GCP, Azure, OCI, or a generic (on-premise / S3-compatible) Kubernetes cluster. The steps are the same across providers; only the Helm values file differs, and each provider's values are documented on its infrastructure page.
+This walkthrough installs the Union.ai data plane operator on AWS, GCP, Azure, OCI, or a generic (on-premise / S3-compatible) Kubernetes cluster. The steps are the same across providers; only the Helm values file differs, and each provider's values are documented on its infrastructure page.
 
 Before you start, provision your cloud infrastructure using the matching page and note its **Deploy configuration** section:
 
@@ -28,7 +28,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
+* You have a Union.ai organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
 * You have a cluster name provided by or coordinated with Union.
 * You have a Kubernetes cluster with workload identity (IRSA / GKE Workload Identity / Entra Workload Identity) or the equivalent credentials enabled, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have provisioned object storage, a container registry, and identity bindings as described on your provider's [infrastructure recommendations](../infrastructure-recommendations/_index) page.
@@ -40,9 +40,9 @@ Before you start, provision your cloud infrastructure using the matching page an
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{% key product_name %}} operator
+## Deploy the Union.ai operator
 
-1. Add the {{< key product_name >}} Helm repo:
+1. Add the Union.ai Helm repo:
 
    ```bash
    helm repo add unionai https://unionai.github.io/helm-charts/
@@ -67,7 +67,7 @@ Before you start, provision your cloud infrastructure using the matching page an
    uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME> --provider <PROVIDER>
    ```
 
-   * The command outputs the ID, name, and a secret that the {{< key product_name >}} services use to communicate with your control plane. You pass the client ID and client secret to the Helm chart in step 5.
+   * The command outputs the ID, name, and a secret that the Union.ai services use to communicate with your control plane. You pass the client ID and client secret to the Helm chart in step 5.
    * Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
 4. Download the values file for your provider (see the table above) and fill in your infrastructure details. The exact keys — object storage, service-account/identity bindings, and any provider-specific settings — are documented in the **Deploy configuration** section of your provider's infrastructure page ([AWS](../infrastructure-recommendations/aws#deploy-configuration) · [GCP](../infrastructure-recommendations/gcp#deploy-configuration) · [Azure](../infrastructure-recommendations/azure#deploy-configuration) · [OCI](../infrastructure-recommendations/oci#deploy-configuration) · [Generic](../infrastructure-recommendations/generic#deploy-configuration)):

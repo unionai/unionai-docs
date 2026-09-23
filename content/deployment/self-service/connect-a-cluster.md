@@ -8,12 +8,12 @@ variants: -flyte +union
 
 # Connect your cluster
 
-You have an organization. Now give {{< key product_name >}} a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
+You have an organization. Now give Union.ai a Kubernetes cluster to run workloads on. Your code, data and credentials stay in that cluster.
 
-**Nothing dials in.** You install an agent into your cluster, and the agent connects out to {{< key product_name >}}. You do not open a port, expose an endpoint, or hand over cluster credentials.
+**Nothing dials in.** You install an agent into your cluster, and the agent connects out to Union.ai. You do not open a port, expose an endpoint, or hand over cluster credentials.
 
-> [!NOTE] This is not the same as a self-managed deployment
-> On this path you register the cluster first, and the agent then installs the data plane for you. The [Self-managed deployment](../selfmanaged/_index) guides describe the opposite order: you provision and install the data plane yourself, then register the control-plane record. Follow one or the other, not both.
+> [!NOTE] This is not the same as the manual self-managed setup
+> On this path you register the cluster first, and the agent then installs the data plane for you. The manual [self-managed deployment](../selfmanaged/_index) steps use the opposite order: you provision and install the data plane yourself, then register the control-plane record. Follow one or the other, not both.
 
 ## What you'll need
 
@@ -31,13 +31,13 @@ Select your provider, then fill in the store the cluster will use:
 
 | Field | What it is |
 |-------|------------|
-| **Object store** | The S3-compatible bucket, and optional prefix, {{< key product_name >}} stores metadata in. For example, `s3://union-data`. |
+| **Object store** | The S3-compatible bucket, and optional prefix, Union.ai stores metadata in. For example, `s3://union-data`. |
 | **Object store endpoint** | Where the S3-compatible API is reached **from inside the cluster**. Plain `http://` is fine for a store running in the cluster. |
 | **Image registry** | Optional. The registry images are pushed to and pulled from. |
 
-The endpoint is resolved by the agent from inside your cluster, not by {{< key product_name >}}, so an address that only exists on your cluster network is expected here.
+The endpoint is resolved by the agent from inside your cluster, not by Union.ai, so an address that only exists on your cluster network is expected here.
 
-![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/guided/connect-a-cluster/cluster-pool-onprem.png)
+![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/self-service/connect-a-cluster/cluster-pool-onprem.png)
 
 > [!NOTE] Pick the On-Prem tab
 > The form opens on **AWS**, which asks for a full set of IAM roles and ARNs. **On-Prem** is the tab this guide uses, and it asks for two fields.
@@ -46,7 +46,7 @@ Select **Create cluster pool**. The console then takes you to **Clusters**, read
 
 ## 2. Create the storage secret
 
-Your object store's keys stay in your cluster. {{< key product_name >}} is only told the *name* of the Kubernetes secret that holds them.
+Your object store's keys stay in your cluster. Union.ai is only told the *name* of the Kubernetes secret that holds them.
 
 Create the namespace and the secret:
 
@@ -71,7 +71,7 @@ Select **New Cluster** and fill in three things:
 | **Cluster pool** | The pool from step 1. It supplies the object store the cluster deploys with. |
 | **Credentials secret name** | The name of the secret you created in step 2, for example `storage-credentials`. |
 
-![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/guided/connect-a-cluster/connect-cluster-dialog.png)
+![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/self-service/connect-a-cluster/connect-cluster-dialog.png)
 
 Select **Register cluster**. The cluster now exists as a record, and the console moves on to installing the agent.
 
@@ -86,7 +86,7 @@ Registering does not put anything on your cluster by itself. That is the next st
      other PRs (cloud #17954, #18059, #18094, #18139, #18162) and is live on staging.
      STILL UNVERIFIED: the helm run itself. See the comment in section 5. -->
 
-The console shows a command to run against the cluster you want {{< key product_name >}} to use. Run it, and the agent installs itself and connects out.
+The console shows a command to run against the cluster you want Union.ai to use. Run it, and the agent installs itself and connects out.
 
 The command has two parts: a block that writes a `values.yaml` for your cluster, and the `helm` line that installs the agent from it.
 
@@ -107,7 +107,7 @@ Copy the whole thing from the console rather than retyping it. The values are ge
 > The `values.yaml` block contains the agent's client certificate and private key. Treat it like any other secret: do not paste it into a ticket, a chat message, or a shared document, and delete the file once the agent is installed.
 
 > [!NOTE] This step is yours to run, by design
-> {{< key product_name >}} cannot install the agent for you, because nothing dials in to your cluster. Running this command from inside your network is what opens the connection outwards. It is the one step that leaves the console.
+> Union.ai cannot install the agent for you, because nothing dials in to your cluster. Running this command from inside your network is what opens the connection outwards. It is the one step that leaves the console.
 
 ### If the install fails with `denied: denied`
 
@@ -133,12 +133,12 @@ Installation runs in two phases, both shown in the console:
 
 | Phase | What is happening |
 |-------|-------------------|
-| **Agent installation** | The agent starts in your cluster and connects out to {{< key product_name >}}. |
-| **Union installation** | {{< key product_name >}} installs the data plane through that connection. |
+| **Agent installation** | The agent starts in your cluster and connects out to Union.ai. |
+| **Union installation** | Union.ai installs the data plane through that connection. |
 
 Alongside them the console reports **connectivity** and **health** for the cluster.
 
-Only the first phase needs you. Once the agent connects, {{< key product_name >}} applies the data plane itself, so there is nothing further to run.
+Only the first phase needs you. Once the agent connects, Union.ai applies the data plane itself, so there is nothing further to run.
 
 > [!NOTE] Where the data plane lands
 > The data plane installs into its own namespace, named `instance-` followed by an identifier, not into the `union` namespace. `union` holds only the storage secret you created in step 2. If you are checking progress with `kubectl`, list pods across all namespaces rather than looking in `union` and concluding nothing happened.
@@ -147,7 +147,7 @@ Installing the data plane takes a few minutes on a new cluster, mostly spent pul
 
 When the cluster is ready, it shows as **Healthy** in the cluster list, with the data-plane version it is running:
 
-![The cluster list showing kind-local as healthy](../../_static/images/deployment/guided/connect-a-cluster/cluster-healthy.png)
+![The cluster list showing kind-local as healthy](../../_static/images/deployment/self-service/connect-a-cluster/cluster-healthy.png)
 
 <!-- ⚠️ THIS IMAGE IS RETOUCHED. Captured on staging 2026-09-04, then the AWS logo and the
      "EKS / us-east-1" line were hidden in the DOM before the shot was taken, so the image is a
@@ -270,7 +270,7 @@ Then follow the steps above, using:
 
 ## Next steps
 
-That is the setup complete. You subscribed or signed up, created your organization, and connected a cluster, and {{< key product_name >}} is now running your workloads on your own infrastructure.
+That is the setup complete. You subscribed or signed up, created your organization, and connected a cluster, and Union.ai is now running your workloads on your own infrastructure.
 
 From here:
 

@@ -47,11 +47,11 @@ variants: -flyte +union
 
 # Start from AWS Marketplace
 
-You can subscribe to {{< key product_name >}} through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there.
+You can subscribe to Union.ai through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there.
 
-This page covers the purchase itself, and the handoff to {{< key product_name >}} that follows it. Buying a subscription sets up the billing relationship. It does not create the workspace you work in, so once you have subscribed you carry on to [Sign up and create your Union.ai organization](./sign-up), which is the same path everyone else follows.
+This page covers the purchase itself, and the handoff to Union.ai that follows it. Buying a subscription sets up the billing relationship. It does not create the workspace you work in, so once you have subscribed you carry on to [Sign up and create your Union.ai organization](./sign-up), which is the same path everyone else follows.
 
-If you already have a {{< key product_name >}} organization, you do not need this page.
+If you already have a Union.ai organization, you do not need this page.
 
 ## What you'll need
 
@@ -61,9 +61,9 @@ You do not deploy anything into your own AWS account to buy a subscription, and 
 
 ## 1. Subscribe on AWS Marketplace
 
-Find the {{< key product_name >}} listing on AWS Marketplace and subscribe with the AWS account you want the charges to appear on.
+Find the Union.ai listing on AWS Marketplace and subscribe with the AWS account you want the charges to appear on.
 
-Your subscription is tied to the AWS account that buys it, so buy it from the account whose bill you want it on. Moving a subscription between AWS accounts later is an AWS-side change, not something you can do from {{< key product_name >}}.
+Your subscription is tied to the AWS account that buys it, so buy it from the account whose bill you want it on. Moving a subscription between AWS accounts later is an AWS-side change, not something you can do from Union.ai.
 
 ## 2. Continue to Union.ai
 
@@ -72,11 +72,11 @@ After the subscription is confirmed, AWS hands you off to Union.ai.
 Follow that handoff when you see it. It carries a short-lived token that ties your new organization to the subscription you just bought, and it expires, so if you leave it too long you may need to return to your AWS Marketplace subscriptions and start the handoff again.
 
 > [!NOTE] One subscription, one organization
-> A marketplace subscription can only be associated with a single {{< key product_name >}} organization. If you try to associate the same subscription with a second organization, {{< key product_name >}} refuses rather than splitting your entitlement across two workspaces.
+> A marketplace subscription can only be associated with a single Union.ai organization. If you try to associate the same subscription with a second organization, Union.ai refuses rather than splitting your entitlement across two workspaces.
 
 ## Next steps
 
-The handoff lands you on the {{< key product_name >}} sign-up form. From there your path is the same as anyone else's:
+The handoff lands you on the Union.ai sign-up form. From there your path is the same as anyone else's:
 
 1. **[Sign up and create your Union.ai organization](./sign-up).** Name your organization, choose a region, and run a workflow to see it working. No cluster needed.
-2. **[Connect your cluster](./connect-a-cluster).** Give {{< key product_name >}} a Kubernetes cluster to run your workloads on, and it installs the data plane into it.
+2. **[Connect your cluster](./connect-a-cluster).** Give Union.ai a Kubernetes cluster to run your workloads on, and it installs the data plane into it.

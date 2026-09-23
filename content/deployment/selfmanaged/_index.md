@@ -1,18 +1,23 @@
 ---
-title: Self-managed deployment
-description: Run the data plane on your own Kubernetes cluster, owning the cluster and its upgrades while Union runs the control plane.
+title: Self-managed deployment (manual setup)
+description: Provision and install the data plane on your own Kubernetes cluster yourself, owning the cluster and its upgrades while Union runs the control plane.
 icon: server
-weight: 3
+weight: 2
 variants: -flyte +union
 ---
 
-# Self-managed deployment
+# Self-managed deployment (manual setup)
 
 In a self-managed deployment, you operate the data plane on your own Kubernetes infrastructure.
 Union.ai runs the control plane, but you manage the cluster, upgrades, and operational aspects of the data plane yourself.
 Union.ai has no access to your cluster, providing the highest level of data isolation.
 
 ## Getting started
+
+> [!TIP] On AWS? Use self-service setup instead
+> The fastest way to a self-managed deployment is to subscribe to Union.ai Teams on AWS Marketplace and follow the [self-service setup](../self-service/_index). An agent installs the data plane into your cluster for you, so you can skip the manual steps below.
+
+These steps are for providers self-service setup doesn't cover yet, or for when you want to provision and install the data plane yourself:
 
 1. Review the [architecture](./architecture/_index) to understand the control plane, data plane operators, and security model.
 2. Review the [infrastructure recommendations](./infrastructure-recommendations/_index) for the sizing model, networking and IP planning, identity, and the [scaling constraints](./infrastructure-recommendations/scaling-constraints) to plan around.

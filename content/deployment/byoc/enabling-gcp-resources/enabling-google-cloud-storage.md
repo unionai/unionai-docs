@@ -8,11 +8,11 @@ variants: -flyte +union
 
 # Enabling Google Cloud Storage
 
-For {{< key product_name >}} customers whose data plane is in GCP, we walk through setting up access to your own Google Cloud Storage bucket.
+For Union.ai customers whose data plane is in GCP, we walk through setting up access to your own Google Cloud Storage bucket.
 
-> [!NOTE] Google Cloud Storage in the {{< key product_name >}} environment
+> [!NOTE] Google Cloud Storage in the Union.ai environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are several Google Cloud Storage (GCS) buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
+> Among these are several Google Cloud Storage (GCS) buckets used internally by the Union.ai operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the GCS buckets we are talking about in this section.**
 >
@@ -22,7 +22,7 @@ For {{< key product_name >}} customers whose data plane is in GCP, we walk throu
 
 To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Service Account as a principal to that bucket and assign it a role that includes the permissions that you want your code to have.
 
-* Find the actual name and email of the `<UserFlyteGSA>` in your {{< key product_name >}} data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](_index#find-the-actual-name-of-userflytegsa))
+* Find the actual name and email of the `<UserFlyteGSA>` in your Union.ai data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](_index#find-the-actual-name-of-userflytegsa))
 * Go to **Cloud Storage > Buckets** and select the bucket to which you want to grant access.
 * In the **Bucket details** view select the **Permissions** tab and then select **GRANT ACCESS**:
 
@@ -37,8 +37,8 @@ To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Ser
 
 * Click **SAVE**.
 
-Your bucket should now be **globally accessible** to task code in all Flyte projects and domains in your {{< key product_name >}} organization.
+Your bucket should now be **globally accessible** to task code in all Flyte projects and domains in your Union.ai organization.
 
 > [!NOTE] Domain-scoped permissions are not self-service
-> If you want to assign permissions in a more fine-grained way, per project and/or domain, you need to contact the {{< key product_name >}} team.
+> If you want to assign permissions in a more fine-grained way, per project and/or domain, you need to contact the Union.ai team.
 > See [Domain-scoped access](_index#domain-scoped-access).

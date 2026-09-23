@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Overview
 
-The {{< key product_name >}} architecture consists of two components, referred to as planes: the control plane and the data plane.
+The Union.ai architecture consists of two components, referred to as planes: the control plane and the data plane.
 
 ![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../../../_static/images/deployment/byoc/platform-architecture/union-architecture.svg)
 
@@ -16,31 +16,31 @@ The {{< key product_name >}} architecture consists of two components, referred t
 
 The control plane:
 
-* Runs within the {{< key product_name >}} AWS account.
+* Runs within the Union.ai AWS account.
 * Provides the user interface through which users can access authentication, authorization, observation, and management functions.
 * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
 
-{{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
+Union.ai operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, Union.ai supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
 
-## {{% key product_name %}} operator
+## Union.ai operator
 
-The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure.
+The Union.ai hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling Union.ai to handle the details of managing that infrastructure.
 
-Management of the data plane is mediated by a dedicated operator (the {{< key product_name >}} operator) resident on that plane.
+Management of the data plane is mediated by a dedicated operator (the Union.ai operator) resident on that plane.
 This operator is designed to perform its functions with only the very minimum set of required permissions.
-It allows the control plane to spin up and down clusters and provides {{< key product_name >}}'s support engineers with access to system-level logs and the ability to apply changes as per customer requests.
+It allows the control plane to spin up and down clusters and provides Union.ai's support engineers with access to system-level logs and the ability to apply changes as per customer requests.
 It _does not_ provide direct access to secrets or data.
 
-In addition, communication is always initiated by the {{< key product_name >}} operator in the data plane toward the {{< key product_name >}} control plane, not the other way around.
+In addition, communication is always initiated by the Union.ai operator in the data plane toward the Union.ai control plane, not the other way around.
 This further enhances the security of your data plane.
 
-{{< key product_name >}} is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
+Union.ai is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
 
 ## Registry data
 
