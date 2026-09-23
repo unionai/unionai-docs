@@ -79,4 +79,5 @@ Follow that handoff when you see it. It carries a short-lived token that ties yo
 The handoff lands you on the Union.ai sign-up form. From there your path is the same as anyone else's:
 
 1. **[Sign up and create your Union.ai organization](./sign-up).** Name your organization, choose a region, and run a workflow to see it working. No cluster needed.
-2. **[Connect your cluster](./connect-a-cluster).** Give Union.ai a Kubernetes cluster to run your workloads on, and it installs the data plane into it.
+2. **[Provision your AWS resources](./aws-infrastructure).** Create the EKS cluster, S3 bucket, ECR repository and IAM roles your data plane runs on.
+3. **[Connect your cluster](./connect-a-cluster).** Give Union.ai a Kubernetes cluster to run your workloads on, and it installs the data plane into it.

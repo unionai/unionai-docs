@@ -2,7 +2,7 @@
 title: Connect your cluster
 description: Point Union at a Kubernetes cluster you own, so your workloads run on your infrastructure instead of your machine.
 icon: hdd-network
-weight: 3
+weight: 4
 variants: -flyte +union
 ---
 
@@ -17,17 +17,38 @@ You have an organization. Now give Union.ai a Kubernetes cluster to run workload
 
 ## What you'll need
 
-- A Kubernetes cluster you can reach with `kubectl`.
-- An S3-compatible object store that the cluster can reach, and its access key and secret.
-- Optionally, a container registry the cluster can push to and pull from.
+- **On AWS:** the EKS cluster, S3 bucket, ECR repository and IAM roles from [Provision your AWS resources](./aws-infrastructure), and the values you collected at the end of it.
+- **On any other Kubernetes cluster:**
+  - A Kubernetes cluster you can reach with `kubectl`.
+  - An S3-compatible object store that the cluster can reach, and its access key and secret.
+  - Optionally, a container registry the cluster can push to and pull from.
 
-All of this works on a local cluster. See [Trying it on a local cluster](#trying-it-on-a-local-cluster).
+  All of this works on a local cluster. See [Trying it on a local cluster](#trying-it-on-a-local-cluster).
 
 ## 1. Set up a cluster pool
 
 A cluster pool groups clusters that share an object store, secrets and an image registry. Your first cluster needs one, and a new organization starts without any, so the console asks for this first.
 
-Select your provider, then fill in the store the cluster will use:
+Go to **Settings → Cluster Pools → New Cluster Pool** and select the tab for your provider.
+
+### On AWS
+
+Select the **AWS** tab and enter the six values from [Provision your AWS resources](./aws-infrastructure#8-collect-the-values-for-the-cluster-pool):
+
+| Field | Value |
+|---|---|
+| **Object store URI** | `s3://<data-bucket>` |
+| **Secrets Manager account ID** | Your AWS account ID |
+| **Secrets Manager region** | Your AWS Region |
+| **Image registry** | `<account-id>.dkr.ecr.<region>.amazonaws.com/<repository>` |
+| **Backend IAM role ARN** | The backend role ARN |
+| **Worker IAM role ARN** | The worker role ARN |
+
+The form does not take a Secrets Manager ARN. It takes the AWS account ID and region for the runtime secret store, and no secret needs to exist before you connect. The data plane's backend role creates and manages runtime secrets in that account and region.
+
+### On any other Kubernetes cluster
+
+Select the **On-Prem** tab, then fill in the store the cluster will use:
 
 | Field | What it is |
 |-------|------------|
@@ -39,12 +60,17 @@ The endpoint is resolved by the agent from inside your cluster, not by Union.ai,
 
 ![The cluster pool form on the On-Prem tab, with the object store endpoint highlighted](../../_static/images/deployment/self-service/connect-a-cluster/cluster-pool-onprem.png)
 
-> [!NOTE] Pick the On-Prem tab
-> The form opens on **AWS**, which asks for a full set of IAM roles and ARNs. **On-Prem** is the tab this guide uses, and it asks for two fields.
-
 Select **Create cluster pool**. The console then takes you to **Clusters**, ready to connect one.
 
 ## 2. Create the storage secret
+
+> [!NOTE] On-Prem pools only
+> Skip this step on AWS. The IAM roles in your cluster pool give the data plane access to S3, so there are no storage keys to store.
+
+<!-- UNVERIFIED: that the AWS path needs no storage secret, and that the New Cluster dialog omits
+     "Credentials secret name" for an AWS pool, are inferred from MANUAL_SETUP.md (whose step 8
+     goes straight from the pool to registering the cluster) and from IRSA. Nobody has watched
+     the AWS dialog. Check both against the console. -->
 
 Your object store's keys stay in your cluster. Union.ai is only told the *name* of the Kubernetes secret that holds them.
 
@@ -63,13 +89,13 @@ You can do this before or straight after registering the cluster. The agent read
 
 ## 3. Register the cluster
 
-Select **New Cluster** and fill in three things:
+Go to **Settings → Clusters → New Cluster** and fill in the dialog:
 
 | Field | Notes |
 |-------|-------|
 | **Cluster name** | The name the cluster is registered under. It **cannot be changed** once the cluster is connected. |
 | **Cluster pool** | The pool from step 1. It supplies the object store the cluster deploys with. |
-| **Credentials secret name** | The name of the secret you created in step 2, for example `storage-credentials`. |
+| **Credentials secret name** | On-Prem pools only. The name of the secret you created in step 2, for example `storage-credentials`. |
 
 ![The Connect your cluster dialog with the cluster name and pool filled in](../../_static/images/deployment/self-service/connect-a-cluster/connect-cluster-dialog.png)
 
@@ -86,7 +112,7 @@ Registering does not put anything on your cluster by itself. That is the next st
      other PRs (cloud #17954, #18059, #18094, #18139, #18162) and is live on staging.
      STILL UNVERIFIED: the helm run itself. See the comment in section 5. -->
 
-The console shows a command to run against the cluster you want Union.ai to use. Run it, and the agent installs itself and connects out.
+The console shows a command to run against the cluster you want Union.ai to use. Run it, and the agent installs itself and connects out. On AWS, run it in the shell where `kubectl get nodes` succeeds, after `aws eks update-kubeconfig` from the end of [Provision your AWS resources](./aws-infrastructure).
 
 The command has two parts: a block that writes a `values.yaml` for your cluster, and the `helm` line that installs the agent from it.
 

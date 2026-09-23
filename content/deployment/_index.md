@@ -24,9 +24,10 @@ The quickest route to a working Union.ai deployment is **Union.ai Teams**, a sel
 
 1. **Subscribe on AWS Marketplace.** The charges appear on your existing AWS bill, so there is no separate procurement process.
 2. **Create your organization in the console.** You can run a workflow straight away, even before setting up your cluster.
-3. **Connect your Kubernetes cluster.** Install the agent in your cluster and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+3. **Provision your AWS resources.** Create an EKS cluster, an S3 bucket, an ECR repository and two IAM roles with the AWS CLI and `eksctl`.
+4. **Connect your Kubernetes cluster.** Install the agent in your cluster and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-See [Self-service setup](./self-service/_index) for the step-by-step path. Self-service setup on GCP and Azure is coming soon.
+See [Self-service setup](./self-service/_index) for the step-by-step path.
 
 If you need a platform AWS Marketplace doesn't cover, or you want Union.ai to run your data plane for you, see the [manual self-managed setup](./selfmanaged/_index) or [BYOC deployment](./byoc/_index).
 

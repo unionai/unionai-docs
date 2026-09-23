@@ -134,7 +134,7 @@ Everything you see here came from a run on your own machine. Union.ai recorded i
 
 ## Next steps
 
-**[Connect your cluster](./connect-a-cluster)** is the next step of the setup. Everything so far has run on your own machine. When you want Union.ai to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it.
+**[Provision your AWS resources](./aws-infrastructure)**, then **[connect your cluster](./connect-a-cluster)**, are the next steps of the setup. Everything so far has run on your own machine. When you want Union.ai to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it. On a cluster other than EKS, skip straight to connecting it.
 
 Two things you can do without a cluster:
 
