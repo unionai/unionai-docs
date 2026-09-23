@@ -83,7 +83,11 @@ Publishing to a partition that already has a version adds a new version. It does
 
 ## Publishing from outside a task
 
-`Artifact.create` takes the same `partitions` mapping. Use it to backfill partitions from data you already have:
+Publishing from a script or the CLI takes the same partition values. Use it to backfill partitions from data you already have:
+
+{{< tabs "publish-partition" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 
 ```python
 import flyte
@@ -98,6 +102,22 @@ Artifact.create(
     partitions={"date": date(2026, 7, 31), "region": "us"},
 )
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte create artifact raw_events --from-file backfill/2026-07-31-us.parquet \
+    --partition date=2026-07-31 --partition region=us
+```
+
+An ISO date (`2026-07-31`) is a daily partition, an ISO hour (`2026-07-31T09`) an hourly one, and anything else a string partition. Weekly and monthly partitions need the Python API. `--partition` on `flyte create artifact` is newer than the rest of this page; if `flyte create artifact --help` doesn't list it, upgrade flyte.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Fixing the keys up front
 
