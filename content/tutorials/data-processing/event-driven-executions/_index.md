@@ -2,6 +2,7 @@
 title: Event-driven executions
 weight: 3
 variants: -flyte +union
+mermaid: true
 ---
 
 # Event-driven executions
@@ -271,6 +272,8 @@ gap: you would still need to notice the object before you could register it, whi
 original problem.
 
 ## Next steps
+ 
+Learn more about the Union features used in this tutorial:
 
-- [Triggers](../../../user-guide/task-configuration/triggers/) for schedule and artifact automation
-- [Apps](../../../user-guide/build-apps/) for the subscriber runtime
+- [Triggers](../../../user-guide/triggers/artifact-triggers.md) for schedule and artifact automation
+- [Apps](../../../user-guide/apps/build-apps/_index.md/) for the subscriber runtime
