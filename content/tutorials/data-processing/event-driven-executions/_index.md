@@ -11,7 +11,7 @@ variants: -flyte +union
 
 An event happens outside Flyte — a file lands in a bucket, a partner drops a batch, an
 upstream service finishes a job — and a task should run. This tutorial builds that with
-AWS SQS, then with Google Cloud Pub/Sub, then shows the version that needs no queue at
+AWS SQS or Google Cloud Pub/Sub, then shows the version that needs no queue at
 all, and ends with how to choose.
 
 Every approach launches the same task:
@@ -52,8 +52,7 @@ The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. I
 inherits the permissions of whoever minted it — scope it to the project and domain the
 subscriber launches into rather than reusing a personal key.
 
-Two settings matter. Apps scale to zero by default and autoscale on request volume, and a
-subscriber serves no requests, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
+Two settings matter. Apps scale to zero by default and autoscale on request volume, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
 away. It also needs something listening on the app port, which the health endpoint
 provides.
 
@@ -153,7 +152,7 @@ that gap means building a reconciliation of your own: which messages produced ru
 each one ended, which failures should be re-fired, and how a deliberate re-fire avoids
 colliding with the message-id-derived run name that exists to prevent duplicates.
 
-None of that is exotic. It is a second system holding state about the first, and it has to
+It is a second system holding state about the first, and it has to
 stay correct as both change.
 
 ## The version without a queue
@@ -168,7 +167,7 @@ Publishing is what fires it:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/artifact_chain.py" fragment=artifact_produce lang=python >}}
 
-Run `produce` and a run of `consume` appears that nobody launched, with the artifact bound
+When you run `produce` a run of `consume` triggers automatically, with the artifact bound
 to its `dataset` input.
 
 Two things disappear. The run is recorded against the artifact version that fired it, so
@@ -189,11 +188,10 @@ type checking against the task signature and breaks silently when either side ch
 | Event to task inputs | a mapping you maintain | typed, bound directly |
 | Run to event lineage | build it yourself | recorded on the run |
 
-The deciding question is where the event comes from, not which cloud you are on.
+The deciding question is where the event comes from, regardless of the cloud provider.
 
 If an upstream Flyte task can publish the artifact — including one that ingests from a
-bucket on a schedule — the artifact trigger is simpler in every dimension, and the queue
-earns nothing.
+bucket on a schedule — the artifact trigger is simpler than the queue in every dimension.
 
 If the producer is a partner, another team, or a system you cannot change, nothing
 publishes an artifact and nothing fires. The event has to be observed, and the queue is the
