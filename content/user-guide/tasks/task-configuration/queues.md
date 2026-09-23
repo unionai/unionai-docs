@@ -57,7 +57,7 @@ definition:
 flyte.with_runcontext(queue="my-queue").run(main, count=10)
 ```
 
-And a [trigger](./triggers) can send its scheduled runs to a specific queue,
+And a [trigger](../../triggers/_index) can send its scheduled runs to a specific queue,
 useful when you want scheduled or automated work to run under different limits
 than ad-hoc runs:
 
@@ -124,7 +124,7 @@ async def nightly_job(fan_out: int = 50) -> list[str]:
     # ...but two nightly_job runs never overlap.
 ```
 
-This pairs naturally with [triggers](./triggers): give the trigger a serialized
+This pairs naturally with [triggers](../../triggers/_index): give the trigger a serialized
 queue and you get self-non-overlapping scheduled jobs for free.
 
 ### Backfill control
