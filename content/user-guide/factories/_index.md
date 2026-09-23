@@ -9,7 +9,9 @@ mermaid: true
 
 # Factories
 
-> [!NOTE]
+> [!NOTE] Preview feature
+> Factories are in preview. We are actively working with customers to improve them, so if you want changes or improvements, talk to the Union team.
+>
 > Factories require `flyteplugins-union` 0.12.0 or later and flyte 2.10.0 or later: `pip install "flyteplugins-union>=0.12.0"`.
 
 ## Why factories

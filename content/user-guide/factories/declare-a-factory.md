@@ -8,6 +8,9 @@ variants: -flyte +union
 
 # Declare a factory
 
+> [!NOTE] Preview feature
+> Factories are in preview. If you want changes or improvements, talk to the Union team.
+
 This page builds the analytics factory from the [overview](./_index): `raw_events` is cleaned per day and region, combined across regions into `features`, and rolled into a report over a trailing three-day window.
 
 ## The tasks

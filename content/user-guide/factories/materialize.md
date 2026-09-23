@@ -8,6 +8,9 @@ variants: -flyte +union
 
 # Materialize and backfill
 
+> [!NOTE] Preview feature
+> Factories are in preview. If you want changes or improvements, talk to the Union team.
+
 Once a factory is [declared](./declare-a-factory), there is one verb for running it: **materialize**. You name an artifact and a partition or a range, and the factory builds whatever is needed to produce it.
 
 ## Deploy
