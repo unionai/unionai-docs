@@ -2,7 +2,7 @@
 title: Pydantic AI
 description: "Pydantic AI adapter for Flyte."
 icon: book
-version: 2.5.18
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,15 +13,15 @@ layout: py_api
 
 Pydantic AI adapter for Flyte.
 
-Bring your own Pydantic AI ``Agent`` and run it durably on Flyte. The adapter
+Bring your own Pydantic AI `Agent` and run it durably on Flyte. The adapter
 provides:
 
-- :func:`tool` — turn a Flyte ``@env.task`` into a Pydantic AI tool that
+- `flyteplugins.agents.pydantic_ai.tool` — turn a Flyte `@env.task` into a Pydantic AI tool that
   executes as a durable child action (own container/GPU, retries, caching).
-  This is the shared :func:`flyteplugins.agents.core.tool`: Pydantic AI accepts
-  plain (async) callables in ``Agent(tools=[...])`` and infers each tool's
+  This is the shared `flyteplugins.agents.core.tool`: Pydantic AI accepts
+  plain (async) callables in `Agent(tools=[...])` and infers each tool's
   schema from the callable's signature, which the core wrapper preserves.
-- :func:`run_agent` — run the Pydantic AI agent loop inside your task and return
+- `flyteplugins.agents.pydantic_ai.run_agent` — run the Pydantic AI agent loop inside your task and return
   the final answer.
 
 Each tool call runs as a durable Flyte child action, and the run timeline is
@@ -32,7 +32,7 @@ rendered into the Flyte task report.
 
 | Class | Description |
 |-|-|
-| [`FlyteModel`](./flytemodel) | Wrap a `Model` so each model turn is durable. |
+| [`FlyteModel`](./flytemodel) | Wrap a `pydantic_ai.models.Model` so each model turn is durable. |
 
 ### Methods
 
@@ -63,30 +63,30 @@ def run_agent(
 ```
 Run a Pydantic AI agent with the given tools and prompt; return the final text.
 
-Await this from an async task as ``await run_agent(...)``; from a sync task
-use `run_agent_sync` instead.
+Await this from an async task as `await run_agent(...)`; from a sync task
+use `flyteplugins.agents.pydantic_ai.run_agent_sync` instead.
 
-Call this from inside an ``@env.task`` — that task is the durable parent.
+Call this from inside an `@env.task` — that task is the durable parent.
 Within it, each tool call runs as a durable Flyte child action. Give the
-enclosing task ``retries=...`` for self-healing and ``report=True`` to see
+enclosing task `retries=...` for self-healing and `report=True` to see
 the agent timeline.
 
-Provide either a pre-built ``agent`` (with its tools already attached) or
-``tools`` + ``model`` to have one built for you — not both.
+Provide either a pre-built `agent` (with its tools already attached) or
+`tools` + `model` to have one built for you — not both.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `input` | `str` | The user prompt. |
-| `tools` | `typing.Sequence[typing.Any]` | ``tool``-wrapped tools or bare ``@env.task`` templates. Used only when no ``agent`` is passed; the built agent attaches them natively. |
-| `model` | `typing.Any` | Model name (e.g. ``"openai:gpt-4o"``) or ``pydantic_ai`` ``Model`` instance for the built agent. Required on the builder path (no default is assumed — the adapter is provider agnostic); ignored when a pre-built ``agent`` is given. |
+| `tools` | `typing.Sequence[typing.Any]` | `tool`-wrapped tools or bare `@env.task` templates. Used only when no `agent` is passed; the built agent attaches them natively. |
+| `model` | `typing.Any` | Model name (e.g. `"openai:gpt-4o"`) or `pydantic_ai` `Model` instance for the built agent. Required on the builder path (no default is assumed — the adapter is provider agnostic); ignored when a pre-built `agent` is given. |
 | `instructions` | `str \| None` | System prompt / instructions for the built agent. |
-| `agent` | `typing.Any` | A pre-built Pydantic AI ``Agent`` (tools already attached). Mutually exclusive with ``tools``. |
+| `agent` | `typing.Any` | A pre-built Pydantic AI `Agent` (tools already attached). Mutually exclusive with `tools`. |
 | `name` | `str` | Agent name (for debugging/observability). |
-| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. On the builder path the inferred model is wrapped in ``FlyteModel``; on the prebuilt- agent path durability is applied via ``agent.override(model=...)`` when the agent's model can be obtained (best-effort otherwise). |
+| `durable` | `bool` | Record/replay each model turn via `flyte.trace`. On the builder path the inferred model is wrapped in `FlyteModel`; on the prebuilt- agent path durability is applied via `agent.override(model=...)` when the agent's model can be obtained (best-effort otherwise). |
 | `observability` | `bool` | Render the run timeline into the Flyte task report. |
-| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, prior conversation history is loaded from a durable, keyed ``MemoryStore`` and passed as ``message_history=``; after the run the full history is saved back, so a later run with the same key continues the conversation. Best-effort — a memory failure never breaks a run. |
+| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, prior conversation history is loaded from a durable, keyed `MemoryStore` and passed as `message_history=`; after the run the full history is saved back, so a later run with the same key continues the conversation. Best-effort — a memory failure never breaks a run. |
 | `**run_kwargs` | `typing.Any` | |
 
 **Returns:** The agent's final output as a string.
@@ -111,30 +111,30 @@ Synchronous variant of run_agent for use in sync tasks; runs the async implement
 
 Run a Pydantic AI agent with the given tools and prompt; return the final text.
 
-Await this from an async task as ``await run_agent(...)``; from a sync task
-use `run_agent_sync` instead.
+Await this from an async task as `await run_agent(...)`; from a sync task
+use `flyteplugins.agents.pydantic_ai.run_agent_sync` instead.
 
-Call this from inside an ``@env.task`` — that task is the durable parent.
+Call this from inside an `@env.task` — that task is the durable parent.
 Within it, each tool call runs as a durable Flyte child action. Give the
-enclosing task ``retries=...`` for self-healing and ``report=True`` to see
+enclosing task `retries=...` for self-healing and `report=True` to see
 the agent timeline.
 
-Provide either a pre-built ``agent`` (with its tools already attached) or
-``tools`` + ``model`` to have one built for you — not both.
+Provide either a pre-built `agent` (with its tools already attached) or
+`tools` + `model` to have one built for you — not both.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `input` | `str` | The user prompt. |
-| `tools` | `typing.Sequence[typing.Any]` | ``tool``-wrapped tools or bare ``@env.task`` templates. Used only when no ``agent`` is passed; the built agent attaches them natively. |
-| `model` | `typing.Any` | Model name (e.g. ``"openai:gpt-4o"``) or ``pydantic_ai`` ``Model`` instance for the built agent. Required on the builder path (no default is assumed — the adapter is provider agnostic); ignored when a pre-built ``agent`` is given. |
+| `tools` | `typing.Sequence[typing.Any]` | `tool`-wrapped tools or bare `@env.task` templates. Used only when no `agent` is passed; the built agent attaches them natively. |
+| `model` | `typing.Any` | Model name (e.g. `"openai:gpt-4o"`) or `pydantic_ai` `Model` instance for the built agent. Required on the builder path (no default is assumed — the adapter is provider agnostic); ignored when a pre-built `agent` is given. |
 | `instructions` | `str \| None` | System prompt / instructions for the built agent. |
-| `agent` | `typing.Any` | A pre-built Pydantic AI ``Agent`` (tools already attached). Mutually exclusive with ``tools``. |
+| `agent` | `typing.Any` | A pre-built Pydantic AI `Agent` (tools already attached). Mutually exclusive with `tools`. |
 | `name` | `str` | Agent name (for debugging/observability). |
-| `durable` | `bool` | Record/replay each model turn via ``flyte.trace``. On the builder path the inferred model is wrapped in ``FlyteModel``; on the prebuilt- agent path durability is applied via ``agent.override(model=...)`` when the agent's model can be obtained (best-effort otherwise). |
+| `durable` | `bool` | Record/replay each model turn via `flyte.trace`. On the builder path the inferred model is wrapped in `FlyteModel`; on the prebuilt- agent path durability is applied via `agent.override(model=...)` when the agent's model can be obtained (best-effort otherwise). |
 | `observability` | `bool` | Render the run timeline into the Flyte task report. |
-| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, prior conversation history is loaded from a durable, keyed ``MemoryStore`` and passed as ``message_history=``; after the run the full history is saved back, so a later run with the same key continues the conversation. Best-effort — a memory failure never breaks a run. |
+| `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, prior conversation history is loaded from a durable, keyed `MemoryStore` and passed as `message_history=`; after the run the full history is saved back, so a later run with the same key continues the conversation. Best-effort — a memory failure never breaks a run. |
 | `**run_kwargs` | `typing.Any` | |
 
 **Returns**
