@@ -65,9 +65,9 @@ Find the {{< key product_name >}} listing on AWS Marketplace and subscribe with 
 
 Your subscription is tied to the AWS account that buys it, so buy it from the account whose bill you want it on. Moving a subscription between AWS accounts later is an AWS-side change, not something you can do from {{< key product_name >}}.
 
-## 2. Continue to {{< key product_name >}}
+## 2. Continue to Union.ai
 
-After the subscription is confirmed, AWS hands you off to {{< key product_name >}}.
+After the subscription is confirmed, AWS hands you off to Union.ai.
 
 Follow that handoff when you see it. It carries a short-lived token that ties your new organization to the subscription you just bought, and it expires, so if you leave it too long you may need to return to your AWS Marketplace subscriptions and start the handoff again.
 
