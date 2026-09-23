@@ -245,7 +245,7 @@ Scheduled submission moves from a cron entry on the login node to a trigger on t
 async def nightly_eval() -> Report: ...
 ```
 
-Docs: [Triggers](../tasks/task-configuration/triggers) &middot; [Error handling](../tasks/task-programming/error-handling)
+Docs: [Triggers](../triggers/_index) &middot; [Error handling](../tasks/task-programming/error-handling)
 
 ---
 

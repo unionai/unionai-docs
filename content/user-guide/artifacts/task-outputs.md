@@ -36,6 +36,8 @@ Every run of this task registers a new version of `trained-model`. Union records
 > [!WARNING] Both parts are required
 > The wrapper is stripped from the output value either way. Without `produces_artifacts=True` the platform never extracts the metadata, so no artifact is registered, no trigger fires, and there is nothing for an app to bind to. Nothing warns you.
 
+If you can't change the task, the caller can declare its outputs as artifacts instead. See [Publish outputs of tasks you don't own](./declared-artifacts).
+
 ## What can be an artifact
 
 An artifact must be an offloaded value: a `flyte.io.File`, a `flyte.io.Dir`, or a `flyte.io.DataFrame`. Primitives, dataclasses, and Pydantic models cannot be artifacts. Wrap a raw dataframe with `DataFrame.from_df()` first.
