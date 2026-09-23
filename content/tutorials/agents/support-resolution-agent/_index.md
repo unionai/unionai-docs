@@ -1,5 +1,7 @@
 ---
 title: Support resolution agent
+icon: headset
+description: Ground support tickets in fresh public sources via the You.com Research API and draft cited, customer-ready replies for human review.
 weight: 7
 variants: +flyte +union
 ---
@@ -90,7 +92,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

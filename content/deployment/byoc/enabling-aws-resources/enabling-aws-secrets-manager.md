@@ -1,5 +1,7 @@
 ---
 title: Enabling AWS Secrets Manager
+description: Let task code read secrets from AWS Secrets Manager.
+icon: safe
 weight: 3
 variants: -flyte +union
 ---
@@ -8,7 +10,7 @@ variants: -flyte +union
 
 > [!NOTE]
 > This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../../user-guide/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager.
+> [{{< key product_name >}} secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager.
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
 
@@ -127,35 +129,35 @@ We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<Secret
 To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your {{< key product_name >}} data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
-See [the binding directions](.) for details. Once the binding is done, your secrets are now accessible from within your Flyte code.
+See [the binding directions](./_index) for details. Once the binding is done, your secrets are now accessible from within your Flyte code.
 
 ## Using AWS secrets in your task code
 
 To use an AWS secret in your task code, do the following:
 
-* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
-* Inside the task code, retrieve the value of the secret with a call to\
-  `{{< key kit_as >}}.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
+* Declare a `flyte.Secret` in the `secrets` of your `TaskEnvironment`, with `group` set to the `SECRET_GROUP` and `key` set to the `SECRET_KEY` derived from the secret ARN, above.
+* Set `mount="/etc/flyte/secrets"`. AWS secrets can only be delivered as files. Without `mount`, `flyte.Secret` tries to deliver the secret as an environment variable named after the group and key, and raises an error because an ARN is not a valid variable name.
+* Inside the task, read the secret from the file `/etc/flyte/secrets/<SECRET_GROUP>/<SECRET_KEY>`, with both parts in lower case.
 
 Here is an example:
 
 ```python
-import {{< key kit_import >}}
+import pathlib
+
+import flyte
 
 SECRET_GROUP = "arn:aws:secretsmanager:<Region>:<AccountId>:secret:"
 SECRET_KEY = "<SecretName>-<SixRandomCharacters>"
-SECRET_REQUEST = {{< key kit_as >}}.Secret(
-  group=SECRET_GROUP,
-  key=SECRET_KEY,
-  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
+
+env = flyte.TaskEnvironment(
+    name="aws-secrets",
+    secrets=[flyte.Secret(key=SECRET_KEY, group=SECRET_GROUP, mount="/etc/flyte/secrets")],
 )
 
-@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
+@env.task
 def t1():
-    secret_val = {{< key kit_as >}}.current_context().secrets.get(
-        SECRET_GROUP,
-        group_version=SECRET_GROUP_VERSION
-    )
+    secret_file = pathlib.Path("/etc/flyte/secrets") / SECRET_GROUP.lower() / SECRET_KEY.lower()
+    secret_val = secret_file.read_text()
     # do something with the secret. For example, communication with an external API.
     ...
 ```

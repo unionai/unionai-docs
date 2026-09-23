@@ -24,8 +24,10 @@ on:
       - main
   workflow_dispatch:
 
+# contents: write — the one-merge cut (DOC-1245) materializes + pushes the stable
+# tag named by versions.toml as a pre-build step (see "Materialize stable tag").
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 # Opt in early to the Node.js 24 runtime for JavaScript actions. GitHub forces
@@ -38,13 +40,41 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # Concurrency policy:
-#   - push to main: queue in order, don't cancel, so we never leave
-#     production in an inconsistent state mid-deploy.
-#   - workflow_dispatch: own group, distinct from push, so manual
-#     re-runs never block or get blocked by an in-progress production
-#     deploy.
+#   - production deploys use one `prod` group PER LINE, queued in order (never
+#     cancel), so two merges on the same line can't race on the CF Pages
+#     project — and, crucially, can't race on cutting the same stable tag (the
+#     cut runs in-job, so serializing the job serializes the cut).
+#   - workflow_dispatch: own `manual` group, so manual re-runs never block or
+#     get blocked by an in-progress production deploy. The ref suffix applies to
+#     this arm too, so manual runs are per-line as well -- a manual v1 deploy
+#     cannot evict a manual main one, which is the same guarantee `prod` gets and
+#     the reason the suffix is unconditional rather than applied to `prod` only.
+#
+# `github.ref_name` is what makes the group per-line, and it is not cosmetic.
+# This policy was written when main was the only branch that deployed, so one
+# global `prod` group was the same thing as one group per line. Go-live
+# (DOC-1245) made `v1` a deploying line too and nothing revisited the group,
+# which left main and v1 sharing one queue.
+#
+# The failure that produces is silent, and it follows documented behaviour
+# rather than a quirk: `cancel-in-progress: false` protects a RUNNING job, but
+# per GitHub's concurrency docs, "any existing pending job or workflow in the
+# same concurrency group will be canceled and the new queued job or workflow
+# will take its place" — newest wins, cancellation setting notwithstanding.
+# https://docs.github.com/en/actions/using-jobs/using-concurrency
+#
+# So a v1 deploy queued behind a main deploy is discarded the moment any second
+# main deploy arrives, and it reports `cancelled`, not `failure`: nothing turns
+# red and nobody is told. Observed 2026-08-18, where
+# v1's deploy queued at 10:20:02 and was evicted at 10:20:17 by a main deploy
+# created one second earlier; the v1 line silently did not ship.
+#
+# Same-line eviction stays, deliberately. Two pushes to the same branch are
+# ordered, so the newer commit already contains the older one and superseding
+# is correct. Only CROSS-line eviction is wrong, and that is exactly what
+# keying on the ref removes.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && 'manual' || 'prod' }}-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -55,10 +85,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
-          fetch-depth: 1
+          # 0 (was 1): the multi-version assembly checks out cut tags + main into
+          # isolated worktrees, so it needs full history + all tags.
+          fetch-depth: 0
 
       - name: Set up Hugo
         uses: peaceiris/actions-hugo@v3
@@ -67,12 +99,12 @@ jobs:
           extended: true
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v10.1.0
 
       - name: Print environment
         run: |
@@ -82,11 +114,64 @@ jobs:
           uv --version
           echo "::endgroup::"
 
+      # One-merge cut (DOC-1245): versions.toml names the stable tag /docs/v2 serves.
+      # If that tag doesn't exist yet, THIS merge is the promotion — materialize it
+      # (guarded: PyPI-published SDK + versions.toml agrees with the resolver) BEFORE
+      # the build, so /docs/v2 assembles from it in the same job (no cut↔deploy race).
+      # Idempotent: an already-cut stable is a no-op. Inert until versioning go-live
+      # (no versions.toml → skipped), matching the Build-dist feature gate below.
+      - name: Materialize stable tag if needed (cut)
+        if: github.event_name == 'push'
+        env:
+          # cut-docs-version.sh reads flyteorg/flyte releases for the backend row.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          if [ ! -f versions.toml ]; then
+            echo "no versions.toml → versioning off; skip cut"; exit 0
+          fi
+          STABLE=$(sed -n 's/^stable *= *"\(.*\)"/\1/p' versions.toml | head -1)
+          if [ -z "$STABLE" ]; then echo "versions.toml has no stable → skip"; exit 0; fi
+          if git rev-parse -q --verify "refs/tags/$STABLE" >/dev/null; then
+            echo "stable tag $STABLE already cut → no-op"; exit 0
+          fi
+          echo "stable $STABLE not yet cut → materializing at this merge"
+          bash unionai-docs-infra/scripts/cut-docs-version.sh --push
+
       - name: Build dist
         run: |
           start=$(date +%s)
-          make dist
+          # One shared CI build step (DOC-1333): `auto` = the versions.toml gate,
+          # identical to the previous inline logic (multi-version assembly when
+          # present — /docs/latest, /docs/v2, pins — else single-version).
+          # build-pr.yml calls the SAME script with an explicit mode, so the two
+          # build paths cannot silently drift again (that drift is how previews
+          # spent months building a different artifact class than production).
+          LATEST_REF=origin/main bash unionai-docs-infra/scripts/ci-build-dist.sh auto
           echo "BUILD_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
+
+      - name: Check generated links
+        run: |
+          # The links the GENERATOR writes into dist/. `Check Internal Links`
+          # reads content/ and cannot see these: 202 of them pointed at nothing
+          # while that job stayed green (DOC-1499, DOC-1511, infra#291).
+          # Runs here rather than in its own workflow because it needs the dist
+          # this job already built, and a second full Hugo build to check links
+          # is not worth the minutes.
+          make check-generated-links
+
+      - name: Check rendered images
+        run: |
+          # The images the BUILT site serves, resolved the way a browser does --
+          # against the page's URL, not the source file's directory. `Check
+          # Images` reads content/ and cannot see this: Hugo's render hooks
+          # rebase an image src, so a path can be correct in the markdown and
+          # wrong in the HTML. unionai-docs#1529 shipped an image that 404s on
+          # its own preview while all 15 checks passed (DOC-1515, infra#295).
+          # Same reasoning as the link check above: it needs the dist this job
+          # already built.
+          make check-rendered-images
 
       - name: Emit build provenance
         if: success()
@@ -128,7 +213,7 @@ jobs:
 
       - name: Upload dist artifact
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
@@ -153,7 +238,7 @@ jobs:
         # (incl. the build) before failing — observed once at ~26 min on a large
         # API-docs regen. Fail fast so the deploy can be re-run. See DOC-1229.
         timeout-minutes: 10
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -166,6 +251,20 @@ jobs:
           # wrangler-action records the commit metadata on its own via the
           # GITHUB_SHA env var.
           command: pages deploy ./dist --project-name=docs --branch=${{ steps.branch.outputs.name }} --commit-dirty=true
+
+      - name: Update search index
+        # After the deploy, not before: the index should describe what is now
+        # served. Scoped to the slices THIS branch built (main: v2 + latest;
+        # v1 branch: v1), so the two lines cannot clobber each other's records.
+        #
+        # Skips itself when the secret is absent, so forks and any repo without
+        # Algolia credentials still deploy normally.
+        if: success() && github.event_name == 'push'
+        timeout-minutes: 15
+        env:
+          ALGOLIA_DOCS_2_APPLICATION_ID: ${{ secrets.ALGOLIA_DOCS_2_APPLICATION_ID }}
+          ALGOLIA_DOCS_2_WRITE_API_KEY: ${{ secrets.ALGOLIA_DOCS_2_WRITE_API_KEY }}
+        run: make index-search
 
       - name: Deploy summary
         if: success()

@@ -1,5 +1,7 @@
 ---
 title: Control flow
+description: Branching, fan-out, and failure handling become ordinary Python instead of DSL constructs.
+icon: signpost-split
 weight: 7
 variants: +flyte +union
 ---
@@ -59,7 +61,7 @@ except flyte.errors.OOMError:
     )(sample_size)
 ```
 
-See [Error handling](../../task-programming/error-handling) for more.
+See [Error handling](../../tasks/task-programming/error-handling) for more.
 
 ## Next
 

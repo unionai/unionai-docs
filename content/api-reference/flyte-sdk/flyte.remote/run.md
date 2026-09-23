@@ -1,0 +1,538 @@
+---
+title: Run
+description: "A class representing a run of a task."
+icon: braces
+version: 2.10.0
+variants: +flyte +union
+layout: py_api
+---
+
+# Run
+
+**Package:** `flyte.remote`
+
+A class representing a run of a task. It is used to manage the run of a task and its state on the remote
+Union API.
+
+
+## Parameters
+
+```python
+class Run(
+    pb2: run_definition_pb2.Run,
+    _details: RunDetails | None = None,
+    _preserve_original_types: bool = False,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.Run` | |
+| `_details` | `RunDetails \| None` | |
+| `_preserve_original_types` | `bool` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `str` | Get the name of the run. |
+| `phase` | `str` | Get the phase of the run. |
+| `raw_phase` | `phase_pb2.ActionPhase` | Get the raw phase of the run. |
+| `url` | `str` | Get the URL of the run. |
+
+## Methods
+
+| Method | Description |
+|-|-|
+| [`abort()`](#abort) | Aborts / Terminates the run. |
+| [`code_bundle()`](#code_bundle) | The code bundle this run executed, or None when it ran from code baked into its image. |
+| [`details()`](#details) | Get the details of the run. |
+| [`done()`](#done) | Check if the run is done. |
+| [`download_code()`](#download_code) | Download the code this run executed — the source shown in the console's "Code" tab. |
+| [`first_failure()`](#first_failure) | Details of the first action that failed in this run, or None when no action failed. |
+| [`get()`](#get) | Get the current run. |
+| [`get_debug_url()`](#get_debug_url) | Get the debug URL of the run. |
+| [`get_logs()`](#get_logs) | Get logs for the run as an iterator of strings. |
+| [`get_report()`](#get_report) | Get the HTML report associated with this run's root action. |
+| [`input_literals()`](#input_literals) | Raw input literals of the run's action, without reconstructing types. |
+| [`inputs()`](#inputs) | Get the inputs of the run. |
+| [`listall()`](#listall) | Get all runs for the current project and domain. |
+| [`output_literals()`](#output_literals) | Raw output literals of the run's action, without reconstructing types. |
+| [`outputs()`](#outputs) | Get the outputs of the run. |
+| [`show_logs()`](#show_logs) |  |
+| [`sync()`](#sync) | Sync the run with the remote server. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`typed_inputs()`](#typed_inputs) | Re-hydrate the run's requested inputs into caller-supplied types. |
+| [`typed_outputs()`](#typed_outputs) | Re-hydrate the run's requested outputs into caller-supplied types. |
+| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions, time elapsed, and error details in case of failure. |
+| [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
+
+
+### abort()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.abort.aio()`.
+```python
+def abort(
+    reason: str = 'Manually aborted from the SDK api.',
+)
+```
+Aborts / Terminates the run.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `reason` | `str` | |
+
+### code_bundle()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.code_bundle.aio()`.
+```python
+def code_bundle()
+```
+The code bundle this run executed, or None when it ran from code baked into its image.
+
+Metadata only — where the bundle lives, which version it is, and whether it is a tarball
+or a pickle. Use `Run.download_code` to fetch the source itself.
+
+
+### details()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.details.aio()`.
+```python
+def details()
+```
+Get the details of the run. This is a placeholder for getting the run details.
+
+
+### done()
+
+```python
+def done()
+```
+Check if the run is done.
+
+
+### download_code()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.download_code.aio()`.
+```python
+def download_code(
+    dest: str | pathlib.Path | None = None,
+    extract: bool = True,
+    attempt: int | None = None,
+) -> pathlib.Path
+```
+Download the code this run executed — the source shown in the console's "Code" tab.
+
+The code is whatever `flyte run` / `flyte deploy` packaged and uploaded for this run: a
+tarball of the source tree, or a cloudpickle of the task when it was launched from a
+notebook or REPL. Runs whose task ran from code baked into its image carry no bundle,
+and raise.
+
+```python
+run = flyte.remote.Run.get("my-run")
+src = run.download_code()
+print((src / "workflows" / "main.py").read_text())
+```
+
+This fetches the bundle of the run's root action. A nested action can be packaged
+differently (a task from another environment, deployed separately) — use
+`Action.download_code` on that action to fetch its own code.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `dest` | `str \| pathlib.Path \| None` | Directory to download into, created if missing. Defaults to a directory named after the run, under the current working directory. |
+| `extract` | `bool` | Unpack the tarball into `dest`. Set False to keep the archive as-is. Pickled bundles are never unpacked. |
+| `attempt` | `int \| None` | Attempt to fetch the bundle for. Defaults to the latest attempt. |
+
+**Returns**
+
+The directory the source was extracted into, or the path of the downloaded archive
+when `extract` is False or the bundle is a pickle.
+
+### first_failure()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.first_failure.aio()`.
+```python
+def first_failure()
+```
+Details of the first action that failed in this run, or None when no action failed.
+
+Failed actions are considered in creation order, and a failed sub-action (a step inside
+the run) is preferred over the failed root action — the root's error usually just
+repeats the sub-action's. The root's details are returned only when it is the only
+failure recorded. Together with `ActionDetails.task_name` and
+`ActionDetails.error_message`, this answers "which step broke, and why" — the
+observation an automated repair loop (or a human) needs before patching code and
+rerunning or forking the run:
+
+```python
+run = flyte.run(my_pipeline, x=1)
+run.wait()
+if failure := run.first_failure():
+    print(f"{failure.task_name} failed: {failure.error_message}")
+```
+
+
+### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Run.get.aio()`.
+```python
+def get(
+    cls,
+    name: str,
+) -> Run
+```
+Get the current run.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
+
+**Returns:** The current run.
+
+### get_debug_url()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_debug_url.aio()`.
+```python
+def get_debug_url()
+```
+Get the debug URL of the run. Returns `None` if the VS Code
+Debugger log entry is not yet available in the action details.
+
+
+### get_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_logs.aio()`.
+```python
+def get_logs(
+    attempt: int | None = None,
+    filter_system: bool = False,
+    show_ts: bool = False,
+) -> AsyncGenerator[str, None]
+```
+Get logs for the run as an iterator of strings.
+
+Can be called synchronously (returns `Iterator[str]`) or asynchronously
+via `.aio()` (returns `AsyncIterator[str]`).
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to retrieve logs for (defaults to latest attempt). |
+| `filter_system` | `bool` | If True, filter out system-generated log lines. |
+| `show_ts` | `bool` | If True, prefix each line with an ISO-8601 timestamp. |
+
+### get_report()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.get_report.aio()`.
+```python
+def get_report(
+    attempt: int | None = None,
+) -> str
+```
+Get the HTML report associated with this run's root action.
+
+This first requests a signed download link from the data proxy for the report artifact,
+then downloads the report from that URL and returns its contents as an HTML string.
+
+To fetch the report for a specific action nested inside the run (rather than the root
+action), use `Action.get_report` on that action, e.g. via `Action.get` or by
+iterating `Action.listall`.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | The attempt number to fetch the report for. Defaults to the latest attempt. |
+
+**Returns:** The report contents as an HTML string.
+
+### input_literals()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.input_literals.aio()`.
+```python
+def input_literals()
+```
+Raw input literals of the run's action, without reconstructing types.
+
+See `ActionDetails.input_literals`.
+
+
+### inputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.inputs.aio()`.
+```python
+def inputs()
+```
+Get the inputs of the run. This is a placeholder for getting the run inputs.
+
+
+### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Run.listall.aio()`.
+```python
+def listall(
+    cls,
+    in_phase: Tuple[ActionPhase | str, ...] | None = None,
+    task_name: str | None = None,
+    task_version: str | None = None,
+    created_by_subject: str | None = None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None = None,
+    limit: int = 100,
+    project: str | None = None,
+    domain: str | None = None,
+    created_at: TimeFilter | None = None,
+    updated_at: TimeFilter | None = None,
+    with_labels: dict[str, str] | None = None,
+    with_label_keys: list[str] | None = None,
+    paused_actions_only: bool = False,
+) -> AsyncIterator[Run]
+```
+Get all runs for the current project and domain.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter runs by one or more phases. |
+| `task_name` | `str \| None` | Filter runs by task name. |
+| `task_version` | `str \| None` | Filter runs by task version. |
+| `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
+| `limit` | `int` | The maximum number of runs to return. |
+| `project` | `str \| None` | The project to list runs for. Defaults to the globally configured project. |
+| `domain` | `str \| None` | The domain to list runs for. Defaults to the globally configured domain. |
+| `created_at` | `TimeFilter \| None` | Filter runs by creation time range. |
+| `updated_at` | `TimeFilter \| None` | Filter runs by last-update time range. |
+| `with_labels` | `dict[str, str] \| None` | Filter runs whose labels include all of these key=value pairs (AND semantics). |
+| `with_label_keys` | `list[str] \| None` | Filter runs that have all of these label keys present (existence check). |
+| `paused_actions_only` | `bool` | If True, only return runs that have at least one paused action (i.e. runs waiting on a human in the loop). |
+
+**Returns:** An iterator of runs.
+
+### output_literals()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.output_literals.aio()`.
+```python
+def output_literals()
+```
+Raw output literals of the run's action, without reconstructing types.
+
+See `ActionDetails.output_literals`.
+
+
+### outputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.outputs.aio()`.
+```python
+def outputs()
+```
+Get the outputs of the run. This is a placeholder for getting the run outputs.
+
+
+### show_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.show_logs.aio()`.
+```python
+def show_logs(
+    attempt: int | None = None,
+    max_lines: int = 100,
+    show_ts: bool = False,
+    raw: bool = False,
+    filter_system: bool = False,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | |
+| `max_lines` | `int` | |
+| `show_ts` | `bool` | |
+| `raw` | `bool` | |
+| `filter_system` | `bool` | |
+
+### sync()
+
+```python
+def sync()
+```
+Sync the run with the remote server. This is a placeholder for syncing the run.
+
+
+### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+
+
+**Returns:** dict: A dictionary representation of the object.
+
+### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+
+
+**Returns:** str: A JSON string representation of the object.
+
+### typed_inputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.typed_inputs.aio()`.
+```python
+def typed_inputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
+) -> Dict[str, Any]
+```
+Re-hydrate the run's requested inputs into caller-supplied types.
+
+See `ActionDetails.typed_inputs`.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
+
+### typed_outputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.typed_outputs.aio()`.
+```python
+def typed_outputs(
+    types: Dict[str, type],
+    deserializers: Dict[type, Callable[[Any], Any]] | None = None,
+) -> Dict[str, Any]
+```
+Re-hydrate the run's requested outputs into caller-supplied types.
+
+See `ActionDetails.typed_outputs`.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `types` | `Dict[str, type]` | |
+| `deserializers` | `Dict[type, Callable[[Any], Any]] \| None` | |
+
+### wait()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.wait.aio()`.
+```python
+def wait(
+    quiet: bool = False,
+    wait_for: Literal['terminal', 'running'] = 'terminal',
+)
+```
+Wait for the run to complete, displaying a rich progress panel with status transitions,
+time elapsed, and error details in case of failure.
+
+This method updates the Run's internal state, ensuring that properties like
+`run.action.phase` reflect the final state after waiting completes.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `quiet` | `bool` | |
+| `wait_for` | `Literal['terminal', 'running']` | |
+
+### watch()
+
+```python
+def watch(
+    cache_data_on_done: bool = False,
+) -> AsyncGenerator[ActionDetails, None]
+```
+Watch the run for updates, updating the internal Run state with latest details.
+
+This method updates the Run's action state, ensuring that properties like
+`run.action.phase` reflect the current state after watching.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | |
+

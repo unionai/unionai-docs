@@ -1,5 +1,7 @@
 ---
 title: Brain tumor MRI classification
+icon: hospital
+description: Classify brain MRI scans with a two-phase EfficientNet-B4 pipeline featuring resumable GPU checkpointing and in-UI reports.
 weight: 2
 variants: +flyte +union
 ---

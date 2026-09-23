@@ -1,5 +1,7 @@
 ---
 title: Multimodal retrieval evaluation
+icon: images
+description: Benchmark ColPali, SigLIP, and OCR+BM25 visual document retrieval on ViDoRe with warm GPU containers, dynamic batching, and an interactive report.
 weight: 2
 variants: +flyte +union
 ---

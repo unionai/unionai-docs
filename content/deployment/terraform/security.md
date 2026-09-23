@@ -1,5 +1,7 @@
 ---
 title: Security best practices
+description: Securely manage API keys and credentials
+icon: lock
 weight: 3
 variants: -flyte +union
 ---

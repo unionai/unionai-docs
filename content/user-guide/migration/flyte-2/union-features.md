@@ -1,5 +1,7 @@
 ---
 title: Union features
+description: Where Flyte 1's Union-specific Actors and Apps landed in Flyte 2.
+icon: stars
 weight: 12
 variants: -flyte +union
 ---
@@ -71,7 +73,7 @@ async def compute(x: int) -> int:
 | N/A | `concurrency` | New: async tasks per container (total capacity is `replicas × concurrency`) |
 | `@actor.task` | `@env.task` | A regular task |
 
-Reusable containers require the [`unionai-reuse`](https://pypi.org/project/unionai-reuse/) package in the task image and, as in Flyte 1, run on a Union backend. See [Reusable containers](../../task-configuration/reusable-containers) for the full parameter reference and capacity math.
+Reusable containers require the [`unionai-reuse`](https://pypi.org/project/unionai-reuse/) package in the task image and, as in Flyte 1, run on a Union backend. See [Reusable containers](../../tasks/task-configuration/reusable-containers) for the full parameter reference and capacity math.
 
 ## Apps → the Flyte SDK
 
@@ -124,9 +126,9 @@ if __name__ == "__main__":
 
 Because apps are now part of the OSS SDK, the same `flyte.app` API covers dashboards (Streamlit, Gradio), REST and webhook backends (FastAPI, Flask), and model serving. For LLM serving specifically, use the `flyteplugins-vllm` or SGLang integrations. See:
 
-- [Configure apps](../../configure-apps/_index) — the `AppEnvironment` configuration reference
-- [Build apps](../../build-apps/_index) and [Serve and deploy apps](../../serve-and-deploy-apps/_index)
-- [Native app integrations](../../native-app-integrations/_index) — Streamlit, FastAPI, vLLM, SGLang
+- [Configure apps](../../apps/configure-apps/_index) — the `AppEnvironment` configuration reference
+- [Build apps](../../apps/build-apps/_index) and [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index)
+- [Native app integrations](../../apps/native-app-integrations/_index) — Streamlit, FastAPI, vLLM, SGLang
 
 ## Next
 

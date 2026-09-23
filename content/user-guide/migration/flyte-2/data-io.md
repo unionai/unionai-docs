@@ -1,5 +1,7 @@
 ---
 title: Data types and I/O
+description: The offloaded-data types are renamed and their I/O is async, but the mental model is unchanged.
+icon: arrow-left-right
 weight: 9
 variants: +flyte +union
 ---
@@ -21,7 +23,7 @@ Flyte 2 renames the offloaded-data types and makes their I/O `async`, but the me
 {{< /tab >}}
 {{< /tabs >}}
 
-See [Files and directories](../../task-programming/files-and-directories) for more.
+See [Files and directories](../../tasks/task-programming/files-and-directories) for more.
 
 ## DataFrames
 
@@ -36,7 +38,7 @@ See [Files and directories](../../task-programming/files-and-directories) for mo
 {{< /tab >}}
 {{< /tabs >}}
 
-See [DataFrames](../../task-programming/dataframes) for more.
+See [DataFrames](../../tasks/task-programming/dataframes) for more.
 
 ## Dataclasses and structured types
 

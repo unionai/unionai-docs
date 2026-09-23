@@ -1,0 +1,31 @@
+---
+title: RuntimeUnknownError
+description: "This error is raised when the underlying task execution fails because of an unknown error."
+icon: exclamation-triangle
+version: 2.10.0
+variants: +flyte +union
+layout: py_api
+---
+
+# RuntimeUnknownError
+
+**Package:** `flyte.errors`
+
+This error is raised when the underlying task execution fails because of an unknown error.
+
+
+## Parameters
+
+```python
+class RuntimeUnknownError(
+    code: str,
+    message: str,
+    worker: str | None = None,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
+

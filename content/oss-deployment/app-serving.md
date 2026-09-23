@@ -1,5 +1,7 @@
 ---
 title: Enable app serving
+description: Run long-running apps beside your workflows by installing Knative and enabling the app controller.
+icon: window
 variants: +flyte -union
 weight: 5
 ---
@@ -24,7 +26,7 @@ Serving first, then turn app serving on in the `flyte-binary` chart.
 
 ## Prerequisites
 
-- A running Flyte deployment (see [AWS deployment](./aws-deployment)).
+- A running Flyte deployment (see [AWS deployment](./aws-deployment/_index)).
 - Cluster-admin access to install Knative (CRDs and controllers).
 - A **wildcard DNS record** and a **TLS certificate** for the app base domain (details
   in steps 2 to 3).

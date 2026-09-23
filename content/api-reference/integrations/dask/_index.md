@@ -1,6 +1,7 @@
 ---
 title: Dask
-version: 2.5.11
+icon: book
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,13 +16,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.dask.Dask`](packages/flyteplugins.dask/dask) | Configuration for the dask task. |
-| [`flyteplugins.dask.Scheduler`](packages/flyteplugins.dask/scheduler) | Configuration for the scheduler pod. |
-| [`flyteplugins.dask.WorkerGroup`](packages/flyteplugins.dask/workergroup) | Configuration for a group of dask worker pods. |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.dask`](packages/flyteplugins.dask/_index) |  |
+| [`Dask`](./dask) | Configuration for the dask task. |
+| [`Scheduler`](./scheduler) | Configuration for the scheduler pod. |
+| [`WorkerGroup`](./workergroup) | Configuration for a group of dask worker pods. |
 

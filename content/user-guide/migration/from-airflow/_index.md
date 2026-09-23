@@ -1,5 +1,7 @@
 ---
 title: From Airflow to Flyte
+description: Mapping from Airflow concepts (DAGs, operators, schedules, XCom, trigger rules) to their Flyte 2 equivalents.
+icon: git
 weight: 2
 variants: +flyte +union
 ---
@@ -12,7 +14,7 @@ The migration is split by operator family. Each section maps an Airflow construc
 
 {{< grid >}}
 
-{{< link-card target="part-1-vanilla-operators" title="Part 1: Vanilla Operators" >}}
+{{< link-card target="part-1-vanilla-operators" icon="diagram-2" title="Part 1: Vanilla Operators" >}}
 PythonOperator, TaskFlow, BashOperator, KubernetesPodOperator, plus DAG schedules, the driver task model, and orchestration patterns (parallelism, conditionals, error handling).
 {{< /link-card >}}
 

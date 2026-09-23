@@ -1,5 +1,7 @@
 ---
 title: Code generation
+description: Turn a natural-language prompt, sample data, and constraints into tested Python code.
+icon: magic
 weight: 1
 variants: +flyte +union
 mermaid: true

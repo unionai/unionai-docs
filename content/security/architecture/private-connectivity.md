@@ -1,5 +1,7 @@
 ---
 title: Private connectivity (BYOC)
+description: How BYOC reaches the customer cluster over AWS PrivateLink, GCP Private Service Connect, or the Azure equivalent.
+icon: reception-4
 weight: 6
 variants: -flyte +union
 ---

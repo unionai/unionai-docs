@@ -1,13 +1,12 @@
 ---
 title: Self-managed deployment
+description: Run the data plane on your own Kubernetes cluster, owning the cluster and its upgrades while Union runs the control plane.
+icon: server
 weight: 2
 variants: -flyte +union
-llm_readable_bundle: true
 ---
 
 # Self-managed deployment
-
-{{< llm-bundle-note >}}
 
 In a self-managed deployment, you operate the data plane on your own Kubernetes infrastructure.
 Union.ai runs the control plane, but you manage the cluster, upgrades, and operational aspects of the data plane yourself.
@@ -16,16 +15,17 @@ Union.ai has no access to your cluster, providing the highest level of data isol
 ## Getting started
 
 1. Review the [architecture](./architecture/_index) to understand the control plane, data plane operators, and security model.
-2. Check the [cluster recommendations](./cluster-recommendations) for Kubernetes version, networking, and IP planning requirements.
-3. Set up your data plane on your cloud provider:
-   - [Generic Kubernetes](./selfmanaged-generic/_index) (on-premise or any S3-compatible environment)
-   - [AWS](./selfmanaged-aws/_index)
-   - [GCP](./selfmanaged-gcp/_index)
-   - [Azure](./selfmanaged-azure/_index)
-   - [OCI](./selfmanaged-oci/_index)
-   - [CoreWeave](./selfmanaged-coreweave/_index)
-   - [Crusoe](./selfmanaged-crusoe/_index)
-   - [Nebius](./selfmanaged-nebius/_index)
+2. Review the [infrastructure recommendations](./infrastructure-recommendations/_index) for the sizing model, networking and IP planning, identity, and the [scaling constraints](./infrastructure-recommendations/scaling-constraints) to plan around.
+3. Provision your cloud infrastructure using the page for your provider:
+   - [AWS](./infrastructure-recommendations/aws)
+   - [GCP](./infrastructure-recommendations/gcp)
+   - [Azure](./infrastructure-recommendations/azure)
+   - [OCI](./infrastructure-recommendations/oci)
+   - [Generic Kubernetes](./infrastructure-recommendations/generic) (on-premise or any S3-compatible environment)
+   - [CoreWeave](./infrastructure-recommendations/coreweave)
+   - [Crusoe](./infrastructure-recommendations/crusoe)
+   - [Nebius](./infrastructure-recommendations/nebius)
+4. [Deploy the data plane](./deploy/_index) once your infrastructure is ready. CoreWeave, Crusoe, and Nebius have their deploy steps on their own pages.
 
 ## Configuration
 
@@ -45,3 +45,5 @@ After initial setup, configure platform features on your cluster:
 
 - [Helm chart reference](./helm-chart-reference/_index) for available chart values
 - [Kubernetes access controls](./architecture/kubernetes-rbac) for RBAC configuration details
+
+{{< subpage-cards >}}

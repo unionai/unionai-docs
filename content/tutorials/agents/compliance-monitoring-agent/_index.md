@@ -1,5 +1,7 @@
 ---
 title: Compliance monitoring agent
+icon: clipboard-check
+description: Monitor trusted regulatory sources with the You.com Research API and route citation-precise findings to the right team.
 weight: 4
 variants: +flyte +union
 ---
@@ -86,7 +88,7 @@ flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run locally or remotely
 

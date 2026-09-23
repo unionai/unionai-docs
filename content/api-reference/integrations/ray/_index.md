@@ -1,6 +1,7 @@
 ---
 title: Ray
-version: 2.5.11
+icon: book
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,13 +16,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.ray.HeadNodeConfig`](packages/flyteplugins.ray/headnodeconfig) |  |
-| [`flyteplugins.ray.RayJobConfig`](packages/flyteplugins.ray/rayjobconfig) |  |
-| [`flyteplugins.ray.WorkerNodeConfig`](packages/flyteplugins.ray/workernodeconfig) |  |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.ray`](packages/flyteplugins.ray/_index) |  |
+| [`AutoscalerOptionsConfig`](./autoscaleroptionsconfig) | Configuration for the Ray autoscaler sidecar. |
+| [`HeadNodeConfig`](./headnodeconfig) |  |
+| [`RayJobConfig`](./rayjobconfig) |  |
+| [`WorkerNodeConfig`](./workernodeconfig) |  |
 

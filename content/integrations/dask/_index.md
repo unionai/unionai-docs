@@ -1,5 +1,7 @@
 ---
 title: Dask
+description: Run Dask jobs on a transient Kubernetes cluster provisioned per task execution.
+icon: diagram-3
 weight: 1
 variants: +flyte +union
 ---
@@ -28,8 +30,10 @@ image = flyte.Image.from_debian_base(name="dask").with_pip_packages("flyteplugin
 ```
 
 {{< variant union >}}
+{{< markdown >}}
 > [!NOTE]
-For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged/configuration/plugins#dask) to enable the Dask plugin in your data plane.
+> For self-managed setups, refer to the [setup instructions](../../deployment/selfmanaged/configuration/plugins#dask) to enable the Dask plugin in your data plane.
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Configuration

@@ -1,5 +1,7 @@
 ---
 title: Secrets management
+description: How secret values stay in customer infrastructure behind a write-only API that never returns them.
+icon: safe
 weight: 4
 variants: -flyte +union
 ---

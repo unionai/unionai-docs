@@ -1,5 +1,7 @@
 ---
 title: AutoSec researcher agent
+icon: shield-exclamation
+description: Fan out vulnerability analysis across C targets, hypothesize exploits with an LLM agent, and validate PoCs in an isolated sandbox.
 weight: 3
 variants: +flyte +union
 ---
@@ -9,7 +11,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/autosec_research_agent).
 
-This tutorial demonstrates an autonomous security-research agent on Flyte. The pipeline fans out across bundled C source files (each with a planted memory-corruption bug), runs static analysis, uses a `flyte.ai.agents.Agent` to hypothesize vulnerabilities, builds proof-of-concept payloads, and validates exploits inside an on-device [unionai-sandbox](../../../user-guide/sandboxing/_index) user-namespace session.
+This tutorial demonstrates an autonomous security-research agent on Flyte. The pipeline fans out across bundled C source files (each with a planted memory-corruption bug), runs static analysis, uses a `flyte.ai.agents.Agent` to hypothesize vulnerabilities, builds proof-of-concept payloads, and validates exploits inside an on-device [unionai-sandbox](../../../user-guide/agents/sandboxing/_index) user-namespace session.
 
 Flyte provides:
 
@@ -56,7 +58,7 @@ Get an Anthropic API key from the [Anthropic console](https://console.anthropic.
 flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
 ```
 
-See [Secrets](../../../user-guide/task-configuration/secrets) for scoping and file-based secrets.
+See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
 
 ### Run remotely
 

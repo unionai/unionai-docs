@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "flyteplugins.agents.crewai": "/api-reference/integrations/agents/crewai/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.agents.crewai.run_agent": "/api-reference/integrations/agents/crewai/#run_agent",
+    "flyteplugins.agents.crewai.run_agent_sync": "/api-reference/integrations/agents/crewai/#run_agent_sync",
+    "flyteplugins.agents.crewai.tool": "/api-reference/integrations/agents/crewai/#tool"
+  }
+}

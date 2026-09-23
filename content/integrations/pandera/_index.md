@@ -1,5 +1,7 @@
 ---
 title: Pandera
+description: Validate dataframes against a Pandera DataFrameModel schema at task boundaries.
+icon: check2-square
 weight: 1
 variants: +flyte +union
 ---

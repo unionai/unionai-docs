@@ -1,5 +1,7 @@
 ---
 title: Deployment overview
+description: What the Flyte binary contains, and the cluster, database, and object store you supply yourself.
+icon: diagram-3
 variants: +flyte -union
 weight: 1
 mermaid: true
@@ -157,4 +159,4 @@ defaults:
 
 When you're ready, continue to the
 [Kind deployment](./kind-deployment/_index) to try Flyte on a kind cluster,
-or the [AWS deployment](./aws-deployment) guide for a real deployment.
+or the [AWS deployment](./aws-deployment/_index) guide for a real deployment.

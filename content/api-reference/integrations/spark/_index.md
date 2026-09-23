@@ -1,6 +1,7 @@
 ---
 title: Spark
-version: 2.5.11
+icon: book
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,13 +16,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flyteplugins.spark.ParquetToSparkDecoder`](packages/flyteplugins.spark/parquettosparkdecoder) |  |
-| [`flyteplugins.spark.Spark`](packages/flyteplugins.spark/spark) | Use this to configure a SparkContext for a your task. |
-| [`flyteplugins.spark.SparkToParquetEncoder`](packages/flyteplugins.spark/sparktoparquetencoder) |  |
-
-### Packages
-
-| Package | Description |
-|-|-|
-| [`flyteplugins.spark`](packages/flyteplugins.spark/_index) |  |
+| [`ParquetToSparkDecoder`](./parquettosparkdecoder) |  |
+| [`Spark`](./spark) | Use this to configure a SparkContext for a your task. |
+| [`SparkToParquetEncoder`](./sparktoparquetencoder) |  |
 

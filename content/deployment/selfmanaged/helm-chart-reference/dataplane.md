@@ -1,5 +1,7 @@
 ---
 title: Dataplane chart
+description: Helm values for the chart that onboards a Kubernetes cluster as a Union data plane.
+icon: list-columns
 variants: -flyte +union
 chart_version: 2026.3.12
 weight: 1
