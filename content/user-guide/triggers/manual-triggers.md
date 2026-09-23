@@ -33,16 +33,56 @@ A manual trigger can sit next to scheduled ones on the same task. Only a schedul
 
 Deploy the task as usual and all three triggers are registered:
 
+{{< tabs "deploy-manual" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.deploy(env)
+
+for trigger in flyte.remote.Trigger.listall():
+    print(trigger.name, trigger.task_name)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
 ```bash
 flyte deploy manual.py env
 flyte get trigger
 ```
 
-You can also create a manual trigger for an already-deployed task from the CLI by omitting `--schedule`:
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+You can also create a manual trigger for an already-deployed task. In the CLI, leave out `--schedule`:
+
+{{< tabs "create-manual" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.remote.Trigger.create(
+    flyte.Trigger(name="ad-hoc", description="Fire by hand"),
+    task_name="manual_trigger_example.report_on_demand",
+)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
 flyte create trigger manual_trigger_example.report_on_demand ad-hoc --description "Fire by hand"
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Firing a trigger on demand
 

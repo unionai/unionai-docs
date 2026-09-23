@@ -10,6 +10,10 @@ variants: -flyte +union
 
 `flyte.prefetch.hf_model()` downloads a model from the Hugging Face Hub into your own object storage and registers the result as a model artifact. It is the third way an artifact is created, alongside [task outputs](./task-outputs) and [publishing your own](./publish-artifacts).
 
+{{< tabs "prefetch" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
 ```python
 import flyte
 import flyte.prefetch
@@ -19,6 +23,19 @@ flyte.init_from_config()
 run = flyte.prefetch.hf_model(repo="HuggingFaceTB/SmolLM2-135M-Instruct")
 run.wait()
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
+```bash
+flyte prefetch hf-model HuggingFaceTB/SmolLM2-135M-Instruct --wait
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 For the full how-to, including sharding for multi-GPU inference, resources, tokens for gated repos, CLI usage, and serving the result from a vLLM or SGLang app, see [Prefetching models](../apps/serve-and-deploy-apps/prefetching-models). This page covers what a prefetch means for the artifact registry.
 
@@ -35,19 +52,32 @@ Because the version is the upstream commit, a prefetch is idempotent. Re-running
 
 ## Finding a prefetched model
 
-Retrieve it by name:
+Retrieve it by name, or find it by where it came from. The source repo and commit are recorded as searchable metadata:
+
+{{< tabs "find-prefetched" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
 
 ```python
 from flyte.remote import Artifact
 
 model = Artifact.get("SmolLM2-135M-Instruct")
+models = Artifact.listall(attrs={"source_repo": "HuggingFaceTB/SmolLM2-135M-Instruct"})
 ```
 
-Or find it by where it came from. The source repo and commit are recorded as searchable metadata:
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
+flyte get artifact SmolLM2-135M-Instruct
 flyte get artifact --attr source_repo=HuggingFaceTB/SmolLM2-135M-Instruct
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Those `source_repo` and `source_commit` attributes are what make a prefetched model traceable back to its Hub repo and commit.
 

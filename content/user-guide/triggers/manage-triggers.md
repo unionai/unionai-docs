@@ -24,17 +24,28 @@ The Union UI displays:
 
 For development and debugging purposes, you can adjust and deploy individual triggers from the UI.
 
-To deploy a task with its triggers, you can either use Flyte CLI:
+To deploy a task with its triggers:
+
+{{< tabs "deploy" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.deploy(env)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
 flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 ```
 
-Or in Python:
-
-```python
-flyte.deploy(env)
-```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the latest version of that task. Triggers on task `T` which are defined elsewhere (i.e. in the UI) will be deleted unless they have been referenced in the task definition of `T`
 
@@ -51,17 +62,36 @@ An inactive trigger will not create runs until activated.
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="auto-activate-false" lang="python">}}
 
 This trigger won't create runs until it is explicitly activated.
-You can activate a trigger via the Flyte CLI:
+Activate it, or deactivate a trigger to stop it from creating new runs:
 
-```bash
-flyte update trigger custom_cron my_task_env.custom_task --activate --project <project> --domain <domain>
+{{< tabs "activate" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+# Activate
+flyte.remote.Trigger.update("custom_cron", "my_task_env.custom_task", active=True)
+
+# Deactivate
+flyte.remote.Trigger.update("custom_cron", "my_task_env.custom_task", active=False)
 ```
 
-If you want to stop your trigger from creating new runs, you can deactivate it:
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
+# Activate
+flyte update trigger custom_cron my_task_env.custom_task --activate --project <project> --domain <domain>
+
+# Deactivate
 flyte update trigger custom_cron my_task_env.custom_task --deactivate --project <project> --domain <domain>
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 You can also view and manage your deployed triggers in the Union UI.
 
@@ -69,8 +99,25 @@ You can also view and manage your deployed triggers in the Union UI.
 
 If you decide that you don't need a trigger anymore, you can remove the trigger from the task definition and deploy the task again.
 
-Alternatively, you can use Flyte CLI:
+Alternatively, delete it directly:
+
+{{< tabs "delete" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.remote.Trigger.delete("custom_cron", "my_task_env.custom_task")
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
 flyte delete trigger custom_cron my_task_env.custom_task --project <project> --domain <domain>
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}

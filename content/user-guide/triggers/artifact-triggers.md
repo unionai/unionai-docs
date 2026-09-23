@@ -33,9 +33,26 @@ async def validate(model: File, threshold: float = 0.5) -> str:
 
 Deploy the environment to register the trigger:
 
+{{< tabs "deploy" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.deploy(env)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
 ```bash
 flyte deploy validation.py env
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 From then on, every new version of `customer_model` in the task's project and domain starts a run of `validate`, with the new version bound to the `model` input. The task body sees an ordinary `File` or `Dir` and needs no artifact-specific code.
 

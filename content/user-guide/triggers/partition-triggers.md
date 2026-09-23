@@ -44,9 +44,26 @@ async def process_partition(events: File, day: datetime, region: str) -> str:
 
 Deploy the environment to register the trigger:
 
+{{< tabs "deploy" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+flyte.deploy(env)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
+
 ```bash
 flyte deploy us_cleaning.py env
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 From then on, a new `raw_events` version with `region="us"` starts a run of `process_partition`, with `events`, `day`, and `region` filled in. A version published for `region="eu"` is still registered, but it fires nothing.
 

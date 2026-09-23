@@ -10,9 +10,13 @@ variants: -flyte +union
 
 Not every dataset or model is produced by a task. You can publish an existing asset as an artifact from anywhere: a laptop, a notebook, a CI job, or an external pipeline. This is how you bootstrap a registry from assets you already have.
 
-## From Python
+## Publish an artifact
 
-Use `flyte.remote.Artifact.create()`. It uploads the value and registers a version in one call:
+{{< tabs "publish-artifact" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+`flyte.remote.Artifact.create()` uploads the value and registers a version in one call:
 
 ```python
 import flyte
@@ -30,25 +34,53 @@ published = Artifact.create(
 print(published.name, published.version)
 ```
 
-If you do not pass a `version`, one is generated for you. Pass `attrs`, `kind`, and `card` the same way as in task-produced [metadata](./task-outputs#metadata). The call is synchronous by default; use `Artifact.create.aio(...)` from async code.
+The call is synchronous by default; use `Artifact.create.aio(...)` from async code.
 
-The `external_ref` records where the data came from. When `Artifact.create()` runs inside a task, the producing run is stamped on the artifact automatically; outside a task, `external_ref` is the provenance you can attach.
-
-## From the CLI
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 `flyte create artifact` publishes a file directly:
 
 ```bash
+flyte create artifact incoming_dataset --from-file data/2026-08-18.csv \
+    --external-ref s3://partner-bucket/drop/2026-08-18.csv
 flyte create artifact my-model --from-file model.pt --kind model --attr framework=torch
-flyte create artifact llama3 --from-file weights.bin --external-ref hf://meta-llama/Meta-Llama-3-8B
 flyte create artifact my-model --from-file model.pt --card model_card.html --card-type model
 ```
 
 `--attr` is repeatable, `--kind` is one of `model`, `data`, or `generic`, and the card format is inferred from the file extension.
 
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+If you do not pass a version, one is generated for you. Set attrs, kind, and a card the same way as in task-produced [metadata](./task-outputs#metadata).
+
+The external ref records where the data came from. When `Artifact.create()` runs inside a task, the producing run is stamped on the artifact automatically; outside a task, the external ref is the provenance you can attach.
+
 ## Finding artifacts
 
-`flyte get artifact` browses the registry:
+{{< tabs "find-artifacts" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+from flyte.remote import Artifact
+
+Artifact.list_names()                                   # all artifact names, with latest version info
+Artifact.listall("my-model")                            # every version of my-model, newest first
+Artifact.get("my-model", version="1.0")                 # one version
+Artifact.list_names(search="model")                     # names containing "model"
+Artifact.listall(source_run="my_run")                   # versions produced by a run
+Artifact.listall(kind="model", attrs={"framework": "torch"})
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
 flyte get artifact                        # all artifact names, with latest version info
@@ -59,6 +91,10 @@ flyte get artifact --source-run my_run    # versions produced by a run
 flyte get artifact --kind model --attr framework=torch
 ```
 
-The same queries are available in Python. `Artifact.get(name)` returns the latest version by default, `Artifact.listall()` iterates versions newest first with server-side filtering, and `Artifact.list_names()` lists distinct names with their version counts. For partitions, ranges, and more filters, see [Find and retrieve artifacts](./retrieving-artifacts).
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+`Artifact.get(name)` returns the latest version by default, and `listall` and `list_names` return iterators. For partitions, ranges, and more filters, see [Find and retrieve artifacts](./retrieving-artifacts).
 
 Artifacts are scoped to a project and domain. All of these calls accept `project` and `domain` arguments, and default to the ones in your config.
