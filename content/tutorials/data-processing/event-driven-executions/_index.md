@@ -32,6 +32,33 @@ immediate production change with no way to pin or roll back.
 
 ## Reading from SQS
 
+```mermaid
+flowchart LR
+    subgraph aws["Your AWS account"]
+        direction TB
+        s3[("S3 bucket")]
+        q["SQS queue"]
+        dlq["Dead-letter queue"]
+        s3 -->|"s3:ObjectCreated"| q
+        q -.->|"after ~5 attempts"| dlq
+    end
+
+    subgraph union["Union"]
+        direction TB
+        sec[["Secret: flyte-api-key"]]
+        app["Union app: sqs-subscriber<br/>replicas (1, 1)"]
+        run(["Run of on_object"])
+        sec -.->|"FLYTE_API_KEY"| app
+        app -->|"2 - launch"| run
+    end
+
+    q -->|"1 - long poll"| app
+    app -->|"3 - delete message"| q
+```
+
+Steps 2 and 3 are in that order on purpose: the message is deleted once the run exists,
+not once it finishes.
+
 A subscriber reads the queue and launches a run per message. It runs as a Union app, so
 there is no cluster resource to operate — deploy it and the platform keeps it alive:
 
@@ -88,8 +115,35 @@ region.
 
 ## Reading from Pub/Sub
 
-The same design with a different client. Pub/Sub manages the polling threads, so the
-handler is a callback rather than a loop:
+```mermaid
+flowchart LR
+    subgraph gcp["Your Google Cloud project"]
+        direction TB
+        gcs[("GCS bucket")]
+        topic["Pub/Sub topic"]
+        sub["Pull subscription"]
+        dlt["Dead-letter topic"]
+        gcs -->|"OBJECT_FINALIZE"| topic
+        topic --> sub
+        sub -.->|"after ~5 attempts"| dlt
+    end
+
+    subgraph union["Union"]
+        direction TB
+        sec[["Secret: flyte-api-key"]]
+        app["Union app: pubsub-subscriber<br/>replicas (1, 1)"]
+        run(["Run of on_object"])
+        sec -.->|"FLYTE_API_KEY"| app
+        app -->|"2 - launch"| run
+    end
+
+    sub -->|"1 - streaming pull"| app
+    app -->|"3 - ack"| sub
+```
+
+The same pieces as SQS, with delivery split in two: the bucket publishes to a topic, and
+the subscriber reads a subscription on it. Pub/Sub also manages the polling threads, so
+the handler is a callback rather than a loop:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/pubsub_subscriber.py" fragment=pubsub_app lang=python >}}
 
@@ -156,6 +210,23 @@ It is a second system holding state about the first, and it has to
 stay correct as both change.
 
 ## The version without a queue
+
+```mermaid
+flowchart LR
+    subgraph union["Union"]
+        direction LR
+        pr(["Run of produce"])
+        art[("Artifact: incoming_dataset<br/>new version")]
+        trig["Trigger: on_new_dataset<br/>OnArtifact"]
+        cons(["Run of consume"])
+        pr -->|"Artifact.create"| art
+        art --> trig
+        trig -->|"bound to the dataset input"| cons
+    end
+```
+
+Nothing sits outside Union: no queue, no subscriber, no dead-letter path, and no stored
+credentials.
 
 When the event originates inside Flyte, none of the above is needed. A task publishes a
 new version of a named artifact, and any task with an `OnArtifact` trigger on that name
