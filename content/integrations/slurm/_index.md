@@ -322,9 +322,55 @@ The connector keeps one SSH connection per cluster, reused across calls and re-e
 
 Each job also leaves a `.sbatch`, `.out` and `.err` file in `working_dir`, and nothing removes them — they are the first thing to read when a job fails. On a busy cluster they accumulate in the submitting user's home, so prune them on whatever schedule suits the site.
 
-## Limitations
+## Known gaps
 
-- **No multi-node gang execution for `slurm` tasks.** `nodes > 1` allocates the nodes, but the Flyte entrypoint runs as a single process. Use `slurm_script` for distributed launchers.
-- **SSH transport only.** A `slurmrestd` transport can be added behind the plugin's transport protocol, but is not implemented.
-- **One identity.** Every job runs as the configured SSH user; there is no per-user attribution on the cluster.
-- **`slurm_script` has no typed outputs.** It reports phase, exit code and logs only, so downstream tasks cannot consume its results through Flyte.
+What the plugin does not do today, and what to do instead.
+
+### Execution
+
+- **No multi-node gang execution for `slurm` tasks.** The native task pins
+  `srun --nodes=1 --ntasks=1`, so the Flyte entrypoint runs exactly once even when the
+  allocation spans several nodes. Without that pin, `nodes=2` would start one entrypoint
+  per node, each writing the same output prefix. Distributed work belongs in a
+  `slurm_script` task, which drives `srun` or `mpirun` itself. A launcher for native
+  tasks is not implemented.
+- **Only Pyxis and Apptainer are supported as container runtimes.** Anything else needs a
+  new branch in the plugin's container invocation. A cluster with neither cannot run
+  native tasks at all; use `slurm_script` and invoke whatever the site provides.
+- **`resources` is refused on a Slurm task environment.** The allocation comes from the
+  `Slurm` config, so setting `resources` raises rather than being silently ignored. Use
+  `cpus_per_task`, `mem`, `gres` or `gpus_per_node`.
+
+### Data and I/O
+
+- **`slurm_script` has no typed outputs.** It reports phase, exit code and logs only, so
+  downstream tasks cannot consume its results through Flyte. Coordinate through an agreed
+  path in object storage, which Flyte will not track.
+- **Script inputs are limited to scalars and URIs.** `str`, `int`, `float` and `bool`
+  become `FLYTE_INPUT_<NAME>`; `File` and `Dir` become their URI. Anything else fails at
+  submission, because an environment variable cannot carry it.
+- **No clickable log links.** A job's stdout and stderr are files on the login node, not
+  resources behind a URL, so their paths are named in the task's message instead. Live
+  stdout is streamed through the connector.
+
+### Operations
+
+- **SSH transport only.** A `slurmrestd` transport can be added behind the plugin's
+  transport protocol, but is not implemented. Many clusters already have the prerequisite
+  (`AuthAltTypes=auth/jwt`) without running the daemon.
+- **One identity.** Every job runs as the configured SSH user, so the cluster attributes
+  all work to that account regardless of who launched the run.
+- **Status is polled per job.** The connector keeps one SSH connection per cluster, but
+  `get` is called once per resource, so it issues one `squeue` per job per poll.
+  Coalescing would need a cache inside the connector.
+- **Job files accumulate.** Each job leaves a `.sbatch`, `.out` and `.err` in
+  `working_dir` and nothing removes them — they are the first thing to read when a job
+  fails. Prune them on whatever schedule suits the site.
+- **A cluster without accounting has a small blind spot.** When `sacct` is unavailable,
+  a finished job is resolved through `scontrol`, which only keeps it for `MinJobAge`
+  seconds. A job that finishes and ages out between two polls cannot be resolved at all.
+
+> [!WARNING] Values in `env` are written to the cluster in plain text
+> They are rendered into the generated `sbatch` script, which stays on the login node's
+> filesystem. Mount credentials from the shared filesystem and reference the path in
+> `env`; never put the secret itself there.
