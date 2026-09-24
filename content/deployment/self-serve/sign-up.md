@@ -1,12 +1,12 @@
 ---
-title: Sign up to Union.ai
+title: Sign up for Union.ai
 description: Sign up with your Google or Microsoft work account and create the organization that is your Union.ai workspace.
 icon: person-plus
 weight: 2
 variants: -flyte +union
 ---
 
-# Sign up to Union.ai
+# Sign up for Union.ai
 
 Here you create your account and an organization. Your organization is your workspace in Union.ai. It holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
@@ -22,8 +22,8 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 
 ![The Union sign-up page, offering Continue with Google, Continue with Microsoft and AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
 
-> [!NOTE] Subscribed through AWS Marketplace?
-> Your organization needs to be associated with a subscription. If you do not yet have a subscription to Union.ai, just click go to the [**AWS Marketplace**](./aws-marketplace) button and go there first. You will rejoin this step after you complete the subscription.
+> [!NOTE] Not subscribed yet?
+> Your organization needs to be associated with a subscription. If you do not have one yet, select **AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first. You return to this step after you complete the subscription.
 
 ## Create your organization
 
@@ -41,7 +41,7 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 
 ![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
 
-## Sign in to your organization
+## Open your organization
 
 When setup finishes, Union.ai takes you to your organization's home page. Your organization's address, in the form `<your-org>.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
 
@@ -64,9 +64,9 @@ Select **Show me how** on the **Run something locally** card for a short in-app 
 
 [Run your first workflow locally](./run-locally) covers the same steps as the in-product guide.
 
-###  Provision and connect
+### Provision and connect
 
-When you are ready to start running workflows in your AWS infrastructure, proceed to the following steps:
+When you are ready to run workflows on your AWS infrastructure, continue with:
 
-- **[Provision your AWS resources](./aws-infrastructure)**.
-- **[Connect your cluster](./connect-a-cluster)**, when you want Union.ai to run your workloads on your own infrastructure.
+- **[Provision your AWS resources](./aws-infrastructure)**
+- **[Connect your cluster](./connect-a-cluster)**

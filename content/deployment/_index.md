@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-description: Deploy the Union platform as a self-managed or BYOC.
+description: Deploy Union.ai as a self-managed or BYOC deployment, or set it up yourself from AWS Marketplace.
 icon: server
 weight: 5
 variants: -flyte +union
@@ -18,9 +18,9 @@ You can deploy Union.ai on all major cloud providers, on neocloud providers, and
 
 In both cases, the control plane runs in Union.ai's cloud account, but due to Union's [Zero Trust architecture](../security/_index), your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own cloud account. See [Two-plane separation](../security/architecture/two-plane-separation) for how the split works.
 
-## The fastest way to get started: Union.ai Teams on AWS Marketplace
+## The fastest way to get started: Union Team on AWS Marketplace
 
-The quickest route to a working Union.ai deployment is **Union.ai Teams**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process, and new subscriptions start with a 30-day free trial.
+The quickest route to a working Union.ai deployment is **Union Team**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process, and new subscriptions start with a 30-day free trial.
 
 You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai UI. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 

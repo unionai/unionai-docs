@@ -112,7 +112,7 @@ With a connected cluster, run the `hello.py` workflow from [Run your first workf
 flyte run hello.py main
 ```
 
-The run appears under **Runs** in your project, not under **Tracked Runs**, (that is for runs that execute on your own machine). See [Run modes](../../user-guide/get-started/run-modes/_index) for how the two differ.
+The run appears under **Runs** in your project, not under **Tracked Runs**, which is for runs that execute on your own machine. See [Run modes](../../user-guide/get-started/run-modes/_index) for how the two differ.
 
 ## Next steps
 

@@ -15,7 +15,7 @@ Union.ai has no access to your cluster, providing the highest level of data isol
 ## Getting started
 
 > [!TIP] On AWS? Use self-serve setup instead
-> The fastest way to a self-managed deployment is to subscribe to Union.ai Teams on AWS Marketplace and follow the [self-serve setup](../self-serve/_index). You still provision your AWS resources, but an agent installs the data plane into your cluster for you, so you skip the Helm install and configuration below.
+> The fastest way to a self-managed deployment is to subscribe to Union Team on AWS Marketplace and follow the [self-serve setup](../self-serve/_index). You still provision your AWS resources, but an agent installs the data plane into your cluster for you, so you skip the Helm install and configuration below.
 
 These steps are for providers self-serve setup doesn't cover yet, or for when you want to provision and install the data plane yourself:
 

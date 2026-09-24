@@ -25,7 +25,7 @@ At the end you have the values you enter when you [connect your cluster](./conne
 - AWS CLI authenticated to the target account.
 - `eksctl` 0.195.0 or later, `kubectl`, `jq`, and `envsubst` installed locally.
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
-- A Union.ai organization. See [Sign up and create your Union.ai organization](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
 
 The commands create billable resources, including an EKS control plane, three EC2 nodes, and networking. Choose a dedicated test account when possible.
 

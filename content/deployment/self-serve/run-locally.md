@@ -8,11 +8,11 @@ variants: -flyte +union
 
 # Run your first workflow locally
 
-Your Union.ai account can display locally run workflows before you connect any cloud infrastructure. A workflow you run with `--tracked` executes on your own machine and reports its progress to Union.ai as it goes so you can see how Union.ai works before you create a cluster.
+Your Union.ai account can display locally run workflows before you connect any cloud infrastructure. A workflow you run with `--tracked` executes on your own machine and reports its progress to Union.ai as it goes, so you can see how Union.ai works before you create a cluster.
 
 ## What you'll need
 
-- A Union.ai organization. See [Sign up and create your Union.ai organization](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
 - Your organization's address, in the form `<your-org>.hosted.unionai.cloud`. It is in your browser's address bar when you are signed in to the Union.ai UI.
 - Python 3.10+ in a virtual environment.
 
@@ -51,7 +51,7 @@ def fn(x: int) -> int:
     return slope * x + intercept
 
 @env.task
-def main(x_list: list[int] = [1,2,3,4,5]) -> float:
+def main(x_list: list[int] = [1, 2, 3, 4, 5]) -> float:
     y_list = list(flyte.map(fn, x_list))
     return sum(y_list) / len(y_list)
 ```
@@ -68,19 +68,17 @@ The example fans a small computation out over a list of inputs with `flyte.map` 
 
 ## See your run in the UI
 
-Open the printed path in the terminal, or, from your organization home page select **Projects**, find the **default** project, and then select **Tracked Runs**:
+Open the path printed in your terminal. Or, from your organization's home page, select **Projects**, open the **default** project, and select **Tracked Runs**. Tracked runs have their own section, separate from **Runs**, which shows runs that executed on a cluster.
 
-(**Tracked runs** have their own section, separate from **Runs**, which shows runs that executed on a cluster.)
+![The Tracked Runs page of the default project, listing the main run as succeeded](../../_static/images/deployment/self-serve/run-locally/tracked-runs.png)
 
-![Tracked runs](../../_static/images/deployment/self-serve/run-locally/tracked-runs.png)
+Select **main** to see the run itself:
 
-Click on **main** to see the run itself:
-
-![Run view](../../_static/images/deployment/self-serve/run-locally/run-view.png)
+![The run page for main, showing the main action with its five fn child actions, the hello_env environment, and the run's input and output](../../_static/images/deployment/self-serve/run-locally/run-view.png)
 
 The run page shows:
 
-- The run and each of its actions, with status and timing. The example has one parent action and ten child actions, one per input.
+- The run and each of its actions, with status and timing. The example has one parent action and five child actions, one per input.
 - The environment the task belongs to.
 - Under **Summary**, the inputs the run received and the outputs it produced.
 
