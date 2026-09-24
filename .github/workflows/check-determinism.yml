@@ -56,4 +56,4 @@ jobs:
       - name: Report status
         if: ${{ failure() }}
         run: |
-          echo "::error::The determinism check failed -- either a Hugo build failed or two builds of the same source differ. The FATAL line in the step above says which. Reproduce locally with 'unionai-docs-infra/scripts/check-determinism.sh'."
+          echo "::error::The determinism workflow failed. Inspect the failed step above; reproduce the build check locally with 'unionai-docs-infra/scripts/check-determinism.sh'."
