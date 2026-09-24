@@ -29,7 +29,7 @@ The account you buy from doesn't have to be the one Union.ai runs in. You can ru
 
 ## 2. Continue to Union.ai
 
-Once you make the purchase, you will be taken to the the Union.ai sign-up page.
+Once you make the purchase, click **Set up your account** to be taken to the the Union.ai sign-up page.
 
 > [!NOTE] One subscription, one organization
 > A marketplace subscription can only be associated with a single Union.ai organization. If you try to associate the same subscription with a second organization, Union.ai refuses rather than splitting your entitlement across two workspaces.

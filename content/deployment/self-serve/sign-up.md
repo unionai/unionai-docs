@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Sign up to Union.ai
 
-Create your account and an organization. Your organization is your workspace in Union.ai. It holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
+Here you create your account and an organization. Your organization is your workspace in Union.ai. It holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
 Once it exists, you can [run a workflow on your own machine](./run-locally) and follow it in the Union.ai UI, so you can see how Union.ai works before connecting any infrastructure.
 
@@ -23,7 +23,7 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 ![The Union sign-up page, offering Continue with Google, Continue with Microsoft and AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
 
 > [!NOTE] Subscribed through AWS Marketplace?
-> Your subscription needs to be associated with the organization you create, so start at [AWS Marketplace](./aws-marketplace) rather than here. If you came here first, just click the **AWS Marketplace** button. You will rejoin this step after you complete the subscription.
+> Your organization needs to be associated with a subscription. If you do not yet have a subscription to Union.ai, just click go to the [**AWS Marketplace**](./aws-marketplace) button and go there first. You will rejoin this step after you complete the subscription.
 
 ## Create your organization
 
@@ -49,8 +49,8 @@ When setup finishes, Union.ai takes you to your organization's home page. Your o
 
 The home page offers two ways to start:
 
-- **Connect your cluster.** Give Union.ai a Kubernetes cluster to run workloads on, with scalable compute and GPUs. See [Connect your cluster](./connect-a-cluster).
-- **Run something locally.** Run a workflow on your own machine and follow it in the UI. No cluster needed.
+- **Run something locally.**
+- **Connect your cluster.**
 
 ![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/self-serve/sign-up/connect-or-run.png)
 
