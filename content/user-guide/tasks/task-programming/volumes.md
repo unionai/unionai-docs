@@ -214,9 +214,36 @@ Each branch commits its own immutable version; downstream you can read them
 independently or fork a new branch from any of them. Reading is never
 restricted: any number of tasks can mount the same `ROVolume` read-only at once.
 
-## Tracking versions as artifacts
+## Going further
 
-Every commit already gives you an immutable version, but that history lives
+### Checkpoint while you work
+
+Use `commit()` to record a version **without unmounting**: useful in
+long-running loops where you want a durable point you can resume from if the run
+is interrupted:
+
+```python
+@env.task
+async def train(base: ROVolume) -> ROVolume:
+    rw = await base.fork(name="training-run")
+    data = await rw.mount()
+
+    for epoch in range(100):
+        train_one_epoch(data)                   # writes under the mounted volume
+        if epoch % 10 == 0:
+            await rw.commit(message=f"epoch {epoch}")   # durable checkpoint
+
+    return await rw.finalize(message="training complete")
+```
+
+Each `commit()` records a durable, immutable version you can resume from. Those
+versions are **retained**, so commit on a cadence that matches how often you'd
+actually want to roll back: checkpoint periodically rather than every step, and
+prune versions you no longer need.
+
+### Tracking versions as artifacts
+
+Every commit gives you an immutable version, but that history lives
 inside the volume. Declaring the volume as an **artifact** also publishes each
 sealed version to the artifact registry, where it has a stable name, is
 searchable across runs, and carries an explicit parent edge to the version it
@@ -262,7 +289,7 @@ split one version graph into two.
 > `Metadata(version=...)` and `Metadata(card=...)` are rejected on a volume.
 > Versions are per-seal, and the card is rendered from each seal.
 
-### Publishing a version
+#### Publishing a version
 
 Returning the volume from a task publishes that seal as part of writing the
 task's outputs: no extra call in your code, and no registry round trip inside
@@ -286,7 +313,7 @@ Commits you don't publish are still durable versions — they are simply not in
 the registry, much as a local commit is real but has not been pushed. The registry holds
 the versions you chose to publish.
 
-### Versions and parents
+#### Versions and parents
 
 A published version defaults to the seal's **identity hash**, which covers the
 committed index and where its chunks live. Every seal writes a new index, so
@@ -307,7 +334,7 @@ carries:
 | `volume/inode_count` | Files, directories and symlinks at the seal |
 | `volume/metadata_store` | The metadata store backing the volume |
 
-### Branching under a different artifact
+#### Branching under a different artifact
 
 `fork()` inherits its parent's artifact identity, so a branch keeps publishing
 under the same name and the registry shows it as a continuation.
@@ -331,37 +358,6 @@ commits durable versions, it just publishes none of them.
 > still succeeds, your data is still durable and still addressable by locator,
 > and a warning records that the registry entry is missing. Local executions
 > skip publishing altogether.
-
-## Going further
-
-### Checkpoint while you work
-
-Use `commit()` to record a version **without unmounting**: useful in
-long-running loops where you want a durable point you can resume from if the run
-is interrupted:
-
-```python
-@env.task
-async def train(base: ROVolume) -> ROVolume:
-    rw = await base.fork(name="training-run")
-    data = await rw.mount()
-
-    for epoch in range(100):
-        train_one_epoch(data)                   # writes under the mounted volume
-        if epoch % 10 == 0:
-            await rw.commit(message=f"epoch {epoch}")   # durable checkpoint
-
-    return await rw.finalize(message="training complete")
-```
-
-Each `commit()` records a durable, immutable version you can resume from. Those
-versions are **retained**, so commit on a cadence that matches how often you'd
-actually want to roll back: checkpoint periodically rather than every step, and
-prune versions you no longer need.
-
-To make a checkpoint visible outside the volume, publish it as an artifact
-version with `commit(publish_artifact=True)` — see
-[Tracking versions as artifacts](#tracking-versions-as-artifacts).
 
 ### Reference a volume across runs
 
