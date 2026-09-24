@@ -22,7 +22,7 @@ In both cases, the control plane runs in Union.ai's cloud account, but due to Un
 
 The quickest route to a working Union.ai deployment is **Union.ai Teams**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process, and new subscriptions start with a 30-day free trial.
 
-You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai console. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai UI. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
 See [Self-serve setup](./self-serve/_index) for the step-by-step path.
 

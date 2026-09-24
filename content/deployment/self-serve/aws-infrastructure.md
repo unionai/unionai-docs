@@ -2,7 +2,7 @@
 title: Provision your AWS resources
 description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
 icon: amazon
-weight: 3
+weight: 4
 variants: -flyte +union
 ---
 

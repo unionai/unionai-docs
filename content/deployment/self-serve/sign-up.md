@@ -1,6 +1,6 @@
 ---
 title: Sign up and create your Union.ai organization
-description: Sign up with your Google work account and create the organization that is your Union.ai workspace, then run a workflow to see it working. No cluster needed.
+description: Sign up with your Google or Microsoft work account and create the organization that is your Union.ai workspace.
 icon: person-plus
 weight: 2
 variants: -flyte +union
@@ -10,22 +10,20 @@ variants: -flyte +union
 
 Create your account and an organization. Your organization is your workspace in Union.ai: it holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
-Once it exists you can test it by running a workflow on your local machine but connected to the Union.ai control plane, so you can see the system running even without a cluster.
-Your first workflow executes on your own machine and reports its progress to Union.ai, so you can see how Union.ai works before connecting any infrastructure.
+Once it exists, you can [run a workflow on your own machine](./run-locally) and follow it in the Union.ai UI, so you can see how Union.ai works before connecting any infrastructure.
 
 > [!NOTE] Subscribed through AWS Marketplace?
 > Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
 
 ## What you'll need
 
-- A Google or Microsoft account for work. Signing up is currently onlu availbelt though through these providers.
-- Python 3.10+ in a virtual environment.
+A Google or Microsoft account for work. Union.ai sign-up is currently only available through these identity providers.
 
 ## Create your account
 
-Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google**. Choose the account you want to use for Union.ai.
+Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google** or **Continue with Microsoft**. Choose the account you want to use for Union.ai.
 
-![The Union sign-up page, with Continue with Google highlighted](../../_static/images/deployment/self-serve/sign-up/sign-in.png)
+![The Union sign-up page, offering Continue with Google, Continue with Microsoft and AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
 
 ## Create your organization
 
@@ -33,7 +31,7 @@ An organization is your top-level workspace in Union.ai. It is where your projec
 
 1. **Organization name.** This becomes your organization's web address, so it must be unique across Union.ai, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, Union.ai checks whether the name is available.
 
-   ![The organization form with a name typed and shown as available](../../_static/images/deployment/self-serve/sign-up/create-organization.png)
+   ![The organization form with a name typed and shown as available, and the us-east-2 region selected](../../_static/images/deployment/self-serve/sign-up/create-org.png)
 
 2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
 
@@ -41,79 +39,33 @@ An organization is your top-level workspace in Union.ai. It is where your projec
 
 Union.ai sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
 
-![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-organization.png)
+![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
 
 ## Sign in to your organization
 
-When setup finishes, Union.ai takes you to your new organization's sign-in page. Select **Continue with Google** and choose the same account again.
+When setup finishes, Union.ai takes you to your new organization's sign-in page. Sign in with the same account again.
 
-You land in the Union.ai UI. Your organization's address is shown at the top of the page, in the form `my-org.hosted.unionai.cloud`. You'll need it in the next step.
+You land in the Union.ai UI. Your organization's address, in the form `my-org.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
 
-> [!NOTE] You don't need a cluster yet
-> The console first asks you to set up a cluster pool. That is [connecting your own cluster](./connect-a-cluster), and you can come back to it any time. For your first run, skip it: select **Projects** in the sidebar. Your organization already has a `default` project ready to use.
+## Choose how to start
 
-## Set up the CLI
+The home page offers two ways to start:
 
-Install the Flyte SDK, which includes the `flyte` command:
+- **Connect your cluster.** Give Union.ai a Kubernetes cluster to run workloads on, with scalable compute and GPUs. See [Connect your cluster](./connect-a-cluster).
+- **Run something locally.** Run a workflow on your own machine and follow it in the UI. No cluster needed.
 
-```bash
-pip install flyte
-```
+![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/self-serve/sign-up/connect-or-run.png)
 
-Create a configuration file that points the CLI at your organization. Replace the endpoint with your organization's address from the previous step:
+Your organization already has a `default` project ready to use, so the local route works straight away. You can connect a cluster at any time.
 
-```bash
-flyte create config \
-    --endpoint my-org.hosted.unionai.cloud \
-    --project default \
-    --domain development \
-    --builder remote
-```
+Select **Show me how** on the **Run something locally** card for a short in-app guide: install the SDK, create a config file that points at your organization, and write a first workflow.
 
-This writes `.flyte/config.yaml` in the current directory. The first command that contacts your organization opens a browser window so you can sign in; after that, the CLI remembers you.
+![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/self-serve/sign-up/show-me-how.png)
 
-<!-- verify on the capture pass: confirm the exact sign-in behaviour a brand-new user sees from the CLI (device flow vs browser redirect) and reconcile this paragraph to it. -->
-
-## Run your first workflow
-
-Run a built-in example workflow. It needs no files of its own:
-
-```bash
-flyte run --tracked hello
-```
-
-The `--tracked` flag runs the workflow on your machine and reports its progress to your organization as it goes. You'll see output like this:
-
-```bash
-Using the built-in example from /tmp/flyte-hello-<user>/task/hello.py
-Copy it into your own project to start editing.
-
-Completed Local Run
-Path: https://my-org.hosted.unionai.cloud/v2/domain/development/project/default/tracked-runs/local-54ce6d6e
-Outputs: ActionOutputs(o0=14.0)
-```
-
-The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path Union.ai prints is the run's page in the console.
-
-## See your run in the console
-
-Open the printed path, or select **Tracked Runs** in the sidebar of your project. Tracked runs have their own section, separate from **Runs**, which shows runs that executed on a cluster.
-
-<!-- screenshot: tracked-run details page for the hello run. Frame on the action tree (main + 10 workers). Evidence shot exists at 1x: shots/evidence-tracked-run-details-1x.jpg; recapture at 2x. -->
-
-The run's page shows:
-
-- The run and each of its actions, with status and timing. The example has one parent action and ten child actions, one per input.
-- The environment the task belongs to.
-- Under **Summary**, the inputs the run received and the outputs it produced.
-
-Everything you see here came from a run on your own machine. Union.ai recorded it as it happened.
+[Run your first workflow locally](./run-locally) covers the same ground step by step, runs a built-in example so you have no file to write, and shows you where to find your run in the UI.
 
 ## Next steps
 
-**[Provision your AWS resources](./aws-infrastructure)**, then **[connect your cluster](./connect-a-cluster)**, are the next steps of the setup. Everything so far has run on your own machine. When you want Union.ai to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it. On a cluster other than EKS, skip straight to connecting it.
-
-Two things you can do without a cluster:
-
-- **Run your own code the same way.** Write a workflow following the [Quickstart](../../user-guide/get-started/quickstart), then run it with `flyte run --tracked temperatures.py hottest`. See [Track local runs in the console](../../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
-- **Learn the concepts.** [Core concepts](../../user-guide/get-started/core-concepts/_index) explains tasks, environments, projects, and runs.
+- **[Run your first workflow locally](./run-locally).** Set up the CLI, run a workflow on your own machine, and follow it in the UI. No cluster needed.
+- **[Provision your AWS resources](./aws-infrastructure)**.
+- **[Connect your cluster](./connect-a-cluster)**, when you want Union.ai to run your workloads on your own infrastructure.
