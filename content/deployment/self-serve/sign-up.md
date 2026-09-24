@@ -12,7 +12,6 @@ Create your account and an organization. Your organization is your workspace in 
 
 Once it exists, you can [run a workflow on your own machine](./run-locally) and follow it in the Union.ai UI, so you can see how Union.ai works before connecting any infrastructure.
 
-
 ## What you'll need
 
 A Google or Microsoft account for work. Union.ai sign-up is currently only available through these identity providers.
@@ -24,17 +23,17 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 ![The Union sign-up page, offering Continue with Google, Continue with Microsoft and AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
 
 > [!NOTE] Subscribed through AWS Marketplace?
-> Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./aws-marketplace) rather than here. If you are already on the Uniona.ai sign-up page, you can just click the AWS Marketplace button. You will rejoin this step after you complete the subscription.
+> Your subscription needs to be associated with the organization you create, so start at [AWS Marketplace](./aws-marketplace) rather than here. If you came here first, just click the **AWS Marketplace** button. You will rejoin this step after you complete the subscription.
 
 ## Create your organization
 
-An organization is your top-level workspace in Union.ai. It is where your projects, workflows, resources, and team members live.
+The organization is the top-level workspace in Union.ai. It is where your projects, workflows, resources, and team members live.
 
 1. **Organization name.** This becomes your organization's web address, so it must be unique across Union.ai, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, Union.ai checks whether the name is available.
 
    ![The organization form with a name typed and shown as available, and the us-east-2 region selected](../../_static/images/deployment/self-serve/sign-up/create-org.png)
 
-2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. If you later connect a cluster of your own, choose the region closest to it. If you are not sure, keep the default.
+2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. You should choose the region closest to where you plan to install your data plane.
 
 3. Select **Create Organization**.
 
@@ -42,10 +41,9 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 
 ![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
 
-
 ## Sign in to your organization
 
-When setup finishes, Union.ai takes you to the Union.ai UI. Your organization's address, in the form `<your-org>.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
+When setup finishes, Union.ai takes you to your organization's home page. Your organization's address, in the form `<your-org>.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
 
 ## Choose how to start
 

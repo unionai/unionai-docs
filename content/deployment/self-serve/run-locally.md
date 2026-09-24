@@ -36,30 +36,9 @@ flyte create config \
 
 This writes `.flyte/config.yaml` in the current directory. The first command that contacts your organization opens a browser window so you can sign in; after that, the CLI remembers you.
 
-## Run the built-in example workflow
+## Create and run your own workflow
 
-Run a built-in example workflow. It needs no files of its own:
-
-```bash
-flyte run --tracked hello
-```
-
-The `--tracked` flag runs the workflow on your machine and reports its progress to your organization as it goes. You'll see output like this:
-
-```bash
-Using the built-in example from /tmp/flyte-hello-<user>/task/hello.py
-Copy it into your own project to start editing.
-
-Completed Local Run
-Path: https://my-org.hosted.unionai.cloud/v2/domain/development/project/default/tracked-runs/local-54ce6d6e
-Outputs: ActionOutputs(o0=14.0)
-```
-
-The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path Union.ai prints is the run's page in the UI.
-
-## Alternatively, create your own workflow
-
-For example, save this file as `hello.py` in a new directory
+Save this file as `hello.py`:
 
 ```python
 import flyte
@@ -77,19 +56,29 @@ def main(x_list: list[int] = [1,2,3,4,5]) -> float:
     return sum(y_list) / len(y_list)
 ```
 
-then, run it with
+Run it with:
 
 ```bash
-flyte run --local --tracked hello.py main
+flyte run --tracked hello.py main
 ```
+
+The `--tracked` flag runs the workflow on your machine and reports its progress to your organization as it goes.
+
+The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path Union.ai prints is the run's page in the UI.
 
 ## See your run in the UI
 
-Open the printed path, or select **Tracked Runs** in the sidebar of your project. Tracked runs have their own section, separate from **Runs**, which shows runs that executed on a cluster.
+Open the printed path in the terminal, or, from your organization home page select **Projects**, find the **default** project, and then select **Tracked Runs**:
 
-<!-- screenshot: tracked-run details page for the hello run. Frame on the action tree (main + 10 workers). Evidence shot exists at 1x: shots/evidence-tracked-run-details-1x.jpg; recapture at 2x. -->
+(**Tracked runs** have their own section, separate from **Runs**, which shows runs that executed on a cluster.)
 
-The run's page shows:
+![Tracked runs](../../_static/images/deployment/self-serve/run-locally/tracked-runs.png)
+
+Click on **main** to see the run itself:
+
+![Run view](../../_static/images/deployment/self-serve/run-locally/run-view.png)
+
+The run page shows:
 
 - The run and each of its actions, with status and timing. The example has one parent action and ten child actions, one per input.
 - The environment the task belongs to.
@@ -99,9 +88,12 @@ Everything you see here came from a run on your own machine. Union.ai recorded i
 
 ## Next steps
 
-**[Provision your AWS resources](./aws-infrastructure)**, then **[connect your cluster](./connect-a-cluster)**, are the next steps of the setup. Everything so far has run on your own machine. When you want Union.ai to run your workloads for you, with GPUs and cluster-scale resources, give it a Kubernetes cluster and it installs the data plane into it. On a cluster other than EKS, skip straight to connecting it.
+When you want to start running your workflows on your AWS infrastructure, proceed with:
 
-Two things you can do without a cluster:
+- **[Provision your AWS resources](./aws-infrastructure)**.
+- **[Connect your cluster](./connect-a-cluster)**.
 
-- **Run your own code the same way.** Write a workflow following the [Quickstart](../../user-guide/get-started/quickstart), then run it with `flyte run --tracked temperatures.py hottest`. See [Track local runs in the console](../../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
+Before that, two things you can do without a cluster are:
+
+- **Try running more code the same way.** Write a workflow following the [Quickstart](../../user-guide/get-started/quickstart). See [Track local runs in the console](../../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console) for what tracking does and does not report.
 - **Learn the concepts.** [Core concepts](../../user-guide/get-started/core-concepts/_index) explains tasks, environments, projects, and runs.

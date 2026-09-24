@@ -1,6 +1,6 @@
 ---
 title: Provision your AWS resources
-description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
+description: Create the EKS cluster, S3 buckets, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
 icon: amazon
 weight: 4
 variants: -flyte +union
@@ -10,39 +10,40 @@ variants: -flyte +union
 
 The self-serve setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
 
-- an EKS cluster in Auto Mode
-- one S3 bucket
+- an EKS cluster with a managed node group of three `m6i.large` nodes
+- two S3 buckets, one for metadata and one for fast registration
 - a private ECR repository
 - separate backend and worker IAM roles for service accounts (IRSA)
 
-At the end you have the six values the AWS cluster-pool form asks for in [Connect your cluster](./connect-a-cluster).
+At the end you have the values you enter when you [connect your cluster](./connect-a-cluster): four for the cluster pool, and two IAM role ARNs for registering the cluster.
 
 > [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: a single bucket, AWS Secrets Manager for runtime secrets, and IAM trust that follows the namespace the agent chooses. Use this page for self-serve setup only.
+> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page for self-serve setup only.
 
 ## Prerequisites
 
 - AWS CLI authenticated to the target account.
-- `eksctl` 0.195.0 or later, `kubectl`, and `envsubst` installed locally.
+- `eksctl` 0.195.0 or later, `kubectl`, `jq`, and `envsubst` installed locally.
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
 - A Union.ai organization. See [Sign up and create your Union.ai organization](./sign-up).
 
-The commands create billable resources, including an EKS control plane and
-networking. Choose a dedicated test account when possible.
+The commands create billable resources, including an EKS control plane, three EC2 nodes, and networking. Choose a dedicated test account when possible.
+
+Run every step in the same shell session. Later steps use the variables that earlier steps export.
 
 ## 1. Set names and verify your AWS identity
 
-Choose names that are unique in the AWS account. `BUCKET_PREFIX` must also be
-globally unique because S3 bucket names are global. Do not use the sample values
-unchanged.
+Choose names that are unique in the AWS account. `BUCKET_PREFIX` must also be globally unique, because S3 bucket names are global. Do not use the sample values unchanged.
 
 ```shell
-export NAME_PREFIX=<name_prefix>
 export AWS_REGION=us-east-2
+export NAME_PREFIX=<my-team>
 export CLUSTER_NAME=${NAME_PREFIX}-union-selfserve
+export NODEGROUP_NAME=${CLUSTER_NAME}-workers
 export KUBERNETES_VERSION=1.35
 export BUCKET_PREFIX=${NAME_PREFIX}-union-selfserve
-export DATA_BUCKET=${BUCKET_PREFIX}-data
+export METADATA_BUCKET=${BUCKET_PREFIX}-metadata
+export FAST_REGISTRATION_BUCKET=${BUCKET_PREFIX}-fast-reg
 export ECR_REPO_NAME=${CLUSTER_NAME}
 export BACKEND_ROLE_NAME=${CLUSTER_NAME}-backend
 export WORKER_ROLE_NAME=${CLUSTER_NAME}-worker
@@ -56,27 +57,51 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output tex
 aws sts get-caller-identity
 ```
 
-Use a currently supported EKS Kubernetes version. The Terraform root defaults
-to `1.35`; update `KUBERNETES_VERSION` if AWS no longer offers that version in
-your region.
+Use a Kubernetes version that EKS currently supports in your region. If AWS no longer offers `1.35`, update `KUBERNETES_VERSION`.
 
-## 2. Create an EKS Auto Mode cluster
+## 2. Create the EKS cluster
 
-Create the cluster and let `eksctl` create its VPC, subnets, control-plane
-role, Auto Mode node role, and default node pools:
-
-These commands use [Amazon EKS Auto Mode with eksctl](https://docs.aws.amazon.com/eks/latest/userguide/automode-get-started-eksctl.html).
+Create the cluster with a managed node group. The configuration leaves out the EKS Metrics Server add-on, because the data plane chart installs Metrics Server itself, and keeps the networking add-ons the cluster needs:
 
 ```shell
-eksctl create cluster \
-  --name "${CLUSTER_NAME}" \
-  --region "${AWS_REGION}" \
-  --version "${KUBERNETES_VERSION}" \
-  --enable-auto-mode
+eksctl create cluster --config-file <(
+  jq -n \
+    --arg clusterName "${CLUSTER_NAME}" \
+    --arg region "${AWS_REGION}" \
+    --arg version "${KUBERNETES_VERSION}" \
+    --arg nodegroupName "${NODEGROUP_NAME}" \
+    '{
+      apiVersion: "eksctl.io/v1alpha5",
+      kind: "ClusterConfig",
+      metadata: {
+        name: $clusterName,
+        region: $region,
+        version: $version
+      },
+      addonsConfig: {
+        disableDefaultAddons: true
+      },
+      addons: [
+        {name: "vpc-cni"},
+        {name: "coredns"},
+        {name: "kube-proxy"}
+      ],
+      managedNodeGroups: [
+        {
+          name: $nodegroupName,
+          instanceType: "m6i.large",
+          desiredCapacity: 3,
+          minSize: 3,
+          maxSize: 6
+        }
+      ]
+    }'
+)
 ```
 
-Associate an IAM OIDC provider. It is required for both IRSA roles. The command
-is safe to run when the provider already exists.
+`eksctl` also creates the VPC and subnets the cluster uses. The three `m6i.large` nodes provide the data plane's initial capacity, and the node group can scale to six.
+
+Associate an IAM OIDC provider, which both IRSA roles need, and look up the OIDC issuer and the node group's IAM role. The first command is safe to run when the provider already exists.
 
 ```shell
 eksctl utils associate-iam-oidc-provider \
@@ -90,68 +115,88 @@ export OIDC_PROVIDER=$(aws eks describe-cluster \
   --query 'cluster.identity.oidc.issuer' \
   --output text | sed 's|https://||')
 
-export NODE_ROLE_ARN=$(aws eks describe-cluster \
+if [[ -z "${OIDC_PROVIDER}" || "${OIDC_PROVIDER}" == "None" ]]; then
+  echo "Unable to resolve the cluster OIDC provider" >&2
+fi
+
+export NODE_ROLE_ARN=$(aws eks describe-nodegroup \
   --region "${AWS_REGION}" \
-  --name "${CLUSTER_NAME}" \
-  --query 'cluster.computeConfig.nodeRoleArn' \
+  --cluster-name "${CLUSTER_NAME}" \
+  --nodegroup-name "${NODEGROUP_NAME}" \
+  --query 'nodegroup.nodeRole' \
   --output text)
+
+if [[ -z "${NODE_ROLE_ARN}" || "${NODE_ROLE_ARN}" == "None" ]]; then
+  echo "Unable to resolve the managed node-group IAM role" >&2
+fi
 ```
 
-Configure access and check that the cluster is usable. If the creator identity
-is not an EKS administrator, grant its IAM role the EKS cluster-admin access
-policy before running `update-kubeconfig`.
+If either check prints an error, stop and fix it before you continue. Later steps put these values into IAM policies.
+
+Configure access and check that the cluster is usable. If the identity that created the cluster is not an EKS administrator, grant its IAM role the EKS cluster-admin access policy before you run `update-kubeconfig`.
 
 ```shell
 aws eks update-kubeconfig --region "${AWS_REGION}" --name "${CLUSTER_NAME}"
 kubectl get nodes
 ```
 
-## 3. Create the S3 bucket
+Confirm that three nodes report `Ready`. Then check that the cluster has no Metrics Server of its own, which would conflict with the one the data plane chart installs:
 
-The data bucket stores workflow metadata, task inputs and outputs, artifacts,
-and fast-registration code bundles. It is the object store entered in the
-cluster-pool form. For `us-east-1`, omit `--create-bucket-configuration`.
+```shell
+if kubectl get clusterrole system:metrics-server-aggregated-reader >/dev/null 2>&1; then
+  echo "ERROR: An existing Metrics Server will conflict with the dataplane chart." >&2
+else
+  echo "No Metrics Server ownership collision detected."
+fi
+```
+
+Do not install the EKS Metrics Server add-on on this cluster later. The data plane chart owns Metrics Server.
+
+## 3. Create the S3 buckets
+
+The metadata bucket stores workflow metadata, task inputs and outputs, and artifacts. It is the object store you enter in the cluster-pool form. The fast-registration bucket holds code bundles, and both IAM roles get the same access to it.
+
+For `us-east-1`, omit `--create-bucket-configuration`.
 
 ```shell
 aws s3api create-bucket \
-  --bucket "${DATA_BUCKET}" \
+  --bucket "${METADATA_BUCKET}" \
   --region "${AWS_REGION}" \
   --create-bucket-configuration "LocationConstraint=${AWS_REGION}"
 
-aws s3api put-public-access-block --bucket "${DATA_BUCKET}" \
-  --public-access-block-configuration \
-  'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
+aws s3api create-bucket \
+  --bucket "${FAST_REGISTRATION_BUCKET}" \
+  --region "${AWS_REGION}" \
+  --create-bucket-configuration "LocationConstraint=${AWS_REGION}"
+
+for bucket in "${METADATA_BUCKET}" "${FAST_REGISTRATION_BUCKET}"; do
+  aws s3api put-public-access-block --bucket "${bucket}" \
+    --public-access-block-configuration \
+    'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
+done
 ```
 
-To let the Union.ai console download code and artifacts through presigned URLs,
-save the following as `cors.json`. Add your console hostname if it is not served
-from a Union domain.
-
-```json
-{
-  "CORSRules": [
-    {
-      "AllowedHeaders": ["*"],
-      "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
-      "AllowedOrigins": ["https://*.unionai.cloud", "https://*.union.ai"],
-      "ExposeHeaders": ["ETag"],
-      "MaxAgeSeconds": 3600
-    }
-  ]
-}
-```
-
-Apply the CORS policy to the bucket:
+Add a CORS policy to both buckets, so the Union.ai UI can download code and artifacts through presigned URLs. If your UI is not served from a Union.ai domain, add its hostname to `AllowedOrigins`.
 
 ```shell
-aws s3api put-bucket-cors \
-  --bucket "${DATA_BUCKET}" \
-  --cors-configuration file://cors.json
+for bucket in "${METADATA_BUCKET}" "${FAST_REGISTRATION_BUCKET}"; do
+  aws s3api put-bucket-cors \
+    --bucket "${bucket}" \
+    --cors-configuration '{
+      "CORSRules": [
+        {
+          "AllowedHeaders": ["*"],
+          "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+          "AllowedOrigins": ["https://*.unionai.cloud", "https://*.union.ai"],
+          "ExposeHeaders": ["ETag"],
+          "MaxAgeSeconds": 3600
+        }
+      ]
+    }'
+done
 ```
 
-For production, add an S3 lifecycle policy, explicit encryption/KMS controls as
-required by your organization, and recovery retention appropriate for workflow
-data.
+For production, add an S3 lifecycle policy, the encryption and KMS controls your organization requires, and recovery retention appropriate for workflow data.
 
 ## 4. Create the private ECR repository
 
@@ -170,235 +215,228 @@ export IMAGE_REGISTRY=$(aws ecr describe-repositories \
 
 ## 5. Create the backend and worker IRSA roles
 
-The backend role is assumed by `union-system` and the legacy
-`flytepropeller-system` service accounts in the dataplane namespace. The worker
-role is assumed by task-pod service accounts (`default` or `union`) in dynamic
-project namespaces.
+The backend role is assumed by the `union-system` and legacy `flytepropeller-system` service accounts in the data plane namespace. The worker role is assumed by task-pod service accounts (`default` or `union`) in dynamic project namespaces.
 
-Save this backend trust policy as `backend-trust-policy.json`:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [{
-    "Effect": "Allow",
-    "Principal": {
-      "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/$OIDC_PROVIDER"
-    },
-    "Action": "sts:AssumeRoleWithWebIdentity",
-    "Condition": {
-      "StringEquals": {
-        "$OIDC_PROVIDER:aud": "sts.amazonaws.com"
-      },
-      "StringLike": {
-        "$OIDC_PROVIDER:sub": [
-          "system:serviceaccount:$DATAPLANE_NAMESPACE:union-system",
-          "system:serviceaccount:$DATAPLANE_NAMESPACE:flytepropeller-system"
-        ]
-      }
-    }
-  }]
-}
-```
-
-Save this worker trust policy as `worker-trust-policy.json`:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [{
-    "Effect": "Allow",
-    "Principal": {
-      "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/$OIDC_PROVIDER"
-    },
-    "Action": "sts:AssumeRoleWithWebIdentity",
-    "Condition": {
-      "StringEquals": {
-        "$OIDC_PROVIDER:aud": "sts.amazonaws.com"
-      },
-      "StringLike": {
-        "$OIDC_PROVIDER:sub": [
-          "system:serviceaccount:*:default",
-          "system:serviceaccount:*:union"
-        ]
-      }
-    }
-  }]
-}
-```
-
-Substitute the shell variables, create the roles, and record their ARNs:
+Each command fills the shell variables into the trust policy with `envsubst`, creates the role, and records its ARN:
 
 ```shell
-envsubst < backend-trust-policy.json > /tmp/backend-trust-policy.json
-envsubst < worker-trust-policy.json > /tmp/worker-trust-policy.json
-
-aws iam create-role \
+export BACKEND_IAM_ROLE_ARN=$(aws iam create-role \
   --role-name "${BACKEND_ROLE_NAME}" \
-  --assume-role-policy-document file:///tmp/backend-trust-policy.json
+  --assume-role-policy-document "$(envsubst <<< '{
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/$OIDC_PROVIDER"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "$OIDC_PROVIDER:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "$OIDC_PROVIDER:sub": [
+            "system:serviceaccount:$DATAPLANE_NAMESPACE:union-system",
+            "system:serviceaccount:$DATAPLANE_NAMESPACE:flytepropeller-system"
+          ]
+        }
+      }
+    }]
+  }')" \
+  --query 'Role.Arn' \
+  --output text)
 
-aws iam create-role \
+export WORKER_IAM_ROLE_ARN=$(aws iam create-role \
   --role-name "${WORKER_ROLE_NAME}" \
-  --assume-role-policy-document file:///tmp/worker-trust-policy.json
-
-export BACKEND_IAM_ROLE_ARN=$(aws iam get-role --role-name "${BACKEND_ROLE_NAME}" --query 'Role.Arn' --output text)
-export WORKER_IAM_ROLE_ARN=$(aws iam get-role --role-name "${WORKER_ROLE_NAME}" --query 'Role.Arn' --output text)
+  --assume-role-policy-document "$(envsubst <<< '{
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/$OIDC_PROVIDER"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "$OIDC_PROVIDER:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "$OIDC_PROVIDER:sub": [
+            "system:serviceaccount:*:default",
+            "system:serviceaccount:*:union"
+          ]
+        }
+      }
+    }]
+  }')" \
+  --query 'Role.Arn' \
+  --output text)
 ```
 
 ## 6. Grant S3 and Secrets Manager access
 
-Save this policy as `backend-policy.json`. It grants the dataplane services
-access to the data bucket and permits the runtime secret-store operations used by
-the operator proxy.
+Attach an inline policy to each role:
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "UnionDataBuckets",
-      "Effect": "Allow",
-      "Action": ["s3:DeleteObject*", "s3:GetObject*", "s3:ListBucket", "s3:PutObject*"],
-      "Resource": [
-        "arn:aws:s3:::$DATA_BUCKET",
-        "arn:aws:s3:::$DATA_BUCKET/*"
-      ]
-    },
-    {
-      "Sid": "SecretsManagerReadWrite",
-      "Effect": "Allow",
-      "Action": [
-        "secretsmanager:CreateSecret", "secretsmanager:DescribeSecret",
-        "secretsmanager:GetSecretValue", "secretsmanager:PutSecretValue",
-        "secretsmanager:UpdateSecret", "secretsmanager:TagResource"
-      ],
-      "Resource": "arn:aws:secretsmanager:$AWS_REGION:$AWS_ACCOUNT_ID:secret:*"
-    }
-  ]
-}
-```
-
-Save this policy as `worker-policy.json`. It lets task pods use storage, read
-runtime secrets, and obtain an ECR authorization token.
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "UnionDataBuckets",
-      "Effect": "Allow",
-      "Action": ["s3:DeleteObject*", "s3:GetObject*", "s3:ListBucket", "s3:PutObject*"],
-      "Resource": [
-        "arn:aws:s3:::$DATA_BUCKET",
-        "arn:aws:s3:::$DATA_BUCKET/*"
-      ]
-    },
-    {
-      "Sid": "SecretsManagerRead",
-      "Effect": "Allow",
-      "Action": ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
-      "Resource": "arn:aws:secretsmanager:$AWS_REGION:$AWS_ACCOUNT_ID:secret:*"
-    },
-    {
-      "Sid": "ECRTokenPermission",
-      "Effect": "Allow",
-      "Action": "ecr:GetAuthorizationToken",
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-Expand the variables and attach the inline policies:
+- The backend policy gives the data plane services access to both buckets, and permits the runtime secret-store operations the operator proxy uses.
+- The worker policy lets task pods use both buckets, read runtime secrets, and obtain an ECR authorization token.
 
 ```shell
-envsubst < backend-policy.json > /tmp/backend-policy.json
-envsubst < worker-policy.json > /tmp/worker-policy.json
-
 aws iam put-role-policy \
   --role-name "${BACKEND_ROLE_NAME}" \
   --policy-name union-backend-access \
-  --policy-document file:///tmp/backend-policy.json
+  --policy-document "$(envsubst <<< '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "UnionDataBuckets",
+        "Effect": "Allow",
+        "Action": [
+          "s3:DeleteObject*",
+          "s3:GetObject*",
+          "s3:ListBucket",
+          "s3:PutObject*"
+        ],
+        "Resource": [
+          "arn:aws:s3:::$METADATA_BUCKET",
+          "arn:aws:s3:::$METADATA_BUCKET/*",
+          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET",
+          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET/*"
+        ]
+      },
+      {
+        "Sid": "SecretsManagerReadWrite",
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:CreateSecret",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:PutSecretValue",
+          "secretsmanager:UpdateSecret",
+          "secretsmanager:TagResource"
+        ],
+        "Resource": "arn:aws:secretsmanager:$AWS_REGION:$AWS_ACCOUNT_ID:secret:*"
+      }
+    ]
+  }')"
 
 aws iam put-role-policy \
   --role-name "${WORKER_ROLE_NAME}" \
   --policy-name union-worker-access \
-  --policy-document file:///tmp/worker-policy.json
+  --policy-document "$(envsubst <<< '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "UnionDataBuckets",
+        "Effect": "Allow",
+        "Action": [
+          "s3:DeleteObject*",
+          "s3:GetObject*",
+          "s3:ListBucket",
+          "s3:PutObject*"
+        ],
+        "Resource": [
+          "arn:aws:s3:::$METADATA_BUCKET",
+          "arn:aws:s3:::$METADATA_BUCKET/*",
+          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET",
+          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET/*"
+        ]
+      },
+      {
+        "Sid": "SecretsManagerRead",
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue"
+        ],
+        "Resource": "arn:aws:secretsmanager:$AWS_REGION:$AWS_ACCOUNT_ID:secret:*"
+      },
+      {
+        "Sid": "ECRTokenPermission",
+        "Effect": "Allow",
+        "Action": "ecr:GetAuthorizationToken",
+        "Resource": "*"
+      }
+    ]
+  }')"
 ```
 
 ## 7. Grant repository access
 
-Save this ECR repository policy as `ecr-policy.json`. It gives the worker role
-push/pull access and the backend and EKS node roles pull access.
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "WorkerPushPull",
-      "Effect": "Allow",
-      "Principal": {"AWS": "$WORKER_IAM_ROLE_ARN"},
-      "Action": [
-        "ecr:BatchCheckLayerAvailability", "ecr:BatchGetImage",
-        "ecr:CompleteLayerUpload", "ecr:DescribeImages",
-        "ecr:DescribeRepositories", "ecr:GetDownloadUrlForLayer",
-        "ecr:InitiateLayerUpload", "ecr:ListImages", "ecr:PutImage",
-        "ecr:UploadLayerPart"
-      ]
-    },
-    {
-      "Sid": "BackendAndNodePull",
-      "Effect": "Allow",
-      "Principal": {"AWS": ["$BACKEND_IAM_ROLE_ARN", "$NODE_ROLE_ARN"]},
-      "Action": [
-        "ecr:BatchCheckLayerAvailability", "ecr:BatchGetImage",
-        "ecr:DescribeImages", "ecr:DescribeRepositories",
-        "ecr:GetDownloadUrlForLayer", "ecr:ListImages"
-      ]
-    }
-  ]
-}
-```
+Set a repository policy on the ECR repository. It gives the worker role push and pull access, and gives the backend role and the EKS node role pull access.
 
 ```shell
-envsubst < ecr-policy.json > /tmp/ecr-policy.json
 aws ecr set-repository-policy \
   --repository-name "${ECR_REPO_NAME}" \
   --region "${AWS_REGION}" \
-  --policy-text file:///tmp/ecr-policy.json
+  --policy-text "$(envsubst <<< '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "WorkerPushPull",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "$WORKER_IAM_ROLE_ARN"
+        },
+        "Action": [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      },
+      {
+        "Sid": "BackendAndNodePull",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+            "$BACKEND_IAM_ROLE_ARN",
+            "$NODE_ROLE_ARN"
+          ]
+        },
+        "Action": [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:ListImages"
+        ]
+      }
+    ]
+  }')"
 ```
 
-## 8. Collect the values for the cluster pool
+## 8. Collect the values for connecting your cluster
 
-Print the values you will enter in the AWS cluster-pool form:
+Print the values you will enter in the Union.ai UI, labelled with the fields they go in:
 
 ```shell
 printf '%s\n' \
-  "object_store_uri = s3://${DATA_BUCKET}" \
-  "secret_store_account_id = ${AWS_ACCOUNT_ID}" \
-  "secret_store_region = ${AWS_REGION}" \
-  "image_registry = ${IMAGE_REGISTRY}" \
-  "backend_iam_role_arn = ${BACKEND_IAM_ROLE_ARN}" \
-  "worker_iam_role_arn = ${WORKER_IAM_ROLE_ARN}" \
-  "kubeconfig_command = aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
+  "Cluster pool form:" \
+  "  S3 Bucket          = s3://${METADATA_BUCKET}" \
+  "  Account ID         = ${AWS_ACCOUNT_ID}" \
+  "  Region             = ${AWS_REGION}" \
+  "  Image registry     = ${IMAGE_REGISTRY}" \
+  "Connect cluster dialog:" \
+  "  System IAM Role ARN = ${BACKEND_IAM_ROLE_ARN}" \
+  "  Task IAM Role ARN   = ${WORKER_IAM_ROLE_ARN}" \
+  "kubeconfig command: aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
 ```
 
 Keep this output, and keep the shell where `kubectl get nodes` succeeds: you run the agent install from it.
 
 ## Important behavior and cleanup
 
-- The wide service-account trust is deliberate for the agent-selected release
-  namespace and dynamic task namespaces. Restrict `DATAPLANE_NAMESPACE` only
-  when the actual release namespace is known and fixed.
-- The pool uses one object-store bucket for metadata and fast registration; do
-  not create or configure a separate fast-registration bucket.
-- This guide does not configure automatic expiry. Add S3/ECR lifecycle rules
-  before production use.
-- To remove the environment, delete the cluster with `eksctl delete cluster`,
-  then empty/delete the S3 bucket, delete the ECR repository, and delete the
-  two IAM roles and their inline policies. Review every target before deletion.
+- The wide service-account trust is deliberate, for the agent-selected release namespace and dynamic task namespaces. Restrict `DATAPLANE_NAMESPACE` only when the actual release namespace is known and fixed.
+- The data plane chart owns Metrics Server. Do not add the EKS Metrics Server add-on to this cluster.
+- This guide does not configure automatic expiry. Add S3 and ECR lifecycle rules before production use.
+- To remove the environment, delete the cluster and its node group with `eksctl delete cluster`, then empty and delete both S3 buckets, delete the ECR repository, and delete the two IAM roles and their inline policies. Review every target before deletion.
 
 ## Next steps
 
