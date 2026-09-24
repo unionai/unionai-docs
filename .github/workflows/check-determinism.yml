@@ -1,22 +1,31 @@
 name: Check Build Determinism
 
-# Reproducibility gate (DOC-1357). Two things run here:
+# Reproducibility gate (DOC-1357): build each variant twice and require the two
+# trees to be byte-identical, modulo the `?v=<timestamp>` asset cache-buster.
 #
-#   1. A content lint: no heading may call a shortcode with `{{< ... >}}`, since
-#      Hugo resolves that form AFTER goldmark has computed the heading id, so the
-#      id ends up built out of Hugo's internal placeholder. Use `{{% ... %}}` (or
-#      an explicit `{#my-id}`) instead.
-#   2. The general check: build each variant twice and require the two trees to
-#      be byte-identical, modulo the `?v=<timestamp>` asset cache-buster.
+# Nondeterminism comes from build machinery -- templates, render hooks, the
+# Python generators -- not from content, so this runs only when that machinery
+# changes: an infra submodule bump, the variant list, or this workflow. The one
+# known content-side cause, a `{{< ... >}}` shortcode in a heading, is caught on
+# every PR by the much cheaper check-heading-shortcodes.yml.
 #
-# Nothing else in CI asserted reproducibility, which is why a build-varying
-# heading anchor survived for as long as it did -- and why diffing built output
-# to verify an infra change was unreliable.
+# Reproducible output is what makes diffing built output a reliable way to
+# verify an infra change; background churn otherwise drowns the signal.
 
 on:
   pull_request:
+    paths:
+      - 'unionai-docs-infra'
+      - 'makefile.inc'
+      - 'Makefile'
+      - '.github/workflows/check-determinism.yml'
   push:
     branches: [main]
+    paths:
+      - 'unionai-docs-infra'
+      - 'makefile.inc'
+      - 'Makefile'
+      - '.github/workflows/check-determinism.yml'
 
 jobs:
   check-determinism:
@@ -41,13 +50,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check heading shortcode form
-        run: python unionai-docs-infra/tools/check_heading_shortcodes.py content
-
       - name: Check build determinism
         run: unionai-docs-infra/scripts/check-determinism.sh
 
       - name: Report status
         if: ${{ failure() }}
         run: |
-          echo "::error::The build is not reproducible. Run 'unionai-docs-infra/scripts/check-determinism.sh' locally for details."
+          echo "::error::The determinism workflow failed. Inspect the failed step above; reproduce the build check locally with 'unionai-docs-infra/scripts/check-determinism.sh'."

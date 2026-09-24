@@ -241,6 +241,124 @@ versions are **retained**, so commit on a cadence that matches how often you'd
 actually want to roll back: checkpoint periodically rather than every step, and
 prune versions you no longer need.
 
+### Tracking versions as artifacts
+
+Every commit gives you an immutable version, but that history lives
+inside the volume. Declaring the volume as an **artifact** also publishes each
+sealed version to the artifact registry, where it has a stable name, is
+searchable across runs, and carries an explicit parent edge to the version it
+came from.
+
+Declare the identity once, when the volume is created:
+
+```python
+@env.task
+async def build_index() -> RWVolume:
+    vol = Volume.new(name="search-index", artifact=True)
+    data = await vol.mount()
+
+    build_into(data)
+
+    return vol    # the committed version is published as artifact "search-index"
+```
+
+`artifact=True` publishes under the volume's own name. Pass a string to publish
+under a different name, or a `flyte.artifacts.Metadata` when you want a
+description and your own attributes:
+
+```python
+from flyte.artifacts import Metadata
+
+vol = Volume.new(
+    name="search-index",
+    artifact=Metadata(
+        name="product-search-index",
+        description="FAISS index over the product catalog",
+        attrs={"team": "search"},
+    ),
+)
+```
+
+Artifact identity belongs to the *lineage*, not to any one version, so you set
+it when the volume is created or when you
+[branch it](#branching-under-a-different-artifact) — never per commit. That is
+why `commit()` and `finalize()` take no artifact name: renaming mid-stream would
+split one version graph into two.
+
+> [!NOTE]
+> `Metadata(version=...)` and `Metadata(card=...)` are rejected on a volume.
+> Versions are per-seal, and the card is rendered from each seal.
+
+#### Publishing a version
+
+Returning the volume from a task publishes that seal as part of writing the
+task's outputs: no extra call in your code, and no registry round trip inside
+the task.
+
+To publish a checkpoint partway through a task, ask for it on the commit:
+
+```python
+for epoch in range(100):
+    train_one_epoch(data)
+    if epoch % 10 == 0:
+        await rw.commit(message=f"epoch {epoch}", publish_artifact=True)
+
+return await rw.finalize(message="training complete")   # published as well
+```
+
+`publish_artifact=True` works even on a volume that declared no identity; the
+artifact name then defaults to the volume's name.
+
+Commits you don't publish are still durable versions — they are simply not in
+the registry, much as a local commit is real but has not been pushed. The registry holds
+the versions you chose to publish.
+
+#### Versions and parents
+
+A published version defaults to the seal's **identity hash**, which covers the
+committed index and where its chunks live. Every seal writes a new index, so
+every seal is its own version; publishing the *same* seal twice is idempotent
+rather than duplicating it. Pass `artifact_version="v3"` to `commit()` or
+`finalize()` to choose the version string yourself.
+
+Each version records a parent edge pointing at the previous *published* version
+of the same artifact, so the registry mirrors the branching shape of the
+volume's own lineage. Alongside any attributes you set, every published version
+carries:
+
+| Attribute | What it holds |
+|---|---|
+| `volume/name` | The volume's name |
+| `volume/locator` | The locator for this exact version, for `Volume.from_locator()` |
+| `volume/used_bytes` | Bytes used at the seal |
+| `volume/inode_count` | Files, directories and symlinks at the seal |
+| `volume/metadata_store` | The metadata store backing the volume |
+
+#### Branching under a different artifact
+
+`fork()` inherits its parent's artifact identity, so a branch keeps publishing
+under the same name and the registry shows it as a continuation.
+
+Give a branch its own artifact when it is genuinely a different thing. The first
+version published under the new name still records the old one as its parent, so
+the lineage stays connected across the rename:
+
+```python
+candidate = await base.fork(
+    name="index-candidate",
+    artifact="product-search-index-candidate",
+)
+```
+
+Pass `artifact=None` to detach a branch from the registry entirely: it still
+commits durable versions, it just publishes none of them.
+
+> [!NOTE]
+> Publishing is best-effort by design. If the registry is unreachable the seal
+> still succeeds, your data is still durable and still addressable by locator,
+> and a warning records that the registry entry is missing. Local executions
+> skip publishing altogether.
+
 ### Reference a volume across runs
 
 The usual way to receive a volume is as a typed task input or from
@@ -343,6 +461,45 @@ It follows the version lineage, so you can step back through earlier commits and
 jump to the action that produced any version. To open an index you already have
 on disk, pass `--from-file <path> --store-type sqlite`.
 
+## Debugging a mount
+
+When a volume is slow, or a task looks stuck on file I/O, turn on the **volume
+report**. It samples the live mount while the task runs and publishes a `Volume`
+tab on the task's [report](./reports): throughput over time, a marker at each
+`commit()`, `fork()` and `finalize()`, and a health line.
+
+```python
+vol = Volume.new(name="my-dataset", report=True)
+```
+
+You can also switch it on without touching the volume, for a whole environment:
+
+```python
+env = flyte.TaskEnvironment(
+    name="my-env",
+    env_vars={"UNION_VOLUME_REPORT": "1"},
+)
+```
+
+The report is flushed at every seal point, so the charts survive a task that
+fails later.
+
+Read the health line first, because it separates the two situations that look
+identical from inside the task:
+
+- **healthy** — requests are being served, and the number waiting is shown. Slow
+  is then a tuning question: see [Tuning the mount](#tuning-the-mount) and
+  [Performance and trade-offs](#performance-and-trade-offs).
+- **wedged** — requests have sat unmoved long enough that nothing inside the pod
+  will recover them. The line names the channel, how many requests are waiting
+  and for how long. Abort the channel or replace the pod; waiting will not help.
+- **unknown** — no health answer is available, which is what you see when the
+  mount does not go through the node's mount broker.
+
+> [!NOTE]
+> The report can never fail a mount. If sampling cannot start or a probe goes
+> unanswered, the task runs exactly as it would have without it.
+
 ## Performance and trade-offs
 
 A Volume is a durable, object-store-backed file system, so it behaves
@@ -397,5 +554,10 @@ few seconds at `commit()`.
 
 - API: `Volume`, `RWVolume`, `ROVolume`, and
   `flyteplugins.union.io.allow_volumes`.
+- Artifact publication: `Volume.new(artifact=...)`, `fork(artifact=...)`, and
+  `publish_artifact=` / `artifact_version=` on `commit()` and `finalize()` —
+  see [Tracking versions as artifacts](#tracking-versions-as-artifacts).
+- Reporting: `Volume.new(report=True)` or `$UNION_VOLUME_REPORT` — see
+  [Debugging a mount](#debugging-a-mount).
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.

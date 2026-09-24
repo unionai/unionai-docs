@@ -9,7 +9,242 @@ top_menu: true
 
 # Release notes
 
+## August 2026
+
+
+### :rocket: Flyte 2 Is Generally Available
+
+Flyte 2 is generally available. The SDK README and documentation are updated for the GA release.
+
+
+### :robot: LLM Gateway
+
+An org-level gateway gives your teams one OpenAI-compatible endpoint for every model provider they use, so application code targets a single base URL. The gateway issues managed virtual keys as its credential and supports provider fallback, budgets, rate limits, and per-key and per-provider usage reporting. Set the expected requests per second and Union sizes and autoscales the proxy for you. Whether the endpoint accepts requests without Union sign-in is configurable at deploy time or from the gateway's configuration card, and gateway administration is governed by role-based access control.
+
+
+### :package: Artifacts, End to End
+
+A task that declares `produces_artifacts` now registers its outputs as versioned artifacts when the run completes. Artifact triggers fire a run when a new version is published, including artifacts published from outside the platform. On an artifact's details page, an interactive lineage graph shows the run that produced it and everything downstream: the triggers watching it (expand one to see the runs it fired) and the apps consuming it. An Apps tab lists the exact artifact version each app was deployed against. The artifacts list filters by metadata and creator, with filters kept in the URL so you can share or bookmark a view, and a prefetched model is published as an artifact that apps can consume. See [Artifacts](../user-guide/artifacts/_index), [Artifact triggers](../user-guide/triggers/artifact-triggers), and [Lineage](../user-guide/artifacts/lineage).
+
+
+### :computer: Tracked Local Runs
+
+`flyte run --tracked` reports a run executing on your own machine to the platform: live phases, inputs, outputs, and reports. A Local Runs page in the Console lists and live-streams these runs with the same details experience as platform runs. You can abort a tracked run from the Console, though this cannot stop the process running on your machine. Per-organization limits apply to concurrent local runs and actions, actions per run, and monthly run creations. See [Track local runs in the console](../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console).
+
+
+### :chart_with_upwards_trend: GPU Observability
+
+The run Metrics tab now shows per-GPU health: temperature, power draw, clocks, tensor-core and memory-bandwidth activity, PCIe throughput, thermal and power throttling, and ECC memory errors. Each pod keeps a consistent color across every metrics chart, with its GPUs drawn as shades of that color. CPU-only tasks are unaffected.
+
+
+### :mag: Kubernetes Events in the Run View
+
+Mount failures, image pull errors, and other cluster events now appear in the run view with severity, reason, and repeat count, with warnings highlighted. A stuck action's failure message includes the warning events that explain it, and before a pod starts the Logs tab shows events instead of an empty log view.
+
+
+### :sparkles: App Status, Self-Healing Deployments, and Logs
+
+Apps now report fine-grained status (Pulling image, Initializing, Running, Scaled to zero, Scaling up or down), and crash or out-of-memory exits report the real cause instead of appearing stuck in Deploying. A failed deployment webhook retries for about five minutes and recovers to Active on its own once the cause, such as a missing secret, is fixed, with no redeploy needed. Logs can follow running replicas live or show persisted output from replicas that have stopped, labelled and colored by replica, with a replica filter on both Logs and Metrics. The app view adds a Summary tab, a cards/list toggle, sorting, and status and deployed-by filters. In the CLI, `flyte serve --follow` streams app logs.
+
+
+### :gear: Queue and Cluster Lifecycle
+
+A drained queue can now be soft-deleted and later restored; deleted queues appear behind a Deleted filter and open read-only. The organization default queue cannot be deleted. A queue's cluster membership is editable while it is active, and its cluster pool can be changed once it is drained. Drained queues are visible on the Queues page by default, and a queue used as `run.default_queue` can be drained. Cluster details gain a Compute tab listing node groups with instance types, interruptibility, autoscaling bounds, per-node allocatable resources, labels, and taints. Queue activity adds a Throughput chart and a completions-by-outcome breakdown. See the [Queues documentation](../user-guide/cluster-workload-management/queues).
+
+
+### :bar_chart: Console Dashboards
+
+Organization and project overview dashboards show actions executed, the work Union saved you (cache hits and recovered actions), runs completed, active apps, builders and triggers, actions over time, and the busiest users. The projects list shows per-project activity sparklines, ordered so the busiest projects sit at the top. The runs and local-runs lists gain run-completion charts, and a per-project triage view surfaces failures, retries, and stuck apps.
+
+
+### :sparkles: Secrets and Timeouts on the Launch Form
+
+For tasks that declare secrets, a Secrets tab on the launch form lets you change which secret store entry is injected into each declared target before launching. A Timeout field sets the overall task attempt timeout, prefilled from the task's existing value.
+
+
+### :lock: Volumes Without Elevated Privileges
+
+Tasks now mount volumes with no elevated privileges. A node-level broker performs the privileged filesystem setup and hands the task an already-connected file descriptor, so pods keep running under restricted Pod Security Standards: no `CAP_SYS_ADMIN`, no device mount, and no host paths. Volume data access uses the pod's own cloud identity, and the broker holds no storage credentials. This is available on demo and playground clusters in this release, with wider enablement to follow.
+
+
+### :recycle: Recovery and Reusable Ray Improvements
+
+Run recovery is now available from the Console with a Recover button. Recovered actions show their inputs and outputs correctly, and action names are stable across code changes, so recovery matches the right work. Reusable Ray clusters are shared correctly across tasks in an environment that sets a pod template, and aborted runs no longer leak a cluster past its idle TTL. The image shown on a task or run links to the build that produced it, even when the image was served from cache.
+
+
+### :zap: Faster Console
+
+The Apps list loads quickly and returns cached results instantly while it refreshes. Artifact and code-rendering pages load in under half a second instead of several, and a class of intermittent stuck spinners and slow uploads is fixed across logs, reports, code, secrets, app metrics, launch forms, file uploads, and trigger creation.
+
+
+### :wrench: SDK Updates
+
+- `flyte run hello` and `flyte serve hello` give you a first run and a first app with no files on disk.
+- Devbox: `flyte get devbox`, a `--devbox` shortcut on `flyte create config`, and support for GitHub Codespaces, Google Colab, and Windows.
+- `flyte.load_interactive_ctx()` restores task context inside a debugger, and the Python debugger extension is installed by default.
+- Task-level cache max age, and the root action's cache key now honors `Literal.hash` the way sub-actions do.
+- Speculative decoding and cache-aware routing for vLLM and SGLang model serving.
+- `service_account` on a task environment, a termination grace period, and `Image.from_pixi_script()`.
+- Clustered tasks resume from checkpoints across whole-set restarts.
+
+
+### :wrench: Reliability and Fixes
+
+Spark tasks launch again after a plugin registration fix, and with a pod template the driver and executor no longer inherit the task container's entrypoint. The VS Code link appears for Ray tasks with interactive debugging enabled. Every API response carries an `X-Request-ID` header: supply your own and it is echoed back, or one is generated for you; quote it in a support request so Union can find the exact request. Structured outputs render their real values in the formatted view, organization creation shows live provisioning progress, and the Console login and signup pages have clickjacking protection.
+
+
+### :gear: Self-Managed Dataplane Updates
+
+Update to the latest Union helm chart to pick up:
+
+- Artifact registration for tasks declaring `produces_artifacts`, and artifact triggers on new versions.
+- The node-level mount broker for unprivileged volume mounts.
+- Kubernetes event enrichment in failure messages and the Logs tab.
+- Fine-grained app status and self-healing deployment webhooks.
+- Reusable Ray cluster fixes, Spark fixes, and Ray metrics and logs across head and worker pods.
+- Live logs for a distributed task no longer fail when one pod has been evicted.
+
+The action scheduling and lease services can also be backed by PostgreSQL, with no behavior change for existing deployments.
+
+
+### :warning: Breaking Changes
+
+- **Runs against a draining or drained queue now fail immediately.** The implicit fallback to the `default` queue is removed. Target an active queue, or set `run.default_queue` explicitly.
+- **Moving a queue to a different cluster pool requires draining it first.** Cluster membership remains editable while a queue is active.
+- **Calling a sync task from async code must now use `.aio`.** Change the call site to `await task.aio(...)`. In exchange, `asyncio.run()` now works inside sync tasks.
+
+## July 2026
+
+
+### :recycle: Run Recovery
+
+Recovering a failed run now reuses the actions that already succeeded and re-executes only what failed or changed, so you stop paying twice for compute. Use `--recover` or `--recover-from` on the CLI; a new "Recovered" action status is shown across the platform. See [Recover runs](../user-guide/tasks/task-deployment/recover-runs).
+
+
+### :robot: Bring Your Own Agent Framework
+
+New plugins run CrewAI, LangGraph, LangChain, PydanticAI, and Hermes agents as Flyte tasks, with native tool calling preserved under durable execution. The agent event stream carries multiple agents, so a supervisor and its sub-agents report coherently, and agent runs emit OpenTelemetry traces and metrics. Human-in-the-loop approval runs on native conditions. For MCP servers, `transport="stdio"` now serves stdio. See [Bring your own framework](../user-guide/agents/build-agent/bring-your-own-framework).
+
+
+### :zap: Reusable Ray Clusters
+
+Declare a `ReusePolicy` on a task environment and Ray tasks with identical configuration share one long-lived Ray cluster instead of paying full cold start each time. Idle clusters are reclaimed after a configurable TTL, and Ray task metrics and logs cover head and worker nodes, not only the driver pod. See [Reusable containers](../user-guide/tasks/task-configuration/reusable-containers).
+
+
+### :bell: Notifications on Paused Runs
+
+Notification rules can subscribe to the `PAUSED` phase, so a webhook or email fires the moment an action pauses to wait for a human signal. Paused notifications carry the paused action's identifier and the condition's prompt, description, and prompt type.
+
+
+### :gear: Queue Lifecycle Management
+
+Queues can now be drained: they stop accepting new work while in-flight work completes. A queue set as a default in settings is validated before draining, and a draining or drained queue cannot be set as a default. You can move a queue between cluster pools and register clusters into pools from the CLI. A cluster cannot be deleted while an explicit queue still points at it. Queue metrics stream for live display.
+
+
+### :mag: Cluster Visibility
+
+`flyte get cluster-config` reads the live configuration of your clusters' core components directly from the cluster, and lists any component it cannot read with the reason. It is available to Viewer and above. `flyte get system-logs` streams system component logs from the target cluster, and a cluster Logs tab in the Console shows the same logs live. Hovering over a pool in the clusters and queues lists shows its object store, secret store, and image registry.
+
+
+### :lock: Editable Roles and Policies
+
+You can now edit which actions a custom role grants from the Console. Descriptions on roles and policies persist, admins can access system logs without also holding the separate support role, and fetching a role or policy that doesn't exist returns "not found" instead of an internal error.
+
+
+### :sparkles: Launch Form Version Selector
+
+When launching a task or rerunning a run or action, a searchable selector in the launch drawer picks the version to launch. Switching versions updates the inputs to match. The Inputs tab defaults to the form view with raw JSON one toggle away, and closing the form without launching discards unsubmitted changes.
+
+
+### :zap: Fail Fast and Stay Connected
+
+A run whose pod spec Kubernetes will reject, such as one with an empty container image, now fails at run creation with the reason instead of sitting in Queued for about 30 minutes. Watching runs, streaming logs, and app watches are no longer cut off after 20 minutes, and in-flight API requests survive gateway deployments, autoscaling, and availability-zone disruption. The dataplane operator reconnects with backoff instead of restarting when the control plane is briefly unreachable.
+
+
+### :sparkles: Metrics, Apps, and Sign-In Fixes
+
+GPU utilization, SM active cycles, and SM occupancy charts now render for GPU tasks. An app with no running pods shows recent persisted logs instead of an empty stream, and the Apps list splits into active cards and an inactive table. Email and password sign-in works for self-serve organizations in every region and from CLI authentication flows, and the macOS keychain no longer prompts once per virtual environment. Raw container tasks start again, app pod template annotations are preserved, and a cluster not yet assigned to a cluster pool reports an error naming the command to fix it.
+
+
+### :wrench: SDK Updates
+
+- `flyte.remote.Run.get_report()` and `Action.get_report()` pull run and action HTML reports.
+- A remote TUI for browsing runs from the terminal.
+- `Image.with_pixi_project` and `Image.from_pixi_script()`, a base registry override, a default push registry, and extra `docker buildx` flags through an environment variable.
+- `plugin_config` in `TaskTemplate.override`, and a `--status` filter on `flyte get apps`.
+- A new fork verb in the CLI and SDK forks a run or volume, optionally merging new inputs over the source run's.
+- Authentication tokens are stored in a single keychain item.
+
+
+### :gear: Self-Managed Dataplane Updates
+
+Update to the latest Union helm chart to pick up:
+
+- The shared-cluster plugin manager required for `ReusePolicy` on Ray tasks.
+- Permission for the operator proxy to read the component ConfigMaps that `flyte get cluster-config` returns. Against a dataplane that has not been updated, the command succeeds but every entry reports "permission denied".
+- Fail-fast on invalid pod specs, operator reconnection with backoff, the raw container task startup fix, and preserved app pod template annotations.
+- An S3 mount startup probe, and a clear error for a cluster with no cluster pool.
+
+An alternative ingress provider is now supported as an opt-in, each dataplane is provisioned with its own operator and API-key OAuth client, and the separate control-plane and dataplane multi-cluster topology is available on AWS as well as GCP.
+
+
+### :warning: Breaking Changes
+
+- **SDK versions older than 2.0.4 can no longer create runs.** Upgrade to Flyte SDK 2.0.4 or later.
+- **The earlier human-in-the-loop tool-approval mechanism is deprecated** in favor of native conditions. It still works and emits a deprecation notice. Move `@tool(requires_approval=True)` approvals onto native conditions at your convenience.
+- **A cluster with an explicit queue pointing at it can no longer be deleted.** Drain and remove or re-point the queue first.
+
 ## June 2026
+
+
+### :bug: Interactive Debugging
+
+`flyte debug` opens an interactive session against a task over a WebSocket tunnel, so it works without direct network access to the cluster. You can attach SSH or VS Code to a running task's container, and `debug.relaunch` on `flyte.rerun` relaunches a failed action straight into a debug session with the same inputs. See [Debug runs](../user-guide/tasks/task-deployment/debug-runs).
+
+
+### :rocket: Distributed Multi-Node Tasks
+
+`ClusteredTaskEnvironment` runs a single task across a coordinated group of pods for multi-node training and other tightly coupled distributed work. A failed member exits non-zero and the error is recorded once the whole set is terminal, so a partial failure reports as one failure. GPU configuration flows through to every member. See [Clustered task environment](../user-guide/tasks/task-configuration/clustered-task-environment).
+
+
+### :floppy_disk: Persistent Volumes
+
+A new `Volume` type gives tasks a durable, mountable filesystem. The platform records which runs wrote to a volume, so you can trace data back to the work that produced it, and a three-pane terminal explorer browses volume contents and lineage. Clusters advertise FUSE as a requestable device, so a task opts in with `allow_fuse()` instead of running as a privileged container. See [Volumes](../user-guide/tasks/task-programming/volumes).
+
+
+### :traffic_light: Run-Level Action Concurrency and Queue Binding
+
+Set `max_action_concurrency` on a run (`flyte run --max-action-concurrency 5 ...`) or as a default per org, domain, or project to bound how many of a run's actions execute at once. Excess actions wait and start as running actions complete. Leaving it unset, or setting `0`, means unlimited; `1` is rejected because a parent awaiting its children would deadlock. Every queue now binds to a cluster pool, and queue creation, editing, and per-run queue selection are available from the CLI and the Console. See the [Queues documentation](../user-guide/cluster-workload-management/queues).
+
+
+### :label: Labels on Runs
+
+Set labels when you create a run, from the SDK, the CLI, or the launch form. Filter runs by label in the API (`labels.<key>` filters) and the Console runs list, including grouped views. Labels render in every run listing with stable per-value colors.
+
+
+### :wrench: Settings in the Console
+
+A Settings surface in the Console edits org, domain, and project settings with inheritance, and shows where each effective value comes from. New settings include a default queue, `run_base_dir`, and run-level max action concurrency. Max-GPU settings now apply only when a task requests GPUs.
+
+
+### :bell: Notifications and Conditions in the Console
+
+A Notifications tab on the launch form configures notifications, with email as the default channel. You can resolve a condition from the run details page, abort an action from the condition UI, and see who aborted an action or resolved a condition, including the value they supplied. Condition timeouts surface as a user error that explains the timeout.
+
+
+### :robot: Agent Updates
+
+Agents gain `code_mode`, which runs tool calls as generated code in a sandbox, with a `call_handler` hook on `@tool`. `MemoryStore` is decoupled from `Agent`, agent tools accept `File`, `Dir`, and `DataFrame`, and human-in-the-loop approval runs on native conditions.
+
+
+### :package: Usage-Based Image Retention on AWS
+
+On AWS, images built by ImageBuilder are no longer deleted 30 days after they were built. They move to archive after 60 days without a pull and are deleted 90 days after that, so actively used images are never removed. Archived images can be restored on request within that window. GCP and Azure registries keep 30-day age-based cleanup.
+
+
+### :wrench: Reliability Improvements
+
+Task resources, Ray head and worker resources, and app resources are merged into your pod template's primary container instead of replacing it. Action phases no longer get stuck on "Initializing" after a lost status update, large uploads auto-size their multipart chunks, and Ray tasks requesting GPUs through a pod template land on the intended GPU pools. Apps in a project assigned to a non-default cluster pool deploy to the right cluster, and cloud log links resolve to the right log group, region, and project.
 
 
 ### :rocket: Retries with Backoff and Timeout Controls
@@ -125,6 +360,13 @@ A new top-level SDK construct lets you emit events from your tasks, with a runna
 ### :gear: Self-Managed Dataplane Updates
 
 Update to the latest Union helm chart to pick up accurate `max_runtime` anchoring and per-attempt `max_queued_time` enforcement, immediate failure on `NonRecoverableError`, multi-pod log streaming, VSCode debugger links routed through the dataplane ingress, app connector endpoint fixes with project/domain propagation, billing metering on the dataplane operator in low-privilege mode, and configurable Azure OAuth app secret expiry.
+
+Later in June, the chart also adds coordinated task groups for `ClusteredTaskEnvironment`, unprivileged FUSE mounts for Volumes and `allow_fuse()`, task memory metrics reported from cgroup usage instead of working set, retried action status updates, an app startup-failure classifier, and heartbeat reliability fixes. Secret-bearing payloads are no longer written to operator logs. New self-managed topologies include a separate control-plane and dataplane multi-cluster setup on GCP, OpenShift kubeconfig support for operator access through browser-based login, and Helm v4 compatibility.
+
+
+### :warning: Breaking Changes
+
+- **A cluster now belongs to exactly one cluster pool.** Clusters that were assigned to multiple pools were migrated so each sits in a single pool. Confirm each cluster is in the intended pool, and create an explicit pool first if you need a queue to target something other than the default.
 
 ## May 2026
 
