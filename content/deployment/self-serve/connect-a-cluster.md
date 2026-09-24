@@ -63,9 +63,7 @@ When the pool is created, the dialog moves straight on to **Connect a cluster**,
 | **System IAM Role ARN** | The backend IAM role ARN |
 | **Task IAM Role ARN** | The worker IAM role ARN |
 
-<!-- screenshot: the Connect a cluster dialog on an AWS pool, showing Name, Cluster pool and the two
-     IAM role fields. The previous shot (connect-cluster-dialog.png) was taken on an On-Prem pool and
-     showed the credentials-secret field instead, so it was taken off this page. -->
+![The Connect a cluster dialog with a cluster name, the default pool, and the system and task IAM role ARNs filled in](../../_static/images/deployment/self-serve/connect-a-cluster/connect-cluster.png)
 
 Select **Connect cluster**. Union.ai registers the cluster and takes you to its page, where you install the agent. Registering does not put anything on your cluster by itself.
 
