@@ -1,6 +1,6 @@
 ---
 title: Provision your AWS resources
-description: Create the EKS cluster, S3 buckets, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
+description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
 icon: amazon
 weight: 4
 variants: -flyte +union
@@ -11,7 +11,7 @@ variants: -flyte +union
 The self-serve setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
 
 - an EKS cluster with a managed node group of three `m6i.large` nodes
-- two S3 buckets, one for metadata and one for fast registration
+- one S3 bucket, the cluster pool's object store
 - a private ECR repository
 - separate backend and worker IAM roles for service accounts (IRSA)
 
@@ -43,7 +43,6 @@ export NODEGROUP_NAME=${CLUSTER_NAME}-workers
 export KUBERNETES_VERSION=1.35
 export BUCKET_PREFIX=${NAME_PREFIX}-union-selfserve
 export METADATA_BUCKET=${BUCKET_PREFIX}-metadata
-export FAST_REGISTRATION_BUCKET=${BUCKET_PREFIX}-fast-reg
 export ECR_REPO_NAME=${CLUSTER_NAME}
 export BACKEND_ROLE_NAME=${CLUSTER_NAME}-backend
 export WORKER_ROLE_NAME=${CLUSTER_NAME}-worker
@@ -152,9 +151,9 @@ fi
 
 Do not install the EKS Metrics Server add-on on this cluster later. The data plane chart owns Metrics Server.
 
-## 3. Create the S3 buckets
+## 3. Create the S3 bucket
 
-The metadata bucket stores workflow metadata, task inputs and outputs, and artifacts. It is the object store you enter in the cluster-pool form. The fast-registration bucket holds code bundles, and both IAM roles get the same access to it.
+The bucket stores workflow metadata, task inputs and outputs, artifacts, and fast-registration code bundles. It is the object store you enter in the cluster-pool form. Union.ai configures the data plane to use it for both metadata and fast registration, so you do not need a separate fast-registration bucket.
 
 For `us-east-1`, omit `--create-bucket-configuration`.
 
@@ -164,36 +163,27 @@ aws s3api create-bucket \
   --region "${AWS_REGION}" \
   --create-bucket-configuration "LocationConstraint=${AWS_REGION}"
 
-aws s3api create-bucket \
-  --bucket "${FAST_REGISTRATION_BUCKET}" \
-  --region "${AWS_REGION}" \
-  --create-bucket-configuration "LocationConstraint=${AWS_REGION}"
-
-for bucket in "${METADATA_BUCKET}" "${FAST_REGISTRATION_BUCKET}"; do
-  aws s3api put-public-access-block --bucket "${bucket}" \
-    --public-access-block-configuration \
-    'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
-done
+aws s3api put-public-access-block --bucket "${METADATA_BUCKET}" \
+  --public-access-block-configuration \
+  'BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'
 ```
 
-Add a CORS policy to both buckets, so the Union.ai UI can download code and artifacts through presigned URLs. If your UI is not served from a Union.ai domain, add its hostname to `AllowedOrigins`.
+Add a CORS policy to the bucket, so the Union.ai UI can download code and artifacts through presigned URLs. If your UI is not served from a Union.ai domain, add its hostname to `AllowedOrigins`.
 
 ```shell
-for bucket in "${METADATA_BUCKET}" "${FAST_REGISTRATION_BUCKET}"; do
-  aws s3api put-bucket-cors \
-    --bucket "${bucket}" \
-    --cors-configuration '{
-      "CORSRules": [
-        {
-          "AllowedHeaders": ["*"],
-          "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
-          "AllowedOrigins": ["https://*.unionai.cloud", "https://*.union.ai"],
-          "ExposeHeaders": ["ETag"],
-          "MaxAgeSeconds": 3600
-        }
-      ]
-    }'
-done
+aws s3api put-bucket-cors \
+  --bucket "${METADATA_BUCKET}" \
+  --cors-configuration '{
+    "CORSRules": [
+      {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+        "AllowedOrigins": ["https://*.unionai.cloud", "https://*.union.ai"],
+        "ExposeHeaders": ["ETag"],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  }'
 ```
 
 For production, add an S3 lifecycle policy, the encryption and KMS controls your organization requires, and recovery retention appropriate for workflow data.
@@ -277,8 +267,8 @@ export WORKER_IAM_ROLE_ARN=$(aws iam create-role \
 
 Attach an inline policy to each role:
 
-- The backend policy gives the data plane services access to both buckets, and permits the runtime secret-store operations the operator proxy uses.
-- The worker policy lets task pods use both buckets, read runtime secrets, and obtain an ECR authorization token.
+- The backend policy gives the data plane services access to the bucket, and permits the runtime secret-store operations the operator proxy uses.
+- The worker policy lets task pods use the bucket, read runtime secrets, and obtain an ECR authorization token.
 
 ```shell
 aws iam put-role-policy \
@@ -298,9 +288,7 @@ aws iam put-role-policy \
         ],
         "Resource": [
           "arn:aws:s3:::$METADATA_BUCKET",
-          "arn:aws:s3:::$METADATA_BUCKET/*",
-          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET",
-          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET/*"
+          "arn:aws:s3:::$METADATA_BUCKET/*"
         ]
       },
       {
@@ -336,9 +324,7 @@ aws iam put-role-policy \
         ],
         "Resource": [
           "arn:aws:s3:::$METADATA_BUCKET",
-          "arn:aws:s3:::$METADATA_BUCKET/*",
-          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET",
-          "arn:aws:s3:::$FAST_REGISTRATION_BUCKET/*"
+          "arn:aws:s3:::$METADATA_BUCKET/*"
         ]
       },
       {
@@ -434,9 +420,10 @@ Keep this output, and keep the shell where `kubectl get nodes` succeeds: you run
 ## Important behavior and cleanup
 
 - The wide service-account trust is deliberate, for the agent-selected release namespace and dynamic task namespaces. Restrict `DATAPLANE_NAMESPACE` only when the actual release namespace is known and fixed.
+- The pool uses one bucket for both metadata and fast registration. Do not create or configure a separate fast-registration bucket.
 - The data plane chart owns Metrics Server. Do not add the EKS Metrics Server add-on to this cluster.
 - This guide does not configure automatic expiry. Add S3 and ECR lifecycle rules before production use.
-- To remove the environment, delete the cluster and its node group with `eksctl delete cluster`, then empty and delete both S3 buckets, delete the ECR repository, and delete the two IAM roles and their inline policies. Review every target before deletion.
+- To remove the environment, delete the cluster and its node group with `eksctl delete cluster`, then empty and delete the S3 bucket, delete the ECR repository, and delete the two IAM roles and their inline policies. Review every target before deletion.
 
 ## Next steps
 
