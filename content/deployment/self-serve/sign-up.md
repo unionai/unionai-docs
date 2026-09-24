@@ -23,6 +23,9 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 
 ![The Union sign-up page, offering Continue with Google, Continue with Microsoft and AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
 
+> [!NOTE] Subscribed through AWS Marketplace?
+> Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./aws-marketplace) rather than here. If you are already on the Uniona.ai sign-up page, you can just click the AWS Marketplace button. You will rejoin this step after you complete the subscription.
+
 ## Create your organization
 
 An organization is your top-level workspace in Union.ai. It is where your projects, workflows, resources, and team members live.
@@ -39,8 +42,6 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 
 ![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
 
-> [!NOTE] Subscribed through AWS Marketplace?
-> Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./aws-marketplace) rather than here. If you are already on the Uniona.ai sign-up page, you can just click the AWS Marketplace button. You will rejoin this step after you complete the subscription.
 
 ## Sign in to your organization
 
