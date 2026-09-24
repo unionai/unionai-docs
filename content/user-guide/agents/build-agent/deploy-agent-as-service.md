@@ -63,7 +63,7 @@ To run an agent autonomously on a schedule, attach a `flyte.Trigger` to the task
 
 The agent's tools (`list_open_issues`, `classify_issue`, `post_digest`) are durable `@env.task`s; see the [full example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/build-agent/deploy/scheduled_triage_agent.py) for their definitions.
 
-Deploying the task registers the trigger; from then on {{< key product_name >}} wakes the agent on schedule. Use `flyte.Cron(...)` for calendar schedules or `flyte.FixedRate(...)` for fixed intervals. The `flyte.TriggerTime` input is filled with the scheduled fire time. See [Triggers](../../tasks/task-configuration/triggers) for the full schedule reference.
+Deploying the task registers the trigger; from then on {{< key product_name >}} wakes the agent on schedule. Use `flyte.Cron(...)` for calendar schedules or `flyte.FixedRate(...)` for fixed intervals. The `flyte.TriggerTime` input is filled with the scheduled fire time. See [Triggers](../../triggers/_index) for the full schedule reference.
 
 ## Behind a webhook (`AppEnvironment`)
 

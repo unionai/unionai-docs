@@ -96,7 +96,7 @@ def generate_report(trigger_time: datetime) -> str:
     ...
 ```
 
-Multiple triggers per task and parameterized trigger inputs are supported; see the [Triggers docs](../../tasks/task-configuration/triggers).
+Multiple triggers per task and parameterized trigger inputs are supported; see the [Triggers docs](../../triggers/_index).
 
 ---
 
@@ -143,7 +143,7 @@ async def driver(ds: str) -> str:
 
 A few things change in the move:
 
-- **Inputs are the function parameters.** No `**context`. If the task needs the run's date, declare it as a parameter (`ds: str`) and the driver passes it in. The driver itself can receive trigger time when a [Trigger](../../tasks/task-configuration/triggers) fires it.
+- **Inputs are the function parameters.** No `**context`. If the task needs the run's date, declare it as a parameter (`ds: str`) and the driver passes it in. The driver itself can receive trigger time when a [Trigger](../../triggers/_index) fires it.
 - **Data flows through `await`, not XCom.** The value returned by `fetch_events` is the value `summarize` receives: the function call graph IS the dependency graph. No `xcom_pull` and no `t1 >> t2` to maintain separately from the data flow.
 - **Types are part of the signature.** Flyte uses the hints to serialize between tasks, but keep expectations calibrated: the runtime is more like typed JSON than a fully enforced contract. It is useful as documentation and for tooling, not as a strict static check.
 - **Async-native, sync-also-works.** Tasks are typically `async def` and invoked with `await`. Plain `def` tasks are fully supported if you'd rather stay in a sync codebase; you just give up some of the flexibility async offers.

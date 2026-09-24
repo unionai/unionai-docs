@@ -50,7 +50,7 @@ The three sections below follow the order you meet them in: describe the environ
 {{< grid >}}
 
 {{< link-card target="task-configuration" icon="gear" title="Configure tasks" >}}
-Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
+Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more.
 {{< /link-card >}}
 
 {{< link-card target="task-programming" icon="code" title="Build tasks" >}}

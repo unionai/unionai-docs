@@ -1,8 +1,8 @@
 ---
 title: FlyteModel
-description: "Wrap a `Model` so each model turn is durable."
+description: "Wrap a `pydantic_ai.models.Model` so each model turn is durable."
 icon: braces
-version: 2.5.18
+version: 2.10.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,11 +11,11 @@ layout: py_api
 
 **Package:** `flyteplugins.agents.pydantic_ai`
 
-Wrap a `Model` so each model turn is durable.
+Wrap a `pydantic_ai.models.Model` so each model turn is durable.
 
-``request`` is recorded/replayed via ``durable_step``. ``request_stream`` is
+`request` is recorded/replayed via `durable_step`. `request_stream` is
 delegated unchanged: streamed turns are not memoized in this version (tool
-calls remain durable regardless). ``model_name`` / ``system`` and any other
+calls remain durable regardless). `model_name` / `system` and any other
 members are forwarded to the inner model.
 
 

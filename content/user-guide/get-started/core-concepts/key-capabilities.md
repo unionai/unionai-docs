@@ -74,7 +74,7 @@ Manage credentials and automate execution.
   → [Secrets](../../tasks/task-configuration/secrets)
 
 - **Triggers**: Schedule tasks on a cron schedule or trigger them from external events
-  → [Triggers](../../tasks/task-configuration/triggers)
+  → [Triggers](../../triggers/_index)
 
 - **Webhooks**: Build APIs that trigger task execution from external systems
   → [Hybrid graphs](../../apps/build-apps/hybrid-graphs)

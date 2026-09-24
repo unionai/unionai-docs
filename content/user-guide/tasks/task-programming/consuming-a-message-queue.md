@@ -185,7 +185,7 @@ not a Flyte task. Any producer that writes to the queue will do.
   soon as it dispatches the processing task. If a `process_message` action can fail and you need
   at-least-once semantics, delete the message only after the task succeeds instead.
 - **`max_messages` bounds the run.** The consumer loop here stops after `max_messages`. For a
-  continuously running consumer, drive it on a [trigger](../task-configuration/triggers) or remove
+  continuously running consumer, drive it on a [trigger](../../triggers/_index) or remove
   the bound and manage the task lifecycle explicitly.
 - **Reusable containers require a Union backend.** See
   [Reusable containers](../task-configuration/reusable-containers) for the `ReusePolicy` parameters
