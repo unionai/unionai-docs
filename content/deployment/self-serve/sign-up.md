@@ -1,19 +1,17 @@
 ---
-title: Sign up and create your Union.ai organization
+title: Sign up to Union.ai
 description: Sign up with your Google or Microsoft work account and create the organization that is your Union.ai workspace.
 icon: person-plus
 weight: 2
 variants: -flyte +union
 ---
 
-# Sign up and create your Union.ai organization
+# Sign up to Union.ai
 
-Create your account and an organization. Your organization is your workspace in Union.ai: it holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
+Create your account and an organization. Your organization is your workspace in Union.ai. It holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
 Once it exists, you can [run a workflow on your own machine](./run-locally) and follow it in the Union.ai UI, so you can see how Union.ai works before connecting any infrastructure.
 
-> [!NOTE] Subscribed through AWS Marketplace?
-> Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. It rejoins this page at the organization step.
 
 ## What you'll need
 
@@ -41,11 +39,12 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 
 ![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
 
+> [!NOTE] Subscribed through AWS Marketplace?
+> Your subscription needs to be associated with the organization you create, so start at [Start from AWS Marketplace](./from-aws-marketplace) rather than here. If you are already on the Uniona.ai sign-up page, you can just click the AWS Marketplace button. You will rejoin this step after you complete the subscription.
+
 ## Sign in to your organization
 
-When setup finishes, Union.ai takes you to your new organization's sign-in page. Sign in with the same account again.
-
-You land in the Union.ai UI. Your organization's address, in the form `my-org.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
+When setup finishes, Union.ai takes you to the Union.ai UI. Your organization's address, in the form `<your-org>.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
 
 ## Choose how to start
 
@@ -56,16 +55,19 @@ The home page offers two ways to start:
 
 ![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/self-serve/sign-up/connect-or-run.png)
 
-Your organization already has a `default` project ready to use, so the local route works straight away. You can connect a cluster at any time.
+The local route works straight away. You can connect a cluster at any time.
+
+### Run something locally
 
 Select **Show me how** on the **Run something locally** card for a short in-app guide: install the SDK, create a config file that points at your organization, and write a first workflow.
 
 ![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/self-serve/sign-up/show-me-how.png)
 
-[Run your first workflow locally](./run-locally) covers the same ground step by step, runs a built-in example so you have no file to write, and shows you where to find your run in the UI.
+[Run your first workflow locally](./run-locally) covers the same steps as the in-product guide.
 
-## Next steps
+###  Provision and connect
 
-- **[Run your first workflow locally](./run-locally).** Set up the CLI, run a workflow on your own machine, and follow it in the UI. No cluster needed.
+When you are ready to start running workflows in your AWS infrastructure, proceed to the following steps:
+
 - **[Provision your AWS resources](./aws-infrastructure)**.
 - **[Connect your cluster](./connect-a-cluster)**, when you want Union.ai to run your workloads on your own infrastructure.

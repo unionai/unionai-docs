@@ -1,12 +1,12 @@
 ---
-title: Start from AWS Marketplace
+title: AWS Marketplace
 description: Subscribe to Union through AWS Marketplace and associate the subscription with your organization, so the charges appear on your AWS bill.
 icon: cart
 weight: 1
 variants: -flyte +union
 ---
 
-# Start from AWS Marketplace
+# AWS Marketplace
 
 You can subscribe to Union.ai through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there. New subscriptions start with a 30-day free trial; see the [listing](https://aws.amazon.com/marketplace/pp/prodview-66k3cmidsgv5o) for the current terms.
 

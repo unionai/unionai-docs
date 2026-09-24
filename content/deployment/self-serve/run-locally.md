@@ -36,9 +36,7 @@ flyte create config \
 
 This writes `.flyte/config.yaml` in the current directory. The first command that contacts your organization opens a browser window so you can sign in; after that, the CLI remembers you.
 
-<!-- verify on the capture pass: confirm the exact sign-in behaviour a brand-new user sees from the CLI (device flow vs browser redirect) and reconcile this paragraph to it. -->
-
-## Run your first workflow
+## Run the built-in example workflow
 
 Run a built-in example workflow. It needs no files of its own:
 
@@ -58,6 +56,32 @@ Outputs: ActionOutputs(o0=14.0)
 ```
 
 The example fans a small computation out over a list of inputs with `flyte.map` and averages the results. The path Union.ai prints is the run's page in the UI.
+
+## Alternatively, create your own workflow
+
+For example, save this file as `hello.py` in a new directory
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="hello_env")
+
+@env.task
+def fn(x: int) -> int:
+    slope, intercept = 2, 5
+    return slope * x + intercept
+
+@env.task
+def main(x_list: list[int] = [1,2,3,4,5]) -> float:
+    y_list = list(flyte.map(fn, x_list))
+    return sum(y_list) / len(y_list)
+```
+
+then, run it with
+
+```bash
+flyte run --local --tracked hello.py main
+```
 
 ## See your run in the UI
 
