@@ -1,6 +1,6 @@
 ---
 title: Configure tasks
-description: Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more; use triggers for schedules.
+description: Define `TaskEnvironment`s for container images, resources, secrets, caching, retries, and more.
 icon: gear
 weight: 1
 variants: +flyte +union
@@ -74,7 +74,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **max_inline_io_bytes** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#inline-io-threshold) |
 | **links** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#links) |
 | **report** | `@env.task` only | [Additional task settings](./additional-task-settings#report) |
-| **triggers** | `@env.task` only | [Triggers](./triggers) &bull; [`Trigger` API ref](../../../api-reference/flyte-sdk/flyte/trigger) |
+| **triggers** | `@env.task` only | [Triggers](../../triggers/_index) &bull; [`Trigger` API ref](../../../api-reference/flyte-sdk/flyte/trigger) |
 | **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
 
 {{< /markdown >}}
@@ -104,13 +104,28 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **max_inline_io_bytes** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#inline-io-threshold) |
 | **links** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#links) |
 | **report** | `@env.task` only | [Additional task settings](./additional-task-settings#report) |
-| **triggers** | `@env.task` only | [Triggers](./triggers) &bull; [`Trigger` API ref](../../../api-reference/flyte-sdk/flyte/trigger) |
+| **triggers** | `@env.task` only | [Triggers](../../triggers/_index) &bull; [`Trigger` API ref](../../../api-reference/flyte-sdk/flyte/trigger) |
 | **docs** | `@env.task` only | [Additional task settings](./additional-task-settings#docs) |
 
 {{< /markdown >}}
 {{< /variant >}}
 
 \*When `reusable` is set, `resources`, `env_vars`, and `secrets` can only be overridden via `task.override()` with `reusable="off"` in the same call.
+
+## Scheduled and reactive automation
+
+Everything above configures how a task runs. To decide *when* it runs without someone calling it, attach triggers with the `triggers` parameter of `@env.task`.
+
+{{< variant union >}}
+{{< markdown >}}
+A trigger can run the task on a schedule (a cron expression or a fixed interval), react to a new version of an artifact or one of its partitions, or save a set of inputs to fire on demand. See [Triggers](../../triggers/_index) for every type of automation.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+A trigger can run the task on a schedule (a cron expression or a fixed interval), or save a set of inputs to fire on demand. See [Triggers](../../triggers/_index) for every type of automation.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Distributed tasks with a clustered environment
 

@@ -16,7 +16,7 @@ Notifications fire when the run reaches the terminal execution phase; no trigger
 Pass a single notification or a tuple of notifications. The notification types in `flyte.notify` are `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
 
 > [!NOTE]
-> To attach notifications to every run created by a scheduled trigger, set `notifications` on the `flyte.Trigger` object instead. See [Notifications](../task-configuration/triggers#notifications).
+> To attach notifications to every run created by a scheduled trigger, set `notifications` on the `flyte.Trigger` object instead. See [Notifications](../../triggers/trigger-notifications).
 
 ## Execution phases
 
