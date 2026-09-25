@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-description: Deploy the Union platform, either as BYOC or self-managed, with your code and data staying in your own cloud.
+description: Deploy Union.ai as a self-managed or BYOC deployment, or set it up yourself from AWS Marketplace.
 icon: server
 weight: 5
 variants: -flyte +union
@@ -11,69 +11,21 @@ secondary_topnav: -flyte +union
 
 # Platform deployment
 
-The Union.ai platform uses a split-plane model with separate control and data planes.
+You can deploy Union.ai on all major cloud providers, on neocloud providers, and on-premises on any Kubernetes cluster. You can also choose between two deployment models, depending on how much of the data plane you want to manage yourself:
 
-In both BYOC and Self-managed deployments, your code, input and output data, container images and logs reside entirely on the **data plane**, which runs in your cloud account, while the **control plane** runs on Union.ai's cloud account, providing the workflow orchestration logic.
+* **[Self-managed deployment](./selfmanaged/_index)**: You run the data plane on infrastructure you control, and you manage the cluster, upgrades, and all operational aspects. Union.ai support has no access to your cluster, giving you the highest level of data isolation. Supported on AWS, GCP, Azure and OCI; on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment.
+* **[BYOC deployment](./byoc/_index)**: Union.ai manages the data plane for you, but it still runs in your cloud account. You manage your cloud account and its resources; Union.ai handles the cluster, upgrades, and monitoring. To do this, Union.ai support has some access to your cluster, strictly for upgrades, provisioning, and maintaining cluster health, but never to your object storage or logs. Supported on AWS, GCP, and Azure.
 
-The **control plane** does not have access to the code, data, images, or logs in the **data plane**.
+In both cases, the control plane runs in Union.ai's cloud account, but due to Union's [Zero Trust architecture](../security/_index), your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own cloud account. See [Two-plane separation](../security/architecture/two-plane-separation) for how the split works.
 
-If you choose a **Self-managed deployment**, your data isolation is further enhanced by the fact that you manage your data plane entirely on your own, without providing any access to Union.ai customer support.
+## The fastest way to get started: Union Team on AWS Marketplace
 
-If you choose a **BYOC deployment**, Union.ai manages the Kubernetes cluster in your data plane for you. The data isolation of the control vs. data plane is still enforced - for example, Union.ai has no access to your object storage or logs. However, Union.ai customer support will have some access to your cluster, though strictly for upgrades, provisioning, and other actions related to maintaining cluster health.
+The quickest route to a working Union.ai deployment is **Union Team**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process, and new subscriptions start with a 30-day free trial.
 
-> [!INFO] Try Flyte Devbox in your browser
->
-> You can deploy Flyte Devbox, a light-weight Flyte cluster, locally using the [Flyte Devbox](../user-guide/get-started/run-modes/running-devbox).
->
-> If you want to try it without installing anything on your local machine or cloud environment, create a Flyte Devbox in Github Codespaces.
->
-> [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/flyteorg/flyte-devbox-codespace?quickstart=1)
+You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai UI. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-## BYOC deployment
+See [Self-serve setup](./self-serve/_index) for the step-by-step path.
 
-The BYOC deployment offers a fully "serverless in your cloud", turnkey solution where all infrastructure management is offloaded to Union.ai:
-
-* The **data plane** resides in your cloud provider account but is managed by Union.ai, who will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. BYOC deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
-
-* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai AWS account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
-
-## Self-managed deployment
-
-The Self-managed deployment allows you to manage the data plane yourself on cloud infrastructure that you control and maintain:
-
-* The **data plane** resides in your cloud provider account and is managed by you. Your team will handle deployment, monitoring, Kubernetes upgrades, and all other operational aspects of the platform. You do not need to provide any permissions to the Union.ai system to create a data plane. Self-managed deployment supports data planes on Amazon Web Services (AWS), Google Cloud Platform (GCP), Microsoft Azure, and Oracle Cloud Infrastructure (OCI); on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment. See [Set up your data plane](./selfmanaged/_index) for the full list of supported providers.
-
-* The **control plane**, as with all Union.ai deployment options, resides in the Union.ai Amazon Web Services (AWS) account and is administered by Union.ai. However, as mentioned, data separation is maintained between the data plane and the control plane, with no control plane access to the code, input/output, images or logs in the data plane.
-
-## Data plane
-
-The data plane runs in your cloud account and VPC. It is composed of the required services to run and monitor workflows:
-
-* Kubernetes cluster
-* Object storage bucket
-* Container image registry
-* Secrets manager
-* Logging solution
-* IAM role with proper access
-
-When you run your workflow:
-
-1. Your code is sent to the object storage bucket
-2. Container images are built on a builder node and pushed to the registry
-3. Pods are created and assume the IAM role
-4. Container images are pulled down from the registry for each pod as needed
-5. Containers load their inputs from, and save their outputs to, the object store
-
-All of this happens in the data plane, with the control plane aware only of the workflow execution state, and not the code, data, logs, secrets, or any other proprietary information. The data plane initiates an outbound-only connection to the control plane. There is no open incoming port to the data plane.
-
-## Control plane
-
-Union.ai operates the control plane in its own cloud infrastructure in Amazon Web Services (AWS).
-The control plane has access to:
-
-* Workflow execution state information
-* Names of tasks and other deployed entities
-* Pointers to object storage locations in the data plane (but not any user data)
-* Union.ai IDP
+If you need a platform AWS Marketplace doesn't cover, or you want Union.ai to run your data plane for you, see the [manual self-managed setup](./selfmanaged/_index) or [BYOC deployment](./byoc/_index).
 
 {{< subpage-cards >}}

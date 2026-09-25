@@ -9,21 +9,21 @@ sidebar_expanded: true
 
 # Infrastructure recommendations
 
-In a self-managed deployment, {{< key product_name >}} runs the **control plane** and you
+In a self-managed deployment, Union.ai runs the **control plane** and you
 run the **data plane** on your own Kubernetes cluster. This page covers the infrastructure
 **you** provision for the data plane: a Kubernetes cluster, a VPC, object storage, a
 managed identity binding, a container image registry, and egress to the
-{{< key product_name >}}-hosted control plane. Nothing here is {{< key product_name >}}-specific
+Union.ai-hosted control plane. Nothing here is Union.ai-specific
 infrastructure — it is your cloud account's standard infrastructure wired up to run
-{{< key product_name >}} task workloads.
+Union.ai task workloads.
 
-{{< key product_name >}} is capable of running on any Kubernetes cluster — managed services
+Union.ai is capable of running on any Kubernetes cluster — managed services
 such as GKE, AKS, and EKS, as well as self-managed clusters. The recommendations below
 ensure the best performance and reliability of your data plane.
 
-> [!NOTE] What {{< key product_name >}} runs vs. what you run
+> [!NOTE] What Union.ai runs vs. what you run
 > The **control plane** (admin, identity, queue service, database, control-plane object
-> storage) is hosted and operated by {{< key product_name >}} — you do not provision any of it.
+> storage) is hosted and operated by Union.ai — you do not provision any of it.
 > Your responsibility is the **data plane**: the cluster that runs the operator, executor,
 > and your task pods. Deployments where you also run the control plane are a separate,
 > self-hosted model and are out of scope for this page.
@@ -40,7 +40,7 @@ registry pull rate) bites independently as workload grows. See
 ### Workload signals → size mapping
 
 Use these signals to pick a starting point. They describe data-plane load only; the
-control plane that {{< key product_name >}} operates scales independently.
+control plane that Union.ai operates scales independently.
 
 | Signal | Small | Medium | Large |
 | --- | --- | --- | --- |
@@ -51,14 +51,14 @@ control plane that {{< key product_name >}} operates scales independently.
 ## Pre-installation checklist
 
 Provision the following in your cloud account before installing the
-{{< key product_name >}} data plane Helm chart. Each item links to the section that covers it
+Union.ai data plane Helm chart. Each item links to the section that covers it
 in detail; the concrete `aws` / `gcloud` / `az` commands live on the per-cloud
 [cloud provider setup](#cloud-provider-setup) pages.
 
 1. **VPC and subnets** — private subnets for worker nodes, sized for peak pod-IP demand.
    See [Networking](#networking).
 2. **NAT egress** — outbound path so worker nodes reach public registries **and the
-   {{< key product_name >}} control-plane endpoint**. See [Networking](#networking) and
+   Union.ai control-plane endpoint**. See [Networking](#networking) and
    [Control-plane connectivity](#control-plane-connectivity).
 3. **Kubernetes cluster** — managed control plane (EKS / GKE / AKS) plus a system node pool
    and worker pool(s). See [Kubernetes cluster](#kubernetes-cluster).
@@ -68,7 +68,7 @@ in detail; the concrete `aws` / `gcloud` / `az` commands live on the per-cloud
 5. **Object storage buckets** — metadata bucket and fast-registration bucket. See
    [Object storage](#object-storage).
 6. **Container image registry** — a private registry for task images (the image builder
-   writes here; nodes pull from here), plus credentials to pull {{< key product_name >}}
+   writes here; nodes pull from here), plus credentials to pull Union.ai
    system images. See [Container image registry](#container-image-registry).
 7. **Service-account IAM bindings** — bind the `union-system` identity to the buckets and
    registry above. See [Identity and workload binding](#identity-and-workload-binding).
@@ -91,7 +91,7 @@ Run a version that is [actively supported by the Kubernetes community](https://k
 
 ### Node pools
 
-Use separate node pools for {{< key product_name >}} system services and for worker (task)
+Use separate node pools for Union.ai system services and for worker (task)
 pods. This guards against resource contention between the platform and your workloads. See
 [Configuring node pools](../configuration/node-pools) for details.
 
@@ -102,7 +102,7 @@ pods. This guards against resource contention between the platform and your work
 | Spot (optional) | Interruptible task capacity | Workloads must tolerate the spot taint and interruption. Configure on-demand fallback for production. |
 | GPU (optional) | GPU task pods | The GPU family (`g`/`p` on AWS, `n1`/`a2` on GCP) is what drives quota planning. Default production GPU pools to on-demand — spot GPU capacity is unreliable. |
 
-By default the {{< key product_name >}} data plane requests the following resources for its
+By default the Union.ai data plane requests the following resources for its
 system components (excludes user task pods):
 
 |          | CPU (vCPUs) | Memory (GiB) |
@@ -110,8 +110,8 @@ system components (excludes user task pods):
 | Requests | 14          | 27.1         |
 | Limits   | 17          | 32           |
 
-For GPU access, {{< key product_name >}} injects tolerations and label selectors onto
-execution pods. {{< key product_name >}} supports cluster autoscaling and spot/interruptible
+For GPU access, Union.ai injects tolerations and label selectors onto
+execution pods. Union.ai supports cluster autoscaling and spot/interruptible
 instances.
 
 **Scale up when**:
@@ -165,7 +165,7 @@ VPC (/16)
 
 Worker nodes in private subnets need outbound access to pull container images from public
 registries (Docker Hub, ECR Public, `ghcr.io`) **and to reach the
-{{< key product_name >}}-hosted control plane** (see
+Union.ai-hosted control plane** (see
 [Control-plane connectivity](#control-plane-connectivity)). This requires a NAT gateway (or
 equivalent) with an egress path from each AZ.
 
@@ -177,12 +177,12 @@ equivalent) with an egress path from each AZ.
 
 > [!NOTE] Fully private clusters
 > If your cluster has no outbound internet access, configure private endpoints or mirrors
-> for all container registries and for the {{< key product_name >}} control-plane endpoint.
+> for all container registries and for the Union.ai control-plane endpoint.
 
 ## Identity and workload binding
 
 The cluster needs a managed identity mechanism so pods can call cloud APIs (object storage,
-image registry, secrets) without static credentials. The {{< key product_name >}} data plane
+image registry, secrets) without static credentials. The Union.ai data plane
 uses a **single Kubernetes service account, `union-system`**, shared by all platform
 components (operator, executor, webhook, proxy, and FluentBit), and the same identity is
 assumed by task pods across per-project namespaces.
@@ -211,7 +211,7 @@ per-cloud [cloud provider setup](#cloud-provider-setup) pages. Review the
 
 ### Common identity pitfalls
 
-**GCP — `objectAdmin` alone is insufficient.** Several {{< key product_name >}} services use
+**GCP — `objectAdmin` alone is insufficient.** Several Union.ai services use
 the stow GCS driver, which calls `storage.buckets.get` on startup to introspect the bucket.
 `roles/storage.objectAdmin` covers object read/write but **not** the bucket-metadata
 permission. Symptom: pods crash-loop with `Error 403: does not have storage.buckets.get
@@ -251,10 +251,10 @@ per-cloud pages for CORS configuration (required for the
 
 ## Container image registry
 
-A {{< key product_name >}} data plane pulls images from three categories of registry:
+A Union.ai data plane pulls images from three categories of registry:
 
-1. **{{< key product_name >}} system images** — the data-plane components (operator,
-   executor, proxy). Pulled from {{< key product_name >}}'s registry; access requires a pull
+1. **Union.ai system images** — the data-plane components (operator,
+   executor, proxy). Pulled from Union.ai's registry; access requires a pull
    secret you create at install time.
 2. **Task images built by the image builder** — when users invoke the `flyte.Image` API, the
    [image builder](../configuration/image-builder) writes images into a registry **you
@@ -273,7 +273,7 @@ Task-pod stdout/stderr needs to land in a backend the operator can read, so the 
 display logs **while a task runs and after its pod is garbage-collected**. The default
 backend differs by cloud:
 
-- **AWS**: a {{< key product_name >}}-managed FluentBit DaemonSet writes container logs to
+- **AWS**: a Union.ai-managed FluentBit DaemonSet writes container logs to
   the metadata bucket (default) or CloudWatch Logs.
 - **GCP**: GKE's managed Cloud Logging agent ships logs automatically; the operator reads
   post-GC logs from the Cloud Logging API. The FluentBit subchart is disabled by default to
@@ -283,7 +283,7 @@ See [Persistent logs](../configuration/persistent-logs) for configuration.
 
 ## Secrets
 
-The {{< key product_name >}} chart consumes **Kubernetes secrets** for registry pull
+The Union.ai chart consumes **Kubernetes secrets** for registry pull
 credentials, the control-plane OAuth client credential, and user-supplied workflow secrets.
 How those secrets get into the cluster is your choice — manual `kubectl create secret`,
 `external-secrets` / a cloud secrets-store CSI driver, Sealed Secrets / SOPS, or your own
@@ -294,9 +294,9 @@ configurable backing store (Kubernetes secrets by default, or a cloud secrets ma
 ## Control-plane connectivity
 
 Unlike a self-hosted deployment, the data plane authenticates to and communicates with a
-**remote, {{< key product_name >}}-hosted control plane** over the internet. Ensure:
+**remote, Union.ai-hosted control plane** over the internet. Ensure:
 
-- **Egress** from worker nodes (via NAT) can reach the {{< key product_name >}}
+- **Egress** from worker nodes (via NAT) can reach the Union.ai
   control-plane endpoint (`*.unionai.cloud`) in addition to your container registries.
   Connectivity is **outbound-only** over gRPC-over-TLS (**TCP 443**) and, under the default
   tier, the Cloudflare Tunnel (**TCP 7844**); no inbound firewall rules are required. For the
@@ -305,7 +305,7 @@ Unlike a self-hosted deployment, the data plane authenticates to and communicate
 - The operator authenticates to the control plane using an **OAuth2 client-credentials
   ("eager") key**, supplied as a Kubernetes secret. See
   [Authentication](../configuration/authentication).
-- If you run **multiple data-plane clusters** under one {{< key product_name >}} control
+- If you run **multiple data-plane clusters** under one Union.ai control
   plane, each cluster registers independently — see [Multi-cluster](../configuration/multi-cluster).
 
 ## Cloud provider setup

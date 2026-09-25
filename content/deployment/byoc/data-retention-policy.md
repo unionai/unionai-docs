@@ -12,7 +12,7 @@ Data retention policies determine how long workflow data is kept in the data pla
 
 For the conceptual map of what's in the data plane bucket versus the control plane database, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives). This page describes which data is covered by the retention policy and what happens when data is deleted.
 
-Retention periods are set by your {{< key product_name >}} plan:
+Retention periods are set by your Union.ai plan:
 
 | Plan | Retention period |
 | ---- | ---------------- |

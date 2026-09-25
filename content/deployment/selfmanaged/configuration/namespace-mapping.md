@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Namespace mapping
 
-By default, {{< key product_name >}} maps each project-domain pair to a Kubernetes namespace using the pattern `{project}-{domain}`. For example, the project `flytesnacks` in domain `development` runs workloads in namespace `flytesnacks-development`.
+By default, Union.ai maps each project-domain pair to a Kubernetes namespace using the pattern `{project}-{domain}`. For example, the project `flytesnacks` in domain `development` runs workloads in namespace `flytesnacks-development`.
 
 You can customize this mapping by setting the `namespace_mapping.template` value in your Helm configuration.
 
