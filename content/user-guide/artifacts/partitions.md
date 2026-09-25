@@ -53,6 +53,9 @@ us_aug_2 = Artifact.get("raw_events", date=date(2026, 8, 2), region="us")
 
 See [Find and retrieve artifacts](./retrieving-artifacts) for ranges, listing partition values, and more. To run a task each time a partition lands, see [Trigger on partitions](../triggers/partition-triggers).
 
+> [!WARNING] Partition keys are fixed per artifact name
+> The first partitioned version of `raw_events` fixes its keys to `date` and `region`. A later version published with different keys does not change them, and neither does adding partitions to an artifact that was declared without any. To use different keys, publish under a new artifact name. See [Partition keys are fixed](#partition-keys-are-fixed).
+
 ## Partition values
 
 `Metadata.partitions` maps a partition key to a value. The Python type of the value decides what kind of partition it is:
@@ -119,9 +122,36 @@ An ISO date (`2026-07-31`) is a daily partition, an ISO hour (`2026-07-31T09`) a
 {{< /tab >}}
 {{< /tabs >}}
 
+## Partition keys are fixed
+
+An artifact name has one set of partition keys. They are fixed once, by whichever comes first:
+
+* The first version published **with** partitions. A version published without partitions never fixes the keys.
+* A declaration with `Artifact.declare`. See [Fixing the keys up front](#fixing-the-keys-up-front).
+
+After that, no later version changes them. For `raw_events`, fixed to `date` and `region`:
+
+| You publish | Result |
+|---|---|
+| A version with an extra key, such as `channel` | The keys stay `date` and `region` |
+| A version without one of the keys, such as `date` alone | The keys stay `date` and `region` |
+| A version without partitions | The keys stay `date` and `region` |
+
+The same holds for an artifact declared with no partitions: a version published with partitions leaves it unpartitioned.
+
+There is one case where adding partitions does change an artifact: its earlier versions have no partitions, and it was never declared. Then the first partitioned version fixes the keys, and the earlier versions no longer match them. To prevent this, declare the artifact with no partitions.
+
+A version whose keys differ from the artifact's is not rejected. It is published after the task that made it has finished, so the registry stores it as published instead of failing the run. Compare its `partitions` with `Artifact.get_schema(name)` to find it.
+
+### Changing an artifact's keys
+
+To use different keys, publish under a new artifact name. Publishing versions with the new keys does not change the old name, and declaring different keys fails.
+
+Deleting versions does not reliably reset the keys either. Declared keys stay after every version is deleted. Keys fixed by a first version are dropped only when the last version is deleted.
+
 ## Fixing the keys up front
 
-An artifact's partition keys are fixed by its first partitioned version. When several teams or jobs write the same artifact, declare the keys before anyone publishes, so the first writer can't fix the wrong ones by accident:
+When several teams or jobs write the same artifact, declare the keys before anyone publishes, so the first writer can't fix the wrong ones by accident:
 
 ```python
 Artifact.declare("raw_events", {"date": date, "region": str})
@@ -131,4 +161,10 @@ Artifact.declare("monthly_report", {"date": "month"})
 
 A key maps to `date` (or `"day"`) for daily, `datetime` (or `"hour"`) for hourly, `"week"` or `"month"` for the coarser time partitions, and `str` for a string partition. Declaring again with the same keys is a no-op. Declaring different keys fails, because changing an artifact's keys means using a new name.
 
-`Artifact.get_schema(name)` returns the keys an artifact has, whether they were declared or fixed by the first version.
+An artifact that is read by version, not by partition, can be declared with no keys. Then a version published with partitions by mistake can't make it partitioned:
+
+```python
+Artifact.declare("tracking_data", {})
+```
+
+`Artifact.get_schema(name)` returns the keys an artifact has, and whether they were declared or fixed by the first version.
