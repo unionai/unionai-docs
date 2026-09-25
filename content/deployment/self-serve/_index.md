@@ -21,7 +21,7 @@ The result is a [self-managed deployment](../selfmanaged/_index): the data plane
 1. **[Start from AWS Marketplace](./aws-marketplace).** Subscribe to the [Union Team listing](https://aws.amazon.com/marketplace/pp/prodview-66k3cmidsgv5o) on AWS Marketplace, so the charges appear on your AWS bill, then follow the handoff to Union.ai.
 2. **[Sign up for Union.ai](./sign-up).** Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on.
 3. **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. Optional, but the quickest way to see Union.ai working.
-4. **[Provision your AWS resources](./aws-infrastructure).** Create the EKS cluster, S3 bucket, ECR repository and IAM roles your data plane runs on, in your AWS account.
+4. **[Provision your AWS resources](./aws-infrastructure).** Create the EKS cluster, S3 bucket, ECR repository and IAM roles your data plane runs on, in your AWS account. Optional if you already have AWS resources that meet the requirements.
 5. **[Connect your cluster](./connect-a-cluster).** Give Union.ai a Kubernetes cluster to run your workloads on, and it installs the data plane into it.
 
 {{< subpage-cards >}}

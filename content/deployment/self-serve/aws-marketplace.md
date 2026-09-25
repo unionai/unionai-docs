@@ -16,7 +16,7 @@ This page covers the purchase itself, and the handoff to Union.ai that follows i
 
 An AWS account that is allowed to subscribe on AWS Marketplace. Many organizations restrict this to a billing or procurement account.
 
-You don't need a cluster or any other AWS resources yet. You create those later, in [Provision your AWS resources](./aws-infrastructure).
+You don't need a cluster or any other AWS resources yet. You create those later, in [Provision your AWS resources](./aws-infrastructure), or use ones you already have.
 
 ## 1. Subscribe on AWS Marketplace
 
@@ -40,5 +40,5 @@ The next steps are:
 
 1. **[Sign up for Union.ai](./sign-up).** Name your organization and choose a region.
 2. **[Run your first workflow locally](./run-locally).** Optional: see Union.ai working before you set up a cluster.
-3. **[Provision your AWS resources](./aws-infrastructure).** Create the EKS cluster, S3 bucket, ECR repository and IAM roles your data plane runs on.
+3. **[Provision your AWS resources](./aws-infrastructure).** Create the EKS cluster, S3 bucket, ECR repository and IAM roles your data plane runs on. Optional if you already have AWS resources that meet the requirements.
 4. **[Connect your cluster](./connect-a-cluster).** Enter the details of the resources you created, and Union.ai installs the data plane on them.

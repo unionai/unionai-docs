@@ -17,6 +17,16 @@ The self-serve setup installs the data plane into your cluster for you, but the 
 
 At the end you have the values you enter when you [connect your cluster](./connect-a-cluster): four for the cluster pool, and two IAM role ARNs for registering the cluster.
 
+> [!NOTE] Already have these resources?
+> This page is optional. You can use an existing EKS cluster, S3 bucket, ECR repository and IAM roles instead, as long as they meet the same requirements:
+>
+> - The EKS cluster has an IAM OIDC provider, and no Metrics Server of its own, because the data plane chart installs one ([step 2](#2-create-the-eks-cluster)).
+> - The S3 bucket blocks public access and has the CORS rule from [step 3](#3-create-the-s3-bucket).
+> - The ECR repository is private, with the repository policy from [step 7](#7-grant-repository-access).
+> - The two IAM roles have the trust policies from [step 5](#5-create-the-system-and-task-irsa-roles) and the permissions from [step 6](#6-grant-s3-and-secrets-manager-access).
+>
+> Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](./connect-a-cluster).
+
 > [!NOTE] Not the manual self-managed setup
 > These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page for self-serve setup only.
 

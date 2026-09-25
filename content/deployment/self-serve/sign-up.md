@@ -68,5 +68,5 @@ Select **Show me how** on the **Run something locally** card for a short in-app 
 
 When you are ready to run workflows on your AWS infrastructure, continue with:
 
-- **[Provision your AWS resources](./aws-infrastructure)**
+- **[Provision your AWS resources](./aws-infrastructure)**. Optional if you already have AWS resources that meet the requirements.
 - **[Connect your cluster](./connect-a-cluster)**

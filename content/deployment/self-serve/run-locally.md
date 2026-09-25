@@ -88,7 +88,7 @@ Everything you see here came from a run on your own machine. Union.ai recorded i
 
 When you want to start running your workflows on your AWS infrastructure, proceed with:
 
-- **[Provision your AWS resources](./aws-infrastructure)**.
+- **[Provision your AWS resources](./aws-infrastructure)**. Optional if you already have AWS resources that meet the requirements.
 - **[Connect your cluster](./connect-a-cluster)**.
 
 Before that, two things you can do without a cluster are:

@@ -19,7 +19,7 @@ You have an organization and the AWS resources your data plane runs on. Now conn
 
 ## What you'll need
 
-The values printed at the end of [Provision your AWS resources](./aws-infrastructure#8-collect-the-values-for-connecting-your-cluster):
+The values printed at the end of [Provision your AWS resources](./aws-infrastructure#8-collect-the-values-for-connecting-your-cluster). If you are using AWS resources you already had, collect the same values for them, and check that they meet the [requirements](./aws-infrastructure#provision-your-aws-resources) first:
 
 - **S3 bucket URI**: the metadata bucket, for example `s3://my-team-union-selfserve-metadata`
 - **AWS account ID**: the 12-digit ID of the account that holds Secrets Manager
@@ -71,6 +71,8 @@ Select **Connect cluster**. Union.ai registers the cluster and takes you to its 
 
 The cluster's page, **Install Union on your AWS cluster**, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl get nodes` succeeds. The agent installs itself and connects out to Union.ai.
 
+![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/self-serve/connect-a-cluster/install-union.png)
+
 The command writes a `values.yaml` for your cluster, then installs the agent from it with Helm. It looks like this:
 
 ```bash
@@ -98,7 +100,7 @@ The **Installation progress** panel on the cluster's page tracks two phases:
 | **Installing the Union agent** | The agent starts in your cluster and connects out to Union.ai. The panel shows the connection status. |
 | **Installing the Union operator** | Union.ai installs the data plane through that connection. The panel shows the cluster's health. |
 
-Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later.
+Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later. Until it finishes, the cluster shows as **Unhealthy** at the top of the page. That is expected during the install.
 
 If you check progress with `kubectl`, list pods across all namespaces. The data plane installs into its own namespace, named `instance-` followed by an identifier.
 
