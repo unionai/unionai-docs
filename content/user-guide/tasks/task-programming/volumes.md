@@ -394,7 +394,7 @@ The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
 committed yet: there's no published version to point at.
 
-### Caching chunks
+### The chunk cache
 
 Reads go through a local **chunk cache**. Where that cache lives is the single
 biggest lever on read performance, and by default it is in the worst place:
@@ -417,9 +417,11 @@ client's own bookkeeping and the imprecision of its accounting. It is per
 mount: split it with `mount(cache_size_mb=...)` when one task mounts several
 volumes.
 
-**Share it across pods on a node.** With `shared_node_cache=True`, read-only
-mounts in the pod use a cache shared by every pod on that node, so a chunk is
-fetched from object storage once per *node* rather than once per *pod*:
+### Shared node cache
+
+With `shared_node_cache=True`, read-only mounts in the pod use a chunk cache
+shared by every pod on that node, so a chunk is fetched from object storage
+once per *node* rather than once per *pod*:
 
 ```python
 pod_template = allow_volumes(cache_size="50Gi", shared_node_cache=True)
@@ -626,8 +628,10 @@ few seconds at `commit()`.
   see [Tracking versions as artifacts](#tracking-versions-as-artifacts).
 - Reporting: `Volume.new(report=True)` or `$UNION_VOLUME_REPORT` — see
   [Debugging a mount](#debugging-a-mount).
-- Caching: `allow_volumes(cache_size=..., shared_node_cache=...)` and
-  `mount(cache_dir=..., cache_size_mb=..., shared_node_cache=...)` — see
-  [Caching chunks](#caching-chunks).
+- Caching: `allow_volumes(cache_size=...)` and
+  `mount(cache_dir=..., cache_size_mb=...)` — see
+  [The chunk cache](#the-chunk-cache); `allow_volumes(shared_node_cache=True)`
+  and `mount(shared_node_cache=...)` — see
+  [Shared node cache](#shared-node-cache).
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
