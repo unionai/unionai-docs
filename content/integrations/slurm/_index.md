@@ -296,7 +296,76 @@ COPY dist/flyteplugins_slurm-*.whl /tmp/
 RUN pip install --no-deps /tmp/flyteplugins_slurm-*.whl && pip install asyncssh
 ```
 
-Push it to a registry the data plane can pull from, and set `flyteconnector.image` in your data plane values.
+Push it to a registry the data plane can pull from.
+
+### Data plane values
+
+{{< variant union >}}
+{{< markdown >}}
+
+Create the secret holding the SSH key and the `known_hosts` file:
+
+```bash
+kubectl -n <namespace> create secret generic slurm-login \
+  --from-file=ssh-privatekey=./slurm-connector \
+  --from-file=known_hosts=./known_hosts
+```
+
+Then point the connector at your image and give it the connection:
+
+```yaml
+flyteconnector:
+  # Also gates the connector-service block in the leaseworker's config, so the
+  # leaseworker has no connector endpoint at all when this is false.
+  enabled: true
+  image:
+    repository: <your-registry>/slurm-connector
+    tag: <your-tag>
+  additionalEnvs:
+    - { name: FLYTE_SLURM_HOST, value: "<login-host>" }
+    - { name: FLYTE_SLURM_USERNAME, value: "flyte" }
+    - name: FLYTE_SLURM_SSH_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef: { name: slurm-login, key: ssh-privatekey }
+    - { name: FLYTE_SLURM_KNOWN_HOSTS, value: /etc/slurm-login/known_hosts }
+  # These two take a map, not a list — see the warning below.
+  additionalVolumeMounts:
+    volumeMounts:
+      - { name: slurm-login, mountPath: /etc/slurm-login, readOnly: true }
+  additionalVolumes:
+    volumes:
+      - name: slurm-login
+        secret:
+          secretName: slurm-login
+          items: [{ key: known_hosts, path: known_hosts }]
+```
+
+`FLYTE_SLURM_SSH_PRIVATE_KEY` holds the key's **contents**, so it comes from a
+`secretKeyRef`; `FLYTE_SLURM_KNOWN_HOSTS` is a **path**, so its file is mounted.
+
+> [!WARNING] `additionalVolumes` and `additionalVolumeMounts` take a map, not a list
+> The chart splices these into the pod spec without a `volumes:` / `volumeMounts:` key of
+> its own, so the value has to supply it. A bare list — which the chart's own `[]` default
+> and its comments imply — renders invalid YAML and fails the upgrade:
+>
+> ```
+> YAML parse error on dataplane/templates/flyteconnector/deployment.yaml:
+> error converting YAML to JSON: yaml: did not find expected key
+> ```
+>
+> `additionalEnvs` is unaffected: the template does scaffold `env:`, so it takes a plain
+> list. Render before upgrading:
+>
+> ```bash
+> helm template t <chart> -s templates/flyteconnector/deployment.yaml -f values-slurm.yaml
+> ```
+>
+> On upgrade Helm also prints `warning: destination for
+> dataplane.flyteconnector.additionalVolumeMounts is a table. Ignoring non-table value
+> ([])`. That is expected: your map overrides the chart's `[]` default.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Task types are discovered at runtime from the connector's metadata service, so there is no task-type routing to configure. Confirm the connector advertises them:
 
