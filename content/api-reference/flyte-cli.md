@@ -4,6 +4,8 @@ version: 2.10.0
 variants: +flyte +union
 layout: py_api
 weight: 3
+plugin_versions:
+  flyteplugins-union: 0.13.0
 ---
 
 # Flyte CLI
@@ -86,10 +88,15 @@ This is the command line interface for Flyte.
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
 | `volume` | [`explore⁺`](#flyte-explore-volume)  |
+| `deploy` | [`factory⁺`](#flyte-factory-deploy)  |
+| `get` | [`factory⁺`](#flyte-factory-get)  |
+| `materialize` | [`factory⁺`](#flyte-factory-materialize)  |
+| `plan` | [`factory⁺`](#flyte-factory-plan)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `cluster-config` | [`get⁺`](#flyte-get-cluster-config)  |
 | `code` | [`get`](#flyte-get-code)  |
 | `condition` | [`get`](#flyte-get-condition), [`signal`](#flyte-signal-condition)  |
+| `environment` | [`get⁺`](#flyte-get-environment)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
@@ -112,9 +119,10 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `edit` | [`settings`](#flyte-edit-settings)  |
 | `explore⁺` | [`volume⁺`](#flyte-explore-volume)  |
+| `factory⁺` | [`deploy⁺`](#flyte-factory-deploy), [`get⁺`](#flyte-factory-get), [`materialize⁺`](#flyte-factory-materialize), [`plan⁺`](#flyte-factory-plan)  |
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
@@ -1295,6 +1303,140 @@ $ flyte explore volume --from-file ./index.db --store-type sqlite
 
 {{< variant union >}}
 {{< markdown >}}
+### flyte factory
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte factory COMMAND [ARGS]...`**
+
+Factories: graphs of artifacts wired by deployed tasks, materialized on demand.
+
+A factory deploys as a task of type ``factory``. Running that task for a target artifact
+and a partition selector is a materialization; a range selector is a backfill.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte factory deploy
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte factory deploy [OPTIONS] FILE`**
+
+Validate a factory module against its deployed tasks and register it as a task of type factory.
+
+Examples:
+
+```bash
+$ flyte factory deploy factories/analytics.py
+
+$ flyte factory deploy factories/analytics.py --name analytics --dry-run
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--name` | `text` |  | Deploy only the factory with this name |
+| `--dry-run` | `boolean` | `False` | Validate and compile without registering |
+| `--version` | `text` |  | Explicit version; default is a graph hash |
+| `--project` | `text` |  |  |
+| `--domain` | `text` |  |  |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte factory get
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte factory get [OPTIONS] [NAME]`**
+
+List factories in the project, or show one factory's definition.
+
+Examples:
+
+```bash
+$ flyte factory get
+
+$ flyte factory get analytics --graph
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--graph` | `boolean` | `False` | Print the definition as Mermaid |
+| `--limit` | `integer` | `200` |  |
+| `--project` | `text` |  |  |
+| `--domain` | `text` |  |  |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte factory materialize
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte factory materialize [OPTIONS] FACTORY_NAME ARTIFACT`**
+
+Materialize ARTIFACT through FACTORY_NAME for the selected partitions.
+
+Examples:
+
+```bash
+$ flyte factory materialize analytics daily_report --partition date=2026-08-01..2026-08-31
+
+$ flyte factory materialize analytics daily_report --partition date=2026-09-08 --plan --wait
+
+$ flyte factory materialize analytics events --partition date=2026-08-01..31 --partition region=us,eu \
+      --rebuild ingest.clean --concurrency 50 --queue gpu-spot
+
+$ flyte factory materialize models model --version tracks=v2 --version labels=v1
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--partition` | `text` | `Sentinel.UNSET` | dim=value, dim=a..b (range), dim=a,b (list), or dim=* (every partition in the registry) |
+| `--version` | `text` | `Sentinel.UNSET` | source=version: read that artifact version of a source instead of its latest |
+| `--param` | `text` | `Sentinel.UNSET` | artifact.param=value (or task.param=value) override for one build |
+| `--rebuild` | `text` | `Sentinel.UNSET` | Artifact or task name; treat every instance of that build as stale |
+| `--rebuild-all` | `boolean` | `False` | Ignore the cache everywhere |
+| `--downstream` | `boolean` | `False` | Also refresh downstream instances |
+| `--plan` | `boolean` | `False` | Plan only; launch nothing |
+| `--concurrency` | `integer` | `0` | Max instances building at once per node |
+| `--queue` | `text` |  | Run the materialization and every build on this queue |
+| `--wait` | `boolean` | `False` | Wait for the run and print the plan with results |
+| `--name` | `text` |  | Run name |
+| `--project` | `text` |  |  |
+| `--domain` | `text` |  |  |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte factory plan
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte factory plan [OPTIONS] FACTORY_NAME ARTIFACT`**
+
+Short for ``materialize --plan --wait``: show what would be reused and built.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--partition` | `text` | `Sentinel.UNSET` |  |
+| `--version` | `text` | `Sentinel.UNSET` | source=version: pin a source to an artifact version |
+| `--project` | `text` |  |  |
+| `--domain` | `text` |  |  |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 ### flyte fork
 
 > **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
@@ -1713,6 +1855,45 @@ flyte -of json-raw get devbox
 |--------|------|---------|-------------|
 | `--no-probes` | `boolean` | `False` | Skip the HTTP readiness probe and the container resource usage sample, for a faster, offline check. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get environment
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get environment [OPTIONS] [NAME]`**
+
+Get or list environments.
+
+Without NAME, lists every retained environment version in the project and
+domain. Each version is an independent worker pool; a version that no
+cluster has reported recently is INACTIVE.
+
+With NAME, shows one version in detail: its spec, scaling, and each
+cluster's workers, pending/assigned actions and recent worker errors.
+
+Examples:
+
+```bash
+$ flyte get environment
+
+$ flyte get environment my-env
+
+$ flyte get environment my-env --version abc123
+
+$ flyte get environment my-env --output json
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--version` | `text` |  | Version to get. Defaults to the most recently active one. |
+| `--limit` | `integer` | `100` | Maximum number of environment versions to list |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 #### flyte get io
 

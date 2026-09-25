@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.12.1
+version: 0.13.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -12,175 +12,62 @@ weight: 5
 
 
 
-Union SDK - Proprietary extensions for Flyte.
-
-This package provides Union-specific functionality on top of the open-source Flyte SDK.
 ## Directory
 
-### Methods
+### Classes
 
-| Method | Description |
+| Class | Description |
 |-|-|
-| [`debug()`](#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
-| [`fork()`](#fork) | Fork run *run_name*, replaying it with new code and/or inputs. |
-| [`with_debugcontext()`](#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
-| [`with_forkcontext()`](#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
+| [`flyteplugins.union.factory.Factory`](flyteplugins.union.factory/factory) | A set of builds. |
+| [`flyteplugins.union.factory.TimeRange`](flyteplugins.union.factory/timerange) | A trailing window, relative to the consumer's own time value, ending at that value. |
+| [`flyteplugins.union.io.ActionRef`](flyteplugins.union.io/actionref) | Provenance: the action (one task execution within a run) that produced a particular `Volume` version, plus the output slot it was returned as. |
+| [`flyteplugins.union.io.ROVolume`](flyteplugins.union.io/rovolume) | Immutable, versioned volume — PRD §Core Concepts. |
+| [`flyteplugins.union.io.RWVolume`](flyteplugins.union.io/rwvolume) | Mutable working copy — PRD §Core Concepts. |
+| [`flyteplugins.union.io.Volume`](flyteplugins.union.io/volume) | A persistent volume identified by its metadata index. |
+| [`flyteplugins.union.remote.ApiKey`](flyteplugins.union.remote/apikey) | Represents a Union API Key (OAuth Application). |
+| [`flyteplugins.union.remote.Assignment`](flyteplugins.union.remote/assignment) | Represents role/policy assignments for an identity. |
+| [`flyteplugins.union.remote.Cluster`](flyteplugins.union.remote/cluster) | Represents a Union cluster. |
+| [`flyteplugins.union.remote.ClusterConfig`](flyteplugins.union.remote/clusterconfig) | The tracked ConfigMaps of a single cluster. |
+| [`flyteplugins.union.remote.ClusterPool`](flyteplugins.union.remote/clusterpool) | Represents a Union cluster pool — the configuration shared by its member clusters. |
+| [`flyteplugins.union.remote.Environment`](flyteplugins.union.remote/environment) | One environment version with its full spec, scaling and per-cluster status snapshots. |
+| [`flyteplugins.union.remote.EnvironmentVersion`](flyteplugins.union.remote/environmentversion) | One environment version as returned by the list call: its summary and per-cluster summaries. |
+| [`flyteplugins.union.remote.Member`](flyteplugins.union.remote/member) | Represents a Union organization member (user or application). |
+| [`flyteplugins.union.remote.MetricResult`](flyteplugins.union.remote/metricresult) | The result of querying one metric. |
+| [`flyteplugins.union.remote.MetricSeries`](flyteplugins.union.remote/metricseries) | One time series of a metric result, e.g. one container or one GPU device. |
+| [`flyteplugins.union.remote.Metrics`](flyteplugins.union.remote/metrics) | Pod metrics of a task's action attempt or of an app, as shown in the Union UI. |
+| [`flyteplugins.union.remote.Policy`](flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
+| [`flyteplugins.union.remote.Queue`](flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
+| [`flyteplugins.union.remote.Role`](flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
+| [`flyteplugins.union.remote.SSHDebug`](flyteplugins.union.remote/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
+| [`flyteplugins.union.remote.SystemLogs`](flyteplugins.union.remote/systemlogs) | Logs of the Union system components running on a cluster's dataplane. |
+| [`flyteplugins.union.remote.User`](flyteplugins.union.remote/user) | Represents a Union user. |
+| [`flyteplugins.union.remote.VolumeExplore`](flyteplugins.union.remote/volumeexplore) | A resolved `Volume` plus the IO to inspect and walk its lineage. |
+| [`flyteplugins.union.remote.VolumeResolveError`](flyteplugins.union.remote/volumeresolveerror) | No (or ambiguous) Volume-typed value could be resolved on an action. |
 
+### Functions
 
-## Methods
+| Function | Description |
+|-|-|
+| [`flyteplugins.union.debug()`](flyteplugins.union/_index#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
+| [`flyteplugins.union.fork()`](flyteplugins.union/_index#fork) | Fork run *run_name*, replaying it with new code and/or inputs. |
+| [`flyteplugins.union.with_debugcontext()`](flyteplugins.union/_index#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
+| [`flyteplugins.union.with_forkcontext()`](flyteplugins.union/_index#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
+| [`flyteplugins.union.factory.build()`](flyteplugins.union.factory/_index#build) | Name the artifact (or artifacts) one task call makes. |
+| [`flyteplugins.union.factory.materialize()`](flyteplugins.union.factory/_index#materialize) | Start a run of ``<factory>.materialize`` and return the ``flyte.remote.Run``. |
+| [`flyteplugins.union.factory.partition()`](flyteplugins.union.factory/_index#partition) | Pass the instance's value of ``dim`` to a task parameter. |
+| [`flyteplugins.union.factory.source()`](flyteplugins.union.factory/_index#source) | An artifact made outside this factory. |
+| [`flyteplugins.union.io.allow_volumes()`](flyteplugins.union.io/_index#allow_volumes) | Enable `Volume` mounts in a task pod with **zero privileges**. |
+| [`flyteplugins.union.io.with_high_throughput_volume_deps()`](flyteplugins.union.io/_index#with_high_throughput_volume_deps) | Prepare ``base`` for high-throughput (Redis-backed) Volumes. |
+| [`flyteplugins.union.io.with_local_flyteplugins()`](flyteplugins.union.io/_index#with_local_flyteplugins) | Package the **locally checked-out** flyteplugins-union (built to a wheel) and an optional local ``juicefs`` binary into ``base`` — for iterating on an *unreleased* plugin build against a real cluster. |
+| [`flyteplugins.union.utils.with_local_flyteplugins_union()`](flyteplugins.union.utils/_index#with_local_flyteplugins_union) | Layer the locally-built ``flyteplugins-union`` wheel onto ``img``. |
 
-#### debug()
+### Packages
 
-```python
-def debug(
-    target: 'str | TaskTemplate',
-    *args: Any,
-    action_name: str = 'a0',
-    name: Optional[str] = None,
-    ssh_host_name: Optional[str] = None,
-    custom_context: Optional[Dict[str, str]] = None,
-    task_template: 'Optional[TaskTemplate]' = None,
-    inputs: Optional[Dict[str, Any]] = None,
-    env_vars: Optional[Dict[str, str]] = None,
-    **kwargs: Any,
-) -> 'Run'
-```
-Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. Returns the `Run`.
-
-Two forms (mirroring `flyte.run` / `flyte.rerun`), both with the ssh-debug env injected so the new
-run comes up with sshd:
-
-- **`debug(task, x=1)`** — run ``task`` in debug mode (= `with_debugcontext().run(task, x=1)`).
-- **`debug("run-name")`** — relaunch an existing run in debug mode, fetching its code + inputs
-  (= `with_debugcontext().rerun("run-name")`). Pass ``inputs={...}`` to change parameters or
-  ``task_template=`` to substitute code.
-
-Then connect with `SSHDebug.connect(run.name)` (or use the `flyte debug <run>` CLI, which relaunches
-**and** connects in one shot).
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `target` | `'str \| TaskTemplate'` | a `TaskTemplate` to launch, or a prior run name (str) to relaunch. |
-| `*args` | `Any` | |
-| `action_name` | `str` | action to source the task + inputs from (default ``a0``). |
-| `name` | `Optional[str]` | explicit name for the new run; omit to let the platform assign one. A fixed name makes the launch idempotent — relaunching with the same name re-uses the existing run. |
-| `ssh_host_name` | `Optional[str]` | record the intended ssh Host alias on the run's custom_context (``ssh-host-name``); record/propagation only (see `with_debugcontext`). |
-| `custom_context` | `Optional[Dict[str, str]]` | extra custom-context key/values to attach to the run (merged with ``ssh-host-name`` when *ssh_host_name* is given). |
-| `task_template` | `'Optional[TaskTemplate]'` | substitute task to run instead of the prior run's code. |
-| `inputs` | `Optional[Dict[str, Any]]` | native input overrides; omit to reuse the prior run's inputs. |
-| `env_vars` | `Optional[Dict[str, str]]` | extra env vars to set on the run (merged with the ssh-debug env). |
-| `**kwargs` | `Any` | |
-
-**Returns:** the new ssh-debug Run.
-
-#### fork()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await fork.aio()`.
-```python
-def fork(
-    run_name: str,
-    task_template: TaskTemplate | None = None,
-    force_rerun_actions: Sequence[str] | None = None,
-    allow_missing_source_outputs: bool = False,
-    **inputs: Any,
-) -> Run
-```
-Fork run *run_name*, replaying it with new code and/or inputs. Returns a `Run`.
-
-Its succeeded actions are reused; the ones whose code you edited re-execute, along with
-anything downstream of them. Pass keyword inputs to change the root action's parameters
-(`fork("r1", task_template=fixed, x=2)`); inputs left out keep the source run's values. Use
-`with_forkcontext(...)` to apply run-context overrides (name, env vars, ...).
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `run_name` | `str` | Name of the run to fork. |
-| `task_template` | `TaskTemplate \| None` | Substitute task to run instead of the source run's code. |
-| `force_rerun_actions` | `Sequence[str] \| None` | Names of actions that must re-execute even though they succeeded in the source run. A listed parent re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
-| `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. |
-| `**inputs` | `Any` | Native keyword inputs to change the root action's parameters; omit an input to keep the source run's value. |
-
-**Returns:** the new Run.
-
-#### with_debugcontext()
-
-```python
-def with_debugcontext(
-    mode: Any = None,
-    env_vars: Optional[Dict[str, str]] = None,
-    ssh_host_name: Optional[str] = None,
-    custom_context: Optional[Dict[str, str]] = None,
-    **kwargs,
-)
-```
-Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug.
-
-Ensures the auto-managed debug keypair exists and merges the ssh-debug env
-(``_F_E_SSH`` / ``_F_SSH_PK`` / ``_F_E_VS``) into *env_vars*; all other
-arguments are forwarded unchanged. Returns the same runner as
-`with_runcontext`, so call ``.run(task, ...)`` / ``.rerun(run, ...)`` on it.
-
-*ssh_host_name* records the intended ssh Host alias on the run's *custom_context*
-(under ``ssh-host-name``); it is propagation/record only — the alias used to build
-the local ssh-config is the one threaded directly to `SSHDebug.connect`.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `mode` | `Any` | |
-| `env_vars` | `Optional[Dict[str, str]]` | |
-| `ssh_host_name` | `Optional[str]` | |
-| `custom_context` | `Optional[Dict[str, str]]` | |
-| `**kwargs` |  | |
-
-#### with_forkcontext()
-
-```python
-def with_forkcontext(
-    mode: Any = None,
-    **kwargs: Any,
-) -> _ForkRunner
-```
-Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`.
-
-**The keyword arguments are `flyte.with_runcontext`'s, one for one.** They are forwarded
-unchanged to the same underlying runner, so anything you can set on a run you can set on
-a fork — `name`, `project`, `domain`, `env_vars`, `labels`, `annotations`, `queue`,
-`service_account`, `interruptible`, `copy_style`, `raw_data_path`, `overwrite_cache`,
-`cache_lookup_scope`, `max_action_concurrency`, `notifications`, `custom_context`,
-`log_level`, `debug`, and the rest. `flyte.with_runcontext`
-is the authoritative reference for what each one does; this function deliberately does not
-restate or restrict the list, so options added to the SDK work here the day they land.
-
-They are taken as `**kwargs` rather than spelled out, which is what keeps the two in
-lockstep — at the cost of no signature help in an editor. `test_fork.py` asserts every
-`with_runcontext` parameter is still accepted here, so the claim above stays true.
-
-What to fork — the run name, substitute code, replay actions — belongs to `fork()`, not
-here, exactly as the run itself belongs to `run()` / `rerun()`.
-
-```python
-run = with_forkcontext(
-    name="fix-1",                     # any with_runcontext option
-    env_vars={"LOG_LEVEL": "debug"},
-    queue="gpu",
-).fork("ul56wcvgqrb9vzhzz5l2", task_template=my_task)
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `mode` | `Any` | Run mode, as `flyte.with_runcontext`'s first argument. Forking is remote-only, so a non-remote mode is rejected by `fork()` at launch. |
-| `**kwargs` | `Any` | Any keyword argument `flyte.with_runcontext` accepts, forwarded unchanged. |
-
-**Returns:** a runner that behaves like `with_runcontext`'s, plus `fork()`.
+| Package | Description |
+|-|-|
+| [`flyteplugins.union`](flyteplugins.union/_index) | Union SDK - Proprietary extensions for Flyte. |
+| [`flyteplugins.union.factory`](flyteplugins.union.factory/_index) | Factories: a declared graph of partitioned artifacts the platform can materialize on demand. |
+| [`flyteplugins.union.io`](flyteplugins.union.io/_index) | Persistent, mountable :class:`Volume` type for the Flyte SDK v2. |
+| [`flyteplugins.union.remote`](flyteplugins.union.remote/_index) | Union remote control plane objects. |
+| [`flyteplugins.union.utils`](flyteplugins.union.utils/_index) | Public utilities for ``flyteplugins.union``. |
 
