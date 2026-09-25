@@ -69,7 +69,7 @@ Select **Connect cluster**. Union.ai registers the cluster and takes you to its 
 
 ## 3. Install the agent
 
-The cluster's page, **Install Union on your AWS cluster**, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl get nodes` succeeds. The agent installs itself and connects out to Union.ai.
+The cluster's page, **Install Union on your AWS cluster**, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
 
 ![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/self-serve/connect-a-cluster/install-union.png)
 

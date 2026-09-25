@@ -10,7 +10,7 @@ variants: -flyte +union
 
 The self-serve setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
 
-- an EKS cluster with a managed node group of three `m6i.large` nodes
+- an EKS cluster in Auto Mode, which adds and removes nodes as the data plane needs them
 - one S3 bucket, the cluster pool's object store
 - a private ECR repository
 - separate system and task IAM roles for service accounts (IRSA)
@@ -20,7 +20,7 @@ At the end you have the values you enter when you [connect your cluster](./conne
 > [!NOTE] Already have these resources?
 > This page is optional. You can use an existing EKS cluster, S3 bucket, ECR repository and IAM roles instead, as long as they meet the same requirements:
 >
-> - The EKS cluster has an IAM OIDC provider, and no Metrics Server of its own, because the data plane chart installs one ([step 2](#2-create-the-eks-cluster)).
+> - The EKS cluster has an IAM OIDC provider, can add nodes as the data plane needs them (Auto Mode or a cluster autoscaler), and has no Metrics Server of its own, because the data plane chart installs one ([step 2](#2-create-the-eks-cluster)).
 > - The S3 bucket blocks public access and has the CORS rule from [step 3](#3-create-the-s3-bucket).
 > - The ECR repository is private, with the repository policy from [step 7](#7-grant-repository-access).
 > - The two IAM roles have the trust policies from [step 5](#5-create-the-system-and-task-irsa-roles) and the permissions from [step 6](#6-grant-s3-and-secrets-manager-access).
@@ -37,7 +37,7 @@ At the end you have the values you enter when you [connect your cluster](./conne
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
 - A Union.ai organization. See [Sign up for Union.ai](./sign-up).
 
-The commands create billable resources, including an EKS control plane, three EC2 nodes, and networking. Choose a dedicated test account when possible.
+The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. Choose a dedicated test account when possible.
 
 Run every step in the same shell session. Later steps use the variables that earlier steps export.
 
@@ -49,7 +49,6 @@ Choose names that are unique in the AWS account. `BUCKET_PREFIX` must also be gl
 export AWS_REGION=us-east-2
 export NAME_PREFIX=<my-team>
 export CLUSTER_NAME=${NAME_PREFIX}-union-selfserve
-export NODEGROUP_NAME=${CLUSTER_NAME}-workers
 export KUBERNETES_VERSION=1.35
 export BUCKET_PREFIX=${NAME_PREFIX}-union-selfserve
 export METADATA_BUCKET=${BUCKET_PREFIX}-metadata
@@ -70,7 +69,7 @@ Use a Kubernetes version that EKS currently supports in your region. If AWS no l
 
 ## 2. Create the EKS cluster
 
-Create the cluster with a managed node group. The configuration leaves out the EKS Metrics Server add-on, because the data plane chart installs Metrics Server itself, and keeps the networking add-ons the cluster needs:
+Create the cluster in [EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/automode.html). Auto Mode launches nodes when pods need them and removes them when they are idle, so the cluster grows to fit the data plane without a node group to size or an autoscaler to install. The configuration also turns off the default add-ons, so the EKS Metrics Server add-on is not installed: the data plane chart installs Metrics Server itself, and Auto Mode provides networking and DNS.
 
 ```shell
 eksctl create cluster --config-file <(
@@ -78,7 +77,6 @@ eksctl create cluster --config-file <(
     --arg clusterName "${CLUSTER_NAME}" \
     --arg region "${AWS_REGION}" \
     --arg version "${KUBERNETES_VERSION}" \
-    --arg nodegroupName "${NODEGROUP_NAME}" \
     '{
       apiVersion: "eksctl.io/v1alpha5",
       kind: "ClusterConfig",
@@ -87,30 +85,20 @@ eksctl create cluster --config-file <(
         region: $region,
         version: $version
       },
+      autoModeConfig: {
+        enabled: true,
+        nodePools: ["general-purpose", "system"]
+      },
       addonsConfig: {
         disableDefaultAddons: true
-      },
-      addons: [
-        {name: "vpc-cni"},
-        {name: "coredns"},
-        {name: "kube-proxy"}
-      ],
-      managedNodeGroups: [
-        {
-          name: $nodegroupName,
-          instanceType: "m6i.large",
-          desiredCapacity: 3,
-          minSize: 3,
-          maxSize: 6
-        }
-      ]
+      }
     }'
 )
 ```
 
-`eksctl` also creates the VPC and subnets the cluster uses. The three `m6i.large` nodes provide the data plane's initial capacity, and the node group can scale to six.
+`eksctl` also creates the VPC and subnets the cluster uses, and the IAM role Auto Mode's nodes run as.
 
-Associate an IAM OIDC provider, which both IRSA roles need, and look up the OIDC issuer and the node group's IAM role. The first command is safe to run when the provider already exists.
+Associate an IAM OIDC provider, which both IRSA roles need, and look up the OIDC issuer and the Auto Mode node role. The first command is safe to run when the provider already exists.
 
 ```shell
 eksctl utils associate-iam-oidc-provider \
@@ -128,15 +116,14 @@ if [[ -z "${OIDC_PROVIDER}" || "${OIDC_PROVIDER}" == "None" ]]; then
   echo "Unable to resolve the cluster OIDC provider" >&2
 fi
 
-export NODE_ROLE_ARN=$(aws eks describe-nodegroup \
+export NODE_ROLE_ARN=$(aws eks describe-cluster \
   --region "${AWS_REGION}" \
-  --cluster-name "${CLUSTER_NAME}" \
-  --nodegroup-name "${NODEGROUP_NAME}" \
-  --query 'nodegroup.nodeRole' \
+  --name "${CLUSTER_NAME}" \
+  --query 'cluster.computeConfig.nodeRoleArn' \
   --output text)
 
 if [[ -z "${NODE_ROLE_ARN}" || "${NODE_ROLE_ARN}" == "None" ]]; then
-  echo "Unable to resolve the managed node-group IAM role" >&2
+  echo "Unable to resolve the Auto Mode node role" >&2
 fi
 ```
 
@@ -146,10 +133,10 @@ Configure access and check that the cluster is usable. If the identity that crea
 
 ```shell
 aws eks update-kubeconfig --region "${AWS_REGION}" --name "${CLUSTER_NAME}"
-kubectl get nodes
+kubectl get namespaces
 ```
 
-Confirm that three nodes report `Ready`. Then check that the cluster has no Metrics Server of its own, which would conflict with the one the data plane chart installs:
+Confirm that `kubectl get namespaces` lists `kube-system` and the other default namespaces. `kubectl get nodes` may show few or no nodes at this point: Auto Mode starts them once there are pods to run. Then check that the cluster has no Metrics Server of its own, which would conflict with the one the data plane chart installs:
 
 ```shell
 if kubectl get clusterrole system:metrics-server-aggregated-reader >/dev/null 2>&1; then
@@ -425,7 +412,7 @@ printf '%s\n' \
   "kubeconfig command: aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
 ```
 
-Keep this output, and keep the shell where `kubectl get nodes` succeeds: you run the agent install from it.
+Keep this output, and keep the shell where `kubectl` can reach the cluster: you run the agent install from it.
 
 ## Important behavior and cleanup
 
@@ -433,7 +420,7 @@ Keep this output, and keep the shell where `kubectl get nodes` succeeds: you run
 - The pool uses one bucket for both metadata and fast registration. Do not create or configure a separate fast-registration bucket.
 - The data plane chart owns Metrics Server. Do not add the EKS Metrics Server add-on to this cluster.
 - This guide does not configure automatic expiry. Add S3 and ECR lifecycle rules before production use.
-- To remove the environment, delete the cluster and its node group with `eksctl delete cluster`, then empty and delete the S3 bucket, delete the ECR repository, and delete the two IAM roles and their inline policies. Review every target before deletion.
+- To remove the environment, delete the cluster with `eksctl delete cluster`, then empty and delete the S3 bucket, delete the ECR repository, and delete the two IAM roles and their inline policies. Review every target before deletion.
 
 ## Next steps
 
