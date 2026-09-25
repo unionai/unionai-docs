@@ -394,6 +394,73 @@ The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
 committed yet: there's no published version to point at.
 
+### Caching chunks
+
+Reads go through a local **chunk cache**. Where that cache lives is the single
+biggest lever on read performance, and by default it is in the worst place:
+unset, it falls back to `$HOME`, which on every managed Kubernetes is the
+container's overlayfs — the slowest writable thing on the node, with no size
+limit the client knows about.
+
+**Give it a real disk.** `cache_size` attaches a sized `emptyDir` and tells the
+client its budget:
+
+```python
+pod_template = allow_volumes(cache_size="50Gi")
+```
+
+The budget matters as much as the disk. Without it the client keeps its own
+100 GiB default, overruns the `emptyDir`'s limit, and kubelet evicts the pod —
+a worse failure than a cache that is merely smaller than you hoped. The
+published budget is about 90% of the size you give, leaving headroom for the
+client's own bookkeeping and the imprecision of its accounting. It is per
+mount: split it with `mount(cache_size_mb=...)` when one task mounts several
+volumes.
+
+**Share it across pods on a node.** With `shared_node_cache=True`, read-only
+mounts in the pod use a cache shared by every pod on that node, so a chunk is
+fetched from object storage once per *node* rather than once per *pod*:
+
+```python
+pod_template = allow_volumes(cache_size="50Gi", shared_node_cache=True)
+```
+
+This is worth reaching for when many pods on a node read the same volume — a
+fan-out over one dataset, or several tasks sharing a model. It is not a
+general speed-up: pods reading unrelated volumes share nothing but the disk.
+
+The task pod gains no privilege from it. The shared directory arrives as an
+inline CSI volume from the same mount broker that serves the volume channel,
+and the broker bind-mounts a per-namespace subtree of the node's cache — so
+other namespaces are not visible, and the pod still has no `hostPath` and no
+capabilities. It needs a broker configured with a node cache directory, which
+the dataplane chart enables by default (`uvolMountBroker.nodeCache`); a pod
+that asks for one where the broker has none fails to start rather than quietly
+falling back.
+
+> [!NOTE]
+> **Read-only only, and that is a correctness rule rather than a policy.**
+> JuiceFS keeps its write-back staging queue *inside* the cache directory, so
+> two writers sharing one directory would interleave each other's
+> not-yet-uploaded blocks. A writable mount therefore never shares:
+> `shared_node_cache=True` on one raises an error, and the per-mount default
+> falls back to the pod's own cache.
+
+Per mount, `mount(shared_node_cache=...)` decides:
+
+| Value | Behavior |
+|---|---|
+| unset (default) | Use the shared cache when the pod exposes one and the mount is read-only; otherwise use the pod's own. |
+| `True` | Require it. Errors if the pod exposes none, or if the mount is writable. |
+| `False` | Never share; always use the pod's own cache. |
+
+An explicit `mount(cache_dir=...)` wins over all of it.
+
+> [!NOTE]
+> Every client sharing the directory runs its own eviction against its own
+> budget, so they can evict each other. Expect hit rates to vary with whatever
+> else is mounted on the node — it is a shared cache, not a reservation.
+
 ### Tuning the mount
 
 `mount()` accepts options to match the I/O profile of your workload: where to
@@ -559,5 +626,8 @@ few seconds at `commit()`.
   see [Tracking versions as artifacts](#tracking-versions-as-artifacts).
 - Reporting: `Volume.new(report=True)` or `$UNION_VOLUME_REPORT` — see
   [Debugging a mount](#debugging-a-mount).
+- Caching: `allow_volumes(cache_size=..., shared_node_cache=...)` and
+  `mount(cache_dir=..., cache_size_mb=..., shared_node_cache=...)` — see
+  [Caching chunks](#caching-chunks).
 - Related: [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
