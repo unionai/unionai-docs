@@ -313,6 +313,12 @@ title = "Weights & Biases"
 name = "wandb"
 
 [[plugins]]
+package = "flyteplugins-slurm"
+plugin = "flyteplugins.slurm"
+title = "Slurm"
+name = "slurm"
+
+[[plugins]]
 package = "flyteplugins-snowflake"
 plugin = "flyteplugins.snowflake"
 title = "Snowflake"
