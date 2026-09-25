@@ -47,6 +47,8 @@
 #   name     - Folder name under output_base
 #   extras   - (optional) pip extras to install, e.g. ["bigquery", "snowflake"]
 #   frozen   - (optional) If true, skip clean/generate (committed content, no longer regenerable)
+#   document_subpackages - (optional) If true, also document public subpackages that declare
+#                          their own __all__, not just the top-level __all__
 
 # === SDK packages ===
 
@@ -299,6 +301,9 @@ output_folder = "content/api-reference/union-plugin"
 weight = 5
 # Union-only: the union plugin is not part of open-source Flyte.
 variants = "-flyte +union"
+# Also document public subpackages with their own __all__ (factory, io, remote, utils),
+# not just the top-level exports. Opt-in: a subpackage __all__ is not always public API.
+document_subpackages = true
 
 [[plugins]]
 package = "flyteplugins-vllm"
