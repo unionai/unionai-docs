@@ -25,8 +25,8 @@ The values printed at the end of [Provision your AWS resources](./aws-infrastruc
 - **AWS account ID**: the 12-digit ID of the account that holds Secrets Manager
 - **AWS Region**: the Region the cluster and Secrets Manager are in
 - **Image registry URI**: the address of the ECR repository. It has the form `<account-id>.dkr.ecr.<region>.amazonaws.com/<repository-name>`, for example `123456789012.dkr.ecr.us-east-2.amazonaws.com/my-team-union-selfserve`.
-- **Backend IAM role ARN**: entered as **System IAM Role ARN**
-- **Worker IAM role ARN**: entered as **Task IAM Role ARN**
+- **System IAM role ARN**
+- **Task IAM role ARN**
 
 You also need [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the EKS cluster from the shell where you ran `aws eks update-kubeconfig`.
 
@@ -60,8 +60,8 @@ When the pool is created, the dialog moves straight on to **Connect a cluster**,
 | Field | Value |
 |---|---|
 | **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is connected. |
-| **System IAM Role ARN** | The backend IAM role ARN |
-| **Task IAM Role ARN** | The worker IAM role ARN |
+| **System IAM Role ARN** | The system IAM role ARN |
+| **Task IAM Role ARN** | The task IAM role ARN |
 
 ![The Connect a cluster dialog with a cluster name, the default pool, and the system and task IAM role ARNs filled in](../../_static/images/deployment/self-serve/connect-a-cluster/connect-cluster.png)
 

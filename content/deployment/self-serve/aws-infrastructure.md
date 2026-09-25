@@ -13,7 +13,7 @@ The self-serve setup installs the data plane into your cluster for you, but the 
 - an EKS cluster with a managed node group of three `m6i.large` nodes
 - one S3 bucket, the cluster pool's object store
 - a private ECR repository
-- separate backend and worker IAM roles for service accounts (IRSA)
+- separate system and task IAM roles for service accounts (IRSA)
 
 At the end you have the values you enter when you [connect your cluster](./connect-a-cluster): four for the cluster pool, and two IAM role ARNs for registering the cluster.
 
@@ -44,8 +44,8 @@ export KUBERNETES_VERSION=1.35
 export BUCKET_PREFIX=${NAME_PREFIX}-union-selfserve
 export METADATA_BUCKET=${BUCKET_PREFIX}-metadata
 export ECR_REPO_NAME=${CLUSTER_NAME}
-export BACKEND_ROLE_NAME=${CLUSTER_NAME}-backend
-export WORKER_ROLE_NAME=${CLUSTER_NAME}-worker
+export SYSTEM_ROLE_NAME=${CLUSTER_NAME}-system
+export TASK_ROLE_NAME=${CLUSTER_NAME}-task
 
 # "*" supports the agent-selected release namespace. Replace it with a known
 # namespace only after the cluster is connected and the chart release namespace
@@ -203,15 +203,15 @@ export IMAGE_REGISTRY=$(aws ecr describe-repositories \
   --output text)
 ```
 
-## 5. Create the backend and worker IRSA roles
+## 5. Create the system and task IRSA roles
 
-The backend role is assumed by the `union-system` and legacy `flytepropeller-system` service accounts in the data plane namespace. The worker role is assumed by task-pod service accounts (`default` or `union`) in dynamic project namespaces.
+The system role is assumed by the `union-system` and legacy `flytepropeller-system` service accounts in the data plane namespace. The task role is assumed by task-pod service accounts (`default` or `union`) in dynamic project namespaces.
 
 Each command fills the shell variables into the trust policy with `envsubst`, creates the role, and records its ARN:
 
 ```shell
-export BACKEND_IAM_ROLE_ARN=$(aws iam create-role \
-  --role-name "${BACKEND_ROLE_NAME}" \
+export SYSTEM_IAM_ROLE_ARN=$(aws iam create-role \
+  --role-name "${SYSTEM_ROLE_NAME}" \
   --assume-role-policy-document "$(envsubst <<< '{
     "Version": "2012-10-17",
     "Statement": [{
@@ -236,8 +236,8 @@ export BACKEND_IAM_ROLE_ARN=$(aws iam create-role \
   --query 'Role.Arn' \
   --output text)
 
-export WORKER_IAM_ROLE_ARN=$(aws iam create-role \
-  --role-name "${WORKER_ROLE_NAME}" \
+export TASK_IAM_ROLE_ARN=$(aws iam create-role \
+  --role-name "${TASK_ROLE_NAME}" \
   --assume-role-policy-document "$(envsubst <<< '{
     "Version": "2012-10-17",
     "Statement": [{
@@ -267,13 +267,13 @@ export WORKER_IAM_ROLE_ARN=$(aws iam create-role \
 
 Attach an inline policy to each role:
 
-- The backend policy gives the data plane services access to the bucket, and permits the runtime secret-store operations the operator proxy uses.
-- The worker policy lets task pods use the bucket, read runtime secrets, and obtain an ECR authorization token.
+- The system role's policy gives the data plane services access to the bucket, and permits the runtime secret-store operations the operator proxy uses.
+- The task role's policy lets task pods use the bucket, read runtime secrets, and obtain an ECR authorization token.
 
 ```shell
 aws iam put-role-policy \
-  --role-name "${BACKEND_ROLE_NAME}" \
-  --policy-name union-backend-access \
+  --role-name "${SYSTEM_ROLE_NAME}" \
+  --policy-name union-system-access \
   --policy-document "$(envsubst <<< '{
     "Version": "2012-10-17",
     "Statement": [
@@ -308,8 +308,8 @@ aws iam put-role-policy \
   }')"
 
 aws iam put-role-policy \
-  --role-name "${WORKER_ROLE_NAME}" \
-  --policy-name union-worker-access \
+  --role-name "${TASK_ROLE_NAME}" \
+  --policy-name union-task-access \
   --policy-document "$(envsubst <<< '{
     "Version": "2012-10-17",
     "Statement": [
@@ -348,7 +348,7 @@ aws iam put-role-policy \
 
 ## 7. Grant repository access
 
-Set a repository policy on the ECR repository. It gives the worker role push and pull access, and gives the backend role and the EKS node role pull access.
+Set a repository policy on the ECR repository. It gives the task role push and pull access, and gives the system role and the EKS node role pull access.
 
 ```shell
 aws ecr set-repository-policy \
@@ -358,10 +358,10 @@ aws ecr set-repository-policy \
     "Version": "2012-10-17",
     "Statement": [
       {
-        "Sid": "WorkerPushPull",
+        "Sid": "TaskPushPull",
         "Effect": "Allow",
         "Principal": {
-          "AWS": "$WORKER_IAM_ROLE_ARN"
+          "AWS": "$TASK_IAM_ROLE_ARN"
         },
         "Action": [
           "ecr:BatchCheckLayerAvailability",
@@ -377,11 +377,11 @@ aws ecr set-repository-policy \
         ]
       },
       {
-        "Sid": "BackendAndNodePull",
+        "Sid": "SystemAndNodePull",
         "Effect": "Allow",
         "Principal": {
           "AWS": [
-            "$BACKEND_IAM_ROLE_ARN",
+            "$SYSTEM_IAM_ROLE_ARN",
             "$NODE_ROLE_ARN"
           ]
         },
@@ -410,8 +410,8 @@ printf '%s\n' \
   "  Region             = ${AWS_REGION}" \
   "  Image registry     = ${IMAGE_REGISTRY}" \
   "Connect cluster dialog:" \
-  "  System IAM Role ARN = ${BACKEND_IAM_ROLE_ARN}" \
-  "  Task IAM Role ARN   = ${WORKER_IAM_ROLE_ARN}" \
+  "  System IAM Role ARN = ${SYSTEM_IAM_ROLE_ARN}" \
+  "  Task IAM Role ARN   = ${TASK_IAM_ROLE_ARN}" \
   "kubeconfig command: aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
 ```
 
