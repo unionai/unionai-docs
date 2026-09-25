@@ -73,20 +73,20 @@ The cluster's page, **Install Union on your AWS cluster**, shows an install comm
 
 ![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/self-serve/connect-a-cluster/install-union.png)
 
-The command writes a `values.yaml` for your cluster, then installs the agent from it with Helm. It looks like this:
+The command writes a `values.yaml` for your cluster, then installs the agent from it with Helm. In outline, with the generated values left out, it looks like this:
 
 ```bash
 cat <<'UNION_DP_AGENT_VALUES' > values.yaml
-# the values the console generated for your cluster
+# ...the values the UI generated for your cluster...
 UNION_DP_AGENT_VALUES
 
 helm upgrade --install dp-agent oci://ghcr.io/omnistrate/dataplane-agent-chart \
-  --version 1.18.25 \
+  --version <chart-version> \
   --namespace dataplane-agent --create-namespace --values values.yaml \
   --set nameOverride=dp-agent --timeout 10m0s --wait
 ```
 
-Always copy the command from the UI rather than from this page. The values are generated for this one cluster, and the chart version can differ from the one shown here.
+This outline is only to show you what the command does, and you cannot run it as shown. Use **Copy install command** to get the real command from the UI, with the values and chart version for your cluster.
 
 > [!WARNING] The values are a credential
 > The `values.yaml` block contains the agent's client certificate and private key. Treat it like any other secret: do not paste it into a ticket, a chat message, or a shared document, and delete the file once the agent is installed.
