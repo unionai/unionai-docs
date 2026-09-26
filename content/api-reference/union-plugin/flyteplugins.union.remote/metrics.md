@@ -2,7 +2,7 @@
 title: Metrics
 description: "Pod metrics of a task's action attempt or of an app, as shown in the Union UI."
 icon: braces
-version: 0.13.0
+version: 0.14.0
 variants: -flyte +union
 layout: py_api
 ---

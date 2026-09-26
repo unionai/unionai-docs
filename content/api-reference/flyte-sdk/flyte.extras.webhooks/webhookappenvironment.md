@@ -2,7 +2,7 @@
 title: WebhookAppEnvironment
 description: "Dashboard plus a verified webhook receiver for one or more providers."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ class WebhookAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
     type: str = 'FastAPI',
     app: FastAPI | None = None,
@@ -73,6 +74,7 @@ class WebhookAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `app` | `FastAPI \| None` | |

@@ -2,7 +2,7 @@
 title: AgentChatAppEnvironment
 description: "An `flyte.app.AppEnvironment` that spins up a FastAPI chat interface backed by any object satisfying the `flyte.ai.agents.AgentProtocol`."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -40,6 +40,7 @@ class AgentChatAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
     type: str = 'AgentChat',
     agent: Any = None,
@@ -77,6 +78,7 @@ class AgentChatAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `agent` | `Any` | Any object implementing the `flyte.ai.agents.AgentProtocol`. |

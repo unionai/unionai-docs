@@ -2,7 +2,7 @@
 title: VolumeExplore
 description: "A resolved `Volume` plus the IO to inspect and walk its lineage."
 icon: braces
-version: 0.13.0
+version: 0.14.0
 variants: -flyte +union
 layout: py_api
 ---

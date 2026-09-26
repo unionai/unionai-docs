@@ -2,7 +2,7 @@
 title: GPUFaultUserError
 description: "This error is raised when the GPU fault the backend attributed the failure to was the workload's own doing, for example an out-of-bounds access that the driver reported as an Xid 31."
 icon: exclamation-triangle
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
