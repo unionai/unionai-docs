@@ -2,7 +2,7 @@
 title: PathRewrite
 description: "Configuration for rewriting paths during input loading."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

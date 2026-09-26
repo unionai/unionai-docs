@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -1246,6 +1246,7 @@ def with_servecontext(
     env_vars: dict[str, str] | None = None,
     parameter_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None = None,
     cluster_pool: str | None = None,
+    cluster: str | None = None,
     log_level: int | None = None,
     log_format: LogFormat = 'console',
     user_log_level: int | None = None,
@@ -1305,6 +1306,7 @@ print(f"App URL: {app.url}")
 | `env_vars` | `dict[str, str] \| None` | Optional environment variables to inject/override in the app container |
 | `parameter_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional parameter values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of parameter names to values. |
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
+| `cluster` | `str \| None` | |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | Optional log format ("console" or "json", default: "console") |
 | `user_log_level` | `int \| None` | |

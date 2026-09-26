@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.13.0
+  flyteplugins-union: 0.14.0
 ---
 
 # Flyte CLI
@@ -335,6 +335,7 @@ Example usage:
 flyte create artifact my_model --from-file model.pt --kind model --attr framework=torch
 flyte create artifact llama3 --from-file weights.bin --external-ref hf://meta-llama/Meta-Llama-3-8B
 flyte create artifact my_model --from-file model.pt --card model_card.html --card-type model
+flyte create artifact raw_events --from-file events.parquet --partition date=2026-08-01 --partition region=us
 ```
 
 | Option | Type | Default | Description |
@@ -345,6 +346,7 @@ flyte create artifact my_model --from-file model.pt --card model_card.html --car
 | `--attr` | `text` | `Sentinel.UNSET` | Free-form user metadata as key=value pairs. Can be specified multiple times. |
 | `--kind` | `choice` |  | What the artifact is. Recorded under the reserved `flyte.io/kind` attr. Distinct from `--card-type`, which controls how an attached card renders. |
 | `--external-ref` | `text` |  | Opaque reference into an external system (a URI, model id, ...) recorded as the artifact's source. |
+| `--partition` | `text` | `Sentinel.UNSET` | Partition value as key=value. Repeatable. An ISO date (2026-08-01) is a daily time partition, an ISO hour or timestamp (2026-08-01T09) an hourly one, and anything else a string partition. Weekly and monthly partitions need the Python API (flyte.artifacts.TimePartition). |
 | `--card` | `file` |  | Local card file (HTML by default) to upload and attach to the artifact for display in the UI. |
 | `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or `html` when it has none. |
 | `--card-type` | `choice` | `generic` | Kind of card being attached. |

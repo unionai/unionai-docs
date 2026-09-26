@@ -2,7 +2,7 @@
 title: ROVolume
 description: "Immutable, versioned volume — PRD §Core Concepts."
 icon: braces
-version: 0.13.0
+version: 0.14.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -352,6 +352,7 @@ def mount(
     dir_entry_cache: float = 60.0,
     shared_node_cache: Optional[bool] = None,
     cache_size_mb: Optional[int] = None,
+    enable_xattr: bool = False,
 ) -> Path
 ```
 Mount this volume read-only at ``mount_path`` and return the path.
@@ -366,7 +367,10 @@ omitted too.
 `Volume.mount` only ever shares for read-only mounts, so an
 `ROVolume` is what actually uses a node-shared chunk cache --
 automatically when the pod exposes one. ``cache_size_mb`` caps this
-mount's on-disk cache. See `Volume.mount` for both.
+mount's on-disk cache. ``enable_xattr`` exposes extended attributes
+(needed when the mount is an overlayfs lower layer). See
+`Volume.mount` for all three. ``passthrough`` is absent: a
+read-only mount never uses the passthrough write path.
 
 
 | Parameter | Type | Description |
@@ -380,6 +384,7 @@ mount's on-disk cache. See `Volume.mount` for both.
 | `dir_entry_cache` | `float` | |
 | `shared_node_cache` | `Optional[bool]` | |
 | `cache_size_mb` | `Optional[int]` | |
+| `enable_xattr` | `bool` | |
 
 ### new()
 

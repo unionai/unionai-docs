@@ -2,7 +2,7 @@
 title: Volume
 description: "A persistent volume identified by its metadata index."
 icon: braces
-version: 0.13.0
+version: 0.14.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -383,6 +383,8 @@ def mount(
     read_only: bool = False,
     shared_node_cache: Optional[bool] = None,
     cache_size_mb: Optional[int] = None,
+    passthrough: Optional[bool] = None,
+    enable_xattr: bool = False,
 ) -> Path
 ```
 Format (if fresh) and mount the volume at ``mount_path`` in this
@@ -434,6 +436,16 @@ The mount point, ``meta_dir`` and ``cache_dir`` must also be writable by
 the task user; the name-keyed defaults live under ``$HOME``, which the
 default image owns.
 
+``passthrough`` selects the FUSE passthrough fast-write path: ``None``
+(default) means on for writable mounts unless ``UNION_JUICEFS_PASSTHROUGH=0``
+is set; ``True``/``False`` force it. Read-only mounts never use it.
+``enable_xattr`` turns on extended attributes for the mount (off by
+JuiceFS default). Both matter when the volume is used as an overlayfs
+layer (for example as a container snapshotter's root): overlayfs needs
+``trusted.overlay.*`` xattrs, and the kernel refuses a passthrough FUSE
+superblock as a layer ("maximum fs stacking depth exceeded"), so such
+a mount needs ``enable_xattr=True, passthrough=False``.
+
 When ``writeback=True`` (default), writes land in the local cache
 directory first and are uploaded asynchronously in the background.
 This decouples write latency from object-store round-trips. The
@@ -483,6 +495,8 @@ any resume-from-checkpoint policy at the usage layer.
 | `read_only` | `bool` | |
 | `shared_node_cache` | `Optional[bool]` | |
 | `cache_size_mb` | `Optional[int]` | |
+| `passthrough` | `Optional[bool]` | |
+| `enable_xattr` | `bool` | |
 
 ### new()
 

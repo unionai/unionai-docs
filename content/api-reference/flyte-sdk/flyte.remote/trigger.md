@@ -2,7 +2,7 @@
 title: Trigger
 description: "Represents a trigger in the Flyte platform."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
