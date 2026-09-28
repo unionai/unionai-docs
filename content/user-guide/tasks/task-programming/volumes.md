@@ -69,6 +69,12 @@ More broadly, reach for a Volume whenever you need **long-lived, versioned
 state** that carries forward across tasks or runs: anything you'd otherwise
 rebuild from scratch every time.
 
+> [!TIP] Many small files, one writer?
+> Build caches, package caches, virtualenvs and source trees spend most of
+> their time on per-file metadata. A [block volume](./block-volumes) stores the
+> volume as one ext4 image the kernel mounts directly, which brings these
+> workloads close to local-disk speed.
+
 ## Read-write and read-only volumes
 
 A Volume is always one of two types, and the type tells you what you can do with
@@ -633,5 +639,6 @@ few seconds at `commit()`.
   [The chunk cache](#the-chunk-cache); `allow_volumes(shared_node_cache=True)`
   and `mount(shared_node_cache=...)` — see
   [Shared node cache](#shared-node-cache).
-- Related: [Files and directories](./files-and-directories) for passing
+- Related: [Block volumes](./block-volumes) for small-file, single-writer
+  workloads; [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.

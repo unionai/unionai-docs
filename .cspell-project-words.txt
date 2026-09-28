@@ -247,3 +247,5 @@ mashumaro
 agenticness
 autoregressively
 typosquatted
+inodes
+virtualenvs
