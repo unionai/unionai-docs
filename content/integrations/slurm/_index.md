@@ -133,6 +133,11 @@ what most scripts emit — metrics, summaries, configs, small models.
 > script gets a path or a URI — the connector fails rather than quietly taking the slow
 > path, and the job's work is lost. Declare `output_upload="job"` up front for an output
 > that might be large.
+>
+> The ceiling is `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` on the connector deployment — a
+> byte count or a suffixed size (`500MB`, `2GB`, `512MiB`), or `0` for none. It belongs to
+> whoever sized that pod, since it is the pod's bandwidth and scratch space being spent on
+> behalf of every job it polls, rather than to the task that would be spending it.
 
 **`"job"`** makes the destination the object-storage URI and the script uploads directly:
 one hop, the cluster's bandwidth, no size limit. The node needs a client and credentials for
@@ -237,8 +242,17 @@ Each of these may be set per task, or once for the whole cluster on the connecto
 | `ssh_private_key` | `FLYTE_SLURM_SSH_PRIVATE_KEY` | Name of the Flyte secret holding the SSH private key |
 | `known_hosts` | `FLYTE_SLURM_KNOWN_HOSTS` | Path to a `known_hosts` file on the connector, for host-key verification |
 | — | `FLYTE_SLURM_WORKING_DIR` | Cluster-wide default for `working_dir` |
+| — | `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` | Largest script-task output the connector will move itself; default `100MB`, `0` for no limit |
 
-Task configuration takes precedence over the connector's environment. Setting the connection once on the connector is usually what you want: tasks then carry only scheduling options and stay portable.
+Setting the connection once on the connector is usually what you want: tasks then carry only
+scheduling options and stay portable.
+
+> [!NOTE] The connector's environment wins over task configuration
+> For the connection fields specifically. The SSH key belongs to the deployment and is shared
+> by every task, so a task that could point it at a host of its own choosing would be handed
+> that key. Task configuration still supplies these on a connector that sets none of them,
+> which is how local execution works. `FLYTE_SLURM_WORKING_DIR` is the exception — it is only
+> a default, and a task's `working_dir` overrides it.
 
 ## Container runtimes
 
