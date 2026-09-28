@@ -99,7 +99,11 @@ The script's own leading `#SBATCH` directives are hoisted above the generated `e
 
 ### Outputs from a script task
 
-Declare them, and a downstream task can consume the script's results:
+An arbitrary sbatch script cannot write Flyte's literal format, so a script task produces
+only what it is told to produce. Declaring outputs is what makes a script's results usable
+by a downstream task; without them the task returns nothing.
+
+#### Declare what the script will write
 
 ```python
 train = SlurmScriptTask(
@@ -111,37 +115,59 @@ train = SlurmScriptTask(
 )
 ```
 
-A script cannot write Flyte's own output format, so the plugin hands it a destination URI
-per output and the script writes there:
+**Only `File` and `Dir` may be declared.** Anything else is rejected when the task is
+defined, rather than failing at run time. A scalar would have to come from parsing stdout,
+which is silently wrong for any script that logs, and a structured value has no
+representation a shell script can write. A native `slurm` task has the full range — see
+[Output types](#output-types) for the comparison.
+
+> [!WARNING] A declared output the script never wrote fails the task
+> Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
+> surfaces much later as an unexplained read error.
+
+#### Write to the destination the script is given
+
+Each declared output arrives as `FLYTE_OUTPUT_<NAME>`, upper-cased. By default that is an
+ordinary local path, so writing the output is a `cp`:
 
 ```bash
 python train.py --epochs "$FLYTE_INPUT_EPOCHS" --out ./model.pt
 cp ./model.pt "$FLYTE_OUTPUT_MODEL"
 ```
 
-`output_upload` decides who moves the bytes.
+Once the job succeeds, the connector confirms every destination exists and records it as the
+declared `File` or `Dir`, ready for the next task to read.
 
-**`"connector"` (the default)** makes the destination a local path, as above: the script
-writes an ordinary file and the connector streams it to object storage afterwards. The
-compute node needs no upload tool, no credentials and no endpoint configuration, which suits
-what most scripts emit — metrics, summaries, configs, small models.
+#### Choose who uploads
 
-> [!WARNING] The connector refuses above 100 MB
+That default has the connector move the bytes for you, which is why the script above needed
+no credentials and no upload tool. `output_upload` switches it:
+
+| | `"connector"` (default) | `"job"` |
+| --- | --- | --- |
+| `FLYTE_OUTPUT_<NAME>` holds | a local path | the object-storage URI |
+| Who uploads | the connector, after the job | the script, during the job |
+| The compute node needs | nothing | a client and credentials for the store |
+| The bytes travel | node → connector → storage | node → storage |
+| Size limit | 100 MB by default | none |
+
+**`"connector"`** suits what most scripts emit — metrics, summaries, configs, small models.
+The node needs no upload tool, no credentials and no endpoint configuration.
+
+> [!WARNING] The connector refuses to move more than 100 MB
 > Streaming would work, but every byte would take two hops instead of one, through a pod
-> concurrently polling every other job it tracks, on its bandwidth rather than the
-> cluster's. Since the choice has to be made before the job runs — it decides whether the
-> script gets a path or a URI — the connector fails rather than quietly taking the slow
-> path, and the job's work is lost. Declare `output_upload="job"` up front for an output
-> that might be large.
->
-> The ceiling is `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` on the connector deployment — a
-> byte count or a suffixed size (`500MB`, `2GB`, `512MiB`), or `0` for none. It belongs to
-> whoever sized that pod, since it is the pod's bandwidth and scratch space being spent on
-> behalf of every job it polls, rather than to the task that would be spending it.
+> concurrently polling every other job it tracks, on its bandwidth rather than the cluster's.
+> The task fails rather than quietly taking the slow path — and since the mode decides what
+> the script is handed, it cannot be switched after the fact, so the job's work is lost.
+> Declare `"job"` up front for an output that might be large.
 
-**`"job"`** makes the destination the object-storage URI and the script uploads directly:
-one hop, the cluster's bandwidth, no size limit. The node needs a client and credentials for
-the store, mounted the same way a native task's are.
+That ceiling is `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` on the connector deployment — a
+byte count or a suffixed size (`500MB`, `2GB`, `512MiB`), or `0` for none. It belongs to
+whoever sized that pod, since it is the pod's bandwidth and scratch space being spent on
+behalf of every job it polls, rather than to the task that would be spending it.
+
+**`"job"`** has no size limit, because the bytes go straight from the compute node to
+storage:
 
 ```python
 train = SlurmScriptTask(..., outputs={"model": File}, output_upload="job")
@@ -164,19 +190,15 @@ azcopy copy ./model.pt "$FLYTE_OUTPUT_MODEL"
 aws s3 cp --recursive ./checkpoints "$FLYTE_OUTPUT_CHECKPOINTS"
 ```
 
-A script task runs on the bare node rather than in a container, so the available tooling is
-the site's, not your image's. `command -v aws rclone gcloud azcopy` on a login node settles
-which of these you can use. Either way, once the job succeeds the connector checks that each
-destination exists and records it as the declared `File` or `Dir`.
+A script task runs on the bare node rather than in a container, so which of these exists is
+the site's business, not your image's. `command -v aws rclone gcloud azcopy` on a login node
+settles it. Credentials are mounted the same way a native task's are — see
+[Object storage from inside the job](#object-storage-from-inside-the-job).
 
 > [!NOTE] None of this applies to native `slurm` tasks
 > A native task runs the Flyte entrypoint inside the job, which writes its outputs to object
-> storage directly — the connector never carries them, so there is no mode to choose and no
+> storage directly. The connector never carries them, so there is no mode to choose and no
 > size limit.
-
-> [!WARNING] A declared output the script never wrote fails the task
-> Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
-> surfaces much later as an unexplained read error.
 
 ## Configuration
 
