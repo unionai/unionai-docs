@@ -6,7 +6,7 @@ variants: +flyte +union
 
 # Slurm
 
-The Slurm plugin lets you run Flyte tasks as jobs on an existing [Slurm](https://slurm.schedmd.com/) cluster, including clusters managed by [Soperator](https://github.com/nebius/soperator). Jobs are submitted over SSH to a login node, so the cluster needs no Flyte components installed and no configuration changes. The connector handles submission, state polling, cancellation and log retrieval.
+The Slurm plugin lets you run Flyte tasks as jobs on an existing [Slurm](https://slurm.schedmd.com/) cluster — an on-premise HPC installation, a cloud GPU cluster, or one managed by an operator such as [Soperator](https://github.com/nebius/soperator). Jobs are submitted over SSH to a login node, so the cluster needs no Flyte components installed and no configuration changes, and the plugin assumes nothing about which cloud the cluster runs in or where the run's object storage lives. The connector handles submission, state polling, cancellation and log retrieval.
 
 The plugin supports:
 
@@ -53,8 +53,9 @@ slurm_env = flyte.TaskEnvironment(
         time_limit="4:00:00",
         # Credentials for the run's object storage, mounted from the cluster's
         # shared filesystem.
-        container_mounts=["/home/flyte/.gcp:/etc/gcp:ro"],
-        env={"GOOGLE_APPLICATION_CREDENTIALS": "/etc/gcp/sa.json"},
+        # Credentials for the run's object storage, mounted rather than passed in `env`.
+        container_mounts=["/home/flyte/.cloud:/etc/cloud:ro"],
+        env={"AWS_SHARED_CREDENTIALS_FILE": "/etc/cloud/credentials"},
     ),
     image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-slurm"),
 )
@@ -115,7 +116,22 @@ per output and the script writes there:
 
 ```bash
 python train.py --epochs "$FLYTE_INPUT_EPOCHS" --out ./model.pt
-aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"      # or gcloud storage cp, rclone, ...
+cp ./model.pt "$FLYTE_OUTPUT_MODEL"
+```
+
+By default that destination is a **local path**: the script writes an ordinary file and the
+connector streams it to object storage afterwards, so the compute node needs no upload tool
+and no credentials of its own. Above roughly 100 MB the connector warns, because every byte
+then takes two hops and shares a pod with every other job it polls — set
+`output_upload="job"` and the script is handed the object-storage URI instead, uploading
+directly with whatever tooling the site has:
+
+```python
+train = SlurmScriptTask(..., outputs={"model": File}, output_upload="job")
+```
+
+```bash
+aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"      # or rclone, gcloud storage, azcopy, ...
 ```
 
 The bytes go straight from the job to object storage — it already holds credentials for
@@ -253,6 +269,18 @@ Slurm(container_image="/jail/images/train.sqsh", partition="main")
 ## Object storage from inside the job
 
 A `slurm` task runs the Flyte entrypoint inside the job, which reads inputs and writes outputs to the run's object storage. Compute nodes therefore need network access to that storage and credentials for it.
+
+Which credentials depends on the store, not on the plugin — it works with anything Flyte's storage layer supports:
+
+| Store | Variable the job needs |
+| --- | --- |
+| S3, and S3-compatible (MinIO, R2, Nebius, …) | `AWS_SHARED_CREDENTIALS_FILE`, or the usual `AWS_*` pair |
+| Google Cloud Storage | `GOOGLE_APPLICATION_CREDENTIALS` |
+| Azure Blob | `AZURE_STORAGE_*` |
+
+Mount the credential file from the cluster's shared filesystem with `container_mounts` and
+name its path in `env`. Never put the secret itself in `env`: it is rendered into the
+generated sbatch script, which stays on the login node's filesystem.
 
 Outputs land in exactly the same place they would for a Kubernetes pod task, which is what allows a Slurm task to hand results to a task running elsewhere:
 
