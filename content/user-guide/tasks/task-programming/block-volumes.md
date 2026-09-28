@@ -79,9 +79,10 @@ env = flyte.TaskEnvironment(
 ```
 
 Attaching an image makes the node's kernel parse a file system whose bytes the
-task controls. The mount broker therefore refuses block volumes unless the
-cluster administrator has **opted the workload in**, by namespace, by service
-account, or both. Only opt in trusted workloads. If a task isn't allowed, its
+task controls. The mount broker therefore allows block volumes only for the
+workloads the cluster administrator permits, by namespace, by service account,
+or both. By default, a cluster in low-privilege mode allows none and any other
+cluster allows every pod. If a task isn't allowed, its
 `mount()` fails with the broker's reason. On a self-managed cluster, see
 [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
 
