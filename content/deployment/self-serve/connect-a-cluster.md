@@ -104,7 +104,9 @@ Only the first phase needs you. Once the agent connects, Union.ai installs the d
 
 If you check progress with `kubectl`, list pods across all namespaces. The data plane installs into its own namespace, named `instance-` followed by an identifier.
 
-When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** in the cluster list.
+When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** next to its name:
+
+![The cluster page header, showing the docsy cluster on AWS with a green Healthy badge](../../_static/images/deployment/self-serve/connect-a-cluster/cluster-healthy.png)
 
 ## 5. Run a workload on the cluster
 
