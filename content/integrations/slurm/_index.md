@@ -119,25 +119,55 @@ python train.py --epochs "$FLYTE_INPUT_EPOCHS" --out ./model.pt
 cp ./model.pt "$FLYTE_OUTPUT_MODEL"
 ```
 
-By default that destination is a **local path**: the script writes an ordinary file and the
-connector streams it to object storage afterwards, so the compute node needs no upload tool
-and no credentials of its own. Above roughly 100 MB the connector warns, because every byte
-then takes two hops and shares a pod with every other job it polls — set
-`output_upload="job"` and the script is handed the object-storage URI instead, uploading
-directly with whatever tooling the site has:
+`output_upload` decides who moves the bytes.
+
+**`"connector"` (the default)** makes the destination a local path, as above: the script
+writes an ordinary file and the connector streams it to object storage afterwards. The
+compute node needs no upload tool, no credentials and no endpoint configuration, which suits
+what most scripts emit — metrics, summaries, configs, small models.
+
+> [!WARNING] The connector refuses above 100 MB
+> Streaming would work, but every byte would take two hops instead of one, through a pod
+> concurrently polling every other job it tracks, on its bandwidth rather than the
+> cluster's. Since the choice has to be made before the job runs — it decides whether the
+> script gets a path or a URI — the connector fails rather than quietly taking the slow
+> path, and the job's work is lost. Declare `output_upload="job"` up front for an output
+> that might be large.
+
+**`"job"`** makes the destination the object-storage URI and the script uploads directly:
+one hop, the cluster's bandwidth, no size limit. The node needs a client and credentials for
+the store, mounted the same way a native task's are.
 
 ```python
 train = SlurmScriptTask(..., outputs={"model": File}, output_upload="job")
 ```
 
 ```bash
-aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"      # or rclone, gcloud storage, azcopy, ...
+# S3, and S3-compatible stores (MinIO, R2, Nebius, Ceph) with --endpoint-url
+aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"
+
+# Anything rclone has a remote for, often already configured on HPC clusters
+rclone copyto ./model.pt "$FLYTE_OUTPUT_MODEL"
+
+# Google Cloud Storage
+gcloud storage cp ./model.pt "$FLYTE_OUTPUT_MODEL"
+
+# Azure Blob
+azcopy copy ./model.pt "$FLYTE_OUTPUT_MODEL"
+
+# A directory output: copy the tree
+aws s3 cp --recursive ./checkpoints "$FLYTE_OUTPUT_CHECKPOINTS"
 ```
 
-The bytes go straight from the job to object storage — it already holds credentials for
-reading its inputs — so nothing large passes through the connector. Once the job succeeds
-the connector checks each destination exists and records it as the declared `File` or
-`Dir`.
+A script task runs on the bare node rather than in a container, so the available tooling is
+the site's, not your image's. `command -v aws rclone gcloud azcopy` on a login node settles
+which of these you can use. Either way, once the job succeeds the connector checks that each
+destination exists and records it as the declared `File` or `Dir`.
+
+> [!NOTE] None of this applies to native `slurm` tasks
+> A native task runs the Flyte entrypoint inside the job, which writes its outputs to object
+> storage directly — the connector never carries them, so there is no mode to choose and no
+> size limit.
 
 > [!WARNING] A declared output the script never wrote fails the task
 > Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
