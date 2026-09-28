@@ -232,7 +232,9 @@ before you finalize it. The source isn't modified.
   the volume when it fills.
 - **One writer at a time.** This is true of every mounted Volume, but a block
   volume also has no read-only mounts. Fork it for every additional reader.
-- **Only trusted workloads.** The cluster must opt a workload in.
+- **Only where the cluster allows it.** Attaching an image exposes the node
+  kernel to the task's file system bytes, so administrators of shared clusters
+  may restrict block volumes to trusted workloads.
 - **More upload on heavy churn.** The client stores the image in fixed-size
   pieces, and a small change rewrites a whole piece. Workloads that rewrite
   many files between commits upload more than the same work on a regular
