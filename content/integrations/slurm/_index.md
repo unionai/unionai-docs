@@ -93,8 +93,39 @@ The script's own leading `#SBATCH` directives are hoisted above the generated `e
 > [!NOTE] Script tasks must belong to an environment
 > A task has to be attached to a `TaskEnvironment` before it can be serialized. `flyte.TaskEnvironment.from_task` does that for a standalone task.
 
-> [!WARNING] Only scalar inputs reach a script
-> `str`, `int`, `float` and `bool` inputs are exported as `FLYTE_INPUT_<NAME>`. Other types are silently dropped — no variable is set and no error is raised. Pass a URI as a `str` and have the script fetch the data itself.
+> [!NOTE] What a script can receive
+> `str`, `int`, `float` and `bool` arrive as `FLYTE_INPUT_<NAME>`, and `File`/`Dir` as their URI for the script to fetch with its own tooling. Anything else fails the task at submission, because an environment variable cannot carry it — pass a URI as a `str` instead.
+
+### Outputs from a script task
+
+Declare them, and a downstream task can consume the script's results:
+
+```python
+train = SlurmScriptTask(
+    name="train",
+    script=open("train.sbatch").read(),
+    plugin_config=Slurm(partition="main"),
+    inputs={"epochs": int},
+    outputs={"model": File, "shards": Dir},
+)
+```
+
+A script cannot write Flyte's own output format, so the plugin hands it a destination URI
+per output and the script writes there:
+
+```bash
+python train.py --epochs "$FLYTE_INPUT_EPOCHS" --out ./model.pt
+aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"      # or gcloud storage cp, rclone, ...
+```
+
+The bytes go straight from the job to object storage — it already holds credentials for
+reading its inputs — so nothing large passes through the connector. Once the job succeeds
+the connector checks each destination exists and records it as the declared `File` or
+`Dir`.
+
+> [!WARNING] A declared output the script never wrote fails the task
+> Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
+> surfaces much later as an unexplained read error.
 
 ## Configuration
 
@@ -253,6 +284,66 @@ async def pipeline() -> dict[str, str]:
 > Returning a path such as `"/data/model.pt"` as a `str` satisfies the type system and then fails when a task on another cluster opens it — the Slurm cluster's filesystem does not exist there. Return `flyte.io.File` or `flyte.io.Dir` so the contents are uploaded. Path references are valid only between tasks that share a filesystem.
 
 For data read repeatedly, such as a training set read every epoch, stage it onto the Slurm cluster's shared filesystem once and pass a path within the cluster. Re-reading it from object storage on every epoch is the expensive mistake.
+
+## Outputs and caching
+
+The two task types differ sharply here, because only one of them runs Flyte's entrypoint.
+
+### Output types
+
+| | `slurm` | `slurm_script` |
+| --- | --- | --- |
+| Scalars — `int`, `float`, `str`, `bool`, `datetime`, `date`, `timedelta`, `None` | Yes | No |
+| Containers — `list`, `dict`, `Union`, `Optional`, `Enum` | Yes | No |
+| Structured — dataclass, Pydantic model, protobuf | Yes | No |
+| Offloaded — `File`, `Dir`, `DataFrame` | Yes | `File` and `Dir`, declared |
+| Anything else, via pickle | Yes | No |
+| Several outputs as a `tuple` | Yes | Yes, all declared |
+
+A native `slurm` task runs the same entrypoint a Kubernetes pod task does, so its outputs
+go through the standard type engine with nothing added or removed by the plugin. Scalars,
+containers and structured values are inlined into `outputs.pb`; `File`, `Dir` and
+`DataFrame` contents are offloaded to the raw-data prefix, including when nested inside a
+dataclass or a list.
+
+A `slurm_script` task has no such entrypoint — an arbitrary sbatch script cannot write
+Flyte's literal format — so it produces only what it is told to write, as described in
+[Outputs from a script task](#outputs-from-a-script-task). A scalar output would mean
+parsing stdout, which is silently wrong for any script that logs.
+
+> [!NOTE] Artifacts are narrower than outputs
+> Only `File`, `Dir` and `DataFrame` can be wrapped with `flyte.artifacts.new(...)`, and an
+> artifact must be a top-level output rather than nested inside another value. That applies
+> to every task type, not just these.
+
+Two things that follow from the job doing its own I/O: the compute node needs credentials
+for the run's object storage, and a large value belongs in a `File` or `Dir` rather than
+returned directly, since inline inputs and outputs are capped by `max_inline_io_bytes`.
+
+### Caching
+
+Both task types cache, and both invalidate on a change to the code that produced the
+result — but they compute that differently.
+
+| | What the cache version is derived from |
+| --- | --- |
+| `slurm` | The task function's source, as for any Python task |
+| `slurm_script` | The script body, plus the configuration that shapes execution |
+
+`cache="auto"` normally hashes the task function. A script task has no function, so the
+default policy would return the hash of the empty string — one constant shared by every
+script task, meaning an edited script would keep hitting its old entry. The plugin
+substitutes a version over the script instead, so editing the script invalidates the cache
+as you would expect.
+
+Connection details are deliberately excluded from that version: moving the cluster to a new
+login node, or rotating the SSH secret, does not change what the job computes and should
+not discard valid results. An explicit `Cache(behavior="override", ...)` is left untouched.
+
+> [!NOTE] Caching a script task needs declared outputs to be useful
+> A cache hit restores outputs and skips the job. With no outputs declared there is nothing
+> to restore, so a hit simply skips the work — rarely what you want from a script whose
+> value is its side effects.
 
 ## Job state mapping
 
