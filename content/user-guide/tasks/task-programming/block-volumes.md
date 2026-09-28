@@ -56,6 +56,7 @@ Stay with a **regular Volume** when:
 | **Content** | Each file stored separately | One ext4 image |
 | **Small-file performance** | Network round trip per operation | Near local disk |
 | **Size** | Unlimited | Fixed; grow it with `grow()` |
+| **Immutable version type** | `ROVolume` | `ROBlockVolume` (an `ROVolume`) |
 | **Read-only mounts** | Yes, any number at once | No: fork, then mount the fork |
 | **Browse files without mounting** | Yes (`flyte explore volume`) | No |
 | **Cluster setup** | Mount broker | Mount broker **and** an administrator opt-in |
@@ -67,7 +68,7 @@ A block volume uses the same image and pod template as any Volume. See
 
 ```python
 import flyte
-from flyteplugins.union.io import BlockVolume, ROVolume, RWVolume, allow_volumes
+from flyteplugins.union.io import BlockVolume, ROBlockVolume, ROVolume, RWVolume, allow_volumes
 
 env = flyte.TaskEnvironment(
     name="builds",
@@ -98,7 +99,7 @@ generous size costs nothing up front.
 
 ```python
 @env.task
-async def warm_cache() -> ROVolume:
+async def warm_cache() -> ROBlockVolume:
     cache = BlockVolume.new(name="go-build-cache", size="64G")
     root = await cache.mount()          # an ext4 mount, used like any directory
 
@@ -112,15 +113,18 @@ The first `mount()` creates and formats the image. Sizes use binary units
 
 ## Use it in a later task: fork, then mount
 
-The task above returns an immutable `ROVolume`, as every Volume does. Because a
-block image can only be mounted read-write, a downstream task **forks** it and
-mounts the fork, even when it only needs to read. The fork is a `BlockVolume`
-again, and it shares every unchanged block with its parent, so forking a large
-cache is cheap:
+`finalize()` and `commit()` on a block volume return an `ROBlockVolume`, the
+immutable version of a block volume. It is an `ROVolume`, so anything that
+accepts an `ROVolume` accepts it.
+
+Because a block image can only be mounted read-write, a downstream task
+**forks** it and mounts the fork, even when it only needs to read. The fork is
+a `BlockVolume` again, and it shares every unchanged block with its parent, so
+forking a large cache is cheap:
 
 ```python
 @env.task
-async def build(cache: ROVolume) -> ROVolume:
+async def build(cache: ROBlockVolume) -> ROBlockVolume:
     work = await cache.fork(name="go-build-cache")   # a writable BlockVolume
     root = await work.mount()
 
@@ -129,14 +133,23 @@ async def build(cache: ROVolume) -> ROVolume:
     return await work.finalize(message="after build")
 ```
 
-Calling `mount()` directly on an `ROVolume` of a block volume raises an error
-that tells you to fork it. To check which kind of volume you received, use
-`is_block`:
+Declaring the input as `ROBlockVolume` makes the requirement part of the task
+signature: passing a regular volume fails at the task boundary, not partway
+through the task. An input declared `ROVolume` accepts either kind. A block
+volume still arrives as an `ROBlockVolume`, and `is_block` tells you which kind
+you received:
 
 ```python
-if cache.is_block:
-    work = await cache.fork(name="go-build-cache")
+@env.task
+async def inspect(vol: ROVolume) -> int:
+    if vol.is_block:                                  # an ROBlockVolume
+        vol = await vol.fork(name="inspect-scratch")  # fork to read it
+    root = await vol.mount()
+    return len(list(root.rglob("*")))
 ```
+
+Calling `mount()` on an `ROBlockVolume` raises an error that tells you to fork
+it.
 
 ## Checkpoint while you work
 
@@ -197,12 +210,12 @@ every link.
 
 ```python
 @env.task
-async def to_block(src: ROVolume) -> ROVolume:
+async def to_block(src: ROVolume) -> ROBlockVolume:
     bv = await BlockVolume.from_volume(src, name="source-tree-blk")
     return await bv.finalize(message="converted from source-tree")
 
 @env.task
-async def to_regular(src: ROVolume) -> ROVolume:
+async def to_regular(src: ROBlockVolume) -> ROVolume:
     rw = await RWVolume.from_block(src, name="source-tree")
     return await rw.finalize(message="converted from source-tree-blk")
 ```
@@ -226,8 +239,8 @@ before you finalize it. The source isn't modified.
 
 ## Reference
 
-- API: `BlockVolume.new()`, `BlockVolume.commit()`, `BlockVolume.grow()`,
-  `BlockVolume.from_volume()`, `RWVolume.from_block()` and `Volume.is_block`.
+- API: `BlockVolume` (`new()`, `commit()`, `grow()`, `from_volume()`),
+  `ROBlockVolume` (`fork()`), `RWVolume.from_block()` and `Volume.is_block`.
 - The rest of the Volume model (forking, artifacts, locators and the chunk
   cache) works the same way. See [Volumes](./volumes).
 - Cluster setup: [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
