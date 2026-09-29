@@ -13,13 +13,14 @@ site_root: true
 
 # Flyte OSS
 
-Flyte is a free and open source platform that provides a full suite of features for orchestrating AI workflows.
-Flyte enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
-You deploy and manage Flyte yourself, on your own cloud infrastructure.
+Flyte 2 is the durable AI runtime, in open source.
+You write training, serving, and agent workloads in plain Python, and Flyte can recover them from failure, whether your code raised an error or the infrastructure failed under it with an OOM kill or a preempted node.
+Flyte is Apache 2.0 licensed and a Linux Foundation AI & Data project, and you run it yourself on your own Kubernetes cluster.
 
-> [!NOTE]
-> These are the Flyte **2.0** docs.
-> To switch to [version 1.0]({{< docs_home flyte v1 >}}) or to the commercial product, [**Union.ai**]({{< docs_home union v2 >}}), use the selectors above.
+> [!TIP] Try Flyte on Union.ai, free for 30 days
+> [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
+> Subscribe to Union Team on AWS Marketplace and try it free for 30 days.
+> See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -28,19 +29,16 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 # {{% key product_name %}}
 
-{{< key product_name >}} enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
+{{< key product_name >}} is the durable AI runtime your team owns.
+Your workloads run in your own cloud, and your data and code never leave it: they never traverse the {{< key product_name >}} control plane.
+On it, you build model factories, production agents, and model serving in plain Python, as durable steps that can recover from failure.
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
+{{< key product_name >}} is enterprise-grade [Flyte]({{< docs_home flyte v2 >}}), open source at the core.
+See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways to run it.
 
-{{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
-
-{{< key product_name >}} provides all the features of Flyte, plus much more, in an environment where you keep your data and workflow code on your own infrastructure. {{< key product_name >}} is available as [BYOC]({{< docs_home union v2 >}}/deployment/byoc/_index) (Bring Your Own Cloud), where Union.ai manages the infrastructure for you, or [Self-managed]({{< docs_home union v2 >}}/deployment/selfmanaged/_index), where you manage the data plane yourself.
-
-> [!NOTE]
-> These are the Union.ai **2.0** docs.
-> To switch to [version 1.0]({{< docs_home union v1 >}}) or to another product variant, use the selectors above.
+> [!TIP] Try Union.ai free for 30 days
+> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, free for the first 30 days.
+> See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/).
 
 {{< /markdown >}}
 {{< /variant >}}
