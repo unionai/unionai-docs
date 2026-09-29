@@ -31,7 +31,8 @@ oci ce cluster create \
   --region ${REGION}
 ```
 
-> [!NOTE] The OKE cluster creation requires a pre-existing VCN and subnet. See the [OCI networking documentation](https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengnetworkconfigexample.htm) for details on setting up the required network resources.
+> [!NOTE]
+> The OKE cluster creation requires a pre-existing VCN and subnet. See the [OCI networking documentation](https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengnetworkconfigexample.htm) for details on setting up the required network resources.
 
 Union supports Autoscaling and the use of preemptible instances.
 
@@ -141,7 +142,8 @@ oci iam customer-secret-key create \
   --display-name union-dataplane-s3-compat
 ```
 
-> [!NOTE] The command output contains the secret key value. Save it immediately; it cannot be retrieved again.
+> [!NOTE]
+> The command output contains the secret key value. Save it immediately; it cannot be retrieved again.
 
 You will configure these credentials in the Helm values file during deployment (see step 3 in [Deploy the dataplane](../deploy/_index)).
 

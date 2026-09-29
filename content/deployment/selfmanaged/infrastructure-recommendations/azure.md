@@ -10,7 +10,8 @@ variants: -flyte +union
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
-> [!NOTE] **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
+> [!NOTE]
+> **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 
@@ -135,7 +136,8 @@ az aks nodepool add \
   --labels union.ai/node-role=worker
 ```
 
-> [!NOTE] **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
+> [!NOTE]
+> **Spot VMs**: Union supports interruptible workloads on Azure Spot. Spot nodes are identified by the label `kubernetes.azure.com/scalesetpriority: spot`, which AKS sets automatically when `--priority Spot` is used.
 
 ## 4. Storage account and container
 
@@ -157,7 +159,8 @@ az storage container create \
   --account-name $STORAGE_ACCOUNT
 ```
 
-> [!NOTE] Union reads and writes this account through Workload Identity rather than the account
+> [!NOTE]
+> Union reads and writes this account through Workload Identity rather than the account
 > key. `--allow-shared-key-access true` is only needed if you take the optional
 > [FluentBit-to-Blob path](../configuration/persistent-logs#alternative-writing-to-blob-storage)
 > for persisted logs.
@@ -302,7 +305,8 @@ Union reads historical task logs (the logs of a task pod that has already termin
 Azure Log Analytics workspace. The AKS **Container Insights** add-on ships container logs into
 that workspace, and the Union operator queries them back out using the backend managed identity.
 
-> [!NOTE] **FluentBit is not used on Azure.** From dataplane chart 2026.8.0 the chart's
+> [!NOTE]
+> **FluentBit is not used on Azure.** From dataplane chart 2026.8.0 the chart's
 > `values.azure.yaml` ships `fluentbit.enabled: false`; on earlier charts set it yourself.
 > FluentBit's `azure_blob` output cannot authenticate with Workload
 > Identity, so the DaemonSet lands in `CrashLoopBackOff` unless you hand it a storage account
@@ -351,7 +355,8 @@ az role assignment create \
   --scope $LOG_ANALYTICS_WORKSPACE_ID
 ```
 
-> [!NOTE] The assignment is scoped to the workspace, which may sit in a different resource group
+> [!NOTE]
+> The assignment is scoped to the workspace, which may sit in a different resource group
 > under different ownership than the AKS cluster. Creating it requires
 > `Microsoft.Authorization/roleAssignments/write` on that scope, so whoever administers that
 > resource group may have to run this command for you.
@@ -371,7 +376,8 @@ az monitor log-analytics query \
   --output table
 ```
 
-> [!NOTE] No rows means Container Insights is not ingesting, so fixing the Union configuration
+> [!NOTE]
+> No rows means Container Insights is not ingesting, so fixing the Union configuration
 > will not help. `az aks enable-addons` grants the cluster's Azure Monitor Agent identity the
 > **Monitoring Metrics Publisher** role automatically; check that it is present if Container
 > Insights was wired up by hand. Ingestion and query both use the public Azure Monitor endpoints.

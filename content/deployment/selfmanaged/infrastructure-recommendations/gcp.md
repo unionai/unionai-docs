@@ -35,7 +35,8 @@ First, enable the required APIs:
 gcloud services enable container.googleapis.com --project ${PROJECT_ID}
 ```
 
-> [!NOTE] If the project has no default VPC network, create one before proceeding:
+> [!NOTE]
+> If the project has no default VPC network, create one before proceeding:
 >
 > ```bash
 > gcloud compute networks create default --project ${PROJECT_ID} --subnet-mode=auto
@@ -51,7 +52,8 @@ gcloud container clusters create ${CLUSTER_NAME} \
   --workload-pool ${PROJECT_ID}.svc.id.goog
 ```
 
-> [!NOTE] The `--workload-pool` flag enables [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), which is required for the [Workload Identity](#workload-identity) setup below.
+> [!NOTE]
+> The `--workload-pool` flag enables [GKE Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), which is required for the [Workload Identity](#workload-identity) setup below.
 
 The following GKE add-ons are required and come pre-installed on GKE clusters:
 
@@ -316,7 +318,8 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --role roles/iam.serviceAccountTokenCreator
 ```
 
-> [!NOTE] If prompted to specify a condition, select **None**. This role applies project-wide and does not require a condition. The prompt appears because the policy already contains other conditional bindings.
+> [!NOTE]
+> If prompted to specify a condition, select **None**. This role applies project-wide and does not require a condition. The prompt appears because the policy already contains other conditional bindings.
 
 Once your infrastructure is ready, proceed to [Deploy the dataplane](../deploy/_index).
 
