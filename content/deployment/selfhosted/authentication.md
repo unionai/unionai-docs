@@ -131,7 +131,7 @@ Your IdP must emit a claim that maps to the `identitytype` concept, with values 
 |----------|-----------|------------|-----------|---------------|
 | Okta | `identitytype` | `"user"` | `"app"` | Custom access token claim on authorization server |
 | Entra ID | `idtyp` | (not emitted) | `"app"` | Enable via optional claims in app manifest. Map with `identityTypeClaimsForApps: {idtyp: ["app"]}` |
-| PingOne | `identitytype` | `"user"` | (not emitted) | Configure via application attribute mapping on user-facing apps. Worker apps are resolved via client_credentials flow. |
+| PingOne | `identitytype` / `client_id` | `"user"` | `"app"` | Map `identitytype` on user-facing apps. Configure worker client IDs in `identityTypeClaimsForApps.client_id` |
 | Generic | varies | varies | varies | Configure `identityTypeClaimsForApps` to map your claim name and values |
 
 > [!WARNING]
@@ -387,6 +387,14 @@ flyte:
             subjectClaimNamesForApps:
               - client_id
               - sub
+          identityTypeClaimsForApps:
+            identitytype:
+              - app
+            client_id:
+              - "<service-to-service-client-id>"    # App 3
+              - "<operator-client-id>"              # App 4
+              - "<eager-client-id>"                 # App 5
+              - "<cicd-client-id>"                  # App 6 (optional)
           thirdPartyConfig:
             flyteClient:
               clientId: "<cli-client-id>"           # App 2
@@ -420,6 +428,9 @@ global:
 
 > [!NOTE]
 > PingOne worker tokens (Apps 3–5) carry an audience of `https://api.pingone.com`. Both `https://<your-domain>` and `https://api.pingone.com` must be included in `allowedAudience` so token validation succeeds.
+
+> [!IMPORTANT]
+> PingOne worker application (`client_credentials`) tokens omit custom attribute mappings. To ensure worker applications (Apps 3–5) are correctly classified as `app` (rather than defaulting to `user` and failing RBAC authorization), configure `identityTypeClaimsForApps.client_id` with your worker application Client IDs as shown above.
 
 > [!WARNING]
 > In PingOne, each worker application (Apps 3–5) must be granted an environment role (such as **Identity Data Read Only**) under **Applications > [Your App] > Roles > Grant Roles**. Without this role assignment, PingOne returns `403 Access Denied` on `client_credentials` grant requests.
