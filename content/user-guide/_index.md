@@ -17,9 +17,10 @@ Flyte is a free and open source platform that provides a full suite of features 
 Flyte enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
-> [!NOTE]
-> These are the Flyte **2.0** docs.
-> To switch to [version 1.0]({{< docs_home flyte v1 >}}) or to the commercial product, [**Union.ai**]({{< docs_home union v2 >}}), use the selectors above.
+> [!TIP] Try Flyte on Union.ai, free for 30 days
+> [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
+> Subscribe to Union Team on AWS Marketplace and try it free for 30 days.
+> See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/_index).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -38,8 +39,8 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< key product_name >}} provides all the features of Flyte, plus much more, in an environment where you keep your data and workflow code on your own infrastructure. {{< key product_name >}} is available as [BYOC]({{< docs_home union v2 >}}/deployment/byoc/_index) (Bring Your Own Cloud), where Union.ai manages the infrastructure for you, or [Self-managed]({{< docs_home union v2 >}}/deployment/selfmanaged/_index), where you manage the data plane yourself.
 
-> [!TIP] Start a free trial from AWS Marketplace
-> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, starting with a 30-day free trial.
+> [!TIP] Try Union.ai free for 30 days
+> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, free for the first 30 days.
 > See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/_index).
 
 {{< /markdown >}}
