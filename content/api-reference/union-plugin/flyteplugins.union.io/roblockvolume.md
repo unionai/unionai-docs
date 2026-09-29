@@ -1,32 +1,30 @@
 ---
-title: Volume
-description: "A persistent volume identified by its metadata index."
+title: ROBlockVolume
+description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
 version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
 
-# Volume
+# ROBlockVolume
 
 **Package:** `flyteplugins.union.io`
 
-A persistent volume identified by its metadata index.
+An immutable version of a `BlockVolume` -- what its `commit`
+and `finalize` return, and what a downstream task receives.
 
-A ``Volume`` is content-addressable lineage on top of an object-store
-bucket. The bucket holds the data chunks; the metadata store holds the
-entire namespace (a SQLite ``.db`` or a Redis ``dump.rdb``, depending on
-``metadata_store_type``). Cloning
-the metadata produces an independent fork that initially sees the
-same file tree and shares chunk objects but diverges as either side
-writes — see `fork` for the chunk-key disjointness guarantees
-that make concurrent writes safe.
+A block image mounts read-write only, so this has no usable `mount`:
+`fork` it and mount the fork, a `BlockVolume` sharing every
+unchanged block. Declaring a task input as ``ROBlockVolume`` rejects a
+regular volume at the task boundary; an input declared ``ROVolume`` accepts
+either kind and receives an ``ROBlockVolume`` for a block volume.
 
 
 ## Parameters
 
 ```python
-class Volume(
+class ROBlockVolume(
     kind: typing.Literal['flyte.volume/v1'] = 'flyte.volume/v1',
     name: str,
     bucket: str,
@@ -87,6 +85,7 @@ validated to form a valid model.
 | `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
 | `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
+| `size` | `str` | The image size this version was committed with. |
 
 ## Methods
 
@@ -94,12 +93,12 @@ validated to form a valid model.
 |-|-|
 | [`commit()`](#commit) | **Deprecated.** Drain + unmount + publish, returning a new ``Volume``. |
 | [`empty()`](#empty) | Declare a brand-new volume. |
-| [`fork()`](#fork) | Snapshot the current metadata index and return a new ``Volume`` that points at the snapshot. |
+| [`fork()`](#fork) | Branch this version into a new writable `BlockVolume` (copy-on-write). |
 | [`from_locator()`](#from_locator) | Load a previously published volume version by its `locator`. |
 | [`get_artifact_metadata()`](#get_artifact_metadata) | Artifact declaration for the declarative (returned-as-output) publish path — flyte-sdk's output conversion calls this on every top-level task output exposing it and, when it returns metadata, emits a ``ProducedArtifact`` on the Outputs envelope; the backend registers the artifact atomically with the action record (no RPC from the task). |
 | [`migrate_metadata_store_type()`](#migrate_metadata_store_type) | Re-host this Volume's metadata on ``new_metadata_store_type`` without copying data chunks. |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
-| [`mount()`](#mount) | Format (if fresh) and mount the volume at ``mount_path`` in this process, and return the resolved mount point as a `Path` (also available afterwards via the `mount_path` property). |
+| [`mount()`](#mount) | Not supported: a block image mounts read-write only. |
 | [`new()`](#new) | PRD §Lifecycle: create a fresh empty `RWVolume`. |
 | [`recover_mount()`](#recover_mount) | Remount this volume after its mount daemon died under it. |
 
@@ -210,54 +209,20 @@ the consumer's env.
 ```python
 def fork(
     name: str,
-    mount_path: Optional[str] = None,
     meta_dir: Optional[str] = None,
     timeout: float = 60.0,
-    artifact: Any = Ellipsis,
-) -> 'Volume'
+    artifact: object = Ellipsis,
+) -> BlockVolume
 ```
-Snapshot the current metadata index and return a new ``Volume``
-that points at the snapshot.
-
-``artifact`` controls the branch's artifact-registry identity. The
-default (leave it unset) inherits ``self``'s: two published forks of a
-version become sibling branches under the same artifact name. Pass
-``artifact=None`` to detach the branch from the registry, or a
-name/``Metadata`` (same forms as `new`) to start publishing it
-as its own artifact. The last-published lineage pointer is inherited
-either way, so a rebranded branch's first published seal still carries
-a (cross-name) parent edge back to where it branched from.
-
-Both the original and the fork reference the same bucket. To keep
-their writes from clobbering each other, the fork's chunk / inode /
-session allocator counters are advanced by a random 56-bit offset
-before publication. Object keys embed those allocator IDs, so the two
-diverge into disjoint key spaces; without this, parent and fork would
-race to allocate the same IDs and one side's writes would silently
-overwrite the other's.
-
-Works whether or not ``self`` is currently mounted:
-
-* **Live** (mounted): flushes in-memory state (``SAVE`` for Redis,
-  WAL checkpoint for SQLite) and snapshots the live on-disk index,
-  bumps counters on the snapshot, and uploads it.
-* **Cold** (not mounted): downloads ``self.index`` to a tempdir,
-  bumps counters in place, and uploads. Stats are inherited from
-  ``self`` since no writes can have occurred.
-
-Note: cold-fork still avoids copying the data chunks (which dominate
-bytes), but it does pull the metadata file through the pod — the
-previous ``File.copy_to`` server-side path could not mutate counters
-and was unsafe for the chunk-key reasons above.
+Branch this version into a new writable `BlockVolume` (copy-on-write).
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
-| `mount_path` | `Optional[str]` | |
 | `meta_dir` | `Optional[str]` | |
 | `timeout` | `float` | |
-| `artifact` | `Any` | |
+| `artifact` | `object` | |
 
 ### from_locator()
 
@@ -373,133 +338,15 @@ It takes context as an argument since that's what pydantic-core passes when call
 
 ```python
 def mount(
-    mount_path: Optional[str] = None,
-    meta_dir: Optional[str] = None,
-    cache_dir: Optional[str] = None,
-    timeout: float = 120.0,
-    writeback: bool = True,
-    upload_delay: Optional[str] = None,
-    max_uploads: int = 50,
-    attr_cache: float = 60.0,
-    entry_cache: float = 60.0,
-    dir_entry_cache: float = 60.0,
-    read_only: bool = False,
-    shared_node_cache: Optional[bool] = None,
-    cache_size_mb: Optional[int] = None,
-    passthrough: Optional[bool] = None,
-    enable_xattr: bool = False,
-) -> Path
+    **_: object,
+) -> NoReturn
 ```
-Format (if fresh) and mount the volume at ``mount_path`` in this
-process, and return the resolved mount point as a `Path`
-(also available afterwards via the `mount_path` property).
-
-Call once near the top of a task body before reading or writing under
-``mount_path``.
-
-``shared_node_cache`` selects the chunk cache shared by every pod on the
-node, which the pod template exposes as ``$UNION_VOLUME_SHARED_NODE_CACHE_DIR``
-(see `allow_volumes`). Every pod on the node mounting this volume
-family then fetches each chunk from object storage once per *node*
-rather than once per pod. The default ``None`` uses it **automatically
-whenever it is present and the mount is read-only** -- a pod that never
-heard of the flag still benefits, and still contributes chunks. ``True``
-requires it (an error if the pod has none, or if the mount is writable);
-``False`` never uses it. Writable mounts always get a per-pod cache: the
-writeback staging queue lives inside the cache directory and is
-per-writer. Clients sharing a directory each run their own eviction
-against their own budget, so they can evict one another; the hit rate
-depends on what else is mounted on that node.
-
-``cache_size_mb`` caps the on-disk chunk cache for *this* mount. When
-omitted, a mount whose cache lives on the volume that
-``allow_volumes(cache_size=...)`` attached takes 90% of that volume's
-size -- **per mount**: two volumes mounted in one task each get the full
-budget, so a task that mounts several must split it here, or size the
-volume for the sum, or kubelet evicts the pod for exceeding the
-emptyDir. A cache anywhere else (an explicit ``cache_dir``, the node
-cache) is left on the client's own default and its free-space guard.
-
-**Runtime requirements** (both needed, or the mount fails):
-
-* **Image** — the ``fuse3`` apt package. JuiceFS execs the
-  ``fusermount3`` userspace helper to mount; the default minimal images
-  don't ship it, so the mount client exits immediately with
-  ``fuse: fuse is not installed``. Add it with
-  ``flyte.Image...with_apt_packages("fuse3")`` (or use
-  `with_high_throughput_volume_deps`, which includes it). A
-  Redis-backed Volume additionally needs ``redis-server`` in the image —
-  that helper installs it too.
-* **Pod** — ``pod_template=flyte.PodTemplate().allow_fuse()`` on the
-  `flyte.TaskEnvironment`, which grants the ``/dev/fuse`` device
-  and the capability an unprivileged mount needs (the cluster must run a
-  FUSE device plugin; the Union data plane ships one).
-
-The mount point, ``meta_dir`` and ``cache_dir`` must also be writable by
-the task user; the name-keyed defaults live under ``$HOME``, which the
-default image owns.
-
-``passthrough`` selects the FUSE passthrough fast-write path: ``None``
-(default) means on for writable mounts unless ``UNION_JUICEFS_PASSTHROUGH=0``
-is set; ``True``/``False`` force it. Read-only mounts never use it.
-``enable_xattr`` turns on extended attributes for the mount (off by
-JuiceFS default). Both matter when the volume is used as an overlayfs
-layer (for example as a container snapshotter's root): overlayfs needs
-``trusted.overlay.*`` xattrs, and the kernel refuses a passthrough FUSE
-superblock as a layer ("maximum fs stacking depth exceeded"), so such
-a mount needs ``enable_xattr=True, passthrough=False``.
-
-When ``writeback=True`` (default), writes land in the local cache
-directory first and are uploaded asynchronously in the background.
-This decouples write latency from object-store round-trips. The
-pending upload queue is drained on ``commit()``; if the pod dies
-before commit, in-flight chunks are lost — but that's fine because
-the Volume itself is never published in that case.
-
-``upload_delay`` (e.g. ``"1h"``, ``"30m"``, ``"5s"``) defers uploads
-by the given duration. Useful for write-scratchy workloads — files
-that are written and then overwritten / deleted within the delay
-window are never uploaded at all. Default (``None``) is no extra
-delay; the background uploader starts as soon as a chunk is written.
-Has no effect without ``writeback=True``.
-
-``max_uploads`` caps concurrent S3 PUTs (default 50; underlying
-client default is 20). Bumping helps write-burst phases when the
-chunks are small enough that 20 streams can't saturate the link.
-
-``attr_cache`` / ``entry_cache`` / ``dir_entry_cache`` are kernel-side
-TTLs in seconds for file attributes, name-to-inode lookups, and
-directory listings respectively. Defaults are ``60.0`` for all three,
-which collapses stat / getattr / lookup storms by an order of
-magnitude on directory-heavy workloads (Go toolchain, package
-managers, codegen). This is safe because a Volume is single-writer
-for the duration of its mount — no external mutator is supported by
-this mechanism. Concurrent-writer scenarios will be opt-in via a
-separate API when added.
-
-Periodic checkpointing and crash recovery are intentionally *not* part
-of this method. Callers that want a keep-alive loop drive it themselves
-with `RWVolume.commit` on whatever cadence they choose, and own
-any resume-from-checkpoint policy at the usage layer.
+Not supported: a block image mounts read-write only. Fork it and mount the fork.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `mount_path` | `Optional[str]` | |
-| `meta_dir` | `Optional[str]` | |
-| `cache_dir` | `Optional[str]` | |
-| `timeout` | `float` | |
-| `writeback` | `bool` | |
-| `upload_delay` | `Optional[str]` | |
-| `max_uploads` | `int` | |
-| `attr_cache` | `float` | |
-| `entry_cache` | `float` | |
-| `dir_entry_cache` | `float` | |
-| `read_only` | `bool` | |
-| `shared_node_cache` | `Optional[bool]` | |
-| `cache_size_mb` | `Optional[int]` | |
-| `passthrough` | `Optional[bool]` | |
-| `enable_xattr` | `bool` | |
+| `**_` | `object` | |
 
 ### new()
 

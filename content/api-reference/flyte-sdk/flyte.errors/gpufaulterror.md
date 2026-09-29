@@ -2,7 +2,7 @@
 title: GPUFaultError
 description: "This error is raised when the backend attributed the task failure to a GPU or NVSwitch fault that the GPU health daemon observed on the node, such as an Xid 31 (a GPU memory page fault) or an Xid 79 (the GPU fell off the bus)."
 icon: exclamation-triangle
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,32 +1,58 @@
 ---
-title: Volume
-description: "A persistent volume identified by its metadata index."
+title: BlockVolume
+description: "A writable Volume whose content is one ext4 filesystem image."
 icon: braces
 version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
 
-# Volume
+# BlockVolume
 
 **Package:** `flyteplugins.union.io`
 
-A persistent volume identified by its metadata index.
+A writable Volume whose content is one ext4 filesystem image.
 
-A ``Volume`` is content-addressable lineage on top of an object-store
-bucket. The bucket holds the data chunks; the metadata store holds the
-entire namespace (a SQLite ``.db`` or a Redis ``dump.rdb``, depending on
-``metadata_store_type``). Cloning
-the metadata produces an independent fork that initially sees the
-same file tree and shares chunk objects but diverges as either side
-writes — see `fork` for the chunk-key disjointness guarantees
-that make concurrent writes safe.
+Use it for single-writer, small-file workloads — build caches (BuildKit),
+package caches, virtualenvs, ``node_modules``, source trees. `mount`
+attaches the image as a loop device and returns the ext4 mount, so file
+metadata is handled in the kernel instead of a FUSE round trip per
+operation. Measured on dogfood: BuildKit cold build 67 s vs 125 s on a
+plain Volume (59 s on local disk); 5,000 small files 0.44 s vs 6.9 s.
+
+Everything else is a Volume: `commit` snapshots it (after trimming
+freed blocks), forks share unchanged blocks, and returning it from a task
+finalizes it. Forks of a block volume are block volumes. A commit is
+crash-consistent by default -- like snapshotting a live disk; ext4 replays
+its journal when a fork mounts it -- and does not stall writers;
+``commit(freeze=True)`` takes a clean snapshot at the cost of a brief
+write stall.
+
+Trade-offs versus a plain Volume:
+
+* **Trusted workloads only.** Attaching makes the node kernel parse the
+  image. Behind the uvol mount broker it is allowed only for pods matching
+  the cluster's ``blockAllow`` rules; a privileged pod without the broker
+  attaches it itself.
+* **One writer, no read-only mounts, not browsable file by file.** Fork it
+  to read it elsewhere.
+* **A size limit**, set here and grown online with `grow`.
+* More object-store traffic on file-heavy work (whole blocks are
+  rewritten).
+
+::
+
+    cache = BlockVolume.new(size="64G")
+    path = await cache.mount()          # ext4 mount point
+    ...
+    await cache.grow("128G")             # online
+    return cache                         # finalized at task return
 
 
 ## Parameters
 
 ```python
-class Volume(
+class BlockVolume(
     kind: typing.Literal['flyte.volume/v1'] = 'flyte.volume/v1',
     name: str,
     bucket: str,
@@ -87,20 +113,25 @@ validated to form a valid model.
 | `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
 | `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
+| `size` | `str` | The image size this volume was declared or last grown to. |
 
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`commit()`](#commit) | **Deprecated.** Drain + unmount + publish, returning a new ``Volume``. |
+| [`commit()`](#commit) | Snapshot the live image as a new immutable version (see `RWVolume.commit`). |
 | [`empty()`](#empty) | Declare a brand-new volume. |
-| [`fork()`](#fork) | Snapshot the current metadata index and return a new ``Volume`` that points at the snapshot. |
+| [`finalize()`](#finalize) | Detach, unmount and publish as an `ROBlockVolume` (see `RWVolume.finalize`). |
+| [`fork()`](#fork) | Branch this block volume (see `RWVolume.fork`): a `BlockVolume`, or an `ROBlockVolume` snapshot with ``as_="ro"``. |
+| [`from_block()`](#from_block) | A new regular volume holding a copy of a block volume's files -- the reverse of `BlockVolume.from_volume`, with the same copy semantics. ext4's ``lost+found`` is not copied. |
 | [`from_locator()`](#from_locator) | Load a previously published volume version by its `locator`. |
+| [`from_volume()`](#from_volume) | A new block volume holding a copy of a regular volume's files. |
 | [`get_artifact_metadata()`](#get_artifact_metadata) | Artifact declaration for the declarative (returned-as-output) publish path — flyte-sdk's output conversion calls this on every top-level task output exposing it and, when it returns metadata, emits a ``ProducedArtifact`` on the Outputs envelope; the backend registers the artifact atomically with the action record (no RPC from the task). |
+| [`grow()`](#grow) | Grow the image and its filesystem online, while mounted. |
 | [`migrate_metadata_store_type()`](#migrate_metadata_store_type) | Re-host this Volume's metadata on ``new_metadata_store_type`` without copying data chunks. |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`mount()`](#mount) | Format (if fresh) and mount the volume at ``mount_path`` in this process, and return the resolved mount point as a `Path` (also available afterwards via the `mount_path` property). |
-| [`new()`](#new) | PRD §Lifecycle: create a fresh empty `RWVolume`. |
+| [`new()`](#new) | Declare a new, empty block volume of ``size`` (e.g. ``"64G"``, binary units). |
 | [`recover_mount()`](#recover_mount) | Remount this volume after its mount daemon died under it. |
 
 
@@ -108,29 +139,33 @@ validated to form a valid model.
 
 ```python
 def commit(
+    message: Optional[str] = None,
     mount_path: Optional[str] = None,
     meta_dir: Optional[str] = None,
-    timeout: float = 60.0,
-    message: Optional[str] = None,
-) -> 'Volume'
+    publish_artifact: bool = False,
+    artifact_version: Optional[str] = None,
+    freeze: bool = False,
+) -> 'ROBlockVolume'
 ```
-**Deprecated.** Drain + unmount + publish, returning a new ``Volume``.
+Snapshot the live image as a new immutable version (see `RWVolume.commit`).
 
-Prefer the typed lifecycle: create an `RWVolume`
-(`Volume.new` / `ROVolume.fork`), use
-`RWVolume.commit` for a keep-alive snapshot, and let the type
-transformer call `RWVolume.finalize` automatically when you
-return an `RWVolume` from a task. This base-class method is
-retained as a thin wrapper so existing ``Volume`` callers keep
-working; it emits `DeprecationWarning`.
+``freeze=False`` (default): no writer stall; the snapshot is
+crash-consistent, and ext4 replays its journal when a fork mounts it.
+``freeze=True``: freeze the filesystem for the snapshot so it is clean
+(no replay needed); writers stall until the snapshot is pinned (with a
+JuiceFS client that announces the pin; older clients hold the freeze
+through the whole checkpoint, drain included), and the commit fails
+rather than publish if the freeze had to be released early.
 
 
 | Parameter | Type | Description |
 |-|-|-|
+| `message` | `Optional[str]` | |
 | `mount_path` | `Optional[str]` | |
 | `meta_dir` | `Optional[str]` | |
-| `timeout` | `float` | |
-| `message` | `Optional[str]` | |
+| `publish_artifact` | `bool` | |
+| `artifact_version` | `Optional[str]` | |
+| `freeze` | `bool` | |
 
 ### empty()
 
@@ -205,59 +240,77 @@ the consumer's env.
 | `endpoint` | `Optional[str]` | |
 | `metadata_store_type` | `Optional[str]` | |
 
+### finalize()
+
+```python
+def finalize(
+    message: Optional[str] = None,
+    timeout: float = 60.0,
+    publish_artifact: bool = False,
+    artifact_version: Optional[str] = None,
+) -> 'ROBlockVolume'
+```
+Detach, unmount and publish as an `ROBlockVolume` (see `RWVolume.finalize`).
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `Optional[str]` | |
+| `timeout` | `float` | |
+| `publish_artifact` | `bool` | |
+| `artifact_version` | `Optional[str]` | |
+
 ### fork()
 
 ```python
 def fork(
     name: str,
+    as_: Literal['rw', 'ro'] = 'rw',
     mount_path: Optional[str] = None,
     meta_dir: Optional[str] = None,
     timeout: float = 60.0,
-    artifact: Any = Ellipsis,
-) -> 'Volume'
+    artifact: object = Ellipsis,
+) -> Union['BlockVolume', 'ROBlockVolume']
 ```
-Snapshot the current metadata index and return a new ``Volume``
-that points at the snapshot.
-
-``artifact`` controls the branch's artifact-registry identity. The
-default (leave it unset) inherits ``self``'s: two published forks of a
-version become sibling branches under the same artifact name. Pass
-``artifact=None`` to detach the branch from the registry, or a
-name/``Metadata`` (same forms as `new`) to start publishing it
-as its own artifact. The last-published lineage pointer is inherited
-either way, so a rebranded branch's first published seal still carries
-a (cross-name) parent edge back to where it branched from.
-
-Both the original and the fork reference the same bucket. To keep
-their writes from clobbering each other, the fork's chunk / inode /
-session allocator counters are advanced by a random 56-bit offset
-before publication. Object keys embed those allocator IDs, so the two
-diverge into disjoint key spaces; without this, parent and fork would
-race to allocate the same IDs and one side's writes would silently
-overwrite the other's.
-
-Works whether or not ``self`` is currently mounted:
-
-* **Live** (mounted): flushes in-memory state (``SAVE`` for Redis,
-  WAL checkpoint for SQLite) and snapshots the live on-disk index,
-  bumps counters on the snapshot, and uploads it.
-* **Cold** (not mounted): downloads ``self.index`` to a tempdir,
-  bumps counters in place, and uploads. Stats are inherited from
-  ``self`` since no writes can have occurred.
-
-Note: cold-fork still avoids copying the data chunks (which dominate
-bytes), but it does pull the metadata file through the pod — the
-previous ``File.copy_to`` server-side path could not mutate counters
-and was unsafe for the chunk-key reasons above.
+Branch this block volume (see `RWVolume.fork`): a `BlockVolume`,
+or an `ROBlockVolume` snapshot with ``as_="ro"``.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
+| `as_` | `Literal['rw', 'ro']` | |
 | `mount_path` | `Optional[str]` | |
 | `meta_dir` | `Optional[str]` | |
 | `timeout` | `float` | |
-| `artifact` | `Any` | |
+| `artifact` | `object` | |
+
+### from_block()
+
+```python
+def from_block(
+    source: Volume,
+    name: Optional[str] = None,
+    workers: int = 8,
+    mount_path: Optional[str] = None,
+) -> 'RWVolume'
+```
+A new regular volume holding a copy of a block volume's files --
+the reverse of `BlockVolume.from_volume`, with the same copy
+semantics. ext4's ``lost+found`` is not copied.
+
+A block source that is mounted by this task is read from its live ext4
+mount (do not write to it meanwhile); otherwise a temporary fork of it
+is mounted for the copy and torn down after (a block image mounts
+read-write only). Returns the new volume mounted.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `Volume` | |
+| `name` | `Optional[str]` | |
+| `workers` | `int` | |
+| `mount_path` | `Optional[str]` | |
 
 ### from_locator()
 
@@ -286,6 +339,44 @@ active task context. Raises `VolumeError` if ``locator`` is empty.
 |-|-|-|
 | `locator` | `str` | |
 
+### from_volume()
+
+```python
+def from_volume(
+    source: Volume,
+    name: Optional[str] = None,
+    size: Optional[str] = None,
+    workers: int = 8,
+    mount_path: Optional[str] = None,
+) -> 'BlockVolume'
+```
+A new block volume holding a copy of a regular volume's files.
+
+There is no in-place conversion: a regular volume stores each file as
+its own JuiceFS file and a block volume stores one ext4 image, and
+neither layout's data can be reused by the other. This mounts both and
+copies the tree (modes, timestamps, symlinks and hard links, as
+``cp -a``; see ``workers`` for hard links across top-level entries).
+
+``size`` defaults to the source's recorded usage with headroom -- by
+bytes and by file count, since ext4 has one inode per 16 KiB of image
+(`block_size_for`).
+A source that is mounted by this task is read from its live mount (do
+not write to it meanwhile); otherwise it is mounted read-only for the
+copy and unmounted after.
+
+Returns the new volume mounted: keep working in it, `commit` it,
+or return it from the task (which publishes it).
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `Volume` | |
+| `name` | `Optional[str]` | |
+| `size` | `Optional[str]` | |
+| `workers` | `int` | |
+| `mount_path` | `Optional[str]` | |
+
 ### get_artifact_metadata()
 
 ```python
@@ -310,6 +401,23 @@ conversion. For that same reason stats attrs reflect this handle's
 last seal (or are absent on a fresh handle) rather than the final one;
 the registered value itself always carries the authoritative numbers.
 
+
+### grow()
+
+```python
+def grow(
+    size: str,
+)
+```
+Grow the image and its filesystem online, while mounted. Never shrinks.
+
+The new size is recorded on this handle, so later commits and forks
+carry it.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `size` | `str` | |
 
 ### migrate_metadata_store_type()
 
@@ -507,44 +615,25 @@ any resume-from-checkpoint policy at the usage layer.
 def new(
     name: Optional[str] = None,
     bucket: Optional[str] = None,
+    size: str,
     storage: Optional[StorageBackend] = None,
     region: Optional[str] = None,
     endpoint: Optional[str] = None,
     metadata_store_type: Optional[str] = None,
     artifact: Union[bool, str, 'ArtifactMetadata', 'VolumeArtifact', None] = None,
-) -> 'RWVolume'
+) -> 'BlockVolume'
 ```
-PRD §Lifecycle: create a fresh empty `RWVolume`.
+Declare a new, empty block volume of ``size`` (e.g. ``"64G"``, binary units).
 
-Equivalent in mechanics to `empty`, but:
-
-* ``name`` is optional (auto-generated when omitted, matching the
-  PRD's ``flyte.Volume.new(name=None)`` signature).
-* Returns the strictly-typed `RWVolume` rather than the
-  generic `Volume`, so mypy / pyright can enforce a
-  task's RO/RW contract at the signature boundary.
-
-Prefer `new` in new code; `empty` is retained for
-existing callers that already declare ``-> Volume``.
-
-Creating the handle does no I/O; the first `mount` formats the
-namespace and needs a FUSE-capable image + pod (``fuse3`` and
-``allow_fuse()`` — see `mount`).
-
-``artifact`` declares the volume's artifact-registry identity (see
-`VolumeArtifact` for what identity does and doesn't control):
-
-* ``True`` — publish under the volume's own ``name``;
-* a string — publish under that artifact name;
-* a ``flyte.artifacts.Metadata`` (or `VolumeArtifact`) — full
-  identity: name, description, attrs;
-* ``None`` (default) — no standing identity.
+The image is created sparse on the first `mount` — only what
+ext4 writes is ever stored or uploaded.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `Optional[str]` | |
 | `bucket` | `Optional[str]` | |
+| `size` | `str` | |
 | `storage` | `Optional[StorageBackend]` | |
 | `region` | `Optional[str]` | |
 | `endpoint` | `Optional[str]` | |
