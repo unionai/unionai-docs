@@ -31,7 +31,7 @@ The plugin provides two task types, served by one connector.
 | Task type | What is submitted | Typed I/O | Caching | Multi-node |
 | --------- | ----------------- | --------- | ------- | ---------- |
 | `slurm` | The task's own container image and the Flyte entrypoint, via Pyxis | Yes | Yes | No |
-| `slurm_script` | A user-supplied `sbatch` script, unchanged | No — phase, exit code and logs | No | Yes |
+| `slurm_script` | A user-supplied `sbatch` script, unchanged | `File` and `Dir`, declared | Yes | Yes |
 
 Prefer `slurm` for anything that can be containerized and runs as a single process. Reach for `slurm_script` when a script cannot be converted, or when you need gang-scheduled multi-node execution.
 
@@ -433,28 +433,42 @@ returned directly, since inline inputs and outputs are capped by `max_inline_io_
 
 ### Caching
 
-Both task types cache, and both invalidate on a change to the code that produced the
-result — but they compute that differently.
+**Both task types cache**, with `cache="auto"` on the task as anywhere else in Flyte:
 
-| | What the cache version is derived from |
+```python
+train = SlurmScriptTask(name="train", script=SCRIPT, outputs={"model": File}, cache="auto")
+```
+
+A cache hit restores the declared outputs and never submits the job — the point of caching
+a Slurm task, where a miss can mean hours in a queue.
+
+What differs is how the version is computed. `cache="auto"` hashes the task *function*, and
+a script task has no function: the default policy would return the hash of the empty string,
+one constant shared by every script task in existence. An edited script would keep hitting
+its old entry, and two unrelated script tasks would share results. So the plugin computes
+the version itself, over the things that determine what the job produces:
+
+| Change | Cache |
 | --- | --- |
-| `slurm` | The task function's source, as for any Python task |
-| `slurm_script` | The script body, plus the configuration that shapes execution |
+| The script body | **Invalidated** |
+| A declared output added, removed, or retyped | **Invalidated** |
+| Scheduling config — `partition`, `nodes`, `time_limit`, `gres`, `sbatch_options`, … | **Invalidated** |
+| `host`, `port`, `username`, `ssh_private_key`, `known_hosts` | Reused |
+| `output_upload` | Reused |
 
-`cache="auto"` normally hashes the task function. A script task has no function, so the
-default policy would return the hash of the empty string — one constant shared by every
-script task, meaning an edited script would keep hitting its old entry. The plugin
-substitutes a version over the script instead, so editing the script invalidates the cache
-as you would expect.
+The reused rows are the deliberate part. Moving the cluster to a new login node, rotating
+the SSH secret, or switching who uploads the bytes does not change what the job computes, so
+discarding good results over it would be wrong — the output lands at the same URI either
+way.
 
-Connection details are deliberately excluded from that version: moving the cluster to a new
-login node, or rotating the SSH secret, does not change what the job computes and should
-not discard valid results. An explicit `Cache(behavior="override", ...)` is left untouched.
+An explicit `Cache(behavior="override", version_override=...)` is left untouched — the
+plugin only substitutes a version when the behavior is `"auto"`, so a pinned version is
+never second-guessed. `cache="disable"` turns it off entirely.
 
-> [!NOTE] Caching a script task needs declared outputs to be useful
-> A cache hit restores outputs and skips the job. With no outputs declared there is nothing
-> to restore, so a hit simply skips the work — rarely what you want from a script whose
-> value is its side effects.
+> [!NOTE] A script task with no declared outputs caches, but pointlessly
+> A hit restores outputs and skips the job. With nothing declared there is nothing to
+> restore, so a hit just skips the work — rarely what you want from a script whose value is
+> its side effects. Declare outputs, or set `cache="disable"` and be explicit.
 
 ## Job state mapping
 
