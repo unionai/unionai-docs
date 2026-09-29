@@ -13,7 +13,24 @@ variants: -flyte +union
 >
 > Triggers on factories require `flyteplugins-union` 0.15.0 or later.
 
-`materialize` builds what you ask for, when you ask. A trigger asks for you: when a source gets a new version, or on a schedule. Declare triggers with `factory.on(event, *targets)` and pass them to the factory:
+A factory can materialize itself. A trigger starts a materialization when a source gets a new version, or on a schedule. Add triggers with `factory.on` and pass them to the factory:
+
+```python
+sensors = factory.Factory(
+    "sensors",
+    daily,
+    triggers=[
+        factory.on(readings),                        # each new version of the readings source
+        factory.on(flyte.Cron("0 1 * * *"), daily),  # every night at 01:00
+    ],
+)
+```
+
+Each trigger starts an ordinary materialization, and a partition that is already up to date is a cache hit. The rest of this page covers the details: which partitions a source event or a schedule materializes, filters, lags and timezones, names, and limits.
+
+## Declare triggers
+
+`factory.on(event, *targets)` takes a source handle, a `flyte.Cron`, or a `flyte.FixedRate`, and optionally the artifacts to materialize. Every form, on one graph:
 
 ```python
 import flyte

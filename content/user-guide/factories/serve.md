@@ -13,7 +13,20 @@ variants: -flyte +union
 >
 > Serving from a factory requires `flyteplugins-union` 0.15.0 or later.
 
-A factory can end in a running [app](../apps/_index) instead of an artifact. The factory builds the data and the model, checks them, and then deploys the app with the exact model version it built. One `materialize` does all of it.
+A factory can end in a running [app](../apps/_index). Its target is then an **endpoint** rather than an artifact: materializing it builds and checks the model, then deploys the app serving that exact version. Add one with `factory.serve`:
+
+```python
+approved = factory.build("beans_approved", kind="model").using(gate, model=model, report=metrics)
+api = factory.serve("beans-api").using(serving, model=approved)  # serving is an AppEnvironment
+
+beans = factory.Factory("beans", api)
+```
+
+```bash
+flyte factory materialize beans beans-api
+```
+
+The rest of this page covers the details: binding app parameters, what deploy and materialize do, gates and approvals, partitioned endpoints and rollback, and sharded models.
 
 ## Serve a model
 
