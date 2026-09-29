@@ -44,6 +44,8 @@ flyte factory deploy analytics.py
 {{< /tab >}}
 {{< /tabs >}}
 
+If the factory is given [task objects](./declare-a-factory#tasks-that-ship-with-the-factory), `flyte factory deploy` deploys their environments too, and `flyte deploy` isn't needed.
+
 `flyte factory deploy` checks every build against its deployed task, including argument names, required parameters, partition mappings, and the number of outputs. It checks every source against the registry, then registers the factory as a task of type `factory`. Mistakes fail here, with a message per build, instead of halfway through a backfill. Add `--dry-run` (or `analytics.deploy(dryrun=True)`) to validate without registering.
 
 ## One partition
@@ -189,6 +191,7 @@ flyte factory materialize analytics daily_report --partition date=2026-08-01..20
 | `concurrency=50` | `--concurrency 50` | Limit how many partitions build at once |
 | `queue="gpu"` | `--queue gpu` | Run the materialization and every build on this queue |
 | `downstream=True` | `--downstream` | Also refresh downstream partitions that become stale |
+| `versions={"events": "<version>"}` | `--version events=<version>` | Read that version of an artifact instead of building it, and skip what only it needed. This is how you [roll an app back](./serve#one-app-one-partition) |
 | `run.wait()` | `--wait` | Wait for the run to finish. The CLI also prints the plan with results |
 
 ## What gets published

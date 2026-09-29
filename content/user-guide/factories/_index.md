@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE] Preview feature
 > Factories are in preview. We are actively working with customers to improve them, so if you want changes or improvements, talk to the Union team.
 >
-> Factories require `flyteplugins-union` 0.12.0 or later and flyte 2.10.0 or later: `pip install "flyteplugins-union>=0.12.0"`.
+> Factories require `flyteplugins-union` 0.12.0 or later and flyte 2.10.0 or later: `pip install "flyteplugins-union>=0.12.0"`. Ending in an app and triggers require 0.15.0 or later.
 
 ## Why factories
 
@@ -69,6 +69,8 @@ It is made of three things:
 * **Builds.** One task call that makes one or more artifacts from other artifacts and constants. The tasks are ordinary deployed tasks. They take plain inputs and return plain outputs, and they don't know the factory exists.
 * **Materializations.** A request to make one artifact for a partition or a range. A materialization is a single run: every partition that needs building becomes a child action, and a partition whose inputs and code haven't changed is a cache hit.
 
+A factory can also end in a running app that serves what it built, and it can materialize itself when a source gets a new version or on a schedule.
+
 A factory is like a Makefile for data. A source is a file with no rule, a build is a rule, and materializing is `make <target>`. "Is it up to date?" is answered by the task cache.
 
 ## How factories connect the platform
@@ -79,11 +81,11 @@ Everything a factory produces is an ordinary, partitioned artifact version, publ
 |---|---|---|
 | [Tasks](../tasks/_index) | The work | Each build is a task you already have, owned by whichever team wrote it |
 | [Artifacts](../artifacts/_index) | Named, versioned, partitioned data | The nodes of the graph, and what you ask for |
-| [Triggers](../triggers/_index) | Push: react when new data lands | Downstream `OnArtifact` triggers fire on the versions a factory publishes |
-| [Apps](../apps/_index) | Serve models and data | Mount the artifacts a factory keeps up to date |
+| [Triggers](../triggers/_index) | Push: react when new data lands | A factory [triggers itself](./triggers) when a source changes or on a schedule, and downstream `OnArtifact` triggers fire on the versions it publishes |
+| [Apps](../apps/_index) | Serve models and data | A factory can [end in an app](./serve) and deploy it with the exact version it built |
 | [Lineage](../artifacts/lineage) | Where data came from | Every version points at the action that built it |
 
-Triggers push work forward when data arrives. Factories pull: they make sure the data you need exists for the partitions you ask for.
+Triggers push work forward when data arrives. Factories pull: they make sure the data you need exists for the partitions you ask for. A trigger on a factory combines the two: new data arrives, and the factory builds what depends on it.
 
 ## When to use one
 
@@ -97,6 +99,14 @@ Describe how each artifact is made with sources and builds, map partitions betwe
 
 {{< link-card target="materialize" icon="play-circle" title="Materialize and backfill" >}}
 Deploy a factory, then build one partition or a whole range, preview the plan, rebuild after a code change, and resume a failed backfill.
+{{< /link-card >}}
+
+{{< link-card target="serve" icon="rocket-takeoff" title="End in an app" >}}
+Deploy an app with the exact model version a factory built, after checks and a person's approval, and roll it back by pinning a version.
+{{< /link-card >}}
+
+{{< link-card target="triggers" icon="lightning-charge" title="Trigger a factory" >}}
+Materialize automatically when a source gets a new version or on a schedule.
 {{< /link-card >}}
 
 {{< /grid >}}
