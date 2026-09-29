@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,6 +28,7 @@ unknown error.
 | [`ConditionNotFoundError`](../flyte.errors/conditionnotfounderror) | This error is raised when the user tries to access a condition that does not exist. |
 | [`ConditionTimedoutError`](../flyte.errors/conditiontimedouterror) | This error is raised when a condition is not signaled within its specified timeout. |
 | [`CustomError`](../flyte.errors/customerror) | This error is raised when the user raises a custom error. |
+| [`DeadlineExceededError`](../flyte.errors/deadlineexceedederror) | This error is raised when a task does not finish within `flyte.Timeout.deadline`, across all attempts. |
 | [`DeploymentError`](../flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`GPUFaultError`](../flyte.errors/gpufaulterror) | This error is raised when the backend attributed the task failure to a GPU or NVSwitch fault that the GPU health daemon observed on the node, such as an Xid 31 (a GPU memory page fault) or an Xid 79 (the GPU fell off the bus). |
 | [`GPUFaultSystemError`](../flyte.errors/gpufaultsystemerror) | This error is raised when the GPU fault the backend attributed the failure to condemned the device or the node, for example an uncorrectable ECC error or a GPU that fell off the bus. |
@@ -39,6 +40,8 @@ unknown error.
 | [`InvalidImageNameError`](../flyte.errors/invalidimagenameerror) | This error is raised when the image name is invalid. |
 | [`InvalidPackageError`](../flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`LogsNotYetAvailableError`](../flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
+| [`MaxQueuedTimeExceededError`](../flyte.errors/maxqueuedtimeexceedederror) | This error is raised when a task waits longer than `flyte.Timeout.max_queued_time` before it starts running, e.g. because no node can satisfy its resource request. |
+| [`MaxRuntimeExceededError`](../flyte.errors/maxruntimeexceedederror) | This error is raised when a task runs for longer than `flyte.Timeout.max_runtime`. |
 | [`ModuleLoadError`](../flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a syntax error. |
 | [`NonRecoverableError`](../flyte.errors/nonrecoverableerror) | Raised when an error is encountered that is not recoverable. |
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
@@ -58,7 +61,7 @@ unknown error.
 | [`SlowDownError`](../flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`SyncTaskCallInAsyncContextError`](../flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async task. |
 | [`TaskInterruptedError`](../flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
-| [`TaskTimeoutError`](../flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`TaskTimeoutError`](../flyte.errors/tasktimeouterror) | This error is raised when a task exceeds one of its `flyte.Timeout` bounds. |
 | [`TraceDoesNotAllowNestedTasksError`](../flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |
 | [`UnionRpcError`](../flyte.errors/unionrpcerror) | This error is raised when communication with the Union server fails. |
 

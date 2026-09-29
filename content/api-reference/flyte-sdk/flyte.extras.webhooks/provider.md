@@ -2,7 +2,7 @@
 title: Provider
 description: "Everything core needs to accept one product's webhooks."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

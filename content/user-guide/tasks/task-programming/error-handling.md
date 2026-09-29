@@ -250,7 +250,7 @@ their clauses must come before the generic `RuntimeUserError` clause.
 A task (or a script) can also launch a whole *run* with `flyte.run` rather than calling a task as a sub-action,
 for example to compose several independent runs into a larger pipeline. A sub-action failure raises in the
 parent automatically. A run you launched doesn't, because `flyte.run` returns a `flyte.remote.Run` handle
-immediately. Wait on the handle, then call `raise_for_status()`:
+immediately. Wait on the handle, then call `flyte.remote.Run.raise_for_status()`:
 
 ```python
 run = await flyte.run.aio(train, epochs=3)

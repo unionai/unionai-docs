@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -114,6 +114,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.ConditionNotFoundError`](flyte.errors/conditionnotfounderror) | This error is raised when the user tries to access a condition that does not exist. |
 | [`flyte.errors.ConditionTimedoutError`](flyte.errors/conditiontimedouterror) | This error is raised when a condition is not signaled within its specified timeout. |
 | [`flyte.errors.CustomError`](flyte.errors/customerror) | This error is raised when the user raises a custom error. |
+| [`flyte.errors.DeadlineExceededError`](flyte.errors/deadlineexceedederror) | This error is raised when a task does not finish within `flyte.Timeout.deadline`, across all attempts. |
 | [`flyte.errors.DeploymentError`](flyte.errors/deploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`flyte.errors.GPUFaultError`](flyte.errors/gpufaulterror) | This error is raised when the backend attributed the task failure to a GPU or NVSwitch fault that the GPU health daemon observed on the node, such as an Xid 31 (a GPU memory page fault) or an Xid 79 (the GPU fell off the bus). |
 | [`flyte.errors.GPUFaultSystemError`](flyte.errors/gpufaultsystemerror) | This error is raised when the GPU fault the backend attributed the failure to condemned the device or the node, for example an uncorrectable ECC error or a GPU that fell off the bus. |
@@ -125,6 +126,8 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.InvalidImageNameError`](flyte.errors/invalidimagenameerror) | This error is raised when the image name is invalid. |
 | [`flyte.errors.InvalidPackageError`](flyte.errors/invalidpackageerror) | Raised when an invalid system package is detected during image build. |
 | [`flyte.errors.LogsNotYetAvailableError`](flyte.errors/logsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
+| [`flyte.errors.MaxQueuedTimeExceededError`](flyte.errors/maxqueuedtimeexceedederror) | This error is raised when a task waits longer than `flyte.Timeout.max_queued_time` before it starts running, e.g. because no node can satisfy its resource request. |
+| [`flyte.errors.MaxRuntimeExceededError`](flyte.errors/maxruntimeexceedederror) | This error is raised when a task runs for longer than `flyte.Timeout.max_runtime`. |
 | [`flyte.errors.ModuleLoadError`](flyte.errors/moduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a syntax error. |
 | [`flyte.errors.NonRecoverableError`](flyte.errors/nonrecoverableerror) | Raised when an error is encountered that is not recoverable. |
 | [`flyte.errors.NotInTaskContextError`](flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
@@ -144,7 +147,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.SlowDownError`](flyte.errors/slowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.SyncTaskCallInAsyncContextError`](flyte.errors/synctaskcallinasynccontexterror) | This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async task. |
 | [`flyte.errors.TaskInterruptedError`](flyte.errors/taskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
-| [`flyte.errors.TaskTimeoutError`](flyte.errors/tasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`flyte.errors.TaskTimeoutError`](flyte.errors/tasktimeouterror) | This error is raised when a task exceeds one of its `flyte.Timeout` bounds. |
 | [`flyte.errors.TraceDoesNotAllowNestedTasksError`](flyte.errors/tracedoesnotallownestedtaskserror) | This error is raised when the user tries to use a task from within a trace. |
 | [`flyte.errors.UnionRpcError`](flyte.errors/unionrpcerror) | This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
