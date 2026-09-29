@@ -121,18 +121,9 @@ which is silently wrong for any script that logs, and a structured value has no
 representation a shell script can write. A native `slurm` task has the full range — see
 [Output types](#output-types) for the comparison.
 
-Both directions are checked, at the earliest point each can be:
-
 > [!WARNING] A declared output the script never wrote fails the task
 > Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
 > surfaces much later as an unexplained read error.
-
-> [!WARNING] A `$FLYTE_OUTPUT_*` the task never declared is refused when the task is defined
-> The variable is only exported for a declared output, so otherwise the job fails on the
-> cluster with `unbound variable` — or, in a script without `set -u`, writes to the empty
-> path and can still exit 0 having produced nothing. Only `$NAME` and `${NAME}` expansions
-> count: a mention in a comment is not a reference, and a name assembled at run time is left
-> alone.
 
 #### Write to the destination the script is given
 
@@ -143,6 +134,23 @@ ordinary local path, so writing the output is a `cp`:
 python train.py --epochs "$FLYTE_INPUT_EPOCHS" --out ./model.pt
 cp ./model.pt "$FLYTE_OUTPUT_MODEL"
 ```
+
+**The two sides must match: every `$FLYTE_OUTPUT_*` the script writes to has to be declared
+in `outputs`, and every declared output has to be written.** Neither half is optional, and
+both are checked — a missing declaration when the task is defined, a missing write when the
+job finishes:
+
+| The script has | `outputs` has | What happens |
+| --- | --- | --- |
+| `$FLYTE_OUTPUT_MODEL` | `{"model": File}` | The output is recorded and a downstream task can read it |
+| `$FLYTE_OUTPUT_MODEL` | nothing, or another name | `ValueError` when the task is defined |
+| nothing | `{"model": File}` | The task fails when the job finishes, even on exit 0 |
+
+The variable is only exported for a declared output, so without the first check the job
+would fail on the cluster with `FLYTE_OUTPUT_MODEL: unbound variable` — or, in a script
+without `set -u`, write to the empty path and still exit 0 having produced nothing. Only
+`$NAME` and `${NAME}` expansions are checked: a mention in a comment is not a reference, and
+a name assembled at run time is left alone.
 
 Once the job succeeds, the connector confirms every destination exists and records it as the
 declared `File` or `Dir`, ready for the next task to read.
