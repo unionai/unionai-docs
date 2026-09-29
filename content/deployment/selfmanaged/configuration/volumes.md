@@ -115,6 +115,57 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 > descriptors held by running pods survive a restart, and the state journal plus
 > client re-registration resume the rest.
 
+### Enable block volumes
+
+[Block volumes](../../../user-guide/tasks/task-programming/block-volumes) store
+a Volume as one ext4 image that the broker attaches as a loop device and mounts
+for the pod. Small-file workloads such as build caches then run close to
+local-disk speed. The task pod stays unprivileged, but attaching the image
+makes the **node's kernel parse a file system whose bytes the task controls**,
+so the broker only allows it for pods matching `uvolMountBroker.block.allow`.
+
+When `block.allow` is unset, the default depends on `low_privilege`:
+
+- `low_privilege: false`: every pod may use block volumes
+  (`[{namespace: "*"}]`).
+- `low_privilege: true` (the chart default): block volumes are disabled.
+
+On a cluster that runs untrusted workloads, set an explicit list to allow only
+specific trusted ones:
+
+```yaml
+uvolMountBroker:
+  enabled: true
+  block:
+    allow:
+      - namespace: builders                        # every pod in this namespace
+      - namespace: ci
+        serviceAccount: buildkit                   # only this service account in "ci"
+```
+
+A pod may use block volumes when **any** rule matches it, and a rule matches
+when **every** field it sets matches the pod. A rule that sets only
+`serviceAccount` matches that service account in every namespace. Kubelet
+supplies the pod's namespace and service account to the broker, so a task
+cannot forge them. Fields are glob patterns: `team-*` matches a prefix, and
+`[{namespace: "*"}]` allows every pod on the cluster.
+
+> [!WARNING]
+> Allowing every pod, whether explicitly or through the `low_privilege: false`
+> default, lets any task that can run on the cluster present a crafted file
+> system image to the node kernel. On a cluster shared by tenants who don't
+> trust each other, set an explicit list, or `allow: []` to disable block
+> volumes.
+
+A rule that sets neither field is rejected when the broker starts, so a typo
+cannot silently widen the opt-in. A pod that isn't allowed gets a mount error
+naming the reason.
+
+| Key | Default | Description |
+|---|---|---|
+| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `low_privilege` is false, none when it is true. `[]` disables block volumes. |
+| `uvolMountBroker.block.freezeMax` | `60s` | Thaw a block volume that a client froze for a commit after this long, so a client that dies mid-commit cannot stall the volume's writers. |
+
 ## The FUSE device plugin (legacy path)
 
 Use this only on clusters that cannot run the mount broker. Task pods take the
