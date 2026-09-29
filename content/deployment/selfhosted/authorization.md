@@ -187,7 +187,9 @@ The `externalIdentityClaim` is typically set via the `INTERNAL_SUBJECT_ID` globa
 5. **Assign roles** — use the {{< key product_name >}} console to assign roles to additional users
 
 > [!NOTE]
-> If you switch from Noop to Union and internal services start failing with permission errors, check the authorizer logs for denied subjects. The most common cause is `clientId` in `serviceAccounts` not matching the actual `sub` claim value from your IdP.
+> If you switch from Noop to Union and internal services start failing with permission errors, check the authorizer logs for denied subjects. The most common causes are:
+> 1. `clientId` in `serviceAccounts` not matching the actual `sub` claim value from your IdP.
+> 2. Worker application tokens omitting an `identitytype` claim, causing them to be normalized to `user` (viewer role) instead of `app` (admin role). Map worker Client IDs in `identityTypeClaimsForApps.client_id` (see [Authentication]({{< relref "authentication#identity-type-claim-requirements" >}})).
 
 ### External
 
@@ -263,7 +265,7 @@ The `identity` field contains the caller's subject (the JWT `sub` claim). The pr
 | Scenario | Proto type | When |
 |----------|-----------|------|
 | IdP without `identitytype` custom claim | `external_identity` | Default for selfhosted with non-Okta IdPs (Apple IdMS, Entra ID, etc.) |
-| IdP with `identitytype: "user"` | `user_id` | When Okta or equivalent configures the custom claim |
+| IdP with `identitytype: "user"` | `user_id` | When Okta or equivalent (such as PingOne attribute mapping) configures the custom claim |
 | IdP with `identitytype: "app"` | `application_id` | OAuth app credentials with the custom claim |
 
 > [!NOTE]

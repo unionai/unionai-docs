@@ -88,6 +88,20 @@ Register an **App Registration** in Microsoft Entra ID:
 > - **Service-to-service** (client_credentials): `api://<app-name>/.default`
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "PingOne" >}}
+{{< markdown >}}
+Use your PingOne environment's built-in OAuth/OIDC authorization server:
+
+- **Issuer URL**: `https://auth.pingone.com/<environment-id>/as`
+- **Metadata URL**: `.well-known/openid-configuration` (standard OIDC discovery)
+- **Audience**: Worker application (`client_credentials`) tokens carry an audience of `https://api.pingone.com`. Add `https://api.pingone.com` to `allowedAudience` in the FlyteAdmin auth configuration alongside your ingress domain.
+- **Scopes**: Standard OIDC scopes (`openid`, `profile`, `email`, `offline_access`). No custom scopes are required.
+- **Claims**:
+  - `sub` — PingOne populates user UUID in `sub` for user tokens. Client credentials (worker) tokens omit `sub` by default and place the client identifier in `client_id`. Configure `subjectClaimNames: ["sub", "client_id"]` and `subjectClaimNamesForApps: ["client_id", "sub"]`.
+  - `identitytype` — configure via PingOne application attribute mapping on user-facing apps (`identitytype` -> `"user"`).
+  - `preferred_username` — configure via PingOne application attribute mapping (`preferred_username` -> `${user.username}` or `${user.email}`).
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Generic OIDC" >}}
 {{< markdown >}}
 For other OIDC providers (Keycloak, Authentik, Auth0, etc.):
@@ -117,6 +131,7 @@ Your IdP must emit a claim that maps to the `identitytype` concept, with values 
 |----------|-----------|------------|-----------|---------------|
 | Okta | `identitytype` | `"user"` | `"app"` | Custom access token claim on authorization server |
 | Entra ID | `idtyp` | (not emitted) | `"app"` | Enable via optional claims in app manifest. Map with `identityTypeClaimsForApps: {idtyp: ["app"]}` |
+| PingOne | `identitytype` / `client_id` | `"user"` | `"app"` | Map `identitytype` on user-facing apps. Configure worker client IDs in `identityTypeClaimsForApps.client_id` |
 | Generic | varies | varies | varies | Configure `identityTypeClaimsForApps` to map your claim name and values |
 
 > [!WARNING]
@@ -157,6 +172,7 @@ The platform tries each claim in order and uses the first non-empty value as the
 > **Provider-specific `sub` values:**
 > - **Okta**: `sub` equals the Client ID for client_credentials tokens and the user's Okta ID for user tokens.
 > - **Entra ID**: `sub` equals the **Service Principal Object ID** for client_credentials tokens (not the Client ID). Find this in Entra ID > Enterprise Applications > your app > Object ID.
+> - **PingOne**: `sub` contains the user's UUID for user tokens. Client credentials (worker) tokens omit `sub` by default and place the Client ID in `client_id`. Use `subjectClaimNames: ["sub", "client_id"]` and `subjectClaimNamesForApps: ["client_id", "sub"]`.
 > - When configuring trusted identities for internal services (e.g., `INTERNAL_SUBJECT_ID`), use the value that your IdP places in the `sub` claim — not necessarily the Client ID.
 
 ## Step 1: Create OAuth2 applications
@@ -345,6 +361,79 @@ global:
 
 > [!NOTE]
 > `INTERNAL_SUBJECT_ID` defaults to `INTERNAL_CLIENT_ID` for backward compatibility. For Entra ID, where the token `sub` claim is the Service Principal Object ID (not the Client ID), set `INTERNAL_SUBJECT_ID` to the SP Object ID. Find this in **Entra ID > Enterprise Applications > your app > Object ID**.
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "PingOne" >}}
+{{< markdown >}}
+```yaml
+flyte:
+  configmap:
+    adminServer:
+      server:
+        security:
+          useAuth: true
+      auth:
+        appAuth:
+          authServerType: External
+          externalAuthServer:
+            baseUrl: "https://auth.pingone.com/<environment-id>/as"
+            metadataUrl: ".well-known/openid-configuration"
+            allowedAudience:
+              - "https://<your-domain>"
+              - "https://api.pingone.com"       # PingOne worker app token audience
+            subjectClaimNames:
+              - sub
+              - client_id
+            subjectClaimNamesForApps:
+              - client_id
+              - sub
+          identityTypeClaimsForApps:
+            identitytype:
+              - app
+            client_id:
+              - "<service-to-service-client-id>"    # App 3
+              - "<operator-client-id>"              # App 4
+              - "<eager-client-id>"                 # App 5
+              - "<cicd-client-id>"                  # App 6 (optional)
+          thirdPartyConfig:
+            flyteClient:
+              clientId: "<cli-client-id>"           # App 2
+              redirectUri: "http://localhost:53593/callback"
+              scopes:
+                - openid
+                - profile
+                - email
+                - offline_access
+        userAuth:
+          openId:
+            baseUrl: "https://auth.pingone.com/<environment-id>/as"
+            clientId: "<browser-login-client-id>"   # App 1
+            scopes:
+              - openid
+              - profile
+              - email
+              - offline_access
+          cookieSetting:
+            sameSitePolicy: LaxMode
+            domain: "<your-domain>"
+```
+
+Set globals:
+```yaml
+global:
+  INTERNAL_CLIENT_ID: "<service-to-service-client-id>"
+  AUTH_TOKEN_URL: "https://auth.pingone.com/<environment-id>/as/token"
+  OIDC_S2S_SCOPE: ""   # PingOne worker apps do not require custom scopes
+```
+
+> [!NOTE]
+> PingOne worker tokens (Apps 3–5) carry an audience of `https://api.pingone.com`. Both `https://<your-domain>` and `https://api.pingone.com` must be included in `allowedAudience` so token validation succeeds.
+
+> [!IMPORTANT]
+> PingOne worker application (`client_credentials`) tokens omit custom attribute mappings. To ensure worker applications (Apps 3–5) are correctly classified as `app` (rather than defaulting to `user` and failing RBAC authorization), configure `identityTypeClaimsForApps.client_id` with your worker application Client IDs as shown above.
+
+> [!WARNING]
+> In PingOne, each worker application (Apps 3–5) must be granted an environment role (such as **Identity Data Read Only**) under **Applications > [Your App] > Roles > Grant Roles**. Without this role assignment, PingOne returns `403 Access Denied` on `client_credentials` grant requests.
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Generic OIDC" >}}
@@ -655,3 +744,11 @@ Client_credentials flows in Entra ID require the `/.default` scope. Ensure `OIDC
 ### Subject not found in token
 
 If flyteadmin logs show `subject claim not found`, your IdP's client_credentials tokens may not include a `sub` claim. Configure `subjectClaimNames` in the auth block to specify a fallback chain (e.g., `["sub", "client_id"]`).
+
+### PingOne: `403 Access Denied` on worker token requests
+
+Worker applications in PingOne require an environment role assignment before the token endpoint permits `client_credentials` grants. In the PingOne Admin Console, navigate to **Applications > [Your App] > Roles > Grant Roles** and assign **Identity Data Read Only** (or equivalent environment role).
+
+### PingOne: Token audience does not match
+
+PingOne's authorization server emits `aud: ["https://api.pingone.com"]` on access tokens issued to worker applications. Ensure `https://api.pingone.com` is added to `allowedAudience` in your control plane Helm values alongside your ingress domain `https://<your-domain>`.
