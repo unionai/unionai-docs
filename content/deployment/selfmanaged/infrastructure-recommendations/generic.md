@@ -10,7 +10,8 @@ variants: -flyte +union
 
 This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
-> [!NOTE] If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./aws), [GCP](./gcp), [Azure](./azure), [OCI](./oci).
+> [!NOTE]
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./aws), [GCP](./gcp), [Azure](./azure), [OCI](./oci).
 
 ## Kubernetes cluster
 
@@ -100,7 +101,8 @@ For a basic private Docker Registry, you can start one with:
 docker run -d -p 5000:5000 --restart=always --name registry registry:2
 ```
 
-> [!NOTE] This runs an unauthenticated registry suitable for testing. For production, configure TLS and authentication. See the [Docker Registry documentation](https://docs.docker.com/registry/deploying/) for details.
+> [!NOTE]
+> This runs an unauthenticated registry suitable for testing. For production, configure TLS and authentication. See the [Docker Registry documentation](https://docs.docker.com/registry/deploying/) for details.
 
 Note the registry URL (e.g. `registry.example.com:5000/union`); you will configure it in your Helm values.
 
@@ -120,7 +122,8 @@ mc admin user add myminio union-service GENERATED_SECRET_KEY
 mc admin policy attach myminio readwrite --user union-service
 ```
 
-> [!NOTE] For production, create a scoped policy that limits access to only the Union buckets rather than using the built-in `readwrite` policy.
+> [!NOTE]
+> For production, create a scoped policy that limits access to only the Union buckets rather than using the built-in `readwrite` policy.
 
 ### Registry credentials
 

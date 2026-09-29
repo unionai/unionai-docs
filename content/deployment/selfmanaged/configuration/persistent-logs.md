@@ -12,7 +12,8 @@ Persistent logging is enabled by default. The data plane deploys [FluentBit](htt
 
 FluentBit runs under the `fluentbit-system` Kubernetes service account. This service account must have write access to the storage bucket so FluentBit can push logs. The sections below describe how to grant that access on each cloud provider.
 
-> [!NOTE] **Azure works differently.** On AKS, persisted logs come from Azure Log Analytics and
+> [!NOTE]
+> **Azure works differently.** On AKS, persisted logs come from Azure Log Analytics and
 > the chart ships with FluentBit disabled. See [Azure](#azure) below.
 
 ## AWS (IRSA)
@@ -190,7 +191,8 @@ fluentbit:
           key: shared_key
 ```
 
-> [!NOTE] The storage account key grants full access to the account. Rotate it on your normal
+> [!NOTE]
+> The storage account key grants full access to the account. Rotate it on your normal
 > schedule; after rotation, update the secret (`kubectl create secret ... --dry-run=client -o yaml
 > | kubectl apply -f -`) and restart the FluentBit DaemonSet.
 

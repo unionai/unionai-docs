@@ -39,7 +39,8 @@ eksctl create cluster \
   --managed
 ```
 
-> [!NOTE] The `--with-oidc` flag creates an IAM OIDC provider for the cluster, which is required for [IRSA](#iam) below.
+> [!NOTE]
+> The `--with-oidc` flag creates an IAM OIDC provider for the cluster, which is required for [IRSA](#iam) below.
 
 The following EKS add-ons are required and come pre-installed on managed clusters created with `eksctl`:
 
@@ -128,7 +129,8 @@ aws s3api create-bucket \
   --create-bucket-configuration LocationConstraint=${AWS_REGION}
 ```
 
-> [!NOTE] If your region is `us-east-1`, omit the `--create-bucket-configuration` flag.
+> [!NOTE]
+> If your region is `us-east-1`, omit the `--create-bucket-configuration` flag.
 
 ### CORS configuration
 
