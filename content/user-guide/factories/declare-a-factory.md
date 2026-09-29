@@ -71,6 +71,18 @@ Nothing runs here. `source` and `build` only declare.
 * **Handles form the graph.** `.using(...)` returns a handle for the artifact it makes. Passing that handle into another build is what connects them. There is no separate step for adding edges.
 * **`factory.Factory(name, *targets)`** includes every build reachable by walking back from the artifacts you list. You can materialize any artifact in it, not only the ones listed.
 
+### Tasks that ship with the factory
+
+`.using(...)` also takes a task object instead of a reference to a deployed task. `flyte factory deploy` then checks the arguments against the task's signature, deploys the task's environment, and pins the build to the version it deployed, so the factory and its tasks ship with one command:
+
+```python
+from analytics_tasks import clean, featurize, report
+
+events = factory.build("events").using(clean, raw=raw_events, min_quality=30)
+```
+
+Keep such tasks in a module that doesn't import the factory. A task's pod imports the module the task is defined in, and the factory plugin isn't installed in the task's image.
+
 To check the definition without registering anything, validate it and print the graph as Mermaid:
 
 {{< tabs "check-graph" >}}
@@ -148,8 +160,8 @@ The list must be as long as the return tuple, so deploy fails rather than guessi
 
 `factory.build(...)` also takes:
 
-* `kind`: the artifact kind, such as `"model"`, or a mapping of artifact name to kind for a multi-output build.
+* `kind`: the artifact kind, `"model"`, `"data"`, or `"generic"`, or a mapping of artifact name to kind for a multi-output build.
 * `runcontext`: settings for this build's task call. The supported keys are `queue`, `env_vars`, and `service_account`.
 * `description`: shown with the artifact.
 
-Next, [deploy and materialize it](./materialize).
+Next, [deploy and materialize it](./materialize). A factory can also [end in an app](./serve).
