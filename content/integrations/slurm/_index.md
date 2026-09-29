@@ -562,6 +562,44 @@ kubectl -n <namespace> logs deploy/flyteconnector | grep -A6 "Connector Metadata
 
 The SSH private key is a Flyte secret named by `ssh_private_key`, or is set cluster-wide as `FLYTE_SLURM_SSH_PRIVATE_KEY` on the `flyteconnector` deployment. Provide a `known_hosts` file for host-key verification; `skip_host_key_verification=True` exists for development only and logs a warning.
 
+### The connector's own object-storage access
+
+A script task whose outputs use the default `output_upload="connector"` makes the connector
+pod a **writer to the run's output prefix**. That is new: a connector otherwise only talks
+to its remote system, so the `flyteconnector` service account is not given the data plane's
+cloud identity the way `union-system`, `webhook` and `dataproxy` are. Without it the pod
+authenticates as the node's default identity and every upload fails after the job has
+already succeeded:
+
+```
+The operation lacked the necessary privileges to complete for path
+metadata/v2/<org>/<project>/<domain>/<run>/<action>/0/<output>:
+403 Forbidden ... Caller does not have storage.objects.create access
+```
+
+Annotate the service account with the identity that can write the metadata bucket — the
+same one in `global.BACKEND_IAM_ROLE_ARN`:
+
+```yaml
+flyteconnector:
+  serviceAccount:
+    annotations:
+      # GCP
+      iam.gke.io/gcp-service-account: union-system@<project>.iam.gserviceaccount.com
+      # AWS
+      # eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/<backend-role>
+```
+
+On GKE, add the matching workload-identity binding, or the annotation has no effect:
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding   union-system@<project>.iam.gserviceaccount.com   --role roles/iam.workloadIdentityUser   --member "serviceAccount:<project>.svc.id.goog[<namespace>/flyteconnector]"
+```
+
+Then restart the deployment so the pods pick up the new token. None of this is needed for
+native `slurm` tasks, or for script tasks using `output_upload="job"` — in both cases the
+job writes to object storage with the credentials it already has for reading its inputs.
+
 ### Network
 
 The connector must reach the login node on its SSH port. Restrict the login node's allowed source ranges to the connector's egress addresses, and verify from the pod that will actually connect rather than from your workstation:
