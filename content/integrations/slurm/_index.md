@@ -597,9 +597,14 @@ What the plugin does not do today, and what to do instead.
 
 ### Data and I/O
 
-- **`slurm_script` has no typed outputs.** It reports phase, exit code and logs only, so
-  downstream tasks cannot consume its results through Flyte. Coordinate through an agreed
-  path in object storage, which Flyte will not track.
+- **A script task's outputs are `File` and `Dir` only.** It cannot return a scalar, a
+  dataclass or a `DataFrame`, since an arbitrary script has no way to write Flyte's literal
+  format — see [Outputs from a script task](#outputs-from-a-script-task). Undeclared
+  results are invisible to Flyte, and coordinating through an agreed path leaves them
+  untracked.
+- **The connector will not move more than 100 MB on a job's behalf.** Raise
+  `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES`, or have the job upload its own outputs with
+  `output_upload="job"`. The refusal fires after the job has run, so its work is lost.
 - **Script inputs are limited to scalars and URIs.** `str`, `int`, `float` and `bool`
   become `FLYTE_INPUT_<NAME>`; `File` and `Dir` become their URI. Anything else fails at
   submission, because an environment variable cannot carry it.
