@@ -1,6 +1,6 @@
 ---
 title: Provision your AWS resources
-description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a self-serve cluster pool on AWS needs.
+description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that a cluster pool set up from AWS Marketplace needs.
 icon: amazon
 weight: 4
 variants: -flyte +union
@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Provision your AWS resources
 
-The self-serve setup installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
+Setup from Marketplace installs the data plane into your cluster for you, but the AWS resources it runs on must exist first. This page creates them with the AWS CLI and `eksctl`:
 
 - an EKS cluster in Auto Mode, which adds and removes nodes as the data plane needs them
 - one S3 bucket, the cluster pool's object store
@@ -28,7 +28,7 @@ At the end you have the values you enter when you [connect your cluster](./conne
 > Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](./connect-a-cluster).
 
 > [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page for self-serve setup only.
+> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for setup from Marketplace.
 
 ## Prerequisites
 

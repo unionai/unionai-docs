@@ -70,11 +70,11 @@ The example fans a small computation out over a list of inputs with `flyte.map` 
 
 Open the path printed in your terminal. Or, from your organization's home page, select **Projects**, open the **default** project, and select **Tracked Runs**. Tracked runs have their own section, separate from **Runs**, which shows runs that executed on a cluster.
 
-![The Tracked Runs page of the default project, listing the main run as succeeded](../../_static/images/deployment/self-serve/run-locally/tracked-runs.png)
+![The Tracked Runs page of the default project, listing the main run as succeeded](../../_static/images/deployment/marketplace/run-locally/tracked-runs.png)
 
 Select **main** to see the run itself:
 
-![The run page for main, showing the main action with its five fn child actions, the hello_env environment, and the run's input and output](../../_static/images/deployment/self-serve/run-locally/run-view.png)
+![The run page for main, showing the main action with its five fn child actions, the hello_env environment, and the run's input and output](../../_static/images/deployment/marketplace/run-locally/run-view.png)
 
 The run page shows:
 

@@ -47,7 +47,7 @@ A cluster pool groups clusters that share an S3 bucket, a secret store and an im
 
    Your first pool is always named `default`, so the **Pool name** field is already filled in.
 
-   ![The Create a cluster pool form on the AWS tab, with S3 bucket, Secrets Manager account ID and region, and image registry fields](../../_static/images/deployment/self-serve/connect-a-cluster/create-cluster-pool.png)
+   ![The Create a cluster pool form on the AWS tab, with S3 bucket, Secrets Manager account ID and region, and image registry fields](../../_static/images/deployment/marketplace/connect-a-cluster/create-cluster-pool.png)
 
 4. Select **Create cluster pool**.
 
@@ -63,7 +63,7 @@ When the pool is created, the dialog moves straight on to **Connect a cluster**,
 | **System IAM Role ARN** | The system IAM role ARN |
 | **Task IAM Role ARN** | The task IAM role ARN |
 
-![The Connect a cluster dialog with a cluster name, the default pool, and the system and task IAM role ARNs filled in](../../_static/images/deployment/self-serve/connect-a-cluster/connect-cluster.png)
+![The Connect a cluster dialog with a cluster name, the default pool, and the system and task IAM role ARNs filled in](../../_static/images/deployment/marketplace/connect-a-cluster/connect-cluster.png)
 
 Select **Connect cluster**. Union.ai registers the cluster and takes you to its page, where you install the agent. Registering does not put anything on your cluster by itself.
 
@@ -71,7 +71,7 @@ Select **Connect cluster**. Union.ai registers the cluster and takes you to its 
 
 The cluster's page, **Install Union on your AWS cluster**, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
 
-![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/self-serve/connect-a-cluster/install-union.png)
+![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/marketplace/connect-a-cluster/install-union.png)
 
 The command writes a `values.yaml` for your cluster, then installs the agent from it with Helm. In outline, with the generated values left out, it looks like this:
 
@@ -106,7 +106,7 @@ If you check progress with `kubectl`, list pods across all namespaces. The data 
 
 When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** next to its name:
 
-![The cluster page header, showing the docsy cluster on AWS with a green Healthy badge](../../_static/images/deployment/self-serve/connect-a-cluster/cluster-healthy.png)
+![The cluster page header, showing the docsy cluster on AWS with a green Healthy badge](../../_static/images/deployment/marketplace/connect-a-cluster/cluster-healthy.png)
 
 ## 5. Run a workload on the cluster
 
