@@ -263,7 +263,7 @@ The `identity` field contains the caller's subject (the JWT `sub` claim). The pr
 | Scenario | Proto type | When |
 |----------|-----------|------|
 | IdP without `identitytype` custom claim | `external_identity` | Default for selfhosted with non-Okta IdPs (Apple IdMS, Entra ID, etc.) |
-| IdP with `identitytype: "user"` | `user_id` | When Okta or equivalent configures the custom claim |
+| IdP with `identitytype: "user"` | `user_id` | When Okta or equivalent (such as PingOne attribute mapping) configures the custom claim |
 | IdP with `identitytype: "app"` | `application_id` | OAuth app credentials with the custom claim |
 
 > [!NOTE]

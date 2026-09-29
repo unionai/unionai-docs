@@ -55,6 +55,19 @@ Create a new confidential (service) application in your identity provider. This 
 > Without admin consent, client_credentials token requests will fail with an `AADSTS` error. This is the most common setup issue.
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "PingOne" >}}
+{{< markdown >}}
+1. In the PingOne Admin Console, navigate to **Applications > Applications > Add Application (+)**
+2. Select **Worker** (machine-to-machine) as the application type
+3. Name it descriptively (e.g., `union-cicd`)
+4. Save the application, then under the **Configuration** tab note the **Client ID** and generate a **Client Secret**
+5. Navigate to the application's **Roles** tab and click **Grant Roles**
+6. Assign an environment role such as **Identity Data Read Only** (required for PingOne to grant access tokens via `client_credentials`)
+
+> [!WARNING]
+> Without an environment role assignment, PingOne rejects `client_credentials` requests with `403 Access Denied`.
+{{< /markdown >}}
+{{< /tab >}}
 {{< tab "Generic OIDC" >}}
 {{< markdown >}}
 1. Create a new **confidential client** in your identity provider
@@ -199,6 +212,16 @@ curl -s -X POST "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token
   -d "client_id=<client-id>" \
   -d "client_secret=<client-secret>" \
   -d "scope=api://<app-name>/.default" | jq .access_token
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "PingOne" >}}
+{{< markdown >}}
+```shell
+curl -s -X POST "https://auth.pingone.com/<environment-id>/as/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -u "<client-id>:<client-secret>" \
+  -d "grant_type=client_credentials" | jq .access_token
 ```
 {{< /markdown >}}
 {{< /tab >}}
