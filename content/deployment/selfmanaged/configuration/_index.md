@@ -8,6 +8,6 @@ variants: -flyte +union
 
 # Advanced configurations
 
-This section covers the configuration of union features on your {{< key product_name >}} cluster.
+This section covers the configuration of union features on your Union.ai cluster.
 
 {{< subpage-cards >}}

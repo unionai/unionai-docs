@@ -2,7 +2,7 @@
 title: DataFrameTransformerEngine
 description: "Think of this transformer as a higher-level meta transformer that is used for all the dataframe types."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

@@ -8,23 +8,23 @@ variants: -flyte +union
 
 # Data plane setup on Azure
 
-To set up your data plane on Azure, you must allow {{< key product_name >}} to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
+To set up your data plane on Azure, you must allow Union.ai to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
 
 ## Selecting Azure tenant and subscription
 
 - Select the tenant ID for your organization. Refer to [Microsoft Entra ID service page](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) from the Azure portal.
-- We highly recommend creating a new subscription for {{< key product_name >}}-specific services. This helps isolate permissions, service quotas, and costs for {{< key product_name >}} managed Azure resources.
+- We highly recommend creating a new subscription for Union.ai-specific services. This helps isolate permissions, service quotas, and costs for Union.ai managed Azure resources.
   - Ensure the subscription is tied to an active billing account.
-- Provide the Tenant and Subscription ID to {{< key product_name >}}.
+- Provide the Tenant and Subscription ID to Union.ai.
 
 ## Create a Microsoft Entra application registration
 
-{{< key product_name >}} requires permissions to manage Azure and Microsoft Entra resources to create a dataplane. This step involves
-creating a {{< key product_name >}} specific App and granting it sufficient permission to manage the dataplane.
+Union.ai requires permissions to manage Azure and Microsoft Entra resources to create a dataplane. This step involves
+creating a Union.ai specific App and granting it sufficient permission to manage the dataplane.
 
-### Create a Microsoft Entra ID application for {{% key product_name %}} access
+### Create a Microsoft Entra ID application for Union.ai access
 
-{{< key product_name >}} manages Azure resources through a [Microsoft Entra ID Application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) via [Workload Identity Federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp).
+Union.ai manages Azure resources through a [Microsoft Entra ID Application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) via [Workload Identity Federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp).
 
 1. Navigate to the [Application Registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) page.
 2. Create a new registration.
@@ -35,7 +35,7 @@ creating a {{< key product_name >}} specific App and granting it sufficient perm
 - Contributor
 - Role Based Access Control Administrator
 
-6. Provide the Application Client ID to {{< key product_name >}}.
+6. Provide the Application Client ID to Union.ai.
 7. Go the application registration page for the app you created.
 8. Select "Certificates & secrets."
 9. Select the "Federated Credentials" tab, then select "Add credential", and choose "Other issuer".
@@ -44,19 +44,19 @@ creating a {{< key product_name >}} specific App and granting it sufficient perm
 12. "Name" is your choice, but we recommend `union-access`
 13. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
 
-### Create Microsoft Entra ID applications for {{% key product_name %}} cost allocation
+### Create Microsoft Entra ID applications for Union.ai cost allocation
 
-{{< key product_name >}} requires new roles and applications to support Union's cost allocation feature.
+Union.ai requires new roles and applications to support Union's cost allocation feature.
 This can be done by providing the `union` application additional permissions or you can choose to create the roles and applications yourself.
 
 #### Union managed cost allocation roles
 
-- Assign `User Access Administrator` role to the `union` application against the subscription. This enables {{< key product_name >}} role creation.
+- Assign `User Access Administrator` role to the `union` application against the subscription. This enables Union.ai role creation.
 - Assign `Application Administrator` role to the `union` application within Microsoft Entra ID. This allows Union to create applications.
 
 #### Create cost allocation roles and applications manually
 
-{{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem.
+Union.ai requires a role and service principal for the internal OpenCost subsystem.
 
 Create the OpenCost role for retrieving pricing data (name and subscription can be changed):
 
@@ -88,28 +88,28 @@ az ad sp create-for-rbac \
   --years 2
 ```
 
-Share the output of the above `az ad sp create-for-rbac` command with {{< key product_name >}}.
+Share the output of the above `az ad sp create-for-rbac` command with Union.ai.
 
 ## (Recommended) create a Microsoft Entra group for cluster administration
 
 We recommend [creating a Microsoft Entra group](https://learn.microsoft.com/en-us/training/modules/create-users-and-groups-in-azure-active-directory/) for AKS cluster admin access.
 AKS Cluster admin access is commonly provided to individuals that need direct (e.g. `kubectl`) access to the cluster.
 
-Provide the group `Object ID` to {{< key product_name >}}.
+Provide the group `Object ID` to Union.ai.
 
 ## (Optional) setting up and managing your own VNet
 
-If you decide to manage your own VNet instead of leaving it to {{< key product_name >}}, you will need to set it up yourself.
+If you decide to manage your own VNet instead of leaving it to Union.ai, you will need to set it up yourself.
 
-### Required {{% key product_name %}} VNet permissions
+### Required Union.ai VNet permissions
 
-{{< key product_name >}} requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying {{< key product_name >}} Kubernetes cluster.
+Union.ai requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying Union.ai Kubernetes cluster.
 
-[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow {{< key product_name >}} to read VNet resources and assign roles. These permissions should be scoped to the target Virtual Network (VNet). Follow these steps to set up the required access:
+[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union.ai to read VNet resources and assign roles. These permissions should be scoped to the target Virtual Network (VNet). Follow these steps to set up the required access:
 
 1. Navigate to the Azure portal and locate the target VNet.
 2. In the VNet's access control (IAM) section, create a new role assignment.
-3. For the 'Assigned to' field, select the {{< key product_name >}} application's service principal.
+3. For the 'Assigned to' field, select the Union.ai application's service principal.
 4. For the 'Role' field, you have two options:
    - Simplest approach: Assign the built-in Azure roles `Reader` and `User Access Administrator`.
    - Advanced approach: Create a custom role with the following specific permissions:
@@ -121,7 +121,7 @@ If you decide to manage your own VNet instead of leaving it to {{< key product_n
 5. Ensure the 'Scope' is set to the target VNet.
 6. Complete the role assignment process.
 
-This configuration will provide the {{< key product_name >}} application with the necessary permissions to interact with and manage resources within the specified VNet.
+This configuration will provide the Union.ai application with the necessary permissions to interact with and manage resources within the specified VNet.
 
 > [!NOTE] Creating Azure role assignments
 >
@@ -130,7 +130,7 @@ This configuration will provide the {{< key product_name >}} application with th
 
 ### Required VNet properties
 
-We recommend using a VNet within the same Azure tenant as your {{< key product_name >}} data plane. It should be configured with the following characteristics:
+We recommend using a VNet within the same Azure tenant as your Union.ai data plane. It should be configured with the following characteristics:
 
 - A single subnet with an address prefix with `/19` CIDR mask. This is used for Kubernetes nodes.
 - One to five subnets with an address prefix with `/14` to `/18` CIDR mask. This is used for Kubernetes pods. `/14` is preferable to mitigate IP exhaustion. It is common to start with one subnet for initial clusters and add more subnets as workloads scale.
@@ -139,7 +139,7 @@ We recommend using a VNet within the same Azure tenant as your {{< key product_n
 - (Recommended): Enable [virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) `Microsoft.Storage`, `Microsoft.ContainerRegistry`, and `Microsoft.KeyVault`.
 - (Recommended) Create a [NAT gateway for virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limiting scenarios.
 
-Once your VPC is set up, provide the following to {{< key product_name >}}:
+Once your VPC is set up, provide the following to Union.ai:
 
 - The Virtual Network's subscription ID.
 - The Virtual Network's name.
@@ -158,9 +158,9 @@ Once your VPC is set up, provide the following to {{< key product_name >}}:
 - `10.0.96.0/19` unallocated for Kubernetes services.
 - `10.0.96.10` for internal DNS.
 
-## {{% key product_name %}} maintenance windows
+## Union.ai maintenance windows
 
-{{< key product_name >}} configures a four hour maintenance window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
+Union.ai configures a four hour maintenance window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 
 > [!NOTE] Setting up Tasks for Fault Tolerance
 > During this time window Flyte execution pods could be potentially interrupted.

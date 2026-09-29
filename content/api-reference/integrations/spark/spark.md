@@ -2,7 +2,7 @@
 title: Spark
 description: "Use this to configure a SparkContext for a your task."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

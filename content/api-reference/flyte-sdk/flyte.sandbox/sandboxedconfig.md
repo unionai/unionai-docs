@@ -2,7 +2,7 @@
 title: SandboxedConfig
 description: "Configuration for a sandboxed task executed via Monty."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

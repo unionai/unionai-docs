@@ -92,7 +92,7 @@ CIDRs.
   enabled, tune `WARM_PREFIX_TARGET` instead. See the
   [VPC CNI configuration reference](https://github.com/aws/amazon-vpc-cni-k8s#warm_ip_target).
 
-{{< key product_name >}} deletes each task pod as soon as its task finishes, so completed pods do
+Union.ai deletes each task pod as soon as its task finishes, so completed pods do
 not hold IPs and there is no retention timer to tune.
 
 **Monitoring IP usage**: scrape the VPC CNI metrics that the `aws-node` DaemonSet exposes on

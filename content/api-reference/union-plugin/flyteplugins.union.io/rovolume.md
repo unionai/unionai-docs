@@ -2,7 +2,7 @@
 title: ROVolume
 description: "Immutable, versioned volume — PRD §Core Concepts."
 icon: braces
-version: 0.13.0
+version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -37,6 +37,7 @@ class ROVolume(
     endpoint: typing.Optional[str] = None,
     index: typing.Optional[flyte.io._file.File] = None,
     metadata_store_type: typing.Optional[str] = None,
+    block_size: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
     used_bytes: typing.Optional[int] = None,
     inode_count: typing.Optional[int] = None,
@@ -68,6 +69,7 @@ validated to form a valid model.
 | `endpoint` | `typing.Optional[str]` | |
 | `index` | `typing.Optional[flyte.io._file.File]` | |
 | `metadata_store_type` | `typing.Optional[str]` | |
+| `block_size` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
 | `used_bytes` | `typing.Optional[int]` | |
 | `inode_count` | `typing.Optional[int]` | |
@@ -84,6 +86,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
 | `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
 
@@ -352,6 +355,7 @@ def mount(
     dir_entry_cache: float = 60.0,
     shared_node_cache: Optional[bool] = None,
     cache_size_mb: Optional[int] = None,
+    enable_xattr: bool = False,
 ) -> Path
 ```
 Mount this volume read-only at ``mount_path`` and return the path.
@@ -366,7 +370,10 @@ omitted too.
 `Volume.mount` only ever shares for read-only mounts, so an
 `ROVolume` is what actually uses a node-shared chunk cache --
 automatically when the pod exposes one. ``cache_size_mb`` caps this
-mount's on-disk cache. See `Volume.mount` for both.
+mount's on-disk cache. ``enable_xattr`` exposes extended attributes
+(needed when the mount is an overlayfs lower layer). See
+`Volume.mount` for all three. ``passthrough`` is absent: a
+read-only mount never uses the passthrough write path.
 
 
 | Parameter | Type | Description |
@@ -380,6 +387,7 @@ mount's on-disk cache. See `Volume.mount` for both.
 | `dir_entry_cache` | `float` | |
 | `shared_node_cache` | `Optional[bool]` | |
 | `cache_size_mb` | `Optional[int]` | |
+| `enable_xattr` | `bool` | |
 
 ### new()
 

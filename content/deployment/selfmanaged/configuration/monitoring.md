@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Monitoring
 
-The {{< key product_name >}} data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
+The Union.ai data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
 
 For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, etc.), the data plane chart includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance that can be enabled separately.
 
@@ -62,7 +62,7 @@ The chart offers two Prometheus deployment options for Union features:
 
 ## Union features Prometheus
 
-The static Prometheus instance is always deployed and pre-configured to scrape the metrics that {{< key product_name >}} requires. No Prometheus Operator or CRDs are needed. This instance is a platform dependency and should not be replaced or reconfigured.
+The static Prometheus instance is always deployed and pre-configured to scrape the metrics that Union.ai requires. No Prometheus Operator or CRDs are needed. This instance is a platform dependency and should not be replaced or reconfigured.
 
 ### Scrape targets
 
@@ -107,7 +107,7 @@ prometheus:
 ```
 
 > [!NOTE] Retention and storage
-> The default 3-day retention is sufficient for {{< key product_name >}} features. Increase `retention` if you query historical feature metrics directly.
+> The default 3-day retention is sufficient for Union.ai features. Increase `retention` if you query historical feature metrics directly.
 
 ### Internal service endpoint
 
@@ -240,10 +240,10 @@ For the full set of configurable values, see the [kube-prometheus-stack chart do
 
 ## Scraping Union services from your own Prometheus
 
-If you already run Prometheus in your cluster, you can scrape {{< key product_name >}} data plane services for operational visibility. All services expose metrics on standard ports.
+If you already run Prometheus in your cluster, you can scrape Union.ai data plane services for operational visibility. All services expose metrics on standard ports.
 
 > [!NOTE] Union features Prometheus
-> The built-in static Prometheus handles all metrics required for {{< key product_name >}} platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
+> The built-in static Prometheus handles all metrics required for Union.ai platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
 
 ### Static scrape configs
 

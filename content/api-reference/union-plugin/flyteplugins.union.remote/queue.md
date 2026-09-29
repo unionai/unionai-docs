@@ -2,7 +2,7 @@
 title: Queue
 description: "Represents a Union scheduling queue."
 icon: braces
-version: 0.13.0
+version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -42,6 +42,7 @@ class Queue(
 | `fairness` | `str` |  |
 | `has_authorship` | `bool` | True when at least one of ``created_by`` / ``updated_by`` renders as something readable. |
 | `is_deleted` | `bool` |  |
+| `max_accelerators` | `dict[str, int]` | Per-accelerator caps on the queue's in-flight GPU devices, as ``{selector: count}``.  Selectors are ``class[/device[/partition]]`` with the device by its canonical name (``nvidia_gpu``, ``nvidia_gpu/nvidia-t4``, ``nvidia_gpu/nvidia-a100/1g.5gb``); a cap stored under an older spelling reads back as its canonical name. An empty dict means no accelerator cap; GPUs are capped only here. |
 | `max_resources` | `dict[str, str]` | Resource cap on the queue's dispatched, not-yet-completed actions, as ``{name: quantity}``.  Only the dimensions the cap names are present; an absent dimension is unlimited. An empty dict means the queue has no cap at all. |
 | `name` | `str` |  |
 | `organization` | `str` |  |
@@ -135,6 +136,7 @@ def create(
     clusters: list[str] | None = None,
     cluster_pool: str | None = None,
     max_resources: Mapping[str, object] | None = None,
+    max_accelerators: Mapping[str, object] | None = None,
     scheduling: str = 'strict_fifo',
 ) -> Queue
 ```
@@ -149,10 +151,21 @@ assigned pool; the wildcard cannot be mixed with explicit cluster names.
 
 ``max_resources`` caps the summed resource request of the queue's
 dispatched, not-yet-completed actions, as ``{name: quantity}`` — e.g.
-``{"gpu": "8", "memory": "512Gi"}``. Names are ``cpu``, ``gpu``,
-``memory`` and ``ephemeral_storage``; values are Kubernetes quantities.
-A dimension not named is unlimited (``0`` is a hard cap, not "unset");
-``None`` or ``{}`` means no cap.
+``{"cpu": "64", "memory": "512Gi"}``. Names are ``cpu``, ``memory`` and
+``ephemeral_storage``; values are Kubernetes quantities. A dimension not
+named is unlimited (``0`` is a hard cap, not "unset"); ``None`` or ``{}``
+means no cap. GPUs are not capped here — see ``max_accelerators``.
+
+``max_accelerators`` caps the in-flight GPU devices per accelerator type,
+as ``{selector: count}`` — e.g. ``{"T4": 2, "A100/1g.5gb": 1, "nvidia_gpu": 8}``.
+A selector is a task-style device shorthand (``T4``), optionally with a
+partition, a canonical ``class/device[/partition]``, or a class alone to
+cap every device of that class. A device is charged to every cap covering
+it; a type not named is unlimited; counts are positive. Every GPU request
+names its type (a task that omits it gets the run's default GPU type), so
+every GPU in flight is charged to the caps covering its type. ``None`` or
+``{}`` means no accelerator cap. Enforced with the same ``scheduling`` rule as
+``max_resources``.
 
 ``scheduling`` is what the resource gate does when the action at the head
 of the queue does not fit the remaining capacity: ``strict_fifo`` (the
@@ -180,6 +193,7 @@ be created: the server rejects an id carrying ``project`` or ``domain``.
 | `clusters` | `list[str] \| None` | |
 | `cluster_pool` | `str \| None` | |
 | `max_resources` | `Mapping[str, object] \| None` | |
+| `max_accelerators` | `Mapping[str, object] \| None` | |
 | `scheduling` | `str` | |
 
 ### delete()
@@ -453,6 +467,7 @@ def update(
     clusters: list[str] | None = None,
     cluster_pool: str | None = None,
     max_resources: Mapping[str, object] | None = None,
+    max_accelerators: Mapping[str, object] | None = None,
     scheduling: str | None = None,
 ) -> Queue
 ```
@@ -462,8 +477,10 @@ Update a queue's configuration. Unset fields are read from the current spec.
 exactly as it is (an unrelated edit never drops it), a ``{name: quantity}``
 mapping replaces it wholesale, and an empty ``{}`` removes it — the queue
 becomes unlimited again. See ``Queue.create`` for the accepted names and
-values. ``scheduling`` behaves like every other field: ``None`` keeps the
-queue's current policy.
+values. ``max_accelerators`` follows the same three-way rule (``None``
+keeps, a mapping replaces, ``{}`` clears), independently of
+``max_resources``. ``scheduling`` behaves like every other field:
+``None`` keeps the queue's current policy.
 
 The server requires an explicit cluster pool on every UpdateQueue call and
 rejects requests without one, so the queue's current pool is resent when
@@ -497,6 +514,7 @@ A soft-deleted queue cannot be updated at all — undelete it first.
 | `clusters` | `list[str] \| None` | |
 | `cluster_pool` | `str \| None` | |
 | `max_resources` | `Mapping[str, object] \| None` | |
+| `max_accelerators` | `Mapping[str, object] \| None` | |
 | `scheduling` | `str \| None` | |
 
 ### watch()

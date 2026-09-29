@@ -309,7 +309,7 @@ for epoch in range(100):
     if epoch % 10 == 0:
         await rw.commit(message=f"epoch {epoch}", publish_artifact=True)
 
-return await rw.finalize(message="training complete")   # published as well
+return await rw.finalize(message="training complete")   # published too, if the volume declares an artifact
 ```
 
 `publish_artifact=True` works even on a volume that declared no identity; the
@@ -544,10 +544,15 @@ tab on the task's [report](./reports): throughput over time, a marker at each
 `commit()`, `fork()` and `finalize()`, and a health line.
 
 ```python
-vol = Volume.new(name="my-dataset", report=True)
+vol = Volume.new(name="my-dataset")
+vol.report = True          # set before mount(); sampling starts at mount
+data = await vol.mount()
 ```
 
-You can also switch it on without touching the volume, for a whole environment:
+The setting belongs to that handle only. It does not travel with the volume, so
+a branch from `fork()`, or a volume a later task receives, needs it set again.
+To cover every mount without per-handle code, set the environment variable on
+the task environment instead:
 
 ```python
 env = flyte.TaskEnvironment(
@@ -632,7 +637,7 @@ few seconds at `commit()`.
 - Artifact publication: `Volume.new(artifact=...)`, `fork(artifact=...)`, and
   `publish_artifact=` / `artifact_version=` on `commit()` and `finalize()` —
   see [Tracking versions as artifacts](#tracking-versions-as-artifacts).
-- Reporting: `Volume.new(report=True)` or `$UNION_VOLUME_REPORT` — see
+- Reporting: `vol.report = True` or `$UNION_VOLUME_REPORT` — see
   [Debugging a mount](#debugging-a-mount).
 - Caching: `allow_volumes(cache_size=...)` and
   `mount(cache_dir=..., cache_size_mb=...)` — see

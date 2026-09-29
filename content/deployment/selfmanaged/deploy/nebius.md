@@ -15,7 +15,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
+* You have a Union.ai organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
 * You have a Nebius Managed Kubernetes cluster running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have a Nebius Object Storage bucket, service account, and access key as described in [Prepare infrastructure](../infrastructure-recommendations/nebius).
@@ -28,7 +28,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 * Install the [Nebius CLI](https://docs.nebius.com/cli) and authenticate with `nebius profile create`.
 
-## Deploy the {{% key product_name %}} operator
+## Deploy the Union.ai operator
 
 1. Set your `KUBECONFIG` to the Nebius MK8s cluster where you want to deploy the data plane:
 
@@ -93,7 +93,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    > [!NOTE]
    > The chart resolves the secret with a Helm `lookup`, which returns nothing during `helm template` or `--dry-run`. Those commands render the storage config without credentials; only a real install picks them up. If your secret uses different field names, set `credentialsSecretRef.accessKeyIdKey` and `credentialsSecretRef.secretKeyKey` to match.
 
-5. Add the {{< key product_name >}} Helm repo:
+5. Add the Union.ai Helm repo:
 
    ```bash
    helm repo add unionai https://unionai.github.io/helm-charts/

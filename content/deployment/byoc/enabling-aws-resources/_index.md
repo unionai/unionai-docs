@@ -8,17 +8,17 @@ variants: -flyte +union
 
 # Enabling AWS resources
 
-Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
+Components of your Union.ai data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
+> We strongly recommend using the [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
-As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
+As much as possible, access to the resources you need will be pre-configured by the Union.ai team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
 **You just have to inform the team of your specific requirements before the setup process begins**.
 
 As your projects evolve, your needs may change.
-You can always contact the {{< key product_name >}} team for help enabling additional resources as required.
+You can always contact the Union.ai team for help enabling additional resources as required.
 
 **There are also some cases where you may want to configure things on your own.**
 **Below we give a general overview of these self-configuration options.**
@@ -31,7 +31,7 @@ Broadly speaking, there are two categories of access that you are likely to have
 * **Infrastructure access**:
   Enabling access to a resource for your data plane infrastructure.
   The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr) for your task container images, and it resides in an AWS account other than the one containing your data plane.
-  In that case, some configuration is required to enable the {{< key product_name >}} operator on your data plane to pull images from the registry when registering your workflows and tasks.
+  In that case, some configuration is required to enable the Union.ai operator on your data plane to pull images from the registry when registering your workflows and tasks.
   **If you are using an ECR instance within the same AWS account as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
   Enabling access to a resource for your task code.
@@ -61,7 +61,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a project and domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see the user management documentation).
+> This is independent of the permissions granted to users and machine applications through Union.ai's role-based access control (see the user management documentation).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to an S3 bucket, two things are required:
@@ -93,9 +93,9 @@ Within that cluster, the Kubernetes pods allocated to run your task code are org
 > **Be aware of the difference and don't get these two things confused!**
 
 > [!NOTE] `<UserFlyteRole>`vs `<AdminFlyteRole>`
-> In addition to the task pods, your cluster also contains pods that run {{< key product_name >}} services, which are used to manage tasks and to connect your cluster to the control plane.
+> In addition to the task pods, your cluster also contains pods that run Union.ai services, which are used to manage tasks and to connect your cluster to the control plane.
 > These pods are bound to a different default role, `<AdminFlyteRole>` (again, its actual name differs from organization to organization).
-> The separation of this role from `<UserFlyteRole>` serves to provide isolation between {{< key product_name >}} administrative logic and your workflow logic.
+> The separation of this role from `<UserFlyteRole>` serves to provide isolation between Union.ai administrative logic and your workflow logic.
 >
 > **You should not alter any settings associated with `<AdminFlyteRole>`**.
 
@@ -174,7 +174,7 @@ In AWS:
 * Add the `userflyterole` policy to `<CustomRole>`.
 * Add `<CustomPolicy>` to `<CustomRole>`.
 
-In {{< key product_name >}}:
+In Union.ai:
 
 * Bind `<CustomRole>` to the project-domain pair desired (see [Bind the IAM role to a project-domain pair](#bind-the-iam-role-to-a-project-domain-pair) below).
 
@@ -187,7 +187,7 @@ In {{< key product_name >}}:
 5. Choose `sts.amazonaws.com` as the **Audience** and select **Next**.
 6. On the **Add permissions** page, search for the `userflyterole` policy and check the box beside it and select **Next**.
 7. Enter a name and description for this role.
-8. Under **Step 1: Select trusted entities**, click edit and _replace_ the `Condition` block with the following, where `oidc.eks.<Suffix>` is the value from step 4, and `<Project>`, and `<Domain>` are the {{< key product_name >}} project and domain pairs you want to set custom permissions for. Repeat for each project-domain pair.
+8. Under **Step 1: Select trusted entities**, click edit and _replace_ the `Condition` block with the following, where `oidc.eks.<Suffix>` is the value from step 4, and `<Project>`, and `<Domain>` are the Union.ai project and domain pairs you want to set custom permissions for. Repeat for each project-domain pair.
 
 ```json
 "Condition": {
@@ -206,7 +206,7 @@ In {{< key product_name >}}:
 
 ### Bind the IAM role to a project-domain pair
 
-Once the IAM role exists, the mapping from a project-domain pair to that role is applied in the {{< key product_name >}} control plane. Provide the {{< key product_name >}} team with the role ARN (from step 11 above) and the project-domain pairs it should apply to, and they will bind the role to those namespaces.
+Once the IAM role exists, the mapping from a project-domain pair to that role is applied in the Union.ai control plane. Provide the Union.ai team with the role ARN (from step 11 above) and the project-domain pairs it should apply to, and they will bind the role to those namespaces.
 
 **At this point, only code in your chosen project-domain pairs will have access to the cloud resource as defined by your custom policy.**
 

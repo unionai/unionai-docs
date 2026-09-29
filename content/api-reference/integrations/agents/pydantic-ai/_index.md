@@ -2,7 +2,7 @@
 title: Pydantic AI
 description: "Pydantic AI adapter for Flyte."
 icon: book
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---

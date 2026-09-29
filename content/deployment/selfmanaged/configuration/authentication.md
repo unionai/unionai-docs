@@ -9,7 +9,7 @@ mermaid: true
 
 # Authentication
 
-{{< key product_name >}} uses [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization. You must configure an external Identity Provider (IdP) to enable authentication on your deployment.
+Union.ai uses [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization. You must configure an external Identity Provider (IdP) to enable authentication on your deployment.
 
 ## Overview
 
@@ -45,7 +45,7 @@ sequenceDiagram
 
 ## Prerequisites
 
-- A {{< key product_name >}} deployment with the control plane installed.
+- A Union.ai deployment with the control plane installed.
 - An OIDC-compliant Identity Provider (IdP).
 - Access to create OAuth applications in your IdP.
 - A secret management solution for delivering client secrets to pods (e.g., External Secrets Operator with AWS Secrets Manager, HashiCorp Vault, or native Kubernetes secrets).
@@ -323,7 +323,7 @@ executor:
 
 #### Provisioning
 
-The {{< key product_name >}} operator provisions this key for you: no manual step and no support request are needed. On each reconciliation tick the operator checks whether the key already exists; if it does not, the operator mints one on the control plane and writes it into the cluster through the local operator proxy. Once the key is in place the check is a no-op, so the loop is safe to run continuously and re-provisions the key automatically if it is ever removed.
+The Union.ai operator provisions this key for you: no manual step and no support request are needed. On each reconciliation tick the operator checks whether the key already exists; if it does not, the operator mints one on the control plane and writes it into the cluster through the local operator proxy. Once the key is in place the check is a no-op, so the loop is safe to run continuously and re-provisions the key automatically if it is ever removed.
 
 Self-provisioning is active when secret management is enabled, which is the chart default:
 

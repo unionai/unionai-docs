@@ -2,7 +2,7 @@
 title: FlyteWebhookAppEnvironment
 description: "A pre-built FastAPI app environment for common Flyte webhook operations."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,6 +52,7 @@ class FlyteWebhookAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
     image: flyte.Image = <factory>,
     type: str = 'FlyteWebhookApp',
@@ -85,6 +86,7 @@ class FlyteWebhookAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `image` | `flyte.Image` | Docker image to use for the environment |
 | `type` | `str` | |

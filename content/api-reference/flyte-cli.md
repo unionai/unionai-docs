@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.13.0
+  flyteplugins-union: 0.14.1
 ---
 
 # Flyte CLI
@@ -335,6 +335,7 @@ Example usage:
 flyte create artifact my_model --from-file model.pt --kind model --attr framework=torch
 flyte create artifact llama3 --from-file weights.bin --external-ref hf://meta-llama/Meta-Llama-3-8B
 flyte create artifact my_model --from-file model.pt --card model_card.html --card-type model
+flyte create artifact raw_events --from-file events.parquet --partition date=2026-08-01 --partition region=us
 ```
 
 | Option | Type | Default | Description |
@@ -345,6 +346,7 @@ flyte create artifact my_model --from-file model.pt --card model_card.html --car
 | `--attr` | `text` | `Sentinel.UNSET` | Free-form user metadata as key=value pairs. Can be specified multiple times. |
 | `--kind` | `choice` |  | What the artifact is. Recorded under the reserved `flyte.io/kind` attr. Distinct from `--card-type`, which controls how an attached card renders. |
 | `--external-ref` | `text` |  | Opaque reference into an external system (a URI, model id, ...) recorded as the artifact's source. |
+| `--partition` | `text` | `Sentinel.UNSET` | Partition value as key=value. Repeatable. An ISO date (2026-08-01) is a daily time partition, an ISO hour or timestamp (2026-08-01T09) an hourly one, and anything else a string partition. Weekly and monthly partitions need the Python API (flyte.artifacts.TimePartition). |
 | `--card` | `file` |  | Local card file (HTML by default) to upload and attach to the artifact for display in the UI. |
 | `--card-format` | `choice` |  | Format of the card. Defaults to the card file's extension, or `html` when it has none. |
 | `--card-type` | `choice` | `generic` | Kind of card being attached. |
@@ -544,7 +546,7 @@ $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
     --priority min --cluster gpu-cluster-1
 
 $ flyte create queue gpu-queue --run-concurrency 50 --action-concurrency 500 \
-    --max-resources gpu=8 --max-resources memory=512Gi
+    --max-accelerators H100=8 --max-resources memory=512Gi
 
 $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
     --cluster-pool gpu-pool
@@ -553,7 +555,10 @@ $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
     --depth 5000 --priority max
 
 $ flyte create queue gangs --run-concurrency 50 --action-concurrency 500 \
-    --max-resources gpu=64 --scheduling greedy_capacity
+    --max-accelerators nvidia_gpu=64 --scheduling greedy_capacity
+
+$ flyte create queue mixed-gpu --run-concurrency 50 --action-concurrency 500 \
+    --max-accelerators nvidia_gpu=8 --max-accelerators H100=2 --max-accelerators T4=4
 ```
 
 | Option | Type | Default | Description |
@@ -565,7 +570,8 @@ $ flyte create queue gangs --run-concurrency 50 --action-concurrency 500 \
 | `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
-| `--max-resources` | `text` | `Sentinel.UNSET` | Cap the summed resource request of the queue's dispatched, not-yet-completed actions. Repeat per resource: --max-resources gpu=8 --max-resources memory=512Gi. NAME is one of cpu, gpu, memory, ephemeral_storage; QUANTITY is a Kubernetes quantity (8, 0.5, 100m, 512Gi). A resource not named is unlimited — 0 is a hard cap that forbids every request on it, not 'unset'. Omit the option entirely for no cap. |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Cap the summed resource request of the queue's dispatched, not-yet-completed actions. Repeat per resource: --max-resources cpu=64 --max-resources memory=512Gi. NAME is one of cpu, memory, ephemeral_storage (GPUs are capped per type with --max-accelerators); QUANTITY is a Kubernetes quantity (8, 0.5, 100m, 512Gi). A resource not named is unlimited — 0 is a hard cap that forbids every request on it, not 'unset'. Omit the option entirely for no cap. |
+| `--max-accelerators` | `text` | `Sentinel.UNSET` | Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators nvidia-t4=2 --max-accelerators nvidia-a100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v5e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V5E is accepted and stored as the canonical name), optionally with a partition, or a class alone (nvidia_gpu, google_tpu, amazon_neuron, amd_gpu, habana_gaudi) to cap every device of that class. A device counts against every cap covering it; COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
 | `--scheduling` | `choice` | `strict_fifo` | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
 | `--project` | `text` | `` | Scope queue to a project (currently rejected by the server: only organization-scoped queues can be created). |
 | `--domain` | `text` | `` | Scope queue to a domain (currently rejected by the server: only organization-scoped queues can be created). |
@@ -3161,11 +3167,18 @@ $ flyte update queue my-queue --activate
 Set or lift the resource cap without opening an editor:
 
 ```bash
-$ flyte update queue gpu-gangs --max-resources gpu=64 --max-resources cpu=512
+$ flyte update queue gpu-gangs --max-accelerators H100=64 --max-resources cpu=512
 
 $ flyte update queue gpu-gangs --clear-max-resources
 
 $ flyte update queue gpu-gangs --scheduling greedy_capacity
+```
+Set or lift the per-accelerator caps the same way:
+
+```bash
+$ flyte update queue gpu-gangs --max-accelerators H100=2 --max-accelerators T4=4
+
+$ flyte update queue gpu-gangs --clear-max-accelerators
 ```
 
 | Option | Type | Default | Description |
@@ -3177,6 +3190,8 @@ $ flyte update queue gpu-gangs --scheduling greedy_capacity
 | `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to modify queue settings |
 | `--max-resources` | `text` | `Sentinel.UNSET` | Set the queue's resource cap, NAME=QUANTITY, repeatable per dimension (cpu, memory, gpu, ephemeral_storage). Replaces the whole cap: dimensions not named here become unbounded. |
 | `--clear-max-resources` | `boolean` | `Sentinel.UNSET` | Lift the queue's resource cap entirely (every dimension unlimited). |
+| `--max-accelerators` | `text` | `Sentinel.UNSET` | Set the queue's per-accelerator caps, SELECTOR=COUNT, repeatable. Replaces the whole set: accelerators not named here become unlimited. Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators nvidia-t4=2 --max-accelerators nvidia-a100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v5e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V5E is accepted and stored as the canonical name), optionally with a partition, or a class alone (nvidia_gpu, google_tpu, amazon_neuron, amd_gpu, habana_gaudi) to cap every device of that class. A device counts against every cap covering it; COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
+| `--clear-max-accelerators` | `boolean` | `Sentinel.UNSET` | Lift the queue's per-accelerator caps entirely. |
 | `--scheduling` | `choice` |  | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}

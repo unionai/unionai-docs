@@ -14,7 +14,7 @@ The data plane uses an object store bucket (S3, GCS, or ABS) to hold the **raw d
 
 It helps to be precise about what "metadata" means here, because the term is used in two very different ways elsewhere in the industry.
 
-**Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
+**Metadata in Union.ai lives in the control plane database.** It includes:
 
 - Task, trigger and app definitions (including their default input values).
 - Execution status, history, schedules, and audit trail.
@@ -56,9 +56,9 @@ Data correctness is not silently violated: re-runs read from current raw data, a
 
 ## Designing lifecycle rules
 
-The {{< key product_name >}} data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
+The Union.ai data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
 
-- **Execution working files**: `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** {{< key product_name >}} metadata in the customer-facing sense; that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
+- **Execution working files**: `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** Union.ai metadata in the customer-facing sense; that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
 - **Offloaded raw data**: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other values too large to inline. By default these land under the same configured storage prefix; they can be routed elsewhere per run via `flyte.with_runcontext(raw_data_path=...)` (see [Run context](../../../user-guide/tasks/task-deployment/run-context#storage)).
 
 When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to the offloaded raw-data subpaths** rather than applying a bucket-wide rule. The execution working files (`inputs.pb`, `outputs.pb`, Decks) must remain durable for in-flight executions to complete and for historical-execution previews to render. Typical patterns are rules scoped to domain/project prefixes, or to per-run raw-data paths that have been routed to dedicated buckets via `raw_data_path`.
