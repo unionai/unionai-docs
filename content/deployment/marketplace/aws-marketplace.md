@@ -23,7 +23,7 @@ You don't need a cluster or any other AWS resources yet. You create those later,
 Open the [Union Team listing](https://aws.amazon.com/marketplace/pp/prodview-66k3cmidsgv5o) on AWS Marketplace and subscribe with the AWS account you want the charges to appear on.
 
 > [!NOTE] Choose Union Team, not Union Enterprise
-> If you search for Union.ai under **Discover products** in AWS Marketplace instead of following the link above, you see two listings: **Union Team** and **Union Enterprise**. Self-serve setup is Union Team. Union Enterprise is a separate offering.
+> If you search for Union.ai under **Discover products** in AWS Marketplace instead of following the link above, you see two listings: **Union Team** and **Union Enterprise**. Setup from Marketplace uses Union Team. Union Enterprise is a separate offering.
 
 The account you buy from doesn't have to be the one Union.ai runs in. You can run the data plane in the same AWS account or in a different one.
 

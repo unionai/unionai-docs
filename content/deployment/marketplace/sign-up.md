@@ -20,7 +20,7 @@ A Google or Microsoft account for work. Union.ai sign-up is currently only avail
 
 Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google** or **Continue with Microsoft**. Choose the account you want to use for Union.ai.
 
-![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/self-serve/sign-up/create-account.png)
+![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/marketplace/sign-up/create-account.png)
 
 > [!NOTE] Not subscribed yet?
 > Your organization needs to be associated with a subscription. If you do not have one yet, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first. You return to this step after you complete the subscription.
@@ -31,7 +31,7 @@ The organization is the top-level workspace in Union.ai. It is where your projec
 
 1. **Organization name.** This becomes your organization's web address, so it must be unique across Union.ai, and it cannot be changed later. Use lowercase letters, digits, and hyphens. As you type, Union.ai checks whether the name is available.
 
-   ![The organization form with a name typed and shown as available, and the us-east-2 region selected](../../_static/images/deployment/self-serve/sign-up/create-org.png)
+   ![The organization form with a name typed and shown as available, and the us-east-2 region selected](../../_static/images/deployment/marketplace/sign-up/create-org.png)
 
 2. **Preferred Union region.** This is where your control plane runs. The control plane is the Union.ai service that manages your workflows, metadata, and user interface. You should choose the region closest to where you plan to install your data plane.
 
@@ -39,7 +39,7 @@ The organization is the top-level workspace in Union.ai. It is where your projec
 
 Union.ai sets up your organization in about thirty seconds. You'll see each step complete: receiving the request, creating the organization, setting up sign-in, preparing your workspace, and finalizing.
 
-![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/self-serve/sign-up/setting-up-org.png)
+![Union setting up the organization, showing the five setup phases](../../_static/images/deployment/marketplace/sign-up/setting-up-org.png)
 
 ## Open your organization
 
@@ -52,7 +52,7 @@ The home page offers two ways to start:
 - **Run something locally.**
 - **Connect your cluster.**
 
-![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/self-serve/sign-up/connect-or-run.png)
+![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/marketplace/sign-up/connect-or-run.png)
 
 The local route works straight away. You can connect a cluster at any time.
 
@@ -60,7 +60,7 @@ The local route works straight away. You can connect a cluster at any time.
 
 Select **Show me how** on the **Run something locally** card for a short in-app guide: install the SDK, create a config file that points at your organization, and write a first workflow.
 
-![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/self-serve/sign-up/show-me-how.png)
+![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/marketplace/sign-up/show-me-how.png)
 
 [Run your first workflow locally](./run-locally) covers the same steps as the in-product guide.
 
