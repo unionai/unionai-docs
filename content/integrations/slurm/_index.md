@@ -121,9 +121,18 @@ which is silently wrong for any script that logs, and a structured value has no
 representation a shell script can write. A native `slurm` task has the full range — see
 [Output types](#output-types) for the comparison.
 
+Both directions are checked, at the earliest point each can be:
+
 > [!WARNING] A declared output the script never wrote fails the task
 > Even on exit 0. The alternative is handing a downstream task a URI to nothing, which
 > surfaces much later as an unexplained read error.
+
+> [!WARNING] A `$FLYTE_OUTPUT_*` the task never declared is refused when the task is defined
+> The variable is only exported for a declared output, so otherwise the job fails on the
+> cluster with `unbound variable` — or, in a script without `set -u`, writes to the empty
+> path and can still exit 0 having produced nothing. Only `$NAME` and `${NAME}` expansions
+> count: a mention in a comment is not a reference, and a name assembled at run time is left
+> alone.
 
 #### Write to the destination the script is given
 
