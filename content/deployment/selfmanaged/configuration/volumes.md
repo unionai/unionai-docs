@@ -141,7 +141,7 @@ allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability:
 {{< markdown >}}
 
 > [!NOTE]
-> {{< key product_name >}} adds the `smarter-devices/fuse` request and the
+> Union.ai adds the `smarter-devices/fuse` request and the
 > `CAP_SYS_ADMIN` capability to volume-mounting task pods automatically. You only
 > need to enable the device plugin; your users do not change their task code.
 > Privilege is confined to the DaemonSet; the workloads it serves stay

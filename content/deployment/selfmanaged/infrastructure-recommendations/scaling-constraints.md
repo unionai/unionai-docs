@@ -14,7 +14,7 @@ others, so plan for all of them. This page enumerates the constraints in roughly
 they tend to bite, with detection signals and resolutions for each.
 
 These are all data-plane concerns. The control plane is operated by
-{{< key product_name >}} and scales independently; see
+Union.ai and scales independently; see
 [Infrastructure recommendations](./_index) for the data-plane sizing model.
 
 ## Pod density and IP allocation
@@ -70,7 +70,7 @@ affecting system components (operator, executor) after a rollout.
   source. Subsequent pulls hit your private ECR (no rate limit).
 - **Add VPC interface endpoints** for `ecr.api` and `ecr.dkr` so ECR traffic routes over the
   AWS backbone instead of through the NAT gateway.
-- Mirror {{< key product_name >}} system images and frequently-used base images into a
+- Mirror Union.ai system images and frequently-used base images into a
   registry inside your own account/region to avoid cross-network pulls.
 
 ## CoreDNS and conntrack
@@ -104,7 +104,7 @@ disk demand can hit regional cloud-provider quotas before vCPU does.
 
 ## etcd ceiling
 
-Managed Kubernetes' etcd has a hard storage ceiling that {{< key product_name >}} workloads
+Managed Kubernetes' etcd has a hard storage ceiling that Union.ai workloads
 can hit before most other limits, because high action churn generates many short-lived
 Kubernetes objects (pods, events, CRDs).
 
@@ -120,7 +120,7 @@ Alert at 6 GB / 500K.
 
 **Resolution at the hard limit**:
 
-- {{< key product_name >}} pauses accepting new runs at the safety threshold (~7 GB) to avoid
+- Union.ai pauses accepting new runs at the safety threshold (~7 GB) to avoid
   cluster brickage.
 - **EKS Ultra clusters** offer 16 GB etcd at additional cost — doubles the per-cluster
   ceiling.

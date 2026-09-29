@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Platform architecture
 
-The {{< key product_name >}} architecture consists of two virtual private clouds, referred to as planes: the control plane and the data plane.
+The Union.ai architecture consists of two virtual private clouds, referred to as planes: the control plane and the data plane.
 
 ![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../../_static/images/deployment/byoc/platform-architecture/union-architecture.svg)
 
@@ -16,19 +16,19 @@ The {{< key product_name >}} architecture consists of two virtual private clouds
 
 The control plane:
 
-* Runs within the {{< key product_name >}} AWS account.
+* Runs within the Union.ai AWS account.
 * Provides the user interface through which users can access authentication, authorization, observation, and management functions.
 * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your cloud provider account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident {{< key product_name >}} operator that runs with minimal required permissions (described in the following section).
+All your workflow and task executions are performed in the data plane, which runs within your cloud provider account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident Union.ai operator that runs with minimal required permissions (described in the following section).
 
-{{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
+Union.ai operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, Union.ai supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
-Once the data plane is deployed in your cloud provider account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
+Once the data plane is deployed in your cloud provider account, there are different kinds of nodes with different responsibilities running in your cluster. In Union.ai, we distinguish between default nodes and worker nodes.
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
@@ -36,13 +36,13 @@ Worker nodes are responsible for executing your workloads. You have full control
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
 
-## {{% key product_name %}} operator
+## Union.ai operator
 
-The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure. The component that makes this possible is the **{{< key product_name >}} operator**: a dedicated service, resident in your data plane, that acts as the primary channel through which the control plane and your data plane interact. It is designed to perform its functions with only the very minimum set of required permissions.
+The Union.ai hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling Union.ai to handle the details of managing that infrastructure. The component that makes this possible is the **Union.ai operator**: a dedicated service, resident in your data plane, that acts as the primary channel through which the control plane and your data plane interact. It is designed to perform its functions with only the very minimum set of required permissions.
 
 ### How your data plane is provisioned and maintained
 
-Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires — such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, {{< key product_name >}} deploys the operator onto it.
+Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires — such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, Union.ai deploys the operator onto it.
 
 The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance — for example, adding instance types, adjusting node-group sizes, or updating the versions of platform components — so that upgrades and configuration changes are handled for you.
 
@@ -55,12 +55,12 @@ Once installed, the operator is the resident data-plane component that keeps you
 * **Maintains platform services.** It manages the data plane's supporting services — including the secure tunnel used for connectivity, API-key provisioning, image building, secret watching, and compute reconciliation.
 * **Moves your data.** It runs the data-plane `dataproxy` service, which issues the presigned URLs that let clients read and write your workflow data directly to and from the object store in your data plane (see [Execution data](#execution-data)), so that data never transits the control plane.
 
-The operator also allows {{< key product_name >}}'s support engineers to access system-level logs and to apply changes at your request. It _does not_ provide direct access to your secrets or data.
+The operator also allows Union.ai's support engineers to access system-level logs and to apply changes at your request. It _does not_ provide direct access to your secrets or data.
 
-In addition, communication is always initiated by the {{< key product_name >}} operator in the data plane toward the {{< key product_name >}} control plane, not the other way around.
+In addition, communication is always initiated by the Union.ai operator in the data plane toward the Union.ai control plane, not the other way around.
 This further enhances the security of your data plane.
 
-{{< key product_name >}} is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
+Union.ai is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
 
 ## Registry data
 

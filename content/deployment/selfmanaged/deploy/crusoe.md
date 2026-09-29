@@ -15,7 +15,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
 ## Assumptions
 
-* You have a {{< key product_name >}} organization, and you know the control plane URL for your organization.
+* You have a Union.ai organization, and you know the control plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union.
 * You have a CMK cluster running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have a Crusoe Cloud Storage bucket, access keys, and access policy as described in [Prepare infrastructure](../infrastructure-recommendations/crusoe).
@@ -27,7 +27,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 * Install the [`flyte` CLI](../../../api-reference/flyte-cli) (used later to run a sample workflow).
 * Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
 
-## Deploy the {{% key product_name %}} operator
+## Deploy the Union.ai operator
 
 1. Set your `KUBECONFIG` to the CMK cluster where you want to deploy the data plane:
 
@@ -127,7 +127,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    > [!NOTE]
    > The `uctl selfserve provision-dataplane-resources` command in step 3 generates the `<CLIENT_ID>` and `<CLIENT_SECRET>` values. Use the values from that command's output.
 
-5. Add the {{< key product_name >}} Helm repo:
+5. Add the Union.ai Helm repo:
 
    ```bash
    helm repo add unionai https://unionai.github.io/helm-charts/

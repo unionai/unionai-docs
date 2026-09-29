@@ -8,13 +8,13 @@ variants: -flyte +union
 
 # Data plane setup on GCP
 
-To set up your data plane on Google Cloud Platform (GCP) you must allow {{< key product_name >}} to provision and maintain compute resources under your GCP account.
+To set up your data plane on Google Cloud Platform (GCP) you must allow Union.ai to provision and maintain compute resources under your GCP account.
 To do this you will need to provision a service account with sufficient permissions to perform these tasks.
 
 ## Select or create a project
 
 The first step is to select an existing project or create a new one.
-This is where {{< key product_name >}} will provision all resources for your data plane.
+This is where Union.ai will provision all resources for your data plane.
 Below, we use the placeholder `<ProjectID>` for the project ID.
 The actual ID can be whatever you choose.
 In addition, you will need the project number associated with your project.
@@ -28,8 +28,8 @@ Go to the [billing page](https://console.cloud.google.com/billing/linkedaccount)
 
 ## Create a workload identity pool and provider
 
-Though your data plane will be in your project in GCP, the {{< key product_name >}} control plane is still run in AWS.
-To allow the control plane to interact with your data plane you must create a _workload identity pool_ and add {{< key product_name >}}'s AWS account as a workload provider.
+Though your data plane will be in your project in GCP, the Union.ai control plane is still run in AWS.
+To allow the control plane to interact with your data plane you must create a _workload identity pool_ and add Union.ai's AWS account as a workload provider.
 For more details see the Google Cloud guide for [setting up workload identity federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation).
 
 ### In the GCP web console
@@ -43,7 +43,7 @@ If you have not done so already, you will be guided to [enable the required APIs
 * For **Provider name**, enter `unionai-aws`.
 * The **Provider ID** should be automatically set to `unionai-aws` as well. If not, select **EDIT** and enter it manually.
 
-4. For **AWS Account ID**, enter `479331373192` ({{< key product_name >}}'s management account ID)
+4. For **AWS Account ID**, enter `479331373192` (Union.ai's management account ID)
 5. **Continue** with the default attribute mappings and conditions.
 
 ### On the command line using `gcloud`
@@ -72,9 +72,9 @@ gcloud iam workload-identity-pools providers create-aws unionai-aws \
     --account-id="479331373192"
 ```
 
-## Create a role for {{% key product_name %}} admin
+## Create a role for Union.ai admin
 
-To ensure that the {{< key product_name >}} team has all the privileges needed to deploy the data plane, _but no more than strictly necessary_, you will need to create a custom role that the {{< key product_name >}} service account will assume.
+To ensure that the Union.ai team has all the privileges needed to deploy the data plane, _but no more than strictly necessary_, you will need to create a custom role that the Union.ai service account will assume.
 
 To avoid having to manually select each separate required privilege we recommend that you perform this step on the command-line with `gcloud`.
 
@@ -91,16 +91,16 @@ gcloud iam roles create UnionaiAdministrator \
     --file=union-ai-admin-role.yaml
 ```
 
-## Create the {{% key product_name %}} admin service account
+## Create the Union.ai admin service account
 
 ### In the GCP web console
 
 1. Go to **IAM & Admin >** [**Service Accounts**](https://console.cloud.google.com/iam-admin/serviceaccounts).
 2. Select **Create Service Account**
-3. For **Name**, enter `{{< key product_name >}} Administrator`.
+3. For **Name**, enter `Union.ai Administrator`.
 4. For **ID**, enter `unionai-administrator`.
-_Note that setup process used by the {{< key product_name >}} team depends on the ID being this precise string_.
-_If you use a different ID (though this is not recommended) then you must inform the {{< key product_name >}} team of this change._
+_Note that setup process used by the Union.ai team depends on the ID being this precise string_.
+_If you use a different ID (though this is not recommended) then you must inform the Union.ai team of this change._
 5. You can enter a **Description** if you wish.
 6. Grant this service account access to your project `<ProjectId>` with the role create above, `UnionaiAdministrator`.
 
@@ -113,7 +113,7 @@ gcloud iam service-accounts create unionai-administrator \
     --project <ProjectId>
 ```
 
-Bind the service account to the project and add the {{< key product_name >}} Administrator role like this (again, substituting your project ID):
+Bind the service account to the project and add the Union.ai Administrator role like this (again, substituting your project ID):
 
 ```bash
 gcloud projects add-iam-policy-binding <ProjectId> \
@@ -196,17 +196,17 @@ gcloud services enable storage-api.googleapis.com
 
 ## Setting up and managing your own VPC (optional)
 
-If you decide to manage your own VPC instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
+If you decide to manage your own VPC instead of leaving it to Union.ai, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics:
 
-* We recommend using a VPC that resides in the same project as the {{< key product_name >}} data plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact {{< key product_name >}} support.
+* We recommend using a VPC that resides in the same project as the Union.ai data plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact Union.ai support.
 * Create a single VPC subnet with:
   * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
   * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.
   * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. We recommend associating the name with services, e.g. `gke-services`.
   * Identify a /28 CIDR block that will be used for the Kubernetes Master IP addresses. Note this CIDR block is not reserved within the subnet. Google Kubernetes Engine requires this /28 block to be available.
 
-Once your VPC is set up, provide the following to {{< key product_name >}}:
+Once your VPC is set up, provide the following to Union.ai:
 
 * VPC name
 * Subnet region and name
