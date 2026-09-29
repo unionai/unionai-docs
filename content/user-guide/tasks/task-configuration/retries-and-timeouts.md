@@ -162,6 +162,10 @@ stalling indefinitely. It is per-attempt and resets on each retry.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/retries-and-timeouts/timeouts.py" fragment="max-queued-time" lang="python" >}}
 
+When the budget runs out, the parent task receives `flyte.errors.MaxQueuedTimeExceededError`. Catch it to try a
+different GPU type instead of failing the whole run; see
+[Falling back when GPU capacity isn't available](../task-programming/error-handling#falling-back-when-gpu-capacity-isnt-available).
+
 ### `deadline`: bound the total wall-clock
 
 `deadline` is the strongest of the three: an absolute budget on total wall-clock, measured from

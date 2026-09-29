@@ -155,3 +155,9 @@ to fail fast when capacity isn't available within your window, and
 [`deadline`](./retries-and-timeouts#deadline-bound-the-total-wall-clock) to put
 an absolute ceiling on total wall-clock including queue wait. See
 [Retries and timeouts](./retries-and-timeouts) for the full picture.
+
+When `max_queued_time` fires, the parent task receives
+`flyte.errors.MaxQueuedTimeExceededError`. Catching it and re-running the task
+with `override(queue=..., resources=...)` lets a workflow fall back to another
+queue that has a different GPU available; see
+[Routing each option to a different queue](../task-programming/error-handling#routing-each-option-to-a-different-queue).
