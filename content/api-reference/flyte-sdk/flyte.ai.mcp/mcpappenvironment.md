@@ -2,7 +2,7 @@
 title: MCPAppEnvironment
 description: "Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -67,6 +67,7 @@ class MCPAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
     type: str = 'MCPApp',
     mcp: FastMCP,
@@ -97,6 +98,7 @@ class MCPAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `mcp` | `FastMCP` | |

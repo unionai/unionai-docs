@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 weight: 4

@@ -2,7 +2,7 @@
 title: RWVolume
 description: "Mutable working copy — PRD §Core Concepts."
 icon: braces
-version: 0.13.0
+version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -40,6 +40,7 @@ class RWVolume(
     endpoint: typing.Optional[str] = None,
     index: typing.Optional[flyte.io._file.File] = None,
     metadata_store_type: typing.Optional[str] = None,
+    block_size: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
     used_bytes: typing.Optional[int] = None,
     inode_count: typing.Optional[int] = None,
@@ -71,6 +72,7 @@ validated to form a valid model.
 | `endpoint` | `typing.Optional[str]` | |
 | `index` | `typing.Optional[flyte.io._file.File]` | |
 | `metadata_store_type` | `typing.Optional[str]` | |
+| `block_size` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
 | `used_bytes` | `typing.Optional[int]` | |
 | `inode_count` | `typing.Optional[int]` | |
@@ -87,6 +89,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
 | `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
 
@@ -98,6 +101,7 @@ validated to form a valid model.
 | [`empty()`](#empty) | Declare a brand-new volume. |
 | [`finalize()`](#finalize) | Drain writeback, unmount, and publish as `ROVolume`. |
 | [`fork()`](#fork) | Branch this writable into another volume. |
+| [`from_block()`](#from_block) | A new regular volume holding a copy of a block volume's files -- the reverse of `BlockVolume.from_volume`, with the same copy semantics. ext4's ``lost+found`` is not copied. |
 | [`from_locator()`](#from_locator) | Load a previously published volume version by its `locator`. |
 | [`get_artifact_metadata()`](#get_artifact_metadata) | Artifact declaration for the declarative (returned-as-output) publish path — flyte-sdk's output conversion calls this on every top-level task output exposing it and, when it returns metadata, emits a ``ProducedArtifact`` on the Outputs envelope; the backend registers the artifact atomically with the action record (no RPC from the task). |
 | [`migrate_metadata_store_type()`](#migrate_metadata_store_type) | Re-host this Volume's metadata on ``new_metadata_store_type`` without copying data chunks. |
@@ -305,6 +309,33 @@ name/``Metadata`` to rebrand it — see `Volume.fork`.
 | `timeout` | `float` | |
 | `artifact` | `object` | |
 
+### from_block()
+
+```python
+def from_block(
+    source: Volume,
+    name: Optional[str] = None,
+    workers: int = 8,
+    mount_path: Optional[str] = None,
+) -> 'RWVolume'
+```
+A new regular volume holding a copy of a block volume's files --
+the reverse of `BlockVolume.from_volume`, with the same copy
+semantics. ext4's ``lost+found`` is not copied.
+
+A block source that is mounted by this task is read from its live ext4
+mount (do not write to it meanwhile); otherwise a temporary fork of it
+is mounted for the copy and torn down after (a block image mounts
+read-write only). Returns the new volume mounted.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `source` | `Volume` | |
+| `name` | `Optional[str]` | |
+| `workers` | `int` | |
+| `mount_path` | `Optional[str]` | |
+
 ### from_locator()
 
 ```python
@@ -432,6 +463,8 @@ def mount(
     read_only: bool = False,
     shared_node_cache: Optional[bool] = None,
     cache_size_mb: Optional[int] = None,
+    passthrough: Optional[bool] = None,
+    enable_xattr: bool = False,
 ) -> Path
 ```
 Format (if fresh) and mount the volume at ``mount_path`` in this
@@ -483,6 +516,16 @@ The mount point, ``meta_dir`` and ``cache_dir`` must also be writable by
 the task user; the name-keyed defaults live under ``$HOME``, which the
 default image owns.
 
+``passthrough`` selects the FUSE passthrough fast-write path: ``None``
+(default) means on for writable mounts unless ``UNION_JUICEFS_PASSTHROUGH=0``
+is set; ``True``/``False`` force it. Read-only mounts never use it.
+``enable_xattr`` turns on extended attributes for the mount (off by
+JuiceFS default). Both matter when the volume is used as an overlayfs
+layer (for example as a container snapshotter's root): overlayfs needs
+``trusted.overlay.*`` xattrs, and the kernel refuses a passthrough FUSE
+superblock as a layer ("maximum fs stacking depth exceeded"), so such
+a mount needs ``enable_xattr=True, passthrough=False``.
+
 When ``writeback=True`` (default), writes land in the local cache
 directory first and are uploaded asynchronously in the background.
 This decouples write latency from object-store round-trips. The
@@ -532,6 +575,8 @@ any resume-from-checkpoint policy at the usage layer.
 | `read_only` | `bool` | |
 | `shared_node_cache` | `Optional[bool]` | |
 | `cache_size_mb` | `Optional[int]` | |
+| `passthrough` | `Optional[bool]` | |
+| `enable_xattr` | `bool` | |
 
 ### new()
 

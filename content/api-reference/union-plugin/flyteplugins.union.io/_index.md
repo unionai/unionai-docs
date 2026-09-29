@@ -2,7 +2,7 @@
 title: flyteplugins.union.io
 description: "Persistent, mountable :class:`Volume` type for the Flyte SDK v2."
 icon: box-seam
-version: 0.13.0
+version: 0.14.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -29,6 +29,8 @@ under :mod:`flyteplugins.union.io._internal` and is not part of the public API.
 | Class | Description |
 |-|-|
 | [`ActionRef`](../flyteplugins.union.io/actionref) | Provenance: the action (one task execution within a run) that produced a particular `Volume` version, plus the output slot it was returned as. |
+| [`BlockVolume`](../flyteplugins.union.io/blockvolume) | A writable Volume whose content is one ext4 filesystem image. |
+| [`ROBlockVolume`](../flyteplugins.union.io/roblockvolume) | An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives. |
 | [`ROVolume`](../flyteplugins.union.io/rovolume) | Immutable, versioned volume — PRD §Core Concepts. |
 | [`RWVolume`](../flyteplugins.union.io/rwvolume) | Mutable working copy — PRD §Core Concepts. |
 | [`Volume`](../flyteplugins.union.io/volume) | A persistent volume identified by its metadata index. |

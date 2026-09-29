@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.13.0
+version: 0.14.1
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -21,6 +21,8 @@ weight: 5
 | [`flyteplugins.union.factory.Factory`](flyteplugins.union.factory/factory) | A set of builds. |
 | [`flyteplugins.union.factory.TimeRange`](flyteplugins.union.factory/timerange) | A trailing window, relative to the consumer's own time value, ending at that value. |
 | [`flyteplugins.union.io.ActionRef`](flyteplugins.union.io/actionref) | Provenance: the action (one task execution within a run) that produced a particular `Volume` version, plus the output slot it was returned as. |
+| [`flyteplugins.union.io.BlockVolume`](flyteplugins.union.io/blockvolume) | A writable Volume whose content is one ext4 filesystem image. |
+| [`flyteplugins.union.io.ROBlockVolume`](flyteplugins.union.io/roblockvolume) | An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives. |
 | [`flyteplugins.union.io.ROVolume`](flyteplugins.union.io/rovolume) | Immutable, versioned volume — PRD §Core Concepts. |
 | [`flyteplugins.union.io.RWVolume`](flyteplugins.union.io/rwvolume) | Mutable working copy — PRD §Core Concepts. |
 | [`flyteplugins.union.io.Volume`](flyteplugins.union.io/volume) | A persistent volume identified by its metadata index. |

@@ -2,7 +2,7 @@
 title: ConnectorEnvironment
 description: "Configure a connector environment for custom Flyte connectors."
 icon: braces
-version: 2.10.0
+version: 2.10.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -60,6 +60,7 @@ class ConnectorEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
 )
 ```
@@ -86,6 +87,7 @@ class ConnectorEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 
 ## Properties
