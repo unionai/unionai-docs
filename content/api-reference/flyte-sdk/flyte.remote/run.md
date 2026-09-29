@@ -2,7 +2,7 @@
 title: Run
 description: "A class representing a run of a task."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---
@@ -58,6 +58,7 @@ class Run(
 | [`listall()`](#listall) | Get all runs for the current project and domain. |
 | [`output_literals()`](#output_literals) | Raw output literals of the run's action, without reconstructing types. |
 | [`outputs()`](#outputs) | Get the outputs of the run. |
+| [`raise_for_status()`](#raise_for_status) | Raise the run's failure as the exception a parent task would have raised for it, like `requests.Response.raise_for_status`. |
 | [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
@@ -393,6 +394,42 @@ def outputs()
 ```
 Get the outputs of the run. This is a placeholder for getting the run outputs.
 
+
+### raise_for_status()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.raise_for_status.aio()`.
+```python
+def raise_for_status()
+```
+Raise the run's failure as the exception a parent task would have raised for it, like
+`requests.Response.raise_for_status`. Does nothing when the run succeeded.
+
+The exception matches what awaiting the same task inside a parent task raises: a timeout
+raises the `flyte.errors.TaskTimeoutError` subclass for the bound that fired (for example
+`MaxQueuedTimeExceededError`), an abort raises `ActionAbortedError`, and any other failure
+raises the error converted from the run's error code. This makes a run launched with
+`flyte.run` from inside a task composable like a sub-action:
+
+```python
+run = await flyte.run.aio(train, epochs=3)
+await run.wait.aio(quiet=True)
+try:
+    await run.raise_for_status.aio()
+except flyte.errors.MaxQueuedTimeExceededError:
+    ...  # no capacity, fall back to a smaller GPU
+```
+
+
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `flyte.errors.RuntimeUserError` | `RunNotDoneError` when the run is not yet in a terminal phase; call `wait()` first. |
 
 ### show_logs()
 

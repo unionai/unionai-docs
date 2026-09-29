@@ -2,7 +2,7 @@
 title: Factory
 description: "A set of builds."
 icon: braces
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -28,6 +28,7 @@ class Factory(
     description: str = '',
     project: Optional[str] = None,
     domain: Optional[str] = None,
+    triggers: Sequence[On] = (),
 )
 ```
 | Parameter | Type | Description |
@@ -37,6 +38,7 @@ class Factory(
 | `description` | `str` | |
 | `project` | `Optional[str]` | |
 | `domain` | `Optional[str]` | |
+| `triggers` | `Sequence[On]` | |
 
 ## Methods
 

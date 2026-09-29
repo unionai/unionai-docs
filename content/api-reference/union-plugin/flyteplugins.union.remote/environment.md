@@ -2,7 +2,7 @@
 title: Environment
 description: "One environment version with its full spec, scaling and per-cluster status snapshots."
 icon: braces
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 ---

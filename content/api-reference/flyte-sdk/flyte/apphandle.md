@@ -2,7 +2,7 @@
 title: AppHandle
 description: "Protocol defining the common interface between local and remote app handles."
 icon: diagram-3
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

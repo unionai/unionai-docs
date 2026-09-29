@@ -2,7 +2,7 @@
 title: RuntimeSystemError
 description: "This error is raised when the underlying task execution fails because of a system error."
 icon: exclamation-triangle
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

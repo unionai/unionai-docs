@@ -2,7 +2,7 @@
 title: MCPAppEnvironment
 description: "Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

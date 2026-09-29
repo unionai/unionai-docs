@@ -2,7 +2,7 @@
 title: ConcurrencyError
 description: "Raised when an `expected_sha` precondition does not match the current state."
 icon: exclamation-triangle
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

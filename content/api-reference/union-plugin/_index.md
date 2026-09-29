@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -56,7 +56,9 @@ weight: 5
 | [`flyteplugins.union.with_forkcontext()`](flyteplugins.union/_index#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
 | [`flyteplugins.union.factory.build()`](flyteplugins.union.factory/_index#build) | Name the artifact (or artifacts) one task call makes. |
 | [`flyteplugins.union.factory.materialize()`](flyteplugins.union.factory/_index#materialize) | Start a run of ``<factory>.materialize`` and return the ``flyte.remote.Run``. |
+| [`flyteplugins.union.factory.on()`](flyteplugins.union.factory/_index#on) | Materialize when a source gets a new version, or on a schedule. |
 | [`flyteplugins.union.factory.partition()`](flyteplugins.union.factory/_index#partition) | Pass the instance's value of ``dim`` to a task parameter. |
+| [`flyteplugins.union.factory.serve()`](flyteplugins.union.factory/_index#serve) | Name the app a factory ends in. |
 | [`flyteplugins.union.factory.source()`](flyteplugins.union.factory/_index#source) | An artifact made outside this factory. |
 | [`flyteplugins.union.io.allow_volumes()`](flyteplugins.union.io/_index#allow_volumes) | Enable `Volume` mounts in a task pod with **zero privileges**. |
 | [`flyteplugins.union.io.with_high_throughput_volume_deps()`](flyteplugins.union.io/_index#with_high_throughput_volume_deps) | Prepare ``base`` for high-throughput (Redis-backed) Volumes. |

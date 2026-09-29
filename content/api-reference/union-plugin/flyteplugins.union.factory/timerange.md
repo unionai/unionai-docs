@@ -2,7 +2,7 @@
 title: TimeRange
 description: "A trailing window, relative to the consumer's own time value, ending at that value."
 icon: braces
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 ---
