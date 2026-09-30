@@ -2,7 +2,7 @@
 title: EventType
 description: "Base for event constants: a real `str`, usable anywhere a pattern is."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: Image
 description: "Container image specification built using a fluent, two-step pattern."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

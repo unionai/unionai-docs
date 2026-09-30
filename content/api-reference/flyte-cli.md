@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.14.1
+  flyteplugins-union: 0.15.0
 ---
 
 # Flyte CLI
@@ -1405,7 +1405,7 @@ $ flyte factory materialize models model --version tracks=v2 --version labels=v1
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--partition` | `text` | `Sentinel.UNSET` | dim=value, dim=a..b (range), dim=a,b (list), or dim=* (every partition in the registry) |
-| `--version` | `text` | `Sentinel.UNSET` | source=version: read that artifact version of a source instead of its latest |
+| `--version` | `text` | `Sentinel.UNSET` | artifact=version: read that version instead of the latest (a source) or of building it (a built artifact; rolls an endpoint back) |
 | `--param` | `text` | `Sentinel.UNSET` | artifact.param=value (or task.param=value) override for one build |
 | `--rebuild` | `text` | `Sentinel.UNSET` | Artifact or task name; treat every instance of that build as stale |
 | `--rebuild-all` | `boolean` | `False` | Ignore the cache everywhere |
@@ -1434,7 +1434,7 @@ Short for ``materialize --plan --wait``: show what would be reused and built.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--partition` | `text` | `Sentinel.UNSET` |  |
-| `--version` | `text` | `Sentinel.UNSET` | source=version: pin a source to an artifact version |
+| `--version` | `text` | `Sentinel.UNSET` | artifact=version: pin an artifact to a version |
 | `--project` | `text` |  |  |
 | `--domain` | `text` |  |  |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |

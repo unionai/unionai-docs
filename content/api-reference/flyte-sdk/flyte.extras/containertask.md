@@ -2,7 +2,7 @@
 title: ContainerTask
 description: "This is an intermediate class that represents Flyte Tasks that run a container at execution time."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---
