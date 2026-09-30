@@ -49,7 +49,8 @@ You can also create and manage secrets in the {{< key product_name >}} UI:
 
 Secrets created in the UI are the same secrets that the CLI and SDK create, so they can be used from both Flyte 1 and Flyte 2 tasks.
 
-Creating, updating, and deleting secrets requires the **Admin** role.
+Admins can create, update, and delete any secret.
+Contributors can manage secrets within the projects they are assigned to.
 See [Role-based access control](../../../security/identity-and-access/rbac).
 
 {{< /markdown >}}
@@ -205,6 +206,16 @@ For example:
 > The name of the secret file is the key of the secret exactly as you created it, including its case.
 > For example, a secret created as `MY_CERT` is mounted at `/etc/flyte/secrets/MY_CERT`.
 
+{{< variant union >}}
+{{< markdown >}}
+The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
+Secrets read directly from an external store use a different, provider-specific path:
+see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager),
+[Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault),
+or [Google Secret Manager](../../../deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Using secrets in local runs
 
 When you run a task locally, for example with `flyte run --local` or by calling the task directly in Python, secrets are **not** fetched from the secret store.
@@ -223,7 +234,9 @@ flyte run --local secrets.py task_1
 
 ### File secrets
 
-A file secret is read from `/etc/flyte/secrets/<SECRET_KEY>`, so you can create that file locally:
+A file secret created with `flyte create secret`, the SDK, or the UI is read from `/etc/flyte/secrets/<SECRET_KEY>`.
+For a secret from an external store, use that provider's path instead.
+To simulate the secret locally, create the file at that path:
 
 ```bash
 sudo mkdir -p /etc/flyte/secrets
