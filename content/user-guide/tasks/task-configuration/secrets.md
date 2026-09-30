@@ -37,6 +37,24 @@ flyte create secret MY_SECRET_KEY --from-file /local/path/to/my_secret_file
 
 In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-file-secret).
 
+{{< variant union >}}
+{{< markdown >}}
+
+## Creating a secret in the UI
+
+You can also create and manage secrets in the {{< key product_name >}} UI:
+
+* **Organization-wide secrets:** open **Settings** and select **Secrets** under **Assets & Configuration**.
+* **Project- or domain-scoped secrets:** navigate into a project and domain, then select **Secrets** in the main sidebar.
+
+Secrets created in the UI are the same secrets that the CLI and SDK create, so they can be used from both Flyte 1 and Flyte 2 tasks.
+
+Creating, updating, and deleting secrets requires the **Admin** role.
+See [Role-based access control](../../../security/identity-and-access/rbac).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Scoping secrets
 
 When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level.
@@ -125,6 +143,44 @@ To delete a secret, use the [`flyte delete secret`](../../../api-reference/flyte
 flyte delete secret MY_SECRET_KEY
 ```
 
+## Declaring secrets in a task environment
+
+A task can only read a secret that it declares.
+Declare secrets with the `secrets` parameter of `flyte.TaskEnvironment`, using one or more `flyte.Secret` objects:
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    secrets=[
+        # Injected as the environment variable OPENAI_API_KEY
+        flyte.Secret(key="openai-api-key", as_env_var="OPENAI_API_KEY"),
+        # Injected as the environment variable MY_DB_PASSWORD (default name derived from the key)
+        flyte.Secret(key="my-db-password"),
+        # Mounted as the file /etc/flyte/secrets/my_cert
+        flyte.Secret(key="my_cert", mount="/etc/flyte/secrets"),
+    ],
+)
+```
+
+`flyte.Secret` takes the following parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `key` | The name of the secret in the secret store, exactly as you created it (for example, with `flyte create secret`). Required. |
+| `as_env_var` | The name of the environment variable to inject the secret into. Must be a valid uppercase environment variable name (`^[A-Z_][A-Z0-9_]*$`). |
+| `mount` | Set to `"/etc/flyte/secrets"` to mount the secret as a file instead of an environment variable. No other path is supported. |
+| `group` | Optional. Used by some secret stores to organize secrets. If set, it is prepended to the default environment variable name. |
+
+Set either `as_env_var` or `mount`, not both.
+If you set both, the secret is injected as an environment variable.
+
+If you set neither, the secret is injected as an environment variable whose name is derived from the key: uppercased, with `-` replaced by `_`, and prefixed with the group if one is given.
+For example, `flyte.Secret(key="my-db-password")` is injected as `MY_DB_PASSWORD`, and `flyte.Secret(key="password", group="db")` as `DB_PASSWORD`.
+
+As a shorthand, you can pass a key string instead of a `flyte.Secret` object: `secrets="my-db-password"` is equivalent to `secrets=flyte.Secret(key="my-db-password")`.
+
 ## Using a literal string secret
 
 To use a literal string secret, specify it in the `TaskEnvironment` along with the name of the environment variable into which it will be injected.
@@ -146,7 +202,57 @@ For example:
 > [!NOTE]
 > Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
 > This fixed path is the directory in which the secret file will be placed.
-> The name of the secret file will be equal to the key of the secret.
+> The name of the secret file is the key of the secret exactly as you created it, including its case.
+> For example, a secret created as `MY_CERT` is mounted at `/etc/flyte/secrets/MY_CERT`.
+
+## Using secrets in local runs
+
+When you run a task locally, for example with `flyte run --local` or by calling the task directly in Python, secrets are **not** fetched from the secret store.
+Your code reads secrets from environment variables and files, so you need to provide those yourself in your local environment.
+
+### Environment variable secrets
+
+Export an environment variable with the name that the task reads.
+This is the `as_env_var` name, or the [default name derived from the key](#declaring-secrets-in-a-task-environment).
+For the literal string secret example above:
+
+```bash
+export MY_SECRET_ENV_VAR=my_secret_value
+flyte run --local secrets.py task_1
+```
+
+### File secrets
+
+A file secret is read from `/etc/flyte/secrets/<SECRET_KEY>`, so you can create that file locally:
+
+```bash
+sudo mkdir -p /etc/flyte/secrets
+echo -n 'my_secret_value' | sudo tee /etc/flyte/secrets/my_secret > /dev/null
+```
+
+Writing to `/etc` usually needs `sudo`.
+To avoid that, you can build the path from the `FLYTE_SECRETS_DEFAULT_DIR` environment variable.
+It is set to `/etc/flyte/secrets` in the task container when a file secret is mounted, so locally you can point it at any directory you like:
+
+```python
+import os
+
+@env_2.task
+def task_2():
+    secrets_dir = os.getenv("FLYTE_SECRETS_DEFAULT_DIR", "/etc/flyte/secrets")
+    with open(os.path.join(secrets_dir, "my_secret")) as f:
+        my_secret_file_content = f.read()
+```
+
+```bash
+mkdir -p ~/.flyte-secrets
+echo -n 'my_secret_value' > ~/.flyte-secrets/my_secret
+export FLYTE_SECRETS_DEFAULT_DIR=~/.flyte-secrets
+flyte run --local secrets.py task_2
+```
+
+> [!WARNING]
+> Do not commit local secret files or `export` lines containing secret values to source control.
 
 ## Overriding secrets at invocation time
 
