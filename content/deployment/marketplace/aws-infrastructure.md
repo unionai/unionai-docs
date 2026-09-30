@@ -30,6 +30,102 @@ At the end you have the values you enter when you [connect your cluster](./conne
 > [!NOTE] Not the manual self-managed setup
 > These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for setup from Marketplace.
 
+## Agent-assisted provisioning
+
+If you work with a coding agent, the `union-self-serve` skill from [union-skills](https://github.com/unionai-oss/union-skills/) can run this page for you. It does not take a different path: it works through the same steps below, in the same order, with the same commands. What it adds is that it carries the exported values from one step to the next, pauses for your approval before each command that creates a billable AWS resource, and tells you which values to plug into the Union.ai UI and which to copy back out of it.
+
+Install the skills into your agent. Without `--target`, the installer detects the harnesses on your machine; pass `--target` to pick one explicitly.
+
+{{< tabs "union-skills-install" >}}
+{{< tab "Auto-detect" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install
+```
+
+Installs into every harness found on your machine.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "agents" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target agents
+```
+
+Installs into `~/.agents/skills/`, the cross-harness convention. Read by Codex, Hermes, and anything else that follows it.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "claude" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target claude
+```
+
+Installs into `~/.claude/skills/`, read by Claude Code.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "codex" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target codex
+```
+
+Installs into `~/.agents/skills/`, read by Codex. `codex` is an alias for `agents` — it is the same directory.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "hermes" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target hermes
+```
+
+Installs into `~/.hermes/skills/`, read by Hermes.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "opencode" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target opencode
+```
+
+Installs into `~/.config/opencode/skills/`, read by opencode.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "pi" >}}
+{{< markdown >}}
+
+```shell
+uvx union-skills install --target pi
+```
+
+Installs into `~/.pi/agent/skills/`, read by pi.
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+Add `--project` to any of these to install into the current repository instead of your home directory, and `--dry-run` to see what would change without writing anything.
+
+Then start it with your Union.ai deployment URL:
+
+```
+/union-self-serve {union-deployment-url}
+```
+
+Where `{union-deployment-url}` is your Union url, e.g. `{org}.hosted.unionai.cloud`
+
 ## Prerequisites
 
 - AWS CLI authenticated to the target account.
