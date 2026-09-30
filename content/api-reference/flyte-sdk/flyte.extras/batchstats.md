@@ -2,7 +2,7 @@
 title: BatchStats
 description: "Monitoring statistics exposed by `DynamicBatcher.stats`."
 icon: braces
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---

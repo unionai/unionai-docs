@@ -2,7 +2,7 @@
 title: FlyteLlm
 description: "A `BaseLlm` that records each model turn via `durable_step` for replay."
 icon: braces
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---

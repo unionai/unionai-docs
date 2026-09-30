@@ -2,7 +2,7 @@
 title: Checkpoint
 description: "Checkpoint helper using `flyte.io.File` for all checkpoint blob I/O (load/save, async and sync)."
 icon: braces
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---

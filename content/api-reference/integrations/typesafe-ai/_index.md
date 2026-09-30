@@ -2,7 +2,7 @@
 title: TypeSafe AI
 description: "Run TypeSafe's System One model (Jev) inside durable Flyte tasks."
 icon: book
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---
