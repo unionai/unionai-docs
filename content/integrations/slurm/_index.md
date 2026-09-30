@@ -443,10 +443,11 @@ A cache hit restores the declared outputs and never submits the job — the poin
 a Slurm task, where a miss can mean hours in a queue.
 
 What differs is how the version is computed. `cache="auto"` hashes the task *function*, and
-a script task has no function: the default policy would return the hash of the empty string,
-one constant shared by every script task in existence. An edited script would keep hitting
-its old entry, and two unrelated script tasks would share results. So the plugin computes
-the version itself, over the things that determine what the job produces:
+a script task has no function — the default policy returns an empty string. Since the cache
+key is a hash of the inputs, the task name, the interface and the version, an empty version
+leaves the script itself out of the key: edit it and you keep hitting the entry the previous
+version wrote. So the plugin computes the version itself, over the things that determine what
+the job produces:
 
 | Change | Cache |
 | --- | --- |
