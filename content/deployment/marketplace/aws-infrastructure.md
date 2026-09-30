@@ -118,13 +118,9 @@ Installs into `~/.pi/agent/skills/`, read by pi.
 
 Add `--project` to any of these except `pi` to install into the current repository instead of your home directory, and `--dry-run` to see what would change without writing anything. The `pi` target supports user-level installation only.
 
-Then start it with your Union.ai deployment URL:
+Then ask your coding agent: `Use the union-self-serve skill for {union-deployment-hostname}`.
 
-```
-/union-self-serve {union-deployment-url}
-```
-
-Where `{union-deployment-url}` is your Union url, e.g. `{org}.hosted.unionai.cloud`
+Use the bare hostname, for example, `{org}.hosted.unionai.cloud`; omit the `https://` scheme and any trailing slash.
 
 ## Prerequisites
 
