@@ -191,11 +191,8 @@ train = SlurmScriptTask(..., outputs={"model": File}, output_upload="job")
 ```
 
 ```bash
-# S3, and S3-compatible stores (MinIO, R2, Nebius, Ceph) with --endpoint-url
+# S3, and S3-compatible stores (MinIO, R2, Ceph) with --endpoint-url
 aws s3 cp ./model.pt "$FLYTE_OUTPUT_MODEL"
-
-# Anything rclone has a remote for, often already configured on HPC clusters
-rclone copyto ./model.pt "$FLYTE_OUTPUT_MODEL"
 
 # Google Cloud Storage
 gcloud storage cp ./model.pt "$FLYTE_OUTPUT_MODEL"
@@ -208,8 +205,31 @@ aws s3 cp --recursive ./checkpoints "$FLYTE_OUTPUT_CHECKPOINTS"
 ```
 
 A script task runs on the bare node rather than in a container, so which of these exists is
-the site's business, not your image's. `command -v aws rclone gcloud azcopy` on a login node
-settles it. Credentials are mounted the same way a native task's are — see
+the site's business, not your image's — `gcloud` in particular is often missing from a
+compute image that carries `aws` and `rclone`. Ask a compute node, not the login host, since
+they are not always the same build:
+
+```bash
+srun --ntasks=1 bash -c 'command -v aws rclone gcloud azcopy'
+```
+
+`rclone` is the usual answer on an HPC cluster, and needs no configured remote if you give it
+the backend inline. It takes a bucket path rather than a URL, so strip the scheme:
+
+```bash
+GCS=":gcs,service_account_file=$HOME/.gcp/sa.json,bucket_policy_only=true:"
+rclone copyto ./model.pt "${GCS}${FLYTE_OUTPUT_MODEL#gs://}"
+
+S3=":s3,provider=AWS,env_auth=true:"
+rclone copyto ./model.pt "${S3}${FLYTE_OUTPUT_MODEL#s3://}"
+```
+
+> [!WARNING] `bucket_policy_only=true` is required on a uniform-access GCS bucket
+> Without it rclone sets a per-object ACL, and a bucket with uniform bucket-level access —
+> the default for new buckets — rejects the write with `Error 400: Cannot insert legacy ACL
+> for an object`. The job fails after doing its work.
+
+Credentials are mounted the same way a native task's are — see
 [Object storage from inside the job](#object-storage-from-inside-the-job).
 
 > [!NOTE] None of this applies to native `slurm` tasks
