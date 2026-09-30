@@ -2,7 +2,7 @@
 title: flyteplugins.union.factory
 description: "Factories: a declared graph of partitioned artifacts the platform can materialize on demand."
 icon: box-seam
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -32,7 +32,12 @@ Typical use::
     analytics.deploy()
     run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
 
-``source`` and ``build`` declare; nothing runs until ``materialize``. A build's names line up
+A factory can end in a running app. ``serve`` names the app and binds its parameters to
+artifacts; a materialization deploys it with the versions it resolved::
+
+    endpoint = factory.serve("qwen3-chat").using(chat_app, model_path=approved)
+
+``source``, ``build`` and ``serve`` declare; nothing runs until ``materialize``. A build's names line up
 with its task's return tuple, and ``"_"`` skips an output that is not an artifact::
 
     model, metrics = factory.build("_", "model", "metrics").using(train, data=features)
@@ -58,7 +63,9 @@ already knows the artifact; deploy reads them from it::
 |-|-|
 | [`build()`](#build) | Name the artifact (or artifacts) one task call makes. |
 | [`materialize()`](#materialize) | Start a run of ``<factory>.materialize`` and return the ``flyte.remote.Run``. |
+| [`on()`](#on) | Materialize when a source gets a new version, or on a schedule. |
 | [`partition()`](#partition) | Pass the instance's value of ``dim`` to a task parameter. |
+| [`serve()`](#serve) | Name the app a factory ends in. |
 | [`source()`](#source) | An artifact made outside this factory. |
 
 
@@ -83,7 +90,7 @@ def build(
     backfill: str = 'partition',
     project: Optional[str] = None,
     domain: Optional[str] = None,
-    kind: Union[None, str, Mapping[str, str]] = None,
+    kind: Union[None, ArtifactKind, Mapping[str, ArtifactKind]] = None,
     description: str = '',
 ) -> BuildSpec
 ```
@@ -105,7 +112,7 @@ output that is not an artifact::
 | `backfill` | `str` | ``"partition"`` (one action per partition) or ``"range"``. |
 | `project` | `Optional[str]` | |
 | `domain` | `Optional[str]` | |
-| `kind` | `Union[None, str, Mapping[str, str]]` | Artifact kind, or a mapping of artifact name to kind. |
+| `kind` | `Union[None, ArtifactKind, Mapping[str, ArtifactKind]]` | Artifact kind (``"model"``, ``"data"`` or ``"generic"``), or a mapping of artifact name to kind. |
 | `description` | `str` | |
 
 #### materialize()
@@ -132,7 +139,9 @@ def materialize(
 Start a run of ``<factory>.materialize`` and return the ``flyte.remote.Run``.
 
 ``queue`` puts the materialization run and every build it makes on that queue. ``versions``
-pins sources to artifact versions (``{"tracks": "v2"}``) instead of the latest version.
+pins artifacts to versions (``{"tracks": "v2"}``): a source is read at that version instead of
+its latest, and a built artifact is read at that version instead of being built, which is how an
+endpoint is rolled back.
 
 
 | Parameter | Type | Description |
@@ -153,6 +162,49 @@ pins sources to artifact versions (``{"tracks": "v2"}``) instead of the latest v
 | `domain` | `Optional[str]` | |
 | `run_name` | `Optional[str]` | |
 
+#### on()
+
+```python
+def on(
+    event: Event,
+    *targets: ArtifactHandle,
+    lag: Optional[TimeRange] = None,
+    name: Optional[str] = None,
+    **filter: str,
+) -> On
+```
+Materialize when a source gets a new version, or on a schedule.
+
+``event`` is a ``factory.source`` handle or a ``flyte.Cron`` / ``flyte.FixedRate``. ``targets``
+are the artifacts or endpoints to materialize; by default, everything the factory produces
+downstream of the source (for a source event) or everything it produces (for a schedule).
+Acting on each new version of something the factory builds needs no trigger: add a build
+that reads it::
+
+    beans = factory.Factory("beans", api, predictions, triggers=[
+        factory.on(images),                                    # score each new day of images
+        factory.on(flyte.Cron("0 3 * * *"), api),              # nightly: retrain if anything changed
+        factory.on(flyte.Cron("0 2 * * *"), report, lag=factory.TimeRange(days=1)),  # yesterday
+    ])
+
+A source event materializes the partition the new version belongs to; dimensions the event
+does not carry are materialized for every value the registry knows. A schedule materializes
+the fire time in the schedule's timezone, moved back by ``lag`` and rounded down to each target's
+time granularity. Keyword arguments filter a source event by a string partition, e.g.
+``factory.on(raw, region="us")``; ``lag`` and ``name`` are this function's own, so a dimension
+with either name cannot be filtered on.
+
+When nothing changed, a triggered materialization is all cache hits and finishes in seconds.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `event` | `Event` | |
+| `*targets` | `ArtifactHandle` | |
+| `lag` | `Optional[TimeRange]` | |
+| `name` | `Optional[str]` | |
+| `**filter` | `str` | |
+
 #### partition()
 
 ```python
@@ -171,6 +223,34 @@ and has the same name as a dimension receives that dimension's value without thi
 |-|-|-|
 | `dim` | `str` | |
 
+#### serve()
+
+```python
+def serve(
+    name: str,
+    description: str = '',
+) -> ServeSpec
+```
+Name the app a factory ends in. Follow with ``.using(app, **params)``.
+
+``name`` is the app's name. Each keyword binds one of the app's parameters to an artifact,
+the way ``build(...).using(task, **args)`` binds task arguments::
+
+    chat = VLLMAppEnvironment(name="qwen3-chat", model_path=ArtifactValue("qwen3-approved"), ...)
+    endpoint = factory.serve("qwen3-chat").using(chat, model_path=approved)
+    qwen = factory.Factory("qwen3", endpoint)
+
+A materialization deploys the app with each parameter set to the artifact version it resolved,
+and leaves an app whose spec did not change alone. An endpoint is one app: materializing a range
+of partitions deploys the newest one. The app keeps whatever the definition says about its image,
+resources and scaling.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `description` | `str` | |
+
 #### source()
 
 ```python
@@ -180,7 +260,7 @@ def source(
     domain: Optional[str] = None,
     type: Any = None,
     partitions: Optional[Mapping[str, DimensionType]] = None,
-    kind: Optional[str] = None,
+    kind: Optional[ArtifactKind] = None,
     description: str = '',
 ) -> ArtifactHandle
 ```
@@ -200,6 +280,6 @@ must agree; when it has none, deploy declares it.
 | `domain` | `Optional[str]` | |
 | `type` | `Any` | The value type the artifact holds (``flyte.io.File``, ``Dir``, or ``DataFrame``). |
 | `partitions` | `Optional[Mapping[str, DimensionType]]` | Dimension name to ``str``, ``int``, ``factory.Daily``, ``factory.Hourly``, ``factory.Weekly``, or ``factory.Monthly``. |
-| `kind` | `Optional[str]` | Optional artifact kind (``model``, ``data``, ``generic``). |
+| `kind` | `Optional[ArtifactKind]` | Optional artifact kind (``model``, ``data``, ``generic``). |
 | `description` | `str` | |
 

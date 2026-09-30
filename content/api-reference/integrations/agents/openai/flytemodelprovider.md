@@ -2,7 +2,7 @@
 title: FlyteModelProvider
 description: "Wrap a `ModelProvider` so every model it returns produces durable turns."
 icon: braces
-version: 2.10.2
+version: 2.10.3
 variants: +flyte +union
 layout: py_api
 ---

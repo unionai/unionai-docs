@@ -2,7 +2,7 @@
 title: RWVolume
 description: "Mutable working copy — PRD §Core Concepts."
 icon: braces
-version: 0.14.1
+version: 0.15.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -41,6 +41,7 @@ class RWVolume(
     index: typing.Optional[flyte.io._file.File] = None,
     metadata_store_type: typing.Optional[str] = None,
     block_size: typing.Optional[str] = None,
+    metadata_prefix: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
     used_bytes: typing.Optional[int] = None,
     inode_count: typing.Optional[int] = None,
@@ -73,6 +74,7 @@ validated to form a valid model.
 | `index` | `typing.Optional[flyte.io._file.File]` | |
 | `metadata_store_type` | `typing.Optional[str]` | |
 | `block_size` | `typing.Optional[str]` | |
+| `metadata_prefix` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
 | `used_bytes` | `typing.Optional[int]` | |
 | `inode_count` | `typing.Optional[int]` | |
@@ -169,6 +171,7 @@ def empty(
     region: Optional[str] = None,
     endpoint: Optional[str] = None,
     metadata_store_type: Optional[str] = None,
+    metadata_prefix: Optional[str] = None,
 ) -> 'Volume'
 ```
 Declare a brand-new volume. The first ``mount()`` call will
@@ -216,6 +219,12 @@ inferred from the bucket URI scheme (``s3://`` → ``s3``, ``gs://`` →
 the default one derived from ``raw_data_path`` — gets the right
 backend without the caller spelling it out.
 
+``metadata_prefix`` is where this volume's new versions (their index and
+metadata objects) are written. Leave it unset inside a task (the
+action's output path is used); outside one -- an app, a sidecar, a
+script -- it defaults to ``$UNION_VOLUME_METADATA_PREFIX`` and then to
+``<bucket>/versions``, so a Volume works anywhere with no task context.
+
 ``region`` pins the object-store region onto the Volume (S3 only —
 it forms the endpoint host). When omitted it's derived from the ambient
 ``AWS_REGION`` / ``AWS_DEFAULT_REGION`` at mount time; pass it to make
@@ -231,6 +240,7 @@ the consumer's env.
 | `region` | `Optional[str]` | |
 | `endpoint` | `Optional[str]` | |
 | `metadata_store_type` | `Optional[str]` | |
+| `metadata_prefix` | `Optional[str]` | |
 
 ### finalize()
 
@@ -494,8 +504,15 @@ omitted, a mount whose cache lives on the volume that
 size -- **per mount**: two volumes mounted in one task each get the full
 budget, so a task that mounts several must split it here, or size the
 volume for the sum, or kubelet evicts the pod for exceeding the
-emptyDir. A cache anywhere else (an explicit ``cache_dir``, the node
-cache) is left on the client's own default and its free-space guard.
+emptyDir. The default cache anywhere else is on the container's
+writable layer, which counts against the pod's ephemeral-storage limit
+while the client's free-space guard reads the node's disk; there the
+mount leases a budget from the limit `allow_volumes` publishes:
+half of the ephemeral share not already leased by other mounts (the
+share is half the limit), at least 1 GiB, returned at unmount. So a
+30 GiB pod's first mount gets 7.5 GiB and the next 3.75 GiB. An explicit
+``cache_dir`` and the node cache are left on the client's own default
+and its free-space guard.
 
 **Runtime requirements** (both needed, or the mount fails):
 
@@ -589,6 +606,7 @@ def new(
     endpoint: Optional[str] = None,
     metadata_store_type: Optional[str] = None,
     artifact: Union[bool, str, 'ArtifactMetadata', 'VolumeArtifact', None] = None,
+    metadata_prefix: Optional[str] = None,
 ) -> 'RWVolume'
 ```
 PRD §Lifecycle: create a fresh empty `RWVolume`.
@@ -627,6 +645,7 @@ namespace and needs a FUSE-capable image + pod (``fuse3`` and
 | `endpoint` | `Optional[str]` | |
 | `metadata_store_type` | `Optional[str]` | |
 | `artifact` | `Union[bool, str, 'ArtifactMetadata', 'VolumeArtifact', None]` | |
+| `metadata_prefix` | `Optional[str]` | |
 
 ### recover_mount()
 
