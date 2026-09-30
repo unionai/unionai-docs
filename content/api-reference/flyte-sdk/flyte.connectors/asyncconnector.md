@@ -2,7 +2,7 @@
 title: AsyncConnector
 description: "This is the base class for all async connectors, and it defines the interface that all connectors must implement."
 icon: braces
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

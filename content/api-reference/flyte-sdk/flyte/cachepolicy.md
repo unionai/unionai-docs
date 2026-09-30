@@ -2,7 +2,7 @@
 title: CachePolicy
 description: "Protocol for custom cache version strategies."
 icon: diagram-3
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

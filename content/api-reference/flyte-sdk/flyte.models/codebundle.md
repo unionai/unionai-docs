@@ -2,7 +2,7 @@
 title: CodeBundle
 description: "A class representing a code bundle for a task."
 icon: braces
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

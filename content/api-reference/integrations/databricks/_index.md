@@ -2,7 +2,7 @@
 title: Databricks
 description: "Databricks connector plugin for Flyte."
 icon: book
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

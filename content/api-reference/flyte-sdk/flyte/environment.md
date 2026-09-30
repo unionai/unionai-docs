@@ -2,7 +2,7 @@
 title: Environment
 description: "Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`."
 icon: braces
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---
