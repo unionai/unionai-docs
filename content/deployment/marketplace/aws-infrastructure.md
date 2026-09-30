@@ -55,7 +55,7 @@ Installs into every harness found on your machine.
 uvx union-skills install --target agents
 ```
 
-Installs into `~/.agents/skills/`, the cross-harness convention. Read by Codex, Hermes, and anything else that follows it.
+Installs into `~/.agents/skills/`, the cross-harness convention. Read by Codex and anything else that follows it. For a user-level Hermes installation, use the `hermes` target.
 
 {{< /markdown >}}
 {{< /tab >}}
