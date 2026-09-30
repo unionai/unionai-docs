@@ -1,19 +1,19 @@
 ---
-title: ParquetToPolarsDecodingHandler
+title: BQToPandasDecodingHandler
 icon: braces
 version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---
 
-# ParquetToPolarsDecodingHandler
+# BQToPandasDecodingHandler
 
-**Package:** `flyteplugins.polars.df_transformer`
+**Package:** `flyteplugins.bigquery`
 
 ## Parameters
 
 ```python
-def ParquetToPolarsDecodingHandler()
+def BQToPandasDecodingHandler()
 ```
 Extend this abstract class, implement the decode function, and register your concrete class with the
 DataFrameTransformerEngine class in order for the core flytekit type engine to handle
@@ -43,7 +43,7 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 def decode(
     flyte_value: flyteidl2.core.literals_pb2.StructuredDataset,
     current_task_metadata: flyteidl2.core.literals_pb2.StructuredDatasetMetadata,
-) -> pl.DataFrame
+) -> pd.DataFrame
 ```
 This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal
 value into a Python instance.

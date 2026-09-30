@@ -2,7 +2,7 @@
 title: Resource
 description: "This is the output resource of the job."
 icon: braces
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 ---

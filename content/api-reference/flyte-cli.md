@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.10.3
+version: 2.10.4
 variants: +flyte +union
 layout: py_api
 weight: 3
