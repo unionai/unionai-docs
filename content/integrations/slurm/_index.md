@@ -171,6 +171,13 @@ no credentials and no upload tool. `output_upload` switches it:
 **`"connector"`** suits what most scripts emit — metrics, summaries, configs, small models.
 The node needs no upload tool, no credentials and no endpoint configuration.
 
+The transfer runs in the background rather than inside the connector's status call, so a
+task stays in RUNNING — with a message naming the outputs being moved — for a poll or two
+after the Slurm job itself has finished. That is expected. A connector's status call carries
+a deadline (`defaultTimeout`, 10 seconds unless the deployment raises it), and moving bytes
+inside it would let that deadline cancel the transfer part-way, with every poll restarting
+it.
+
 > [!WARNING] The connector refuses to move more than 100 MB
 > Streaming would work, but every byte would take two hops instead of one, through a pod
 > concurrently polling every other job it tracks, on its bandwidth rather than the cluster's.
