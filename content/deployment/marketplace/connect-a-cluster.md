@@ -53,19 +53,21 @@ A cluster pool groups clusters that share an S3 bucket, a secret store and an im
 
 No secret needs to exist in Secrets Manager yet. The data plane creates and manages runtime secrets in that account and Region as it needs them.
 
-## 2. Connect the cluster
+## 2. Register the cluster
 
-When the pool is created, the dialog moves straight on to **Connect a cluster**, with your new pool already selected. Fill in:
+When the pool is created, the dialog moves straight on to **Register a cluster**, with your new pool already selected. Fill in:
 
 | Field | Value |
 |---|---|
-| **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is connected. |
+| **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is registered. |
+| **Cluster pool** | Already set to `default`, the pool you just created. |
+| **Namespace** | Leave it empty to use `union`. The IAM roles from [Provision your AWS resources](./aws-infrastructure) trust any namespace, so the default works with them. |
 | **System IAM Role ARN** | The system IAM role ARN |
 | **Task IAM Role ARN** | The task IAM role ARN |
 
-![The Connect a cluster dialog with a cluster name, the default pool, and the system and task IAM role ARNs filled in](../../_static/images/deployment/marketplace/connect-a-cluster/connect-cluster.png)
+![The Register a cluster dialog with a cluster name, the default pool, the namespace left at its default, and the system and task IAM role ARNs filled in](../../_static/images/deployment/marketplace/connect-a-cluster/connect-cluster.png)
 
-Select **Connect cluster**. Union.ai registers the cluster and takes you to its page, where you install the agent. Registering does not put anything on your cluster by itself.
+Select **Register cluster**. Union.ai registers the cluster and takes you to its page, where you install the agent. Registering does not put anything on your cluster by itself.
 
 ## 3. Install the agent
 
