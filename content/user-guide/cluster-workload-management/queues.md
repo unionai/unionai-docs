@@ -237,13 +237,14 @@ levels the CLI and Python call `min`, `medium`, and `max`.
 | `depth` | `--depth` | `10000` | Total in-flight plus waiting items the queue will hold. `0` means no limit. |
 | `priority` | `--priority` | `medium` | `min`, `medium`, or `max`. Among queues contending for the same pool's capacity, higher-priority work is scheduled first. Priority controls ordering, not preemption. |
 | `max_resources` | `--max-resources` | No cap | Caps the CPU, memory, and ephemeral storage requested by the queue's in-flight actions, across every cluster the queue routes to. |
-| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs per accelerator type. |
+| `max_gpus` | `--max-gpus` | No cap | Caps the queue's in-flight GPUs that were requested without a device type. |
+| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs and other accelerators per device type. Repeat the flag for each type. |
 | `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. |
 
 Under the hood the priority levels map to enum values 1, 50, and 100; use `max`
 for a priority higher than 50.
 
-`max_resources`, `max_accelerators`, and `scheduling` are covered in
+`max_resources`, `max_gpus`, `max_accelerators`, and `scheduling` are covered in
 [Resource caps and scheduling](./resource-caps-and-scheduling).
 
 ## Inspect queues

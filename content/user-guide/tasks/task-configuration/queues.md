@@ -106,10 +106,11 @@ queue for a workload:
   priority work is scheduled ahead of lower priority work. Priority controls
   *ordering*, not preemption: a lower-priority task that has already started is
   not interrupted when higher-priority work arrives.
-- **Resource caps**: the most CPU, memory, and GPUs (per accelerator type) that
-  the queue's running tasks may request at once, counted across every cluster
-  the queue routes to. A task that would push the queue past a cap waits until
-  enough running work finishes.
+- **Resource caps**: the most CPU, memory, and GPUs that the queue's scheduled
+  tasks may request at once, counted across every cluster the queue routes to.
+  GPUs can be capped per device type, and separately for tasks that ask for a
+  GPU without naming a type. A task that would push the queue past a cap waits
+  until enough running work finishes.
 - **Scheduling policy**: what the queue does when the next task in line does not
   fit. A `strict_fifo` queue waits for it, so nothing behind it starts first. A
   `greedy_capacity` queue skips it and starts the tasks behind it that do fit.
@@ -161,8 +162,8 @@ When several teams run on the same clusters, one team's large job can take all
 of the GPUs and leave everyone else waiting. Give each team a queue with
 **resource caps** and each team gets a ceiling on the CPU, memory, and GPUs its
 scheduled work can use at once. Work beyond the ceiling is still accepted and
-waits in the queue. The caps count resources, not tasks, so a team can run many
-small tasks or a few large ones within the same budget.
+waits in the queue. Because the caps count resources, a team can run many small
+tasks or a few large ones under the same cap.
 
 Which queue you pick also decides how your work waits. On a `greedy_capacity`
 queue, small tasks and tasks for a
