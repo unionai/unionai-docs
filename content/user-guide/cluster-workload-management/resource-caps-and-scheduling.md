@@ -94,6 +94,22 @@ You can write a device the same way a task does (`T4`, `A100 80G`) or by its
 canonical name (`nvidia-t4`, `nvidia-a100-80gb`). The queue stores and prints
 the canonical form, for example `nvidia_gpu/nvidia-h100`.
 
+A queue can cap several accelerator types at once. Repeat `--max-accelerators`
+once per type, or pass several entries in the Python mapping:
+
+```bash
+# At most 48 H100s, 16 A100s, and 32 T4s scheduled at once
+flyte create queue research \
+  --run-concurrency 100 \
+  --action-concurrency 1000 \
+  --max-accelerators H100=48 \
+  --max-accelerators A100=16 \
+  --max-accelerators T4=32
+```
+
+Each type has its own budget. A task that asks for T4s is counted against the T4
+cap only, so a team that has used all of its H100s can still run T4 work.
+
 A device counts against **every** cap that covers it, and the action must fit
 all of them. This lets you combine a wide cap with narrow ones:
 
@@ -135,7 +151,7 @@ flyte create queue research \
 
 # Change the caps on an existing queue
 flyte update queue research --max-resources cpu=768 --max-resources memory=6Ti
-flyte update queue research --max-accelerators H100=64
+flyte update queue research --max-accelerators H100=64 --max-accelerators T4=32
 
 # Remove the caps
 flyte update queue research --clear-max-resources
@@ -168,7 +184,7 @@ Queue.create(
 
 # Change the caps on an existing queue
 Queue.update("research", max_resources={"cpu": "768", "memory": "6Ti"})
-Queue.update("research", max_accelerators={"H100": 64})
+Queue.update("research", max_accelerators={"H100": 64, "T4": 32})
 
 # Remove the caps
 Queue.update("research", max_resources={})
@@ -193,7 +209,9 @@ scheduling policy there.
 > [!WARNING] An update replaces the whole cap
 > `--max-resources` and `--max-accelerators` on `flyte update queue` replace the
 > full set of caps of that kind. A resource you leave out becomes unlimited.
-> To raise CPU on a queue that also caps memory, pass both again.
+> To raise CPU on a queue that also caps memory, pass both again. The same goes
+> for accelerators: to change the H100 cap on a queue that also caps T4s, pass
+> both.
 > In Python the same rule applies to the mapping you pass: `None` keeps the
 > current caps, a mapping replaces them, and `{}` removes them.
 
@@ -279,89 +297,130 @@ it, with an `other` entry for devices no cap covers.
 
 The scheduling policy decides what a queue does when the next action in line
 does not fit, either under the queue's caps or on the clusters it routes to.
-Both policies consider actions in the order they were queued. They differ in
-what happens at the first action that does not fit.
+There are two policies. Both consider actions in the order they were queued, and
+they differ in what happens at the first action that does not fit.
 
-| | `strict_fifo` | `greedy_capacity` |
+> [!NOTE] Use `greedy_capacity` for most queues
+> `greedy_capacity` is the recommended policy. It keeps capacity in use and keeps
+> reusable containers busy. Choose `strict_fifo` only for queues that run
+> gang-style jobs or that need strict first come, first served ordering.
+>
+> A new queue is created as `strict_fifo` unless you say otherwise, so pass
+> `--scheduling greedy_capacity` (or `scheduling="greedy_capacity"` in Python)
+> when you create it.
+
+| | Greedy capacity (recommended) | Strict FIFO |
 |---|---|---|
-| When the next action does not fit | The queue stops and waits for it | The queue skips it and keeps going |
-| Order of dispatch | Exactly first come, first served | First come, first served among the actions that fit |
-| Can a large action be starved? | No | Yes, while smaller actions keep fitting |
-| Can small actions be stuck behind a large one? | Yes | No |
-| Use it for | Gang-style jobs and strict ordering | Most queues |
+| Setting | `greedy_capacity` | `strict_fifo` |
+| When the next action does not fit | Skips it and schedules the actions behind it that fit | Stops and waits for it |
+| Order | First come, first served among the actions that fit | Exactly first come, first served |
+| Idle capacity while work is waiting | No | Yes, while the head of the line is blocked |
+| Can a large action be starved? | Yes, while smaller actions keep fitting | No |
+| Reusable containers (warm pools) | Actions for a warm pool that is already running keep flowing | Actions for a warm pool wait behind the blocked head |
+| Use it for | Most queues | Gang-style jobs and strict ordering |
 
-`strict_fifo` is the default for a new queue. Pass `--scheduling greedy_capacity`
-(or `scheduling="greedy_capacity"` in Python) to choose the other policy.
+### The two policies side by side
 
-### `strict_fifo`
+Take a queue capped at 8 GPUs with 6 in use, so 2 are free. Three actions are
+waiting, in this order:
 
-The queue dispatches actions strictly in arrival order. When the action at the
-head of the line does not fit, nothing behind it is dispatched until it does.
-This is head-of-line blocking, and it is the point of the policy: as running
-work finishes, the freed capacity accumulates for the head instead of being
-handed to smaller actions that arrived later.
+| Position | Action | Asks for | Greedy capacity | Strict FIFO |
+|---|---|---|---|---|
+| 1 | `train` | 4 GPUs | Waits. It does not fit in the 2 free GPUs. | Waits. It does not fit in the 2 free GPUs. |
+| 2 | `evaluate` | 1 GPU | Scheduled now. | Waits behind `train`. |
+| 3 | `embed` | 1 GPU | Scheduled now. | Waits behind `train`. |
 
-Use `strict_fifo` when:
+Under greedy capacity the queue runs at 8 of 8 GPUs, and `train` starts once 4
+GPUs are free at the same moment. Under strict FIFO the queue stays at 6 of 8
+until 2 more GPUs free up, then `train` starts, and only then do `evaluate` and
+`embed` get their turn.
 
-- **You run gang-style jobs.** A distributed training job that needs 32 GPUs at
-  once only starts when 32 are free together. Under `greedy_capacity` a steady
-  stream of one-GPU actions can keep taking each GPU as it frees up, and the
-  large job never gets its turn.
-- **Order matters.** Work must start in the order it was submitted.
+### Greedy capacity
 
-The cost is idle capacity. While the head waits, actions behind it wait too,
-even when they would fit. That includes actions for a
-[reusable environment](#how-the-policies-treat-reusable-environments) that is
-already running.
+Set with `--scheduling greedy_capacity`. Recommended for most queues.
 
-### `greedy_capacity`
+**How it works.** The queue walks the line in arrival order. When an action does
+not fit, the queue moves on to the next one and schedules whatever does fit.
 
-The queue still walks the line in arrival order, but when an action does not
-fit it moves on to the next one and dispatches whatever does fit. Capacity is
-not left idle while something that could use it is waiting.
+**Use it when:**
 
-This is the right choice for most queues: mixed workloads, many small and
-medium actions, and anything built on reusable environments. The trade-off is
-that a very large action can wait a long time when smaller ones keep arriving
-and keep fitting. If a queue carries both, either move the large jobs to their
-own `strict_fifo` queue or give them a
+- The queue carries a mix of small and large actions.
+- The work runs in reusable containers.
+- You want the capacity you are paying for to stay in use.
+
+**Trade-off.** A very large action can wait a long time when smaller ones keep
+arriving and keep fitting. If a queue carries both, move the large jobs to their
+own strict FIFO queue, or give them a
 [`max_queued_time`](../tasks/task-configuration/retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available)
 so they fail instead of waiting indefinitely.
 
-### How the policies treat reusable environments
+### Strict FIFO
+
+Set with `--scheduling strict_fifo`.
+
+**How it works.** The queue schedules actions strictly in arrival order. When
+the action at the head of the line does not fit, nothing behind it is scheduled
+until it does. This is head-of-line blocking, and it is the point of the policy:
+as running work finishes, the freed capacity accumulates for the head instead of
+going to smaller actions that arrived later.
+
+**Use it when:**
+
+- You run gang-style jobs. A distributed training job that needs 32 GPUs at once
+  only starts when 32 are free together. Under greedy capacity, a steady stream
+  of one-GPU actions can take each GPU as it frees up, and the large job never
+  gets its turn.
+- Order matters, and work must start in the order it was submitted.
+
+**Trade-off.** Capacity sits idle while the head waits, and every action behind
+it waits too, even the ones that would fit.
+
+### Reusable containers (warm pools)
 
 A [reusable environment](../tasks/task-configuration/reusable-containers) keeps
-a set of containers alive and runs many actions in them. A queue counts those
-containers against its caps once, when the environment starts, and not once per
-action. An action that joins an environment that is already running adds nothing
-to the cap, because the containers it runs in are already counted.
+a pool of warm containers alive and runs many actions in them. A queue counts
+those containers against its caps once, when the pool starts, and not once per
+action:
 
-The two policies treat those actions differently:
+- **The first action** of an environment starts the pool. It is counted like any
+  other request, at the size of the containers the pool starts with, and it has
+  to fit under the cap.
+- **Every later action** that joins the running pool adds nothing to the cap,
+  because the containers it runs in are already counted.
 
-- Under **`greedy_capacity`**, the queue skips the blocked action and dispatches
-  the actions behind it that fit. Actions for a running reusable environment
-  add nothing to the cap, so they keep flowing while a large action waits for
-  room.
-- Under **`strict_fifo`**, they wait behind the blocked head like everything
-  else. When capacity is low, a reusable environment can sit idle behind one
-  large job even though running its next action would cost the queue nothing.
+This is where the two policies differ most:
+
+| | Greedy capacity | Strict FIFO |
+|---|---|---|
+| Actions for a warm pool that is already running | Skip past a blocked action and are scheduled, since they add nothing to the cap | Wait behind the blocked head like everything else |
+| The warm pool while a large action is blocked | Stays busy | Sits idle, even though its next action would cost the queue nothing |
+| An action that starts a new pool | Scheduled if the pool fits. If it does not, the queue moves on to the next action | Scheduled if the pool fits. If it does not, it blocks the line |
+
+On a strict FIFO queue with little free capacity, one large job at the head of
+the line can stall every reusable environment on the queue. If the wait lasts
+longer than an environment's idle timeout, its containers shut down, and the
+next action pays for a cold start again.
+
+Put work that runs in reusable containers on a greedy capacity queue. If the
+same team also runs gang-style jobs, give those their own strict FIFO queue
+instead of mixing the two on one.
 
 ### When the line is blocked
 
-A `strict_fifo` queue reports when its head is blocked and for how long.
+A strict FIFO queue reports when its head is blocked and for how long.
 `flyte get queue <name> --watch` shows a head-of-line banner with the number of
 actions waiting behind it, and the `flyte get queue --watch` dashboard marks the
 queue as blocked. In Python, `Queue.details` returns `head_blocked` and
 `head_blocked_since`.
 
 A blocked head clears on its own as running work finishes. If the queue should
-not have been holding the line in the first place, switch it:
+not be waiting on its head in the first place, switch it:
 
 ```bash
 flyte update queue research --scheduling greedy_capacity
 ```
 
-The change applies to the live queue, and the actions that fit are dispatched
+The change applies to the live queue, and the actions that fit are scheduled
 shortly after.
 
 ## Resource-aware scheduling
