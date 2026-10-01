@@ -498,7 +498,7 @@ printf '%s\n' \
   "  Account ID         = ${AWS_ACCOUNT_ID}" \
   "  Region             = ${AWS_REGION}" \
   "  Image registry     = ${IMAGE_REGISTRY}" \
-  "Connect cluster dialog:" \
+  "Register cluster dialog:" \
   "  System IAM Role ARN = ${SYSTEM_IAM_ROLE_ARN}" \
   "  Task IAM Role ARN   = ${TASK_IAM_ROLE_ARN}" \
   "kubeconfig command: aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}"
