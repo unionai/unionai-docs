@@ -1,12 +1,14 @@
 ---
 title: Slurm
+description: Run Flyte tasks as Slurm jobs on an existing HPC or GPU cluster, submitted over SSH.
+icon: hdd-stack
 weight: 1
 variants: +flyte +union
 ---
 
 # Slurm
 
-The Slurm plugin lets you run Flyte tasks as jobs on an existing [Slurm](https://slurm.schedmd.com/) cluster — an on-premise HPC installation, a cloud GPU cluster, or one managed by an operator such as [Soperator](https://github.com/nebius/soperator). Jobs are submitted over SSH to a login node, so the cluster needs no Flyte components installed and no configuration changes, and the plugin assumes nothing about which cloud the cluster runs in or where the run's object storage lives. The connector handles submission, state polling, cancellation and log retrieval.
+The Slurm plugin lets you run Flyte tasks as jobs on an existing [Slurm](https://slurm.schedmd.com/) cluster — an on-premise HPC installation, a cloud GPU cluster, or one managed by an operator such as [Soperator](https://github.com/nebius/soperator). Jobs are submitted over SSH to a login node, so no Flyte component runs on the cluster and nothing about Slurm itself has to be reconfigured — no plugin, no daemon, no scheduler changes. The plugin also assumes nothing about which cloud the cluster runs in or where the run's object storage lives. What the cluster does need depends on the task type: a native `slurm` task runs your container image, so the compute nodes need Pyxis/Enroot or Apptainer and credentials for the run's object storage, and requesting GPUs needs GRES configured. A `slurm_script` task needs none of that. The connector handles submission, state polling, cancellation and log retrieval.
 
 The plugin supports:
 
@@ -31,7 +33,7 @@ The plugin provides two task types, served by one connector.
 | Task type | What is submitted | Typed I/O | Caching | Multi-node |
 | --------- | ----------------- | --------- | ------- | ---------- |
 | `slurm` | The task's own container image and the Flyte entrypoint, via Pyxis | Yes | Yes | No |
-| `slurm_script` | A user-supplied `sbatch` script, unchanged | `File` and `Dir`, declared | Yes | Yes |
+| `slurm_script` | A user-supplied `sbatch` script, with `#SBATCH` directives and input/output exports prepended | `File` and `Dir`, declared | Yes | Yes |
 
 Prefer `slurm` for anything that can be containerized and runs as a single process. Reach for `slurm_script` when a script cannot be converted, or when you need gang-scheduled multi-node execution.
 
@@ -520,7 +522,8 @@ Every job leaves three files on the login node under `working_dir`, named `flyte
 ```bash
 ls -t ~/.flyte/jobs | head
 cat  ~/.flyte/jobs/<job>.sbatch   # exactly what was submitted
-tail ~/.flyte/jobs/<job>.err
+tail ~/.flyte/jobs/<job>.out      # stdout: a successful job's output
+tail ~/.flyte/jobs/<job>.err      # stderr: usually where a failure explains itself
 ```
 
 The generated `.sbatch` file is a plain script. Reading it answers most questions outright, and re-running it by hand with `sbatch` separates a plugin problem from a cluster problem. Both log paths are also named in the task's phase message in the UI.
