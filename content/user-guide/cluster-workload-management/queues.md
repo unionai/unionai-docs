@@ -232,39 +232,23 @@ default.
 
 ### What each setting controls
 
-- **`cluster_pool` / `--cluster-pool`**: the pool this queue lives in. A queue can
-  only route to clusters in its own pool. Omit to bind the queue to the `default`
-  pool.
-- **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
-  Omit to use all clusters in the pool. In the API, `["*"]` means all `active`,
-  healthy clusters in the pool (see
-  [Wildcard routing](#how-a-queue-routes)), and `*` must be the only entry if
-  used.
-- **`run_concurrency` / `--run-concurrency`**: maximum number of *runs* active on
-  the queue at once. Children of an active run aren't counted; use this to stop a
-  job from overlapping with a previous invocation of itself. `0` means no limit.
-- **`action_concurrency` / `--action-concurrency`**: maximum number of *actions*
-  (tasks) running at once. A cap of 1 serializes the queue; higher values bound
-  the burst rate. `0` means no limit.
-- **`depth` / `--depth`**: total in-flight plus waiting items the queue will hold
-  (default `10000`). `0` means no limit.
-- **`priority` / `--priority`**: `min`, `medium` (default), or `max`. Among queues
-  contending for the same pool's capacity, higher-priority work is scheduled
-  first. Under the hood these map to enum values 1, 50, and 100; use `max` for a
-  priority higher than 50. Priority controls ordering, not preemption.
-- **`fairness` / `--fairness`**: `round_robin` (default) or `shuffle_interleave`.
-  This controls how actions from different projects sharing the queue are
-  interleaved.
-- **`max_resources` / `--max-resources`**: caps the CPU, memory, and ephemeral
-  storage requested by the queue's in-flight actions, across every cluster the
-  queue routes to. Omit for no cap.
-- **`max_accelerators` / `--max-accelerators`**: caps the queue's in-flight GPUs
-  per accelerator type. Omit for no cap.
-- **`scheduling` / `--scheduling`**: `strict_fifo` (default) or
-  `greedy_capacity`. This decides whether the queue waits or moves on when the
-  next action in line does not fit.
+| Python | CLI | Default | What it controls |
+|---|---|---|---|
+| `cluster_pool` | `--cluster-pool` | `default` pool | The pool this queue lives in. A queue can only route to clusters in its own pool. |
+| `clusters` | `--cluster` | `["*"]` (all clusters in the pool) | Pins the queue to one or more clusters in the pool. `*` means all `active`, healthy clusters in the pool (see [Wildcard routing](#how-a-queue-routes)) and must be the only entry if used. |
+| `run_concurrency` | `--run-concurrency` | Required | Maximum number of *runs* active on the queue at once. Children of an active run aren't counted. Use this to stop a job from overlapping with a previous invocation of itself. `0` means no limit. |
+| `action_concurrency` | `--action-concurrency` | Required | Maximum number of *actions* (tasks) running at once. A value of 1 serializes the queue, and higher values bound the burst rate. `0` means no limit. |
+| `depth` | `--depth` | `10000` | Total in-flight plus waiting items the queue will hold. `0` means no limit. |
+| `priority` | `--priority` | `medium` | `min`, `medium`, or `max`. Among queues contending for the same pool's capacity, higher-priority work is scheduled first. Priority controls ordering, not preemption. |
+| `fairness` | `--fairness` | `round_robin` | `round_robin` or `shuffle_interleave`. Controls how actions from different projects sharing the queue are interleaved. |
+| `max_resources` | `--max-resources` | No cap | Caps the CPU, memory, and ephemeral storage requested by the queue's in-flight actions, across every cluster the queue routes to. |
+| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs per accelerator type. |
+| `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. |
 
-The last three are covered in
+Under the hood the priority levels map to enum values 1, 50, and 100; use `max`
+for a priority higher than 50.
+
+`max_resources`, `max_accelerators`, and `scheduling` are covered in
 [Resource caps and scheduling](./resource-caps-and-scheduling).
 
 ## Inspect queues
