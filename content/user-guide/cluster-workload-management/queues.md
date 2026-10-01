@@ -1,6 +1,6 @@
 ---
 title: Managing queues
-description: Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
+description: Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, resource caps, and priority.
 icon: list-task
 weight: 3
 variants: -flyte +union
@@ -15,12 +15,15 @@ mermaid: true
 
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
 work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
-within it), and it **governs** that work with concurrency, depth, priority, and
-fairness limits.
+within it), and it **governs** that work with concurrency, depth, and priority
+limits, and with caps on the CPU, memory, and GPUs its scheduled work may use.
 
 This page covers creating and managing queues administratively, from either the
 CLI or Python. For how workflow authors *target* a queue from task code, see
-[Queues in Configure tasks](../tasks/task-configuration/queues).
+[Queues in Configure tasks](../tasks/task-configuration/queues). For sharing
+clusters across teams with resource caps, and for choosing how a queue schedules
+when capacity is tight, see
+[Resource caps and scheduling](./resource-caps-and-scheduling).
 
 ## How a queue routes
 
@@ -111,7 +114,7 @@ it cannot be activated on its own while its cluster is `draining` or `drained`
 [How the co-named queue follows its cluster](./clusters#how-the-co-named-queue-follows-its-cluster)).
 The cluster and queue finish their transitions separately, so they may reach
 their final states at slightly different times. Its other settings (concurrency,
-depth, priority, fairness) stay editable like any queue's. Listings make the
+depth, priority) stay editable like any queue's. Listings make the
 distinction visible: cluster-managed queues are flagged in the `flyte get queue`
 table (`cluster_managed`, exposed as `Queue.cluster_managed` in Python), and
 `flyte update queue --edit` says so at the top of the edit buffer.
@@ -156,8 +159,7 @@ flyte create queue gpu-queue \
   --run-concurrency 50 \
   --action-concurrency 500 \
   --depth 5000 \
-  --priority max \
-  --fairness round_robin
+  --priority max
 ```
 
 {{< /markdown >}}
@@ -188,7 +190,6 @@ queue = Queue.create(
     action_concurrency=500,
     depth=5000,
     priority="max",
-    fairness="round_robin",
 )
 ```
 
@@ -214,9 +215,7 @@ the CLI and Python expose:
 | **Action concurrency** | `action_concurrency` / `--action-concurrency` |
 
 The console labels priority **Low**, **Medium**, and **High**; these are the same
-levels the CLI and Python call `min`, `medium`, and `max`. **Fairness** is not in
-the form, so set it from the CLI or Python if you need a value other than the
-default.
+levels the CLI and Python call `min`, `medium`, and `max`.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -229,29 +228,24 @@ default.
 
 ### What each setting controls
 
-- **`cluster_pool` / `--cluster-pool`**: the pool this queue lives in. A queue can
-  only route to clusters in its own pool. Omit to bind the queue to the `default`
-  pool.
-- **`clusters` / `--cluster`**: pin the queue to one or more clusters in the pool.
-  Omit to use all clusters in the pool. In the API, `["*"]` means all `active`,
-  healthy clusters in the pool (see
-  [Wildcard routing](#how-a-queue-routes)), and `*` must be the only entry if
-  used.
-- **`run_concurrency` / `--run-concurrency`**: maximum number of *runs* active on
-  the queue at once. Children of an active run aren't counted; use this to stop a
-  job from overlapping with a previous invocation of itself. `0` means no limit.
-- **`action_concurrency` / `--action-concurrency`**: maximum number of *actions*
-  (tasks) running at once. A cap of 1 serializes the queue; higher values bound
-  the burst rate. `0` means no limit.
-- **`depth` / `--depth`**: total in-flight plus waiting items the queue will hold
-  (default `10000`). `0` means no limit.
-- **`priority` / `--priority`**: `min`, `medium` (default), or `max`. Among queues
-  contending for the same pool's capacity, higher-priority work is scheduled
-  first. Under the hood these map to enum values 1, 50, and 100; use `max` for a
-  priority higher than 50. Priority controls ordering, not preemption.
-- **`fairness` / `--fairness`**: `round_robin` (default) or `shuffle_interleave`.
-  This controls how actions from different projects sharing the queue are
-  interleaved.
+| Python | CLI | Default | What it controls |
+|---|---|---|---|
+| `cluster_pool` | `--cluster-pool` | `default` pool | The pool this queue lives in. A queue can only route to clusters in its own pool. |
+| `clusters` | `--cluster` | `["*"]` (all clusters in the pool) | Pins the queue to one or more clusters in the pool. `*` means all `active`, healthy clusters in the pool (see [Wildcard routing](#how-a-queue-routes)) and must be the only entry if used. |
+| `run_concurrency` | `--run-concurrency` | Required | Maximum number of *runs* active on the queue at once. Children of an active run aren't counted. Use this to stop a job from overlapping with a previous invocation of itself. `0` means no limit. |
+| `action_concurrency` | `--action-concurrency` | Required | Maximum number of *actions* (tasks) running at once. A value of 1 serializes the queue, and higher values bound the burst rate. `0` means no limit. |
+| `depth` | `--depth` | `10000` | Total in-flight plus waiting items the queue will hold. `0` means no limit. |
+| `priority` | `--priority` | `medium` | `min`, `medium`, or `max`. Among queues contending for the same pool's capacity, higher-priority work is scheduled first. Priority controls ordering, not preemption. |
+| `max_resources` | `--max-resources` | No cap | Caps the CPU, memory, and ephemeral storage requested by the queue's in-flight actions, across every cluster the queue routes to. |
+| `max_gpus` | `--max-gpus` | No cap | Caps the queue's in-flight GPUs that were requested without a device type. |
+| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs and other accelerators per device type. Repeat the flag for each type. |
+| `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. |
+
+Under the hood the priority levels map to enum values 1, 50, and 100; use `max`
+for a priority higher than 50.
+
+`max_resources`, `max_gpus`, `max_accelerators`, and `scheduling` are covered in
+[Resource caps and scheduling](./resource-caps-and-scheduling).
 
 ## Inspect queues
 
@@ -277,7 +271,9 @@ flyte get queue --deleted
 ```
 
 `--watch` renders live progress bars for run concurrency, action concurrency, and
-depth, so you can see a queue filling up or draining in real time. Metrics are
+depth, plus one for each
+[resource cap](./resource-caps-and-scheduling#see-how-much-of-a-cap-is-in-use),
+so you can see a queue filling up or draining in real time. Metrics are
 available while a queue is `active`, `draining`, `drained`, or `deleting`.
 Watching a `draining` queue shows work finishing normally; watching a `deleting`
 queue shows its cleanup progress. A [deleted](#delete-a-queue) queue cannot be
@@ -372,10 +368,12 @@ and scope, plus its priority, depth, and run and action concurrency limits.
 
 ## Change a queue's settings
 
-You can update limits, priority, fairness, or cluster pinning. The update API
+You can update limits, priority, or cluster pinning. The update API
 replaces the full queue spec; the Python wrapper handles this by reading the
 current queue first, changing only the fields you pass, and writing the complete
-spec back.
+spec back. Resource caps and the scheduling policy can also be changed with
+dedicated flags, without opening an editor; see
+[Set caps on a queue](./resource-caps-and-scheduling#set-caps-on-a-queue).
 
 {{< tabs "update-queue" >}}
 {{< tab "CLI" >}}
@@ -660,5 +658,7 @@ shift traffic over:
 
 - [Queues in Configure tasks](../tasks/task-configuration/queues): routing work to a
   queue from task code, triggers, and per-run context.
+- [Resource caps and scheduling](./resource-caps-and-scheduling): cap the
+  resources a queue's scheduled work may use and choose its scheduling policy.
 - [Cluster pools](./cluster-pools) and [Clusters](./clusters): the routing
   targets a queue points at.
