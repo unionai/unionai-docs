@@ -25,7 +25,7 @@ control *where* a workload runs and *under what limits*. Three primitives do thi
 - **Queue**: what you submit work to. A queue lives in one pool, **routes** work to
   one or more clusters in that pool, and applies the concurrency, depth, and
   priority limits for the work it admits. A queue can also cap the CPU,
-  memory, and GPUs its work holds, which is how teams share clusters without one
+  memory, and GPUs its scheduled work uses, which is how teams share clusters without one
   team taking all of the capacity (see
   [Resource caps and scheduling](./resource-caps-and-scheduling)). Every cluster automatically gets a
   **co-named queue** that routes only to it, so any cluster can be targeted by

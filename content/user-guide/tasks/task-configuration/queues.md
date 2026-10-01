@@ -159,8 +159,9 @@ is scheduled first.
 
 When several teams run on the same clusters, one team's large job can take all
 of the GPUs and leave everyone else waiting. Give each team a queue with
-**resource caps** and each team gets a ceiling on the CPU, memory, and GPUs it
-can hold at once. The caps count resources, not tasks, so a team can run many
+**resource caps** and each team gets a ceiling on the CPU, memory, and GPUs its
+scheduled work can use at once. Work beyond the ceiling is still accepted and
+waits in the queue. The caps count resources, not tasks, so a team can run many
 small tasks or a few large ones within the same budget.
 
 Which queue you pick also decides how your work waits. On a `greedy_capacity`

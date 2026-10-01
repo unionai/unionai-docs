@@ -16,7 +16,7 @@ mermaid: true
 A **queue** is a named scheduling lane. It does two jobs at once: it **routes**
 work to a [cluster pool](./cluster-pools) (and, optionally, specific clusters
 within it), and it **governs** that work with concurrency, depth, and priority
-limits, and with caps on the CPU, memory, and GPUs its work may hold.
+limits, and with caps on the CPU, memory, and GPUs its scheduled work may use.
 
 This page covers creating and managing queues administratively, from either the
 CLI or Python. For how workflow authors *target* a queue from task code, see
@@ -658,6 +658,6 @@ shift traffic over:
 - [Queues in Configure tasks](../tasks/task-configuration/queues): routing work to a
   queue from task code, triggers, and per-run context.
 - [Resource caps and scheduling](./resource-caps-and-scheduling): cap the
-  resources a queue may hold and choose its scheduling policy.
+  resources a queue's scheduled work may use and choose its scheduling policy.
 - [Cluster pools](./cluster-pools) and [Clusters](./clusters): the routing
   targets a queue points at.

@@ -16,10 +16,10 @@ Two teams share one pool of GPU clusters. The research team launches a sweep
 that asks for every H100 in the pool, and the inference team's nightly
 evaluation, which needs four, waits for hours. Concurrency limits do not fix
 this. One action can ask for half a CPU and the next for sixty-four GPUs, so
-counting actions says little about how much of the cluster a team is holding.
+counting actions says little about how much of the cluster a team is using.
 
 Resource caps bound the resources themselves. Give each team its own queue, cap
-the CPU, memory, and GPUs that queue may hold at once, and both teams draw from
+the CPU, memory, and GPUs its scheduled work may use at once, and both teams draw from
 the same clusters without either one taking all of it:
 
 ```bash
@@ -54,8 +54,11 @@ dispatched and that have not finished yet. It counts what each action asks for
 in its `resources`, not what the container ends up using.
 
 - **The cap spans every cluster the queue routes to.** It is one budget for the
-  queue, not a budget per cluster. A queue capped at 48 H100s holds at most 48
-  whether its work lands on one cluster or four.
+  queue, not a budget per cluster. The queue can accept
+  as much work as its depth allows. The cap limits how much of it is scheduled
+  at once: on a queue capped at 48 H100s, at most about 48 are scheduled at any
+  moment, whether that work lands on one cluster or four. The rest waits in
+  the queue.
 - **Only the resources you name are capped.** `--max-resources cpu=512` caps CPU
   and leaves memory unlimited. A value of `0` is a hard cap that refuses every
   request for that resource. It does not mean "unset".
@@ -211,7 +214,7 @@ to everything it dispatches from then on:
 ## See how much of a cap is in use
 
 A queue reports its usage next to its caps, so you can see how much of a team's
-budget is held by running actions.
+budget is in use by scheduled actions.
 
 {{< tabs "watch-caps" >}}
 {{< tab "CLI" >}}
