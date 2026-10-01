@@ -2,7 +2,7 @@
 title: ConnectorRegistry
 description: "This is the registry for all connectors."
 icon: braces
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

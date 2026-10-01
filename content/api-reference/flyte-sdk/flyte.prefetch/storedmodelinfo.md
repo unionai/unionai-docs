@@ -2,7 +2,7 @@
 title: StoredModelInfo
 description: "Information about a stored model."
 icon: braces
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---

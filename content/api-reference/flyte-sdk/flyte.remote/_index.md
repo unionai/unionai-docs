@@ -2,7 +2,7 @@
 title: flyte.remote
 description: "Remote Entities that are accessible from the Union Server once deployed or created."
 icon: box-seam
-version: 2.10.4
+version: 2.10.5
 variants: +flyte +union
 layout: py_api
 ---
