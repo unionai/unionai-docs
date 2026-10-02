@@ -158,4 +158,5 @@ Both files are in [`v2/integrations/flyte-plugins/github`](https://github.com/un
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
+- [Review and release gates](../../user-guide/software-development-lifecycle/review-and-release-gates) for what to build on top of this.
 - [GitHub API reference](../../api-reference/integrations/software-development-tools/github/_index).

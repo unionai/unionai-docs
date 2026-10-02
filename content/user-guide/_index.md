@@ -146,6 +146,10 @@ other workflow orchestrators.
 Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
 {{< /link-card >}}
 
+{{< link-card target="software-development-lifecycle" icon="arrow-repeat" title="Software development lifecycle" >}}
+Use Flyte as the automation substrate for your own development process — event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
+{{< /link-card >}}
+
 {{< link-card target="run-scaling" icon="box" title="Run scaling" >}}
 Tune task overhead, batching, reusable containers, and fanout to scale your workflows.
 {{< /link-card >}}
