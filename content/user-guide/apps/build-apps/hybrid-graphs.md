@@ -208,8 +208,8 @@ if __name__ == "__main__":
 The `RUN_MODE` variable gives you a smooth development progression:
 
 1. **Fully local**: `RUN_MODE=local python agent_app.py`. Everything runs in your local Python environment, great for rapid iteration.
-2. **Local app, remote task**: `python agent_app.py`. The UI runs locally but the agent executes on the cluster with full compute resources.
-3. **Full remote**: `flyte deploy agent_app.py serving_env`. Both the UI and agent run on the cluster.
+2. **Local app, on-cluster task**: `python agent_app.py`. The UI runs locally but the agent executes on the cluster with full compute resources.
+3. **Fully on-cluster**: `flyte deploy agent_app.py serving_env`. Both the UI and agent run on the cluster.
 
 ## Best practices
 

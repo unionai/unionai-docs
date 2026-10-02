@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Run modes
 
-{{< key product_full_name >}} supports three execution modes, letting you choose the right trade-off between speed and fidelity at each stage of development:
+{{< key product_full_name >}} supports three execution modes, letting you choose the right trade-off between speed and fidelity at each stage of development: local, devbox, and remote.
 
 ## Two things vary, not one
 
@@ -25,6 +25,20 @@ Throughout the docs, **remote** always answers the second question. A remote clu
 |--------------------|-------------------------|------------|
 | **Local machine**  | Local (`--local`)       | Devbox     |
 | **Remote cluster** | —                       | Remote     |
+
+### In the CLI and SDK
+
+The CLI and SDK name only the first question. `flyte run --local` and `flyte.with_runcontext(mode="local")` run in-process. Without `--local`, or with `mode="remote"`, the run goes on-cluster, on whichever cluster your configuration points at. That includes the devbox. The API's `remote` predates the devbox and means on-cluster; where the cluster is depends only on your configuration.
+
+{{< variant union >}}
+{{< markdown >}}
+
+### Watching a local run
+
+A local run can also report its progress to {{< key product_name >}}. Add `--tracked` and the run still executes in-process on your machine, but it appears in the console under **Tracked Runs**. Tracking changes what you can see, not where the run executes. See [Track local runs in the console](./running-locally#track-local-runs-in-the-console).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< grid cols=3 >}}
 

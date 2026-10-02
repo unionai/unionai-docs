@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Run a Python script
 
-`flyte run python-script` executes an arbitrary `.py` file on a remote
+`flyte run python-script` executes an arbitrary `.py` file on a
 Flyte cluster without wrapping it in a workflow or `@env.task`. Point it
 at a script, request resources, and the SDK builds an image, bundles
 the code, and runs it.

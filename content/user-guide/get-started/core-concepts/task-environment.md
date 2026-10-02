@@ -75,7 +75,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-The image doesn't hard-code a container registry. For remote runs you set that once in your config (`image.registry`), so it stays out of your code. See [Container images](../../tasks/task-configuration/container-images) for detailed image configuration options.
+The image doesn't hard-code a container registry. For on-cluster runs you set that once in your config (`image.registry`), so it stays out of your code. See [Container images](../../tasks/task-configuration/container-images) for detailed image configuration options.
 
 ## Multiple tasks, one environment
 

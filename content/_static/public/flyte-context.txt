@@ -53,7 +53,7 @@ flyte get config  # Check current configuration
 
 ### Running Workflows
 
-**Remote Execution:**
+**On-cluster Execution:**
 ```bash
 # Command line
 flyte run hello.py main

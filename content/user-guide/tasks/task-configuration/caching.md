@@ -168,7 +168,7 @@ When a task input is a DataFrame (`pandas`, `polars`, or `flyte.io.DataFrame`), 
 To cache on **content** instead, attach a hash of the data at the point where it is produced. Flyte then uses that content hash when computing the cache key of any downstream consuming task, so identical content produces a cache hit regardless of where it is stored.
 
 > [!NOTE]
-> Caching applies only on a remote cluster - local execution does not produce cache hits across runs.
+> Content-based hashing applies only on-cluster. In-process runs still cache across runs, but key these types on their location, so identical content at a new path is a cache miss. See [Local development caching](#local-development-caching).
 
 ### DataFrames
 
@@ -256,16 +256,15 @@ Caches are automatically isolated by:
 
 ## Local development caching
 
-When running locally, Flyte maintains a local cache:
+When running in-process, Flyte keeps a local cache in a SQLite database, so a cached task called again with the same inputs returns its stored outputs, including across runs:
 
 ```python
-# Local execution uses ~/.flyte/local-cache/
-flyte.init()  # Local mode
+flyte.init()  # no endpoint, so runs are in-process
 result = flyte.run(my_cached_task, data="test")
 ```
 
 Local cache behavior:
 
-- Stored in `~/.flyte/local-cache/` directory
+- Stored in `local-cache/cache.db`, in the directory that holds your config file (for example `.flyte/local-cache/`), or in `~/.flyte/local-cache/` when no config file is found
+- Only `behavior="auto"` reads from the local cache
 - No project/domain isolation (since running locally)
-- Disabled by setting `FLYTE_LOCAL_CACHE_ENABLED=false`

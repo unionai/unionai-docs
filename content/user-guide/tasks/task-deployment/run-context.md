@@ -27,7 +27,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `mode` | `"local"` \| `"remote"` \| `"hybrid"` | *from config* | Where the run executes. `"remote"` runs on the Flyte backend; `"local"` runs in-process. |
+| `mode` | `"local"` \| `"remote"` \| `"hybrid"` | *from config* | Where the run executes. `"remote"` runs on-cluster, on whichever cluster your config points at (including the devbox); `"local"` runs in-process. |
 | `project` | `str` | *from config* | Project to run in. |
 | `domain` | `str` | *from config* | Domain to run in (e.g. `"development"`, `"production"`). |
 | `name` | `str` | *auto-generated* | Custom name for the run, visible in the UI. |

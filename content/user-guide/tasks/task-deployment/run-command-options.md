@@ -74,7 +74,7 @@ If not provided, these default to the `task.project` and `task.domain` values in
 
 **`flyte run --local <PATH> <TASK_NAME>`**
 
-The `--local` option runs tasks locally instead of submitting them to the remote Flyte backend:
+The `--local` option runs tasks in-process on your machine instead of on-cluster (on the devbox or a remote cluster, whichever your configuration points at):
 
 ```bash
 flyte run --local my_example.py my_task --input "test_data"
@@ -112,9 +112,11 @@ The run appears under **Tracked Runs** in the project sidebar, a separate sectio
 flyte run --tracked hello
 ```
 
-Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with a remote run.
+Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with an on-cluster run.
 
 Tracking reports the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported: your task's output stays in the terminal where you launched the run.
+
+You can abort a tracked run from the console, but this cannot stop the process running on your machine. Per-organization limits apply to tracked runs: concurrent runs and actions, actions per run, and run creations per month.
 
 Reporting is best-effort by design. If the control plane is slow or unreachable, the failure is logged and the local run continues to completion, so tracking never blocks or fails work that would otherwise have succeeded. To debug reporting itself, add `--tracked-strict`, which turns any reporting failure into a loud run failure:
 
@@ -137,6 +139,8 @@ flyte create config --local-tracked
 ```
 
 This sets the `local.tracked` key, after which `flyte run --local` reports to the control plane on its own. The matching key for strict mode is `local.tracked_strict`.
+
+To track a run you start from Python, use `flyte.with_runcontext(mode="local", tracked=True)`, or pass `local_tracked=True` to `flyte.init()`. See [Tracking a local run](./how-task-run-works#tracking-a-local-run).
 
 {{< /markdown >}}
 {{< /variant >}}
