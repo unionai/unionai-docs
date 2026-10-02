@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -28,7 +28,6 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Environment`](../flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`FixedRate`](../flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`Image`](../flyte/image) | Container image specification built using a fluent, two-step pattern. |
-| [`ImageBuild`](../flyte/imagebuild) | Result of an image build operation. |
 | [`OnArtifact`](../flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created. |
 | [`PodTemplate`](../flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](../flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
@@ -58,13 +57,10 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`HABANA_GAUDI()`](#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
-| [`build()`](#build) | Build an image. |
-| [`build_images()`](#build_images) | Build the images for the given environment(s). |
 | [`ctx()`](#ctx) | Returns the current flyte.models.TaskContext when running inside a task. |
 | [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`current_project()`](#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
-| [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`get_custom_context()`](#get_custom_context) | Get the current input context. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
@@ -192,70 +188,6 @@ Create a TPU device instance.
 
 **Returns:** Device instance.
 
-#### build()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await build.aio()`.
-```python
-def build(
-    image: Image,
-    dry_run: bool = False,
-    force: bool = False,
-    wait: bool = True,
-) -> ImageBuild
-```
-Build an image. The existing async context will be used.
-
-```python
-import flyte
-image = flyte.Image("example_image")
-if __name__ == "__main__":
-    result = asyncio.run(flyte.build.aio(image))
-    print(result.uri)
-```
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `image` | `Image` | The image(s) to build. |
-| `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
-| `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
-| `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
-
-**Returns**
-
-An ImageBuild object containing the image URI and optionally the remote run that kicked off the build.
-
-
-#### build_images()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await build_images.aio()`.
-```python
-def build_images(
-    *envs: Environment,
-    copy_style: 'CopyFiles' = 'loaded_modules',
-    seed_cache: ImageCache | None = None,
-) -> ImageCache
-```
-Build the images for the given environment(s).
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
-| `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
-| `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
-
-**Returns:** ImageCache containing the built images.
-
 #### ctx()
 
 ```python
@@ -334,38 +266,6 @@ def main():
 | Parameter | Type | Description |
 |-|-|-|
 | `**context` | `str` | Key-value pairs to set as input context |
-
-#### deploy()
-
-
-> [!NOTE] This method can be called both synchronously or asynchronously.
-> Default invocation is sync and will block.
-> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
-> `result = await deploy.aio()`.
-```python
-def deploy(
-    *envs: Environment,
-    dry_run: bool = False,
-    version: str | None = None,
-    interactive_mode: bool | None = None,
-    copy_style: CopyFiles = 'loaded_modules',
-    dryrun: bool | None = None,
-) -> List[Deployment]
-```
-Deploy the given environment or list of environments.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `*envs` | `Environment` | Environment or list of environments to deploy. |
-| `dry_run` | `bool` | dry run mode, if True, the deployment will not be applied to the control plane. |
-| `version` | `str \| None` | version of the deployment, if None, the version will be computed from the code bundle. TODO: Support for interactive_mode |
-| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
-| `copy_style` | `CopyFiles` | Copy style to use when running the task |
-| `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
-
-**Returns:** Deployment object containing the deployed environments and tasks.
 
 #### get_custom_context()
 

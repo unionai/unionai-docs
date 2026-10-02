@@ -1,7 +1,7 @@
 ---
 title: ParquetToSparkDecoder
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,10 +15,10 @@ layout: py_api
 ```python
 def ParquetToSparkDecoder()
 ```
-Extend this abstract class, implement the decode function, and register your concrete class with the
-DataFrameTransformerEngine class in order for the core flytekit type engine to handle
-dataframe libraries. This is the decoder interface, meaning it is used when there is a Flyte Literal value,
-and we have to get a Python value out of it. For the other way, see the DataFrameEncoder
+Extend this abstract class, implement the decode function, and register your concrete class with
+`DataFrameTransformerEngine` so that the Flyte type engine can handle dataframe libraries. This is the
+decoding interface: it is used when the Flyte type engine converts a Flyte Literal into a Python value.
+For the other direction, see `DataFrameEncoder`.
 
 
 

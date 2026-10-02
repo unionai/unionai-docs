@@ -2,7 +2,7 @@
 title: flyte.io
 description: "This package contains additional data types beyond the primitive data types in python to abstract data flow of large datasets in Union."
 icon: box-seam
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,10 +24,4 @@ of large datasets in Union.
 | [`EmptyDir`](../flyte.io/emptydir) | A sentinel `flyte.io.Dir` representing `no directory was produced`. |
 | [`File`](../flyte.io/file) | A generic file class representing a file with a specified format. |
 | [`HashFunction`](../flyte.io/hashfunction) | A hash method that wraps a user-provided function to compute hashes. |
-
-### Variables
-
-| Property | Type | Description |
-|-|-|-|
-| `PARQUET` | `str` |  |
 

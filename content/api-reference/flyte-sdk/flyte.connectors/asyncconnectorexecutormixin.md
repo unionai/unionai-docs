@@ -2,7 +2,7 @@
 title: AsyncConnectorExecutorMixin
 description: "This mixin class is used to run the connector task locally, and it's only used for local execution."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: FunctionTool
 description: "An OpenAI Agents `FunctionTool` backed by a Flyte task."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,6 +54,7 @@ class FunctionTool(
     _mcp_title: str | None = None,
     _tool_origin: ToolOrigin | None = None,
     _emit_tool_origin: bool = True,
+    _mcp_tool_binding: tuple[str, str, int | None] | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -89,6 +90,7 @@ class FunctionTool(
 | `_mcp_title` | `str \| None` | |
 | `_tool_origin` | `ToolOrigin \| None` | |
 | `_emit_tool_origin` | `bool` | |
+| `_mcp_tool_binding` | `tuple[str, str, int \| None] \| None` | |
 
 ## Methods
 

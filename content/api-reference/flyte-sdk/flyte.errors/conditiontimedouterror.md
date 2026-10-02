@@ -2,7 +2,7 @@
 title: ConditionTimedoutError
 description: "This error is raised when a condition is not signaled within its specified timeout."
 icon: exclamation-triangle
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

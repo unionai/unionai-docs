@@ -2,7 +2,7 @@
 title: flyte.types
 description: "The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows."
 icon: box-seam
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,9 +33,9 @@ It is always possible to bypass the type system and use the `FlytePickle` type t
 
 | Class | Description |
 |-|-|
-| [`FlytePickle`](../flyte.types/flytepickle) | This type is only used by flytekit internally. |
-| [`TypeEngine`](../flyte.types/typeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`TypeTransformer`](../flyte.types/typetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`FlytePickle`](../flyte.types/flytepickle) | This type is only used by Flyte internally. |
+| [`TypeEngine`](../flyte.types/typeengine) | Core extensible type engine of Flyte. |
+| [`TypeTransformer`](../flyte.types/typetransformer) | Base transformer type that should be implemented for every Python native type that Flyte can handle. |
 
 ### Protocols
 

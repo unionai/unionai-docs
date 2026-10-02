@@ -1,26 +1,26 @@
 {
-  "docs_version": "2.10.5.0",
-  "tag": "v2.10.5.0",
+  "docs_version": "2.10.7.0",
+  "tag": "v2.10.7.0",
   "z": 0,
   "cut_kind": "sdk-release",
   "existing_z": [],
-  "sdk": "2.10.5",
+  "sdk": "2.10.7",
   "sdk_on_pypi": "true",
   "sdk_label": "flyte-sdk",
   "variants": {
     "union": {
-      "flyte-sdk": "2.10.5",
-      "flyteplugins-union": "0.15.0",
+      "flyte-sdk": "2.10.7",
+      "flyteplugins-union": "0.15.1",
       "examples": "fee0dae1706553d18e6bf9beebb4b55ab9b8763b",
-      "content": "6ab302acfa3f06d6c21dae8bf971d3ffd272235a",
-      "infra": "2b2d8695d5ca6622da660faa877dcc8754315638"
+      "content": "195ede2123a9ea10198ae4e07e69acb86d4f76e7",
+      "infra": "3d4a6ee5c9e2f4636f5635cd3fab3d125c75795a"
     },
     "flyte": {
-      "flyte-sdk": "2.10.5",
+      "flyte-sdk": "2.10.7",
       "backend": "v2.0.50",
       "examples": "fee0dae1706553d18e6bf9beebb4b55ab9b8763b",
-      "content": "6ab302acfa3f06d6c21dae8bf971d3ffd272235a",
-      "infra": "2b2d8695d5ca6622da660faa877dcc8754315638"
+      "content": "195ede2123a9ea10198ae4e07e69acb86d4f76e7",
+      "infra": "3d4a6ee5c9e2f4636f5635cd3fab3d125c75795a"
     }
   }
 }

@@ -2,7 +2,7 @@
 title: flyteplugins.union.io
 description: "Persistent, mountable :class:`Volume` type for the Flyte SDK v2."
 icon: box-seam
-version: 0.15.0
+version: 0.15.1
 variants: -flyte +union
 layout: py_api
 ---

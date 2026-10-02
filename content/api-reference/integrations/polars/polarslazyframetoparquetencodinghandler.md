@@ -1,7 +1,7 @@
 ---
 title: PolarsLazyFrameToParquetEncodingHandler
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,11 +15,10 @@ layout: py_api
 ```python
 def PolarsLazyFrameToParquetEncodingHandler()
 ```
-Extend this abstract class, implement the encode function, and register your concrete class with the
-DataFrameTransformerEngine class in order for the core flytekit type engine to handle
-dataframe libraries. This is the encoding interface, meaning it is used when there is a Python value that the
-flytekit type engine is trying to convert into a Flyte Literal. For the other way, see
-the DataFrameEncoder
+Extend this abstract class, implement the encode function, and register your concrete class with
+`DataFrameTransformerEngine` so that the Flyte type engine can handle dataframe libraries. This is the
+encoding interface: it is used when the Flyte type engine converts a Python value into a Flyte Literal.
+For the other direction, see `DataFrameDecoder`.
 
 
 
