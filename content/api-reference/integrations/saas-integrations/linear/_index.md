@@ -2,7 +2,7 @@
 title: Linear
 description: "Linear webhooks for Flyte."
 icon: book
-version: 2.10.6
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -30,7 +30,7 @@ Linear's API is a single GraphQL endpoint, so use `gql` from your tasks. See
 | Method | Description |
 |-|-|
 | [`parse()`](#parse) | Normalize a Linear delivery into a `WebhookEvent`. |
-| [`verify()`](#verify) | Verify the `X-Linear-Signature` HMAC over the raw body. |
+| [`verify()`](#verify) | Verify the `Linear-Signature` HMAC over the raw body. |
 
 
 ### Variables
@@ -66,7 +66,7 @@ def verify(
     secret: str,
 ) -> bool
 ```
-Verify the `X-Linear-Signature` HMAC over the raw body.
+Verify the `Linear-Signature` HMAC over the raw body.
 
 
 | Parameter | Type | Description |

@@ -21,8 +21,8 @@ For setup, patterns, and per-product examples, see the [SaaS integrations](../..
 | --- | --- | --- | --- |
 | `flyteplugins-github` | [GitHub](./github/_index) | [GitHub](../../../integrations/saas-integrations/github) | HMAC-SHA256 (`X-Hub-Signature-256`) |
 | `flyteplugins-slack` | [Slack](./slack/_index) | [Slack](../../../integrations/saas-integrations/slack) | HMAC-SHA256 with a replay window (`X-Slack-Signature`) |
-| `flyteplugins-linear` | [Linear](./linear/_index) | [Linear](../../../integrations/saas-integrations/linear) | HMAC-SHA256 (`X-Linear-Signature`) |
-| `flyteplugins-clickup` | [ClickUp](./clickup/_index) | [ClickUp](../../../integrations/saas-integrations/clickup) | HMAC-SHA256 (`X-Clickup-Signature`) |
+| `flyteplugins-linear` | [Linear](./linear/_index) | [Linear](../../../integrations/saas-integrations/linear) | HMAC-SHA256 (`Linear-Signature`) |
+| `flyteplugins-clickup` | [ClickUp](./clickup/_index) | [ClickUp](../../../integrations/saas-integrations/clickup) | HMAC-SHA256 (`X-Signature`) |
 | `flyteplugins-jira` | [Jira](./jira/_index) | [Jira](../../../integrations/saas-integrations/jira) | none — Jira does not sign; a shared token stands in |
 
 > [!NOTE] Event constants are not in the generated reference

@@ -2,7 +2,7 @@
 title: LinearProvider
 description: "Linear's webhook provider, with its defaults pre-wired."
 icon: braces
-version: 2.10.6
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

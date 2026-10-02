@@ -2,7 +2,7 @@
 title: GitHub
 description: "GitHub webhooks for Flyte."
 icon: book
-version: 2.10.6
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

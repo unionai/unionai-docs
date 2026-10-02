@@ -19,8 +19,8 @@ These integrations close that gap. One app receives webhooks from any combinatio
 |---|---|---|---|
 | [GitHub](https://docs.github.com/en/webhooks) | [GitHub](./github) | `flyteplugins-github` | HMAC-SHA256 (`X-Hub-Signature-256`) |
 | [Slack](https://api.slack.com/apis/events-api) | [Slack](./slack) | `flyteplugins-slack` | HMAC-SHA256 with a replay window (`X-Slack-Signature`) |
-| [Linear](https://developers.linear.app/docs/graphql/webhooks) | [Linear](./linear) | `flyteplugins-linear` | HMAC-SHA256 (`X-Linear-Signature`) |
-| [ClickUp](https://developer.clickup.com/docs/webhooks) | [ClickUp](./clickup) | `flyteplugins-clickup` | HMAC-SHA256 (`X-Clickup-Signature`) |
+| [Linear](https://developers.linear.app/docs/graphql/webhooks) | [Linear](./linear) | `flyteplugins-linear` | HMAC-SHA256 (`Linear-Signature`) |
+| [ClickUp](https://developer.clickup.com/docs/webhooks) | [ClickUp](./clickup) | `flyteplugins-clickup` | HMAC-SHA256 (`X-Signature`) |
 | [Jira](https://developer.atlassian.com/cloud/jira/platform/webhooks/) | [Jira](./jira) | `flyteplugins-jira` | **none** — Jira does not sign; a shared token stands in |
 
 Install the packages for the products you wire up. The receiver itself ships with Flyte, so there is no core package to add:

@@ -22,7 +22,7 @@ Requires Python 3.10 or later. The `app` extra pulls in `fastapi` and `uvicorn` 
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_webhooks.py" fragment=app lang=python >}}
 
-`CLICKUP_WEBHOOK_SECRET` is mounted for you from the provider's `default_secret_env`. Deliveries are verified against an HMAC-SHA256 in `X-Clickup-Signature`.
+`CLICKUP_WEBHOOK_SECRET` is mounted for you from the provider's `default_secret_env`. Deliveries are verified against an HMAC-SHA256 in `X-Signature` — ClickUp's signature header is unprefixed by its own name, so it is `X-Signature` and not `X-Clickup-Signature`.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_webhooks.py" fragment=handler lang=python >}}
 

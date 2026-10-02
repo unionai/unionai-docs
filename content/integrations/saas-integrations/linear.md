@@ -22,7 +22,7 @@ Requires Python 3.10 or later. The `app` extra pulls in `fastapi` and `uvicorn` 
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/linear/linear_webhooks.py" fragment=app lang=python >}}
 
-`LINEAR_WEBHOOK_SECRET` is mounted for you from the provider's `default_secret_env`. Deliveries are verified against an HMAC-SHA256 in `X-Linear-Signature`.
+`LINEAR_WEBHOOK_SECRET` is mounted for you from the provider's `default_secret_env`. Deliveries are verified against an HMAC-SHA256 in `Linear-Signature` — note there is no `X-` prefix, which is unusual enough to look like a typo and is not one.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/linear/linear_webhooks.py" fragment=handler lang=python >}}
 
