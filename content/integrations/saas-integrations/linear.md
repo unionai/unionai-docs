@@ -74,6 +74,11 @@ Linear takes the API key raw in the `Authorization` header, with no `Bearer` pre
 flyte run --local linear_tasks.py replay_sample_delivery
 ```
 
+> [!NOTE] Why the replay asserts the header *name*
+> `verify` and `SAMPLE_DELIVERY` agree with each other whatever the signature header is called, so a round trip is self-consistent for any name — and cannot catch a wrong one. That is exactly how Linear's header shipped as `X-Linear-Signature` in releases before 2.10.7: conformance was green while every genuine delivery got a 401.
+>
+> Asserting the literal header a real delivery carries is the one check the round trip cannot make. It is worth copying into your own tests for any provider you add.
+
 ## Examples
 
 Both files live in [`v2/integrations/flyte-plugins/linear`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/linear):

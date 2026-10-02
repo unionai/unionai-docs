@@ -112,7 +112,9 @@ Events carrying **no** scope at all are also not dispatched: an allowlist cannot
 
 ## Try one without an account
 
-Every provider plugin ships a `SAMPLE_DELIVERY` — a trimmed but real payload, plus a function that signs it. It is what each plugin's own conformance test replays in CI, which is how `verify` and `parse` are checked against something the product actually sent rather than against each other.
+Every provider plugin ships a `SAMPLE_DELIVERY` — a trimmed but real payload, plus a function that signs it. It is what each plugin's own conformance test replays in CI, so `parse` is exercised against a body the product actually sent rather than one written to match the parser.
+
+Be precise about what that does and does not cover, because the gap bit us. The **body** is real, so field extraction is checked against reality. The **headers** are fabricated by the plugin, so for anything whose name the plugin chooses — the signature header above all — the sample agrees with `verify` whatever that name is. ClickUp and Linear both shipped reading a header no real delivery carries, with conformance green and every genuine webhook getting a 401. Asserting the literal header name is a separate check, and the product pages show it.
 
 That makes it the fastest way to see the shape of an event before wiring anything up:
 
