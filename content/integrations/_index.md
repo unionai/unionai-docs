@@ -40,6 +40,7 @@ Flyte 2 integrations fall into the following categories:
 8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
 10. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+11. **SaaS integrations**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
 
 ## Distributed compute
 
@@ -160,6 +161,26 @@ Agentic AI integrations let you run agents written in a third-party framework as
 | [Agent frameworks](./agents/_index) | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
 | [TypeSafe AI](./typesafe-ai/_index)  | Typed, confidence-scored answers from a System One model, as task inputs and outputs                                     | Model-based I/O guards, intent routing, typed agent control flow |
+
+## SaaS integrations
+
+SaaS integrations let something that happened in another product start a Flyte run. A pull request opens, an issue is filed, someone types a slash command, a ticket changes status — the trigger lives in GitHub or Linear or Slack, but the work that should follow is typed, retried, observable, and auditable, which is Flyte's half.
+
+One app receives webhooks from any combination of the five products below, authenticates each delivery with that product's own scheme, normalizes it into a single event model, and launches a run once per event however many times the delivery arrives. The receiver itself ships with Flyte, in `flyte.extras.webhooks`; each package below contributes only what is specific to its product.
+
+There is deliberately no Flyte wrapper around these products' APIs — the vendor clients are maintained, and a task is just a function that calls one. Two exceptions earn their place by doing something a vendor SDK cannot: GitHub pull-request review gates and Slack approvals both park a run on a durable human decision.
+
+### Supported SaaS integrations
+
+| Plugin | Description | Common use cases |
+| ------ | ----------- | ---------------- |
+| [GitHub](./saas-integrations/github) | Webhooks, human review gates, and GitHub App installation tokens | PR triage, gated merges and releases, coding agents |
+| [Slack](./saas-integrations/slack) | Events, interactivity and slash commands in; messages and button approvals out | ChatOps, deploy approvals, run notifications |
+| [Linear](./saas-integrations/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
+| [ClickUp](./saas-integrations/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
+| [Jira](./saas-integrations/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
+
+See [SaaS integrations](./saas-integrations/_index) for the shared event model, launch-once semantics, and scoping.
 
 ## Experiment tracking
 
