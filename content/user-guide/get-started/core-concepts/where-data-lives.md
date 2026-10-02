@@ -45,11 +45,6 @@ The control plane database holds everything Flyte needs to enumerate, schedule, 
 
 The values your tasks actually pass at runtime, even a bare `int`, do **not** live in the database. They are written to `inputs.pb` / `outputs.pb` in the bucket, and the database keeps only the pointer. See the next section.
 
-Two things never enter the database at all:
-
-- **Secret values and secret names.** Secrets are created and stored in your data plane (Kubernetes Secrets or your cloud secret manager). The control plane keeps no record of them; `flyte get secret` lists them live from the data plane. Only the *references* a task, run, app, or workspace declares are stored, and a reference is just a key name.
-- **Task container logs and Decks.** Logs stay in your data plane's logging stack; Decks are written to the bucket.
-
 Because environment variables in task, run, and app specs are stored as plain text in the database, put credentials and other sensitive configuration in secrets rather than in `env` maps.
 
 (Internally, Flyte uses several backing databases: Postgres for registrations and run history, separate stores for in-flight action coordination and caches. For developer purposes the only thing that matters is that they're all small-record, structured stores; none of them hold bulk content.)
