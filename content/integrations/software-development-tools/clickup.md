@@ -86,4 +86,5 @@ Both files live in [`v2/integrations/flyte-plugins/clickup`](https://github.com/
 ## See also
 
 - [Software development tools](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [ClickUp API reference](../../api-reference/integrations/software-development-tools/clickup/_index).
