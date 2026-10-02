@@ -164,7 +164,7 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 | **Tracing** | `@flyte.trace` functions appear as child nodes in the TUI with their own timing, inputs, and outputs. | [Traces](../../tasks/task-programming/traces) |
 | **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../../tasks/task-programming/reports) |
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) |
-| **Plugins** | Same decorators and APIs as on-cluster. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
+| **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
 | **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
 
 {{< variant union >}}
@@ -183,7 +183,7 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 
 The same code runs in both environments. Here's what changes:
 
-| Aspect | Local | Devbox/Remote |
+| Aspect | Local | Remote (devbox or deployed cluster) |
 |--------|-------|--------|
 | **Run pipeline** | `flyte run --local` | `flyte run` |
 | **TUI** | `--tui` flag | Dashboard in Flyte UI |
@@ -199,5 +199,5 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 
 ## Next steps
 
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
-- [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
+- [**Run on the devbox**](./running-devbox): Run a full Flyte cluster on your machine with Docker to test remote execution before moving to a deployed cluster.
+- [**Run on a deployed cluster**](./running-remote): Configure the CLI and SDK to run on a cluster in the cloud or on-premises.

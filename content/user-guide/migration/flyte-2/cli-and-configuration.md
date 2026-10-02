@@ -15,7 +15,7 @@ The command-line tool is renamed from `pyflyte` to `flyte`, and the config file 
 | Flyte 1 | Flyte 2 | Notes |
 |---|---|---|
 | `pyflyte run` | `flyte run` | Similar, different flags |
-| `pyflyte run --remote` | `flyte run` | On-cluster execution is the default in Flyte 2 |
+| `pyflyte run --remote` | `flyte run` | Remote is the default in Flyte 2 |
 | `pyflyte run` (local) | `flyte run --local` | Local execution is now explicit |
 | `pyflyte register` | `flyte deploy` | Different concept |
 | `pyflyte package` | N/A | Not needed in Flyte 2 |
@@ -38,7 +38,7 @@ pyflyte --config config.yaml run --remote my_module.py my_workflow --arg1 value1
 {{< tab "Flyte 2" >}}
 {{< markdown >}}
 ```shell
-# On-cluster (default)
+# Remote (default)
 flyte run my_module.py my_task --arg1 value1
 
 # Local
@@ -84,7 +84,7 @@ flyte deploy --recursive --all ./src
 
 | Flyte 1 flag | Flyte 2 flag | Notes |
 |---|---|---|
-| `--remote` | (default) | On-cluster execution is the default |
+| `--remote` | (default) | Remote is the default |
 | `--copy-all` | `--copy-style all` | File copying |
 | N/A | `--copy-style loaded_modules` | Default: only imported modules |
 | `-p, --project` | `--project` | Same |
@@ -151,7 +151,7 @@ flyte.init(
 )
 ```
 
-For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../get-started/run-modes/running-remote).
+For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a deployed cluster](../../get-started/run-modes/running-remote).
 
 ## Next
 

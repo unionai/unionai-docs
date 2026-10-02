@@ -17,7 +17,7 @@ The `flyte run` command and `flyte.run()` SDK function support three ways to lau
 
 Additionally, you can run deployed tasks through the Flyte/Union UI for interactive execution and monitoring.
 
-This page is about *how* a run is launched. *Where* it runs (in-process, on the devbox, or on a remote cluster) is covered in [Run modes](../../get-started/run-modes/_index).
+This page is about *how* a run is launched. Whether it runs locally in-process or remotely, on a devbox or a deployed cluster, is covered in [Run modes](../../get-started/run-modes/_index).
 
 ## Ephemeral deployment + run: The development shortcut
 

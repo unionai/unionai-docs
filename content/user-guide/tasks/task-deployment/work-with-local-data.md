@@ -1,6 +1,6 @@
 ---
 title: Work with local data
-description: Pass local files, directories, and DataFrames into an on-cluster run.
+description: Pass local files, directories, and DataFrames into a remote run.
 icon: folder-symlink
 weight: 3
 variants: +flyte +union
@@ -20,7 +20,7 @@ You can also create custom type extensions for specialized data types. See [cust
 
 ## Local execution
 
-One of the most powerful features of Flyte is the ability to work with data entirely locally, without creating an on-cluster run. When you run tasks in local mode, all inputs, outputs, and intermediate data stay on your local machine.
+One of the most powerful features of Flyte is the ability to work with data entirely locally, without creating a remote run. When you run tasks in local mode, all inputs, outputs, and intermediate data stay on your local machine.
 
 ```python
 import flyte
@@ -31,7 +31,7 @@ env = flyte.TaskEnvironment(name="local_data")
 async def process_data(data: str) -> str:
     return f"Processed: {data}"
 
-# Run locally - no blob store needed
+# Run locally - no remote storage needed
 run = flyte.with_runcontext(mode="local").run(process_data, data="test")
 run.wait()
 print(run.outputs()[0])
@@ -39,9 +39,9 @@ print(run.outputs()[0])
 
 For more details on local execution, see [how task run works](./how-task-run-works#local-execution).
 
-## Uploading local data to on-cluster runs
+## Uploading local data to remote runs
 
-When you want to send local data to a task running on-cluster, you need to upload it first. Flyte provides a secure data uploading system that handles this automatically. The same system used for [code bundling](./packaging) can upload files, DataFrames, and directories.
+When you want to send local data to a remote task, you need to upload it first. Flyte provides a secure data uploading system that handles this automatically. The same system used for [code bundling](./packaging) can upload files, DataFrames, and directories.
 
 To upload local data, use the Flyte core representation for that type with the `from_local_sync()` method.
 
@@ -83,10 +83,10 @@ if __name__ == "__main__":
         "value": [10, 20, 30]
     })
 
-    # Upload the local DataFrame for on-cluster execution
+    # Upload the local DataFrame for remote execution
     uploaded_df = flyte.io.DataFrame.from_local_sync(local_df)
 
-    # Pass to an on-cluster task
+    # Pass to a remote task
     run = flyte.run(process_dataframe, df=uploaded_df)
     print(f"Run URL: {run.url}")
     run.wait()
@@ -122,10 +122,10 @@ if __name__ == "__main__":
         temp.write("Hello, Flyte!")
         temp_path = temp.name
 
-    # Upload the local file for on-cluster execution
+    # Upload the local file for remote execution
     file = File.from_local_sync(temp_path)
 
-    # Pass to an on-cluster task
+    # Pass to a remote task
     run = flyte.run(process_file, file=file)
     print(f"Run URL: {run.url}")
     run.wait()
@@ -167,10 +167,10 @@ if __name__ == "__main__":
             with open(os.path.join(temp_dir, f"file{i}.py"), "w") as f:
                 f.write(f"print('Hello from file {i}!')")
 
-        # Upload the local directory for on-cluster execution
+        # Upload the local directory for remote execution
         dir = Dir.from_local_sync(temp_dir)
 
-        # Pass to an on-cluster task
+        # Pass to a remote task
         run = flyte.run(process_dir, dir=dir)
         print(f"Run URL: {run.url}")
         run.wait()
@@ -223,6 +223,6 @@ For details on configuring storage access, see [interact with runs and actions](
 | Scenario | Approach |
 |----------|----------|
 | Local development and testing | Use local execution mode |
-| Small test data to on-cluster tasks | Use `from_local_sync()` |
+| Small test data to remote tasks | Use `from_local_sync()` |
 | Passing data between runs | Pass outputs directly (automatic) |
 | Large datasets | Configure `flyte.storage` for direct cloud access |

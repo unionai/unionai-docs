@@ -74,7 +74,7 @@ If not provided, these default to the `task.project` and `task.domain` values in
 
 **`flyte run --local <PATH> <TASK_NAME>`**
 
-The `--local` option runs tasks in-process on your machine instead of on-cluster (on the devbox or a remote cluster, whichever your configuration points at):
+The `--local` option runs tasks locally, in-process, instead of submitting them to the remote Flyte backend (a devbox or a deployed cluster, whichever your configuration points at):
 
 ```bash
 flyte run --local my_example.py my_task --input "test_data"
@@ -112,7 +112,7 @@ The run appears under **Tracked Runs** in the project sidebar, a separate sectio
 flyte run --tracked hello
 ```
 
-Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with an on-cluster run.
+Because the run is reported to the control plane, `--tracked` needs an endpoint, project and domain in your configuration, and it cannot be combined with a remote run.
 
 Tracking reports the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported: your task's output stays in the terminal where you launched the run.
 

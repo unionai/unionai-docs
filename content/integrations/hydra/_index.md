@@ -118,7 +118,7 @@ The same `pipeline` task is the target of every example below.
 
 On-cluster execution is the default. Every entry point exposes an explicit knob:
 
-| Surface                | Local                       | On-cluster                             |
+| Surface                | Local                       | Remote                                 |
 | ---------------------- | --------------------------- | -------------------------------------- |
 | `@hydra.main` launcher | `hydra.launcher.mode=local` | `hydra.launcher.mode=remote` (default) |
 | `flyte hydra run`      | `--local`                   | `--mode remote` (default)              |
@@ -126,7 +126,7 @@ On-cluster execution is the default. Every entry point exposes an explicit knob:
 
 For the `@hydra.main` launcher, the default applies as soon as `hydra/launcher=flyte` is selected.
 
-On-cluster runs print the Flyte run URL immediately after submission, before any waiting. By default the plugin then waits for every submitted run to reach a terminal phase, capped at 32 worker threads. To tune or disable waiting:
+Remote runs print the Flyte run URL immediately after submission, before any waiting. By default the plugin then waits for every submitted run to reach a terminal phase, capped at 32 worker threads. To tune or disable waiting:
 
 | Surface                | Tune wait threads                    | Fire and forget             |
 | ---------------------- | ------------------------------------ | --------------------------- |
@@ -140,7 +140,7 @@ For a sweep, every job is submitted first, and then the plugin waits for all run
 
 Use this path when your script already has a `@hydra.main` entry point. Selecting `hydra/launcher=flyte` swaps Hydra's built-in `BasicLauncher` for `FlyteLauncher`.
 
-Single on-cluster run:
+Single remote run:
 
 ```bash
 python train.py hydra/launcher=flyte hydra.launcher.mode=remote
@@ -152,7 +152,7 @@ Single local run:
 python train.py hydra/launcher=flyte hydra.launcher.mode=local
 ```
 
-On-cluster grid sweep submission: Each comma-separated value expands into a separate Flyte execution; six executions in this example:
+Remote grid sweep submission: Each comma-separated value expands into a separate Flyte execution; six executions in this example:
 
 ```bash{hl_lines=[4]}
 python train.py --multirun \
@@ -220,7 +220,7 @@ run = hydra_run(
 )
 ```
 
-For an on-cluster run with `wait=True`, the return value is a wrapper exposing both `run.url` and `run.value` (the resolved task output). The wrapper is `float()`-castable so Hydra sweepers such as Optuna can consume scalar objectives directly. With `wait=False`, the return value is the underlying `flyte.remote.Run`.
+For a remote run with `wait=True`, the return value is a wrapper exposing both `run.url` and `run.value` (the resolved task output). The wrapper is `float()`-castable so Hydra sweepers such as Optuna can consume scalar objectives directly. With `wait=False`, the return value is the underlying `flyte.remote.Run`.
 
 ### Grid sweep
 
@@ -289,7 +289,7 @@ runs = hydra_sweep(
 
 ### Single run
 
-On-cluster (default):
+Remote (default):
 
 ```bash
 flyte hydra run --config-path conf --config-name training \
@@ -458,7 +458,7 @@ flyte hydra run --multirun --config-path conf --config-name training \
   --cfg "model=choice(resnet,vit)"
 ```
 
-When `wait=True`, each on-cluster run's wrapped result exposes the task output as a float (via `__float__`), so Optuna can use it directly as the trial objective. With `wait=False`, the sweeper sees the run URL but cannot read objective values; use this only for fire-and-forget submission.
+When `wait=True`, each remote run's wrapped result exposes the task output as a float (via `__float__`), so Optuna can use it directly as the trial objective. With `wait=False`, the sweeper sees the run URL but cannot read objective values; use this only for fire-and-forget submission.
 
 Other sweepers that respect Hydra's plugin protocol are activated the same way: install the package, select `hydra/sweeper=<name>`, and set the sweeper's parameters under `hydra.sweeper.*`.
 

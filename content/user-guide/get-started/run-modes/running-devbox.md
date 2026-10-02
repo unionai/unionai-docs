@@ -12,8 +12,8 @@ variants: +flyte +union
 {{< markdown >}}
 
 The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
-local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
-execution without deploying to a production cluster.
+cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
+execution without connecting to a deployed cluster.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -21,7 +21,7 @@ execution without deploying to a production cluster.
 {{< variant flyte >}}
 {{< markdown >}}
 
-The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test on-cluster execution without connecting to a remote cluster.
+The Flyte devbox is a lightweight cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test remote execution without connecting to a deployed cluster.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -46,7 +46,7 @@ pip install flyte
 
 ## Start the devbox
 
-Launch the local cluster:
+Launch the devbox:
 
 {{< tabs "cpu" >}}
 {{< tab "CPU" >}}
@@ -149,7 +149,7 @@ Run it on the devbox:
 flyte run hello.py main
 ```
 
-Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a remote cluster.
+Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a deployed cluster.
 
 ## View results in the UI
 
@@ -232,4 +232,4 @@ def gpu_task() -> bool:
 ## Next steps
 
 - [**Core concepts**](../core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
-- [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a cluster that is not on your machine.
+- [**Run on a deployed cluster**](./running-remote): Configure the CLI and SDK to run on a cluster in the cloud or on-premises.

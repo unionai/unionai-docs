@@ -100,7 +100,7 @@ result = greet("World")
 print(result)  # "Hello, World!"
 ```
 
-This bypasses Flyte entirely and is useful for debugging logic. However, local calls don't track data, use cluster resources, or benefit from Flyte's features.
+This bypasses Flyte entirely and is useful for debugging logic. However, local calls don't track data, use remote resources, or benefit from Flyte's features.
 
 ## Running tasks remotely
 

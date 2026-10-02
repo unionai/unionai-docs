@@ -77,7 +77,7 @@ The example fans a small computation over a list of inputs with `flyte.map` and 
 
 > [!NOTE] Watch it in the console
 > Once your config file points at your {{< key product_name >}} endpoint (see
-> [Run on a remote cluster](./run-modes/running-remote#configuration-file)), swap `--local` for `--tracked`. The run still executes
+> [Run on a deployed cluster](./run-modes/running-remote#configuration-file)), swap `--local` for `--tracked`. The run still executes
 > on your machine, but reports its progress to {{< key product_name >}} and appears under
 > **Tracked Runs**:
 >
@@ -184,4 +184,4 @@ Now that you've run your first workflow:
 - [**Core concepts**](./core-concepts/_index): Understand the core concepts of Flyte programming
 - [**Run locally**](./run-modes/running-locally): Learn about the TUI, caching, and other features that work locally
 - [**Run on the devbox**](./run-modes/running-devbox): Learn about the devbox cluster and how to run workflows on it
-- [**Run on a remote cluster**](./run-modes/running-remote): Configure your environment to run on a cluster that is not on your machine
+- [**Run on a deployed cluster**](./run-modes/running-remote): Configure your environment to run on a cluster in the cloud or on-premises
