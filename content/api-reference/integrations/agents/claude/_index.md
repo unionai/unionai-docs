@@ -2,7 +2,7 @@
 title: Claude Agent SDK
 description: "Claude Agent SDK adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

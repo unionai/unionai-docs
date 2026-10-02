@@ -2,7 +2,7 @@
 title: Settings
 description: "Hierarchical configuration settings with inheritance support."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

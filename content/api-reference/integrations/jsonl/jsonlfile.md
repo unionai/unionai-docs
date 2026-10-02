@@ -2,7 +2,7 @@
 title: JsonlFile
 description: "A file type for JSONL (JSON Lines) files, backed by `orjson` for fast serialisation."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

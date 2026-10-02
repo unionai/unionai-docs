@@ -2,7 +2,7 @@
 title: Agent
 description: "A flyte-native tool-use agent harness."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

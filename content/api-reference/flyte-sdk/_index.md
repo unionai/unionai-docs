@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -34,7 +34,6 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.Environment`](flyte/environment) | Base class for execution environments, shared by `TaskEnvironment` and `AppEnvironment`. |
 | [`flyte.FixedRate`](flyte/fixedrate) | Fixed-rate (interval-based) automation schedule for use with `Trigger`. |
 | [`flyte.Image`](flyte/image) | Container image specification built using a fluent, two-step pattern. |
-| [`flyte.ImageBuild`](flyte/imagebuild) | Result of an image build operation. |
 | [`flyte.OnArtifact`](flyte/onartifact) | Artifact-based automation for use with `Trigger`: fire a run whenever a new version of the named artifact is created. |
 | [`flyte.PodTemplate`](flyte/podtemplate) | Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](flyte/resources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
@@ -231,9 +230,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.S3`](flyte.storage/s3) | S3 specific configuration. |
 | [`flyte.storage.Storage`](flyte.storage/storage) | Data storage configuration that applies across any provider. |
 | [`flyte.syncify.Syncify`](flyte.syncify/syncify) | A decorator to convert asynchronous functions or methods into synchronous ones. |
-| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by flytekit internally. |
-| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by Flyte internally. |
+| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core extensible type engine of Flyte. |
+| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every Python native type that Flyte can handle. |
 | [`flyte.types.TypeTransformerFailedError`](flyte.types/typetransformerfailederror) |  |
 
 ### Protocols
@@ -262,13 +261,10 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.HABANA_GAUDI()`](flyte/_index#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`flyte.Neuron()`](flyte/_index#neuron) | Create a Neuron device instance. |
 | [`flyte.TPU()`](flyte/_index#tpu) | Create a TPU device instance. |
-| [`flyte.build()`](flyte/_index#build) | Build an image. |
-| [`flyte.build_images()`](flyte/_index#build_images) | Build the images for the given environment(s). |
 | [`flyte.ctx()`](flyte/_index#ctx) | Returns the current flyte.models.TaskContext when running inside a task. |
 | [`flyte.current_domain()`](flyte/_index#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
 | [`flyte.current_project()`](flyte/_index#current_project) | Returns the current project from the Runtime environment (on the cluster) or from the initialized configuration. |
 | [`flyte.custom_context()`](flyte/_index#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
-| [`flyte.deploy()`](flyte/_index#deploy) | Deploy the given environment or list of environments. |
 | [`flyte.get_custom_context()`](flyte/_index#get_custom_context) | Get the current input context. |
 | [`flyte.group()`](flyte/_index#group) | Create a new group with the given name. |
 | [`flyte.init()`](flyte/_index#init) | Initialize the Flyte system with the given configuration. |
