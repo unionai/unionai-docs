@@ -19,7 +19,7 @@ Each mode answers two separate questions, and it helps to keep them apart:
 
 The devbox is why the distinction matters: it is a real Flyte cluster, so tasks run on-cluster in containers, but it runs on your laptop. It is on-cluster and local at the same time.
 
-Throughout the docs, **remote** always answers the second question. A remote cluster is one that is not on your machine, whether it runs in a cloud, on a neocloud, or on-premises. Containerized execution is called **on-cluster**, never remote.
+Throughout the docs, **remote** always answers the second question. A remote cluster is one that is not on your machine, whether it runs in the cloud or on-premises. Containerized execution is called **on-cluster**, never remote.
 
 |                    | In-process              | On-cluster |
 |--------------------|-------------------------|------------|
