@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Jira
 
-Receive [Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/webhooks/) webhooks in Flyte and turn them into runs. See [SaaS integrations](./_index) for the shared model this builds on.
+Receive [Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/webhooks/) webhooks in Flyte and turn them into runs. See [SDLC integrations](./_index) for the shared model this builds on.
 
 Read the authentication section before exposing the route. Jira is the one provider in this family that does not sign its webhooks, and that changes what you have to do.
 
@@ -108,5 +108,5 @@ Both files live in [`v2/integrations/flyte-plugins/jira`](https://github.com/uni
 
 ## See also
 
-- [SaaS integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
-- [Jira API reference](../../api-reference/integrations/saas-integrations/jira/_index).
+- [SDLC integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Jira API reference](../../api-reference/integrations/sdlc-integrations/jira/_index).

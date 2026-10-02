@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.clickup": "/api-reference/integrations/sdlc-integrations/clickup/"
+  },
+  "identifiers": {
+    "flyteplugins.clickup.ClickUpProvider": "/api-reference/integrations/sdlc-integrations/clickup/clickupprovider/",
+    "ClickUpProvider": "/api-reference/integrations/sdlc-integrations/clickup/clickupprovider/"
+  },
+  "methods": {
+    "flyteplugins.clickup.parse": "/api-reference/integrations/sdlc-integrations/clickup/#parse",
+    "flyteplugins.clickup.verify": "/api-reference/integrations/sdlc-integrations/clickup/#verify"
+  }
+}

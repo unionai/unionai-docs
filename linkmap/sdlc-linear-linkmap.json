@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.linear": "/api-reference/integrations/sdlc-integrations/linear/"
+  },
+  "identifiers": {
+    "flyteplugins.linear.LinearProvider": "/api-reference/integrations/sdlc-integrations/linear/linearprovider/",
+    "LinearProvider": "/api-reference/integrations/sdlc-integrations/linear/linearprovider/"
+  },
+  "methods": {
+    "flyteplugins.linear.parse": "/api-reference/integrations/sdlc-integrations/linear/#parse",
+    "flyteplugins.linear.verify": "/api-reference/integrations/sdlc-integrations/linear/#verify"
+  }
+}

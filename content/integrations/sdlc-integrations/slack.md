@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Slack
 
-Receive [Slack](https://api.slack.com/apis/events-api) webhooks in Flyte, send messages back from tasks, and park a run on a button click. Slack is the broadest of the [SaaS integrations](./_index) in both directions: it delivers three different shapes to one route, and it is one of two plugins that also *send*.
+Receive [Slack](https://api.slack.com/apis/events-api) webhooks in Flyte, send messages back from tasks, and park a run on a button click. Slack is the broadest of the [SDLC integrations](./_index) in both directions: it delivers three different shapes to one route, and it is one of two plugins that also *send*.
 
 ## Installation
 
@@ -152,5 +152,5 @@ Both files live in [`v2/integrations/flyte-plugins/slack`](https://github.com/un
 
 ## See also
 
-- [SaaS integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
-- [Slack API reference](../../api-reference/integrations/saas-integrations/slack/_index).
+- [SDLC integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Slack API reference](../../api-reference/integrations/sdlc-integrations/slack/_index).

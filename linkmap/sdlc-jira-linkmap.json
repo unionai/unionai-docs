@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.jira": "/api-reference/integrations/sdlc-integrations/jira/"
+  },
+  "identifiers": {
+    "flyteplugins.jira.JiraProvider": "/api-reference/integrations/sdlc-integrations/jira/jiraprovider/",
+    "JiraProvider": "/api-reference/integrations/sdlc-integrations/jira/jiraprovider/"
+  },
+  "methods": {
+    "flyteplugins.jira.parse": "/api-reference/integrations/sdlc-integrations/jira/#parse",
+    "flyteplugins.jira.verify": "/api-reference/integrations/sdlc-integrations/jira/#verify"
+  }
+}

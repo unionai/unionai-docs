@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Linear
 
-Receive [Linear](https://developers.linear.app/docs/graphql/webhooks) webhooks in Flyte and turn them into runs. See [SaaS integrations](./_index) for the shared model this builds on.
+Receive [Linear](https://developers.linear.app/docs/graphql/webhooks) webhooks in Flyte and turn them into runs. See [SDLC integrations](./_index) for the shared model this builds on.
 
 ## Installation
 
@@ -88,5 +88,5 @@ Both files live in [`v2/integrations/flyte-plugins/linear`](https://github.com/u
 
 ## See also
 
-- [SaaS integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
-- [Linear API reference](../../api-reference/integrations/saas-integrations/linear/_index).
+- [SDLC integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Linear API reference](../../api-reference/integrations/sdlc-integrations/linear/_index).

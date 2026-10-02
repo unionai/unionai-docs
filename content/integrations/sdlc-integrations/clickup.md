@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # ClickUp
 
-Receive [ClickUp](https://developer.clickup.com/docs/webhooks) webhooks in Flyte and turn them into runs. See [SaaS integrations](./_index) for the shared model this builds on.
+Receive [ClickUp](https://developer.clickup.com/docs/webhooks) webhooks in Flyte and turn them into runs. See [SDLC integrations](./_index) for the shared model this builds on.
 
 ## Installation
 
@@ -85,5 +85,5 @@ Both files live in [`v2/integrations/flyte-plugins/clickup`](https://github.com/
 
 ## See also
 
-- [SaaS integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
-- [ClickUp API reference](../../api-reference/integrations/saas-integrations/clickup/_index).
+- [SDLC integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [ClickUp API reference](../../api-reference/integrations/sdlc-integrations/clickup/_index).
