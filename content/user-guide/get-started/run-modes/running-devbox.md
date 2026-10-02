@@ -13,7 +13,7 @@ variants: +flyte +union
 
 The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
 local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
-execution without deploying to a cluster in the cloud.
+execution without deploying to a production cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

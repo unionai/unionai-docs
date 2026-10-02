@@ -19,7 +19,7 @@ Each mode answers two separate questions, and it helps to keep them apart:
 
 The devbox is why the distinction matters: it is a real Flyte cluster, so tasks run on-cluster in containers, but it runs on your laptop. It is on-cluster and local at the same time.
 
-Throughout the docs, **remote** always answers the second question. A remote cluster is one that is not on your machine. Containerized execution is called **on-cluster**, never remote.
+Throughout the docs, **remote** always answers the second question. A remote cluster is one that is not on your machine, whether it runs in a cloud, on a neocloud, or on-premises. Containerized execution is called **on-cluster**, never remote.
 
 |                    | In-process              | On-cluster |
 |--------------------|-------------------------|------------|
@@ -28,7 +28,7 @@ Throughout the docs, **remote** always answers the second question. A remote clu
 
 ### In the CLI and SDK
 
-The CLI and SDK name only the first question. `flyte run --local` and `flyte.with_runcontext(mode="local")` run in-process. Without `--local`, or with `mode="remote"`, the run goes on-cluster, on whichever cluster your configuration points at. That includes the devbox. The API's `remote` predates the devbox and means on-cluster; where the cluster is depends only on your configuration.
+The CLI and SDK name only the first question. `flyte run --local` and `flyte.with_runcontext(mode="local")` run in-process. Without `--local`, or with `mode="remote"`, the run goes on-cluster, on whichever cluster your configuration points at. That includes the devbox. In the API, `remote` means on-cluster, not a remote cluster; where the cluster is depends only on your configuration.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -51,7 +51,7 @@ Run tasks and apps in a lightweight Flyte cluster using Docker. Get the full Fly
 {{< /link-card >}}
 
 {{< link-card target="running-remote" icon="cloud" title="Remote" >}}
-Run tasks and apps on a remote cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
+Run tasks and apps on a remote cluster, in the cloud or on-premises, with full production capabilities including GPUs and distributed compute.
 {{< /link-card >}}
 
 {{< /grid >}}
