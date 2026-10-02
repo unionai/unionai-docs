@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.clickup": "/api-reference/integrations/saas-integrations/clickup/"
+  },
+  "identifiers": {
+    "flyteplugins.clickup.ClickUpProvider": "/api-reference/integrations/saas-integrations/clickup/clickupprovider/",
+    "ClickUpProvider": "/api-reference/integrations/saas-integrations/clickup/clickupprovider/"
+  },
+  "methods": {
+    "flyteplugins.clickup.parse": "/api-reference/integrations/saas-integrations/clickup/#parse",
+    "flyteplugins.clickup.verify": "/api-reference/integrations/saas-integrations/clickup/#verify"
+  }
+}

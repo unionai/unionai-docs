@@ -172,6 +172,54 @@ title = "Pydantic AI"
 name = "agents-pydantic-ai"
 output_folder = "content/api-reference/integrations/agents/pydantic-ai"
 
+# SaaS webhook providers. One package per product, each contributing a single
+# `Provider` to the receiver in `flyte.extras.webhooks` -- which ships with flyte, so
+# the shared machinery (the app, dispatch, dedupe, the verification primitives) is
+# documented with the SDK and does NOT appear here. These five entries cover only
+# what is product-specific: the provider, its typed event constants, and the few
+# helpers that beat calling the vendor SDK (Slack approvals and sends, GitHub review
+# gates and App tokens).
+#
+# Grouped under a nested output_folder for the same reason as the agents adapters
+# above: they share one explanatory landing page, and five product names flattened
+# into output_base would read as five unrelated plugins. `name` stays flat
+# (saas-<product>) because it names the linkmap file, which lives in a single flat
+# directory; page URLs follow output_folder, not name.
+[[plugins]]
+package = "flyteplugins-clickup"
+plugin = "flyteplugins.clickup"
+title = "ClickUp"
+name = "saas-clickup"
+output_folder = "content/api-reference/integrations/saas-integrations/clickup"
+
+[[plugins]]
+package = "flyteplugins-github"
+plugin = "flyteplugins.github"
+title = "GitHub"
+name = "saas-github"
+output_folder = "content/api-reference/integrations/saas-integrations/github"
+
+[[plugins]]
+package = "flyteplugins-jira"
+plugin = "flyteplugins.jira"
+title = "Jira"
+name = "saas-jira"
+output_folder = "content/api-reference/integrations/saas-integrations/jira"
+
+[[plugins]]
+package = "flyteplugins-linear"
+plugin = "flyteplugins.linear"
+title = "Linear"
+name = "saas-linear"
+output_folder = "content/api-reference/integrations/saas-integrations/linear"
+
+[[plugins]]
+package = "flyteplugins-slack"
+plugin = "flyteplugins.slack"
+title = "Slack"
+name = "saas-slack"
+output_folder = "content/api-reference/integrations/saas-integrations/slack"
+
 # Frozen agentic plugins. flyteplugins-{anthropic,gemini,openai} were removed from
 # the SDK; agents now run on Flyte through the framework adapters documented under
 # content/integrations/agents/. Their API-reference dirs are retained by hand as

@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "flyteplugins.slack": "/api-reference/integrations/saas-integrations/slack/"
+  },
+  "identifiers": {
+    "flyteplugins.slack.SlackProvider": "/api-reference/integrations/saas-integrations/slack/slackprovider/",
+    "SlackProvider": "/api-reference/integrations/saas-integrations/slack/slackprovider/"
+  },
+  "methods": {
+    "flyteplugins.slack.handshake": "/api-reference/integrations/saas-integrations/slack/#handshake",
+    "flyteplugins.slack.parse": "/api-reference/integrations/saas-integrations/slack/#parse",
+    "flyteplugins.slack.verify": "/api-reference/integrations/saas-integrations/slack/#verify"
+  }
+}
