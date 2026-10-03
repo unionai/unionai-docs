@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.jira": "/api-reference/integrations/software-development-tools/jira/"
+  },
+  "identifiers": {
+    "flyteplugins.jira.JiraProvider": "/api-reference/integrations/software-development-tools/jira/jiraprovider/",
+    "JiraProvider": "/api-reference/integrations/software-development-tools/jira/jiraprovider/"
+  },
+  "methods": {
+    "flyteplugins.jira.parse": "/api-reference/integrations/software-development-tools/jira/#parse",
+    "flyteplugins.jira.verify": "/api-reference/integrations/software-development-tools/jira/#verify"
+  }
+}

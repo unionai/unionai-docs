@@ -2,7 +2,7 @@
 title: Grafana Agent Observability
 description: Send agent generations, tool calls, token usage, and cost to Grafana Agent Observability.
 icon: graph-up
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 

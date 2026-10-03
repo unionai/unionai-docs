@@ -2,7 +2,7 @@
 title: Snowflake
 description: Run SQL queries against Snowflake from a task, submitted asynchronously and polled for completion.
 icon: snow
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
