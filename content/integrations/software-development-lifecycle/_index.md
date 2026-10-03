@@ -1,5 +1,5 @@
 ---
-title: SDLC integrations
+title: Software development lifecycle
 description: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and turn them into Flyte runs.
 icon: broadcast
 weight: 2
@@ -7,7 +7,7 @@ variants: +flyte +union
 sidebar_expanded: false
 ---
 
-# SDLC integrations
+# Software development lifecycle
 
 Most of what a team wants automated starts somewhere other than Flyte. A pull request opens, an issue is filed, someone types a slash command, a ticket changes status. The work that should follow is exactly the kind of thing Flyte is good at — typed, retried, observable, and auditable — but the trigger lives in GitHub or Linear or Slack.
 
@@ -154,6 +154,6 @@ Step 2 is the one people skip and then regret: it separates "my credentials are 
 ## Next steps
 
 - Pick a product page above for its events, setup steps, and quirks.
-- [API reference](../../api-reference/integrations/sdlc-integrations/_index) for the five packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared core.
+- [API reference](../../api-reference/integrations/software-development-lifecycle/_index) for the five packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared core.
 
 {{< subpage-cards >}}

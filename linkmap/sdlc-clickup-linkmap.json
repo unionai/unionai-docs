@@ -1,13 +1,13 @@
 {
   "packages": {
-    "flyteplugins.clickup": "/api-reference/integrations/sdlc-integrations/clickup/"
+    "flyteplugins.clickup": "/api-reference/integrations/software-development-lifecycle/clickup/"
   },
   "identifiers": {
-    "flyteplugins.clickup.ClickUpProvider": "/api-reference/integrations/sdlc-integrations/clickup/clickupprovider/",
-    "ClickUpProvider": "/api-reference/integrations/sdlc-integrations/clickup/clickupprovider/"
+    "flyteplugins.clickup.ClickUpProvider": "/api-reference/integrations/software-development-lifecycle/clickup/clickupprovider/",
+    "ClickUpProvider": "/api-reference/integrations/software-development-lifecycle/clickup/clickupprovider/"
   },
   "methods": {
-    "flyteplugins.clickup.parse": "/api-reference/integrations/sdlc-integrations/clickup/#parse",
-    "flyteplugins.clickup.verify": "/api-reference/integrations/sdlc-integrations/clickup/#verify"
+    "flyteplugins.clickup.parse": "/api-reference/integrations/software-development-lifecycle/clickup/#parse",
+    "flyteplugins.clickup.verify": "/api-reference/integrations/software-development-lifecycle/clickup/#verify"
   }
 }

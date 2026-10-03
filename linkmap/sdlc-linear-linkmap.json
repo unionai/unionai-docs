@@ -1,13 +1,13 @@
 {
   "packages": {
-    "flyteplugins.linear": "/api-reference/integrations/sdlc-integrations/linear/"
+    "flyteplugins.linear": "/api-reference/integrations/software-development-lifecycle/linear/"
   },
   "identifiers": {
-    "flyteplugins.linear.LinearProvider": "/api-reference/integrations/sdlc-integrations/linear/linearprovider/",
-    "LinearProvider": "/api-reference/integrations/sdlc-integrations/linear/linearprovider/"
+    "flyteplugins.linear.LinearProvider": "/api-reference/integrations/software-development-lifecycle/linear/linearprovider/",
+    "LinearProvider": "/api-reference/integrations/software-development-lifecycle/linear/linearprovider/"
   },
   "methods": {
-    "flyteplugins.linear.parse": "/api-reference/integrations/sdlc-integrations/linear/#parse",
-    "flyteplugins.linear.verify": "/api-reference/integrations/sdlc-integrations/linear/#verify"
+    "flyteplugins.linear.parse": "/api-reference/integrations/software-development-lifecycle/linear/#parse",
+    "flyteplugins.linear.verify": "/api-reference/integrations/software-development-lifecycle/linear/#verify"
   }
 }

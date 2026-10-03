@@ -1,13 +1,13 @@
 {
   "packages": {
-    "flyteplugins.jira": "/api-reference/integrations/sdlc-integrations/jira/"
+    "flyteplugins.jira": "/api-reference/integrations/software-development-lifecycle/jira/"
   },
   "identifiers": {
-    "flyteplugins.jira.JiraProvider": "/api-reference/integrations/sdlc-integrations/jira/jiraprovider/",
-    "JiraProvider": "/api-reference/integrations/sdlc-integrations/jira/jiraprovider/"
+    "flyteplugins.jira.JiraProvider": "/api-reference/integrations/software-development-lifecycle/jira/jiraprovider/",
+    "JiraProvider": "/api-reference/integrations/software-development-lifecycle/jira/jiraprovider/"
   },
   "methods": {
-    "flyteplugins.jira.parse": "/api-reference/integrations/sdlc-integrations/jira/#parse",
-    "flyteplugins.jira.verify": "/api-reference/integrations/sdlc-integrations/jira/#verify"
+    "flyteplugins.jira.parse": "/api-reference/integrations/software-development-lifecycle/jira/#parse",
+    "flyteplugins.jira.verify": "/api-reference/integrations/software-development-lifecycle/jira/#verify"
   }
 }

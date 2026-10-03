@@ -172,8 +172,9 @@ title = "Pydantic AI"
 name = "agents-pydantic-ai"
 output_folder = "content/api-reference/integrations/agents/pydantic-ai"
 
-# SDLC webhook providers. One package per product, each contributing a single
-# `Provider` to the receiver in `flyte.extras.webhooks` -- which ships with flyte, so
+# Software-development-lifecycle webhook providers. One package per product,
+# each contributing a single `Provider` to the receiver in
+# `flyte.extras.webhooks` -- which ships with flyte, so
 # the shared machinery (the app, dispatch, dedupe, the verification primitives) is
 # documented with the SDK and does NOT appear here. These five entries cover only
 # what is product-specific: the provider, its typed event constants, and the few
@@ -184,41 +185,43 @@ output_folder = "content/api-reference/integrations/agents/pydantic-ai"
 # above: they share one explanatory landing page, and five product names flattened
 # into output_base would read as five unrelated plugins. `name` stays flat
 # (sdlc-<product>) because it names the linkmap file, which lives in a single flat
-# directory; page URLs follow output_folder, not name.
+# directory; page URLs follow output_folder, not name. It keeps the SDLC
+# abbreviation deliberately -- spelling the section out would give every linkmap
+# a 40-character prefix for no reader-visible gain, since `name` appears in no URL.
 [[plugins]]
 package = "flyteplugins-clickup"
 plugin = "flyteplugins.clickup"
 title = "ClickUp"
 name = "sdlc-clickup"
-output_folder = "content/api-reference/integrations/sdlc-integrations/clickup"
+output_folder = "content/api-reference/integrations/software-development-lifecycle/clickup"
 
 [[plugins]]
 package = "flyteplugins-github"
 plugin = "flyteplugins.github"
 title = "GitHub"
 name = "sdlc-github"
-output_folder = "content/api-reference/integrations/sdlc-integrations/github"
+output_folder = "content/api-reference/integrations/software-development-lifecycle/github"
 
 [[plugins]]
 package = "flyteplugins-jira"
 plugin = "flyteplugins.jira"
 title = "Jira"
 name = "sdlc-jira"
-output_folder = "content/api-reference/integrations/sdlc-integrations/jira"
+output_folder = "content/api-reference/integrations/software-development-lifecycle/jira"
 
 [[plugins]]
 package = "flyteplugins-linear"
 plugin = "flyteplugins.linear"
 title = "Linear"
 name = "sdlc-linear"
-output_folder = "content/api-reference/integrations/sdlc-integrations/linear"
+output_folder = "content/api-reference/integrations/software-development-lifecycle/linear"
 
 [[plugins]]
 package = "flyteplugins-slack"
 plugin = "flyteplugins.slack"
 title = "Slack"
 name = "sdlc-slack"
-output_folder = "content/api-reference/integrations/sdlc-integrations/slack"
+output_folder = "content/api-reference/integrations/software-development-lifecycle/slack"
 
 # Frozen agentic plugins. flyteplugins-{anthropic,gemini,openai} were removed from
 # the SDK; agents now run on Flyte through the framework adapters documented under

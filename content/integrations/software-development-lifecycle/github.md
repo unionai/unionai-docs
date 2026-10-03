@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # GitHub
 
-Receive [GitHub webhooks](https://docs.github.com/en/webhooks) in Flyte and turn them into runs. This is the richest of the [SDLC integrations](./_index) because it carries two things beyond the webhook provider — a human review gate and GitHub App authentication — both in places where Flyte can do something `PyGithub` cannot.
+Receive [GitHub webhooks](https://docs.github.com/en/webhooks) in Flyte and turn them into runs. This is the richest of the [Software development lifecycle](./_index) because it carries two things beyond the webhook provider — a human review gate and GitHub App authentication — both in places where Flyte can do something `PyGithub` cannot.
 
 ## Installation
 
@@ -153,5 +153,5 @@ Both files live in [`v2/integrations/flyte-plugins/github`](https://github.com/u
 
 ## See also
 
-- [SDLC integrations](./_index) for the shared model: the normalized event, `run_once`, and scoping.
-- [GitHub API reference](../../api-reference/integrations/sdlc-integrations/github/_index).
+- [Software development lifecycle](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [GitHub API reference](../../api-reference/integrations/software-development-lifecycle/github/_index).
