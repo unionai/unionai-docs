@@ -1,0 +1,27 @@
+{
+  "packages": {
+    "flyteplugins.github": "/api-reference/integrations/software-development-tools/github/"
+  },
+  "identifiers": {
+    "flyteplugins.github.GitHubProvider": "/api-reference/integrations/software-development-tools/github/githubprovider/",
+    "GitHubProvider": "/api-reference/integrations/software-development-tools/github/githubprovider/",
+    "flyteplugins.github.ReviewComment": "/api-reference/integrations/software-development-tools/github/reviewcomment/",
+    "ReviewComment": "/api-reference/integrations/software-development-tools/github/reviewcomment/",
+    "flyteplugins.github.ReviewContext": "/api-reference/integrations/software-development-tools/github/reviewcontext/",
+    "ReviewContext": "/api-reference/integrations/software-development-tools/github/reviewcontext/",
+    "flyteplugins.github.ReviewDecision": "/api-reference/integrations/software-development-tools/github/reviewdecision/",
+    "ReviewDecision": "/api-reference/integrations/software-development-tools/github/reviewdecision/"
+  },
+  "methods": {
+    "flyteplugins.github.build_review_prompt": "/api-reference/integrations/software-development-tools/github/#build_review_prompt",
+    "flyteplugins.github.clone_url": "/api-reference/integrations/software-development-tools/github/#clone_url",
+    "flyteplugins.github.collect_review_context": "/api-reference/integrations/software-development-tools/github/#collect_review_context",
+    "flyteplugins.github.condition_name_for": "/api-reference/integrations/software-development-tools/github/#condition_name_for",
+    "flyteplugins.github.handshake": "/api-reference/integrations/software-development-tools/github/#handshake",
+    "flyteplugins.github.mint_installation_token": "/api-reference/integrations/software-development-tools/github/#mint_installation_token",
+    "flyteplugins.github.parse": "/api-reference/integrations/software-development-tools/github/#parse",
+    "flyteplugins.github.parse_review_payload": "/api-reference/integrations/software-development-tools/github/#parse_review_payload",
+    "flyteplugins.github.review_pr": "/api-reference/integrations/software-development-tools/github/#review_pr",
+    "flyteplugins.github.verify": "/api-reference/integrations/software-development-tools/github/#verify"
+  }
+}

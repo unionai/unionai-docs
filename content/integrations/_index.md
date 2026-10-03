@@ -32,7 +32,7 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Software development lifecycle**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
+3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
 4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
 5. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
 6. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
@@ -162,7 +162,7 @@ Agentic AI integrations let you run agents written in a third-party framework as
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
 | [TypeSafe AI](./typesafe-ai/_index)  | Typed, confidence-scored answers from a System One model, as task inputs and outputs                                     | Model-based I/O guards, intent routing, typed agent control flow |
 
-## Software development lifecycle
+## Software development tools
 
 These integrations let something that happened in one of your team's own tools start a Flyte run. A pull request opens, an issue is filed, someone types a slash command, a ticket changes status — the trigger lives in GitHub or Linear or Slack, but the work that should follow is typed, retried, observable, and auditable, which is Flyte's half.
 
@@ -170,17 +170,17 @@ One app receives webhooks from any combination of the five products below, authe
 
 There is deliberately no Flyte wrapper around these products' APIs — the vendor clients are maintained, and a task is just a function that calls one. Two exceptions earn their place by doing something a vendor SDK cannot: GitHub pull-request review gates and Slack approvals both park a run on a durable human decision.
 
-### Supported software development lifecycle integrations
+### Supported software development tool integrations
 
 | Plugin | Description | Common use cases |
 | ------ | ----------- | ---------------- |
-| [GitHub](./software-development-lifecycle/github) | Webhooks, human review gates, and GitHub App installation tokens | PR triage, gated merges and releases, coding agents |
-| [Slack](./software-development-lifecycle/slack) | Events, interactivity and slash commands in; messages and button approvals out | ChatOps, deploy approvals, run notifications |
-| [Linear](./software-development-lifecycle/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
-| [ClickUp](./software-development-lifecycle/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
-| [Jira](./software-development-lifecycle/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
+| [GitHub](./software-development-tools/github) | Webhooks, human review gates, and GitHub App installation tokens | PR triage, gated merges and releases, coding agents |
+| [Slack](./software-development-tools/slack) | Events, interactivity and slash commands in; messages and button approvals out | ChatOps, deploy approvals, run notifications |
+| [Linear](./software-development-tools/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
+| [ClickUp](./software-development-tools/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
+| [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 
-See [Software development lifecycle](./software-development-lifecycle/_index) for the shared event model, launch-once semantics, and scoping.
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping.
 
 ## Experiment tracking
 
