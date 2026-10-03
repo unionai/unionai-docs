@@ -2,7 +2,7 @@
 title: flytekit.types.directory
 description: "Similar to {{< py_class_ref flytekit.types.file.FlyteFile >}} there are some 'preformatted' directory types."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

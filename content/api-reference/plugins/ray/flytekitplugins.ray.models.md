@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.ray.models
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +17,7 @@ layout: py_api
 | [`AutoscalerOptions`](./flytekitplugins.ray.models#flytekitpluginsraymodelsautoscaleroptions) |  |
 | [`HeadGroupSpec`](./flytekitplugins.ray.models#flytekitpluginsraymodelsheadgroupspec) |  |
 | [`RayCluster`](./flytekitplugins.ray.models#flytekitpluginsraymodelsraycluster) | Define RayCluster spec that will be used by KubeRay to launch the cluster. |
-| [`RayJob`](./flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2. |
+| [`RayJob`](./flytekitplugins.ray.models#flytekitpluginsraymodelsrayjob) | Models _ray_pb2.RayJob. |
 | [`WorkerGroupSpec`](./flytekitplugins.ray.models#flytekitpluginsraymodelsworkergroupspec) |  |
 
 ## flytekitplugins.ray.models.AutoscalerOptions

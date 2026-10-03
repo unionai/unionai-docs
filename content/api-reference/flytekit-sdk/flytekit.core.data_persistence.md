@@ -2,7 +2,7 @@
 title: flytekit.core.data_persistence
 description: "The Data persistence module is used by core flytekit and most of the core TypeTransformers to manage data fetch & store, between the durable backend store and the runtime environment."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -36,6 +36,8 @@ simple implementation that ships with the core.
 |-|-|-|
 | `default_local_file_access_provider` | `FileAccessProvider` |  |
 | `flyte_tmp_dir` | `str` |  |
+| `fsspec_known_implementations` | `dict` |  |
+| `fsspec_registry` | `mappingproxy` |  |
 
 ## Methods
 

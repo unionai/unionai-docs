@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.inference.ollama.serve
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

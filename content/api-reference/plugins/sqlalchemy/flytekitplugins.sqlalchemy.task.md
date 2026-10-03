@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.sqlalchemy.task
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -107,7 +108,7 @@ class SQLAlchemyTask(
     task_config: flytekitplugins.sqlalchemy.task.SQLAlchemyConfig,
     inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
     output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]] = flytekit.types.schema.types.FlyteSchema,
-    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-sqlalchemy-1.16.28',
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-sqlalchemy-1.16.29',
     **kwargs,
 )
 ```
@@ -156,7 +157,7 @@ class SQLAlchemyTask(
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python. |
+| [`dispatch_execute()`](#dispatch_execute) | This function is largely similar to the base PythonTask, with the exception that we have to infer the Python interface before executing. |
 | [`execute()`](#execute) | Rather than running here, send everything to the executor. |
 | [`find_lhs()`](#find_lhs) |  |
 | [`get_command()`](#get_command) |  |

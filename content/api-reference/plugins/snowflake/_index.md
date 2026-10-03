@@ -1,6 +1,8 @@
 ---
 title: Snowflake
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.snowflake."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

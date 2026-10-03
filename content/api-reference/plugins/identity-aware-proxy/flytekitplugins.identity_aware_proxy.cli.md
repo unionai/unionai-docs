@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.identity_aware_proxy.cli
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`GCPIdentityAwareProxyAuthenticator`](./flytekitplugins.identity_aware_proxy.cli#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator) | This Authenticator encapsulates the entire OAauth 2. |
+| [`GCPIdentityAwareProxyAuthenticator`](./flytekitplugins.identity_aware_proxy.cli#flytekitpluginsidentity_aware_proxycligcpidentityawareproxyauthenticator) | This Authenticator encapsulates the entire OAauth 2.0 flow with GCP Identity Aware Proxy. |
 
 ### Methods
 

@@ -1,6 +1,8 @@
 ---
 title: Async FSSpec
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.async_fsspec."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
