@@ -154,6 +154,7 @@ Step 2 is the one people skip and then regret: it separates "my credentials are 
 ## Next steps
 
 - Pick a product page above for its events, setup steps, and quirks.
+- [Software development lifecycle](../../user-guide/software-development-lifecycle/_index): what to build on top of these, and how the pieces fit into review, release, and incident response.
 - [API reference](../../api-reference/integrations/software-development-tools/_index) for the five packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared core.
 
 {{< subpage-cards >}}

@@ -180,7 +180,7 @@ There is deliberately no Flyte wrapper around these products' APIs — the vendo
 | [ClickUp](./software-development-tools/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 
-See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping.
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping — and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
 
 ## Experiment tracking
 
