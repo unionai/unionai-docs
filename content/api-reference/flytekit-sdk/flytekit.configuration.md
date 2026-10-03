@@ -2,7 +2,7 @@
 title: flytekit.configuration
 description: "There are multiple ways to configure flytekit settings."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -215,7 +215,7 @@ class Config(
     secrets: SecretsConfig = SecretsConfig(env_prefix='_FSEC_', default_dir='/etc/secrets', file_prefix=''),
     stats: StatsConfig = StatsConfig(host='localhost', port=8125, disabled=False, disabled_tags=False),
     data_config: DataConfig = DataConfig(s3=S3Config(enable_debug=False, endpoint=None, retries=3, backoff=datetime.timedelta(seconds=5), access_key_id=None, secret_access_key=None, adressing_style=None), gcs=GCSConfig(gsutil_parallelism=False), azure=AzureBlobStorageConfig(account_name=None, account_key=None, tenant_id=None, client_id=None, client_secret=None), generic=GenericPersistenceConfig(attach_execution_metadata=True)),
-    local_sandbox_path: str = '/tmp/flytegaolxhbu',
+    local_sandbox_path: str = '/tmp/flyte1qk08jte',
 )
 ```
 | Parameter | Type | Description |

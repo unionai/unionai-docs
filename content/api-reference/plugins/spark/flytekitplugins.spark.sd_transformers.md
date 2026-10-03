@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.spark.sd_transformers
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -52,7 +53,7 @@ the StructuredDatasetEncoder
 
 | Method | Description |
 |-|-|
-| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the. |
+| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the incoming dataframe with defaults set for that dataframe type. |
 
 
 #### encode()
@@ -108,7 +109,7 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Method | Description |
 |-|-|
-| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal. |
+| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal value into a Python instance. |
 
 
 #### decode()
@@ -160,7 +161,7 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Method | Description |
 |-|-|
-| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal. |
+| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal value into a Python instance. |
 
 
 #### decode()
@@ -236,7 +237,7 @@ the StructuredDatasetEncoder
 
 | Method | Description |
 |-|-|
-| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the. |
+| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the incoming dataframe with defaults set for that dataframe type. |
 
 
 #### encode()

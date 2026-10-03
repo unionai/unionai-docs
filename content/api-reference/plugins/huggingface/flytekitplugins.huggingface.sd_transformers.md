@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.huggingface.sd_transformers
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,7 +14,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`HuggingFaceDatasetRenderer`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets. |
+| [`HuggingFaceDatasetRenderer`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasetrenderer) | The datasets.Dataset printable representation is saved to HTML. |
 | [`HuggingFaceDatasetToParquetEncodingHandler`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformershuggingfacedatasettoparquetencodinghandler) |  |
 | [`ParquetToHuggingFaceDatasetDecodingHandler`](./flytekitplugins.huggingface.sd_transformers#flytekitpluginshuggingfacesd_transformersparquettohuggingfacedatasetdecodinghandler) |  |
 
@@ -73,7 +74,7 @@ the StructuredDatasetEncoder
 
 | Method | Description |
 |-|-|
-| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the. |
+| [`encode()`](#encode) | Even if the user code returns a plain dataframe instance, the dataset transformer engine will wrap the incoming dataframe with defaults set for that dataframe type. |
 
 
 #### encode()
@@ -129,7 +130,7 @@ and we have to get a Python value out of it. For the other way, see the Structur
 
 | Method | Description |
 |-|-|
-| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal. |
+| [`decode()`](#decode) | This is code that will be called by the dataset transformer engine to ultimately translate from a Flyte Literal value into a Python instance. |
 
 
 #### decode()

@@ -2,7 +2,7 @@
 title: flytekit.models.presto
 description: "This is a deprecated module."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

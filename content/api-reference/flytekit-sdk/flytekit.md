@@ -2,7 +2,7 @@
 title: flytekit
 description: "This package contains all of the most common abstractions you'll need to write Flyte workflows and extend Flytekit."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
