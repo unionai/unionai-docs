@@ -28,9 +28,11 @@ Register the model or dataset as an artifact, and use an [artifact trigger](../t
 
 ## Gate a pull request
 
-The [GitHub integration](../../integrations/software-development-tools/github) receives the pull request event and launches a task. The receiver is the one shown in [Event-driven automation](./event-driven-automation#launch-once-per-event). The launched task does the work and reports the result as a check run, which branch protection can require:
+The [GitHub integration](../../integrations/software-development-tools/github) receives the pull request event and launches a task. The receiver is the one shown in [Event-driven automation](./event-driven-automation#launch-once-per-event). The launched task does the work and writes the result back to the pull request. This one labels the pull request by size:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_tasks.py" fragment=task lang=python >}}
+
+To make the result a required status, have the task publish a check run through the GitHub API (for example, `Repository.create_check_run` in PyGithub), and require that check in branch protection. GitHub accepts check runs only from a GitHub App, so authenticate with an [installation token](#gate-agent-pull-requests) rather than a personal access token.
 
 Running the gate as a Flyte task instead of a CI job lets it:
 

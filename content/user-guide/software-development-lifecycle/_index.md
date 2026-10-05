@@ -35,7 +35,7 @@ The section uses no special lifecycle features. Each need maps to an ordinary pa
 |---|---|
 | Start a run from GitHub, Slack, Linear, ClickUp, or Jira | [Software development tools](../../integrations/software-development-tools/_index) |
 | Start a run on a schedule | [Triggers](../triggers/_index) |
-| Launch once per event, even when the event is delivered twice | `run_once`, keyed on the event |
+| Launch once per event when a delivery is retried or resent | `run_once`, keyed on the event. See [Event-driven automation](./event-driven-automation#launch-once-per-event) for the concurrent case. |
 | Wait for a person, possibly for days | [External conditions](../tasks/task-programming/conditions) |
 | Keep an expensive gate fast | [Caching](../tasks/task-configuration/caching), [fan-out](../tasks/task-programming/fanout), and per-task [resources](../tasks/task-configuration/resources) |
 | Survive a flaky provider | [Retries and timeouts](../tasks/task-configuration/retries-and-timeouts) |

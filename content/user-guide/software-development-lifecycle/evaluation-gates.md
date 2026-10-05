@@ -59,7 +59,14 @@ async def gate(candidate_uri: str, baseline_uri: str, cases: list[dict]) -> bool
         score_all(candidate_uri, cases),
         score_all(baseline_uri, cases),
     )
-    return decide(candidate, baseline)
+    passed = decide(candidate, baseline)
+    await flyte.report.replace.aio(
+        f"<h2>{'Pass' if passed else 'Fail'}</h2>"
+        f"<p>Candidate mean: {sum(candidate) / len(candidate):.3f} ({candidate_uri})</p>"
+        f"<p>Baseline mean: {sum(baseline) / len(baseline):.3f} ({baseline_uri})</p>",
+        do_flush=True,
+    )
+    return passed
 ```
 
 Three settings do most of the work:
@@ -67,6 +74,8 @@ Three settings do most of the work:
 - `cache="auto"` on `score_one`. The baseline's scores are the same for every candidate you test against it, so after the first gate they come from the cache. `repeat` is an input, so each repeat is a separate sample rather than a cache hit on the first one.
 - `retries=3` on `score_one`, not on `gate`. A transient provider error retries one case. A retry on `gate` would re-run every case.
 - `flyte.map.aio` for the fan-out. Each case is its own action, so a failure at case 900 doesn't lose the first 899.
+
+The cache key is the task's code plus its inputs, so cached scores are only valid while `model_uri` names exactly one model. Pass an immutable identifier, such as a registry version or a provider's dated model snapshot, never an alias like `latest`. If anything else that affects scoring changes, such as a judge model or a dependency, add it as an input to `score_one` so both sides are rescored.
 
 `flyte.map` passes the lists to `score_one` position by position, like Python's built-in `map`. `return_exceptions=False` makes a case that exhausts its retries fail the gate instead of appearing as an exception in the score list.
 
@@ -112,7 +121,7 @@ To version the evaluation set, register it as an [artifact](../artifacts/_index)
 
 [MLflow](../../integrations/mlflow/_index) and [Weights & Biases](../../integrations/wandb/_index) both log from inside a task, so the recorded metrics trace back to the run that produced them.
 
-For the readable half, `report=True` gives the gate a task report. If the reviewer needs plots and tables, [Papermill](../../integrations/papermill/_index) runs a parameterized notebook as a task, so the notebook is the gate's output.
+For the readable half, `report=True` gives the gate a task report, which the example fills with `flyte.report.replace.aio`. Add per-slice scores and the worst-scoring cases there. If the reviewer needs plots and tables, [Papermill](../../integrations/papermill/_index) runs a parameterized notebook as a task, so the notebook is the gate's output.
 
 ## Gate the input
 
