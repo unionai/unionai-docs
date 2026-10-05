@@ -147,7 +147,7 @@ If you do not have a workflow to hand yet, `hello` runs a built-in one and needs
 flyte run --tracked hello
 ```
 
-Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options). To track a run started from Python with `flyte.run()`, see [How task run works](../../tasks/task-deployment/how-task-run-works#local-execution).
+Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options). To track a run started from Python with `flyte.run()`, see [How task run works](../../tasks/task-deployment/how-task-run-works#tracking-a-local-run).
 
 {{< /markdown >}}
 {{< /variant >}}

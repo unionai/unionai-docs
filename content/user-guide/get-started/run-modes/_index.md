@@ -13,7 +13,7 @@ A run is either **local** or **remote**. The same task code runs unchanged eithe
 ## Local and remote
 
 - **Local** runs the task in-process, directly in your Python interpreter. There is no cluster and no container. Select it with `flyte run --local` or `flyte.with_runcontext(mode="local")`.
-- **Remote** runs the task on a Flyte backend, inside a container that a cluster schedules. It is the default: `flyte run` without `--local`, or `mode="remote"`. Your configuration decides which backend.
+- **Remote** runs the task on a Flyte backend, inside a container that a cluster schedules. It is the default for `flyte run`, and you can select it explicitly with `mode="remote"`. Your configuration decides which backend.
 
 A remote backend is either a **devbox** on your own machine or a **deployed cluster** in the cloud or on-premises. "Remote" describes how the run executes, not where the machine is: a devbox run is remote even though the devbox runs on your laptop. This is how the CLI and SDK use the word throughout.
 
@@ -28,7 +28,7 @@ A remote backend is either a **devbox** on your own machine or a **deployed clus
 
 ### Watching a local run
 
-A local run can also report its progress to {{< key product_name >}}. Add `--tracked` and the run still executes in-process on your machine, but it appears in the console under **Tracked Runs**. Tracking changes what you can see, not where the run executes. See [Track local runs in the console](./running-locally#track-local-runs-in-the-console).
+A local run can also report its progress to {{< key product_name >}}. Run with `--tracked`, which implies `--local`, and the run still executes in-process on your machine, but it appears in the console under **Tracked Runs**. Tracking changes what you can see, not where the run executes. See [Track local runs in the console](./running-locally#track-local-runs-in-the-console).
 
 {{< /markdown >}}
 {{< /variant >}}
