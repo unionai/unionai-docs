@@ -1,6 +1,6 @@
 ---
 title: Human gates and approvals
-description: Put a person in the loop with a durable condition — and avoid the failure mode where the run waits forever.
+description: Put a person in the loop with a durable condition, and decide what happens when nobody answers.
 icon: person-check
 weight: 3
 variants: +flyte +union
@@ -8,51 +8,47 @@ variants: +flyte +union
 
 # Human gates and approvals
 
-Some decisions should not be automated: a production deploy, a schema migration, a model that will touch customers, an agent action with real consequences. Flyte's answer is the [external condition](../tasks/task-programming/conditions) — a first-class action that pauses a run until a signal arrives.
+Use a human gate for decisions that should not be automated, such as a production deploy, a schema migration, or an agent action with real consequences. The gate is an [external condition](../tasks/task-programming/conditions): an action that pauses a run until a signal arrives.
 
-The reason it is worth using rather than hand-rolling is narrow and important: **the waiting is durable.** The condition is state on the backend, not a held-open process. The run survives restarts, redeploys, and node failures while it waits, and it can wait for days without consuming anything. A script that blocks on an HTTP long-poll has none of those properties, and loses the decision when the pod is rescheduled.
+The wait is durable. The condition is stored on the backend, not held by a running process, so the run survives restarts, redeploys, and node failures, and can wait for days without using compute. A script that blocks on an HTTP long-poll loses the decision when its pod is rescheduled.
 
-## Three ways to ask
+## Choose where the person answers
 
-| Approach | The person answers in | Reach for it when |
+| Approach | The person answers in | Use it when |
 |---|---|---|
-| A bare [condition](../tasks/task-programming/conditions) | The Flyte UI | The approver already works in Flyte, or the decision needs run context to make |
-| [Slack approval](../../integrations/software-development-tools/slack) | Slack, by clicking a button | The approver lives in chat and should not have to go find a UI |
-| [GitHub review gate](../../integrations/software-development-tools/github) | The Flyte UI, with the PR's metadata inlined | The decision is about a specific pull request |
+| A [condition](../tasks/task-programming/conditions) | The {{< key product_name >}} UI | The approver works in {{< key product_name >}}, or needs the run's context to decide |
+| A [Slack approval](../../integrations/software-development-tools/slack) | Slack, with a button | The approver works in chat |
+| A [GitHub review gate](../../integrations/software-development-tools/github) | The {{< key product_name >}} UI, with the PR's metadata shown | The decision is about a specific pull request |
 
-These are not exclusive. A Slack approval *is* a condition underneath, which has a consequence worth knowing: an approval that nobody clicks in Slack is not a stuck run, because the same condition is answerable from the Flyte UI. Either path resolves it.
+A Slack approval is a condition underneath. If nobody clicks the button in Slack, the same condition can still be answered in the {{< key product_name >}} UI.
 
-## Asking in Slack
+## Ask in Slack
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_tasks.py" fragment=approval lang=python >}}
 
-The task half posts Block Kit buttons and parks the run. The webhook half signals the condition when a button is clicked, then replaces the buttons with a "decided by" line so nobody clicks twice. The button's `value` carries the run, action, and condition names, so the receiver needs no configuration to answer — which is what one line switches on:
+The task posts Block Kit buttons and pauses the run. When someone clicks a button, the receiver signals the condition and replaces the buttons with a "decided by" line. The button's `value` carries the run, action, and condition names, so the receiver needs only one setting to answer:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_webhooks.py" fragment=app lang=python >}}
 
-## Design the waiting, not just the asking
+## Set a timeout
 
-Most problems with human gates are not about posting the prompt. They are about what happens when nobody answers.
+A condition with no timeout waits indefinitely, and the run can sit "in progress" for weeks with nobody responsible for it.
 
-### Always set a timeout
+`approval.request` times out after one hour by default. On expiry, `wait()` raises `flyte.errors.ConditionTimedoutError`. Catch it and decide what a timeout means:
 
-A condition with no timeout waits indefinitely. That is occasionally what you want and usually not — the common outcome is a run that has been "in progress" for three weeks and that nobody is accountable for.
+- **No.** The right default for anything with consequences. Take the safe branch.
+- **Escalate.** Ask again in another channel, or page someone.
+- **Yes.** Rarely appropriate. If an unanswered hour counts as approval, the gate does not protect anything.
 
-`approval.request` defaults to one hour, which is a reasonable default precisely because it is short enough to notice. On expiry, `wait()` raises `flyte.errors.ConditionTimedoutError`, so decide what that means:
+## Make the prompt decidable
 
-- **Timeout means no.** The right default for anything with consequences. Catch it and take the safe branch.
-- **Timeout means escalate.** Re-ask in a different channel, or page someone.
-- **Timeout means yes.** Almost never defensible for a gate worth having. If a silent hour is as good as an approval, the gate is theater.
+The person answering is often not the author of the change, and may be on a phone. "Approve deploy?" sends them looking for context, so they approve without it or don't answer.
 
-### Make the prompt decidable
+Put the facts needed to decide in the prompt: what is changing, what it was measured against, what the measurement showed, and what happens on "no". `review_pr` includes the pull request's metadata. For Slack, build a richer Block Kit message with `approval.blocks(...)`, including context, fields, and a link to the report. The registered handler still answers it.
 
-The person answering is usually not the person who wrote the change, and often not at a desk. A prompt that says "Approve deploy?" forces them to go and find out what is in it — so they either approve blindly or ignore it.
+## Control who can answer
 
-Put the decision-relevant facts in the prompt: what is changing, against what it was measured, what the measurement said, and what happens if they say no. `review_pr` does this by construction, inlining the pull request's metadata. `approval.blocks(...)` is exposed so you can build a richer Block Kit message — context, fields, a link to the report — and still have it answered by the registered handler.
-
-### Be explicit about who may answer
-
-A Slack button is answerable by anyone who can see the channel. For a low-stakes deploy that is fine and is most of the value. For anything else, post it to a channel whose membership *is* the authorization, or use a Flyte condition where access is governed by the platform's own permissions.
+Anyone who can see a Slack channel can click its buttons. For a low-stakes deploy, that is acceptable. Otherwise, post to a channel whose membership is the set of approvers, or use a condition answered in the {{< key product_name >}} UI, where platform permissions control access.
 
 {{< variant union >}}
 {{< markdown >}}
@@ -60,27 +56,21 @@ See [Resource management](../project-patterns/resource-management) for the RBAC 
 {{< /markdown >}}
 {{< /variant >}}
 
-### Do not put a human in a loop that runs often
+## Keep human gates rare
 
-A gate on every merge trains people to click without reading within about a week, and then you have the latency of a human gate with the assurance of none.
+A gate on every merge trains people to approve without reading. Gate on changes that are rare and consequential, such as a production promotion, a migration, or a first rollout to real traffic. If a human gate fires more than a few times a day, replace it with an [evaluation gate](./evaluation-gates) and an alert.
 
-Gate on the things that are rare and consequential — a production promotion, a migration, a first rollout to real traffic. Let measurement gate the rest. If a human gate fires more than a few times a day, it has become a rubber stamp and should be replaced by an [evaluation gate](./evaluation-gates) with an alert.
+## Review AI output by exception
 
-## Human review of AI output
+Reviewing AI output, such as a generated summary or an agent's proposed action, differs from approving a change because its volume grows with traffic. Send only the uncertain cases to a person:
 
-There is a distinct case worth separating: not "approve this change", but "is this *output* acceptable" — a generated summary, an agent's proposed action, a low-confidence classification.
-
-The difference is volume. Change approvals are rare by nature; output reviews scale with traffic, so routing all of them to a person does not work. The usable pattern is to review **by exception**:
-
-1. Get a typed answer with a confidence score, rather than free text. [TypeSafe AI](../../integrations/typesafe-ai/_index) does this; [System one types](../system-one-types/_index) covers the pattern.
+1. Get a typed answer with a confidence score instead of free text. [TypeSafe AI](../../integrations/typesafe-ai/_index) does this, and [System one types](../system-one-types/_index) covers the pattern.
 2. Act automatically on confident answers.
-3. Park only the uncertain ones on a condition.
-4. Record the human's answer — it is labelled data, and it is the best source you will get for your next [evaluation set](./evaluation-gates).
+3. Pause the uncertain ones on a condition.
+4. Record each human answer. These answers are labeled data for your next [evaluation set](./evaluation-gates).
 
-That last step is the one most often skipped, and it is the one that compounds.
+## See also
 
-## Next
-
-- [External conditions](../tasks/task-programming/conditions) — the mechanism, in full.
-- [Evaluation gates](./evaluation-gates) — what to measure so fewer decisions need a person.
-- [Slack integration](../../integrations/software-development-tools/slack) — approvals, sends, and the receiver.
+- [External conditions](../tasks/task-programming/conditions) for the full condition API.
+- [Evaluation gates](./evaluation-gates) for measurements that reduce how often a person must decide.
+- [Slack integration](../../integrations/software-development-tools/slack) for approvals, messages, and the receiver.
