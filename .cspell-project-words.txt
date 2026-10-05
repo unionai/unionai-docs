@@ -4,7 +4,9 @@
 # shared allow-list used by cspell in CI.
 
 # --- Products / brands / orgs ---
+Apptainer
 Enroot
+GRES
 Pyxis
 sacct
 sbatch
