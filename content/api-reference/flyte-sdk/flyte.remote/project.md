@@ -2,7 +2,7 @@
 title: Project
 description: "A class representing a project in the Union API."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: FunctionTool
 description: "An OpenAI Agents `FunctionTool` backed by a Flyte task."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -42,18 +42,6 @@ class FunctionTool(
     custom_data_extractor: FunctionToolCustomDataExtractor | None = None,
     allowed_callers: list[ToolCaller] | None = None,
     output_json_schema: dict[str, Any] | None = None,
-    _output_type_adapter: TypeAdapter[Any] | None = None,
-    _failure_error_function: ToolErrorFunction | None = None,
-    _use_default_failure_error_function: bool = True,
-    _is_agent_tool: bool = False,
-    _agent_tool_default_identity: tuple[str, str] | None = None,
-    _is_codex_tool: bool = False,
-    _agent_instance: Any = None,
-    _tool_namespace: str | None = None,
-    _tool_namespace_description: str | None = None,
-    _mcp_title: str | None = None,
-    _tool_origin: ToolOrigin | None = None,
-    _emit_tool_origin: bool = True,
 )
 ```
 | Parameter | Type | Description |
@@ -77,18 +65,6 @@ class FunctionTool(
 | `custom_data_extractor` | `FunctionToolCustomDataExtractor \| None` | |
 | `allowed_callers` | `list[ToolCaller] \| None` | |
 | `output_json_schema` | `dict[str, Any] \| None` | |
-| `_output_type_adapter` | `TypeAdapter[Any] \| None` | |
-| `_failure_error_function` | `ToolErrorFunction \| None` | |
-| `_use_default_failure_error_function` | `bool` | |
-| `_is_agent_tool` | `bool` | |
-| `_agent_tool_default_identity` | `tuple[str, str] \| None` | |
-| `_is_codex_tool` | `bool` | |
-| `_agent_instance` | `Any` | |
-| `_tool_namespace` | `str \| None` | |
-| `_tool_namespace_description` | `str \| None` | |
-| `_mcp_title` | `str \| None` | |
-| `_tool_origin` | `ToolOrigin \| None` | |
-| `_emit_tool_origin` | `bool` | |
 
 ## Methods
 

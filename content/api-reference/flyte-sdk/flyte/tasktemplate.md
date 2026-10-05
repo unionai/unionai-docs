@@ -2,7 +2,7 @@
 title: TaskTemplate
 description: "Task template is a template for a task that can be executed."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -55,7 +55,6 @@ class TaskTemplate(
     max_inline_io_bytes: int = 10485760,
     triggers: Tuple[Trigger, ...] = <factory>,
     links: Tuple[Link, ...] = <factory>,
-    _call_as_synchronous: bool = False,
 )
 ```
 | Parameter | Type | Description |
@@ -87,7 +86,6 @@ class TaskTemplate(
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
 | `triggers` | `Tuple[Trigger, ...]` | |
 | `links` | `Tuple[Link, ...]` | |
-| `_call_as_synchronous` | `bool` | |
 
 ## Properties
 

@@ -1,7 +1,7 @@
 ---
 title: Weights & Biases
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -526,7 +526,6 @@ This function works in two contexts:
 
 ```python
 def wandb_init(
-    _func: typing.Optional[~F] = None,
     run_mode: typing.Optional[typing.Literal['auto', 'new', 'shared']] = None,
     rank_scope: typing.Optional[typing.Literal['global', 'worker']] = None,
     download_logs: typing.Optional[bool] = None,
@@ -555,7 +554,6 @@ This decorator:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_func` | `typing.Optional[~F]` | |
 | `run_mode` | `typing.Optional[typing.Literal['auto', 'new', 'shared']]` | Controls whether to create a new W&B run or share an existing one: - "auto" (default): Creates new run if no parent run exists, otherwise shares parent's run - "new": Always creates a new wandb run with a unique ID - "shared": Always shares the parent's run ID (useful for child tasks) In distributed training context (single-node): - "auto" (default): Only rank 0 logs. - "shared": All ranks log to a single shared W&B run. - "new": Each rank gets its own W&B run (grouped in W&B UI). Multi-node: behavior depends on `rank_scope`. |
 | `rank_scope` | `typing.Optional[typing.Literal['global', 'worker']]` | Flyte-specific rank scope - "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `download_logs` | `typing.Optional[bool]` | If `True`, downloads wandb run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from `wandb_config()` context if set. |
@@ -567,7 +565,6 @@ This decorator:
 
 ```python
 def wandb_sweep(
-    _func: typing.Optional[~F] = None,
     project: typing.Optional[str] = None,
     entity: typing.Optional[str] = None,
     download_logs: typing.Optional[bool] = None,
@@ -592,7 +589,6 @@ Decorator Order:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_func` | `typing.Optional[~F]` | |
 | `project` | `typing.Optional[str]` | W&B project name (overrides context config if provided) |
 | `entity` | `typing.Optional[str]` | W&B entity/team name (overrides context config if provided) |
 | `download_logs` | `typing.Optional[bool]` | if `True`, downloads all sweep run files after task completes and shows them as a trace output in the Flyte UI. If None, uses the value from wandb_sweep_config() context if set. |

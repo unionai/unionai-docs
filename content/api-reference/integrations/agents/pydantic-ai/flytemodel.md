@@ -2,7 +2,7 @@
 title: FlyteModel
 description: "Wrap a `pydantic_ai.models.Model` so each model turn is durable."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

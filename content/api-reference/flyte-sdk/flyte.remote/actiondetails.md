@@ -2,7 +2,7 @@
 title: ActionDetails
 description: "A class representing an action."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,19 +19,11 @@ A class representing an action. It is used to manage the run of a task and its s
 ```python
 class ActionDetails(
     pb2: run_definition_pb2.ActionDetails,
-    _inputs: ActionInputs | None = None,
-    _outputs: ActionOutputs | None = None,
-    _preserve_original_types: bool = False,
-    _action_data: dataproxy_service_pb2.GetActionDataResponse | None = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.ActionDetails` | |
-| `_inputs` | `ActionInputs \| None` | |
-| `_outputs` | `ActionOutputs \| None` | |
-| `_preserve_original_types` | `bool` | |
-| `_action_data` | `dataproxy_service_pb2.GetActionDataResponse \| None` | |
 
 ## Properties
 

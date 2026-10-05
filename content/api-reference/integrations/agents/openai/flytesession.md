@@ -2,7 +2,7 @@
 title: FlyteSession
 description: "An `agents` `Session` whose items live in a keyed Flyte `MemoryStore`."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
