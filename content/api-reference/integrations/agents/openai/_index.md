@@ -2,7 +2,7 @@
 title: OpenAI Agents SDK
 description: "OpenAI Agents SDK adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -179,10 +179,7 @@ may be `flyteplugins.agents.openai.tool`-wrapped tools or bare `@env.task` templ
 | `hooks` | `typing.Any` | Your own `RunHooks`. Any registered instrumentor is offered these, so an observability handler chains onto yours rather than displacing them. |
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, conversation history is loaded from and saved to a durable, keyed `MemoryStore` (via the SDK's `Session`), so a later run with the same key continues the conversation. `None` disables memory. |
 
-**Returns**
-
-The agent's final output as a string.
-
+**Returns:** The agent's final output as a string.
 
 #### tool()
 

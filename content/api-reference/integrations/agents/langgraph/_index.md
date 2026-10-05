@@ -2,7 +2,7 @@
 title: LangGraph
 description: "LangGraph adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -170,10 +170,7 @@ tool-calling graph built for you. The two are mutually exclusive.
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, the conversation transcript is persisted to a keyed `MemoryStore` and resumed on a later run with the same key. |
 | `**run_kwargs` | `typing.Any` | |
 
-**Returns**
-
-The graph's final assistant message as a string.
-
+**Returns:** The graph's final assistant message as a string.
 
 #### tool()
 

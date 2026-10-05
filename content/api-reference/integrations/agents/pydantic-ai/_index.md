@@ -2,7 +2,7 @@
 title: Pydantic AI
 description: "Pydantic AI adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -137,10 +137,7 @@ Provide either a pre-built `agent` (with its tools already attached) or
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, prior conversation history is loaded from a durable, keyed `MemoryStore` and passed as `message_history=`; after the run the full history is saved back, so a later run with the same key continues the conversation. Best-effort — a memory failure never breaks a run. |
 | `**run_kwargs` | `typing.Any` | |
 
-**Returns**
-
-The agent's final output as a string.
-
+**Returns:** The agent's final output as a string.
 
 #### tool()
 

@@ -2,7 +2,7 @@
 title: EmptyDir
 description: "A sentinel `flyte.io.Dir` representing `no directory was produced`."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -85,8 +85,6 @@ validated to form a valid model.
 | [`list_files_sync()`](#list_files_sync) | Synchronously get a list of all files in the directory (non-recursive). |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`new_remote()`](#new_remote) | Create a new Dir reference for a remote directory that will be written to. |
-| [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
-| [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches Dir schema. |
 | [`walk()`](#walk) | Asynchronously walk through the directory and yield File objects. |
 | [`walk_sync()`](#walk_sync) | Synchronously walk through the directory and yield File objects. |
 
@@ -566,34 +564,6 @@ async def create() -> Dir:
 | `hash` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. |
 
 **Returns:** A new Dir instance with a generated remote path.
-
-### pre_init()
-
-```python
-def pre_init(
-    data,
-)
-```
-Internal: Pydantic validator to set default name from path. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `data` |  | |
-
-### schema_match()
-
-```python
-def schema_match(
-    incoming: dict,
-)
-```
-Internal: Check if incoming schema matches Dir schema. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `incoming` | `dict` | |
 
 ### walk()
 

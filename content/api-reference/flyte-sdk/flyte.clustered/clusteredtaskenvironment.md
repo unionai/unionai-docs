@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -204,7 +204,6 @@ The created TaskEnvironment.
 
 ```python
 def task(
-    _func: F | None = None,
     short_name: Optional[str] = None,
     cache: CacheRequest | None = None,
     retries: Union[int, RetryStrategy] = 0,
@@ -229,7 +228,6 @@ Decorate a function to be a task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_func` | `F \| None` | Optional The function to decorate. If not provided, the decorator will return a callable that accepts a function to be decorated. |
 | `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
 | `retries` | `Union[int, RetryStrategy]` | Number of user retries (`int`) or a `RetryStrategy` object. `RetryStrategy` accepts an optional `backoff=Backoff(base, factor, cap)` to pace retries exponentially. Defaults to `0` (no retries). |

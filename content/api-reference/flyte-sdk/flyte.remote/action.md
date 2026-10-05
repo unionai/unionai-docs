@@ -2,7 +2,7 @@
 title: Action
 description: "A class representing an action."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,13 +33,11 @@ From a datamodel perspective, a Run consists of actions. All actions are linearl
 ```python
 class Action(
     pb2: run_definition_pb2.Action,
-    _details: ActionDetails | None = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.Action` | |
-| `_details` | `ActionDetails \| None` | |
 
 ## Properties
 

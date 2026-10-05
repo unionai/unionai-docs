@@ -1,8 +1,8 @@
 ---
 title: TypeTransformer
-description: "Base transformer type that should be implemented for every python native type that can be handled by flytekit."
+description: "Base transformer type that should be implemented for every Python native type that Flyte can handle."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,7 +11,7 @@ layout: py_api
 
 **Package:** `flyte.types`
 
-Base transformer type that should be implemented for every python native type that can be handled by flytekit
+Base transformer type that should be implemented for every Python native type that Flyte can handle.
 
 
 ## Parameters

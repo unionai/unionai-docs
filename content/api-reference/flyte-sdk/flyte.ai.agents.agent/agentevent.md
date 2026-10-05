@@ -2,7 +2,7 @@
 title: AgentEvent
 description: "Lightweight event emitted by the agent loop."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---

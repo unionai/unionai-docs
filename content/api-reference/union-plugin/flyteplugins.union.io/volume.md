@@ -2,7 +2,7 @@
 title: Volume
 description: "A persistent volume identified by its metadata index."
 icon: braces
-version: 0.15.0
+version: 0.15.1
 variants: -flyte +union
 layout: py_api
 ---

@@ -1,8 +1,8 @@
 ---
 title: TypeEngine
-description: "Core Extensible TypeEngine of Flytekit."
+description: "Core extensible type engine of Flyte."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,10 +11,9 @@ layout: py_api
 
 **Package:** `flyte.types`
 
-Core Extensible TypeEngine of Flytekit. This should be used to extend the capabilities of FlyteKits type system.
-Users can implement their own TypeTransformers and register them with the TypeEngine. This will allow special
- handling
-of user objects
+Core extensible type engine of Flyte. Use it to extend the capabilities of Flyte's type system.
+Users can implement their own `TypeTransformer` subclasses and register them with the `TypeEngine`. This allows
+special handling of user objects.
 
 
 ## Methods

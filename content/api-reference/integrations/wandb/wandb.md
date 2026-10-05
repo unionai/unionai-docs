@@ -2,7 +2,7 @@
 title: Wandb
 description: "Generates a Weights & Biases run link."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -26,8 +26,6 @@ class Wandb(
     rank_scope: typing.Literal['global', 'worker'] = 'global',
     id: typing.Optional[str] = None,
     name: str = 'Weights & Biases',
-    _is_distributed: bool = False,
-    _worker_index: typing.Optional[int] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -39,8 +37,6 @@ class Wandb(
 | `rank_scope` | `typing.Literal['global', 'worker']` | Flyte-specific rank scope - "global" or "worker". Controls which ranks log in distributed training. run_mode="auto": - "global" (default): Only global rank 0 logs (1 run total). - "worker": Local rank 0 of each worker logs (1 run per worker). run_mode="shared": - "global": All ranks log to a single shared W&B run. - "worker": Ranks per worker log to a single shared W&B run (1 run per worker). run_mode="new": - "global": Each rank gets its own W&B run (1 run total). - "worker": Each rank gets its own W&B run grouped per worker -&gt; N runs. |
 | `id` | `typing.Optional[str]` | Optional W&B run ID (overrides context config if provided) |
 | `name` | `str` | Link name in the Flyte UI |
-| `_is_distributed` | `bool` | |
-| `_worker_index` | `typing.Optional[int]` | |
 
 ## Methods
 

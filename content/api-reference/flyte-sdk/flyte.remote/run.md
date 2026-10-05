@@ -2,7 +2,7 @@
 title: Run
 description: "A class representing a run of a task."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,15 +20,11 @@ Union API.
 ```python
 class Run(
     pb2: run_definition_pb2.Run,
-    _details: RunDetails | None = None,
-    _preserve_original_types: bool = False,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.Run` | |
-| `_details` | `RunDetails \| None` | |
-| `_preserve_original_types` | `bool` | |
 
 ## Properties
 

@@ -2,7 +2,7 @@
 title: Image
 description: "Container image specification built using a fluent, two-step pattern."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -62,10 +62,6 @@ class Image(
     platform: Tuple[Architecture, ...] = ('linux/amd64',),
     python_version: Tuple[int, int] = <factory>,
     extendable: bool = False,
-    _is_cloned: bool = False,
-    _ref_name: Optional[str] = None,
-    _layers: Tuple[Layer, ...] = <factory>,
-    _image_registry_secret: Optional[Secret] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -77,10 +73,6 @@ class Image(
 | `platform` | `Tuple[Architecture, ...]` | |
 | `python_version` | `Tuple[int, int]` | |
 | `extendable` | `bool` | |
-| `_is_cloned` | `bool` | |
-| `_ref_name` | `Optional[str]` | |
-| `_layers` | `Tuple[Layer, ...]` | |
-| `_image_registry_secret` | `Optional[Secret]` | |
 
 ## Properties
 

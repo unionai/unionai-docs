@@ -2,7 +2,7 @@
 title: ClusterPool
 description: "Represents a Union cluster pool — the configuration shared by its member clusters."
 icon: braces
-version: 0.15.0
+version: 0.15.1
 variants: -flyte +union
 layout: py_api
 ---

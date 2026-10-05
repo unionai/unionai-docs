@@ -2,7 +2,7 @@
 title: FlyteLlm
 description: "A `BaseLlm` that records each model turn via `durable_step` for replay."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -145,7 +145,6 @@ Yields:
   **Important:** All yielded responses represent one logical model turn.
   The final response with `partial=False` should be identical to the
   response that would be received with `stream=False`.
-
 
 
 | Parameter | Type | Description |

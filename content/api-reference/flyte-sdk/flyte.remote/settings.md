@@ -2,7 +2,7 @@
 title: Settings
 description: "Hierarchical configuration settings with inheritance support."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -25,9 +25,6 @@ class Settings(
     local_settings: list[LocalSetting],
     domain: str | None = None,
     project: str | None = None,
-    _version: int = 0,
-    _parent_effective: dict[str, EffectiveSetting] = <factory>,
-    _map_entry_origins: dict[str, dict[str, EffectiveSetting]] = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -36,9 +33,6 @@ class Settings(
 | `local_settings` | `list[LocalSetting]` | |
 | `domain` | `str \| None` | |
 | `project` | `str \| None` | |
-| `_version` | `int` | |
-| `_parent_effective` | `dict[str, EffectiveSetting]` | |
-| `_map_entry_origins` | `dict[str, dict[str, EffectiveSetting]]` | |
 
 ## Methods
 

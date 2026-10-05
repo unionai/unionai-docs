@@ -1,8 +1,8 @@
 ---
 title: FlytePickle
-description: "This type is only used by flytekit internally."
+description: "This type is only used by Flyte internally."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,8 +11,8 @@ layout: py_api
 
 **Package:** `flyte.types`
 
-This type is only used by flytekit internally. User should not use this type.
-Any type that flyte can't recognize will become FlytePickle
+This type is only used by Flyte internally. Users should not use this type.
+Any type that Flyte can't recognize becomes `FlytePickle`.
 
 
 ## Methods

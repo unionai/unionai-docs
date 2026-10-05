@@ -1,7 +1,7 @@
 ---
 title: DataFrameEncoder
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,18 +19,17 @@ class DataFrameEncoder(
     supported_format: Optional[str] = None,
 )
 ```
-Extend this abstract class, implement the encode function, and register your concrete class with the
-DataFrameTransformerEngine class in order for the core flytekit type engine to handle
-dataframe libraries. This is the encoding interface, meaning it is used when there is a Python value that the
-flytekit type engine is trying to convert into a Flyte Literal. For the other way, see
-the DataFrameEncoder
+Extend this abstract class, implement the encode function, and register your concrete class with
+`DataFrameTransformerEngine` so that the Flyte type engine can handle dataframe libraries. This is the
+encoding interface: it is used when the Flyte type engine converts a Python value into a Flyte Literal.
+For the other direction, see `DataFrameDecoder`.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `python_type` | `Type[T]` | The dataframe class in question that you want to register this encoder with |
-| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this encoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
+| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this encoder will be registered with all protocols that Flyte's storage layer is capable of handling. |
 | `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the encoder works with any format. If the format being asked for does not exist, the transformer engine will look for the "" encoder instead and write a warning. |
 
 ## Properties

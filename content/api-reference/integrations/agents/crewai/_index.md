@@ -2,7 +2,7 @@
 title: CrewAI
 description: "CrewAI adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -128,10 +128,7 @@ Provide either a pre-built `agent` (with its own tools already attached) or
 | `memory_key` | `str \| None` | Stable id (e.g. a user/thread id) for cross-run memory. When set, conversation history is persisted to a keyed `MemoryStore` and resumed on a later run with the same key. |
 | `**run_kwargs` | `typing.Any` | |
 
-**Returns**
-
-The agent's final output as a string.
-
+**Returns:** The agent's final output as a string.
 
 #### tool()
 

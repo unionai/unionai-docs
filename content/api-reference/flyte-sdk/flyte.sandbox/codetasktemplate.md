@@ -2,7 +2,7 @@
 title: CodeTaskTemplate
 description: "A sandboxed task created from a code string rather than a decorated function."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -49,13 +49,9 @@ class CodeTaskTemplate(
     max_inline_io_bytes: int = 10485760,
     triggers: Tuple[Trigger, ...] = <factory>,
     links: Tuple[Link, ...] = <factory>,
-    _call_as_synchronous: bool = False,
     func: F,
     plugin_config: Optional[SandboxedConfig] = None,
     task_resolver: Optional[Any] = None,
-    _user_source: str = '',
-    _user_input_names: List[str] = <factory>,
-    _user_functions: Dict[str, Any] = <factory>,
 )
 ```
 | Parameter | Type | Description |
@@ -87,13 +83,9 @@ class CodeTaskTemplate(
 | `max_inline_io_bytes` | `int` | |
 | `triggers` | `Tuple[Trigger, ...]` | |
 | `links` | `Tuple[Link, ...]` | |
-| `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
 | `plugin_config` | `Optional[SandboxedConfig]` | |
 | `task_resolver` | `Optional[Any]` | |
-| `_user_source` | `str` | |
-| `_user_input_names` | `List[str]` | |
-| `_user_functions` | `Dict[str, Any]` | |
 
 ## Properties
 
