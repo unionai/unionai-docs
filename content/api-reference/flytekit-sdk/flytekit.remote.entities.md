@@ -2,7 +2,7 @@
 title: flytekit.remote.entities
 description: "This module contains shadow entities for all Flyte entities as represented in Flyte Admin / Control Plane."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

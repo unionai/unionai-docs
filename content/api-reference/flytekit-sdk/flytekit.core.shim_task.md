@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.shim_task
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -118,7 +118,6 @@ Rather than running here, send everything to the executor.
 
 ```python
 def post_execute(
-    _: Optional[ExecutionParameters],
     rval: Any,
 ) -> Any
 ```
@@ -127,7 +126,6 @@ This function is a stub, just here to keep dispatch_execute compatibility betwee
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_` | `Optional[ExecutionParameters]` | |
 | `rval` | `Any` | |
 
 #### pre_execute()

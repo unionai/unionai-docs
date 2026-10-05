@@ -1,7 +1,7 @@
 ---
 title: flytekit.clis.sdk_in_container.build
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -143,7 +143,6 @@ class BuildParams(
     cluster_pool: str = '',
     execution_cluster_label: str = '',
     computed_params: flytekit.clis.sdk_in_container.run.RunLevelComputedParams = <factory>,
-    _remote: typing.Optional[flytekit.remote.remote.FlyteRemote] = None,
     fast: bool = False,
 )
 ```
@@ -179,7 +178,6 @@ class BuildParams(
 | `cluster_pool` | `str` | |
 | `execution_cluster_label` | `str` | |
 | `computed_params` | `flytekit.clis.sdk_in_container.run.RunLevelComputedParams` | |
-| `_remote` | `typing.Optional[flytekit.remote.remote.FlyteRemote]` | |
 | `fast` | `bool` | |
 
 ### Properties

@@ -1,6 +1,8 @@
 ---
 title: flytekitplugins.spark.databricks_auth
-version: 1.16.28
+description: "Authentication strategies for the Databricks connector."
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

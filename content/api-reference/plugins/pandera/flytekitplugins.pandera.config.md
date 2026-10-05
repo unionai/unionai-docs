@@ -1,6 +1,8 @@
 ---
 title: flytekitplugins.pandera.config
-version: 1.16.28
+description: "Pandera validation configuration."
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

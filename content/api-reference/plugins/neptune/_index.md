@@ -1,6 +1,8 @@
 ---
 title: Neptune
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.neptune."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,5 +23,5 @@ layout: py_api
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.neptune`](flytekitplugins.neptune) |  |
+| [`flytekitplugins.neptune`](flytekitplugins.neptune) | .. currentmodule:: flytekitplugins.neptune. |
 

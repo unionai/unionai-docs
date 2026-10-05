@@ -2,7 +2,7 @@
 title: flytekit.core.legacy_map_task
 description: "Flytekit map tasks specify how to run a single task across a list of inputs."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

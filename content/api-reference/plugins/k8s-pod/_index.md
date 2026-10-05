@@ -1,6 +1,7 @@
 ---
 title: Kubernetes Pod
-version: 1.16.28
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

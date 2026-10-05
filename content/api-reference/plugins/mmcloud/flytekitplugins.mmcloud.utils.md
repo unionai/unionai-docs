@@ -1,6 +1,7 @@
 ---
 title: flytekitplugins.mmcloud.utils
-version: 1.16.28
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,7 +14,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`async_check_output()`](#async_check_output) | This behaves similarly to subprocess. |
+| [`async_check_output()`](#async_check_output) | This behaves similarly to subprocess.check_output(). |
 | [`flyte_to_mmcloud_resources()`](#flyte_to_mmcloud_resources) | Map Flyte (K8s) resources to MMCloud resources. |
 | [`mmcloud_status_to_flyte_phase()`](#mmcloud_status_to_flyte_phase) | Map MMCloud status to Flyte phase. |
 

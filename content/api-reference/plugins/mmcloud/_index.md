@@ -1,6 +1,8 @@
 ---
 title: Memory Machine Cloud
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.mmcloud."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +26,7 @@ layout: py_api
 
 | Function | Description |
 |-|-|
-| [`flytekitplugins.mmcloud.utils.async_check_output()`](flytekitplugins.mmcloud.utils#async_check_output) | This behaves similarly to subprocess. |
+| [`flytekitplugins.mmcloud.utils.async_check_output()`](flytekitplugins.mmcloud.utils#async_check_output) | This behaves similarly to subprocess.check_output(). |
 | [`flytekitplugins.mmcloud.utils.flyte_to_mmcloud_resources()`](flytekitplugins.mmcloud.utils#flyte_to_mmcloud_resources) | Map Flyte (K8s) resources to MMCloud resources. |
 | [`flytekitplugins.mmcloud.utils.mmcloud_status_to_flyte_phase()`](flytekitplugins.mmcloud.utils#mmcloud_status_to_flyte_phase) | Map MMCloud status to Flyte phase. |
 

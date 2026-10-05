@@ -2,7 +2,7 @@
 title: flytekit.core.base_task
 description: "This module provides the core task-related functionality in Flytekit."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
