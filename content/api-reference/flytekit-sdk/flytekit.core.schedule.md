@@ -2,7 +2,7 @@
 title: flytekit.core.schedule
 description: "These classes provide functionality related to schedules."
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

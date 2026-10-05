@@ -1,6 +1,8 @@
 ---
 title: Kubeflow PyTorch
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.kfpytorch."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,12 +18,12 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`flytekitplugins.kfpytorch.task.CleanPodPolicy`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskcleanpodpolicy) | CleanPodPolicy describes how to deal with pods when the job is finished. |
-| [`flytekitplugins.kfpytorch.task.Elastic`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelastic) | Configuration for [`torch elastic training`](https://pytorch. |
+| [`flytekitplugins.kfpytorch.task.Elastic`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelastic) | Configuration for [`torch elastic training`](https://pytorch.org/docs/stable/elastic/run.html). |
 | [`flytekitplugins.kfpytorch.task.ElasticWorkerResult`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskelasticworkerresult) | A named tuple representing the result of a torch elastic worker process. |
 | [`flytekitplugins.kfpytorch.task.Master`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskmaster) | Configuration for master replica group. |
-| [`flytekitplugins.kfpytorch.task.PyTorch`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorch) | Configuration for an executable [`PyTorch Job`](https://github. |
-| [`flytekitplugins.kfpytorch.task.PyTorchFunctionTask`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchfunctiontask) | Plugin that submits a PyTorchJob (see https://github. |
-| [`flytekitplugins.kfpytorch.task.PytorchElasticFunctionTask`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask) | Plugin for distributed training with torch elastic/torchrun (see. |
+| [`flytekitplugins.kfpytorch.task.PyTorch`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorch) | Configuration for an executable [`PyTorch Job`](https://github.com/kubeflow/pytorch-operator). |
+| [`flytekitplugins.kfpytorch.task.PyTorchFunctionTask`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchfunctiontask) | Plugin that submits a PyTorchJob (see https://github.com/kubeflow/pytorch-operator) defined by the code within the _task_function to k8s cluster. |
+| [`flytekitplugins.kfpytorch.task.PytorchElasticFunctionTask`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskpytorchelasticfunctiontask) | Plugin for distributed training with torch elastic/torchrun (see https://pytorch.org/docs/stable/elastic/run.html). |
 | [`flytekitplugins.kfpytorch.task.RestartPolicy`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
 | [`flytekitplugins.kfpytorch.task.RunPolicy`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskrunpolicy) | RunPolicy describes some policy to apply to the execution of a kubeflow job. |
 | [`flytekitplugins.kfpytorch.task.Worker`](flytekitplugins.kfpytorch.task#flytekitpluginskfpytorchtaskworker) |  |
@@ -41,5 +43,5 @@ layout: py_api
 |-|-|
 | [`flytekitplugins.kfpytorch.error_handling`](flytekitplugins.kfpytorch.error_handling) | Handle errors in elastic training jobs. |
 | [`flytekitplugins.kfpytorch.pod_template`](flytekitplugins.kfpytorch.pod_template) |  |
-| [`flytekitplugins.kfpytorch.task`](flytekitplugins.kfpytorch.task) | This Plugin adds the capability of running distributed pytorch training to Flyte using backend plugins, natively on. |
+| [`flytekitplugins.kfpytorch.task`](flytekitplugins.kfpytorch.task) | This Plugin adds the capability of running distributed pytorch training to Flyte using backend plugins, natively on Kubernetes. |
 

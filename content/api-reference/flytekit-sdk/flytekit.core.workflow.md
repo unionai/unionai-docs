@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.workflow
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -127,7 +127,6 @@ def ref_wf1(a: int) -> typing.Tuple[str, str]:
 
 ```python
 def workflow(
-    _workflow_function: Optional[Callable[P, FuncOut]] = None,
     failure_policy: Optional[WorkflowFailurePolicy] = None,
     interruptible: bool = False,
     on_failure: Optional[Union[WorkflowBase, Task]] = None,
@@ -682,7 +681,6 @@ Please see the `user guide` for more usage examples.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_workflow_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function. |
 | `failure_policy` | `Optional[WorkflowFailurePolicy]` | Use the options in flytekit.WorkflowFailurePolicy |
 | `interruptible` | `bool` | Whether or not tasks launched from this workflow are by default interruptible |
 | `on_failure` | `Optional[Union[WorkflowBase, Task]]` | Invoke this workflow or task on failure. The Workflow / task has to match the signature of the current workflow, with an additional parameter called `error` Error |

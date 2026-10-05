@@ -1,6 +1,8 @@
 ---
 title: flytekitplugins.slurm.ssh_utils
-version: 1.16.28
+description: "Utilities of asyncssh connections."
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

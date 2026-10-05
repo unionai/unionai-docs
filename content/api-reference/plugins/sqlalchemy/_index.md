@@ -1,6 +1,8 @@
 ---
 title: SQLAlchemy
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.sqlalchemy."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

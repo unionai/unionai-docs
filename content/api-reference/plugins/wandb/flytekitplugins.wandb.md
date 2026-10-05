@@ -1,6 +1,8 @@
 ---
 title: flytekitplugins.wandb
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.wandb."
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---

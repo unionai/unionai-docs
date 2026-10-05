@@ -1,7 +1,7 @@
 ---
 title: flytekit.clis.sdk_in_container.run
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -73,16 +73,10 @@ Returns a list of flyte workflow names and list of Flyte tasks in a file.
 #### is_optional()
 
 ```python
-def is_optional(
-    _type,
-)
+def is_optional()
 ```
 Checks if the given type is Optional Type
 
-
-| Parameter | Type | Description |
-|-|-|-|
-| `_type` |  | |
 
 #### load_naive_entity()
 
@@ -457,7 +451,6 @@ class RunLevelParams(
     cluster_pool: str = '',
     execution_cluster_label: str = '',
     computed_params: flytekit.clis.sdk_in_container.run.RunLevelComputedParams = <factory>,
-    _remote: typing.Optional[flytekit.remote.remote.FlyteRemote] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -492,7 +485,6 @@ class RunLevelParams(
 | `cluster_pool` | `str` | |
 | `execution_cluster_label` | `str` | |
 | `computed_params` | `flytekit.clis.sdk_in_container.run.RunLevelComputedParams` | |
-| `_remote` | `typing.Optional[flytekit.remote.remote.FlyteRemote]` | |
 
 ### Properties
 

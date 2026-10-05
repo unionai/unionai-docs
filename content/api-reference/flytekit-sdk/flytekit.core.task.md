@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.task
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -60,7 +60,6 @@ Decorates the task with additional functionality if necessary.
 
 ```python
 def eager(
-    _fn = None,
     *args,
     **kwargs,
 ) -> Union[EagerAsyncPythonFunctionTask, partial]
@@ -138,7 +137,6 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_fn` |  | |
 | `*args` |  | |
 | `**kwargs` |  | |
 
@@ -188,7 +186,6 @@ def ref_t1(a: typing.List[str]) -> str:
 
 ```python
 def task(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -259,7 +256,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |

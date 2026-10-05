@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.promise
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -154,8 +154,6 @@ def create_and_link_node_from_remote(
     overridden_interface: Optional[_interface_models.TypedInterface] = None,
     add_node_to_compilation_state: bool = True,
     node_id: str = '',
-    _inputs_not_allowed: Optional[Set[str]] = None,
-    _ignorable_inputs: Optional[Set[str]] = None,
     **kwargs,
 ) -> Optional[Union[Tuple[Promise], Promise, VoidPromise]]
 ```
@@ -175,8 +173,6 @@ interface, so all comparisons need to happen using the Literals.
 | `overridden_interface` | `Optional[_interface_models.TypedInterface]` | utilize this interface instead of the one provided by the entity. This is useful for ArrayNode as there's a mismatch between the underlying interface and inputs |
 | `add_node_to_compilation_state` | `bool` | bool that enables for nodes to be created but not linked to the workflow. This is useful when creating nodes nested under other nodes such as ArrayNode |
 | `node_id` | `str` | str if provided, this will be used as the node id. |
-| `_inputs_not_allowed` | `Optional[Set[str]]` | Set of all variable names that should not be provided when using this entity. Useful for Launchplans with `fixed` inputs |
-| `_ignorable_inputs` | `Optional[Set[str]]` | Set of all variable names that are optional, but if provided will be overridden. Useful for launchplans with `default` inputs |
 | `**kwargs` |  | Dict[str, Any] default inputs passed from the user to this entity. Can be promises. |
 
 **Returns:** Optional[Union[Tuple[Promise], Promise, VoidPromise]]

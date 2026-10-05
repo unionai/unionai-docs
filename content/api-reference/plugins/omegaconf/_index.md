@@ -1,6 +1,7 @@
 ---
 title: OmegaConf
-version: 1.16.28
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -15,7 +16,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`flytekitplugins.omegaconf.OmegaConfTransformerMode`](flytekitplugins.omegaconf#flytekitpluginsomegaconfomegaconftransformermode) | Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the. |
+| [`flytekitplugins.omegaconf.OmegaConfTransformerMode`](flytekitplugins.omegaconf#flytekitpluginsomegaconfomegaconftransformermode) | Operation Mode indicating whether a (potentially unannotated) DictConfig object or a structured config using the underlying dataclass is returned. |
 
 ### Functions
 

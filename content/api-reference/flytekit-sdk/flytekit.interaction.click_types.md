@@ -1,7 +1,7 @@
 ---
 title: flytekit.interaction.click_types
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -65,7 +65,6 @@ Checks if the python type is a pydantic BaseModel
 
 ```python
 def key_value_callback(
-    _: typing.Any,
     param: str,
     values: typing.List[str],
 ) -> typing.Optional[typing.Dict[str, str]]
@@ -75,7 +74,6 @@ Callback for click to parse key-value pairs.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_` | `typing.Any` | |
 | `param` | `str` | |
 | `values` | `typing.List[str]` | |
 
@@ -83,7 +81,6 @@ Callback for click to parse key-value pairs.
 
 ```python
 def labels_callback(
-    _: typing.Any,
     param: str,
     values: typing.List[str],
 ) -> typing.Optional[typing.Dict[str, str]]
@@ -93,7 +90,6 @@ Callback for click to parse labels.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_` | `typing.Any` | |
 | `param` | `str` | |
 | `values` | `typing.List[str]` | |
 
@@ -131,7 +127,6 @@ Modifies the literal object recursively to replace the URIs with the native path
 
 ```python
 def resource_callback(
-    _: typing.Any,
     param: str,
     value: typing.Optional[str],
 ) -> typing.Optional[flytekit.core.resources.Resources]
@@ -141,7 +136,6 @@ Click callback to parse resource strings like 'cpu=1,mem=2Gi' into a Resources o
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_` | `typing.Any` | |
 | `param` | `str` | |
 | `value` | `typing.Optional[str]` | |
 

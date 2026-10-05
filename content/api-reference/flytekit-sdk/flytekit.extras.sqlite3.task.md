@@ -1,7 +1,7 @@
 ---
 title: flytekit.extras.sqlite3.task
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -448,7 +448,6 @@ def local_execution_mode()
 
 ```python
 def post_execute(
-    _: Optional[ExecutionParameters],
     rval: Any,
 ) -> Any
 ```
@@ -457,7 +456,6 @@ This function is a stub, just here to keep dispatch_execute compatibility betwee
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_` | `Optional[ExecutionParameters]` | |
 | `rval` | `Any` | |
 
 #### pre_execute()

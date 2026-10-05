@@ -137,7 +137,6 @@ or the drop in replacement ArrayNode implementation
 
 ```python
 def task(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -208,7 +207,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
@@ -241,7 +239,6 @@ Please see some cookbook `task examples` for additional information.
 
 ```python
 def workflow(
-    _workflow_function: Optional[Callable[P, FuncOut]] = None,
     failure_policy: Optional[WorkflowFailurePolicy] = None,
     interruptible: bool = False,
     on_failure: Optional[Union[WorkflowBase, Task]] = None,
@@ -796,7 +793,6 @@ Please see the `user guide` for more usage examples.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_workflow_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function. |
 | `failure_policy` | `Optional[WorkflowFailurePolicy]` | Use the options in flytekit.WorkflowFailurePolicy |
 | `interruptible` | `bool` | Whether or not tasks launched from this workflow are by default interruptible |
 | `on_failure` | `Optional[Union[WorkflowBase, Task]]` | Invoke this workflow or task on failure. The Workflow / task has to match the signature of the current workflow, with an additional parameter called `error` Error |

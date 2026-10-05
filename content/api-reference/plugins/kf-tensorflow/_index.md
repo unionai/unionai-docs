@@ -1,6 +1,8 @@
 ---
 title: Kubeflow TensorFlow
-version: 1.16.28
+description: ".. currentmodule:: flytekitplugins.kftensorflow."
+icon: book
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,13 +23,13 @@ layout: py_api
 | [`flytekitplugins.kftensorflow.task.PS`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskps) |  |
 | [`flytekitplugins.kftensorflow.task.RestartPolicy`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
 | [`flytekitplugins.kftensorflow.task.RunPolicy`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrunpolicy) | RunPolicy describes a set of policies to apply to the execution of a Kubeflow job. |
-| [`flytekitplugins.kftensorflow.task.TensorflowFunctionTask`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github. |
-| [`flytekitplugins.kftensorflow.task.TfJob`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github. |
+| [`flytekitplugins.kftensorflow.task.TensorflowFunctionTask`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github.com/kubeflow/tf-operator) defined by the code within the _task_function to k8s cluster. |
+| [`flytekitplugins.kftensorflow.task.TfJob`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github.com/kubeflow/tf-operator). |
 | [`flytekitplugins.kftensorflow.task.Worker`](flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
 
 ### Packages
 
 | Package | Description |
 |-|-|
-| [`flytekitplugins.kftensorflow.task`](flytekitplugins.kftensorflow.task) | This Plugin adds the capability of running distributed tensorflow training to Flyte using backend plugins, natively on. |
+| [`flytekitplugins.kftensorflow.task`](flytekitplugins.kftensorflow.task) | This Plugin adds the capability of running distributed tensorflow training to Flyte using backend plugins, natively on Kubernetes. |
 

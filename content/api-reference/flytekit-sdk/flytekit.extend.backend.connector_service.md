@@ -1,7 +1,7 @@
 ---
 title: flytekit.extend.backend.connector_service
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -121,7 +121,6 @@ def GetTaskLogs(
 ) -> flyteidl.admin.agent_pb2.GetTaskLogsResponse
 ```
 GetTaskLogs returns task execution logs, if available.
-        
 
 
 | Parameter | Type | Description |
@@ -168,7 +167,6 @@ def GetAgent(
 ) -> flyteidl.admin.agent_pb2.GetAgentResponse
 ```
 Fetch a `ref_flyteidl.admin.Agent` definition.
-        
 
 
 | Parameter | Type | Description |
@@ -185,7 +183,6 @@ def ListAgents(
 ) -> flyteidl.admin.agent_pb2.ListAgentsResponse
 ```
 Fetch a list of `ref_flyteidl.admin.Agent` definitions.
-        
 
 
 | Parameter | Type | Description |
@@ -211,7 +208,6 @@ def ExecuteTaskSync(
 ) -> typing.AsyncIterator[flyteidl.admin.agent_pb2.ExecuteTaskSyncResponse]
 ```
 ExecuteTaskSync streams the create request and inputs to the agent service and streams the outputs back.
-        
 
 
 | Parameter | Type | Description |

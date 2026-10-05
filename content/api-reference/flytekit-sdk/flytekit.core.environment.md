@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.environment
 icon: box-seam
-version: 1.16.28
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -63,7 +63,6 @@ def inherit(
 
 ```python
 class Environment(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -134,7 +133,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
@@ -178,7 +176,6 @@ Please see some cookbook `task examples` for additional information.
 
 ```python
 def dynamic(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -243,7 +240,6 @@ See the `cookbook` for a longer discussion.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | |
 | `task_config` | `Optional[T]` | |
 | `cache` | `Union[bool, Cache]` | |
 | `retries` | `int` | |
@@ -276,7 +272,6 @@ See the `cookbook` for a longer discussion.
 
 ```python
 def extend(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -347,7 +342,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
@@ -385,7 +379,6 @@ def show()
 
 ```python
 def task(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -456,7 +449,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |
@@ -489,7 +481,6 @@ Please see some cookbook `task examples` for additional information.
 
 ```python
 def update(
-    _task_function: Optional[Callable[P, FuncOut]] = None,
     task_config: Optional[T] = None,
     cache: Union[bool, Cache] = False,
     retries: int = 0,
@@ -560,7 +551,6 @@ Please see some cookbook `task examples` for additional information.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_task_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function |
 | `task_config` | `Optional[T]` | This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use. |
 | `cache` | `Union[bool, Cache]` | Boolean or Cache that indicates how caching is configured. |
 | `retries` | `int` | Number of times to retry this task during a workflow execution. |

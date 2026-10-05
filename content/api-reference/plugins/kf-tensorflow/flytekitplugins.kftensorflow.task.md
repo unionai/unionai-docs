@@ -1,6 +1,8 @@
 ---
 title: flytekitplugins.kftensorflow.task
-version: 1.16.28
+description: "This Plugin adds the capability of running distributed tensorflow training to Flyte using backend plugins, natively on Kubernetes."
+icon: box-seam
+version: 1.16.29
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,8 +23,8 @@ Kubernetes. It leverages [`TF Job`](https://github.com/kubeflow/tf-operator) Plu
 | [`PS`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskps) |  |
 | [`RestartPolicy`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrestartpolicy) | RestartPolicy describes how the replicas should be restarted. |
 | [`RunPolicy`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskrunpolicy) | RunPolicy describes a set of policies to apply to the execution of a Kubeflow job. |
-| [`TensorflowFunctionTask`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github. |
-| [`TfJob`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github. |
+| [`TensorflowFunctionTask`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktensorflowfunctiontask) | Plugin that submits a TFJob (see https://github.com/kubeflow/tf-operator) defined by the code within the _task_function to k8s cluster. |
+| [`TfJob`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtasktfjob) | Configuration for an executable [`TensorFlow Job`](https://github.com/kubeflow/tf-operator). |
 | [`Worker`](./flytekitplugins.kftensorflow.task#flytekitpluginskftensorflowtaskworker) |  |
 
 ## flytekitplugins.kftensorflow.task.Chief
@@ -174,13 +176,13 @@ class TensorflowFunctionTask(
 | Method | Description |
 |-|-|
 | [`compile()`](#compile) | Generates a node that encapsulates this task in a workflow definition. |
-| [`compile_into_workflow()`](#compile_into_workflow) | In the case of dynamic workflows, this function will produce a workflow definition at execution time which will. |
+| [`compile_into_workflow()`](#compile_into_workflow) | In the case of dynamic workflows, this function will produce a workflow definition at execution time which will then proceed to be executed. |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
-| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor. |
-| [`dynamic_execute()`](#dynamic_execute) | By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte. |
+| [`dispatch_execute()`](#dispatch_execute) | This method translates Flyte's Type system based input values and invokes the actual call to the executor This method is also invoked during runtime. |
+| [`dynamic_execute()`](#dynamic_execute) | By the time this function is invoked, the local_execute function should have unwrapped the Promises and Flyte literal wrappers so that the kwargs we are working with here are now Python native literal values. |
 | [`execute()`](#execute) | This method will be invoked to execute the task. |
 | [`find_lhs()`](#find_lhs) |  |
-| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task. |
+| [`get_command()`](#get_command) | Returns the command which should be used in the container definition for the serialized version of this task registered on a hosted Flyte platform. |
 | [`get_config()`](#get_config) | Returns the task config as a serializable dictionary. |
 | [`get_container()`](#get_container) | Returns the container definition (if any) that is used to run the task on hosted Flyte. |
 | [`get_custom()`](#get_custom) | Return additional plugin-specific custom data (if any) as a serializable dictionary. |
@@ -194,8 +196,8 @@ class TensorflowFunctionTask(
 | [`get_type_for_output_var()`](#get_type_for_output_var) | Returns the python type for the specified output variable by name. |
 | [`local_execute()`](#local_execute) | This function is used only in the local execution path and is responsible for calling dispatch execute. |
 | [`local_execution_mode()`](#local_execution_mode) |  |
-| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up,. |
-| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs. |
+| [`post_execute()`](#post_execute) | Post execute is called after the execution has completed, with the user_params and can be used to clean-up, or alter the outputs to match the intended tasks outputs. |
+| [`pre_execute()`](#pre_execute) | This is the method that will be invoked directly before executing the task method and before all the inputs are converted. |
 | [`reset_command_fn()`](#reset_command_fn) | Resets the command which should be used in the container definition of this task to the default arguments. |
 | [`sandbox_execute()`](#sandbox_execute) | Call dispatch_execute, in the context of a local sandbox execution. |
 | [`set_command_fn()`](#set_command_fn) | By default, the task will run on the Flyte platform using the pyflyte-execute command. |
