@@ -2,7 +2,7 @@
 title: PyTorch
 description: Run distributed PyTorch training on Kubernetes through the Kubeflow Training Operator.
 icon: fire
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 

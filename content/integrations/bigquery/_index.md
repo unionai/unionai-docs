@@ -2,7 +2,7 @@
 title: BigQuery
 description: Run SQL queries against Google BigQuery from a task, submitted asynchronously through the Jobs API.
 icon: table
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 

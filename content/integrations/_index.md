@@ -32,14 +32,15 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
-4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-6. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
-7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-10. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
+4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
+5. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+6. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+7. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+8. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+9. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+10. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+11. **Observability**: Export task and agent telemetry to external tracing and observability backends.
 
 ## Distributed compute
 
@@ -160,6 +161,22 @@ Agentic AI integrations let you run agents written in a third-party framework as
 | [Agent frameworks](./agents/_index) | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
 | [TypeSafe AI](./typesafe-ai/_index)  | Typed, confidence-scored answers from a System One model, as task inputs and outputs                                     | Model-based I/O guards, intent routing, typed agent control flow |
+
+## Software development tools
+
+Software development tool integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, and Jira, such as a pull request opening or a ticket changing status. One app receives webhooks from any combination of these products, verifies each delivery, and launches one run per event. The receiver ships with Flyte in `flyte.extras.webhooks`; each package adds support for one product.
+
+### Supported software development tool integrations
+
+| Plugin | Description | Common use cases |
+| ------ | ----------- | ---------------- |
+| [GitHub](./software-development-tools/github) | Webhooks, human review gates, and GitHub App installation tokens | PR triage, gated merges and releases, coding agents |
+| [Slack](./software-development-tools/slack) | Events, interactivity and slash commands in; messages and button approvals out | ChatOps, deploy approvals, run notifications |
+| [Linear](./software-development-tools/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
+| [ClickUp](./software-development-tools/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
+| [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
+
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping.
 
 ## Experiment tracking
 
