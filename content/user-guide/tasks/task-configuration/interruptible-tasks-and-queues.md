@@ -122,9 +122,8 @@ async def main(data: list) -> dict:
         return await train_model.override(interruptible=False)(data=data)
 ```
 
-Without `max_queued_time` the spot attempt has no reason to give up, so the fallback never runs.
 See [Falling back when GPU capacity isn't available](../task-programming/error-handling#falling-back-when-gpu-capacity-isnt-available)
-for the same pattern applied to scarce accelerators.
+for the same pattern applied to scarce accelerators and more details on interpreting timeouts and more advanced fallback patterns.
 
 {{< variant union >}}
 {{< markdown >}}
