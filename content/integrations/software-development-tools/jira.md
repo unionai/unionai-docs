@@ -1,6 +1,6 @@
 ---
 title: Jira
-description: Receive Jira Cloud webhooks as Flyte runs — and what to put in front of them, since Jira does not sign.
+description: Receive Jira Cloud webhooks as Flyte runs, authenticated with a shared token.
 icon: journal-text
 weight: 5
 variants: +flyte +union
@@ -8,9 +8,9 @@ variants: +flyte +union
 
 # Jira
 
-Receive [Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/webhooks/) webhooks in Flyte and turn them into runs. See [Software development tools](./_index) for the shared model this builds on.
+Receive [Jira Cloud](https://developer.atlassian.com/cloud/jira/platform/webhooks/) webhooks in Flyte and turn them into runs.
 
-Read the authentication section before exposing the route. Jira is the one provider in this family that does not sign its webhooks, and that changes what you have to do.
+Jira Cloud doesn't sign its webhooks. This plugin authenticates deliveries with a shared token instead, which requires a proxy or a Jira Automation rule to add the token. Read [Authentication](#authentication) before you expose the route.
 
 ## Installation
 
@@ -18,34 +18,34 @@ Read the authentication section before exposing the route. Jira is the one provi
 pip install "flyteplugins-jira[app]"
 ```
 
-Requires Python 3.10 or later. The `app` extra pulls in `fastapi` and `uvicorn` for serving the receiver.
+Requires Python 3.10 or later. The `app` extra adds `fastapi` and `uvicorn` for serving the receiver.
 
-## Authentication: Jira does not sign
+## Authentication
 
-Every other provider here signs its deliveries with an HMAC, so the receiver can prove a payload came from the product and was not altered. **Jira Cloud sends no signature at all.**
+The provider checks for a shared token in the `X-Webhook-Token` header, using a constant-time comparison. `JiraProvider` reports `signed=False`, and the setup dashboard shows that the route isn't signature-verified.
 
-So this plugin authenticates with a shared token in an `X-Webhook-Token` header, compared in constant time. `JiraProvider` reports `signed=False`, which is what makes the setup dashboard say so plainly rather than implying a guarantee that is absent.
+A shared token is weaker than a signature:
 
-That substitution is weaker in two specific ways, and both are worth stating:
+- The same token is sent with every request. Anyone who obtains it can forge deliveries.
+- It doesn't cover the body. Anything between Jira and the app can change the payload undetected.
 
-- **A shared token travels on every request** rather than signing one. Anything that has ever seen it can replay or forge a delivery.
-- **It does not cover the body.** A proxy or anything in the path could alter the payload without detection.
+Jira webhooks can't send custom headers, so you need one of these to add `X-Webhook-Token`:
 
-> [!WARNING] Jira cannot send custom headers, so something in front must inject one
-> A plain Jira webhook has no way to add `X-Webhook-Token`. You need one of:
->
-> - **An API gateway or ingress rule** in front of the app that injects the header on requests from Jira's address range, or
-> - **A Jira Automation rule** using *Send web request*, which **can** set custom headers — and is the simplest route if your events are expressible as automation triggers.
->
-> Without one of these, deliveries will be refused ( is the default, and the right default). Do not reach for `require_signature=False` to make them flow — that turns the route into an unauthenticated run-launcher. It exists for local development.
+- An API gateway or ingress rule in front of the app that adds the header to requests from Jira's IP ranges.
+- A Jira Automation rule that uses the **Send web request** action, which can set custom headers. This is the simpler option if your events are available as Automation triggers.
 
-Combine the token with a narrow `scopes` allowlist, and treat the proxy as part of the auth story rather than an extra.
+Without the header, the app rejects every delivery, because `require_signature` defaults to `True`.
+
+> [!WARNING] Don't disable verification in production
+> Setting `require_signature=False` makes the route launch runs for any request. Use it only for local development.
+
+Set a narrow `scopes` allowlist as well.
 
 ## The receiver
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/jira/jira_webhooks.py" fragment=app lang=python >}}
 
-`JIRA_WEBHOOK_TOKEN` is mounted for you from the provider's `default_secret_env`. Generate a long random value yourself — unlike the other providers, there is nothing on Jira's side that issues it:
+The provider reads the token from `JIRA_WEBHOOK_TOKEN`, which the app mounts automatically. Jira doesn't issue this token, so generate one yourself:
 
 ```bash
 flyte create secret jira-webhook-token --value "$(openssl rand -hex 32)"
@@ -53,17 +53,18 @@ flyte create secret jira-webhook-token --value "$(openssl rand -hex 32)"
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/jira/jira_webhooks.py" fragment=handler lang=python >}}
 
-### Setting up the webhook in Jira
+### Set up the webhook in Jira
 
-**Settings → System → Webhooks → Create a WebHook**:
+Go to **Settings → System → Webhooks → Create a WebHook** and set:
 
-1. **URL** — the `/webhook/jira` URL from the app's dashboard.
-2. **Events** — select the events your handlers match, and optionally a JQL filter.
-3. Configure whatever sits in front of the app to inject `X-Webhook-Token`.
+1. **URL**: the `/webhook/jira` URL from the app's dashboard.
+2. **Events**: the events your handlers match. Optionally, add a JQL filter.
+
+Then configure your proxy or Automation rule to add `X-Webhook-Token`.
 
 ## Events
 
-Constants live in `flyteplugins.jira.events`. Note that Jira namespaces some event names (`jira:issue_created`) and not others (`comment_created`) — the constants hide that inconsistency.
+Constants live in `flyteplugins.jira.events`. Jira prefixes some event names (`jira:issue_created`) but not others (`comment_created`); the constants handle both.
 
 | Class | Members |
 |---|---|
@@ -74,22 +75,21 @@ Constants live in `flyteplugins.jira.events`. Note that Jira namespaces some eve
 | `Version` | `CREATED`, `UPDATED`, `RELEASED`, `UNRELEASED`, `DELETED` |
 | `Sprint` | `CREATED`, `UPDATED`, `STARTED`, `CLOSED`, `DELETED` |
 
-### How events are scoped and deduped
+### Scope and deduplication
 
-`scope` is the **project key** (`PROJ`), which is what `scopes=` matches. `resource_id` is the **issue key** (`PROJ-1`) — the stable handle the Jira API takes, and unlike the numeric id, the one a human reads too. `occurred_at` is Jira's own `timestamp`.
+`scope` is the project key, such as `PROJ`. `resource_id` is the issue key, such as `PROJ-1`. `occurred_at` is Jira's `timestamp` field.
 
 ## The task it launches
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/jira/jira_tasks.py" fragment=task lang=python >}}
 
-Two things generalize here:
+The example looks up transitions by name rather than by ID. Transition IDs differ between workflows, so a hard-coded ID breaks when someone edits the project's workflow.
 
-- **Transitions are resolved by name, not by a hard-coded id.** Transition ids are per-workflow, so a hard-coded one breaks the first time somebody edits the project's workflow — in a way that surfaces as a confusing API error rather than as "the workflow changed".
-- **The `jira` client is synchronous**, so it runs through `asyncio.to_thread` to stay off the event loop.
+The `jira` client is synchronous, so the example calls it through `asyncio.to_thread` to avoid blocking the event loop.
 
-Credentials are an Atlassian account email plus an [API token](https://id.atlassian.com/manage-profile/security/api-tokens), used as HTTP basic auth.
+Authenticate with an Atlassian account email and an [API token](https://id.atlassian.com/manage-profile/security/api-tokens), using HTTP basic auth.
 
-## Try it without a Jira site
+## Test without a Jira site
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/jira/jira_tasks.py" fragment=replay lang=python >}}
 
@@ -97,16 +97,16 @@ Credentials are an Atlassian account email plus an [API token](https://id.atlass
 flyte run --local jira_tasks.py replay_sample_delivery
 ```
 
-Note what `verify` is doing in that replay: comparing a shared token, not checking a signature. The returned `provider_signs_deliveries` is `False`.
+In this replay, `verify` compares the shared token; there's no signature to check. The output's `provider_signs_deliveries` is `False`.
 
 ## Examples
 
-Both files live in [`v2/integrations/flyte-plugins/jira`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/jira):
+Both files are in [`v2/integrations/flyte-plugins/jira`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/jira):
 
-- `jira_webhooks.py` — the receiver and an issue-created handler.
-- `jira_tasks.py` — commenting and transitioning, and the offline replay.
+- `jira_webhooks.py`: the receiver and an issue-created handler.
+- `jira_tasks.py`: commenting, transitioning, and the offline replay.
 
 ## See also
 
-- [Software development tools](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Software development tools](./_index) for the event model, `run_once`, and scopes.
 - [Jira API reference](../../api-reference/integrations/software-development-tools/jira/_index).

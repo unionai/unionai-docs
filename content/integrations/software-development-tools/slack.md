@@ -1,6 +1,6 @@
 ---
 title: Slack
-description: Receive Slack events, interactions, and slash commands as Flyte runs — and post, update, and gate a run on a button click.
+description: Receive Slack events, interactions, and slash commands as Flyte runs, and post messages and approval buttons from tasks.
 icon: slack
 weight: 2
 variants: +flyte +union
@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Slack
 
-Receive [Slack](https://api.slack.com/apis/events-api) webhooks in Flyte, send messages back from tasks, and park a run on a button click. Slack is the broadest of these integrations in both directions: it delivers three different shapes to one route, and it is one of two plugins that also *send*.
+Receive [Slack](https://api.slack.com/apis/events-api) events, interactions, and slash commands in Flyte and turn them into runs. From tasks, the plugin can post and update messages, and pause a run until someone clicks an approval button.
 
 ## Installation
 
@@ -16,62 +16,62 @@ Receive [Slack](https://api.slack.com/apis/events-api) webhooks in Flyte, send m
 pip install "flyteplugins-slack[app]"
 ```
 
-Requires Python 3.10 or later. The `app` extra pulls in `fastapi` and `uvicorn` for serving the receiver; `notify` and `approval` send over `httpx`, which Flyte already depends on, so they need no extra.
+Requires Python 3.10 or later. The `app` extra adds `fastapi` and `uvicorn` for serving the receiver. The `notify` and `approval` modules need no extra.
 
-## Two credentials, and they are not interchangeable
+## Credentials
 
-This is the thing to get straight first, because conflating them produces errors that read like something else entirely.
+The plugin uses two Slack credentials. They aren't interchangeable.
 
-| Credential | Where | Used by | Default env var |
+| Credential | Where to find it | Used by | Environment variable |
 |---|---|---|---|
-| **Signing secret** | *Basic Information* | The receiver, to verify deliveries | `SLACK_SIGNING_SECRET` |
-| **Bot token** (`xoxb-…`) | *OAuth & Permissions* | `notify` and `approval`, to call the Web API | `SLACK_BOT_TOKEN` |
+| Signing secret | **Basic Information** | The receiver, to verify deliveries | `SLACK_SIGNING_SECRET` |
+| Bot token (`xoxb-…`) | **OAuth & Permissions** | `notify` and `approval`, to call the Web API | `SLACK_BOT_TOKEN` |
 
-The signing secret belongs to the app and is mounted automatically from the provider's `default_secret_env`. The bot token belongs on the **task** environment, and posting with it needs the `chat:write` scope plus a `/invite` of the bot into the channel.
+The app mounts the signing secret automatically. Mount the bot token on the task environment. Posting requires the `chat:write` scope, and the bot must be invited to the channel with `/invite`.
 
 ## The receiver
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_webhooks.py" fragment=app lang=python >}}
 
-`approval.register(app_env)` is one line that wires up the other half of the approval round trip — see [Approvals](#approvals).
+`approval.register(app_env)` adds the handler that receives approval button clicks. See [Approvals](#approvals).
 
-### Three delivery shapes, one route
+### Delivery types
 
-All three arrive at `/webhook/slack` and are signed the same way, so one provider verifies them all. `on_event` is what tells them apart:
+Slack sends three kinds of delivery to `/webhook/slack`. All three are signed the same way, and `on_event` tells them apart:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_webhooks.py" fragment=handler lang=python >}}
 
-| Shape | Body | `event_type` | `action` |
+| Delivery | Body | `event_type` | `action` |
 |---|---|---|---|
-| Events API callback | JSON | The event's `type` — `message`, `app_mention` | The event's `subtype`, when it has one |
-| Interactivity (buttons, shortcuts, modals) | form, JSON under `payload` | `block_actions`, `view_submission`, `shortcut`, … | The `action_id` or `callback_id` |
-| Slash command | form fields | `command` | The command name, leading `/` dropped |
+| Events API callback | JSON | The event's `type`, such as `message` or `app_mention` | The event's `subtype`, if any |
+| Interactivity (buttons, shortcuts, modals) | Form, with JSON in `payload` | `block_actions`, `view_submission`, `shortcut`, … | The `action_id` or `callback_id` |
+| Slash command | Form | `command` | The command name, without the leading `/` |
 
-Because the action half of an interaction is the `action_id`, the bare constant matches every button and `action=` narrows it to one:
+For interactions, the action is the `action_id`. A bare constant matches every button; add `action=` to match one:
 
 ```python
-# every Block Kit button in the workspace
+# Every Block Kit button in the workspace
 @app_env.on_event(events.Interaction.BLOCK_ACTIONS)
 async def any_button(event): ...
 
-# exactly one button
+# One button
 @app_env.on_event(events.Interaction.BLOCK_ACTIONS, action="redeploy")
 async def redeploy_button(event): ...
 ```
 
-A leading `/` is dropped from slash commands, so `action="/deploy"` reads the way Slack displays it.
+For slash commands, you can write `action="/deploy"` or `action="deploy"`. The leading `/` is dropped.
 
-### Setting up the app in Slack
+### Set up the app in Slack
 
-At [api.slack.com/apps](https://api.slack.com/apps), paste the `/webhook/slack` URL from the dashboard into **all three** places you use:
+At [api.slack.com/apps](https://api.slack.com/apps), paste the `/webhook/slack` URL from the dashboard into each of these that you use:
 
-1. **Event Subscriptions → Request URL**, then subscribe to the bot events your handlers match.
-2. **Interactivity & Shortcuts → Request URL**, if you use buttons, shortcuts, modals, or approvals.
-3. **Slash Commands → Request URL**, per command.
+1. **Event Subscriptions → Request URL**. Then subscribe to the bot events your handlers match.
+2. **Interactivity & Shortcuts → Request URL**, for buttons, shortcuts, modals, or approvals.
+3. **Slash Commands → Request URL**, for each command.
 
-The provider answers both of Slack's reachability probes automatically — the `url_verification` challenge on the Events API URL and the form-encoded `ssl_check` on the other two — so the URL should go green immediately.
+The provider answers Slack's `url_verification` challenge and `ssl_check` probe, so each URL verifies as soon as you save it.
 
-Scopes: `app_mentions:read` to receive mentions, `chat:write` to post, `commands` for slash commands.
+Required scopes: `app_mentions:read` to receive mentions, `chat:write` to post, `commands` for slash commands.
 
 ## Events
 
@@ -91,51 +91,55 @@ Constants live in `flyteplugins.slack.events`.
 | `Interaction` | `BLOCK_ACTIONS`, `VIEW_SUBMISSION`, `VIEW_CLOSED`, `SHORTCUT`, `MESSAGE_ACTION` |
 | `Command` | `ANY` |
 
-### How events are scoped and deduped
+### Scope and deduplication
 
-`scope` is the channel id, which is what `scopes=` matches. `resource_id` is `channel:ts` — **per message**. To collapse a whole thread onto one run, build your own key from `thread_ts` and pass it to `run_once` directly.
+`scope` is the channel ID. `resource_id` is `channel:ts`, which identifies a single message. To launch one run per thread instead, build a key from `thread_ts` and pass it to `run_once` as `key=`.
 
-For interactions, `occurred_at` is the click's `action_ts`, so two clicks of one button get their own dedupe keys while a redelivery of either does not.
+For interactions, `occurred_at` is the click's `action_ts`. Two clicks on one button launch two runs; a redelivery of either click doesn't.
 
-> [!NOTE] Slack is the one provider with a replay window
-> Deliveries older than five minutes (`MAX_REQUEST_AGE_SECONDS`) are rejected, which is why the plugin's `SAMPLE_DELIVERY` signs at call time rather than carrying a fixed signature that would start failing the moment it aged out.
+The provider rejects deliveries more than five minutes old (`MAX_REQUEST_AGE_SECONDS`). For this reason, `SAMPLE_DELIVERY` signs its payload when called rather than carrying a fixed signature.
 
-## Sending from tasks
+## Send messages from tasks
 
-Receiving is the app's job; sending is a task's. `notify` covers the sends every integration otherwise hand-rolls in fifty lines of HTTP and `ok`-checking.
+The `notify` module posts, edits, and deletes messages through the Slack Web API.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_tasks.py" fragment=task lang=python >}}
 
-| Function | Does |
+| Function | Description |
 |---|---|
-| `post(channel, text, *, blocks, thread_ts, token)` | Posts a message; returns its `ts`, which both anchors a thread and addresses `update` |
-| `update(channel, ts, text, *, blocks, token)` | Edits a posted message in place — progress counters, final status |
-| `delete(channel, ts, *, token)` | Deletes one of the bot's own messages |
-| `respond(response_url, text, *, blocks, replace_original, response_type)` | Answers an interaction or slash command. **No token needed** |
+| `post(channel, text, *, blocks, thread_ts, token)` | Posts a message and returns its `ts`. Use the `ts` to reply in a thread or to `update` the message. |
+| `update(channel, ts, text, *, blocks, token)` | Edits a posted message, for example to show progress or a final status |
+| `delete(channel, ts, *, token)` | Deletes a message the bot posted |
+| `respond(response_url, text, *, blocks, replace_original, response_type)` | Replies to an interaction or slash command. Needs no token. |
 
-`respond` is the one to reach for from a handler: it posts to the `response_url` every interaction and slash command carries, valid for 30 minutes and five uses, which makes it the zero-setup way for a launched task to answer the click that launched it.
+`respond` posts to the `response_url` that each interaction and slash command carries. The URL is valid for 30 minutes and five uses, so a task launched by a click can reply to that click without a bot token.
 
-`SlackApiError` carries Slack's own code. The two worth knowing: `not_in_channel` means the bot needs a `/invite`, and `missing_scope` names the OAuth scope to add.
+Failed calls raise `SlackApiError` with Slack's error code. `not_in_channel` means the bot needs to be invited to the channel. `missing_scope` names the OAuth scope to add.
 
-> [!NOTE] One place can hold the token
-> `notify` ships a ready-made task environment with a `send` task. Deploy it once and only it holds the bot token; every other run posts through `flyte.run(notify.send, ...)` without mounting a secret.
+To keep the bot token in one place, deploy `notify.env`. It provides a `send` task that holds the token, and other runs post through `flyte.run(notify.send, ...)` without mounting the secret themselves.
 
 ## Approvals
 
-`approval` is the round trip, and the reason it belongs in the plugin rather than in an example: posting buttons is Slack's job, but *parking a run until one is clicked* is Flyte's.
+`approval.request` posts a message with buttons and pauses the run until someone clicks one.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_tasks.py" fragment=approval lang=python >}}
 
-The task half posts a Block Kit message and parks the run on a `flyte.new_condition`. The webhook half signals that condition when a button is clicked, then replaces the buttons with a "decided by" line so nobody clicks twice. The button's `value` carries the run, action, and condition names, so the app needs no configuration to answer — which is what `approval.register(app_env)` switches on.
+The task posts a Block Kit message and waits on a `flyte.new_condition`. When someone clicks a button, the handler added by `approval.register(app_env)` resolves the condition and replaces the buttons with a line showing who decided. Each button carries the run, action, and condition names, so the handler needs no other configuration.
 
-`request` takes `options` (default `("approve", "reject")`), `thread_ts`, `timeout` (default one hour), `name`, and `token`. It is `syncify`'d: use `.aio(...)` from async tasks and the bare call from sync ones. It runs inside a task only, since the condition is registered against the running action.
+`request` accepts:
 
-`approval.blocks(...)` is exposed separately, so a richer message — context blocks, fields, images — can embed the same buttons in your own layout and still be answered by the registered handler.
+- `options`: the button labels. Defaults to `("approve", "reject")`.
+- `thread_ts`: posts into an existing thread.
+- `timeout`: defaults to one hour.
+- `name` and `token`.
 
-> [!NOTE] An approval nobody clicks is not a stuck run
-> The condition is equally answerable from the Flyte UI. If nobody clicks in Slack, the run shows the same prompt there and either path resolves it.
+Call `request.aio(...)` from async tasks and `request(...)` from sync tasks. It works only inside a task, because the condition belongs to the running action.
 
-## Try it without a Slack workspace
+To embed the buttons in your own message layout, build them with `approval.blocks(...)`. The registered handler answers them the same way.
+
+The condition can also be resolved from the Flyte UI, which shows the same prompt.
+
+## Test without a Slack workspace
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_tasks.py" fragment=replay lang=python >}}
 
@@ -145,12 +149,12 @@ flyte run --local slack_tasks.py replay_sample_delivery
 
 ## Examples
 
-Both files live in [`v2/integrations/flyte-plugins/slack`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/slack):
+Both files are in [`v2/integrations/flyte-plugins/slack`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/slack):
 
-- `slack_webhooks.py` — the receiver, a mention handler, a slash command, and `approval.register`.
-- `slack_tasks.py` — `notify` post-then-update, the approval gate, and the offline replay.
+- `slack_webhooks.py`: the receiver, a mention handler, a slash command, and `approval.register`.
+- `slack_tasks.py`: posting and updating with `notify`, the approval gate, and the offline replay.
 
 ## See also
 
-- [Software development tools](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Software development tools](./_index) for the event model, `run_once`, and scopes.
 - [Slack API reference](../../api-reference/integrations/software-development-tools/slack/_index).

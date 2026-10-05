@@ -6,24 +6,23 @@ weight: 2
 
 # Software development tools
 
-API reference for the five software-development-tool webhook provider plugins — one package per product, each contributing a single `Provider` to the receiver that ships with Flyte.
+API reference for the webhook provider plugins, one package per product. Each package contributes a `Provider` to the receiver in `flyte.extras.webhooks`.
 
-The shared machinery is not here. `WebhookAppEnvironment`, `WebhookEvent`, `Provider`, and `run_once` live in the SDK, documented under [`flyte.extras.webhooks`](../../flyte-sdk/flyte.extras.webhooks/_index). What each package below adds is only what is specific to its product: which environment variable holds its secret, how to verify a delivery, how to parse one into a `WebhookEvent`, and the typed constants for its events.
+The receiver itself (`WebhookAppEnvironment`, `WebhookEvent`, `Provider`, and `run_once`) is documented under [`flyte.extras.webhooks`](../../flyte-sdk/flyte.extras.webhooks/_index). Each package below adds its product's secret, verification, parsing, and event constants.
 
-Two packages carry more than that, in the places where Flyte can do something a vendor SDK cannot:
+Two packages also provide task helpers:
 
-- `flyteplugins-slack` adds `approval` (post buttons, park the run on a condition, resume on the click) and `notify` (post, update, delete, respond).
-- `flyteplugins-github` adds `review_pr` (park a run on a human review condition, get a typed decision back) and `mint_installation_token` (short-lived GitHub App tokens instead of a stored PAT).
+- `flyteplugins-github`: `review_pr`, which pauses a run until a person reviews a pull request, and `mint_installation_token`, which creates short-lived GitHub App tokens.
+- `flyteplugins-slack`: `approval`, which pauses a run until someone clicks a button, and `notify`, which posts, updates, and deletes messages.
 
-For setup, patterns, and per-product examples, see the [Software development tools](../../../integrations/software-development-tools/_index) guide.
+For setup and examples, see the [Software development tools](../../../integrations/software-development-tools/_index) guide.
 
 | Package | API reference | Guide | Verification |
 | --- | --- | --- | --- |
 | `flyteplugins-github` | [GitHub](./github/_index) | [GitHub](../../../integrations/software-development-tools/github) | HMAC-SHA256 (`X-Hub-Signature-256`) |
-| `flyteplugins-slack` | [Slack](./slack/_index) | [Slack](../../../integrations/software-development-tools/slack) | HMAC-SHA256 with a replay window (`X-Slack-Signature`) |
+| `flyteplugins-slack` | [Slack](./slack/_index) | [Slack](../../../integrations/software-development-tools/slack) | HMAC-SHA256 with a five-minute replay window (`X-Slack-Signature`) |
 | `flyteplugins-linear` | [Linear](./linear/_index) | [Linear](../../../integrations/software-development-tools/linear) | HMAC-SHA256 (`Linear-Signature`) |
 | `flyteplugins-clickup` | [ClickUp](./clickup/_index) | [ClickUp](../../../integrations/software-development-tools/clickup) | HMAC-SHA256 (`X-Signature`) |
-| `flyteplugins-jira` | [Jira](./jira/_index) | [Jira](../../../integrations/software-development-tools/jira) | none — Jira does not sign; a shared token stands in |
+| `flyteplugins-jira` | [Jira](./jira/_index) | [Jira](../../../integrations/software-development-tools/jira) | Shared token (`X-Webhook-Token`) |
 
-> [!NOTE] Event constants are not in the generated reference
-> Each package exports an `events` module of typed constants (`events.PullRequest.OPENED`, `events.Task.STATUS_UPDATED`). The generator documents classes and functions, not modules, so the constants are listed on each product's guide page instead.
+Each package's `events` module of constants, such as `events.PullRequest.OPENED`, isn't included in the generated reference. The constants are listed on each product's guide page.

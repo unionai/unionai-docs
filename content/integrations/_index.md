@@ -164,11 +164,7 @@ Agentic AI integrations let you run agents written in a third-party framework as
 
 ## Software development tools
 
-These integrations let something that happened in one of your team's own tools start a Flyte run. A pull request opens, an issue is filed, someone types a slash command, a ticket changes status — the trigger lives in GitHub or Linear or Slack, but the work that should follow is typed, retried, observable, and auditable, which is Flyte's half.
-
-One app receives webhooks from any combination of the five products below, authenticates each delivery with that product's own scheme, normalizes it into a single event model, and launches a run once per event however many times the delivery arrives. The receiver itself ships with Flyte, in `flyte.extras.webhooks`; each package below contributes only what is specific to its product.
-
-There is deliberately no Flyte wrapper around these products' APIs — the vendor clients are maintained, and a task is just a function that calls one. Two exceptions earn their place by doing something a vendor SDK cannot: GitHub pull-request review gates and Slack approvals both park a run on a durable human decision.
+Software development tool integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, and Jira, such as a pull request opening or a ticket changing status. One app receives webhooks from any combination of these products, verifies each delivery, and launches one run per event. The receiver ships with Flyte in `flyte.extras.webhooks`; each package adds support for one product.
 
 ### Supported software development tool integrations
 

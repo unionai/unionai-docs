@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # ClickUp
 
-Receive [ClickUp](https://developer.clickup.com/docs/webhooks) webhooks in Flyte and turn them into runs. See [Software development tools](./_index) for the shared model this builds on.
+Receive [ClickUp](https://developer.clickup.com/docs/webhooks) webhooks in Flyte and turn them into runs.
 
 ## Installation
 
@@ -16,27 +16,28 @@ Receive [ClickUp](https://developer.clickup.com/docs/webhooks) webhooks in Flyte
 pip install "flyteplugins-clickup[app]"
 ```
 
-Requires Python 3.10 or later. The `app` extra pulls in `fastapi` and `uvicorn` for serving the receiver.
+Requires `flyteplugins-clickup` 2.10.7 or later and Python 3.10 or later. Earlier releases read the wrong signature header and reject every delivery. The `app` extra adds `fastapi` and `uvicorn` for serving the receiver.
 
 ## The receiver
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_webhooks.py" fragment=app lang=python >}}
 
-`CLICKUP_WEBHOOK_SECRET` is mounted for you from the provider's `default_secret_env`. Deliveries are verified against an HMAC-SHA256 in `X-Signature` — ClickUp's signature header is unprefixed by its own name, so it is `X-Signature` and not `X-Clickup-Signature`.
+The provider reads its secret from `CLICKUP_WEBHOOK_SECRET`, which the app mounts automatically. It verifies an HMAC-SHA256 signature in the `X-Signature` header (not `X-Clickup-Signature`).
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_webhooks.py" fragment=handler lang=python >}}
 
-### Setting up the webhook in ClickUp
+### Set up the webhook in ClickUp
 
-**Space Settings → Integrations → Webhooks**:
+Go to **Space Settings → Integrations → Webhooks** and set:
 
-1. **Endpoint** — the `/webhook/clickup` URL from the app's dashboard.
-2. **Secret** — ClickUp generates it; store that value as the `clickup-webhook-secret` Flyte secret.
-3. **Events** — select the events your handlers match.
+1. **Endpoint**: the `/webhook/clickup` URL from the app's dashboard.
+2. **Events**: the events your handlers match.
+
+ClickUp generates a secret for the webhook. Store it as the `clickup-webhook-secret` Flyte secret.
 
 ## Events
 
-ClickUp does **not** split type and action. The event name is one camelCase string, so `qualified_type` is `taskStatusUpdated` and `action` is `None`. Constants live in `flyteplugins.clickup.events`.
+ClickUp doesn't separate type and action. Each event name is a single camelCase string, so `qualified_type` is, for example, `taskStatusUpdated`, and `action` is `None`. Constants live in `flyteplugins.clickup.events`.
 
 | Class | Members |
 |---|---|
@@ -47,23 +48,23 @@ ClickUp does **not** split type and action. The event name is one camelCase stri
 | `Goal` | `CREATED`, `UPDATED`, `DELETED` |
 | `KeyResult` | `CREATED`, `UPDATED`, `DELETED` |
 
-### How events are scoped and deduped
+### Scope and deduplication
 
-`scope` is the **list id**, which is what `scopes=` matches. ClickUp puts the list id at the top level on list-scoped events and only on the nested task for task-scoped ones; the provider reads both, so a single allowlist attributes either kind.
+`scope` is the list ID. List events carry it at the top level, and task events carry it on the nested task; the provider reads both.
 
-`resource_id` is the task id, and `occurred_at` is the delivery timestamp — so each successive status change on one ticket gets its own dedupe key.
+`resource_id` is the task ID, and `occurred_at` is the delivery's `timestamp`, so each status change on a task gets its own dedupe key.
 
 ## The task it launches
 
-ClickUp ships no official Python SDK, and its API is a handful of REST calls, so `httpx` directly beats a thin third-party wrapper.
+ClickUp has no official Python SDK. The example calls its REST API with `httpx`:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_tasks.py" fragment=task lang=python >}}
 
-The pre-check is the interesting part, and generalizes beyond ClickUp. `run_once` guarantees one *run* per event; it does not make the run's side effects idempotent. ClickUp accepts a redundant status write, so without reading first, a redelivered webhook would leave a second, misleading entry in the ticket's audit log. Where a duplicate write would be visible or harmful, make the task idempotent too.
+The task reads the current status before writing a new one. `run_once` prevents duplicate runs, not duplicate side effects within a run. Without the check, a retried run would write the same status again and add a redundant entry to the task's activity log.
 
-Mint an API token under **Settings → Apps → API Token**.
+Create an API token under **Settings → Apps → API Token**.
 
-## Try it without a ClickUp workspace
+## Test without a ClickUp workspace
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/clickup/clickup_tasks.py" fragment=replay lang=python >}}
 
@@ -71,19 +72,16 @@ Mint an API token under **Settings → Apps → API Token**.
 flyte run --local clickup_tasks.py replay_sample_delivery
 ```
 
-> [!NOTE] Why the replay asserts the header *name*
-> `verify` and `SAMPLE_DELIVERY` agree with each other whatever the signature header is called, so a round trip is self-consistent for any name — and cannot catch a wrong one. That is exactly how ClickUp's header shipped as `X-Clickup-Signature` in releases before 2.10.7: conformance was green while every genuine delivery got a 401.
->
-> Asserting the literal header a real delivery carries is the one check the round trip cannot make. It is worth copying into your own tests for any provider you add.
+The replay also asserts that the signature arrives in `X-Signature`. A sign-and-verify round trip alone can't detect a wrong header name, because the sample's headers come from the same plugin. If you write your own provider, add the same check.
 
 ## Examples
 
-Both files live in [`v2/integrations/flyte-plugins/clickup`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/clickup):
+Both files are in [`v2/integrations/flyte-plugins/clickup`](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/clickup):
 
-- `clickup_webhooks.py` — the receiver and a status-change handler.
-- `clickup_tasks.py` — the idempotent close, and the offline replay.
+- `clickup_webhooks.py`: the receiver and a status-change handler.
+- `clickup_tasks.py`: the idempotent status update, and the offline replay.
 
 ## See also
 
-- [Software development tools](./_index) for the shared model: the normalized event, `run_once`, and scoping.
+- [Software development tools](./_index) for the event model, `run_once`, and scopes.
 - [ClickUp API reference](../../api-reference/integrations/software-development-tools/clickup/_index).
