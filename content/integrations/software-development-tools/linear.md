@@ -84,4 +84,5 @@ Both files are in [`v2/integrations/flyte-plugins/linear`](https://github.com/un
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
+- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [Linear API reference](../../api-reference/integrations/software-development-tools/linear/_index).

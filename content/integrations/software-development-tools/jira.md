@@ -109,4 +109,5 @@ Both files are in [`v2/integrations/flyte-plugins/jira`](https://github.com/unio
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
+- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [Jira API reference](../../api-reference/integrations/software-development-tools/jira/_index).

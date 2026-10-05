@@ -157,4 +157,5 @@ Both files are in [`v2/integrations/flyte-plugins/slack`](https://github.com/uni
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
+- [Human gates and approvals](../../user-guide/software-development-lifecycle/human-gates-and-approvals) for when to use a Slack button versus a Flyte condition on its own.
 - [Slack API reference](../../api-reference/integrations/software-development-tools/slack/_index).
