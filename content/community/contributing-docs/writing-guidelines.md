@@ -1,6 +1,6 @@
 ---
 title: Writing guidelines
-description: 'The editorial conventions the docs follow: voice, page structure, headings, notices, and terminology.'
+description: 'The editorial conventions the docs follow: content, page structure, voice, wording, formatting, code examples, notices, links, and images.'
 icon: book
 weight: 4
 variants: +flyte +union
@@ -8,78 +8,104 @@ variants: +flyte +union
 
 # Writing guidelines
 
-These guidelines describe the editorial conventions the docs follow.
-Following them keeps your contribution consistent with the rest of the site.
-They cover *how to write* the content; for the mechanics of authoring pages (frontmatter, shortcodes, variants), see [Author content](./authoring).
+The docs are for developers who came to get something done. Write for that reader: say what to do and what will happen, then get out of the way.
 
-## Lead with the task
+These guidelines cover *how to write* the content. For the mechanics of authoring pages (frontmatter, shortcodes, variants), see [Author content](./authoring).
 
-Start a page or section with what the reader needs to do, not with background.
-State the goal, then show the shortest example that achieves it, then explain the details.
-Move context, caveats, and edge cases below the first working example.
+<!-- Kept in sync with .claude/rules/style.md, which applies the same guide to AI-assisted edits. Change both together. -->
 
-## Write in a clear, active voice
+## Content
 
-* Use the active voice ("Call `flyte.init()` before submitting a run"), not the passive ("`flyte.init()` should be called").
-* Address the reader as "you".
-* Keep sentences short and concrete. Prefer plain verbs (`use`, not `leverage` or `utilize`).
-* Cut filler. Phrases like "it is worth noting that", "in order to", and "a wide range of" add words without adding meaning.
+- **Lead with the task.** Open with one or two sentences on what the feature does and when to use it, then the smallest working example. Concepts and background come after, and only as much as the reader needs to use the feature correctly.
+- **Describe the current product.** No history ("previously", "we changed"), no roadmap ("coming soon", "will support"), and no time-relative words ("new", "currently", "now"). When behavior depends on a version, state the requirement: "Requires `flyte` 2.10 or later."
+- **Explain only what the reader can act on.** A clause of *why* is useful when it helps the reader choose or avoid a mistake. Design rationale, trade-offs the reader can't change, and arguments for the API's shape belong in the PR or a design doc.
+- **Don't editorialize.** No commentary on how surprising, common, interesting, or painful something is, and no predictions about how the reader will feel. State the fact.
+- **State gotchas plainly.** Non-obvious behavior is the most valuable thing a page carries. Name the symptom and the cause together: "If the handler never fires, check that `scopes` includes the event's repository."
+- **Say it once.** Put a shared fact on one page, usually the section landing page, and link to it. Don't copy setup steps or explanations across sibling pages.
+- **Be accurate.** Verify behavior against the SDK source or by running the code. Don't document from memory or from Flyte 1.x material.
 
-## Structure a page
+## Page structure
 
-A typical page follows this shape:
+A typical feature page follows this order. Omit sections that don't apply.
 
-1. A brief description of what the feature does.
-2. A minimal, runnable example early on.
-3. The parameters and options, explained after the example.
-4. Common use cases and gotchas at the end.
+1. What it is and when to use it (one or two sentences)
+2. Installation or prerequisites
+3. Minimal working example
+4. Configuration and options
+5. Common patterns
+6. Gotchas and limitations
+7. Related pages
 
-Use headings to break up the page, and keep each section focused on one idea.
+- **Headings** are sentence case: capitalize only the first word and proper nouns. Name the content: "Configure retries", not "Retries: what you need to know". Use imperative verbs for task sections ("Deploy the app") and nouns for reference sections ("Event fields").
+- **One topic per page.** If a page covers two features a reader would look for separately, split it.
+- **Prefer lists and tables** for steps, options, and comparisons. Use prose to explain how things relate.
 
-## Use sentence case for headings
+## Voice
 
-Write headings and titles in sentence case: capitalize only the first word and any proper nouns.
+- **Second person, present tense, active voice.** "You define the environment once." "The app verifies each delivery." Not "the delivery is verified" or "the app will verify".
+- **Imperative for instructions.** "Set `scopes`." Not "You should set `scopes`" or "You can now set `scopes`."
+- **Product voice, not author voice.** Don't use "we" to mean the people who built the product. "We" is fine in tutorials for steps the reader is doing alongside the text ("Next, we add a cache").
+- **Contractions are fine.** Use them where they read naturally.
+- **Don't soften or pad.** Cut "simply", "just", "easily", "please", "note that", "in order to", and "it's worth mentioning". If something is important, the sentence should show it.
 
-* Write "Set up a local dev environment", not "Set Up A Local Dev Environment".
-* Keep product names and acronyms capitalized as they normally appear: Flyte, Union.ai, Kubernetes, API, SDK, CLI.
+## Sentences and words
 
-## Use notes and warnings deliberately
+- **Keep sentences short.** Aim for under 25 words, one idea each. Split sentences that chain clauses with dashes or semicolons.
+- **Condition before instruction.** "If the run fails, check the logs."
+- **One term per concept.** Choose a name and keep it on the page. Don't alternate "app", "server", and "service" for the same thing.
+- **Plain words.** "use", not "utilize" or "leverage"; "before", not "prior to"; "for example", not "e.g."; "make sure", not "ensure that".
+- **Be specific.** Give the value, the limit, the name: "times out after 10 seconds", not "times out quickly".
+- **Product names.** Use `{{</* key product_name */>}}` for text that differs between variants. Write "Union.ai" (not "Union AI" or "UnionAI") and "Flyte"; lowercase `flyte` only for the package, CLI, or module, in code. Write third-party names as their owners do: GitHub, Kubernetes (not "k8s"), Hugging Face. Say "data plane", never "compute plane".
+- **Concepts are lowercase nouns.** "Create a task", "the environment". Capitalize only the literal API class, in backticks: `flyte.TaskEnvironment`.
+- **Use the Oxford comma.** "tasks, apps, and triggers".
 
-Use a note for helpful, non-critical information and a warning for something that can cause data loss, breakage, or a security problem. Do not overuse them; if every paragraph is a callout, none of them stand out.
+## Formatting
+
+- **Code formatting** for anything the reader types or reads in code: identifiers, parameters, values, file names, paths, commands, environment variables.
+- **API identifiers** go in backticks, fully qualified, with no explicit link. The site links them to the API reference automatically. See [Linking to the API reference](./authoring#linking-to-the-api-reference).
+- **Bold** for UI labels ("Click **Save**") and for the term being defined. Not for emphasis in prose.
+- **UI paths** use bold labels and arrows: **Settings → Webhooks → Add webhook**.
+- **Em dashes sparingly**, at most one per paragraph. A period is usually better.
+- **Numbers:** numerals for values and units (`512Mi`, 10 seconds, 3 retries); words for one to nine in ordinary prose ("two options").
+
+## Code examples
+
+- **Runnable and tested.** Prefer embedding examples from [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples) so CI exercises the code; see [Python generated content](./authoring#python-generated-content). Inline snippets must still be correct.
+- **Complete enough to copy.** Include imports and the environment definition the snippet depends on, or show them once earlier on the page.
+- **Realistic but minimal.** Use plausible names (`octo/repo`, `train_model`), not `foo` and `bar`, and leave out anything that doesn't serve the point.
+- **Comments describe the code.** Example comments render in the docs and follow these guidelines.
+- **Shell commands** go in `bash` blocks without a `$` prompt. Show output in a separate block when it matters.
+- **Placeholders** are explicit, like `<your-project>`, and the text says what to replace them with.
+
+## Notices
+
+- **Use sparingly.** If every reader needs it, it belongs in the prose. More than two notices on a page usually means the page needs restructuring.
+- **NOTE** adds useful context. **WARNING** prevents harm: data loss, a security exposure, a failed deployment, or a cost surprise.
+- **Titles are optional.** If you use one, make it a short label, not a sentence. Text on the `[!NOTE]` line renders as the bold title, so the explanation goes on the next line.
 
 ```markdown
-> [!NOTE] Optional title
-> Helpful, non-critical information.
-
-> [!WARNING] Optional title
-> Something the reader must not miss.
+> [!NOTE] Python 3.10 or later
+> The plugin uses syntax introduced in Python 3.10.
 ```
 
-See [Authoring > Warnings and notices](./authoring#warnings-and-notices) for the syntax.
+See [Warnings and notices](./authoring#warnings-and-notices) for the syntax.
 
-## Keep terminology consistent
+## Links
 
-Use the same term for the same thing throughout. Match the spelling and casing the rest of the docs use:
+- **Descriptive link text** that names the destination: `see [Caching](...)`, not `click [here](...)`.
+- **Link the first mention** of a related concept on a page, not every mention.
+- **Relative links** within the docs, and `{{</* docs_home */>}}` across variants. Never use absolute URLs to `union.ai/docs`.
 
-* **Union.ai** for the company and product (not "Union AI" or "UnionAI").
-* **Flyte** for the open-source project (lowercase `flyte` only for the package, CLI, or module name, in code).
-* **Kubernetes**, not "k8s", in prose.
+## Images
 
-When you write about a Flyte 2 concept as an ordinary noun ("create a task", "the workflow"), use lowercase.
-Capitalize the name only when you mean the literal API class, and then write it in backticks so it links to the API reference: `` `Task` ``, `` `TaskEnvironment` ``, `` `File` ``.
+- **Alt text** that says what the image shows.
+- **Screenshots** only where text can't do the job, cropped to the relevant area. They go stale with every UI change.
 
-## Make examples runnable and tested
+## Before you finish
 
-Code examples should run as written. Prefer examples that a reader can copy, paste, and execute.
-Longer, runnable examples belong in the [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples) repository and are embedded into pages; see [Author content](./authoring#python-generated-content) for how that works.
+Read the page as a new user would. Then:
 
-## Link to the API reference by writing the identifier
-
-When you mention an API identifier in prose or a code block, write it in backticks and let the site link it automatically. Do not write an explicit Markdown link to the API reference.
-
-```markdown
-✅  A `flyte.io.File` is a reference to an offloaded file.
-✅  Call `flyte.init()` before submitting a run.
-```
-
-See [Authoring > Linking to the API reference](./authoring#linking-to-the-api-reference) for the details.
+- Remove sentences that recount history, defend a design, or tell the reader how to feel.
+- Remove anything stated earlier on the page or on its landing page.
+- Check that the first screen tells the reader what the feature does and shows how to use it.
+- Check that every code block runs.
