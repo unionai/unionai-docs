@@ -1,6 +1,6 @@
 ---
 title: How task run works
-description: The three execution modes behind flyte run, and when each applies.
+description: The three ways flyte run launches a task, and when each applies.
 icon: gear
 weight: 1
 variants: +flyte +union
@@ -9,13 +9,15 @@ mermaid: true
 
 # How task run works
 
-The `flyte run` command and `flyte.run()` SDK function support three primary execution modes:
+The `flyte run` command and `flyte.run()` SDK function support three ways to launch a task:
 
 1. **Ephemeral deployment + run**: Automatically prepare task environments ephemerally and execute tasks (development shortcut)
 2. **Run deployed task**: Execute permanently deployed tasks without redeployment
 3. **Local execution**: Run tasks on your local machine for development and testing
 
 Additionally, you can run deployed tasks through the Flyte/Union UI for interactive execution and monitoring.
+
+This page is about *how* a run is launched. Whether it runs locally in-process or remotely, on a devbox or a deployed cluster, is covered in [Run modes](../../get-started/run-modes/_index).
 
 ## Ephemeral deployment + run: The development shortcut
 
@@ -142,7 +144,7 @@ flyte run --project prod --domain production deployed-task my_env.my_task --batc
 
 ## Local execution
 
-For development, debugging, and testing, you can run tasks locally on your machine without any backend interaction.
+For development, debugging, and testing, you can run tasks in-process on your local machine. By default, no backend is involved.
 
 {{< tabs "local-execution" >}}
 {{< tab "Programmatic" >}}
@@ -190,6 +192,25 @@ flyte run --local data_pipeline.py process_data --input_path "/local/data" --deb
 - **Debugging**: Full access to local debugging tools
 - **Offline development**: Works without backend connectivity
 - **Resource efficiency**: Uses local compute resources
+
+{{< variant union >}}
+{{< markdown >}}
+
+### Tracking a local run
+
+A local run can report its progress to {{< key product_name >}}, so you can follow it in the console under **Tracked Runs** while it still executes on your machine. From the CLI, use `flyte run --tracked`. From Python, pass `tracked=True` to `flyte.with_runcontext()`:
+
+```python
+flyte.init_from_config()  # needs an endpoint, project and domain
+run = flyte.with_runcontext(mode="local", tracked=True).run(my_task, name="World")
+```
+
+Tracking is local-only: `tracked=True` with `mode="remote"` raises a `ValueError`. If no client is initialized, the run goes ahead locally without reporting and logs a warning. To track every local run, pass `local_tracked=True` to `flyte.init()` or set `local.tracked: true` in your config file.
+
+For strict reporting, run naming rules and what is reported, see [`--tracked`, `--tracked-strict`](./run-command-options#--tracked---tracked-strict).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Running tasks through the Union UI
 
@@ -257,11 +278,19 @@ graph TD
     E --> F[Cleanup ephemeral environment]
 ```
 
-### Execution modes comparison
+### Launch methods compared
 
-| Mode | Deployment | Performance | Use Case | Code Version |
+| Launch method | Deployment | Performance | Use Case | Code Version |
 |------|------------|-------------|-----------|--------------|
 | Ephemeral Deploy + Run | Ephemeral (temporary) | Medium | Development, testing | Latest local |
 | Run Deployed | None (uses permanent deployment) | Fast | Production, stable runs | Deployed version |
 | Local | None | Variable | Development, debugging | Local |
 | UI | None | Fast | Interactive, collaboration | Deployed version |
+
+{{< variant union >}}
+{{< markdown >}}
+
+A [tracked](#tracking-a-local-run) local run has the same profile as **Local**. It also appears in the console under **Tracked Runs**.
+
+{{< /markdown >}}
+{{< /variant >}}
