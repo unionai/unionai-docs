@@ -92,7 +92,7 @@ See [Warnings and notices](./authoring#warnings-and-notices) for the syntax.
 
 ## Links
 
-- **Descriptive link text** that names the destination: `see [Caching](...)`, not `click [here](...)`.
+- **Descriptive link text** that names the destination, such as "Caching", not "here" or "this page".
 - **Link the first mention** of a related concept on a page, not every mention.
 - **Relative links** within the docs, and `{{</* docs_home */>}}` across variants. Never use absolute URLs to `union.ai/docs`.
 

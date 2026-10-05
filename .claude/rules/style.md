@@ -126,8 +126,8 @@ A typical feature page follows this order. Omit sections that don't apply.
 
 ## Links
 
-- **Descriptive link text** that names the destination: `see [Caching](...)`, not
-  `click [here](...)`.
+- **Descriptive link text** that names the destination, such as "Caching", not "here" or
+  "this page".
 - **Link the first mention** of a related concept on a page, not every mention.
 - **Relative links** within the docs; `{{< docs_home >}}` across variants. Never absolute
   URLs to `union.ai/docs`.
