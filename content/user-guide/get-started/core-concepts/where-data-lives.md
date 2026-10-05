@@ -36,16 +36,32 @@ The database is the **source of truth for what executed**. The bucket is **where
 The control plane database holds everything Flyte needs to enumerate, schedule, and replay your work. Specifically:
 
 - **Registrations**: every task you've deployed, every trigger you've registered, every project and domain. A task's definition includes its *default* input values, which are stored inline as part of the registration. The registration also carries the full task template: container image reference, command and arguments, resource requests, environment variables (as literal key/value pairs), and the *names* of any secrets the task requests.
-- **Execution records**: every run, every action (task / trace / condition) inside that run, attempts, phases, timing, error messages, parent/child relationships. Each run also stores the run-level configuration it was launched with: labels, annotations, environment variables set through the run context, queue / cluster pool, custom blob storage prefixes, cache settings, notification rules, and the names of secrets requested at run level.
+- **Execution records**: every run, every action (task / trace / condition) inside that run, attempts, phases, timing, error messages, parent/child relationships. Each run also stores the run-level configuration it was launched with: labels, annotations, environment variables set through the run context, custom blob storage prefixes, cache settings, and notification rules.
 - **Schedules and triggers**: `Cron`, event triggers, and their revision history.
-- **Apps**: every deployed app's full spec (container image, command and arguments, environment variables, ports, resources, autoscaling and ingress settings, secret *names*, and any string inputs you pass to the app) plus its current status, including the public / CNAME / VPC URLs it is reachable at, the assigned cluster, the creator, and the last start time.
-- **Reusable environments**: For a reusable environment the database holds the environment spec (image, resources, environment variables, secret names, pod template, parallelism), its scaling state (replicas, idle and scale-down TTLs), and the per-cluster status of its worker pool, including worker states and recent worker error messages. Plain environment specs are not persisted.
 - **Pointers to runtime inputs and outputs**: the database stores the *URI* of each run's `inputs.pb` / `outputs.pb`, not the values themselves. (One exception: an awaited *condition* / approval action stores the value that satisfies it inline.)
 - **Caches**: the cache key → output-URI mapping for `@env.task(cache=...)`.
 
+{{< variant union >}}
+{{< markdown >}}
+In {{< key product_name >}}, the database also holds:
+
+- **Run placement**: the queue and cluster pool each run was launched on.
+- **Apps**: every deployed app's full spec (container image reference, command and arguments, environment variables, ports, resources, autoscaling and ingress settings, secret *names*, and the inputs you pass to the app) plus its current status, including the public, CNAME, and VPC URLs it is reachable at, the assigned cluster, the creator, and the last start time.
+- **Reusable environments**: the environment spec (image, resources, environment variables, secret names, pod template, parallelism), its scaling state (replicas, idle and scale-down TTLs), and the per-cluster status of its worker pool, including worker states and recent worker error messages.
+{{< /markdown >}}
+{{< /variant >}}
+
 The values your tasks actually pass at runtime, even a bare `int`, do **not** live in the database. They are written to `inputs.pb` / `outputs.pb` in the bucket, and the database keeps only the pointer. See the next section.
 
-Because environment variables in task, run, and app specs are stored as plain text in the database, put credentials and other sensitive configuration in secrets rather than in `env` maps. Secrets can still be mounted as environment variables. Since these are mounted at runtime, secret values are not persisted in the control plane database.
+Environment variables in task and run specs are stored as plain text in the database.
+
+{{< variant union >}}
+{{< markdown >}}
+So are environment variables in app and reusable environment specs, and string inputs passed to apps.
+{{< /markdown >}}
+{{< /variant >}}
+
+Put credentials and other sensitive configuration in [secrets](../../tasks/task-configuration/secrets) rather than in `env` maps. A secret can be mounted as an environment variable, and because it is mounted at runtime, its value is never stored in the control plane database.
 
 (Internally, Flyte uses several backing databases: Postgres for registrations and run history, separate stores for in-flight action coordination and caches. For developer purposes the only thing that matters is that they're all small-record, structured stores; none of them hold bulk content.)
 
