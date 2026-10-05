@@ -36,7 +36,7 @@ A task that declares `produces_artifacts` now registers its outputs as versioned
 
 ### :computer: Tracked Local Runs
 
-`flyte run --tracked` reports a run executing on your own machine to the platform: live phases, inputs, outputs, and reports. A Local Runs page in the Console lists and live-streams these runs with the same details experience as platform runs. You can abort a tracked run from the Console, though this cannot stop the process running on your machine. Per-organization limits apply to concurrent local runs and actions, actions per run, and monthly run creations. See [Track local runs in the console](../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console).
+`flyte run --tracked` reports a run executing on your own machine to the platform: live phases, inputs, outputs, and reports. A Tracked Runs page in the Console lists and live-streams these runs with the same details experience as platform runs. You can abort a tracked run from the Console, though this cannot stop the process running on your machine. Per-organization limits apply to concurrent local runs and actions, actions per run, and monthly run creations. See [Track local runs in the console](../user-guide/get-started/run-modes/running-locally#track-local-runs-in-the-console).
 
 
 ### :chart_with_upwards_trend: GPU Observability
