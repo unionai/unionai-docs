@@ -86,6 +86,46 @@ def train_model(data: list) -> dict:
 > Retries due to spot preemption do not count against the user-configured retry budget.
 > System retries (for preemptions and other system-level failures) are tracked separately.
 
+## Behavior if spot instances are not available
+
+Preemption and *unavailability* are different failures. A preempted task is rescheduled for you,
+but a task whose spot pool has no capacity at all never starts: it sits in the **Queued** or
+**Waiting for resources** phase until capacity appears. Bound that wait with
+[`max_queued_time`](./retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available),
+then catch `flyte.errors.MaxQueuedTimeExceededError` in the caller and re-run the same task on
+on-demand compute with `interruptible=False`:
+
+```python
+from datetime import timedelta
+
+import flyte
+import flyte.errors
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    interruptible=True,
+)
+
+
+@env.task(timeout=flyte.Timeout(max_queued_time=timedelta(minutes=10)))
+async def train_model(data: list) -> dict:
+    return {"accuracy": 0.95}
+
+
+@env.task
+async def main(data: list) -> dict:
+    try:
+        # Cheap path: spot, abandoned if nothing is scheduled within 10 minutes
+        return await train_model(data=data)
+    except flyte.errors.MaxQueuedTimeExceededError:
+        # Pay for on-demand rather than wait for spot capacity
+        return await train_model.override(interruptible=False)(data=data)
+```
+
+Without `max_queued_time` the spot attempt has no reason to give up, so the fallback never runs.
+See [Falling back when GPU capacity isn't available](../task-programming/error-handling#falling-back-when-gpu-capacity-isnt-available)
+for the same pattern applied to scarce accelerators.
+
 {{< variant union >}}
 {{< markdown >}}
 > [!NOTE]
