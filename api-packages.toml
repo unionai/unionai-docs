@@ -262,6 +262,12 @@ title = "Databricks"
 name = "databricks"
 
 [[plugins]]
+package = "flyteplugins-dbt"
+plugin = "flyteplugins.dbt"
+title = "dbt"
+name = "dbt"
+
+[[plugins]]
 package = "flyteplugins-gemini"
 plugin = "flyteplugins.gemini"
 title = "Gemini"
