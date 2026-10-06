@@ -42,6 +42,7 @@ Flyte 2 integrations fall into the following categories:
 10. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
 11. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
 12. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+13. **Profiling**: Profile GPU tasks and get the results back in the task's report.
 
 ## Distributed compute
 
@@ -427,5 +428,15 @@ Observability integrations export telemetry from a Flyte run to an external back
 | [Grafana Agent Observability](./grafana-agent-observability/_index) | Sends agent generations, tool calls, token usage, and cost to Grafana, grouped by Flyte run | LLM cost tracking, prompt iteration, agent debugging                 |
 
 Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/tasks/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.
+
+## Profiling
+
+Profiling integrations run a task under a profiler and attach the results to the run.
+
+### Supported profiling integrations
+
+| Plugin                                  | Description                                                              | Common use cases                                                    |
+| --------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [NVIDIA Nsight Systems](./nsight/_index) | Runs a task under `nsys` and adds a GPU report and a downloadable trace | Finding slow CUDA kernels, data-loading stalls, distributed training bottlenecks |
 
 {{< subpage-cards >}}
