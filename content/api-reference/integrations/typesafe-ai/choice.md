@@ -2,7 +2,7 @@
 title: Choice
 description: "One pick from a fixed vocabulary, carrying the calibration it came with."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

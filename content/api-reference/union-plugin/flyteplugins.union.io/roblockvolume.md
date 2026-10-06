@@ -2,7 +2,7 @@
 title: ROBlockVolume
 description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
-version: 0.15.1
+version: 0.15.3
 variants: -flyte +union
 layout: py_api
 ---
@@ -93,6 +93,7 @@ validated to form a valid model.
 
 | Method | Description |
 |-|-|
+| [`abandon()`](#abandon) | Let go of a live mount **without committing**: for a volume whose client died under it, where the sealing teardown would only block. |
 | [`commit()`](#commit) | **Deprecated.** Drain + unmount + publish, returning a new ``Volume``. |
 | [`empty()`](#empty) | Declare a brand-new volume. |
 | [`fork()`](#fork) | Branch this version into a new writable `BlockVolume` (copy-on-write). |
@@ -104,6 +105,31 @@ validated to form a valid model.
 | [`new()`](#new) | PRD §Lifecycle: create a fresh empty `RWVolume`. |
 | [`recover_mount()`](#recover_mount) | Remount this volume after its mount daemon died under it. |
 
+
+### abandon()
+
+```python
+def abandon(
+    timeout: float = 30.0,
+)
+```
+Let go of a live mount **without committing**: for a volume whose
+client died under it, where the sealing teardown would only block.
+
+Best-effort and bounded, every step on its own: detach the block
+device, stop the client's process group, retire the broker channel
+(aborted, never handed out again: the superblock it served is dead),
+stop the metadata store, close the writer's slice domain. Nothing is
+uploaded or published; the last commit stands. Without this a caller
+that gives up on a dead volume leaked its block attachment and channel
+in the node's broker, which refuses new ones past a per-volume cap, so
+a pod that kept recovering would eventually be unable to remount.
+Idempotent; a no-op when nothing is mounted.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `timeout` | `float` | |
 
 ### commit()
 

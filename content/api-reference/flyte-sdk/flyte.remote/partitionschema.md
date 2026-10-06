@@ -2,7 +2,7 @@
 title: PartitionSchema
 description: "The partition keys fixed for an artifact name: at most one time key with its granularity, plus string keys in declaration order."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,7 +1,7 @@
 ---
 title: flyte.extend
 icon: box-seam
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,7 @@ layout: py_api
 |-|-|
 | [`AsyncFunctionTaskTemplate`](../flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`ImageBuildEngine`](../flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`RuntimeTaskTemplate`](../flyte.extend/runtimetasktemplate) | Task template for Python-runtime tasks that execute through the Flyte task entrypoint. |
 | [`TaskTemplate`](../flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
 
 ### Protocols

@@ -2,7 +2,7 @@
 title: SandboxedTaskTemplate
 description: "A task template that executes the function body in a Monty sandbox."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -51,9 +51,9 @@ class SandboxedTaskTemplate(
     max_inline_io_bytes: int = 10485760,
     triggers: Tuple[Trigger, ...] = <factory>,
     links: Tuple[Link, ...] = <factory>,
+    task_resolver: Optional[Any] = None,
     func: F,
     plugin_config: Optional[SandboxedConfig] = None,
-    task_resolver: Optional[Any] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -85,9 +85,9 @@ class SandboxedTaskTemplate(
 | `max_inline_io_bytes` | `int` | |
 | `triggers` | `Tuple[Trigger, ...]` | |
 | `links` | `Tuple[Link, ...]` | |
+| `task_resolver` | `Optional[Any]` | |
 | `func` | `F` | |
 | `plugin_config` | `Optional[SandboxedConfig]` | |
-| `task_resolver` | `Optional[Any]` | |
 
 ## Properties
 
