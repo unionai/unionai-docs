@@ -96,7 +96,7 @@ with nvtx.range("forward"):
 nvtx.mark("checkpoint saved")
 ```
 
-Both are thin wrappers over `torch.cuda.nvtx`. When torch isn't installed they do nothing. With a CPU-only torch build they raise `RuntimeError`, so keep NVTX labels in code that runs on a GPU.
+Both are thin wrappers over `torch.cuda.nvtx`. When torch isn't installed, or is a CPU-only build, they do nothing, so annotated code still runs on a laptop or in a CPU-only test.
 
 Label the phases you'll want to find on the timeline, such as data loading, the forward and backward passes, and the optimizer step. Unlabeled, the timeline shows only kernels and API calls.
 
