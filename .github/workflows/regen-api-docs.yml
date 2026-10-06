@@ -126,6 +126,23 @@ jobs:
             echo "drift=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # A released plugin with no api-packages.toml entry never drifts -- it has no
+      # committed docs to fall behind -- so check-api-docs cannot see it. Checked
+      # separately and NOT folded into `drift`: an unregistered plugin must not set
+      # off the regen/cut-fold path. Reported in the PR body, and fails the job at
+      # the end so a scheduled run goes red.
+      - name: Check plugin registry
+        id: registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          if make check-plugin-registry 2>&1 | tee /tmp/registry.txt; then
+            echo "unregistered=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "unregistered=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Regenerate API docs
         if: steps.drift.outputs.drift == 'true'
         run: make update-api-docs < /dev/null
@@ -273,6 +290,17 @@ jobs:
           } > /tmp/pr-body.md
           # Append the surface-delta classification (material/cosmetic + symbols).
           cat /tmp/delta.md >> /tmp/pr-body.md 2>/dev/null || true
+          if [ "${{ steps.registry.outputs.unregistered }}" = "true" ]; then
+            {
+              echo ""
+              echo "### Unregistered plugins"
+              echo ""
+              echo "These plugins are released but have no \`[[plugins]]\` entry in \`api-packages.toml\`, so this regen does not document them. Register them in a separate PR."
+              echo '```'
+              cat /tmp/registry.txt
+              echo '```'
+            } >> /tmp/pr-body.md
+          fi
 
       - name: Create or update draft PR
         if: steps.drift.outputs.drift == 'true'
@@ -305,3 +333,10 @@ jobs:
             api-docs-regen
             ${{ steps.classify.outputs.material == 'true' && 'docsy:api-surface-delta' || '' }}
           delete-branch: false
+
+      - name: Fail on unregistered plugins
+        if: steps.registry.outputs.unregistered == 'true'
+        run: |
+          echo "::error title=Released plugin(s) have no API reference::$(grep -E 'UNREGISTERED|DISCOVERY FAILED' /tmp/registry.txt | tr -s ' ' | paste -sd ';' -)"
+          echo "Add a [[plugins]] entry to api-packages.toml for each (or a [[plugin_discovery.skip]] entry with a reason)."
+          exit 1
