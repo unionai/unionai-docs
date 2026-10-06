@@ -174,6 +174,10 @@ If dbt reports failure, the task fails. If dbt provides an exception, the plugin
 
 The report is written before the failure is raised, so a failed dbt task can still show which nodes succeeded and which nodes failed.
 
+For example, a failing `dbt test` task can still show the full node result table in the report:
+
+![dbt report showing failed and passed test nodes](../../_static/images/integrations/dbt/dbt_report_test_fail.png)
+
 ## Custom dbt callbacks
 
 Pass dbt event callbacks to `DbtTask` when you need custom logging or event handling.
