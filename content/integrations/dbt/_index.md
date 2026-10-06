@@ -20,7 +20,7 @@ pip install flyteplugins-dbt
 
 Install the dbt adapter required by your project in the task image as well, such as `dbt-duckdb`, `dbt-bigquery`, or `dbt-snowflake`.
 
-```python{hl_lines=["5-8"]}
+```python
 import flyte
 
 image = (
@@ -36,7 +36,7 @@ image = (
 
 Put your dbt project and profiles directory in the task image, then create a `DbtTask` with project-level configuration. Pass the dbt command when you call the task.
 
-```python{hl_lines=[4, 10, "15-23", "28-30"]}
+```python
 from pathlib import Path
 
 import flyte
@@ -106,7 +106,7 @@ await dbt_build.aio(
 
 Because `DbtTask` is a Flyte task, you can run independent dbt invocations concurrently from an async parent task:
 
-```python{hl_lines=["5-8"]}
+```python
 import asyncio
 
 @env.task
@@ -159,7 +159,7 @@ Some dbt commands, such as commands that return plain strings instead of node re
 
 Set `report=True` to write a dbt report tab for the task. The report includes node names, resource types, statuses, failures, execution times, messages, and relation names.
 
-```python{hl_lines=[8]}
+```python
 dbt_test = DbtTask(
     name="dbt-test",
     task_environment=env,
@@ -178,7 +178,7 @@ The report is written before the failure is raised, so a failed dbt task can sti
 
 Pass dbt event callbacks to `DbtTask` when you need custom logging or event handling.
 
-```python{hl_lines=["1-10", 17]}
+```python
 def print_dbt_event(event):
     event_name = getattr(getattr(event, "info", None), "name", type(event).__name__)
     data = getattr(event, "data", None)
