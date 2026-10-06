@@ -2,7 +2,7 @@
 title: Slack
 description: "Slack webhooks for Flyte: the Events API, interactivity, and slash commands."
 icon: book
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

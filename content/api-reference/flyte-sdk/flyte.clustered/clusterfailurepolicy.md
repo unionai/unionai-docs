@@ -2,7 +2,7 @@
 title: ClusterFailurePolicy
 description: "Failure and restart policy for the JobSet as a whole."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

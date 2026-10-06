@@ -1,7 +1,7 @@
 ---
 title: flyte.config
 icon: box-seam
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,6 +21,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`auto()`](#auto) | Automatically constructs the Config Object. |
+| [`get_config_file()`](#get_config_file) | Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None. |
 | [`set_if_exists()`](#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 
 
@@ -53,6 +54,20 @@ Automatically constructs the Config Object. The order of precedence is as follow
 | `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched |
 
 **Returns:** Config
+
+#### get_config_file()
+
+```python
+def get_config_file(
+    c: typing.Union[str, pathlib.Path, flyte.config._reader.ConfigFile, NoneType],
+) -> flyte.config._reader.ConfigFile | None
+```
+Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `typing.Union[str, pathlib.Path, flyte.config._reader.ConfigFile, NoneType]` | |
 
 #### set_if_exists()
 

@@ -2,7 +2,7 @@
 title: Trigger
 description: "Specification for a trigger that can be associated with any Flyte task."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---
