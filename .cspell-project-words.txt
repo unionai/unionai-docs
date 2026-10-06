@@ -140,11 +140,13 @@ Dask
 Daytona
 DBFS
 dbname
+dbt
 DCGM
 dendrograms
 DETR
 DGXC
 dockernetes
+duckdb
 ECMWF
 elif
 exfiltration

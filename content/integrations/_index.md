@@ -34,13 +34,14 @@ Flyte 2 integrations fall into the following categories:
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
 3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
 4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
-5. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-6. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-7. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
-8. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-9. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-10. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-11. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+5. **Data transformation**: Run data transformation tools as Flyte tasks and capture their results.
+6. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+7. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+8. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+9. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+10. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+11. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+12. **Observability**: Export task and agent telemetry to external tracing and observability backends.
 
 ## Distributed compute
 
@@ -177,6 +178,16 @@ Software development tool integrations launch Flyte runs from events in GitHub, 
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 
 See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
+
+## Data transformation
+
+Data transformation integrations let you run transformation tools as Flyte tasks, compose them with Python tasks, and capture task reports and typed outputs.
+
+### Supported data transformation integrations
+
+| Plugin                  | Description                       | Common use cases                                      |
+| ----------------------- | --------------------------------- | ----------------------------------------------------- |
+| [dbt](./dbt/_index)     | Run dbt CLI invocations as tasks  | Analytics engineering, data quality checks, reporting |
 
 ## Experiment tracking
 
