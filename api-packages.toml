@@ -299,12 +299,6 @@ title = "JSONL"
 name = "jsonl"
 
 [[plugins]]
-package = "flyteplugins-lance"
-plugin = "flyteplugins.lance"
-title = "Lance"
-name = "lance"
-
-[[plugins]]
 package = "flyteplugins-llamacpp"
 plugin = "flyteplugins.llamacpp"
 title = "llama.cpp"
