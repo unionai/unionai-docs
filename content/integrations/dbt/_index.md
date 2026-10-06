@@ -1,5 +1,5 @@
 ---
-title: dbt
+title: DBT
 description: Run dbt CLI commands as Flyte tasks and capture node results and reports.
 icon: database
 weight: 3
