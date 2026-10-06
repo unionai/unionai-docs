@@ -1,0 +1,9 @@
+{
+  "packages": {
+    "flyteplugins.lance": "/api-reference/integrations/lance/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.lance.register_lance_df_transformers": "/api-reference/integrations/lance/#register_lance_df_transformers"
+  }
+}

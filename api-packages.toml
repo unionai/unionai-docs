@@ -262,11 +262,23 @@ title = "Databricks"
 name = "databricks"
 
 [[plugins]]
+package = "flyteplugins-dbt"
+plugin = "flyteplugins.dbt"
+title = "dbt"
+name = "dbt"
+
+[[plugins]]
 package = "flyteplugins-gemini"
 plugin = "flyteplugins.gemini"
 title = "Gemini"
 name = "gemini"
 frozen = true  # see "Frozen agentic plugins" above
+
+[[plugins]]
+package = "flyteplugins-hitl"
+plugin = "flyteplugins.hitl"
+title = "Human-in-the-loop"
+name = "hitl"
 
 [[plugins]]
 package = "flyteplugins-huggingface"
@@ -287,6 +299,18 @@ title = "JSONL"
 name = "jsonl"
 
 [[plugins]]
+package = "flyteplugins-lance"
+plugin = "flyteplugins.lance"
+title = "Lance"
+name = "lance"
+
+[[plugins]]
+package = "flyteplugins-llamacpp"
+plugin = "flyteplugins.llamacpp"
+title = "llama.cpp"
+name = "llamacpp"
+
+[[plugins]]
 package = "flyteplugins-mlflow"
 plugin = "flyteplugins.mlflow"
 title = "MLflow"
@@ -304,6 +328,18 @@ package = "flyteplugins-omegaconf"
 plugin = "flyteplugins.omegaconf"
 title = "OmegaConf"
 name = "omegaconf"
+
+[[plugins]]
+package = "flyteplugins-otel"
+plugin = "flyteplugins.otel"
+title = "OpenTelemetry"
+name = "otel"
+
+[[plugins]]
+package = "flyteplugins-pandera"
+plugin = "flyteplugins.pandera"
+title = "Pandera"
+name = "pandera"
 
 [[plugins]]
 package = "flyteplugins-papermill"
@@ -334,6 +370,12 @@ package = "flyteplugins-sglang"
 plugin = "flyteplugins.sglang"
 title = "SGLang"
 name = "sglang"
+
+[[plugins]]
+package = "flyteplugins-slurm"
+plugin = "flyteplugins.slurm"
+title = "Slurm"
+name = "slurm"
 
 [[plugins]]
 package = "flyteplugins-spark"
@@ -373,6 +415,12 @@ package = "flyteplugins-snowflake"
 plugin = "flyteplugins.snowflake"
 title = "Snowflake"
 name = "snowflake"
+
+[[plugins]]
+package = "flyteplugins-trackio"
+plugin = "flyteplugins.trackio"
+title = "Trackio"
+name = "trackio"
 
 [[plugins]]
 package = "flyteplugins-typesafe-ai"
