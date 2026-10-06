@@ -178,34 +178,29 @@ For example, a failing `dbt test` task can still show the full node result table
 Pass dbt event callbacks to `DbtTask` when you need custom logging or event handling.
 
 ```python
-def print_dbt_event(event):
-    event_name = getattr(getattr(event, "info", None), "name", type(event).__name__)
-    data = getattr(event, "data", None)
-    node_info = getattr(data, "node_info", None)
-    if node_info is None:
-        return
+from dbt_common.events.base_types import EventMsg
 
-    node_name = getattr(node_info, "node_name", None)
-    node_status = getattr(node_info, "node_status", None)
-    print(f"dbt event={event_name} node={node_name} status={node_status}")
+def print_version_callback(event: EventMsg):
+    if event.info.name == "MainReportVersion":
+        print(f"We are thrilled to be running dbt{event.data.version}")
 
 dbt_build = DbtTask(
     name="dbt-build",
     task_environment=env,
     project_dir=DBT_PROJECT_DIR,
     profiles_dir=DBT_PROFILES_DIR,
-    callbacks=[print_dbt_event],
+    callbacks=[print_version_callback],
 )
 ```
 
-For remote execution, callback functions must be importable. If you define a callback in the same file as your `DbtTask`, the plugin serializes it by import path when the workflow is registered. Import-path strings are also supported:
+The callback receives dbt's structured `EventMsg`, including `event.info` metadata and event-specific `event.data` fields. For remote execution, callback functions must be importable. If you define a callback in the same file as your `DbtTask`, the plugin serializes it by import path when the workflow is registered. Import-path strings are also supported:
 
 ```python
 dbt_build = DbtTask(
     name="dbt-build",
     task_environment=env,
     project_dir=DBT_PROJECT_DIR,
-    callbacks=["my_project.callbacks.print_dbt_event"],
+    callbacks=["my_project.callbacks.print_version_callback"],
 )
 ```
 
