@@ -124,7 +124,7 @@ If you only want the report and not the trace file, set `attach_report=False`.
 
 `@nsys_profile` works on tasks in a [clustered task environment](../../user-guide/tasks/task-configuration/clustered-task-environment). Only the global primary worker, `RANK` 0, runs under `nsys`. Every other rank runs normally.
 
-{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_clustered.py" fragment="env" lang="python" highlight="4-6 9" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_clustered.py" fragment="env" lang="python" highlight="1 4-6 9" >}}
 
 In data-parallel training, rank 0 does the same work as the others, and its timeline includes the NCCL all-reduce in the backward pass.
 
