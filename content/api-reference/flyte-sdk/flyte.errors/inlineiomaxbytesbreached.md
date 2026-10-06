@@ -2,7 +2,7 @@
 title: InlineIOMaxBytesBreached
 description: "This error is raised when the inline IO max bytes limit is breached."
 icon: exclamation-triangle
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

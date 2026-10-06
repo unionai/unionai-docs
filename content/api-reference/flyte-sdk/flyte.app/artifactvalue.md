@@ -2,7 +2,7 @@
 title: ArtifactValue
 description: "Use a published artifact as an app parameter value."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

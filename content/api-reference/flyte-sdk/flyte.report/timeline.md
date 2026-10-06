@@ -2,7 +2,7 @@
 title: Timeline
 description: "Append a best-effort chronological timeline to a tab of the task report."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

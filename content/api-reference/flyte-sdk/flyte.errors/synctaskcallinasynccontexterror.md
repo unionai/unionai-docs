@@ -2,7 +2,7 @@
 title: SyncTaskCallInAsyncContextError
 description: "This error is raised when a sync task is invoked in a blocking way (`task(...)`) from inside an async task."
 icon: exclamation-triangle
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

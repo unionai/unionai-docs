@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -152,6 +152,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.UnionRpcError`](flyte.errors/unionrpcerror) | This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`flyte.extend.RuntimeTaskTemplate`](flyte.extend/runtimetasktemplate) | Task template for Python-runtime tasks that execute through the Flyte task entrypoint. |
 | [`flyte.extend.TaskTemplate`](flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`flyte.extras.ContainerTask`](flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
@@ -299,6 +300,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.artifacts.produces()`](flyte.artifacts/_index#produces) | Declare that outputs of the task called inside this block are artifacts. |
 | [`flyte.clustered.jax_initialize()`](flyte.clustered/_index#jax_initialize) | Initialize `jax.distributed` for this clustered task's process topology. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
+| [`flyte.config.get_config_file()`](flyte.config/_index#get_config_file) | Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None. |
 | [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 | [`flyte.connectors.utils.convert_to_flyte_phase()`](flyte.connectors.utils/_index#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
 | [`flyte.connectors.utils.is_terminal_phase()`](flyte.connectors.utils/_index#is_terminal_phase) | Return true if the phase is terminal. |

@@ -2,7 +2,7 @@
 title: NativeInterface
 description: "A class representing the native interface for a task."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

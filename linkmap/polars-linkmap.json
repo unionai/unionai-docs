@@ -14,6 +14,7 @@
     "PolarsToParquetEncodingHandler": "/api-reference/integrations/polars/polarstoparquetencodinghandler/"
   },
   "methods": {
-    "flyteplugins.polars.df_transformer.get_polars_storage_options": "/api-reference/integrations/polars/#get_polars_storage_options"
+    "flyteplugins.polars.df_transformer.get_polars_storage_options": "/api-reference/integrations/polars/#get_polars_storage_options",
+    "flyteplugins.polars.df_transformer.register_polars_df_transformers": "/api-reference/integrations/polars/#register_polars_df_transformers"
   }
 }

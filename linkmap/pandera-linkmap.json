@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "flyteplugins.pandera": "/api-reference/integrations/pandera/"
+  },
+  "identifiers": {
+    "flyteplugins.pandera.ValidationConfig": "/api-reference/integrations/pandera/validationconfig/",
+    "ValidationConfig": "/api-reference/integrations/pandera/validationconfig/"
+  },
+  "methods": {
+    "flyteplugins.pandera.register_type_transformers": "/api-reference/integrations/pandera/#register_type_transformers"
+  }
+}

@@ -2,7 +2,7 @@
 title: TokenBatcher
 description: "Token-aware batcher for LLM inference workloads."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

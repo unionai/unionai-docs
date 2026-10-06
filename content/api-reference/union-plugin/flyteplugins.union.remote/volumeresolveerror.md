@@ -2,7 +2,7 @@
 title: VolumeResolveError
 description: "No (or ambiguous) Volume-typed value could be resolved on an action."
 icon: exclamation-triangle
-version: 0.15.1
+version: 0.15.3
 variants: -flyte +union
 layout: py_api
 ---
