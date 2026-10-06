@@ -10,7 +10,7 @@ variants: +flyte +union
 
 The Nsight plugin runs a Flyte task under [NVIDIA Nsight Systems](https://developer.nvidia.com/nsight-systems) (`nsys`). Add the `@nsys_profile` decorator to a task and each run gives you two things:
 
-- A **GPU Profile** tab in the task's report, with summary metrics, the most expensive CUDA kernels, a breakdown of your NVTX ranges, and the full `nsys stats` tables.
+- A **GPU Profile** tab in the task's report, with summary metrics, the most expensive CUDA kernels, a breakdown of your NVTX ranges, and detail tables from `nsys stats`.
 - The raw `.nsys-rep` trace, which you can download and open in the Nsight Systems GUI to see the full timeline.
 
 The decorator doesn't change the task's signature or body. To keep it in your code and switch profiling on only for some runs, see [Turning profiling off](#turning-profiling-off).
@@ -23,7 +23,7 @@ Install the plugin from the `flyte-sdk` repository:
 pip install "flyteplugins-nsight @ git+https://github.com/flyteorg/flyte-sdk#subdirectory=plugins/nsight"
 ```
 
-The plugin requires `flyte` 2.5.10 or later, and the task image needs the `nsys` CLI on its `PATH`. The [NGC PyTorch images](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch) include it.
+The plugin requires `flyte` 2.5.10 or later. The task image needs the `nsys` CLI on its `PATH`, or the task fails at startup. The [NGC PyTorch images](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch) include it.
 
 ## Quick start
 
@@ -49,14 +49,14 @@ The decorator also turns on the task's [report](../../user-guide/tasks/task-prog
 
 ## Reading the profile
 
-Open the run and select the task. The **GPU Profile** report tab shows:
+Open the run, select the task, and go to **Reports** → **GPU Profile**. The tab shows:
 
 | Section                      | What it tells you                                                                                                  |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | Summary tiles                | Total GPU kernel time, kernel launches, distinct kernels, host-to-device and device-to-host bytes, NVTX range count |
 | Top CUDA kernels by GPU time | The ten kernels that used the most GPU time, with long C++ signatures shortened to readable names                  |
 | NVTX ranges by time          | Where time went across the regions you labeled with `nvtx.range`                                                  |
-| Detail tables                | The full output of each `nsys stats` report, collapsed by default                                                 |
+| Detail tables                | Full rows for the CUDA kernel, GPU memory-op, CUDA API, and NVTX range summaries, collapsed by default            |
 
 ![GPU Profile report tab showing summary tiles for kernel time, launches, distinct kernels, memory copied, and NVTX ranges, above a bar chart of the top CUDA kernels by GPU time. The run tree on the left lists the capture_report_file trace step under the task.](../../_static/images/integrations/nsight/gpu_profile_summary.png)
 
@@ -96,7 +96,7 @@ with nvtx.range("forward"):
 nvtx.mark("checkpoint saved")
 ```
 
-Both are thin wrappers over `torch.cuda.nvtx`. When torch or CUDA isn't available they do nothing, so annotated code still runs on a laptop or in a CPU-only test.
+Both are thin wrappers over `torch.cuda.nvtx`. When torch isn't installed they do nothing. With a CPU-only torch build they raise `RuntimeError`, so keep NVTX labels in code that runs on a GPU.
 
 Label the phases you'll want to find on the timeline, such as data loading, the forward and backward passes, and the optimizer step. Unlabeled, the timeline shows only kernels and API calls.
 
@@ -116,19 +116,19 @@ Label the phases you'll want to find on the timeline, such as data loading, the 
 
 `sample` sets CPU sampling, passed to `nsys --sample`. For example, `sample="cpu"` adds CPU call stacks to the trace and `sample="none"` turns sampling off. When omitted, `nsys` uses its own default.
 
-`reports` chooses which `nsys stats` reports feed the GPU Profile tab. The default is `flyteplugins.nsight.DEFAULT_REPORTS`: `cuda_gpu_kern_sum`, `cuda_gpu_mem_time_sum`, `cuda_gpu_mem_size_sum`, `cuda_api_sum` and `nvtx_pushpop_sum`. A report that your `nsys` version doesn't support, or that has no rows, is skipped.
+`reports` lists the `nsys stats` reports the plugin runs. The default is `flyteplugins.nsight.DEFAULT_REPORTS`: `cuda_gpu_kern_sum`, `cuda_gpu_mem_time_sum`, `cuda_gpu_mem_size_sum`, `cuda_api_sum`, and `nvtx_pushpop_sum`. The GPU Profile tab only renders these five, so use `reports` to drop one, not to add others. A report that your `nsys` version doesn't support, or that has no rows, is skipped.
 
 If you only want the report and not the trace file, set `attach_report=False`.
 
 ## Profiling distributed training
 
-`@nsys_profile` works on tasks in a [clustered task environment](../../user-guide/tasks/task-configuration/clustered-task-environment). Only the global primary worker, `RANK` 0, runs under `nsys`. Every other rank runs normally.
+`@nsys_profile` works on tasks in a [clustered task environment](../../user-guide/tasks/task-configuration/clustered-task-environment) that uses the default `TorchRun` runtime. Only the global primary worker, `RANK` 0, runs under `nsys`. Every other rank runs normally.
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_clustered.py" fragment="env" lang="python" highlight="1 4-6 9" >}}
 
 In data-parallel training, rank 0 does the same work as the others, and its timeline includes the NCCL all-reduce in the backward pass.
 
-The trace isn't attached as a run output for a clustered task. The plugin uploads the `.nsys-rep` to the task's raw data path instead, and prints its location at the bottom of the GPU Profile tab. To download it, pass that location to `File.from_existing_remote`:
+The trace isn't attached as a run output for a clustered task. The plugin uploads the `.nsys-rep` to the task's raw data path instead, and prints its location in the GPU Profile tab, below the charts. To download it, pass that location to `File.from_existing_remote`:
 
 ```python
 import flyte
@@ -145,14 +145,17 @@ Running under `nsys` adds overhead. To keep the decorator in your code but skip 
 
 `enabled` is evaluated each time the module is imported: on your machine when you run `flyte run` or `flyte deploy`, and again in the task container. Both must get the same value. If you drive it from an environment variable, pass that variable to the task as well:
 
-```python
+```python{hl_lines=[12,16]}
 import os
+
+import flyte
+from flyteplugins.nsight import nsys_profile
 
 PROFILE_GPU = os.getenv("PROFILE_GPU", "0")
 
 env = flyte.TaskEnvironment(
     name="train",
-    image=image,
+    image=image,  # the image from the quick start
     resources=flyte.Resources(gpu="L4:1"),
     env_vars={"PROFILE_GPU": PROFILE_GPU},
 )
@@ -172,7 +175,7 @@ With `flyte deploy`, the value in your shell at deploy time applies to every run
 Profiling also switches itself off when it can't run:
 
 - In a local run, the task runs unprofiled and `nsys.range` blocks do nothing.
-- If `nsys` isn't on the image's `PATH`, or `nsys start` fails, the plugin logs a warning and runs the task unprofiled.
+- If `nsys start` fails, the plugin logs a warning and runs the task unprofiled.
 
 Profiling errors never fail the task. If the task body raises an exception, the plugin stops collection, renders the report, and uploads the trace before the exception propagates, so a failed run has a profile too.
 
@@ -180,7 +183,7 @@ Profiling errors never fail the task. If the task body raises an exception, the 
 
 The `osrt` trace domain needs `CAP_SYS_ADMIN` and an unconfined AppArmor profile. Without them, `nsys` reports a permission error such as `insufficient privileges` in the task logs, or the trace has no OS runtime data.
 
-Grant both with `pod_template=flyte.PodTemplate().allow_nested_sandboxing()`, as in the quick start. It adds `CAP_SYS_ADMIN` and the AppArmor annotation and nothing else, so the container stays unprivileged. See [Pod templates](../../user-guide/tasks/task-configuration/pod-templates) for how pod templates work.
+Grant both with `pod_template=flyte.PodTemplate().allow_nested_sandboxing()`, as in the quick start. It adds `CAP_SYS_ADMIN` and an unconfined AppArmor profile, sets `allowPrivilegeEscalation: false`, and doesn't make the container privileged. See [Pod templates](../../user-guide/tasks/task-configuration/pod-templates) for how pod templates work.
 
 If your cluster doesn't allow that capability, leave `osrt` out of `trace` and drop the pod template. The `cuda`, `nvtx`, `cudnn`, and `cublas` domains need no extra permissions.
 
@@ -190,7 +193,7 @@ If `nsys` reports `ERR_NVGPUCTRPERM`, the GPU driver restricts profiling to admi
 
 | Symptom                                                            | Likely cause and fix                                                                                                                                                             |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No GPU Profile tab, log says `nsys not on PATH`                    | The image doesn't include Nsight Systems. Use an NGC PyTorch base image, or install the `nsys` CLI.                                                                                 |
+| The task fails at startup with `FileNotFoundError` for `nsys`      | The image doesn't include Nsight Systems. Use an NGC PyTorch base image, or install the `nsys` CLI.                                                                             |
 | `ModuleNotFoundError: No module named 'torch'` on an NGC image     | The task venv can't see NGC's system packages. Add the `include-system-site-packages` command from the quick start, and set `python_version` to the base image's Python version.                                                              |
 | `ModuleNotFoundError: No module named 'kubernetes'`                | `allow_nested_sandboxing()` needs the `kubernetes` package in the image.                                                                                                         |
 | A permission error, or no OS runtime data with `osrt` enabled      | The pod lacks the capabilities `osrt` needs. See [Permissions](#permissions).                                                                                                    |
@@ -211,7 +214,7 @@ If `nsys` reports `ERR_NVGPUCTRPERM`, the GPU driver restricts profiling to admi
 | `trace`         | `("cuda", "nvtx")` | `nsys` trace domains. See [Choosing what to trace](#choosing-what-to-trace).         |
 | `sample`        | `None`             | CPU sampling mode passed to `nsys --sample`, such as `"cpu"` or `"none"`.            |
 | `capture`       | `"task"`           | `"task"` profiles the whole body. `"manual"` profiles only `nsys.range` blocks.      |
-| `reports`       | `DEFAULT_REPORTS`  | `nsys stats` reports to render into the GPU Profile tab.                             |
+| `reports`       | `DEFAULT_REPORTS`  | `nsys stats` reports to run. Only the five defaults are rendered.                    |
 | `attach_report` | `True`             | Upload the `.nsys-rep` trace alongside the report.                                   |
 | `enabled`       | `True`             | When `False`, the decorator returns the task unchanged.                              |
 
