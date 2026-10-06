@@ -2,7 +2,7 @@
 title: NativeInterface
 description: "A class representing the native interface for a task."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,7 +22,6 @@ class NativeInterface(
     inputs: Dict[str, Tuple[Type, Any]],
     outputs: Dict[str, Type],
     docstring: Optional[Docstring] = None,
-    _remote_defaults: Optional[Dict[str, literals_pb2.Literal]] = None,
 )
 ```
 | Parameter | Type | Description |
@@ -30,7 +29,6 @@ class NativeInterface(
 | `inputs` | `Dict[str, Tuple[Type, Any]]` | |
 | `outputs` | `Dict[str, Type]` | |
 | `docstring` | `Optional[Docstring]` | |
-| `_remote_defaults` | `Optional[Dict[str, literals_pb2.Literal]]` | |
 
 ## Properties
 

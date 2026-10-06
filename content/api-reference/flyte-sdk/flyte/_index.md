@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -1166,7 +1166,6 @@ def with_runcontext(
     debug: bool = False,
     tracked: bool = False,
     tracked_strict: bool = False,
-    _tracker: Any = None,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -1229,7 +1228,6 @@ if __name__ == "__main__":
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
 | `tracked` | `bool` | Local-only. If true, report tracked run state (actions, attempts, outputs, reports) to the Flyte control plane via TrackedRunService so the run shows up in the console. Requires an initialized client and a configured project/domain. Can also be enabled globally with the `local.tracked` config key. Reporting is best-effort and never fails the local run. |
 | `tracked_strict` | `bool` | Local-only, for debugging reporting itself. When true (with `tracked`), the first reporting failure — registration, an artifact upload, a rejected or undeliverable ReportActions update, or a flush timeout — fails the run loudly instead of being logged and swallowed. Can also be enabled globally with the `local.tracked_strict` config key. |
-| `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner
 

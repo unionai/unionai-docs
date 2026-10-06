@@ -2,7 +2,7 @@
 title: ROBlockVolume
 description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
-version: 0.15.0
+version: 0.15.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -347,16 +347,10 @@ It takes context as an argument since that's what pydantic-core passes when call
 ### mount()
 
 ```python
-def mount(
-    **_: object,
-) -> NoReturn
+def mount()
 ```
 Not supported: a block image mounts read-write only. Fork it and mount the fork.
 
-
-| Parameter | Type | Description |
-|-|-|-|
-| `**_` | `object` | |
 
 ### new()
 

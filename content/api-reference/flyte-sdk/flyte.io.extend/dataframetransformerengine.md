@@ -2,7 +2,7 @@
 title: DataFrameTransformerEngine
 description: "Think of this transformer as a higher-level meta transformer that is used for all the dataframe types."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,8 +12,8 @@ layout: py_api
 **Package:** `flyte.io.extend`
 
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
-If you are bringing a custom data frame type, or any data frame type, to flytekit, instead of
-registering with the main type engine, you should register with this transformer instead.
+If you are bringing a custom data frame type, or any data frame type, to Flyte, register it with this
+transformer instead of the main type engine.
 
 
 ## Parameters
@@ -44,7 +44,7 @@ def DataFrameTransformerEngine()
 | [`isinstance_generic()`](#isinstance_generic) |  |
 | [`iter_as()`](#iter_as) |  |
 | [`open_as()`](#open_as) |  |
-| [`register()`](#register) | Call this with any Encoder or Decoder to register it with the flytekit type system. |
+| [`register()`](#register) | Call this with any Encoder or Decoder to register it with the Flyte type system. |
 | [`register_for_protocol()`](#register_for_protocol) | See the main register function instead. |
 | [`register_renderer()`](#register_renderer) |  |
 | [`schema_match()`](#schema_match) | Check if a JSON schema fragment matches this transformer's python_type. |
@@ -245,15 +245,15 @@ def register(
     default_storage_for_type: bool = False,
 )
 ```
-Call this with any Encoder or Decoder to register it with the flytekit type system. If your handler does not
-specify a protocol (e.g. s3, gs, etc.) field, then
+Call this with any Encoder or Decoder to register it with the Flyte type system. If your handler does not
+specify a protocol (e.g. s3, gs, etc.), it is registered for every protocol.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `h` | `Handlers` | The DataFrameEncoder or DataFrameDecoder you wish to register with this transformer. |
-| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. `return pd.DataFrame(...)`, not wrapped around the `StructuredDataset` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
+| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. `return pd.DataFrame(...)`, not wrapped around the `StructuredDataset` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that Flyte's storage layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
 | `override` | `bool` | Override any previous registrations. If default_for_type is also set, this will also override the default. |
 | `default_format_for_type` | `bool` | Unlike the default_for_type arg that will set this handler's format and storage as the default, this will only set the format. Error if already set, unless override is specified. |
 | `default_storage_for_type` | `bool` | Same as above but only for the storage format. Error if already set, unless override is specified. |

@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -231,9 +231,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.S3`](flyte.storage/s3) | S3 specific configuration. |
 | [`flyte.storage.Storage`](flyte.storage/storage) | Data storage configuration that applies across any provider. |
 | [`flyte.syncify.Syncify`](flyte.syncify/syncify) | A decorator to convert asynchronous functions or methods into synchronous ones. |
-| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by flytekit internally. |
-| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by Flyte internally. |
+| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core extensible type engine of Flyte. |
+| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every Python native type that Flyte can handle. |
 | [`flyte.types.TypeTransformerFailedError`](flyte.types/typetransformerfailederror) |  |
 
 ### Protocols

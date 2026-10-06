@@ -2,7 +2,7 @@
 title: Spark
 description: Run Apache Spark jobs on Kubernetes, with Flyte managing the full transient cluster lifecycle.
 icon: lightning
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 

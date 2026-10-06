@@ -152,11 +152,13 @@ Dask
 Daytona
 DBFS
 dbname
+dbt
 DCGM
 dendrograms
 DETR
 DGXC
 dockernetes
+duckdb
 ECMWF
 elif
 exfiltration
@@ -261,3 +263,8 @@ autoregressively
 typosquatted
 inodes
 virtualenvs
+
+# --- SaaS webhook provider plugins (flyteplugins-{github,slack,jira,clickup,linear}) ---
+# Keyed-hash message authentication code (RFC 2104); how four of the five
+# providers sign their deliveries.
+HMAC

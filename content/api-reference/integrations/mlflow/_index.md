@@ -1,7 +1,7 @@
 ---
 title: MLflow
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -246,7 +246,6 @@ Works in two contexts:
 
 ```python
 def mlflow_run(
-    _func: typing.Optional[~F] = None,
     run_mode: typing.Literal['auto', 'new', 'nested'] = 'auto',
     tracking_uri: typing.Optional[str] = None,
     experiment_name: typing.Optional[str] = None,
@@ -281,7 +280,6 @@ async def my_task():
 
 | Parameter | Type | Description |
 |-|-|-|
-| `_func` | `typing.Optional[~F]` | |
 | `run_mode` | `typing.Literal['auto', 'new', 'nested']` | "auto" (default), "new", or "nested". - "auto": reuse parent run if available, else create new. - "new": always create a new independent run. - "nested": create a new run nested under the parent via   `mlflow.parentRunId` tag. Works across processes/containers. |
 | `tracking_uri` | `typing.Optional[str]` | MLflow tracking server URL. |
 | `experiment_name` | `typing.Optional[str]` | MLflow experiment name (exclusive with experiment_id). |

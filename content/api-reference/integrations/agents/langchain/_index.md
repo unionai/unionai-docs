@@ -2,7 +2,7 @@
 title: LangChain
 description: "LangChain adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -133,10 +133,7 @@ or `tools` + `model` to have one built for you.
 | `config` | `dict[str, typing.Any] \| None` | A LangChain `RunnableConfig` forwarded to the graph's `ainvoke` — your own callbacks, tags, or metadata. Any registered instrumentor is offered this config, so an observability handler is appended to your callbacks rather than replacing them. |
 | `**agent_kwargs` | `typing.Any` | |
 
-**Returns**
-
-The agent's final output as a string.
-
+**Returns:** The agent's final output as a string.
 
 #### tool()
 

@@ -2,7 +2,7 @@
 title: RunDetails
 description: "A class representing a run of a task."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -20,13 +20,11 @@ Union API.
 ```python
 class RunDetails(
     pb2: run_definition_pb2.RunDetails,
-    _preserve_original_types: bool = False,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.RunDetails` | |
-| `_preserve_original_types` | `bool` | |
 
 ## Properties
 

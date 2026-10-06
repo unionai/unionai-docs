@@ -2,7 +2,7 @@
 title: ClusteredTaskTemplate
 description: "Task template for `ClusteredTaskEnvironment`."
 icon: braces
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -50,7 +50,6 @@ class ClusteredTaskTemplate(
     max_inline_io_bytes: int = 10485760,
     triggers: Tuple[Trigger, ...] = <factory>,
     links: Tuple[Link, ...] = <factory>,
-    _call_as_synchronous: bool = False,
     func: F,
     plugin_config: _ClusteredPlugin = None,
     task_resolver: Optional[Any] = None,
@@ -85,7 +84,6 @@ class ClusteredTaskTemplate(
 | `max_inline_io_bytes` | `int` | |
 | `triggers` | `Tuple[Trigger, ...]` | |
 | `links` | `Tuple[Link, ...]` | |
-| `_call_as_synchronous` | `bool` | |
 | `func` | `F` | |
 | `plugin_config` | `_ClusteredPlugin` | |
 | `task_resolver` | `Optional[Any]` | |

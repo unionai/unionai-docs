@@ -2,7 +2,7 @@
 title: Claude Agent SDK
 description: "Claude Agent SDK adapter for Flyte."
 icon: book
-version: 2.10.5
+version: 2.10.7
 variants: +flyte +union
 layout: py_api
 ---
@@ -133,7 +133,6 @@ Run a Claude agent with the given tools and prompt; return the final text.
 
     The `claude-agent-sdk` wheel bundles the native `claude` CLI, so the runtime
     image needs no separate Node.js install — just an Anthropic API key.
-    
 
 
 | Parameter | Type | Description |
