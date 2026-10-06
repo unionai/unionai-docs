@@ -379,3 +379,19 @@ package = "flyteplugins-typesafe-ai"
 plugin = "flyteplugins.typesafe_ai"
 title = "TypeSafe AI"
 name = "typesafe-ai"
+
+# === Plugin discovery ===
+# `make check-plugin-registry` lists every pyproject.toml under `path` in `repo`
+# and fails when a package there has a final release in the `lockstep` package's
+# major line but no [[plugins]] entry above, so a new plugin cannot ship with no
+# API reference unnoticed. Name claims (a 0.0.0a0 placeholder) and unpublished
+# plugins are reported, not failed. To leave a plugin undocumented on purpose:
+#
+#   [[plugin_discovery.skip]]
+#   package = "flyteplugins-example"
+#   reason = "why it has no API reference"
+[plugin_discovery]
+repo = "flyteorg/flyte-sdk"
+ref = "main"
+path = "plugins"
+lockstep = "flyte"
