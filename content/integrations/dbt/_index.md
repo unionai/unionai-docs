@@ -6,7 +6,7 @@ weight: 3
 variants: +flyte +union
 ---
 
-# dbt
+# DBT
 
 The dbt plugin lets you run [dbt](https://www.getdbt.com/) CLI invocations as Flyte tasks. A `DbtTask` maps one `dbtRunner.invoke(...)` call to one Flyte task, so each dbt command appears as its own node in the Flyte run graph.
 
