@@ -23,11 +23,8 @@ The plugin supports:
 ## Installation
 
 ```bash
-pip install --pre flyteplugins-slurm
+pip install flyteplugins-slurm
 ```
-
-> [!NOTE] Pre-release
-> Only a pre-release of `flyteplugins-slurm` is published so far, so `pip` needs `--pre`. Drop it once a stable release is out.
 
 The connector must also be installed in the `flyteconnector` image of your data plane. See [Deployment](#deployment).
 
@@ -62,7 +59,7 @@ slurm_env = flyte.TaskEnvironment(
         container_mounts=["/home/flyte/.cloud:/etc/cloud:ro"],
         env={"AWS_SHARED_CREDENTIALS_FILE": "/etc/cloud/credentials"},
     ),
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-slurm", pre=True),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-slurm"),
 )
 
 
@@ -160,13 +157,13 @@ When the job succeeds, the connector checks that every destination exists and re
 | Who uploads | the connector, after the job | the script, during the job |
 | The compute node needs | nothing | a client and credentials for the store |
 | The bytes travel | node → connector → storage | node → storage |
-| Size limit | 100 MB by default | none |
+| Size limit | 100 MiB by default | none |
 
 **`"connector"`** suits small outputs such as metrics, summaries, configs and small models. The node needs no upload tool and no credentials.
 
 The upload runs in the background after the Slurm job finishes. The task stays in `RUNNING`, with a message naming the outputs being moved, for a poll or two after the job ends. This is expected.
 
-> [!WARNING] The connector refuses to move more than 100 MB
+> [!WARNING] The connector refuses to move more than 100 MiB
 > The task fails when an output is over the limit. The limit is only checked after the job has run, so the job's work is lost. Use `output_upload="job"` for any output that might be large.
 
 Operators can change the limit with `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` on the connector deployment. It takes a byte count or a size with a suffix (`500MB`, `2GB`, `512MiB`), or `0` for no limit.
@@ -281,7 +278,7 @@ Each of these can be set per task, or once for the whole cluster on the connecto
 | `known_hosts_secret` | — | Name of a Flyte secret holding the `known_hosts` entries. Needs no file mounted on the connector |
 | — | `FLYTE_SLURM_SKIP_HOST_KEY_VERIFICATION` | Disable host-key verification. Development only |
 | — | `FLYTE_SLURM_WORKING_DIR` | Cluster-wide default for `working_dir` |
-| — | `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` | Largest script-task output the connector will upload; default `100MB`, `0` for no limit |
+| — | `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES` | Largest script-task output the connector will upload; default `100MiB`, `0` for no limit |
 
 Setting the connection once on the connector is usually best: tasks then carry only scheduling options and stay portable.
 
@@ -471,7 +468,7 @@ Add `flyteplugins-slurm` to the `flyteconnector` image:
 
 ```dockerfile
 FROM ghcr.io/flyteorg/flyte-connectors:<tag matching your data plane>
-RUN pip install --pre flyteplugins-slurm
+RUN pip install flyteplugins-slurm
 ```
 
 Push it to a registry the data plane can pull from.
@@ -606,7 +603,7 @@ The connector keeps one SSH connection per cluster and reuses it across jobs, re
 
 - **Script task outputs are `File` and `Dir` only.** See [Outputs from a script task](#outputs-from-a-script-task).
 - **Script task inputs are scalars and URIs only.** See [Running an existing sbatch script](#running-an-existing-sbatch-script).
-- **The connector uploads at most 100 MB per output by default.** Raise `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES`, or use `output_upload="job"`.
+- **The connector uploads at most 100 MiB per output by default.** Raise `FLYTE_SLURM_CONNECTOR_UPLOAD_MAX_BYTES`, or use `output_upload="job"`.
 - **No clickable log links.** Job stdout and stderr are files on the login node, so their paths are shown in the task's status message. Live logs are streamed through the connector.
 
 ### Operations
@@ -616,3 +613,7 @@ The connector keeps one SSH connection per cluster and reuses it across jobs, re
 - **Status is polled per job.** The connector runs one `squeue` per job on each poll.
 - **Job files are not cleaned up.** See [Inspecting a job](#inspecting-a-job).
 - **Clusters without accounting.** Without `sacct`, a finished job is looked up with `scontrol`, which only keeps it for `MinJobAge` seconds. A job that finishes and ages out between two polls cannot be resolved.
+
+## API reference
+
+See the [Slurm API reference](../../api-reference/integrations/slurm/_index) for full details.
