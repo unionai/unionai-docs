@@ -10,7 +10,7 @@ variants: +flyte +union
 
 The dbt plugin lets you run [dbt](https://www.getdbt.com/) CLI invocations as Flyte tasks. A `DbtTask` maps one `dbtRunner.invoke(...)` call to one Flyte task, so each dbt command appears as its own node in the Flyte run graph.
 
-Use this plugin when you want to orchestrate dbt commands alongside Python tasks, run dbt commands in parallel, capture dbt node results as typed task outputs, and optionally render a dbt report in the Flyte UI.
+Use this plugin when you want to orchestrate dbt commands alongside Python tasks, chain dbt invocations with other workflow steps, capture dbt node results as typed task outputs, and optionally render a dbt report in the Flyte UI.
 
 ## Installation
 
@@ -102,23 +102,18 @@ await dbt_build.aio(
 
 `DbtTask` manages these flags itself, so do not pass them in `extra_args`: `--project-dir`, `--profiles-dir`, `--profile`, `--target`, `--target-path`, `--select`, and `--exclude`.
 
-## Running dbt tasks in parallel
+## Chaining dbt tasks
 
-Because `DbtTask` is a Flyte task, you can run independent dbt invocations concurrently from an async parent task:
+dbt does not support [parallel programmatic invocations](https://docs.getdbt.com/reference/programmatic-invocations?version=2#parallel-execution-not-supported) in the same Python process. When orchestrating multiple dbt commands from one Flyte task, run them sequentially:
 
 ```python
-import asyncio
-
 @env.task
-async def dbt_checks() -> tuple[list[DbtNodeResult], list[DbtNodeResult]]:
-    debug_result, test_result = await asyncio.gather(
-        dbt_build.aio(command="debug"),
-        dbt_build.aio(command="test"),
-    )
-    return debug_result, test_result
+async def dbt_pipeline() -> list[DbtNodeResult]:
+    await dbt_build.aio(command="run")
+    return await dbt_build.aio(command="test")
 ```
 
-You can also override task execution settings per call:
+You can override task execution settings per call:
 
 ```python
 @env.task
