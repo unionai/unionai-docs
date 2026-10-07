@@ -406,7 +406,7 @@ committed yet: there's no published version to point at.
 promote a version you built in a development bucket into staging or
 production. The copy is a volume in its own right: it reads and writes only its
 new bucket, so the source can expire, be deleted, or lose access without
-affecting it. Requires `flyteplugins-union` 0.16 or later.
+affecting it. Requires `flyteplugins-union` 0.15.6 or later.
 
 ```python
 @env.task
