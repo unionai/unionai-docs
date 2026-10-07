@@ -20,7 +20,7 @@ The decorator doesn't change the task's signature or body. To keep it in your co
 Install the plugin from the `flyte-sdk` repository:
 
 ```bash
-pip install "flyteplugins-nsight @ git+https://github.com/flyteorg/flyte-sdk#subdirectory=plugins/nsight"
+pip install "flyteplugins-nsight @ git+https://github.com/flyteorg/flyte-sdk@6d3d72b8198d0444ad0471836ca118d32344b268#subdirectory=plugins/nsight"
 ```
 
 The plugin requires `flyte` 2.5.10 or later. The task image needs the `nsys` CLI on its `PATH`, or the task fails at startup. The [NGC PyTorch images](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch) include it.
@@ -29,11 +29,11 @@ The plugin requires `flyte` 2.5.10 or later. The task image needs the `nsys` CLI
 
 Define an image that has `nsys`, torch, and the plugin:
 
-{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="image" lang="python" highlight="5 7 10-11 15-17" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="image" lang="python" highlight="5 7 10 14-16" >}}
 
 Give the task a GPU:
 
-{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="env" lang="python" highlight="4 6" >}}
+{{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="env" lang="python" highlight="4" >}}
 
 Then add `@nsys_profile` above `@env.task`. The `[[flyteplugins.nsight.nvtx.range|nvtx.range]]` labels are optional, but they make the timeline and the report easier to read:
 
@@ -62,7 +62,7 @@ Open the run, select the task, and go to **Reports** → **GPU Profile**. The ta
 
 ![Expanded detail tables in the GPU Profile tab: the CUDA kernel summary with time, instances, and duration statistics per kernel, and the GPU memory-op summary for host-to-device, device-to-device, and device-to-host copies.](../../_static/images/integrations/nsight/gpu_profile_tables.png)
 
-The `.nsys-rep` file is attached to the run as the output of a traced step named `capture_report_file`. Download it from that step's outputs in the UI and open it in `nsys-ui`, the Nsight Systems desktop app, to inspect the timeline. It shows kernel overlap, CPU-side stalls, memory copies, and synchronization gaps that the summary tables don't.
+The `.nsys-rep` file is attached to the run as the output of a traced step named `capture_report_file`, or `capture_report_file_sync` for an `nsys.range` block in a synchronous task. Download it from that step's outputs in the UI and open it in `nsys-ui`, the Nsight Systems desktop app, to inspect the timeline. It shows kernel overlap, CPU-side stalls, memory copies, and synchronization gaps that the summary tables don't.
 
 ## Profiling part of a task
 
@@ -183,7 +183,25 @@ Profiling errors never fail the task. If the task body raises an exception, the 
 
 The `osrt` trace domain needs `CAP_SYS_ADMIN` and an unconfined AppArmor profile. Without them, `nsys` reports a permission error such as `insufficient privileges` in the task logs, or the trace has no OS runtime data.
 
-Grant both with `pod_template=flyte.PodTemplate().allow_nested_sandboxing()`, as in the quick start. It adds `CAP_SYS_ADMIN` and an unconfined AppArmor profile, sets `allowPrivilegeEscalation: false`, and doesn't make the container privileged. See [Pod templates](../../user-guide/tasks/task-configuration/pod-templates) for how pod templates work.
+Grant both with `pod_template=flyte.PodTemplate().allow_nested_sandboxing()`. It imports the `kubernetes` package, so add that to the task image and to your local environment:
+
+```python{hl_lines=[1,7,11]}
+image = image.with_pip_packages("kubernetes")  # the image from the quick start
+
+env = flyte.TaskEnvironment(
+    name="train",
+    image=image,
+    resources=flyte.Resources(cpu="4", memory="16Gi", gpu="L4:1"),
+    pod_template=flyte.PodTemplate().allow_nested_sandboxing(),
+)
+
+
+@nsys_profile(trace=["cuda", "nvtx", "osrt"])
+@env.task
+async def train() -> float: ...
+```
+
+`allow_nested_sandboxing()` adds `CAP_SYS_ADMIN` and an unconfined AppArmor profile, sets `allowPrivilegeEscalation: false`, and doesn't make the container privileged. See [Pod templates](../../user-guide/tasks/task-configuration/pod-templates) for how pod templates work.
 
 If your cluster doesn't allow that capability, leave `osrt` out of `trace` and drop the pod template. The `cuda`, `nvtx`, `cudnn`, and `cublas` domains need no extra permissions.
 
