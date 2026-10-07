@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.nsight": "/api-reference/integrations/nsight/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.nsight.capture_report_file": "/api-reference/integrations/nsight/#capture_report_file",
+    "flyteplugins.nsight.nsys_available": "/api-reference/integrations/nsight/#nsys_available",
+    "flyteplugins.nsight.nsys_profile": "/api-reference/integrations/nsight/#nsys_profile",
+    "flyteplugins.nsight.session_name": "/api-reference/integrations/nsight/#session_name",
+    "flyteplugins.nsight.under_nsys": "/api-reference/integrations/nsight/#under_nsys"
+  }
+}
