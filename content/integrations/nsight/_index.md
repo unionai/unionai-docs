@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # NVIDIA Nsight Systems
 
-The Nsight plugin runs a Flyte task under [NVIDIA Nsight Systems](https://developer.nvidia.com/nsight-systems) (`nsys`). Add the `@nsys_profile` decorator to a task and each run gives you two things:
+The Nsight plugin runs a Flyte task under [NVIDIA Nsight Systems](https://developer.nvidia.com/nsight-systems) (`nsys`). Add the `[[flyteplugins.nsight.nsys_profile|@nsys_profile]]` decorator to a task and each run gives you two things:
 
 - A **GPU Profile** tab in the task's report, with summary metrics, the most expensive CUDA kernels, a breakdown of your NVTX ranges, and detail tables from `nsys stats`.
 - The raw `.nsys-rep` trace, which you can download and open in the Nsight Systems GUI to see the full timeline.
@@ -35,7 +35,7 @@ Give the task a GPU:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="env" lang="python" highlight="4 6" >}}
 
-Then add `@nsys_profile` above `@env.task`. The `nvtx.range` labels are optional, but they make the timeline and the report easier to read:
+Then add `@nsys_profile` above `@env.task`. The `[[flyteplugins.nsight.nvtx.range|nvtx.range]]` labels are optional, but they make the timeline and the report easier to read:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_training.py" fragment="task" lang="python" highlight="1-2 23" >}}
 
@@ -66,7 +66,7 @@ The `.nsys-rep` file is attached to the run as the output of a traced step named
 
 ## Profiling part of a task
 
-A long task profiled end to end can produce a trace of several gigabytes. Its first steps also include one-time startup work, such as CUDA context creation, cuDNN autotuning, and module loading. To profile only the code you're investigating, set `capture="manual"` and wrap that code in `nsys.range`:
+A long task profiled end to end can produce a trace of several gigabytes. Its first steps also include one-time startup work, such as CUDA context creation, cuDNN autotuning, and module loading. To profile only the code you're investigating, set `capture="manual"` and wrap that code in `[[flyteplugins.nsight.nsys.range|nsys.range]]`:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/nsight/profile_region.py" fragment="async" lang="python" highlight="1 11 17" >}}
 
@@ -85,7 +85,7 @@ Don't confuse `nsys.range` with `nvtx.range`. `nsys.range` starts and stops a re
 
 ## Labeling the timeline with NVTX
 
-`nvtx.range` marks a block of code as a named span on the Nsight timeline and in the NVTX section of the report. `nvtx.mark` records a single point in time:
+`nvtx.range` marks a block of code as a named span on the Nsight timeline and in the NVTX section of the report. `[[flyteplugins.nsight.nvtx.mark|nvtx.mark]]` records a single point in time:
 
 ```python
 from flyteplugins.nsight import nvtx
@@ -207,7 +207,7 @@ If `nsys` reports `ERR_NVGPUCTRPERM`, the GPU driver restricts profiling to admi
 
 ## Reference
 
-`nsys_profile` parameters:
+`[[flyteplugins.nsight.nsys_profile|nsys_profile]]` parameters:
 
 | Parameter       | Default            | Description                                                                          |
 | --------------- | ------------------ | ------------------------------------------------------------------------------------ |
@@ -227,3 +227,5 @@ Other public names in `flyteplugins.nsight`:
 | `nvtx.mark(message)`          | Label a single point in time.                                                              |
 | `under_nsys()`                | `True` when the current process is running under `nsys`.                                   |
 | `nsys_available()`            | `True` when the `nsys` CLI is on `PATH`.                                                   |
+
+See the [Nsight API reference](../../api-reference/integrations/nsight/_index) for full signatures.
