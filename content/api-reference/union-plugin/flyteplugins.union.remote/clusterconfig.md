@@ -2,7 +2,7 @@
 title: ClusterConfig
 description: "The tracked ConfigMaps of a single cluster."
 icon: braces
-version: 0.15.1
+version: 0.15.3
 variants: -flyte +union
 layout: py_api
 ---

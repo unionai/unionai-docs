@@ -2,7 +2,7 @@
 title: TypeSafe AI
 description: "Run TypeSafe's System One model (Jev) inside durable Flyte tasks."
 icon: book
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -92,6 +92,7 @@ async def triage(ticket: str) -> Triage:
 | [`ask_with_info()`](#ask_with_info) | Answer everything in one call, and report what the call cost. |
 | [`client()`](#client) | An `AsyncTypeSafeClient`, or a message that says exactly what to do. |
 | [`compile_questions()`](#compile_questions) | Build the SDK's question objects from any accepted form. |
+| [`register_typesafe_ai_types()`](#register_typesafe_ai_types) | Register Choice, Score and Noul with the Flyte type engine. |
 | [`thresholds()`](#thresholds) | Where each `bool` field cuts its 0..1 answer. |
 
 
@@ -193,6 +194,23 @@ Build the SDK's question objects from any accepted form.
 | Parameter | Type | Description |
 |-|-|-|
 | `askable` | `Askable` | |
+
+#### register_typesafe_ai_types()
+
+```python
+def register_typesafe_ai_types()
+```
+Register Choice, Score and Noul with the Flyte type engine.
+
+Called automatically via the `flyte.plugins.types` entry point when
+`flyte.init()` runs with `load_plugin_type_transformers=True` (the default).
+
+The three answer types are plain dataclasses, so they reuse the existing
+`DataclassTransformer` rather than introducing one of their own. Registering
+them anyway makes the resolution explicit: a parameterized `Choice[Intent]`
+is matched through its origin instead of falling through to the type engine's
+last-resort dataclass branch.
+
 
 #### thresholds()
 

@@ -2,7 +2,7 @@
 title: FlyteWebhookAppEnvironment
 description: "A pre-built FastAPI app environment for common Flyte webhook operations."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

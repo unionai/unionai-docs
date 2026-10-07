@@ -2,7 +2,7 @@
 title: WebhookEvent
 description: "One inbound webhook, normalized across providers."
 icon: braces
-version: 2.10.7
+version: 2.11.0
 variants: +flyte +union
 layout: py_api
 ---

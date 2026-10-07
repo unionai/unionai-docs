@@ -46,3 +46,20 @@ jobs:
               echo "To resolve (maintainers): run \`make update-api-docs\` and open a separate regen PR."
             } >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      - name: Check plugin registry (advisory)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if make check-plugin-registry; then
+            echo "Every released plugin has an api-packages.toml entry."
+          else
+            echo "::warning title=Released plugin(s) have no API reference (advisory, non-blocking)::A plugin released from flyte-sdk has no [[plugins]] entry in api-packages.toml, so no API reference is generated for it. This does NOT block your PR and is not caused by your changes. A maintainer should register it (see the step log)."
+            {
+              echo "### ⚠️ Released plugin(s) have no API reference — advisory, non-blocking"
+              echo ""
+              echo "**This does not block your PR and is not caused by your changes.**"
+              echo ""
+              echo "To resolve (maintainers): add a \`[[plugins]]\` entry to \`api-packages.toml\` for each \`UNREGISTERED\` plugin in the step log, then run \`make update-api-docs\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
