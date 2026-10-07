@@ -444,10 +444,14 @@ name = "agento11y"
 
 [[plugins]]
 package = "flyteplugins-nsight"
-install = "flyteplugins-nsight@git+https://github.com/flyteorg/flyte-sdk@6d3d72b8198d0444ad0471836ca118d32344b268#subdirectory=plugins/nsight"
+# Temporary: pinned to the head of flyte-sdk#1668 (unmerged), which adds __all__ to the
+# nsys and nvtx submodules so document_subpackages picks them up. Repin to its merge
+# commit once it lands.
+install = "flyteplugins-nsight@git+https://github.com/flyteorg/flyte-sdk@d91bf539f6279a8fdcca400a03b86bae17100836#subdirectory=plugins/nsight"
 plugin = "flyteplugins.nsight"
 title = "NVIDIA Nsight Systems"
 name = "nsight"
+document_subpackages = true
 
 # === Plugin discovery ===
 # `make check-plugin-registry` lists every pyproject.toml under `path` in `repo`
