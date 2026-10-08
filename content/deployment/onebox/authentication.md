@@ -101,7 +101,32 @@ args:
 
 `<audience>` is the `aud` claim in the tokens the CLI application gets. That is usually its client ID; Okta's custom authorization servers use the server's audience, such as `api://default`.
 
-The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS, either behind a load balancer or ingress that terminates TLS, or with its own certificate (`--https-address` and `--tls-cert-file`). In the second case nothing sets `X-Forwarded-Proto`, so also set `publicScheme: https` in onebox's values.
+The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS in one of two ways:
+
+- **Behind an ingress or load balancer that terminates TLS** (most common). Add `--reverse-proxy=true` so oauth2-proxy trusts the `X-Forwarded-*` headers the ingress sets; it passes `X-Forwarded-Proto` on to onebox. For example, with ingress-nginx:
+
+  ```yaml
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: onebox
+    namespace: union
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-buffer-size: 16k   # oauth2-proxy's session cookie
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  spec:
+    ingressClassName: nginx
+    tls: [{hosts: [<host>], secretName: <tls secret>}]
+    rules:
+      - host: <host>
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend: {service: {name: oauth2-proxy, port: {number: 80}}}
+  ```
+
+- **With its own certificate** (`--https-address` and `--tls-cert-file`). Nothing sets `X-Forwarded-Proto` then, so also set `publicScheme: https` in onebox's values.
 
 Expose oauth2-proxy at `<host>`, and only oauth2-proxy: onebox's Service stays `ClusterIP`.
 
@@ -117,6 +142,14 @@ flyte run hello.py main
 ```
 
 The first command opens a browser to sign in at the IdP. After that the CLI refreshes its token itself.
+
+If `<host>`'s certificate is issued by a private CA, point the CLI at the CA certificate in `.flyte/config.yaml`:
+
+```yaml
+admin:
+  endpoint: dns:///<host>
+  caCertFilePath: /path/to/ca.pem
+```
 
 ### Sign out
 
