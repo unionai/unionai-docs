@@ -80,6 +80,14 @@ Three features need components you install beside onebox. Onebox starts without 
 
 The Logs tab streams logs of running tasks without any add-on.
 
+## Debug in VS Code
+
+The **Debug** button reruns a task with a VS Code server in its pod, and **Open VS Code** opens it through onebox. It needs no add-on, but:
+
+- Opening it needs permission to run in the project (the contributor role with authorization on), since the server runs code with the task's credentials.
+- Your proxy must pass websockets through. ingress-nginx and the AWS ALB do by default.
+- The task needs memory for VS Code as well as its own work: a task limited to 256Mi is killed while VS Code starts. 2Gi is plenty.
+
 ## Limitations
 
 - One replica, and one data plane: the cluster onebox runs in.
