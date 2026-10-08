@@ -2,7 +2,7 @@
 title: ErrorDiagnosis
 description: "Structured diagnosis of execution errors."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

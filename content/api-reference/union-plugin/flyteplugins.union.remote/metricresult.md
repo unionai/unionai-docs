@@ -2,7 +2,7 @@
 title: MetricResult
 description: "The result of querying one metric."
 icon: braces
-version: 0.15.3
+version: 0.15.5
 variants: -flyte +union
 layout: py_api
 ---

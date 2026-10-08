@@ -2,7 +2,7 @@
 title: ToolFn
 description: "The tool under invocation, handed to a `flyte.ai.agents.ToolCallHandler`."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

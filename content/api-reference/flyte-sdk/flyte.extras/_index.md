@@ -2,7 +2,7 @@
 title: flyte.extras
 description: "Flyte extras package."
 icon: box-seam
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,6 +34,10 @@ This package provides various utilities that make it possible to build highly cu
                 bio module libraries (bedtools, samtools, bcftools, GATK, etc.) and any other case
                 where a user wants to call a pre-built binary in a published container with
                 typed inputs and outputs.
+
+6. model_streamer: Stream safetensors weights from object storage straight onto the GPU, tensor
+                by tensor, from any task (e.g. an `alru_cache`d bootstrap on a reusable
+                container). Needs `torch`; `flyteplugins-vllm` adds a matching vLLM load format.
 ## Directory
 
 ### Classes

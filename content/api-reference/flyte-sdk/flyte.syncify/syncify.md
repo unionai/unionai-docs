@@ -2,7 +2,7 @@
 title: Syncify
 description: "A decorator to convert asynchronous functions or methods into synchronous ones."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

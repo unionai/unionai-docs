@@ -2,7 +2,7 @@
 title: CallInfo
 description: "What one `system_one` call cost, plus the calibration a plain field dropped."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---
