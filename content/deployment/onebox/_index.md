@@ -76,7 +76,7 @@ Three features need components you install beside onebox. Onebox starts without 
 |---|---|---|
 | Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | [Task logs](./logs) |
 | The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | [Task metrics](./metrics) |
-| Building images in the cluster | BuildKit, a registry, and the build task | [Image builder](./image-builder) |
+| Building images in the cluster | BuildKit and a registry | [Image builder](./image-builder) |
 
 The Logs tab streams logs of running tasks without any add-on.
 
