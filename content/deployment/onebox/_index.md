@@ -64,7 +64,20 @@ kubectl delete mutatingwebhookconfiguration onebox
 
 Onebox registers its pod admission webhook itself when it starts, so `helm uninstall` leaves the `MutatingWebhookConfiguration` behind. It is named after the release's Service (`onebox` for a release named `onebox`). Delete it, or pods created later in that namespace fail admission. The database and the bucket are yours and are left as they are.
 
+## Add-ons
+
+Three features need components you install beside onebox. Onebox starts without them and never waits for them:
+
+| Feature | Needs | Page |
+|---|---|---|
+| Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | [Task logs](./logs) |
+| The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | [Task metrics](./metrics) |
+| Building images in the cluster | BuildKit, a registry, and the build task | [Image builder](./image-builder) |
+
+The Logs tab streams logs of running tasks without any add-on.
+
 ## Limitations
 
 - One replica, and one data plane: the cluster onebox runs in.
-- Apps and serving, the image builder, and artifacts are not included.
+- Apps and serving, artifacts, and the project and organization dashboards aren't included.
+- Union Volumes aren't supported.
