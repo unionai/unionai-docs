@@ -19,7 +19,7 @@ With the image builder, the SDK builds a task's container image inside your clus
   - onebox can read anonymously, possibly at a different address.
 
   Registries that require credentials aren't supported.
-- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `public.ecr.aws/g1m2l3c1/imagebuilder`. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the tag in the chart's `imageBuilder.taskImages.tag`, and point onebox at it:
+- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `public.ecr.aws/g1m2l3c1/imagebuilder-canary`, for amd64 and arm64. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the tag in the chart's `imageBuilder.taskImages.tag`, and point onebox at it:
 
   ```yaml
   imageBuilder:
@@ -28,7 +28,8 @@ With the image builder, the SDK builds a task's container image inside your clus
       tag: <tag>
   ```
 
-  The published `frontend-v2` image is amd64 only, so BuildKit must run on an amd64 node.
+  > [!NOTE] Canary images
+  > Onebox currently uses Union's canary builds of these images, because the production builds (`imagebuilder`) don't include arm64 yet. A later chart switches to the production images. The tag names a single build, so the images don't change under you.
 
 ## Example: k3d
 
@@ -120,6 +121,6 @@ i Image localhost:30500/onebox/my-image:3892709e... already exists, skipping bui
 | Symptom | Cause and fix |
 |---|---|
 | `remote image builder is not enabled` | The `build-image` task isn't registered in `system`/`production` yet, or the CLI user can't read that project. Onebox registers it shortly after starting; while it can't, its log says `build-image task not registered yet` and why. |
-| Builds fail with `exit code 255` while BuildKit loads the frontend | BuildKit runs on an arm64 node, and the `frontend-v2` image is amd64 only. Run BuildKit on an amd64 node. |
+| Builds fail with `exit code 255` while BuildKit loads the frontend | BuildKit can't run the `frontend-v2` image on its node's architecture. With a mirror, copy the image with all its architectures (for example `crane copy` or `docker buildx imagetools create`), not just one. |
 | Every run rebuilds | Onebox can't read the registry at `imageBuilder.lookupURL`, or the path differs from `imageBuilder.repository`. They must name the same repository. |
 | Task pods fail with `ErrImagePull` after a successful build | Nodes can't pull from `imageBuilder.repository`. It must resolve and be trusted from the node. |
