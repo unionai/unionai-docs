@@ -26,11 +26,15 @@ Everything is served on **one port**: the UI, the API that the SDK and CLI use, 
 | You provide | Chart values |
 |---|---|
 | A PostgreSQL database onebox can reach, and a user that owns it | `database.host`, `database.name`, `database.user`, and a password in `database.existingSecret` |
-| A bucket in Amazon S3, Google Cloud Storage, or an S3-compatible store | `storage.type`, `storage.bucket`, and the credentials the bucket needs |
+| A bucket in Amazon S3, Google Cloud Storage, or an S3-compatible store, with a CORS rule for the UI | `storage.type`, `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
 | Optionally, an authenticating proxy in front of onebox | `identity.*`; see [Authentication](./authentication) |
 | Optionally, role-based access control | `authz.enabled`; see [Authorization](./authorization) |
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
+
+## Bucket CORS
+
+The UI reads some objects straight from the bucket, through presigned URLs: a task's code in the Code tab, and downloads. The browser allows that only if the bucket sends CORS headers for the UI's origin, so give the bucket a CORS rule that allows `GET` and `HEAD` from `https://<host>`, the address your users open. Each guide shows how for its store. Without it, the Code tab shows "We're having trouble loading the code" and the browser's console reports `blocked by CORS policy`.
 
 ## Choose a guide
 

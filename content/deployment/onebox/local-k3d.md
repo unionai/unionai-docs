@@ -98,7 +98,14 @@ spec:
       containers:
         - name: mb
           image: curlimages/curl:8.10.1
-          command: [curl, -fsS, -X, PUT, http://s3:4566/onebox]
+          # Create the bucket, and let the UI read objects from it (Bucket CORS).
+          command:
+            - sh
+            - -c
+            - |
+              curl -fsS -X PUT http://s3:4566/onebox &&
+              curl -fsS -X PUT -H 'Content-Type: application/xml' 'http://s3:4566/onebox?cors' --data-binary \
+                '<CORSConfiguration><CORSRule><AllowedOrigin>*</AllowedOrigin><AllowedMethod>GET</AllowedMethod><AllowedMethod>HEAD</AllowedMethod><AllowedHeader>*</AllowedHeader><MaxAgeSeconds>3600</MaxAgeSeconds></CORSRule></CORSConfiguration>'
 ```
 
 Apply it and wait for the bucket:

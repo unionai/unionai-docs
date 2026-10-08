@@ -20,6 +20,20 @@ This guide installs onebox on any conformant Kubernetes cluster, on-premises or 
 
 The SDK uploads code and downloads outputs through signed URLs that point at the store, so **the store's endpoint must be reachable at the same address from inside the cluster and from your users' machines**. Use a DNS name that resolves in both places, such as the store's public or corporate hostname, rather than a cluster-internal Service name.
 
+## Allow the UI to read the bucket
+
+Give the bucket a CORS rule that allows `GET` and `HEAD` from the address your users open (see [Bucket CORS](./_index#bucket-cors)). With the AWS CLI against an S3-compatible store:
+
+```shell
+cat > cors.json <<EOF
+{"CORSRules": [{"AllowedOrigins": ["https://<host>"], "AllowedMethods": ["GET", "HEAD"],
+                "AllowedHeaders": ["*"], "MaxAgeSeconds": 3600}]}
+EOF
+aws s3api put-bucket-cors --endpoint-url https://<store endpoint> --bucket <bucket> --cors-configuration file://cors.json
+```
+
+Some stores configure CORS differently, for example per deployment rather than per bucket; follow your store's documentation.
+
 ## Install onebox
 
 Create the namespace and two Secrets: the database password, and the store's access key:

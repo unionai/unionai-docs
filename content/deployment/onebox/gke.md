@@ -43,6 +43,15 @@ gcloud storage buckets create gs://${BUCKET} --project ${PROJECT_ID} --location 
   --uniform-bucket-level-access
 ```
 
+Let the UI read objects from it (see [Bucket CORS](./_index#bucket-cors)), with the address your users open:
+
+```shell
+cat > cors.json <<EOF
+[{"origin": ["https://<host>"], "method": ["GET", "HEAD"], "responseHeader": ["*"], "maxAgeSeconds": 3600}]
+EOF
+gcloud storage buckets update gs://${BUCKET} --cors-file=cors.json
+```
+
 ## Create the Google service account
 
 Onebox and the task pods both need the bucket. Onebox runs as the `onebox` Kubernetes service account; task pods run as the namespace's `default` service account unless a task asks for another one. Map both to one Google service account:

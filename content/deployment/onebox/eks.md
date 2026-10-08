@@ -45,6 +45,16 @@ aws s3api create-bucket --bucket ${BUCKET} --region ${AWS_REGION} \
 
 In `us-east-1`, leave out `--create-bucket-configuration`.
 
+Let the UI read objects from it (see [Bucket CORS](./_index#bucket-cors)), with the address your users open:
+
+```shell
+cat > cors.json <<EOF
+{"CORSRules": [{"AllowedOrigins": ["https://<host>"], "AllowedMethods": ["GET", "HEAD"],
+                "AllowedHeaders": ["*"], "MaxAgeSeconds": 3600}]}
+EOF
+aws s3api put-bucket-cors --bucket ${BUCKET} --cors-configuration file://cors.json
+```
+
 ## Create the IAM role
 
 Onebox and the task pods both need the bucket. Onebox runs as the `onebox` service account; task pods run as the namespace's `default` service account unless a task asks for another one. Create one role that both can assume.
