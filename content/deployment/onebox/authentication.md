@@ -95,11 +95,13 @@ args:
   - --skip-auth-route=^/\.well-known/oauth-authorization-server$
   # Accept the IdP's tokens from the SDK and CLI.
   - --skip-jwt-bearer-tokens=true
-  - --extra-jwt-issuers=<issuer URL>=<audience>
+  - --oidc-extra-audience=<audience>
   - --skip-provider-button=true
+  # Only with OAuth apps: their client-credentials tokens carry no email.
+  # - --insecure-oidc-allow-unverified-email=true
 ```
 
-`<audience>` is the `aud` claim in the tokens the CLI application gets. That is usually its client ID; Okta's custom authorization servers use the server's audience, such as `api://default`.
+`<audience>` is the `aud` claim in the tokens the CLI application gets. That is usually its client ID; Okta's custom authorization servers use the server's audience, such as `api://default`. On Keycloak, add an audience mapper to a default client scope so every token, including those of [OAuth apps](./oauth-apps), carries the same audience. If the CLI's tokens come from a different issuer than oauth2-proxy's own sign-in, use `--extra-jwt-issuers=<issuer URL>=<audience>` instead.
 
 The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS in one of two ways:
 
@@ -310,7 +312,8 @@ Point DNS for `<host>` at the ALB, then sign in as in [oauth2-proxy](#4-sign-in)
 |---|---|
 | The UI loads, but every API call returns `401` | Onebox doesn't see the identity headers. Check that `identity.*` names the headers your proxy sets, and, with `identity.proxySecret`, that the proxy sends the secret. |
 | The CLI says the endpoint doesn't support authentication, or skips sign-in | `authMetadata.externalAuthServerBaseUrl` isn't set, the proxy requires a login on the discovery paths, or the CLI config has `insecure: true`. |
-| The CLI signs in, then API calls are redirected to the IdP or return `401` | The proxy doesn't accept the token. For oauth2-proxy, check that `--extra-jwt-issuers` has the token's issuer and `aud`. For ALB, check the `jwt-validation` issuer and JWKS URL. |
+| The CLI signs in, then API calls are redirected to the IdP or return `401` | The proxy doesn't accept the token. For oauth2-proxy, check that `--oidc-extra-audience` (or `--extra-jwt-issuers`) matches the token's `aud`; its log names the audience it expected. For ALB, check the `jwt-validation` issuer and JWKS URL. |
+| An OAuth app's token is redirected to the IdP, and oauth2-proxy logs `email in id_token ... isn't verified` | Client-credentials tokens have no email. Add `--insecure-oidc-allow-unverified-email=true`. |
 | `flyte run` fails while uploading the code bundle, behind a proxy that terminates TLS itself | Onebox gave the SDK an `http://` address. Set `publicScheme: https`. |
 | ALB targets are unhealthy | The health check path isn't `/healthz`. |
 | ALB: `FailedBuildModel … secrets "onebox-oidc" is forbidden` on the Ingress | The AWS Load Balancer Controller can't read Secrets in onebox's namespace. Grant its service account `get`, `list`, and `watch` on Secrets there. |

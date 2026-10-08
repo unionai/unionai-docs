@@ -79,5 +79,6 @@ The Logs tab streams logs of running tasks without any add-on.
 ## Limitations
 
 - One replica, and one data plane: the cluster onebox runs in.
-- Apps and serving, artifacts, and the project and organization dashboards aren't included.
+- Apps and serving, and artifacts aren't included.
+- The dashboards' queue panels show no data.
 - Union Volumes aren't supported.
