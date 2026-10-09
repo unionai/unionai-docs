@@ -106,6 +106,17 @@ queue for a workload:
   priority work is scheduled ahead of lower priority work. Priority controls
   *ordering*, not preemption: a lower-priority task that has already started is
   not interrupted when higher-priority work arrives.
+- **Resource caps**: the most CPU, memory, and GPUs that the queue's scheduled
+  tasks may request at once, counted across every cluster the queue routes to.
+  GPUs can be capped per device type, and separately for tasks that ask for a
+  GPU without naming a type. A task that would push the queue past a cap waits
+  until enough running work finishes.
+- **Scheduling policy**: what the queue does when the next task in line does not
+  fit. A `strict_fifo` queue waits for it, so nothing behind it starts first. A
+  `greedy_capacity` queue skips it and starts the tasks behind it that do fit.
+
+Resource caps and scheduling policies are described in
+[Resource caps and scheduling](../../cluster-workload-management/resource-caps-and-scheduling).
 
 ## When to use queues
 
@@ -144,6 +155,35 @@ a priority, queues are how you say "GPU training goes to the GPU cluster" or
 business-critical work to a high-priority queue and bulk or best-effort work to a
 lower-priority one; when they contend for the same capacity, the important work
 is scheduled first.
+
+### Sharing clusters across teams
+
+When several teams run on the same clusters, one team's large job can take all
+of the GPUs and leave everyone else waiting. Give each team a queue with
+**resource caps** and each team gets a ceiling on the CPU, memory, and GPUs its
+scheduled work can use at once. Work beyond the ceiling is still accepted and
+waits in the queue. Because the caps count resources, a team can run many small
+tasks or a few large ones under the same cap.
+
+Which queue you pick also decides how your work waits. On a `greedy_capacity`
+queue, small tasks and tasks for a
+[reusable environment](./reusable-containers) that is already running keep
+starting while a large task waits for room. On a `strict_fifo` queue, tasks start
+strictly in the order they were submitted, which suits a job that needs many
+GPUs at the same moment and must not be overtaken by smaller work.
+
+## Requests that can never run
+
+A task can ask for more than its queue allows, for example 64 CPUs on a queue
+capped at 32. Waiting would not help, so the action fails right away with the
+error code `INFEASIBLE` and is not retried. The error message names the request
+and the cap. Lower the task's `resources`, or route it to a queue with a higher
+cap.
+
+The same check is being extended to the clusters behind a queue: a task that
+asks for an accelerator none of the queue's clusters has, or for a container
+larger than any of their nodes, will fail the same way. See
+[Infeasible requests fail fast](../../cluster-workload-management/resource-caps-and-scheduling#infeasible-requests-fail-fast).
 
 ## Queues and timeouts
 
