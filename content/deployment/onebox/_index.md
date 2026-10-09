@@ -72,13 +72,14 @@ Onebox registers its pod admission webhook itself when it starts, so `helm unins
 
 ## Add-ons
 
-Three features need components you install beside onebox. Onebox starts without them and never waits for them:
+Four features need components you install beside onebox. Onebox starts without them and never waits for them:
 
 | Feature | Needs | Page |
 |---|---|---|
 | Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | [Task logs](./logs) |
 | The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | [Task metrics](./metrics) |
 | Building images in the cluster | BuildKit and a registry | [Image builder](./image-builder) |
+| Apps and LLM gateways | Knative Serving with Kourier | [Apps and LLM gateways](./apps) |
 
 The Logs tab streams logs of running tasks without any add-on.
 
