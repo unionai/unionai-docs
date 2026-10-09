@@ -38,7 +38,9 @@ The UI reads some objects straight from the bucket, through presigned URLs: a ta
 
 ## Choose a guide
 
-Start with [Try onebox on k3d](./local-k3d) on your laptop, or install it on [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization).
+For a proof of concept, start with [Try Union.ai on your machine](./try-locally): one command, `flyte start unibox`, runs everything in one Docker container on your laptop, with nothing to set up first.
+
+To install onebox on a Kubernetes cluster, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
 
 {{< subpage-cards >}}
 

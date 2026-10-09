@@ -150,7 +150,7 @@ Install onebox in a namespace of its own: task pods, their secrets, and the obje
 kubectl -n ${NAMESPACE} port-forward svc/onebox 8080:80
 ```
 
-Open [http://localhost:8080/v2](http://localhost:8080/v2), and run a workflow as in [Try onebox on k3d](./local-k3d#run-a-workflow).
+Open [http://localhost:8080/v2](http://localhost:8080/v2), and run a workflow as in [Install the chart on k3d](./local-k3d#run-a-workflow).
 
 Anyone who can reach port `80` can use onebox until you put an authenticating proxy in front of it. To expose onebox to your users behind an ALB with single sign-on, see [Authentication](./authentication#aws-alb).
 

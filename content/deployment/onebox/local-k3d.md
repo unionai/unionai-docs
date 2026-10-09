@@ -1,14 +1,14 @@
 ---
-title: Try onebox on k3d
-description: Run onebox on your laptop in a k3d cluster, with throwaway PostgreSQL and S3, and run a workflow against it.
+title: Install the chart on k3d
+description: Install the onebox chart step by step in a local k3d cluster, with throwaway PostgreSQL and S3, and run a workflow against it.
 icon: laptop
-weight: 1
+weight: 11
 variants: -flyte +union
 ---
 
-# Try onebox on k3d
+# Install the chart on k3d
 
-This guide runs onebox on your laptop in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
+To try Union.ai on your machine, [`flyte start unibox`](./try-locally) is quicker: it runs everything in one container. This guide instead installs the onebox chart step by step on your laptop, in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
 
 ## Prerequisites
 
