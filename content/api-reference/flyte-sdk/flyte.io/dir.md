@@ -2,7 +2,7 @@
 title: Dir
 description: "A generic directory class representing a directory with files of a specified format."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,36 @@ A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node trai
 Inherits all fields from TaskEnvironment (name, image, resources, env_vars, secrets,
 pod_template, queue, cache, reusable). The fields below are specific to clustered execution.
 
+Restarts and retries:
+    A clustered task can start over at three levels; only the second uses the task's `retries`.
+
+    1. **JobSet restarts** (`failure_policy`): when a worker fails, every pod of the JobSet is
+       recreated in place, up to `failure_policy.max_restarts` times (node maintenance is free
+       with `restart_on_host_maintenance`). `flyte.ctx().restart_attempt` counts them.
+    2. **User retries** (`retries=` on `env.task`): a new attempt with a new JobSet. Each uses one
+       of the task's `retries` and waits `RetryStrategy.backoff` first. Causes: the task failed
+       after its JobSet restarts were used up, or the gang was preempted by higher-priority work
+       after it started. If the task can be preempted, set `retries > 0`, otherwise the first
+       preemption fails it. Limit run time with `timeout=flyte.Timeout(max_runtime=...)`.
+    3. **System retries**: the same attempt with a new JobSet, after an infrastructure problem
+       such as the queue being stopped or nodes failing. They do not use `retries`.
+
+    The failure message names the cause and, for user retries, how many retries are left.
+
+Waiting and queues:
+    The task waits until every worker is ready. Bound the wait with
+    `timeout=flyte.Timeout(max_queued_time=..., deadline=...)` on `env.task`: `max_queued_time`
+    covers each attempt until all workers are ready, `deadline` the whole run across attempts and
+    retries.
+
+    With Kueue on the cluster, choose the queue with a pod-template label:
+
+    ```python
+    env = ClusteredTaskEnvironment(
+        ...,
+        pod_template=flyte.PodTemplate(labels={"kueue.x-k8s.io/queue-name": "training"}),
+    )
+    ```
 
 
 ## Parameters
