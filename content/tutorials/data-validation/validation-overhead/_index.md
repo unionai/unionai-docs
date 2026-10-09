@@ -78,7 +78,7 @@ store.
 
 The run used 4 torch threads on x86_64, with torch 2.14.1+cpu, pandera 0.34.0, and tensordict 0.14.2.
 
-![Wall-clock time with and without pandera, and added runtime per training length](../../../_static/images/tutorials/data-validation/overhead.png)
+![Wall-clock time with and without pandera, and added runtime per training length](../../../_static/images/tutorials/data-validation/overhead-dark.png)
 
 | Steps | Without pandera (s) | With pandera (s) | Overhead |
 |---:|---:|---:|---:|
@@ -119,7 +119,7 @@ width runs enough steps to take about 15 seconds per run, five runs per mode, al
 
 {{< code file="/unionai-examples/v2/tutorials/pandera_validation_overhead/main.py" lang="python" fragment="step-size-sweep" >}}
 
-![Validation time as a share of the training step, by model size](../../../_static/images/tutorials/data-validation/step-size.png)
+![Validation time as a share of the training step, by model size](../../../_static/images/tutorials/data-validation/step-size-dark.png)
 
 The chart plots validation's share of the step: milliseconds per `validate()` call, timed around each call, divided
 by the median training milliseconds per step without pandera. Both halves are timed directly, so the ratio isn't

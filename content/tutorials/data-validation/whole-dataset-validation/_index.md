@@ -70,7 +70,7 @@ repeats per point. A second sweep validates the same 1 GB continuous-control dat
 
 The run used 4 torch threads on x86_64, with torch 2.14.1+cpu, pandera 0.34.0, and tensordict 0.14.2.
 
-![Validation time by dataset size, and the same 1 GB validated at different chunk sizes](../../../_static/images/tutorials/data-validation/dataset-validation.png)
+![Validation time by dataset size, and the same 1 GB validated at different chunk sizes](../../../_static/images/tutorials/data-validation/dataset-validation-dark.png)
 
 Validation time at each size (median of 3, streamed in 64 MB chunks):
 

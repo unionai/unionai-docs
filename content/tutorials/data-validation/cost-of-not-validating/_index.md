@@ -96,7 +96,7 @@ steps.
 The run used 30 seeds per cell, 420 runs in all, on x86_64 with torch 2.14.1+cpu, pandera 0.34.0, tensordict
 0.14.3, and gymnasium 1.4.0.
 
-![Compute to solve CartPole relative to a clean run, by corruption type and rate](../../../_static/images/tutorials/data-validation/cost.png)
+![Compute to solve CartPole relative to a clean run, by corruption type and rate](../../../_static/images/tutorials/data-validation/cost-dark.png)
 
 Median environment steps to reach a 475 return, with the interquartile range in parentheses. A clean run took
 69.9K.
