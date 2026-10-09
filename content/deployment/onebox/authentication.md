@@ -109,28 +109,38 @@ args:
 
 The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS in one of two ways:
 
-- **Behind an ingress or load balancer that terminates TLS** (most common). Add `--reverse-proxy=true` so oauth2-proxy trusts the `X-Forwarded-*` headers the ingress sets; it passes `X-Forwarded-Proto` on to onebox. For example, with ingress-nginx:
+- **Behind a gateway or load balancer that terminates TLS** (most common). Add `--reverse-proxy=true` so oauth2-proxy trusts the `X-Forwarded-*` headers the gateway sets; it passes `X-Forwarded-Proto` on to onebox. For example, with any [Gateway API](https://gateway-api.sigs.k8s.io/) implementation:
 
   ```yaml
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
+  apiVersion: gateway.networking.k8s.io/v1
+  kind: Gateway
   metadata:
     name: onebox
     namespace: union
-    annotations:
-      nginx.ingress.kubernetes.io/proxy-buffer-size: 16k   # oauth2-proxy's session cookie
-      nginx.ingress.kubernetes.io/proxy-body-size: "0"
   spec:
-    ingressClassName: nginx
-    tls: [{hosts: [<host>], secretName: <tls secret>}]
+    gatewayClassName: <your gateway class>
+    listeners:
+      - name: https
+        protocol: HTTPS
+        port: 443
+        hostname: <host>
+        tls:
+          mode: Terminate
+          certificateRefs: [{name: <tls secret>}]
+  ---
+  apiVersion: gateway.networking.k8s.io/v1
+  kind: HTTPRoute
+  metadata:
+    name: onebox
+    namespace: union
+  spec:
+    parentRefs: [{name: onebox, sectionName: https}]
+    hostnames: [<host>]
     rules:
-      - host: <host>
-        http:
-          paths:
-            - path: /
-              pathType: Prefix
-              backend: {service: {name: oauth2-proxy, port: {number: 80}}}
+      - backendRefs: [{name: oauth2-proxy, port: 80}]
   ```
+
+  oauth2-proxy's session cookie can be several kilobytes; if your gateway limits request header sizes, allow at least 16 KB. If your gateway doesn't set `X-Forwarded-Proto`, also set `publicScheme: https` in onebox's values.
 
 - **With its own certificate** (`--https-address` and `--tls-cert-file`). Nothing sets `X-Forwarded-Proto` then, so also set `publicScheme: https` in onebox's values.
 
@@ -170,17 +180,17 @@ and allow that domain in oauth2-proxy with `--whitelist-domain=<IdP domain>`.
 
 ## AWS ALB
 
-On EKS, an Application Load Balancer can do the sign-in itself: it challenges browsers with OIDC and validates the SDK's tokens. You define three Ingresses that share one ALB:
+On EKS, an Application Load Balancer can do the sign-in itself: it challenges browsers with OIDC and validates the SDK's tokens. The [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/) builds it from a Gateway and one HTTPRoute with three rules:
 
-| Ingress | Matches | Auth |
+| Rule | Matches | Auth |
 |---|---|---|
-| `onebox-discovery` | The two discovery paths | None, so the SDK can find the IdP |
-| `onebox-api` | Requests with `Authorization: Bearer …` | ALB validates the token (JWT validation) |
-| `onebox` | Everything else | ALB signs the browser in (OIDC) |
+| Discovery | The two discovery paths | None, so the SDK can find the IdP |
+| API | Requests with `Authorization: Bearer …` | ALB validates the token (JWT validation) |
+| Browser | Everything else | ALB signs the browser in (OIDC) |
 
 ### Prerequisites
 
-- The [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/) v2.16 or later. JWT validation needs it.
+- The AWS Load Balancer Controller v3.5.0 or later, with the [Gateway API CRDs and its own Gateway CRDs](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/gateway/gateway/#prerequisites) installed. Its ALB Gateway controller starts when they are.
 - An ACM certificate for `<host>`. ALB authenticates only on HTTPS listeners.
 - Two applications at your IdP, as for [oauth2-proxy](#1-register-two-applications-at-your-idp), except the web application's redirect URI is `https://<host>/oauth2/idpresponse`.
 
@@ -220,95 +230,141 @@ networkPolicy:
         cidr: <VPC CIDR>
 ```
 
-Onebox reads the first of the two JWT headers present. Every request that carries `Authorization: Bearer` is routed to `onebox-api`, where ALB has validated the token; every other request has been signed in by ALB, which sets `X-Amzn-Oidc-Data` itself.
+Onebox reads the first of the two JWT headers present. Every request that carries `Authorization: Bearer` takes the API rule, where ALB has validated the token; every other request has been signed in by ALB, which sets `X-Amzn-Oidc-Data` itself.
 
-### 2. Create the Ingresses
-
-Annotations every Ingress needs (repeat them in each):
+### 2. Create the Gateway
 
 ```yaml
-alb.ingress.kubernetes.io/group.name: onebox
-alb.ingress.kubernetes.io/scheme: internet-facing
-alb.ingress.kubernetes.io/target-type: ip
-alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-alb.ingress.kubernetes.io/certificate-arn: <ACM certificate ARN>
-alb.ingress.kubernetes.io/healthcheck-path: /healthz
-```
-
-The health check path matters: onebox answers `/` with a redirect, which ALB counts as unhealthy.
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
 metadata:
-  name: onebox-discovery
-  namespace: union
-  annotations:
-    # ... the common annotations ...
-    alb.ingress.kubernetes.io/group.order: "1"
+  name: aws-alb
 spec:
-  ingressClassName: alb
-  rules:
-    - host: <host>
-      http:
-        paths:
-          - path: /.well-known/oauth-authorization-server
-            pathType: Exact
-            backend: {service: {name: onebox, port: {number: 80}}}
-          - path: /flyteidl2.auth.AuthMetadataService
-            pathType: Prefix
-            backend: {service: {name: onebox, port: {number: 80}}}
+  controllerName: gateway.k8s.aws/alb
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: onebox-api
-  namespace: union
-  annotations:
-    # ... the common annotations ...
-    alb.ingress.kubernetes.io/group.order: "2"
-    alb.ingress.kubernetes.io/conditions.onebox: '[{"field":"http-header","httpHeaderConfig":{"httpHeaderName":"Authorization","values":["Bearer*"]}}]'
-    alb.ingress.kubernetes.io/jwt-validation: '{"jwksEndpoint":"<IdP JWKS URL>","issuer":"<issuer URL>"}'
-spec:
-  ingressClassName: alb
-  rules:
-    - host: <host>
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend: {service: {name: onebox, port: {number: 80}}}
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.k8s.aws/v1
+kind: LoadBalancerConfiguration
 metadata:
   name: onebox
   namespace: union
-  annotations:
-    # ... the common annotations ...
-    alb.ingress.kubernetes.io/group.order: "3"
-    alb.ingress.kubernetes.io/auth-type: oidc
-    alb.ingress.kubernetes.io/auth-scope: openid email profile
-    alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
-    alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"<issuer URL>","authorizationEndpoint":"<authorize URL>","tokenEndpoint":"<token URL>","userInfoEndpoint":"<userinfo URL>","secretName":"onebox-oidc"}'
 spec:
-  ingressClassName: alb
+  scheme: internet-facing
+  listenerConfigurations:
+    - protocolPort: HTTPS:443
+      defaultCertificate: <ACM certificate ARN>
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: onebox
+  namespace: union
+spec:
+  gatewayClassName: aws-alb
+  infrastructure:
+    parametersRef:
+      group: gateway.k8s.aws
+      kind: LoadBalancerConfiguration
+      name: onebox
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: <host>
+---
+# Targets are onebox's pods, health-checked on /healthz: onebox answers / with
+# a redirect, which ALB counts as unhealthy.
+apiVersion: gateway.k8s.aws/v1
+kind: TargetGroupConfiguration
+metadata:
+  name: onebox
+  namespace: union
+spec:
+  targetReference:
+    name: onebox
+  defaultConfiguration:
+    targetType: ip
+    healthCheckConfig:
+      healthCheckPath: /healthz
+```
+
+Skip the GatewayClass if your cluster already has one for `gateway.k8s.aws/alb`, and use its name.
+
+### 3. Create the route
+
+The two authentication steps are ListenerRuleConfigurations, attached to their rules as filters. ALB orders the rules by how specific they are: the discovery paths first, then the rule that also matches the `Authorization` header, then the rest.
+
+```yaml
+apiVersion: gateway.k8s.aws/v1
+kind: ListenerRuleConfiguration
+metadata:
+  name: onebox-api
+  namespace: union
+spec:
+  actions:
+    - type: jwt-validation
+      jwtValidationConfig:
+        jwksEndpoint: <IdP JWKS URL>
+        issuer: <issuer URL>
+---
+apiVersion: gateway.k8s.aws/v1
+kind: ListenerRuleConfiguration
+metadata:
+  name: onebox-browser
+  namespace: union
+spec:
+  actions:
+    - type: authenticate-oidc
+      authenticateOIDCConfig:
+        issuer: <issuer URL>
+        authorizationEndpoint: <authorize URL>
+        tokenEndpoint: <token URL>
+        userInfoEndpoint: <userinfo URL>
+        scope: openid email profile
+        onUnauthenticatedRequest: authenticate
+        secret:
+          name: onebox-oidc
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: onebox
+  namespace: union
+spec:
+  parentRefs: [{name: onebox, sectionName: https}]
+  hostnames: [<host>]
   rules:
-    - host: <host>
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend: {service: {name: onebox, port: {number: 80}}}
+    # Discovery: no authentication.
+    - matches:
+        - path: {type: Exact, value: /.well-known/oauth-authorization-server}
+        - path: {type: PathPrefix, value: /flyteidl2.auth.AuthMetadataService}
+      backendRefs: [{name: onebox, port: 80}]
+    # The SDK and CLI: ALB validates the bearer token.
+    - matches:
+        - path: {type: PathPrefix, value: /}
+          headers:
+            - name: Authorization
+              type: RegularExpression
+              value: "^Bearer .+"
+      filters:
+        - type: ExtensionRef
+          extensionRef: {group: gateway.k8s.aws, kind: ListenerRuleConfiguration, name: onebox-api}
+      backendRefs: [{name: onebox, port: 80}]
+    # Browsers: ALB signs them in.
+    - matches:
+        - path: {type: PathPrefix, value: /}
+      filters:
+        - type: ExtensionRef
+          extensionRef: {group: gateway.k8s.aws, kind: ListenerRuleConfiguration, name: onebox-browser}
+      backendRefs: [{name: onebox, port: 80}]
 ```
 
 The issuer, JWKS, authorize, token, and userinfo URLs are in your IdP's discovery document, `<issuer URL>/.well-known/openid-configuration`.
 
-ALB's JWT validation checks the token's signature, issuer, and expiry. To accept only tokens minted for the CLI application, also check their audience by adding `"additionalClaims":[{"name":"aud","format":"single-string","values":["<audience>"]}]` to `jwt-validation`.
+ALB's JWT validation checks the token's signature, issuer, and expiry. To accept only tokens minted for the CLI application, also check their audience: add `additionalClaims: [{name: aud, format: single-string, values: [<audience>]}]` to `jwtValidationConfig`.
 
-### 3. Sign in
+### 4. Sign in
 
-Point DNS for `<host>` at the ALB, then sign in as in [oauth2-proxy](#4-sign-in): the UI at `https://<host>/v2`, and the CLI with `flyte create config --endpoint <host>`.
+Point DNS for `<host>` at the ALB (the Gateway's address), then sign in as in [oauth2-proxy](#4-sign-in): the UI at `https://<host>/v2`, and the CLI with `flyte create config --endpoint <host>`.
 
 ## Troubleshooting
 
@@ -316,8 +372,8 @@ Point DNS for `<host>` at the ALB, then sign in as in [oauth2-proxy](#4-sign-in)
 |---|---|
 | The UI loads, but every API call returns `401` | Onebox doesn't see the identity headers. Check that `identity.*` names the headers your proxy sets, and, with `identity.proxySecret`, that the proxy sends the secret. |
 | The CLI says the endpoint doesn't support authentication, or skips sign-in | `authMetadata.externalAuthServerBaseUrl` isn't set, the proxy requires a login on the discovery paths, or the CLI config has `insecure: true`. |
-| The CLI signs in, then API calls are redirected to the IdP or return `401` | The proxy doesn't accept the token. For oauth2-proxy, check that `--oidc-extra-audience` (or `--extra-jwt-issuers`) matches the token's `aud`; its log names the audience it expected. For ALB, check the `jwt-validation` issuer and JWKS URL. |
+| The CLI signs in, then API calls are redirected to the IdP or return `401` | The proxy doesn't accept the token. For oauth2-proxy, check that `--oidc-extra-audience` (or `--extra-jwt-issuers`) matches the token's `aud`; its log names the audience it expected. For ALB, check the `jwtValidationConfig` issuer and JWKS URL. |
 | An OAuth app's token is redirected to the IdP, and oauth2-proxy logs `email in id_token ... isn't verified` | Client-credentials tokens have no email. Add `--insecure-oidc-allow-unverified-email=true`. |
 | `flyte run` fails while uploading the code bundle, behind a proxy that terminates TLS itself | Onebox gave the SDK an `http://` address. Set `publicScheme: https`. |
 | ALB targets are unhealthy | The health check path isn't `/healthz`. |
-| ALB: `FailedBuildModel … secrets "onebox-oidc" is forbidden` on the Ingress | The AWS Load Balancer Controller can't read Secrets in onebox's namespace. Grant its service account `get`, `list`, and `watch` on Secrets there. |
+| ALB: the Gateway or HTTPRoute reports that it can't read secret `onebox-oidc` | The AWS Load Balancer Controller can't read Secrets in onebox's namespace. Grant its service account `get`, `list`, and `watch` on Secrets there. |

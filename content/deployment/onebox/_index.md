@@ -87,7 +87,7 @@ The Logs tab streams logs of running tasks without any add-on.
 The **Debug** button reruns a task with a VS Code server in its pod, and **Open VS Code** opens it through onebox. It needs no add-on, but:
 
 - Opening it needs permission to run in the project (the contributor role with authorization on), since the server runs code with the task's credentials.
-- Your proxy must pass websockets through. ingress-nginx and the AWS ALB do by default.
+- Your proxy must pass websockets through. oauth2-proxy and the AWS ALB do by default; so do most Gateway API implementations.
 - The task needs memory for VS Code as well as its own work: a task limited to 256Mi is killed while VS Code starts. 2Gi is plenty.
 
 ## Limitations
