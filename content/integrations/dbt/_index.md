@@ -152,7 +152,7 @@ Some dbt commands, such as commands that return plain strings instead of node re
 
 ## Reports and failures
 
-Set `report=True` to write a dbt report tab for the task. The report is a table with one row per dbt node, showing the node name, resource type, status, failure count, execution time, and message. It does not include relation names; read `relation_name` from the returned `DbtNodeResult` values instead.
+Set `report=True` to write a dbt report tab for the task. The report is a table with one row per dbt node, showing the node name, resource type, status, failures, execution time, and message. It does not include relation names; read `relation_name` from the returned `DbtNodeResult` values instead.
 
 ```python
 dbt_test = DbtTask(

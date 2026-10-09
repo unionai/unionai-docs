@@ -434,7 +434,7 @@ An explicit `Cache(behavior="override", version_override=...)` is used as-is; th
 
 ## Job state mapping
 
-Only the first word of the Slurm state is matched, with any trailing `+` removed, so `CANCELLED by 1234` and `CANCELLED+` are both treated as `CANCELLED`. The table lists every state the connector maps. Any other state is not treated as running: the connector's status check raises `ValueError` (`Unrecognized Slurm job state ...`) instead of reporting a phase, and the connector logs that error.
+Only the first word of the Slurm state is matched, with any trailing `+` removed, so `CANCELLED by 1234` and `CANCELLED+` are both treated as `CANCELLED`. The table lists every state the connector maps. Any other state makes the connector's status check raise `ValueError` (`Unrecognized Slurm job state ...`) instead of reporting a phase, and the connector logs that error.
 
 | Slurm state | Flyte phase | Notes |
 | ----------- | ----------- | ----- |
