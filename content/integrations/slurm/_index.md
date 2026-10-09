@@ -434,12 +434,12 @@ An explicit `Cache(behavior="override", version_override=...)` is used as-is; th
 
 ## Job state mapping
 
-Only the first word of the Slurm state is matched, with any trailing `+` removed, so `CANCELLED by 1234` and `CANCELLED+` are both treated as `CANCELLED`. An unrecognized state is not treated as running: the connector's status check raises `ValueError` (`Unrecognized Slurm job state ...`) instead of reporting a phase.
+Only the first word of the Slurm state is matched, with any trailing `+` removed, so `CANCELLED by 1234` and `CANCELLED+` are both treated as `CANCELLED`. The table lists every state the connector maps. Any other state is not treated as running: the connector's status check raises `ValueError` (`Unrecognized Slurm job state ...`) instead of reporting a phase, and the connector logs that error.
 
 | Slurm state | Flyte phase | Notes |
 | ----------- | ----------- | ----- |
-| `PENDING`, `CONFIGURING`, `REQUEUED`, `SUSPENDED` | `QUEUED` | Time waiting for an allocation does not count as running |
-| `RUNNING`, `COMPLETING` | `RUNNING` | — |
+| `PENDING`, `CONFIGURING`, `REQUEUED`, `REQUEUE_HOLD`, `REQUEUE_FED`, `RESV_DEL_HOLD`, `SUSPENDED`, `STOPPED` | `QUEUED` | Time waiting for an allocation does not count as running |
+| `RUNNING`, `COMPLETING`, `STAGE_OUT`, `SIGNALING`, `RESIZING` | `RUNNING` | — |
 | `COMPLETED` | `SUCCEEDED` | Script tasks with `output_upload="connector"` stay `RUNNING` until the connector has uploaded their outputs |
 | `FAILED`, `NODE_FAIL`, `OUT_OF_MEMORY`, `TIMEOUT`, `DEADLINE`, `BOOT_FAIL`, `SPECIAL_EXIT`, `REVOKED` | `FAILED` | The message includes Slurm's reason and the end of stderr |
 | `PREEMPTED` | `RETRYABLE_FAILED` | Uses a retry instead of failing the run, but only if the task sets `retries` (default 0) |
