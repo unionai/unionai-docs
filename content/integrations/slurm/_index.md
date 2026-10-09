@@ -2,7 +2,7 @@
 title: Slurm
 description: Run Flyte tasks as Slurm jobs on an existing HPC or GPU cluster, submitted over SSH.
 icon: hdd-stack
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
@@ -232,7 +232,7 @@ These fields map one-to-one onto `sbatch` options.
 | `qos` | `str` | Quality of service |
 | `reservation` | `str` | Reservation name |
 | `constraint` | `str` | Node feature constraint |
-| `sbatch_options` | `Dict[str, Any]` | Any other `sbatch` option, as `--<key>=<value>`. `True` renders a bare flag. Overrides the first-class fields on conflict. The plugin sets `job-name`, `output`, `error` and `chdir` itself, so these and `wrap`, `uid` and `gid` are rejected |
+| `sbatch_options` | `Dict[str, Any]` | Any other `sbatch` option, as `--<key>=<value>`. `True` renders a bare flag. Overrides the first-class fields on conflict. The plugin sets `job-name`, `output` and `error` itself, so these are rejected, as are `chdir`, `wrap`, `uid` and `gid` |
 
 ### Container and execution
 
@@ -310,6 +310,9 @@ command -v apptainer                       # Apptainer
 ```
 
 If `apptainer` is only available through environment modules, add it to `modules`. A cluster with neither runtime cannot run native tasks; use `slurm_script` instead. An unknown `container_runtime` value is rejected when the task is defined.
+
+> [!NOTE] Apptainer support is unit-tested only
+> The plugin's Apptainer path has not been run against a real Apptainer cluster. See [Known gaps](#known-gaps).
 
 ## Container images
 
@@ -431,12 +434,12 @@ An explicit `Cache(behavior="override", version_override=...)` is used as-is; th
 
 ## Job state mapping
 
-Only the first word of the Slurm state is matched, so `CANCELLED by 1234` is treated as `CANCELLED`. An unrecognized state is logged and treated as running.
+Only the first word of the Slurm state is matched, with any trailing `+` removed, so `CANCELLED by 1234` and `CANCELLED+` are both treated as `CANCELLED`. The table lists every state the connector maps. Any other state makes the connector's status check raise `ValueError` (`Unrecognized Slurm job state ...`) instead of reporting a phase, and the connector logs that error.
 
 | Slurm state | Flyte phase | Notes |
 | ----------- | ----------- | ----- |
-| `PENDING`, `CONFIGURING`, `REQUEUED`, `SUSPENDED` | `QUEUED` | Time waiting for an allocation does not count as running |
-| `RUNNING`, `COMPLETING` | `RUNNING` | — |
+| `PENDING`, `CONFIGURING`, `REQUEUED`, `REQUEUE_HOLD`, `REQUEUE_FED`, `RESV_DEL_HOLD`, `SUSPENDED`, `STOPPED` | `QUEUED` | Time waiting for an allocation does not count as running |
+| `RUNNING`, `COMPLETING`, `STAGE_OUT`, `SIGNALING`, `RESIZING` | `RUNNING` | — |
 | `COMPLETED` | `SUCCEEDED` | Script tasks with `output_upload="connector"` stay `RUNNING` until the connector has uploaded their outputs |
 | `FAILED`, `NODE_FAIL`, `OUT_OF_MEMORY`, `TIMEOUT`, `DEADLINE`, `BOOT_FAIL`, `SPECIAL_EXIT`, `REVOKED` | `FAILED` | The message includes Slurm's reason and the end of stderr |
 | `PREEMPTED` | `RETRYABLE_FAILED` | Uses a retry instead of failing the run, but only if the task sets `retries` (default 0) |
@@ -598,6 +601,7 @@ The connector keeps one SSH connection per cluster and reuses it across jobs, re
 
 - **No multi-node execution for `slurm` tasks.** The native task runs `srun --nodes=1 --ntasks=1`, so the Flyte entrypoint runs once even when the allocation spans several nodes. Use a `slurm_script` task, which runs `srun` or `mpirun` itself, for distributed work.
 - **Only Pyxis and Apptainer are supported.** A cluster with neither cannot run native tasks; use `slurm_script` instead.
+- **The Apptainer path is unit-tested only.** It has not been run against a real Apptainer cluster.
 
 ### Data and I/O
 
