@@ -81,7 +81,7 @@ flyte run --local hello.py main
 The task's **parameters become CLI options**. Each task input maps to a `--<name>` flag (run `flyte run --local hello.py main --help` to see them, with their defaults). For example, to override `x_list`:
 
 ```bash
-flyte run --local hello.py main --x-list '[1, 2, 3]'
+flyte run --local hello.py main --x_list '[1, 2, 3]'
 ```
 
 > [!NOTE]
