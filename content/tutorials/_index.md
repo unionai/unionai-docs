@@ -53,6 +53,10 @@ Prompt engineering, prompt optimization, and context construction.
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
+{{< link-card target="data-validation" icon="shield-check" title="Data Validation" >}}
+Benchmarks that measure the cost of validating training data with pandera, and the cost of not validating it.
+{{< /link-card >}}
+
 {{< variant union >}}
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
 RL fine-tuning of language models.
