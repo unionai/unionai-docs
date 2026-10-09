@@ -271,9 +271,27 @@ Putting the call inside a [`flyte.trace`](../../user-guide/tasks/task-programmin
 
 ## Content capture
 
-agento11y sends metadata by default (model, token usage, tool names, timing) and keeps prompts and responses local unless you opt in.
+By default, agento11y exports the content of every generation: the prompts and the model's responses go to Grafana along with the metadata (model, token usage, tool names, timing). Tool execution spans carry tool arguments and results only when the framework integration opts in. This plugin does not change those defaults.
 
-That is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so content capture is switched on exactly as it would be outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the current field names and defaults; they belong to that library, not to this plugin.
+To export metadata only, set agento11y's content capture mode to `metadata_only`. Either set the variable on the task environment:
+
+```python
+env = flyte.TaskEnvironment(
+    name="agent_env",
+    image=image,
+    env_vars={"AGENTO11Y_CONTENT_CAPTURE_MODE": "metadata_only"},
+)
+```
+
+Or pass the mode through `client_options`:
+
+```python
+from agento11y import ContentCaptureMode
+
+init(service_name="my-agent", client_options={"content_capture": ContentCaptureMode.METADATA_ONLY})
+```
+
+Content capture is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so you set the mode exactly as you would outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the other modes; they belong to that library, not to this plugin.
 
 The same passthrough covers anything else `init()` does not surface: auth mode and token, protocol or a custom generation exporter.
 

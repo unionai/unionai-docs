@@ -81,7 +81,7 @@ flyte run --local hello.py main
 The task's **parameters become CLI options**. Each task input maps to a `--<name>` flag (run `flyte run --local hello.py main --help` to see them, with their defaults). For example, to override `x_list`:
 
 ```bash
-flyte run --local hello.py main --x-list '[1, 2, 3]'
+flyte run --local hello.py main --x_list '[1, 2, 3]'
 ```
 
 > [!NOTE]
@@ -165,7 +165,7 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 | **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../../tasks/task-programming/reports) |
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) |
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
-| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
+| **Secrets** | Read from environment variables you export, or from local files for file-mounted secrets. Flyte does not load `.env` files. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -190,7 +190,7 @@ The same code runs in both environments. Here's what changes:
 | **Caching** | Local SQLite | Cluster-wide distributed cache |
 | **Reports** | Local HTML files | Rendered in the Flyte UI |
 | **Serving** | `python serve.py` | `flyte deploy serve.py env` |
-| **Secrets** | `.env` / environment variables | `flyte create secret` / `flyte.Secret` |
+| **Secrets** | Environment variables you export | `flyte create secret` / `flyte.Secret` |
 | **Compute** | Your CPU/GPU | `Resources(cpu=2, memory="4Gi", gpu=1)` |
 
 The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locally, image and resource settings are ignored. On the cluster, Flyte builds containers and allocates compute from the same definition.

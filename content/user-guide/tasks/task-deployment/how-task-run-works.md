@@ -179,7 +179,7 @@ flyte run --local my_example.py my_task --name "World"
 With development data:
 
 ```bash
-flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
+flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug
 ```
 
 {{< /markdown >}}

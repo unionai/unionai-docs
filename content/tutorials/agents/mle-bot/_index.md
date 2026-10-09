@@ -18,7 +18,7 @@ This tutorial walks you through building exactly that. You'll construct an auton
 ## TL;DR
 
 - You'll build an agent that takes a natural language problem description and a CSV file, then produces a trained model and a detailed report comparing the results.
-- The LLM reasons over dataset statistics, never raw data. Trusted tools compute statistics in the cloud, and only those statistics reach the LLM.
+- The LLM reasons over a dataset profile, not the full dataset. Trusted tools compute statistics in the cloud, and the LLM receives those statistics plus the first three rows as a sample.
 - LLM-generated orchestration code runs inside Flyte's sandbox: no imports, no network access, no filesystem. It can only call pre-approved tool functions.
 - Each tool function runs as a durable Flyte task in the cloud, with retries, observability, and full traceability.
 
@@ -36,13 +36,13 @@ Think of it like giving a junior engineer access to a curated set of approved to
 
 The agent runs in five phases:
 
-1. **Profile** the dataset using a trusted tool. The tool returns statistics (shape, class balance, feature correlations, missing values). The LLM never touches the raw data.
+1. **Profile** the dataset using a trusted tool. The tool returns statistics (shape, class balance, feature correlations, missing values) and a three-row sample. The LLM never loads the dataset itself.
 2. **Design** a batch of experiments. The LLM reads the profile and proposes 2 to 3 experiments, each with an algorithm, hyperparameters, and a feature engineering strategy.
 3. **Execute** each experiment in parallel. For each one, the LLM generates Python orchestration code that chains together pre-approved tool functions. That code runs inside a restricted sandbox, and each tool call dispatches as a durable Flyte task on cloud compute.
 4. **Analyze** the results. The LLM reviews metrics across experiments, optionally requests targeted data explorations (e.g., "are failures concentrated on specific machines?"), and decides whether to iterate with new experiments.
 5. **Produce a report** summarizing the winning model, the experiment journey, and deployment recommendations.
 
-Two things make this work. First, the LLM never sees raw data. The profiling tool runs in the cloud on managed compute and returns only aggregated statistics. This keeps prompt sizes manageable and avoids leaking sensitive data into LLM API calls. Second, the LLM-generated code runs inside Flyte's sandbox where the only thing it can do is call your pre-approved tool functions. More on that shortly.
+Two things make this work. First, the LLM never sees the full dataset. The profiling tool runs in the cloud on managed compute and returns aggregated statistics plus the first three rows, which keeps prompt sizes manageable. Those three rows go to the LLM API in the prompt that designs the first experiments, so if your data is sensitive, drop the `sample` key from the profile before you run the agent. Second, the LLM-generated code runs inside Flyte's sandbox where the only thing it can do is call your pre-approved tool functions. More on that shortly.
 
 ### What to expect
 
@@ -266,8 +266,8 @@ uv run main.py run \
 The agent connects to your cluster via `~/.flyte/config.yaml`, uploads the CSV, and submits the agent task. You'll see a URL to track the execution in the Flyte UI, and logs will stream to your terminal.
 
 > [!NOTE]
-> You'll need to register your OpenAI API key as a cluster secret before running:
-> `flyte create secret openai-api-key <YOUR_KEY>`
+> You'll need to register your OpenAI API key as a cluster secret named `OPENAI_API_KEY` before running:
+> `flyte create secret OPENAI_API_KEY --value <YOUR_KEY>`
 
 If you want to see the self-healing retry loop in action, add the `--inject-failure` flag. This deliberately corrupts the first experiment so the agent has to detect the error and recover, which makes for a nice demo of the durability guarantees.
 
