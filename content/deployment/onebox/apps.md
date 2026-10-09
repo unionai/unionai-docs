@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Apps and LLM gateways
 
-Onebox serves [apps](../../user-guide/apps) the way a Union data plane does: each app runs as a Knative Service in onebox's namespace, created and updated by the app controller inside onebox. You install Knative Serving beside onebox. Onebox starts without it, and apps stay off until you turn them on.
+Onebox serves [apps](../../user-guide/apps/_index) the way a Union data plane does: each app runs as a Knative Service in onebox's namespace, created and updated by the app controller inside onebox. You install Knative Serving beside onebox. Onebox starts without it, and apps stay off until you turn them on.
 
 LLM gateways are apps too, so they come with apps.
 
