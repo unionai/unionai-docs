@@ -400,6 +400,89 @@ The locator stays resolvable as long as the producing run's outputs are
 retained. `locator` is `None` for a freshly created volume that hasn't been
 committed yet: there's no published version to point at.
 
+### Copy a volume to another bucket
+
+`clone()` copies a volume into a different bucket or prefix, for example to
+promote a version you built in a development bucket into staging or
+production. The copy is a volume in its own right: it reads and writes only its
+new bucket, so the source can expire, be deleted, or lose access without
+affecting it. Requires `flyteplugins-union` 0.15.6 or later.
+
+```python
+@env.task
+async def promote(dev: ROVolume) -> ROVolume:
+    return await dev.clone(
+        "s3://staging-bucket/volumes",
+        artifact="search-index-staging",
+        publish_artifact=True,
+    )
+```
+
+`clone()` copies the version's index and exactly the data its files
+reference, nothing else. The object store copies the data itself (S3
+`CopyObject`, a GCS rewrite, an Azure blob copy), so none of it passes through
+the task, however large the volume is. The result has the same type as the
+source (`ROVolume`, `RWVolume`, `BlockVolume`, and so on), and you can mount it
+or fork it like any other volume.
+
+#### Promote new versions
+
+The usual pattern is to keep iterating in the development bucket and promote
+each version you're happy with: version 10 today, version 15 next week. Every
+version you clone from one volume (and its forks) into the same destination
+shares data there, so promoting version 15 copies only what changed since
+version 10, and both stay available in staging.
+
+To decide what the destination already holds, `clone()` compares against an
+earlier clone in that destination, the **baseline**:
+
+- By default it uses the last clone of this volume into the destination.
+- Pass `since=` to choose the baseline yourself. A natural choice is the latest
+  version of the destination's artifact:
+
+```python
+from flyte.remote import Artifact
+
+@env.task
+async def promote(dev: ROVolume) -> ROVolume:
+    latest = await Artifact.get.aio("search-index-staging")
+    return await dev.clone(
+        "s3://staging-bucket/volumes",
+        artifact="search-index-staging",
+        since=await latest.to_python(ROVolume),
+        publish_artifact=True,
+    )
+```
+
+Comparing against a baseline keeps each promotion proportional to the size of
+one version, not to everything ever promoted into the destination. If there is
+no usable baseline (the first promotion, or the baseline's index has been
+deleted), `clone()` lists the destination's data instead, which is slower but
+gives the same result. A baseline that's older than it could be only means a
+little more is copied; it can never cause data to be left out. `since=` must be
+a clone of the same volume into the same destination; anything else is
+rejected.
+
+#### Copy behavior
+
+- **What gets copied.** `clone()` copies the last *committed* version. If the
+  source is mounted, writes since its last `commit()` are not included.
+- **Destinations.** Any prefix in the same bucket works on S3, GCS and Azure.
+  Copying between two S3 buckets needs `boto3` in the task image; other
+  cross-bucket copies raise `VolumeCloneUnsupported`. The task's credentials
+  need read access to the source bucket and write access to the destination.
+- **Retries.** A failed clone publishes nothing and leaves only unreferenced
+  data in the destination; running it again copies just what is missing.
+- **Writing in the destination.** You can fork a clone and write to it there.
+  Promoting newer versions afterwards stays safe: data written in the
+  destination never collides with data promoted later.
+- **Artifacts.** `artifact=` sets the clone's artifact identity (it inherits the
+  source's by default), and `publish_artifact=True` registers it right away, as
+  on `commit()`. See [Tracking versions as artifacts](#tracking-versions-as-artifacts).
+- **Versions.** The clone's versions are written next to its new bucket (or, in
+  a task, with that task's outputs), not to the source's `metadata_prefix`.
+  Pass `metadata_prefix=` to choose the location.
+
 ### The chunk cache
 
 Reads go through a local **chunk cache**. Where that cache lives is the single
@@ -637,6 +720,8 @@ few seconds at `commit()`.
 - Artifact publication: `Volume.new(artifact=...)`, `fork(artifact=...)`, and
   `publish_artifact=` / `artifact_version=` on `commit()` and `finalize()` —
   see [Tracking versions as artifacts](#tracking-versions-as-artifacts).
+- Copying and promotion: `clone(destination, since=..., publish_artifact=...)` —
+  see [Copy a volume to another bucket](#copy-a-volume-to-another-bucket).
 - Reporting: `vol.report = True` or `$UNION_VOLUME_REPORT` — see
   [Debugging a mount](#debugging-a-mount).
 - Caching: `allow_volumes(cache_size=...)` and
