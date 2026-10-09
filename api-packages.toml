@@ -444,10 +444,9 @@ name = "agento11y"
 
 [[plugins]]
 package = "flyteplugins-nsight"
-# Temporary: pinned to the head of flyte-sdk#1668 (unmerged), which adds __all__ to the
-# nsys and nvtx submodules so document_subpackages picks them up. Repin to its merge
-# commit once it lands.
-install = "flyteplugins-nsight@git+https://github.com/flyteorg/flyte-sdk@d91bf539f6279a8fdcca400a03b86bae17100836#subdirectory=plugins/nsight"
+# Pinned to the merge commit of flyte-sdk#1668 (825fdbe), which adds __all__ to the
+# nsys and nvtx submodules so document_subpackages picks them up.
+install = "flyteplugins-nsight@git+https://github.com/flyteorg/flyte-sdk@825fdbe5739b6b32389e5b2f202091f632e680d1#subdirectory=plugins/nsight"
 plugin = "flyteplugins.nsight"
 title = "NVIDIA Nsight Systems"
 name = "nsight"
