@@ -95,6 +95,10 @@ args:
   - --skip-auth-route=^/\.well-known/oauth-authorization-server$
   # Accept the IdP's tokens from the SDK and CLI.
   - --skip-jwt-bearer-tokens=true
+  # Answer API calls without a token with 401, not a redirect to the sign-in page:
+  # the SDK and CLI send their first call without a token and sign in on a 401.
+  - --api-route=^/(flyteidl|flyteidl2|cloudidl)\.
+  - --api-route=^/api/
   - --oidc-extra-audience=<audience>
   - --skip-provider-button=true
   # Only with OAuth apps: their client-credentials tokens carry no email.

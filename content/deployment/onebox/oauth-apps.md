@@ -53,6 +53,8 @@ Onebox registers the client at your IdP and returns its secret once. Onebox keep
 
    Onebox treats a request as an app only after the app's token verifies against the issuer's keys, and carries `audience` when you set it.
 
+   Leave `apps.dcr.scope` unset on Keycloak. Keycloak then gives each registered client the realm's default client scopes, including the audience scope from step 1. A scope set here becomes the client's only scope, and Keycloak adds it to a token only when the token request asks for it, so the SDK's app sign-ins would get tokens without the audience.
+
 4. Let oauth2-proxy accept the apps' tokens: `--oidc-extra-audience=<audience>` and `--insecure-oidc-allow-unverified-email=true`, since client-credentials tokens have no email.
 
 ### Use an app
