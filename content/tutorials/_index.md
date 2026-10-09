@@ -54,7 +54,7 @@ Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
 {{< link-card target="data-validation" icon="shield-check" title="Data Validation" >}}
-Validating training data with pandera, and measuring what it costs to validate and to not validate.
+Benchmarks that measure the cost of validating training data with pandera, and the cost of not validating it.
 {{< /link-card >}}
 
 {{< variant union >}}
