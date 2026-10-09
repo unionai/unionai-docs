@@ -2,7 +2,7 @@
 title: OtelObserver
 description: "A `flyte._observe.Observer` that records spans."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---

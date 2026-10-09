@@ -2,7 +2,7 @@
 title: TriggeredPartition
 description: "Bind one partition value of the triggering artifact version to a task input of an artifact trigger: `inputs={\"day\": flyte.TriggeredPartition(\"date\")}` supplies the new version's `date` partition (a datetime for the time partition, a string for a string partition)."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---

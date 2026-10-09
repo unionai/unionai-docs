@@ -2,7 +2,7 @@
 title: ModelStreamer
 description: "Stream the safetensors weights under a remote prefix, tensor by tensor."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---

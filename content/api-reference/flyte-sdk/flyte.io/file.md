@@ -2,7 +2,7 @@
 title: File
 description: "A generic file class representing a file with a specified format."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -236,7 +236,7 @@ async def download_to_path(f: File) -> str:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. If the file is already on the local filesystem (e.g. a mounted volume) and no other path is requested, it is not copied and its existing path is returned. |
 
 **Returns:** The absolute path to the downloaded file
 
@@ -275,7 +275,7 @@ def download_to_path_sync(f: File) -> str:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. If the file is already on the local filesystem (e.g. a mounted volume) and no other path is requested, it is not copied and its existing path is returned. |
 
 **Returns:** The absolute path to the downloaded file
 

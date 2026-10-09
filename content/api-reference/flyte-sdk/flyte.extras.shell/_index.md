@@ -2,7 +2,7 @@
 title: flyte.extras.shell
 description: "Shell task — wrap a CLI tool packaged in a container image."
 icon: box-seam
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---

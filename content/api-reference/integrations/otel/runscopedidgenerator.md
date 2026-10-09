@@ -2,7 +2,7 @@
 title: RunScopedIdGenerator
 description: "Hands back the run's derived trace id when one has been pinned."
 icon: braces
-version: 2.11.1
+version: 2.11.2
 variants: +flyte +union
 layout: py_api
 ---
