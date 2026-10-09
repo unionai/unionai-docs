@@ -219,9 +219,7 @@ dbt_build = DbtTask(
 | `callbacks` | `[]` | dbt event callbacks or import-path strings |
 | `report` | `False` | Write a dbt report tab in the Flyte UI |
 
-`DbtTask` also accepts normal Flyte task settings such as `resources`, `secrets`, `queue`, `interruptible`, and `short_name`. Caching is not supported yet; leave `cache` unset or set it to `"disable"`.
-
-If you leave `cache` unset, `DbtTask` inherits the cache setting of its `task_environment`. A `TaskEnvironment` created with `cache="auto"` (or any other enabled cache) therefore makes the `DbtTask` constructor raise `ValueError: DbtTask does not support caching yet`. To keep caching for the environment's other tasks, pass `cache="disable"` to the `DbtTask` explicitly:
+`DbtTask` also accepts normal Flyte task settings such as `resources`, `secrets`, `queue`, `interruptible`, and `short_name`. Caching is not supported yet. If you leave `cache` unset, `DbtTask` inherits the cache setting of its `task_environment`, so a `TaskEnvironment` created with `cache="auto"` (or any other enabled cache) makes the `DbtTask` constructor raise `ValueError: DbtTask does not support caching yet`. Pass `cache="disable"` to the `DbtTask` to avoid this; the environment's other tasks keep their caching:
 
 ```python
 env = flyte.TaskEnvironment(name="dbt-jaffle-shop", image=image, cache="auto")
