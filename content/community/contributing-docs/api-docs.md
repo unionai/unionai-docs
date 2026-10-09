@@ -90,29 +90,39 @@ workflow to decide, in order, if the resource must be in or out:
 
 Every package that the API generator processes, the SDK and all plugins, emits a linkmap file (`linkmap/<name>-linkmap.json`) that maps identifiers to their API reference URLs. Two scripts in the shared infra consume those linkmaps at runtime to turn mentions of those identifiers in docs prose and code samples into links to the API reference:
 
-- `static/js/inline-code-linker.js`: wraps inline `` `code` `` whose text matches a linkmap key.
-- `static/js/codeblock-linker.js`: wraps matching identifiers inside Python code blocks based on the block's `import` statements.
+- `assets/js/inline-code-linker.js`: wraps inline `` `code` `` whose text matches a linkmap key.
+- `assets/js/codeblock-linker.js`: wraps matching identifiers inside Python code blocks based on the block's `import` statements.
 
 **Registration is automatic.** At build time, `layouts/_default/baseof.html` scans `linkmap/` and exposes every `*-linkmap.json` file as `window.__LINKMAP_SOURCES`. Both linker scripts read that variable and fetch the linkmaps on page load. There is no per-package wiring step: adding an entry to `api-packages.toml` is enough; the generator produces its linkmap and the linkers pick it up.
 
 ### Short vs. fully-qualified names
 
-Whether short names get emitted is controlled by the `--short-names` generator flag:
+The generator runs with `--short-names` for the SDK (`tools/api_sdk_generate.py`) and for plugins (`Makefile.api.plugins`), so every linkmap follows the same rule. Whether a short name links depends on whether the identifier is a class or a function, not on which linkmap it is in:
 
-- **Plugins** (`Makefile.api.plugins`): `--short-names` is enabled. Each identifier is emitted under both keys, e.g. `flyteplugins.wandb.wandb_init` _and_ the bare `wandb_init`, so authors can use either form in prose.
-- **SDK** (`Makefile.api.sdk`): `--short-names` is not passed. SDK identifiers are only emitted fully qualified (e.g. `flyte.io.File`). Bare short names like `` `File` `` won't autolink against the SDK.
+- **Classes** are keyed under both the fully-qualified and the short name, so `` `flyte.Trigger` `` and `` `Trigger` `` both link.
+- **Functions** are keyed only by their fully-qualified name, in every linkmap. `` `flyte.init()` `` links; a bare `` `init()` `` does not. The generator leaves short function names out on purpose, because names like `init`, `run`, and `log` are too generic to link safely.
+
+A short class name that two linkmaps both define, such as `Agent`, resolves to whichever linkmap loads last. Use the fully-qualified name when the short one is ambiguous.
+
+To check whether an identifier autolinks, search `linkmap/*.json` for it: fully-qualified for functions, either form for classes.
 
 ### How auto-linking works
 
-- **Inline code**: `` `flyte.io.File` `` (or `` `wandb_init()` ``) is wrapped with a link to its API reference. A trailing `()` and a leading `@` (for decorators) are stripped before lookup. `ClassName.method` syntax falls back to `<class-url>#method` when the class is in the linkmap.
+- **Inline code**: `` `flyte.io.File` `` (or the short class name `` `File` ``) is wrapped with a link to its API reference. A trailing `()` and a leading `@` (for decorators) are stripped before lookup. `ClassName.method` syntax falls back to `<class-url>#method` when the class is in the linkmap. That fallback does not cover `module.function`: a module-qualified short function name such as `nsys.range` does not link.
 - **Code blocks**: identifiers inside Python code blocks are linked based on the block's `from … import …` and `import …` statements: only names that resolve through one of those imports get wrapped.
 
-### Magic-marker syntax for inline code
+### Sigils for inline code
 
-If an identifier is in some linkmap but not in a form that matches what you wrote, wrap the text in `[[…]]` inside the backticks to force a match by last segment:
+When the text you want to show is not a linkmap key, use a sigil inside the backticks instead of writing an explicit link. The whole backticked span must be the sigil:
 
 ```markdown
-The `[[Trigger]]` class …
+`[[flyteplugins.nsight.nsys.range|nsys.range]]`   links to the target, renders "nsys.range"
+`[[Trigger]]`                                     links by last-segment lookup, renders "Trigger"
+`{{Trigger}}`                                     renders "Trigger" with no link
 ```
 
-renders as `Trigger` and links to the API reference (resolving to `flyte.Trigger`) even when only the fully-qualified short form isn't in the linkmap.
+- **Target and display** (double brackets with a `|`): links to the target, either a linkmap key or a match on its last segment, and renders the display text. Use it to keep a short function name in prose.
+- **Double brackets**: forces a link by last-segment lookup and renders the text inside the brackets.
+- **Double braces**: renders the text inside the braces with no link, even if it is in a linkmap.
+
+Don't use the target-and-display form inside a Markdown table cell: its `|` splits the cell. Link the first mention in the prose above the table instead.
