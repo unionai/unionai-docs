@@ -2,7 +2,7 @@
 title: Policy
 description: "Represents a Union RBAC Policy."
 icon: braces
-version: 0.15.3
+version: 0.15.5
 variants: -flyte +union
 layout: py_api
 ---

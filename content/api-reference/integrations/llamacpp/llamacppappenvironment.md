@@ -2,7 +2,7 @@
 title: LlamaCppAppEnvironment
 description: "App environment backed by llama.cpp (llama-server) for serving GGUF models."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -44,7 +44,7 @@ class LlamaCppAppEnvironment(
     cluster_pool: str = 'default',
     cluster: str | None = None,
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.11.0', dockerfile=None, registry=None, name='llama-cpp-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(git='build-essential'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands(wget -q https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-x64.tar.xz -O /tmp/node.tar.xz='mkdir -p /opt/node && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1 && rm /tmp/node.tar.xz'), Env(env_vars=(('PATH', '/opt/llama.cpp/build/bin:/usr/local/cuda-12.8/bin:$PATH'), ('LLAMA_CACHE', '/tmp/llama.cpp/cache'), ('CUDA_HOME', '/usr/local/cuda-12.8'))), PipPackages(pre=True, packages=('flyteplugins-llamacpp',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.11.1', dockerfile=None, registry=None, name='llama-cpp-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(AptPackages(git='build-essential'), Commands(wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb='dpkg -i cuda-keyring_1.1-1_all.deb'), Commands(wget -q https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-x64.tar.xz -O /tmp/node.tar.xz='mkdir -p /opt/node && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1 && rm /tmp/node.tar.xz'), Env(env_vars=(('PATH', '/opt/llama.cpp/build/bin:/usr/local/cuda-12.8/bin:$PATH'), ('LLAMA_CACHE', '/tmp/llama.cpp/cache'), ('CUDA_HOME', '/usr/local/cuda-12.8'))), PipPackages(pre=True, packages=('flyteplugins-llamacpp',))), _tag=None, _image_registry_secret=None),
     type: str = 'llama.cpp',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',

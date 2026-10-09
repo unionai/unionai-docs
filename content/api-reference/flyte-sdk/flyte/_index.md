@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

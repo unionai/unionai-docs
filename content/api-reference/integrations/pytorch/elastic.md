@@ -2,7 +2,7 @@
 title: Elastic
 description: "Elastic defines the configuration for running a PyTorch elastic job using torch.distributed."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

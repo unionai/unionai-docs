@@ -2,7 +2,7 @@
 title: AgentResult
 description: "Outcome of a single agent invocation."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

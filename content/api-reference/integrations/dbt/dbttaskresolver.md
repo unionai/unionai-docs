@@ -2,7 +2,7 @@
 title: DbtTaskResolver
 description: "Reconstructs a DbtTask in the remote task container."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

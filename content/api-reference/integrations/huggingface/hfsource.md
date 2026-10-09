@@ -2,7 +2,7 @@
 title: HFSource
 description: "HuggingFace dataset source for task parameter defaults."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---
