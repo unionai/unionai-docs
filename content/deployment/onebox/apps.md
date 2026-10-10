@@ -31,6 +31,33 @@ kubectl patch configmap/config-network -n knative-serving --type merge \
   -p '{"data":{"ingress-class":"kourier.ingress.networking.knative.dev"}}'
 ```
 
+Then turn on the Knative features apps use. Union's app controller sets affinity, tolerations, environment values from pod fields and more on each app, and Knative rejects those unless they're enabled:
+
+```shell
+kubectl patch configmap/config-features -n knative-serving --type merge -p '{"data":{
+  "kubernetes.podspec-affinity":"enabled",
+  "kubernetes.podspec-dnsconfig":"enabled",
+  "kubernetes.podspec-dnspolicy":"enabled",
+  "kubernetes.podspec-fieldref":"enabled",
+  "kubernetes.podspec-hostaliases":"enabled",
+  "kubernetes.podspec-init-containers":"enabled",
+  "kubernetes.podspec-nodeselector":"enabled",
+  "kubernetes.podspec-persistent-volume-claim":"enabled",
+  "kubernetes.podspec-persistent-volume-write":"enabled",
+  "kubernetes.podspec-priorityclassname":"enabled",
+  "kubernetes.podspec-runtimeclassname":"enabled",
+  "kubernetes.podspec-schedulername":"enabled",
+  "kubernetes.podspec-securitycontext":"enabled",
+  "kubernetes.containerspec-addcapabilities":"enabled",
+  "kubernetes.podspec-shareprocessnamespace":"enabled",
+  "kubernetes.podspec-tolerations":"enabled",
+  "kubernetes.podspec-topologyspreadconstraints":"enabled",
+  "kubernetes.podspec-volumes-emptydir":"enabled",
+  "kubernetes.podspec-volumes-hostpath":"enabled"}}'
+```
+
+If your apps use images from a registry Knative can't reach over HTTPS, add it to `registries-skipping-tag-resolving` in the `config-deployment` ConfigMap.
+
 Onebox reaches apps at their cluster-local addresses, so Kourier needs no external load balancer or Knative domain setup. For an airgapped install, mirror Knative's images along with onebox's.
 
 ## 2. Turn on apps
