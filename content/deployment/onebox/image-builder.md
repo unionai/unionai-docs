@@ -33,7 +33,7 @@ With the image builder, the SDK builds a task's container image inside your clus
 
 ## Example: k3d
 
-On a single-node k3d cluster, BuildKit and the kubelet both run on the node, so a registry exposed on a NodePort is `localhost:30500` to both, and containerd and BuildKit accept plain HTTP for `localhost`.
+On a single-node k3d cluster, BuildKit and the kubelet both run on the node, so a registry exposed on a NodePort is `localhost:30000` to both, and containerd and BuildKit accept plain HTTP for `localhost`.
 
 > [!WARNING] Local clusters only
 > BuildKit here is privileged, on the node's network, and listening without TLS, and the registry accepts anonymous pushes. Anything that can reach them can run builds as root on the node or overwrite images. On a shared cluster, run BuildKit with mutual TLS (`--tlscacert`, `--tlscert`, `--tlskey`) or rootless, restrict access with a NetworkPolicy, and use a registry with TLS.
@@ -60,7 +60,7 @@ metadata: {name: registry}
 spec:
   type: NodePort
   selector: {app: registry}
-  ports: [{port: 5000, nodePort: 30500}]
+  ports: [{port: 5000, nodePort: 30000}]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -96,7 +96,7 @@ Turn the image builder on in onebox's values:
 imageBuilder:
   enabled: true
   buildkitURI: tcp://buildkit.union.svc:1234
-  repository: localhost:30500/onebox                       # where nodes pull from
+  repository: localhost:30000/onebox                       # where nodes pull from
   lookupURL: http://registry.union.svc:5000/onebox         # where onebox checks
 ```
 
@@ -113,7 +113,7 @@ flyte --image-builder remote run my_task.py main
 or set `image.builder: remote` in `.flyte/config.yaml`. The first run builds the image, which takes about half a minute for a small Python image, and later runs skip the build:
 
 ```text
-i Image localhost:30500/onebox/my-image:3892709e... already exists, skipping build
+i Image localhost:30000/onebox/my-image:3892709e... already exists, skipping build
 ```
 
 ## Gotchas
