@@ -146,6 +146,13 @@ If training fails, the driver task catches the error and returns the last recove
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/tasks.py" fragment="recovery-handler" lang="python" >}}
 
+> [!WARNING] Call the training task with `.aio()`
+> The code above calls the sync task `train_qwen_adapter_multinode` directly from the async driver.
+> From `flyte` 2.6.8 onward, that call raises `flyte.errors.SyncTaskCallInAsyncContextError`, a
+> subclass of `RuntimeUserError`, so the `except` block catches it and training never starts. Until
+> the example is updated, change the call to
+> `training_artifacts = await train_qwen_adapter_multinode.aio(...)` with the same arguments.
+
 A failed run still produces useful output: the best checkpoint reached before the failure, along with a partial training report. To resume from that point, pass the recovery artifact as `resume_training_artifacts` on the next run. The training task downloads it, finds the most recent `.ckpt` file, and passes it to `trainer.fit()` as `ckpt_path`. Training picks up at the last saved epoch with optimizer state and metrics history intact.
 
 The recovery URI is constructed from the configurable base path and the run name:
