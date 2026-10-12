@@ -88,8 +88,8 @@ Get a You.com API key from the [You.com platform](https://you.com/platform) (see
 Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
 ```
-flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
-flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret youdotcom-api-key --value <YOUR_YOU_API_KEY>
+flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 ```
 
 See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.

@@ -17,13 +17,13 @@ Before defining and deploying the app, you need to create the `API_KEY` secret i
 Create the secret using the Flyte CLI:
 
 ```bash
-flyte create secret API_KEY <your-api-key-value>
+flyte create secret API_KEY --value <your-api-key-value>
 ```
 
 For example:
 
 ```bash
-flyte create secret API_KEY my-secret-api-key-12345
+flyte create secret API_KEY --value my-secret-api-key-12345
 ```
 
 > [!NOTE]
@@ -106,13 +106,13 @@ Both vLLM and SGLang apps support API key authentication through their native `-
 Create a secret to store your API key:
 
 ```bash
-flyte create secret AUTH_SECRET <your-api-key-value>
+flyte create secret AUTH_SECRET --value <your-api-key-value>
 ```
 
 For example:
 
 ```bash
-flyte create secret AUTH_SECRET my-llm-api-key-12345
+flyte create secret AUTH_SECRET --value my-llm-api-key-12345
 ```
 
 ### Deploy vLLM app with authentication
@@ -219,7 +219,7 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 3. **Scope secrets appropriately**: Use project/domain scoping when creating secrets if you want to limit access:
 
    ```bash
-   flyte create secret --project my-project --domain development API_KEY my-secret-value
+   flyte create secret --project my-project --domain development API_KEY --value my-secret-value
    ```
 
 4. **Never commit secrets**: Always use Flyte secrets for API keys, never hardcode them in your code
