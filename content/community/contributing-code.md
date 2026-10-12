@@ -94,6 +94,8 @@ make dist    # Build a wheel so the default Image() uses your local changes
 
 `uv sync` installs the package in editable mode, so your source edits take effect
 immediately. `make dist` builds the wheel into `dist/` and does not need Docker.
+You need the Docker daemon when you run with the default `Image()`, which builds
+the local wheel from `dist/` into the image.
 
 ### Set up prek pre-commit hooks
 
