@@ -124,9 +124,9 @@ The two caps are independent. A task that asks for `gpu=1` counts against
 against `--max-gpus`. In the example, the queue can have 8 untyped GPUs and 10
 H100s scheduled at the same time.
 
-Only NVIDIA GPUs can be requested without a type, so `--max-gpus` applies to
-NVIDIA GPUs. Tasks that use TPUs or other accelerators always name the device,
-and you cap those with `--max-accelerators`.
+`--max-gpus` applies to NVIDIA GPUs only. Cap TPUs and other accelerators per
+device with `--max-accelerators`. A TPU or other non-NVIDIA accelerator
+requested without a device is not limited by any queue cap.
 
 Two cases change which cap an untyped request counts against:
 
@@ -134,9 +134,9 @@ Two cases change which cap an untyped request counts against:
   device that has its own cap, the request counts against that cap as well. On a
   cluster with T4, L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task
   that lands on an L4 counts against both `--max-gpus` and the L4 cap.
-- If your organization has a default GPU type in its settings, an untyped
-  request is treated as a request for that type. It counts against that type's
-  cap in `--max-accelerators`.
+- If your organization or project sets a default GPU type in its settings, an
+  untyped request is treated as a request for that type. It counts against that
+  type's cap in `--max-accelerators`.
 
 ## Set caps on a queue
 
