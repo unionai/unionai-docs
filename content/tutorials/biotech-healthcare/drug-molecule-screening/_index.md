@@ -27,7 +27,7 @@ Flyte provides:
 > Create an Anthropic API key secret (the key name must match the `TaskEnvironment`):
 >
 > ```
-> flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+> flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 > ```
 >
 > See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.

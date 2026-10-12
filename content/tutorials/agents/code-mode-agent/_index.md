@@ -132,7 +132,7 @@ Deploying is one command. The entry point uses the remote image builder so no lo
 Register your Anthropic key as a secret and deploy:
 
 ```shell
-flyte create secret anthropic_api_key <your-anthropic-key>
+flyte create secret anthropic_api_key --value <your-anthropic-key>
 python app.py
 ```
 
