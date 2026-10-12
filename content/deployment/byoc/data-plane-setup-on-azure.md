@@ -160,11 +160,9 @@ Once your VPC is set up, provide the following to Union.ai:
 
 ## Union.ai maintenance windows
 
-Union.ai configures a four hour maintenance window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
+Union.ai configures a four-hour maintenance window for Kubernetes version upgrades and node OS image upgrades. It runs monthly on the first Sunday, starting at 10:00 UTC (03:00 at UTC-07:00), and the time is the same in every Azure region.
 
-> [!NOTE] Setting up Tasks for Fault Tolerance
-> During this time window Flyte execution pods could be potentially interrupted.
-> We recommend leveraging
-> [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and
-> [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html)
-> to efficiently minimize failed executions.
+> [!NOTE] Setting up tasks for fault tolerance
+> Task pods running during this window can be interrupted. Use
+> [retries](../../user-guide/tasks/task-configuration/retries-and-timeouts) so an interrupted task runs again, and
+> [intra-task checkpoints](../../user-guide/tasks/task-programming/intra-task-checkpoints) so it doesn't start over.
