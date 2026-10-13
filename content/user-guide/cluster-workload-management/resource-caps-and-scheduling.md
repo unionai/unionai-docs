@@ -248,6 +248,11 @@ memory, and ephemeral storage. The console does not edit GPU caps yet: set
 `--max-accelerators` from the CLI or Python. Editing a queue
 in the console keeps its GPU caps as they are.
 
+The form's **Scheduling policy** starts at **Default**, which creates the queue
+with no policy (`unspecified`): it orders actions by project, round-robin,
+not first come, first served. Choose **Strict FIFO** or **Greedy capacity** to
+get the behavior described below.
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
@@ -361,7 +366,7 @@ policies consider actions in the order they were queued.
 |---|---|---|
 | Setting | `greedy_capacity` | `strict_fifo` |
 | When the next action does not fit | Skips it and schedules the actions behind it that fit | Stops and waits for it |
-| Order | First come, first served among the actions that fit | Exactly first come, first served |
+| Order | First come, first served among the actions that fit | First come, first served (on very deep queues, ordering is best effort) |
 | Idle capacity while work is waiting | No | Yes, while the head of the line is blocked |
 | Can a large action be starved? | Yes, while smaller actions keep fitting | No |
 | Reusable containers (warm pools) | Actions for a running warm pool keep being scheduled | Actions for a running warm pool wait behind the blocked head |
@@ -404,9 +409,10 @@ so they fail after a set wait.
 
 Set with `--scheduling strict_fifo`.
 
-The queue schedules actions strictly in arrival order. When the action at the
-head of the line does not fit, the queue schedules nothing behind it until it
-does. As running work finishes, the freed capacity accumulates for the head of
+The queue schedules actions in arrival order. When the action at the head of
+the line does not fit, the queue schedules nothing behind it until it does. On
+a very deep queue, the order is best effort: the scheduler sorts each batch of
+waiting actions it reads, not the whole queue. As running work finishes, the freed capacity accumulates for the head of
 the line, and later, smaller actions cannot take it.
 
 Use it for gang-style jobs. A distributed training job that needs 32 GPUs at
@@ -434,8 +440,8 @@ add nothing to the cap.
 
 On a strict FIFO queue with little free capacity, one large job at the head of
 the line stalls every reusable environment on the queue. If an environment has
-no running actions for longer than its `idle_ttl`, the whole pool shuts down,
-and the next action starts cold.
+no running actions for longer than its `idle_ttl`, the whole pool can shut
+down, and the next action then starts cold.
 
 Put work that runs in reusable containers on a greedy capacity queue. If the
 same team also runs gang-style jobs, give those jobs their own strict FIFO
@@ -494,6 +500,8 @@ queue routes to could ever run it:
 - It asks for an accelerator that none of those clusters has.
 - One of its containers is larger than any node those clusters can launch.
 - Its total request is more than those clusters have at full scale.
+- The task is interruptible and none of those clusters has a spot node pool it
+  fits. Mark the task non-interruptible, or add a spot node pool.
 
 An infeasible action fails with the error code `INFEASIBLE` and is not retried.
 The error message names the request and what the queue or the clusters offer.

@@ -181,8 +181,9 @@ and the cap. Lower the task's `resources`, or route it to a queue with a higher
 cap.
 
 With resource-aware scheduling, the check also covers the clusters behind a
-queue: a task that asks for an accelerator none of the queue's clusters has, or
-for a container larger than any of their nodes, fails the same way. See
+queue: a task that asks for an accelerator none of the queue's clusters has,
+for a container larger than any of their nodes, or that is interruptible when
+none of them has a spot node pool it fits, fails the same way. See
 [Infeasible requests fail fast](../../cluster-workload-management/resource-caps-and-scheduling#infeasible-requests-fail-fast).
 
 ## Queues and timeouts
