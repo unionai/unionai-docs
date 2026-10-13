@@ -131,6 +131,38 @@ moving a queue that still holds work would cross an isolation boundary. See
 > and `domain` parameters, but project/domain-scoped queue creation is not
 > implemented yet and is rejected. Support is coming soon.
 
+## Queue operations
+
+Every queue operation is available from the CLI and from Python. The sections
+below cover each one.
+
+| Operation | CLI | Python |
+|---|---|---|
+| [Create a queue](#create-a-queue) | `flyte create queue NAME` | `Queue.create` |
+| [Get one queue](#inspect-queues) | `flyte get queue NAME` | `Queue.get` |
+| [List queues](#inspect-queues) | `flyte get queue` (`--state`, `--deleted`) | `Queue.listall` |
+| [Change settings](#change-a-queues-settings) | `flyte update queue NAME --edit`, or flags such as `--max-gpus` | `Queue.update` |
+| [Drain or reactivate](#drain-and-reactivate-a-queue) | `flyte update queue NAME --drain` / `--activate` | `Queue.drain` / `Queue.activate` |
+| [Delete](#delete-a-queue) | `flyte delete queue NAME` | `Queue.delete` |
+| [Restore a deleted queue](#delete-a-queue) | `flyte undelete queue NAME` | `Queue.undelete` |
+| [Watch usage](#inspect-queues) | `flyte get queue NAME --watch` | `Queue.details`, `Queue.watch` |
+| [Watch every queue](./resource-caps-and-scheduling#see-how-much-of-a-cap-is-in-use) | `flyte get queue --watch` (`--pool`) | `Queue.watch_pool` |
+
+The resource cap flags of `flyte create queue` and `flyte update queue` are:
+
+| Flag | Python | What it does |
+|---|---|---|
+| `--max-resources NAME=QUANTITY` | `max_resources={...}` | Caps `cpu`, `memory`, or `ephemeral_storage`. Repeat for each resource. |
+| `--clear-max-resources` | `max_resources={}` | Removes the resource caps (update only). |
+| `--max-gpus N` | `max_gpus=N` | Caps GPUs requested without a device type. |
+| `--clear-max-gpus` | `clear_max_gpus=True` | Removes the `--max-gpus` cap (update only). |
+| `--max-accelerators DEVICE=N` | `max_accelerators={...}` | Caps one device type, such as `H100=10`, `V6E=10`, or `A100/1g.5gb=4`. Repeat for each type. |
+| `--clear-max-accelerators` | `max_accelerators={}` | Removes the per-device caps (update only). |
+| `--scheduling` | `scheduling=` | `strict_fifo` or `greedy_capacity`. |
+
+See [Resource caps and scheduling](./resource-caps-and-scheduling) for how
+these caps work.
+
 ## Create a queue
 
 `run_concurrency` and `action_concurrency` are required; everything else has a

@@ -124,6 +124,36 @@ The two caps are independent. A task that asks for `gpu=1` counts against
 against `--max-gpus`. In the example, the queue can have 8 untyped GPUs and 10
 H100s scheduled at the same time.
 
+One queue can combine `--max-gpus` with caps on several device types,
+including TPUs and partition sizes:
+
+```bash
+flyte create queue mixed-gpu \
+  --run-concurrency 50 \
+  --action-concurrency 500 \
+  --max-gpus 8 \
+  --max-accelerators H100=10 \
+  --max-accelerators V6E=10 \
+  --max-accelerators A100/1g.5gb=4 \
+  --scheduling greedy_capacity
+```
+
+`flyte get queue mixed-gpu` then lists `max_gpus` as `8` and the device caps
+under `max_accelerators`. In Python, read them from `Queue.max_gpus` and
+`Queue.max_accelerators`:
+
+```python
+from flyteplugins.union.remote import Queue
+
+queue = Queue.get("mixed-gpu")
+print(queue.max_gpus)          # 8
+print(queue.max_accelerators)  # {'nvidia_gpu/nvidia-h100': 10, 'google_tpu/google-tpu-v6e': 10,
+                               #  'nvidia_gpu/nvidia-a100/1g.5gb': 4}
+```
+
+`--max-accelerators` always names a device. A class alone, such as
+`--max-accelerators nvidia_gpu=8`, is refused; use `--max-gpus` for that.
+
 `--max-gpus` applies to NVIDIA GPUs only. Cap TPUs and other accelerators per
 device with `--max-accelerators`. A TPU or other non-NVIDIA accelerator
 requested without a device is not limited by any queue cap.
