@@ -18,12 +18,9 @@ There are separate mechanisms for:
 Currently, the docs site supports two variants:
 
 - **Flyte OSS**: The open-source Flyte project.
-- **Union**: The Union.ai commercial product, available as BYOC (Bring Your Own Cloud) or Self-managed.
+- **Union**: The Union.ai commercial product.
 
 Each variant is referenced in the page logic using its respective code name: `flyte` or `union`.
-
-> [!NOTE]
-> The previous code names `byoc`, `selfmanaged`, and `serverless` are no longer valid. They all map to the current `union` variant. Union.ai now ships as a single docs variant covering BYOC and Self-managed deployments. The `flyte` variant covers open-source Flyte. If you encounter any of the retired names in older content, frontmatter, or shortcodes, replace `byoc`, `selfmanaged`, or `serverless` with `union`.
 
 The available set of variants are defined in the `config.<code_name>.toml` files in the `unionai-docs-infra/` directory.
 
@@ -112,7 +109,7 @@ For example, if you want to render the product name keyword, you would use:
 {{</* key product_name */>}}
 ```
 
-The available key names are defined in the [params.key] section of the `hugo.site.toml` configuration file in the root of the repository.
+The available key names are defined in the [params.key] section of the `unionai-docs-infra/hugo.site.toml` configuration file.
 
 For example the `product_name` used above is defined in that file as
 
@@ -195,25 +192,26 @@ tagged to be either included or excluded when the variant is built.
 
 ### Location
 
-When deploying, the variant takes a folder in the root
+When deploying, the variant takes a folder under each docs version
 
-`https://<your-site-domain>/<variant>/<content>`
+`https://<your-site-domain>/docs/<version>/<variant>/<content>`
 
-For example, if we have a variant `acme`, then when built the content goes to:
+For example, if we have a variant `acme`, then the build from `main` puts the content at `https://<your-site-domain>/docs/latest/acme/<content>`, and after a version cut it is also at:
 
-`https://<your-site-domain>/acme/<content>`
+`https://<your-site-domain>/docs/v2/acme/<content>`
 
 ### Creating a new variant
 
 To create a new variant a few steps are required:
 
-| File                                      | Changes                                                        |
-| ----------------------------------------- | -------------------------------------------------------------- |
-| `hugo.site.toml`                          | Add to `params.variant_weights` and all `params.key`           |
-| `unionai-docs-infra/hugo.toml`            | Add to `params.search`                                         |
-| `unionai-docs-infra/Makefile`             | Add a new `make variant` to `dist` target                      |
-| `<content>.md`                            | Add either `+<variant>` or `-<variant>` to all content pages   |
-| `unionai-docs-infra/config.<variant>.toml`| Create a new file and configure `baseURL` and `params.variant` |
+| File                                                            | Changes                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------------------ |
+| `unionai-docs-infra/hugo.site.toml`                             | Add to `params.variant_weights` and all `params.key`         |
+| `makefile.inc`                                                  | Add to `VARIANTS`                                            |
+| `unionai-docs-infra/scripts/build_versions.sh`                  | Add to the default `VARIANTS` list                           |
+| `unionai-docs-infra/tools/link_checker/check_internal_links.py` | Add to `VARIANTS`                                            |
+| `<content>.md`                                                  | Add either `+<variant>` or `-<variant>` to all content pages |
+| `unionai-docs-infra/config.<variant>.toml`                      | Create a new file and configure `title` and `params.variant` |
 
 ### Testing the new variant
 
