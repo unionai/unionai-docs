@@ -19,7 +19,7 @@ Redirects are recorded in `unionai-docs-infra/redirects.csv`, one per line, in C
 |---|---|
 | `source_url` | the incoming URL, **without** `https://` |
 | `target_url` | the full URL to send the user to, **including** `https://` |
-| `status` | `301` for a permanent move, which is what new rows normally use |
+| `status` | `301` or `302`. Use `301` only when the target is certain, `302` otherwise. Rows written by the automatic detector (`make update-redirects`, which `make dist` runs) use `302` |
 | `include_subdomains` | `TRUE` / `FALSE` |
 | `subpath_matching` | `TRUE` matches everything beneath the source path |
 | `preserve_query_string` | `TRUE` keeps `?a=b` on the target |
@@ -31,11 +31,14 @@ A real row:
 docs.union.ai/administration,https://www.union.ai/docs/v2/union/user-guide/user-management,301,TRUE,TRUE,TRUE,TRUE
 ```
 
-**Deployment is automatic.** Merging your change is enough. The `deploy-redirects.yml` workflow
-pushes the whole list to Cloudflare on any push to `main` or `v1` that touches the infra pointer
-or `versions.toml`. Nobody has to apply it by hand.
+**Merging a `redirects.csv` change deploys nothing by itself.** The CSV lives in
+`unionai-docs-infra`. The `deploy-redirects.yml` workflow in `unionai-docs` runs on a push to
+`main` or `v1` that touches the `unionai-docs-infra` pointer or `versions.toml`, and pushes the
+whole list to Cloudflare only if `redirects.csv` differs between the old and new pointer commits
+or `versions.toml` changed. To ship a CSV change, bump the `unionai-docs-infra` pointer in
+`unionai-docs` after the infra PR merges. Running the workflow manually also deploys.
 
-To add a redirect, open a pull request changing `redirects.csv`. Two rules save review time:
+To add a redirect, open a pull request in `unionai-docs-infra` changing `redirects.csv`. Two rules save review time:
 
 - **Point at the page that actually serves**, not at a URL you know will redirect again. Chains
   are trimmed periodically and a new one undoes that work.
@@ -57,9 +60,9 @@ For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` s
 
 | | |
 |---|---|
-| Request URL | `https://docs.union.ai/administration` |
-| Target URL | `{{< docs_home union v1 >}}/user-guide/administration` |
-| Redirect Entry | `docs.union.ai/administration,{{< docs_home union v1 >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
+| Request URL | `https://docs.union.ai/building-workflows/launch-plans/triggers` |
+| Target URL | `https://www.union.ai/docs/v2/union/user-guide/triggers` |
+| Redirect Entry | `docs.union.ai/building-workflows/launch-plans/triggers,https://www.union.ai/docs/v2/union/user-guide/triggers,301,TRUE,TRUE,TRUE,TRUE` |
 
 ## `docs.flyte.org` redirects
 
@@ -67,9 +70,9 @@ For directs from the old `docs.flyte.org` to the new `www.union.ai/docs`, we rep
 
 | | |
 |---|---|
-| Request URL | `https://docs.flyte.org/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
-| Converted request URL | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
-| Target URL | `{{< docs_home flyte v1 >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/` |
-| Redirect Entry | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html,{{< docs_home flyte v1 >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/,302,TRUE,FALSE,TRUE,TRUE` |
+| Request URL | `https://docs.flyte.org/en/latest/user_guide/development_lifecycle/caching.html` |
+| Converted request URL | `www.union.ai/_r_/flyte/en/latest/user_guide/development_lifecycle/caching` |
+| Target URL | `https://www.union.ai/docs/v2/flyte/user-guide/tasks/task-configuration/caching/` |
+| Redirect Entry | `www.union.ai/_r_/flyte/en/latest/user_guide/development_lifecycle/caching,https://www.union.ai/docs/v2/flyte/user-guide/tasks/task-configuration/caching/,301,FALSE,TRUE,TRUE,FALSE` |
 
 The special prefix is used so that we can include both `docs.union.ai` and `docs.flyte.org` redirects in the same file and apply them on the same domain (`www.union.ai`).
