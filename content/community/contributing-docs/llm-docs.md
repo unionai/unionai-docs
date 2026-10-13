@@ -41,7 +41,7 @@ dist/docs/v2/{variant}/**/<page>.md         # Per-page Markdown, section landing
 ## How the page twins are generated
 
 1. Hugo builds the site into `dist/` and also outputs a Markdown format into `tmp-md/`.
-2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as the page's `.md` twin beside its rendered `index.html`.
+2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as the page's `.md` twin beside the page's directory rather than inside it (`a/b/foo/index.html` → `a/b/foo.md`).
 3. `fix_internal_links_post_processing()` converts all internal links in the twins to point to other twins using relative paths.
 4. `build_llm_docs.py` then enhances subpage listings with H2/H3 headings, converts all relative links to absolute URLs, and creates the `llms.txt` and `llms-full.txt` index files.
 
