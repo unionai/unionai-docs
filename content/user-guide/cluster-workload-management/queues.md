@@ -268,7 +268,7 @@ levels the CLI and Python call `min`, `medium`, and `max`.
 | `priority` | `--priority` | `medium` | `min`, `medium`, or `max`. Among queues contending for the same pool's capacity, higher-priority work is scheduled first. Priority controls ordering, not preemption. |
 | `max_resources` | `--max-resources` | No cap | Caps the CPU, memory, and ephemeral storage requested by the queue's in-flight actions, across every cluster the queue routes to. |
 | `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs and other accelerators per device type, and with `nvidia_gpu` the GPUs requested without a device type. Repeat the flag for each entry. |
-| `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. |
+| `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. The `default` queue and co-named queues start with no policy (`unspecified`) and order actions by project, round-robin. |
 
 Under the hood the priority levels map to enum values 1, 50, and 100; use `max`
 for a priority higher than 50.

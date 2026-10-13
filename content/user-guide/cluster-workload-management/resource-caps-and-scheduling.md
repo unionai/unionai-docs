@@ -8,9 +8,11 @@ variants: -flyte +union
 
 # Resource caps and scheduling
 
-> [!NOTE] Requires the `flyteplugins-union` plugin
+> [!NOTE] Requires `flyteplugins-union` 0.16.0 or later
 > The queue CLI commands and Python objects on this page are provided by the
-> `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
+> `flyteplugins-union` package. Install it with
+> `pip install "flyteplugins-union>=0.16.0"`. Earlier versions send a
+> `nvidia_gpu` cap the server rejects.
 
 Two teams share one pool of GPU clusters. The research team launches a sweep
 that asks for every H100 in the pool, and the inference team's nightly
@@ -161,8 +163,9 @@ Two cases change which cap an untyped request counts against:
 - With [resource-aware scheduling](#resource-aware-scheduling), the scheduler
   chooses a device for an untyped request. If it chooses a device that has its
   own cap, the request counts against that cap as well. On a cluster with T4,
-  L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that lands on an
-  L4 counts against both the `nvidia_gpu` cap and the L4 cap. Without
+  L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that the
+  scheduler assigns to an L4 counts against both the `nvidia_gpu` cap and the
+  L4 cap. Without
   resource-aware scheduling, an untyped request counts against the `nvidia_gpu`
   cap only.
 - If a default GPU type is set in Settings, an untyped request is treated as a
@@ -348,6 +351,11 @@ policies consider actions in the order they were queued.
 >
 > A new queue is created as `strict_fifo` unless you pass
 > `--scheduling greedy_capacity`, or `scheduling="greedy_capacity"` in Python.
+>
+> The `default` queue and each cluster's co-named queue start with no policy,
+> and `flyte get queue` shows `unspecified`. Such a queue orders its actions by
+> project, round-robin, and skips an action that does not fit. To give it a
+> policy, run `flyte update queue default --scheduling greedy_capacity`.
 
 | | Greedy capacity (recommended) | Strict FIFO |
 |---|---|---|
