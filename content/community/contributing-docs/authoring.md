@@ -40,8 +40,8 @@ variants: -flyte +union
 
 In this example the page will be:
 
-* Included in Union (which covers both BYOC and Self-managed).
-* Excluded from Flyte.
+* Included in the Union variant.
+* Excluded from the Flyte variant.
 
 > [!NOTE]
 > All variants must be explicitly listed in the `variants` field.
