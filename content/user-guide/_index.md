@@ -162,4 +162,8 @@ An advanced guide for building an LLM reporting agent on Flyte.
 Port a Flyte 1 codebase to Flyte 2, or map Airflow concepts to their Flyte 2 equivalents.
 {{< /link-card >}}
 
+{{< link-card target="telemetry" icon="eye-slash" title="Telemetry" >}}
+What telemetry is sent and how to turn it off with DO_NOT_TRACK.
+{{< /link-card >}}
+
 {{< /grid >}}
