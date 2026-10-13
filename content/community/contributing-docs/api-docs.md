@@ -20,7 +20,7 @@ All the buildable APIs are defined in Makefiles of the form:
 `unionai-docs-infra/Makefile.api.<api_name>`
 
 To build it, run `make -f unionai-docs-infra/Makefile.api.<your_api>` and observe the setup
-requirements in the `README.md` file above. Alternatively, `make update-api-docs` will regenerate all API docs.
+requirements in the `README.md` file above. Alternatively, `make update-api-docs` regenerates only the API docs that are missing or behind the latest release on PyPI, and `make regen-api-docs-all` regenerates all API docs regardless of version.
 
 ## Package resource resolution
 
