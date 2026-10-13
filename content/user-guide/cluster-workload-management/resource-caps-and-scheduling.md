@@ -68,19 +68,19 @@ team is not using.
 An action is scheduled only when it fits under the queue's run concurrency,
 action concurrency, depth, and resource caps together.
 
-There are three cap settings:
+There are two cap settings:
 
 | Python | CLI | Limits | Values |
 |---|---|---|---|
 | `max_resources` | `--max-resources` | `cpu`, `memory`, `ephemeral_storage` | Kubernetes quantities such as `64`, `500m`, `512Gi` |
-| `max_gpus` | `--max-gpus` | GPUs requested without a device type | A whole number of GPUs |
-| `max_accelerators` | `--max-accelerators` | GPUs and other accelerators, per device type | A whole number of devices for each type |
+| `max_accelerators` | `--max-accelerators` | GPUs and other accelerators, per device type, and NVIDIA GPUs requested without a device type | A whole number of devices for each entry |
 
 ## Cap GPUs and accelerators
 
 A task asks for a GPU in one of two ways. It names a device, such as `H100:1`,
-or it asks for a GPU of any type with `gpu=1`. A queue has a separate setting
-for each.
+or it asks for a GPU of any type with `gpu=1`. `--max-accelerators` caps both:
+name a device type to cap that type, or use `nvidia_gpu` to cap the GPUs
+requested without a type.
 
 ### GPUs of a named type
 
@@ -108,55 +108,53 @@ partition size of a device, add the partition: `A100/1g.5gb=4`.
 
 ### GPUs without a type
 
-`--max-gpus` caps the GPUs requested without a device type:
+`--max-accelerators nvidia_gpu=N` caps the GPUs requested without a device type.
+`gpu` works as a shorter name for `nvidia_gpu`.
 
 ```bash
-# At most 8 GPUs of any type, and separately at most 10 H100s
+# At most 8 GPUs requested without a type, and separately at most 10 H100s
 flyte create queue mixed-gpu \
   --run-concurrency 50 \
   --action-concurrency 500 \
-  --max-gpus 8 \
+  --max-accelerators nvidia_gpu=8 \
   --max-accelerators H100=10
 ```
 
-The two caps are independent. A task that asks for `gpu=1` counts against
-`--max-gpus`. A task that asks for `H100:1` counts against the H100 cap and not
-against `--max-gpus`. In the example, the queue can have 8 untyped GPUs and 10
-H100s scheduled at the same time.
+The two caps are independent. A task that asks for `gpu=1` counts against the
+`nvidia_gpu` cap. A task that asks for `H100:1` counts against the H100 cap and
+not against the `nvidia_gpu` cap. In the example, the queue can have 8 untyped
+GPUs and 10 H100s scheduled at the same time.
 
-One queue can combine `--max-gpus` with caps on several device types,
+One queue can combine the `nvidia_gpu` cap with caps on several device types,
 including TPUs and partition sizes:
 
 ```bash
 flyte create queue mixed-gpu \
   --run-concurrency 50 \
   --action-concurrency 500 \
-  --max-gpus 8 \
+  --max-accelerators nvidia_gpu=8 \
   --max-accelerators H100=10 \
   --max-accelerators V6E=10 \
   --max-accelerators A100/1g.5gb=4 \
   --scheduling greedy_capacity
 ```
 
-`flyte get queue mixed-gpu` then lists `max_gpus` as `8` and the device caps
-under `max_accelerators`. In Python, read them from `Queue.max_gpus` and
-`Queue.max_accelerators`:
+`flyte get queue mixed-gpu` lists all four under `max_accelerators`. In Python,
+read them from `Queue.max_accelerators`:
 
 ```python
 from flyteplugins.union.remote import Queue
 
 queue = Queue.get("mixed-gpu")
-print(queue.max_gpus)          # 8
-print(queue.max_accelerators)  # {'nvidia_gpu/nvidia-h100': 10, 'google_tpu/google-tpu-v6e': 10,
-                               #  'nvidia_gpu/nvidia-a100/1g.5gb': 4}
+print(queue.max_accelerators)
+# {'nvidia_gpu': 8, 'nvidia_gpu/nvidia-h100': 10,
+#  'google_tpu/google-tpu-v6e': 10, 'nvidia_gpu/nvidia-a100/1g.5gb': 4}
 ```
 
-`--max-accelerators` always names a device. A class alone, such as
-`--max-accelerators nvidia_gpu=8`, is refused; use `--max-gpus` for that.
-
-`--max-gpus` applies to NVIDIA GPUs only. Cap TPUs and other accelerators per
-device with `--max-accelerators`. A TPU or other non-NVIDIA accelerator
-requested without a device is not limited by any queue cap.
+Only NVIDIA GPUs can be capped without a device type. Cap TPUs and other
+accelerators per device: `--max-accelerators google_tpu=8` is refused. A TPU or
+other non-NVIDIA accelerator requested without a device is not limited by any
+queue cap.
 
 Two cases change which cap an untyped request counts against:
 
@@ -164,11 +162,12 @@ Two cases change which cap an untyped request counts against:
   chooses a device for an untyped request. If it chooses a device that has its
   own cap, the request counts against that cap as well. On a cluster with T4,
   L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that lands on an
-  L4 counts against both `--max-gpus` and the L4 cap. Without resource-aware
-  scheduling, an untyped request counts against `--max-gpus` only.
+  L4 counts against both the `nvidia_gpu` cap and the L4 cap. Without
+  resource-aware scheduling, an untyped request counts against the `nvidia_gpu`
+  cap only.
 - If a default GPU type is set in Settings, an untyped request is treated as a
-  request for that type. It counts against that type's cap in
-  `--max-accelerators`, not against `--max-gpus`.
+  request for that type. It counts against that type's cap, not against the
+  `nvidia_gpu` cap.
 
 ## Set caps on a queue
 
@@ -186,18 +185,16 @@ flyte create queue research \
   --action-concurrency 1000 \
   --max-resources cpu=512 \
   --max-resources memory=4Ti \
-  --max-gpus 8 \
+  --max-accelerators nvidia_gpu=8 \
   --max-accelerators H100=48 \
   --scheduling greedy_capacity
 
 # Change the caps on an existing queue
 flyte update queue research --max-resources cpu=768 --max-resources memory=6Ti
-flyte update queue research --max-gpus 16
-flyte update queue research --max-accelerators H100=64 --max-accelerators T4=32
+flyte update queue research --max-accelerators nvidia_gpu=16 --max-accelerators H100=64
 
 # Remove the caps
 flyte update queue research --clear-max-resources
-flyte update queue research --clear-max-gpus
 flyte update queue research --clear-max-accelerators
 
 # Change the scheduling policy
@@ -205,7 +202,7 @@ flyte update queue research --scheduling strict_fifo
 ```
 
 `flyte update queue <name> --edit` opens the whole queue in your `$EDITOR`,
-including `max_resources`, `max_gpus`, `max_accelerators`, and `scheduling`.
+including `max_resources`, `max_accelerators`, and `scheduling`.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -221,19 +218,16 @@ Queue.create(
     run_concurrency=100,
     action_concurrency=1000,
     max_resources={"cpu": "512", "memory": "4Ti"},
-    max_gpus=8,
-    max_accelerators={"H100": 48},
+    max_accelerators={"nvidia_gpu": 8, "H100": 48},
     scheduling="greedy_capacity",
 )
 
 # Change the caps on an existing queue
 Queue.update("research", max_resources={"cpu": "768", "memory": "6Ti"})
-Queue.update("research", max_gpus=16)
-Queue.update("research", max_accelerators={"H100": 64, "T4": 32})
+Queue.update("research", max_accelerators={"nvidia_gpu": 16, "H100": 64})
 
 # Remove the caps
 Queue.update("research", max_resources={})
-Queue.update("research", clear_max_gpus=True)
 Queue.update("research", max_accelerators={})
 
 # Change the scheduling policy
@@ -248,7 +242,7 @@ Queue.update("research", scheduling="strict_fifo")
 Go to **Settings > Queues**. The **New Queue** form and a queue's edit form
 have a **Scheduling policy** choice and **Resource caps** fields for CPU,
 memory, and ephemeral storage. The console does not edit GPU caps yet: set
-`--max-gpus` and `--max-accelerators` from the CLI or Python. Editing a queue
+`--max-accelerators` from the CLI or Python. Editing a queue
 in the console keeps its GPU caps as they are.
 
 {{< /markdown >}}
@@ -258,10 +252,10 @@ in the console keeps its GPU caps as they are.
 > [!WARNING] An update replaces every cap of the same kind
 > `--max-resources` on `flyte update queue` replaces all of the queue's resource
 > caps, so a resource you leave out becomes unlimited. To raise CPU on a queue
-> that also caps memory, pass both. `--max-accelerators` works the same way for
-> device types: to change the H100 cap on a queue that also caps T4s, pass both.
-> The three settings do not affect each other. Changing `--max-accelerators`
-> leaves `--max-gpus` and `--max-resources` as they are.
+> that also caps memory, pass both. `--max-accelerators` works the same way: to
+> change the H100 cap on a queue that also caps T4s and `nvidia_gpu`, pass all
+> three. The two settings do not affect each other. Changing
+> `--max-accelerators` leaves `--max-resources` as it is.
 >
 > In Python, passing `None` for `max_resources` or `max_accelerators` keeps the
 > current caps, a mapping replaces them, and `{}` removes them.
@@ -302,8 +296,8 @@ flyte get queue --watch --pool gpu-pool
 ```
 
 With a queue name, the output has a bar for each cap showing `used / cap` and a
-percentage: one per capped resource, one named `gpus` for `--max-gpus`, and one
-per capped device type. They follow the bars for run concurrency, action
+percentage: one per capped resource and one per `--max-accelerators` entry,
+with `nvidia_gpu` for the GPUs requested without a type. They follow the bars for run concurrency, action
 concurrency, and depth. A resource without a cap shows its usage with no bar.
 
 Without a name, `--watch` shows one row per queue with its pool, scheduling
@@ -320,7 +314,7 @@ from flyteplugins.union.remote import Queue
 
 metrics = Queue.details("research")
 print(metrics["in_flight_resources"], metrics["max_resources"])
-print(metrics["accelerator_charges"], metrics["max_gpus"], metrics["max_accelerators"])
+print(metrics["accelerator_charges"], metrics["max_accelerators"])
 print(metrics["scheduling"], metrics["head_blocked"])
 
 # Stream one queue

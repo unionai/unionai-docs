@@ -141,7 +141,7 @@ below cover each one.
 | [Create a queue](#create-a-queue) | `flyte create queue NAME` | `Queue.create` |
 | [Get one queue](#inspect-queues) | `flyte get queue NAME` | `Queue.get` |
 | [List queues](#inspect-queues) | `flyte get queue` (`--state`, `--deleted`) | `Queue.listall` |
-| [Change settings](#change-a-queues-settings) | `flyte update queue NAME --edit`, or flags such as `--max-gpus` | `Queue.update` |
+| [Change settings](#change-a-queues-settings) | `flyte update queue NAME --edit`, or flags such as `--max-accelerators` | `Queue.update` |
 | [Drain or reactivate](#drain-and-reactivate-a-queue) | `flyte update queue NAME --drain` / `--activate` | `Queue.drain` / `Queue.activate` |
 | [Delete](#delete-a-queue) | `flyte delete queue NAME` | `Queue.delete` |
 | [Restore a deleted queue](#delete-a-queue) | `flyte undelete queue NAME` | `Queue.undelete` |
@@ -154,10 +154,8 @@ The resource cap flags of `flyte create queue` and `flyte update queue` are:
 |---|---|---|
 | `--max-resources NAME=QUANTITY` | `max_resources={...}` | Caps `cpu`, `memory`, or `ephemeral_storage`. Repeat for each resource. |
 | `--clear-max-resources` | `max_resources={}` | Removes the resource caps (update only). |
-| `--max-gpus N` | `max_gpus=N` | Caps GPUs requested without a device type. |
-| `--clear-max-gpus` | `clear_max_gpus=True` | Removes the `--max-gpus` cap (update only). |
-| `--max-accelerators DEVICE=N` | `max_accelerators={...}` | Caps one device type, such as `H100=10`, `V6E=10`, or `A100/1g.5gb=4`. Repeat for each type. |
-| `--clear-max-accelerators` | `max_accelerators={}` | Removes the per-device caps (update only). |
+| `--max-accelerators DEVICE=N` | `max_accelerators={...}` | Caps one device type, such as `H100=10`, `V6E=10`, or `A100/1g.5gb=4`, or with `nvidia_gpu=8` the GPUs requested without a device type. Repeat for each entry. |
+| `--clear-max-accelerators` | `max_accelerators={}` | Removes the accelerator caps (update only). |
 | `--scheduling` | `scheduling=` | `strict_fifo` or `greedy_capacity`. |
 
 See [Resource caps and scheduling](./resource-caps-and-scheduling) for how
@@ -269,14 +267,13 @@ levels the CLI and Python call `min`, `medium`, and `max`.
 | `depth` | `--depth` | `10000` | Total in-flight plus waiting items the queue will hold. `0` means no limit. |
 | `priority` | `--priority` | `medium` | `min`, `medium`, or `max`. Among queues contending for the same pool's capacity, higher-priority work is scheduled first. Priority controls ordering, not preemption. |
 | `max_resources` | `--max-resources` | No cap | Caps the CPU, memory, and ephemeral storage requested by the queue's in-flight actions, across every cluster the queue routes to. |
-| `max_gpus` | `--max-gpus` | No cap | Caps the queue's in-flight GPUs that were requested without a device type. |
-| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs and other accelerators per device type. Repeat the flag for each type. |
+| `max_accelerators` | `--max-accelerators` | No cap | Caps the queue's in-flight GPUs and other accelerators per device type, and with `nvidia_gpu` the GPUs requested without a device type. Repeat the flag for each entry. |
 | `scheduling` | `--scheduling` | `strict_fifo` | `strict_fifo` or `greedy_capacity`. Decides whether the queue waits or moves on when the next action in line does not fit. |
 
 Under the hood the priority levels map to enum values 1, 50, and 100; use `max`
 for a priority higher than 50.
 
-`max_resources`, `max_gpus`, `max_accelerators`, and `scheduling` are covered in
+`max_resources`, `max_accelerators`, and `scheduling` are covered in
 [Resource caps and scheduling](./resource-caps-and-scheduling).
 
 ## Inspect queues
