@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.10.5
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.15.0
+  flyteplugins-union: 0.15.5
 ---
 
 # Flyte CLI

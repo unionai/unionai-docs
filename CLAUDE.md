@@ -150,8 +150,10 @@ Inline `` `code` `` and Python code blocks are linked to their API reference at 
 
 **Do not write explicit Markdown links for identifiers the autolinker already handles.** Write the
 bare backticked identifier — `` `flyte.io.File` ``, `` `flyte.init()` `` — and let the linker wrap
-it. Keep an explicit link only when the link text isn't a single backticked identifier, the name
-isn't fully qualified, or the target isn't the canonical API page.
+it. Short class names link too; functions link only by their fully-qualified name, so for a short
+function name in prose use a sigil: `` `[[flyteplugins.nsight.nsys.range|nsys.range]]` ``. Keep an
+explicit link only when the link text isn't a single backticked identifier or the target isn't the
+canonical API page.
 
 Full matcher rules, notices, Python example pages and Jupyter frontmatter:
 `.claude/rules/authoring.md` (loads automatically when you edit content).

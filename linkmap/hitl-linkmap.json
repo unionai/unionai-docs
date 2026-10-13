@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "flyteplugins.hitl": "/api-reference/integrations/hitl/"
+  },
+  "identifiers": {
+    "flyteplugins.hitl.Event": "/api-reference/integrations/hitl/event/",
+    "Event": "/api-reference/integrations/hitl/event/"
+  },
+  "methods": {
+    "flyteplugins.hitl.new_event": "/api-reference/integrations/hitl/#new_event"
+  }
+}

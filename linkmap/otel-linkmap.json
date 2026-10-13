@@ -1,0 +1,18 @@
+{
+  "packages": {
+    "flyteplugins.otel": "/api-reference/integrations/otel/"
+  },
+  "identifiers": {
+    "flyteplugins.otel.OtelObserver": "/api-reference/integrations/otel/otelobserver/",
+    "OtelObserver": "/api-reference/integrations/otel/otelobserver/",
+    "flyteplugins.otel.RunScopedIdGenerator": "/api-reference/integrations/otel/runscopedidgenerator/",
+    "RunScopedIdGenerator": "/api-reference/integrations/otel/runscopedidgenerator/"
+  },
+  "methods": {
+    "flyteplugins.otel.format_trace_id": "/api-reference/integrations/otel/#format_trace_id",
+    "flyteplugins.otel.get_tracer": "/api-reference/integrations/otel/#get_tracer",
+    "flyteplugins.otel.init": "/api-reference/integrations/otel/#init",
+    "flyteplugins.otel.shutdown": "/api-reference/integrations/otel/#shutdown",
+    "flyteplugins.otel.trace_id_for_run": "/api-reference/integrations/otel/#trace_id_for_run"
+  }
+}

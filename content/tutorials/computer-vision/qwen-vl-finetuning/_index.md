@@ -1,7 +1,7 @@
 ---
 title: Fine-tuning a VLM
 icon: image
-description: Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
+description: Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, recovery checkpoints you can resume from, and live training dashboards.
 weight: 1
 variants: +flyte +union
 ---
@@ -228,6 +228,6 @@ To resume a failed or interrupted run, uncomment the `resume_training_artifacts`
 
 **Using a larger Qwen model.** Change `DEFAULT_MODEL_NAME` to `Qwen/Qwen2.5-VL-7B-Instruct` or a larger variant. You may need to increase `memory` in `training_env` and reduce `per_device_batch_size`. The frozen backbone + adapter pattern becomes more valuable at larger scales where you're always training the same ~10,500-parameter adapter regardless of backbone size.
 
-**Training keeps failing.** Add `retries=3` to the `@training_env.task` decorator. With the recovery callback uploading checkpoints after every validation epoch, Flyte automatically restarts training from the last checkpoint on transient failures. Spot instance preemptions and most hardware hiccups become non-events.
+**Training keeps failing.** Add `retries=3` to the `@training_env.task` decorator to have Flyte rerun the training task on transient failures such as spot instance preemptions. A retry reruns the task with the same inputs, so training restarts from the beginning, not from the last checkpoint. To keep the progress a failed run made, start a new run and pass its recovery artifact as `resume_training_artifacts`, as described in [Fault tolerance and recovery](#fault-tolerance-and-recovery).
 
 **Scaling to more nodes.** Increase `NUM_NODES` in `config.py`. The Elastic plugin, DeepSpeed strategy, and gradient accumulation calculation all adapt automatically. The recovery system is unchanged as each run still gets its own recovery URI.

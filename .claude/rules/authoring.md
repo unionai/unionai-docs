@@ -31,21 +31,44 @@ In inline code, against the exact `<code>` text:
 
 - Fully-qualified identifiers from any loaded linkmap — `flyte.io.File`, `flyte.report.log()`,
   `flyte.errors.OOMError`, `flyteplugins.bigquery.BigQueryConfig`.
+- Short **class** names — `` `Trigger` ``, `` `TaskEnvironment` ``, `` `BigQueryConfig` ``. Every
+  linkmap, SDK and plugin alike, keys classes under both the full and the short name.
 - A trailing `()` is stripped before lookup, so `` `flyte.init()` `` and `` `flyte.init` `` both link.
 - A leading `@` is stripped, so the decorator form works.
 - `ClassName.method` falls back to `<class-url>#method` when the class is in the linkmap.
 
-## What it does not match — keep an explicit link
+The split is by kind, not by linkmap: **functions are keyed only by their fully-qualified name**,
+in every linkmap. The generator leaves short function names out on purpose, because names like
+`init`, `run` and `log` are too generic to link safely.
 
+## What it does not match
+
+- Short **function** names, bare or module-qualified — `` `nsys_profile` ``, `` `nsys.range` ``,
+  `` `nvtx.mark()` ``. The `ClassName.method` fallback does not cover `module.function`.
 - Link text that isn't a single pure backticked identifier: `` [`Resources` API reference](…) ``,
   `` [`Trigger` and `Cron`](…) ``.
-- Bare short names such as `` `Trigger` `` or `` `Resources` `` — the **SDK** linkmap emits only
-  fully-qualified keys, so prefer `` `flyte.Trigger` ``. (Plugin linkmaps do emit both forms.)
 - Anchors that aren't `#methodname`.
 - Cross-page links (`./other-page`) and non-API-ref URLs.
 
-**To check whether an identifier is autolinkable, grep `linkmap/*.json` for it.** If it is there,
-drop the explicit `[...](…)` wrapper.
+A short class name that two linkmaps both define (`Agent`, `FlyteModel`) resolves to whichever
+loads last. Use the fully-qualified name when the short one is ambiguous.
+
+## Sigils
+
+When the text you want to show isn't a linkmap key, use a sigil instead of an explicit link. The
+whole backticked span must be the sigil:
+
+- `` `[[target|display]]` `` — link to `target` (a linkmap key, or matched by its last segment)
+  and render `display`. Use it to keep a short name in prose:
+  `` `[[flyteplugins.nsight.nsys.range|nsys.range]]` ``, `` `[[flyte.Trigger|Trigger]]` ``.
+- `` `[[X]]` `` — force a link by last-segment lookup and render `X`.
+- `` `{{X}}` `` — render `X` with no link, even if it is in the linkmap.
+
+**Not inside a table cell:** the `|` in `[[target|display]]` splits the cell. Link the first
+mention in the prose above the table, or link the API reference page.
+
+**To check whether an identifier is autolinkable, grep `linkmap/*.json` for it** — fully-qualified
+for functions, either form for classes. If it is there, drop the explicit `[...](…)` wrapper.
 
 ## Other authoring patterns
 

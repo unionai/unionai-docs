@@ -27,7 +27,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `mode` | `"local"` \| `"remote"` \| `"hybrid"` | *from config* | Where the run executes. `"remote"` runs on the Flyte backend; `"local"` runs in-process. |
+| `mode` | `"local"` \| `"remote"` | *from config* | Where the run executes. `"remote"` runs on the Flyte backend your config points at, whether a devbox or a deployed cluster; `"local"` runs in-process. |
 | `project` | `str` | *from config* | Project to run in. |
 | `domain` | `str` | *from config* | Domain to run in (e.g. `"development"`, `"production"`). |
 | `name` | `str` | *auto-generated* | Custom name for the run, visible in the UI. |
@@ -122,7 +122,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | Field | Type | Description |
 |-------|------|-------------|
 | `action` | `ActionID` | Identity of this specific action (task invocation) within the run. |
-| `mode` | `"local"` \| `"remote"` \| `"hybrid"` | Execution mode of the current run. |
+| `mode` | `"local"` \| `"remote"` | Execution mode of the current run. |
 | `version` | `str` | Version of the deployed task code bundle. |
 | `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
 | `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. |

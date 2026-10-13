@@ -45,6 +45,7 @@
 #   plugin   - Python import path (for the API parser)
 #   title    - Display title for the documentation
 #   name     - Folder name under output_base
+#   install  - (optional) pip install specifier, replacing `package` (e.g. a pinned git URL)
 #   extras   - (optional) pip extras to install, e.g. ["bigquery", "snowflake"]
 #   frozen   - (optional) If true, skip clean/generate (committed content, no longer regenerable)
 #   document_subpackages - (optional) If true, also document public subpackages that declare
@@ -172,6 +173,57 @@ title = "Pydantic AI"
 name = "agents-pydantic-ai"
 output_folder = "content/api-reference/integrations/agents/pydantic-ai"
 
+# Software-development-tool webhook providers. One package per product,
+# each contributing a single `Provider` to the receiver in
+# `flyte.extras.webhooks` -- which ships with flyte, so
+# the shared machinery (the app, dispatch, dedupe, the verification primitives) is
+# documented with the SDK and does NOT appear here. These five entries cover only
+# what is product-specific: the provider, its typed event constants, and the few
+# helpers that beat calling the vendor SDK (Slack approvals and sends, GitHub review
+# gates and App tokens).
+#
+# Grouped under a nested output_folder for the same reason as the agents adapters
+# above: they share one explanatory landing page, and five product names flattened
+# into output_base would read as five unrelated plugins. `name` stays flat
+# (devtools-<product>) because it names the linkmap file, which lives in a single
+# flat directory; page URLs follow output_folder, not name. It is abbreviated
+# deliberately -- spelling the section out would give every linkmap a
+# 40-character prefix for no reader-visible gain, since `name` appears in no URL.
+[[plugins]]
+package = "flyteplugins-clickup"
+plugin = "flyteplugins.clickup"
+title = "ClickUp"
+name = "devtools-clickup"
+output_folder = "content/api-reference/integrations/software-development-tools/clickup"
+
+[[plugins]]
+package = "flyteplugins-github"
+plugin = "flyteplugins.github"
+title = "GitHub"
+name = "devtools-github"
+output_folder = "content/api-reference/integrations/software-development-tools/github"
+
+[[plugins]]
+package = "flyteplugins-jira"
+plugin = "flyteplugins.jira"
+title = "Jira"
+name = "devtools-jira"
+output_folder = "content/api-reference/integrations/software-development-tools/jira"
+
+[[plugins]]
+package = "flyteplugins-linear"
+plugin = "flyteplugins.linear"
+title = "Linear"
+name = "devtools-linear"
+output_folder = "content/api-reference/integrations/software-development-tools/linear"
+
+[[plugins]]
+package = "flyteplugins-slack"
+plugin = "flyteplugins.slack"
+title = "Slack"
+name = "devtools-slack"
+output_folder = "content/api-reference/integrations/software-development-tools/slack"
+
 # Frozen agentic plugins. flyteplugins-{anthropic,gemini,openai} were removed from
 # the SDK; agents now run on Flyte through the framework adapters documented under
 # content/integrations/agents/. Their API-reference dirs are retained by hand as
@@ -211,11 +263,23 @@ title = "Databricks"
 name = "databricks"
 
 [[plugins]]
+package = "flyteplugins-dbt"
+plugin = "flyteplugins.dbt"
+title = "dbt"
+name = "dbt"
+
+[[plugins]]
 package = "flyteplugins-gemini"
 plugin = "flyteplugins.gemini"
 title = "Gemini"
 name = "gemini"
 frozen = true  # see "Frozen agentic plugins" above
+
+[[plugins]]
+package = "flyteplugins-hitl"
+plugin = "flyteplugins.hitl"
+title = "Human-in-the-loop"
+name = "hitl"
 
 [[plugins]]
 package = "flyteplugins-huggingface"
@@ -236,6 +300,18 @@ title = "JSONL"
 name = "jsonl"
 
 [[plugins]]
+package = "flyteplugins-lance"
+plugin = "flyteplugins.lance"
+title = "Lance"
+name = "lance"
+
+[[plugins]]
+package = "flyteplugins-llamacpp"
+plugin = "flyteplugins.llamacpp"
+title = "llama.cpp"
+name = "llamacpp"
+
+[[plugins]]
 package = "flyteplugins-mlflow"
 plugin = "flyteplugins.mlflow"
 title = "MLflow"
@@ -253,6 +329,18 @@ package = "flyteplugins-omegaconf"
 plugin = "flyteplugins.omegaconf"
 title = "OmegaConf"
 name = "omegaconf"
+
+[[plugins]]
+package = "flyteplugins-otel"
+plugin = "flyteplugins.otel"
+title = "OpenTelemetry"
+name = "otel"
+
+[[plugins]]
+package = "flyteplugins-pandera"
+plugin = "flyteplugins.pandera"
+title = "Pandera"
+name = "pandera"
 
 [[plugins]]
 package = "flyteplugins-papermill"
@@ -283,6 +371,12 @@ package = "flyteplugins-sglang"
 plugin = "flyteplugins.sglang"
 title = "SGLang"
 name = "sglang"
+
+[[plugins]]
+package = "flyteplugins-slurm"
+plugin = "flyteplugins.slurm"
+title = "Slurm"
+name = "slurm"
 
 [[plugins]]
 package = "flyteplugins-spark"
@@ -324,7 +418,60 @@ title = "Snowflake"
 name = "snowflake"
 
 [[plugins]]
+package = "flyteplugins-trackio"
+plugin = "flyteplugins.trackio"
+title = "Trackio"
+name = "trackio"
+
+[[plugins]]
 package = "flyteplugins-typesafe-ai"
 plugin = "flyteplugins.typesafe_ai"
 title = "TypeSafe AI"
 name = "typesafe-ai"
+
+# Unreleased plugins. flyteplugins-{agento11y,nsight} are in the SDK but have no
+# release on PyPI: their projects there are quarantined, so every publish upload is
+# rejected. `install` builds them from a pinned flyte-sdk commit instead (6d3d72b
+# carries flyte-sdk#1666, which drops agento11y's pip install text). The PyPI drift
+# check cannot see a version for them, so they are not regenerated automatically:
+# bump the pin by hand. Once they publish, delete the `install` lines.
+[[plugins]]
+package = "flyteplugins-agento11y"
+install = "flyteplugins-agento11y@git+https://github.com/flyteorg/flyte-sdk@6d3d72b8198d0444ad0471836ca118d32344b268#subdirectory=plugins/agento11y"
+plugin = "flyteplugins.agento11y"
+title = "Grafana Agent Observability"
+name = "agento11y"
+
+[[plugins]]
+package = "flyteplugins-nsight"
+# Pinned to the merge commit of flyte-sdk#1668 (825fdbe), which adds __all__ to the
+# nsys and nvtx submodules so document_subpackages picks them up.
+install = "flyteplugins-nsight@git+https://github.com/flyteorg/flyte-sdk@825fdbe5739b6b32389e5b2f202091f632e680d1#subdirectory=plugins/nsight"
+plugin = "flyteplugins.nsight"
+title = "NVIDIA Nsight Systems"
+name = "nsight"
+document_subpackages = true
+
+# === Plugin discovery ===
+# `make check-plugin-registry` lists every pyproject.toml under `path` in `repo`
+# and fails when a package there has a final release in the `lockstep` package's
+# major line but no [[plugins]] entry above, so a new plugin cannot ship with no
+# API reference unnoticed. Name claims (a 0.0.0a0 placeholder) and unpublished
+# plugins are reported, not failed. To leave a plugin undocumented on purpose:
+#
+#   [[plugin_discovery.skip]]
+#   package = "flyteplugins-example"
+#   reason = "why it has no API reference"
+[plugin_discovery]
+repo = "flyteorg/flyte-sdk"
+ref = "main"
+path = "plugins"
+lockstep = "flyte"
+
+[[plugin_discovery.skip]]
+package = "flyteplugins-echo"
+reason = "echo task type for load-testing the leaseworker path without pods; not a user-facing plugin"
+
+[[plugin_discovery.skip]]
+package = "flyteplugins-redis"
+reason = "fsspec backend for redis:// metadata storage, loaded through an entry point; no user-facing API"

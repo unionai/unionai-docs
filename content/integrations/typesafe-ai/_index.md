@@ -2,7 +2,7 @@
 title: TypeSafe AI
 description: Run TypeSafe's System One model inside durable Flyte tasks, and carry its typed answers across task boundaries.
 icon: sliders
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 

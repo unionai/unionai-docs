@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "flyteplugins.trackio": "/api-reference/integrations/trackio/"
+  },
+  "identifiers": {
+    "flyteplugins.trackio.Trackio": "/api-reference/integrations/trackio/trackio/",
+    "Trackio": "/api-reference/integrations/trackio/trackio/"
+  },
+  "methods": {
+    "flyteplugins.trackio.get_trackio_context": "/api-reference/integrations/trackio/#get_trackio_context",
+    "flyteplugins.trackio.get_trackio_run": "/api-reference/integrations/trackio/#get_trackio_run",
+    "flyteplugins.trackio.trackio_config": "/api-reference/integrations/trackio/#trackio_config",
+    "flyteplugins.trackio.trackio_init": "/api-reference/integrations/trackio/#trackio_init"
+  }
+}

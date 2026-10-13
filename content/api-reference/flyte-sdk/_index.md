@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.10.5
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -152,6 +152,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.UnionRpcError`](flyte.errors/unionrpcerror) | This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`flyte.extend.RuntimeTaskTemplate`](flyte.extend/runtimetasktemplate) | Task template for Python-runtime tasks that execute through the Flyte task entrypoint. |
 | [`flyte.extend.TaskTemplate`](flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`flyte.extras.ContainerTask`](flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
@@ -160,6 +161,8 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extras.Sleep`](flyte.extras/sleep) | Route a task to the backend `core-sleep` plugin. |
 | [`flyte.extras.SleepTask`](flyte.extras/sleeptask) |  |
 | [`flyte.extras.TokenBatcher`](flyte.extras/tokenbatcher) | Token-aware batcher for LLM inference workloads. |
+| [`flyte.extras.model_streamer.LoadResult`](flyte.extras.model_streamer/loadresult) | What `ModelStreamer.load_into` did not match. |
+| [`flyte.extras.model_streamer.ModelStreamer`](flyte.extras.model_streamer/modelstreamer) | Stream the safetensors weights under a remote prefix, tensor by tensor. |
 | [`flyte.extras.shell.FlagSpec`](flyte.extras.shell/flagspec) | How to render a typed input as a CLI flag in `{flags.<name>}`. |
 | [`flyte.extras.shell.Glob`](flyte.extras.shell/glob) | A multi-file output bundle. |
 | [`flyte.extras.shell.Stderr`](flyte.extras.shell/stderr) | Capture the task's stderr as a typed output. |
@@ -231,9 +234,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.S3`](flyte.storage/s3) | S3 specific configuration. |
 | [`flyte.storage.Storage`](flyte.storage/storage) | Data storage configuration that applies across any provider. |
 | [`flyte.syncify.Syncify`](flyte.syncify/syncify) | A decorator to convert asynchronous functions or methods into synchronous ones. |
-| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by flytekit internally. |
-| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flyte.types.FlytePickle`](flyte.types/flytepickle) | This type is only used by Flyte internally. |
+| [`flyte.types.TypeEngine`](flyte.types/typeengine) | Core extensible type engine of Flyte. |
+| [`flyte.types.TypeTransformer`](flyte.types/typetransformer) | Base transformer type that should be implemented for every Python native type that Flyte can handle. |
 | [`flyte.types.TypeTransformerFailedError`](flyte.types/typetransformerfailederror) |  |
 
 ### Protocols
@@ -299,6 +302,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.artifacts.produces()`](flyte.artifacts/_index#produces) | Declare that outputs of the task called inside this block are artifacts. |
 | [`flyte.clustered.jax_initialize()`](flyte.clustered/_index#jax_initialize) | Initialize `jax.distributed` for this clustered task's process topology. |
 | [`flyte.config.auto()`](flyte.config/_index#auto) | Automatically constructs the Config Object. |
+| [`flyte.config.get_config_file()`](flyte.config/_index#get_config_file) | Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None. |
 | [`flyte.config.set_if_exists()`](flyte.config/_index#set_if_exists) | Given a dict `d` sets the key `k` with value of config `v`, if the config value `v` is set and return the updated dictionary. |
 | [`flyte.connectors.utils.convert_to_flyte_phase()`](flyte.connectors.utils/_index#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
 | [`flyte.connectors.utils.is_terminal_phase()`](flyte.connectors.utils/_index#is_terminal_phase) | Return true if the phase is terminal. |
@@ -315,6 +319,9 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.pod_spec_from_resources()`](flyte.extend/_index#pod_spec_from_resources) |  |
 | [`flyte.extras.serialize()`](flyte.extras/_index#serialize) | Translate a single task to its wire TaskSpec, offline and code-agnostic. |
 | [`flyte.extras.serialize_env()`](flyte.extras/_index#serialize_env) | Serialize every task in an environment. |
+| [`flyte.extras.model_streamer.empty_weights()`](flyte.extras.model_streamer/_index#empty_weights) | Build modules with their parameters on the `meta` device. |
+| [`flyte.extras.model_streamer.load_hf_model()`](flyte.extras.model_streamer/_index#load_hf_model) | Build a `transformers` model and stream its weights onto `device`. |
+| [`flyte.extras.model_streamer.missing_parameters()`](flyte.extras.model_streamer/_index#missing_parameters) | Parameters and buffers still on the `meta` device. |
 | [`flyte.extras.shell.create()`](flyte.extras.shell/_index#create) | Wrap a CLI tool packaged in a container as a Flyte task. |
 | [`flyte.extras.webhooks.blocking_run()`](flyte.extras.webhooks/_index#blocking_run) | Return the run that blocks this key, or None. |
 | [`flyte.extras.webhooks.constant_time_equals()`](flyte.extras.webhooks/_index#constant_time_equals) | Compare two credentials in constant time, without raising. |
@@ -379,6 +386,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors`](flyte.errors/_index) | Exceptions raised by Union. |
 | [`flyte.extend`](flyte.extend/_index) |  |
 | [`flyte.extras`](flyte.extras/_index) | Flyte extras package. |
+| [`flyte.extras.model_streamer`](flyte.extras.model_streamer/_index) | Stream safetensors model weights from object storage straight onto a device. |
 | [`flyte.extras.shell`](flyte.extras.shell/_index) | Shell task — wrap a CLI tool packaged in a container image. |
 | [`flyte.extras.webhooks`](flyte.extras.webhooks/_index) | Receive SaaS webhooks in Flyte, and turn them into runs. |
 | [`flyte.extras.webhooks.testing`](flyte.extras.webhooks.testing/_index) | Conformance harness — enforce the common provider format. |

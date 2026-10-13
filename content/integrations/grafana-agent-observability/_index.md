@@ -2,7 +2,7 @@
 title: Grafana Agent Observability
 description: Send agent generations, tool calls, token usage, and cost to Grafana Agent Observability.
 icon: graph-up
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
@@ -271,9 +271,19 @@ Putting the call inside a [`flyte.trace`](../../user-guide/tasks/task-programmin
 
 ## Content capture
 
-agento11y sends metadata by default (model, token usage, tool names, timing) and keeps prompts and responses local unless you opt in.
+By default, agento11y exports the content of every generation: the prompts and the model's responses go to Grafana along with the metadata (model, token usage, tool names, timing). The framework integrations also capture tool arguments and results by default. This plugin does not change those defaults. (Grafana's coding-agent integrations, set up with `agento11y login`, default to metadata only; the Python SDK this plugin uses does not.)
 
-That is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so content capture is switched on exactly as it would be outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the current field names and defaults; they belong to that library, not to this plugin.
+To export metadata only, pass the mode through `client_options`. This works in local and remote runs alike:
+
+```python
+from agento11y import ContentCaptureMode
+
+init(service_name="my-agent", client_options={"content_capture": ContentCaptureMode.METADATA_ONLY})
+```
+
+Or set the `AGENTO11Y_CONTENT_CAPTURE_MODE` environment variable to `metadata_only` before `init()` runs. In remote runs, set it on the task environment with `env_vars={"AGENTO11Y_CONTENT_CAPTURE_MODE": "metadata_only"}`. A local run doesn't apply the task environment's variables, so export it in your shell as well.
+
+Content capture is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so you set the mode exactly as you would outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the other modes; they belong to that library, not to this plugin.
 
 The same passthrough covers anything else `init()` does not surface: auth mode and token, protocol or a custom generation exporter.
 

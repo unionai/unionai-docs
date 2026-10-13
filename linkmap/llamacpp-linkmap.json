@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "flyteplugins.llamacpp": "/api-reference/integrations/llamacpp/"
+  },
+  "identifiers": {
+    "flyteplugins.llamacpp.LlamaCppAppEnvironment": "/api-reference/integrations/llamacpp/llamacppappenvironment/",
+    "LlamaCppAppEnvironment": "/api-reference/integrations/llamacpp/llamacppappenvironment/"
+  },
+  "methods": {
+    "flyteplugins.llamacpp.build_llama_cpp_image": "/api-reference/integrations/llamacpp/#build_llama_cpp_image"
+  }
+}

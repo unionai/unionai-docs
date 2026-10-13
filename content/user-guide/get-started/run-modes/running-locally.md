@@ -81,7 +81,7 @@ flyte run --local hello.py main
 The task's **parameters become CLI options**. Each task input maps to a `--<name>` flag (run `flyte run --local hello.py main --help` to see them, with their defaults). For example, to override `x_list`:
 
 ```bash
-flyte run --local hello.py main --x-list '[1, 2, 3]'
+flyte run --local hello.py main --x_list '[1, 2, 3]'
 ```
 
 > [!NOTE]
@@ -139,13 +139,15 @@ The command prints a link to the run when it starts. Tracking covers the run's a
 
 Reporting never gets in the way of the run itself: if the control plane is unreachable, the failure is logged and your local run finishes normally.
 
+You can abort a tracked run from the console, but this cannot stop the process running on your machine. Per-organization limits apply to tracked runs: concurrent runs and actions, actions per run, and run creations per month.
+
 If you do not have a workflow to hand yet, `hello` runs a built-in one and needs no files at all:
 
 ```bash
 flyte run --tracked hello
 ```
 
-Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options).
+Use `flyte create config --local-tracked` to track every local run without passing the flag. For the full option reference, including strict reporting and run-name rules, see [Run command options](../../tasks/task-deployment/run-command-options). To track a run started from Python with `flyte.run()`, see [How task run works](../../tasks/task-deployment/how-task-run-works#tracking-a-local-run).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -163,7 +165,7 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 | **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../../tasks/task-programming/reports) |
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) |
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
-| **Secrets** | Read from `.env` files or environment variables. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
+| **Secrets** | Read from environment variables you export, or from local files for file-mounted secrets. Flyte does not load `.env` files. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -181,14 +183,14 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 
 The same code runs in both environments. Here's what changes:
 
-| Aspect | Local | Devbox/Remote |
+| Aspect | Local | Remote (devbox or deployed cluster) |
 |--------|-------|--------|
 | **Run pipeline** | `flyte run --local` | `flyte run` |
 | **TUI** | `--tui` flag | Dashboard in Flyte UI |
 | **Caching** | Local SQLite | Cluster-wide distributed cache |
 | **Reports** | Local HTML files | Rendered in the Flyte UI |
 | **Serving** | `python serve.py` | `flyte deploy serve.py env` |
-| **Secrets** | `.env` / environment variables | `flyte create secret` / `flyte.Secret` |
+| **Secrets** | Environment variables you export | `flyte create secret` / `flyte.Secret` |
 | **Compute** | Your CPU/GPU | `Resources(cpu=2, memory="4Gi", gpu=1)` |
 
 The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locally, image and resource settings are ignored. On the cluster, Flyte builds containers and allocates compute from the same definition.
@@ -197,19 +199,5 @@ The [`TaskEnvironment`](../core-concepts/task-environment) is the bridge. Locall
 
 ## Next steps
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant union >}}
-{{< markdown >}}
-
-- [**Run on the devbox**](./running-devbox): Run a full local Flyte cluster with Docker to test on-cluster execution before moving to a remote cluster.
-- [**Run on a remote cluster**](./running-remote): Configure the CLI and SDK to run on a remote Flyte cluster.
-
-{{< /markdown >}}
-{{< /variant >}}
+- [**Run on the devbox**](./running-devbox): Run a full Flyte cluster on your machine with Docker to test remote execution before moving to a deployed cluster.
+- [**Run on a deployed cluster**](./running-remote): Configure the CLI and SDK to run on a cluster in the cloud or on-premises.

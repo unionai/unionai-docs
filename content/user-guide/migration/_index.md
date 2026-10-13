@@ -2,7 +2,7 @@
 title: Migration
 description: Port a Flyte 1 codebase to Flyte 2, or map Airflow concepts to their Flyte 2 equivalents.
 icon: arrow-right
-weight: 13
+weight: 14
 variants: +flyte +union
 ---
 

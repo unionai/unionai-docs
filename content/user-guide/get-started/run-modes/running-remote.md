@@ -1,12 +1,12 @@
 ---
-title: Run on a remote cluster
-description: Run tasks and apps on a remote cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
+title: Run on a deployed cluster
+description: Run tasks and apps on a deployed cluster, in the cloud or on-premises, with full production capabilities including GPUs and distributed compute.
 icon: cloud
 weight: 6
 variants: +flyte +union
 ---
 
-# Run on a remote cluster
+# Run on a deployed cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your {{< key product_name >}} instance.
 
@@ -28,14 +28,14 @@ anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
 {{< markdown >}}
 > [!NOTE]
 > Don't have a Flyte cluster yet? See [Platform deployment](../../../oss-deployment/_index)
-> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+> to stand one up, or use the [Devbox](./running-devbox) to run a cluster on your machine in Docker.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant union >}}
 {{< markdown >}}
 > [!NOTE]
 > Don't have a Union.ai instance yet? See [Platform deployment](../../../deployment/_index)
-> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+> to stand one up, or use the [Devbox](./running-devbox) to run a cluster on your machine in Docker.
 {{< /markdown >}}
 {{< /variant >}}
 

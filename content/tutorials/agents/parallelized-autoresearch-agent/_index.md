@@ -57,7 +57,7 @@ The driver task `parallelized_autoresearch` restores prior memory (default key `
 Register an Anthropic API key for agent LLM calls and for per-experiment resource sizing inside `call_handler`:
 
 ```
-flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 ```
 
 ### Run remotely

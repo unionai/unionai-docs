@@ -1,0 +1,17 @@
+{
+  "packages": {
+    "flyteplugins.agento11y": "/api-reference/integrations/agento11y/"
+  },
+  "identifiers": {
+    "flyteplugins.agento11y.FlyteIdentityBinding": "/api-reference/integrations/agento11y/flyteidentitybinding/",
+    "FlyteIdentityBinding": "/api-reference/integrations/agento11y/flyteidentitybinding/",
+    "flyteplugins.agento11y.GrafanaAgentObservability": "/api-reference/integrations/agento11y/grafanaagentobservability/",
+    "GrafanaAgentObservability": "/api-reference/integrations/agento11y/grafanaagentobservability/"
+  },
+  "methods": {
+    "flyteplugins.agento11y.get_client": "/api-reference/integrations/agento11y/#get_client",
+    "flyteplugins.agento11y.init": "/api-reference/integrations/agento11y/#init",
+    "flyteplugins.agento11y.instrumented_frameworks": "/api-reference/integrations/agento11y/#instrumented_frameworks",
+    "flyteplugins.agento11y.shutdown": "/api-reference/integrations/agento11y/#shutdown"
+  }
+}
