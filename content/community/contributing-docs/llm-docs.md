@@ -13,8 +13,9 @@ designed for use by AI coding agents and AI search engines.
 
 ## Output files
 
-The `make dist` command (specifically the `make llm-docs` step) produces the following
-in each variant's `dist/docs/v2/{variant}/` directory:
+The `make dist` command produces the following in each variant's `dist/docs/v2/{variant}/`
+directory. Each variant's `make variant` step writes the `<page>.md` twins; the `make llm-docs`
+step then post-processes those twins and writes `llms.txt` and `llms-full.txt`:
 
 | File | Description |
 |------|-------------|
