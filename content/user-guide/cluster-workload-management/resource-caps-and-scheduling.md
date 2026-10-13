@@ -54,7 +54,7 @@ and that have not finished. It adds up what each action asks for in its
 
 A queue has one cap for all the clusters it routes to. A queue still accepts as
 much work as its depth allows, and the cap limits how much of that work is
-scheduled at once. On a queue capped at 48 H100s, at most about 48 H100s are
+scheduled at once. On a queue capped at 48 H100s, at most 48 H100s are
 scheduled at any moment, on one cluster or spread over four. The rest of the
 work waits in the queue.
 
@@ -160,13 +160,15 @@ requested without a device is not limited by any queue cap.
 
 Two cases change which cap an untyped request counts against:
 
-- The scheduler chooses the device for an untyped request. If it chooses a
-  device that has its own cap, the request counts against that cap as well. On a
-  cluster with T4, L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task
-  that lands on an L4 counts against both `--max-gpus` and the L4 cap.
-- If your organization or project sets a default GPU type in its settings, an
-  untyped request is treated as a request for that type. It counts against that
-  type's cap in `--max-accelerators`.
+- With [resource-aware scheduling](#resource-aware-scheduling), the scheduler
+  chooses a device for an untyped request. If it chooses a device that has its
+  own cap, the request counts against that cap as well. On a cluster with T4,
+  L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that lands on an
+  L4 counts against both `--max-gpus` and the L4 cap. Without resource-aware
+  scheduling, an untyped request counts against `--max-gpus` only.
+- If a default GPU type is set in Settings, an untyped request is treated as a
+  request for that type. It counts against that type's cap in
+  `--max-accelerators`, not against `--max-gpus`.
 
 ## Set caps on a queue
 
@@ -243,8 +245,11 @@ Queue.update("research", scheduling="strict_fifo")
 {{< tab "Console" >}}
 {{< markdown >}}
 
-Go to **Settings > Queues**, open the queue, and edit its resource caps and
-scheduling policy.
+Go to **Settings > Queues**. The **New Queue** form and a queue's edit form
+have a **Scheduling policy** choice and **Resource caps** fields for CPU,
+memory, and ephemeral storage. The console does not edit GPU caps yet: set
+`--max-gpus` and `--max-accelerators` from the CLI or Python. Editing a queue
+in the console keeps its GPU caps as they are.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -426,9 +431,9 @@ add nothing to the cap.
 | An action that starts a new pool | Scheduled if the pool fits. If it does not fit, the queue moves on to the next action | Scheduled if the pool fits. If it does not fit, it blocks the line |
 
 On a strict FIFO queue with little free capacity, one large job at the head of
-the line stalls every reusable environment on the queue. If the wait lasts
-longer than an environment's idle timeout, its containers shut down and the next
-action starts cold.
+the line stalls every reusable environment on the queue. If an environment has
+no running actions for longer than its `idle_ttl`, the whole pool shuts down,
+and the next action starts cold.
 
 Put work that runs in reusable containers on a greedy capacity queue. If the
 same team also runs gang-style jobs, give those jobs their own strict FIFO
@@ -465,11 +470,13 @@ scale. With it, the scheduler does the following for every action:
   policy. On a strict FIFO queue it blocks the line.
 - Among the clusters with room, it places the action on the least loaded one.
 
-> [!NOTE] Union needs your cluster configuration
-> Union BYOC deployments already have this configuration. For self-managed
-> deployments, talk to the Union team to set it up. Until then, a queue treats a
-> cluster as able to run anything and places work on any healthy cluster it
-> routes to. Resource caps and the scheduling policy apply either way.
+> [!NOTE] Resource-aware scheduling is enabled per organization
+> It needs Union to have your cluster configuration. Union BYOC deployments
+> already have it; for self-managed deployments, the Union team sets it up.
+> Talk to the Union team to have resource-aware scheduling turned on for your
+> organization. Without it, a queue treats a cluster as able to run anything
+> and places work on any healthy cluster it routes to. Resource caps and the
+> scheduling policy apply either way.
 
 ## Infeasible requests fail fast
 
@@ -478,9 +485,9 @@ CPUs on a queue capped at 32 does not fit even when the queue is empty. On a
 strict FIFO queue it would also block everything behind it. The scheduler fails
 such an action as soon as it sees it.
 
-With your cluster configuration in place, the same check extends to the
-clusters, and this is rolling out now. An action also fails as infeasible when
-no cluster its queue routes to could ever run it:
+With [resource-aware scheduling](#resource-aware-scheduling), the check also
+covers the clusters. An action then also fails as infeasible when no cluster its
+queue routes to could ever run it:
 
 - It asks for an accelerator that none of those clusters has.
 - One of its containers is larger than any node those clusters can launch.

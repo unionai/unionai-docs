@@ -180,9 +180,9 @@ error code `INFEASIBLE` and is not retried. The error message names the request
 and the cap. Lower the task's `resources`, or route it to a queue with a higher
 cap.
 
-The same check is being extended to the clusters behind a queue: a task that
-asks for an accelerator none of the queue's clusters has, or for a container
-larger than any of their nodes, will fail the same way. See
+With resource-aware scheduling, the check also covers the clusters behind a
+queue: a task that asks for an accelerator none of the queue's clusters has, or
+for a container larger than any of their nodes, fails the same way. See
 [Infeasible requests fail fast](../../cluster-workload-management/resource-caps-and-scheduling#infeasible-requests-fail-fast).
 
 ## Queues and timeouts
