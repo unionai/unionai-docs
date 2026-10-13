@@ -18,7 +18,7 @@ in each variant's `dist/docs/v2/{variant}/` directory:
 
 | File | Description |
 |------|-------------|
-| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
+| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page directly beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
 | `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. |
 | `llms-full.txt` | The entire documentation for one variant as a single file, with all internal links converted to hierarchical bold references (e.g. `**Configure tasks > Resources**`). |
 
