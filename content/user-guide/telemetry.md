@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Telemetry
 
-{{< key product_name >}} sends telemetry to help find bugs and improve the product. To turn it off, set the [`DO_NOT_TRACK`](https://consoledonottrack.com) environment variable:
+{{< key product_name >}} sends telemetry to help find bugs and improve the product. To turn it off, set the [`DO_NOT_TRACK`](https://donottrack.sh) environment variable:
 
 ```bash
 export DO_NOT_TRACK=1
