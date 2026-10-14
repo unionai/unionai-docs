@@ -15,7 +15,7 @@ variants: -flyte +union
 The `<UserFlyteGSA>` can access secrets in Secret Manager in the same GCP project as the data plane by default.
 
 To access a secret stored in Secret Manager in a GCP project _other than the one that holds your data plane_ requires one additional step:
-Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./_index)) access to top the secret in the other projects.
+Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./_index)) access to the secret in the other projects.
 
 > [!WARNING]
 > Flyte 2 tasks cannot request a Secret Manager secret.
