@@ -55,7 +55,7 @@ Provide the ID of the AWS account, Azure subscription, or GCP project in which e
 
 ## Region
 
-For each cluster, specify the region. Available regions are `us-west`, `us-east`, `eu-west`, and `eu-central`.
+For each cluster, specify the cloud provider region in which it will be deployed (for example, `us-west-2` on AWS or `europe-west1` on GCP).
 
 ## VPC
 
@@ -143,7 +143,7 @@ Values provided by you are in single quotes (').
 - Clusters:
     - 'development'
         - Account ID: 'account-id-1'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-1'
         - Node groups:
             - 'node-group-1'
@@ -162,7 +162,7 @@ Values provided by you are in single quotes (').
                 - Disk: '1500 GiB'
     - 'staging'
         - Account ID: 'account-id-2'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-2'
         - Node groups:
             - 'node-group-1'
@@ -181,7 +181,7 @@ Values provided by you are in single quotes (').
                 - Disk: '1500 GiB'
     - 'production'
         - Account ID: 'account-id-3'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-3'
         - Node groups:
             - 'node-group-1'
