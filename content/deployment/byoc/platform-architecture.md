@@ -93,7 +93,7 @@ Raw data is composed of:
 * Files and directories
 * Dataframes
 * Models
-* Python-pickled types
+* Python-pickled values larger than 10 KB (10,240 bytes) as measured by `sys.getsizeof`. This counts only the outer object, not the data it references, so a small object holding a lot of data is still inlined (see below).
 
 These are passed by reference between tasks and are always stored in an object store in your data plane.
 They are fetched directly from the data-plane object store via presigned URLs issued by the data-plane `dataproxy` service; the bytes never pass through the control plane.
@@ -102,6 +102,7 @@ They are fetched directly from the data-plane object store via presigned URLs is
 
 * Primitive execution inputs (int, string... etc.)
 * JSON-serializable dataclasses
+* Python-pickled values of 10 KB or less as measured by `sys.getsizeof` (the inlined pickle itself can be larger)
 
 These small values are passed by value rather than as a reference to a separately offloaded object. Like raw data, they are stored in the object store in your data plane (inlined within the run's `inputs.pb`/`outputs.pb` payload) and the control plane stores only a URI pointer to them.
 
