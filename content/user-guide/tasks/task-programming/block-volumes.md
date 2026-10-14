@@ -162,15 +162,15 @@ costing storage.
 await work.commit(message="after step 1")
 ```
 
-With `flyteplugins-union` 0.16.0 or later, the client runs that trim more
-cheaply. The first trim after a mount walks the whole image, because ext4
-forgets what it trimmed when it unmounts. On a large volume this takes tens of
-seconds. So the client runs one trim in the background, 300 seconds after the
-mount, and every later trim covers only the space freed since. `finalize()`
-also trims before it unmounts. If the background trim hasn't run yet, or is
-turned off, the first `commit()` or `finalize()` pays for the full trim
-itself. Two environment variables control trimming. Set them in the task
-environment's `env_vars`:
+The client runs the first trim after a mount in the background, so that
+`commit()` usually doesn't have to. Requires `flyteplugins-union` 0.15.5 or
+later. That first trim walks the whole image, because ext4 forgets what it
+trimmed when it unmounts. On a large volume this takes tens of seconds. The
+client runs it 300 seconds after the mount, and every later trim covers only
+the space freed since. `finalize()` also trims before it unmounts. If the
+background trim hasn't run yet, or is turned off, the first `commit()` or
+`finalize()` pays for the full trim itself. Two environment variables control
+trimming. Set them in the task environment's `env_vars`:
 
 | Variable | Default | Effect |
 |---|---|---|

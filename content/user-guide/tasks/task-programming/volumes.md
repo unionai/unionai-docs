@@ -496,10 +496,10 @@ data = await vol.mount(
 > (common with package managers and build systems).
 
 The volume client runs in the task's pod, so its memory counts toward the
-task's `memory` in `flyte.Resources`. Leave room for it. With
-`flyteplugins-union` 0.16.0 or later, the client's Go heap is held near 2 GiB
-by default. This is a soft limit (`GOMEMLIMIT`), and the client can go over
-it. To change the limit, set `UNION_VOLUME_CLIENT_MEMORY_LIMIT` in the task
+task's `memory` in `flyte.Resources`. Leave room for it. By default, the
+client's Go memory is held near 2 GiB. This is a soft limit (`GOMEMLIMIT`),
+and the client can go over it. Requires `flyteplugins-union` 0.15.5 or later.
+To change the limit, set `UNION_VOLUME_CLIENT_MEMORY_LIMIT` in the task
 environment's `env_vars` to a Go size such as `1536MiB`, or to `off` for no
 limit. A value that isn't a Go size falls back to `2GiB`, with a warning. A
 `GOMEMLIMIT` set on the task does not reach the client.
