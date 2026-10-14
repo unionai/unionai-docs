@@ -22,7 +22,7 @@ The control plane:
 
 ## Data plane
 
-Union.ai operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, Union.ai supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
+Your data plane runs wherever you deploy it: in the cloud provider region you choose, or on your own Kubernetes infrastructure.
 
 ### Data plane nodes
 

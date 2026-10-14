@@ -24,7 +24,7 @@ The control plane:
 
 All your workflow and task executions are performed in the data plane, which runs within your cloud provider account. Your data plane is a Kubernetes cluster provisioned by the control plane and then managed on an ongoing basis through a resident Union.ai operator that runs with minimal required permissions (described in the following section).
 
-Union.ai operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, Union.ai supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
+Your data plane runs in the cloud provider region you choose.
 
 ### Data plane nodes
 
