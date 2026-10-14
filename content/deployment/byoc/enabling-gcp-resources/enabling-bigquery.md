@@ -8,4 +8,4 @@ variants: -flyte +union
 
 # Enabling BigQuery
 
-For customers using the Google Cloud Platform as the data plane, Union.ai lets you easily pull data from BigQuery into your workflows. BigQuery access is not enabled by default. The Union.ai team enables it for each data plane by turning on the BigQuery connector and granting BigQuery access to its service account, so let the team know if you need it.
+On GCP data planes, your tasks can query BigQuery. BigQuery access is not enabled by default: ask the Union.ai team to enable it for your data plane. They turn on the BigQuery connector and grant BigQuery roles to the data plane's service accounts.
