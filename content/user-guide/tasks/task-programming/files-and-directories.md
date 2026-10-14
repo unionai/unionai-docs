@@ -67,8 +67,13 @@ The two forms are otherwise equivalent — pick the one that matches how your ta
 | `File.new_remote()` | `File.new_remote()` | Allocate a new remote file to stream into |
 | `File.from_existing_remote(uri)` | `File.from_existing_remote(uri)` | Reference a file that already exists remotely |
 | `async with file.open(mode) as fh` | `with file.open_sync(mode) as fh` | Open the file as a stream for reading or writing |
-| `await file.download()` | `file.download_sync()` | Download the file to the local filesystem |
+| `await file.download()` | `file.download_sync()` | Download the file to the local filesystem (a local file returns its own path; see below) |
 | `await file.exists()` | `file.exists_sync()` | Check whether the file exists |
+
+> [!WARNING]
+> If a `File` already points at the local filesystem, for example a file on a mounted volume, `download()` and `download_sync()` return the file's own path without copying it (`flyte` 2.11.2 or later). This happens when you pass no `local_path` or pass the file's own path. Modifying or deleting the returned file changes the source.
+>
+> To get a separate copy, pass a different `local_path`. For large files, use `download_sync()` for this: the async `download()` reads the whole file into memory when it copies.
 
 ### Dir methods
 
@@ -82,6 +87,8 @@ The two forms are otherwise equivalent — pick the one that matches how your ta
 | `await dir.get_file(name)` | `dir.get_file_sync(name)` | Get a single file from the directory by name |
 | `await dir.download()` | `dir.download_sync()` | Download the whole directory to the local filesystem |
 | `await dir.exists()` | `dir.exists_sync()` | Check whether the directory exists |
+
+If a `Dir` already points at the local filesystem, `dir.download()` and `dir.download_sync()` with no `local_path` return the directory's own path without copying it. Modifying or deleting files under it changes the source.
 
 > [!NOTE]
 > `walk_sync()` additionally accepts a `file_pattern` glob (for example `file_pattern="*.txt"`) to filter the files it yields. Both forms accept `recursive` and `max_depth`.
