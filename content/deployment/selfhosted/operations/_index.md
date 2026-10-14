@@ -30,4 +30,8 @@ Diagnose common control plane, data plane, and cloud-binding issues
 Observability stack setup and metrics reference
 {{< /link-card >}}
 
+{{< link-card target="./telemetry" icon="eye-slash" title="Telemetry" >}}
+Turn off the web console's analytics and the Flyte SDK's telemetry with telemetry.enabled.
+{{< /link-card >}}
+
 {{< /grid >}}
