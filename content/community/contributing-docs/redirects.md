@@ -66,7 +66,7 @@ For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` s
 
 ## `docs.flyte.org` redirects
 
-For directs from the old `docs.flyte.org` to the new `www.union.ai/docs`, we replace the `docs.flyte.org` in the request URL with the special prefix `www.union.ai/_r_/flyte`. For example:
+For redirects from the old `docs.flyte.org` to the new `www.union.ai/docs`, we replace the `docs.flyte.org` in the request URL with the special prefix `www.union.ai/_r_/flyte`, after Cloudflare's normalization rules collapse the version to `latest` and strip `.html`. For example:
 
 | | |
 |---|---|
