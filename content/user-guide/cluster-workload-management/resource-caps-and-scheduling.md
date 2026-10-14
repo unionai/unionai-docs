@@ -249,7 +249,7 @@ memory, and ephemeral storage. The console does not edit GPU caps yet: set
 in the console keeps its GPU caps as they are.
 
 The form's **Scheduling policy** starts at **Default**, which creates the queue
-with no policy (`unspecified`): it orders actions by project, round-robin,
+with no policy (`unspecified`): it orders actions by project and domain, round-robin,
 not first come, first served. Choose **Strict FIFO** or **Greedy capacity** to
 get the behavior described below.
 
@@ -337,7 +337,8 @@ for snapshot in Queue.watch_pool(pools=["gpu-pool"]):
 
 `in_flight_resources` and `max_resources` are `{name: quantity}` mappings.
 `accelerator_charges` maps each GPU cap to the number of devices counted against
-it. Devices with no cap are counted under `other`.
+it. GPUs requested without a type that no cap covers are counted under
+`nvidia_gpu`, and other devices with no cap under `other`.
 
 {{< /markdown >}}
 {{< /tab >}}
@@ -359,7 +360,7 @@ policies consider actions in the order they were queued.
 >
 > The `default` queue and each cluster's co-named queue start with no policy,
 > and `flyte get queue` shows `unspecified`. Such a queue orders its actions by
-> project, round-robin, and skips an action that does not fit. To give it a
+> project and domain, round-robin, and skips an action that does not fit. To give it a
 > policy, run `flyte update queue default --scheduling greedy_capacity`.
 
 | | Greedy capacity (recommended) | Strict FIFO |
@@ -427,14 +428,16 @@ waits too, including the ones that would fit.
 
 A [reusable environment](../tasks/task-configuration/reusable-containers) keeps
 a pool of warm containers alive and runs many actions in them. A queue counts
-those containers against its caps once, when the pool starts. The first action
-of an environment starts the pool, and it has to fit under the cap at the size
-of the containers the pool starts with. Later actions that join the running pool
-add nothing to the cap.
+the pool's containers against its caps, not each action that runs in them. The
+first action of an environment starts the pool, and it has to fit under the cap
+at the pool's minimum size. An action that joins a running pool is scheduled
+without adding to the cap. When the pool scales up to run more actions at once,
+the queue counts the added containers too, up to the pool's maximum size. A pool
+that runs on several clusters is counted on each of them.
 
 | | Greedy capacity | Strict FIFO |
 |---|---|---|
-| Actions for a warm pool that is already running | Scheduled past a blocked action, since they add nothing to the cap | Wait behind the blocked head |
+| Actions for a warm pool that is already running | Scheduled past a blocked action, since joining a running pool adds nothing to the cap | Wait behind the blocked head |
 | The warm pool while a large action is blocked | Stays busy | Sits idle |
 | An action that starts a new pool | Scheduled if the pool fits. If it does not fit, the queue moves on to the next action | Scheduled if the pool fits. If it does not fit, it blocks the line |
 
@@ -479,10 +482,11 @@ scale. With it, the scheduler does the following for every action:
 - Among the clusters with room, it places the action on the least loaded one.
 
 > [!NOTE] Resource-aware scheduling is enabled per organization
-> It needs Union to have your cluster configuration. Union BYOC deployments
-> already have it; for self-managed deployments, the Union team sets it up.
-> Talk to the Union team to have resource-aware scheduling turned on for your
-> organization. Without it, a queue treats a cluster as able to run anything
+> It is off until the Union team turns it on for your organization, and it
+> needs Union to have your cluster configuration. Union BYOC deployments
+> already have the configuration; for self-managed deployments, the Union team
+> sets it up. Talk to the Union team to have resource-aware scheduling turned
+> on for your organization. Without it, a queue treats a cluster as able to run anything
 > and places work on any healthy cluster it routes to. Resource caps and the
 > scheduling policy apply either way.
 
