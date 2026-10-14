@@ -25,7 +25,7 @@ If you want to store your task container images in an ECR instance in an AWS acc
 Here are the details:
 
 * Your Union.ai data plane comes pre-configured with a specific role, which we will refer to here as `<FlyteWorkerNodeGroupRole>`.
-* The actual name of this role depends on your organization's name. It will be of the form `unionai-<YourOrganizationName>-flyteworker-node-group`.
+* The actual name of this role is of the form `unionai-<ClusterName>-eks-flyteworker-node-group`, where `<ClusterName>` is your EKS cluster's name without the `opta-` prefix. To find it, search **IAM > Roles** for `flyteworker-node-group`.
 
 To enable access to the ECR instance in the other account, do the following:
 
