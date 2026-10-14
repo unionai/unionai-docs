@@ -495,6 +495,15 @@ data = await vol.mount(
 > mounted. It helps most when a tool repeatedly stats or lists the same paths
 > (common with package managers and build systems).
 
+The volume client runs in the task's pod, so its memory counts toward the
+task's `memory` in `flyte.Resources`. Leave room for it. By default, the
+client's Go memory is held near 2 GiB. This is a soft limit (`GOMEMLIMIT`),
+and the client can go over it. Requires `flyteplugins-union` 0.15.5 or later.
+To change the limit, set `UNION_VOLUME_CLIENT_MEMORY_LIMIT` in the task
+environment's `env_vars` to a Go size such as `1536MiB`, or to `off` for no
+limit. A value that isn't a Go size falls back to `2GiB`, with a warning. A
+`GOMEMLIMIT` set on the task does not reach the client.
+
 ## Custom images
 
 The setup above works on top of any image built from
@@ -644,6 +653,8 @@ few seconds at `commit()`.
   [The chunk cache](#the-chunk-cache); `allow_volumes(shared_node_cache=True)`
   and `mount(shared_node_cache=...)` — see
   [Shared node cache](#shared-node-cache).
+- Client memory: `$UNION_VOLUME_CLIENT_MEMORY_LIMIT`. See
+  [Tuning the mount](#tuning-the-mount).
 - Related: [Block volumes](./block-volumes) for small-file, single-writer
   workloads; [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.
