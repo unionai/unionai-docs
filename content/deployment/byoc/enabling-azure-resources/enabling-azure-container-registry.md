@@ -31,7 +31,7 @@ By default this Union.ai-managed ACR instance:
 * Will be created within the same subscription and resource group of the Azure Kubernetes cluster instance.
 * Union.ai will create necessary permissions for the Azure Kubernetes cluster to pull images from the container registry.
 * Container registry will be created with **Standard** service tier.
-* To limit storage costs, Union.ai creates a daily [scheduled container registry task](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-scheduled) that [purges](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auto-purge#use-the-purge-command) images last pushed more than 30 days ago, even if they are still in use. The task covers user images (repositories under `orgs/`) and Union.ai `build-image` and `frontend` images other than `latest`. As a result, some images older than 30 days will be rebuilt.
+* To limit storage costs, Union.ai creates a nightly [scheduled container registry task](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-scheduled) that [purges](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auto-purge#use-the-purge-command) Union.ai `build-image` and `frontend` images (except `latest`) not modified in the last 30 days. By default it also purges user images (repositories under `orgs/`) not modified in the last 30 days. The task also removes untagged manifests from these repositories. As a result, some images older than 30 days are rebuilt.
 
 Upon request, Union.ai can:
 
