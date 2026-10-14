@@ -202,16 +202,19 @@ For example, if we have a variant `acme`, then the build from `main` puts the co
 
 ### Creating a new variant
 
-To create a new variant a few steps are required:
+To create a new variant, change at least these files:
 
-| File                                                            | Changes                                                      |
-| --------------------------------------------------------------- | ------------------------------------------------------------ |
-| `unionai-docs-infra/hugo.site.toml`                             | Add to `params.variant_weights` and all `params.key`         |
-| `makefile.inc`                                                  | Add to `VARIANTS`                                            |
-| `unionai-docs-infra/scripts/build_versions.sh`                  | Add to the default `VARIANTS` list                           |
-| `unionai-docs-infra/tools/link_checker/check_internal_links.py` | Add to `VARIANTS`                                            |
-| `<content>.md`                                                  | Add either `+<variant>` or `-<variant>` to all content pages |
-| `unionai-docs-infra/config.<variant>.toml`                      | Create a new file and configure `title` and `params.variant` |
+| File                                                            | Changes                                                                                                                              |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `unionai-docs-infra/hugo.site.toml`                             | Add to `params.variant_weights` and all `params.key`                                                                                 |
+| `makefile.inc`                                                  | Add to `VARIANTS`                                                                                                                    |
+| `unionai-docs-infra/scripts/build_versions.sh`                  | Add to the default `VARIANTS` list                                                                                                   |
+| `unionai-docs-infra/tools/link_checker/check_internal_links.py` | Add to `VARIANTS`                                                                                                                    |
+| `unionai-docs-infra/tools/api_cli_generate.py`                  | Add to the default variant list in `_page_variants`                                                                                  |
+| `unionai-docs-infra/tools/check_cli_variant_gating.py`          | Add to the fallback variant set in `parse_all_variants`                                                                              |
+| `unionai-docs-infra/cli-variants.toml`                          | Add to each listed distribution whose CLI commands the variant should show (unlisted distributions already publish to every variant) |
+| `<content>.md`                                                  | Add either `+<variant>` or `-<variant>` to all content pages                                                                         |
+| `unionai-docs-infra/config.<variant>.toml`                      | Create a new file setting `params.variant` (and optionally `title`, as `config.flyte.toml` does)                                     |
 
 ### Testing the new variant
 
