@@ -51,7 +51,7 @@ This example follows the `uv` script format to declare dependencies.
 > You can set up access to the OpenAI API using a Flyte secret.
 >
 > ```
-> flyte create secret openai_api_key <YOUR_OPENAI_API_KEY>
+> flyte create secret openai_api_key --value <YOUR_OPENAI_API_KEY>
 > ```
 
 We store the LLM-generated code in a structured format. This allows us to:

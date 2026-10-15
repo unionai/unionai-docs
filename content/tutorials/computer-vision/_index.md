@@ -14,7 +14,7 @@ Tutorials for image and vision-language model workloads.
 {{< grid >}}
 
 {{< link-card target="qwen-vl-finetuning" icon="image" title="Fine-tuning a VLM" >}}
-Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, automatic recovery, and live training dashboards.
+Adapt Qwen2.5-VL to occluded image classification by training a 10K-parameter adapter with multi-node DeepSpeed, recovery checkpoints you can resume from, and live training dashboards.
 {{< /link-card >}}
 
 {{< link-card target="detr-object-detection" icon="bounding-box" title="RT-DETR object detection" >}}

@@ -73,7 +73,7 @@ mounts:
 
 ```bash
 flyte create api-key --name sqs-subscriber
-flyte create secret flyte-api-key <the-key-value>
+flyte create secret flyte-api-key --value <the-key-value>
 ```
 
 The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It also
@@ -272,7 +272,7 @@ gap: you would still need to notice the object before you could register it, whi
 original problem.
 
 ## Next steps
- 
+
 Learn more about the Union features used in this tutorial:
 
 - [Triggers](../../../user-guide/triggers/_index) for schedule and artifact automation

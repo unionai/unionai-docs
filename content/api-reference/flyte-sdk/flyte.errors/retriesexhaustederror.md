@@ -2,7 +2,7 @@
 title: RetriesExhaustedError
 description: "This error is raised when the underlying task execution fails after all retries have been exhausted."
 icon: exclamation-triangle
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: flyteplugins.union.remote
 description: "Union remote control plane objects."
 icon: box-seam
-version: 0.15.3
+version: 0.15.5
 variants: -flyte +union
 layout: py_api
 ---

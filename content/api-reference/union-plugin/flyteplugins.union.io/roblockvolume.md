@@ -2,7 +2,7 @@
 title: ROBlockVolume
 description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
-version: 0.15.3
+version: 0.15.5
 variants: -flyte +union
 layout: py_api
 ---
@@ -34,6 +34,7 @@ class ROBlockVolume(
     index: typing.Optional[flyte.io._file.File] = None,
     metadata_store_type: typing.Optional[str] = None,
     block_size: typing.Optional[str] = None,
+    block_journal_blocks: typing.Optional[typing.List[int]] = None,
     metadata_prefix: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
     used_bytes: typing.Optional[int] = None,
@@ -67,6 +68,7 @@ validated to form a valid model.
 | `index` | `typing.Optional[flyte.io._file.File]` | |
 | `metadata_store_type` | `typing.Optional[str]` | |
 | `block_size` | `typing.Optional[str]` | |
+| `block_journal_blocks` | `typing.Optional[typing.List[int]]` | |
 | `metadata_prefix` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
 | `used_bytes` | `typing.Optional[int]` | |

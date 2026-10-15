@@ -163,3 +163,15 @@ Port a Flyte 1 codebase to Flyte 2, or map Airflow concepts to their Flyte 2 equ
 {{< /link-card >}}
 
 {{< /grid >}}
+
+{{< variant flyte >}}
+
+{{< grid >}}
+
+{{< link-card target="telemetry" icon="eye-slash" title="Telemetry" >}}
+What telemetry is sent and how to turn it off with DO_NOT_TRACK.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< /variant >}}

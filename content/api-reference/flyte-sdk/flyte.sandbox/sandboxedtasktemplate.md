@@ -2,7 +2,7 @@
 title: SandboxedTaskTemplate
 description: "A task template that executes the function body in a Monty sandbox."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

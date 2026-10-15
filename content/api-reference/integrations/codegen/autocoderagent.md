@@ -2,7 +2,7 @@
 title: AutoCoderAgent
 description: "Agent for single-file Python code generation with automatic testing and iteration."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

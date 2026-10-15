@@ -7,6 +7,7 @@
 Apptainer
 Enroot
 GRES
+nsys
 Pyxis
 sacct
 sbatch

@@ -2,7 +2,7 @@
 title: Mlflow
 description: "MLflow UI link for Flyte tasks."
 icon: braces
-version: 2.11.0
+version: 2.11.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -152,7 +152,7 @@ Some dbt commands, such as commands that return plain strings instead of node re
 
 ## Reports and failures
 
-Set `report=True` to write a dbt report tab for the task. The report includes node names, resource types, statuses, failures, execution times, messages, and relation names.
+Set `report=True` to write a dbt report tab for the task. The report is a table with one row per dbt node, showing the node name, resource type, status, failures, execution time, and message. It does not include relation names; read `relation_name` from the returned `DbtNodeResult` values instead.
 
 ```python
 dbt_test = DbtTask(
@@ -219,7 +219,18 @@ dbt_build = DbtTask(
 | `callbacks` | `[]` | dbt event callbacks or import-path strings |
 | `report` | `False` | Write a dbt report tab in the Flyte UI |
 
-`DbtTask` also accepts normal Flyte task settings such as `resources`, `secrets`, `queue`, `interruptible`, and `short_name`. Caching is not supported yet; leave `cache` unset or set it to `"disable"`.
+`DbtTask` also accepts normal Flyte task settings such as `resources`, `secrets`, `queue`, `interruptible`, and `short_name`. Caching is not supported yet. If you leave `cache` unset, `DbtTask` inherits the cache setting of its `task_environment`, so a `TaskEnvironment` created with `cache="auto"` (or any other enabled cache) makes the `DbtTask` constructor raise `ValueError: DbtTask does not support caching yet`. Pass `cache="disable"` to the `DbtTask` to avoid this; the environment's other tasks keep their caching:
+
+```python
+env = flyte.TaskEnvironment(name="dbt-jaffle-shop", image=image, cache="auto")
+
+dbt_build = DbtTask(
+    name="dbt-build",
+    task_environment=env,
+    project_dir=DBT_PROJECT_DIR,
+    cache="disable",
+)
+```
 
 ### Invocation inputs
 
