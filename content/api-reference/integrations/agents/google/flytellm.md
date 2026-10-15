@@ -2,7 +2,7 @@
 title: FlyteLlm
 description: "A `BaseLlm` that records each model turn via `durable_step` for replay."
 icon: braces
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -119,13 +119,11 @@ Yields:
   4. Text + bytes (image generation with gemini-2.5-flash-image)::
 
        LlmResponse(partial=True,  parts=[Text("Here's an image of a dog.")])
-       LlmResponse(partial=True,  parts=[Text("
-")])
+       LlmResponse(partial=True,  parts=[Text("")])
        LlmResponse(partial=True,  parts=[Blob(image/png, 1.6MB)])
        LlmResponse(partial=True,  parts=[Text("It carries a bone")])
        LlmResponse(partial=True,  parts=[Text(" and running around.")])
-       LlmResponse(partial=False, parts=[Text("Here's an image of a dog.
-"),
+       LlmResponse(partial=False, parts=[Text("Here's an image of a dog."),
                                          Blob(image/png, 1.6MB),
                                          Text("It carries a bone and running around.")])
 

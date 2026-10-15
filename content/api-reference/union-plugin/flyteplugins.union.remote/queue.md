@@ -2,7 +2,7 @@
 title: Queue
 description: "Represents a Union scheduling queue."
 icon: braces
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -39,17 +39,16 @@ class Queue(
 | `deleted_at` | `str` | When the queue was soft-deleted, or "" if it is live. |
 | `depth` | `int` |  |
 | `domain` | `str` |  |
-| `fairness` | `str` |  |
 | `has_authorship` | `bool` | True when at least one of ``created_by`` / ``updated_by`` renders as something readable. |
 | `is_deleted` | `bool` |  |
-| `max_accelerators` | `dict[str, int]` | Per-accelerator caps on the queue's in-flight GPU devices, as ``{selector: count}``.  Selectors are ``class[/device[/partition]]`` with the device by its canonical name (``nvidia_gpu``, ``nvidia_gpu/nvidia-t4``, ``nvidia_gpu/nvidia-a100/1g.5gb``); a cap stored under an older spelling reads back as its canonical name. An empty dict means no accelerator cap; GPUs are capped only here. |
+| `max_accelerators` | `dict[str, int]` | Per-accelerator caps on the queue's in-flight GPU devices, as ``{selector: count}``.  Selectors are ``class[/device[/partition]]`` with the device by its canonical name (``nvidia_gpu/nvidia-t4``, ``nvidia_gpu/nvidia-a100/1g.5gb``); a cap stored under an older spelling reads back as its canonical name. ``nvidia_gpu`` alone is the cap on GPUs requested without a device. An empty dict means no accelerator cap; GPUs are capped only here. |
 | `max_resources` | `dict[str, str]` | Resource cap on the queue's dispatched, not-yet-completed actions, as ``{name: quantity}``.  Only the dimensions the cap names are present; an absent dimension is unlimited. An empty dict means the queue has no cap at all. |
 | `name` | `str` |  |
 | `organization` | `str` |  |
 | `priority` | `str` |  |
 | `project` | `str` |  |
 | `run_concurrency` | `int` |  |
-| `scheduling` | `str` | What the resource gate does when the head of the queue does not fit.  ``strict_fifo`` holds the line behind it; ``greedy_capacity`` skips it and keeps packing. An unset field reads as ``strict_fifo`` — that is what the scheduler applies. |
+| `scheduling` | `str` | How the queue orders and admits its actions.  Both policies visit actions in enqueue order; they differ when the head of the queue does not fit. ``strict_fifo`` holds the line behind it; ``greedy_capacity`` skips it and keeps packing. ``unspecified`` means the queue has no policy: the server creates the default queue and a cluster's co-named queue that way, and the leasor then orders the queue by project round-robin and skips an action that does not fit. Setting ``strict_fifo`` or ``greedy_capacity`` on such a queue changes its order. |
 | `state_generation` | `int` | Server-owned counter of queue *state* changes (spec updates don't touch it).  State-changing requests carry the generation the caller observed, so a delayed request cannot apply to a state the caller never saw. Starts at 1 on creation; queues created before the counter existed read 0 until their first transition. |
 | `status` | `str` |  |
 | `updated_at` | `str` |  |
@@ -132,7 +131,6 @@ def create(
     action_concurrency: int,
     depth: int = 10000,
     priority: str = 'medium',
-    fairness: str = 'round_robin',
     clusters: list[str] | None = None,
     cluster_pool: str | None = None,
     max_resources: Mapping[str, object] | None = None,
@@ -157,15 +155,16 @@ named is unlimited (``0`` is a hard cap, not "unset"); ``None`` or ``{}``
 means no cap. GPUs are not capped here — see ``max_accelerators``.
 
 ``max_accelerators`` caps the in-flight GPU devices per accelerator type,
-as ``{selector: count}`` — e.g. ``{"T4": 2, "A100/1g.5gb": 1, "nvidia_gpu": 8}``.
+as ``{selector: count}`` — e.g. ``{"H100": 10, "A100/1g.5gb": 1, "nvidia_gpu": 8}``.
 A selector is a task-style device shorthand (``T4``), optionally with a
-partition, a canonical ``class/device[/partition]``, or a class alone to
-cap every device of that class. A device is charged to every cap covering
-it; a type not named is unlimited; counts are positive. Every GPU request
-names its type (a task that omits it gets the run's default GPU type), so
-every GPU in flight is charged to the caps covering its type. ``None`` or
-``{}`` means no accelerator cap. Enforced with the same ``scheduling`` rule as
-``max_resources``.
+partition, or a canonical ``class/device[/partition]``; a type not named
+is unlimited; counts are positive. ``nvidia_gpu`` (or ``gpu``) alone caps
+the GPUs requested without a device: it does not limit requests that
+name one. When a default GPU type is set in Settings, untyped requests
+count as that type instead; when the scheduler assigns an untyped GPU a
+device, it counts against that device's cap too. A class alone is
+accepted for NVIDIA only. ``None`` or ``{}`` means no accelerator cap.
+Enforced with the same ``scheduling`` rule as ``max_resources``.
 
 ``scheduling`` is what the resource gate does when the action at the head
 of the queue does not fit the remaining capacity: ``strict_fifo`` (the
@@ -189,7 +188,6 @@ be created: the server rejects an id carrying ``project`` or ``domain``.
 | `action_concurrency` | `int` | |
 | `depth` | `int` | |
 | `priority` | `str` | |
-| `fairness` | `str` | |
 | `clusters` | `list[str] \| None` | |
 | `cluster_pool` | `str \| None` | |
 | `max_resources` | `Mapping[str, object] \| None` | |
@@ -463,7 +461,6 @@ def update(
     action_concurrency: int | None = None,
     depth: int | None = None,
     priority: str | None = None,
-    fairness: str | None = None,
     clusters: list[str] | None = None,
     cluster_pool: str | None = None,
     max_resources: Mapping[str, object] | None = None,
@@ -494,7 +491,7 @@ the move otherwise.
 A cluster's co-named implicit queue is the exception: its ``clusters`` and
 ``cluster_pool`` are managed by that cluster and any request changing
 either is rejected — move the cluster with ``Cluster.update`` instead. Its
-other fields (concurrency, depth, priority, fairness) stay editable.
+other fields (concurrency, depth, priority, caps, scheduling) stay editable.
 
 A soft-deleted queue cannot be updated at all — undelete it first.
 
@@ -510,7 +507,6 @@ A soft-deleted queue cannot be updated at all — undelete it first.
 | `action_concurrency` | `int \| None` | |
 | `depth` | `int \| None` | |
 | `priority` | `str \| None` | |
-| `fairness` | `str \| None` | |
 | `clusters` | `list[str] \| None` | |
 | `cluster_pool` | `str \| None` | |
 | `max_resources` | `Mapping[str, object] \| None` | |

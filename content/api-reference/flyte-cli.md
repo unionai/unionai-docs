@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.15.5
+  flyteplugins-union: 0.17.0
 ---
 
 # Flyte CLI
@@ -83,11 +83,11 @@ This is the command line interface for Flyte.
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `user` | [`create⁺`](#flyte-create-user), [`delete⁺`](#flyte-delete-user), [`get⁺`](#flyte-get-user)  |
+| `volume` | [`create⁺`](#flyte-create-volume), [`explore⁺`](#flyte-explore-volume), [`mount⁺`](#flyte-mount-volume)  |
 | `app` | [`delete`](#flyte-delete-app), [`get`](#flyte-get-app), [`proxy`](#flyte-proxy-app), [`update`](#flyte-update-app)  |
 | `devbox` | [`delete`](#flyte-delete-devbox), [`get`](#flyte-get-devbox), [`start`](#flyte-start-devbox), [`stop`](#flyte-stop-devbox)  |
 | `local-cache` | [`delete`](#flyte-delete-local-cache)  |
 | `settings` | [`edit`](#flyte-edit-settings), [`get`](#flyte-get-settings)  |
-| `volume` | [`explore⁺`](#flyte-explore-volume)  |
 | `deploy` | [`factory⁺`](#flyte-factory-deploy)  |
 | `get` | [`factory⁺`](#flyte-factory-get)  |
 | `materialize` | [`factory⁺`](#flyte-factory-materialize)  |
@@ -113,7 +113,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user), [`volume⁺`](#flyte-create-volume)  |
 | [`debug⁺`](#flyte-debug) | - |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`queue⁺`](#flyte-delete-queue), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
 | [`deploy`](#flyte-deploy) | - |
@@ -123,6 +123,7 @@ This is the command line interface for Flyte.
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `mount⁺` | [`volume⁺`](#flyte-mount-volume)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `proxy` | [`app`](#flyte-proxy-app)  |
 | [`rerun`](#flyte-rerun) | - |
@@ -553,12 +554,21 @@ $ flyte create queue pool-queue --run-concurrency 50 --action-concurrency 500 \
 
 $ flyte create queue backfill --run-concurrency 10 --action-concurrency 100 \
     --depth 5000 --priority max
+```
+Gang-style jobs (all GPUs at once) want strict_fifo, so smaller work cannot
+take the GPUs a waiting job needs:
 
+```bash
 $ flyte create queue gangs --run-concurrency 50 --action-concurrency 500 \
-    --max-accelerators nvidia_gpu=64 --scheduling greedy_capacity
+    --max-accelerators H100=64 --scheduling strict_fifo
+```
+A shared queue: at most 8 GPUs requested without a device (gpu=1), and
+separate caps per device type:
 
-$ flyte create queue mixed-gpu --run-concurrency 50 --action-concurrency 500 \
-    --max-accelerators nvidia_gpu=8 --max-accelerators H100=2 --max-accelerators T4=4
+```bash
+$ flyte create queue shared --run-concurrency 50 --action-concurrency 500 \
+    --max-accelerators nvidia_gpu=8 --max-accelerators H100=10 \
+    --max-accelerators V6E=10 --scheduling greedy_capacity
 ```
 
 | Option | Type | Default | Description |
@@ -567,12 +577,11 @@ $ flyte create queue mixed-gpu --run-concurrency 50 --action-concurrency 500 \
 | `--action-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent actions (required) |
 | `--depth` | `integer` | `10000` | Max queue depth |
 | `--priority` | `choice` | `medium` | Queue priority |
-| `--fairness` | `choice` | `round_robin` | Fairness algorithm |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
 | `--max-resources` | `text` | `Sentinel.UNSET` | Cap the summed resource request of the queue's dispatched, not-yet-completed actions. Repeat per resource: --max-resources cpu=64 --max-resources memory=512Gi. NAME is one of cpu, memory, ephemeral_storage (GPUs are capped per type with --max-accelerators); QUANTITY is a Kubernetes quantity (8, 0.5, 100m, 512Gi). A resource not named is unlimited — 0 is a hard cap that forbids every request on it, not 'unset'. Omit the option entirely for no cap. |
-| `--max-accelerators` | `text` | `Sentinel.UNSET` | Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators nvidia-t4=2 --max-accelerators nvidia-a100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v5e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V5E is accepted and stored as the canonical name), optionally with a partition, or a class alone (nvidia_gpu, google_tpu, amazon_neuron, amd_gpu, habana_gaudi) to cap every device of that class. A device counts against every cap covering it; COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
-| `--scheduling` | `choice` | `strict_fifo` | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
+| `--max-accelerators` | `text` | `Sentinel.UNSET` | Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators H100=10 --max-accelerators V6E=10 --max-accelerators A100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v6e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V6E is accepted and stored as the canonical name), optionally with a partition. nvidia_gpu (or gpu) alone caps the GPUs requested without a device (unless a default GPU type is set in Settings, which makes them that type); it does not limit requests that name one, and when the scheduler assigns an untyped GPU a device it also counts against that device's cap. Only NVIDIA may be capped without a device. COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
+| `--scheduling` | `choice` | `strict_fifo` | How the queue orders its actions. Both policies go in enqueue order; they differ when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit (recommended for most queues). |
 | `--project` | `text` | `` | Scope queue to a project (currently rejected by the server: only organization-scoped queues can be created). |
 | `--domain` | `text` | `` | Scope queue to a domain (currently rejected by the server: only organization-scoped queues can be created). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
@@ -723,6 +732,47 @@ $ flyte --org my-org create user --first-name Jane --last-name Doe --email jane@
 | `--last-name` | `text` | `Sentinel.UNSET` | Last name of the user |
 | `--email` | `text` | `Sentinel.UNSET` | Email address of the user |
 | `--policy` | `text` |  | Policy to assign to the user after creation |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte create volume
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte create volume [OPTIONS] NAME`**
+
+Create a Union Volume, and optionally mount it.
+
+A declared volume has no published version until something writes and seals
+it, so this always mounts: with --mount it hands you the mount point and
+publishes on Ctrl-C; without, it mounts to a temporary directory and
+publishes an empty version straight away, so you get a locator to mount
+later.
+
+
+Create one and start using it:
+  flyte create volume scratch --bucket s3://my-bucket/volumes --mount ~/scratch
+
+Create an empty one and just take the locator:
+  flyte create volume scratch --bucket s3://my-bucket/volumes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--bucket` | `text` | `Sentinel.UNSET` | Object-store bucket URI (s3://..., gs://..., abfss://...). |
+| `--storage` | `choice` | `Sentinel.UNSET` | Object-store backend. Inferred from the bucket scheme (s3:// gs:// abfs(s)://); pass it only to override. These three are all a Volume supports. |
+| `--region` | `text` | `Sentinel.UNSET` | Object-store region. Derived from AWS_REGION when omitted, which is wrong whenever the bucket lives somewhere else — S3 then answers PermanentRedirect. |
+| `--endpoint` | `text` | `Sentinel.UNSET` | Object-store endpoint, for an S3-compatible store (MinIO, Cloudflare R2) with --storage s3. |
+| `--size` | `text` | `Sentinel.UNSET` | Make a BLOCK volume of this size (e.g. 64G): one sparse ext4 image instead of files. |
+| `--mount` | `path` | `Sentinel.UNSET` | Mount it here and hold until Ctrl-C, then publish. Without this, an empty version is published. |
+| `--metadata-prefix` | `text` | `Sentinel.UNSET` | Where new versions are written (default: <bucket>/versions). |
+| `--artifact` | `text` | `Sentinel.UNSET` | Register it in the artifact registry under this name. |
+| `--no-commit` | `boolean` | `Sentinel.UNSET` | On exit, discard instead of publishing. |
+| `--cache-dir` | `path` | `Sentinel.UNSET` | Local chunk cache directory. |
+| `--cache-size-mb` | `integer` | `Sentinel.UNSET` | Cap the local chunk cache, in MiB. |
+| `--transport` | `choice` | `auto` | How the filesystem reaches the kernel. auto means nfs on macOS, fuse elsewhere. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -2353,6 +2403,67 @@ $ flyte --org my-org get user --email jane@example.com
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant union >}}
+{{< markdown >}}
+### flyte mount
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte mount COMMAND [ARGS]...`**
+
+Mount Union resources on this machine.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte mount volume
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte mount volume [OPTIONS] REF MOUNTPOINT`**
+
+Mount a Union Volume at MOUNTPOINT.
+
+REF is either a volume locator (s3://..., gs://...) or RUN/ACTION, with an
+optional :OP when one action published more than one volume.
+
+The volume is FORKED first by default, and the fork is what gets mounted —
+so writing through the mount cannot touch the version you named, and cannot
+collide with whatever else is using it. A fork copies no data: it snapshots
+the metadata index and advances the allocator counters, and the chunks stay
+shared copy-on-write. It does write a new version to the bucket, so it needs
+object-store WRITE; use --read-only if you only have read, or only want to
+look.
+
+On Ctrl-C the mount is drained, unmounted and published, and the new
+locator printed. --no-commit throws the writes away instead.
+
+
+A volume a run published:
+  flyte mount volume my-run/a0 ~/vol
+
+A locator, with no control plane involved:
+  flyte mount volume s3://bucket/versions/ab/metadata.json ~/vol
+
+Look without writing anything, anywhere:
+  flyte mount volume my-run/a0 ~/vol --read-only
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--read-only` `-r` | `boolean` | `Sentinel.UNSET` | Mount the published version read-only. Needs only object-store READ, and does not fork. |
+| `--no-fork` | `boolean` | `Sentinel.UNSET` | Write to the resolved volume itself. Two writers on one volume corrupt it — be sure. |
+| `--fork-name` | `text` | `Sentinel.UNSET` | Name for the fork (default: <volume>-<host>-<timestamp>). |
+| `--keep-artifact` | `boolean` | `Sentinel.UNSET` | Let the fork inherit the artifact identity, so publishing it makes a sibling branch. |
+| `--no-commit` | `boolean` | `Sentinel.UNSET` | On exit, discard the writes instead of publishing them. |
+| `--region` | `text` | `Sentinel.UNSET` | Object-store region. Discovered from the bucket when omitted, so you should not normally need this. |
+| `--cache-dir` | `path` | `Sentinel.UNSET` | Local chunk cache directory. |
+| `--cache-size-mb` | `integer` | `Sentinel.UNSET` | Cap the local chunk cache, in MiB. |
+| `--transport` | `choice` | `auto` | How the filesystem reaches the kernel. auto means nfs on macOS, fuse elsewhere. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 ### flyte prefetch
 
 **`flyte prefetch COMMAND [ARGS]...`**
@@ -3167,18 +3278,20 @@ $ flyte update queue my-queue --activate
 Set or lift the resource cap without opening an editor:
 
 ```bash
-$ flyte update queue gpu-gangs --max-accelerators H100=64 --max-resources cpu=512
+$ flyte update queue shared --max-resources cpu=512 --max-resources memory=4Ti
 
-$ flyte update queue gpu-gangs --clear-max-resources
+$ flyte update queue shared --clear-max-resources
 
-$ flyte update queue gpu-gangs --scheduling greedy_capacity
+$ flyte update queue shared --scheduling greedy_capacity
 ```
-Set or lift the per-accelerator caps the same way:
+Set or lift the accelerator caps the same way. --max-accelerators replaces
+the whole set, so pass every cap the queue should keep:
 
 ```bash
-$ flyte update queue gpu-gangs --max-accelerators H100=2 --max-accelerators T4=4
+$ flyte update queue shared --max-accelerators nvidia_gpu=16 \
+    --max-accelerators H100=64
 
-$ flyte update queue gpu-gangs --clear-max-accelerators
+$ flyte update queue shared --clear-max-accelerators
 ```
 
 | Option | Type | Default | Description |
@@ -3188,11 +3301,11 @@ $ flyte update queue gpu-gangs --clear-max-accelerators
 | `--drain` | `boolean` | `Sentinel.UNSET` | Begin draining the queue |
 | `--activate` | `boolean` | `Sentinel.UNSET` | Re-activate a draining or drained queue |
 | `--edit` | `boolean` | `Sentinel.UNSET` | Open an editor to modify queue settings |
-| `--max-resources` | `text` | `Sentinel.UNSET` | Set the queue's resource cap, NAME=QUANTITY, repeatable per dimension (cpu, memory, gpu, ephemeral_storage). Replaces the whole cap: dimensions not named here become unbounded. |
+| `--max-resources` | `text` | `Sentinel.UNSET` | Set the queue's resource cap, NAME=QUANTITY, repeatable per dimension (cpu, memory, ephemeral_storage). Replaces the whole cap: dimensions not named here become unbounded. |
 | `--clear-max-resources` | `boolean` | `Sentinel.UNSET` | Lift the queue's resource cap entirely (every dimension unlimited). |
-| `--max-accelerators` | `text` | `Sentinel.UNSET` | Set the queue's per-accelerator caps, SELECTOR=COUNT, repeatable. Replaces the whole set: accelerators not named here become unlimited. Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators nvidia-t4=2 --max-accelerators nvidia-a100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v5e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V5E is accepted and stored as the canonical name), optionally with a partition, or a class alone (nvidia_gpu, google_tpu, amazon_neuron, amd_gpu, habana_gaudi) to cap every device of that class. A device counts against every cap covering it; COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
+| `--max-accelerators` | `text` | `Sentinel.UNSET` | Set the queue's per-accelerator caps, SELECTOR=COUNT, repeatable. Replaces the whole set: accelerators not named here become unlimited. Cap the queue's in-flight GPU devices per accelerator type — the only way GPUs are capped. Repeat per cap: --max-accelerators H100=10 --max-accelerators V6E=10 --max-accelerators A100/1g.5gb=1 --max-accelerators nvidia_gpu=8. SELECTOR names a device by its canonical name (nvidia-t4, nvidia-a100-80gb, nvidia-h100, google-tpu-v6e, aws-trn1, amd-mi300x, ...; the task shorthand T4, A100 80G, V6E is accepted and stored as the canonical name), optionally with a partition. nvidia_gpu (or gpu) alone caps the GPUs requested without a device (unless a default GPU type is set in Settings, which makes them that type); it does not limit requests that name one, and when the scheduler assigns an untyped GPU a device it also counts against that device's cap. Only NVIDIA may be capped without a device. COUNT is positive; an accelerator not named is unlimited. Enforced with the same --scheduling rule as --max-resources. |
 | `--clear-max-accelerators` | `boolean` | `Sentinel.UNSET` | Lift the queue's per-accelerator caps entirely. |
-| `--scheduling` | `choice` |  | What the resource gate does when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit. |
+| `--scheduling` | `choice` |  | How the queue orders its actions. Both policies go in enqueue order; they differ when the action at the head of the queue does not fit the remaining capacity: strict_fifo holds the line behind it (head-of-line blocking, which is what a gang wants), greedy_capacity skips it and keeps packing what does fit (recommended for most queues). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
