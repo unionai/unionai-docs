@@ -114,7 +114,7 @@ admin:
   endpoint: dns:///your-cluster.hosted.unionai.cloud
 
 image:
-  builder: remote  # or "local"
+  builder: remote  # or "local" or "local-podman"
 
 task:
   domain: development
@@ -132,7 +132,7 @@ task:
 | Project | CLI flag `-p` | `task.project` (default) |
 | Domain | CLI flag `-d` | `task.domain` (default) |
 | Organization | CLI flag `--org` | `task.org` (default) |
-| Image builder | N/A | `image.builder` (`local` or `remote`) |
+| Image builder | N/A | `image.builder` (`local`, `local-podman`, or `remote`) |
 
 ### Configuring in code
 

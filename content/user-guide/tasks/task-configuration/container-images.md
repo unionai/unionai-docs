@@ -328,9 +328,9 @@ Any of these sets the base registry for all image builds, so your `Image` defini
 {{< /markdown >}}
 {{< /variant >}}
 
-For Flyte OSS instances, this property must be set to `local`.
+For Flyte OSS instances, this property must be set to `local` or `local-podman`.
 
-For Union instances, this property can be set to `remote` to use the Union `ImageBuilder`, or `local` to build the image locally on your machine.
+For Union instances, this property can be set to `remote` to use the Union `ImageBuilder`, or `local` or `local-podman` to build the image locally on your machine.
 
 ### Local image building
 
@@ -352,6 +352,8 @@ You must ensure that:
 * Docker is running on your local machine.
 * You have successfully run `docker login` to that registry from your local machine (For example GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Union/Flyte installation has read access to that registry.
+
+To build with Podman instead of Docker, set `image.builder` to `local-podman` (requires flyte 2.10.6 or later). The image is built with `podman build` and pushed with `podman push` (`podman manifest push` for a multi-platform image). In place of the Docker requirements above, make sure that Podman is on your `PATH`, that a Podman machine is running on macOS and Windows (`podman machine start`), and that you have run `podman login` to the registry.
 
 > [!NOTE]
 > If you are using the GitHub container registry (`ghcr.io`)
