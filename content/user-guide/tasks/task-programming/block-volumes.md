@@ -239,6 +239,10 @@ before you finalize it. The source isn't modified.
   pieces, and a small change rewrites a whole piece. Workloads that rewrite
   many files between commits upload more than the same work on a regular
   Volume.
+- **No local mount on macOS.** A regular Volume can be mounted on your own
+  machine, but attaching an image needs a loop device and an ext4 driver, and
+  macOS has neither. Mount a block volume from Linux, or convert it — see
+  [Mount a volume on your own machine](./volumes#mount-a-volume-on-your-own-machine).
 
 ## Reference
 

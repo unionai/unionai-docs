@@ -536,6 +536,162 @@ It follows the version lineage, so you can step back through earlier commits and
 jump to the action that produced any version. To open an index you already have
 on disk, pass `--from-file <path> --store-type sqlite`.
 
+`explore` reads metadata only. To read or change the *contents* of a volume
+from outside a task, mount it — see
+[Mount a volume on your own machine](#mount-a-volume-on-your-own-machine).
+
+## Mount a volume on your own machine
+
+A Volume is not only mountable from a task. The same client mounts one on your
+laptop, so you can open a volume produced by a run in your editor, drop files
+into it from Finder, run a local script against it, and publish the result as a
+new version.
+
+```bash
+pip install -U 'flyteplugins-union>=0.17.0'
+flyte mount volume <run-name>/<action-name> ~/vol
+```
+
+The version floor matters on macOS: before 0.17.0 the macOS wheel carried a
+client with no local-mount support, so an older install fails rather than
+mounting.
+
+`REF` is either a volume **locator** (`s3://…/metadata.json`) or
+`RUN/ACTION`, with an optional `:OP` when one action published more than one
+volume. The command mounts and then holds the terminal; **Ctrl-C** unmounts,
+publishes an immutable version and prints its locator:
+
+```
+  mounted: /Users/me/vol
+  Ctrl-C to unmount.
+
+unmounting…
+committed.
+  locator: s3://my-bucket/volumes/versions/ab12/metadata.json
+  Mount it again with:
+    flyte mount volume s3://my-bucket/volumes/versions/ab12/metadata.json /Users/me/vol
+```
+
+### It forks before mounting
+
+By default the volume you name is **forked**, and the fork is what gets
+mounted. Writing through the mount therefore cannot touch the version you
+named, and cannot collide with whatever else is using it — which matters,
+because the volume you most want to open locally is often one a run is still
+writing. Forking copies no data: it snapshots the metadata index and advances
+the allocator counters, and the chunks stay shared copy-on-write.
+
+```bash
+# Read it, change nothing anywhere, and need only object-store READ:
+flyte mount volume my-run/a0 ~/vol --read-only
+
+# Name the fork instead of taking <volume>-<host>-<timestamp>:
+flyte mount volume my-run/a0 ~/vol --fork-name my-experiment
+
+# Let the fork inherit the artifact identity, so publishing it makes a sibling branch:
+flyte mount volume my-run/a0 ~/vol --keep-artifact
+
+# Throw the writes away on exit instead of publishing them:
+flyte mount volume my-run/a0 ~/vol --no-commit
+
+# Write to the resolved volume itself. Two writers on one volume corrupt it:
+flyte mount volume my-run/a0 ~/vol --no-fork
+```
+
+A fork **writes** a new version to the bucket, so it needs object-store write
+access. `--read-only` is the path that needs only read.
+
+### Create one from the command line
+
+```bash
+# Create, mount, write, Ctrl-C to publish:
+flyte create volume scratch --bucket s3://my-bucket/volumes --mount ~/scratch
+
+# Create an empty one and just take the locator:
+flyte create volume scratch --bucket s3://my-bucket/volumes
+
+# Register it in the artifact registry at the same time:
+flyte create volume scratch --bucket s3://my-bucket/volumes --artifact my-scratch --mount ~/scratch
+
+# An S3-compatible store (MinIO, Cloudflare R2):
+flyte create volume scratch --bucket s3://my-bucket/volumes \
+    --storage s3 --endpoint https://<account>.r2.cloudflarestorage.com --mount ~/scratch
+```
+
+`--bucket` can be left out if `$UNION_VOLUME_BUCKET` is set. A declared volume
+has no published version until something writes and seals it, so `create` always
+mounts: with `--mount` it hands you the mount point and publishes on Ctrl-C;
+without, it mounts a temporary directory and publishes an empty version straight
+away, so you have a locator to mount later.
+
+### How it reaches the kernel: NFS, not FUSE
+
+In a task pod the volume reaches the kernel through FUSE, handed over by the
+node's mount broker. On your own machine there is no broker, and on macOS there
+is no FUSE either without installing macFUSE — a kernel extension whose load
+needs an interactive approval.
+
+So on macOS the client runs its **own NFSv3 server on `127.0.0.1`** and lets the
+operating system's NFS client mount it. That mount is unprivileged: no kext, no
+`sudo`, and the mount table shows it as
+`127.0.0.1:/ on /Users/me/vol (nfs, nodev, nosuid, mounted by <you>)`.
+
+`--transport` (and `mount(transport=...)` in Python) chooses explicitly. The
+default is `auto`:
+
+| Where you are | `auto` picks |
+|---|---|
+| A task pod (mount broker present) | **FUSE** — the broker exists so an unprivileged pod never calls `mount(2)`, and NFS is a `mount(2)` that needs `CAP_SYS_ADMIN`. Asking for NFS there is refused |
+| macOS | **NFS** — the only transport that works with nothing installed |
+| Linux, no broker | **FUSE** — fewer round trips and real page-cache invalidation. NFS is not a way to avoid privileges on Linux: the mount still needs `CAP_SYS_ADMIN` |
+
+An explicit `--transport fuse` on macOS is allowed, not refused — if you have
+macFUSE installed, it is a supported configuration and the client will say so
+precisely if it is missing.
+
+### Credentials
+
+Two different things need access, and only the first involves the control
+plane:
+
+- **Resolving `RUN/ACTION`** into a volume — your ordinary `flyte` login. A
+  locator needs no control plane at all.
+- **The data** — the client talks **straight to the object store** with the
+  normal cloud credential chain (`AWS_PROFILE`, `~/.aws`, SSO, instance
+  credentials). In a task pod these are injected for you; on your laptop they
+  are whatever your shell has.
+
+So you need direct object-store access to the volume's bucket: read, and write
+too unless you pass `--read-only`. On a tenant whose bucket lives in Union's
+account you may have none, and then a local mount cannot work regardless.
+
+> [!NOTE]
+> Set `AWS_PROFILE` and let the CLI resolve it. Avoid exporting static keys with
+> `eval "$(aws configure export-credentials …)"`: static `AWS_*` variables take
+> precedence over `AWS_PROFILE` in every AWS credential chain, so once they are
+> in your shell a later `aws sso login` refreshes a profile nothing is reading,
+> and you get `ExpiredToken` from a login that just succeeded.
+
+### Limits of a local mount
+
+- **A [block volume](./block-volumes) cannot be mounted on macOS.** Block mode
+  stores one sparse ext4 image and attaches it with `losetup`; macOS has
+  neither loop devices nor an ext4 driver, so the CLI refuses with that reason
+  rather than showing you one opaque multi-gigabyte file. Mount it from Linux
+  instead. Forking does not help: a fork of a block volume is a block volume.
+- **Commit happens on the way out**, not while the mount is live: Ctrl-C is
+  what seals a version.
+- **Staleness.** NFSv3 cannot invalidate the client's cache, so another writer's
+  changes can take up to the attribute timeout to appear. FUSE does better;
+  this is the protocol's limit.
+- **Locking is local.** The macOS mount uses `locallocks`, so `flock`/`fcntl`
+  are handled by your own kernel and work, but they are not coordinated with
+  any other client.
+- **The server has no authentication.** It listens on loopback only, so
+  anything that can reach the port has the whole volume.
+- **Ctrl-C, not `kill -9`.** SIGTERM is what flushes and unmounts; SIGKILL
+  strands the mount point and loses the tail of the writes.
+
 ## Debugging a mount
 
 When a volume is slow, or a task looks stuck on file I/O, turn on the **volume
@@ -644,6 +800,9 @@ few seconds at `commit()`.
   [The chunk cache](#the-chunk-cache); `allow_volumes(shared_node_cache=True)`
   and `mount(shared_node_cache=...)` — see
   [Shared node cache](#shared-node-cache).
+- Local mounts: `flyte mount volume REF MOUNTPOINT` and
+  `flyte create volume NAME --mount DIR`, plus `mount(transport=...)` — see
+  [Mount a volume on your own machine](#mount-a-volume-on-your-own-machine).
 - Related: [Block volumes](./block-volumes) for small-file, single-writer
   workloads; [Files and directories](./files-and-directories) for passing
   snapshot data between tasks.

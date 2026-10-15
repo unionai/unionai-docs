@@ -268,3 +268,11 @@ virtualenvs
 # Keyed-hash message authentication code (RFC 2104); how four of the five
 # providers sign their deliveries.
 HMAC
+
+# --- Local (off-cluster) volume mounts, user-guide/tasks/task-programming/volumes.md ---
+# macFUSE is the macOS FUSE kernel extension (a "kext"); a local mount exists
+# precisely to avoid needing it. NFSv3 is the protocol the client serves on
+# loopback instead.
+macFUSE
+kext
+NFSv3
