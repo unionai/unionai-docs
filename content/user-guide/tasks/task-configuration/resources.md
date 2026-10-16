@@ -102,7 +102,11 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Supported NVIDIA types include `T4`, `L4`, `L40s`, `A10`, `A10G`, `A100`, `A100 80G`, `B200`, `H100`, `H200`, and `V100`.
+Supported NVIDIA types include `T4`, `L4`, `L40s`, `A10`, `A10G`, `A100`, `A100_80G`, `B200`, `H100`, `H200`, `V100`, `RTX_PRO_4500`, and `RTX_PRO_6000`.
+
+The names `A100_80G`, `RTX_PRO_4500`, and `RTX_PRO_6000` require `flyte` 2.11.3 or later. Earlier releases spell `A100_80G` and `RTX_PRO_6000` as `A100 80G` and `RTX PRO 6000`, and have no RTX PRO 4500 type.
+From `flyte` 2.11.4, the earlier spellings `A100 80G` and `RTX PRO 6000` still work as deprecated aliases and log a deprecation warning. `flyte` 2.11.3 rejects them.
+In the string form, `RTX_PRO_4500` is accepted only with a count of 1 (`"RTX_PRO_4500:1"`).
 
 #### GPU partitioning (MIG)
 
@@ -112,7 +116,7 @@ To request a Multi-Instance GPU (MIG) partition, use `flyte.GPU()` with a `parti
 resources=flyte.Resources(gpu=flyte.GPU(device="A100", quantity=1, partition="1g.5gb"))
 ```
 
-Partitioning is available on `A100`, `A100 80G`, `H100`, and `H200`.
+Partitioning is available on `A100`, `A100_80G` (`A100 80G` before `flyte` 2.11.3), `H100`, and `H200`.
 
 ### Google TPUs
 
