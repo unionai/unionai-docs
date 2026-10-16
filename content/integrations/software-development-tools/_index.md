@@ -1,6 +1,6 @@
 ---
 title: Software development tools
-description: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and turn them into Flyte runs.
+description: Receive webhooks from GitHub, Slack, Linear, ClickUp, Jira, and GitLab, and turn them into Flyte runs.
 icon: broadcast
 weight: 2
 variants: +flyte +union
@@ -9,9 +9,9 @@ sidebar_expanded: false
 
 # Software development tools
 
-These integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, and Jira: a pull request opens, an issue is filed, someone types a slash command, a ticket changes status.
+These integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, Jira, and GitLab: a pull request opens, an issue is filed, someone types a slash command, a ticket changes status.
 
-One app receives webhooks from any combination of the five products. It verifies each delivery with that product's authentication scheme, converts it to a common event model, and launches a run once per event, however many times the delivery arrives.
+One app receives webhooks from any combination of the six products. It verifies each delivery with that product's authentication scheme, converts it to a common event model, and launches a run once per event, however many times the delivery arrives.
 
 ## Supported products
 
@@ -22,6 +22,7 @@ One app receives webhooks from any combination of the five products. It verifies
 | [Linear](./linear) | `flyteplugins-linear` | HMAC-SHA256 (`Linear-Signature`) |
 | [ClickUp](./clickup) | `flyteplugins-clickup` | HMAC-SHA256 (`X-Signature`) |
 | [Jira](./jira) | `flyteplugins-jira` | Shared token (`X-Webhook-Token`). Jira does not sign deliveries. |
+| [GitLab](./gitlab) | `flyteplugins-gitlab` | Shared token (`X-Gitlab-Token`). The plugin doesn't verify a signature. |
 
 ## Quick start
 
@@ -60,7 +61,7 @@ The app serves:
 
 Each provider's secret is mounted automatically from its `default_secret_env`. Pass `secrets=` only to read a provider's secret from a different key.
 
-The product pages cover each product's setup, events, and the tasks it launches.
+The product pages cover each product's setup and events. All but the GitLab page also show the tasks it launches.
 
 ## The event model
 
@@ -101,7 +102,7 @@ When `scopes` is set, the app also skips events that carry no scope at all. If a
 
 ## Test without an account
 
-Each provider package ships a `SAMPLE_DELIVERY`: a recorded payload and a function that signs it. Pass it through `verify` and `parse` to see the event your handler will receive, without connecting the product. Each product page has a `replay_sample_delivery` task that does this:
+Each provider package ships a `SAMPLE_DELIVERY`: a recorded payload and a function that signs it. Pass it through `verify` and `parse` to see the event your handler will receive, without connecting the product. Each product page except GitLab has a `replay_sample_delivery` task that does this:
 
 ```bash
 flyte run --local github_tasks.py replay_sample_delivery
@@ -130,7 +131,7 @@ Step 2 separates a credentials problem from a delivery problem. From the receive
 
 ## Calling the product's API
 
-These packages don't wrap the products' APIs. To act on GitHub, Slack, Linear, ClickUp, or Jira from a task, call the vendor's client, such as `PyGithub` or `slack_sdk`, directly.
+These packages don't wrap the products' APIs. To act on GitHub, Slack, Linear, ClickUp, Jira, or GitLab from a task, call the vendor's client, such as `PyGithub` or `slack_sdk`, directly.
 
 Two helpers are the exception, because each pauses a run until a person decides:
 
@@ -145,6 +146,6 @@ Two helpers are the exception, because each pauses a run until a person decides:
 ## Next steps
 
 - [Software development lifecycle](../../user-guide/software-development-lifecycle/_index) for what to build on top of these, and how the pieces fit into review, release, and incident response.
-- [API reference](../../api-reference/integrations/software-development-tools/_index) for the five packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared receiver.
+- [API reference](../../api-reference/integrations/software-development-tools/_index) for the GitHub, Slack, Linear, ClickUp, and Jira packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared receiver.
 
 {{< subpage-cards >}}
