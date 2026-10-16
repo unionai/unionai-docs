@@ -165,6 +165,26 @@ def main() -> int:
     return read_dir(d)
 ```
 
+## Upload concurrency and part size
+
+When a task uploads to S3, GCS or Azure Blob Storage, `File.from_local` and `Dir.from_local` send each file in multipart parts, several at once. If many tasks upload to the same bucket at the same time, the object store can throttle the requests (on S3, `503 SlowDown`). To send fewer requests, use larger parts or fewer uploads in flight (`flyte` 2.11.3 or later):
+
+| Argument | Environment variable | Default | Controls |
+|---|---|---|---|
+| `batch_size` | `FLYTE_IO_BATCH_SIZE` | 32 | Files of a `Dir` uploaded at once |
+| `chunk_size` | `FLYTE_IO_UPLOAD_CHUNK_SIZE` | 5 MiB (10 MiB for `File.from_local` with a `HashMethod` as `hash_method`) | Minimum part size, in bytes |
+| `max_concurrency` | `FLYTE_IO_UPLOAD_MAX_CONCURRENCY` | 12 | Parts of one file uploaded at once |
+
+`Dir.from_local` and `Dir.from_local_sync` take all three arguments. `File.from_local` and `File.from_local_sync` take `chunk_size` and `max_concurrency`.
+
+An argument applies to that call only. An environment variable sets the default for every upload in the process. To apply them to a task, set them with `env_vars` on its `TaskEnvironment`. They are read when `flyte` is imported, so setting them from inside the task has no effect. `File.open()` in write mode also uses both variables, with a default part size of 10 MiB.
+
+A part size below 5 MiB is raised to 5 MiB, with a warning. When `File.from_local` computes a hash with a `HashMethod`, `FLYTE_IO_UPLOAD_CHUNK_SIZE` only takes effect above 10 MiB; a `chunk_size` argument is used as given. Very large files use larger parts than the minimum, to stay under the 10,000-part limit. A `max_concurrency` below 1 is raised to 1.
+
+Each part in flight is held in memory, so peak upload memory is roughly part size × `max_concurrency` for one file, and part size × `max_concurrency` × `batch_size` for a `Dir` upload.
+
+Uploads to other filesystems, such as local paths, ignore `chunk_size` and `max_concurrency`.
+
 ## JSONL files
 
 Flyte provides typed JSON Lines (JSONL) I/O through the `flyteplugins-jsonl` plugin, which extends `File` and `Dir` with the `JsonlFile` and `JsonlDir` types, adding streaming record-level read/write, optional zstd compression, and automatic shard rotation for large datasets.
