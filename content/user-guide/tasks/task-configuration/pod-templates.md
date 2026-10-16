@@ -54,7 +54,7 @@ The `PodTemplate` class provides the following parameters:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `primary_container_name` | `str` | Name of the container where task code runs (default: `"primary"`). Must match a container in `pod_spec`. |
+| `primary_container_name` | `str` | Name of the container where task code runs (default: `"primary"`). If `pod_spec` lists containers, one of them must have this name. |
 | `pod_spec` | `V1PodSpec` | Kubernetes pod specification for configuring containers, volumes, security contexts, and more. |
 | `labels` | `dict[str, str]` | Pod labels for organization and selection by Kubernetes selectors. |
 | `annotations` | `dict[str, str]` | Pod annotations for metadata and integrations (doesn't affect scheduling). |
@@ -215,7 +215,7 @@ pod_template = flyte.PodTemplate(
 
 ## Cluster-specific configuration
 
-Pod templates are often used to configure Kubernetes-specific settings required by your cluster, even when not using multiple containers:
+Pod templates are often used to configure Kubernetes-specific settings required by your cluster, even when not using multiple containers. A template like this one, with no `pod_spec`, requires `flyte` 2.11.2 or later:
 
 ```python
 import flyte
@@ -239,7 +239,7 @@ pod_template = flyte.PodTemplate(
 
 2. **Image building**: Flyte automatically builds and manages the image for your task environment. Images for sidecar containers must be pre-built and available in a registry.
 
-3. **Primary container**: Your task code is automatically injected into the container matching `primary_container_name`. This container must be defined in the `pod_spec.containers` list.
+3. **Primary container**: Your task code is automatically injected into the container matching `primary_container_name`. If `pod_spec.containers` lists any containers, one of them must be named `primary_container_name`. Starting with `flyte` 2.11.2, if the template has no `pod_spec` or no containers (for example, one that only sets labels and annotations), Flyte adds the primary container for you.
 
 4. **Lifecycle management**: Flyte monitors the primary container and terminates the entire pod when it exits, ensuring sidecar containers don't run indefinitely.
 
