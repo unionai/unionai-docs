@@ -131,12 +131,14 @@ Step 2 separates a credentials problem from a delivery problem. From the receive
 
 ## Calling the product's API
 
-These packages don't wrap the products' APIs. To act on GitHub, Slack, Linear, ClickUp, Jira, or GitLab from a task, call the vendor's client, such as `PyGithub` or `slack_sdk`, directly.
+The Linear, ClickUp, Jira, and GitLab packages don't wrap the products' APIs. To act on those products from a task, call the vendor's API or client directly.
 
-Two helpers are the exception, because each pauses a run until a person decides:
+The GitHub and Slack packages include a few task helpers. For anything they don't cover, call `PyGithub` or `slack_sdk` directly.
 
 - [`review_pr`](./github#human-review-gates) in `flyteplugins-github` waits for a pull-request review decision in the Flyte UI.
+- [`mint_installation_token`](./github#github-app-tokens) in `flyteplugins-github` creates short-lived GitHub App installation tokens.
 - [`approval.request`](./slack#approvals) in `flyteplugins-slack` waits for a button click in Slack.
+- [`notify`](./slack#send-messages-from-tasks) in `flyteplugins-slack` posts, edits, and deletes messages through the Slack Web API, and replies to interactions and slash commands.
 
 ## Related features
 
