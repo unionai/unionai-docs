@@ -33,7 +33,7 @@ The section uses no special lifecycle features. Each need maps to an ordinary pa
 
 | Need | Use |
 |---|---|
-| Start a run from GitHub, Slack, Linear, ClickUp, or Jira | [Software development tools](../../integrations/software-development-tools/_index) |
+| Start a run from GitHub, Slack, Linear, ClickUp, Jira, or GitLab | [Software development tools](../../integrations/software-development-tools/_index) |
 | Start a run on a schedule | [Triggers](../triggers/_index) |
 | Launch once per event when a delivery is retried or resent | `run_once`, keyed on the event. See [Event-driven automation](./event-driven-automation#launch-once-per-event) for the concurrent case. |
 | Wait for a person, possibly for days | [External conditions](../tasks/task-programming/conditions) |
@@ -54,7 +54,7 @@ Most teams use a handful of these. None is required.
 
 | Stage | Integrations |
 |---|---|
-| Trigger a run from an event | [GitHub](../../integrations/software-development-tools/github), [Slack](../../integrations/software-development-tools/slack), [Linear](../../integrations/software-development-tools/linear), [ClickUp](../../integrations/software-development-tools/clickup), [Jira](../../integrations/software-development-tools/jira) |
+| Trigger a run from an event | [GitHub](../../integrations/software-development-tools/github), [Slack](../../integrations/software-development-tools/slack), [Linear](../../integrations/software-development-tools/linear), [ClickUp](../../integrations/software-development-tools/clickup), [Jira](../../integrations/software-development-tools/jira), [GitLab](../../integrations/software-development-tools/gitlab) |
 | Configure the run | [Hydra](../../integrations/hydra/_index), [OmegaConf](../../integrations/omegaconf/_index) |
 | Validate inputs | [Pandera](../../integrations/pandera/_index) for dataframe contracts, [TypeSafe AI](../../integrations/typesafe-ai/_index) for typed, confidence-scored model answers |
 | Test generated code | [Code generation](../../integrations/codegen/_index), which runs generated code in a sandbox |
