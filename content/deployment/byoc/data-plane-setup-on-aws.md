@@ -34,10 +34,14 @@ Ensure that you are logged into the desired AWS account and then select the appr
 | `ap-northeast-1` | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14-byovpc%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
 
 > [!NOTE] CloudFormation template
-> All of these buttons launch the same CloudFormation template, just in different regions.
-> The CloudFormation template itself is available at this URL:
+> The buttons for every region except `ap-northeast-1` launch the same CloudFormation template.
+> It is available at this URL:
 >
 > [https://union-public.s3.amazonaws.com/templates/v0.14/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.14/union-ai-admin-role.template.yaml)
+>
+> The `ap-northeast-1` button launches this template. If your data plane is in `ap-northeast-1`, use this URL when you update the stack:
+>
+> [https://union-public.s3.amazonaws.com/templates/v0.14-byovpc/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.14-byovpc/union-ai-admin-role.template.yaml)
 >
 > For details on the functionality enabled by each of the permissions,
 > see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
@@ -75,7 +79,7 @@ When an update is required:
 - The Union.ai team will inform you that you need to perform the update.
 - The URL of the template will be published above, in the **CloudFormation template** info box. This is always kept up to date with the latest template.
 
-To perform the update on your system, copy the template URL and follow the directions here:
+To perform the update on your system, copy the template URL for your data plane's region and follow the directions here:
 
 ### Update your CloudFormation template
 
@@ -83,7 +87,7 @@ To perform the update on your system, copy the template URL and follow the direc
 2. Select the `UnionCloudAccess` stack.
 3. Select **Stack Actions > Create change set for current stack**.
 4. Select **Replace current template**.
-5. Input the new CloudFormation template URL provided to you by the Union.ai team (and published above in the **Current template** info box).
+5. Input the new CloudFormation template URL provided to you by the Union.ai team (and published above in the **CloudFormation template** info box).
 6. Select **Next**.
 7. On the **Specify stack details** page, accept the defaults and select **Next**.
 8. On the **Configure stack options** page, accept the defaults and select **Next**.
