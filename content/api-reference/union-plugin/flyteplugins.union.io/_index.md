@@ -1,6 +1,6 @@
 ---
 title: flyteplugins.union.io
-description: "Persistent, mountable :class:`Volume` type for the Flyte SDK v2."
+description: "Persistent, mountable `Volume` type for the Flyte SDK v2."
 icon: box-seam
 version: 0.17.0
 variants: -flyte +union
@@ -9,19 +9,21 @@ layout: py_api
 
 # flyteplugins.union.io
 
-Persistent, mountable :class:`Volume` type for the Flyte SDK v2.
+Persistent, mountable `Volume` type for the Flyte SDK v2.
 
 A ``Volume`` materializes as a mountable filesystem inside a task pod, backed
 by an object-store bucket (immutable data chunks) plus a metadata index. The
 index rides through the normal Flyte literal system as a Pydantic model, so
 lineage, caching, fork, and clone are first-class.
 
-Public surface::
+Public surface:
 
-    from flyteplugins.union.io import ROVolume, RWVolume, Volume
+```python
+from flyteplugins.union.io import ROVolume, RWVolume, Volume
+```
 
 The mount stack (JuiceFS client, metadata stores, subprocess plumbing) lives
-under :mod:`flyteplugins.union.io._internal` and is not part of the public API.
+under `flyteplugins.union.io._internal` and is not part of the public API.
 ## Directory
 
 ### Classes
@@ -135,13 +137,15 @@ directory and it is per-writer. Pods of one namespace share the directory
 world-writable; that is the trust boundary, and it is a namespace, not a
 node.
 
-Usage::
+Usage:
 
-    env = flyte.TaskEnvironment(
-        name="my-task",
-        image=with_high_throughput_volume_deps(flyte.Image.from_debian_base()),
-        pod_template=allow_volumes(),
-    )
+```python
+env = flyte.TaskEnvironment(
+    name="my-task",
+    image=with_high_throughput_volume_deps(flyte.Image.from_debian_base()),
+    pod_template=allow_volumes(),
+)
+```
 
 
 | Parameter | Type | Description |

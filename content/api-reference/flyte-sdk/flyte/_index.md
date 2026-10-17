@@ -1098,8 +1098,9 @@ app = flyte.serve(env)
 print(f"App URL: {app.url}")
 ```
 
-See Also:
-    with_servecontext: For customizing deployment settings
+**See Also:**
+
+- `with_servecontext`: For customizing deployment settings
 
 
 | Parameter | Type | Description |

@@ -22,10 +22,11 @@ The middleware is highly configurable:
 - Specific paths can be excluded from auth requirements
 - Auth can be optional or required
 
-Thread Safety:
-    This middleware is async-safe and properly isolates auth metadata per request
-    using Python's contextvars. Multiple concurrent requests with different
-    authentication will not interfere with each other.
+**Thread Safety:**
+
+This middleware is async-safe and properly isolates auth metadata per request
+using Python's contextvars. Multiple concurrent requests with different
+authentication will not interfere with each other.
 
 
 ## Parameters

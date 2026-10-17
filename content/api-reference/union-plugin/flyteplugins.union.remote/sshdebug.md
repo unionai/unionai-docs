@@ -141,10 +141,12 @@ def launch_env(
 ```
 Env vars to enable ssh-debug on a run, with the debug pubkey auto-injected.
 
-Use with the run launcher so users don't manage keys or env vars::
+Use with the run launcher so users don't manage keys or env vars:
 
-    run = flyte.with_runcontext(env_vars=SSHDebug.launch_env()).run(task)
-    info = SSHDebug.connect(run.name)   # uses the same auto-managed key
+```python
+run = flyte.with_runcontext(env_vars=SSHDebug.launch_env()).run(task)
+info = SSHDebug.connect(run.name)   # uses the same auto-managed key
+```
 
 
 | Parameter | Type | Description |

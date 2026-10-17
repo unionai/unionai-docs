@@ -168,8 +168,9 @@ def listall(
 ```
 List all API keys.
 
-Yields:
-    ApiKey instances
+**Yields:**
+
+ApiKey instances
 
 
 

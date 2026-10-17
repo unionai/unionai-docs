@@ -16,38 +16,46 @@ together tasks owned by other teams without those tasks changing. Deploying it p
 an ordinary task of type ``factory``; running that task for a target and a partition
 selector is a *materialization*. Backfill is a materialization over a range.
 
-Typical use::
+Typical use:
 
-    from flyte.remote import Task
-    from flyteplugins.union import factory
+```python
+from flyte.remote import Task
+from flyteplugins.union import factory
 
-    clean = Task.get("ingest.clean", auto_version="latest")
-    report = Task.get("analytics.report", auto_version="latest")
+clean = Task.get("ingest.clean", auto_version="latest")
+report = Task.get("analytics.report", auto_version="latest")
 
-    raw = factory.source("raw_events")  # type and partitions come from the registry
-    events = factory.build("events").using(clean, raw=raw, min_quality=30)
-    daily_report = factory.build("daily_report").using(report, events=events.all("region"))
+raw = factory.source("raw_events")  # type and partitions come from the registry
+events = factory.build("events").using(clean, raw=raw, min_quality=30)
+daily_report = factory.build("daily_report").using(report, events=events.all("region"))
 
-    analytics = factory.Factory("analytics", daily_report)
-    analytics.deploy()
-    run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
+analytics = factory.Factory("analytics", daily_report)
+analytics.deploy()
+run = analytics.materialize(daily_report, date="2026-08-01..2026-08-31")
+```
 
 A factory can end in a running app. ``serve`` names the app and binds its parameters to
-artifacts; a materialization deploys it with the versions it resolved::
+artifacts; a materialization deploys it with the versions it resolved:
 
-    endpoint = factory.serve("qwen3-chat").using(chat_app, model_path=approved)
+```python
+endpoint = factory.serve("qwen3-chat").using(chat_app, model_path=approved)
+```
 
 ``source``, ``build`` and ``serve`` declare; nothing runs until ``materialize``. A build's names line up
-with its task's return tuple, and ``"_"`` skips an output that is not an artifact::
+with its task's return tuple, and ``"_"`` skips an output that is not an artifact:
 
-    model, metrics = factory.build("_", "model", "metrics").using(train, data=features)
+```python
+model, metrics = factory.build("_", "model", "metrics").using(train, data=features)
+```
 
 Partitions are identity in the artifact registry: a version is published with its typed
 partition values (one time partition with a granularity, any number of string partitions)
 and looked up by them. A source needs no ``type=`` or ``partitions=`` when the registry
-already knows the artifact; deploy reads them from it::
+already knows the artifact; deploy reads them from it:
 
-    raw = factory.source("raw_events")
+```python
+raw = factory.source("raw_events")
+```
 ## Directory
 
 ### Classes
@@ -97,10 +105,12 @@ def build(
 Name the artifact (or artifacts) one task call makes. Follow with ``.using(task, **args)``.
 
 ``outputs`` lines up with the task's return tuple, left to right. Use ``"_"`` for an
-output that is not an artifact::
+output that is not an artifact:
 
-    events = factory.build("events").using(clean, raw=raw_events)
-    model, metrics = factory.build("_", "model", "metrics", "_").using(train, data=features)
+```python
+events = factory.build("events").using(clean, raw=raw_events)
+model, metrics = factory.build("_", "model", "metrics", "_").using(train, data=features)
+```
 
 
 
@@ -179,13 +189,15 @@ Materialize when a source gets a new version, or on a schedule.
 are the artifacts or endpoints to materialize; by default, everything the factory produces
 downstream of the source (for a source event) or everything it produces (for a schedule).
 Acting on each new version of something the factory builds needs no trigger: add a build
-that reads it::
+that reads it:
 
-    beans = factory.Factory("beans", api, predictions, triggers=[
-        factory.on(images),                                    # score each new day of images
-        factory.on(flyte.Cron("0 3 * * *"), api),              # nightly: retrain if anything changed
-        factory.on(flyte.Cron("0 2 * * *"), report, lag=factory.TimeRange(days=1)),  # yesterday
-    ])
+```python
+beans = factory.Factory("beans", api, predictions, triggers=[
+    factory.on(images),                                    # score each new day of images
+    factory.on(flyte.Cron("0 3 * * *"), api),              # nightly: retrain if anything changed
+    factory.on(flyte.Cron("0 2 * * *"), report, lag=factory.TimeRange(days=1)),  # yesterday
+])
+```
 
 A source event materializes the partition the new version belongs to; dimensions the event
 does not carry are materialized for every value the registry knows. A schedule materializes
@@ -234,11 +246,13 @@ def serve(
 Name the app a factory ends in. Follow with ``.using(app, **params)``.
 
 ``name`` is the app's name. Each keyword binds one of the app's parameters to an artifact,
-the way ``build(...).using(task, **args)`` binds task arguments::
+the way ``build(...).using(task, **args)`` binds task arguments:
 
-    chat = VLLMAppEnvironment(name="qwen3-chat", model_path=ArtifactValue("qwen3-approved"), ...)
-    endpoint = factory.serve("qwen3-chat").using(chat, model_path=approved)
-    qwen = factory.Factory("qwen3", endpoint)
+```python
+chat = VLLMAppEnvironment(name="qwen3-chat", model_path=ArtifactValue("qwen3-approved"), ...)
+endpoint = factory.serve("qwen3-chat").using(chat, model_path=approved)
+qwen = factory.Factory("qwen3", endpoint)
+```
 
 A materialization deploys the app with each parameter set to the artifact version it resolved,
 and leaves an app whose spec did not change alone. An endpoint is one app: materializing a range

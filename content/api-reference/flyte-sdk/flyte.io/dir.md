@@ -767,8 +767,9 @@ async def list_files_max_depth(d: Dir) -> list[str]:
     return file_names
 ```
 
-Yields:
-    File objects for each file found in the directory
+**Yields:**
+
+File objects for each file found in the directory
 
 
 | Parameter | Type | Description |
@@ -822,8 +823,9 @@ def list_files_limited(d: Dir) -> list[str]:
     return file_names
 ```
 
-Yields:
-    File objects for each file found in the directory
+**Yields:**
+
+File objects for each file found in the directory
 
 
 | Parameter | Type | Description |

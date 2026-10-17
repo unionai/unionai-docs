@@ -22,9 +22,10 @@ The batcher runs two internal loops:
 2. **Processing loop** — pulls assembled batches and calls
    `process_fn`, resolving each record's `asyncio.Future`.
 
-Type Parameters:
-    RecordT: The input record type produced by your tasks.
-    ResultT: The per-record output type returned by `process_fn`.
+**Type Parameters:**
+
+- `RecordT`: The input record type produced by your tasks.
+- `ResultT`: The per-record output type returned by `process_fn`.
 
 ```python
 async def process(batch: list[dict]) -> list[str]:

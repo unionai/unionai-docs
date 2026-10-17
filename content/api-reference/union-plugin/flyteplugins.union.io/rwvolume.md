@@ -156,11 +156,13 @@ Drain writeback, then snapshot the current state as a new immutable
 `ROVolume` — keeping this handle live and writable.
 
 PRD §Lifecycle: subsequent commits produce a linear history. This is
-the trace-style "checkpoint per epoch" pattern (UC2)::
+the trace-style "checkpoint per epoch" pattern (UC2):
 
-    for epoch in range(10):
-        train_one_epoch(...)
-        versions.append(await ckpt.commit(message=f"epoch {epoch}"))
+```python
+for epoch in range(10):
+    train_one_epoch(...)
+    versions.append(await ckpt.commit(message=f"epoch {epoch}"))
+```
 
 Because the writeback queue is drained before the snapshot, the
 returned `ROVolume` references durable chunks and is safe to

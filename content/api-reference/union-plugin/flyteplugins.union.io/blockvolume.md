@@ -40,13 +40,13 @@ Trade-offs versus a plain Volume:
 * More object-store traffic on file-heavy work (whole blocks are
   rewritten).
 
-::
-
-    cache = BlockVolume.new(size="64G")
-    path = await cache.mount()          # ext4 mount point
-    ...
-    await cache.grow("128G")             # online
-    return cache                         # finalized at task return
+```python
+cache = BlockVolume.new(size="64G")
+path = await cache.mount()          # ext4 mount point
+...
+await cache.grow("128G")             # online
+return cache                         # finalized at task return
+```
 
 
 ## Parameters
