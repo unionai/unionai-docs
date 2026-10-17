@@ -491,12 +491,11 @@ admin:
   clientSecretLocation: "/path/to/client_secret"
 ```
 
-Or use environment variables:
+Environment variables override the matching entries in the config file. They take effect only when the SDK finds a config file; with none, it uses defaults and ignores these variables:
 
 ```bash
-export FLYTE_CREDENTIALS_CLIENT_ID="<your-ci-client-id>"
-export FLYTE_CREDENTIALS_CLIENT_SECRET="<your-ci-client-secret>"
-export FLYTE_CREDENTIALS_AUTH_MODE=basic
+export FLYTE_ADMIN_CLIENTID="<your-ci-client-id>"
+export FLYTE_ADMIN_CLIENTSECRETLOCATION="/path/to/client_secret"
 ```
 
 ## Troubleshooting
