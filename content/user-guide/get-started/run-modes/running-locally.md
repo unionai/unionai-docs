@@ -85,7 +85,7 @@ flyte run --local hello.py main --x_list '[1, 2, 3]'
 ```
 
 > [!NOTE]
-> A common first-run trip-up: invoking `flyte run` against a task whose inputs have **no defaults** without supplying them. The CLI then can't construct the input and you'll see a confusing type-converter error rather than a "missing argument" message. If you hit one, check `--help` and pass the required `--<name>` values (or give the parameters defaults in the task signature, as `main` does above).
+> A common first-run trip-up: invoking `flyte run` against a task whose inputs have **no defaults** without supplying them. The CLI stops before running the task and names each missing input with its type, for example `Missing required parameter(s): --x (type: INTEGER)`. (`bool` inputs default to `False` and `Optional` inputs to `None`, so they are never reported missing.) If you hit this, check `--help` and pass the required `--<name>` values (or give the parameters defaults in the task signature, as `main` does above).
 
 ## Terminal UI
 
