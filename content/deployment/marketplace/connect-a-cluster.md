@@ -104,7 +104,7 @@ The **Installation progress** panel on the cluster's page tracks two phases:
 
 Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later. Until it finishes, the cluster shows as **Unhealthy** at the top of the page. That is expected during the install.
 
-If you check progress with `kubectl`, list pods across all namespaces. The data plane installs into its own namespace, named `instance-` followed by an identifier.
+If you check progress with `kubectl`, the agent runs in the `dataplane-agent` namespace, and the data plane installs into the namespace you set when you registered the cluster. That is `union` if you left **Namespace** empty.
 
 When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** next to its name:
 
