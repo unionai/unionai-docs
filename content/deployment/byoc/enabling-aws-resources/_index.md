@@ -79,18 +79,18 @@ Within that cluster, the Kubernetes pods allocated to run your task code are org
   For example, code in the `development` domain of project `foo` runs in the namespace `foo-development` while code in the `staging` domain of project `bar` runs in the namespace `bar-staging`, and so forth.
 * By default, all project-domain namespaces are bound to a common IAM role which we will refer to as `<UserFlyteRole>`.
   Its actual name differs from organization to organization. **The actual name will have the form `<YourOrgPrefix>-userflyterole`**.
-* The role `<UserFlyteRole>` has an attached policy called `userflyterole`.
+* The role `<UserFlyteRole>` has an attached policy which we will refer to as `<UserFlyteRolePolicy>`.
+  Its actual name usually has the same form as the role's, `<YourOrgPrefix>-userflyterole`; if you can't find it under that name, ask the Union.ai team.
   This policy contains all the permissions granted to your task code when your data plane was set up.
   If you requested permissions for resources specific to your organization at set up time, they will have been added here.
 
-> [!NOTE] `<UserFlyteRole>` vs `userflyterole`
+> [!NOTE] `<UserFlyteRole>` vs `<UserFlyteRolePolicy>`
 > The entity that we refer to here as `<UserFlyteRole>` is an IAM role.
-> As mentioned the actual name of this role in your system will be of the form `<YourOrgPrefix>-userflyterole.`
+> As mentioned the actual name of this role in your system will be of the form `<YourOrgPrefix>-userflyterole`.
 >
-> By default, this role has an attached IAM policy called `userflyterole`.
-> This is the literal name used in all AWS-based data planes.
+> By default, this role has an attached IAM policy, `<UserFlyteRolePolicy>`, whose name usually has the same form, `<YourOrgPrefix>-userflyterole`.
 >
-> **Be aware of the difference and don't get these two things confused!**
+> **The role and the policy usually have the same name, so check whether you are looking at roles or policies in the IAM console!**
 
 > [!NOTE] `<UserFlyteRole>`vs `<AdminFlyteRole>`
 > In addition to the task pods, your cluster also contains pods that run Union.ai services, which are used to manage tasks and to connect your cluster to the control plane.
@@ -114,10 +114,12 @@ You can then choose whether to enable **global access** or **project-domain-scop
 * [**To enable project-domain-scoped access**](#setting-up-project-domain-scoped-access) to your resource:
   * Create your own custom role (let's refer to it `<CustomRole>`)
   * Attach `<CustomPolicy>` to `<CustomRole>`.
-  * Also, attach the policy called `userflyterole` to `<CustomRole>` (this will ensure that `<CustomRole>` has all the default permissions needed to allow tasks to run).
+  * Also, attach `<UserFlyteRolePolicy>` to `<CustomRole>` (this will ensure that `<CustomRole>` has all the default permissions needed to allow tasks to run).
   * Attach `<CustomRole>` to the desired project-domain namespace.
 
 ![Diagram of the AWS IAM roles and policies used for project-domain-scoped access in Union](../../../_static/images/user-guide/integrations/enabling-aws-resources/union-roles.png)
+
+In this diagram, the "Union policy" attached to `custom-role` is `<UserFlyteRolePolicy>`. Don't attach any policy of `<AdminFlyteRole>` to `<CustomRole>`.
 
 ### Creating a custom policy
 
@@ -171,7 +173,7 @@ To set up project-domain-scoped access, you do this:
 In AWS:
 
 * Create the IAM role, `<CustomRole>`.
-* Add the `userflyterole` policy to `<CustomRole>`.
+* Add `<UserFlyteRolePolicy>` to `<CustomRole>`.
 * Add `<CustomPolicy>` to `<CustomRole>`.
 
 In Union.ai:
@@ -185,7 +187,7 @@ In Union.ai:
 3. Choose the **Web identity** role type.
 4. In the **Identity provider** dropdown select `oidc.eks.<Suffix>.`Record this name.
 5. Choose `sts.amazonaws.com` as the **Audience** and select **Next**.
-6. On the **Add permissions** page, search for the `userflyterole` policy and check the box beside it and select **Next**.
+6. On the **Add permissions** page, search for the `<UserFlyteRolePolicy>` policy (usually named `<YourOrgPrefix>-userflyterole`) and check the box beside it and select **Next**.
 7. Enter a name and description for this role.
 8. Under **Step 1: Select trusted entities**, click edit and _replace_ the `Condition` block with the following, where `oidc.eks.<Suffix>` is the value from step 4, and `<Project>`, and `<Domain>` are the Union.ai project and domain pairs you want to set custom permissions for. Repeat for each project-domain pair.
 
