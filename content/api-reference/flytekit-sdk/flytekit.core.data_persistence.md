@@ -234,8 +234,9 @@ FYI: Currently the raw output prefix set by propeller is already unique per retr
 If lpath is a folder, then recursive will be set.
 If lpath is a streamable, then it can only be a single file.
 
-Writes to:
-    {raw output prefix}/{upload_prefix}/{file_name}
+**Writes to:**
+
+{raw output prefix}/{upload_prefix}/{file_name}
 
 
 
@@ -531,8 +532,9 @@ FYI: Currently the raw output prefix set by propeller is already unique per retr
 If lpath is a folder, then recursive will be set.
 If lpath is a streamable, then it can only be a single file.
 
-Writes to:
-    {raw output prefix}/{upload_prefix}/{file_name}
+**Writes to:**
+
+{raw output prefix}/{upload_prefix}/{file_name}
 
 
 

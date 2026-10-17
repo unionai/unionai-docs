@@ -698,6 +698,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.clis.sdk_in_container.utils.validate_package()`](flytekit.clis.sdk_in_container.utils#validate_package) | This method will validate the packages passed in by the user. |
 | [`flytekit.configuration.file.bool_transformer()`](flytekit.configuration.file#bool_transformer) |  |
 | [`flytekit.configuration.file.comma_list_transformer()`](flytekit.configuration.file#comma_list_transformer) |  |
+| [`flytekit.configuration.file.get_config_file()`](flytekit.configuration.file#get_config_file) | Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None. |
 | [`flytekit.configuration.file.int_transformer()`](flytekit.configuration.file#int_transformer) |  |
 | [`flytekit.configuration.file.read_file_if_exists()`](flytekit.configuration.file#read_file_if_exists) | Reads the contents of the file if passed a path. |
 | [`flytekit.configuration.file.set_if_exists()`](flytekit.configuration.file#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set and return the updated dictionary. |
@@ -787,6 +788,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.core.type_engine.convert_marshmallow_json_schema_to_python_class()`](flytekit.core.type_engine#convert_marshmallow_json_schema_to_python_class) | Generate a model class based on the provided JSON Schema. |
 | [`flytekit.core.type_engine.convert_mashumaro_json_schema_to_python_class()`](flytekit.core.type_engine#convert_mashumaro_json_schema_to_python_class) | Generate a model class based on the provided JSON Schema. |
 | [`flytekit.core.type_engine.dataclass_from_dict()`](flytekit.core.type_engine#dataclass_from_dict) | Utility function to construct a dataclass object from dict. |
+| [`flytekit.core.type_engine.display_pickle_warning()`](flytekit.core.type_engine#display_pickle_warning) |  |
 | [`flytekit.core.type_engine.generate_attribute_list_from_dataclass_json()`](flytekit.core.type_engine#generate_attribute_list_from_dataclass_json) |  |
 | [`flytekit.core.type_engine.generate_attribute_list_from_dataclass_json_mixin()`](flytekit.core.type_engine#generate_attribute_list_from_dataclass_json_mixin) |  |
 | [`flytekit.core.type_engine.get_batch_size()`](flytekit.core.type_engine#get_batch_size) |  |
@@ -894,6 +896,7 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.tools.script_mode.add_imported_modules_from_source()`](flytekit.tools.script_mode#add_imported_modules_from_source) | Copies modules into destination that are in modules. |
 | [`flytekit.tools.script_mode.compress_scripts()`](flytekit.tools.script_mode#compress_scripts) | Compresses the single script while maintaining the folder structure for that file. |
 | [`flytekit.tools.script_mode.get_all_modules()`](flytekit.tools.script_mode#get_all_modules) | Import python file with module_name in source_path and return all modules. |
+| [`flytekit.tools.script_mode.hash_file()`](flytekit.tools.script_mode#hash_file) | Hash a file and produce a digest to be used as a version. |
 | [`flytekit.tools.script_mode.list_all_files()`](flytekit.tools.script_mode#list_all_files) |  |
 | [`flytekit.tools.script_mode.list_imported_modules_as_files()`](flytekit.tools.script_mode#list_imported_modules_as_files) | Copies modules into destination that are in modules. |
 | [`flytekit.tools.script_mode.ls_files()`](flytekit.tools.script_mode#ls_files) | user_modules_and_packages is a list of the Python modules and packages, expressed as absolute paths, that the user has run this pyflyte command with. |
@@ -922,6 +925,11 @@ When working with the Union SDK you will be using the `union` CLI and both the F
 | [`flytekit.types.numpy.ndarray.extract_metadata()`](flytekit.types.numpy.ndarray#extract_metadata) |  |
 | [`flytekit.types.schema.types.generate_ordered_files()`](flytekit.types.schema.types#generate_ordered_files) |  |
 | [`flytekit.types.structured.lazy_import_structured_dataset_handler()`](flytekit.types.structured#lazy_import_structured_dataset_handler) |  |
+| [`flytekit.types.structured.register_arrow_handlers()`](flytekit.types.structured#register_arrow_handlers) |  |
+| [`flytekit.types.structured.register_bigquery_handlers()`](flytekit.types.structured#register_bigquery_handlers) |  |
+| [`flytekit.types.structured.register_csv_handlers()`](flytekit.types.structured#register_csv_handlers) |  |
+| [`flytekit.types.structured.register_pandas_handlers()`](flytekit.types.structured#register_pandas_handlers) |  |
+| [`flytekit.types.structured.register_snowflake_handlers()`](flytekit.types.structured#register_snowflake_handlers) |  |
 | [`flytekit.types.structured.basic_dfs.get_pandas_storage_options()`](flytekit.types.structured.basic_dfs#get_pandas_storage_options) |  |
 | [`flytekit.types.structured.snowflake.get_private_key()`](flytekit.types.structured.snowflake#get_private_key) |  |
 | [`flytekit.types.structured.structured_dataset.convert_schema_type_to_structured_dataset_type()`](flytekit.types.structured.structured_dataset#convert_schema_type_to_structured_dataset_type) |  |

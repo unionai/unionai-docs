@@ -45,6 +45,7 @@ layout: py_api
 | [`convert_marshmallow_json_schema_to_python_class()`](#convert_marshmallow_json_schema_to_python_class) | Generate a model class based on the provided JSON Schema. |
 | [`convert_mashumaro_json_schema_to_python_class()`](#convert_mashumaro_json_schema_to_python_class) | Generate a model class based on the provided JSON Schema. |
 | [`dataclass_from_dict()`](#dataclass_from_dict) | Utility function to construct a dataclass object from dict. |
+| [`display_pickle_warning()`](#display_pickle_warning) |  |
 | [`generate_attribute_list_from_dataclass_json()`](#generate_attribute_list_from_dataclass_json) |  |
 | [`generate_attribute_list_from_dataclass_json_mixin()`](#generate_attribute_list_from_dataclass_json_mixin) |  |
 | [`get_batch_size()`](#get_batch_size) |  |
@@ -123,6 +124,17 @@ Utility function to construct a dataclass object from dict
 |-|-|-|
 | `cls` | `type` | |
 | `src` | `typing.Dict[str, typing.Any]` | |
+
+#### display_pickle_warning()
+
+```python
+def display_pickle_warning(
+    python_type: str,
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `str` | |
 
 #### generate_attribute_list_from_dataclass_json()
 

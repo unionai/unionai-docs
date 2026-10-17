@@ -8,7 +8,6 @@ layout: py_api
 
 # flytekit.types.structured
 
-
 ## Directory
 
 ### Methods
@@ -16,6 +15,11 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`lazy_import_structured_dataset_handler()`](#lazy_import_structured_dataset_handler) |  |
+| [`register_arrow_handlers()`](#register_arrow_handlers) |  |
+| [`register_bigquery_handlers()`](#register_bigquery_handlers) |  |
+| [`register_csv_handlers()`](#register_csv_handlers) |  |
+| [`register_pandas_handlers()`](#register_pandas_handlers) |  |
+| [`register_snowflake_handlers()`](#register_snowflake_handlers) |  |
 
 
 ## Methods
@@ -24,4 +28,29 @@ layout: py_api
 
 ```python
 def lazy_import_structured_dataset_handler()
+```
+#### register_arrow_handlers()
+
+```python
+def register_arrow_handlers()
+```
+#### register_bigquery_handlers()
+
+```python
+def register_bigquery_handlers()
+```
+#### register_csv_handlers()
+
+```python
+def register_csv_handlers()
+```
+#### register_pandas_handlers()
+
+```python
+def register_pandas_handlers()
+```
+#### register_snowflake_handlers()
+
+```python
+def register_snowflake_handlers()
 ```

@@ -497,8 +497,9 @@ This exists because it is possible that MapTasks are created using nested "parti
 When a maptask is created its interface is interpolated from the interface of the subtask - the interpolation,
 simply converts every input into a list/collection input.
 
-For example:
-  interface -&gt; (i: int, j: str) -&gt; str  =&gt; map_task interface -&gt; (i: List[int], j: List[str]) -&gt; List[str]
+**For example:**
+
+interface -&gt; (i: int, j: str) -&gt; str  =&gt; map_task interface -&gt; (i: List[int], j: List[str]) -&gt; List[str]
 
 But in cases in which `j` is bound to a fixed value by using `functools.partial` we need a way to ensure that
 the interface is not simply interpolated, but only the unbound inputs are interpolated.

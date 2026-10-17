@@ -47,11 +47,13 @@ will be the output of tasks and workflows. The other category is user uploads.
 This Python class has limited purpose, as a way for users to specify that tasks/workflows create Artifacts
 and the manner (i.e. name, partitions) in which they are created.
 
-Control creation parameters at task/workflow execution time ::
+Control creation parameters at task/workflow execution time
 
-    @task
-    def t1() -&gt; Annotated[nn.Module, Artifact(name="my.artifact.name")]:
-        ...
+```python
+@task
+def t1() -> Annotated[nn.Module, Artifact(name="my.artifact.name")]:
+    ...
+```
 
 
 ### Parameters

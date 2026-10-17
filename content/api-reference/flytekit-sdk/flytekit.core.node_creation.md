@@ -36,35 +36,45 @@ def create_node(
 ```
 This is the function you want to call if you need to specify dependencies between tasks that don't consume and/or
 don't produce outputs. For example, if you have t1() and t2(), both of which do not take in nor produce any
-outputs, how do you specify that t2 should run before t1? ::
+outputs, how do you specify that t2 should run before t1?
 
-    t1_node = create_node(t1)
-    t2_node = create_node(t2)
+```python
+t1_node = create_node(t1)
+t2_node = create_node(t2)
 
-    t2_node.runs_before(t1_node)
-    # OR
-    t2_node &gt;&gt; t1_node
+t2_node.runs_before(t1_node)
+# OR
+t2_node >> t1_node
+```
 
-This works for tasks that take inputs as well, say a ``t3(in1: int)`` ::
+This works for tasks that take inputs as well, say a ``t3(in1: int)``
 
-    t3_node = create_node(t3, in1=some_int)  # basically calling t3(in1=some_int)
+```python
+t3_node = create_node(t3, in1=some_int)  # basically calling t3(in1=some_int)
+```
 
-You can still use this method to handle setting certain overrides ::
+You can still use this method to handle setting certain overrides
 
-    t3_node = create_node(t3, in1=some_int).with_overrides(...)
+```python
+t3_node = create_node(t3, in1=some_int).with_overrides(...)
+```
 
-Outputs, if there are any, will be accessible. A `t4() -> (int, str)` ::
+Outputs, if there are any, will be accessible. A `t4() -> (int, str)`
 
-    t4_node = create_node(t4)
+```python
+t4_node = create_node(t4)
+```
 
 In compilation node.o0 has the promise. ::
     t5(in1=t4_node.o0)
 
 If t1 produces only one output, note that in local execution, you still get a wrapper object that
-needs to be dereferenced by the output name. ::
+needs to be dereferenced by the output name.
 
-    t1_node = create_node(t1)
-    t2(t1_node.o0)
+```python
+t1_node = create_node(t1)
+t2(t1_node.o0)
+```
 
 
 | Parameter | Type | Description |

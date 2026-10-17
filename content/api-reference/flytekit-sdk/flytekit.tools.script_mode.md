@@ -17,6 +17,7 @@ layout: py_api
 | [`add_imported_modules_from_source()`](#add_imported_modules_from_source) | Copies modules into destination that are in modules. |
 | [`compress_scripts()`](#compress_scripts) | Compresses the single script while maintaining the folder structure for that file. |
 | [`get_all_modules()`](#get_all_modules) | Import python file with module_name in source_path and return all modules. |
+| [`hash_file()`](#hash_file) | Hash a file and produce a digest to be used as a version. |
 | [`list_all_files()`](#list_all_files) |  |
 | [`list_imported_modules_as_files()`](#list_imported_modules_as_files) | Copies modules into destination that are in modules. |
 | [`ls_files()`](#ls_files) | user_modules_and_packages is a list of the Python modules and packages, expressed as absolute paths, that the user has run this pyflyte command with. |
@@ -110,6 +111,20 @@ Import python file with module_name in source_path and return all modules.
 |-|-|-|
 | `source_path` | `str` | |
 | `module_name` | `Optional[str]` | |
+
+#### hash_file()
+
+```python
+def hash_file(
+    file_path: typing.Union[os.PathLike, str],
+) -> (bytes, str, int)
+```
+Hash a file and produce a digest to be used as a version
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path` | `typing.Union[os.PathLike, str]` | |
 
 #### list_all_files()
 
