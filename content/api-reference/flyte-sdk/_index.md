@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -358,7 +358,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.is_remote()`](flyte.storage/_index#is_remote) | Let's find a replacement. |
 | [`flyte.storage.join()`](flyte.storage/_index#join) | Join multiple paths together. |
 | [`flyte.storage.open()`](flyte.storage/_index#open) | Asynchronously open a file and return an async context manager. |
-| [`flyte.storage.put()`](flyte.storage/_index#put) |  |
+| [`flyte.storage.put()`](flyte.storage/_index#put) | Upload a local file or directory to a remote location. |
 | [`flyte.storage.put_stream()`](flyte.storage/_index#put_stream) | Put a stream of data to a remote location. |
 | [`flyte.types.guess_interface()`](flyte.types/_index#guess_interface) | Returns the interface of the task with guessed types, as types may not be present in current env. |
 | [`flyte.types.literal_string_repr()`](flyte.types/_index#literal_string_repr) | This method is used to convert a literal map to a string representation. |

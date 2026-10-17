@@ -2,7 +2,7 @@
 title: FlytePickle
 description: "This type is only used by Flyte internally."
 icon: braces
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---

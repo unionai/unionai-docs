@@ -2,7 +2,7 @@
 title: ROVolume
 description: "Immutable, versioned volume — PRD §Core Concepts."
 icon: braces
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -394,6 +394,7 @@ def mount(
     shared_node_cache: Optional[bool] = None,
     cache_size_mb: Optional[int] = None,
     enable_xattr: bool = False,
+    transport: str = 'auto',
 ) -> Path
 ```
 Mount this volume read-only at ``mount_path`` and return the path.
@@ -426,6 +427,7 @@ read-only mount never uses the passthrough write path.
 | `shared_node_cache` | `Optional[bool]` | |
 | `cache_size_mb` | `Optional[int]` | |
 | `enable_xattr` | `bool` | |
+| `transport` | `str` | |
 
 ### new()
 

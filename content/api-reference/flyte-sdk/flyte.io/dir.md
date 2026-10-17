@@ -2,7 +2,7 @@
 title: Dir
 description: "A generic directory class representing a directory with files of a specified format."
 icon: braces
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -419,6 +419,8 @@ def from_local(
     remote_destination: Optional[str] = None,
     dir_cache_key: Optional[str] = None,
     batch_size: Optional[int] = None,
+    chunk_size: Optional[int] = None,
+    max_concurrency: Optional[int] = None,
 ) -> Dir[T]
 ```
 Asynchronously create a new Dir by uploading a local directory to remote storage.
@@ -465,6 +467,8 @@ async def upload_with_cache_key() -> Dir:
 | `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
 | `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
 | `batch_size` | `Optional[int]` | Optional concurrency limit for uploading files. If not specified, the default value is determined by the FLYTE_IO_BATCH_SIZE environment variable (default: 32). |
+| `chunk_size` | `Optional[int]` | Optional minimum multipart part size in bytes. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_CHUNK_SIZE environment variable (default: 5 MiB). A larger part size means fewer upload requests, which helps when the object store throttles on request rate. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `Optional[int]` | Optional number of parts of a single file uploaded at once. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_MAX_CONCURRENCY environment variable (default: 12). Peak upload memory is roughly chunk_size x max_concurrency x batch_size. Applies to S3, GCS and Azure; ignored by other filesystems. |
 
 **Returns:** A new Dir instance pointing to the uploaded directory
 
@@ -475,6 +479,9 @@ def from_local_sync(
     local_path: Union[str, Path],
     remote_destination: Optional[str] = None,
     dir_cache_key: Optional[str] = None,
+    batch_size: Optional[int] = None,
+    chunk_size: Optional[int] = None,
+    max_concurrency: Optional[int] = None,
 ) -> Dir[T]
 ```
 Synchronously create a new Dir by uploading a local directory to remote storage.
@@ -521,6 +528,9 @@ def upload_with_cache_key_sync() -> Dir:
 | `local_path` | `Union[str, Path]` | Path to the local directory |
 | `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
 | `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
+| `batch_size` | `Optional[int]` | Optional concurrency limit for uploading files. If not specified, the default value is determined by the FLYTE_IO_BATCH_SIZE environment variable (default: 32). |
+| `chunk_size` | `Optional[int]` | Optional minimum multipart part size in bytes. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_CHUNK_SIZE environment variable (default: 5 MiB). A larger part size means fewer upload requests, which helps when the object store throttles on request rate. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `Optional[int]` | Optional number of parts of a single file uploaded at once. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_MAX_CONCURRENCY environment variable (default: 12). Peak upload memory is roughly chunk_size x max_concurrency x batch_size. Applies to S3, GCS and Azure; ignored by other filesystems. |
 
 **Returns:** A new Dir instance pointing to the uploaded directory
 
