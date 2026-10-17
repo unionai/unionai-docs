@@ -2,7 +2,7 @@
 title: User
 description: "Represents a Union user."
 icon: braces
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 ---

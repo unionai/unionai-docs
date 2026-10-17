@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -71,7 +71,7 @@ weight: 5
 |-|-|
 | [`flyteplugins.union`](flyteplugins.union/_index) | Union SDK - Proprietary extensions for Flyte. |
 | [`flyteplugins.union.factory`](flyteplugins.union.factory/_index) | Factories: a declared graph of partitioned artifacts the platform can materialize on demand. |
-| [`flyteplugins.union.io`](flyteplugins.union.io/_index) | Persistent, mountable :class:`Volume` type for the Flyte SDK v2. |
+| [`flyteplugins.union.io`](flyteplugins.union.io/_index) | Persistent, mountable `Volume` type for the Flyte SDK v2. |
 | [`flyteplugins.union.remote`](flyteplugins.union.remote/_index) | Union remote control plane objects. |
 | [`flyteplugins.union.utils`](flyteplugins.union.utils/_index) | Public utilities for ``flyteplugins.union``. |
 
