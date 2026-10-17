@@ -76,7 +76,7 @@ A few things to note. `flyte.Resources` sets the CPU and memory for every task i
 
 Each tool is a regular Python async function decorated with `@env.task`. That decorator turns it into a durable Flyte task: it runs in its own container with the resources declared on the environment, it's automatically retried on transient failures, and every invocation is tracked in the Flyte UI.
 
-Data flows between tasks as `flyte.io.File` objects. A `File` is a reference to data in cloud storage. When a task needs the actual bytes, it calls `await data.download()` to pull them into the container's local filesystem. When it produces output, it creates a `File` from a local path and returns it. Flyte handles the upload to cloud storage when the task completes. The data itself never passes through the agent or the LLM.
+Data flows between tasks as `flyte.io.File` objects. A `File` is a reference to data in cloud storage. When a task needs the actual bytes, it calls `await data.download()` to pull them into the container's local filesystem. When it produces output, it writes the result to a local path and calls `await File.from_local()`, which uploads the file to cloud storage right away and returns a `File` that references it. The data itself never passes through the agent or the LLM.
 
 Here's what the training tool looks like:
 
@@ -86,7 +86,7 @@ And here's the profiling tool, which is the first thing the agent calls. It comp
 
 {{< code file="/unionai-examples/v2/tutorials/mle_bot/mle_bot/tools/data.py" fragment=profile_dataset lang=python >}}
 
-The full tool inventory includes ten functions: `profile_dataset`, `split_dataset`, `explore_dataset`, `engineer_features`, `select_features`, `resample_dataset`, `train_model`, `get_predictions`, `evaluate_model`, and `rank_experiments`. Each one does exactly one thing. The LLM composes them into pipelines, but each tool enforces its own correctness guarantees internally. For example, `resample_dataset` only applies resampling to training data, never test data, regardless of what the LLM asks for.
+The full tool inventory includes ten functions: `profile_dataset`, `split_dataset`, `explore_dataset`, `engineer_features`, `select_features`, `resample_dataset`, `train_model`, `get_predictions`, `evaluate_model`, and `rank_experiments`. Each one does exactly one thing. The LLM composes them into pipelines. The tools don't check how they're composed: `resample_dataset`, for example, resamples whatever file it's given. The rule to resample only the training split is guidance in the tool's docstring and the orchestration prompt, not a check in the tool.
 
 ## Guiding the LLM with domain knowledge
 
@@ -150,7 +150,7 @@ The LLM typically proposes 2 to 3 experiments: a baseline with minimal feature e
 
 {{< code file="/unionai-examples/v2/tutorials/mle_bot/mle_bot/agent.py" fragment=parallel_execute lang=python >}}
 
-**Phase 4: Analyze and iterate.** After each batch completes, the LLM reviews the results and decides whether to continue. It can optionally request targeted data explorations before designing the next round. If the LLM requests explorations (e.g., "do failure cases show higher vibration readings?"), the agent runs `explore_dataset` with those configurations, feeds the results back to the LLM, and lets it refine the next batch of experiments based on what it learned. The loop continues until the LLM decides to stop, the target metric threshold is reached, or the maximum number of iterations is exhausted.
+**Phase 4: Analyze and iterate.** After each batch except the last, provided at least one experiment has succeeded, the LLM reviews the results so far and decides whether to continue. It can optionally request targeted data explorations before designing the next round. If the LLM requests explorations (e.g., "do failure cases show higher vibration readings?"), the agent runs `explore_dataset` with those configurations, feeds the results back to the LLM, and lets it refine the next batch of experiments based on what it learned. The loop continues until the LLM decides to stop, it proposes no further experiments, or the maximum number of iterations is exhausted.
 
 ## Running LLM-generated code in Flyte's sandbox
 
@@ -269,8 +269,6 @@ The agent connects to your cluster via `~/.flyte/config.yaml`, uploads the CSV, 
 > You'll need to register your OpenAI API key as a cluster secret named `OPENAI_API_KEY` before running:
 > `flyte create secret OPENAI_API_KEY --value <YOUR_KEY>`
 
-If you want to see the self-healing retry loop in action, add the `--inject-failure` flag. This deliberately corrupts the first experiment so the agent has to detect the error and recover, which makes for a nice demo of the durability guarantees.
-
 ## Why Flyte?
 
 You could build something similar with plain Python and `exec()`. But there are a few things you'd lose.
@@ -283,6 +281,6 @@ You could build something similar with plain Python and `exec()`. But there are 
 
 **Compute isolation.** The ML tools run on cloud instances with the CPU and memory they need. The agent itself runs on a small 1-CPU instance since all it does is call the LLM and dispatch tool tasks. You're not bottlenecked by your laptop, and you're not paying for GPU-class compute to run an orchestration loop.
 
-**Parallelism.** Multiple experiments run simultaneously via `asyncio.gather()`, each dispatching its own durable tasks. Flyte handles the scheduling. If you have three experiments in a batch and each involves training + evaluation, that's six tasks running concurrently on cloud compute.
+**Parallelism.** Multiple experiments run simultaneously via `asyncio.gather()`, each dispatching its own durable tasks. Flyte handles the scheduling. If you have three experiments in a batch, they run concurrently on cloud compute. Within each experiment, the sandbox runs one tool call at a time: it waits for each task to finish before the generated code continues, so `evaluate_model` starts only after `train_model` returns the model file.
 
 The MLE Bot is a specific example of a more general pattern: giving an LLM the ability to reason about *what* work should be done, while Flyte handles *how* that work gets executed safely, durably, and at scale. The sandbox is the boundary between the two. Everything above the boundary is LLM-generated and untrusted. Everything below it is your code, running on your infrastructure, with all the guarantees you'd expect from a production orchestrator.
