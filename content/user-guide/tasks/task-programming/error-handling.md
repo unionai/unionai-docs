@@ -367,8 +367,11 @@ async def large_inline_io() -> str:
 ```
 
 The small string passes through, but the ~1 MiB string breaches the 100 KiB limit and raises
-`flyte.errors.InlineIOMaxBytesBreached`. When you expect large values, raise `max_inline_io_bytes` or pass the
-data as a `flyte.io.File` or `flyte.io.Dir` so it is offloaded to blob storage instead of travelling inline. A
+`flyte.errors.InlineIOMaxBytesBreached`. The calling task raises the error, and only in remote runs; local runs
+don't enforce the limit. See
+[Inline I/O threshold](../task-configuration/additional-task-settings#where-the-limit-is-checked).
+When you expect large values, raise `max_inline_io_bytes` or pass the
+data as a `flyte.io.File` or `flyte.io.Dir` so it is offloaded to blob storage instead of traveling inline. A
 runnable version of this example is available as
 [`large_inline_io.py`](https://github.com/flyteorg/flyte-sdk/blob/main/examples/advanced/large_inline_io.py).
 
