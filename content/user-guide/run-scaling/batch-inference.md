@@ -528,6 +528,8 @@ async def get_batcher() -> TokenBatcher[Prompt, str]:
     return batcher
 ```
 
+To stream the model's weights from object storage instead of downloading them from the Hugging Face Hub, see [Stream model weights](./stream-model-weights).
+
 #### 3. Define the GPU worker task
 
 ```python
