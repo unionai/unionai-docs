@@ -75,9 +75,7 @@ inside exactly one pool:
 > current state. Pinned selectors are filtered the same way: an unhealthy
 > cluster, or one that is `draining`, `drained`, or being deleted, receives no
 > new work from *any* queue, wildcard or pinned.
-> Say a pool holds two clusters and the second goes unhealthy for any reason,
-> including a
-> [config mismatch with the pool](./cluster-pools#how-a-pools-config-is-enforced):
+> Say a pool holds two clusters and the second goes unhealthy:
 > the queue routes new runs and actions to the first cluster only, and sends
 > nothing to the second until it becomes healthy again. This governs the placement
 > of new work; it does not move work that has already been dispatched. Check with
