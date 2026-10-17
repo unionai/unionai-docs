@@ -25,6 +25,7 @@ layout: py_api
 |-|-|
 | [`bool_transformer()`](#bool_transformer) |  |
 | [`comma_list_transformer()`](#comma_list_transformer) |  |
+| [`get_config_file()`](#get_config_file) | Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None. |
 | [`int_transformer()`](#int_transformer) |  |
 | [`read_file_if_exists()`](#read_file_if_exists) | Reads the contents of the file if passed a path. |
 | [`set_if_exists()`](#set_if_exists) | Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config value ``v`` is set and return the updated dictionary. |
@@ -60,6 +61,20 @@ def comma_list_transformer(
 | Parameter | Type | Description |
 |-|-|-|
 | `config_val` | `typing.Any` | |
+
+#### get_config_file()
+
+```python
+def get_config_file(
+    c: typing.Union[str, ConfigFile, None],
+) -> typing.Optional[ConfigFile]
+```
+Checks if the given argument is a file or a configFile and returns a loaded configFile else returns None
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `c` | `typing.Union[str, ConfigFile, None]` | |
 
 #### int_transformer()
 

@@ -628,18 +628,22 @@ def with_attr(
 
 ## flytekit.core.promise.Promise
 
-This object is a wrapper and exists for three main reasons. Let's assume we're dealing with a task like ::
+This object is a wrapper and exists for three main reasons. Let's assume we're dealing with a task like
 
-    @task
-    def t1() -&gt; (int, str): ...
+```python
+@task
+def t1() -> (int, str): ...
+```
 
 #. Handling the duality between compilation and local execution - when the task function is run in a local execution
    mode inside a workflow function, a Python integer and string are produced. When the task is being compiled as
    part of the workflow, the task call creates a Node instead, and the task returns two Promise objects that
    point to that Node.
-#. One needs to be able to call ::
+#. One needs to be able to call
 
-      x = t1().with_overrides(...)
+   ```python
+   x = t1().with_overrides(...)
+   ```
 
    If the task returns an integer or a ``(int, str)`` tuple like ``t1`` above, calling ``with_overrides`` on the
    result would throw an error. This Promise object adds that.
@@ -666,7 +670,7 @@ class Promise(
 | Property | Type | Description |
 |-|-|-|
 | `attr_path` | `List[Union[str, int]]` | The attribute path the promise will be resolved with. |
-| `is_ready` | `bool` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage ::     p = Promise(...)    ...    if p.is_ready():         print(p.val)    else:         print(p.ref) |
+| `is_ready` | `bool` | Returns if the Promise is READY (is not a reference and the val is actually ready)  Usage  `p = Promise(...) ... if p.is_ready(): print(p.val) else: print(p.ref)` |
 | `ref` | `NodeOutput` | If the promise is NOT READY / Incomplete, then it maps to the origin node that owns the promise |
 | `val` | `_literals_models.Literal` | If the promise is ready then this holds the actual evaluate value in Flyte's type system |
 | `var` | `str` | Name of the variable bound with this promise |

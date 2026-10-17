@@ -824,15 +824,19 @@ case, at execution time, for most tasks (that is those that generate a container
 containing the task needs to be spun up again at which point the container needs to know which task it's supposed
 to run and how to rehydrate the task object.
 
-For example, the serialization of a simple task ::
+For example, the serialization of a simple task
 
-    # in repo_root/workflows/example.py
-    @task
-    def t1(...) -&gt; ...: ...
+```python
+# in repo_root/workflows/example.py
+@task
+def t1(...) -> ...: ...
+```
 
-might result in a container with arguments like ::
+might result in a container with arguments like
 
-    pyflyte-execute --inputs s3://path/inputs.pb --output-prefix s3://outputs/location         --raw-output-data-prefix /tmp/data         --resolver flytekit.core.python_auto_container.default_task_resolver         --         task-module repo_root.workflows.example task-name t1
+```
+pyflyte-execute --inputs s3://path/inputs.pb --output-prefix s3://outputs/location         --raw-output-data-prefix /tmp/data         --resolver flytekit.core.python_auto_container.default_task_resolver         --         task-module repo_root.workflows.example task-name t1
+```
 
 At serialization time, the container created for the task will start out automatically with the ``pyflyte-execute``
 bit, along with the requisite input/output args and the offloaded data prefix. Appended to that will be two things,

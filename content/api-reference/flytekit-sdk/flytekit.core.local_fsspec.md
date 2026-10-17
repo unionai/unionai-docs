@@ -8,7 +8,6 @@ layout: py_api
 
 # flytekit.core.local_fsspec
 
-
 ## Directory
 
 ### Classes
