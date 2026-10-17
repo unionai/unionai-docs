@@ -2,7 +2,7 @@
 title: Connect your cluster
 description: Connect your EKS cluster to Union.ai, so your workloads run on your own infrastructure instead of your machine.
 icon: hdd-network
-weight: 5
+weight: 7
 variants: -flyte +union
 ---
 
