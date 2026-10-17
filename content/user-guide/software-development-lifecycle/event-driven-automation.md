@@ -14,7 +14,7 @@ Every automation starts with a cause. The cause determines whether the automatio
 
 | The cause is | Use |
 |---|---|
-| A person acted in GitHub, Slack, Linear, ClickUp, or Jira | A [software development tool webhook](../../integrations/software-development-tools/_index). It fires when the action happens and carries who did what. |
+| A person acted in GitHub, Slack, Linear, ClickUp, Jira, or GitLab | A [software development tool webhook](../../integrations/software-development-tools/_index). It fires when the action happens and carries who did what. |
 | Time | A [schedule](../triggers/schedules). |
 | Another external system calls you | A [custom provider](../../integrations/software-development-tools/_index) or a [FastAPI app](../apps/native-app-integrations/fastapi-app). |
 | An outside system needs to drive Flyte itself | A [Flyte webhook](../apps/native-app-integrations/flyte-webhook), which exposes Flyte's own operations over HTTP. |
@@ -34,7 +34,7 @@ When the cause is new data, start the downstream work at the end of the run that
 
 ## Receive a webhook
 
-A webhook receiver is an app that verifies each inbound delivery with the sending product's own scheme, normalizes it, and launches a run. One app can serve any combination of the five supported products:
+A webhook receiver is an app that verifies each inbound delivery with the sending product's own scheme, normalizes it, and launches a run. One app can serve any combination of the six supported products:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_webhooks.py" fragment=app lang=python >}}
 

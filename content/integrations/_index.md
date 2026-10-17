@@ -32,7 +32,7 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, and Jira, and launch runs from them.
+3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, Jira, and GitLab, and launch runs from them.
 4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
 5. **Data transformation**: Run data transformation tools as Flyte tasks and capture their results.
 6. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
@@ -166,7 +166,7 @@ Agentic AI integrations let you run agents written in a third-party framework as
 
 ## Software development tools
 
-Software development tool integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, and Jira, such as a pull request opening or a ticket changing status. One app receives webhooks from any combination of these products, verifies each delivery, and launches one run per event. The receiver ships with Flyte in `flyte.extras.webhooks`; each package adds support for one product.
+Software development tool integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, Jira, and GitLab, such as a pull request opening or a ticket changing status. One app receives webhooks from any combination of these products, verifies each delivery, and launches one run per event. The receiver ships with Flyte in `flyte.extras.webhooks`; each package adds support for one product.
 
 ### Supported software development tool integrations
 
@@ -177,6 +177,7 @@ Software development tool integrations launch Flyte runs from events in GitHub, 
 | [Linear](./software-development-tools/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
 | [ClickUp](./software-development-tools/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
+| [GitLab](./software-development-tools/gitlab) | Merge request, issue, comment, push, pipeline, release, and deployment webhooks, authenticated with a shared token | Merge request triage, pipeline and deployment follow-up |
 
 See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
 
