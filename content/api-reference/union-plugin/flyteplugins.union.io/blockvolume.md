@@ -2,7 +2,7 @@
 title: BlockVolume
 description: "A writable Volume whose content is one ext4 filesystem image."
 icon: braces
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -40,13 +40,13 @@ Trade-offs versus a plain Volume:
 * More object-store traffic on file-heavy work (whole blocks are
   rewritten).
 
-::
-
-    cache = BlockVolume.new(size="64G")
-    path = await cache.mount()          # ext4 mount point
-    ...
-    await cache.grow("128G")             # online
-    return cache                         # finalized at task return
+```python
+cache = BlockVolume.new(size="64G")
+path = await cache.mount()          # ext4 mount point
+...
+await cache.grow("128G")             # online
+return cache                         # finalized at task return
+```
 
 
 ## Parameters
@@ -534,6 +534,7 @@ def mount(
     cache_size_mb: Optional[int] = None,
     passthrough: Optional[bool] = None,
     enable_xattr: bool = False,
+    transport: str = 'auto',
 ) -> Path
 ```
 Format (if fresh) and mount the volume at ``mount_path`` in this
@@ -653,6 +654,7 @@ any resume-from-checkpoint policy at the usage layer.
 | `cache_size_mb` | `Optional[int]` | |
 | `passthrough` | `Optional[bool]` | |
 | `enable_xattr` | `bool` | |
+| `transport` | `str` | |
 
 ### new()
 
