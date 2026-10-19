@@ -49,6 +49,10 @@ Agentic workflows and autonomous LLM-powered systems.
 Prompt engineering, prompt optimization, and context construction.
 {{< /link-card >}}
 
+{{< link-card target="time-series" icon="graph-up" title="Time Series" >}}
+Forecasting, backtesting, anomaly detection, and capacity planning with time-series foundation models.
+{{< /link-card >}}
+
 {{< link-card target="model-training" icon="sliders" title="Model Training" >}}
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
