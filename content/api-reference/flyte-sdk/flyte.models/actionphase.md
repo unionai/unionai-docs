@@ -2,7 +2,7 @@
 title: ActionPhase
 description: "Represents the execution phase of a Flyte action (run)."
 icon: braces
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

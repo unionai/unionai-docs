@@ -2,7 +2,7 @@
 title: TaskTimeoutError
 description: "This error is raised when a task exceeds one of its `flyte.Timeout` bounds."
 icon: exclamation-triangle
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

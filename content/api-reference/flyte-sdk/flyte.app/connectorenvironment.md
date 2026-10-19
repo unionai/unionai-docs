@@ -2,7 +2,7 @@
 title: ConnectorEnvironment
 description: "Configure a connector environment for custom Flyte connectors."
 icon: braces
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

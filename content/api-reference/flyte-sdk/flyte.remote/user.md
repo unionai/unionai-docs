@@ -2,7 +2,7 @@
 title: User
 description: "Represents a user in the Flyte platform."
 icon: braces
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

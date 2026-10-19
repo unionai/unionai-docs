@@ -2,7 +2,7 @@
 title: flyte.ai.chat
 description: "flyte.ai.chat — FastAPI chat UI and HTML/CSS assets for Flyte agents."
 icon: box-seam
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

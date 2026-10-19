@@ -2,7 +2,7 @@
 title: CustomError
 description: "This error is raised when the user raises a custom error."
 icon: exclamation-triangle
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: WebhookPluginError
 description: "Base class for all errors raised by this plugin."
 icon: exclamation-triangle
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

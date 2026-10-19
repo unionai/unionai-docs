@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -2914,6 +2914,7 @@ Start a local Flyte devbox cluster.
 | `--image` | `text` |  | Docker image to use for the devbox cluster. |
 | `--dev` | `boolean` | `False` | Enable dev mode inside the devbox cluster (sets FLYTE_DEV=True). |
 | `--gpu` | `boolean` | `False` | Pass host GPUs into the devbox container (adds `--gpus` all to docker run). Requires an NVIDIA-enabled host. Defaults `--image` to a GPU-capable image if `--image` is not explicitly set. |
+| `--apple-silicon` | `boolean` | `False` | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run natively on the Mac, so their code can use Metal (torch mps, mlx). This runs workload code outside any sandbox, so the devbox's ports are bound to 127.0.0.1: unreachable from the network, though not from other software on this Mac. Needs uv (https://docs.astral.sh/uv/). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte start tui
