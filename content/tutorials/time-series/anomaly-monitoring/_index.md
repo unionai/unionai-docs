@@ -41,11 +41,11 @@ flowchart LR
 python anomaly_monitor.py
 ```
 
-The script crashes each monitor once, in its fifth window, to show recovery. When pump-02 trips, the run pauses. Answer in the UI, or from the CLI:
+The script crashes each monitor once, in its fifth window, to show recovery. When pump-02 trips, the run pauses on a condition named `dispatch-pump-02-<minute>`. Answer in the UI, or from the CLI. `flyte get condition` lists the paused conditions with their action names, and `flyte signal condition` takes the action name:
 
 ```bash
 flyte get condition <run-name>
-flyte signal condition <run-name> dispatch-pump-02-<minute> true
+flyte signal condition <run-name> <action-name> true
 ```
 
 If nobody answers within 15 minutes, the monitor dispatches the crew.
