@@ -2,7 +2,7 @@
 title: flyte.notify
 description: "Task Notifications API for Flyte 2.0."
 icon: box-seam
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,53 +14,57 @@ Task Notifications API for Flyte 2.0
 Send notifications when tasks reach specific execution phases.
 Supports Email, Slack, Teams, and custom Webhooks.
 
-Quick Start:
-    ```python
-    import flyte
-    import flyte.models
-    from flyte import notify
+**Quick Start:**
 
-    @flyte.task(
-        trigger=flyte.Trigger(
-            name="daily_report",
-            automation=flyte.Cron("0 0 * * *"),
-            notifications=[
-                notify.Email(
-                    on_phase=flyte.models.ActionPhase.FAILED,
-                    recipients=["oncall@example.com"]
-                ),
-                notify.Slack(
-                    on_phase=flyte.models.ActionPhase.SUCCEEDED,
-                    webhook_url="https://hooks.slack.com/...",
-                    message="Daily report completed! {{.Run.Name}}"
-                )
-            ]
-        )
+```python
+import flyte
+import flyte.models
+from flyte import notify
+
+@flyte.task(
+    trigger=flyte.Trigger(
+        name="daily_report",
+        automation=flyte.Cron("0 0 * * *"),
+        notifications=[
+            notify.Email(
+                on_phase=flyte.models.ActionPhase.FAILED,
+                recipients=["oncall@example.com"]
+            ),
+            notify.Slack(
+                on_phase=flyte.models.ActionPhase.SUCCEEDED,
+                webhook_url="https://hooks.slack.com/...",
+                message="Daily report completed! {{.Run.Name}}"
+            )
+        ]
     )
-    def daily_report():
-        # Your task logic here
-        pass
-    ```
+)
+def daily_report():
+    # Your task logic here
+    pass
+```
 
-Available Notification Types:
-    - Email: Send email notifications
-    - Slack: Send Slack messages (with optional Block Kit)
-    - Teams: Send Microsoft Teams messages (with optional Adaptive Cards)
-    - Webhook: Send custom HTTP requests (most flexible)
+**Available Notification Types:**
 
-Supported Phases:
-    - SUCCEEDED: Task completed successfully
-    - FAILED: Task failed
-    - TIMED_OUT: Task timed out
-    - ABORTED: Task was aborted
+- Email: Send email notifications
+- Slack: Send Slack messages (with optional Block Kit)
+- Teams: Send Microsoft Teams messages (with optional Adaptive Cards)
+- Webhook: Send custom HTTP requests (most flexible)
 
-Template Variables:
-    All notification messages support template variables:
-    - {{.Run.Project}}: Run project name
-    - {{.Run.Domain}}: Run domain name
-    - {{.Run.Name}}: Run ID/name
-    - {{.Phase}}: Terminal run phase
-    - {{.Error}}: Error message (if failed)
+**Supported Phases:**
+
+- SUCCEEDED: Task completed successfully
+- FAILED: Task failed
+- TIMED_OUT: Task timed out
+- ABORTED: Task was aborted
+
+**Template Variables:**
+
+All notification messages support template variables:
+- {{.Run.Project}}: Run project name
+- {{.Run.Domain}}: Run domain name
+- {{.Run.Name}}: Run ID/name
+- {{.Phase}}: Terminal run phase
+- {{.Error}}: Error message (if failed)
 ## Directory
 
 ### Classes

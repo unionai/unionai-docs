@@ -2,7 +2,7 @@
 title: FlyteLlm
 description: "A `BaseLlm` that records each model turn via `durable_step` for replay."
 icon: braces
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -60,91 +60,100 @@ This method handles Server-Sent Events (SSE) streaming for unidirectional
 content generation. For bidirectional streaming (e.g., Gemini Live API),
 use the `connect()` method instead.
 
-Yields:
-  LlmResponse objects representing the model's response for one turn.
+**Yields:**
 
-  **Non-streaming mode (stream=False):**
+LlmResponse objects representing the model's response for one turn.
 
-    Yields exactly one LlmResponse containing the complete model output
-    (text, function calls, bytes, etc.). This response has `partial=False`.
+**Non-streaming mode (stream=False):**
 
-  **Streaming mode (stream=True):**
+  Yields exactly one LlmResponse containing the complete model output
+  (text, function calls, bytes, etc.). This response has `partial=False`.
 
-    Yields multiple LlmResponse objects as chunks arrive:
+**Streaming mode (stream=True):**
 
-    - Intermediate chunks: `partial=True` (progressive updates)
-    - Final chunk: `partial=False` (aggregated content from entire turn,
-      identical to stream=False output)
-    - Text consolidation: Consecutive text parts of the same type
-      (thought/non-thought) SHOULD merge without separator, but client
-      code must not rely on this - unconsolidated parts are unusual but also
-      valid
+  Yields multiple LlmResponse objects as chunks arrive:
 
-  **Common content in partial chunks:**
+  - Intermediate chunks: `partial=True` (progressive updates)
+  - Final chunk: `partial=False` (aggregated content from entire turn,
+    identical to stream=False output)
+  - Text consolidation: Consecutive text parts of the same type
+    (thought/non-thought) SHOULD merge without separator, but client
+    code must not rely on this - unconsolidated parts are unusual but also
+    valid
 
-    All intermediate chunks have `partial=True` regardless of content type.
-    Common examples include:
+**Common content in partial chunks:**
 
-    - Text: Streams incrementally as tokens arrive
-    - Function calls: May arrive in separate chunks
-    - Bytes (e.g., images): Typically arrive as single chunk, interleaved
-      with text
-    - Thoughts: Stream incrementally when thinking_config is enabled
+  All intermediate chunks have `partial=True` regardless of content type.
+  Common examples include:
 
-  **Examples:**
+  - Text: Streams incrementally as tokens arrive
+  - Function calls: May arrive in separate chunks
+  - Bytes (e.g., images): Typically arrive as single chunk, interleaved
+    with text
+  - Thoughts: Stream incrementally when thinking_config is enabled
 
-  1. Simple text streaming::
+**Examples:**
 
-       LlmResponse(partial=True,  parts=["The weather"])
-       LlmResponse(partial=True,  parts=[" in Tokyo is"])
-       LlmResponse(partial=True,  parts=[" sunny."])
-       LlmResponse(partial=False, parts=["The weather in Tokyo is sunny."])
+1. Simple text streaming:
 
-  2. Text + function call::
+   ```python
+   LlmResponse(partial=True,  parts=["The weather"])
+   LlmResponse(partial=True,  parts=[" in Tokyo is"])
+   LlmResponse(partial=True,  parts=[" sunny."])
+   LlmResponse(partial=False, parts=["The weather in Tokyo is sunny."])
+   ```
 
-       LlmResponse(partial=True,  parts=[Text("Let me check...")])
-       LlmResponse(partial=True,  parts=[FunctionCall("get_weather", ...)])
-       LlmResponse(partial=False, parts=[Text("Let me check..."),
-                                         FunctionCall("get_weather", ...)])
+2. Text + function call:
 
-  3. Parallel function calls across chunks::
+   ```python
+   LlmResponse(partial=True,  parts=[Text("Let me check...")])
+   LlmResponse(partial=True,  parts=[FunctionCall("get_weather", ...)])
+   LlmResponse(partial=False, parts=[Text("Let me check..."),
+                                     FunctionCall("get_weather", ...)])
+   ```
 
-       LlmResponse(partial=True,  parts=[Text("Checking both cities...")])
-       LlmResponse(partial=True,  parts=[FunctionCall("get_weather", Tokyo)])
-       LlmResponse(partial=True,  parts=[FunctionCall("get_weather", NYC)])
-       LlmResponse(partial=False, parts=[Text("Checking both cities..."),
-                                         FunctionCall("get_weather", Tokyo),
-                                         FunctionCall("get_weather", NYC)])
+3. Parallel function calls across chunks:
 
-  4. Text + bytes (image generation with gemini-2.5-flash-image)::
+   ```python
+   LlmResponse(partial=True,  parts=[Text("Checking both cities...")])
+   LlmResponse(partial=True,  parts=[FunctionCall("get_weather", Tokyo)])
+   LlmResponse(partial=True,  parts=[FunctionCall("get_weather", NYC)])
+   LlmResponse(partial=False, parts=[Text("Checking both cities..."),
+                                     FunctionCall("get_weather", Tokyo),
+                                     FunctionCall("get_weather", NYC)])
+   ```
 
-       LlmResponse(partial=True,  parts=[Text("Here's an image of a dog.")])
-       LlmResponse(partial=True,  parts=[Text("
-")])
-       LlmResponse(partial=True,  parts=[Blob(image/png, 1.6MB)])
-       LlmResponse(partial=True,  parts=[Text("It carries a bone")])
-       LlmResponse(partial=True,  parts=[Text(" and running around.")])
-       LlmResponse(partial=False, parts=[Text("Here's an image of a dog.
-"),
-                                         Blob(image/png, 1.6MB),
-                                         Text("It carries a bone and running around.")])
+4. Text + bytes (image generation with gemini-2.5-flash-image):
 
-     Note: Consecutive text parts before and after blob merge separately.
+   ```
+   LlmResponse(partial=True,  parts=[Text("Here's an image of a dog.")])
+   LlmResponse(partial=True,  parts=[Text("")])
+   LlmResponse(partial=True,  parts=[Blob(image/png, 1.6MB)])
+   LlmResponse(partial=True,  parts=[Text("It carries a bone")])
+   LlmResponse(partial=True,  parts=[Text(" and running around.")])
+   LlmResponse(partial=False, parts=[Text("Here's an image of a dog."),
+                                     Blob(image/png, 1.6MB),
+                                     Text("It carries a bone and running around.")])
+   ```
 
-  5. Text with thinking (gemini-2.5-flash with thinking_config)::
+   Note: Consecutive text parts before and after blob merge separately.
 
-       LlmResponse(partial=True,  parts=[Thought("Let me analyze...")])
-       LlmResponse(partial=True,  parts=[Thought("The user wants...")])
-       LlmResponse(partial=True,  parts=[Text("Based on my analysis,")])
-       LlmResponse(partial=True,  parts=[Text(" the answer is 42.")])
-       LlmResponse(partial=False, parts=[Thought("Let me analyze...The user wants..."),
-                                         Text("Based on my analysis, the answer is 42.")])
+5. Text with thinking (gemini-2.5-flash with thinking_config):
 
-     Note: Consecutive parts of same type merge (thoughts→thought, text→text).
+   ```python
+   LlmResponse(partial=True,  parts=[Thought("Let me analyze...")])
+   LlmResponse(partial=True,  parts=[Thought("The user wants...")])
+   LlmResponse(partial=True,  parts=[Text("Based on my analysis,")])
+   LlmResponse(partial=True,  parts=[Text(" the answer is 42.")])
+   LlmResponse(partial=False, parts=[Thought("Let me analyze...The user wants..."),
+                                     Text("Based on my analysis, the answer is 42.")])
+   ```
 
-  **Important:** All yielded responses represent one logical model turn.
-  The final response with `partial=False` should be identical to the
-  response that would be received with `stream=False`.
+   Note: Consecutive parts of same type merge (thoughts→thought, text→text).
+
+**Important:** All yielded responses represent one logical model turn.
+The final response with `partial=False` should be identical to the
+response that would be received with `stream=False`.
 
 
 | Parameter | Type | Description |

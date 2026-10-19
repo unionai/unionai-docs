@@ -1,7 +1,7 @@
 ---
 title: flyte.storage
 icon: box-seam
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -34,7 +34,7 @@ layout: py_api
 | [`is_remote()`](#is_remote) | Let's find a replacement. |
 | [`join()`](#join) | Join multiple paths together. |
 | [`open()`](#open) | Asynchronously open a file and return an async context manager. |
-| [`put()`](#put) |  |
+| [`put()`](#put) | Upload a local file or directory to a remote location. |
 | [`put_stream()`](#put_stream) | Put a stream of data to a remote location. |
 
 
@@ -230,16 +230,26 @@ def put(
     to_path: Optional[str] = None,
     recursive: bool = False,
     batch_size: Optional[int] = None,
+    chunk_size: Optional[int] = None,
+    max_concurrency: Optional[int] = None,
     **kwargs,
 ) -> str
 ```
+Upload a local file or directory to a remote location.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `from_path` | `str` | |
-| `to_path` | `Optional[str]` | |
-| `recursive` | `bool` | |
-| `batch_size` | `Optional[int]` | |
-| `**kwargs` |  | |
+| `from_path` | `str` | Local path to upload. |
+| `to_path` | `Optional[str]` | Remote destination. If not provided, a random path under the raw data prefix is used. |
+| `recursive` | `bool` | Upload a directory tree rather than a single file. |
+| `batch_size` | `Optional[int]` | Number of files uploaded at once for recursive uploads. Defaults to the FLYTE_IO_BATCH_SIZE environment variable (default: 32). |
+| `chunk_size` | `Optional[int]` | Minimum multipart part size in bytes. Defaults to the FLYTE_IO_UPLOAD_CHUNK_SIZE environment variable (default: 5 MiB). Larger files still scale the part size above this to stay under the 10,000-part limit; values below 5 MiB are raised to 5 MiB. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `Optional[int]` | Number of parts of a single file uploaded at once. Defaults to the FLYTE_IO_UPLOAD_MAX_CONCURRENCY environment variable (default: 12). Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `**kwargs` |  | Additional arguments passed to the underlying filesystem (non-obstore filesystems only). |
+
+**Returns:** str: The remote path the data was uploaded to.
 
 #### put_stream()
 
@@ -249,6 +259,8 @@ def put_stream(
     name: str | None = None,
     to_path: str | None = None,
     size_hint: int | None = None,
+    chunk_size: int | None = None,
+    max_concurrency: int | None = None,
     **kwargs,
 ) -> str
 ```
@@ -268,7 +280,9 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 | `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` | Iterable of bytes to be streamed. |
 | `name` | `str \| None` | Name of the file to be created. If not provided, a random name will be generated. |
 | `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
-| `size_hint` | `int \| None` | Total number of bytes the stream is expected to yield, if known. On obstore-backed filesystems the writer uploads one multipart part per buffer, so a fixed buffer caps a single object at ~97.6 GiB (10,000 x 10 MiB). When the hint says the stream is larger than that, the part size is scaled up to stay under the limit; smaller streams are unaffected. |
+| `size_hint` | `int \| None` | Total number of bytes the stream is expected to yield, if known. On obstore-backed filesystems the writer uploads one multipart part per buffer, so a fixed buffer caps a single object at ~97.6 GiB (10,000 x 10 MiB). When the hint says the stream is larger than that, the part size is scaled up to stay under the limit; smaller streams are unaffected. If FLYTE_IO_UPLOAD_CHUNK_SIZE is set above the default buffer, it is used as the part size. |
+| `chunk_size` | `int \| None` | Minimum multipart part size in bytes, overriding FLYTE_IO_UPLOAD_CHUNK_SIZE for this call. Scaled up when `size_hint` requires it; values below 5 MiB are raised to 5 MiB. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `int \| None` | Number of parts uploaded at once, overriding FLYTE_IO_UPLOAD_MAX_CONCURRENCY for this call. Applies to S3, GCS and Azure; ignored by other filesystems. |
 | `**kwargs` |  | Additional arguments to be passed to the underlying filesystem. |
 
 **Returns:** str: The path to the remote location where the data was stored.

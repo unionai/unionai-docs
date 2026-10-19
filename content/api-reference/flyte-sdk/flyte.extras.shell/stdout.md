@@ -2,7 +2,7 @@
 title: Stdout
 description: "Capture the task's stdout as a typed output."
 icon: braces
-version: 2.11.1
+version: 2.11.4
 variants: +flyte +union
 layout: py_api
 ---
