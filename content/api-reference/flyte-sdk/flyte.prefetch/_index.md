@@ -2,7 +2,7 @@
 title: flyte.prefetch
 description: "Prefetch utilities for Flyte."
 icon: box-seam
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

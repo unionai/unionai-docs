@@ -2,7 +2,7 @@
 title: MemoryStoreError
 description: "Base class for `flyte.ai.agents.MemoryStore` errors."
 icon: exclamation-triangle
-version: 2.11.4
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---
