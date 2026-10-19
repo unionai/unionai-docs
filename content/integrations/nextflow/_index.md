@@ -24,7 +24,7 @@ pip install flyteplugins-nextflow
 
 ## Quick start
 
-`nextflow_image()` builds the image for the task that runs the Nextflow head. Add `flyteplugins-nextflow` to it so the task can import the plugin, then call `run_nextflow` from an async task:
+`nextflow_image()` builds the image for the task that runs the Nextflow head, with `flyteplugins-nextflow` installed. Call `run_nextflow` from an async task:
 
 ```python
 import flyte
@@ -33,7 +33,7 @@ from flyteplugins.nextflow import nextflow_image, run_nextflow
 
 env = flyte.TaskEnvironment(
     name="nextflow",
-    image=nextflow_image().with_pip_packages("flyteplugins-nextflow"),
+    image=nextflow_image(),
     resources=flyte.Resources(cpu=2, memory="4Gi"),
 )
 
@@ -62,7 +62,7 @@ The resources on the task environment apply only to the Nextflow head. Pipeline 
 | `params`     | Pipeline parameters as a mapping, passed as a params file. |
 | `outdir`     | `--outdir`. A relative path goes under the task's raw data prefix. The directory is returned as a `Dir`; without `outdir`, `run_nextflow` returns `None`. |
 | `work_dir`   | Work directory. Default: `nextflow-work` under the task's raw data prefix. |
-| `config`     | Extra Nextflow config, as a file path or config text. |
+| `config`     | Extra Nextflow config: config text, or an absolute path to a config file (a `Path`, or a string ending in `.config`). Relative paths don't resolve, because Nextflow runs in a temporary launch directory. |
 | `resume`     | Resume the previous run that used the same `work_dir`. |
 | `report`     | Render Nextflow's execution report, timeline, and DAG into the task's Flyte report. The task must be declared with `report=True`. |
 | `extra_args` | Any other `nextflow run` arguments. |
@@ -96,7 +96,7 @@ The reports are published even when the pipeline fails.
 
 Nextflow's resume state lives in the work directory, not in the task pod:
 
-- the task cache (the cloud cache on object stores, `.nextflow` locally)
+- the task cache (the cloud cache on object stores; `.nextflow-cache` in the work directory locally)
 - a session ID derived from the work directory
 
 This has two effects:
@@ -134,11 +134,11 @@ from pathlib import Path
 
 image = nextflow_image(
     nf_flyte=Path("~/nf-flyte/build/distributions/nf-flyte-0.1.0.zip").expanduser(),
-).with_pip_packages("flyteplugins-nextflow")
+)
 ```
 
 ## Requirements
 
-- Flyte 2.
+- `flyte` 2.12.0 or later, and `flyteplugins-nextflow` 2.12.0 or later.
 - On a cluster, the work directory must be on an object store Flyte can read (S3, GCS, or Azure). The default, under the task's raw data prefix, always is.
 - Every process container needs `bash`.
