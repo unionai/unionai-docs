@@ -14,10 +14,10 @@ Union.ai has no access to your cluster, providing the highest level of data isol
 
 ## Getting started
 
-> [!TIP] On AWS? Set up from Marketplace instead
-> The fastest way to a self-managed deployment is to subscribe to Union Team on AWS Marketplace and follow the [setup from Marketplace](../marketplace/_index). You still provision your AWS resources, but an agent installs the data plane into your cluster for you, so you skip the Helm install and configuration below.
+> [!TIP] On AWS, GCP, or Azure? Let the Union.ai UI install the data plane instead
+> The fastest way to a self-managed deployment is to [set up from the Union.ai UI](../marketplace/_index). You still provision your cloud resources, but an agent you install from the Union.ai UI installs the data plane into your cluster for you, so you skip the Helm install and configuration below. On AWS, you subscribe on AWS Marketplace. On GCP and Azure, there is no marketplace listing yet, so you contact Union.ai for a subscription.
 
-These steps are for providers that setup from Marketplace doesn't cover yet, or for when you want to provision and install the data plane yourself:
+These steps are for providers that setup from the Union.ai UI doesn't cover, or for when you want to provision and install the data plane yourself:
 
 1. Review the [architecture](./architecture/_index) to understand the control plane, data plane operators, and security model.
 2. Review the [infrastructure recommendations](./infrastructure-recommendations/_index) for the sizing model, networking and IP planning, identity, and the [scaling constraints](./infrastructure-recommendations/scaling-constraints) to plan around.
