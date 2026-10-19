@@ -72,7 +72,7 @@ curl -X POST <app-url>/forecast -H 'content-type: application/json' \
 
 ## Batch concurrent requests
 
-One request is one series, but Timestral forecasts a whole batch of series in about the time it takes to forecast one. `DynamicBatcher` collects requests that arrive within 10 ms of each other, up to 64, and hands them to `_process` as one batch. Each caller awaits a future for its own result.
+One request is one series, but a batched forward pass is much cheaper per series: on a laptop CPU, Timestral-28M forecasts 64 series of 1,024 steps about 5 times faster in one batch than one at a time. `DynamicBatcher` collects requests that arrive within 10 ms of each other, up to 64, and hands them to `_process` as one batch. Each caller awaits a future for its own result.
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/forecast_api.py" fragment=batching lang=python >}}
 
@@ -116,4 +116,4 @@ Re-run the batch pipeline when new data arrives, then redeploy with `--champion`
 python forecast_client.py <app-url> --requests 500
 ```
 
-Raise `--requests` past 32 per replica in flight and watch the app add replicas in the UI.
+Throughput depends on the checkpoint, the history lengths, and the replica's CPUs. Larger checkpoints and longer histories cost more per forecast, so size `resources` and `Scaling` for the checkpoint you serve. Keep more than 32 requests per replica in flight and the app adds replicas, which you can watch in the UI.
