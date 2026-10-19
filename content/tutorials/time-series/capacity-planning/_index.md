@@ -36,10 +36,11 @@ flowchart LR
 python capacity_planning.py
 ```
 
-When the report is ready, the run pauses on a condition named `reserve-margin`. Enter a percentage in the UI, or from the CLI:
+When the report is ready, the run pauses on a condition named `reserve-margin`. Enter a percentage in the UI, or from the CLI with the condition's action name, which `flyte get condition` lists:
 
 ```bash
-flyte signal condition <run-name> reserve-margin 15
+flyte get condition <run-name>
+flyte signal condition <run-name> <action-name> 15.0
 ```
 
 Enter `0` to reject the plan, which fails the run. To stress-test the plan against hotter weather, shift every scenario up by a few degrees:
