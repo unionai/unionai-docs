@@ -114,6 +114,32 @@ jobs:
           done
           echo "ERROR: timed out waiting for PyPI ($LINK)"; exit 1
 
+      # A released plugin with no api-packages.toml entry never drifts -- it has no
+      # committed docs to fall behind -- so check-api-docs cannot see it. Register
+      # it FIRST: the new entry then reads as drift ("committed=not generated"), and
+      # the regen below documents the plugin in this same PR. Two gates before an
+      # entry is written (see the tool's docstring): every PyPI owner is in
+      # [plugin_discovery].owners, and there is a real release, not a 0.0.0a0 name
+      # claim. A plugin that fails the owner gate is UNVERIFIED: never registered,
+      # reported in the PR body, and the job fails at the end so the run goes red.
+      # Registration alone never cuts: the fold below promotes only an SDK release.
+      - name: Register new plugins
+        id: registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          if make register-plugins 2>&1 | tee /tmp/registry.txt; then
+            echo "failed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          if grep -q '\[REGISTERED\]' /tmp/registry.txt; then
+            echo "registered=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "registered=false" >> "$GITHUB_OUTPUT"
+          fi
+
       # Gate: check-api-docs exits non-zero on drift. Capture, don't fail the job.
       - name: Check API docs freshness
         id: drift
@@ -124,23 +150,6 @@ jobs:
             echo "API docs are already up to date with PyPI — nothing to regenerate."
           else
             echo "drift=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # A released plugin with no api-packages.toml entry never drifts -- it has no
-      # committed docs to fall behind -- so check-api-docs cannot see it. Checked
-      # separately and NOT folded into `drift`: an unregistered plugin must not set
-      # off the regen/cut-fold path. Reported in the PR body, and fails the job at
-      # the end so a scheduled run goes red.
-      - name: Check plugin registry
-        id: registry
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -o pipefail
-          if make check-plugin-registry 2>&1 | tee /tmp/registry.txt; then
-            echo "unregistered=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "unregistered=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Regenerate API docs
@@ -290,14 +299,27 @@ jobs:
           } > /tmp/pr-body.md
           # Append the surface-delta classification (material/cosmetic + symbols).
           cat /tmp/delta.md >> /tmp/pr-body.md 2>/dev/null || true
-          if [ "${{ steps.registry.outputs.unregistered }}" = "true" ]; then
+          if [ "${{ steps.registry.outputs.registered }}" = "true" ]; then
             {
               echo ""
-              echo "### Unregistered plugins"
+              echo "### Newly registered plugins -- check before merging"
               echo ""
-              echo "These plugins are released but have no \`[[plugins]]\` entry in \`api-packages.toml\`, so this regen does not document them. Register them in a separate PR."
+              echo "These plugins were released since the last regen and had no \`[[plugins]]\` entry. Each passed both gates (every PyPI owner is in \`[plugin_discovery].owners\`; a real release, not a name claim), so this PR registers it in \`api-packages.toml\` and generates its API reference."
+              echo ""
+              echo "**The \`title\` is a guess and the page sits at the default \`integrations/<name>\`.** Fix the title (e.g. \`Gitlab\` -> \`GitLab\`) and, if the plugin belongs in a group such as \`software-development-tools/\`, set \`name\` and \`output_folder\` like its siblings -- then rerun \`make update-api-docs\`. Moving a published page later needs a redirect. The new pages reach \`/docs/latest\` at merge and \`/docs/v2\` at the next cut."
               echo '```'
-              cat /tmp/registry.txt
+              grep -E '\[REGISTERED\]' /tmp/registry.txt
+              echo '```'
+            } >> /tmp/pr-body.md
+          fi
+          if [ "${{ steps.registry.outputs.failed }}" = "true" ]; then
+            {
+              echo ""
+              echo "### Plugins NOT registered"
+              echo ""
+              echo "Released, but not registered: a PyPI owner is outside \`[plugin_discovery].owners\` (a possible squat -- confirm the package is ours before adding the owner), or discovery could not complete. The job is failed so this is looked at."
+              echo '```'
+              grep -E 'UNVERIFIED|FAILED' /tmp/registry.txt || cat /tmp/registry.txt
               echo '```'
             } >> /tmp/pr-body.md
           fi
@@ -311,6 +333,7 @@ jobs:
           base: main
           draft: true
           add-paths: |
+            api-packages.toml
             content/api-reference/**
             linkmap/*-linkmap.json
             versions.toml
@@ -334,9 +357,9 @@ jobs:
             ${{ steps.classify.outputs.material == 'true' && 'docsy:api-surface-delta' || '' }}
           delete-branch: false
 
-      - name: Fail on unregistered plugins
-        if: steps.registry.outputs.unregistered == 'true'
+      - name: Fail on unverified plugins or incomplete discovery
+        if: steps.registry.outputs.failed == 'true'
         run: |
-          echo "::error title=Released plugin(s) have no API reference::$(grep -E 'UNREGISTERED|DISCOVERY FAILED' /tmp/registry.txt | tr -s ' ' | paste -sd ';' -)"
-          echo "Add a [[plugins]] entry to api-packages.toml for each (or a [[plugin_discovery.skip]] entry with a reason)."
+          echo "::error title=Plugin registration needs a human::$(grep -E 'UNVERIFIED|FAILED' /tmp/registry.txt | tr -s ' ' | paste -sd ';' -)"
+          echo "UNVERIFIED: a PyPI owner is outside [plugin_discovery].owners. Confirm the package is ours, then add the owner to the allowlist or add a [[plugin_discovery.skip]] entry with a reason."
           exit 1
