@@ -22,8 +22,8 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 
 ![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/marketplace/sign-up/create-account.png)
 
-> [!NOTE] On AWS and not subscribed yet?
-> If your data plane will run on AWS, your organization needs to be associated with a subscription. If you do not have one yet, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first. You return to this step after you complete the subscription.
+> [!NOTE] Not subscribed yet?
+> Your organization needs to be associated with a subscription. On AWS, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. On GCP or Azure, there is no marketplace listing yet: contact Union.ai for a subscription before you sign up.
 
 ## Create your organization
 
