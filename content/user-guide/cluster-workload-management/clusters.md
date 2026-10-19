@@ -105,7 +105,7 @@ other pool never does.
 
 Both are ordinary queues — they appear in `flyte get queue` (a co-named queue is
 flagged there as **cluster-managed**), carry the same
-concurrency, depth, priority, and fairness settings as any other, and are managed
+concurrency, depth, and priority settings as any other, and are managed
 the same way on the [Managing queues](./queues) page. What sets the co-named
 queue apart is that its cluster selector and pool are managed by its cluster and
 cannot be edited directly: it follows its cluster if the cluster is

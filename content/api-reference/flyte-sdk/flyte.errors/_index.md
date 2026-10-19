@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.11.1
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,6 +21,13 @@ unknown error.
 |-|-|
 | [`ActionAbortedError`](../flyte.errors/actionabortederror) | This error is raised when an action was aborted, externally. |
 | [`ActionNotFoundError`](../flyte.errors/actionnotfounderror) | This error is raised when the user tries to access an action that does not exist. |
+| [`AppleSiliconBridgeUnreachableError`](../flyte.errors/applesiliconbridgeunreachableerror) | Raised when a container cannot reach the devbox's host-side Apple Silicon bridge, or the bridge lost track of the workload's host process. |
+| [`AppleSiliconDaemonOOMError`](../flyte.errors/applesilicondaemonoomerror) | Raised when the host process of an Apple Silicon workload (its code, or its MLX daemon) is killed for running out of memory. |
+| [`AppleSiliconDaemonStartFailedError`](../flyte.errors/applesilicondaemonstartfailederror) | Raised when the host-side MLX daemon serving an Apple Silicon workload in container mode fails to start. |
+| [`AppleSiliconError`](../flyte.errors/applesiliconerror) | Base class for errors of the devbox-local Apple Silicon accelerator, requested with `flyte.Resources(gpu="AppleSilicon")`. |
+| [`AppleSiliconHostExecFailedError`](../flyte.errors/applesiliconhostexecfailederror) | Raised when an Apple Silicon workload could not run on the Mac: its environment could not be built (e.g. `uv` is missing, or a package has no macOS wheel), its entrypoint could not start, or the bridge refused it. |
+| [`AppleSiliconModelNotFoundError`](../flyte.errors/applesiliconmodelnotfounderror) | Raised when the model an Apple Silicon workload asks the MLX daemon to serve cannot be found or loaded. |
+| [`AppleSiliconNotAvailableError`](../flyte.errors/applesiliconnotavailableerror) | Raised when `gpu="AppleSilicon"` is requested anywhere but a devbox on an Apple Silicon Mac: another OS or architecture, a devbox started without `--apple-silicon`, or a remote cluster. |
 | [`BaseRuntimeError`](../flyte.errors/baseruntimeerror) | Base class for all Union runtime errors. |
 | [`CodeBundleError`](../flyte.errors/codebundleerror) | This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`ConditionAlreadyExistsError`](../flyte.errors/conditionalreadyexistserror) | This error is raised when the user tries to create a condition that already exists within the action. |
@@ -76,6 +83,7 @@ unknown error.
 
 | Property | Type | Description |
 |-|-|-|
+| `APPLE_SILICON_ERRORS_BY_CODE` | `dict` |  |
 | `GPU_FAULT_CODES` | `tuple` |  |
 
 ## Methods

@@ -2,7 +2,7 @@
 title: flyte.extras.webhooks.testing
 description: "Conformance harness — enforce the common provider format."
 icon: box-seam
-version: 2.11.1
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---

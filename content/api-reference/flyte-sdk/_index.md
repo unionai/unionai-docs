@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.11.1
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -107,6 +107,13 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.connectors.ResourceMeta`](flyte.connectors/resourcemeta) | This is the metadata for the job. |
 | [`flyte.errors.ActionAbortedError`](flyte.errors/actionabortederror) | This error is raised when an action was aborted, externally. |
 | [`flyte.errors.ActionNotFoundError`](flyte.errors/actionnotfounderror) | This error is raised when the user tries to access an action that does not exist. |
+| [`flyte.errors.AppleSiliconBridgeUnreachableError`](flyte.errors/applesiliconbridgeunreachableerror) | Raised when a container cannot reach the devbox's host-side Apple Silicon bridge, or the bridge lost track of the workload's host process. |
+| [`flyte.errors.AppleSiliconDaemonOOMError`](flyte.errors/applesilicondaemonoomerror) | Raised when the host process of an Apple Silicon workload (its code, or its MLX daemon) is killed for running out of memory. |
+| [`flyte.errors.AppleSiliconDaemonStartFailedError`](flyte.errors/applesilicondaemonstartfailederror) | Raised when the host-side MLX daemon serving an Apple Silicon workload in container mode fails to start. |
+| [`flyte.errors.AppleSiliconError`](flyte.errors/applesiliconerror) | Base class for errors of the devbox-local Apple Silicon accelerator, requested with `flyte.Resources(gpu="AppleSilicon")`. |
+| [`flyte.errors.AppleSiliconHostExecFailedError`](flyte.errors/applesiliconhostexecfailederror) | Raised when an Apple Silicon workload could not run on the Mac: its environment could not be built (e.g. `uv` is missing, or a package has no macOS wheel), its entrypoint could not start, or the bridge refused it. |
+| [`flyte.errors.AppleSiliconModelNotFoundError`](flyte.errors/applesiliconmodelnotfounderror) | Raised when the model an Apple Silicon workload asks the MLX daemon to serve cannot be found or loaded. |
+| [`flyte.errors.AppleSiliconNotAvailableError`](flyte.errors/applesiliconnotavailableerror) | Raised when `gpu="AppleSilicon"` is requested anywhere but a devbox on an Apple Silicon Mac: another OS or architecture, a devbox started without `--apple-silicon`, or a remote cluster. |
 | [`flyte.errors.BaseRuntimeError`](flyte.errors/baseruntimeerror) | Base class for all Union runtime errors. |
 | [`flyte.errors.CodeBundleError`](flyte.errors/codebundleerror) | This error is raised when the code bundle cannot be created, for example when no files are found to bundle. |
 | [`flyte.errors.ConditionAlreadyExistsError`](flyte.errors/conditionalreadyexistserror) | This error is raised when the user tries to create a condition that already exists within the action. |
@@ -261,6 +268,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | Function | Description |
 |-|-|
 | [`flyte.AMD_GPU()`](flyte/_index#amd_gpu) | Create an AMD GPU device instance. |
+| [`flyte.APPLE_SILICON()`](flyte/_index#apple_silicon) | Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on. |
 | [`flyte.GPU()`](flyte/_index#gpu) | Create a GPU device instance. |
 | [`flyte.HABANA_GAUDI()`](flyte/_index#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`flyte.Neuron()`](flyte/_index#neuron) | Create a Neuron device instance. |
@@ -358,7 +366,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.storage.is_remote()`](flyte.storage/_index#is_remote) | Let's find a replacement. |
 | [`flyte.storage.join()`](flyte.storage/_index#join) | Join multiple paths together. |
 | [`flyte.storage.open()`](flyte.storage/_index#open) | Asynchronously open a file and return an async context manager. |
-| [`flyte.storage.put()`](flyte.storage/_index#put) |  |
+| [`flyte.storage.put()`](flyte.storage/_index#put) | Upload a local file or directory to a remote location. |
 | [`flyte.storage.put_stream()`](flyte.storage/_index#put_stream) | Put a stream of data to a remote location. |
 | [`flyte.types.guess_interface()`](flyte.types/_index#guess_interface) | Returns the interface of the task with guessed types, as types may not be present in current env. |
 | [`flyte.types.literal_string_repr()`](flyte.types/_index#literal_string_repr) | This method is used to convert a literal map to a string representation. |

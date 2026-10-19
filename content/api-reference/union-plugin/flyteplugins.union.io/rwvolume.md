@@ -2,7 +2,7 @@
 title: RWVolume
 description: "Mutable working copy — PRD §Core Concepts."
 icon: braces
-version: 0.15.5
+version: 0.17.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -156,11 +156,13 @@ Drain writeback, then snapshot the current state as a new immutable
 `ROVolume` — keeping this handle live and writable.
 
 PRD §Lifecycle: subsequent commits produce a linear history. This is
-the trace-style "checkpoint per epoch" pattern (UC2)::
+the trace-style "checkpoint per epoch" pattern (UC2):
 
-    for epoch in range(10):
-        train_one_epoch(...)
-        versions.append(await ckpt.commit(message=f"epoch {epoch}"))
+```python
+for epoch in range(10):
+    train_one_epoch(...)
+    versions.append(await ckpt.commit(message=f"epoch {epoch}"))
+```
 
 Because the writeback queue is drained before the snapshot, the
 returned `ROVolume` references durable chunks and is safe to
@@ -503,6 +505,7 @@ def mount(
     cache_size_mb: Optional[int] = None,
     passthrough: Optional[bool] = None,
     enable_xattr: bool = False,
+    transport: str = 'auto',
 ) -> Path
 ```
 Format (if fresh) and mount the volume at ``mount_path`` in this
@@ -622,6 +625,7 @@ any resume-from-checkpoint policy at the usage layer.
 | `cache_size_mb` | `Optional[int]` | |
 | `passthrough` | `Optional[bool]` | |
 | `enable_xattr` | `bool` | |
+| `transport` | `str` | |
 
 ### new()
 

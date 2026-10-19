@@ -23,8 +23,11 @@ control *where* a workload runs and *under what limits*. Three primitives do thi
   [Crossing a pool boundary](#crossing-a-pool-boundary)).
 - **Cluster**: an execution cluster that lives in exactly one pool.
 - **Queue**: what you submit work to. A queue lives in one pool, **routes** work to
-  one or more clusters in that pool, and applies the concurrency, depth, priority,
-  and fairness limits for the work it admits. Every cluster automatically gets a
+  one or more clusters in that pool, and applies the concurrency, depth, and
+  priority limits for the work it admits. A queue can also cap the CPU,
+  memory, and GPUs its scheduled work uses, which is how teams share clusters without one
+  team taking all of the capacity (see
+  [Resource caps and scheduling](./resource-caps-and-scheduling)). Every cluster automatically gets a
   **co-named queue** that routes only to it, so any cluster can be targeted by
   name without creating anything (see
   [Queues you get for free](./queues#queues-you-get-for-free)).
@@ -134,7 +137,11 @@ Register execution clusters into a pool and inspect their state, capacity, and b
 {{< /link-card >}}
 
 {{< link-card target="queues" icon="list-task" title="Managing queues" >}}
-Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, priority, and fairness.
+Create and manage the scheduling lanes that route workloads to a pool and enforce concurrency, resource caps, and priority.
+{{< /link-card >}}
+
+{{< link-card target="resource-caps-and-scheduling" icon="sliders" title="Resource caps and scheduling" >}}
+Share clusters across teams with per-queue CPU, memory, and GPU caps, and choose how a queue schedules work when capacity is tight.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.11.1
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,6 +54,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Method | Description |
 |-|-|
 | [`AMD_GPU()`](#amd_gpu) | Create an AMD GPU device instance. |
+| [`APPLE_SILICON()`](#apple_silicon) | Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on. |
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`HABANA_GAUDI()`](#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
@@ -118,13 +119,27 @@ Create an AMD GPU device instance.
 
 **Returns:** Device instance.
 
+#### APPLE_SILICON()
+
+```python
+def APPLE_SILICON()
+```
+Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on.
+
+The same as `gpu="AppleSilicon"`. The workload runs natively on the Mac, so its code can use Metal
+(`torch.device("mps")`, `mlx`); it needs a devbox started with `flyte start devbox --apple-silicon`.
+
+
+
+**Returns:** Device instance.
+
 #### GPU()
 
 ```python
 def GPU(
-    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
-    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType] = None,
+    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType] = None,
 ) -> flyte._resources.Device
 ```
 Create a GPU device instance.
@@ -133,9 +148,9 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared']` | The type of GPU (e.g., "T4", "A100"). A "&lt;model&gt; shared" device such as "T4 shared" requests time-sliced (or MPS) capacity on a pool that advertises the shared accelerator. |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
-| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). A shared device takes no partition. |
 
 **Returns:** Device instance.
 
@@ -528,6 +543,8 @@ def init_from_api_key(
     image_builder: ImageBuildEngine.ImageBuilderType = 'local',
     images: typing.Dict[str, str] | None = None,
     sync_local_sys_paths: bool = True,
+    insecure_skip_verify: bool = False,
+    ca_cert_file_path: str | None = None,
 )
 ```
 Initialize the Flyte system using an API key for authentication. This is a convenience
@@ -552,6 +569,8 @@ or cloud provider.
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration |
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True) |
+| `insecure_skip_verify` | `bool` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `str \| None` | Optional path to a CA certificate bundle used to verify the server certificate. Useful behind TLS-intercepting corporate proxies that re-sign traffic with a private CA. Note that if insecure_skip_verify is also set, it takes precedence and certificate verification against this bundle is skipped. |
 
 **Returns:** None
 
@@ -1094,8 +1113,9 @@ app = flyte.serve(env)
 print(f"App URL: {app.url}")
 ```
 
-See Also:
-    with_servecontext: For customizing deployment settings
+**See Also:**
+
+- `with_servecontext`: For customizing deployment settings
 
 
 | Parameter | Type | Description |

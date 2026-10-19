@@ -1,16 +1,19 @@
 ---
 title: Connect your cluster
-description: Connect your EKS cluster to Union.ai, so your workloads run on your own infrastructure instead of your machine.
+description: Connect your cluster to Union.ai, so your workloads run on your own infrastructure instead of your machine.
 icon: hdd-network
-weight: 5
+weight: 7
 variants: -flyte +union
 ---
 
 # Connect your cluster
 
-You have an organization and the AWS resources your data plane runs on. Now connect your EKS cluster to Union.ai, and Union.ai installs the data plane into it. Your code, data and credentials stay in your AWS account.
+You have an organization and the cloud resources your data plane runs on. Now connect your cluster to Union.ai, and Union.ai installs the data plane into it. Your code, data and credentials stay in your cloud account.
 
 **Nothing dials in.** You install an agent into your cluster, and the agent connects out to Union.ai. You do not open a port, expose an endpoint, or hand over cluster credentials.
+
+> [!NOTE] On GCP or Azure?
+> Steps 1 and 2 show the AWS forms. The GCP and Azure forms are at the end of [Provision your GCP resources](./gcp-infrastructure#9-connect-your-cluster) and [Provision your Azure resources](./azure-infrastructure#11-connect-your-cluster). Fill them in there, then come back for [step 3](#3-install-the-agent).
 
 <!-- Flow traced in source, not yet watched end to end on AWS: cloud origin/main,
      clientsv2/src/components/pages/SettingsClusters/ConnectCluster/ (ConnectClusterDialog.tsx,
@@ -28,7 +31,7 @@ The values printed at the end of [Provision your AWS resources](./aws-infrastruc
 - **System IAM role ARN**
 - **Task IAM role ARN**
 
-You also need [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the EKS cluster from the shell where you ran `aws eks update-kubeconfig`.
+You also need [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the cluster from the shell where you provisioned it.
 
 ## 1. Create the cluster pool
 
@@ -71,7 +74,7 @@ Select **Register cluster**. Union.ai registers the cluster and takes you to its
 
 ## 3. Install the agent
 
-The cluster's page, **Install Union on your AWS cluster**, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
+The cluster's page, **Install Union on your AWS cluster**, or its GCP or Azure counterpart, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
 
 ![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/marketplace/connect-a-cluster/install-union.png)
 
@@ -104,7 +107,7 @@ The **Installation progress** panel on the cluster's page tracks two phases:
 
 Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later. Until it finishes, the cluster shows as **Unhealthy** at the top of the page. That is expected during the install.
 
-If you check progress with `kubectl`, list pods across all namespaces. The data plane installs into its own namespace, named `instance-` followed by an identifier.
+If you check progress with `kubectl`, the agent runs in the `dataplane-agent` namespace, and the data plane installs into the namespace you entered when you registered the cluster, or `union` if you left it empty.
 
 When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** next to its name:
 

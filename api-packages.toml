@@ -462,11 +462,33 @@ document_subpackages = true
 #   [[plugin_discovery.skip]]
 #   package = "flyteplugins-example"
 #   reason = "why it has no API reference"
+[[plugins]]
+package = "flyteplugins-gitlab"
+plugin = "flyteplugins.gitlab"
+title = "GitLab"
+name = "devtools-gitlab"
+output_folder = "content/api-reference/integrations/software-development-tools/gitlab"
+
+[[plugins]]
+package = "flyteplugins-nextflow"
+plugin = "flyteplugins.nextflow"
+title = "Nextflow"
+name = "nextflow"
+
+[[plugins]]
+package = "flyteplugins-omlx"
+plugin = "flyteplugins.omlx"
+title = "oMLX"
+name = "omlx"
+
 [plugin_discovery]
 repo = "flyteorg/flyte-sdk"
 ref = "main"
 path = "plugins"
 lockstep = "flyte"
+# PyPI accounts allowed to own a plugin. A release owned by anyone else is
+# reported as UNVERIFIED and never registered automatically.
+owners = ["flyte-bot", "unionai-oss"]
 
 [[plugin_discovery.skip]]
 package = "flyteplugins-echo"

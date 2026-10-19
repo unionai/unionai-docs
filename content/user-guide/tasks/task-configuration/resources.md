@@ -79,15 +79,20 @@ For complete format specifications for each resource type (CPU, memory, GPU/TPU/
 
 ## Accelerators
 
-To run a task on a hardware accelerator — an NVIDIA or AMD GPU, a Google TPU, an AWS Trainium/Inferentia (Neuron) chip, or an Intel Habana Gaudi device — set the `gpu` parameter of `Resources`. Despite its name, `gpu` selects any supported accelerator type.
+To run a task on a hardware accelerator — an NVIDIA or AMD GPU, a Google TPU, an AWS Trainium/Inferentia (Neuron) chip, an Intel Habana Gaudi device, or, on a devbox only, a Mac's Apple Silicon GPU — set the `gpu` parameter of `Resources`. Despite its name, `gpu` selects any supported accelerator type.
 
 You can request an accelerator in three ways:
 
 - **Type-and-count string** — `"<device>:<count>"`, for example `"T4:1"` or `"A100:8"`. This is the most common form.
 - **Integer count** — `gpu=2` requests that many GPUs of whatever type is available.
-- **Device object** — `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
+- **Device object** — `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, `flyte.APPLE_SILICON()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
 
 The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above.
+
+> [!NOTE]
+> Which accelerator types are actually available depends on your deployment and the node pools configured in your cluster. Requesting a type that no node provides will leave the task's pod `Pending`. For Apple Silicon, see [Apple Silicon (devbox only)](#apple-silicon-devbox-only).
+
+For the full list of accepted accelerator strings and device-configuration options, see the [`Resources` API reference](../../../api-reference/flyte-sdk/flyte/resources).
 
 ### NVIDIA GPUs
 
@@ -152,7 +157,12 @@ Request an Intel Habana Gaudi accelerator by type and count:
 resources=flyte.Resources(gpu="Gaudi1:1")
 ```
 
-> [!NOTE]
-> Which accelerator types are actually available depends on your deployment and the node pools configured in your cluster. Requesting a type that no node provides will leave the task's pod `Pending`.
+### Apple Silicon (devbox only)
 
-For the full list of accepted accelerator strings and device-configuration options, see the [`Resources` API reference](../../../api-reference/flyte-sdk/flyte/resources).
+On a devbox started with `flyte start devbox --apple-silicon`, request the Mac's GPU with `gpu="AppleSilicon"` or `gpu=flyte.APPLE_SILICON()`. `"AppleSilicon:1"` is also accepted; a higher count is rejected:
+
+```python
+resources=flyte.Resources(gpu="AppleSilicon")
+```
+
+Requires `flyte` 2.12.0 or later. On a remote cluster whose backend includes Apple Silicon support, the task fails with `APPLE_SILICON_NOT_AVAILABLE`. On a backend that predates it, the task's pod stays `Pending` instead. For setup and requirements, see [Using the Apple Silicon GPU](../../get-started/run-modes/running-devbox#using-the-apple-silicon-gpu).

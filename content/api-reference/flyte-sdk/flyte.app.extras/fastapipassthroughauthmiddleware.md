@@ -2,7 +2,7 @@
 title: FastAPIPassthroughAuthMiddleware
 description: "FastAPI middleware that automatically sets Flyte auth metadata from request headers."
 icon: braces
-version: 2.11.1
+version: 2.12.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -22,10 +22,11 @@ The middleware is highly configurable:
 - Specific paths can be excluded from auth requirements
 - Auth can be optional or required
 
-Thread Safety:
-    This middleware is async-safe and properly isolates auth metadata per request
-    using Python's contextvars. Multiple concurrent requests with different
-    authentication will not interfere with each other.
+**Thread Safety:**
+
+This middleware is async-safe and properly isolates auth metadata per request
+using Python's contextvars. Multiple concurrent requests with different
+authentication will not interfere with each other.
 
 
 ## Parameters

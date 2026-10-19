@@ -162,6 +162,21 @@ costing storage.
 await work.commit(message="after step 1")
 ```
 
+The client runs the first trim after a mount in the background, so that
+`commit()` usually doesn't have to. Requires `flyteplugins-union` 0.15.5 or
+later. That first trim walks the whole image, because ext4 forgets what it
+trimmed when it unmounts. On a large volume this takes tens of seconds. The
+client runs it 300 seconds after the mount, and every later trim covers only
+the space freed since. `finalize()` also trims before it unmounts. If the
+background trim hasn't run yet, or is turned off, the first `commit()` or
+`finalize()` pays for the full trim itself. Two environment variables control
+trimming. Set them in the task environment's `env_vars`:
+
+| Variable | Default | Effect |
+|---|---|---|
+| `UNION_VOLUME_EARLY_TRIM_S` | `300` | Seconds after the mount to run the background trim. `off` disables it. |
+| `UNION_VOLUME_TRIM` | on | `0`, `false` or `off` turns off every trim, including the one before each snapshot. |
+
 By default the snapshot is taken **without pausing writers**. It is
 *crash-consistent*, like a snapshot of a running disk: when a fork of it is
 mounted, ext4 replays its journal and the file system is consistent, but a
@@ -244,6 +259,8 @@ before you finalize it. The source isn't modified.
 
 - API: `BlockVolume` (`new()`, `commit()`, `grow()`, `from_volume()`),
   `ROBlockVolume` (`fork()`), `RWVolume.from_block()` and `Volume.is_block`.
+- Trimming: `$UNION_VOLUME_EARLY_TRIM_S` and `$UNION_VOLUME_TRIM`. See
+  [Checkpoint while you work](#checkpoint-while-you-work).
 - The rest of the Volume model (forking, artifacts, locators and the chunk
   cache) works the same way. See [Volumes](./volumes).
 - Cluster setup: [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).

@@ -14,7 +14,117 @@ top_menu: true
 
 ### :rotating_light: Typed Errors for GPU Capacity and GPU Faults
 
-A parent task can now tell *why* a GPU sub-action failed and react to it in plain Python. When `max_queued_time` fires because no GPU could be scheduled, the parent receives `flyte.errors.MaxQueuedTimeExceededError`, so it can re-run the task on a different GPU type or queue instead of failing the whole run. The other timeout bounds raise `flyte.errors.MaxRuntimeExceededError` and `flyte.errors.DeadlineExceededError`. All three subclass `flyte.errors.TaskTimeoutError`, so existing handlers keep working. A failure the platform attributes to a GPU fault raises `flyte.errors.GPUFaultUserError` for a workload fault such as Xid 31, or `flyte.errors.GPUFaultSystemError` for failed hardware such as an uncorrectable ECC error. Both carry the Xid number, severity, node, and GPU. `flyte.remote.Run.raise_for_status()` raises the same typed errors for a whole run launched with `flyte.run`, so runs compose like sub-actions. See [Error handling](../user-guide/tasks/task-programming/error-handling).
+A parent task can now tell *why* a GPU sub-action failed and react to it in plain Python. When `max_queued_time` fires because no GPU could be scheduled, the parent receives `flyte.errors.MaxQueuedTimeExceededError`, so it can re-run the task on a different GPU type or queue instead of failing the whole run. The other timeout bounds raise `flyte.errors.MaxRuntimeExceededError` and `flyte.errors.DeadlineExceededError`. All three subclass `flyte.errors.TaskTimeoutError`, so existing handlers keep working. A failure the platform attributes to a GPU fault raises `flyte.errors.GPUFaultUserError` for a workload fault such as Xid 31, or `flyte.errors.GPUFaultSystemError` for failed hardware such as an uncorrectable ECC error. Both carry the Xid number, severity, node, and GPU. Platform-side GPU fault detection is not yet enabled on Union clusters, so the platform does not raise these two errors today; the classes are available in the SDK. `flyte.remote.Run.raise_for_status()` raises the same typed errors for a whole run launched with `flyte.run`, so runs compose like sub-actions. See [Error handling](../user-guide/tasks/task-programming/error-handling).
+
+
+### :gear: Queue Resource Caps and Scheduling Policy
+
+A queue can now cap the total CPU, memory, and ephemeral storage held by its dispatched, unfinished actions with `max_resources`, and cap in-flight GPUs per accelerator type or class with `max_accelerators`, for example `nvidia-h100=8`. Once a cap is reached, further actions wait instead of dispatching, and an action that asks for more than the cap allows fails immediately with an error that names both. The `scheduling` policy decides what happens behind an action that does not fit: `strict_fifo` holds the line so smaller work cannot starve a large action, and `greedy_capacity` lets smaller work go ahead. Actions that share a reusable environment count once per environment. Set caps and policy with `flyte create queue` and `flyte update queue`, or edit the CPU, memory, and storage caps and the policy on the Console queue pages, which show live utilization and, for a strict-FIFO queue, the action that is blocking it. `flyte get queue --watch` shows the same from the CLI. See [Resource caps and scheduling](../user-guide/cluster-workload-management/resource-caps-and-scheduling).
+
+
+### :gear: Cluster Lifecycle
+
+You can drain, activate, delete, and restore a cluster from an actions menu on the Clusters page and the cluster details page, or with `flyte update cluster NAME --drain` / `--activate`, `flyte delete cluster`, and `flyte undelete cluster`. The Clusters page shows Draining, Drained, Deleting, and Deleted states with a Status filter, and deleted clusters open read-only. A cluster no longer has to be drained before deletion: it is marked Deleting, its work moves elsewhere, and it is fully deleted, along with its queue, once cleanup finishes. Draining is rejected while apps are assigned to the cluster, and the error names them. Clusters, cluster pools, and queues record who created and last updated them, shown in the Console and by `flyte get`. A cluster can no longer override settings its pool defines; a disagreement appears under Cluster Pool Config. See [Cluster pools](../user-guide/cluster-workload-management/cluster-pools).
+
+
+### :package: Artifact Partitions and Lineage
+
+An artifact can declare a partition schema, with one time partition plus string partitions, and gets, lists, and triggers take partitions into account. The Console adds partition columns and a partition filter to the artifacts list and a Partitions tab with a time grid to the artifact page, and `flyte create artifact --partition key=value` publishes a partitioned version from the CLI. A version can record the versions it was derived from, including merges of several, and lineage can be followed in both directions. A version can also opt in to a content-hash name with `Metadata(version_from_content=True)`. `flyte.artifacts.produces` turns another task's outputs into artifacts from the calling code, without changing the task. `Artifact.source_run_url` and `Artifact.source_action_url` link to the run and action that produced an artifact, versions can be deleted from the Console, and the Versions tab sorts and filters by creator and metadata label. See [Partitioned artifacts](../user-guide/artifacts/partitions).
+
+
+### :lock: Device Sign-In and Microsoft Accounts
+
+A tool that cannot open a browser can now show a short code that you enter at the Union sign-in page, after you see which application is asking. The `flyte` CLI uses this to sign in on machines without a browser. Self-serve users can create an account or sign in with a Microsoft work account (Microsoft Entra ID). Workspaces that use SSO only no longer show username and password fields, and a user whose identity provider supplies no email address sees guidance and a reference to share with support. See [Authenticating](../user-guide/authenticating).
+
+
+### :sparkles: Connect Your Own Kubernetes Cluster
+
+For self-serve organizations, the Console takes a Kubernetes cluster you already run from "connect" to a working Union data plane. Home and Overview are now one page, and connecting a cluster is a single dialog that creates the cluster pool, lists the cloud prerequisites, and gives you the install command. AWS pools take your account ID and Secrets Manager region directly. You can choose the namespace Union installs into (the default is `union`) and connect more than one cluster, and a misconfigured pool fails at registration with a clear reason. A registered cluster shows Setting up while Union installs, and a short guided tour follows your first cluster. The Documentation link in the navigation bar becomes Help, with FAQs, your support conversations, and bug reports, and the Cost page becomes Plan & Invoices.
+
+
+### :globe_with_meridians: Apps Across Multiple Data Planes
+
+Apps can run on several data planes, each under its own DNS name: opt in per organization, domain, or project with `app_dns_strategy=dataplane_specific`. By default, apps keep a single shared URL. Set `cluster` on `AppEnvironment`, or `cluster=` on `serve()`, to place an app on a named cluster instead of load-balancing across a pool.
+
+
+### :robot: LLM Gateway Updates
+
+vLLM and SGLang apps on your data plane can now be gateway providers, with per-token pricing. Guardrails check gateway traffic with a guardrail app you deploy, with a timeout and a choice of whether requests proceed when the guardrail is unavailable. A gateway reaches apps on data planes that use per-project app DNS, and can be pinned to a cluster. The redesigned gateway page shows traffic, how to call the gateway (including through `flyte proxy app` for gateways behind Union sign-in), providers, guardrails, and settings, all edited in one dialog with Save & redeploy. Virtual keys open in a side panel with usage examples and each key's requests, errors, and spend over the last 24 hours. One unavailable provider no longer takes the gateway down; existing gateways pick this up when they are redeployed. LLM Gateway is labeled Preview in the Console.
+
+
+### :sparkles: Factories
+
+Factories build graphs of partitioned artifacts that are materialized on demand, with source version pinning. A factory can end in a served app and run on triggers: a new source version or a schedule. Factories are labeled Preview in the Console. See [Factories](../user-guide/factories/_index).
+
+
+### :sparkles: Webhooks From Your SaaS Tools
+
+`flyte.extras.webhooks` receives webhooks in a Flyte app, with provider packages for GitHub, Slack, Linear, ClickUp, and Jira that verify each delivery and parse it into a typed event. Slack adds interactivity, slash commands, notification helpers, and human-in-the-loop approvals. GitHub adds form-encoded deliveries, GitHub App installation tokens, installation events, and a pull-request review gate. Signature verification for Linear and ClickUp needs Flyte SDK 2.10.7 or later. See [Software development tools](../integrations/software-development-tools/_index).
+
+
+### :floppy_disk: Volumes on Every BYOC Cluster
+
+Unprivileged volume mounts now cover every BYOC cluster and are on by default in the self-managed chart. Mount a volume with `pod_template=allow_volumes()` from `flyteplugins.union.io`. `BlockVolume.new(size="64G")` creates a volume stored as a single ext4 image, so small-file, single-writer workloads such as build and package caches avoid a network round trip on every file operation. A commit uploads only what changed. Volumes can be mounted, committed, and forked from apps, sidecars, and scripts, work with S3-compatible stores such as MinIO, Ceph RGW, and Cloudflare R2 on self-managed data planes, and can publish each committed version as an artifact. `allow_volumes(cache_size=...)` puts the cache on a disk, `shared_node_cache=True` shares a read-only cache across the pods of a namespace on a node, and a failed mount names its cause. See [Volumes](../user-guide/tasks/task-programming/volumes) and [Block volumes](../user-guide/tasks/task-programming/block-volumes).
+
+
+### :hourglass_flowing_sand: llama.cpp Model Serving
+
+`LlamaCppAppEnvironment` serves GGUF models from object storage or a Hugging Face GGUF repository behind an OpenAI-compatible endpoint, with optional speculative decoding. `flyte.app.Subdomain` resolves an app's subdomain at deploy time.
+
+
+### :sparkles: Safer App Rollouts
+
+A Union platform upgrade no longer redeploys your apps; an app rolls out only when its spec changes. When a new version cannot start, for example because no node fits it, the app is marked Failed with the reason once the rollout times out, and the previous version keeps serving. Apps no longer return HTTP 503 errors under sustained high traffic, app logs load reliably even when one replica has failed, and very long status messages are truncated.
+
+
+### :wrench: SDK Updates
+
+- `flyte.run(trigger, ...)` runs any deployed trigger from Python with its registered configuration, and a trigger without a schedule works as a named launch configuration.
+- `flyte get code RUN` lists or unpacks the code bundle a run executed, and `Run.download_code()` does the same from Python.
+- `flyte proxy app NAME` opens an authenticated localhost proxy to an app behind Union sign-in, so local clients such as `curl` or an MCP server can reach it without handling tokens.
+- `flyte get metrics` and the `Metrics` remote object return the pod metrics the Console shows for task attempts and apps, and `flyte get environment` lists deployed environments and their retained versions.
+- `flyte.is_control_plane_available()`, `Run.first_failure()`, and `ActionDetails.error_message` help code that fixes and relaunches a failed run.
+- `ClusteredTaskEnvironment` gains a `JaxRun` runtime, NVIDIA A2 and TPU v5e can be requested by name, and the `task_resource.default_accelerator` setting picks the accelerator for tasks that request GPUs without naming one.
+- `FLYTE_AUTH_TYPE=ExternalCommand` with `FLYTE_AUTH_COMMAND` lets tasks authenticate inside the cluster with your own narrowly scoped tokens.
+- `bq://` outputs decode to pandas through the BigQuery Storage API, the type engine supports `IntEnum` and generic dataclasses, and `flyteplugins-typesafe-ai` runs TypeSafe's System One model in durable tasks.
+- `flyteplugins-agents-hermes` records Hermes model turns as durable traces, and `flyte.sandbox` (alpha) runs on a pool of worker processes.
+- `flyte run --version` sets the run's code version, `flyte deploy --dry-run` works for projects with app environments, and `flyte.deploy(dryrun=...)` is deprecated in favor of `dry_run=`.
+- Resource values are validated before submission, `File` and `Dir` uploads size their multipart parts automatically, and vLLM and SGLang apps with `stream_model=True` no longer download the weights before streaming them.
+- A generic dataclass that cannot be serialized now fails with an error instead of silently falling back to pickle.
+- `flyteplugins-union` 0.14.0 and later require Flyte SDK 2.10.1 or later, below 2.11.
+
+
+### :wrench: Reliability and Fixes
+
+The Runs page search matches run IDs as well as task names, and an action that fails before it runs shows the reason instead of a bare "Failed" or "Timed out". Recover and Rerun keep fractional seconds in datetime inputs. The platform honors a task-level cache max age, and cached tasks hit the cache even when their `custom_context` differs. Running a trigger from the Console keeps its notification rules. Ray runs whose names start with a digit start normally, and a Ray job that KubeRay rejects fails with KubeRay's reason instead of hanging. Reusable environments start sooner, users who can see every project get a NotFound error for a project that does not exist, control-plane API latency for runs and actions is lower, and self-serve provisioning reports a failure after three minutes instead of staying in progress. In the Console, the Busiest Users panel shows names instead of identity-provider IDs, the Runs and Tracked Runs pages pin the table headers, multi-pod GPU charts keep one color per pod, run details show the cluster and queue an action ran on, run status badges use the design system's colors, and the run details sidebar works in Safari.
+
+
+### :gear: Self-Managed Dataplane Updates
+
+Update the Union dataplane Helm chart to 2026.9.7 or later. Before you upgrade:
+
+- If your data plane serves apps through `knative-operator`, run the `knative-migration` Job before or during the upgrade to 2026.9.0 or later. Otherwise the upgrade stalls.
+- Chart 2026.9.4 moves app serving to Knative Serving 1.23, which needs Kubernetes 1.32 or later (1.34 recommended). Apply the new CRDs with `kubectl apply --server-side -f crds/dataplane/`.
+- Chart 2026.9.4 removes `fuseDevicePlugin`. Tasks that use `allow_fuse()` must switch to `allow_volumes()`.
+- Chart 2026.9.7 runs `flyteconnector` as the `union-system` service account. Move any IRSA or Workload Identity bindings from the old service account.
+- Chart 2026.9.7 requires Azure GPU node pools to carry the `platform.union.ai/accelerator=<device>` label.
+
+The upgrade brings:
+
+- The node-level mount broker, on by default from 2026.9.7 with a 30m CPU request per node, plus the shared node cache and block-mode volumes. It stays off in `values.openshift.yaml`, and nodes that enforce SELinux, such as Bottlerocket, EKS Auto Mode, and RHCOS, need `selinuxTaskPods`.
+- No app redeploys on a platform upgrade, timed-out rollouts marked Failed, no stalled revisions on busy data planes, and reliable app logs.
+- Per-cluster app URLs: set `updateStatus.connectionConfig.enabled: true` and `updateStatus.connectionConfig.apps.domain`. You manage DNS and TLS for that domain.
+- Clean worker shutdown when a cluster is deleted, faster cold starts for fast tasks, and multi-architecture operator and gateway images for Arm system nodes.
+- Settings > Clusters > Logs, which needs chart 2026.9.3 or later.
+
+The Ray fixes reach self-managed data planes in chart 2026.10.0.
+
+
+### :warning: Breaking Changes
+
+- **`allow_fuse()` no longer works on BYOC clusters or with self-managed chart 2026.9.4 and later.** A pod that uses it stays Pending with no error. Replace it with `pod_template=allow_volumes()` from `flyteplugins.union.io`.
+- **Volumes committed with `flyteplugins-union` 0.14.1 or later cannot be mounted by older plugin versions.** Upgrade every image that mounts volumes to 0.14.1 or later, or set `UNION_VOLUME_DELTA_COMMITS=0` on writers until you have.
+- **`DeleteCluster` requires `expected_generation`.** Pass the generation from your last read of the cluster. The call marks the cluster Deleting, or Deleted if it was already drained, and returns the updated cluster.
 
 ## August 2026
 
@@ -71,7 +181,7 @@ For tasks that declare secrets, a Secrets tab on the launch form lets you change
 
 ### :lock: Volumes Without Elevated Privileges
 
-Tasks now mount volumes with no elevated privileges. A node-level broker performs the privileged filesystem setup and hands the task an already-connected file descriptor, so pods keep running under restricted Pod Security Standards: no `CAP_SYS_ADMIN`, no device mount, and no host paths. Volume data access uses the pod's own cloud identity, and the broker holds no storage credentials. This is available on demo and playground clusters in this release, with wider enablement to follow.
+Tasks now mount volumes with no elevated privileges. A node-level broker performs the privileged filesystem setup and hands the task an already-connected file descriptor, so pods keep running under restricted Pod Security Standards: no `CAP_SYS_ADMIN`, no device mount, and no host paths. Volume data access uses the pod's own cloud identity, and the broker holds no storage credentials. In this release it was available on a limited set of clusters; it reached every BYOC cluster and the self-managed chart in September 2026.
 
 
 ### :recycle: Recovery and Reusable Ray Improvements
@@ -105,13 +215,10 @@ Spark tasks launch again after a plugin registration fix, and with a pod templat
 Update to the latest Union helm chart to pick up:
 
 - Artifact registration for tasks declaring `produces_artifacts`, and artifact triggers on new versions.
-- The node-level mount broker for unprivileged volume mounts.
 - Kubernetes event enrichment in failure messages and the Logs tab.
 - Fine-grained app status and self-healing deployment webhooks.
 - Reusable Ray cluster fixes, Spark fixes, and Ray metrics and logs across head and worker pods.
 - Live logs for a distributed task no longer fail when one pod has been evicted.
-
-The action scheduling and lease services can also be backed by PostgreSQL, with no behavior change for existing deployments.
 
 
 ### :warning: Breaking Changes

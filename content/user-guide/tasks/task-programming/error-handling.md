@@ -199,6 +199,13 @@ very different things:
   reschedules onto other hardware where it can. You only see this error after the platform has given up, so
   retrying in place is unlikely to help. Move to a different GPU type, queue, or cluster instead.
 
+{{< variant union >}}
+{{< markdown >}}
+**Availability:** platform-side GPU fault detection is not enabled on Union clusters, so the platform does not
+raise these errors. The classes are available in the SDK.
+{{< /markdown >}}
+{{< /variant >}}
+
 Catch `flyte.errors.GPUFaultError` to handle both, then branch on the attributes:
 
 | Attribute | Meaning |
@@ -250,7 +257,8 @@ their clauses must come before the generic `RuntimeUserError` clause.
 A task (or a script) can also launch a whole *run* with `flyte.run` rather than calling a task as a sub-action,
 for example to compose several independent runs into a larger pipeline. A sub-action failure raises in the
 parent automatically. A run you launched doesn't, because `flyte.run` returns a `flyte.remote.Run` handle
-immediately. Wait on the handle, then call `flyte.remote.Run.raise_for_status()`:
+immediately. Wait on the handle, then call `flyte.remote.Run.raise_for_status()`
+(requires `flyte` 2.10.3 or later):
 
 ```python
 run = await flyte.run.aio(train, epochs=3)
