@@ -25,7 +25,7 @@ The quickest route to a working Union.ai deployment is to set it up yourself, wi
 How you subscribe depends on where your data plane runs:
 
 - **AWS: subscribe on AWS Marketplace.** Buy **Union Team** on AWS Marketplace, so the charges appear on your existing AWS bill with no separate procurement process. New subscriptions start with a 30-day free trial. Then sign up, provision your AWS resources, and connect your cluster. Start at [AWS Marketplace](./marketplace/aws-marketplace).
-- **GCP or Azure: subscribe through Union.ai.** There is no GCP or Azure marketplace listing, so contact Union.ai for a subscription. Then sign up, provision your GCP or Azure resources, and connect your cluster. Start at [Sign up for Union.ai](./marketplace/sign-up).
+- **GCP or Azure: subscribe through Union.ai.** There is no GCP or Azure marketplace listing yet, so contact Union.ai for a subscription. Then sign up, provision your GCP or Azure resources, and connect your cluster. Start at [Sign up for Union.ai](./marketplace/sign-up).
 
 [Setup from Marketplace](./marketplace/_index) has the full path for both.
 
