@@ -10,7 +10,7 @@ variants: -flyte +union
 
 This is the fastest way to deploy Union.ai, and it starts with a 30-day free trial. You subscribe to **Union Team** on AWS Marketplace, create your organization in the Union.ai UI, and try out a local workflow that you follow in the UI. When you are ready, you create the cloud resources the data plane runs on and connect your cluster, and the data plane is installed for you. You don't have to wait on Union.ai to set anything up.
 
-The result is a [self-managed deployment](../selfmanaged/_index): the data plane runs in your cluster, and you own the cluster and its upgrades. Your cluster can run on AWS, GCP, or Azure. The marketplace subscription is a billing relationship, separate from where your cluster runs, and there is no GCP or Azure marketplace listing: on GCP and Azure, start at [Sign up for Union.ai](./sign-up).
+The result is a [self-managed deployment](../selfmanaged/_index): the data plane runs in your cluster, and you own the cluster and its upgrades. Your cluster can run on AWS, GCP, or Azure. There is no GCP or Azure marketplace step: on GCP and Azure, start at [Sign up for Union.ai](./sign-up).
 
 **You can try it before you set up a cluster.** Once your organization exists, a workflow you run on your own machine reports to it and appears in the Union.ai UI. That is enough to see how Union.ai works before you create any cloud resources.
 

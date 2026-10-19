@@ -24,7 +24,7 @@ The quickest route to a working Union.ai deployment is **Union Team**, a self-ma
 
 You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai UI. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS, GCP, or Azure account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-See [Setup from Marketplace](./marketplace/_index) for the step-by-step path.
+See [Setup from Marketplace](./marketplace/_index) for the step-by-step path. There is no GCP or Azure marketplace step: on GCP and Azure, you start at sign-up and follow the same path from there.
 
 If your data plane runs somewhere Setup from Marketplace doesn't cover, such as OCI, a neocloud provider, or on-premises, or you want Union.ai to run your data plane for you, see the [manual self-managed setup](./selfmanaged/_index) or [BYOC deployment](./byoc/_index).
 
