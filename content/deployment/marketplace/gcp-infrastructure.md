@@ -17,7 +17,8 @@ Union.ai installs the data plane into your cluster for you, but the Google Cloud
 
 You supply two values: your Google Cloud project ID and the address of your Union.ai UI. The commands derive every resource name from the project. At the end you have the values you enter when you connect your cluster: three for the cluster pool, and four for registering the cluster.
 
-These resources differ from the ones in the manual [GCP infrastructure](../selfmanaged/infrastructure-recommendations/gcp) guide for self-managed deployments: here Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
+> [!NOTE] Not the manual self-managed setup
+> These resources differ from the ones in the manual [GCP infrastructure](../selfmanaged/infrastructure-recommendations/gcp) guide: Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
 
 > [!NOTE] Already have these resources?
 > This page is optional. You can use an existing GKE cluster, bucket, repository, and service accounts instead, as long as they meet the same requirements:
@@ -32,6 +33,7 @@ These resources differ from the ones in the manual [GCP infrastructure](../selfm
 ## Prerequisites
 
 - The [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), `kubectl`, and `gke-gcloud-auth-plugin`. `kubectl` uses the plugin to authenticate to GKE, and fails without it. Install both with `gcloud components install kubectl gke-gcloud-auth-plugin`.
+- [Helm](https://helm.sh/docs/intro/install/), for the agent install in [step 9](#9-connect-your-cluster).
 - A billing-enabled Google Cloud project, and an account that can enable APIs, create the resources below, and grant IAM roles in it. `roles/owner` covers all of it. Otherwise you need:
 
   | Role | For |

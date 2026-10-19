@@ -19,7 +19,8 @@ Union.ai installs the data plane into your cluster for you, but the Azure resour
 
 At the end you have the values you enter when you connect your cluster: three for the cluster pool, and seven for registering the cluster.
 
-These resources differ from the ones in the manual [Azure infrastructure](../selfmanaged/infrastructure-recommendations/azure) guide for self-managed deployments: here Key Vault is required and holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
+> [!NOTE] Not the manual self-managed setup
+> These resources differ from the ones in the manual [Azure infrastructure](../selfmanaged/infrastructure-recommendations/azure) guide: Key Vault is required and holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
 
 > [!WARNING] Choose the namespace before you start
 > The managed identities trust Kubernetes service accounts in one namespace, which you choose in [step 1](#1-sign-in-and-choose-names). When you register the cluster, you must enter exactly that namespace. Azure federated credentials accept no wildcard, so a mismatch is not reported anywhere: the data plane's pods run with no Azure identity, and the cluster never finishes registering.
@@ -37,6 +38,7 @@ These resources differ from the ones in the manual [Azure infrastructure](../sel
 ## Prerequisites
 
 - The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) and `kubectl`. If you don't have `kubectl`, install it with `az aks install-cli`.
+- [Helm](https://helm.sh/docs/intro/install/), for the agent install in [step 11](#11-connect-your-cluster).
 - An account that can create resource groups and role assignments in the subscription: Owner, or Contributor together with User Access Administrator. Contributor alone cannot create role assignments, so with it the setup fails as soon as it assigns a role.
 - A Union.ai organization. See [Sign up for Union.ai](./sign-up).
 
