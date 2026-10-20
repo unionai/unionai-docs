@@ -19,13 +19,15 @@ Every approach launches the same task:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/pipeline.py" fragment=task lang=python >}}
 
-Deploy it twice — once under a tag that is a permanent record, and once under a label the
+Deploy it twice — once under a version that names this build, and once under a label the
 caller pins:
 
 ```bash
-flyte deploy --version 2026-09-23-a3f9c21 pipeline.py env   # immutable record
+flyte deploy --version 2026-09-23-a3f9c21 pipeline.py env   # names this build
 flyte deploy --version prod               pipeline.py env   # what production runs
 ```
+
+Neither version is immutable. Deploying again under an existing version overwrites it.
 
 The caller then names `prod` and never changes. Releases and rollbacks happen on the
 Flyte side. Avoid resolving "latest" in the caller: every deploy would become an
@@ -76,9 +78,14 @@ flyte create api-key --name sqs-subscriber
 flyte create secret flyte-api-key --value <the-key-value>
 ```
 
-The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It also
-inherits the permissions of whoever minted it — scope it to the project and domain the
-subscriber launches into rather than reusing a personal key.
+The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It does not
+inherit your permissions and is not scoped to a project or domain: by default it gets the
+org-wide Contributor policy. To restrict it to the project and domain the subscriber
+launches into, create it with `--no-default-policies`, create a policy bound to that
+project and domain with `flyte create policy`, and assign it to the key with
+`flyte create assignment --creds-subject <client-id> --policy <policy-name>` (see
+[Custom roles and policies](../../../user-guide/user-management#custom-roles-and-policies)).
+Every key also keeps a baseline `_system-provisioned-access` policy.
 
 Two settings matter. Apps scale to zero by default and autoscale on request volume, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
 away. It also needs something listening on the app port, which the health endpoint
@@ -181,7 +188,14 @@ same on both clouds.
 **Delivery is at-least-once.** Both services can deliver a message more than once. The run
 name is derived from the message id, so a redelivery collides with the run that already
 exists rather than starting a second one. Uniqueness is enforced by Flyte, which means
-this holds even across several subscriber replicas.
+this holds even across several subscriber replicas — provided the name is deterministic and
+fits Flyte's 30-character limit on run names.
+
+The SQS subscriber above does not fit that limit: `sqs-` plus an SQS `MessageId` is
+longer than 30 characters. Flyte rejects the run name as an invalid run identifier, no run
+is created, and the message is redelivered until it reaches the dead-letter queue. Derive
+the SQS run name deterministically from the `MessageId` (a short hash, for example) and keep
+it to 30 characters or fewer, so a redelivery still maps to the same run.
 
 **Acknowledge on launch, not on completion.** Waiting for a run to finish exhausts the
 visibility timeout or ack deadline, and the message is redelivered while the first run is
