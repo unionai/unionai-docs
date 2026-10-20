@@ -258,7 +258,7 @@ came from.
 Declare the identity once, when the volume is created:
 
 ```python
-@env.task
+@env.task(produces_artifacts=True)
 async def build_index() -> RWVolume:
     vol = Volume.new(name="search-index", artifact=True)
     data = await vol.mount()
@@ -299,7 +299,12 @@ split one version graph into two.
 
 Returning the volume from a task publishes that seal as part of writing the
 task's outputs: no extra call in your code, and no registry round trip inside
-the task.
+the task. This follows the same rule as any
+[task output artifact](../../artifacts/task-outputs): the task must be declared
+with `produces_artifacts=True`, or the platform ignores the declaration and
+registers nothing. Nothing warns you. A volume carries its own artifact
+identity, so it needs no `flyte.artifacts.new()` wrapper. It must be a top-level
+output: the return value itself, or one element of a tuple return.
 
 To publish a checkpoint partway through a task, ask for it on the commit:
 
@@ -312,7 +317,8 @@ for epoch in range(100):
 return await rw.finalize(message="training complete")   # published too, if the volume declares an artifact
 ```
 
-`publish_artifact=True` works even on a volume that declared no identity; the
+`publish_artifact=True` publishes from inside the task, so it doesn't depend on
+`produces_artifacts`. It works even on a volume that declared no identity; the
 artifact name then defaults to the volume's name.
 
 Commits you don't publish are still durable versions — they are simply not in
@@ -329,8 +335,9 @@ rather than duplicating it. Pass `artifact_version="v3"` to `commit()` or
 
 Each version records a parent edge pointing at the previous *published* version
 of the same artifact, so the registry mirrors the branching shape of the
-volume's own lineage. Alongside any attributes you set, every published version
-carries:
+volume's own lineage. The **Lineage** tab in the UI shows the action that
+produced a version, not this parent edge. Alongside any attributes you set,
+every published version carries:
 
 | Attribute | What it holds |
 |---|---|
@@ -539,11 +546,35 @@ flyte explore volume <run-name>
 
 # Pin a specific action and the exact output to inspect
 flyte explore volume <run-name> <action-name> --op-name my_volume
+
+# Explore a published version by its locator
+flyte explore volume <locator>
 ```
 
+Exploring a volume on the Badger metadata store, the default, requires
+`flyteplugins-union` 0.18.0 or later. The locator form and `--region` also
+need 0.18.0.
+
 It follows the version lineage, so you can step back through earlier commits and
-jump to the action that produced any version. To open an index you already have
-on disk, pass `--from-file <path> --store-type sqlite`.
+jump to the action that produced any version. To open a Volume `.json` or a raw
+index file you already have on disk, pass `--from-file <path>`.
+
+## Metadata store
+
+A volume keeps its file-system metadata in an embedded Badger store, and each
+published version records the store it uses in `volume/metadata_store`.
+
+> [!WARNING] SQLite and Redis volumes after upgrading
+> `flyteplugins-union` 0.18.0 and later support only the Badger store. A volume
+> created on the SQLite or Redis store can't be mounted, forked, or explored
+> after you upgrade. The error says the store is no longer supported. Re-create
+> the volume on Badger and copy its data into it, using a plugin version older
+> than 0.18.0 to read the old volume.
+>
+> In 0.18.0 and later, `with_high_throughput_volume_deps`,
+> `Volume.migrate_metadata_store_type()`, and `$UNION_VOLUME_METADATA_STORE`
+> don't exist, and `metadata_store_type` accepts only `"badger"`. On Windows,
+> 0.18.0 can't mount volumes.
 
 ## Debugging a mount
 
