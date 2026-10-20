@@ -83,9 +83,9 @@ inherit your permissions and is not scoped to a project or domain: by default it
 org-wide Contributor policy. To restrict it to the project and domain the subscriber
 launches into, create it with `--no-default-policies`, create a policy bound to that
 project and domain with `flyte create policy`, and assign it to the key with
-`flyte create assignment --creds-subject <client-id>` (see
+`flyte create assignment --creds-subject <client-id> --policy <policy-name>` (see
 [Custom roles and policies](../../../user-guide/user-management#custom-roles-and-policies)).
-Every key also keeps a baseline `system-provisioned-access` policy.
+Every key also keeps a baseline `_system-provisioned-access` policy.
 
 Two settings matter. Apps scale to zero by default and autoscale on request volume, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
 away. It also needs something listening on the app port, which the health endpoint
