@@ -64,7 +64,7 @@ env = flyte.TaskEnvironment(
 @flyte.trace
 async def llm(prompt: str) -> str:
     r = await AsyncOpenAI().chat.completions.create(
-        model="gpt-4.1-nano",
+        model="gpt-5.6-luna",
         messages=[{"role": "user", "content": prompt}],
     )
     return r.choices[0].message.content

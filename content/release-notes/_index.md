@@ -44,7 +44,7 @@ For self-serve organizations, the Console takes a Kubernetes cluster you already
 
 ### :globe_with_meridians: Apps Across Multiple Data Planes
 
-Apps can run on several data planes, each under its own DNS name: opt in per organization, domain, or project with `app_dns_strategy=dataplane_specific`. By default, apps keep a single shared URL. Set `cluster` on `AppEnvironment`, or `cluster=` on `serve()`, to place an app on a named cluster instead of load-balancing across a pool.
+Apps can run on several data planes, each under its own DNS name: opt in per organization, domain, or project with `app_dns_strategy=dataplane_specific`. By default, apps keep a single shared URL. Set `cluster` on `AppEnvironment`, or `cluster=` on `flyte.with_servecontext()`, to place an app on a named cluster instead of load-balancing across a pool.
 
 
 ### :robot: LLM Gateway Updates
