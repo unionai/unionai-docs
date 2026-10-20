@@ -151,9 +151,11 @@ The `max_inline_io_bytes` parameter on `@env.task` (and `override()`) controls t
 size for data passed directly in the task request and response
 (e.g., primitives, strings, dictionaries).
 
-Data exceeding this threshold raises an `InlineIOMaxBytesBreached` error.
+When one task calls another in a remote run, data exceeding this threshold raises an
+`InlineIOMaxBytesBreached` error (see [Where the limit is checked](#where-the-limit-is-checked)).
 
 The default value is 10 MiB (`10 * 1024 * 1024` bytes).
+`TaskEnvironment` does not accept `max_inline_io_bytes`; set it on `@env.task` or `override()`.
 
 This setting does **not** affect [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories),
 or [`flyte.io.DataFrame`](../task-programming/dataframes),
@@ -169,3 +171,24 @@ env = flyte.TaskEnvironment(name="my_env")
 def process_large_dict(data: dict) -> dict:
     return {k: v * 2 for k, v in data.items()}
 ```
+
+To change the limit for a single call, use `override()`:
+
+```python
+result = process_large_dict.override(max_inline_io_bytes=100 * 1024 * 1024)(data)
+```
+
+### Where the limit is checked
+
+The limit applies to calls between tasks, and the calling task checks it against the limit of the task it calls:
+
+- **Inputs** are checked before the call is submitted. With the default limit, the error reads
+  `Inputs exceed max_bytes limit of 10.0 MB, actual size: <size> MB`.
+- **Outputs** are checked when the calling task reads them back. The called task runs to completion and
+  writes its output first, so the called action succeeds and the calling task fails. With the default limit, the error reads
+  `Output file at <path> exceeds max_bytes limit of 10485760`.
+
+The SDK does not check a top-level run's own inputs and outputs.
+
+Local runs do not enforce the limit. A value that passes in a local run can still raise
+`InlineIOMaxBytesBreached` when the same tasks run remotely.
