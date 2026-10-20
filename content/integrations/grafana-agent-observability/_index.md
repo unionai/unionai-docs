@@ -85,7 +85,7 @@ pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteo
 
 To instrument more than one framework, list several extras, as in `[openai,langgraph]`. The same string works in `with_pip_packages()`. Installing from Git needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
-Nothing else has to be configured: `init()` registers instrumentation for every framework whose integration package it finds: an instrumentor for most, and a call wrapper for `claude`. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
+Nothing else has to be configured. `init()` registers instrumentation for every framework whose integration package it finds: an instrumentor for most, and a call wrapper for `claude`. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
 
 ```python
 from flyteplugins.agento11y import instrumented_frameworks
