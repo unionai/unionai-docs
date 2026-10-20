@@ -85,7 +85,7 @@ pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteo
 
 To instrument more than one framework, list several extras, as in `[openai,langgraph]`. The same string works in `with_pip_packages()`. Installing from Git needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
-Nothing else has to be configured: `init()` registers an instrumentor for every framework whose integration package it finds. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
+Nothing else has to be configured. `init()` registers instrumentation for every framework whose integration package it finds: an instrumentor for most, and a call wrapper for `claude`. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
 
 ```python
 from flyteplugins.agento11y import instrumented_frameworks
@@ -330,7 +330,7 @@ register_call_wrapper("claude", wrap)
 
 Framework names match the adapter directory: `langchain`, `langgraph`, `openai`, `claude`, `google`, `pydantic_ai`.
 
-Both registries are best-effort by construction. If your instrumentor or wrapper raises, the adapter logs at debug level and runs the agent uninstrumented, because observing an agent must never be the reason it stops working. The flip side is that a handler which never attaches fails quietly, so confirm registration with `flyteplugins.agents.core.instrumented_frameworks()` rather than assuming it.
+Both registries are best-effort by construction. If your instrumentor or wrapper raises, the adapter logs at debug level and runs the agent uninstrumented, because observing an agent must never be the reason it stops working. The flip side is that a handler which never attaches fails quietly, so confirm registration rather than assuming it. `flyteplugins.agents.core.instrumented_frameworks()` lists only frameworks registered with `register_instrumentor`. No public function lists call wrappers, so to confirm a wrapper registered with `register_call_wrapper`, check that a test run produces the output you expect. This differs from `flyteplugins.agento11y.instrumented_frameworks()`, which returns everything agento11y's `init()` registered, including the `claude` call wrapper.
 
 ## Limitations
 
