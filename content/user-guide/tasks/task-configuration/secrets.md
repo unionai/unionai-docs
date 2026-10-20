@@ -210,9 +210,8 @@ For example:
 {{< markdown >}}
 The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
 Secrets read directly from an external store use a different, provider-specific path:
-see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager),
-[Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault),
-or [Google Secret Manager](../../../deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager).
+see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager)
+or [Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
 {{< /markdown >}}
 {{< /variant >}}
 
