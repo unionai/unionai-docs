@@ -116,7 +116,7 @@ To request a Multi-Instance GPU (MIG) partition, use `flyte.GPU()` with a `parti
 resources=flyte.Resources(gpu=flyte.GPU(device="A100", quantity=1, partition="1g.5gb"))
 ```
 
-Partitioning is available on `A100`, `A100_80G` (`A100 80G` before `flyte` 2.11.3), `H100`, and `H200`.
+Partitioning is available on `A100`, `A100_80G` (`A100 80G` before `flyte` 2.11.3), `H100`, `H200`, and, from `flyte` 2.12.0, `RTX_PRO_6000`.
 
 ### Google TPUs
 
