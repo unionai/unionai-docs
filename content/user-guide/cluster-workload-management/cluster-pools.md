@@ -104,19 +104,21 @@ pool, and the check happens asynchronously afterwards:
 2. Once running, the cluster reports its real object store, secret store, and
    image registry to the control plane in periodic status updates.
 3. The control plane compares each reported value against the pool's config. If
-   they don't match, the cluster is marked **unhealthy**. An unhealthy cluster
-   stops receiving new work from every queue that
-   [routes](./queues#how-a-queue-routes) to it, until it recovers — the pool's
-   other healthy clusters absorb the work.
+   they don't match, it records the mismatch as a `cluster_pool_config` entry,
+   with health `UNHEALTHY`, in the cluster's monitoring info. The cluster's
+   overall health and unhealthy reasons do not change, so every queue that
+   [routes](./queues#how-a-queue-routes) to the cluster keeps sending it new
+   work.
 
-Because the comparison rides on status reporting, a misconfigured cluster is
-accepted first and only turns unhealthy a short time later. After registering a
-cluster into a custom pool, check `flyte get cluster <name>` to confirm it
-settles healthy rather than assuming the join succeeded.
+A misconfigured cluster is accepted at join time and keeps receiving work. After registering a cluster into a custom
+pool, check `Cluster.get("<name>").monitoring_info` for a `cluster_pool_config`
+entry. The console shows it on the cluster's page under **Cluster Pool Config**;
+`flyte get cluster <name>` does not show monitoring info.
 
 Note that while the image registry is optional to *set*, it is still part of the
-contract: a member cluster must report the same registry the pool declares — or
-no registry at all, if the pool doesn't declare one — to stay healthy.
+contract: a member cluster must report the same registry the pool declares to
+avoid a mismatch. If the pool declares none, it adopts the first registry a
+member reports, and later members are checked against that.
 
 ## Inspect pools
 
@@ -193,8 +195,8 @@ ClusterPool.update(
 {{< /tabs >}}
 
 Editing the pool config changes the contract every member cluster is validated
-against, so a change that no longer matches a member cluster will make that
-cluster unhealthy on its next status report. This is also the fix for the
+against, so a change that no longer matches a member cluster records a
+`cluster_pool_config` mismatch on that cluster on its next status report. This is also the fix for the
 opposite case: when a cluster reports config the pool doesn't expect, correct
 whichever side is wrong — the pool here, or the cluster in its own deployment.
 

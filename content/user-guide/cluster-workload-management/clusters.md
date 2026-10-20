@@ -67,15 +67,16 @@ Registration itself does not validate the cluster against the pool: any cluster
 is allowed to join. Validation happens asynchronously, once the cluster starts
 reporting its real object store, secret store, and container registry to the
 control plane. The control plane compares each reported value against the pool's
-config and marks the cluster **unhealthy** on a mismatch. An unhealthy cluster
-stops receiving new work from every queue that
-[routes](./queues#how-a-queue-routes) to it, until it recovers. See
+config. It records a mismatch as a `cluster_pool_config` entry, with health
+`UNHEALTHY`, in the cluster's monitoring info. The cluster's overall health and
+unhealthy reasons do not change, so queues keep
+[routing](./queues#how-a-queue-routes) new work to it. See
 [How a pool's config is enforced](./cluster-pools#how-a-pools-config-is-enforced)
 for the full mechanism.
 
-This is what guarantees that any workload routed to the pool can run on any of
-its healthy clusters — so after registering into a custom pool, confirm with
-`flyte get cluster <name>` that the cluster settles healthy.
+After registering into a custom pool, check for a mismatch in
+`Cluster.get("<name>").monitoring_info`. `flyte get cluster <name>` does not
+show monitoring info.
 
 The name `default` is reserved and cannot be used for a cluster (it collides
 with the org-wide `default` queue), and a cluster cannot share a name with an
@@ -152,6 +153,7 @@ print(cluster.pool)
 print(cluster.drain_state)
 print(cluster.queues)
 print(cluster.health, cluster.unhealthy_reasons)
+print(cluster.monitoring_info)
 print(cluster.capacity)
 print(cluster.config_drift)
 ```
@@ -401,20 +403,25 @@ differ from the cluster's current pool.
    cluster as `drained` and `flyte get queue <name>` reports the queue as
    `drained`. The move is rejected while the queue is still `draining`.
 4. **Make sure the configs match.** The destination pool's config must match
-   what the cluster reports, or the cluster goes unhealthy shortly after the
-   move — see below.
+   what the cluster reports. The control plane does not enforce this: a
+   mismatch does not make the cluster unhealthy, so once activated it receives
+   work like any other member of the pool — see below.
 
-After the move, confirm the cluster is healthy, then run
-`flyte update cluster <name> --activate`. Its co-named queue is activated with it.
+After the move, confirm the cluster is healthy and has no `cluster_pool_config`
+entry in its monitoring info, then run `flyte update cluster <name> --activate`.
+Its co-named queue is activated with it.
 
-### If the cluster goes unhealthy after the move
+### If the configs don't match after the move
 
 Pool config is validated asynchronously against what the cluster reports (see
 [How a pool's config is enforced](./cluster-pools#how-a-pools-config-is-enforced)),
-so a mismatch surfaces only after the move, as an unhealthy cluster that
-[queues](./queues#how-a-queue-routes) will no longer route new work to.
-`flyte get cluster <name>` shows the state, health, and unhealthy reasons. Fix
-whichever side is wrong:
+so a mismatch surfaces only after the move, on the cluster's next status report.
+It appears as a `cluster_pool_config` entry in
+`Cluster.get("<name>").monitoring_info`, and on the cluster's page in the console
+under **Cluster Pool Config**. The health and unhealthy reasons that
+`flyte get cluster <name>` shows are unaffected, and
+[queues](./queues#how-a-queue-routes) keep routing new work to it once it is
+active. Fix whichever side is wrong:
 
 - **The cluster's config**: the reported values come from the deployed data
   plane, so change them where that deployment is defined (Terraform, Helm values,
