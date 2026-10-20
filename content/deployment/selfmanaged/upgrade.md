@@ -31,18 +31,21 @@ The chart and the CRDs are released together under one calendar version (for exa
   [`unionai/helm-charts`](https://github.com/unionai/helm-charts) repository, checked out at
   the git tag matching your chart version (`dataplane-<version>`):
   - `crds/dataplane/` — always required.
-  - `crds/kube-prometheus-stack/` — required when `monitoring.enabled` is `true` (the default)
-    and you do not already manage the Prometheus Operator CRDs elsewhere.
+  - `crds/kube-prometheus-stack/` — required when you set `monitoring.enabled: true` (the
+    default is `false`) and do not already manage the Prometheus Operator CRDs elsewhere.
 - App serving uses the chart's built-in gateway: `gateway.enabled: true` and
   `knative-operator.enabled: false`.
-- The cluster runs one of the three most recent minor Kubernetes versions. See
-  [Kubernetes version skew policy](https://kubernetes.io/releases/version-skew-policy/).
+- The cluster runs Kubernetes 1.28 or later, the chart's declared minimum (`kubeVersion`).
 
 > [!NOTE] Older install mechanisms
 > The `dataplane-crds` chart is deprecated. If you still install it, remove that release and
 > switch to applying `crds/dataplane/` as described above. The `crds/` directory inside the
 > `dataplane` chart package is a Helm convention that is only applied on the very first
 > `helm install` and is never updated afterwards; it is not a substitute for the step above.
+>
+> If you installed by following [Deploy the data plane](./deploy/_index), Helm created your
+> CRDs from that directory. The first server-side apply below (with `--force-conflicts`) takes
+> over their ownership; use `--skip-crds` on every `helm upgrade` from then on.
 
 ## Before you upgrade
 
@@ -53,11 +56,13 @@ The chart and the CRDs are released together under one calendar version (for exa
    [`charts/MIGRATION.md`](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md).
    Look for three things: values keys that were renamed or removed, CRD version bumps, and
    any one-time migration step.
-2. **Save your current values and note the release revision:**
+2. **Save your current values and note the release revision.** The saved file includes
+   everything you passed with `--set` at install time, such as your client ID and secret, so
+   store it securely:
 
    ```bash
    NS=union                       # namespace of the dataplane release
-   REL=unionai-dataplane          # release name
+   REL=union                      # release name; substitute yours if different
 
    helm get values "$REL" -n "$NS" -o yaml > values-backup-$(date +%Y%m%d-%H%M).yaml
    helm history "$REL" -n "$NS"
@@ -79,15 +84,18 @@ VERSION=2026.9.7
    git fetch --tags
    git checkout "dataplane-${VERSION}"
 
-   kubectl apply --server-side -f crds/dataplane/
-   kubectl apply --server-side -f crds/kube-prometheus-stack/   # if monitoring.enabled
+   kubectl apply --server-side --force-conflicts -f crds/dataplane/
+   kubectl apply --server-side --force-conflicts -f crds/kube-prometheus-stack/   # if monitoring.enabled
    ```
 
-   Add `--force-conflicts` the first time you move CRDs from another owner (for example
-   from the deprecated `dataplane-crds` chart) so server-side apply can take over field
-   ownership.
+   `--force-conflicts` lets server-side apply take field ownership from a previous installer
+   (Helm's first-install `crds/` directory, or the deprecated `dataplane-crds` chart). It is
+   safe to include on every run.
 
-2. **Update your values file** with any changes the release notes call for.
+2. **Prepare your upgrade values file.** Start from the file you saved in
+   [Before you upgrade](#before-you-upgrade), not the original provider values file, so the
+   settings you passed with `--set` at install time are carried over. Apply any changes the
+   release notes call for.
 
 3. **Upgrade the chart:**
 
@@ -96,12 +104,14 @@ VERSION=2026.9.7
    helm upgrade "$REL" unionai/dataplane \
      --namespace "$NS" \
      --version "$VERSION" \
-     --values <YOUR_VALUES_FILE> \
+     --values <YOUR_UPGRADE_VALUES_FILE> \
      --skip-crds \
      --timeout 10m --wait
    ```
 
-   Use `--dry-run=server` first to see the rendered diff without applying it.
+   Run the same command with `--dry-run=server` first to render the manifests against the
+   cluster without applying them. For a diff against the live release, use the
+   [`helm diff upgrade`](https://github.com/databus23/helm-diff) plugin.
 
 4. **Verify:**
 
@@ -120,9 +130,6 @@ helm history "$REL" -n "$NS"
 helm rollback "$REL" <LAST_GOOD_REVISION> -n "$NS" --wait
 ```
 
-CRDs are additive across releases, so the newer CRDs can stay in place when rolling back the
-chart.
-
 ## Automating upgrades
 
 The chart is published to a standard Helm repository at
@@ -138,15 +145,29 @@ automation:
 ## One-time migrations
 
 Some releases include a step that runs once, outside the normal flow. These are called out in
-`RELEASE.md` and `MIGRATION.md`. Currently:
+`RELEASE.md` and `MIGRATION.md`:
 
 - **Moving off the `knative-operator` path.** If app serving was ever enabled on the cluster
   with `knative-operator.enabled: true`, run the
   [`knative-migration`](https://github.com/unionai/helm-charts/tree/main/charts/knative-migration)
   chart before upgrading to a release that uses the built-in gateway. It removes the operator's
-  resources. Clusters that never enabled the operator can skip it; a quick check is that no
-  `knativeservings` CRD exists:
+  `KnativeServing` resources and CRDs. Clusters that never enabled the operator can skip it; a
+  quick check is that no `knativeservings` CRD exists:
 
   ```bash
   kubectl get crd knativeservings.operator.knative.dev
+  ```
+
+  Run the migration while the operator is still healthy
+  (`kubectl get deploy -n "$NS" knative-operator`). Because you apply the `dataplane` chart with
+  `helm upgrade`, install the migration chart with adoption enabled and the release name and
+  namespace you use for the data plane:
+
+  ```bash
+  helm install unionai-knative-migration unionai/knative-migration \
+    --namespace "$NS" \
+    --set adoption.enabled=true \
+    --set adoption.targetRelease="$REL" \
+    --set adoption.targetNamespace="$NS" \
+    --wait --wait-for-jobs --timeout 15m
   ```
