@@ -62,7 +62,7 @@ The resources on the task environment apply only to the Nextflow head. Pipeline 
 | `params`     | Pipeline parameters as a mapping, passed as a params file. |
 | `outdir`     | `--outdir`. A relative path goes under the task's raw data prefix. The directory is returned as a `Dir`; without `outdir`, `run_nextflow` returns `None`. |
 | `work_dir`   | Work directory. Default: `nextflow-work` under the task's raw data prefix. |
-| `config`     | Extra Nextflow config: config text, or an absolute path to a config file (a `Path`, or a string ending in `.config`). Relative paths don't resolve, because Nextflow runs in a temporary launch directory. |
+| `config`     | Extra Nextflow config: config text, or an absolute path to a config file (a `Path`, or a string ending in `.config`). A string path is used only if the file exists; otherwise it is treated as config text. Relative paths don't resolve, because Nextflow runs in a temporary launch directory. |
 | `resume`     | Resume the previous run that used the same `work_dir`. |
 | `report`     | Render Nextflow's execution report, timeline, and DAG into the task's Flyte report. The task must be declared with `report=True`. |
 | `extra_args` | Any other `nextflow run` arguments. |
@@ -125,7 +125,7 @@ When the task runs locally (`flyte run --local`), Nextflow uses its own executor
 | `nextflow_version` | Nextflow release to install. Default: `25.10.6`. |
 | `nf_flyte`         | nf-flyte plugin to install: a version from the Nextflow plugin registry, or the `Path` to a locally built plugin zip (`nf-flyte-<version>.zip`). |
 | `base`             | Image to add Nextflow to. Default: the Flyte Debian base image. |
-| `name`             | Image name. Default: `nextflow`. |
+| `name`             | Image name, used only when `base` isn't set. Default: `nextflow`. |
 
 To use a locally built nf-flyte plugin, pass its zip:
 
