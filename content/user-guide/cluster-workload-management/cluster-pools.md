@@ -112,11 +112,13 @@ pool, and the check happens asynchronously afterwards:
 
 A misconfigured cluster is accepted at join time and keeps receiving work. After registering a cluster into a custom
 pool, check `Cluster.get("<name>").monitoring_info` for a `cluster_pool_config`
-entry. `flyte get cluster <name>` does not show monitoring info.
+entry. The console shows it on the cluster's page under **Cluster Pool Config**;
+`flyte get cluster <name>` does not show monitoring info.
 
 Note that while the image registry is optional to *set*, it is still part of the
-contract: a member cluster must report the same registry the pool declares — or
-no registry at all, if the pool doesn't declare one — to avoid a mismatch.
+contract: a member cluster must report the same registry the pool declares to
+avoid a mismatch. If the pool declares none, it adopts the first registry a
+member reports, and later members are checked against that.
 
 ## Inspect pools
 

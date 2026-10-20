@@ -416,8 +416,9 @@ Its co-named queue is activated with it.
 Pool config is validated asynchronously against what the cluster reports (see
 [How a pool's config is enforced](./cluster-pools#how-a-pools-config-is-enforced)),
 so a mismatch surfaces only after the move, on the cluster's next status report.
-It appears only as a `cluster_pool_config` entry in
-`Cluster.get("<name>").monitoring_info`. The health and unhealthy reasons that
+It appears as a `cluster_pool_config` entry in
+`Cluster.get("<name>").monitoring_info`, and on the cluster's page in the console
+under **Cluster Pool Config**. The health and unhealthy reasons that
 `flyte get cluster <name>` shows are unaffected, and
 [queues](./queues#how-a-queue-routes) keep routing new work to it once it is
 active. Fix whichever side is wrong:
