@@ -38,10 +38,18 @@ The chart and the CRDs are released together under one calendar version (for exa
 - The cluster runs Kubernetes 1.28 or later, the chart's declared minimum (`kubeVersion`).
 
 > [!NOTE] Older install mechanisms
-> The `dataplane-crds` chart is deprecated. If you still install it, remove that release and
-> switch to applying `crds/dataplane/` as described above. The `crds/` directory inside the
-> `dataplane` chart package is a Helm convention that is only applied on the very first
-> `helm install` and is never updated afterwards; it is not a substitute for the step above.
+> The `dataplane-crds` chart is deprecated. If you still install it, switch to applying
+> `crds/dataplane/` as described above. Do **not** run `helm uninstall` or `terraform destroy`
+> on `dataplane-crds`: because its `templates/flyteworkflow.yaml` rendered `FlyteWorkflow`
+> as a standard template, Helm will delete the `FlyteWorkflow` CRD and every active workflow
+> object across the cluster. In Terraform, detach the release with
+> `terraform state rm helm_release.dataplane_crds`. In plain Helm, leave the existing release
+> installed (it is dormant once CRDs are managed via server-side apply) or delete only the Helm
+> release Secret directly.
+>
+> The `crds/` directory inside the `dataplane` chart package is a Helm convention that is only
+> applied on the very first `helm install` and is never updated afterwards; it is not a substitute
+> for the step above.
 >
 > If you installed by following [Deploy the data plane](./deploy/_index), Helm created your
 > CRDs from that directory. The first server-side apply below (with `--force-conflicts`) takes
@@ -56,7 +64,10 @@ The chart and the CRDs are released together under one calendar version (for exa
    [`charts/MIGRATION.md`](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md).
    Look for three things: values keys that were renamed or removed, CRD version bumps, and
    any one-time migration step.
-2. **Save your current values and note the release revision.** The saved file includes
+2. **Check for one-time migrations** before upgrading. If your cluster previously enabled
+   `knative-operator`, complete the [Moving off the knative-operator path](#one-time-migrations)
+   step before running `helm upgrade`.
+3. **Save your current values and note the release revision.** The saved file includes
    everything you passed with `--set` at install time, such as your client ID and secret, so
    store it securely:
 
@@ -121,7 +132,13 @@ VERSION=2026.9.7
    ```
 
    All pods should be `Running` and `clusterresourcesync` should log a successful connection
-   to the control plane. Then run a task and, if you use app serving, open an app.
+   to the control plane. Run a test execution to verify end-to-end task scheduling:
+
+   ```bash
+   flyte run hello
+   ```
+
+   If you use app serving, open an app to confirm serving pods reach ready status.
 
 ## Roll back
 
