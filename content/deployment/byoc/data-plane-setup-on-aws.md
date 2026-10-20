@@ -31,7 +31,7 @@ Ensure that you are logged into the desired AWS account and then select the appr
 | `eu-west-1`    | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
 | `eu-west-2`    | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
 | `eu-central-1` | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
-| `ap-northeast-1` | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14-byovpc%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
+| `ap-northeast-1` | [![Launch AWS CloudFormation Stack](../../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.14%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
 
 > [!NOTE] CloudFormation template
 > All of these buttons launch the same CloudFormation template, just in different regions.
@@ -83,7 +83,7 @@ To perform the update on your system, copy the template URL and follow the direc
 2. Select the `UnionCloudAccess` stack.
 3. Select **Stack Actions > Create change set for current stack**.
 4. Select **Replace current template**.
-5. Input the new CloudFormation template URL provided to you by the Union.ai team (and published above in the **Current template** info box).
+5. Input the new CloudFormation template URL provided to you by the Union.ai team (and published above in the **CloudFormation template** info box).
 6. Select **Next**.
 7. On the **Specify stack details** page, accept the defaults and select **Next**.
 8. On the **Configure stack options** page, accept the defaults and select **Next**.
