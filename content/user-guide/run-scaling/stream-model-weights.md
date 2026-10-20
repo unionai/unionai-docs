@@ -3,6 +3,7 @@ title: Stream model weights
 description: Load a model's safetensors weights from object storage onto the GPU inside a task, without writing them to local disk.
 weight: 5
 variants: +flyte +union
+icon: download
 ---
 
 # Stream model weights
@@ -66,8 +67,8 @@ It takes the same `local_dir`, `chunk_size`, and `max_concurrency` arguments as 
 In an async task, build the engine off the event loop, for example `await asyncio.to_thread(LLM, **args, max_model_len=4096)`, because `LLM()` blocks for the whole load.
 
 `engine_args()` also sets `VLLM_WORKER_MULTIPROC_METHOD=spawn` unless it is already set. Keep it at `spawn`.
-According to the plugin's source, obstore's runtime does not survive `fork()`, so a forked vLLM engine would hang on its first weight read.
-`ModelStreamer` raises `RuntimeError` in a process forked from one that has already streamed.
+obstore's runtime does not survive `fork()`, and vLLM forks its engine-core process by default.
+`ModelStreamer` detects a process forked from one that has already streamed or downloaded metadata and raises `RuntimeError` instead of hanging on the first read.
 
 ## Gotchas
 
