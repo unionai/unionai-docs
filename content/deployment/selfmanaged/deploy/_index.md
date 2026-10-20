@@ -128,6 +128,10 @@ Each cluster is assigned exactly one pool. If no custom pool is specified when t
 cluster is created, it joins the `default` pool that every organization is
 provisioned with, so a single-cluster deployment needs no extra pool setup.
 
+## Upgrades and maintenance
+
+When upgrading to newer Helm chart versions, CRDs must be updated out-of-band using server-side apply. See [Upgrade the data plane](../upgrade) for complete upgrade and migration instructions.
+
 ## GPU cloud deployment guides
 
 CoreWeave, Crusoe, and Nebius have their own deployment guides, with provider-specific GPU, storage, and registry steps:
