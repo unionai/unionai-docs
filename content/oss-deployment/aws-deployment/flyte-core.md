@@ -427,7 +427,8 @@ Also available per component: `image`, `extraEnv`, `envFrom`, `affinity`,
 `strategy`, `extraPodSpec`, and `service.{type,annotations,labels,clusterIP}`.
 
 > [!WARNING] The executor is always one replica
-> `components.executor` has no `replicaCount` — the chart hardcodes `replicas: 1`.
+> `components.executor` has no `replicaCount` and no `autoscaling` — the chart
+> hardcodes `replicas: 1`.
 > The executor reconciles `TaskAction` resources and hosts the pod admission webhook,
 > and leader election is off by default (`configuration.executor.leaderElect: false`),
 > so a second replica would duplicate work rather than share it. Give it more CPU and
@@ -438,6 +439,45 @@ Disable a component you don't need with `components.<name>.enabled: false`. Its
 Deployment, Service, ConfigMap, and ingress paths all disappear together. The other
 components address it by URL and will fail their calls to it, so in practice `app` is
 the only one you turn off — and it already is by default.
+
+### Horizontal autoscaling
+
+The chart can create an `autoscaling/v2` HorizontalPodAutoscaler for `runs`, `actions`,
+`events`, `secret`, `cache`, `dataproxy`, `app`, and the console. It is off by default.
+Enable it under `components.<name>.autoscaling`, or `console.autoscaling` for the
+console. For `app`, `components.app.enabled` must also be `true`.
+
+This requires `flyte-core` chart v2.0.52 or later. Older charts silently ignore these
+values, so run `helm repo update` first and check that
+`helm search repo flyteorg/flyte-core --versions` lists v2.0.52 or later.
+
+```yaml
+components:
+  actions:
+    resources:
+      requests: { cpu: "1", memory: 2Gi }   # utilization targets need requests
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 8
+      targetCPUUtilizationPercentage: 70
+```
+
+| Key | Default | Notes |
+|---|---|---|
+| `autoscaling.enabled` | `false` | Creates the HorizontalPodAutoscaler. |
+| `autoscaling.minReplicas` | `1` | |
+| `autoscaling.maxReplicas` | `10` | |
+| `autoscaling.targetCPUUtilizationPercentage` | `80` | Average CPU utilization target. Requires CPU requests on the component. |
+| `autoscaling.targetMemoryUtilizationPercentage` | `null` | Average memory utilization target. Requires memory requests on the component. |
+| `autoscaling.metrics` | `[]` | Additional `autoscaling/v2` metrics (`Pods`, `Object`, `External`, or `Resource`), appended after the CPU and memory targets that are set. To scale on these alone, also set `targetCPUUtilizationPercentage: null`. |
+| `autoscaling.behavior` | `{}` | `autoscaling/v2` `scaleUp` and `scaleDown` policies, passed through as written. |
+
+While autoscaling is enabled, the chart leaves `replicas` out of the Deployment, so
+`replicaCount` is ignored.
+
+Rendering fails if `minReplicas` is less than `1` or greater than `maxReplicas`, or if
+you set `targetCPUUtilizationPercentage: null` without a memory target or `metrics`.
 
 ## Default task resources
 
