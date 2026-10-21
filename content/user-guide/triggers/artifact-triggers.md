@@ -56,6 +56,8 @@ flyte deploy validation.py env
 
 From then on, every new version of `customer_model` in the task's project and domain starts a run of `validate`, with the new version bound to the `model` input. The task body sees an ordinary `File` or `Dir` and needs no artifact-specific code.
 
+Deploying the task again updates the trigger in place: later versions of `customer_model` start runs of the newly deployed task version. See [Deploy and manage triggers](./manage-triggers#deploying-a-task-with-triggers).
+
 ## What counts as a new version
 
 The trigger fires no matter how the version was published: a task output wrapped with `flyte.artifacts.new()`, an upload through `flyte.remote.Artifact.create()` or `flyte create artifact`, or a Hugging Face prefetch. This makes triggers a clean handoff point between external processes and your pipelines: a partner drops a dataset, publishes it as an artifact, and your processing task starts on its own.

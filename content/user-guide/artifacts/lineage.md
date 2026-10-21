@@ -29,6 +29,10 @@ Each artifact in the UI has a **Lineage** tab that draws this graph. The source 
 
 The neighboring tabs break out the same relationships as lists: **Versions** shows the full version history, **Triggers** and **Apps** list what depends on the artifact, and **Artifact card** renders the attached model or data card.
 
+The **Lineage** and **Triggers** tabs show only active triggers. When you [deactivate a trigger](../triggers/manage-triggers#activating-and-deactivating-triggers), it disappears from both tabs, along with the runs it started. The runs themselves remain in the project's run list.
+
+The graph doesn't draw the parent edges between artifact versions, such as the edge a [Volume](../tasks/task-programming/volumes#versions-and-parents) records to its previous published version.
+
 Before deleting or reworking a dataset, you can see every model trained on it and every app serving those models. When a served model misbehaves, you can walk back to the training run and the exact dataset version it consumed.
 
 You can query the same relationships in code:

@@ -38,9 +38,11 @@ Every run of this task registers a new version of `trained-model`. Union records
 
 If you can't change the task, the caller can declare its outputs as artifacts instead. See [Publish outputs of tasks you don't own](./declared-artifacts).
 
+A [Volume](../tasks/task-programming/volumes#tracking-versions-as-artifacts) declared with an artifact identity follows the same rule without the wrapper: it carries its own metadata, and returning it publishes a version only from a task declared with `produces_artifacts=True`.
+
 ## What can be an artifact
 
-An artifact must be an offloaded value: a `flyte.io.File`, a `flyte.io.Dir`, or a `flyte.io.DataFrame`. Primitives, dataclasses, and Pydantic models cannot be artifacts. Wrap a raw dataframe with `DataFrame.from_df()` first.
+An artifact must be an offloaded value: a `flyte.io.File`, a `flyte.io.Dir`, a `flyte.io.DataFrame`, or a Volume. Primitives, dataclasses, and Pydantic models cannot be artifacts. Wrap a raw dataframe with `DataFrame.from_df()` first.
 
 The wrapped value must also be a top-level task output. Nesting an artifact inside a list, a dictionary, or a model raises an error. In a multi-output task, only the wrapped slot becomes an artifact:
 
@@ -113,4 +115,6 @@ local = asyncio.run(load())
 
 In a notebook, `await` the two calls directly instead of wrapping them in `asyncio.run()`.
 
-The download runs wherever you call it, so that environment needs credentials for the object store. This is a plain fetch and records no [lineage](./lineage) edge.
+The download runs wherever you call it, so that environment needs credentials for the object store that holds the data. If it has none, as on a laptop with no access to the data plane's bucket, the download fails after several retries. For S3, the error names the instance metadata endpoint, `169.254.169.254`, rather than missing credentials. In that case, read the artifact inside a task, which runs with the data plane's credentials: pass it as a task input, as in [Consuming artifacts in tasks](#consuming-artifacts-in-tasks).
+
+This is a plain fetch and records no [lineage](./lineage) edge.

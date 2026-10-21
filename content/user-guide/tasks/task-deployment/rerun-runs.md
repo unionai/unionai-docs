@@ -102,16 +102,22 @@ Common options:
 | `--label KEY=VALUE` | Set a label on the new run. Repeatable. |
 | `-f`, `--follow` | Stream the parent action's logs after launch. |
 
-> [!NOTE]
-> `flyte rerun` reuses the prior run's inputs as-is. To change input values from the command line,
-> use the programmatic `flyte.rerun(<run-name>, key=value)` form shown below.
+The source task's inputs are also options on `flyte rerun`. An input you leave out keeps the prior
+run's value. Run `flyte rerun <run-name> --help` to list them:
+
+```bash
+flyte rerun <run-name> --threshold 0.9
+```
+
+See [Changing inputs](./recover-runs#changing-inputs) for how changed inputs combine with
+`--recover`.
 
 ### Rerun compared with a fresh run
 
 | Command | Code | Inputs |
 |---|---|---|
 | `flyte run <file> <task>` | local | from CLI |
-| `flyte rerun <run>` | fetched from backend | prior run's |
+| `flyte rerun <run>` | fetched from backend | prior run's, with any you override |
 
 Both start the run over from the beginning. To instead keep the successful actions of a failed
 run and re-execute only what failed, add `--recover` to `flyte rerun`. See
