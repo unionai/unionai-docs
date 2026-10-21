@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Install the chart on k3d
 
-To try Union.ai on your machine, [`flyte start unibox`](./try-locally) is quicker: it runs everything in one container. This guide instead installs the onebox chart step by step on your laptop, in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
+To try Union.ai on your machine, [`flyte start onebox`](./try-locally) is quicker: it runs everything in one container. This guide instead installs the onebox chart step by step on your laptop, in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
 
 ## Prerequisites
 

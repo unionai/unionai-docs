@@ -1,14 +1,14 @@
 ---
-title: Onebox (single-pod install)
+title: Self-hosted (single-pod install)
 description: Run the whole Union.ai platform, control plane and data plane, as one pod in your own Kubernetes cluster, installed with one Helm chart.
 icon: box
 weight: 4
 variants: -flyte +union
 ---
 
-# Onebox
+# Self-hosted Union.ai
 
-Onebox runs the whole Union.ai platform as **one pod in your own Kubernetes cluster**: the control plane, the data plane that launches your tasks, and the UI. You install it with one Helm chart and give it two things: a PostgreSQL database and an object store bucket. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants a self-contained deployment with no external dependencies.
+Self-hosted Union.ai runs the whole platform as **one pod in your own Kubernetes cluster**: the control plane, the data plane that launches your tasks, and the UI. You install it with one Helm chart, `onebox`, and give it two things: a PostgreSQL database and an object store bucket. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants a self-contained deployment with no external dependencies.
 
 Unlike a [self-managed](../selfmanaged/_index) or [BYOC](../byoc/_index) deployment, nothing runs in Union.ai's cloud: the control plane is in the same pod as the data plane.
 
@@ -38,7 +38,7 @@ The UI reads some objects straight from the bucket, through presigned URLs: a ta
 
 ## Choose a guide
 
-For a proof of concept, start with [Try Union.ai on your machine](./try-locally): one command, `flyte start unibox`, runs everything in one Docker container on your laptop, with nothing to set up first.
+For a proof of concept, start with [Try Union.ai on your machine](./try-locally): one command, `flyte start onebox`, runs everything in one Docker container on your laptop, with nothing to set up first.
 
 To install onebox on a Kubernetes cluster, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
 
@@ -100,4 +100,4 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 
 ## License
 
-Onebox and unibox are under the [Union License](https://www.union.ai/licensing/union-license). The license is in the chart (`LICENSE`, with Union.ai's copyright in `NOTICE`). The onebox image has it in `/usr/share/doc/onebox/` and the unibox image in `/unibox/licenses/`, beside the notices for the third-party software they include.
+Self-hosted Union.ai is under the [Union License](https://www.union.ai/licensing/union-license). The license is in the chart (`LICENSE`, with Union.ai's copyright in `NOTICE`). The onebox image has it in `/usr/share/doc/onebox/`, and the image `flyte start onebox` runs has it in `/onebox/licenses/`, beside the notices for the third-party software they include.

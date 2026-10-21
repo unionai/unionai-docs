@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Try Union.ai on your machine
 
-`flyte start unibox` runs the whole Union.ai platform on your machine, in one Docker container: onebox (the control plane and the data plane), the UI, and a throwaway PostgreSQL database and S3-compatible store for it. It is the quickest way to evaluate Union.ai: the same workflows, CLI, and UI as any other deployment, with nothing to set up first.
+`flyte start onebox` runs the whole Union.ai platform on your machine, in one Docker container: onebox (the control plane and the data plane), the UI, and a throwaway PostgreSQL database and S3-compatible store for it. It is the quickest way to evaluate Union.ai: the same workflows, CLI, and UI as any other deployment, with nothing to set up first.
 
 Nothing is authenticated and everything runs on one machine, so use it to try things out, not for production or shared use. To install Union.ai on a Kubernetes cluster, follow one of the [deployment guides](./_index#choose-a-guide).
 
@@ -22,16 +22,16 @@ Nothing is authenticated and everything runs on one machine, so use it to try th
 
 ```shell
 uv pip install flyte flyteplugins-union
-flyte start unibox
+flyte start onebox
 ```
 
-The first start pulls the unibox image and takes a few minutes; later starts take seconds. When it is ready, it prints where to find everything:
+The first start pulls the image and takes a few minutes; later starts take seconds. When it is ready, it prints where to find everything:
 
 | | |
 |---|---|
 | UI | `http://localhost:30080/v2` |
-| SDK and CLI configuration | `~/.flyte/unibox/config.yaml` (endpoint `dns:///localhost:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
-| Kubernetes | `kubectl --kubeconfig ~/.flyte/unibox/kubeconfig -n onebox get pods` |
+| SDK and CLI configuration | `~/.flyte/onebox/config.yaml` (endpoint `dns:///localhost:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
+| Kubernetes | `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods` |
 | Terms | The [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license) |
 
 ## Run a workflow
@@ -53,22 +53,22 @@ def main(x_list: list[int] = [1, 2, 3, 4, 5]) -> float:
     return sum(y_list) / len(y_list)
 ```
 
-Run it against unibox:
+Run it against Union.ai on your machine:
 
 ```shell
-flyte --config ~/.flyte/unibox/config.yaml run hello.py main
+flyte --config ~/.flyte/onebox/config.yaml run hello.py main
 ```
 
-To use unibox for every command, set `export FLYTECTL_CONFIG=~/.flyte/unibox/config.yaml` instead.
+To use it for every command, set `export FLYTECTL_CONFIG=~/.flyte/onebox/config.yaml` instead.
 
 The run, and the `fn` actions it fans out, appear in the UI. Each action runs as a pod inside the container. Secrets (`flyte create secret`), logs, schedules, and triggers work as on any other deployment.
 
 ## Use your own images
 
-Tasks run in the SDK's default image unless they name another. Unibox pulls images from any registry your machine can reach. For a private registry, create an image pull secret in the `onebox` namespace and add it to that namespace's `default` service account, which task pods run as:
+Tasks run in the SDK's default image unless they name another. It pulls images from any registry your machine can reach. For a private registry, create an image pull secret in the `onebox` namespace and add it to that namespace's `default` service account, which task pods run as:
 
 ```shell
-export KUBECONFIG=~/.flyte/unibox/kubeconfig
+export KUBECONFIG=~/.flyte/onebox/kubeconfig
 kubectl -n onebox create secret docker-registry my-registry \
   --docker-server=<registry> --docker-username=<user> --docker-password=<password>
 kubectl -n onebox patch serviceaccount default -p '{"imagePullSecrets": [{"name": "my-registry"}]}'
@@ -77,9 +77,9 @@ kubectl -n onebox patch serviceaccount default -p '{"imagePullSecrets": [{"name"
 ## Stop, resume, and delete
 
 ```shell
-flyte stop unibox                     # pause it; flyte start unibox resumes where it left off
-flyte stop unibox --delete            # remove the container; runs and data stay in a Docker volume
-flyte stop unibox --delete --volume   # remove everything
+flyte stop onebox                     # pause it; flyte start onebox resumes where it left off
+flyte stop onebox --delete            # remove the container; runs and data stay in a Docker volume
+flyte stop onebox --delete --volume   # remove everything
 ```
 
 ## What a proof of concept on your machine doesn't cover
@@ -96,6 +96,6 @@ flyte stop unibox --delete --volume   # remove everything
 
 | Symptom | Cause and fix |
 |---|---|
-| `flyte start unibox` says Docker is not reachable | Start Docker and try again. |
-| It times out waiting for Union.ai to be ready | Docker has too little memory or CPU. Check `docker logs union-unibox` and `kubectl --kubeconfig ~/.flyte/unibox/kubeconfig -n onebox get pods`. |
-| A port is already in use | Something else listens on `30080` or `30566`. Stop it, then run `flyte start unibox --recreate`. |
+| `flyte start onebox` says Docker is not reachable | Start Docker and try again. |
+| It times out waiting for Union.ai to be ready | Docker has too little memory or CPU. Check `docker logs union-onebox` and `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods`. |
+| A port is already in use | Something else listens on `30080` or `30566`. Stop it, then run `flyte start onebox --recreate`. |
