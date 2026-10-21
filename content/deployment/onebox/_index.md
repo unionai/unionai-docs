@@ -97,3 +97,7 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 - Apps and serving, and artifacts aren't included.
 - The dashboards' queue panels show no data.
 - Union Volumes aren't supported.
+
+## License
+
+Onebox and unibox are under the [Union License](https://www.union.ai/licensing/union-license). The license is in the chart (`LICENSE`, with Union.ai's copyright in `NOTICE`). The onebox image has it in `/usr/share/doc/onebox/` and the unibox image in `/unibox/licenses/`, beside the notices for the third-party software they include.

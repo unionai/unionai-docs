@@ -32,6 +32,7 @@ The first start pulls the unibox image and takes a few minutes; later starts tak
 | UI | `http://localhost:30080/v2` |
 | SDK and CLI configuration | `~/.flyte/unibox/config.yaml` (endpoint `dns:///localhost:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
 | Kubernetes | `kubectl --kubeconfig ~/.flyte/unibox/kubeconfig -n onebox get pods` |
+| Terms | The [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license) |
 
 ## Run a workflow
 
