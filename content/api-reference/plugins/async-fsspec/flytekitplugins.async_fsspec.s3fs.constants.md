@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.constants
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---

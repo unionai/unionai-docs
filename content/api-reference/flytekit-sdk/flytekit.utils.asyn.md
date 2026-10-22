@@ -2,7 +2,7 @@
 title: flytekit.utils.asyn
 description: "Manages an async event loop on another thread."
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---

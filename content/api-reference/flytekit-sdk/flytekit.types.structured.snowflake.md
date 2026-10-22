@@ -1,7 +1,7 @@
 ---
 title: flytekit.types.structured.snowflake
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.sqlalchemy.task
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---
@@ -108,7 +108,7 @@ class SQLAlchemyTask(
     task_config: flytekitplugins.sqlalchemy.task.SQLAlchemyConfig,
     inputs: typing.Optional[typing.Dict[str, typing.Type]] = None,
     output_schema_type: typing.Optional[typing.Type[flytekit.types.schema.types.FlyteSchema]] = flytekit.types.schema.types.FlyteSchema,
-    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-sqlalchemy-1.16.29',
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-sqlalchemy-1.16.30',
     **kwargs,
 )
 ```

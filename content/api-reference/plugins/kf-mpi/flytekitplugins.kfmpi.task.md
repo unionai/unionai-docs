@@ -2,7 +2,7 @@
 title: flytekitplugins.kfmpi.task
 description: "This Plugin adds the capability of running distributed MPI training to Flyte using backend plugins, natively on Kubernetes."
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---
