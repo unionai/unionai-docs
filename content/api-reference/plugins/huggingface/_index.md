@@ -2,7 +2,7 @@
 title: Hugging Face
 description: ".. currentmodule:: flytekitplugins.huggingface."
 icon: book
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,7 +1,7 @@
 ---
 title: flytekit.core.local_cache
 icon: box-seam
-version: 1.16.29
+version: 1.16.30
 variants: +flyte +union
 layout: py_api
 ---
@@ -21,6 +21,7 @@ layout: py_api
 | Property | Type | Description |
 |-|-|-|
 | `CACHE_LOCATION` | `str` |  |
+| `TYPE_CHECKING` | `bool` |  |
 
 ## flytekit.core.local_cache.LocalTaskCache
 
