@@ -76,4 +76,4 @@ If you deploy without these charts, set `DO_NOT_TRACK=1` on the backend and cons
 |---|---|
 | `DO_NOT_TRACK=1` | Turns off Flyte telemetry and that of other tools that honor the convention. |
 | `FLYTE_DISABLE_TELEMETRY=true` | Turns off Flyte telemetry only. |
-| `FLYTE_DISABLE_SENTRY=true` | Older name for `FLYTE_DISABLE_TELEMETRY`. Still honored. |
+| `FLYTE_DISABLE_SENTRY=true` | Older name for `FLYTE_DISABLE_TELEMETRY`, honored by the SDK and CLI and the backend. |
