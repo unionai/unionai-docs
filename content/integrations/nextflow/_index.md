@@ -124,7 +124,7 @@ When the task runs locally (`flyte run --local`), Nextflow uses its own executor
 | Argument           | Description |
 |--------------------|-------------|
 | `nextflow_version` | Nextflow release to install. Default: `25.10.6`. |
-| `nf_flyte`         | nf-flyte plugin to install: a version from the Nextflow plugin registry, or the `Path` to a locally built plugin zip (`nf-flyte-<version>.zip`). Default: `0.2.0`. |
+| `nf_flyte`         | nf-flyte plugin to install: a version from the Nextflow plugin registry, or the `Path` to a locally built plugin zip (`nf-flyte-<version>.zip`). Default: `0.2.1`. |
 | `base`             | Image to add Nextflow to. Default: the Flyte Debian base image. |
 | `name`             | Image name, used only when `base` isn't set. Default: `nextflow`. |
 
@@ -134,7 +134,7 @@ To use a locally built nf-flyte plugin, pass its zip:
 from pathlib import Path
 
 image = nextflow_image(
-    nf_flyte=Path("~/nf-flyte/build/distributions/nf-flyte-0.2.0.zip").expanduser(),
+    nf_flyte=Path("~/nf-flyte/build/distributions/nf-flyte-0.2.1.zip").expanduser(),
 )
 ```
 
@@ -151,7 +151,7 @@ nf-flyte also works without a Flyte task: run `nextflow run` on a laptop or in C
 ```groovy
 plugins {
     id 'nf-amazon'
-    id 'nf-flyte@0.2.0'
+    id 'nf-flyte@0.2.1'
     id 'nf-schema@2.7.2'   // the pipeline's own plugins, repeated
 }
 
