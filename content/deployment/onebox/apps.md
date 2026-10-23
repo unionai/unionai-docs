@@ -62,10 +62,10 @@ If your apps use images from a registry Knative can't reach over HTTPS, add it t
 
 ## 2. Switch to Union's Kourier and Envoy
 
-Union's Kourier controller routes each app by the hosts onebox gives it and adds the union-apps filter to the gateway; Union's Envoy carries the filter. Use the images of your onebox version (`VERSION` below), and point the filter at onebox's gateway port, 8083. Replace `onebox.onebox` with your release's Service and namespace:
+Union's Kourier controller routes each app by the hosts onebox gives it and adds the union-apps filter to the gateway; Union's Envoy carries the filter. Use the images of a Union data plane release (`VERSION` below: the controller is `/bin/kourier` in Union's operator image), and point the filter at onebox's gateway port, 8083. Replace `onebox.onebox` with your release's Service and namespace:
 
 ```shell
-VERSION=2026.9.7
+VERSION=2026.10.0
 ONEBOX=http://onebox.onebox.svc.cluster.local:8083
 
 kubectl -n knative-serving patch deployment net-kourier-controller --type json -p '[
