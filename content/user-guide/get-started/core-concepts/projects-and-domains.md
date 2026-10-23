@@ -11,7 +11,7 @@ variants: +flyte +union
 {{< key product_name >}} organizes work into a hierarchy of **organization**, **projects**, and **domains**.
 
 - **Organization**: Your {{< key product_name >}} instance, typically representing a company or department. Set up during onboarding and mapped to your endpoint URL (e.g., `my-org.my-company.com`). You do not create or manage organizations directly. The organization is normally determined automatically from your endpoint URL, but you can override it with the `--org` flag on any CLI command (e.g., `flyte --org my-org get project`). This is only relevant if you have a multi-organization installation.
-- **Project**: A logical grouping of related workflows, tasks, launch plans, and executions. Projects are the primary unit you create and manage.
+- **Project**: A logical grouping of related tasks, apps, triggers and runs. Projects are the primary unit you create and manage.
 - **Domain**: An environment classification within each project. Three fixed domains exist: `development`, `staging`, and `production`. Domains cannot be created or deleted.
 
 Every project contains all three domains, creating **project-domain pairs** like `my-project/development`, `my-project/staging`, and `my-project/production`. Workflows, executions, and data are scoped to a specific project-domain pair.
