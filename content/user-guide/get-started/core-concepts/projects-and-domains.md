@@ -14,7 +14,7 @@ variants: +flyte +union
 - **Project**: A logical grouping of related tasks, apps, triggers, and runs. Projects are the primary unit you create and manage.
 - **Domain**: An environment classification within each project. Three fixed domains exist: `development`, `staging`, and `production`. Domains cannot be created or deleted.
 
-Every project contains all three domains, creating **project-domain pairs** like `my-project/development`, `my-project/staging`, and `my-project/production`. Workflows, executions, and data are scoped to a specific project-domain pair.
+Every project contains all three domains, creating **project-domain pairs** like `my-project/development`, `my-project/staging`, and `my-project/production`. Tasks, apps, triggers, runs, and data are scoped to a specific project-domain pair.
 
 ## How projects and domains are used
 
