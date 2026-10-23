@@ -14,7 +14,7 @@ LLM gateways are apps too, so they come with apps.
 
 ## How a request reaches an app
 
-Each app gets a URL from `serving.publicURLPattern`, for example `https://quiet-river-1a2b3.apps.onebox.example.com`. Point a wildcard DNS record for those hosts at the same proxy or load balancer as onebox, so their requests arrive at onebox's port. Onebox forwards every app host to the apps gateway in the cluster: Union's Kourier and Envoy, as a Union data plane runs them. The gateway routes the request to the app, and its union-apps filter decides who may call it, as in Union's hosted service:
+Each app gets a URL from `serving.publicURLPattern`, for example `https://quiet-river-1a2b3.apps.onebox.example.com`. Point a wildcard DNS record for those hosts at the same proxy or load balancer as onebox, so their requests arrive at onebox's port. Onebox forwards every app host to the apps gateway the chart installs beside it: Union's Kourier and Envoy, as a Union data plane runs them. The gateway routes the request to the app, and its union-apps filter decides who may call it, as in Union's hosted service:
 
 - An app that allows anonymous callers gets every request, including its `Authorization` header (an LLM gateway's virtual key, for example).
 - Any other app needs a signed-in caller. The filter asks onebox who the caller is, from the token the proxy in front of onebox passed on, and whether they may use the app. The app receives the caller's identity as `x-user-*` headers.
@@ -23,12 +23,11 @@ Onebox doesn't check that token itself: authenticating callers is the proxy's jo
 
 ## 1. Install Knative Serving
 
-Install Knative Serving 1.16 with Kourier as its networking layer:
+Install Knative Serving 1.16 and make Kourier its networking layer. The onebox chart installs Kourier itself, so don't apply Kourier's own manifest:
 
 ```shell
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.16.0/serving-crds.yaml
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.16.0/serving-core.yaml
-kubectl apply -f https://github.com/knative/net-kourier/releases/download/knative-v1.16.0/kourier.yaml
 kubectl patch configmap/config-network -n knative-serving --type merge \
   -p '{"data":{"ingress-class":"kourier.ingress.networking.knative.dev"}}'
 ```
@@ -60,35 +59,32 @@ kubectl patch configmap/config-features -n knative-serving --type merge -p '{"da
 
 If your apps use images from a registry Knative can't reach over HTTPS, add it to `registries-skipping-tag-resolving` in the `config-deployment` ConfigMap.
 
-## 2. Switch to Union's Kourier and Envoy
+For an airgapped install, mirror Knative's images along with onebox's and Union's Kourier images (`serving.gateway.controller.image`, `serving.gateway.envoy.image`).
 
-Union's Kourier controller routes each app by the hosts onebox gives it and adds the union-apps filter to the gateway; Union's Envoy carries the filter. Use the images of a Union data plane release (`VERSION` below: the controller is `/bin/kourier` in Union's operator image), and point the filter at onebox's gateway port, 8083. Replace `onebox.onebox` with your release's Service and namespace:
+## 2. Let the proxy pass the user's token
 
-```shell
-VERSION=2026.10.0
-ONEBOX=http://onebox.onebox.svc.cluster.local:8083
+The gateway's filter asks onebox who's calling from the `Authorization` header, so the proxy in front of onebox must authenticate app hosts too and pass the signed-in user's token on. With oauth2-proxy, add `--pass-authorization-header=true` and a cookie domain that covers the app hosts, such as `--cookie-domain=.onebox.example.com` with `--whitelist-domain=.onebox.example.com`.
 
-kubectl -n knative-serving patch deployment net-kourier-controller --type json -p '[
-  {"op":"replace","path":"/spec/template/spec/containers/0/image","value":"public.ecr.aws/p0i0a9q8/unionoperator:'$VERSION'"},
-  {"op":"add","path":"/spec/template/spec/containers/0/command","value":["/bin/kourier"]}]'
-kubectl -n knative-serving set env deployment/net-kourier-controller KOURIER_UNION_APPS_ENABLED=true
+### Apps that allow anonymous callers
 
-kubectl -n kourier-system set image deployment/3scale-kourier-gateway \
-  kourier-gateway=public.ecr.aws/unionai/envoy:$VERSION
-kubectl -n kourier-system set env deployment/3scale-kourier-gateway \
-  UNION_AUTH_TENANTAUTHURL=$ONEBOX/me \
-  UNION_AUTH_TENANTCONTROLPLANEURL=$ONEBOX \
-  UNION_AUTH_TENANTAUTHSIGNINURL=https://onebox.example.com/oauth2/start \
-  UNION_AUTH_OVERRIDENORG=onebox
+The proxy signs in everyone who reaches it, so an app that allows anonymous callers is only open to the world once its host bypasses the proxy. oauth2-proxy can't skip sign-in by host, so route the host past it to onebox's Service, which still forwards it to the gateway. With a Gateway API gateway in front of oauth2-proxy, a route for the exact host wins over the wildcard:
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-gateway-app
+  namespace: union
+spec:
+  parentRefs: [{name: <gateway>, namespace: <gateway namespace>}]
+  hostnames: ["quiet-river-1a2b3.apps.onebox.example.com"]
+  rules:
+    - backendRefs: [{name: onebox, port: 80}]
 ```
 
-`UNION_AUTH_TENANTAUTHSIGNINURL` is where a caller without a session is sent to sign in: your proxy's sign-in page. `UNION_AUTH_OVERRIDENORG` is onebox's `organization`.
+With [network policy](./authorization#network-policy) on, add the gateway's pods to `networkPolicy.proxyFrom` too. On an AWS ALB, add a listener rule for the host, at a higher priority than the sign-in rules, that forwards to onebox without authenticating.
 
-The filter reads onebox's OAuth2 metadata when the gateway starts, and the gateway doesn't start without it: set `authMetadata.externalAuthServerBaseUrl` in onebox's values (see [authentication](./authentication)).
-
-The proxy in front of onebox must also authenticate app hosts and pass the signed-in user's token to onebox in the `Authorization` header. With oauth2-proxy, that's `--pass-authorization-header`, with its cookie domain covering the app hosts (`--cookie-domain=.onebox.example.com`).
-
-The gateway needs no external load balancer or Knative domain setup: onebox forwards app hosts to its in-cluster Service (`serving.gateway.url`, `http://kourier.kourier-system.svc.cluster.local` by default). With the chart's network policy on, only the gateway's pods may reach onebox's port 8083, and only onebox may reach the gateway's external listener. For an airgapped install, mirror Knative's images and Union's along with onebox's.
+Onebox serves such a host only as the app: whatever path or headers a caller sends, the request goes to the gateway with identity headers removed, and the gateway's filter still guards any app that isn't anonymous.
 
 ## 3. Turn on apps
 
@@ -96,9 +92,16 @@ The gateway needs no external load balancer or Knative domain setup: onebox forw
 serving:
   enabled: true
   publicURLPattern: https://%s.apps.onebox.example.com
+  gateway:
+    auth:
+      signInURL: https://onebox.example.com/oauth2/start
+authMetadata:
+  externalAuthServerBaseUrl: <issuer URL>
 ```
 
-The first `%s` is the app's subdomain; an optional second `%s` is the organization. Upgrade onebox with these values. The chart adds the Knative permissions to onebox's Role.
+The first `%s` is the app's subdomain; an optional second `%s` is the organization. `signInURL` is where a caller without a session is sent to sign in: the proxy's sign-in page. The filter reads onebox's OAuth2 metadata when the gateway starts, so `authMetadata.externalAuthServerBaseUrl` must be set (see [authentication](./authentication)).
+
+Upgrade onebox with these values. The chart installs Union's Kourier controller and Envoy gateway in onebox's namespace, adds `config-kourier` to Knative's namespace (`serving.knativeNamespace`), and adds the Knative permissions to onebox's Role. With network policy on, only the gateway reaches onebox's port 8083, and only onebox reaches the gateway.
 
 ## 4. Serve an app
 
@@ -129,6 +132,5 @@ The gateway's image, `ghcr.io/unionai/union-llm-gateway`, must be pullable from 
 ## Limitations
 
 - Knative Serving is the only way onebox runs apps.
-- The proxy in front authenticates every app host, so an app that allows anonymous callers still needs them to get past it. Give such apps a route that skips the proxy's sign-in if they must take unauthenticated calls.
 - Onebox's local image runs Union's Kourier with the union-apps filter off: apps there are routed but not authorized per app.
 - Apps and gateways were verified on a onebox whose apps run on a Union cluster through a test bridge rather than on Knative in the same cluster. Serving, the app's URL through onebox, status in the UI, and a gateway's policy sync and virtual keys all worked. Provider secrets reaching a gateway's pods weren't covered.
