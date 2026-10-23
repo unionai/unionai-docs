@@ -16,7 +16,7 @@ Flyte 2 provides intelligent **task output caching** that automatically avoids r
 
 ## Overview
 
-By default, caching is disabled.
+By default, caching is disabled, except for shell tasks.
 
 If caching is enabled for a task, then Flyte determines a **cache key** for the task.
 The key is composed of the following:
@@ -27,6 +27,7 @@ The key is composed of the following:
 * Cache version: The cache version string.
 
 If the cache behavior is set to `"auto"`, the cache version is automatically generated using a hash of the task's source code (or according to the custom policy if one is specified).
+For container and shell tasks, `flyte` 2.12.0 or later generates it from what the container runs (see [Container and shell tasks](#container-and-shell-tasks)).
 If the cache behavior is set to `"override"`, the cache version can be specified explicitly using the `version_override` parameter.
 
 When the task runs, Flyte checks if a cache entry exists for the key.
@@ -65,7 +66,7 @@ Since the cache key is fixed as part of the code, it can be manually changed whe
 ### `"disable"` - No caching
 
 To explicitly disable caching, use the `"disable"` behavior.
-**This is the default behavior.**
+**This is the default behavior, except for shell tasks.**
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable" lang="python" >}}
 
@@ -207,6 +208,30 @@ For `behavior="auto"`, Flyte uses cache policies to generate version hashes.
 The default `FunctionBodyPolicy` generates cache versions from the function's source code:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="policy" lang="python" >}}
+
+### Container and shell tasks
+
+A container task (`ContainerTask`) or a shell task (`flyte.extras.shell`) has no Python function to hash.
+With `behavior="auto"` and `flyte` 2.12.0 or later, its cache version is a hash of the following:
+
+* The image
+* The command (for a shell task, the rendered script) and the arguments
+* The input and output data directories, the metadata format and the file input layout
+
+Changing any of these invalidates the cache.
+
+Shell tasks use `cache="auto"` by default.
+Container tasks don't cache unless you set `cache`.
+Set `cache` when you create the task, because `ContainerTask.override()` raises a `TypeError` in `flyte` 2.12.0.
+
+* `env_vars` are not part of the cache version.
+  Changing an environment variable doesn't invalidate the cache.
+* An image given as a tag reference, such as `"alpine:latest"` or `flyte.Image.from_base("alpine:latest")`, is versioned by the reference string.
+  The cache version stays the same when the tag moves to a new image.
+
+Before `flyte` 2.12.0, every container and shell task gets the same cache version, so editing the command, the script or the image never invalidates the cache.
+On those versions, an edited shell task keeps returning its old result, because shell tasks cache by default.
+To avoid this, upgrade `flyte` or set `cache="disable"`.
 
 ### Custom cache policies
 
