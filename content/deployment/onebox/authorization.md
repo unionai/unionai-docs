@@ -14,7 +14,7 @@ Onebox can enforce role-based access control. It is **off by default**: every re
 authz:
   enabled: true
   adminUsers: [<subject>]   # as your proxy reports them
-  defaultRole: viewer       # admin, contributor or viewer
+  defaultRole: viewer       # admin, contributor, viewer or none
 ```
 
 ```shell
@@ -25,6 +25,7 @@ helm upgrade onebox unionai/onebox -n union -f values.yaml
 
 - Every user listed in `adminUsers` is an admin. Onebox applies the list when it starts, so adding a user and upgrading makes them an admin, also if they have signed in before.
 - Every other user gets `defaultRole` the first time they make a request. Changing `defaultRole` later applies to users onebox hasn't seen yet.
+- With `defaultRole: none`, users nobody granted a role can't do anything, using [apps](./apps) included: the apps gateway answers them `403 Forbidden`. Grant one by adding the user to `adminUsers`, for example.
 - A request without identity headers is refused with `401 Unauthenticated`.
 
 | Role | Can |
