@@ -108,7 +108,7 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 | `uvolMountBroker.profilerPort` | `10254` | Port serving `/metrics`, `/healthcheck` and the `/readyz` readiness endpoint. |
 | `uvolMountBroker.metricsScope` | `uvol_broker` | Prefix for the metrics the broker emits. |
 | `uvolMountBroker.priorityClassName` | `system-node-critical` | Priority class for the DaemonSet pods. |
-| `uvolMountBroker.resources` | `requests: cpu 500m, memory 32Mi`; `limits: memory 256Mi` | The broker sits on the task's `open()` hot path, so the CPU request is a scheduling-latency knob rather than a utilization estimate. There is deliberately no CPU limit. |
+| `uvolMountBroker.resources` | `requests: cpu 30m, memory 32Mi`; `limits: memory 256Mi` | The broker sits on the task's `open()` hot path, so the CPU request is a scheduling-latency knob rather than a utilization estimate. There is deliberately no CPU limit. |
 
 > [!NOTE]
 > The broker is safe to upgrade in place: existing kernel mounts and the file
@@ -192,11 +192,9 @@ allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability:
 {{< markdown >}}
 
 > [!NOTE]
-> Union.ai adds the `smarter-devices/fuse` request and the
-> `CAP_SYS_ADMIN` capability to volume-mounting task pods automatically. You only
-> need to enable the device plugin; your users do not change their task code.
-> Privilege is confined to the DaemonSet; the workloads it serves stay
-> unprivileged.
+> Nothing adds the `smarter-devices/fuse` request or the `CAP_SYS_ADMIN`
+> capability to task pods automatically. Your users add both to a task's pod
+> template with `flyte.PodTemplate().allow_fuse()`.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -219,7 +217,7 @@ helm upgrade <release> <chart> -n <namespace> \
   --set fuseDevicePlugin.enabled=true
 ```
 
-Enabling it is the only required step. Because the chart renders nothing for this
+Enabling it is the only required cluster-side step. Because the chart renders nothing for this
 feature when it is off, turning it on does not affect any other workloads.
 
 ### Restrict the plugin to specific nodes (optional)
@@ -240,18 +238,18 @@ fuseDevicePlugin:
 ```
 
 > [!WARNING]
-> A volume-mounting task scheduled onto a node where the plugin is **not** running
-> cannot mount its Volume and the task will fail. If you restrict the plugin with
-> a `nodeSelector`, make sure volume workloads are scheduled onto the labeled
-> nodes (for example with matching task resources or node selectors), or omit the
-> `nodeSelector` so the resource is advertised on all nodes.
+> A volume-mounting task requests `smarter-devices/fuse`, so it only schedules
+> onto nodes where the plugin runs. If you restrict the plugin with a
+> `nodeSelector` and no labeled node has capacity, the task's pod stays Pending
+> with `Insufficient smarter-devices/fuse`. Make sure the labeled nodes can run
+> your volume workloads, or omit the `nodeSelector`.
 
 ### Verify the device plugin
 
 After the upgrade, confirm the DaemonSet is rolled out:
 
 ```bash
-kubectl get daemonset -n <namespace> -l app.kubernetes.io/name=fuse-device-plugin
+kubectl get daemonset -n <namespace> -l app=union-fuse-device-plugin
 ```
 
 Then confirm a node advertises the extended resource:
@@ -274,9 +272,11 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 | `fuseDevicePlugin.devices` | `[{ devicematch: ^fuse$, nummaxdevices: 1000 }]` | Devices the plugin advertises. `nummaxdevices` is the per-node claim count. |
 | `fuseDevicePlugin.nodeSelector` | `{}` | Restrict the DaemonSet to selected nodes; empty means all nodes. |
 | `fuseDevicePlugin.tolerations` | `[{ operator: Exists }]` | Tolerate everything so it lands on every selected node, including tainted ones. |
-| `fuseDevicePlugin.securityContext` | drops `ALL`, adds `SYS_ADMIN` | The plugin needs `SYS_ADMIN` to read host devices and register with kubelet; the workloads it serves stay unprivileged. |
-| `fuseDevicePlugin.priorityClassName` | `""` | Override the priority class (defaults to `operator.priorityClassName`). |
+| `fuseDevicePlugin.priorityClassName` | `system-node-critical` | Priority class for the plugin pods. Set it to `""` to leave it unset. |
 | `fuseDevicePlugin.resources` | `cpu: 10m–100m`, `memory: 15Mi` | Resource requests and limits for the plugin pod. |
+
+The plugin container's security context (drops `ALL`, adds `SYS_ADMIN`) is
+fixed in the chart template. No chart value changes it.
 
 ## Using Volumes
 
