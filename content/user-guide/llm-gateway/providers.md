@@ -44,7 +44,7 @@ The console lists the providers your gateway supports when you add one.
 
 You can put a model you serve on Union behind the gateway, next to hosted providers. Callers reach it with the same client, the same virtual keys, and the same guardrails.
 
-1. Deploy the model as a [vLLM](../user-guide/apps/native-app-integrations/vllm-app) or [SGLang](../user-guide/apps/native-app-integrations/sglang-app) app on the gateway's cluster.
+1. Deploy the model as a [vLLM](../apps/native-app-integrations/vllm-app) or [SGLang](../apps/native-app-integrations/sglang-app) app on the gateway's cluster.
 2. In **Settings → LLM Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
 3. Fill in the provider:
 

@@ -4,7 +4,6 @@ description: One governed endpoint for every model your tasks, apps, and develop
 icon: signpost-split
 weight: 6
 variants: -flyte +union
-top_menu: true
 mermaid: true
 ---
 
@@ -54,7 +53,7 @@ flowchart LR
 
 - **Prompts and answers never reach Union's control plane.** Traffic goes from your callers to the gateway to the provider, and nowhere else. The control plane sends the gateway its policy (providers, keys, budgets, guardrails) and receives usage records: which key, which model, how many tokens, what it cost, how long it took. A usage record never contains a prompt or an answer.
 - **Provider credentials stay in your data plane.** Provider API keys are Union secrets mounted on the gateway. The policy refers to them by environment variable name and never carries the value.
-- **Zero trust.** Every call presents a virtual key. The gateway reaches guardrail apps and self-hosted models over cluster-local addresses, not through ingress. The gateway pulls its policy from the control plane, and the control plane never connects in to the gateway. See [Zero Trust security](../security/_index).
+- **Zero trust.** Every call presents a virtual key. The gateway reaches guardrail apps and self-hosted models over cluster-local addresses, not through ingress. The gateway pulls its policy from the control plane, and the control plane never connects in to the gateway. See [Zero Trust security](../../security/_index).
 - **Built for proxying.** The gateway is a lightweight proxy written in Go. It enforces budgets and rate limits in memory, without a round trip to the control plane, so enforcement keeps working when the control plane is unreachable. It scales out with request rate.
 
 ## In this section
