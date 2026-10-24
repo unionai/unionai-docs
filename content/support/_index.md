@@ -2,7 +2,7 @@
 title: Getting support
 description: How to reach Union support, the severity levels, and the response time targets per tier.
 icon: life-preserver
-weight: 9
+weight: 10
 variants: -flyte +union
 ---
 

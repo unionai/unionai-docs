@@ -2,7 +2,7 @@
 title: Community
 description: How the Flyte open source community works, and how to contribute code, docs, or examples.
 icon: people
-weight: 7
+weight: 8
 variants: +flyte +union
 top_menu: true
 ---
