@@ -50,7 +50,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
@@ -168,19 +168,13 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
 
    When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, `flytepropeller`, and `executor`.
 
-9. Verify the cluster is registered with the control plane:
+9. Verify the data plane has connected to the control plane:
 
    ```bash
    flyte get cluster
    ```
 
-   The output is similar to the following:
-
-   ```text
-   Enabled Clusters
-   NAME            ORG       STATE     HEALTH
-   union-coreweave my-org    enabled   healthy
-   ```
+   Once the data plane is connected, the cluster appears in the **Enabled Clusters** table with health `🟢 healthy`.
 
 ## Test a workflow
 
@@ -232,9 +226,8 @@ To run a sample workflow, complete the following steps:
 
 ## Next: manage your cluster and pools
 
-`uctl selfserve provision-dataplane-resources` provisions the data plane and
-registers this cluster with the control plane. Once it is connected, you manage
-the **cluster pool** it belongs to, and route work to it with queues, from the
+`flyte create cluster` registers this cluster with the control plane in step 2. Once the data plane
+is connected, you manage the **cluster pool** it belongs to, and route work to it with queues, from the
 [Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
 user guide:
 
