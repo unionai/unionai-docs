@@ -842,9 +842,6 @@ This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod th
 
 Read the [Optimization strategies]({{< docs_home union v2 >}}/user-guide/run-scaling/scale-your-workflows/#2-batch-workloads-to-reduce-overhead) page to understand the overheads associated with an execution and how to choose the appropriate batch size.
 
-
-
-
 ## Summary
 
 This notebook demonstrated a production-ready micro-batching pattern for Flyte v2 that combines:
