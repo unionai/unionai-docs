@@ -10,8 +10,8 @@ variants: +flyte +union
 
 An **external condition** is a first-class action that pauses a running task until an external
 signal arrives: a human approval, a callback from an external service, or a value supplied at
-runtime. The paused action stays observable, resumable, and governable like any other action, so
-you no longer need polling loops or side processes to wait on something the workflow can't produce
+runtime. The condition stays observable and governable like any other action, so
+you don't need polling loops or side processes to wait on something the workflow can't produce
 itself.
 
 Inside a task, `await flyte.new_condition.aio(...)` registers a condition action and returns a
@@ -159,6 +159,13 @@ async def with_default():
     except ConditionTimedoutError:
         threshold = 0.5   # proceed with a default if no one responds
 ```
+
+## Resources while waiting
+
+`wait()` blocks inside the task's own process. The waiting task's pod keeps running for the whole
+wait and holds the `Resources` its environment requests. The condition itself is stored on the
+backend as a separate action. Give the task that waits small resources, and account for one running pod
+per waiting task when many tasks wait at once.
 
 ## Errors
 
