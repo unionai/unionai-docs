@@ -108,7 +108,7 @@ Route every model call from your tasks, apps, and laptops through one endpoint i
 {{< grid >}}
 
 {{< link-card target="llm-gateway" icon="signpost-split" title="LLM Gateway" >}}
-Give each team a virtual key with its own budget and models, fall back when a provider fails, and check every prompt and answer with your own guardrails.
+One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
 {{< /link-card >}}
 
 {{< /grid >}}
