@@ -2,7 +2,7 @@
 title: Role
 description: "Represents a Union RBAC Role."
 icon: braces
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 ---

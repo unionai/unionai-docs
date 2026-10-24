@@ -2,7 +2,7 @@
 title: SystemLogs
 description: "Logs of the Union system components running on a cluster's dataplane."
 icon: braces
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 ---

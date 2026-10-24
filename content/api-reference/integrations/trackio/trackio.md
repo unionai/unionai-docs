@@ -2,7 +2,7 @@
 title: Trackio
 description: "Generates a Trackio dashboard link for Flyte."
 icon: braces
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---

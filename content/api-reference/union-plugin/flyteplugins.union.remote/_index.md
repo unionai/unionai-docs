@@ -2,7 +2,7 @@
 title: flyteplugins.union.remote
 description: "Union remote control plane objects."
 icon: box-seam
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -57,6 +57,8 @@ Example:
 | [`MetricResult`](../flyteplugins.union.remote/metricresult) | The result of querying one metric. |
 | [`MetricSeries`](../flyteplugins.union.remote/metricseries) | One time series of a metric result, e.g. one container or one GPU device. |
 | [`Metrics`](../flyteplugins.union.remote/metrics) | Pod metrics of a task's action attempt or of an app, as shown in the Union UI. |
+| [`NodeGroup`](../flyteplugins.union.remote/nodegroup) | One declared node group of a cluster: a pool of nodes and the shape each node has. |
+| [`NodeGroups`](../flyteplugins.union.remote/nodegroups) | A cluster's declared node groups, as stored, with the generation they were read at. |
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`Queue`](../flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |

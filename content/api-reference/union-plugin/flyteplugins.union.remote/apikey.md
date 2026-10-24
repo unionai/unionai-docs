@@ -2,7 +2,7 @@
 title: ApiKey
 description: "Represents a Union API Key (OAuth Application)."
 icon: braces
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 ---
