@@ -388,6 +388,8 @@
     "ActionID": "/api-reference/flyte-sdk/flyte.models/actionid/",
     "flyte.models.ActionPhase": "/api-reference/flyte-sdk/flyte.models/actionphase/",
     "ActionPhase": "/api-reference/flyte-sdk/flyte.models/actionphase/",
+    "flyte.models.CallCounter": "/api-reference/flyte-sdk/flyte.models/callcounter/",
+    "CallCounter": "/api-reference/flyte-sdk/flyte.models/callcounter/",
     "flyte.models.CheckpointPaths": "/api-reference/flyte-sdk/flyte.models/checkpointpaths/",
     "CheckpointPaths": "/api-reference/flyte-sdk/flyte.models/checkpointpaths/",
     "flyte.models.CodeBundle": "/api-reference/flyte-sdk/flyte.models/codebundle/",

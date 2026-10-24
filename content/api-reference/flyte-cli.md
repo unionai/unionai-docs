@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.17.0
+  flyteplugins-union: 0.19.0
 ---
 
 # Flyte CLI
@@ -101,6 +101,7 @@ This is the command line interface for Flyte.
 | `logs` | [`get`](#flyte-get-logs)  |
 | `member` | [`get⁺`](#flyte-get-member)  |
 | `metrics` | [`get⁺`](#flyte-get-metrics)  |
+| `node-groups` | [`get⁺`](#flyte-get-node-groups), [`update⁺`](#flyte-update-node-groups)  |
 | `system-logs` | [`get⁺`](#flyte-get-system-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
@@ -122,7 +123,7 @@ This is the command line interface for Flyte.
 | `factory⁺` | [`deploy⁺`](#flyte-factory-deploy), [`get⁺`](#flyte-factory-get), [`materialize⁺`](#flyte-factory-materialize), [`plan⁺`](#flyte-factory-plan)  |
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`node-groups⁺`](#flyte-get-node-groups), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
 | `mount⁺` | [`volume⁺`](#flyte-mount-volume)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `proxy` | [`app`](#flyte-proxy-app)  |
@@ -133,7 +134,7 @@ This is the command line interface for Flyte.
 | `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
 | `stop` | [`devbox`](#flyte-stop-devbox)  |
 | `undelete⁺` | [`cluster⁺`](#flyte-undelete-cluster), [`cluster-pool⁺`](#flyte-undelete-cluster-pool), [`queue⁺`](#flyte-undelete-queue)  |
-| `update` | [`app`](#flyte-update-app), [`cluster⁺`](#flyte-update-cluster), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
+| `update` | [`app`](#flyte-update-app), [`cluster⁺`](#flyte-update-cluster), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`node-groups⁺`](#flyte-update-node-groups), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
@@ -573,9 +574,9 @@ $ flyte create queue shared --run-concurrency 50 --action-concurrency 500 \
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--run-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent runs (required) |
-| `--action-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent actions (required) |
-| `--depth` | `integer` | `10000` | Max queue depth |
+| `--run-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent runs (required). 0 means no limit. |
+| `--action-concurrency` | `integer` | `Sentinel.UNSET` | Max concurrent actions (required). 0 means no limit. |
+| `--depth` | `integer` | `10000` | Max queue depth. 0 means no limit. |
 | `--priority` | `choice` | `medium` | Queue priority |
 | `--cluster` | `text` | `Sentinel.UNSET` | Target cluster(s). Repeat for multiple. Defaults to '*' (every cluster in the pool); the wildcard cannot be mixed with explicit names. |
 | `--cluster-pool` | `text` |  | Cluster pool to bind the queue to. Optional; defaults to the pool named 'default'. |
@@ -752,12 +753,15 @@ publishes on Ctrl-C; without, it mounts to a temporary directory and
 publishes an empty version straight away, so you get a locator to mount
 later.
 
-
-Create one and start using it:
-  flyte create volume scratch --bucket s3://my-bucket/volumes --mount ~/scratch
-
-Create an empty one and just take the locator:
-  flyte create volume scratch --bucket s3://my-bucket/volumes
+Examples:
+
+```bash
+# Create one and start using it
+$ flyte create volume scratch --bucket s3://my-bucket/volumes --mount ~/scratch
+
+# Create an empty one and just take the locator
+$ flyte create volume scratch --bucket s3://my-bucket/volumes
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -767,7 +771,7 @@ Create an empty one and just take the locator:
 | `--endpoint` | `text` | `Sentinel.UNSET` | Object-store endpoint, for an S3-compatible store (MinIO, Cloudflare R2) with --storage s3. |
 | `--size` | `text` | `Sentinel.UNSET` | Make a BLOCK volume of this size (e.g. 64G): one sparse ext4 image instead of files. |
 | `--mount` | `path` | `Sentinel.UNSET` | Mount it here and hold until Ctrl-C, then publish. Without this, an empty version is published. |
-| `--metadata-prefix` | `text` | `Sentinel.UNSET` | Where new versions are written (default: &lt;bucket&gt;/versions). |
+| `--metadata-prefix` | `text` | `Sentinel.UNSET` | Where new versions are written (default: `<bucket>/versions`). |
 | `--artifact` | `text` | `Sentinel.UNSET` | Register it in the artifact registry under this name. |
 | `--no-commit` | `boolean` | `Sentinel.UNSET` | On exit, discard instead of publishing. |
 | `--cache-dir` | `path` | `Sentinel.UNSET` | Local chunk cache directory. |
@@ -1319,9 +1323,10 @@ Explore artifacts produced by Flyte runs.
 
 Browse a Volume's metadata index in an interactive TUI.
 
-Only RUN_NAME is required: ACTION_NAME defaults to the root action
-``a0``, and when ``--op-name`` is omitted the action's outputs are
-searched for a Volume, then its inputs.
+RUN may also be a volume locator (s3://..., gs://...), which needs no
+control plane. Otherwise ACTION defaults to the root action ``a0``, and
+when ``--op-name`` is omitted the action's outputs are searched for a
+Volume, then its inputs.
 
 Examples:
 
@@ -1335,24 +1340,28 @@ $ flyte explore volume my-run my-action
 # Pin the exact output (or input) to explore.
 $ flyte explore volume my-run my-action --op-name ckpt
 
+# A published version by its locator, with no control plane involved.
+$ flyte explore volume s3://bucket/versions/ab/metadata.json
+
 # Different project / domain than the CLI default.
 $ flyte explore volume my-run my-action --project p --domain d
 
 # Already-downloaded Volume .json — no control-plane round-trip.
 $ flyte explore volume --from-file ./my-volume.json
 
-# Raw index file (sqlite | redis) — debug path.
-$ flyte explore volume --from-file ./index.db --store-type sqlite
+# Raw index file — debug path.
+$ flyte explore volume --from-file ./index.bak
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--op-name` | `text` |  | Name of the Volume value on the action (output or input). If omitted, the action's outputs are searched for a Volume, then its inputs. |
 | `--from-file` | `file` |  | Skip remote resolution; open a local Volume .json or raw index file directly. |
-| `--store-type` | `choice` |  | Backend type when --from-file points at a raw index. Auto-detected from a Volume value otherwise. |
+| `--store-type` | `choice` | `badger` | Backend type when --from-file points at a raw index. Read from the Volume value otherwise. |
 | `--name` | `text` |  | Display name shown in the TUI header (only meaningful with --from-file on a raw index). |
-| `--project` | `text` |  | Override the project context for resolution. Defaults to the CLI config. |
-| `--domain` | `text` |  | Override the domain context for resolution. Defaults to the CLI config. |
+| `--project` | `text` | `Sentinel.UNSET` | Project to resolve RUN/ACTION in. Defaults to the CLI config; unused for a locator. |
+| `--domain` | `text` | `Sentinel.UNSET` | Domain to resolve RUN/ACTION in. Defaults to the CLI config; unused for a locator. |
+| `--region` | `text` | `Sentinel.UNSET` | Object-store region. Discovered from the bucket when omitted, so you should not normally need this. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -1523,10 +1532,20 @@ Force specific actions to re-execute even though they succeeded:
 flyte fork --force-rerun-action a3 <run> hello.py my_task
 ```
 
-`flyte fork` takes the run to fork first, then the file and task, with `flyte run`'s options —
-image, copy-style, service-account, env, labels, queue and the rest — before them. It takes no
-task inputs: a fork replays the ones the source run was launched with. Remote-only — forking a
-run has no local equivalent.
+Override task inputs with options after the task name, as with `flyte run`:
+
+```bash
+flyte fork <run> hello.py my_task --x 2
+```
+
+Every input option is optional. An input you leave out keeps the value the source run was
+launched with, so passing none replays the source inputs as they were. Actions recovered from
+the source run keep the outputs they produced under its inputs; use `--force-rerun-action` for
+any that must re-execute against the new ones.
+
+`flyte fork` takes the run to fork first, then the file and task, with `flyte run`'s options
+(image, copy-style, service-account, env, labels, queue and the rest) before them. Forking is
+remote-only, since a fork reuses a prior run's actions from the control plane.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -2077,6 +2096,36 @@ $ flyte get metrics my-run --output json
 
 {{< variant union >}}
 {{< markdown >}}
+#### flyte get node-groups
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get node-groups [OPTIONS] CLUSTER`**
+
+Show a cluster's declared node groups.
+
+Node groups are the node shapes a cluster can schedule onto. This shows them
+as stored, including every label and taint, with no display filtering.
+
+Examples:
+
+```bash
+$ flyte get node-groups my-cluster
+
+$ flyte -of json get node-groups my-cluster
+
+$ flyte get node-groups my-cluster --export > node-groups.yaml
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--export` | `boolean` | `Sentinel.UNSET` | Print the node groups as YAML in the format `flyte update node-groups -f` reads. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 #### flyte get policy
 
 > **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
@@ -2439,23 +2488,28 @@ look.
 On Ctrl-C the mount is drained, unmounted and published, and the new
 locator printed. --no-commit throws the writes away instead.
 
-
-A volume a run published:
-  flyte mount volume my-run/a0 ~/vol
-
-A locator, with no control plane involved:
-  flyte mount volume s3://bucket/versions/ab/metadata.json ~/vol
-
-Look without writing anything, anywhere:
-  flyte mount volume my-run/a0 ~/vol --read-only
+Examples:
+
+```bash
+# A volume a run published
+$ flyte mount volume my-run/a0 ~/vol
+
+# A locator, with no control plane involved
+$ flyte mount volume s3://bucket/versions/ab/metadata.json ~/vol
+
+# Look without writing anything, anywhere
+$ flyte mount volume my-run/a0 ~/vol --read-only
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--read-only` `-r` | `boolean` | `Sentinel.UNSET` | Mount the published version read-only. Needs only object-store READ, and does not fork. |
 | `--no-fork` | `boolean` | `Sentinel.UNSET` | Write to the resolved volume itself. Two writers on one volume corrupt it — be sure. |
-| `--fork-name` | `text` | `Sentinel.UNSET` | Name for the fork (default: &lt;volume&gt;-&lt;host&gt;-&lt;timestamp&gt;). |
+| `--fork-name` | `text` | `Sentinel.UNSET` | Name for the fork (default: `<volume>-<host>-<timestamp>`). |
 | `--keep-artifact` | `boolean` | `Sentinel.UNSET` | Let the fork inherit the artifact identity, so publishing it makes a sibling branch. |
 | `--no-commit` | `boolean` | `Sentinel.UNSET` | On exit, discard the writes instead of publishing them. |
+| `--project` | `text` | `Sentinel.UNSET` | Project to resolve RUN/ACTION in. Defaults to the CLI config; unused for a locator. |
+| `--domain` | `text` | `Sentinel.UNSET` | Domain to resolve RUN/ACTION in. Defaults to the CLI config; unused for a locator. |
 | `--region` | `text` | `Sentinel.UNSET` | Object-store region. Discovered from the bucket when omitted, so you should not normally need this. |
 | `--cache-dir` | `path` | `Sentinel.UNSET` | Local chunk cache directory. |
 | `--cache-size-mb` | `integer` | `Sentinel.UNSET` | Cap the local chunk cache, in MiB. |
@@ -3181,6 +3235,46 @@ $ flyte update cluster-pool my-pool
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte update node-groups
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte update node-groups [OPTIONS] CLUSTER`**
+
+Update a cluster's node groups.
+
+Opens the cluster's node groups in your $EDITOR as YAML, or applies them from
+--file. Either way the result replaces the cluster's complete set: a group
+left out is removed.
+
+When the control plane tracks a generation for the node groups, an edit is
+refused if they changed between the read and the write. Otherwise, and
+always for --file, the last write wins.
+
+Whether you may write a cluster's node groups is decided by the control
+plane: node groups of a Union-provisioned cluster are managed by
+provisioning.
+
+Examples:
+
+```bash
+$ flyte update node-groups my-cluster
+
+$ flyte get node-groups my-cluster --export > node-groups.yaml
+
+$ flyte update node-groups my-cluster -f node-groups.yaml
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--file` `-f` | `file` |  | Apply node groups from a YAML file instead of opening an editor. |
+| `--yes` | `boolean` | `Sentinel.UNSET` | Skip the confirmation prompt when node groups are removed. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}

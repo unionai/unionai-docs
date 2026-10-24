@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -37,6 +37,8 @@ weight: 5
 | [`flyteplugins.union.remote.MetricResult`](flyteplugins.union.remote/metricresult) | The result of querying one metric. |
 | [`flyteplugins.union.remote.MetricSeries`](flyteplugins.union.remote/metricseries) | One time series of a metric result, e.g. one container or one GPU device. |
 | [`flyteplugins.union.remote.Metrics`](flyteplugins.union.remote/metrics) | Pod metrics of a task's action attempt or of an app, as shown in the Union UI. |
+| [`flyteplugins.union.remote.NodeGroup`](flyteplugins.union.remote/nodegroup) | One declared node group of a cluster: a pool of nodes and the shape each node has. |
+| [`flyteplugins.union.remote.NodeGroups`](flyteplugins.union.remote/nodegroups) | A cluster's declared node groups, as stored, with the generation they were read at. |
 | [`flyteplugins.union.remote.Policy`](flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`flyteplugins.union.remote.Queue`](flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`flyteplugins.union.remote.Role`](flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
@@ -61,7 +63,6 @@ weight: 5
 | [`flyteplugins.union.factory.serve()`](flyteplugins.union.factory/_index#serve) | Name the app a factory ends in. |
 | [`flyteplugins.union.factory.source()`](flyteplugins.union.factory/_index#source) | An artifact made outside this factory. |
 | [`flyteplugins.union.io.allow_volumes()`](flyteplugins.union.io/_index#allow_volumes) | Enable `Volume` mounts in a task pod with **zero privileges**. |
-| [`flyteplugins.union.io.with_high_throughput_volume_deps()`](flyteplugins.union.io/_index#with_high_throughput_volume_deps) | Prepare ``base`` for high-throughput (Redis-backed) Volumes. |
 | [`flyteplugins.union.io.with_local_flyteplugins()`](flyteplugins.union.io/_index#with_local_flyteplugins) | Package the **locally checked-out** flyteplugins-union (built to a wheel) and an optional local ``juicefs`` binary into ``base`` — for iterating on an *unreleased* plugin build against a real cluster. |
 | [`flyteplugins.union.utils.with_local_flyteplugins_union()`](flyteplugins.union.utils/_index#with_local_flyteplugins_union) | Layer the locally-built ``flyteplugins-union`` wheel onto ``img``. |
 

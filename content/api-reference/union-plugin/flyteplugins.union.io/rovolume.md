@@ -2,7 +2,7 @@
 title: ROVolume
 description: "Immutable, versioned volume — PRD §Core Concepts."
 icon: braces
-version: 0.17.0
+version: 0.19.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -104,7 +104,6 @@ validated to form a valid model.
 | [`fork()`](#fork) | Branch this immutable into a new writable working copy. |
 | [`from_locator()`](#from_locator) | Load a previously published volume version by its `locator`. |
 | [`get_artifact_metadata()`](#get_artifact_metadata) | Artifact declaration for the declarative (returned-as-output) publish path — flyte-sdk's output conversion calls this on every top-level task output exposing it and, when it returns metadata, emits a ``ProducedArtifact`` on the Outputs envelope; the backend registers the artifact atomically with the action record (no RPC from the task). |
-| [`migrate_metadata_store_type()`](#migrate_metadata_store_type) | Re-host this Volume's metadata on ``new_metadata_store_type`` without copying data chunks. |
 | [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialize private attributes. |
 | [`mount()`](#mount) | Mount this volume read-only at ``mount_path`` and return the path. |
 | [`new()`](#new) | PRD §Lifecycle: create a fresh empty `RWVolume`. |
@@ -191,30 +190,12 @@ FUSE-capable image and pod — the ``fuse3`` apt package and
 ``flyte.PodTemplate().allow_fuse()`` — see `mount` for the full
 runtime requirements.
 
-``metadata_store_type`` controls the in-pod metadata backend. When
-omitted it resolves from ``$UNION_VOLUME_METADATA_STORE`` and
-otherwise defaults to ``"badger"``.
-
-* ``"badger"`` (default) keeps the namespace in an embedded BadgerDB
-  directory — daemon-less like SQLite but with the highest metadata
-  throughput of the three (~5x SQLite creates, ~27x cold random stats at
-  1M files), published as a backup stream. Requires the forked client
-  binary (checkpoint verbs and ``--slice-domain``), which
-  ``flyteplugins-union`` bundles; a writable mount needs a claimed
-  writer-session domain (the default domain-claim path provides one).
-* ``"sqlite"`` keeps the namespace in a local SQLite file — runs
-  in-process, needs no *extra* package beyond ``fuse3``, works on a
-  stock juicefs binary, and supports `fork`.
-* ``"redis"`` runs an in-process ``redis-server`` and persists the
-  namespace as an RDB snapshot; additionally requires ``redis-server``
-  in the image (installed by `with_high_throughput_volume_deps`,
-  which also sets ``$UNION_VOLUME_METADATA_STORE=redis``). Now that the
-  embedded Badger store is the high-throughput default, Redis is a
-  legacy explicit choice.
-
-The choice is baked into the Volume and travels with it through
-lineage; subsequent mounts of the same Volume must use the same
-store type (use `migrate_metadata_store_type` to change it).
+The namespace lives in an embedded BadgerDB directory, published as a
+store archive. It needs the forked client binary (checkpoint verbs and
+``--slice-domain``), which ``flyteplugins-union`` bundles, and a
+writable mount needs a claimed writer-session domain (the default
+domain-claim path provides one). ``metadata_store_type`` is accepted for
+compatibility and must be one of ``METADATA_STORE_TYPES``.
 
 ``storage`` is the JuiceFS object-store backend. When omitted it is
 inferred from the bucket URI scheme (``s3://`` → ``s3``, ``gs://`` →
@@ -322,47 +303,6 @@ last seal (or are absent on a fresh handle) rather than the final one;
 the registered value itself always carries the authoritative numbers.
 
 
-### migrate_metadata_store_type()
-
-```python
-def migrate_metadata_store_type(
-    new_metadata_store_type: str,
-    meta_dir: Optional[str] = None,
-    new_meta_dir: Optional[str] = None,
-) -> 'Volume'
-```
-Re-host this Volume's metadata on ``new_metadata_store_type``
-without copying data chunks.
-
-``new_metadata_store_type`` must differ from the current store type.
-The full namespace is exported and re-imported into a fresh meta
-store pointing at the *same* bucket. Chunks are addressed by stable
-IDs that are preserved across the migration, so no chunk traffic is
-required.
-
-The returned Volume has a fresh ``index`` (snapshot of the loaded
-meta store), ``parent_produced_by`` linking to the pre-migration
-version, the same ``bucket`` / ``storage`` / ``name``, and the new
-``metadata_store_type``.
-
-Intent is *migration*, not fork: the old store is meant to be
-retired. As a defense against accidental concurrent use, the loaded
-store's chunk-slice / inode / session counters are advanced by a
-random offset (same mechanism as `fork`) so that even if the
-old store is still mounted somewhere, its writes can't collide with
-the migrated store's writes in shared object-store keys.
-
-Does not require a FUSE mount on either side. Safe to call from any
-task pod running the Volume runtime (Redis tooling is only needed if
-one of the stores is ``"redis"``).
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `new_metadata_store_type` | `str` | |
-| `meta_dir` | `Optional[str]` | |
-| `new_meta_dir` | `Optional[str]` | |
-
 ### model_post_init()
 
 ```python
@@ -395,6 +335,7 @@ def mount(
     cache_size_mb: Optional[int] = None,
     enable_xattr: bool = False,
     transport: str = 'auto',
+    log_path: Optional[str] = None,
 ) -> Path
 ```
 Mount this volume read-only at ``mount_path`` and return the path.
@@ -428,6 +369,7 @@ read-only mount never uses the passthrough write path.
 | `cache_size_mb` | `Optional[int]` | |
 | `enable_xattr` | `bool` | |
 | `transport` | `str` | |
+| `log_path` | `Optional[str]` | |
 
 ### new()
 

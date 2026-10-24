@@ -2,7 +2,7 @@
 title: AppleSiliconDaemonOOMError
 description: "Raised when the host process of an Apple Silicon workload (its code, or its MLX daemon) is killed for running out of memory."
 icon: exclamation-triangle
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---
