@@ -237,7 +237,7 @@ Save the following trust policy as `trust-policy.json`:
 ```
 
 > [!NOTE] Why `system:serviceaccount:*`?
-> Union platform services run in the data plane namespace (e.g. `union`), but workflow task pods run in per-project namespaces (e.g. `union-health-monitoring-development`). Both need to assume this role to access S3 and ECR.
+> Union platform services run in the data plane namespace (e.g. `union`), and workflow task pods run either there (as the `union` service account, the default) or, in multi-namespace mode, in each task namespace (as the `default` service account). Both need to assume this role to access S3 and ECR.
 
 Substitute your values and create the role:
 

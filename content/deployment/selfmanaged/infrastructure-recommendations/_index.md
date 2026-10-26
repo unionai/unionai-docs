@@ -63,15 +63,15 @@ in detail; the concrete `aws` / `gcloud` / `az` commands live on the per-cloud
 3. **Kubernetes cluster** — managed control plane (EKS / GKE / AKS) plus a system node pool
    and worker pool(s). See [Kubernetes cluster](#kubernetes-cluster).
 4. **Workload identity foundation** — IRSA OIDC provider (AWS) or Workload Identity
-   Federation (GCP), so the `union-system` service account can call cloud APIs without
-   static credentials. See [Identity and workload binding](#identity-and-workload-binding).
+   Federation (GCP), so the `union-system` service account and the task-pod service account
+   can call cloud APIs without static credentials. See [Identity and workload binding](#identity-and-workload-binding).
 5. **Object storage buckets** — metadata bucket and fast-registration bucket. See
    [Object storage](#object-storage).
 6. **Container image registry** — a private registry for task images (the image builder
    writes here; nodes pull from here), plus credentials to pull Union.ai
    system images. See [Container image registry](#container-image-registry).
-7. **Service-account IAM bindings** — bind the `union-system` identity to the buckets and
-   registry above. See [Identity and workload binding](#identity-and-workload-binding).
+7. **Service-account IAM bindings** — bind the `union-system` identity and the task-pod
+   identity to the buckets and registry above. See [Identity and workload binding](#identity-and-workload-binding).
 8. **Logging backend** (optional to change) — where task-pod stdout/stderr is collected for
    the console's live and post-GC log views. See [Logging](#logging).
 
@@ -183,9 +183,16 @@ equivalent) with an egress path from each AZ.
 
 The cluster needs a managed identity mechanism so pods can call cloud APIs (object storage,
 image registry, secrets) without static credentials. The Union.ai data plane
-uses a **single Kubernetes service account, `union-system`**, shared by all platform
-components (operator, executor, webhook, proxy, and FluentBit), and the same identity is
-assumed by task pods across per-project namespaces.
+uses two Kubernetes service accounts:
+
+- **`union-system`** — shared by the platform components (operator, webhook, proxy, and
+  FluentBit).
+- **The task-pod service account** — task pods do not run as `union-system`. By default
+  they run as the `union` service account in the data plane namespace. If you enable
+  multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`),
+  they run as the `default` service account in each task namespace. Multi-namespace mode
+  also needs `clusterresourcesync.enabled: true`: clusterresourcesync creates the task
+  namespaces and annotates their `default` service accounts, and it is off by default.
 
 | Cloud | Mechanism |
 | --- | --- |
@@ -196,18 +203,31 @@ assumed by task pods across per-project namespaces.
 The `union-system` identity needs:
 
 - **Object storage** (S3 / GCS / Azure Blob) — read/write the metadata and fast-registration
-  buckets (task inputs/outputs, bundled code).
-- **Container registry** (ECR / Artifact Registry / ACR) — pull task images; push images when
-  the [image builder](../configuration/image-builder) is enabled.
+  buckets.
+- **Container registry** (ECR / Artifact Registry / ACR) — read access, to check whether an
+  image exists, when the [image builder](../configuration/image-builder) is enabled.
 
-The concrete IAM policy, role, and service-account annotation for each cloud live on the
-per-cloud [cloud provider setup](#cloud-provider-setup) pages. Review the
+The task-pod identity needs:
+
+- **Object storage** — read/write the metadata and fast-registration buckets (task
+  inputs/outputs, bundled code).
+- **Container registry** — push images when the image builder is enabled.
+
+Bind both service accounts. You can bind them to one cloud identity that holds both sets of
+permissions, as the [AWS](./aws) and [GCP](./gcp) pages do, or give each its own identity, as
+the [Azure](./azure) page does. Separate identities keep registry push access off the platform
+components. If you bind only `union-system`, task pods get no bucket or registry access.
+
+The concrete IAM policy, role, and identity binding for each cloud live on the per-cloud
+[cloud provider setup](#cloud-provider-setup) pages. The chart annotates the task-pod
+service account with the worker identity you set in your Helm values:
+`global.WORKER_IAM_ROLE_ARN` on AWS and GCP, `global.AZURE_WORKER_CLIENT_ID` on Azure (see
+each page's **Deploy configuration** section). Review the
 [common pitfalls](#common-identity-pitfalls) below before you write those bindings.
 
 > [!NOTE] Common service account
-> Earlier versions gave each component its own service account. The consolidated
-> `union-system` service account simplifies IAM: you bind cloud permissions to a single
-> identity.
+> All platform components share the `union-system` service account, so you bind the
+> platform's cloud permissions to a single identity. Task pods still need their own binding.
 
 ### Common identity pitfalls
 
