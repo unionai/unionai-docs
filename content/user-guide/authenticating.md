@@ -187,7 +187,7 @@ def my_task():
 
 if __name__ == "__main__":
     # Initialize with device flow authentication
-    flyte.init(endpoint="dns:///your-union-endpoint", headless=True)
+    flyte.init(endpoint="dns:///your-union-endpoint", auth_type="DeviceFlow")
 
     # Your workflow execution code here
 ```
@@ -201,7 +201,7 @@ import flyte
 # This will display a URL and code in the cell output
 flyte.init(
     endpoint="dns:///your-union-endpoint",
-    headless=True
+    auth_type="DeviceFlow"
 )
 
 # Define and run your workflows
@@ -372,10 +372,10 @@ for task in tasks:
    pip install flyteplugins-union
    ```
 
-2. Ensure the API key is there:
+2. Create the API key, and copy the `FLYTE_API_KEY` value it prints (it's shown only once):
 
    ```bash
-   flyte get api-key my-ci-key
+   flyte create api-key --name my-ci-key
    ```
 
 3. Store this key securely (e.g., in GitHub Secrets, secret manager)
@@ -420,15 +420,17 @@ When you create an API key using `flyte create api-key`, you can use it to invok
 Create an API key:
 
 ```bash
-flyte create api-key my-app-key
+flyte create api-key --name my-app-key
 ```
 
 Use the API key to call a Union App endpoint:
 
 ```bash
 curl -H "Authorization: Bearer <your-api-key>" \
-  https://little-credit-4fff1.apps.dogfood-gcp.cloud-staging.union.ai/profile
+  https://<your-app-endpoint>/profile
 ```
+
+Replace `<your-api-key>` with the `FLYTE_API_KEY` value that `flyte create api-key` printed, and `<your-app-endpoint>` with your app's endpoint hostname.
 
 **Example response:**
 
@@ -456,7 +458,7 @@ The `/profile` endpoint (or similar identity endpoints in your app) returns info
 | **Authentication** | Automatic browser | Manual code entry | Non-interactive |
 | **Token refresh** | Automatic | Automatic | Automatic |
 | **Best for** | Local development | Remote notebooks | CI/CD, production |
-| **Setup complexity** | Minimal | Minimal | Moderate (requires plugin) |
+| **Setup complexity** | Minimal | Minimal | Moderate (creating a key requires `flyteplugins-union`) |
 | **Security** | User credentials | User credentials | App credentials |
 
 ## Switching between authentication modes
@@ -515,7 +517,7 @@ For systems without native keyring support, install the `keyrings.alt` package:
 pip install keyrings.alt
 ```
 
-This package provides an alternative keyring backend that stores credentials in an encrypted file on disk, allowing token persistence across sessions.
+This package provides an alternative keyring backend that stores credentials unencrypted in a plain-text file on disk, allowing token persistence across sessions.
 
 **Installation in different environments:**
 
@@ -553,8 +555,10 @@ print(keyring.get_keyring())
 
 You should see output indicating which keyring backend is active:
 
-- Native keyring: `keyring.backends.OS_X.Keyring` (macOS), `keyring.backends.Windows.WinVaultKeyring` (Windows), etc.
+- Native keyring: `keyring.backends.Windows.WinVaultKeyring` (Windows), etc.
 - Alternative keyring: `keyrings.alt.file.PlaintextKeyring` or similar
+
+On macOS, Flyte doesn't use the `keyring` backend. It stores tokens in the default keychain through `/usr/bin/security`, so this check doesn't show where Flyte stores tokens.
 
 ## Troubleshooting
 
@@ -576,12 +580,6 @@ Device flow codes typically expire after a few minutes. If your code expires:
 2. Authenticate more quickly
 
 ### API key doesn't work
-
-Ensure you've installed the required plugin:
-
-```bash
-pip install flyteplugins-union
-```
 
 Verify your API key is set correctly:
 
