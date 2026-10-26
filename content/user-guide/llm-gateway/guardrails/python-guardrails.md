@@ -13,10 +13,10 @@ variants: -flyte +union
 ## Install
 
 ```bash
-pip install 'flyteplugins-union[guardrails]'
+pip install 'flyteplugins-union[guardrails]>=0.19.1'
 ```
 
-The `guardrails` extra adds FastAPI and uvicorn.
+Requires `flyteplugins-union` 0.19.1 or later. The `guardrails` extra adds FastAPI and uvicorn.
 
 ## Write a pre-call guardrail
 
@@ -45,7 +45,7 @@ Wrap the check in a `GuardrailAppEnvironment`:
 
 {{< code file="/unionai-examples/v2/user-guide/llm-gateway/pii_guardrail.py" fragment=env lang=python >}}
 
-`GuardrailAppEnvironment` accepts every `flyte.app.AppEnvironment` option, such as `resources`, `scaling`, `secrets`, and `image`. The default image installs `flyteplugins-union[guardrails]`. If your checks need more packages, pass your own image and include `flyteplugins-union[guardrails]` in it.
+`GuardrailAppEnvironment` accepts every `flyte.app.AppEnvironment` option, such as `resources`, `scaling`, `secrets`, and `image`. The default image installs `flyteplugins-union[guardrails]`. If your checks need more packages, pass your own image and include `flyteplugins-union[guardrails]>=0.19.1` in it.
 
 Deploy it on the gateway's cluster:
 

@@ -30,7 +30,7 @@ A guardrail can't rewrite a prompt or an answer. To redact rather than refuse, h
 
 Each guardrail is a Union app of type `Guardrail`, running on the gateway's cluster. The gateway calls it over the cluster-local network with a plain HTTP request, so you can write it in any language:
 
-- **Python:** use `GuardrailAppEnvironment` from `flyteplugins-union`. Write a function that returns a verdict; the class handles the HTTP side. See [Python guardrails](./python-guardrails).
+- **Python:** use `GuardrailAppEnvironment` from `flyteplugins-union` 0.19.1 or later. Write a function that returns a verdict; the class handles the HTTP side. See [Python guardrails](./python-guardrails).
 - **Any other language:** implement two HTTP endpoints. See [Guardrail protocol](./protocol).
 
 ## Register a guardrail
