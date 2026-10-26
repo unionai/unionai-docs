@@ -94,7 +94,7 @@ flyte deploy --recursive --all ./src
 
 ## Configuration files
 
-The config file lives in the same place (`~/.flyte/config.yaml`), but the environment variable changes from `FLYTECTL_CONFIG` to `FLYTE_CONFIG`, and the format is simpler.
+The config file lives in the same place (`~/.flyte/config.yaml`) and the environment variable is still `FLYTECTL_CONFIG`, but the format is simpler.
 
 {{< tabs "migration-config-format" >}}
 {{< tab "Flyte 1" >}}
