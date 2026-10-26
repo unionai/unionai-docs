@@ -32,7 +32,7 @@ jobs:
           echo ""
           echo "=== Checking for uncommitted changes ==="
           uv run unionai-docs-infra/tools/redirect_generator/detect_moved_pages.py
-          if ! git diff --exit-code unionai-docs-infra/redirects.csv; then
+          if ! git -C unionai-docs-infra diff --exit-code redirects.csv; then
             echo ""
             echo "::error::Redirect file is out of date. The above output shows what redirects need to be added."
             echo "::error::Run 'make update-redirects' (or 'make dist') locally and commit the changes."
