@@ -31,6 +31,7 @@ These steps are for providers that setup from the Union.ai UI doesn't cover, or 
    - [Crusoe](./infrastructure-recommendations/crusoe)
    - [Nebius](./infrastructure-recommendations/nebius)
 4. [Deploy the data plane](./deploy/_index) once your infrastructure is ready. CoreWeave, Crusoe, and Nebius have their deploy steps on their own pages.
+5. [Upgrade the data plane](./upgrade) when a new chart version is released. You own the chart version, its CRDs, and your values file.
 
 ## Configuration
 

@@ -142,10 +142,11 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    helm repo update
    ```
 
-6. Install the Custom Resource Definitions (CRDs):
+6. Install the Custom Resource Definitions (CRDs) via server-side apply:
 
    ```bash
-   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
+   git clone --depth 1 --branch dataplane-<CHART_VERSION> https://github.com/unionai/helm-charts.git
+   kubectl apply --server-side --force-conflicts -f helm-charts/crds/dataplane/
    ```
 
 7. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 4, and `<CLIENT_ID>` / `<CLIENT_SECRET>` with the credentials printed in step 3.
