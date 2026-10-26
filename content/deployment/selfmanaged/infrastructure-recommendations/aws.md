@@ -18,7 +18,7 @@ Set these variables before running the commands below. Customize the names if yo
 export AWS_REGION=us-east-2                          # AWS region for all resources
 export CLUSTER_NAME=union-dataplane                  # EKS cluster name
 export BUCKET_PREFIX=union-dataplane                 # prefix for S3 buckets (must be globally unique)
-export ECR_REPO_NAME=${ECR_REPO_NAME}    # ECR repository name
+export ECR_REPO_NAME=union-dataplane                 # ECR repository name
 export IAM_ROLE_NAME=union-system-role               # IAM role name
 ```
 
@@ -26,13 +26,13 @@ export IAM_ROLE_NAME=union-system-role               # IAM role name
 
 You need an EKS cluster running one of the most recent three minor Kubernetes versions. See [Infrastructure recommendations](../infrastructure-recommendations/_index) for networking and node pool guidance.
 
-If you don't already have a cluster, create one with `eksctl`:
+If you don't already have a cluster, create one with `eksctl`, replacing `<KUBERNETES_VERSION>` with one of those versions that EKS currently supports in your region:
 
 ```bash
 eksctl create cluster \
   --name ${CLUSTER_NAME} \
-  --region us-east-2 \
-  --version 1.31 \
+  --region ${AWS_REGION} \
+  --version <KUBERNETES_VERSION> \
   --node-type m5.2xlarge \
   --nodes 3 \
   --with-oidc \
@@ -352,4 +352,4 @@ Using the [environment variables](#environment-variables) from above, set the fo
 - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
 - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}` (where `AWS_ACCOUNT_ID` is your 12-digit account ID).
 - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
-- Optionally set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (defaults to `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).
+- Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (the chart auto-generates the full ECR URL from the account ID and region).
