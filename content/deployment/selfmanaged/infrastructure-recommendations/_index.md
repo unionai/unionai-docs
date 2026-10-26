@@ -2,12 +2,18 @@
 title: Infrastructure recommendations
 description: Size the data plane, check prerequisites, and plan control plane connectivity before you install.
 icon: rulers
-weight: 2
+weight: 6
 variants: -flyte +union
 sidebar_expanded: true
 ---
 
 # Infrastructure recommendations
+
+> [!NOTE] For the Helm setup
+> This page is for installing the data plane yourself with Helm: on OCI, CoreWeave, Crusoe, Nebius, or any other
+> Kubernetes environment, and for existing AWS, GCP, and Azure deployments set up that way. For a new deployment on
+> AWS, GCP, or Azure, provision your resources on [AWS](../aws/_index), [GCP](../gcp/_index), or
+> [Azure](../azure/_index) and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 In a self-managed deployment, Union.ai runs the **control plane** and you
 run the **data plane** on your own Kubernetes cluster. This page covers the infrastructure
@@ -145,8 +151,8 @@ cloud's infrastructure page for suggested sizes and the pod-density math:
 
 | Cloud | Networking and capacity guidance |
 | --- | --- |
-| AWS | [Prepare infrastructure (AWS) → Networking and IP capacity](./aws#networking-and-ip-capacity) |
-| GCP | [Prepare infrastructure (GCP) → Networking and IP capacity](./gcp#networking-and-ip-capacity) |
+| AWS | [Prepare infrastructure (AWS) → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) |
+| GCP | [Prepare infrastructure (GCP) → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity) |
 | Azure / OCI / other | Pod IPs come from your VNet/VPC subnets (Azure CNI, Calico, Cilium). Size the node subnet for peak concurrent pods and prefer a large private range up front; if the CNI has a fixed per-node pod cap, the same [pod-density math](./scaling-constraints#pod-density-and-ip-allocation) applies. |
 
 ### Public vs. private subnets
@@ -214,8 +220,8 @@ The task-pod identity needs:
 - **Container registry** — push images when the image builder is enabled.
 
 Bind both service accounts. You can bind them to one cloud identity that holds both sets of
-permissions, as the [AWS](./aws) and [GCP](./gcp) pages do, or give each its own identity, as
-the [Azure](./azure) page does. Separate identities keep registry push access off the platform
+permissions, as the [AWS](../aws/legacy) and [GCP](../gcp/legacy) pages do, or give each its own identity, as
+the [Azure](../azure/legacy) page does. Separate identities keep registry push access off the platform
 components. If you bind only `union-system`, task pods get no bucket or registry access.
 
 The concrete IAM policy, role, and identity binding for each cloud live on the per-cloud
@@ -333,6 +339,8 @@ Unlike a self-hosted deployment, the data plane authenticates to and communicate
 Each page below covers the concrete resource-creation commands and the data-plane Helm values
 for one provider — the cloud-specific realization of the requirements on this page. Pick yours
 after working through the requirements above, then follow [Deploy the data plane](../deploy/_index).
+For AWS, GCP, and Azure, the Helm setup is under each provider: [AWS](../aws/legacy),
+[GCP](../gcp/legacy), [Azure](../azure/legacy).
 
 {{< subpage-cards >}}
 
