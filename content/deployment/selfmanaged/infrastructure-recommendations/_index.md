@@ -211,14 +211,16 @@ The task-pod identity needs:
   inputs/outputs, bundled code).
 - **Container registry** — push images when the image builder is enabled.
 
-Union.ai's reference Terraform maps the task-pod service account to its own cloud identity
-(a `flyte-worker` IAM role on AWS, a worker GSA on GCP), separate from the `union-system`
-identity. If you bind only `union-system`, task pods get no bucket or registry access.
+Bind both service accounts. You can bind them to one cloud identity that holds both sets of
+permissions, as the [AWS](./aws) and [GCP](./gcp) pages do, or give each its own identity, as
+the [Azure](./azure) page does. Separate identities keep registry push access off the platform
+components. If you bind only `union-system`, task pods get no bucket or registry access.
 
-The concrete IAM policy, role, and service-account annotation for each cloud live on the
-per-cloud [cloud provider setup](#cloud-provider-setup) pages. On AWS, the chart annotates
-the task-pod service account with the role you set in `global.WORKER_IAM_ROLE_ARN` (see
-[Deploy configuration](./aws#deploy-configuration)). Review the
+The concrete IAM policy, role, and identity binding for each cloud live on the per-cloud
+[cloud provider setup](#cloud-provider-setup) pages. The chart annotates the task-pod
+service account with the worker identity you set in your Helm values:
+`global.WORKER_IAM_ROLE_ARN` on AWS and GCP, `global.AZURE_WORKER_CLIENT_ID` on Azure (see
+each page's **Deploy configuration** section). Review the
 [common pitfalls](#common-identity-pitfalls) below before you write those bindings.
 
 > [!NOTE] Common service account
