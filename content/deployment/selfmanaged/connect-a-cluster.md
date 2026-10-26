@@ -2,7 +2,7 @@
 title: Connect your cluster
 description: Connect your cluster to Union.ai, so your workloads run on your own infrastructure instead of your machine.
 icon: hdd-network
-weight: 7
+weight: 4
 variants: -flyte +union
 ---
 
@@ -13,7 +13,7 @@ You have an organization and the cloud resources your data plane runs on. Now co
 **Nothing dials in.** You install an agent into your cluster, and the agent connects out to Union.ai. You do not open a port, expose an endpoint, or hand over cluster credentials.
 
 > [!NOTE] On GCP or Azure?
-> Steps 1 and 2 show the AWS forms. The GCP and Azure forms are at the end of [Provision your GCP resources](./gcp-infrastructure#9-connect-your-cluster) and [Provision your Azure resources](./azure-infrastructure#11-connect-your-cluster). Fill them in there, then come back for [step 3](#3-install-the-agent).
+> Steps 1 and 2 show the AWS forms. The GCP and Azure forms are at the end of [Provision your GCP resources](./gcp/_index#9-connect-your-cluster) and [Provision your Azure resources](./azure/_index#11-connect-your-cluster). Fill them in there, then come back for [step 3](#3-install-the-agent).
 
 <!-- Flow traced in source, not yet watched end to end on AWS: cloud origin/main,
      clientsv2/src/components/pages/SettingsClusters/ConnectCluster/ (ConnectClusterDialog.tsx,
@@ -22,7 +22,7 @@ You have an organization and the cloud resources your data plane runs on. Now co
 
 ## What you'll need
 
-The values printed at the end of [Provision your AWS resources](./aws-infrastructure#8-collect-the-values-for-connecting-your-cluster). If you are using AWS resources you already had, collect the same values for them, and check that they meet the [requirements](./aws-infrastructure#provision-your-aws-resources) first:
+The values printed at the end of [Provision your AWS resources](./aws/_index#8-collect-the-values-for-connecting-your-cluster). If you are using AWS resources you already had, collect the same values for them, and check that they meet the [requirements](./aws/_index#provision-your-aws-resources) first:
 
 - **S3 bucket URI**: the metadata bucket, for example `s3://my-team-union-selfserve-metadata`
 - **AWS account ID**: the 12-digit ID of the account that holds Secrets Manager
@@ -64,7 +64,7 @@ When the pool is created, the dialog moves straight on to **Register a cluster**
 |---|---|
 | **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is registered. |
 | **Cluster pool** | Already set to `default`, the pool you just created. |
-| **Namespace** | Leave it empty to use `union`. The IAM roles from [Provision your AWS resources](./aws-infrastructure) trust any namespace, so the default works with them. |
+| **Namespace** | Leave it empty to use `union`. The IAM roles from [Provision your AWS resources](./aws/_index) trust any namespace, so the default works with them. |
 | **System IAM Role ARN** | The system IAM role ARN |
 | **Task IAM Role ARN** | The task IAM role ARN |
 
@@ -115,7 +115,7 @@ When the install finishes, the panel reads **Complete**, and the cluster shows a
 
 ## 5. Run a workload on the cluster
 
-With a connected cluster, run the `hello.py` workflow from [Run your first workflow locally](./run-locally) again, this time without `--tracked`. The same code now runs on your cluster instead of on your own machine:
+With a connected cluster, run the `hello.py` workflow from [Run your first workflow locally](../sign-up/run-locally) again, this time without `--tracked`. The same code now runs on your cluster instead of on your own machine:
 
 ```bash
 flyte run hello.py main

@@ -2,7 +2,7 @@
 title: Provision your AWS resources
 description: Create the EKS cluster, S3 bucket, ECR repository and IAM roles that an AWS cluster pool needs.
 icon: amazon
-weight: 4
+weight: 1
 variants: -flyte +union
 ---
 
@@ -15,7 +15,7 @@ Union.ai installs the data plane into your cluster for you, but the AWS resource
 - a private ECR repository
 - separate system and task IAM roles for service accounts (IRSA)
 
-At the end you have the values you enter when you [connect your cluster](./connect-a-cluster): four for the cluster pool, and two IAM role ARNs for registering the cluster.
+At the end you have the values you enter when you [connect your cluster](../connect-a-cluster): four for the cluster pool, and two IAM role ARNs for registering the cluster.
 
 > [!NOTE] Already have these resources?
 > This page is optional. You can use an existing EKS cluster, S3 bucket, ECR repository and IAM roles instead, as long as they meet the same requirements:
@@ -25,10 +25,10 @@ At the end you have the values you enter when you [connect your cluster](./conne
 > - The ECR repository is private, with the repository policy from [step 7](#7-grant-repository-access).
 > - The two IAM roles have the trust policies from [step 5](#5-create-the-system-and-task-irsa-roles) and the permissions from [step 6](#6-grant-s3-and-secrets-manager-access).
 >
-> Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](./connect-a-cluster).
+> Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](../connect-a-cluster).
 
-> [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [AWS infrastructure](../selfmanaged/infrastructure-recommendations/aws) guide: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for a cluster you connect from the Union.ai UI.
+> [!NOTE] Not the manual setup
+> These resources differ from the ones in the [manual setup (legacy)](./legacy) page, which installs the data plane with Helm: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for a cluster you connect from the Union.ai UI.
 
 ## Agent-assisted provisioning
 
@@ -127,7 +127,7 @@ Use the bare hostname, for example, `{org}.hosted.unionai.cloud`; omit the `http
 - AWS CLI authenticated to the target account.
 - `eksctl` 0.195.0 or later, `kubectl`, `jq`, and `envsubst` installed locally.
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
-- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](../../sign-up/create-organization).
 
 The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. Choose a dedicated test account when possible.
 
@@ -516,4 +516,6 @@ Keep this output, and keep the shell where `kubectl` can reach the cluster: you 
 
 ## Next steps
 
-**[Connect your cluster](./connect-a-cluster).** Create an AWS cluster pool with the values above, register the cluster, and install the agent.
+**[Connect your cluster](../connect-a-cluster).** Create an AWS cluster pool with the values above, register the cluster, and install the agent.
+
+{{< subpage-cards >}}

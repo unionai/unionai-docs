@@ -1,12 +1,17 @@
 ---
-title: Azure
+title: Manual setup on Azure (legacy)
 description: Create the AKS cluster, Storage Account, managed identities, and Log Analytics access the data plane needs.
 icon: microsoft
-weight: 3
+weight: 1
 variants: -flyte +union
 ---
 
-# Azure infrastructure
+# Manual setup on Azure (legacy)
+
+> [!NOTE] For deployments set up with Helm
+> These are the earlier instructions: you provision Azure resources and install the data plane yourself with
+> Helm. They remain for deployments that were set up this way. For a new deployment, [provision your Azure resources](./_index)
+> and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 

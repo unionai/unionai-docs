@@ -2,7 +2,7 @@
 title: Provision your GCP resources
 description: Create the GKE cluster, Cloud Storage bucket, Artifact Registry repository, and service accounts that a GCP cluster pool needs.
 icon: google
-weight: 5
+weight: 2
 variants: -flyte +union
 ---
 
@@ -17,8 +17,8 @@ Union.ai installs the data plane into your cluster for you, but the Google Cloud
 
 You supply two values: your Google Cloud project ID and the address of your Union.ai UI. The commands derive every resource name from the project. At the end you have the values you enter when you connect your cluster: three for the cluster pool, and four for registering the cluster.
 
-> [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [GCP infrastructure](../selfmanaged/infrastructure-recommendations/gcp) guide: Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
+> [!NOTE] Not the manual setup
+> These resources differ from the ones in the [manual setup (legacy)](./legacy) page, which installs the data plane with Helm: Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
 
 > [!NOTE] Already have these resources?
 > This page is optional. You can use an existing GKE cluster, bucket, repository, and service accounts instead, as long as they meet the same requirements:
@@ -47,7 +47,7 @@ You supply two values: your Google Cloud project ID and the address of your Unio
   | `roles/iam.serviceAccountUser` | Creating the cluster with the node service account as its identity |
   | `roles/resourcemanager.projectIamAdmin` | The project-level roles the service accounts get |
 
-- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](../../sign-up/create-organization).
 
 The commands create billable resources, including a regional GKE control plane, its nodes, and Cloud NAT. They bill hourly whether or not anything runs. Use a project dedicated to the data plane: [step 5](#5-create-the-service-accounts-and-grant-access) grants Secret Manager roles on the whole project.
 
@@ -387,7 +387,7 @@ Keep this output, and keep the shell where `kubectl` can reach the cluster: you 
 
 4. Select **Register cluster**. The cluster's page, **Install Union on your GCP cluster**, shows the install command for this cluster.
 
-Install the agent and wait for the data plane as described in steps 3 and 4 of [Connect your cluster](./connect-a-cluster#3-install-the-agent).
+Install the agent and wait for the data plane as described in steps 3 and 4 of [Connect your cluster](../connect-a-cluster#3-install-the-agent).
 
 ## Important behavior and cleanup
 
@@ -399,4 +399,6 @@ Install the agent and wait for the data plane as described in steps 3 and 4 of [
 
 ## Next steps
 
-**[Run a workload on the cluster](./connect-a-cluster#5-run-a-workload-on-the-cluster).** Once the cluster shows as **Healthy**, run a workflow on it.
+**[Run a workload on the cluster](../connect-a-cluster#5-run-a-workload-on-the-cluster).** Once the cluster shows as **Healthy**, run a workflow on it.
+
+{{< subpage-cards >}}

@@ -1,12 +1,17 @@
 ---
-title: GCP
+title: Manual setup on GCP (legacy)
 description: Create the GKE cluster, GCS bucket, Artifact Registry, and Workload Identity bindings.
 icon: google
-weight: 2
+weight: 1
 variants: -flyte +union
 ---
 
-# GCP infrastructure
+# Manual setup on GCP (legacy)
+
+> [!NOTE] For deployments set up with Helm
+> These are the earlier instructions: you provision GCP resources and install the data plane yourself with
+> Helm. They remain for deployments that were set up this way. For a new deployment, [provision your GCP resources](./_index)
+> and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 This page walks you through creating the GCP resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 

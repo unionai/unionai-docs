@@ -22,8 +22,8 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 
 ![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/marketplace/sign-up/create-account.png)
 
-> [!NOTE] Not subscribed yet?
-> Your organization needs to be associated with a subscription. On AWS, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. On GCP or Azure, there is no marketplace listing yet: contact Union.ai for a subscription before you sign up.
+> [!NOTE] Paying through AWS Marketplace?
+> If you want the charges on your AWS bill, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. That works wherever your cluster runs: how you pay is separate from where your data plane lives. Otherwise, sign up directly. Either way, your organization starts with a 30-day free trial.
 
 ## Create your organization
 
@@ -68,5 +68,5 @@ Select **Show me how** on the **Run something locally** card for a short in-app 
 
 When you are ready to run workflows on your own infrastructure, continue with:
 
-- **Provision your cloud resources on [AWS](./aws-infrastructure), [GCP](./gcp-infrastructure), or [Azure](./azure-infrastructure)**. Optional if you already have resources that meet the requirements.
-- **[Connect your cluster](./connect-a-cluster)**
+- **Provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index)**. Optional if you already have resources that meet the requirements.
+- **[Connect your cluster](../selfmanaged/connect-a-cluster)**
