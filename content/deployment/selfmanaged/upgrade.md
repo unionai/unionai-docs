@@ -2,7 +2,7 @@
 title: Upgrade the data plane
 description: Keep a self-managed data plane current, including the chart, its CRDs, and your values file.
 icon: arrow-up-circle
-weight: 4
+weight: 8
 variants: -flyte +union
 ---
 

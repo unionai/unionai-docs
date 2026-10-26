@@ -2,7 +2,7 @@
 title: Deploy the data plane
 description: Install the data plane Helm chart on AWS, GCP, Azure, OCI, or generic Kubernetes.
 icon: rocket-takeoff
-weight: 3
+weight: 7
 variants: -flyte +union
 ---
 
@@ -10,13 +10,16 @@ variants: -flyte +union
 
 This walkthrough installs the Union.ai data plane operator on AWS, GCP, Azure, OCI, or a generic (on-premise / S3-compatible) Kubernetes cluster. The steps are the same across providers; only the Helm values file differs, and each provider's values are documented on its infrastructure page.
 
+> [!NOTE] New on AWS, GCP, or Azure?
+> For a new deployment on AWS, GCP, or Azure, you don't install the data plane with Helm: provision your resources on [AWS](../aws/_index), [GCP](../gcp/_index), or [Azure](../azure/_index) and [connect your cluster](../connect-a-cluster) from the Union.ai UI. The AWS, GCP, and Azure rows below are for deployments set up with Helm.
+
 Before you start, provision your cloud infrastructure using the matching page and note its **Deploy configuration** section:
 
 | Provider | Infrastructure page | `--provider` | Values file |
 | --- | --- | --- | --- |
-| AWS | [AWS](../infrastructure-recommendations/aws) | `aws` | `values.aws.yaml` |
-| GCP | [GCP](../infrastructure-recommendations/gcp) | `gcp` | `values.gcp.yaml` |
-| Azure | [Azure](../infrastructure-recommendations/azure) | `azure` | `values.azure.yaml` |
+| AWS | [AWS](../aws/legacy) | `aws` | `values.aws.yaml` |
+| GCP | [GCP](../gcp/legacy) | `gcp` | `values.gcp.yaml` |
+| Azure | [Azure](../azure/legacy) | `azure` | `values.azure.yaml` |
 | OCI | [OCI](../infrastructure-recommendations/oci) | `oci` | `values.yaml` (base) |
 | Generic | [Generic Kubernetes](../infrastructure-recommendations/generic) | `custom` | `values.yaml` (base) |
 
@@ -29,7 +32,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 ## Assumptions
 
 * You have a Union.ai organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
-* You have a cluster name provided by or coordinated with Union.
+* You have chosen a name for your cluster. You register it under that name with `flyte create cluster` in the steps below.
 * You have a Kubernetes cluster with workload identity (IRSA / GKE Workload Identity / Entra Workload Identity) or the equivalent credentials enabled, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have provisioned object storage, a container registry, and identity bindings as described on your provider's [infrastructure recommendations](../infrastructure-recommendations/_index) page.
 
@@ -70,7 +73,7 @@ Before you start, provision your cloud infrastructure using the matching page an
    * The command outputs the ID, name, and a secret that the Union.ai services use to communicate with your control plane. You pass the client ID and client secret to the Helm chart in step 5.
    * Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
-4. Download the values file for your provider (see the table above) and fill in your infrastructure details. The exact keys — object storage, service-account/identity bindings, and any provider-specific settings — are documented in the **Deploy configuration** section of your provider's infrastructure page ([AWS](../infrastructure-recommendations/aws#deploy-configuration) · [GCP](../infrastructure-recommendations/gcp#deploy-configuration) · [Azure](../infrastructure-recommendations/azure#deploy-configuration) · [OCI](../infrastructure-recommendations/oci#deploy-configuration) · [Generic](../infrastructure-recommendations/generic#deploy-configuration)):
+4. Download the values file for your provider (see the table above) and fill in your infrastructure details. The exact keys — object storage, service-account/identity bindings, and any provider-specific settings — are documented in the **Deploy configuration** section of your provider's infrastructure page ([AWS](../aws/legacy#deploy-configuration) · [GCP](../gcp/legacy#deploy-configuration) · [Azure](../azure/legacy#deploy-configuration) · [OCI](../infrastructure-recommendations/oci#deploy-configuration) · [Generic](../infrastructure-recommendations/generic#deploy-configuration)):
 
    ```bash
    curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/<VALUES_FILE>
