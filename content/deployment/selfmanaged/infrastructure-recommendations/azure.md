@@ -256,7 +256,7 @@ az identity federated-credential create \
   --audiences api://AzureADTokenExchange
 ```
 
-In multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`), task pods run as the `default` service account in each task namespace. `values.azure.yaml` maps task namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
+In multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`, plus `clusterresourcesync.enabled: true` so that the chart creates the task namespaces), task pods run as the `default` service account in each task namespace. `values.azure.yaml` maps task namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
 
 ```bash
 for ns in development staging production; do

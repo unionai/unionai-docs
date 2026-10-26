@@ -185,12 +185,14 @@ The cluster needs a managed identity mechanism so pods can call cloud APIs (obje
 image registry, secrets) without static credentials. The Union.ai data plane
 uses two Kubernetes service accounts:
 
-- **`union-system`** — shared by the platform components (operator, executor, webhook, proxy,
-  and FluentBit).
+- **`union-system`** — shared by the platform components (operator, webhook, proxy, and
+  FluentBit).
 - **The task-pod service account** — task pods do not run as `union-system`. By default
   they run as the `union` service account in the data plane namespace. If you enable
   multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`),
-  they run as the `default` service account in each task namespace.
+  they run as the `default` service account in each task namespace. Multi-namespace mode
+  also needs `clusterresourcesync.enabled: true`: clusterresourcesync creates the task
+  namespaces and annotates their `default` service accounts, and it is off by default.
 
 | Cloud | Mechanism |
 | --- | --- |
