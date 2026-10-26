@@ -244,7 +244,7 @@ az identity federated-credential create \
 
 ### Worker identity (task execution pods)
 
-Task pods run under the `union` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
+Task pods run under the `union` service account. In single-namespace mode (the default), create one federated credential for the release namespace:
 
 ```bash
 az identity federated-credential create \
@@ -256,7 +256,7 @@ az identity federated-credential create \
   --audiences api://AzureADTokenExchange
 ```
 
-If using multi-namespace mode (`low_privilege: false`), also create credentials for each project-domain namespace:
+If using multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`), also create credentials for each project-domain namespace:
 
 ```bash
 for ns in development staging production; do
