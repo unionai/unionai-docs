@@ -113,7 +113,7 @@ Suggested defaults for a production-scale data plane:
 | Cloud NAT | Dynamic Port Allocation enabled |
 
 If you expect a single cluster to scale beyond a few hundred nodes, enlarge the pods secondary
-range to `/14` (200,000 IPs) **up front**.
+range to `/14` (262,144 IPs) **up front**.
 
 ### Per-node CIDR math
 
