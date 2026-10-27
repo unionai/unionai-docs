@@ -26,7 +26,7 @@ Each provider's page has a **Manual setup (legacy)** page under it: the earlier 
 
 ## Other providers: set up with Helm
 
-On OCI, CoreWeave, Crusoe, Nebius, or any other Kubernetes environment, you provision the infrastructure and install the data plane with Helm yourself:
+The UI flow covers AWS, GCP, and Azure today. On OCI, CoreWeave, Crusoe, and Nebius, and on generic Kubernetes (on-premises or any other environment), you provision the infrastructure and install the data plane with Helm yourself. Existing AWS, GCP, and Azure deployments that were set up with Helm follow this path too:
 
 1. Review the [architecture](./architecture/_index) to understand the control plane, data plane operators, and security model.
 2. Review the [infrastructure recommendations](./infrastructure-recommendations/_index) for the sizing model, networking and IP planning, identity, and the [scaling constraints](./infrastructure-recommendations/scaling-constraints) to plan around.
@@ -41,7 +41,7 @@ On OCI, CoreWeave, Crusoe, Nebius, or any other Kubernetes environment, you prov
 
 ## Configuration
 
-After initial setup, configure platform features on your cluster:
+After initial setup, configure platform features on your cluster. Where a page sets values on the `dataplane` Helm chart, it is for a data plane installed with Helm: on one connected from the Union.ai UI, the agent manages the chart and its values (see [Configuration](./configuration/_index)).
 
 - [Authentication](./configuration/authentication)
 - [Image builder](./configuration/image-builder)
@@ -55,7 +55,7 @@ After initial setup, configure platform features on your cluster:
 
 ## Reference
 
-- [Helm chart reference](./helm-chart-reference/_index) for available chart values
+- [Helm chart reference](./helm-chart-reference/_index) for the chart values available when you install with Helm
 - [Kubernetes access controls](./architecture/kubernetes-rbac) for RBAC configuration details
 
 {{< subpage-cards >}}

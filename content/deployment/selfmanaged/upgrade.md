@@ -8,8 +8,13 @@ variants: -flyte +union
 
 # Upgrade the data plane
 
-In a self-managed deployment you own the data plane's version. This page covers what you keep
+When you install the data plane with Helm, you own its version. This page covers what you keep
 current, the supported way to do it, and how to automate it.
+
+> [!NOTE] For data planes installed with Helm
+> This page is for a data plane you installed with Helm: on OCI, CoreWeave, Crusoe, Nebius, or generic Kubernetes,
+> or an existing AWS, GCP, or Azure deployment set up that way. On a data plane connected from the Union.ai UI, the
+> agent installs and manages the chart, so this page doesn't apply.
 
 ## What you maintain
 
