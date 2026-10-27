@@ -31,8 +31,7 @@ ensure the best performance and reliability of your data plane.
 > The **control plane** (admin, identity, queue service, database, control-plane object
 > storage) is hosted and operated by Union.ai — you do not provision any of it.
 > Your responsibility is the **data plane**: the cluster that runs the operator, executor,
-> and your task pods. Deployments where you also run the control plane are a separate,
-> self-hosted model and are out of scope for this page.
+> and your task pods.
 
 ## Sizing model
 
@@ -319,8 +318,8 @@ configurable backing store (Kubernetes secrets by default, or a cloud secrets ma
 
 ## Control-plane connectivity
 
-Unlike a self-hosted deployment, the data plane authenticates to and communicates with a
-**remote, Union.ai-hosted control plane** over the internet. Ensure:
+The data plane authenticates to and communicates with a **remote, Union.ai-hosted control
+plane** over the internet. Ensure:
 
 - **Egress** from worker nodes (via NAT) can reach the Union.ai
   control-plane endpoint (`*.unionai.cloud`) in addition to your container registries.
@@ -328,9 +327,9 @@ Unlike a self-hosted deployment, the data plane authenticates to and communicate
   tier, the Cloudflare Tunnel (**TCP 7844**); no inbound firewall rules are required. For the
   full list of outbound destinations and ports, and guidance on allowlisting by IP address,
   see [Egress requirements](../../../security/architecture/network#egress-requirements).
-- The operator authenticates to the control plane using an **OAuth2 client-credentials
-  ("eager") key**, supplied as a Kubernetes secret. See
-  [Authentication](../configuration/authentication).
+- The data plane's services authenticate to the control plane with an **OAuth2 client ID and
+  secret** that you generate before installing and pass to the Helm chart. See step 3 of
+  [Deploy the data plane](../deploy/_index).
 - If you run **multiple data-plane clusters** under one Union.ai control
   plane, each cluster registers independently — see [Multi-cluster](../configuration/multi-cluster).
 

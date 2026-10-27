@@ -43,7 +43,6 @@ The UI flow covers AWS, GCP, and Azure today. On OCI, CoreWeave, Crusoe, and Neb
 
 After initial setup, configure platform features on your cluster. Where a page sets values on the `dataplane` Helm chart, it is for a data plane installed with Helm: on one connected from the Union.ai UI, the agent manages the chart and its values (see [Configuration](./configuration/_index)).
 
-- [Authentication](./configuration/authentication)
 - [Image builder](./configuration/image-builder)
 - [Multi-cluster](./configuration/multi-cluster)
 - [Node pools](./configuration/node-pools)
