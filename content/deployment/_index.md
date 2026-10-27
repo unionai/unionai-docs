@@ -26,6 +26,6 @@ You can set up a self-managed deployment on AWS, GCP, or Azure yourself, from th
 2. **Provision your cloud resources** on [AWS](./selfmanaged/aws/_index), [GCP](./selfmanaged/gcp/_index), or [Azure](./selfmanaged/azure/_index). Create the Kubernetes cluster, object store, image registry, and identities the data plane runs on, in your own cloud account.
 3. **[Connect your cluster](./selfmanaged/connect-a-cluster).** Enter your resources' details in the Union.ai UI and install the agent it gives you. The agent connects outwards and installs the data plane, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-If your data plane runs on OCI, a neocloud provider, or on-premises, follow the [self-managed setup with Helm](./selfmanaged/_index#other-providers-set-up-with-helm). If you want Union.ai to run your data plane for you, see [BYOC deployment](./byoc/_index).
+The UI flow covers AWS, GCP, and Azure today. If your data plane runs on OCI or a neocloud provider such as CoreWeave, Crusoe, or Nebius, or on your own Kubernetes cluster, follow the [self-managed setup with Helm](./selfmanaged/_index#other-providers-set-up-with-helm). If you want Union.ai to run your data plane for you, see [BYOC deployment](./byoc/_index).
 
 {{< subpage-cards >}}
