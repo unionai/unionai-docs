@@ -327,9 +327,9 @@ plane** over the internet. Ensure:
   tier, the Cloudflare Tunnel (**TCP 7844**); no inbound firewall rules are required. For the
   full list of outbound destinations and ports, and guidance on allowlisting by IP address,
   see [Egress requirements](../../../security/architecture/network#egress-requirements).
-- The operator authenticates to the control plane using an **OAuth2 client-credentials
-  ("eager") key**, supplied as a Kubernetes secret. See
-  [Authentication](../configuration/authentication).
+- The data plane's services authenticate to the control plane with an **OAuth2 client ID and
+  secret** that you generate before installing and pass to the Helm chart. See step 3 of
+  [Deploy the data plane](../deploy/_index).
 - If you run **multiple data-plane clusters** under one Union.ai control
   plane, each cluster registers independently — see [Multi-cluster](../configuration/multi-cluster).
 
