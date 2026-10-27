@@ -31,8 +31,7 @@ ensure the best performance and reliability of your data plane.
 > The **control plane** (admin, identity, queue service, database, control-plane object
 > storage) is hosted and operated by Union.ai — you do not provision any of it.
 > Your responsibility is the **data plane**: the cluster that runs the operator, executor,
-> and your task pods. Deployments where you also run the control plane are a separate,
-> self-hosted model and are out of scope for this page.
+> and your task pods.
 
 ## Sizing model
 
@@ -319,8 +318,8 @@ configurable backing store (Kubernetes secrets by default, or a cloud secrets ma
 
 ## Control-plane connectivity
 
-Unlike a self-hosted deployment, the data plane authenticates to and communicates with a
-**remote, Union.ai-hosted control plane** over the internet. Ensure:
+The data plane authenticates to and communicates with a **remote, Union.ai-hosted control
+plane** over the internet. Ensure:
 
 - **Egress** from worker nodes (via NAT) can reach the Union.ai
   control-plane endpoint (`*.unionai.cloud`) in addition to your container registries.
