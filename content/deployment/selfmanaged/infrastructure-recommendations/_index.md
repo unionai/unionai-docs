@@ -151,8 +151,8 @@ cloud's infrastructure page for suggested sizes and the pod-density math:
 
 | Cloud | Networking and capacity guidance |
 | --- | --- |
-| AWS | [Prepare infrastructure (AWS) → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) |
-| GCP | [Prepare infrastructure (GCP) → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity) |
+| AWS | [Manual setup on AWS (legacy) → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) |
+| GCP | [Manual setup on GCP (legacy) → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity) |
 | Azure / OCI / other | Pod IPs come from your VNet/VPC subnets (Azure CNI, Calico, Cilium). Size the node subnet for peak concurrent pods and prefer a large private range up front; if the CNI has a fixed per-node pod cap, the same [pod-density math](./scaling-constraints#pod-density-and-ip-allocation) applies. |
 
 ### Public vs. private subnets
