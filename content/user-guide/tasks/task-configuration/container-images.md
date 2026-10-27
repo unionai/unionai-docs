@@ -433,14 +433,23 @@ The format of this secret matches the standard Kubernetes [image pull secret](ht
 > [!NOTE]
 > The `auth` field contains the base64-encoded credentials for your registry (username and password or token).
 
-#### Pulling a base image from ECR in another AWS account
+#### Pulling a private base image with a credential helper
 
-If your data plane runs on AWS and your base image lives in an Amazon ECR registry in a _different_ AWS account, `ImageBuilder` needs an `image_pull` secret to pull it.
-Out of the box, `ImageBuilder` only authenticates to its own default registry, so it pulls your base image anonymously and the build fails with `401 Unauthorized`.
-ECR repository policies and IAM roles alone don't fix this, because no credentials are sent at all.
+`ImageBuilder` only authenticates to its own default registry.
+If your base image lives in any other private registry, `ImageBuilder` pulls it anonymously and the build fails with `401 Unauthorized`, even if registry permissions or IAM policies allow access, because no credentials are sent at all.
+To fix this, pass an `image_pull` secret as `registry_secret`. The secret can hold either:
 
-Instead of storing a token, which ECR expires after 12 hours, configure the [`ecr-login` credential helper](https://github.com/awslabs/amazon-ecr-credential-helper) for that registry.
-`ImageBuilder` then fetches a fresh token with the data plane's own AWS identity on every build, so there is nothing to rotate.
+* **Static credentials**, as shown in the previous section. This works with any registry, but you have to rotate the credentials when they expire.
+* **A credential helper mapping**, which stores no credentials. `ImageBuilder` runs the helper on every build to fetch a fresh token with the data plane's own cloud identity, so there is nothing to rotate.
+  This works only when the registry is on the same cloud provider as your data plane.
+
+Credential helpers are currently supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
+For registries on other clouds, use static credentials.
+
+##### Amazon ECR in another AWS account
+
+This setup uses the [`ecr-login` credential helper](https://github.com/awslabs/amazon-ecr-credential-helper).
+A static ECR token would expire after 12 hours.
 
 1. In the AWS account that owns the image, add a repository policy that lets your data plane's account pull from it (replace `<DATA_PLANE_ACCOUNT_ID>`):
 

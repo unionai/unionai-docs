@@ -234,7 +234,7 @@ Follow guidance in this section to integrate Image Builder with private registri
 
 The ECR policies above grant access, but Image Builder only sends credentials to the registry configured in `defaultRepository`.
 To build on a base image from an ECR registry in another account, create an `image_pull` secret that configures the `ecr-login` credential helper for that registry and pass it as `registry_secret`.
-See [Pulling a base image from ECR in another AWS account](../../../user-guide/tasks/task-configuration/container-images#pulling-a-base-image-from-ecr-in-another-aws-account).
+See [Amazon ECR in another AWS account](../../../user-guide/tasks/task-configuration/container-images#amazon-ecr-in-another-aws-account).
 
 #### GitHub Container Registry
 
