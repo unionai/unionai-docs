@@ -46,8 +46,9 @@ flowchart LR
 
 Fork can also change the root action's inputs. In Python the substitute code is optional too:
 `fork(run, threshold=0.9)` with no `task_template` replays the source run's task spec against new
-inputs, which makes fork the way to recover a run with different inputs. On the CLI the file and
-task are always given, since the command is built from them.
+inputs. That is the same as recovering with changed inputs, which `flyte rerun <run> --recover`
+also does (see [Changing inputs](./recover-runs#changing-inputs)). On the CLI the file and task
+are always given, since the command is built from them.
 
 ## Fork from the CLI
 
@@ -139,10 +140,11 @@ Two properties follow, and they explain nearly everything about what a fork re-r
 
 | You change | On fork |
 |---|---|
-| A task's function body | that task re-runs |
+| A task's function body | that task re-runs, unless its cache sets `version_override` (see below) |
 | A task's signature | that task re-runs |
 | A task's docstring | that task re-runs |
 | The task function's name | that task re-runs |
+| Arguments to the task's `@env.task(...)` decorator | that task re-runs |
 | The `flyte.TaskEnvironment` name | every task in it re-runs |
 | Comments inside a task | reused |
 | Formatting or whitespace | reused |
@@ -151,13 +153,23 @@ Two properties follow, and they explain nearly everything about what a fork re-r
 | A module-level constant a task reads | reused (see below) |
 | A helper function a task calls | reused (see below) |
 
-> [!WARNING] Identity is the function body, and only the function body
-> A task's identity hashes only the decorated function's own source. If you edit a module-level
-> constant it reads, or a helper function it calls, the action name does not change, so a task
-> that already succeeded is reused and your change has no effect on it. Nothing warns you.
+> [!WARNING] Identity is the function's own source, and nothing else
+> A task's identity hashes the decorated function's own source, decorator lines included. If you
+> edit a module-level constant it reads, or a helper function it calls, the action name does not
+> change, so a task that already succeeded is reused and your change has no effect on it. Nothing
+> warns you.
 >
 > Use `--force-rerun-action` to re-execute those actions explicitly, or move the changed logic
 > into the task body.
+
+Because the hashed source includes the decorator, a setting passed to `@env.task(...)`, such as
+`retries` or `timeout`, renames the action when you change it. The same setting on the
+`flyte.TaskEnvironment` does not.
+
+The task's cache policy decides the hash. With
+`cache=flyte.Cache(behavior="override", version_override="v1")`, the version string replaces the
+body hash, so editing the function body does not rename the action and the task is reused. Change
+`version_override` to make it re-run. A cache `salt` or custom cache policies also change the hash.
 
 The same rule governs `flyte.trace` functions: a traced function hashes its own body, so editing it
 causes it to re-execute instead of replaying its recorded result. A helper it calls still does not

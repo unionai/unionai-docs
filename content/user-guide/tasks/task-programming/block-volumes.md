@@ -29,7 +29,8 @@ files**, and the same state should carry over from one run to the next:
 - **Package caches and environments.** pip and uv caches, virtualenvs,
   `node_modules`, Cargo and Maven repositories.
 - **Source trees and workspaces.** Checkouts that a build or agent churns through
-  file by file.
+  file by file, when the code that writes them is trusted. An agent sandbox that
+  runs model-written code belongs on a regular Volume.
 
 These workloads are dominated by per-file metadata operations, which is exactly
 where a regular Volume pays the most. Measured on the same cluster:
@@ -49,7 +50,9 @@ Stay with a **regular Volume** when:
   files of a block volume exist only inside its image.
 - **The data is mostly large files.** Sequential I/O on large files is already
   fast on a regular Volume, and it has no size limit to manage.
-- **The code writing to it is untrusted.** See [Setup](#setup).
+- **The code writing to it is untrusted.** This includes an agent workspace where
+  the agent runs code a model wrote. The node's kernel parses the image that code
+  writes. See [Setup](#setup).
 
 | | Regular Volume | Block volume |
 |---|---|---|

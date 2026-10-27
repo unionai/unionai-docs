@@ -15,8 +15,9 @@ backlog can get, how this work is prioritized relative to everyone else's, and
 which cluster it lands on.
 
 Targeting a queue is a single parameter: you don't change your task code, you
-just say *where* it should be scheduled. Anything you don't explicitly route
-goes to the **default queue**.
+just say *where* it should be scheduled. A run you don't explicitly route goes
+to the **default queue**. A child action whose task names no queue runs in its
+run's queue, so it counts against that queue's limits.
 
 ## Routing work to a queue
 

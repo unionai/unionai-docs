@@ -60,6 +60,12 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 > This library only needs to be added to the task image.
 > It does not need to be installed in your local development environment.
 
+> [!WARNING] Match `unionai-reuse` to your `flyte` version
+> Each `unionai-reuse` release accepts a limited range of `flyte` versions, and installing it replaces the image's `flyte` with one in that range.
+> `unionai-reuse` 0.1.16 and earlier require `flyte` below 2.9, so the container runs an older `flyte` than your client.
+> Tasks that use newer `flyte` features then fail at import time, for example with `TypeError: ... got an unexpected keyword argument`.
+> With `flyte` 2.10.5 or later, require `unionai-reuse>=0.2.0`, which accepts `flyte` 2.10.5 up to, but not including, 2.15.
+
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 {{< /markdown >}}
@@ -95,6 +101,10 @@ reuse_policy = flyte.ReusePolicy(
 - **Resource usage** = `replicas × TaskEnvironment.resources`
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**:  `scaledown_ttl` manages individual containers, `idle_ttl` manages the environment
+
+## Environment variables
+
+A reusable container's Python process keeps the environment it started with, and `os.environ` is not updated for each call it serves. Environment variables set for a single run, such as `flyte run --env KEY=VALUE` or `flyte.with_runcontext(env_vars=...)`, are therefore not applied to `os.environ` when a later call runs in that container. With `concurrency` above 1, several calls share one process at the same time, so `os.environ` can't hold per-call values. Pass values that change per call as task inputs instead.
 
 ## Simple example
 
