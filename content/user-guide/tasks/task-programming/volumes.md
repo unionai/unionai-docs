@@ -137,7 +137,7 @@ from flyteplugins.union.io import Volume, RWVolume, ROVolume
 @env.task
 async def create_dataset() -> RWVolume:
     vol = Volume.new(name="my-dataset")   # a fresh writable RWVolume
-    data = await vol.mount()              # mount (default: ~/flyte-volume); returns the path
+    data = await vol.mount()              # mount (default: ~/flyte-volume/<name>); returns the path
 
     (data / "greeting.txt").write_text("hello from a volume\n")
 
@@ -405,8 +405,11 @@ committed yet: there's no published version to point at.
 Reads go through a local **chunk cache**. Where that cache lives is the single
 biggest lever on read performance, and by default it is in the worst place:
 unset, it falls back to `$HOME`, which on every managed Kubernetes is the
-container's overlayfs — the slowest writable thing on the node, with no size
-limit the client knows about.
+container's overlayfs — the slowest writable thing on the node. Its budget comes
+from the container's ephemeral-storage limit, which `allow_volumes()` publishes to
+the client. If the container sets no limit, the node's allocatable storage is used.
+All default caches share half of that limit, and each mount takes half of what is
+left, at least 1 GiB.
 
 **Give it a real disk.** `cache_size` attaches a sized `emptyDir` and tells the
 client its budget:
@@ -415,9 +418,9 @@ client its budget:
 pod_template = allow_volumes(cache_size="50Gi")
 ```
 
-The budget matters as much as the disk. Without it the client keeps its own
-100 GiB default, overruns the `emptyDir`'s limit, and kubelet evicts the pod —
-a worse failure than a cache that is merely smaller than you hoped. The
+The budget matters as much as the disk. If the client's budget is larger than
+the `emptyDir`'s limit, it overruns that limit and kubelet evicts the pod — a
+worse failure than a cache that is merely smaller than you hoped. The
 published budget is about 90% of the size you give, leaving headroom for the
 client's own bookkeeping and the imprecision of its accounting. It is per
 mount: split it with `mount(cache_size_mb=...)` when one task mounts several
@@ -476,7 +479,7 @@ mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
 data = await vol.mount(
-    mount_path="/tmp/data",  # a writable mount point (default: ~/flyte-volume)
+    mount_path="/tmp/data",  # a writable mount point (default: ~/flyte-volume/<name>)
     max_uploads=100,         # raise upload concurrency for write-heavy bursts (default 50)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
@@ -486,7 +489,7 @@ data = await vol.mount(
 
 | Option | Default | Use it to… |
 |---|---|---|
-| `mount_path` | `~/flyte-volume` | Mount somewhere other than the default. |
+| `mount_path` | `~/flyte-volume/<volume name>` | Mount somewhere other than the default. |
 | `max_uploads` | `50` | Raise the cap on concurrent uploads. Bump it during write-heavy bursts of many small files, where the default concurrency can't saturate the upload link to object storage. |
 | `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache file metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
 
@@ -543,14 +546,14 @@ flyte explore volume <run-name> <action-name> --op-name my_volume
 
 It follows the version lineage, so you can step back through earlier commits and
 jump to the action that produced any version. To open an index you already have
-on disk, pass `--from-file <path> --store-type sqlite`.
+on disk, pass `--from-file <path>`.
 
 ## Debugging a mount
 
 When a volume is slow, or a task looks stuck on file I/O, turn on the **volume
 report**. It samples the live mount while the task runs and publishes a `Volume`
 tab on the task's [report](./reports): throughput over time, a marker at each
-`commit()`, `fork()` and `finalize()`, and a health line.
+`commit()` and `finalize()`, and a health line.
 
 ```python
 vol = Volume.new(name="my-dataset")
