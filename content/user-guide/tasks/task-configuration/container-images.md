@@ -433,6 +433,79 @@ The format of this secret matches the standard Kubernetes [image pull secret](ht
 > [!NOTE]
 > The `auth` field contains the base64-encoded credentials for your registry (username and password or token).
 
+#### Pulling a base image from ECR in another AWS account
+
+If your data plane runs on AWS and your base image lives in an Amazon ECR registry in a _different_ AWS account, `ImageBuilder` needs an `image_pull` secret to pull it.
+Out of the box, `ImageBuilder` only authenticates to its own default registry, so it pulls your base image anonymously and the build fails with `401 Unauthorized`.
+ECR repository policies and IAM roles alone don't fix this, because no credentials are sent at all.
+
+Instead of storing a token, which ECR expires after 12 hours, configure the [`ecr-login` credential helper](https://github.com/awslabs/amazon-ecr-credential-helper) for that registry.
+`ImageBuilder` then fetches a fresh token with the data plane's own AWS identity on every build, so there is nothing to rotate.
+
+1. In the AWS account that owns the image, add a repository policy that lets your data plane's account pull from it (replace `<DATA_PLANE_ACCOUNT_ID>`):
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Sid": "AllowDataPlanePull",
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "arn:aws:iam::<DATA_PLANE_ACCOUNT_ID>:root"
+         },
+         "Action": [
+           "ecr:BatchCheckLayerAvailability",
+           "ecr:BatchGetImage",
+           "ecr:GetDownloadUrlForLayer"
+         ]
+       }
+     ]
+   }
+   ```
+
+2. Save a Docker config file, `config.json`, that maps the registry to the `ecr-login` helper.
+   It contains no credentials. List more registries under `credHelpers` if you pull from several accounts.
+
+   ```json
+   {
+     "auths": {},
+     "credHelpers": {
+       "<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com": "ecr-login"
+     }
+   }
+   ```
+
+3. Store the file as an `image_pull` secret:
+
+   ```bash
+   flyte create secret --type image_pull ecr-cross-account --from-file config.json
+   ```
+
+   If your organization has more than one cluster pool, add `--cluster-pool <POOL_NAME>`.
+
+4. Pass the secret to `ImageBuilder` with `registry_secret`.
+   `from_base()` doesn't accept a secret, so set it on `clone()`, which you already need in order to add layers on top of the base image:
+
+   ```python
+   image = (
+       flyte.Image.from_base("<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY>:<TAG>")
+       .clone(name="my-image", registry_secret="ecr-cross-account", extendable=True)
+       .with_pip_packages("pandas")
+   )
+
+   env = flyte.TaskEnvironment(name="my_task_env", image=image)
+   ```
+
+   Leave `registry` unset so the built image is pushed to your Union instance's default registry, as usual.
+   Tasks pull it from there, so the `TaskEnvironment` doesn't need the secret.
+
+{{< variant union >}}
+{{< markdown >}}
+For BYOC data planes, see also [Enabling AWS ECR](../../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr) for running tasks directly on images stored in another account.
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Install private PyPI packages
 
 To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.

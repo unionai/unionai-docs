@@ -63,3 +63,10 @@ We will call this `<FlyteWorkerNodeGroupRoleARN>`.
 * Select **Save**.
 
 Your Union.ai data plane infrastructure should now be able to pull images from the ECR instance. For more information see [How can I allow a secondary account to push or pull images in my Amazon ECR image repository?](https://repost.aws/knowledge-center/secondary-account-access-ecr)
+
+## Building on a base image from another account
+
+The policy above lets tasks _run_ on images stored in the other account.
+If you instead use one of those images as a base and build on top of it with the remote `ImageBuilder` (for example, `flyte.Image.from_base(...)` followed by `with_*` layers), the policy is not enough on its own: the build fails with `401 Unauthorized` because `ImageBuilder` doesn't send credentials to that registry by default.
+To fix this, create an `image_pull` secret that configures the `ecr-login` credential helper for the registry and pass it as `registry_secret`.
+See [Pulling a base image from ECR in another AWS account](../../../user-guide/tasks/task-configuration/container-images#pulling-a-base-image-from-ecr-in-another-aws-account).
