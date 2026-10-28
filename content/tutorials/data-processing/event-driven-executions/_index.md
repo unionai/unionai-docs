@@ -24,7 +24,7 @@ To one that leverages Union's automation and data lineage capabilities:
 
 **Why would you like to do that?** 
 
-We believe using Union's Artifact triggers can help you achieve the automation your ML pipelines need with less components to maintain and better consistency guarantees. This page will guide you to demonstrate this.
+We believe using Union's Artifact triggers can help you achieve the automation your ML pipelines need with fewer components to maintain and better consistency guarantees. This page will guide you to demonstrate this.
 
 ## Implementation
 
