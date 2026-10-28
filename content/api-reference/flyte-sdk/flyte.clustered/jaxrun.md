@@ -2,7 +2,7 @@
 title: JaxRun
 description: "JAX multi-process runtime for a ClusteredTaskEnvironment."
 icon: braces
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---

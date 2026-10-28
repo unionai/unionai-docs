@@ -2,7 +2,7 @@
 title: MCPServerSpec
 description: "Declarative spec for a remote MCP server that exposes tools."
 icon: braces
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---
