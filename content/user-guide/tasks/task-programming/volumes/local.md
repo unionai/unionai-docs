@@ -12,7 +12,9 @@ description: Mount a Volume on a laptop, a dev box or a CI runner with the flyte
 cluster. You can also mount a volume **on your own machine** - a laptop, a dev
 box, a CI runner - and read and write it like any other directory. No FUSE
 tooling to install: on macOS the volume is served over a loopback NFS mount
-instead, so `mount volume` works there without macFUSE.
+instead, so `mount volume` works there without macFUSE. `--transport` picks
+between them (`auto` means NFS on macOS and FUSE elsewhere), and a few commands
+behave differently over NFS - each is called out where it comes up.
 
 This is the workflow for building a dataset by hand, inspecting one in place
 with ordinary tools, or carrying one onto a plane.
@@ -20,8 +22,15 @@ with ordinary tools, or carrying one onto a plane.
 ## Create a volume
 
 ```bash
-flyte create volume my-dataset --project my-project --domain development
+flyte create volume my-dataset --artifact my-dataset \
+  --project my-project --domain development
 ```
+
+`--artifact` registers the new volume in the artifact registry under that name.
+It is optional, but without it nothing in the registry knows the volume, and the
+only handle you have afterwards is the locator `create` printed - so every later
+mount has to name that locator. Registering it once gives you a name you can
+mount by instead.
 
 You do not have to say where it lives. The CLI asks the control plane for the
 storage this project and domain already use - the same raw-data path a task
@@ -77,6 +86,13 @@ credentials expiring, or the machine restarting all leave the work recoverable.
 copy, so rebuilding it does not re-read anything from the bucket. That is the
 difference between resuming on a plane and resuming after you land.
 
+A mount also outlives the credentials it started with. By default
+(`--credentials auto`) the client reads them from a refreshing loopback endpoint
+rather than holding a copy, and scopes them to this volume where the store
+allows it, so a long mount does not die when a token expires. `--credentials
+ambient` takes the environment as-is and **cannot refresh** - use it only for a
+short mount, or where the ambient credentials do not expire.
+
 Three commands manage that local state:
 
 ```bash
@@ -124,9 +140,12 @@ flyte warmup volume ~/data models/    # just this subtree
 flyte warmup volume ~/data --check    # report what is already cached
 ```
 
-On macOS the client's own parallel prefetch is unavailable (it drives the mount
-through a control file the NFS server does not serve), so warming reads the
-files instead. It is slower and the end state is the same.
+On macOS the client's own parallel prefetch is unavailable: it drives the mount
+through a control file the NFS server does not serve. Warming falls back to
+reading the files, which is slower and ends in the same place, so
+`flyte warmup volume ~/data` works there. **`--check` has no such fallback** -
+there is nothing to ask but the control file - so it is refused on macOS, and on
+any mount you started with `--transport nfs`.
 
 > [!NOTE]
 > `flyte create volume --mount` is **not** resumable, and says so when you use
@@ -150,7 +169,7 @@ flyte explore volume <run-name> <action-name> --op-name my_volume
 
 It follows the version lineage, so you can step back through earlier commits and
 jump to the action that produced any version. To open an index you already have
-on disk, pass `--from-file <path> --store-type sqlite`.
+on disk, pass `--from-file <path>`.
 
 ## Next
 
