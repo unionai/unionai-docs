@@ -16,11 +16,11 @@ AWS SQS or Google Cloud Pub/Sub, then shows the approach that uses Union's Artif
 
 The goal of this tutorial is to show you how to go from an architecture that uses a cloud message queue:
 
-![](../../../_static/images/tutorials/event-driven-executions/event-driven-cloud.png)
+![Cloud message queue feeding a Union App subscriber that launches task executions](../../../_static/images/tutorials/event-driven-executions/event-driven-cloud.png)
 
 To one that leverages Union's automation and data lineage capabilities:
 
-![](../../../_static/images/tutorials/event-driven-executions/event-driven-union.png)
+![Union Artifact triggers launch downstream task executions when new artifact versions are published](../../../_static/images/tutorials/event-driven-executions/event-driven-union.png)
 
 **Why would you like to do that?** 
 
