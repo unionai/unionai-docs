@@ -12,14 +12,30 @@ mermaid: true
 
 An event happens outside Flyte — a file lands in a bucket, a partner drops a batch, an
 upstream service finishes a job — and a task should run. This tutorial builds that with
-AWS SQS or Google Cloud Pub/Sub, then shows the version that needs no queue at
-all, and ends with how to choose.
+AWS SQS or Google Cloud Pub/Sub, then shows the approach that uses Union's Artifact triggers without cloud message queues.
 
-Every approach launches the same task:
+The goal of this tutorial is to show you how to go from an architecture that uses a cloud message queue:
+
+![](../../../_static/images/tutorials/event-driven-executions/event-driven-cloud.png)
+
+To one that leverages Union's automation and data lineage capabilities:
+
+![](../../../_static/images/tutorials/event-driven-executions/event-driven-union.png)
+
+**Why would you like to do that?** 
+
+We believe using Union's Artifact triggers can help you achieve the automation your ML pipelines need with less components to maintain and better consistency guarantees. This page will guide you to demonstrate this.
+
+## Implementation
+
+In this tutorial we go with a Union App acting as an always-on subscriber that pulls messages from the queue and pass it to the Union Control Plane to create executions.
+You could implement that piece also with AWS Lambda or other serverless products.
+
+On every cloud we launch the same task:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/pipeline.py" fragment=task lang=python >}}
 
-Deploy it twice — once under a version that names this build, and once under a label the
+Deploy the task twice — once under a version that names this build, and once under a label the
 caller pins:
 
 ```bash
@@ -27,13 +43,8 @@ flyte deploy --version 2026-09-23-a3f9c21 pipeline.py env   # names this build
 flyte deploy --version prod               pipeline.py env   # what production runs
 ```
 
-Neither version is immutable. Deploying again under an existing version overwrites it.
 
-The caller then names `prod` and never changes. Releases and rollbacks happen on the
-Flyte side. Avoid resolving "latest" in the caller: every deploy would become an
-immediate production change with no way to pin or roll back.
-
-## Reading from SQS
+## Reading from AWS SQS
 
 ```mermaid
 flowchart LR
@@ -59,7 +70,7 @@ flowchart LR
     app -->|"3 - delete message"| q
 ```
 
-Steps 2 and 3 are in that order on purpose: the message is deleted once the run exists,
+Steps 2 and 3 in the diagram are in that order on purpose: the message is deleted once the run exists,
 not once it finishes.
 
 A subscriber reads the queue and launches a run per message. It runs as a Union app, so
@@ -107,7 +118,7 @@ A newly configured notification also sends an `s3:TestEvent` with no `Records` a
 Treat it as nothing to do rather than as an error, or it will be retried until it reaches
 the dead-letter queue.
 
-### Queue configuration
+### SQS Queue configuration
 
 | Setting | Recommendation |
 |---|---|
@@ -224,7 +235,7 @@ colliding with the message-id-derived run name that exists to prevent duplicates
 It is a second system holding state about the first, and it has to
 stay correct as both change.
 
-## The version without a queue
+## Usion Union's Artifact triggers
 
 ```mermaid
 flowchart LR
@@ -262,7 +273,7 @@ there is no state to keep outside the platform and no reconciliation to build. A
 payload to decode and no mapping to maintain — the mapping in the queue versions has no
 type checking against the task signature and breaks silently when either side changes.
 
-## Choosing between them
+## Choosing an approach
 
 | | Message queue | Artifact trigger |
 |---|---|---|
@@ -279,9 +290,8 @@ The deciding question is where the event comes from, regardless of the cloud pro
 If an upstream Flyte task can publish the artifact — including one that ingests from a
 bucket on a schedule — the artifact trigger is simpler than the queue in every dimension.
 
-If the producer is a partner, another team, or a system you cannot change, nothing
-publishes an artifact and nothing fires. The event has to be observed, and the queue is the
-right tool. Registering an externally created object as an artifact does not bridge the
+If the producer is a partner, another team, or a system you cannot change, the message queue is the
+right tool. Registering an externally created object as a Union Artifact is possible but does not bridge the
 gap: you would still need to notice the object before you could register it, which is the
 original problem.
 
