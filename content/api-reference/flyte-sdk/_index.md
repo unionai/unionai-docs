@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -192,6 +192,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.io.extend.DataFrameTransformerEngine`](flyte.io.extend/dataframetransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](flyte.models/actionid) | A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.ActionPhase`](flyte.models/actionphase) | Represents the execution phase of a Flyte action (run). |
+| [`flyte.models.CallCounter`](flyte.models/callcounter) | Numbers identical sub-action calls made from one action scope: `foo(); foo(); foo()` → 1, 2, 3. |
 | [`flyte.models.CheckpointPaths`](flyte.models/checkpointpaths) | Paths the platform provides for this task's checkpoint output and optional previous-attempt input. |
 | [`flyte.models.CodeBundle`](flyte.models/codebundle) | A class representing a code bundle for a task. |
 | [`flyte.models.GroupData`](flyte.models/groupdata) |  |
