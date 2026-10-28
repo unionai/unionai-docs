@@ -40,6 +40,22 @@ def train(data: list) -> dict:
     return {"accuracy": 0.95}
 ```
 
+### `prefix`
+
+The `prefix` parameter on `@env.task` prefixes the function name, so the fully-qualified task name becomes `<env_name>.<prefix>-<function_name>` (and the display name `<prefix>-<function_name>`).
+Use it when functions with the same name in different modules share one `TaskEnvironment`.
+A prefix may contain letters, digits, underscores and `-`, but not `.`; changing it renames the task, so existing cache entries no longer apply.
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task(prefix="train")
+def validate_inputs(data: list) -> list:  # my_env.train-validate_inputs
+    return data
+```
+
 ### `description`
 
 The `description` parameter on `TaskEnvironment` provides a description of the task environment (max 255 characters).
