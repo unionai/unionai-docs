@@ -2,7 +2,7 @@
 title: OMLXAppEnvironment
 description: "App environment backed by [oMLX](https://github.com/jundot/omlx) for serving LLMs on Apple Silicon Macs."
 icon: braces
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -59,7 +59,7 @@ class OMLXAppEnvironment(
     cluster_pool: str = 'default',
     cluster: str | None = None,
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.12.0', dockerfile=None, registry=None, name='omlx-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-omlx',)),), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.12.1', dockerfile=None, registry=None, name='omlx-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-omlx',)),), _tag=None, _image_registry_secret=None),
     type: str = 'oMLX',
     port: int | Port = 8000,
     extra_args: str | list[str] = '',

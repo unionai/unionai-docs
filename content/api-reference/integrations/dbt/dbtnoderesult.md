@@ -2,7 +2,7 @@
 title: DbtNodeResult
 description: "Small serializable summary of one dbt node result."
 icon: braces
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---

@@ -1,7 +1,7 @@
 ---
 title: flyte.models
 icon: box-seam
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,7 @@ layout: py_api
 |-|-|
 | [`ActionID`](../flyte.models/actionid) | A class representing the ID of an Action, nested within a Run. |
 | [`ActionPhase`](../flyte.models/actionphase) | Represents the execution phase of a Flyte action (run). |
+| [`CallCounter`](../flyte.models/callcounter) | Numbers identical sub-action calls made from one action scope: `foo(); foo(); foo()` → 1, 2, 3. |
 | [`CheckpointPaths`](../flyte.models/checkpointpaths) | Paths the platform provides for this task's checkpoint output and optional previous-attempt input. |
 | [`CodeBundle`](../flyte.models/codebundle) | A class representing a code bundle for a task. |
 | [`GroupData`](../flyte.models/groupdata) |  |
