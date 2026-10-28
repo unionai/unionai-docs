@@ -28,7 +28,7 @@ We believe using Union's Artifact triggers can help you achieve the automation y
 
 ## Implementation
 
-In this tutorial we go with a Union App acting as an always-on subscriber that pulls messages from the queue and pass it to the Union Control Plane to create executions.
+In this tutorial we go with a Union App acting as an always-on subscriber that pulls messages from the queue and passes them to the Union Control Plane to create executions.
 You could implement that piece also with AWS Lambda or other serverless products.
 
 On every cloud we launch the same task:
