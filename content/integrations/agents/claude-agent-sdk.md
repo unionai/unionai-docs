@@ -61,7 +61,7 @@ async def city_agent(question: str) -> str:
 
 **The conversation** survives a crash through session resume. With `durable=True`, `run_agent` wires the SDK's own session mirror onto a `flyte.Checkpoint`. A deterministic `session_id`, derived from the task's action so it is stable across retries, is pinned on the first attempt. On a retry, the prior attempt's transcript is restored from the checkpoint and the run resumes.
 
-The reason for delegating to the SDK here is structural. A model turn cannot be a `flyte.trace` leaf when the loop that produces it runs in a subprocess. Session resume is the coarser-grained equivalent: whole-session rather than per-turn. It no-ops cleanly when there is no checkpoint context, such as a local run.
+The reason for delegating to the SDK here is structural. A model turn cannot be a `flyte.trace` leaf when the loop that produces it runs in a subprocess. Session resume is the coarser-grained equivalent: whole-session rather than per-turn. A local task run has a checkpoint context too, so session resume is wired there as well. It no-ops only when called outside any task context.
 
 ## Observability
 
