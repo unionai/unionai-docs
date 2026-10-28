@@ -2,7 +2,7 @@
 title: Fanout
 description: Run many tasks in parallel, and what changes at large scale.
 icon: distribute-horizontal
-weight: 17
+weight: 22
 variants: +flyte +union
 ---
 

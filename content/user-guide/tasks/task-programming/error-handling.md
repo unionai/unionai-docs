@@ -2,7 +2,7 @@
 title: Error handling
 description: Catch and recover from task failures, including out-of-memory errors, timeouts, missing GPU capacity, and GPU hardware faults.
 icon: exclamation-triangle
-weight: 13
+weight: 18
 variants: +flyte +union
 ---
 

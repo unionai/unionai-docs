@@ -2,7 +2,7 @@
 title: Custom context
 description: Pass configuration through a task hierarchy without threading it through every signature.
 icon: share
-weight: 6
+weight: 11
 variants: +flyte +union
 ---
 

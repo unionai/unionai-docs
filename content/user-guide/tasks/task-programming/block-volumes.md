@@ -1,7 +1,7 @@
 ---
 title: Block volumes
 icon: hdd
-weight: 3
+weight: 7
 variants: -flyte +union
 description: A Volume whose content is one ext4 disk image, for small-file, single-writer workloads like build and package caches that need near-local-disk speed.
 ---

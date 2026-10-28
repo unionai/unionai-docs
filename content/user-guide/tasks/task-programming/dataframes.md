@@ -2,7 +2,7 @@
 title: DataFrames
 description: Pass DataFrames between tasks by reference instead of materializing them.
 icon: table
-weight: 4
+weight: 9
 variants: +flyte +union
 ---
 

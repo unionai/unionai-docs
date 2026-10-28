@@ -2,7 +2,7 @@
 title: Controlling parallel execution
 description: Cap how many fanned-out tasks run at once, for rate limits and quotas.
 icon: speedometer
-weight: 18
+weight: 23
 variants: +flyte +union
 ---
 

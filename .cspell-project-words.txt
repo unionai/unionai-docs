@@ -269,3 +269,13 @@ virtualenvs
 # Keyed-hash message authentication code (RFC 2104); how four of the five
 # providers sign their deliveries.
 HMAC
+
+# --- Surfaced by the Volumes split (these pages were pulled into the
+# incremental spell check by a frontmatter-only weight change) ---
+# anyio: the structured-concurrency library `anyio`, used as an alternative to
+# raw asyncio (content/user-guide/tasks/task-programming/structured-concurrency-anyio.md).
+anyio
+# Unsloth: third-party LLM fine-tuning library named in the checkpoint example.
+Unsloth
+# Xids: NVIDIA's GPU error codes, reported as "Xid" events by the driver.
+Xids
