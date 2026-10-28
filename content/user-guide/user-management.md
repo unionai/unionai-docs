@@ -23,8 +23,8 @@ Union ships with three built-in policies:
 | Policy | Actions | Summary |
 |---|---|---|
 | **Admin** | All actions | Full control including user management and billing |
-| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, plus the read and write actions for secrets, apps, triggers, workspaces, artifacts, settings and API keys, and the read actions for clusters, usage and users | Register and run workflows |
-| **Viewer** | `view_flyte_executions`, `view_flyte_inventory`, `view_apps`, `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage`, `view_identities` | Read-only access |
+| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, `edit_execution_related_attributes`, `edit_cluster_related_attributes`, `view_llm_gateway`, `manage_llm_gateway_keys`, `view_secrets`, `manage_secrets`, `view_apps`, `manage_apps`, `view_triggers`, `manage_triggers`, `view_workspaces`, `manage_workspaces`, `view_artifacts`, `manage_artifacts`, `view_settings`, `edit_settings`, `manage_api_keys`, `view_clusters`, `view_usage`, `view_identities` | Register and run workflows |
+| **Viewer** | `view_flyte_executions`, `view_flyte_inventory`, `view_llm_gateway`, `view_apps`, `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage`, `view_identities` | Read-only access |
 
 Built-in policies are managed by Union. Custom roles only hold the actions you give them.
 
@@ -46,8 +46,9 @@ This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to th
 
 > [!WARNING]
 > Use `flyteplugins-union` 0.20.1 or later.
-> Older versions don't support every action in [Available actions](#available-actions):
-> they fail to read a role that holds one, and `Role.update` / `flyte update role` silently remove them.
+> Older versions don't support every action in [Available actions](#available-actions).
+> They fail to read a role that holds one (`flyte get role`, `flyte update role`, `Role.get`),
+> and `Role.update` silently removes them.
 
 ### Walkthrough: restrict a team to run workflows in production only
 
@@ -222,7 +223,7 @@ Navigate to **Settings > User Management** to:
 | `view_apps` | View apps, replicas, app logs, and app metrics |
 | `manage_apps` | Deploy, update, and delete apps |
 | `view_triggers` | View triggers and their revision history |
-| `manage_triggers` | Activate and deactivate triggers |
+| `manage_triggers` | Activate and deactivate triggers (creating and deleting triggers requires `register_flyte_inventory`) |
 | `view_workspaces` | View workspace definitions and instances |
 | `manage_workspaces` | Create and update workspace definitions; start and stop workspace instances |
 | `view_artifacts` | View artifacts, cards, and artifact usage |
@@ -233,6 +234,17 @@ Navigate to **Settings > User Management** to:
 | `view_clusters` | View clusters, cluster pools, node groups, and cluster usage |
 | `view_usage` | View usage, metrics, quotas, and credits |
 | `view_identities` | View users and members |
+| `administer_account` | Manage billing and account-wide settings |
+| `manage_cluster` | Manage clusters |
+| `manage_queue` | Manage cluster queues |
+| `view_cluster_config` | View the component configuration of a cluster |
+| `edit_execution_related_attributes` | Edit execution-related attributes (task resources, workflow execution config, external resources) |
+| `edit_cluster_related_attributes` | Edit cluster-related attributes (cluster resources, cluster assignment) |
+| `edit_unused_attributes` | Edit execution queue, execution cluster label, quality of service, and plugin override attributes |
+| `support_system_logs` | View system logs |
+| `view_llm_gateway` | View the LLM gateway, its providers, virtual keys, and usage |
+| `manage_llm_gateway` | Deploy and delete the LLM gateway and manage its upstream providers |
+| `manage_llm_gateway_keys` | Issue and revoke LLM gateway virtual keys |
 
 ## CLI command reference
 
