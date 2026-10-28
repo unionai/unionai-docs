@@ -14,7 +14,7 @@ The system has four core concepts:
 * **Role**: A named set of actions (e.g. view inventory, create executions).
 * **Policy**: Binds one or more roles to specific projects, domains, or the entire organization.
 * **User / Application**: An actor assigned to policies. Users are identified by email; applications by ID.
-* **Action**: An operation like `view_flyte_inventory` or `create_flyte_executions`.
+* **Action**: An operation like `view_flyte_inventory`, `create_flyte_executions` or `manage_secrets`. See [Available actions](#available-actions).
 
 ## Built-in policies
 
@@ -23,8 +23,11 @@ Union ships with three built-in policies:
 | Policy | Actions | Summary |
 |---|---|---|
 | **Admin** | All actions | Full control including user management and billing |
-| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory` | Register and run workflows |
-| **Viewer** | `view_flyte_executions`, `view_flyte_inventory` | Read-only access |
+| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, and every `view_*` and `manage_*` action for secrets, apps, triggers, workspaces, artifacts, settings and API keys | Register and run workflows |
+| **Viewer** | `view_flyte_executions`, `view_flyte_inventory`, `view_apps`, `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage`, `view_identities` | Read-only access |
+
+Built-in policies are kept up to date by Union, so they pick up new actions automatically.
+Custom roles only hold the actions you give them.
 
 Users can hold multiple policies: permissions are the union of all assigned policies.
 
@@ -37,10 +40,15 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 Install the Union CLI plugin:
 
 ```bash
-pip install flyteplugins-union
+pip install 'flyteplugins-union>=0.20.1'
 ```
 
 This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
+
+> [!WARNING]
+> Use `flyteplugins-union` 0.20.1 or later.
+> Older versions don't recognize the granular actions (`view_secrets`, `manage_apps` and the rest):
+> they fail to read a role that holds one, and `Role.update` / `flyte update role` silently remove them.
 
 ### Walkthrough: restrict a team to run workflows in production only
 
@@ -205,10 +213,56 @@ Navigate to **Settings > User Management** to:
 |---|---|
 | `administer_project` | Archive/update projects, manage customizable resources |
 | `manage_permissions` | Manage users, applications, and policy assignments |
-| `create_flyte_executions` | Launch executions |
-| `register_flyte_inventory` | Register workflows, tasks, and launch plans |
-| `view_flyte_executions` | View execution history |
+| `view_permissions` | View roles, policies, and assignments |
+| `create_flyte_executions` | Launch runs and upload inputs |
+| `register_flyte_inventory` | Register and deploy workflows, tasks, and launch plans |
+| `view_flyte_executions` | View runs and actions |
 | `view_flyte_inventory` | View registered workflows, tasks, and launch plans |
+| `view_secrets` | View secrets (get, list) |
+| `manage_secrets` | Create, update, and delete secrets |
+| `view_apps` | View apps, replicas, app logs, and app metrics |
+| `manage_apps` | Deploy, update, and delete apps |
+| `view_triggers` | View triggers and their revision history |
+| `manage_triggers` | Activate and deactivate triggers |
+| `view_workspaces` | View workspace definitions and instances |
+| `manage_workspaces` | Create and update workspace definitions; start and stop workspace instances |
+| `view_artifacts` | View artifacts, cards, and artifact usage |
+| `manage_artifacts` | Create, declare, tag, and delete artifacts |
+| `view_settings` | View settings |
+| `edit_settings` | Create and update settings |
+| `manage_api_keys` | Create and delete API keys |
+| `view_clusters` | View clusters, cluster pools, node groups, and cluster usage |
+| `view_usage` | View usage, metrics, quotas, and credits |
+| `view_identities` | View users and members |
+
+### Granular actions for custom roles (December 1, 2026)
+
+The actions from `view_secrets` down in the table above split operations out of the broader
+`*_flyte_*` actions, so each area has its own read and write action.
+Built-in policies already hold them.
+
+Starting **December 1, 2026**, Union checks the granular actions instead of the broader ones.
+A custom role that only holds the broader actions loses the matching operations.
+To keep a custom role working, add the granular actions that match the broader ones it already holds:
+
+| If the role has | Add |
+|---|---|
+| `view_flyte_executions` | `view_apps`, `view_workspaces`, `view_clusters`, `view_usage`, `view_identities` |
+| `view_flyte_inventory` | `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage` |
+| `create_flyte_executions` | `view_secrets`, `manage_secrets`, `manage_apps`, `manage_workspaces`, `manage_artifacts` |
+| `register_flyte_inventory` | `manage_triggers`, `edit_settings`, `manage_workspaces`, `manage_artifacts` |
+| `manage_permissions` | `view_permissions` |
+
+Adding them before December 1 is safe: they have no effect until then.
+
+Three operations also move to a stronger action on purpose.
+Add the action only to roles that really need the operation:
+
+| Operation | Previously allowed by | Now requires |
+|---|---|---|
+| Create and delete API keys | `view_flyte_executions` | `manage_api_keys` |
+| Deploy tasks (`flyte deploy`) | `create_flyte_executions` | `register_flyte_inventory` |
+| Upload through a presigned URL | `view_flyte_executions` | `create_flyte_executions` |
 
 ## CLI command reference
 
