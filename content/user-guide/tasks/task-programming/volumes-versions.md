@@ -53,7 +53,7 @@ vol = Volume.new(
 
 Artifact identity belongs to the *lineage*, not to any one version, so you set
 it when the volume is created or when you
-[branch it](#branching-under-a-different-artifact) — never per commit. That is
+[branch it](#branching-under-a-different-artifact) - never per commit. That is
 why `commit()` and `finalize()` take no artifact name: renaming mid-stream would
 split one version graph into two.
 
@@ -81,7 +81,7 @@ return await rw.finalize(message="training complete")   # published too, if the 
 `publish_artifact=True` works even on a volume that declared no identity; the
 artifact name then defaults to the volume's name.
 
-Commits you don't publish are still durable versions — they are simply not in
+Commits you don't publish are still durable versions - they are simply not in
 the registry, much as a local commit is real but has not been pushed. The registry holds
 the versions you chose to publish.
 
@@ -168,6 +168,6 @@ committed yet: there's no published version to point at.
 
 ## Next
 
-- [Performance, caching and tuning](./volumes-performance) — commit cost is
+- [Performance, caching and tuning](./volumes-performance) - commit cost is
   part of the write path; this is where the numbers are.
-- [Use a volume in a task](./volumes-in-tasks) — where commits come from.
+- [Use a volume in a task](./volumes-in-tasks) - where commits come from.

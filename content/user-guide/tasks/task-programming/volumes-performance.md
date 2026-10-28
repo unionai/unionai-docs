@@ -18,7 +18,7 @@ single argument.
 Reads go through a local **chunk cache**. Where that cache lives is the single
 biggest lever on read performance, and by default it is in the worst place:
 unset, it falls back to `$HOME`, which on every managed Kubernetes is the
-container's overlayfs — the slowest writable thing on the node, with no size
+container's overlayfs - the slowest writable thing on the node, with no size
 limit the client knows about.
 
 **Give it a real disk.** `cache_size` attaches a sized `emptyDir` and tells the
@@ -29,7 +29,7 @@ pod_template = allow_volumes(cache_size="50Gi")
 ```
 
 The budget matters as much as the disk. Without it the client keeps its own
-100 GiB default, overruns the `emptyDir`'s limit, and kubelet evicts the pod —
+100 GiB default, overruns the `emptyDir`'s limit, and kubelet evicts the pod -
 a worse failure than a cache that is merely smaller than you hoped. The
 published budget is about 90% of the size you give, leaving headroom for the
 client's own bookkeeping and the imprecision of its accounting. It is per
@@ -46,13 +46,13 @@ once per *node* rather than once per *pod*:
 pod_template = allow_volumes(cache_size="50Gi", shared_node_cache=True)
 ```
 
-This is worth reaching for when many pods on a node read the same volume — a
+This is worth reaching for when many pods on a node read the same volume - a
 fan-out over one dataset, or several tasks sharing a model. It is not a
 general speed-up: pods reading unrelated volumes share nothing but the disk.
 
 The task pod gains no privilege from it. The shared directory arrives as an
 inline CSI volume from the same mount broker that serves the volume channel,
-and the broker bind-mounts a per-namespace subtree of the node's cache — so
+and the broker bind-mounts a per-namespace subtree of the node's cache - so
 other namespaces are not visible, and the pod still has no `hostPath` and no
 capabilities. It needs a broker configured with a node cache directory, which
 the dataplane chart enables by default (`uvolMountBroker.nodeCache`); a pod
@@ -80,7 +80,7 @@ An explicit `mount(cache_dir=...)` wins over all of it.
 > [!NOTE]
 > Every client sharing the directory runs its own eviction against its own
 > budget, so they can evict each other. Expect hit rates to vary with whatever
-> else is mounted on the node — it is a shared cache, not a reservation.
+> else is mounted on the node - it is a shared cache, not a reservation.
 
 ## Tuning the mount
 
@@ -198,13 +198,13 @@ fails later.
 Read the health line first, because it separates the two situations that look
 identical from inside the task:
 
-- **healthy** — requests are being served, and the number waiting is shown. Slow
+- **healthy** - requests are being served, and the number waiting is shown. Slow
   is then a tuning question: see [Tuning the mount](#tuning-the-mount) and
   [Performance and trade-offs](#performance-and-trade-offs).
-- **wedged** — requests have sat unmoved long enough that nothing inside the pod
+- **wedged** - requests have sat unmoved long enough that nothing inside the pod
   will recover them. The line names the channel, how many requests are waiting
   and for how long. Abort the channel or replace the pod; waiting will not help.
-- **unknown** — no health answer is available, which is what you see when the
+- **unknown** - no health answer is available, which is what you see when the
   mount does not go through the node's mount broker.
 
 > [!NOTE]
@@ -213,6 +213,6 @@ identical from inside the task:
 
 ## Next
 
-- [Block volumes](./block-volumes) — if per-file metadata cost is what is
+- [Block volumes](./block-volumes) - if per-file metadata cost is what is
   hurting, this is the bigger lever than any option here.
-- [Use a volume in a task](./volumes-in-tasks) — where `mount()` is called.
+- [Use a volume in a task](./volumes-in-tasks) - where `mount()` is called.

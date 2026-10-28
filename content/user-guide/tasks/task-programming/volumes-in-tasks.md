@@ -3,7 +3,7 @@ title: Use a volume in a task
 icon: code
 weight: 4
 variants: -flyte +union
-description: The create, mount, write and return lifecycle of a Volume inside a task — forking to update a version, writing in parallel, and checkpointing mid-task.
+description: The create, mount, write and return lifecycle of a Volume inside a task - forking to update a version, writing in parallel, and checkpointing mid-task.
 ---
 
 # Use a volume in a task
@@ -161,9 +161,9 @@ That is the whole image contract: no FUSE userspace tools are needed.
 
 ## Next
 
-- [Versions, artifacts and lineage](./volumes-versions) — publish each sealed
+- [Versions, artifacts and lineage](./volumes-versions) - publish each sealed
   version, and reach a specific version from an unrelated run.
-- [Performance, caching and tuning](./volumes-performance) — the chunk cache,
+- [Performance, caching and tuning](./volumes-performance) - the chunk cache,
   mount options, and the measured trade-offs.
-- [Work with a volume on your machine](./volumes-local) — the same volume from
+- [Work with a volume on your machine](./volumes-local) - the same volume from
   a laptop.

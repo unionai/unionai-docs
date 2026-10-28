@@ -130,7 +130,7 @@ The rest of this topic is split by what you are trying to do:
 
 - [**Work with a volume on your machine**](./volumes-local): mount a volume on
   a laptop, a dev box or a CI runner and read and write it like any other
-  directory — including offline. The quickest way to get your hands on one.
+  directory - including offline. The quickest way to get your hands on one.
 - [**Use a volume in a task**](./volumes-in-tasks): the create → mount → write →
   return lifecycle, forking to update a version, writing in parallel,
   checkpointing mid-task, and what a custom image needs.
@@ -148,21 +148,21 @@ The rest of this topic is split by what you are trying to do:
 - API: `Volume`, `RWVolume`, `ROVolume`, and
   `flyteplugins.union.io.allow_volumes`.
 - Artifact publication: `Volume.new(artifact=...)`, `fork(artifact=...)`, and
-  `publish_artifact=` / `artifact_version=` on `commit()` and `finalize()` —
+  `publish_artifact=` / `artifact_version=` on `commit()` and `finalize()` -
   see [Tracking versions as artifacts](./volumes-versions#tracking-versions-as-artifacts).
-- Reporting: `vol.report = True` or `$UNION_VOLUME_REPORT` — see
+- Reporting: `vol.report = True` or `$UNION_VOLUME_REPORT` - see
   [Debugging a mount](./volumes-performance#debugging-a-mount).
 - Caching: `allow_volumes(cache_size=...)` and
-  `mount(cache_dir=..., cache_size_mb=...)` — see
+  `mount(cache_dir=..., cache_size_mb=...)` - see
   [The chunk cache](./volumes-performance#the-chunk-cache);
-  `allow_volumes(shared_node_cache=True)` and `mount(shared_node_cache=...)` —
+  `allow_volumes(shared_node_cache=True)` and `mount(shared_node_cache=...)` -
   see [Shared node cache](./volumes-performance#shared-node-cache).
 - Client memory: `$UNION_VOLUME_CLIENT_MEMORY_LIMIT`. See
   [Tuning the mount](./volumes-performance#tuning-the-mount).
 - CLI: `flyte create volume`, `flyte mount volume`, `flyte warmup volume`,
-  `flyte status volume`, `flyte unmount volume`, `flyte forget volume` — see
+  `flyte status volume`, `flyte unmount volume`, `flyte forget volume` - see
   [Work with a volume on your machine](./volumes-local);
-  `flyte explore volume` — see
+  `flyte explore volume` - see
   [Inspecting a volume](./volumes-local#inspecting-a-volume).
 - Related: [Block volumes](./block-volumes) for small-file, single-writer
   workloads; [Files and directories](./files-and-directories) for passing
