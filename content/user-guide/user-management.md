@@ -20,7 +20,7 @@ The system has four core concepts:
 
 Union ships with three built-in policies:
 
-| Policy | Actions | Summary |
+| Policy | Includes | Summary |
 |---|---|---|
 | **Admin** | All actions | Full control including user management and billing |
 | **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory` | Register and run workflows |
@@ -37,7 +37,7 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 Install the Union CLI plugin:
 
 ```bash
-pip install flyteplugins-union
+pip install -U "flyteplugins-union>=0.20.1"
 ```
 
 This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
@@ -209,6 +209,31 @@ Navigate to **Settings > User Management** to:
 | `register_flyte_inventory` | Register workflows, tasks, and launch plans |
 | `view_flyte_executions` | View execution history |
 | `view_flyte_inventory` | View registered workflows, tasks, and launch plans |
+
+### Area-scoped actions
+
+Each of these actions covers reads or writes in one area.
+Setting them with `Role.create`, `Role.update`, `flyte create role`, or `flyte update role` requires `flyteplugins-union` 0.20.1 or later.
+Earlier versions reject these names, and they can't read the actions of a role that holds one: `Role.actions` raises `ValueError: Enum Action has no name defined for value ...`, and `flyte update role` fails with the same error for that role.
+
+| Action | Description |
+|---|---|
+| `view_secrets` | Read secrets (get, list) |
+| `manage_secrets` | Create, update, and delete secrets |
+| `view_apps` | Read apps (get, list, watch, logs, replicas) |
+| `manage_apps` | Deploy, update, and delete apps |
+| `view_triggers` | Read triggers (get, list, revision history) |
+| `manage_triggers` | Activate and deactivate existing triggers |
+| `view_workspaces` | Read workspace definitions and instances |
+| `manage_workspaces` | Create and update workspace definitions; start and stop workspace instances |
+| `view_artifacts` | Read artifacts (get, search, list, cards, usage) |
+| `manage_artifacts` | Create, declare, tag, and delete artifacts; register producers and consumers |
+| `view_settings` | Read settings |
+| `edit_settings` | Create and update settings |
+| `view_clusters` | Read clusters, cluster pools, and node groups |
+| `view_permissions` | Read roles, policies, and their assignments |
+| `view_usage` | Read usage, metrics, quotas, and credits |
+| `manage_api_keys` | Create and delete API keys |
 
 ## CLI command reference
 
