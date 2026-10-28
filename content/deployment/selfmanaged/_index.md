@@ -22,7 +22,7 @@ Before you start, [subscribe and sign up](../sign-up/_index). Then:
    - [Azure](./azure/_index)
 2. [Connect your cluster](./connect-a-cluster). You enter your resources' details in the Union.ai UI and install the agent it gives you, and the agent installs the data plane. You skip the Helm install below.
 
-Each provider's page has a **Manual setup (legacy)** page under it: the earlier instructions, which install the data plane yourself with Helm. They remain for deployments that were set up that way. For a new deployment on AWS, GCP, or Azure, use the steps above.
+Each provider's page has a **Legacy steps** page under it: the earlier instructions, which install the data plane yourself with Helm. They remain for deployments that were set up that way. For a new deployment on AWS, GCP, or Azure, use the steps above.
 
 ## Other providers: set up with Helm
 
