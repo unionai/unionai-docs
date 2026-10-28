@@ -10,16 +10,18 @@ variants: -flyte +union
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte get node-groups` and `flyte update node-groups` commands are
-> provided by `flyteplugins-union` 0.19.0 or later. Install it with
+> provided by `flyteplugins-union` 0.19.0 or later. Reading and writing the
+> `limits` and `max_pods` fields needs `flyteplugins-union` 0.20.0 or later and
+> a control plane that supports them. Install it with
 > `pip install flyteplugins-union`.
 
 A cluster's **node groups** are the node shapes it can schedule onto: for each
 group, the instance types, the node count range, the allocatable CPU and memory
-of one node, accelerators, architecture, capacity types, weight, labels, and
-taints. Use `flyte get node-groups` to see what a [cluster](./clusters)
-declares. On a cluster you manage, and on a control plane that accepts node
-group writes, use `flyte update node-groups` to change it (see
-[Who can write node groups](#who-can-write-node-groups)).
+of one node, the pod slots per node, accelerators, architecture, capacity
+types, weight, limits, labels, and taints. Use `flyte get node-groups` to see
+what a [cluster](./clusters) declares. On a cluster you manage, and on a
+control plane that accepts node group writes, use `flyte update node-groups`
+to change it (see [Who can write node groups](#who-can-write-node-groups)).
 
 ## Inspect node groups
 
@@ -36,8 +38,11 @@ flyte get node-groups my-cluster --export > node-groups.yaml
 
 The output shows the node groups as stored, including every label and taint.
 The table has one row per group, with the columns **Name**, **Instance types**,
-**Nodes** (as `min-max`), **Cpu**, **Memory**, **Accelerators**, **Arch**,
-**Capacity**, **Weight**, **Spot**, **Labels**, and **Taints**.
+**Nodes**, **Limits**, **Cpu**, **Memory**, **Accelerators**, **Arch**,
+**Capacity**, **Weight**, **Spot**, **Labels**, and **Taints**. **Nodes** shows
+`min-max`, or, with `flyteplugins-union` 0.20.0 or later, `min+ (no node limit)`
+when `max_nodes` is `0`. **Limits** (0.20.0 or later) shows the group's limits,
+for example `cpu=20000, nvidia.com/gpu=2`.
 
 The exported YAML lists every editable field of each group, using the field
 names of the `NodeGroup` message:
@@ -57,11 +62,26 @@ node_groups:
   accelerators: []
   architecture: NODE_ARCHITECTURE_UNSPECIFIED
   capacity_types: []
+  max_pods: 0
+  limits: {}
 ```
 
 `weight` is optional and appears only when a group has one (1 to 100, the
 Karpenter NodePool weight). `capacity_types` takes `CAPACITY_TYPE_ON_DEMAND`,
 `CAPACITY_TYPE_SPOT`, and `CAPACITY_TYPE_RESERVED`.
+
+`max_pods` and `limits` appear with `flyteplugins-union` 0.20.0 or later. On a
+control plane that supports them:
+
+- `max_nodes: 0` means the group has no node-count bound. Only `limits`, if
+  set, caps it.
+- `limits` is the Karpenter NodePool `spec.limits`: totals the group may not
+  exceed across all its nodes, as a Kubernetes resource name and a quoted
+  quantity, for example `cpu: '20000'`. The command rejects a bare number
+  before it writes anything, and the control plane rejects a value that isn't a
+  non-negative quantity.
+- `max_pods` is the number of pod slots on one node of the group. `0` means it
+  isn't recorded.
 
 ## Update node groups
 
