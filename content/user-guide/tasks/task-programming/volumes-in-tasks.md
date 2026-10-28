@@ -3,7 +3,7 @@ title: Use a volume in a task
 icon: code
 weight: 4
 variants: -flyte +union
-description: The create, mount, write and return lifecycle of a Volume inside a task: forking to update a version, writing in parallel, and checkpointing mid-task.
+description: The create, mount, write and return lifecycle of a Volume inside a task — forking to update a version, writing in parallel, and checkpointing mid-task.
 ---
 
 # Use a volume in a task

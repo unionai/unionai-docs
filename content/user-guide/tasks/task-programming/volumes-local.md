@@ -3,7 +3,7 @@ title: Work with a volume on your machine
 icon: laptop
 weight: 3
 variants: -flyte +union
-description: Mount a Volume on a laptop, a dev box or a CI runner with the flyte CLI: a durable working copy you can resume, and warm for working offline.
+description: Mount a Volume on a laptop, a dev box or a CI runner with the flyte CLI — a durable working copy you can resume, and warm for working offline.
 ---
 
 # Work with a volume on your machine
