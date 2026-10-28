@@ -2,7 +2,7 @@
 title: RWVolume
 description: "Mutable working copy — PRD §Core Concepts."
 icon: braces
-version: 0.17.0
+version: 0.20.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -38,11 +38,13 @@ class RWVolume(
     storage: typing.Literal['s3', 'gs', 'wasb'] = 's3',
     region: typing.Optional[str] = None,
     endpoint: typing.Optional[str] = None,
+    chunk_prefix: typing.Optional[str] = None,
     index: typing.Optional[flyte.io._file.File] = None,
     metadata_store_type: typing.Optional[str] = None,
     block_size: typing.Optional[str] = None,
     block_journal_blocks: typing.Optional[typing.List[int]] = None,
     metadata_prefix: typing.Optional[str] = None,
+    chunk_branch: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
     used_bytes: typing.Optional[int] = None,
     inode_count: typing.Optional[int] = None,
@@ -72,11 +74,13 @@ validated to form a valid model.
 | `storage` | `typing.Literal['s3', 'gs', 'wasb']` | |
 | `region` | `typing.Optional[str]` | |
 | `endpoint` | `typing.Optional[str]` | |
+| `chunk_prefix` | `typing.Optional[str]` | |
 | `index` | `typing.Optional[flyte.io._file.File]` | |
 | `metadata_store_type` | `typing.Optional[str]` | |
 | `block_size` | `typing.Optional[str]` | |
 | `block_journal_blocks` | `typing.Optional[typing.List[int]]` | |
 | `metadata_prefix` | `typing.Optional[str]` | |
+| `chunk_branch` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
 | `used_bytes` | `typing.Optional[int]` | |
 | `inode_count` | `typing.Optional[int]` | |
@@ -93,6 +97,7 @@ validated to form a valid model.
 
 | Property | Type | Description |
 |-|-|-|
+| `family` | `str` | The STORAGE identity: exactly the set of versions whose chunk keys are interchangeable.  This is ``chunk_prefix`` -- JuiceFS's ``Format.Name``, the name the volume was *formatted* under, which is where its chunks live relative to the bucket root. It is inherited by every fork and commit, because a fork copies the metadata index forward and only a fresh volume is formatted. That is what makes a local chunk cache warmed on version N still valid for N+1, and it is why the cache and the local working copy are keyed on this rather than on ``name``, which a fork changes.  Falls back to ``name`` for a volume old enough to have no recorded ``chunk_prefix``. That fallback is not equivalent -- such a volume's forks each get their own family and so cannot share a cache -- but it is the pre-existing behaviour and better than failing to mount.  Not the same as ``artifact``, which is the *catalog* identity: optional, and the only name a human can type. |
 | `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
 | `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
@@ -102,6 +107,7 @@ validated to form a valid model.
 | Method | Description |
 |-|-|
 | [`abandon()`](#abandon) | Let go of a live mount **without committing**: for a volume whose client died under it, where the sealing teardown would only block. |
+| [`clone()`](#clone) | Copy this volume into ``destination`` and return the copy. |
 | [`commit()`](#commit) | Drain writeback, then snapshot the current state as a new immutable `ROVolume` — keeping this handle live and writable. |
 | [`empty()`](#empty) | Declare a brand-new volume. |
 | [`finalize()`](#finalize) | Drain writeback, unmount, and publish as `ROVolume`. |
@@ -140,6 +146,100 @@ Idempotent; a no-op when nothing is mounted.
 | Parameter | Type | Description |
 |-|-|-|
 | `timeout` | `float` | |
+
+### clone()
+
+```python
+def clone(
+    destination: str,
+    name: Optional[str] = None,
+    region: Optional[str] = None,
+    metadata_prefix: Optional[str] = None,
+    artifact: Any = Ellipsis,
+    concurrency: int = 64,
+    since: Optional['Volume'] = None,
+    publish_artifact: bool = False,
+    artifact_version: Optional[str] = None,
+) -> 'Volume'
+```
+Copy this volume into ``destination`` and return the copy.
+
+``destination`` is a bucket URI (``s3://other-bucket/volumes``) and
+becomes the clone's ``bucket``. The published index and the chunk
+objects it references -- nothing else -- are copied, and the result is a
+volume of the same class that reads and writes only ``destination``: the
+source can be deleted, expired or lose access without affecting it.
+
+Built for promotion: iterate on a volume in a dev bucket, clone v10 into
+staging, iterate on, clone v15 into the same destination. Clones of one
+volume family (the volume, its versions and its forks) into one
+destination share a filesystem identity there -- a JuiceFS name and
+UUID of their own, recorded under ``<destination>/_uvol/clones/`` -- so
+their chunks are shared too, and each clone copies only the chunks the
+destination doesn't already hold. Different families, or different
+destinations, share nothing.
+
+What the destination holds is judged against a *baseline*: an earlier
+clone of the family there, whose index is compared slice by slice with
+this one's, so the cost of a clone follows the size of one version's
+metadata, not of everything ever cloned into the destination. By
+default the baseline is the last clone of the family into
+``destination`` (each clone records itself next to the family's
+identity); pass ``since=`` -- e.g. the latest staging version found
+through an artifact query -- to choose it. Without a usable baseline
+the destination's chunks are listed instead. A baseline can only make a
+clone copy more than it needs, never less than it must.
+
+A clone can be forked and written in the destination like any volume.
+Its slice allocator is moved past the source family's, so what is
+written there can never take the key of a chunk a later clone brings
+over; and its identity is not the source's, so not even a node-shared
+chunk cache mixes the two.
+
+Every chunk is copied server-side (S3 ``CopyObject``, GCS rewrite,
+Azure Copy Blob): no data passes through this process. Within one
+bucket that works on every backend; between two S3 buckets it needs
+``boto3``. Other pairs raise
+`VolumeCloneUnsupported`.
+
+As for every volume, the chunks live at the root of the destination
+bucket under the volume's JuiceFS name (``<bucket>/<fs-name>/chunks/``);
+the object store client ignores the path part of the bucket URI. The
+path still scopes what the plugin keeps there itself: the clone
+identities, the writer-session ledger and, outside a task, the versions.
+
+* ``name`` -- the clone's name; defaults to ``self.name``.
+* ``region`` -- the destination bucket's region (S3); defaults to
+  ``self.region``.
+* ``metadata_prefix`` -- where the clone's versions are written (see
+  `new`); not inherited, so by default they follow the clone's own
+  bucket or task rather than the source's.
+* ``artifact`` -- the clone's artifact identity, as for `fork`.
+* ``concurrency`` -- copy requests in flight.
+* ``since`` -- the baseline: an earlier clone of this volume's family
+  into ``destination``. A volume that isn't one is refused.
+* ``publish_artifact`` / ``artifact_version`` -- register the clone in
+  the artifact registry now, under its artifact identity, as
+  `RWVolume.commit` does: the promotion flow looks the latest
+  version up there for the next clone's ``since=``.
+
+Clones the last *published* version: on a live mount, writes since the
+last `commit` are not included. A failed clone leaves only
+unreferenced objects behind and can simply be retried; the retry skips
+what was already copied.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `destination` | `str` | |
+| `name` | `Optional[str]` | |
+| `region` | `Optional[str]` | |
+| `metadata_prefix` | `Optional[str]` | |
+| `artifact` | `Any` | |
+| `concurrency` | `int` | |
+| `since` | `Optional['Volume']` | |
+| `publish_artifact` | `bool` | |
+| `artifact_version` | `Optional[str]` | |
 
 ### commit()
 
@@ -218,30 +318,12 @@ FUSE-capable image and pod — the ``fuse3`` apt package and
 ``flyte.PodTemplate().allow_fuse()`` — see `mount` for the full
 runtime requirements.
 
-``metadata_store_type`` controls the in-pod metadata backend. When
-omitted it resolves from ``$UNION_VOLUME_METADATA_STORE`` and
-otherwise defaults to ``"badger"``.
-
-* ``"badger"`` (default) keeps the namespace in an embedded BadgerDB
-  directory — daemon-less like SQLite but with the highest metadata
-  throughput of the three (~5x SQLite creates, ~27x cold random stats at
-  1M files), published as a backup stream. Requires the forked client
-  binary (checkpoint verbs and ``--slice-domain``), which
-  ``flyteplugins-union`` bundles; a writable mount needs a claimed
-  writer-session domain (the default domain-claim path provides one).
-* ``"sqlite"`` keeps the namespace in a local SQLite file — runs
-  in-process, needs no *extra* package beyond ``fuse3``, works on a
-  stock juicefs binary, and supports `fork`.
-* ``"redis"`` runs an in-process ``redis-server`` and persists the
-  namespace as an RDB snapshot; additionally requires ``redis-server``
-  in the image (installed by `with_high_throughput_volume_deps`,
-  which also sets ``$UNION_VOLUME_METADATA_STORE=redis``). Now that the
-  embedded Badger store is the high-throughput default, Redis is a
-  legacy explicit choice.
-
-The choice is baked into the Volume and travels with it through
-lineage; subsequent mounts of the same Volume must use the same
-store type (use `migrate_metadata_store_type` to change it).
+The namespace lives in an embedded BadgerDB directory, published as a
+store archive. It needs the forked client binary (checkpoint verbs and
+``--slice-domain``), which ``flyteplugins-union`` bundles, and a
+writable mount needs a claimed writer-session domain (the default
+domain-claim path provides one). ``metadata_store_type`` is accepted for
+compatibility and must be one of ``METADATA_STORE_TYPES``.
 
 ``storage`` is the JuiceFS object-store backend. When omitted it is
 inferred from the bucket URI scheme (``s3://`` → ``s3``, ``gs://`` →
@@ -506,6 +588,9 @@ def mount(
     passthrough: Optional[bool] = None,
     enable_xattr: bool = False,
     transport: str = 'auto',
+    credentials: str = 'auto',
+    log_path: Optional[str] = None,
+    on_existing_index: str = 'replace',
 ) -> Path
 ```
 Format (if fresh) and mount the volume at ``mount_path`` in this
@@ -551,10 +636,7 @@ and its free-space guard.
   ``fusermount3`` userspace helper to mount; the default minimal images
   don't ship it, so the mount client exits immediately with
   ``fuse: fuse is not installed``. Add it with
-  ``flyte.Image...with_apt_packages("fuse3")`` (or use
-  `with_high_throughput_volume_deps`, which includes it). A
-  Redis-backed Volume additionally needs ``redis-server`` in the image —
-  that helper installs it too.
+  ``flyte.Image...with_apt_packages("fuse3")``.
 * **Pod** — ``pod_template=flyte.PodTemplate().allow_fuse()`` on the
   `flyte.TaskEnvironment`, which grants the ``/dev/fuse`` device
   and the capability an unprivileged mount needs (the cluster must run a
@@ -626,6 +708,9 @@ any resume-from-checkpoint policy at the usage layer.
 | `passthrough` | `Optional[bool]` | |
 | `enable_xattr` | `bool` | |
 | `transport` | `str` | |
+| `credentials` | `str` | |
+| `log_path` | `Optional[str]` | |
+| `on_existing_index` | `str` | |
 
 ### new()
 

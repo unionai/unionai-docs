@@ -2,7 +2,7 @@
 title: MetricSeries
 description: "One time series of a metric result, e.g. one container or one GPU device."
 icon: braces
-version: 0.17.0
+version: 0.20.1
 variants: -flyte +union
 layout: py_api
 ---

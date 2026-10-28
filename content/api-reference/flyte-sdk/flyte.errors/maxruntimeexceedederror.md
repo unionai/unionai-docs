@@ -2,7 +2,7 @@
 title: MaxRuntimeExceededError
 description: "This error is raised when a task runs for longer than `flyte.Timeout.max_runtime`."
 icon: exclamation-triangle
-version: 2.12.0
+version: 2.12.1
 variants: +flyte +union
 layout: py_api
 ---

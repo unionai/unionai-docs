@@ -2,7 +2,7 @@
 title: Assignment
 description: "Represents role/policy assignments for an identity."
 icon: braces
-version: 0.17.0
+version: 0.20.1
 variants: -flyte +union
 layout: py_api
 ---
