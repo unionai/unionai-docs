@@ -23,11 +23,10 @@ Union ships with three built-in policies:
 | Policy | Actions | Summary |
 |---|---|---|
 | **Admin** | All actions | Full control including user management and billing |
-| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, and every `view_*` and `manage_*` action for secrets, apps, triggers, workspaces, artifacts, settings and API keys | Register and run workflows |
+| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, plus the read and write actions for secrets, apps, triggers, workspaces, artifacts, settings and API keys, and the read actions for clusters, usage and users | Register and run workflows |
 | **Viewer** | `view_flyte_executions`, `view_flyte_inventory`, `view_apps`, `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage`, `view_identities` | Read-only access |
 
-Built-in policies are kept up to date by Union, so they pick up new actions automatically.
-Custom roles only hold the actions you give them.
+Built-in policies are managed by Union. Custom roles only hold the actions you give them.
 
 Users can hold multiple policies: permissions are the union of all assigned policies.
 
@@ -47,7 +46,7 @@ This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to th
 
 > [!WARNING]
 > Use `flyteplugins-union` 0.20.1 or later.
-> Older versions don't recognize the granular actions (`view_secrets`, `manage_apps` and the rest):
+> Older versions don't support every action in [Available actions](#available-actions):
 > they fail to read a role that holds one, and `Role.update` / `flyte update role` silently remove them.
 
 ### Walkthrough: restrict a team to run workflows in production only
@@ -234,35 +233,6 @@ Navigate to **Settings > User Management** to:
 | `view_clusters` | View clusters, cluster pools, node groups, and cluster usage |
 | `view_usage` | View usage, metrics, quotas, and credits |
 | `view_identities` | View users and members |
-
-### Granular actions for custom roles (December 1, 2026)
-
-The actions from `view_secrets` down in the table above split operations out of the broader
-`*_flyte_*` actions, so each area has its own read and write action.
-Built-in policies already hold them.
-
-Starting **December 1, 2026**, Union checks the granular actions instead of the broader ones.
-A custom role that only holds the broader actions loses the matching operations.
-To keep a custom role working, add the granular actions that match the broader ones it already holds:
-
-| If the role has | Add |
-|---|---|
-| `view_flyte_executions` | `view_apps`, `view_workspaces`, `view_clusters`, `view_usage`, `view_identities` |
-| `view_flyte_inventory` | `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage` |
-| `create_flyte_executions` | `view_secrets`, `manage_secrets`, `manage_apps`, `manage_workspaces`, `manage_artifacts` |
-| `register_flyte_inventory` | `manage_triggers`, `edit_settings`, `manage_workspaces`, `manage_artifacts` |
-| `manage_permissions` | `view_permissions` |
-
-Adding them before December 1 is safe: they have no effect until then.
-
-Three operations also move to a stronger action on purpose.
-Add the action only to roles that really need the operation:
-
-| Operation | Previously allowed by | Now requires |
-|---|---|---|
-| Create and delete API keys | `view_flyte_executions` | `manage_api_keys` |
-| Deploy tasks (`flyte deploy`) | `create_flyte_executions` | `register_flyte_inventory` |
-| Upload through a presigned URL | `view_flyte_executions` | `create_flyte_executions` |
 
 ## CLI command reference
 
