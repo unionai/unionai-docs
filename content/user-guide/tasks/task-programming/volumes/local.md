@@ -31,7 +31,7 @@ locator of the new (empty) version.
 
 Pass `--bucket s3://my-bucket/volumes` to choose explicitly; with an explicit
 bucket the command contacts no control plane at all. `--size 64G` makes a
-[block volume](../block-volumes) instead, which is much faster for workloads
+[block volume](./block-volumes) instead, which is much faster for workloads
 with many small files - but only on Linux: macOS has neither an ext4 driver nor
 a loop device to attach the image to, so `--size` is refused there.
 

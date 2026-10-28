@@ -71,7 +71,7 @@ rebuild from scratch every time.
 
 > [!TIP] Many small files, one writer?
 > Build caches, package caches, virtualenvs and source trees spend most of
-> their time on per-file metadata. A [block volume](../block-volumes) stores the
+> their time on per-file metadata. A [block volume](./block-volumes) stores the
 > volume as one ext4 image the kernel mounts directly, which brings these
 > workloads close to local-disk speed.
 
@@ -131,11 +131,6 @@ to get your hands on a volume is the first one: it needs no cluster.
 
 {{< subpage-cards >}}
 
-Alongside those, [**Block volumes**](../block-volumes) is a different *shape* of
-volume rather than a different thing to do with one: the whole volume is stored
-as a single ext4 image, which is much faster for small-file, single-writer
-workloads like build and package caches.
-
 ## Reference
 
 - API: `Volume`, `RWVolume`, `ROVolume`, and
@@ -157,6 +152,6 @@ workloads like build and package caches.
   [Work with a volume on your machine](./local);
   `flyte explore volume` - see
   [Inspecting a volume](./local#inspecting-a-volume).
-- Related: [Block volumes](../block-volumes) for small-file, single-writer
+- Related: [Block volumes](./block-volumes) for small-file, single-writer
   workloads; [Files and directories](../files-and-directories) for passing
   snapshot data between tasks.

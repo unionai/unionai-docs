@@ -213,6 +213,6 @@ identical from inside the task:
 
 ## Next
 
-- [Block volumes](../block-volumes) - if per-file metadata cost is what is
+- [Block volumes](./block-volumes) - if per-file metadata cost is what is
   hurting, this is the bigger lever than any option here.
 - [Use a volume in a task](./in-tasks) - where `mount()` is called.

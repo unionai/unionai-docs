@@ -117,7 +117,7 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 
 ### Enable block volumes
 
-[Block volumes](../../../user-guide/tasks/task-programming/block-volumes) store
+[Block volumes](../../../user-guide/tasks/task-programming/volumes/block-volumes) store
 a Volume as one ext4 image that the broker attaches as a loop device and mounts
 for the pod. Small-file workloads such as build caches then run close to
 local-disk speed. The task pod stays unprivileged, but attaching the image
