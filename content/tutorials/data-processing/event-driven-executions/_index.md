@@ -235,7 +235,7 @@ colliding with the message-id-derived run name that exists to prevent duplicates
 It is a second system holding state about the first, and it has to
 stay correct as both change.
 
-## Usion Union's Artifact triggers
+## Using Union's Artifact triggers
 
 ```mermaid
 flowchart LR
