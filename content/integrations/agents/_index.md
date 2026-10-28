@@ -146,7 +146,7 @@ The adapters share a contract but the underlying SDKs differ, so durability land
 |---|---|---|---|---|
 | [OpenAI](./openai) | Per turn | `FunctionTool` | Conversation transcript | 3.10+ |
 | [Claude](./claude-agent-sdk) | Per session, via resume | In-process MCP tool | Conversation transcript | 3.10+ |
-| [Google ADK](./google-adk) | Per turn | Plain callable | Session events | 3.10+ |
+| [Google ADK](./google-adk) | Per turn, built agents | Plain callable | Session events | 3.10+ |
 | [Mistral](./mistral) | Per turn | Plain callable | Server-side conversation ID | 3.10+ |
 | [LangChain](./langchain) | Per turn, built agents | `StructuredTool` | Conversation transcript | 3.10+ |
 | [LangGraph](./langgraph) | Per turn, via `ai_node` | `StructuredTool` | Conversation transcript | 3.10+ |
