@@ -2,7 +2,7 @@
 title: Structured concurrency with anyio
 description: Use anyio or trio instead of asyncio, since the graph is built from what you await.
 icon: diagram-3
-weight: 24
+weight: 19
 variants: +flyte +union
 ---
 

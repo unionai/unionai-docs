@@ -2,7 +2,7 @@
 title: Grouping actions
 description: Cluster related actions together so a large run stays readable in the UI.
 icon: collection
-weight: 21
+weight: 16
 variants: +flyte +union
 ---
 

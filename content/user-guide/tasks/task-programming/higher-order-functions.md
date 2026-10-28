@@ -2,7 +2,7 @@
 title: Higher-order functions
 description: Pass tasks to other tasks and return them, since tasks are ordinary Python.
 icon: arrow-return-right
-weight: 27
+weight: 22
 variants: +flyte +union
 ---
 

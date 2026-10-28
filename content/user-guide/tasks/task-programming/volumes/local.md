@@ -1,14 +1,14 @@
 ---
 title: Work with a volume on your machine
 icon: laptop
-weight: 3
+weight: 1
 variants: -flyte +union
 description: Mount a Volume on a laptop, a dev box or a CI runner with the flyte CLI - a durable working copy you can resume, and warm for working offline.
 ---
 
 # Work with a volume on your machine
 
-[Using a volume in a task](./volumes-in-tasks) runs everything inside the
+[Using a volume in a task](./in-tasks) runs everything inside the
 cluster. You can also mount a volume **on your own machine** - a laptop, a dev
 box, a CI runner - and read and write it like any other directory. No FUSE
 tooling to install: on macOS the volume is served over a loopback NFS mount
@@ -31,7 +31,7 @@ locator of the new (empty) version.
 
 Pass `--bucket s3://my-bucket/volumes` to choose explicitly; with an explicit
 bucket the command contacts no control plane at all. `--size 64G` makes a
-[block volume](./block-volumes) instead, which is much faster for workloads
+[block volume](../block-volumes) instead, which is much faster for workloads
 with many small files - but only on Linux: macOS has neither an ext4 driver nor
 a loop device to attach the image to, so `--size` is refused there.
 
@@ -154,7 +154,7 @@ on disk, pass `--from-file <path> --store-type sqlite`.
 
 ## Next
 
-- [Use a volume in a task](./volumes-in-tasks) - the same volume, from inside
+- [Use a volume in a task](./in-tasks) - the same volume, from inside
   the cluster.
-- [Performance, caching and tuning](./volumes-performance) - what the local
+- [Performance, caching and tuning](./performance) - what the local
   cache is doing, and the knobs that apply to any mount.

@@ -1,7 +1,7 @@
 ---
 title: Performance, caching and tuning
 icon: speedometer2
-weight: 6
+weight: 4
 variants: -flyte +union
 description: The chunk cache, the shared node cache, mount options, measured trade-offs against local disk, and how to tell a slow mount from a wedged one.
 ---
@@ -171,7 +171,7 @@ few seconds at `commit()`.
 
 When a volume is slow, or a task looks stuck on file I/O, turn on the **volume
 report**. It samples the live mount while the task runs and publishes a `Volume`
-tab on the task's [report](./reports): throughput over time, a marker at each
+tab on the task's [report](../reports): throughput over time, a marker at each
 `commit()`, `fork()` and `finalize()`, and a health line.
 
 ```python
@@ -213,6 +213,6 @@ identical from inside the task:
 
 ## Next
 
-- [Block volumes](./block-volumes) - if per-file metadata cost is what is
+- [Block volumes](../block-volumes) - if per-file metadata cost is what is
   hurting, this is the bigger lever than any option here.
-- [Use a volume in a task](./volumes-in-tasks) - where `mount()` is called.
+- [Use a volume in a task](./in-tasks) - where `mount()` is called.

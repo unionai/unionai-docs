@@ -1,14 +1,14 @@
 ---
 title: Block volumes
 icon: hdd
-weight: 7
+weight: 3
 variants: -flyte +union
 description: A Volume whose content is one ext4 disk image, for small-file, single-writer workloads like build and package caches that need near-local-disk speed.
 ---
 
 # Block volumes
 
-A **block volume** is a [Volume](./volumes) whose content is a single ext4
+A **block volume** is a [Volume](./volumes/_index) whose content is a single ext4
 disk image rather than a tree of individual files. When you mount it, the image
 is attached as a loop device and mounted as an ordinary ext4 file system, so
 the kernel handles every `open`, `stat` and `mkdir` itself instead of making a
@@ -64,7 +64,7 @@ Stay with a **regular Volume** when:
 ## Setup
 
 A block volume uses the same image and pod template as any Volume. See
-[Volumes: Setup](./volumes#setup).
+[Volumes: Setup](./volumes/_index#setup).
 
 ```python
 import flyte
@@ -262,5 +262,5 @@ before you finalize it. The source isn't modified.
 - Trimming: `$UNION_VOLUME_EARLY_TRIM_S` and `$UNION_VOLUME_TRIM`. See
   [Checkpoint while you work](#checkpoint-while-you-work).
 - The rest of the Volume model (forking, artifacts, locators and the chunk
-  cache) works the same way. See [Volumes](./volumes).
+  cache) works the same way. See [Volumes](./volumes/_index).
 - Cluster setup: [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).

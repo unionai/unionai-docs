@@ -2,7 +2,7 @@
 title: Intra-task checkpoints
 description: Save progress inside a long-running task so a retry does not start over.
 icon: bookmark-check
-weight: 20
+weight: 15
 variants: +flyte +union
 ---
 

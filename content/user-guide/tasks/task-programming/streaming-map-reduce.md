@@ -2,7 +2,7 @@
 title: Streaming map-reduce
 description: Process fanned-out results as they finish instead of waiting for all of them.
 icon: water
-weight: 24
+weight: 19
 variants: +flyte +union
 ---
 

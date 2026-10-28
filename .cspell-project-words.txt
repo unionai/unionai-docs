@@ -279,3 +279,5 @@ anyio
 Unsloth
 # Xids: NVIDIA's GPU error codes, reported as "Xid" events by the driver.
 Xids
+# RLHF: reinforcement learning from human feedback.
+RLHF

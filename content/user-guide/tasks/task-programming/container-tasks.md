@@ -2,7 +2,7 @@
 title: Raw Container Tasks
 description: Run any container image as a task, with no Flyte SDK installed inside it.
 icon: box
-weight: 13
+weight: 8
 variants: +flyte +union
 ---
 

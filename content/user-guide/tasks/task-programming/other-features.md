@@ -2,7 +2,7 @@
 title: Other features
 description: Advanced patterns that do not fit the other pages in this section.
 icon: three-dots
-weight: 27
+weight: 22
 variants: +flyte +union
 ---
 

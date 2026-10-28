@@ -2,7 +2,7 @@
 title: Unit Testing Tasks
 description: Test task logic locally, with and without a running backend.
 icon: check2-square
-weight: 26
+weight: 21
 variants: +flyte +union
 ---
 

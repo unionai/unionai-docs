@@ -1,7 +1,7 @@
 ---
 title: Use a volume in a task
 icon: code
-weight: 4
+weight: 2
 variants: -flyte +union
 description: The create, mount, write and return lifecycle of a Volume inside a task - forking to update a version, writing in parallel, and checkpointing mid-task.
 ---
@@ -13,7 +13,7 @@ follows from one property: a Volume has exactly **one writer** while it is
 mounted. That is why you change a version by forking it, why parallel writers
 each get their own fork, and why a long task checkpoints rather than sharing.
 
-It assumes the image and pod template from [Setup](./volumes#setup).
+It assumes the image and pod template from [Setup](./_index#setup).
 
 ## Get started
 
@@ -161,9 +161,9 @@ That is the whole image contract: no FUSE userspace tools are needed.
 
 ## Next
 
-- [Versions, artifacts and lineage](./volumes-versions) - publish each sealed
+- [Versions, artifacts and lineage](./versions) - publish each sealed
   version, and reach a specific version from an unrelated run.
-- [Performance, caching and tuning](./volumes-performance) - the chunk cache,
+- [Performance, caching and tuning](./performance) - the chunk cache,
   mount options, and the measured trade-offs.
-- [Work with a volume on your machine](./volumes-local) - the same volume from
+- [Work with a volume on your machine](./local) - the same volume from
   a laptop.

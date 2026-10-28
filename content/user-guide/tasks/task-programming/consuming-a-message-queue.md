@@ -2,7 +2,7 @@
 title: Consuming a message queue
 description: Build a long-running task that pulls messages from an external queue such as SQS.
 icon: inbox
-weight: 23
+weight: 18
 variants: +flyte +union
 ---
 

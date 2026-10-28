@@ -19,7 +19,7 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Files and directories**](./files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.
 {{< variant union >}}
 {{< markdown >}}
-- [**Volumes**](./volumes): Mount a persistent file system and use it from within your task like an ordinary local directory. Then: [work with one on your machine](./volumes-local), [use one in a task](./volumes-in-tasks), [publish its versions as artifacts](./volumes-versions), [tune its caching and performance](./volumes-performance), or store it as [a single ext4 image](./block-volumes) for small-file workloads.
+- [**Volumes**](./volumes/_index): Mount a persistent file system and use it from within your task like an ordinary local directory.
 {{< /markdown >}}
 {{< /variant >}}
 - [**DataFrames**](./dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, Dask, and other DataFrame backends.

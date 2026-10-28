@@ -1,7 +1,7 @@
 ---
 title: Versions, artifacts and lineage
 icon: diagram-3
-weight: 5
+weight: 3
 variants: -flyte +union
 description: Publish each sealed Volume version to the artifact registry with a stable name and parent edges, and pin a specific version from an unrelated run by locator.
 ---
@@ -168,6 +168,6 @@ committed yet: there's no published version to point at.
 
 ## Next
 
-- [Performance, caching and tuning](./volumes-performance) - commit cost is
+- [Performance, caching and tuning](./performance) - commit cost is
   part of the write path; this is where the numbers are.
-- [Use a volume in a task](./volumes-in-tasks) - where commits come from.
+- [Use a volume in a task](./in-tasks) - where commits come from.

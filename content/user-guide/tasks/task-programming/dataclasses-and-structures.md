@@ -2,7 +2,7 @@
 title: Data classes and structures
 description: Pass dataclasses and Pydantic models between tasks as materialized values.
 icon: diagram-2
-weight: 8
+weight: 3
 variants: +flyte +union
 ---
 

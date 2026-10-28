@@ -2,7 +2,7 @@
 title: Notebooks
 description: Write and run Flyte workloads from inside a Jupyter notebook.
 icon: journal-code
-weight: 16
+weight: 11
 variants: +flyte +union
 ---
 
