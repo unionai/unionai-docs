@@ -100,11 +100,11 @@ Run a task automatically whenever a new version of an artifact lands, using `fly
 {{< link-card target="partition-triggers" icon="grid-3x3" title="Trigger on partitions" >}}
 Fire an artifact trigger only for matching partitions with `flyte.OnArtifact`, and pass the partition values into the task with `flyte.TriggeredPartition`.
 {{< /link-card >}}
-{{< /variant >}}
 
 {{< link-card target="trigger-notifications" icon="bell" title="Notifications" >}}
 Send Slack, email, Teams, or webhook notifications when a run started by a trigger ends.
 {{< /link-card >}}
+{{< /variant >}}
 
 {{< link-card target="manage-triggers" icon="toggles" title="Deploy and manage triggers" >}}
 Deploy triggers with their task, activate or deactivate them, and delete them.
