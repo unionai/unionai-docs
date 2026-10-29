@@ -3,7 +3,7 @@ title: Run with notifications
 description: Fire a notification when a run reaches a terminal state.
 icon: bell
 weight: 13
-variants: +flyte +union
+variants: -flyte +union
 ---
 
 # Run with notifications
@@ -13,7 +13,10 @@ Notifications fire when the run reaches the terminal execution phase; no trigger
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-with-notifications/run_with_notifications.py" fragment="run-with-notifications" lang="python">}}
 
-Pass a single notification or a tuple of notifications. The notification types in `flyte.notify` are `Slack`, `Email`, `Teams`, `Webhook`, and `NamedDelivery`.
+Pass a single notification or a tuple of notifications. The notification types in `flyte.notify` are `Slack`, `Email`, `Teams`, and `Webhook`.
+
+> [!NOTE]
+> Delivery details such as `webhook_url` and `recipients` are plain values, sent to the backend with the run when you submit it. The example reads `SLACK_WEBHOOK_URL` from your local environment at submission, not inside the task, and a notification can't reference a secret. To choose the destination at runtime, for example a different webhook on each cluster, [send the notification from your code](./notify-from-code).
 
 > [!NOTE]
 > To attach notifications to every run created by a scheduled trigger, set `notifications` on the `flyte.Trigger` object instead. See [Notifications](../../triggers/trigger-notifications).

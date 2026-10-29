@@ -3,7 +3,7 @@ title: Notifications
 description: Send Slack, email, Teams, or webhook notifications when a run started by a trigger ends.
 icon: bell
 weight: 7
-variants: +flyte +union
+variants: -flyte +union
 ---
 
 # Notifications
@@ -12,6 +12,9 @@ A nightly job that fails at 2 AM should reach someone on Slack, instead of waiti
 
 You can attach notifications to a trigger using the `notifications` parameter of `flyte.Trigger`.
 Notifications fire when a triggered run reaches a terminal execution phase.
+
+> [!NOTE]
+> Delivery details such as `webhook_url` and `recipients` are stored with the trigger when you deploy it, and a notification can't reference a secret. To choose the destination at runtime, [send the notification from your code](../tasks/task-deployment/notify-from-code).
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-with-notifications" lang="python">}}
 
