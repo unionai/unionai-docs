@@ -154,9 +154,14 @@ it.
 
 ## Checkpoint while you work
 
-`commit()` records a version without unmounting, as on any Volume. Before each
+`commit()` records a version without unmounting, as on any Volume. Before the
 snapshot the client trims the space ext4 has freed, so deleted files stop
-costing storage.
+costing storage, but only if the image hasn't been trimmed since it was mounted
+or no trim has finished in the last `UNION_VOLUME_COMMIT_TRIM_INTERVAL_S`
+seconds (6 hours by default). Otherwise `commit()` skips the trim, and space
+freed since the last trim is reclaimed by a later trim or by `finalize()`.
+Requires `flyteplugins-union` 0.18.0 or later; earlier versions trim before
+every snapshot.
 
 ```python
 await work.commit(message="after step 1")
@@ -169,13 +174,14 @@ trimmed when it unmounts. On a large volume this takes tens of seconds. The
 client runs it 300 seconds after the mount, and every later trim covers only
 the space freed since. `finalize()` also trims before it unmounts. If the
 background trim hasn't run yet, or is turned off, the first `commit()` or
-`finalize()` pays for the full trim itself. Two environment variables control
+`finalize()` pays for the full trim itself. Three environment variables control
 trimming. Set them in the task environment's `env_vars`:
 
 | Variable | Default | Effect |
 |---|---|---|
 | `UNION_VOLUME_EARLY_TRIM_S` | `300` | Seconds after the mount to run the background trim. `off` disables it. |
-| `UNION_VOLUME_TRIM` | on | `0`, `false` or `off` turns off every trim, including the one before each snapshot. |
+| `UNION_VOLUME_COMMIT_TRIM_INTERVAL_S` | `21600` | Minimum seconds between the last finished trim and a trim by `commit()`. `0` trims at every `commit()`. Requires `flyteplugins-union` 0.18.0 or later. |
+| `UNION_VOLUME_TRIM` | on | `0`, `false` or `off` turns off every trim, including the ones by `commit()` and `finalize()`. |
 
 By default the snapshot is taken **without pausing writers**. It is
 *crash-consistent*, like a snapshot of a running disk: when a fork of it is
@@ -259,7 +265,8 @@ before you finalize it. The source isn't modified.
 
 - API: `BlockVolume` (`new()`, `commit()`, `grow()`, `from_volume()`),
   `ROBlockVolume` (`fork()`), `RWVolume.from_block()` and `Volume.is_block`.
-- Trimming: `$UNION_VOLUME_EARLY_TRIM_S` and `$UNION_VOLUME_TRIM`. See
+- Trimming: `$UNION_VOLUME_EARLY_TRIM_S`, `$UNION_VOLUME_COMMIT_TRIM_INTERVAL_S`
+  and `$UNION_VOLUME_TRIM`. See
   [Checkpoint while you work](#checkpoint-while-you-work).
 - The rest of the Volume model (forking, artifacts, locators and the chunk
   cache) works the same way. See [Volumes](./_index).
