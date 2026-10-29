@@ -13,6 +13,7 @@ The Nextflow plugin runs [Nextflow](https://www.nextflow.io/) pipelines on Flyte
 - Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
 - Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
 - Aborting the Flyte run aborts the pipeline and its running tasks.
+- Each task action's **Code** tab shows the script Nextflow ran for that task.
 
 Use this plugin to run existing Nextflow pipelines, such as those from [nf-core](https://nf-co.re/), without rewriting them, and to chain them with Python tasks in the same Flyte run.
 
@@ -123,7 +124,7 @@ When the task runs locally (`flyte run --local`), Nextflow uses its own executor
 | Argument           | Description |
 |--------------------|-------------|
 | `nextflow_version` | Nextflow release to install. Default: `25.10.6`. |
-| `nf_flyte`         | nf-flyte plugin to install: a version from the Nextflow plugin registry, or the `Path` to a locally built plugin zip (`nf-flyte-<version>.zip`). |
+| `nf_flyte`         | nf-flyte plugin to install: a version from the Nextflow plugin registry, or the `Path` to a locally built plugin zip (`nf-flyte-<version>.zip`). Default: `0.2.1`. |
 | `base`             | Image to add Nextflow to. Default: the Flyte Debian base image. |
 | `name`             | Image name, used only when `base` isn't set. Default: `nextflow`. |
 
@@ -133,7 +134,7 @@ To use a locally built nf-flyte plugin, pass its zip:
 from pathlib import Path
 
 image = nextflow_image(
-    nf_flyte=Path("~/nf-flyte/build/distributions/nf-flyte-0.1.0.zip").expanduser(),
+    nf_flyte=Path("~/nf-flyte/build/distributions/nf-flyte-0.2.1.zip").expanduser(),
 )
 ```
 
@@ -141,4 +142,36 @@ image = nextflow_image(
 
 - `flyte` 2.12.0 or later, and `flyteplugins-nextflow` 2.12.0 or later.
 - On a cluster, the work directory must be on an object store Flyte can read (S3, GCS, or Azure). The default, under the task's raw data prefix, always is.
-- Every process container needs `bash`.
+- Every process container needs `bash`. If the image has an `ENTRYPOINT`, it runs first, as with Docker, so it must run the command it's given (for example, end with `exec "$@"`). The Wave images used by nf-core modules do.
+
+## Launch from `nextflow run`
+
+nf-flyte also works without a Flyte task: run `nextflow run` on a laptop or in CI with the `flyte` executor, and nf-flyte creates the Flyte run and prints its URL. Its root action stands for the Nextflow head. It ends with the pipeline's result, is aborted when you stop Nextflow (Ctrl+C), and fails if the head stops sending heartbeats.
+
+```groovy
+plugins {
+    id 'nf-amazon'
+    id 'nf-flyte@0.2.1'
+    id 'nf-schema@2.7.2'   // the pipeline's own plugins, repeated
+}
+
+process.executor = 'flyte'
+
+flyte {
+    endpoint = 'tenant.hosted.unionai.cloud'   // default: from the API key
+    org      = 'my-org'                         // default: from the API key
+    project  = 'my-project'
+    domain   = 'development'
+}
+
+workDir = 's3://my-bucket/nextflow-work'   // readable by Flyte, writable from where you run
+```
+
+```bash
+export FLYTE_API_KEY=...   # from `flyte create api-key`
+nextflow run nf-core/demo -r 1.2.0 -profile test -c flyte.config --outdir s3://my-bucket/results
+```
+
+A `plugins` block in a `-c` config replaces the pipeline's own, and so does `-plugins`. Repeat the pipeline's plugins with their versions, as listed in its `nextflow.config`. If you leave them out, Nextflow starts the newest release of each, and nf-core pipelines can fail with `Missing process or function paramsSummaryLog`.
+
+Instead of an API key, `authCommand` in the `flyte` block can name a command that prints an access token. See the [nf-flyte README](https://github.com/unionai/nf-flyte#launching-outside-flyte) for all options.
