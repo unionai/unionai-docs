@@ -18,7 +18,7 @@ Everything else is still a Volume: it lives in object storage, `commit()` record
 immutable versions, forks are copy-on-write and share unchanged data, and you
 pass it between tasks like any other Volume. What changes is the trade-off:
 block volumes are much faster on workloads made of many small files, in return
-for a size limit, a single writer, and a cluster-level opt-in.
+for a size limit, a single writer, and a cluster-level allowlist.
 
 ## When to use a block volume
 
@@ -59,7 +59,7 @@ Stay with a **regular Volume** when:
 | **Immutable version type** | `ROVolume` | `ROBlockVolume` (an `ROVolume`) |
 | **Read-only mounts** | Yes, any number at once | No: fork, then mount the fork |
 | **Browse files without mounting** | Yes (`flyte explore volume`) | No |
-| **Cluster setup** | Mount broker | Mount broker **and** an administrator opt-in |
+| **Cluster setup** | Mount broker | Mount broker (every pod allowed unless an administrator narrows the list) |
 
 ## Setup
 
@@ -81,8 +81,8 @@ env = flyte.TaskEnvironment(
 Attaching an image makes the node's kernel parse a file system whose bytes the
 task controls. The mount broker therefore allows block volumes only for the
 workloads the cluster administrator permits, by namespace, by service account,
-or both. By default, a cluster in low-privilege mode allows none and any other
-cluster allows every pod. If a task isn't allowed, its
+or both. By default, every pod is allowed; an administrator can narrow the list
+or disable block volumes. If a task isn't allowed, its
 `mount()` fails with the broker's reason. On a self-managed cluster, see
 [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
 
