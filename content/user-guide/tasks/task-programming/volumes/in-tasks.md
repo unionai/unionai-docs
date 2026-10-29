@@ -28,7 +28,7 @@ from flyteplugins.union.io import Volume, RWVolume, ROVolume
 @env.task
 async def create_dataset() -> RWVolume:
     vol = Volume.new(name="my-dataset")   # a fresh writable RWVolume
-    data = await vol.mount()              # mount (default: ~/flyte-volume); returns the path
+    data = await vol.mount()              # mount (default: ~/flyte-volume/my-dataset); returns the path
 
     (data / "greeting.txt").write_text("hello from a volume\n")
 
