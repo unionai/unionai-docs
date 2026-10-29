@@ -19,8 +19,8 @@ Flyte is Apache 2.0 licensed and a Linux Foundation AI & Data project, and you r
 
 > [!TIP] Try Flyte on Union.ai, free for 30 days
 > [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
-> Subscribe to Union Team on AWS Marketplace and try it free for 30 days.
-> See [Set up from the Union.ai UI]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and try it free for 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -37,8 +37,8 @@ On it, you build model factories, production agents, and model serving in plain 
 See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways to run it.
 
 > [!TIP] Try Union.ai free for 30 days
-> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, free for the first 30 days.
-> See [Set up from the Union.ai UI]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and set up {{< key product_name >}} yourself, free for the first 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}

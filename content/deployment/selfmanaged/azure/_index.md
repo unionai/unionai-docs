@@ -2,7 +2,7 @@
 title: Provision your Azure resources
 description: Create the AKS cluster, storage account, container registry, Key Vault, and managed identities that an Azure cluster pool needs.
 icon: microsoft
-weight: 6
+weight: 3
 variants: -flyte +union
 ---
 
@@ -19,8 +19,8 @@ Union.ai installs the data plane into your cluster for you, but the Azure resour
 
 At the end you have the values you enter when you connect your cluster: three for the cluster pool, and seven for registering the cluster.
 
-> [!NOTE] Not the manual self-managed setup
-> These resources differ from the ones in the manual [Azure infrastructure](../selfmanaged/infrastructure-recommendations/azure) guide: Key Vault is required and holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
+> [!NOTE] Not the manual setup
+> These resources differ from the ones in the [manual setup (legacy)](./legacy) page, which installs the data plane with Helm: Key Vault is required and holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
 
 > [!WARNING] Choose the namespace before you start
 > The managed identities trust Kubernetes service accounts in one namespace, which you choose in [step 1](#1-sign-in-and-choose-names). When you register the cluster, you must enter exactly that namespace. Azure federated credentials accept no wildcard, so a mismatch is not reported anywhere: the data plane's pods run with no Azure identity, and the cluster never finishes registering.
@@ -40,7 +40,7 @@ At the end you have the values you enter when you connect your cluster: three fo
 - The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) and `kubectl`. If you don't have `kubectl`, install it with `az aks install-cli`.
 - [Helm](https://helm.sh/docs/intro/install/), for the agent install in [step 11](#11-connect-your-cluster).
 - An account that can create resource groups and role assignments in the subscription: Owner, or Contributor together with User Access Administrator. Contributor alone cannot create role assignments, so with it the setup fails as soon as it assigns a role.
-- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](../../sign-up/create-organization).
 
 The commands create billable resources, including the AKS cluster, its nodes, a standard load balancer, and the Log Analytics workspace, which bills per GB of logs it ingests. The cluster's API server is reachable from the internet, and its outbound traffic goes through the AKS-managed load balancer. The setup does not create a private cluster or a NAT gateway.
 
@@ -421,7 +421,7 @@ Keep this output, and keep the shell where `kubectl` can reach the cluster: you 
 
 4. Select **Register cluster**. The cluster's page, **Install Union on your Azure cluster**, shows the install command for this cluster.
 
-Install the agent and wait for the data plane as described in steps 3 and 4 of [Connect your cluster](./connect-a-cluster#3-install-the-agent).
+Install the agent and wait for the data plane as described in steps 3 and 4 of [Connect your cluster](../connect-a-cluster#3-install-the-agent).
 
 Once the data plane is installed, check that its service accounts carry the right client IDs:
 
@@ -442,4 +442,6 @@ kubectl -n "$UNION_DATAPLANE_NAMESPACE" get sa union-system union \
 
 ## Next steps
 
-**[Run a workload on the cluster](./connect-a-cluster#5-run-a-workload-on-the-cluster).** Once the cluster shows as **Healthy**, run a workflow on it.
+**[Run a workload on the cluster](../connect-a-cluster#5-run-a-workload-on-the-cluster).** Once the cluster shows as **Healthy**, run a workflow on it.
+
+{{< subpage-cards >}}

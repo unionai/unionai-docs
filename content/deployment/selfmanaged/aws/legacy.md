@@ -1,12 +1,17 @@
 ---
-title: AWS
+title: Manual setup on AWS (legacy)
 description: Create the EKS cluster, S3 bucket, ECR repository, and IAM roles the data plane needs.
 icon: amazon
 weight: 1
 variants: -flyte +union
 ---
 
-# AWS infrastructure
+# Manual setup on AWS (legacy)
+
+> [!NOTE] For deployments set up with Helm
+> These are the earlier instructions: you provision AWS resources and install the data plane yourself with
+> Helm. They remain for deployments that were set up this way. For a new deployment, [provision your AWS resources](./_index)
+> and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 This page walks you through creating the AWS resources needed for a Union data plane. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
@@ -237,7 +242,7 @@ Save the following trust policy as `trust-policy.json`:
 ```
 
 > [!NOTE] Why `system:serviceaccount:*`?
-> Union platform services run in the data plane namespace (e.g. `union`), but workflow task pods run in per-project namespaces (e.g. `union-health-monitoring-development`). Both need to assume this role to access S3 and ECR.
+> Union platform services run in the data plane namespace (e.g. `union`), and workflow task pods run either there (as the `union` service account, the default) or, in multi-namespace mode, in each task namespace (as the `default` service account). Both need to assume this role to access S3 and ECR.
 
 Substitute your values and create the role:
 

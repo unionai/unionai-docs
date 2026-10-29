@@ -2,7 +2,7 @@
 title: SSHDebug
 description: "Resolved SSH-into-task connect info for a running debug action."
 icon: braces
-version: 0.17.0
+version: 0.20.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -102,6 +102,11 @@ renders the ssh-config block. *identity_file* defaults to the auto-managed
 
 ### ensure_api_key()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <SSHDebug instance>.ensure_api_key.aio()`.
 ```python
 def ensure_api_key(
     name: str = 'flyte-ssh-debug',
@@ -113,6 +118,12 @@ Reuses the locally-stored key if it still exists server-side (verified with
 ``ApiKey.get`` — the "api-key get to check for existence" path). Otherwise
 creates a fresh one and stores it 0600. Use this for headless, reusable auth
 that doesn't expire mid-session like an interactive user JWT.
+
+Async under the hood (``ApiKey.get.aio`` / ``ApiKey.create.aio``) so it is safe to
+call from code that already runs on the syncify loop thread — e.g. the body of
+``SSHDebug.connect`` — where the blocking ``ApiKey.get()`` / ``ApiKey.create()``
+wrappers would trip syncify's deadlock guard. Sync callers can still call it directly
+(``SSHDebug.ensure_api_key()``); async callers use ``.aio()``.
 
 
 | Parameter | Type | Description |

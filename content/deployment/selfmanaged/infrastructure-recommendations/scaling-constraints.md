@@ -32,8 +32,8 @@ therefore what runs out first — differs by cloud:
 
 The concrete per-node math, sizing tables, and tuning strategy live on the cloud-specific
 infrastructure pages:
-[AWS → Networking and IP capacity](./aws#networking-and-ip-capacity) ·
-[GCP → Networking and IP capacity](./gcp#networking-and-ip-capacity).
+[AWS → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) ·
+[GCP → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity).
 
 ## vCPU quotas
 

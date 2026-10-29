@@ -64,7 +64,7 @@ Factories build graphs of partitioned artifacts that are materialized on demand,
 
 ### :floppy_disk: Volumes on Every BYOC Cluster
 
-Unprivileged volume mounts now cover every BYOC cluster and are on by default in the self-managed chart. Mount a volume with `pod_template=allow_volumes()` from `flyteplugins.union.io`. `BlockVolume.new(size="64G")` creates a volume stored as a single ext4 image, so small-file, single-writer workloads such as build and package caches avoid a network round trip on every file operation. A commit uploads only what changed. Volumes can be mounted, committed, and forked from apps, sidecars, and scripts, work with S3-compatible stores such as MinIO, Ceph RGW, and Cloudflare R2 on self-managed data planes, and can publish each committed version as an artifact. `allow_volumes(cache_size=...)` puts the cache on a disk, `shared_node_cache=True` shares a read-only cache across the pods of a namespace on a node, and a failed mount names its cause. See [Volumes](../user-guide/tasks/task-programming/volumes) and [Block volumes](../user-guide/tasks/task-programming/block-volumes).
+Unprivileged volume mounts now cover every BYOC cluster and are on by default in the self-managed chart. Mount a volume with `pod_template=allow_volumes()` from `flyteplugins.union.io`. `BlockVolume.new(size="64G")` creates a volume stored as a single ext4 image, so small-file, single-writer workloads such as build and package caches avoid a network round trip on every file operation. A commit uploads only what changed. Volumes can be mounted, committed, and forked from apps, sidecars, and scripts, work with S3-compatible stores such as MinIO, Ceph RGW, and Cloudflare R2 on self-managed data planes, and can publish each committed version as an artifact. `allow_volumes(cache_size=...)` puts the cache on a disk, `shared_node_cache=True` shares a read-only cache across the pods of a namespace on a node, and a failed mount names its cause. See [Volumes](../user-guide/tasks/task-programming/volumes/_index) and [Block volumes](../user-guide/tasks/task-programming/volumes/block-volumes).
 
 
 ### :hourglass_flowing_sand: llama.cpp Model Serving
@@ -323,7 +323,7 @@ An alternative ingress provider is now supported as an opt-in, each dataplane is
 
 ### :floppy_disk: Persistent Volumes
 
-A new `Volume` type gives tasks a durable, mountable filesystem. The platform records which runs wrote to a volume, so you can trace data back to the work that produced it, and a three-pane terminal explorer browses volume contents and lineage. Clusters advertise FUSE as a requestable device, so a task opts in with `allow_fuse()` instead of running as a privileged container. See [Volumes](../user-guide/tasks/task-programming/volumes).
+A new `Volume` type gives tasks a durable, mountable filesystem. The platform records which runs wrote to a volume, so you can trace data back to the work that produced it, and a three-pane terminal explorer browses volume contents and lineage. Clusters advertise FUSE as a requestable device, so a task opts in with `allow_fuse()` instead of running as a privileged container. See [Volumes](../user-guide/tasks/task-programming/volumes/_index).
 
 
 ### :traffic_light: Run-Level Action Concurrency and Queue Binding

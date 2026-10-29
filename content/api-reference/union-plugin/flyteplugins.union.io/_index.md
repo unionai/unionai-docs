@@ -2,7 +2,7 @@
 title: flyteplugins.union.io
 description: "Persistent, mountable `Volume` type for the Flyte SDK v2."
 icon: box-seam
-version: 0.17.0
+version: 0.20.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -42,7 +42,6 @@ under `flyteplugins.union.io._internal` and is not part of the public API.
 | Method | Description |
 |-|-|
 | [`allow_volumes()`](#allow_volumes) | Enable `Volume` mounts in a task pod with **zero privileges**. |
-| [`with_high_throughput_volume_deps()`](#with_high_throughput_volume_deps) | Prepare ``base`` for high-throughput (Redis-backed) Volumes. |
 | [`with_local_flyteplugins()`](#with_local_flyteplugins) | Package the **locally checked-out** flyteplugins-union (built to a wheel) and an optional local ``juicefs`` binary into ``base`` — for iterating on an *unreleased* plugin build against a real cluster. |
 
 
@@ -142,7 +141,7 @@ Usage:
 ```python
 env = flyte.TaskEnvironment(
     name="my-task",
-    image=with_high_throughput_volume_deps(flyte.Image.from_debian_base()),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union"),
     pod_template=allow_volumes(),
 )
 ```
@@ -161,39 +160,6 @@ env = flyte.TaskEnvironment(
 | `shared_node_cache` | `bool` | |
 | `shared_node_cache_dir` | `str` | |
 
-#### with_high_throughput_volume_deps()
-
-```python
-def with_high_throughput_volume_deps(
-    base: Image,
-) -> Image
-```
-Prepare ``base`` for high-throughput (Redis-backed) Volumes.
-
-Returns a new `flyte.Image` that, on top of ``base``:
-
-* installs ``fuse3`` — the ``fusermount3`` userspace helper JuiceFS execs to
-  mount the FUSE filesystem. *Every* Volume mount needs this under the
-  default unprivileged `flyte.PodTemplate.allow_fuse`; without it the
-  mount client exits immediately with ``fuse: fuse is not installed``;
-* installs ``redis-server`` / ``redis-tools`` (the in-pod daemon the Redis
-  store runs against), and
-* sets ``UNION_VOLUME_METADATA_STORE=redis`` so volumes created in this
-  image via `Volume.new` / `Volume.empty` *default* to Redis
-  without the caller passing ``metadata_store_type=`` each time (still
-  overridable per-volume).
-
-With this helper the image is complete: just add
-``pod_template=flyte.PodTemplate().allow_fuse()`` to the
-`flyte.TaskEnvironment` and Volumes mount and run. For the default
-SQLite store you don't need Redis, but you *do* still need ``fuse3`` —
-install it with ``image.with_apt_packages("fuse3")`` (see `Volume.mount`).
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `base` | `Image` | |
-
 #### with_local_flyteplugins()
 
 ```python
@@ -206,8 +172,8 @@ Package the **locally checked-out** flyteplugins-union (built to a
 wheel) and an optional local ``juicefs`` binary into ``base`` — for
 iterating on an *unreleased* plugin build against a real cluster.
 
-The shipped path is `with_high_throughput_volume_deps` plus the
-platform wheel's bundled ``juicefs``; reach for this only when the plugin
+The shipped path is an image that pip-installs ``flyteplugins-union``, whose
+platform wheel bundles ``juicefs``; reach for this only when the plugin
 itself is being developed. Builds the wheel from the installed editable
 source into the SDK's local-plugin dist folder, bundles it via
 `flyte.Image.with_local_v2_plugins`, and (if ``juicefs`` is given)

@@ -1,14 +1,14 @@
 ---
 title: Block volumes
 icon: hdd
-weight: 3
+weight: 5
 variants: -flyte +union
 description: A Volume whose content is one ext4 disk image, for small-file, single-writer workloads like build and package caches that need near-local-disk speed.
 ---
 
 # Block volumes
 
-A **block volume** is a [Volume](./volumes) whose content is a single ext4
+A **block volume** is a [Volume](./_index) whose content is a single ext4
 disk image rather than a tree of individual files. When you mount it, the image
 is attached as a loop device and mounted as an ordinary ext4 file system, so
 the kernel handles every `open`, `stat` and `mkdir` itself instead of making a
@@ -64,7 +64,7 @@ Stay with a **regular Volume** when:
 ## Setup
 
 A block volume uses the same image and pod template as any Volume. See
-[Volumes: Setup](./volumes#setup).
+[Volumes: Setup](./_index#setup).
 
 ```python
 import flyte
@@ -84,7 +84,7 @@ workloads the cluster administrator permits, by namespace, by service account,
 or both. By default, a cluster in low-privilege mode allows none and any other
 cluster allows every pod. If a task isn't allowed, its
 `mount()` fails with the broker's reason. On a self-managed cluster, see
-[Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
+[Enable block volumes](../../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
 
 > [!NOTE]
 > **Privileged pods without the broker**, such as a BuildKit builder, can use
@@ -262,5 +262,5 @@ before you finalize it. The source isn't modified.
 - Trimming: `$UNION_VOLUME_EARLY_TRIM_S` and `$UNION_VOLUME_TRIM`. See
   [Checkpoint while you work](#checkpoint-while-you-work).
 - The rest of the Volume model (forking, artifacts, locators and the chunk
-  cache) works the same way. See [Volumes](./volumes).
-- Cluster setup: [Enable block volumes](../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
+  cache) works the same way. See [Volumes](./_index).
+- Cluster setup: [Enable block volumes](../../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).

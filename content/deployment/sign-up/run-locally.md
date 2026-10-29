@@ -12,7 +12,7 @@ Your Union.ai account can display locally run workflows before you connect any c
 
 ## What you'll need
 
-- A Union.ai organization. See [Sign up for Union.ai](./sign-up).
+- A Union.ai organization. See [Sign up for Union.ai](./create-organization).
 - Your organization's address, in the form `<your-org>.hosted.unionai.cloud`. It is in your browser's address bar when you are signed in to the Union.ai UI.
 - Python 3.10+ in a virtual environment.
 
@@ -88,8 +88,8 @@ Everything you see here came from a run on your own machine. Union.ai recorded i
 
 When you want to start running your workflows on your own infrastructure, proceed with:
 
-- **Provision your cloud resources on [AWS](./aws-infrastructure), [GCP](./gcp-infrastructure), or [Azure](./azure-infrastructure)**. Optional if you already have resources that meet the requirements.
-- **[Connect your cluster](./connect-a-cluster)**.
+- **Provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index)**. Optional if you already have resources that meet the requirements.
+- **[Connect your cluster](../selfmanaged/connect-a-cluster)**.
 
 Before that, two things you can do without a cluster are:
 

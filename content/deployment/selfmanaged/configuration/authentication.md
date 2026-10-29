@@ -3,7 +3,7 @@ title: Authentication
 description: Configure OIDC user authentication and OAuth 2.0 service authorization.
 icon: shield-lock
 weight: 2
-variants: -flyte +union
+variants: -flyte -union
 mermaid: true
 ---
 

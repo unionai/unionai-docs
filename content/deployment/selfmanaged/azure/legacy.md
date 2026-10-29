@@ -1,12 +1,17 @@
 ---
-title: Azure
+title: Manual setup on Azure (legacy)
 description: Create the AKS cluster, Storage Account, managed identities, and Log Analytics access the data plane needs.
 icon: microsoft
-weight: 3
+weight: 1
 variants: -flyte +union
 ---
 
-# Azure infrastructure
+# Manual setup on Azure (legacy)
+
+> [!NOTE] For deployments set up with Helm
+> These are the earlier instructions: you provision Azure resources and install the data plane yourself with
+> Helm. They remain for deployments that were set up this way. For a new deployment, [provision your Azure resources](./_index)
+> and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
@@ -244,7 +249,7 @@ az identity federated-credential create \
 
 ### Worker identity (task execution pods)
 
-Task pods run under the `union` service account. In single-namespace mode (the default with `low_privilege: true`), create one federated credential for the release namespace:
+In single-namespace mode (the default), task pods run as the `union` service account in the release namespace. Create one federated credential for it:
 
 ```bash
 az identity federated-credential create \
@@ -256,7 +261,7 @@ az identity federated-credential create \
   --audiences api://AzureADTokenExchange
 ```
 
-If using multi-namespace mode (`low_privilege: false`), also create credentials for each project-domain namespace:
+In multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`, plus `clusterresourcesync.enabled: true` so that the chart creates the task namespaces), task pods run as the `default` service account in each task namespace. `values.azure.yaml` maps task namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
 
 ```bash
 for ns in development staging production; do
