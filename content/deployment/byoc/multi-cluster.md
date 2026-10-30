@@ -49,7 +49,7 @@ The precise set of GCP projects and/or AWS subaccounts depends on the number of 
 
 ## Data and metadata isolation
 
-Each domain or project is isolated within its own AWS account or Google project, and therefore provides the level of compute and data isolation intrinsic to that arrangement. Specifically, execution-time isolation per domain or project is maintained for both compute and user data stored in blob store (or other configured storage).
+When each domain or project is in its own AWS account or Google project, it gets the level of compute and data isolation intrinsic to that arrangement. Specifically, execution-time isolation per domain or project is maintained for both compute and user data stored in blob store (or other configured storage).
 
 In addition, metadata specific to the internals of Union.ai can be either isolated or shared across clusters, depending on the configuration you choose.
 

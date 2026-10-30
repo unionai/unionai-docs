@@ -16,7 +16,7 @@ You will need to send the following details to the Union.ai team:
   * If so, how will Flyte domains and/or Flyte projects be mapped to clusters?
   * Additionally, how will clusters be grouped into cluster pools? (Each cluster pool will have its own metadata bucket)
 * For each cluster:
-  * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
+  * [Account ID](#account-id) for this cluster (on AWS, several clusters can share one account; if the account already hosts a Union.ai data plane, ask the Union.ai team which setup steps apply)
   * [Region](#region) in which the cluster will be deployed.
   * [VPC](#vpc) setup (will you use your own VPC or have Union.ai provision one for you?)
   * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
@@ -39,7 +39,7 @@ You can choose a single or multi-cluster configuration.
 
 In a multi-cluster configuration, you have separate clusters for each of your Flyte domains and/or Flyte projects.
 
-A cluster in this context refers to a distinct EKS (in AWS), AKS (in Azure), or GKE (in GCP) instance in its own AWS account, Azure subscription, or GCP project.
+A cluster in this context refers to a distinct EKS (in AWS), AKS (in Azure), or GKE (in GCP) instance.
 
 The most common set up is to have a separate cluster for each Flyte domain: development, staging, and production.
 
