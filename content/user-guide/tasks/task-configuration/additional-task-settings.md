@@ -44,7 +44,7 @@ def train(data: list) -> dict:
 
 The `prefix` parameter on `@env.task` prefixes the function name, so the fully-qualified task name becomes `<env_name>.<prefix>-<function_name>` (and the display name `<prefix>-<function_name>`).
 Use it when functions with the same name in different modules share one `TaskEnvironment`.
-A prefix may contain letters, digits, underscores and `-`, but not `.`.
+A prefix is letters, digits and underscores, separated by `-` (for example `myproject-train`); it cannot contain `.`. Use a fixed string rather than `__name__`, which differs between `flyte run` and the task container.
 
 ```python
 import flyte
