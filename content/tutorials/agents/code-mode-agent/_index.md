@@ -21,7 +21,7 @@ Most tool-using agents call tools one at a time. The model asks for a tool, the 
 
 In [code mode](../../../user-guide/agents/sandboxing/code-mode), the model writes a single program that orchestrates the tools instead, with real control flow and composition. A question like "compare three tickers, indexed to 100 at the start, then rank them by volatility" becomes one script that does a few fetches and runs one query. It doesn't glue together a dozen tools with model turns.
 
-The code runs inside Monty, a restricted interpreter with no imports, no filesystem access, no network access, and near-instant startup. It can only use the tools you explicitly make available to the sandbox. That means the model isn't running arbitrary Python with unrestricted access. It can only work within the boundaries you've defined.
+The code runs inside Monty, a restricted interpreter with no third-party packages, no filesystem access, no network access, and near-instant startup. Beyond builtins and a subset of the standard library, it can only use the tools you explicitly make available to the sandbox. That means the model isn't running arbitrary Python with unrestricted access. It can only work within the boundaries you've defined.
 
 ## What runs where
 
