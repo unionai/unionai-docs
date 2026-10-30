@@ -10,8 +10,6 @@ variants: +flyte +union
 
 Run [Pydantic AI](https://ai.pydantic.dev/) agents on Flyte. Pydantic AI owns the loop through `Agent.run`. Flyte supplies the runtime: tools become durable child actions, model turns are recorded for replay, and the run renders into the task report.
 
-This is the one adapter that applies model-turn durability on both the builder path and the pre-built path, because `Agent.override` gives it a clean way in.
-
 ## Installation
 
 ```bash
