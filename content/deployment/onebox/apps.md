@@ -59,7 +59,7 @@ kubectl patch configmap/config-features -n knative-serving --type merge -p '{"da
 
 If your apps use images from a registry Knative can't reach over HTTPS, add it to `registries-skipping-tag-resolving` in the `config-deployment` ConfigMap.
 
-For an airgapped install, mirror Knative's images along with onebox's and Union's Kourier images (`serving.gateway.controller.image`, `serving.gateway.envoy.image`).
+For an airgapped install, mirror Knative's images along with onebox's [images](./_index#images), including Union's Envoy (`serving.gateway.envoy.image`). The Kourier controller runs from the `onebox-server` image, so it needs no image of its own.
 
 ## 2. Let the proxy pass the user's token
 

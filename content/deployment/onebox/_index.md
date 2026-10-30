@@ -14,12 +14,27 @@ Unlike a [self-managed](../selfmanaged/_index) or [BYOC](../byoc/_index) deploym
 
 ## What runs
 
-| Container | What it does |
-|---|---|
-| `onebox` | The control plane (runs, actions, projects, identity, authorization), the data plane worker that creates task pods, and the pod admission webhook that injects secrets into them. |
-| `console` | The Union.ai UI, served by onebox under `/v2`. |
+| Workload | Image | What it does |
+|---|---|---|
+| `onebox` Deployment, `onebox` container | `onebox-server` | The control plane (runs, actions, projects, identity, authorization), the data plane worker that creates task pods, and the pod admission webhook that injects secrets into them. |
+| `onebox` Deployment, `console` container | `onebox-console` | The Union.ai UI, served by onebox under `/v2`. |
+| `onebox-node-agent` DaemonSet | `onebox-server` | Runs on every node: the CSI driver (`volumes.union.ai`) that mounts Union Volumes into task pods, and the node-shared Volume cache. |
 
-Everything is served on **one port**: the UI, the API that the SDK and CLI use, and the REST routes. There is no ingress controller, Envoy, Redis, or ScyllaDB to install. Task pods run in the namespace you install onebox into.
+With [apps](./apps) on, the chart also runs Union's Kourier controller (from the `onebox-server` image) and its Envoy gateway (`envoy`).
+
+Everything is served on **one port**: the UI, the API that the SDK and CLI use, and the REST routes. There is no ingress controller, Redis, or ScyllaDB to install. Task pods run in the namespace you install onebox into.
+
+## Images
+
+The chart pulls three public images from GitHub's container registry, tagged with the chart's `appVersion`. Each Union.ai release publishes them for amd64 and arm64:
+
+| Image | Chart value |
+|---|---|
+| `ghcr.io/unionai/onebox-server` | `image.repository` |
+| `ghcr.io/unionai/onebox-console` | `console.image.repository` |
+| `ghcr.io/unionai/envoy` (only with apps on) | `serving.gateway.envoy.image.repository` |
+
+For an airgapped install or a private mirror, copy each image with all its architectures, point these values at your copies, and add the mirror's pull secret to `imagePullSecrets` if it needs one.
 
 ## What you provide
 
