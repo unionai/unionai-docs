@@ -43,7 +43,7 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 
 ## Open your organization
 
-When setup finishes, Union.ai takes you to your organization's home page. Your organization's address, in the form `<your-org>.hosted.unionai.cloud`, is in your browser's address bar. You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
+When setup finishes, Union.ai takes you to your organization's home page. Your organization's address is in your browser's address bar. Its form depends on the region you chose: `<your-org>.hosted.unionai.cloud` for `us-east-2`, and `<your-org>.<region>.unionai.cloud` for the other regions (for example, `<your-org>.eu-west-2.unionai.cloud`). You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
 
 ## Choose how to start
 
