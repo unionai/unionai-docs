@@ -1,6 +1,6 @@
 ---
-title: Self-hosted (single-pod install)
-description: Run the whole Union.ai platform, control plane and data plane, as one pod in your own Kubernetes cluster, installed with one Helm chart.
+title: Self-hosted (single-cluster install)
+description: Run the whole Union.ai platform, control plane and data plane, in your own Kubernetes cluster, installed with one Helm chart.
 icon: box
 weight: 4
 variants: -flyte +union
@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Self-hosted Union.ai
 
-Self-hosted Union.ai runs the whole platform as **one pod in your own Kubernetes cluster**: the control plane, the data plane that launches your tasks, and the UI. You install it with one Helm chart, `onebox`, and give it two things: a PostgreSQL database and an object store bucket. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants a self-contained deployment with no external dependencies.
+Self-hosted Union.ai runs the whole platform **in your own Kubernetes cluster**: the control plane, the data plane that launches your tasks, and the UI, all from one `onebox` binary and the UI's image. You install it with one Helm chart, `onebox`, and give it two things: a PostgreSQL database and an object store bucket. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants a self-contained deployment with no external dependencies.
 
 Unlike a [self-managed](../selfmanaged/_index) or [BYOC](../byoc/_index) deployment, nothing runs in Union.ai's cloud: the control plane is in the same pod as the data plane.
 
