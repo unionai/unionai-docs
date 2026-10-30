@@ -56,7 +56,7 @@ def validate_inputs(data: list) -> list:  # my_env.train-validate_inputs
     return data
 ```
 > [!NOTE]
-> Adding or changing the prefix renames the task, so existing cache entries no longer apply.
+> Adding or changing the prefix renames the task: existing cache entries no longer apply, and earlier runs stay under the old name.
 
 ### `description`
 
