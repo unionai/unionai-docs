@@ -18,8 +18,11 @@ single argument.
 Reads go through a local **chunk cache**. Where that cache lives is the single
 biggest lever on read performance, and by default it is in the worst place:
 unset, it falls back to `$HOME`, which on every managed Kubernetes is the
-container's overlayfs - the slowest writable thing on the node, with no size
-limit the client knows about.
+container's overlayfs - the slowest writable thing on the node. With
+`allow_volumes()`, each mount whose cache is in that default location gets a
+budget from the container's ephemeral-storage limit: half of what is still
+unclaimed from 50% of the limit, and at least 1 GiB. The mount returns its
+budget when it unmounts. Requires `flyteplugins-union` 0.15.0 or later.
 
 **Give it a real disk.** `cache_size` attaches a sized `emptyDir` and tells the
 client its budget:
@@ -89,7 +92,7 @@ mount, how aggressively to upload, and how long to cache metadata:
 
 ```python
 data = await vol.mount(
-    mount_path="/tmp/data",  # a writable mount point (default: ~/flyte-volume)
+    mount_path="/tmp/data",  # a writable mount point (default: ~/flyte-volume/<volume name>)
     max_uploads=100,         # raise upload concurrency for write-heavy bursts (default 50)
     attr_cache=120.0,        # cache file metadata longer (default 60s)
     entry_cache=120.0,       # cache name lookups longer
@@ -99,7 +102,7 @@ data = await vol.mount(
 
 | Option | Default | Use it to… |
 |---|---|---|
-| `mount_path` | `~/flyte-volume` | Mount somewhere other than the default. |
+| `mount_path` | `~/flyte-volume/<volume name>` | Mount somewhere other than the default. |
 | `max_uploads` | `50` | Raise the cap on concurrent uploads. Bump it during write-heavy bursts of many small files, where the default concurrency can't saturate the upload link to object storage. |
 | `attr_cache` / `entry_cache` / `dir_entry_cache` | `60.0` | Cache file metadata, name lookups, and directory listings longer to collapse repeated `stat`/listing calls. |
 
@@ -172,7 +175,7 @@ few seconds at `commit()`.
 When a volume is slow, or a task looks stuck on file I/O, turn on the **volume
 report**. It samples the live mount while the task runs and publishes a `Volume`
 tab on the task's [report](../reports): throughput over time, a marker at each
-`commit()`, `fork()` and `finalize()`, and a health line.
+`commit()` and `finalize()`, and a health line.
 
 ```python
 vol = Volume.new(name="my-dataset")
