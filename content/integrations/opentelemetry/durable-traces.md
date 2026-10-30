@@ -121,6 +121,8 @@ They have no meaningful duration, because no work happened in this process, but 
 
 For an agent loop, this is also where the money is: a replayed step does not call the model again, so a resume does not pay for the generations the first attempt already bought.
 
+In a [reusable container](../../user-guide/tasks/task-configuration/reusable-containers), a retry can run in the failed attempt's process. There, replaying completed steps requires `flyte` 2.12.1 or later. On earlier versions, such a retry can re-execute steps that already completed, for example after a timeout.
+
 ## A worked crash and resume
 
 The example below crashes partway through its first attempt. The retry resumes: steps 0 through 2 come back from the durable log as replayed spans, steps 3 and 4 actually execute, and both attempts share one trace.
