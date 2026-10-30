@@ -1,12 +1,12 @@
 ---
-title: Sign up for Union.ai
+title: Create your account and organization
 description: Sign up with your Google or Microsoft work account and create the organization that is your Union.ai workspace.
 icon: person-plus
 weight: 2
 variants: -flyte +union
 ---
 
-# Sign up for Union.ai
+# Create your account and organization
 
 Here you create your account and an organization. Your organization is your workspace in Union.ai. It holds your projects, workflows, resources and team members, and everything you do afterward happens inside it.
 
@@ -47,26 +47,13 @@ When setup finishes, Union.ai takes you to your organization's home page. Your o
 
 ## Choose how to start
 
-The home page offers two ways to start:
-
-- **Run something locally.**
-- **Connect your cluster.**
+The home page offers two ways to start: **Run something locally** and **Connect your cluster**.
 
 ![The Union.ai home page, offering Connect your cluster and Run something locally](../../_static/images/deployment/marketplace/sign-up/connect-or-run.png)
 
-The local route works straight away. You can connect a cluster at any time.
+The local route works straight away, and you can connect a cluster at any time.
 
-### Run something locally
+## Next steps
 
-Select **Show me how** on the **Run something locally** card for a short in-app guide: install the SDK, create a config file that points at your organization, and write a first workflow.
-
-![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/marketplace/sign-up/show-me-how.png)
-
-[Run your first workflow locally](./run-locally) covers the same steps as the in-product guide.
-
-### Provision and connect
-
-When you are ready to run workflows on your own infrastructure, continue with:
-
-- **Provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index)**. Optional if you already have resources that meet the requirements.
-- **[Connect your cluster](../selfmanaged/connect-a-cluster)**
+- **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. It covers the same steps as the in-app guide behind **Show me how** on the **Run something locally** card.
+- **Or go straight to your own infrastructure.** Provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), which is optional if you already have resources that meet the requirements, then [connect your cluster](../selfmanaged/connect-a-cluster).

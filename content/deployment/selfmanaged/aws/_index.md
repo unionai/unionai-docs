@@ -28,7 +28,7 @@ At the end you have the values you enter when you [connect your cluster](../conn
 > Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](../connect-a-cluster).
 
 > [!NOTE] Not the manual setup
-> These resources differ from the ones in the [manual setup (legacy)](./legacy) page, which installs the data plane with Helm: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for a cluster you connect from the Union.ai UI.
+> These resources differ from the ones in the [legacy steps](./legacy), which installs the data plane with Helm: AWS Secrets Manager holds runtime secrets, IAM trust follows the namespace the agent chooses, and the data plane chart installs Metrics Server itself. Use this page only for a cluster you connect from the Union.ai UI.
 
 ## Agent-assisted provisioning
 
@@ -127,7 +127,7 @@ Use the bare hostname, for example, `{org}.hosted.unionai.cloud`; omit the `http
 - AWS CLI authenticated to the target account.
 - `eksctl` 0.195.0 or later, `kubectl`, `jq`, and `envsubst` installed locally.
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
-- A Union.ai organization. See [Sign up for Union.ai](../../sign-up/create-organization).
+- A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
 The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. Choose a dedicated test account when possible.
 
