@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -220,6 +220,7 @@ def build(
     dry_run: bool = False,
     force: bool = False,
     wait: bool = True,
+    queue: str | None = None,
 ) -> ImageBuild
 ```
 Build an image. The existing async context will be used.
@@ -239,6 +240,7 @@ if __name__ == "__main__":
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
 | `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
+| `queue` | `str \| None` | Queue for a remote image build run. Ignored by local builders. |
 
 **Returns**
 
@@ -257,6 +259,7 @@ def build_images(
     *envs: Environment,
     copy_style: 'CopyFiles' = 'loaded_modules',
     seed_cache: ImageCache | None = None,
+    queue: str | None = None,
 ) -> ImageCache
 ```
 Build the images for the given environment(s).
@@ -268,6 +271,7 @@ Build the images for the given environment(s).
 | `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 | `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
+| `queue` | `str \| None` | Queue for remote image build runs. None uses the build task default. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -365,6 +369,7 @@ def deploy(
     interactive_mode: bool | None = None,
     copy_style: CopyFiles = 'loaded_modules',
     dryrun: bool | None = None,
+    queue: str | None = None,
 ) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
@@ -379,6 +384,7 @@ Deploy the given environment or list of environments.
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
 | `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
+| `queue` | `str \| None` | Deploy every environment (and its tasks and triggers) to this queue, overriding the `queue` configured in code. The code bundle and trigger inputs are uploaded to that queue's cluster pool. When None, each environment keeps its own queue. |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
 
@@ -1239,7 +1245,7 @@ if __name__ == "__main__":
 | `user_log_level` | `int \| None` | |
 | `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
-| `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `queue` | `Optional[str]` | Optional queue for the run and its remote image builds. Overrides the task queue. |
 | `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |

@@ -2,7 +2,7 @@
 title: Documentation
 description: "This class is used to store the documentation of a task."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

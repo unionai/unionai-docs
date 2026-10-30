@@ -2,7 +2,7 @@
 title: NextflowError
 description: "Raised when `nextflow run` exits with a non-zero status."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

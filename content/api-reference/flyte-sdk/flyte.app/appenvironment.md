@@ -2,7 +2,7 @@
 title: AppEnvironment
 description: "Configure a long-running app environment for APIs, dashboards, or model servers."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +16,7 @@ Configure a long-running app environment for APIs, dashboards, or model servers.
 ```python
 app_env = flyte.app.AppEnvironment(
     name="my-api",
-    image=flyte.Image.from_debian_base(python="3.12").with_pip_packages("fastapi", "uvicorn"),
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages("fastapi", "uvicorn"),
     port=8080,
     scaling=flyte.app.Scaling(replicas=(1, 3)),
 )

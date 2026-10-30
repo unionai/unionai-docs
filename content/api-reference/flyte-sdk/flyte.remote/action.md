@@ -2,7 +2,7 @@
 title: Action
 description: "A class representing an action."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -58,7 +58,6 @@ class Action(
 | Method | Description |
 |-|-|
 | [`abort()`](#abort) | Aborts / Terminates the action. |
-| [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
 | [`download_code()`](#download_code) | Download the code this action ran — the source shown in the console's "Code" tab. |
 | [`get()`](#get) | Get a run by its ID or name. |
@@ -69,7 +68,6 @@ class Action(
 | [`sync()`](#sync) | Sync the action with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
-| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions, time elapsed, and error details in case of failure. |
 | [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
 
 
@@ -91,14 +89,6 @@ Aborts / Terminates the action.
 | Parameter | Type | Description |
 |-|-|-|
 | `reason` | `str` | |
-
-### details()
-
-```python
-def details()
-```
-Get the details of the action. This is a placeholder for getting the action details.
-
 
 ### done()
 
@@ -317,23 +307,6 @@ Convert the object to a JSON string.
 
 
 **Returns:** str: A JSON string representation of the object.
-
-### wait()
-
-```python
-def wait(
-    quiet: bool = False,
-    wait_for: WaitFor = 'terminal',
-)
-```
-Wait for the run to complete, displaying a rich progress panel with status transitions,
-time elapsed, and error details in case of failure.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `quiet` | `bool` | |
-| `wait_for` | `WaitFor` | |
 
 ### watch()
 

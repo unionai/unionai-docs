@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.20.1
+  flyteplugins-union: 0.20.2
 ---
 
 # Flyte CLI
@@ -669,6 +669,13 @@ you can specify which registries to include. If no registries are specified, all
 $ flyte create secret my_secret --type image_pull --from-docker-config --registries ghcr.io,docker.io
 ```
 
+4. You can also store a Docker config JSON file as-is. This is how you configure a credential helper, such as
+`ecr-login` for an ECR registry in another AWS account, so the image builder fetches a fresh token on every
+build instead of storing a static one:
+```bash
+$ flyte create secret my_secret --type image_pull --from-file config.json
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file, from_docker_config, registry. |
@@ -1233,6 +1240,13 @@ To deploy a specific version, use the `--version` flag:
 flyte deploy --version v1.0.0 hello.py my_env
 ```
 
+To deploy every environment (and its triggers) to one queue, overriding the `queue` set in code,
+use the `--queue` flag. The code bundle and trigger inputs are uploaded to that queue's cluster pool:
+
+```bash
+flyte deploy --queue gpu-pool hello.py my_env
+```
+
 To preview what would be deployed without actually deploying, use the `--dry-run` flag:
 
 ```bash
@@ -1279,6 +1293,7 @@ flyte deploy hello.py --help
 | `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments especially when using `--recursive` or `--all`. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
+| `--queue` | `text` |  | Deploy every environment to this queue, overriding the `queue` configured in code. The code bundle and trigger inputs are uploaded to that queue's cluster pool. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 ### flyte edit
@@ -1618,7 +1633,9 @@ remote-only, since a fork reuses a prior run's actions from the control plane.
 | `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
-| `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
+| `--queue` | `text` |  | Queue for the run and its remote image builds. Overrides any queue set on the task. |
+| `--custom-context` | `text` | `Sentinel.UNSET` | Custom context to propagate to every action in the run, readable in tasks via `flyte.get_custom_context()`. Format: KEY=VALUE. Can be specified multiple times, e.g. `--custom-context experiment=calibration`. Takes precedence over `--custom-context-from-env` for the same key. |
+| `--custom-context-from-env` | `text` | `Sentinel.UNSET` | Add a local environment variable to the run's custom context. Format: VAR (key is VAR) or KEY=VAR. Fails if VAR is not set. Can be specified multiple times. Custom context is stored as run metadata, so do not use it for secrets. |
 | `--force-rerun-action` | `text` | `Sentinel.UNSET` | Name of an action to re-execute even though it succeeded in the forked run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
@@ -2857,7 +2874,9 @@ flyte run hello.py my_task --help
 | `--env` `-e` | `text` | `Sentinel.UNSET` | Environment variable to set on the run context. Format: KEY=VALUE. Can be specified multiple times, e.g. `-e LOG_LEVEL=debug -e FOO=bar`. |
 | `--max-action-concurrency` | `integer range` |  | Maximum number of actions that can run concurrently within the run. If not provided, the platform default (run.max_action_concurrency setting) applies. |
 | `--label` | `text` | `Sentinel.UNSET` | User-defined label to attach to the run. Format: KEY=VALUE. Can be specified multiple times, e.g. `--label team=ml --label env=prod`. |
-| `--queue` | `text` |  | Queue (cluster) to send the run to. Overrides any queue set on the task. |
+| `--queue` | `text` |  | Queue for the run and its remote image builds. Overrides any queue set on the task. |
+| `--custom-context` | `text` | `Sentinel.UNSET` | Custom context to propagate to every action in the run, readable in tasks via `flyte.get_custom_context()`. Format: KEY=VALUE. Can be specified multiple times, e.g. `--custom-context experiment=calibration`. Takes precedence over `--custom-context-from-env` for the same key. |
+| `--custom-context-from-env` | `text` | `Sentinel.UNSET` | Add a local environment variable to the run's custom context. Format: VAR (key is VAR) or KEY=VAR. Fails if VAR is not set. Can be specified multiple times. Custom context is stored as run metadata, so do not use it for secrets. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
 #### flyte run hello

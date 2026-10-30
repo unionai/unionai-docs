@@ -2,7 +2,7 @@
 title: Factory
 description: "A set of builds."
 icon: braces
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---

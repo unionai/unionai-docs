@@ -2,7 +2,7 @@
 title: Slurm
 description: "Slurm connector plugin for Flyte."
 icon: book
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
