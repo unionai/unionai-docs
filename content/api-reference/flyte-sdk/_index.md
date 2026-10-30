@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -93,6 +93,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.artifacts.Card`](flyte.artifacts/card) |  |
 | [`flyte.artifacts.Metadata`](flyte.artifacts/metadata) | Structured metadata for Flyte artifacts. |
 | [`flyte.artifacts.TimePartition`](flyte.artifacts/timepartition) | A time partition value with an explicit granularity. |
+| [`flyte.cli.main.RootGroup`](flyte.cli.main/rootgroup) | The `flyte` group. |
 | [`flyte.clustered.ClusterFailurePolicy`](flyte.clustered/clusterfailurepolicy) | Failure and restart policy for the JobSet as a whole. |
 | [`flyte.clustered.ClusteredTaskEnvironment`](flyte.clustered/clusteredtaskenvironment) | A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training. |
 | [`flyte.clustered.ClusteredTaskTemplate`](flyte.clustered/clusteredtasktemplate) | Task template for `ClusteredTaskEnvironment`. |
@@ -160,6 +161,8 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.AsyncFunctionTaskTemplate`](flyte.extend/asyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 | [`flyte.extend.ImageBuildEngine`](flyte.extend/imagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`flyte.extend.RuntimeTaskTemplate`](flyte.extend/runtimetasktemplate) | Task template for Python-runtime tasks that execute through the Flyte task entrypoint. |
+| [`flyte.extend.SessionAddress`](flyte.extend/sessionaddress) | Where a session can be reached, as its worker reported it. |
+| [`flyte.extend.SessionRoutingInfo`](flyte.extend/sessionroutinginfo) | Where in the platform a session is served: the pod its worker serves it from, and the cluster. |
 | [`flyte.extend.TaskTemplate`](flyte.extend/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`flyte.extras.BatchStats`](flyte.extras/batchstats) | Monitoring statistics exposed by `DynamicBatcher.stats`. |
 | [`flyte.extras.ContainerTask`](flyte.extras/containertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
@@ -325,6 +328,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.extend.get_proto_resources()`](flyte.extend/_index#get_proto_resources) | Get main resources IDL representation from the resources object. |
 | [`flyte.extend.is_initialized()`](flyte.extend/_index#is_initialized) | Check if the system has been initialized. |
 | [`flyte.extend.lazy_module()`](flyte.extend/_index#lazy_module) | This function is used to lazily import modules. |
+| [`flyte.extend.new_session()`](flyte.extend/_index#new_session) | Start a session as a child action of the running task. |
 | [`flyte.extend.pod_spec_from_resources()`](flyte.extend/_index#pod_spec_from_resources) |  |
 | [`flyte.extras.serialize()`](flyte.extras/_index#serialize) | Translate a single task to its wire TaskSpec, offline and code-agnostic. |
 | [`flyte.extras.serialize_env()`](flyte.extras/_index#serialize_env) | Serialize every task in an environment. |
@@ -387,6 +391,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.app`](flyte.app/_index) |  |
 | [`flyte.app.extras`](flyte.app.extras/_index) |  |
 | [`flyte.artifacts`](flyte.artifacts/_index) | Artifacts module. |
+| [`flyte.cli.main`](flyte.cli.main/_index) |  |
 | [`flyte.clustered`](flyte.clustered/_index) |  |
 | [`flyte.config`](flyte.config/_index) |  |
 | [`flyte.connectors`](flyte.connectors/_index) |  |

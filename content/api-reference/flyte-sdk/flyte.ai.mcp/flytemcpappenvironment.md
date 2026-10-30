@@ -2,7 +2,7 @@
 title: FlyteMCPAppEnvironment
 description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -101,6 +101,7 @@ class FlyteMCPAppEnvironment(
     sdk_examples_path: str | None = '/root/flyte-sdk/examples',
     docs_examples_path: str | None = '/root/unionai-examples/v2',
     full_docs_path: str | None = '/root/llms.txt',
+    config_file: str | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -144,6 +145,7 @@ class FlyteMCPAppEnvironment(
 | `sdk_examples_path` | `str \| None` | |
 | `docs_examples_path` | `str \| None` | |
 | `full_docs_path` | `str \| None` | |
+| `config_file` | `str \| None` | |
 
 ## Properties
 

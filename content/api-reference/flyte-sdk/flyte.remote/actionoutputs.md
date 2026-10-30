@@ -2,7 +2,7 @@
 title: ActionOutputs
 description: "A class representing the outputs of an action."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,7 +19,7 @@ which are usually auto-generated `o0, o1, o2, o3, ...`.
 Example Usage:
 ```python
 action = Action.get(...)
-print(action.outputs())
+print(action.details().outputs())
 ```
 Output:
 ```python
@@ -28,7 +28,7 @@ Output:
 OR
 ```python
 action = Action.get(...)
-print(action.outputs().named_outputs)
+print(action.details().outputs().named_outputs)
 ```
 Output:
 ```bash

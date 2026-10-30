@@ -2,7 +2,7 @@
 title: Trigger
 description: "Specification for a trigger that can be associated with any Flyte task."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,6 +38,15 @@ async def my_task(start_time: datetime, x: int) -> str:
     ...
 ```
 
+Example (keep a production entrypoint on a released version while CI deploys pre-releases):
+
+```python
+prod = flyte.Trigger(name="prod", automation=flyte.Cron("0 6 * * *"), task_version="v1.4.0")
+
+@env.task(triggers=[prod])
+async def entrypoint() -> None:
+    ...
+```
 
 
 ## Parameters
@@ -58,6 +67,7 @@ class Trigger(
     annotations: Mapping[str, str] | None = None,
     notifications: NamedRule | Notification | Tuple[Notification, ...] | None = None,
     custom_context: Mapping[str, str] | None = None,
+    task_version: str | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -76,6 +86,7 @@ class Trigger(
 | `annotations` | `Mapping[str, str] \| None` | Kubernetes annotations to attach to triggered runs. |
 | `notifications` | `NamedRule \| Notification \| Tuple[Notification, ...] \| None` | |
 | `custom_context` | `Mapping[str, str] \| None` | Metadata propagated through the entire task hierarchy of triggered runs. Readable inside any task via `flyte.ctx().custom_context`. |
+| `task_version` | `str \| None` | Pin the trigger to this version of the task. `None` (default) means the trigger follows the task: every `flyte deploy` points it at the version being deployed. When set, deploying other versions leaves the trigger on this version, while the rest of its spec (automation, inputs, activation, run settings) is still updated from code. The version must already be deployed (or be the one being deployed). Promote or roll back by changing the pin and redeploying. |
 
 ## Methods
 

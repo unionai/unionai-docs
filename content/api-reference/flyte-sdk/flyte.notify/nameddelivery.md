@@ -2,7 +2,7 @@
 title: NamedDelivery
 description: "Use a pre-configured delivery channel by name."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,9 +13,14 @@ layout: py_api
 
 Use a pre-configured delivery channel by name.
 
-Use this when your Flyte admin has configured a named delivery config
-(e.g., a shared Slack webhook or email list) that you want to reference
-without specifying the delivery details inline.
+Not yet supported: no backend resolves named delivery configs, and there is
+no way to create one yet. A run or trigger that references a named delivery
+config is rejected, or sends no notification. Use an inline notification
+such as `Slack` or `Email` instead.
+
+A named delivery config will hold the delivery details (e.g., a shared
+Slack webhook or email list), so you can reference it without specifying
+them inline.
 
 
 

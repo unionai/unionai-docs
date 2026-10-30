@@ -2,7 +2,7 @@
 title: NodeGroup
 description: "One declared node group of a cluster: a pool of nodes and the shape each node has."
 icon: braces
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -237,6 +237,7 @@ The created TaskEnvironment.
 ```python
 def task(
     short_name: Optional[str] = None,
+    prefix: Optional[str] = None,
     cache: CacheRequest | None = None,
     retries: Union[int, RetryStrategy] = 0,
     timeout: TimeoutType = 0,
@@ -260,7 +261,8 @@ Decorate a function to be a task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
+| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). With `prefix`, it becomes `<prefix>-<short_name>`. Overriding `short_name` does not change the task's fully-qualified name. |
+| `prefix` | `Optional[str]` | Optional prefix for the function name, so the task's fully-qualified name becomes `<env_name>.<prefix>-<function_name>` and its short name `<prefix>-<short_name>`. Use it to keep same-named functions from different modules apart while they share one environment (for example a reusable one). The name keeps a single `.`, between environment and task, so the prefix may not contain `.`: use letters, digits and underscores, separated by `-` (e.g. `"myproject-train"`). Use a fixed string rather than `__name__`: a module's `__name__` differs between `flyte run <file>`, a script run and the import inside the task container, which would give the task a different name in each. Note that a change of `prefix` invalidates the cache. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
 | `retries` | `Union[int, RetryStrategy]` | Number of user retries (`int`) or a `RetryStrategy` object. `RetryStrategy` accepts an optional `backoff=Backoff(base, factor, cap)` to pace retries exponentially. Defaults to `0` (no retries). |
 | `timeout` | `TimeoutType` | Task timeout. Accepts a `timedelta`, an integer number of seconds, or a `Timeout` object carrying any combination of `max_runtime`, `max_queued_time`, and `deadline`. A bare `timedelta`/`int` is interpreted as `max_runtime`. A bound is treated as unlimited when unset (`None`) or zero (`0` / `timedelta(0)`); `timeout=0` is the default and means no time bound. |

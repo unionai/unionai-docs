@@ -2,7 +2,7 @@
 title: CodeGenEvalResult
 description: "Result from code generation and evaluation."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ROVolume
 description: "Immutable, versioned volume — PRD §Core Concepts."
 icon: braces
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---

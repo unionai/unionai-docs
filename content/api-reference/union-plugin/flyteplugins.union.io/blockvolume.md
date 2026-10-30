@@ -2,7 +2,7 @@
 title: BlockVolume
 description: "A writable Volume whose content is one ext4 filesystem image."
 icon: braces
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---
