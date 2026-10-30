@@ -145,7 +145,7 @@ oci iam customer-secret-key create \
 > [!NOTE]
 > The command output contains the secret key value. Save it immediately; it cannot be retrieved again.
 
-You will configure these credentials in the Helm values file during deployment (see step 3 in [Deploy the dataplane](../deploy/_index)).
+You will configure these credentials in the Helm values file during deployment (see step 4 in [Deploy the dataplane](../deploy/_index)).
 
 ## Deploy configuration
 
