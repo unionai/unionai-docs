@@ -6,6 +6,14 @@
 
 This file provides guidance for working with the Union.ai documentation repositories. It is shared between `unionai-docs` (parent) and `unionai-docs-infra` (submodule).
 
+## Path-scoped rules
+
+`.claude/rules/` carries subsystem knowledge that loads only when you touch the matching files —
+search indexes, routing and redirects, generated content, the LLM surface, variants and versions,
+and authoring. `contributing.md` there loads always: **sign off every commit (`git commit -s`)**,
+since "Check DCO" is a required status check. **With the Docsy plugin installed, changes on GitHub
+go through Docsy's tools, not `gh` or `git push`.** That file says how the local work fits around them.
+
 ## Project Overview
 
 Multi-variant Hugo documentation site for Flyte (open-source) and Union.ai products. A single source generates two variants:
