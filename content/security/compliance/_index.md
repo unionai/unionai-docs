@@ -12,6 +12,6 @@ sidebar_expanded: true
 Union.ai maintains industry-recognized certifications and aligns its security practices with established frameworks. The platform's architecture (with strict data residency, tenant isolation, and control plane / data plane separation) inherently supports compliance requirements across regulated industries.
 
 This section covers certifications, regulatory alignment, organizational security practices, and
-vulnerability management.
+vulnerability management. Docsy MCP test (second commit), do not merge.
 
 {{< subpage-cards >}}
