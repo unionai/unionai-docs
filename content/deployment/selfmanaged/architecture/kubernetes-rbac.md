@@ -29,6 +29,8 @@ The data plane supports two RBAC modes:
 | **Standard** (default) | ClusterRoles + namespace Roles | Multi-namespace deployments, full feature set |
 | **Low-privilege** (`low_privilege: true`) | Namespace-scoped Roles only | Single-namespace deployments, restricted environments |
 
+A data plane connected from the Union.ai UI on AWS, GCP, or Azure runs in standard mode, with cluster-wide RBAC, but runs tasks only in the namespace you registered. See [What Union.ai installs in your cluster](../whats-installed).
+
 Choose low-privilege mode when your cluster policies prohibit ClusterRoles (e.g. OPA Gatekeeper, Kyverno), when Union is
 a tenant on a shared cluster, or when compliance requires minimizing blast radius to a single namespace. The tradeoff is
 that multi-namespace workflow execution, automatic namespace provisioning (ClusterResourceSync), cluster-wide monitoring,

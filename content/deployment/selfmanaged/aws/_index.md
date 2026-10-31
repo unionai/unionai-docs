@@ -129,7 +129,7 @@ Use the bare hostname, for example, `{org}.hosted.unionai.cloud`; omit the `http
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
 - A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
-The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. Choose a dedicated test account when possible.
+The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. See [What Union.ai installs in your cluster](../whats-installed) for what runs on them. Choose a dedicated test account when possible.
 
 Run every step in the same shell session. Later steps use the variables that earlier steps export.
 

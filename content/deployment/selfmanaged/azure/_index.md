@@ -42,7 +42,7 @@ At the end you have the values you enter when you connect your cluster: three fo
 - An account that can create resource groups and role assignments in the subscription: Owner, or Contributor together with User Access Administrator. Contributor alone cannot create role assignments, so with it the setup fails as soon as it assigns a role.
 - A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
-The commands create billable resources, including the AKS cluster, its nodes, a standard load balancer, and the Log Analytics workspace, which bills per GB of logs it ingests. The cluster's API server is reachable from the internet, and its outbound traffic goes through the AKS-managed load balancer. The setup does not create a private cluster or a NAT gateway.
+The commands create billable resources, including the AKS cluster, its nodes, a standard load balancer, and the Log Analytics workspace, which bills per GB of logs it ingests. See [What Union.ai installs in your cluster](../whats-installed) for what runs on them. The cluster's API server is reachable from the internet, and its outbound traffic goes through the AKS-managed load balancer. The setup does not create a private cluster or a NAT gateway.
 
 Run every step in the same shell session. Later steps use the variables that earlier steps export.
 

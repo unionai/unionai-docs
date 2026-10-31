@@ -19,6 +19,10 @@ The steps are the same on AWS, GCP, and Azure: create a cluster pool, register t
 - The values printed at the end of the provisioning page for your provider: [AWS](./aws/_index#8-collect-the-values-for-connecting-your-cluster), [GCP](./gcp/_index#8-collect-the-values-for-connecting-your-cluster), or [Azure](./azure/_index#10-check-the-resources-and-collect-the-values). If you are using resources you already had, check that they meet the requirements on that page, and collect the same values for them.
 - [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the cluster from the shell where you provisioned it.
 
+## What this installs
+
+You install the agent, in the `dataplane-agent` namespace, and Union.ai installs the data plane through it. Your cloud provider bills you for the resources the data plane runs on even while it is idle. See [What Union.ai installs in your cluster](./whats-installed) for the components, their permissions and the cost on each provider.
+
 ## 1. Create the cluster pool
 
 A cluster pool groups clusters that share an object store, a secret store and an image registry. A new organization has none, so you create one first.
