@@ -14,7 +14,7 @@ The plugin enables:
 
 - `DictConfig` and `ListConfig` as native task input and output types
 - Round-tripping of structured configs (dataclass schemas) across task boundaries
-- Preservation of OmegaConf-specific values: `MISSING` sentinels, `Enum`s, `pathlib.Path`s, `tuple`s, and `bytes`
+- Preservation of OmegaConf-specific values: `MISSING` sentinels, `Enum`s, `pathlib.Path`s, and `bytes`
 - Resolved variable interpolations on the wire
 - A YAML-rendered Flyte report tab for human-readable config inspection
 
@@ -417,7 +417,6 @@ A plain `DictConfig` (one not bound to a dataclass) can still hold Python values
 
 - `pathlib.Path` and any subclass of `pathlib.PurePath`
 - `enum.Enum` members
-- `tuple` (round-trips as `tuple`, not `list`)
 - `bytes`
 
 ```python{hl_lines=[1]}
@@ -431,6 +430,8 @@ async def use_path(cfg: DictConfig) -> str:
 ```
 
 If an `Enum`'s class cannot be imported in the receiving environment, the value is returned as the underlying primitive (`int`, `str`, ...) instead of the enum member.
+
+A `tuple` isn't preserved in a plain or structured config, because OmegaConf converts it to a container when it enters the config. With omegaconf 2.3, it arrives as a `ListConfig`. With omegaconf 2.4, serialization fails with `TypeError: can not serialize 'TupleConfig' object`. Use a list instead.
 
 ## Reserved-looking keys
 
@@ -494,8 +495,8 @@ Literal(scalar=Scalar(binary=Binary(value=<msgpack bytes>, tag="msgpack")))
 
 The msgpack payload uses an internal tagged structure to distinguish OmegaConf-specific concepts from raw values:
 
-- A `DictConfig` payload includes the originating dataclass name (`builtins.dict` for plain configs) plus its values.
-- `MISSING`, `Enum`, `Path`, and `tuple` values carry tagged shapes so they can be reconstructed faithfully.
+- A `DictConfig` payload includes its values and, for a structured config, the originating dataclass name. A plain config's payload carries no dataclass name.
+- `MISSING`, `Enum`, and `Path` values carry tagged shapes so they can be reconstructed faithfully.
 
 You normally do not need to inspect this format. It is documented here because:
 
