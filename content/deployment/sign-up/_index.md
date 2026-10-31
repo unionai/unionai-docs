@@ -15,7 +15,7 @@ Every Union.ai deployment starts here. You create your organization in the Union
 - **On AWS Marketplace.** Buy **Union Team** on AWS Marketplace, so the charges appear on your AWS bill. Start at [AWS Marketplace](./aws-marketplace), which hands you on to sign-up.
 - **Directly.** Start at [Create your account and organization](./create-organization). There is no GCP or Azure Marketplace listing yet.
 
-Either way, a new organization starts with a 30-day free trial.
+Either way, a new organization starts with a 30-day free trial. The trial covers Union.ai's charges, not your cloud provider's: the resources your data plane runs on are billed to your own cloud account during the trial too. See [What it costs](../selfmanaged/whats-installed#what-it-costs).
 
 **You can try it before you set up a cluster.** Once your organization exists, a workflow you run on your own machine reports to it and appears in the Union.ai UI. That is enough to see how Union.ai works before you create any cloud resources.
 
