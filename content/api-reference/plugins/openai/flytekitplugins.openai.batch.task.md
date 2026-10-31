@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.openai.batch.task
 icon: box-seam
-version: 1.16.30
+version: 1.16.31
 variants: +flyte +union
 layout: py_api
 ---
@@ -475,7 +475,7 @@ def find_lhs()
 class DownloadJSONFilesTask(
     name: str,
     task_config: flytekitplugins.openai.batch.task.OpenAIFileConfig,
-    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.30',
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.31',
     **kwargs,
 )
 ```
@@ -946,7 +946,7 @@ def find_lhs()
 class UploadJSONLFileTask(
     name: str,
     task_config: flytekitplugins.openai.batch.task.OpenAIFileConfig,
-    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.30',
+    container_image: str = 'cr.flyte.org/flyteorg/flytekit:py3.12-openai-batch-1.16.31',
     **kwargs,
 )
 ```

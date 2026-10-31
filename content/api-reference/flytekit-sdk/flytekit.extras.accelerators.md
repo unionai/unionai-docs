@@ -2,7 +2,7 @@
 title: flytekit.extras.accelerators
 description: "tags: MachineLearning, Advanced, Hardware."
 icon: box-seam
-version: 1.16.30
+version: 1.16.31
 variants: +flyte +union
 layout: py_api
 ---
