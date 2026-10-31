@@ -109,6 +109,5 @@ For Azure Storage CORS configuration, see the [Azure Storage CORS documentation]
 
 | Error Message | Cause | Fix |
 |---------------|-------|-----|
-| `Not available: No code available for this action.` | The task does not have a code bundle. This occurs when the code is baked into the Docker image or the task is not a code-based task. | This is expected behavior for tasks without code bundles. |
-| `Not Found: The code bundle file could not be found. This may be due to your organization's data retention policy.` | The code bundle was deleted from the bucket, likely due to a retention policy. | Review your fast registration bucket's retention policy settings. |
+| `Not available: No code available for this action.` (on a task or app page: `…for this task.` or `…for this app.`) | Either the task has no code bundle (the code is baked into the container image, or the task is not code-based), or its code bundle was deleted from the bucket, for example by a retention policy. | If the task was deployed with a code bundle, review your fast registration bucket's retention policy settings. Otherwise, this is expected behavior. |
 | `Error: Code download is blocked by your storage bucket's configuration. Please contact your administrator to enable access.` | CORS is not configured on the bucket. | Configure CORS on your bucket using the instructions above. |
