@@ -10,9 +10,9 @@ mermaid: true
 # Cluster and workload management
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` cluster, pool, and queue commands and the Python objects on these
+> The `flyte` cluster, pool, queue, and node-groups commands and the Python objects on these
 > pages are provided by the `flyteplugins-union` package. Install it with
-> `pip install flyteplugins-union`.
+> `pip install flyteplugins-union`. The node-groups commands need version 0.19.0 or later.
 
 As a {{< key product_name >}} deployment grows past a single cluster, you need to
 control *where* a workload runs and *under what limits*. Three primitives do this:
@@ -142,6 +142,10 @@ Create and manage the scheduling lanes that route workloads to a pool and enforc
 
 {{< link-card target="resource-caps-and-scheduling" icon="sliders" title="Resource caps and scheduling" >}}
 Share clusters across teams with per-queue CPU, memory, and GPU caps, and choose how a queue schedules work when capacity is tight.
+{{< /link-card >}}
+
+{{< link-card target="node-groups" icon="server" title="Node groups" >}}
+Inspect and update the node groups a cluster declares, the node shapes it can schedule onto.
 {{< /link-card >}}
 
 {{< /grid >}}
