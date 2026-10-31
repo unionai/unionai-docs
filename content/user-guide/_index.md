@@ -62,7 +62,7 @@ Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
-Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
+Run tasks automatically on a schedule, or save named launch configurations to fire on demand.
 {{< /link-card >}}
 
 {{< link-card target="agents" icon="robot" title="Agents" >}}
