@@ -70,7 +70,7 @@ if __name__ == "__main__":
 That produces one trace shaped like this:
 
 ```text
-main                          ← task span
+my_env.main                   ← task span
 ├── double                    ← flyte.trace step span
 ├── double
 └── double
