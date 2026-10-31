@@ -416,8 +416,9 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
 | [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
 | [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [oMLX](../user-guide/apps/native-app-integrations/omlx-app)     | Serve models on a Mac's Apple Silicon GPU from an Apple Silicon devbox | Local LLM inference on a Mac |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages. oMLX serves only on a Mac from an Apple Silicon devbox; see the [oMLX app](../user-guide/apps/native-app-integrations/omlx-app) page.
 
 ## Notebook execution
 
