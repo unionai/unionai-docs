@@ -90,7 +90,7 @@ Both render their activity into the task report.
 
 **Tools:** `tool` turns an `@env.task` into a LangChain `StructuredTool`. It is a first-class LangGraph tool, so it works with `model.bind_tools(...)`, with `tool_node`, and with LangGraph's own `ToolNode`. The args schema comes from the task's typed signature.
 
-**Model turns:** Durability lives in `ai_node`, not in a model wrapper. That means any chat model works, including a `provider:model` string, and durability applies uniformly.
+**Model turns:** Durability lives in `ai_node`, not in a model wrapper. That means any chat model instance works, and durability applies uniformly. `ai_node` doesn't accept a `provider:model` string. Only `run_agent` resolves one, when it builds the graph for you.
 
 ## Skipping the graph
 
@@ -140,7 +140,7 @@ The conversation transcript is persisted to a durable, keyed `MemoryStore` and p
 | `model` | `Any` | `None` | A chat model instance or `provider:model` string. Required when building the graph |
 | `instructions` | `str \| None` | `None` | System prompt prepended to a built graph's messages |
 | `agent` | `Any` | `None` | A pre-built compiled graph. Mutually exclusive with `tools` |
-| `name` | `str` | `"langgraph-agent"` | Graph name, used for debugging and observability |
+| `name` | `str` | `"langgraph-agent"` | Not used. It doesn't set node names, the report heading, or anything passed to `ainvoke` |
 | `durable` | `bool` | `True` | Record each model turn. Applies to built graphs |
 | `observability` | `bool` | `True` | Render the timeline into the task report |
 | `memory_key` | `str \| None` | `None` | Stable user or thread ID for cross-run memory |
