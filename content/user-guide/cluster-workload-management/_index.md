@@ -43,14 +43,14 @@ administrator. These are administrative tasks; most workflow authors only need
 
 The pages here manage the **control-plane records** for pools, clusters, and
 queues. They do not provision the **data plane** itself: the cloud resources
-(object store, secret store, registry) and the Helm release that registers a
-cluster with the control plane.
+(object store, secret store, registry) and the install of the data plane on the
+cluster (by the agent from the Union.ai UI, or by a Helm release you run).
 
 If you run a self-managed deployment, provision the data plane first with
 [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-[Data plane setup on AWS](../../deployment/selfmanaged/aws/legacy)),
-then use the commands here to manage the pool, cluster, and queue records that
-route work to it.
+[Provision your AWS resources](../../deployment/selfmanaged/aws/_index)),
+then use the commands here to add or change the pool, cluster, and queue records
+that route work to it.
 
 ## How they fit together
 

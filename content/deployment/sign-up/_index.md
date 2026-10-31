@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Subscribe and sign up
 
-Every Union.ai deployment starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
+Every self-managed deployment on AWS, GCP, or Azure starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
 
 **How you pay is separate from where your data plane runs.** A subscription is a billing relationship, not infrastructure: you can subscribe on AWS Marketplace and run your data plane on GCP or Azure.
 
