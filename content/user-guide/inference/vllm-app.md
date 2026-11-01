@@ -1,12 +1,12 @@
 ---
-title: vLLM app
+title: vLLM endpoint
 description: Deploy a high-throughput vLLM model server.
 icon: cpu
 weight: 2
 variants: +flyte +union
 ---
 
-# vLLM app
+# vLLM endpoint
 
 vLLM is a high-performance library for serving large language models (LLMs). Flyte provides `VLLMAppEnvironment` for deploying vLLM model servers.
 
@@ -18,7 +18,7 @@ First, install the vLLM plugin:
 pip install flyteplugins-vllm
 ```
 
-## Basic vLLM app
+## Basic vLLM endpoint
 
 Here's a simple example serving a HuggingFace model:
 
@@ -67,7 +67,7 @@ See the [vLLM documentation](https://docs.vllm.ai/en/stable/configuration/engine
 
 ## Using the OpenAI-compatible API
 
-Once deployed, your vLLM app exposes an OpenAI-compatible API:
+Once deployed, your vLLM endpoint exposes an OpenAI-compatible API:
 
 ```python
 from openai import OpenAI
@@ -134,7 +134,7 @@ See [Prefetching models](./prefetching-models) for more details on sharding.
 
 ## Autoscaling
 
-vLLM apps work well with autoscaling:
+vLLM endpoints work well with autoscaling:
 
 ```python
 vllm_app = VLLMAppEnvironment(

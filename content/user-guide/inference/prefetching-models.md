@@ -41,7 +41,7 @@ flyte prefetch hf-model Qwen/Qwen3-0.6B --wait
 
 ## Using prefetched models
 
-Use the prefetched model in your vLLM or SGLang app:
+Use the prefetched model in your vLLM or SGLang endpoint:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-prefetched-models lang=python >}}
 

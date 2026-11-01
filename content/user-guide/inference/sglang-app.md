@@ -1,12 +1,12 @@
 ---
-title: SGLang app
+title: SGLang endpoint
 description: Deploy an SGLang model server for fast structured generation.
 icon: cpu
 weight: 3
 variants: +flyte +union
 ---
 
-# SGLang app
+# SGLang endpoint
 
 SGLang is a fast structured generation library for large language models (LLMs). Flyte provides `SGLangAppEnvironment` for deploying SGLang model servers.
 
@@ -18,7 +18,7 @@ First, install the SGLang plugin:
 pip install flyteplugins-sglang
 ```
 
-## Basic SGLang app
+## Basic SGLang endpoint
 
 Here's a simple example serving a HuggingFace model:
 
@@ -67,7 +67,7 @@ See the [SGLang server arguments documentation](https://docs.sglang.io/advanced_
 
 ## Using the OpenAI-compatible API
 
-Once deployed, your SGLang app exposes an OpenAI-compatible API:
+Once deployed, your SGLang endpoint exposes an OpenAI-compatible API:
 
 ```python
 from openai import OpenAI
@@ -134,7 +134,7 @@ See [Prefetching models](./prefetching-models) for more details on sharding.
 
 ## Autoscaling
 
-SGLang apps work well with autoscaling:
+SGLang endpoints work well with autoscaling:
 
 ```python
 sglang_app = SGLangAppEnvironment(

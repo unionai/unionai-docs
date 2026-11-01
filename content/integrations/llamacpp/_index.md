@@ -30,7 +30,7 @@ Serve the app:
 
 ## Next steps
 
-The [llama.cpp app](../../user-guide/inference/llamacpp-app) guide covers object storage, calling the app, choosing an image, `llama-server` arguments, and speculative decoding.
+The [llama.cpp endpoint](../../user-guide/inference/llamacpp-app) guide covers object storage, calling the app, choosing an image, `llama-server` arguments, and speculative decoding.
 
 ## API reference
 

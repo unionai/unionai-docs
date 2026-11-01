@@ -1,12 +1,12 @@
 ---
-title: Ollama app
+title: Ollama endpoint
 description: Serve open models locally with Ollama's OpenAI-compatible API.
 icon: cpu
 weight: 4
 variants: +flyte +union
 ---
 
-# Ollama app
+# Ollama endpoint
 
 [Ollama](https://ollama.com/) is a lightweight runtime for serving open large language models (LLMs) locally, with a built-in OpenAI-compatible API. It is a good fit for smaller models and quick local-style serving, and complements the higher-throughput [vLLM](./vllm-app) and [SGLang](./sglang-app) integrations.
 
@@ -20,7 +20,7 @@ Ollama needs no Flyte plugin — it is installed into the app image. Start from 
 
 The `install.sh` script drops the `ollama` binary into `/usr/local/bin`; no systemd service is needed inside a container.
 
-## Basic Ollama app
+## Basic Ollama endpoint
 
 Define the app with a GPU-backed `AppEnvironment`. The `args` run the script's `--server` entrypoint, which starts Ollama and pulls the model:
 
@@ -43,7 +43,7 @@ Deploy it with `flyte.serve`:
 
 ## Using the OpenAI-compatible API
 
-Once deployed, the Ollama app exposes an OpenAI-compatible API. Call it exactly like the vLLM or SGLang apps:
+Once deployed, the Ollama endpoint exposes an OpenAI-compatible API. Call it exactly like the vLLM or SGLang endpoints:
 
 ```python
 from openai import OpenAI
@@ -113,7 +113,7 @@ When calling through the OpenAI client, pass the same key as `api_key` — it be
 
 ## Autoscaling
 
-Ollama apps work well with scale-to-zero, so an idle model server costs nothing:
+Ollama endpoints work well with scale-to-zero, so an idle model server costs nothing:
 
 ```python
 app_env = flyte.app.AppEnvironment(

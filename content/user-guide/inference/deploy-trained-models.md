@@ -136,6 +136,6 @@ Then mount the task's output into a `FastAPIAppEnvironment` with a parameter:
 
 | Model | App | Details |
 |---|---|---|
-| LLM, high throughput | `VLLMAppEnvironment` | [vLLM app](./vllm-app) |
-| LLM, structured generation | `SGLangAppEnvironment` | [SGLang app](./sglang-app) |
+| LLM, high throughput | `VLLMAppEnvironment` | [vLLM endpoint](./vllm-app) |
+| LLM, structured generation | `SGLangAppEnvironment` | [SGLang endpoint](./sglang-app) |
 | Anything else | `FastAPIAppEnvironment` | [FastAPI app](../apps/native-app-integrations/fastapi-app) |

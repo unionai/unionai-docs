@@ -77,4 +77,4 @@ obstore's runtime does not survive `fork()`, and vLLM forks its engine-core proc
 
 ## Related pages
 
-To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM app](./vllm-app#model-streaming) or an [SGLang app](./sglang-app#model-streaming).
+To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM endpoint](./vllm-app#model-streaming) or an [SGLang endpoint](./sglang-app#model-streaming).
