@@ -420,7 +420,7 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/sglang-app) and [vLLM endpoint](../user-guide/inference/vllm-app) pages.
 
-To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers).
+To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers/_index).
 
 ## Notebook execution
 

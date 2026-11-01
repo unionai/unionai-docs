@@ -40,7 +40,7 @@ The gateway meters hosted providers from its built-in price catalog, so budgets 
 
 The console lists the providers your gateway supports when you add one.
 
-To call a provider directly from a task or app instead, without the gateway, see [Providers](../inference/providers) in the Inference section.
+To call a provider directly from a task or app instead, without the gateway, see [Providers](../inference/providers/_index) in the Inference section.
 
 ## Add a self-hosted model
 

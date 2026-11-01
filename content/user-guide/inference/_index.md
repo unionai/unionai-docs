@@ -12,7 +12,7 @@ Choose how to run a model based on where it lives and how you call it:
 
 | You want to | Use |
 |---|---|
-| Call a hosted model such as Fireworks, OpenAI, or Anthropic from a task or app | [Providers](./providers) |
+| Call a hosted model such as Fireworks, OpenAI, or Anthropic from a task or app | [Providers](./providers/_index) |
 | Serve an open-weight LLM on your own GPUs at high throughput | [vLLM endpoint](./vllm-app) or [SGLang endpoint](./sglang-app) |
 | Serve a small LLM with minimal setup | [Ollama endpoint](./ollama-app) |
 | Serve quantized GGUF weights, a model larger than VRAM, or a model on CPU only | [llama.cpp endpoint](./llamacpp-app) |
@@ -21,14 +21,14 @@ Choose how to run a model based on where it lives and how you call it:
 | Score a dataset on GPUs as a job, with no endpoint | [Batch inference](./batch-inference) |
 | Load weights inside a task from object storage | [Stream model weights](./stream-model-weights) |
 
-Most hosted providers, and vLLM, SGLang, Ollama, and llama.cpp endpoints, expose the OpenAI API or an API compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name. Some providers, such as Anthropic, need their own SDK. See [Providers](./providers#providers-with-their-own-sdk).
+Most hosted providers, and vLLM, SGLang, Ollama, and llama.cpp endpoints, expose the OpenAI API or an API compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name. Some providers, such as Anthropic, need their own SDK. See [Providers](./providers/_index#providers-with-their-own-sdk).
 
 {{< variant union >}}
 {{< markdown >}}
 
 ## Route calls through the LLM Gateway
 
-The [LLM Gateway](../llm-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers#choose-direct-calls-or-the-gateway).
+The [LLM Gateway](../llm-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers/_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}

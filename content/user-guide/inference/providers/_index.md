@@ -1,0 +1,154 @@
+---
+title: Inference providers
+linkTitle: Providers
+description: "Call hosted LLM and model APIs such as Fireworks AI, OpenAI, and Anthropic from Flyte tasks and apps, with API keys stored as secrets."
+icon: cloud
+weight: 1
+variants: +flyte +union
+keywords:
+  - inference providers
+  - hosted LLM API
+  - model provider API key
+  - OpenAI-compatible API
+  - Fireworks AI
+  - OpenAI
+  - Anthropic
+  - Flyte secrets
+---
+
+# Inference providers
+
+Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
+
+{{< variant union >}}
+{{< markdown >}}
+
+This works on both BYOC and Self-managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [LLM Gateway](#choose-direct-calls-or-the-gateway).
+
+{{< /markdown >}}
+{{< /variant >}}
+
+## Supported providers
+
+### OpenAI-compatible providers
+
+These providers work with the OpenAI SDK by changing the base URL. Each page lists the URL, where to get a key, and a complete task.
+
+| Provider | Notes |
+|---|---|
+| [Fireworks AI](./fireworks) | Serverless and on-demand deployments |
+| [OpenAI](./openai) | |
+| [Amazon Bedrock](./amazon-bedrock) | Takes a Bedrock API key |
+| [Azure OpenAI](./azure-openai) | `model` is your deployment name |
+| [Cerebras](./cerebras) | |
+| [Cohere](./cohere) | |
+| [DeepSeek](./deepseek) | |
+| [Gemini API](./gemini) | |
+| [Google Vertex AI](./vertex-ai) | Takes an access token from a service account |
+| [Grok API](./grok) | |
+| [Groq](./groq) | |
+| [Hugging Face Inference Providers](./hugging-face) | |
+| [Mistral AI](./mistral) | |
+| [Nebius Token Factory](./nebius) | |
+| [OpenRouter](./openrouter) | |
+| [Perplexity](./perplexity) | Uses the Responses API |
+| [Sarvam AI](./sarvam) | |
+| [Wafer](./wafer) | |
+
+### Providers with their own SDK
+
+These providers don't document an OpenAI-compatible endpoint for production use. Add the SDK to the image and pass it the key from the environment.
+
+| Provider | Python package | Models |
+|---|---|---|
+| [Anthropic](./anthropic) | `anthropic` | Chat |
+| [ElevenLabs](./elevenlabs) | `elevenlabs` | Speech |
+| [Runway](./runway) | `runwayml` | Video and image |
+| [TypeSafe](./typesafe) | `typesafe-sdk` | Typed answers |
+
+## Store the API key as a secret
+
+Run this command without `--value` and paste the key at the prompt, which keeps it out of your shell history:
+
+```bash
+flyte create secret fireworks-api-key --project <your-project> --domain development
+```
+
+Leave out `--project` and `--domain` to make the secret available across your organization. Prefer a project and domain, so that one team's tasks can't use another team's key.
+
+Check that the secret exists:
+
+```bash
+flyte get secret --project <your-project> --domain development
+```
+
+The output lists metadata such as the name and scope. It never includes the value.
+
+{{< variant union >}}
+{{< markdown >}}
+
+Each cluster pool has its own secret store. If your organization has more than one pool, an organization-wide secret needs `--cluster-pool`. See [Org-wide secrets in a multi-cluster deployment](../../tasks/task-configuration/secrets#org-wide-secrets-in-a-multi-cluster-deployment).
+
+Secret values stay in your own infrastructure and no API returns them. See [Secrets management](../../../security/data-protection/secrets).
+
+{{< /markdown >}}
+{{< /variant >}}
+
+## Call the provider from a task
+
+Declare the secret on the environment and read it from the environment variable. This task calls Fireworks AI through the OpenAI SDK:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_fireworks.py" fragment="task" lang="python" >}}
+
+A task can only read a secret whose scope covers the project and domain it runs in. Provider model IDs change often, so check the provider's model catalog for current names.
+
+## Call the provider from an app
+
+`AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_from_app.py" fragment="app-env" lang="python" >}}
+
+## Use a different key for one call
+
+Override the secret for a single invocation when the same task needs different credentials, for example per team:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/override_key.py" fragment="override" lang="python" >}}
+
+The override replaces the environment's secrets for that call. On a [reusable container](../../tasks/task-configuration/reusable-containers) it raises an error unless you also pass `reusable="off"`. See [Overriding secrets](../../tasks/task-configuration/overrides#overriding-secrets).
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Choose direct calls or the gateway
+
+Calling a provider directly needs the fewest moving parts. The [LLM Gateway](../../llm-gateway/_index) supports all of the providers above, including Fireworks, behind one endpoint.
+
+| | Direct call | LLM Gateway |
+|---|---|---|
+| **Key your code holds** | The provider's API key | A virtual key with its own budget and rate limit |
+| **Change provider** | Change the base URL, key, and model | Change the model name |
+| **Provider outage** | Handle it in your code | Fall back to another model |
+| **Prompt and answer checks** | Write them into each task or app | Global guardrails on every call |
+| **Spend across teams** | One view per provider account | One view per virtual key |
+
+To move to the gateway, [add the provider](../../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps).
+
+{{< /markdown >}}
+{{< /variant >}}
+
+## Keep keys safe
+
+- **Never return a key from a task.** Task outputs are written in plaintext to your object store and appear in the UI and in downstream tasks.
+- **Keep keys out of code, task inputs, and `flyte.run()` arguments.** Inputs are stored and displayed the same way as outputs.
+- **Rotate without downtime.** Create a key at the provider, delete and re-create the secret with the new value, redeploy apps that use it, and then revoke the old key.
+
+## Troubleshooting
+
+**The provider returns 401:**
+The key is invalid, revoked, or was stored with a typo. Test it outside Flyte with the provider's REST API, then re-create the secret.
+
+**The task fails before it runs, with a secret not found error:**
+The secret's scope doesn't cover the task's project and domain. List secrets with the same `--project` and `--domain` the task uses.
+
+**The provider returns 429:**
+You've reached a rate limit on your provider account. Check its limits and your usage in the provider's console.
