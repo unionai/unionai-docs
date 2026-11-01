@@ -2,7 +2,7 @@
 title: Ollama app
 description: Serve open models locally with Ollama's OpenAI-compatible API.
 icon: cpu
-weight: 13
+weight: 4
 variants: +flyte +union
 ---
 
@@ -10,7 +10,7 @@ variants: +flyte +union
 
 [Ollama](https://ollama.com/) is a lightweight runtime for serving open large language models (LLMs) locally, with a built-in OpenAI-compatible API. It is a good fit for smaller models and quick local-style serving, and complements the higher-throughput [vLLM](./vllm-app) and [SGLang](./sglang-app) integrations.
 
-Unlike vLLM and SGLang, Ollama has no dedicated `*AppEnvironment` plugin. Instead, you serve it with the generic [`AppEnvironment`](../build-apps/single-script-apps): an image that installs Ollama plus a small entrypoint that launches `ollama serve` and pulls the model on startup.
+Unlike vLLM and SGLang, Ollama has no dedicated `*AppEnvironment` plugin. Instead, you serve it with the generic [`AppEnvironment`](../apps/build-apps/single-script-apps): an image that installs Ollama plus a small entrypoint that launches `ollama serve` and pulls the model on startup.
 
 ## Installation
 
@@ -65,7 +65,7 @@ print(response.choices[0].message.content)
 
 ## Chat UI with Streamlit
 
-To put a browser UI in front of the model, run Ollama internally and expose a [Streamlit](./streamlit-app) chat interface instead of the raw API. Only the Streamlit port is exposed; the browser talks to Streamlit, and Streamlit talks to Ollama over localhost:
+To put a browser UI in front of the model, run Ollama internally and expose a [Streamlit](../apps/native-app-integrations/streamlit-app) chat interface instead of the raw API. Only the Streamlit port is exposed; the browser talks to Streamlit, and Streamlit talks to Ollama over localhost:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/ollama/ollama_streamlit.py" fragment=app-env lang=python >}}
 
@@ -83,7 +83,7 @@ The container entrypoint runs that helper, then hands the exposed port to Stream
 
 ## Authentication
 
-The generic `AppEnvironment` uses Union's platform-level authentication. Leave `requires_auth=True` (the default) to require an authenticated caller, or set `requires_auth=False` for a public endpoint. Ollama has no built-in API-key argument of its own, so prefer platform auth over exposing a public endpoint. For app-managed authentication (verifying a Bearer token yourself with a Flyte secret), see [Secret-based authentication](../build-apps/secret-based-authentication).
+The generic `AppEnvironment` uses Union's platform-level authentication. Leave `requires_auth=True` (the default) to require an authenticated caller, or set `requires_auth=False` for a public endpoint. Ollama has no built-in API-key argument of its own, so prefer platform auth over exposing a public endpoint. For app-managed authentication (verifying a Bearer token yourself with a Flyte secret), see [Secret-based authentication](../apps/build-apps/secret-based-authentication).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -107,7 +107,7 @@ curl -X POST "https://your-app-url/v1/chat/completions" \
   }'
 ```
 
-When calling through the OpenAI client, pass the same key as `api_key` — it becomes the `Authorization: Bearer` token (Ollama itself ignores the value). See [Using API keys with Union apps](../../authenticating#using-api-keys-with-union-apps) for details.
+When calling through the OpenAI client, pass the same key as `api_key` — it becomes the `Authorization: Bearer` token (Ollama itself ignores the value). See [Using API keys with Union apps](../authenticating#using-api-keys-with-union-apps) for details.
 {{< /markdown >}}
 {{< /variant >}}
 

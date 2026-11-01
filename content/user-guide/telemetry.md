@@ -2,7 +2,7 @@
 title: Telemetry
 description: What telemetry is sent and how to turn it off with DO_NOT_TRACK.
 icon: eye-slash
-weight: 15
+weight: 16
 variants: +flyte -union
 ---
 

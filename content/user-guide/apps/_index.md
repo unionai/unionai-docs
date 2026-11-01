@@ -44,6 +44,10 @@ Use `flyte serve` for fast iteration or `flyte deploy` for production deployment
 
 {{< grid >}}
 
+{{< link-card target="../inference" icon="cpu" title="Inference" >}}
+Serve models as apps with vLLM, SGLang, and Ollama, and deploy the models your tasks train.
+{{< /link-card >}}
+
 {{< link-card target="../tasks" icon="gear" title="Tasks" >}}
 The batch workloads an app usually serves the results of.
 {{< /link-card >}}

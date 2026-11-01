@@ -2,7 +2,7 @@
 title: User management
 description: Manage users, roles, and policies for your Union cluster.
 icon: person
-weight: 8
+weight: 9
 variants: -flyte +union
 ---
 

@@ -88,7 +88,7 @@ curl -X POST -H "Content-Type: application/json" \
 
 - **Chat UI:** To let users converse with the agent in a browser, serve it behind a chat interface. See [Add a chat UI](./agent-chat-ui).
 - **FastAPI endpoint:** For API-first agents, expose your agent behind a REST endpoint with `FastAPIAppEnvironment` so other services or agents can call it programmatically.
-- **Model serving:** [Serve open-weight LLMs](../../apps/native-app-integrations/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
+- **Model serving:** [Serve open-weight LLMs](../../inference/vllm-app) on GPUs behind an OpenAI-compatible API with `VLLMAppEnvironment` or `SGLangAppEnvironment`.
 
 > [!TIP]
 > See [Build Apps](../../apps/build-apps/_index) and [Configure Apps](../../apps/configure-apps/_index) for more details on hosting services on {{< key product_name >}}.

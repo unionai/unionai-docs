@@ -61,6 +61,10 @@ Configure, build, and deploy the durable batch workloads that everything else is
 Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Call hosted model providers, serve open-weight models on your own GPUs, and deploy the models your tasks train.
+{{< /link-card >}}
+
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
 Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
 {{< /link-card >}}
