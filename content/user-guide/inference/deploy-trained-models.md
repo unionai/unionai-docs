@@ -2,7 +2,7 @@
 title: Deploy trained models
 description: Serve a model trained in a Flyte task behind an endpoint, with vLLM, SGLang, or your own FastAPI app.
 icon: rocket-takeoff
-weight: 7
+weight: 4
 variants: +flyte +union
 ---
 
@@ -37,7 +37,7 @@ Pass the artifact to `VLLMAppEnvironment` as `model_path`. `SGLangAppEnvironment
 
 The directory must be in a format the engine can load, such as the output of `save_pretrained()`. A PEFT adapter saved on its own is not enough, so merge it into the base model first.
 
-Call the deployed app with any OpenAI client. See [Using the OpenAI-compatible API](./vllm-app#using-the-openai-compatible-api).
+Call the deployed app with any OpenAI client. See [Using the OpenAI-compatible API](./self-hosted-endpoints/vllm#using-the-openai-compatible-api).
 
 ## Serve any other model with FastAPI
 
@@ -107,7 +107,7 @@ Pass the task's output to `VLLMAppEnvironment` as `model_path` with `flyte.app.R
 
 The directory must be in a format the engine can load, such as the output of `save_pretrained()`. A PEFT adapter saved on its own is not enough, so merge it into the base model first.
 
-Call the deployed app with any OpenAI client. See [Using the OpenAI-compatible API](./vllm-app#using-the-openai-compatible-api).
+Call the deployed app with any OpenAI client. See [Using the OpenAI-compatible API](./self-hosted-endpoints/vllm#using-the-openai-compatible-api).
 
 ## Serve any other model with FastAPI
 
@@ -136,6 +136,6 @@ Then mount the task's output into a `FastAPIAppEnvironment` with a parameter:
 
 | Model | App | Details |
 |---|---|---|
-| LLM, high throughput | `VLLMAppEnvironment` | [vLLM endpoint](./vllm-app) |
-| LLM, structured generation | `SGLangAppEnvironment` | [SGLang endpoint](./sglang-app) |
+| LLM, high throughput | `VLLMAppEnvironment` | [vLLM endpoint](./self-hosted-endpoints/vllm) |
+| LLM, structured generation | `SGLangAppEnvironment` | [SGLang endpoint](./self-hosted-endpoints/sglang) |
 | Anything else | `FastAPIAppEnvironment` | [FastAPI app](../apps/native-app-integrations/fastapi-app) |

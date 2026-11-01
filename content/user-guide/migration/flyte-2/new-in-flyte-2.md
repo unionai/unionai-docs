@@ -24,7 +24,7 @@ For serving large language models, the `flyteplugins-vllm` integration gives you
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" fragment="basic-vllm-app" lang="python" >}}
 
-See [vLLM](../../inference/vllm-app) and the other [Native app integrations](../../apps/native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
+See [vLLM](../../inference/self-hosted-endpoints/vllm) and the other [Native app integrations](../../apps/native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
 
 ## App serving (dashboards and APIs)
 

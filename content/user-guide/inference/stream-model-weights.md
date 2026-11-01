@@ -1,7 +1,7 @@
 ---
 title: Stream model weights
 description: Load a model's safetensors weights from object storage onto the GPU inside a task, without writing them to local disk.
-weight: 9
+weight: 6
 variants: +flyte +union
 icon: download
 ---
@@ -84,4 +84,4 @@ obstore's runtime does not survive `fork()`, and vLLM forks its engine-core proc
 
 ## Related pages
 
-To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM endpoint](./vllm-app#model-streaming) or an [SGLang endpoint](./sglang-app#model-streaming).
+To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM endpoint](./self-hosted-endpoints/vllm#model-streaming) or an [SGLang endpoint](./self-hosted-endpoints/sglang#model-streaming).

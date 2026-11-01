@@ -2,7 +2,7 @@
 title: llama.cpp endpoint
 description: Serve quantized GGUF models with llama-server as a Flyte app, on GPU or CPU, behind an OpenAI-compatible API.
 icon: cpu
-weight: 5
+weight: 4
 variants: +flyte +union
 ---
 
@@ -10,7 +10,7 @@ variants: +flyte +union
 
 The `flyteplugins-llamacpp` plugin serves GGUF models with [llama.cpp](https://github.com/ggml-org/llama.cpp)'s `llama-server` as a Flyte app. `LlamaCppAppEnvironment` exposes an OpenAI-compatible API under `/v1` and the llama.cpp Web UI at `/`.
 
-Use it for quantized GGUF weights, for models larger than your GPU's VRAM, and for CPU-only serving. For high-throughput serving of full-precision weights, use [vLLM](./vllm-app) or [SGLang](./sglang-app).
+Use it for quantized GGUF weights, for models larger than your GPU's VRAM, and for CPU-only serving. For high-throughput serving of full-precision weights, use [vLLM](./vllm) or [SGLang](./sglang).
 
 ## Installation
 
@@ -36,12 +36,12 @@ Set `model_path` to a directory of GGUF weights, or to one `.gguf` file:
 
 The weights are downloaded into the container, so set `disk` to fit them. If the directory holds a sharded model, the app selects the `-00001-of-` shard and `llama-server` finds the rest. If it holds several unrelated `.gguf` files, the app serves the first one by sorted path.
 
-`model_path` also accepts a `flyte.app.RunOutput`, to serve the output of a task. See [Deploy trained models](./deploy-trained-models).
+`model_path` also accepts a `flyte.app.RunOutput`, to serve the output of a task. See [Deploy trained models](../deploy-trained-models).
 
 {{< variant union >}}
 {{< markdown >}}
 
-It accepts a `flyte.app.ArtifactValue` too, to serve a [model artifact](../artifacts/artifacts-in-apps).
+It accepts a `flyte.app.ArtifactValue` too, to serve a [model artifact](../../artifacts/artifacts-in-apps).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -59,7 +59,7 @@ Use any OpenAI client:
 {{< variant union >}}
 {{< markdown >}}
 
-With `requires_auth=True` (the default), pass a Union API key as `api_key`. See [Calling an authenticated app](./ollama-app#calling-an-authenticated-app).
+With `requires_auth=True` (the default), pass a Union API key as `api_key`. See [Calling an authenticated app](./ollama#calling-an-authenticated-app).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -110,4 +110,4 @@ Set `draft_model_path` or `draft_model_hf_path` to a small draft GGUF, and tune 
 
 ## API reference
 
-See the [llama.cpp API reference](../../api-reference/integrations/llamacpp/_index).
+See the [llama.cpp API reference](../../../api-reference/integrations/llamacpp/_index).

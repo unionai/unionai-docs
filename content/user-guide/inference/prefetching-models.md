@@ -2,14 +2,14 @@
 title: Prefetching models
 description: Download and shard a HuggingFace model before an inference app starts.
 icon: download
-weight: 6
+weight: 3
 variants: +flyte +union
 ---
 
 # Prefetching models
 
 Prefetching allows you to download and prepare HuggingFace models (including sharding for multi-GPU inference) before
-deploying [vLLM](./vllm-app) or [SGLang](./sglang-app) apps. This speeds up deployment and ensures models are ready when your app starts.
+deploying [vLLM](./self-hosted-endpoints/vllm) or [SGLang](./self-hosted-endpoints/sglang) apps. This speeds up deployment and ensures models are ready when your app starts.
 
 ## Why prefetch?
 

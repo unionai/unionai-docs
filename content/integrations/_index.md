@@ -415,10 +415,10 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 | Plugin                                                          | Description                                         | Common use cases             |
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
 | [llama.cpp](./llamacpp/_index) | Serve quantized GGUF models with llama-server, on GPU or CPU | Quantized models, CPU-only serving, models larger than VRAM |
-| [SGLang](../user-guide/inference/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/inference/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [SGLang](../user-guide/inference/self-hosted-endpoints/sglang) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/inference/self-hosted-endpoints/vllm)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/sglang-app) and [vLLM endpoint](../user-guide/inference/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/self-hosted-endpoints/sglang) and [vLLM endpoint](../user-guide/inference/self-hosted-endpoints/vllm) pages.
 
 To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers/_index).
 

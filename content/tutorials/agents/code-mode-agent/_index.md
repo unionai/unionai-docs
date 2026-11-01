@@ -85,7 +85,7 @@ The LLM callback uses the official Anthropic SDK. The agent's default callback g
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=llm lang=python >}}
 
 > [!NOTE]
-> This does not have to be Claude. The `call_llm` callback is the only model-specific code; everything around it is model-agnostic. Point it at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/inference/vllm-app) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
+> This does not have to be Claude. The `call_llm` callback is the only model-specific code; everything around it is model-agnostic. Point it at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/inference/self-hosted-endpoints/vllm) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
 
 ## The report collector
 

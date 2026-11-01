@@ -46,7 +46,7 @@ To call a provider directly from a task or app instead, without the gateway, see
 
 You can put a model you serve on Union behind the gateway, next to hosted providers. Callers reach it with the same client, the same virtual keys, and the same guardrails.
 
-1. Deploy the model as a [vLLM](../inference/vllm-app) or [SGLang](../inference/sglang-app) app on the gateway's cluster.
+1. Deploy the model as a [vLLM](../inference/self-hosted-endpoints/vllm) or [SGLang](../inference/self-hosted-endpoints/sglang) app on the gateway's cluster.
 2. In **Settings → LLM Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
 3. Fill in the provider:
 
