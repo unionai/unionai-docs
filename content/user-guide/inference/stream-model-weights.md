@@ -15,9 +15,6 @@ The safetensors weights are not written to local disk.
 
 Requires `flyte` 2.11.1 or later. The streamer needs `torch`, `load_hf_model()` also needs `transformers`, and the vLLM load format needs `vllm` and `flyteplugins-vllm` 2.11.1 or later.
 
-> [!NOTE] Not verified on GPUs
-> The examples on this page have not been verified on GPUs, and neither has loading into GPU memory through vLLM.
-
 ## Model location
 
 Every entry point takes `path`, the object-store prefix of a Hugging Face–style model directory, such as `s3://bucket/models/qwen2.5-7b`.
