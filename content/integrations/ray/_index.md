@@ -23,6 +23,8 @@ The Ray plugin lets you run [Ray](https://www.ray.io/) jobs natively on Kubernet
 pip install flyteplugins-ray
 ```
 
+If you set `requests` or `limits` on a `HeadNodeConfig` or `WorkerNodeConfig`, also install `kubernetes` (`pip install kubernetes`). The plugin imports it to build the node's pod spec, and neither `flyte` nor `flyteplugins-ray` depends on it.
+
 Your task image must also include a compatible version of Ray:
 
 ```python
@@ -81,7 +83,7 @@ ray_env = flyte.TaskEnvironment(
 | `enable_autoscaling` | `bool` | Enable Ray autoscaler (default: `False`) |
 | `autoscaler_options` | `AutoscalerOptionsConfig` | Tune the autoscaler sidecar. Has no effect unless `enable_autoscaling` is `True` |
 | `runtime_env` | `dict` | Ray runtime environment (pip packages, env vars, etc.) |
-| `address` | `str` | Connect to an existing Ray cluster instead of provisioning one |
+| `address` | `str` | Address the task passes to `ray.init()`. A Ray cluster is still provisioned for the task |
 | `shutdown_after_job_finishes` | `bool` | Shut down the cluster after the job completes (default: `False`) |
 | `ttl_seconds_after_finished` | `int` | Seconds to keep the cluster after completion before cleanup |
 
@@ -96,7 +98,7 @@ ray_env = flyte.TaskEnvironment(
 | `ray_start_params` | `Dict[str, str]` | Ray start parameters for workers |
 | `requests` | `Resources` | Resource requests per worker |
 | `limits` | `Resources` | Resource limits per worker |
-| `pod_template` | `PodTemplate` | Full pod template (mutually exclusive with `requests`/`limits`) |
+| `pod_template` | `PodTemplate` | Full pod template. If `requests` or `limits` are also set, they are merged into the template's `ray-worker` container, or its only container |
 
 ### `HeadNodeConfig` parameters
 
@@ -105,14 +107,14 @@ ray_env = flyte.TaskEnvironment(
 | `ray_start_params` | `Dict[str, str]` | Ray start parameters for the head node |
 | `requests` | `Resources` | Resource requests for the head node |
 | `limits` | `Resources` | Resource limits for the head node |
-| `pod_template` | `PodTemplate` | Full pod template (mutually exclusive with `requests`/`limits`) |
+| `pod_template` | `PodTemplate` | Full pod template. If `requests` or `limits` are also set, they are merged into the template's `ray-head` container, or its only container |
 
 The head node runs the Ray dashboard, which starts nine subprocess modules on
 top of GCS and the raylet. Give it 2 CPU and 4Gi of memory:
 
 ```python
 ray_config = RayJobConfig(
-    head_node_config=HeadNodeConfig(requests=flyte.Resources(cpu=2, memory="4Gi")),
+    head_node_config=HeadNodeConfig(requests=flyte.Resources(cpu="2", memory="4Gi")),
     worker_node_config=[WorkerNodeConfig(group_name="ray-group", replicas=2)],
 )
 ```
@@ -158,7 +160,7 @@ Every field is optional. Leaving `upscaling_mode`, `idle_timeout_seconds`, `imag
 
 ### Connecting to an existing cluster
 
-To connect to an existing Ray cluster instead of provisioning a new one, set the `address` parameter:
+Setting `address` does not stop Flyte from provisioning a Ray cluster for the task. The address is only passed to `ray.init()` when the task starts:
 
 ```python
 ray_config = RayJobConfig(
@@ -166,6 +168,8 @@ ray_config = RayJobConfig(
     address="ray://existing-cluster:10001",
 )
 ```
+
+To use an existing cluster without provisioning one, call `ray.init(address=...)` from a task that has no `RayJobConfig`, as the second example under [Examples](#examples) does.
 
 {{< variant union >}}
 {{< markdown >}}
