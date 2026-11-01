@@ -57,114 +57,23 @@ Declare the secret on the environment and read it from the environment variable.
 
 {{< tabs "provider-task" >}}
 {{< tab "Fireworks" >}}
-{{< markdown >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_fireworks.py" fragment="task" lang="python" >}}
 
-```python
-import asyncio
-import os
-
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="fireworks-inference",
-    image=flyte.Image.from_debian_base().with_pip_packages("openai"),
-    secrets=flyte.Secret(key="fireworks-api-key", as_env_var="FIREWORKS_API_KEY"),
-)
-
-
-@env.task
-async def summarize(text: str) -> str:
-    from openai import AsyncOpenAI
-
-    client = AsyncOpenAI(
-        base_url="https://api.fireworks.ai/inference/v1",
-        api_key=os.environ["FIREWORKS_API_KEY"],
-    )
-    response = await client.chat.completions.create(
-        model="accounts/fireworks/models/glm-5p3-flash",
-        messages=[{"role": "user", "content": f"Summarize in two sentences:\n\n{text}"}],
-    )
-    return response.choices[0].message.content
-
-
-@env.task
-async def main(texts: list[str]) -> list[str]:
-    return await asyncio.gather(*(summarize(text) for text in texts))
-
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    run = flyte.run(main, texts=["First document...", "Second document..."])
-    print(run.url)
-```
-
-{{< /markdown >}}
 {{< /tab >}}
 {{< tab "OpenAI" >}}
-{{< markdown >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_openai.py" fragment="task" lang="python" >}}
 
-```python
-import os
-
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="openai-inference",
-    image=flyte.Image.from_debian_base().with_pip_packages("openai"),
-    secrets=flyte.Secret(key="openai-api-key", as_env_var="OPENAI_API_KEY"),
-)
-
-
-@env.task
-async def summarize(text: str) -> str:
-    from openai import AsyncOpenAI
-
-    client = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
-    response = await client.chat.completions.create(
-        model="gpt-6-astra",
-        messages=[{"role": "user", "content": f"Summarize in two sentences:\n\n{text}"}],
-    )
-    return response.choices[0].message.content
-```
-
-{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Anthropic" >}}
-{{< markdown >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_anthropic.py" fragment="task" lang="python" >}}
 
-```python
-import os
-
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="anthropic-inference",
-    image=flyte.Image.from_debian_base().with_pip_packages("anthropic"),
-    secrets=flyte.Secret(key="anthropic-api-key", as_env_var="ANTHROPIC_API_KEY"),
-)
-
-
-@env.task
-async def summarize(text: str) -> str:
-    from anthropic import AsyncAnthropic
-
-    client = AsyncAnthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    response = await client.messages.create(
-        model="claude-opus-5-5",
-        max_tokens=1000,
-        messages=[{"role": "user", "content": f"Summarize in two sentences:\n\n{text}"}],
-    )
-    return response.content[0].text
-```
-
-{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 Run it with the script's main block, or with the CLI:
 
 ```bash
-flyte run fireworks_inference.py main --texts '["First document...", "Second document..."]'
+flyte run call_fireworks.py main --texts '["First document...", "Second document..."]'
 ```
 
 A task can only read a secret whose scope covers the project and domain it runs in. Provider model IDs change often, so check the provider's model catalog for current names.
@@ -173,28 +82,13 @@ A task can only read a secret whose scope covers the project and domain it runs 
 
 `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable:
 
-```python
-import flyte
-from flyte.app.extras import FastAPIAppEnvironment
-
-app_env = FastAPIAppEnvironment(
-    name="summarizer-api",
-    app=app,  # your FastAPI app
-    image=flyte.Image.from_debian_base().with_pip_packages("fastapi", "uvicorn", "openai"),
-    secrets=flyte.Secret(key="fireworks-api-key", as_env_var="FIREWORKS_API_KEY"),
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_from_app.py" fragment="app-env" lang="python" >}}
 
 ## Use a different key for one call
 
 Override the secret for a single invocation when the same task needs different credentials, for example per team:
 
-```python
-team_b = summarize.override(
-    secrets=flyte.Secret(key="fireworks-api-key-team-b", as_env_var="FIREWORKS_API_KEY")
-)
-result = await team_b(text=text)
-```
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/override_key.py" fragment="override" lang="python" >}}
 
 The override replaces the environment's secrets for that call, and doesn't work with a [reusable container](../tasks/task-configuration/reusable-containers). See [Overriding secrets](../tasks/task-configuration/overrides#overriding-secrets).
 
@@ -246,9 +140,7 @@ Models on Fireworks' serverless tier use the name `accounts/fireworks/models/<mo
 
 An on-demand deployment runs a model on dedicated GPUs. To use one, change only the model name. The base URL, the key, and the secret stay the same:
 
-```python
-model="accounts/<your-account-id>/deployments/<your-deployment-id>"
-```
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/call_fireworks.py" fragment="on-demand" lang="python" >}}
 
 A deployment that has scaled to zero returns a 503 while it scales up, so give the task [retries](../tasks/task-configuration/retries-and-timeouts).
 

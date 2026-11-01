@@ -414,6 +414,7 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                                          | Description                                         | Common use cases             |
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| [llama.cpp](./llamacpp/_index) | Serve quantized GGUF models with llama-server, on GPU or CPU | Quantized models, CPU-only serving, models larger than VRAM |
 | [SGLang](../user-guide/inference/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
 | [vLLM](../user-guide/inference/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 

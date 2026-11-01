@@ -2,7 +2,7 @@
 title: Triggers
 description: Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
 icon: alarm
-weight: 5
+weight: 6
 variants: +flyte +union
 ---
 

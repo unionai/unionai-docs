@@ -83,6 +83,22 @@ Answer many typed questions in one call, with calibrated confidence, and decide 
 
 {{< markdown >}}
 
+## LLM Gateway
+
+Route every model call from your tasks, apps, and laptops through one endpoint in your own cloud.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="llm-gateway" icon="signpost-split" title="LLM Gateway" >}}
+One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< markdown >}}
+
 ## Artifacts and factories
 
 Name and version the datasets and models your tasks produce, trace where they came from, and build them on demand with factories.
@@ -97,22 +113,6 @@ Register task outputs and uploads as named, versioned artifacts, trigger runs on
 
 {{< link-card target="factories" icon="diagram-3" title="Factories" >}}
 Declare how artifacts are made from other artifacts, then ask for any artifact for a partition or a range and let Union build only what is missing or stale.
-{{< /link-card >}}
-
-{{< /grid >}}
-
-{{< markdown >}}
-
-## LLM Gateway
-
-Route every model call from your tasks, apps, and laptops through one endpoint in your own cloud.
-
-{{< /markdown >}}
-
-{{< grid >}}
-
-{{< link-card target="llm-gateway" icon="signpost-split" title="LLM Gateway" >}}
-One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
 {{< /link-card >}}
 
 {{< /grid >}}

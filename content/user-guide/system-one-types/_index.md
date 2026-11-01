@@ -2,7 +2,7 @@
 title: System one types
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
-weight: 9
+weight: 10
 mermaid: true
 variants: +flyte +union
 ---

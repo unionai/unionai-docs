@@ -2,7 +2,7 @@
 title: LLM Gateway
 description: One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
 icon: signpost-split
-weight: 7
+weight: 5
 variants: -flyte +union
 mermaid: true
 ---
