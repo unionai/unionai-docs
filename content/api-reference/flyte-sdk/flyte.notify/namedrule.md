@@ -2,7 +2,7 @@
 title: NamedRule
 description: "Reference a pre-defined notification rule by name."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -13,9 +13,13 @@ layout: py_api
 
 Reference a pre-defined notification rule by name.
 
-Use this when your Flyte admin has configured a named notification rule
-that you want to apply to your runs. Named rules define both the phases
-to monitor and the delivery channels to use.
+Not yet supported: no backend resolves named rules, and there is no way to
+create one yet. A run or trigger that references a named rule is rejected,
+or sends no notification. Use an inline notification such as `Slack` or
+`Email` instead.
+
+Named rules will define both the phases to monitor and the delivery
+channels to use.
 
 
 

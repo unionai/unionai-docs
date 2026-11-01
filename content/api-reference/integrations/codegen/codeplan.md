@@ -2,7 +2,7 @@
 title: CodePlan
 description: "Structured plan for the code solution."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

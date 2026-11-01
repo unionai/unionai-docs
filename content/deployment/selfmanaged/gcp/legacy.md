@@ -1,12 +1,12 @@
 ---
-title: Manual setup on GCP (legacy)
+title: Legacy steps
 description: Create the GKE cluster, GCS bucket, Artifact Registry, and Workload Identity bindings.
 icon: google
 weight: 1
 variants: -flyte +union
 ---
 
-# Manual setup on GCP (legacy)
+# Legacy steps: manual setup on GCP
 
 > [!NOTE] For deployments set up with Helm
 > These are the earlier instructions: you provision GCP resources and install the data plane yourself with

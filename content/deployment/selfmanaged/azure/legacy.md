@@ -1,12 +1,12 @@
 ---
-title: Manual setup on Azure (legacy)
+title: Legacy steps
 description: Create the AKS cluster, Storage Account, managed identities, and Log Analytics access the data plane needs.
 icon: microsoft
 weight: 1
 variants: -flyte +union
 ---
 
-# Manual setup on Azure (legacy)
+# Legacy steps: manual setup on Azure
 
 > [!NOTE] For deployments set up with Helm
 > These are the earlier instructions: you provision Azure resources and install the data plane yourself with

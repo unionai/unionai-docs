@@ -2,7 +2,7 @@
 title: BaseRuntimeError
 description: "Base class for all Union runtime errors."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

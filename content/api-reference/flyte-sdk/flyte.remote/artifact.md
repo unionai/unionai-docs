@@ -2,7 +2,7 @@
 title: Artifact
 description: "A published artifact in the Flyte artifact service: a typed value (stored as a Flyte literal) addressed by org/project/domain/name/version."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -47,7 +47,6 @@ class Artifact(
 
 | Method | Description |
 |-|-|
-| [`coerce_to_literal()`](#coerce_to_literal) | Coerce the artifact's stored literal to the shape `python_type` expects. |
 | [`create()`](#create) | Publish an artifact from the local machine. |
 | [`declare()`](#declare) | Fix an artifact name's partition keys ahead of any version. |
 | [`delete()`](#delete) | Delete this artifact from the remote system. |
@@ -58,37 +57,7 @@ class Artifact(
 | [`partition_values()`](#partition_values) | The distinct values one partition key has among an artifact's versions, sorted ascending, optionally scoped by the other keys. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
-| [`to_python()`](#to_python) | Materialize the artifact's stored literal back into a python value. |
 
-
-### coerce_to_literal()
-
-```python
-def coerce_to_literal(
-    python_type: Type | None = None,
-) -> literals_pb2.Literal
-```
-Coerce the artifact's stored literal to the shape `python_type` expects.
-
-Round-trips the stored literal through the type engine — `to_python_value`
-against the declared type, then `to_literal` — so every compatibility rule
-(Optional/union wrapping, coercions, blob dimensionality) is the engine's, not
-re-derived here, and a mismatch fails now with the transformer's error rather
-than inside the task. Cheap for offloaded values: File/Dir/DataFrame literals
-reconstruct from their uri without downloading. The artifact's identity is
-stamped on the result so provenance travels with the coerced literal.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `python_type` | `Type \| None` | Declared type to coerce to. When omitted the stored literal is returned as-is (it already carries the service-stamped identity). |
-
-**Raises**
-
-| Exception | Description |
-|-|-|
-| `TypeTransformerFailedError` | when the stored value cannot bind to `python_type`. |
 
 ### create()
 
@@ -416,19 +385,4 @@ Convert the object to a JSON string.
 
 
 **Returns:** str: A JSON string representation of the object.
-
-### to_python()
-
-```python
-def to_python(
-    python_type: Type | None = None,
-) -> Any
-```
-Materialize the artifact's stored literal back into a python value.
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `python_type` | `Type \| None` | Expected python type; guessed from the stored Flyte type when omitted. |
 

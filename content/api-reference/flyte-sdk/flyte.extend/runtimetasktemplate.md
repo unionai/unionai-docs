@@ -2,7 +2,7 @@
 title: RuntimeTaskTemplate
 description: "Task template for Python-runtime tasks that execute through the Flyte task entrypoint."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

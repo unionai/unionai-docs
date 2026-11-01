@@ -2,7 +2,7 @@
 title: CustomError
 description: "This error is raised when the user raises a custom error."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -41,8 +41,8 @@ def from_exception(
     e: Exception,
 )
 ```
-Create a CustomError from an exception. The exception's class name is used as the error code and the exception
-message is used as the error message.
+Create a CustomError from an exception. The exception's class name is used as the error code, and the error
+message includes the error kind and details.
 
 
 | Parameter | Type | Description |

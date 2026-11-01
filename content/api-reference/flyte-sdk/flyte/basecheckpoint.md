@@ -2,7 +2,7 @@
 title: BaseCheckpoint
 description: "Base type for task checkpoint helpers."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,8 +11,9 @@ layout: py_api
 
 **Package:** `flyte`
 
-Base type for task checkpoint helpers. Subclasses load prior checkpoint data from
-`prev_checkpoint` into a local workspace and upload new state to `checkpoint_path`.
+Base type for task checkpoint helpers. Subclasses load prior checkpoint data (this attempt's own
+`checkpoint_path` if an earlier run of the attempt saved one, else `prev_checkpoint`) into a local
+workspace and upload new state to `checkpoint_path`.
 
 
 ## Properties

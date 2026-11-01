@@ -18,7 +18,7 @@ Union.ai installs the data plane into your cluster for you, but the Google Cloud
 You supply two values: your Google Cloud project ID and the address of your Union.ai UI. The commands derive every resource name from the project. At the end you have the values you enter when you connect your cluster: three for the cluster pool, and four for registering the cluster.
 
 > [!NOTE] Not the manual setup
-> These resources differ from the ones in the [manual setup (legacy)](./legacy) page, which installs the data plane with Helm: Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
+> These resources differ from the ones in the [legacy steps](./legacy), which installs the data plane with Helm: Google Cloud Secret Manager holds runtime secrets, and the agent you install from the Union.ai UI installs the data plane chart. Use this page only for a cluster you connect from the Union.ai UI.
 
 > [!NOTE] Already have these resources?
 > This page is optional. You can use an existing GKE cluster, bucket, repository, and service accounts instead, as long as they meet the same requirements:
@@ -28,12 +28,12 @@ You supply two values: your Google Cloud project ID and the address of your Unio
 > - The Artifact Registry repository is a private Docker repository.
 > - The service accounts have the roles from [step 5](#5-create-the-service-accounts-and-grant-access) and the Workload Identity binding from [step 7](#7-bind-the-cluster-to-the-service-accounts).
 >
-> Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [step 9](#9-connect-your-cluster).
+> Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](../connect-a-cluster).
 
 ## Prerequisites
 
 - The [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), `kubectl`, and `gke-gcloud-auth-plugin`. `kubectl` uses the plugin to authenticate to GKE, and fails without it. Install both with `gcloud components install kubectl gke-gcloud-auth-plugin`.
-- [Helm](https://helm.sh/docs/intro/install/), for the agent install in [step 9](#9-connect-your-cluster).
+- [Helm](https://helm.sh/docs/intro/install/), for the agent install in [Connect your cluster](../connect-a-cluster#3-install-the-agent).
 - A billing-enabled Google Cloud project, and an account that can enable APIs, create the resources below, and grant IAM roles in it. `roles/owner` covers all of it. Otherwise you need:
 
   | Role | For |
@@ -47,7 +47,7 @@ You supply two values: your Google Cloud project ID and the address of your Unio
   | `roles/iam.serviceAccountUser` | Creating the cluster with the node service account as its identity |
   | `roles/resourcemanager.projectIamAdmin` | The project-level roles the service accounts get |
 
-- A Union.ai organization. See [Sign up for Union.ai](../../sign-up/create-organization).
+- A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
 The commands create billable resources, including a regional GKE control plane, its nodes, and Cloud NAT. They bill hourly whether or not anything runs. Use a project dedicated to the data plane: [step 5](#5-create-the-service-accounts-and-grant-access) grants Secret Manager roles on the whole project.
 
@@ -360,35 +360,6 @@ printf '%s\n' \
 
 Keep this output, and keep the shell where `kubectl` can reach the cluster: you run the agent install from it.
 
-## 9. Connect your cluster
-
-1. In the Union.ai UI, select **Connect your cluster**, on the home page or in the sidebar. If your organization has no cluster pool yet, select **Create cluster pool**.
-2. Select **GCP**, and fill in the form:
-
-   | Field | Value |
-   |---|---|
-   | **GCS bucket** | The bucket URI, `gs://` followed by the bucket name, with no path after it |
-   | **Project ID** | The project that holds Secret Manager. On this page it is the same project as the cluster's. |
-   | **Image registry** | The repository address, in the form `<region>-docker.pkg.dev/<project-id>/<repository>` |
-
-   Your first pool is always named `default`, so the **Pool name** field is already filled in. Select **Create cluster pool**.
-
-3. When the pool is created, the dialog moves on to **Register a cluster**, with the new pool already selected. Fill in:
-
-   | Field | Value |
-   |---|---|
-   | **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is registered. |
-   | **Cluster pool** | Already set to the pool you just created. |
-   | **Namespace** | Leave it empty to use `union`. The binding from [step 7](#7-bind-the-cluster-to-the-service-accounts) covers every namespace in the cluster. If you bound only specific service accounts instead, enter the namespace you bound them in. |
-   | **Project ID** | The project the GKE cluster runs in |
-   | **Region** | The cluster's region, for example `us-central1`, not a zone |
-   | **System service account email** | The system service account's email |
-   | **Task service account email** | The task service account's email |
-
-4. Select **Register cluster**. The cluster's page, **Install Union on your GCP cluster**, shows the install command for this cluster.
-
-Install the agent and wait for the data plane as described in steps 3 and 4 of [Connect your cluster](../connect-a-cluster#3-install-the-agent).
-
 ## Important behavior and cleanup
 
 - The pool uses one bucket for both metadata and fast registration. Do not create or configure a second bucket.
@@ -399,6 +370,6 @@ Install the agent and wait for the data plane as described in steps 3 and 4 of [
 
 ## Next steps
 
-**[Run a workload on the cluster](../connect-a-cluster#5-run-a-workload-on-the-cluster).** Once the cluster shows as **Healthy**, run a workflow on it.
+**[Connect your cluster](../connect-a-cluster).** Create a GCP cluster pool with the values above, register the cluster, and install the agent.
 
 {{< subpage-cards >}}

@@ -2,7 +2,7 @@
 title: InvalidPackageError
 description: "Raised when an invalid system package is detected during image build."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

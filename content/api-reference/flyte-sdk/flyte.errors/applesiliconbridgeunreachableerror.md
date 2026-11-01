@@ -2,7 +2,7 @@
 title: AppleSiliconBridgeUnreachableError
 description: "Raised when a container cannot reach the devbox's host-side Apple Silicon bridge, or the bridge lost track of the workload's host process."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

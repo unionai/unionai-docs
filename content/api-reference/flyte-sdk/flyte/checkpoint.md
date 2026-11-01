@@ -2,7 +2,7 @@
 title: Checkpoint
 description: "Checkpoint helper using `flyte.io.File` for all checkpoint blob I/O (load/save, async and sync)."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,7 +43,7 @@ class Checkpoint(
 |-|-|-|
 | `path` | `pathlib.Path` | Local directory for reading checkpoint files. |
 | `remote_destination` | `str` | Object-store prefix where `flyte.Checkpoint.save` writes. |
-| `remote_source` | `Optional[str]` | Object-store prefix for the previous attempt's checkpoint, if any. |
+| `remote_source` | `Optional[str]` | Object-store prefix for the previous attempt's checkpoint, if any.  `flyte.Checkpoint.load` reads it only when `flyte.Checkpoint.remote_destination` holds no checkpoint. |
 
 ## Methods
 

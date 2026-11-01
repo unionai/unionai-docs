@@ -2,7 +2,7 @@
 title: RemoteTaskUsageError
 description: "This error is raised when the user tries to access a task that does not exist."
 icon: exclamation-triangle
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

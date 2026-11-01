@@ -12,53 +12,70 @@ You have an organization and the cloud resources your data plane runs on. Now co
 
 **Nothing dials in.** You install an agent into your cluster, and the agent connects out to Union.ai. You do not open a port, expose an endpoint, or hand over cluster credentials.
 
-> [!NOTE] On GCP or Azure?
-> Steps 1 and 2 show the AWS forms. The GCP and Azure forms are at the end of [Provision your GCP resources](./gcp/_index#9-connect-your-cluster) and [Provision your Azure resources](./azure/_index#11-connect-your-cluster). Fill them in there, then come back for [step 3](#3-install-the-agent).
-
-<!-- Flow traced in source, not yet watched end to end on AWS: cloud origin/main,
-     clientsv2/src/components/pages/SettingsClusters/ConnectCluster/ (ConnectClusterDialog.tsx,
-     ConnectClusterPoolFlow.tsx, NoClusterPoolStep.tsx) and ClusterInstall/ (ClusterInstallPanel.tsx,
-     InstallProgressRail.tsx). Check labels against the console on the capture pass. -->
+The steps are the same on AWS, GCP, and Azure: create a cluster pool, register the cluster, and install the agent. Only the values you enter in the two forms differ, so those two steps have a tab for each provider.
 
 ## What you'll need
 
-The values printed at the end of [Provision your AWS resources](./aws/_index#8-collect-the-values-for-connecting-your-cluster). If you are using AWS resources you already had, collect the same values for them, and check that they meet the [requirements](./aws/_index#provision-your-aws-resources) first:
-
-- **S3 bucket URI**: the metadata bucket, for example `s3://my-team-union-selfserve-metadata`
-- **AWS account ID**: the 12-digit ID of the account that holds Secrets Manager
-- **AWS Region**: the Region the cluster and Secrets Manager are in
-- **Image registry URI**: the address of the ECR repository. It has the form `<account-id>.dkr.ecr.<region>.amazonaws.com/<repository-name>`, for example `123456789012.dkr.ecr.us-east-2.amazonaws.com/my-team-union-selfserve`.
-- **System IAM role ARN**
-- **Task IAM role ARN**
-
-You also need [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the cluster from the shell where you provisioned it.
+- The values printed at the end of the provisioning page for your provider: [AWS](./aws/_index#8-collect-the-values-for-connecting-your-cluster), [GCP](./gcp/_index#8-collect-the-values-for-connecting-your-cluster), or [Azure](./azure/_index#10-check-the-resources-and-collect-the-values). If you are using resources you already had, check that they meet the requirements on that page, and collect the same values for them.
+- [Helm](https://helm.sh/docs/intro/install/) installed, and `kubectl` access to the cluster from the shell where you provisioned it.
 
 ## 1. Create the cluster pool
 
-A cluster pool groups clusters that share an S3 bucket, a secret store and an image registry. A new organization has none, so you create one first.
+A cluster pool groups clusters that share an object store, a secret store and an image registry. A new organization has none, so you create one first.
 
 1. In the Union.ai UI, select **Connect your cluster**, on the home page or in the sidebar.
 2. The dialog tells you there is no cluster pool yet. Select **Create cluster pool**.
-3. Select **AWS**, and fill in the form:
-
-   | Field | Value |
-   |---|---|
-   | **S3 Bucket** | The S3 bucket URI |
-   | **Account ID** | The AWS account ID |
-   | **Region** | The AWS Region |
-   | **Image registry** | The image registry URI |
-
-   Your first pool is always named `default`, so the **Pool name** field is already filled in.
-
-   ![The Create a cluster pool form on the AWS tab, with S3 bucket, Secrets Manager account ID and region, and image registry fields](../../_static/images/deployment/marketplace/connect-a-cluster/create-cluster-pool.png)
-
+3. Select your cloud provider, and fill in its form as shown below. Your first pool is always named `default`, so the **Pool name** field is already filled in.
 4. Select **Create cluster pool**.
+
+{{< tabs "cluster-pool-form" >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
+
+| Field | Value |
+|---|---|
+| **S3 Bucket** | The metadata bucket URI, for example `s3://my-team-union-selfserve-metadata` |
+| **Account ID** | The 12-digit ID of the AWS account that holds Secrets Manager |
+| **Region** | The AWS Region the cluster and Secrets Manager are in |
+| **Image registry** | The ECR repository's address, in the form `<account-id>.dkr.ecr.<region>.amazonaws.com/<repository-name>` |
+
+![The Create a cluster pool form on the AWS tab, with S3 bucket, Secrets Manager account ID and region, and image registry fields](../../_static/images/deployment/marketplace/connect-a-cluster/create-cluster-pool.png)
 
 No secret needs to exist in Secrets Manager yet. The data plane creates and manages runtime secrets in that account and Region as it needs them.
 
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+| Field | Value |
+|---|---|
+| **GCS bucket** | The bucket URI, `gs://` followed by the bucket name, with no path after it |
+| **Project ID** | The project that holds Secret Manager. If you followed [Provision your GCP resources](./gcp/_index), it is the same project as the cluster's. |
+| **Image registry** | The repository address, in the form `<region>-docker.pkg.dev/<project-id>/<repository>` |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Azure" >}}
+{{< markdown >}}
+
+| Field | Value |
+|---|---|
+| **Storage container** | The container's Data Lake Storage URI, in the form `abfs://metadata@<storage-account>.dfs.core.windows.net`, with no path after it |
+| **Key Vault URI** | The vault's URI, in the form `https://<vault-name>.vault.azure.net/` |
+| **Image registry** | The registry's login server, in the form `<registry-name>.azurecr.io`. You do not need a repository path: Union.ai adds its own. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
 ## 2. Register the cluster
 
-When the pool is created, the dialog moves straight on to **Register a cluster**, with your new pool already selected. Fill in:
+When the pool is created, the dialog moves straight on to **Register a cluster**, with your new pool already selected. Fill in the form for your provider:
+
+{{< tabs "register-cluster-form" >}}
+{{< tab "AWS" >}}
+{{< markdown >}}
 
 | Field | Value |
 |---|---|
@@ -70,11 +87,47 @@ When the pool is created, the dialog moves straight on to **Register a cluster**
 
 ![The Register a cluster dialog with a cluster name, the default pool, the namespace left at its default, and the system and task IAM role ARNs filled in](../../_static/images/deployment/marketplace/connect-a-cluster/connect-cluster.png)
 
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "GCP" >}}
+{{< markdown >}}
+
+| Field | Value |
+|---|---|
+| **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is registered. |
+| **Cluster pool** | Already set to `default`, the pool you just created. |
+| **Namespace** | Leave it empty to use `union`. The Workload Identity binding from [Provision your GCP resources](./gcp/_index#7-bind-the-cluster-to-the-service-accounts) covers every namespace in the cluster. If you bound only specific service accounts instead, enter the namespace you bound them in. |
+| **Project ID** | The project the GKE cluster runs in |
+| **Region** | The cluster's region, for example `us-central1`, not a zone |
+| **System service account email** | The system service account's email |
+| **Task service account email** | The task service account's email |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Azure" >}}
+{{< markdown >}}
+
+| Field | Value |
+|---|---|
+| **Name** | A name for the cluster in Union.ai, for example `my-cluster`. You cannot change it once the cluster is registered. |
+| **Cluster pool** | Already set to `default`, the pool you just created. |
+| **Namespace** | Exactly the namespace you chose in [Provision your Azure resources](./azure/_index#1-sign-in-and-choose-names). If you kept `union`, you can also leave the field empty. |
+| **Subscription ID** | The subscription the AKS cluster is in |
+| **Tenant ID** | The Microsoft Entra ID tenant the subscription belongs to |
+| **Resource group** | The resource group the AKS cluster is in. Union.ai uses it to link to your task logs in the Azure portal. |
+| **System client ID** | The system identity's client ID, not its principal ID |
+| **Task client ID** | The task identity's client ID, not its principal ID |
+| **Log Analytics workspace ID (optional)** | The workspace's resource ID, which starts with `/subscriptions/`. Without it, the Union.ai UI shows task logs only while the pods exist. |
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
 Select **Register cluster**. Union.ai registers the cluster and takes you to its page, where you install the agent. Registering does not put anything on your cluster by itself.
 
 ## 3. Install the agent
 
-The cluster's page, **Install Union on your AWS cluster**, or its GCP or Azure counterpart, shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
+The cluster's page, **Install Union on your AWS cluster** (or GCP, or Azure), shows an install command generated for this cluster. Copy it with **Copy install command**, and run it in the shell where `kubectl` can reach the cluster. The agent installs itself and connects out to Union.ai.
 
 ![The Install Union on your AWS cluster page, with the Ensure Helm is installed and Install Union steps, and the Installation progress panel showing the agent installed and the Union operator installing](../../_static/images/deployment/marketplace/connect-a-cluster/install-union.png)
 
@@ -112,6 +165,15 @@ If you check progress with `kubectl`, the agent runs in the `dataplane-agent` na
 When the install finishes, the panel reads **Complete**, and the cluster shows as **Healthy** next to its name:
 
 ![The cluster page header, showing the docsy cluster on AWS with a green Healthy badge](../../_static/images/deployment/marketplace/connect-a-cluster/cluster-healthy.png)
+
+On Azure, also check that the data plane's service accounts carry the right client IDs. In the shell where you provisioned the resources, run:
+
+```bash
+kubectl -n "$UNION_DATAPLANE_NAMESPACE" get sa union-system union \
+  -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.annotations.azure\.workload\.identity/client-id}{"\n"}{end}'
+```
+
+`union-system` must show `AZURE_SYSTEM_CLIENT_ID`, and `union` must show `AZURE_TASK_CLIENT_ID`. If the namespace has no such service accounts, the data plane was installed into a different namespace from the one the federated credentials trust.
 
 ## 5. Run a workload on the cluster
 

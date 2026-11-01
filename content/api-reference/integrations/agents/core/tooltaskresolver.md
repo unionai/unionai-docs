@@ -2,7 +2,7 @@
 title: ToolTaskResolver
 description: "Resolver for a task shadowed at module scope by a tool wrapper."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

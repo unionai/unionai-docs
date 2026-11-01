@@ -2,7 +2,7 @@
 title: Image
 description: "Container image specification built using a fluent, two-step pattern."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -18,7 +18,7 @@ Container image specification built using a fluent, two-step pattern:
 
 ```python
 image = (
-    flyte.Image.from_debian_base(python="3.12")
+    flyte.Image.from_debian_base(python_version=(3, 12))
     .with_pip_packages("pandas", "scikit-learn")
     .with_apt_packages("curl", "git")
 )
@@ -195,7 +195,7 @@ Default images are multi-arch amd/arm64
 
 | Parameter | Type | Description |
 |-|-|-|
-| `python_version` | `Optional[Tuple[int, int]]` | If not specified, will use the current Python version |
+| `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, as a (major, minor) tuple such as (3, 13). If not specified, the version of the local interpreter is used and a one-time warning is logged. |
 | `flyte_version` | `Optional[str]` | Flyte version to use |
 | `install_flyte` | `bool` | If True, will install the flyte library in the image |
 | `registry` | `Optional[str]` | Registry to use for the image |

@@ -2,7 +2,7 @@
 title: TaskEnvironment
 description: "Define an execution environment for a set of tasks."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -24,7 +24,7 @@ For shared parameters, the more specific level overrides the more general one.
 ```python
 env = flyte.TaskEnvironment(
     name="my_env",
-    image=flyte.Image.from_debian_base(python="3.12").with_pip_packages("pandas"),
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages("pandas"),
     resources=flyte.Resources(cpu="1", memory="1Gi"),
 )
 
@@ -59,6 +59,7 @@ async def my_task():
 | `report` | — | Yes | — |
 | `triggers` | — | Yes | — |
 | `docs` | — | Yes | — |
+| `prefix` | — | Yes | — |
 
 *When `reusable` is set, `resources`, `env_vars`, and `secrets` can only
 be overridden via `task.override()` with `reusable="off"` in the same call.
@@ -88,7 +89,7 @@ class TaskEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. The fully-qualified name of each task is `<env_name>.<function_name>` (e.g., environment `"my_env"` containing function `my_task` produces FQN `"my_env.my_task"`). Neither component is overridable. |
+| `name` | `str` | Name of the environment (required). Must be snake_case or kebab-case. TaskEnvironment level only. The fully-qualified name of each task is `<env_name>.<function_name>` (e.g., environment `"my_env"` containing function `my_task` produces FQN `"my_env.my_task"`). Neither component is overridable, but `@env.task(prefix=...)` can prefix the function name: `<env_name>.<prefix>-<function_name>`. |
 | `depends_on` | `List[Environment]` | List of other environments this one depends on. Used at deploy time to ensure dependencies are also deployed. TaskEnvironment level only. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Kubernetes pod template for advanced configuration (sidecars, volumes, etc.). Also settable in `@env.task` and `task.override`. |
 | `description` | `Optional[str]` | Human-readable description (max 255 characters). TaskEnvironment level only. |
@@ -239,6 +240,7 @@ The created TaskEnvironment.
 ```python
 def task(
     short_name: Optional[str] = None,
+    prefix: Optional[str] = None,
     cache: CacheRequest | None = None,
     retries: Union[int, RetryStrategy] = 0,
     timeout: TimeoutType = 0,
@@ -262,7 +264,8 @@ Decorate a function to be a task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
+| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). With `prefix`, it becomes `<prefix>-<short_name>`. Overriding `short_name` does not change the task's fully-qualified name. |
+| `prefix` | `Optional[str]` | Optional prefix for the function name, so the task's fully-qualified name becomes `<env_name>.<prefix>-<function_name>` and its short name `<prefix>-<short_name>`. Use it to keep same-named functions from different modules apart while they share one environment (for example a reusable one). The name keeps a single `.`, between environment and task, so the prefix may not contain `.`: use letters, digits and underscores, separated by `-` (e.g. `"myproject-train"`). Use a fixed string rather than `__name__`: a module's `__name__` differs between `flyte run <file>`, a script run and the import inside the task container, which would give the task a different name in each. Note that a change of `prefix` invalidates the cache. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
 | `retries` | `Union[int, RetryStrategy]` | Number of user retries (`int`) or a `RetryStrategy` object. `RetryStrategy` accepts an optional `backoff=Backoff(base, factor, cap)` to pace retries exponentially. Defaults to `0` (no retries). |
 | `timeout` | `TimeoutType` | Task timeout. Accepts a `timedelta`, an integer number of seconds, or a `Timeout` object carrying any combination of `max_runtime`, `max_queued_time`, and `deadline`. A bare `timedelta`/`int` is interpreted as `max_runtime`. A bound is treated as unlimited when unset (`None`) or zero (`0` / `timedelta(0)`); `timeout=0` is the default and means no time bound. |

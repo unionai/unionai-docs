@@ -2,7 +2,7 @@
 title: TaskContext
 description: "A context class to hold the current task executions context."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -68,7 +68,7 @@ class TaskContext(
 | Property | Type | Description |
 |-|-|-|
 | `attempt_number` | `int` | Get the attempt number for the current task. |
-| `checkpoint` | `Optional[Checkpoint]` | Task checkpoint helper for the runtime `checkpoint_path` / `prev_checkpoint` prefixes.  Returns a lazily constructed `flyte.Checkpoint` cached on `flyte.models.TaskContext.data`, or `None` when no checkpoint output prefix is configured. In async tasks use `flyte.Checkpoint.load` and `flyte.Checkpoint.save`; in sync tasks use `flyte.Checkpoint.load_sync` and `flyte.Checkpoint.save_sync`. For a **single raw blob**, pass `bytes` to save; after a successful load, the blob is at `checkpoint.path / "payload"` when the remote object is not a tarball. |
+| `checkpoint` | `Optional[Checkpoint]` | Task checkpoint helper for the runtime `checkpoint_path` / `prev_checkpoint` prefixes.  Returns a lazily constructed `flyte.Checkpoint` cached on `flyte.models.TaskContext.data`, or `None` when no checkpoint output prefix is configured. In async tasks use `flyte.Checkpoint.load` and `flyte.Checkpoint.save`; in sync tasks use `flyte.Checkpoint.load_sync` and `flyte.Checkpoint.save_sync`. For a **single raw blob**, pass `bytes` to save; after a successful load, the blob is at `checkpoint.path / "payload"` when the remote object is not a tarball. Load prefers this attempt's own checkpoint, left by an earlier run of the same attempt (a JobSet restart, or a gang Kueue preempted and readmitted), and otherwise uses the previous attempt's. |
 | `local_rank` | `Optional[int]` |  |
 | `local_world_size` | `Optional[int]` |  |
 | `master_addr` | `Optional[str]` |  |

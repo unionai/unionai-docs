@@ -2,7 +2,7 @@
 title: Nextflow
 description: "Run Nextflow pipelines on Flyte."
 icon: book
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -56,7 +56,7 @@ async def demo() -> flyte.io.Dir:
 ```python
 def nextflow_image(
     nextflow_version: str = '25.10.6',
-    nf_flyte: str | Path = '0.1.0',
+    nf_flyte: str | Path = '0.2.1',
     base: flyte.Image | None = None,
     name: str = 'nextflow',
 ) -> flyte.Image

@@ -2,7 +2,7 @@
 title: Trigger
 description: "Represents a trigger in the Flyte platform."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -45,7 +45,6 @@ class Trigger(
 | [`create()`](#create) | Create a new trigger in the Flyte platform. |
 | [`delete()`](#delete) | Delete a trigger by its name. |
 | [`get()`](#get) | Retrieve a trigger by its name and associated task name. |
-| [`get_details()`](#get_details) | Get detailed information about this trigger. |
 | [`listall()`](#listall) | List all triggers associated with a specific task or all tasks if no task name is provided. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
@@ -127,14 +126,6 @@ Retrieve a trigger by its name and associated task name.
 | `cls` |  | |
 | `name` | `str` | |
 | `task_name` | `str` | |
-
-### get_details()
-
-```python
-def get_details()
-```
-Get detailed information about this trigger.
-
 
 ### listall()
 

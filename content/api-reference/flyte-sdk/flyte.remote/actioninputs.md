@@ -2,7 +2,7 @@
 title: ActionInputs
 description: "A class representing the inputs of an action."
 icon: braces
-version: 2.12.1
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -19,7 +19,7 @@ ActionInputs extends from a `UserDict` and hence is accessible like a dictionary
 Example Usage:
 ```python
 action = Action.get(...)
-print(action.inputs())
+print(action.details().inputs())
 ```
 Output:
 ```bash

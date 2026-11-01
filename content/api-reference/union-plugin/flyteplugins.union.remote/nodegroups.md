@@ -2,7 +2,7 @@
 title: NodeGroups
 description: "A cluster's declared node groups, as stored, with the generation they were read at."
 icon: braces
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---
