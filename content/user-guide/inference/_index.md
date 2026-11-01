@@ -18,8 +18,8 @@ Choose how to run a model based on where it lives and how you call it:
 | Serve quantized GGUF weights, a model larger than VRAM, or a model on CPU only | [llama.cpp](../../integrations/llamacpp/_index) |
 | Copy Hugging Face weights into your storage before serving them | [Prefetching models](./prefetching-models) |
 | Serve a model you trained in a task | [Deploy trained models](./deploy-trained-models) |
-| Score a dataset on GPUs as a job, with no endpoint | [Batch inference](../run-scaling/batch-inference) |
-| Load weights inside a task from object storage | [Stream model weights](../run-scaling/stream-model-weights) |
+| Score a dataset on GPUs as a job, with no endpoint | [Batch inference](./batch-inference) |
+| Load weights inside a task from object storage | [Stream model weights](./stream-model-weights) |
 
 Most hosted providers, and the vLLM, SGLang, Ollama, and llama.cpp apps, expose the OpenAI API or an endpoint compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name. Some providers, such as Anthropic, need their own SDK. See [Providers](./providers#providers-with-their-own-sdk).
 

@@ -1,7 +1,7 @@
 ---
 title: Stream model weights
 description: Load a model's safetensors weights from object storage onto the GPU inside a task, without writing them to local disk.
-weight: 5
+weight: 8
 variants: +flyte +union
 icon: download
 ---
@@ -24,7 +24,7 @@ Requires `flyte` 2.11.1 or later. The streamer needs `torch`, `load_hf_model()` 
 
 Every entry point takes `path`, the object-store prefix of a Hugging Face–style model directory, such as `s3://bucket/models/qwen2.5-7b`.
 The prefix holds the `*.safetensors` files, optionally a `model.safetensors.index.json`, and the config and tokenizer files.
-To copy a Hub model there, use `flyte.prefetch.hf_model()` (see [Prefetching models](../inference/prefetching-models)).
+To copy a Hub model there, use `flyte.prefetch.hf_model()` (see [Prefetching models](./prefetching-models)).
 A task that takes the model as a `flyte.io.Dir` passes `model.path`.
 
 A local filesystem path, with or without `file://`, is not supported.
@@ -77,4 +77,4 @@ obstore's runtime does not survive `fork()`, and vLLM forks its engine-core proc
 
 ## Related pages
 
-To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM app](../inference/vllm-app#model-streaming) or an [SGLang app](../inference/sglang-app#model-streaming).
+To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM app](./vllm-app#model-streaming) or an [SGLang app](./sglang-app#model-streaming).

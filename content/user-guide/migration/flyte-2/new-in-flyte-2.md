@@ -52,7 +52,7 @@ async with DynamicBatcher(
     results = await asyncio.gather(*futures)
 ```
 
-`submit()` is non-blocking and returns a `Future`; when the queue is full it applies backpressure automatically. See [Batch inference](../../run-scaling/batch-inference), which also covers `TokenBatcher` for token-aware LLM batching.
+`submit()` is non-blocking and returns a `Future`; when the queue is full it applies backpressure automatically. See [Batch inference](../../inference/batch-inference), which also covers `TokenBatcher` for token-aware LLM batching.
 
 ## Sandboxed code execution
 
