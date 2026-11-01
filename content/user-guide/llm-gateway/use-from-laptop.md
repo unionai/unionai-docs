@@ -44,7 +44,7 @@ This mode is the simplest, and it suits tools that can only send an API key. The
 
 When anonymous access is off, only callers signed in to Union reach the gateway. A standard OpenAI client can't do that on its own: it sends the virtual key in the `Authorization` header, which is the header Union sign-in uses.
 
-`flyte proxy app` solves this. It opens a local port that forwards to the gateway, adding your Union credential to every request:
+`flyte proxy app` solves this. It opens a local port that forwards to the gateway, adding your Union credential to every request. Requires `flyte` 2.10.1 or later:
 
 ```bash
 flyte proxy app --url https://<your-gateway-endpoint> --port 8600
