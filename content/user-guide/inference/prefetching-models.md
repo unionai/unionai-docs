@@ -2,7 +2,7 @@
 title: Prefetching models
 description: Download and shard a HuggingFace model before an inference app starts.
 icon: download
-weight: 5
+weight: 6
 variants: +flyte +union
 ---
 

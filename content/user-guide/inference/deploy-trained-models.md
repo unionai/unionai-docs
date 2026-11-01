@@ -2,7 +2,7 @@
 title: Deploy trained models
 description: Serve a model trained in a Flyte task behind an endpoint, with vLLM, SGLang, or your own FastAPI app.
 icon: rocket-takeoff
-weight: 6
+weight: 7
 variants: +flyte +union
 ---
 

@@ -15,7 +15,7 @@ Choose how to run a model based on where it lives and how you call it:
 | Call a hosted model such as Fireworks, OpenAI, or Anthropic from a task or app | [Providers](./providers) |
 | Serve an open-weight LLM on your own GPUs at high throughput | [vLLM app](./vllm-app) or [SGLang app](./sglang-app) |
 | Serve a small LLM with minimal setup | [Ollama app](./ollama-app) |
-| Serve quantized GGUF weights, a model larger than VRAM, or a model on CPU only | [llama.cpp](../../integrations/llamacpp/_index) |
+| Serve quantized GGUF weights, a model larger than VRAM, or a model on CPU only | [llama.cpp app](./llamacpp-app) |
 | Copy Hugging Face weights into your storage before serving them | [Prefetching models](./prefetching-models) |
 | Serve a model you trained in a task | [Deploy trained models](./deploy-trained-models) |
 | Score a dataset on GPUs as a job, with no endpoint | [Batch inference](./batch-inference) |

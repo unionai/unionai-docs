@@ -1,7 +1,7 @@
 ---
 title: Stream model weights
 description: Load a model's safetensors weights from object storage onto the GPU inside a task, without writing them to local disk.
-weight: 8
+weight: 9
 variants: +flyte +union
 icon: download
 ---
