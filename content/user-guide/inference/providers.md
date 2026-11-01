@@ -90,7 +90,7 @@ Override the secret for a single invocation when the same task needs different c
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/override_key.py" fragment="override" lang="python" >}}
 
-The override replaces the environment's secrets for that call, and doesn't work with a [reusable container](../tasks/task-configuration/reusable-containers). See [Overriding secrets](../tasks/task-configuration/overrides#overriding-secrets).
+The override replaces the environment's secrets for that call. On a [reusable container](../tasks/task-configuration/reusable-containers) it raises an error unless you also pass `reusable="off"`. See [Overriding secrets](../tasks/task-configuration/overrides#overriding-secrets).
 
 ## Supported providers
 
@@ -158,7 +158,7 @@ This endpoint takes an OAuth access token as `api_key`, and the token expires af
 
 ### Perplexity
 
-Call `client.responses.create()` instead of `client.chat.completions.create()`.
+Perplexity's Agent API uses OpenAI's Responses format, so call `client.responses.create()` instead of `client.chat.completions.create()`. Support for its earlier Sonar Chat Completions API has ended.
 
 {{< variant union >}}
 {{< markdown >}}

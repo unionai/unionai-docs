@@ -21,7 +21,7 @@ Choose how to run a model based on where it lives and how you call it:
 | Score a dataset on GPUs as a job, with no endpoint | [Batch inference](../run-scaling/batch-inference) |
 | Load weights inside a task from object storage | [Stream model weights](../run-scaling/stream-model-weights) |
 
-Hosted providers and the vLLM, SGLang, and Ollama apps all expose the OpenAI API, or an endpoint compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name.
+Most hosted providers, and the vLLM, SGLang, Ollama, and llama.cpp apps, expose the OpenAI API or an endpoint compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name. Some providers, such as Anthropic, need their own SDK. See [Providers](./providers#providers-with-their-own-sdk).
 
 {{< variant union >}}
 {{< markdown >}}

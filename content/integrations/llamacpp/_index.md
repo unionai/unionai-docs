@@ -24,7 +24,7 @@ Set `model_hf_path` to a GGUF repo, with an optional quantization tag. `llama-se
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/llamacpp/llamacpp_apps.py" fragment="hugging-face" lang="python" >}}
 
-Deploy the app:
+Serve the app:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/llamacpp/llamacpp_apps.py" fragment="deploy" lang="python" >}}
 
@@ -53,6 +53,16 @@ Set `model_path` or `model_hf_path`, not both. `model_id` is required, and it's 
 Use any OpenAI client:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/llamacpp/call_app.py" fragment="client" lang="python" >}}
+
+`llama-server` checks no key of its own unless you pass `--api-key` in `extra_args`.
+
+{{< variant union >}}
+{{< markdown >}}
+
+With `requires_auth=True` (the default), pass a Union API key as `api_key`. See [Calling an authenticated app](../../user-guide/inference/ollama-app#calling-an-authenticated-app).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Choose an image
 

@@ -57,7 +57,7 @@ Then mount the artifact into a `FastAPIAppEnvironment` with a parameter:
 
 {{< markdown >}}
 
-`mount` is always a directory. A `flyte.io.File` artifact is downloaded into it, and a `flyte.io.Dir` artifact appears at it. Only those two types can be app parameters. See [Use artifacts in apps](../artifacts/artifacts-in-apps).
+`mount` is always a directory. A `flyte.io.File` artifact is downloaded into it, and a `flyte.io.Dir` artifact appears at it. An artifact used as an app parameter must store one of those two types. See [Use artifacts in apps](../artifacts/artifacts-in-apps).
 
 ## Pin and roll back a version
 
@@ -103,7 +103,7 @@ Pass the task's output to `VLLMAppEnvironment` as `model_path` with `flyte.app.R
 
 {{< markdown >}}
 
-`task_name` is `<environment name>.<task name>`, and the app uses the latest run of that task when you deploy it. To serve the output of one specific run, pass `run_name` instead.
+`task_name` is `<environment name>.<task name>`, and the app uses the latest successful run of that task when you deploy it. To serve the output of one specific run, pass `run_name` instead.
 
 The directory must be in a format the engine can load, such as the output of `save_pretrained()`. A PEFT adapter saved on its own is not enough, so merge it into the base model first.
 
