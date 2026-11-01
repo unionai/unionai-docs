@@ -30,41 +30,46 @@ This works on both BYOC and Self-managed deployments. To add budgets, fallbacks,
 
 ## Supported providers
 
-### OpenAI-compatible providers
+These guides cover setup and a complete task for the most common providers:
 
-These providers work with the OpenAI SDK by changing the base URL. Each page lists the URL, where to get a key, and a complete task.
+{{< subpage-cards >}}
 
-| Provider | Notes |
-|---|---|
-| [Fireworks AI](./fireworks) | Serverless and on-demand deployments |
-| [OpenAI](./openai) | |
-| [Amazon Bedrock](./amazon-bedrock) | Takes a Bedrock API key |
-| [Azure OpenAI](./azure-openai) | `model` is your deployment name |
-| [Cerebras](./cerebras) | |
-| [Cohere](./cohere) | |
-| [DeepSeek](./deepseek) | |
-| [Gemini API](./gemini) | |
-| [Google Vertex AI](./vertex-ai) | Takes an access token from a service account |
-| [Grok API](./grok) | |
-| [Groq](./groq) | |
-| [Hugging Face Inference Providers](./hugging-face) | |
-| [Mistral AI](./mistral) | |
-| [Nebius Token Factory](./nebius) | |
-| [OpenRouter](./openrouter) | |
-| [Perplexity](./perplexity) | Uses the Responses API |
-| [Sarvam AI](./sarvam) | |
-| [Wafer](./wafer) | |
+### Other OpenAI-compatible providers
+
+These providers work with the OpenAI SDK by changing the base URL. Start from the [Fireworks AI task](./fireworks#call-fireworks-from-a-task), and change the base URL, the secret, the environment variable, and the model.
+
+| Provider | Get an API key | Base URL | Conventional variable |
+|---|---|---|---|
+| [Azure OpenAI](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle) | Your Azure resource | `https://<your-resource>.openai.azure.com/openai/v1/` | `AZURE_OPENAI_API_KEY` |
+| [Gemini API](https://ai.google.dev/gemini-api/docs/openai) | [Google AI Studio](https://aistudio.google.com/apikey) | `https://generativelanguage.googleapis.com/v1beta/openai/` | `GEMINI_API_KEY` |
+| [Mistral AI](https://docs.mistral.ai/resources/sdks) | Mistral console, **API Keys** | `https://api.mistral.ai/v1` | `MISTRAL_API_KEY` |
+| [Cohere](https://docs.cohere.com/docs/compatibility-api) | [API keys](https://dashboard.cohere.com/api-keys) | `https://api.cohere.ai/compatibility/v1` | `CO_API_KEY` |
+| [Groq](https://console.groq.com/docs/quickstart) | [API keys](https://console.groq.com/keys) | `https://api.groq.com/openai/v1` | `GROQ_API_KEY` |
+| [DeepSeek](https://api-docs.deepseek.com/) | DeepSeek platform, **API keys** | `https://api.deepseek.com` | `DEEPSEEK_API_KEY` |
+| [Grok API](https://docs.x.ai/docs/tutorial) | xAI console, **API Keys** | `https://api.x.ai/v1` | `XAI_API_KEY` |
+| [Perplexity](https://docs.perplexity.ai/docs/agent-api/openai-compatibility) | [API keys](https://console.perplexity.ai/project/keys) | `https://api.perplexity.ai/v1` | `PERPLEXITY_API_KEY` |
+| [Cerebras](https://inference-docs.cerebras.ai/resources/openai) | Cerebras Cloud console, **API Keys** | `https://api.cerebras.ai/v1` | `CEREBRAS_API_KEY` |
+| [OpenRouter](https://openrouter.ai/docs/quickstart) | [API keys](https://openrouter.ai/keys) | `https://openrouter.ai/api/v1` | `OPENROUTER_API_KEY` |
+| [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers/index) | [Access tokens](https://huggingface.co/settings/tokens) | `https://router.huggingface.co/v1` | `HF_TOKEN` |
+| [Nebius Token Factory](https://docs.tokenfactory.nebius.com/quickstart) | Token Factory console | `https://api.tokenfactory.nebius.com/v1/` | `NEBIUS_API_KEY` |
+| [Sarvam AI](https://docs.sarvam.ai/api/getting-started/models/openweight) | [Key management](https://indus.sarvam.ai/key-management) | `https://api.sarvam.ai/v2` | `SARVAM_API_KEY` |
+| [Wafer](https://docs.wafer.ai/serverless) | Wafer dashboard | `https://pass.wafer.ai/v1` | Your choice |
+
+Two of these differ from the task:
+
+- **Azure OpenAI:** Set `model` to the name of your deployment, not the name of the underlying model.
+- **Perplexity:** Its Agent API uses OpenAI's Responses format, so call `client.responses.create()` instead of `client.chat.completions.create()`. Support for its earlier Sonar Chat Completions API has ended.
 
 ### Providers with their own SDK
 
-These providers don't document an OpenAI-compatible endpoint for production use. Add the SDK to the image and pass it the key from the environment.
+These providers don't document an OpenAI-compatible endpoint for production use. Add the SDK to the image and pass it the key from the environment. See the [Anthropic guide](./anthropic) for the pattern.
 
-| Provider | Python package | Models |
-|---|---|---|
-| [Anthropic](./anthropic) | `anthropic` | Chat |
-| [ElevenLabs](./elevenlabs) | `elevenlabs` | Speech |
-| [Runway](./runway) | `runwayml` | Video and image |
-| [TypeSafe](./typesafe) | `typesafe-sdk` | Typed answers |
+| Provider | Get an API key | Python package | Conventional variable | Models |
+|---|---|---|---|---|
+| [Anthropic](./anthropic) | [API keys](https://platform.claude.com/settings/keys) | `anthropic` | `ANTHROPIC_API_KEY` | Chat |
+| [ElevenLabs](https://elevenlabs.io/docs/quickstart) | [API keys](https://elevenlabs.io/app/api/api-keys) | `elevenlabs` | `ELEVENLABS_API_KEY` | Speech |
+| [Runway](https://docs.dev.runwayml.com/guides/using-the-api/) | [Developer portal](https://dev.runway.com/) | `runwayml` | `RUNWAYML_API_SECRET` | Video and image |
+| [TypeSafe](https://docs.typesafe.ai/introduction/quickstart.md) | TypeSafe console | `typesafe-sdk` | `TYPESAFE_API_KEY` | Typed answers |
 
 ## Store the API key as a secret
 

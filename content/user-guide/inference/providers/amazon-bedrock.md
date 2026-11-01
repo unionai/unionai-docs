@@ -7,6 +7,7 @@ weight: 4
 variants: +flyte +union
 keywords:
   - Amazon Bedrock API
+  - AWS Bedrock
   - Amazon Bedrock Flyte
   - Amazon Bedrock Union.ai
   - Bedrock API key

@@ -3,7 +3,7 @@ title: Use Google Vertex AI with Flyte
 linkTitle: Google Vertex AI
 description: "Call Google Vertex AI from Flyte tasks and apps with the OpenAI SDK: store a service account key as a secret and request an access token in the task."
 icon: cloud
-weight: 19
+weight: 5
 variants: +flyte +union
 keywords:
   - Google Vertex AI API
