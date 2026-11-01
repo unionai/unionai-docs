@@ -1,6 +1,6 @@
 ---
 title: Native app integrations
-description: Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama.
+description: Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, Ollama, and oMLX.
 icon: plugin
 weight: 3
 variants: +flyte +union
@@ -32,6 +32,7 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 | [vLLM app](./vllm-app) | [vLLM](https://docs.vllm.ai/) | High-throughput LLM inference with an OpenAI-compatible API |
 | [SGLang app](./sglang-app) | [SGLang](https://docs.sglang.io/) | Structured generation and LLM serving with an OpenAI-compatible API |
 | [Ollama app](./ollama-app) | [Ollama](https://ollama.com/) | Lightweight local-style LLM serving with an OpenAI-compatible API |
+| [oMLX app](./omlx-app) | [oMLX](https://github.com/jundot/omlx) | LLM serving on a Mac's Apple Silicon GPU from an Apple Silicon devbox, with an OpenAI-compatible API |
 | [Flyte webhook](./flyte-webhook) | [FastAPI](https://fastapi.tiangolo.com/) | Pre-built HTTP endpoints for common Flyte control plane operations |
 
 ## Next steps
@@ -41,6 +42,7 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 - [**vLLM app**](./vllm-app): Serve large language models with vLLM
 - [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
 - [**Ollama app**](./ollama-app): Serve lightweight LLMs with Ollama
+- [**oMLX app**](./omlx-app): Serve LLMs on a Mac's Apple Silicon GPU with oMLX
 - [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
 
 {{< subpage-cards >}}
