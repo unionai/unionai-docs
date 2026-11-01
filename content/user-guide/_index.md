@@ -99,6 +99,22 @@ Declare how artifacts are made from other artifacts, then ask for any artifact f
 
 {{< markdown >}}
 
+## LLM Gateway
+
+Route every model call from your tasks, apps, and laptops through one endpoint in your own cloud.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="llm-gateway" icon="signpost-split" title="LLM Gateway" >}}
+One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< markdown >}}
+
 ## Access and identity
 
 How to authenticate and manage user permissions on your Union cluster.
