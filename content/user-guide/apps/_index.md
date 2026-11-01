@@ -45,7 +45,7 @@ Use `flyte serve` for fast iteration or `flyte deploy` for production deployment
 {{< grid >}}
 
 {{< link-card target="../inference" icon="cpu" title="Inference" >}}
-Serve models as apps with vLLM, SGLang, and Ollama, and deploy the models your tasks train.
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, or deploying the models your tasks train.
 {{< /link-card >}}
 
 {{< link-card target="../tasks" icon="gear" title="Tasks" >}}

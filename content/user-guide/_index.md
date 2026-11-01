@@ -62,7 +62,7 @@ Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
 {{< link-card target="inference" icon="cpu" title="Inference" >}}
-Call hosted model providers, serve open-weight models on your own GPUs, and deploy the models your tasks train.
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, or deploying the models your tasks train.
 {{< /link-card >}}
 
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
