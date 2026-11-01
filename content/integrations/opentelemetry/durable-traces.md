@@ -140,8 +140,8 @@ async def think(step: int) -> str:
 
 @env.task(retries=3)
 async def agent(steps: int = 5, fail_at: int = 2) -> list[str]:
-    # Crash on the first attempt only. FLYTE_ATTEMPT_NUMBER is 1-based.
-    crash = flyte.ctx().attempt_number <= 1
+    # Crash on the first attempt only. FLYTE_ATTEMPT_NUMBER is 0-based.
+    crash = flyte.ctx().attempt_number == 0
 
     results = []
     for step in range(steps):
