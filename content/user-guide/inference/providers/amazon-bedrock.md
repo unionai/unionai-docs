@@ -1,6 +1,5 @@
 ---
-title: Use Amazon Bedrock with Flyte
-linkTitle: Amazon Bedrock
+title: AWS Bedrock
 description: "Call the Amazon Bedrock API from Flyte tasks and apps with the OpenAI SDK: store your API key as a secret and set the base URL."
 icon: cloud
 weight: 4
@@ -16,7 +15,7 @@ keywords:
   - OpenAI-compatible API
 ---
 
-# Use Amazon Bedrock with Flyte
+# AWS Bedrock
 
 [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-chat-completions.html) has an OpenAI-compatible API, so a Flyte task or app can call it with the OpenAI SDK by changing the base URL.
 

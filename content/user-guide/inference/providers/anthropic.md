@@ -1,6 +1,5 @@
 ---
-title: Use Anthropic Claude with Flyte
-linkTitle: Anthropic
+title: Anthropic
 description: "Call the Anthropic API and Claude models from Flyte tasks and apps: store your API key as a secret and use the anthropic Python SDK."
 icon: cloud
 weight: 3
@@ -16,7 +15,7 @@ keywords:
   - Claude API
 ---
 
-# Use Anthropic Claude with Flyte
+# Anthropic
 
 A Flyte task or app can call the [Anthropic API](https://platform.claude.com/docs/en/get-started) with the `anthropic` Python SDK and a key from your own account.
 

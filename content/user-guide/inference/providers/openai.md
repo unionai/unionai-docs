@@ -1,6 +1,5 @@
 ---
-title: Use OpenAI with Flyte
-linkTitle: OpenAI
+title: OpenAI
 description: "Call the OpenAI API from Flyte tasks and apps: store your OpenAI API key as a secret and read it from the environment in your code."
 icon: cloud
 weight: 2
@@ -15,7 +14,7 @@ keywords:
   - GPT
 ---
 
-# Use OpenAI with Flyte
+# OpenAI
 
 A Flyte task or app can call the [OpenAI API](https://developers.openai.com/api/docs/quickstart) with the OpenAI SDK and a key from your own account.
 

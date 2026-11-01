@@ -1,6 +1,5 @@
 ---
-title: Use Google Vertex AI with Flyte
-linkTitle: Google Vertex AI
+title: Google Vertex AI
 description: "Call Google Vertex AI from Flyte tasks and apps with the OpenAI SDK: store a service account key as a secret and request an access token in the task."
 icon: cloud
 weight: 5
@@ -14,7 +13,7 @@ keywords:
   - OpenAI-compatible API
 ---
 
-# Use Google Vertex AI with Flyte
+# Google Vertex AI
 
 [Google Vertex AI](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/openai) has an OpenAI-compatible endpoint, but it takes a short-lived OAuth access token rather than a static API key. The token expires after 1 hour by default, so it doesn't fit a static secret.
 

@@ -1,6 +1,5 @@
 ---
-title: Inference providers
-linkTitle: Providers
+title: Providers
 description: "Call hosted LLM and model APIs such as Fireworks AI, OpenAI, and Anthropic from Flyte tasks and apps, with API keys stored as secrets."
 icon: cloud
 weight: 1
@@ -16,7 +15,7 @@ keywords:
   - Flyte secrets
 ---
 
-# Inference providers
+# Providers
 
 Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
 

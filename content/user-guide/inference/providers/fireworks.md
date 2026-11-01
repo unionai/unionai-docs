@@ -1,6 +1,5 @@
 ---
-title: Use Fireworks AI with Flyte
-linkTitle: Fireworks AI
+title: Fireworks
 description: "Call the Fireworks AI API from Flyte tasks and apps with the OpenAI SDK: store your API key as a secret, set the base URL, and use serverless or on-demand model"
 icon: cloud
 weight: 1
@@ -16,7 +15,7 @@ keywords:
   - Fireworks on-demand deployment
 ---
 
-# Use Fireworks AI with Flyte
+# Fireworks
 
 [Fireworks AI](https://docs.fireworks.ai/getting-started/quickstart) has an OpenAI-compatible API, so a Flyte task or app can call it with the OpenAI SDK by changing the base URL.
 
