@@ -2,7 +2,7 @@
 title: MissingAPIKey
 description: "Raised at the point of use, in the task that actually needs the key."
 icon: exclamation-triangle
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

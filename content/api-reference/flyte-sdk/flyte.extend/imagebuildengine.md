@@ -2,7 +2,7 @@
 title: ImageBuildEngine
 description: "ImageBuildEngine contains a list of builders that can be used to build an ImageSpec."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

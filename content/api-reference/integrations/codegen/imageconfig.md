@@ -2,7 +2,7 @@
 title: ImageConfig
 description: "Configuration for Docker image building at runtime."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

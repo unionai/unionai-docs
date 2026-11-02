@@ -2,7 +2,7 @@
 title: BaseCheckpoint
 description: "Base type for task checkpoint helpers."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

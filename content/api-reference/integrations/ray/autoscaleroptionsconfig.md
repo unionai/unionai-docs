@@ -2,7 +2,7 @@
 title: AutoscalerOptionsConfig
 description: "Configuration for the Ray autoscaler sidecar."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

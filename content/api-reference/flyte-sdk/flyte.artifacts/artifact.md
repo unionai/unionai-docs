@@ -2,7 +2,7 @@
 title: Artifact
 description: "Anything that can declare itself an artifact."
 icon: diagram-3
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
