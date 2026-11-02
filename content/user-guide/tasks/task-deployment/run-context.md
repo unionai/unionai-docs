@@ -49,6 +49,12 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../task-programming/files-and-directories), [Dirs](../task-programming/files-and-directories), [DataFrames](../task-programming/dataframes), checkpoints). Accepts local paths and any remote scheme the storage layer resolves: `s3://`, `gs://`, `abfs://` and `abfss://` natively, plus any other scheme `fsspec` has a filesystem for (such as `hf://`). |
 | `run_base_dir` | `str` | *auto-generated* | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. Distinct from `raw_data_path`. |
 
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend doesn't apply `raw_data_path` (or `--raw-data-path`) to remote runs; see [Where your data lives](../../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+{{< /markdown >}}
+{{< /variant >}}
+
 For the difference between what `raw_data_path` controls (offloaded values) and what stays at the deployment-configured location (`inputs.pb`, `outputs.pb`, Decks) or in the control plane database, see [Where your data lives](../../get-started/core-concepts/where-data-lives).
 
 To direct all task outputs to a specific bucket for a run:
