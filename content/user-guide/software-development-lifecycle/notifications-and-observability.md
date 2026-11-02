@@ -19,9 +19,19 @@ Notifications tell a person that a specific run finished or failed. Observabilit
 
 ## Notify on a terminal state
 
+{{< variant union >}}
+{{< markdown >}}
 Start with the built-in notifications, which need no plugin. [Run with notifications](../tasks/task-deployment/run-with-notifications) sends a message when a run reaches a terminal state, through email, Slack, Teams, or a generic webhook. [Trigger notifications](../triggers/trigger-notifications) does the same for triggered runs.
 
 They are declarative, need no code, and fire even if the task itself crashed.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+Open-source Flyte doesn't deliver built-in notifications yet. Send the message from the run's driver task instead: catch the failure, post, and re-raise. [Send notifications from your code](../tasks/task-deployment/notify-from-code) shows how to post once per run, with the webhook read from a secret at runtime.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Post from inside a run
 
@@ -85,5 +95,5 @@ Make these tasks idempotent, so a retried run doesn't file a duplicate ticket. L
 ## See also
 
 - [Event-driven automation](./event-driven-automation) for what starts a run.
-- [Run with notifications](../tasks/task-deployment/run-with-notifications) for declarative notifications.
+- [Send notifications from your code](../tasks/task-deployment/notify-from-code) for a notification sent from the driver task.
 - [Slack integration](../../integrations/software-development-tools/slack) for messages, approvals, and the receiver.

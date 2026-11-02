@@ -2,7 +2,7 @@
 title: Software development lifecycle
 description: Automate your own development process with Flyte, using event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
 icon: arrow-repeat
-weight: 11
+weight: 13
 variants: +flyte +union
 sidebar_expanded: false
 ---
@@ -40,7 +40,7 @@ The section uses no special lifecycle features. Each need maps to an ordinary pa
 | Keep an expensive gate fast | [Caching](../tasks/task-configuration/caching), [fan-out](../tasks/task-programming/fanout), and per-task [resources](../tasks/task-configuration/resources) |
 | Survive a flaky provider | [Retries and timeouts](../tasks/task-configuration/retries-and-timeouts) |
 | Trace an output back to its inputs and commit | Run history, task reports, and [lineage](./notifications-and-observability#track-what-produced-an-output) |
-| Tell a person the result | [Notifications](../tasks/task-deployment/run-with-notifications), or a Slack message from inside the run |
+| Tell a person the result | [Notifications](./notifications-and-observability#notify-on-a-terminal-state), or a Slack message from inside the run |
 
 {{< variant union >}}
 {{< markdown >}}

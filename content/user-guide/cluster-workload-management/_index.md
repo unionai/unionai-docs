@@ -2,7 +2,7 @@
 title: Cluster and workload management
 description: Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 icon: cloud
-weight: 9
+weight: 11
 variants: -flyte +union
 mermaid: true
 ---
@@ -48,7 +48,7 @@ cluster with the control plane.
 
 If you run a self-managed deployment, provision the data plane first with
 [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-[Data plane setup on AWS](../../deployment/selfmanaged/infrastructure-recommendations/aws)),
+[Data plane setup on AWS](../../deployment/selfmanaged/aws/legacy)),
 then use the commands here to manage the pool, cluster, and queue records that
 route work to it.
 

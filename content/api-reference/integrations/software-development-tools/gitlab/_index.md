@@ -2,7 +2,7 @@
 title: GitLab
 description: "GitLab webhooks for Flyte."
 icon: book
-version: 2.12.0
+version: 2.12.2
 variants: +flyte +union
 layout: py_api
 ---

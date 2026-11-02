@@ -418,7 +418,7 @@ Kubernetes pod spec: volumes, node selectors, tolerations, service accounts, and
 
 {{< variant union >}}
 {{< markdown >}}
-[Volumes](../tasks/task-programming/volumes) are the other option, a durable, versioned filesystem
+[Volumes](../tasks/task-programming/volumes/_index) are the other option, a durable, versioned filesystem
 backed by object storage that tasks mount and read like a local directory, with copy-on-write forks
 for parallel branches of work.
 

@@ -2,7 +2,7 @@
 title: Project patterns
 description: Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
 icon: folder
-weight: 10
+weight: 12
 variants: +flyte +union
 ---
 

@@ -11,7 +11,7 @@ variants: -flyte +union
 This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE]
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./aws), [GCP](./gcp), [Azure](./azure), [OCI](./oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../aws/legacy), [GCP](../gcp/legacy), [Azure](../azure/legacy), [OCI](./oci).
 
 ## Kubernetes cluster
 

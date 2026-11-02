@@ -19,8 +19,8 @@ Flyte is Apache 2.0 licensed and a Linux Foundation AI & Data project, and you r
 
 > [!TIP] Try Flyte on Union.ai, free for 30 days
 > [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
-> Subscribe to Union Team on AWS Marketplace and try it free for 30 days.
-> See [Set up from the Union.ai UI]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and try it free for 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -37,8 +37,8 @@ On it, you build model factories, production agents, and model serving in plain 
 See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways to run it.
 
 > [!TIP] Try Union.ai free for 30 days
-> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, free for the first 30 days.
-> See [Set up from the Union.ai UI]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and set up {{< key product_name >}} yourself, free for the first 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -61,6 +61,10 @@ Configure, build, and deploy the durable batch workloads that everything else is
 Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, or deploying the models your tasks train.
+{{< /link-card >}}
+
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
 Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
 {{< /link-card >}}
@@ -76,6 +80,22 @@ Answer many typed questions in one call, with calibrated confidence, and decide 
 {{< /grid >}}
 
 {{< variant union >}}
+
+{{< markdown >}}
+
+## LLM Gateway
+
+Route every model call from your tasks, apps, and laptops through one endpoint in your own cloud.
+
+{{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="llm-gateway" icon="signpost-split" title="LLM Gateway" >}}
+One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
+{{< /link-card >}}
+
+{{< /grid >}}
 
 {{< markdown >}}
 
