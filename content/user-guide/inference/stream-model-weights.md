@@ -41,6 +41,13 @@ It returns the model in eval mode and the local directory holding the config and
 
 Checkpoint tensors that the model has no parameter for are logged and ignored. A parameter that no tensor fills raises `KeyError`.
 
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> [Reusable containers](../tasks/task-configuration/reusable-containers) need a Union backend. On open-source Flyte, remove `reusable` and `unionai-reuse` from this example and the vLLM example below. The streaming calls work the same, but each task execution loads the model again.
+{{< /markdown >}}
+{{< /variant >}}
+
 This task embeds text on a reusable GPU container, and `alru_cache` loads the model once per container:
 
 {{< code file="/unionai-examples/v2/user-guide/inference/stream-model-weights/load_hf_model.py" fragment="load" lang="python" >}}

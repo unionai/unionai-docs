@@ -66,7 +66,7 @@ With `requires_auth=True` (the default), pass a Union API key as `api_key`. See 
 
 ## Choose an image
 
-The default image compiles `llama-server` from source with CUDA for L4 and L40S GPUs (compute capability 8.9). The source build makes the first image build slow.
+The default image compiles `llama-server` from the tip of llama.cpp's default branch, with CUDA for L4 and L40S GPUs (compute capability 8.9), so two builds can produce different servers. The source build makes the first image build slow.
 
 To target other GPUs, or to pin a llama.cpp release for reproducible builds, use `build_llama_cpp_image()`:
 

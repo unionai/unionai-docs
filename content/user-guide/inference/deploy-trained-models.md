@@ -48,6 +48,12 @@ For a model vLLM and SGLang don't serve, such as a classifier, publish it the sa
 {{< code file="/unionai-examples/v2/user-guide/inference/deploy-trained-models/train_artifact.py" fragment="train-classifier" lang="python" >}}
 
 {{< markdown >}}
+Run the task once on your cluster before you deploy the app, because the app resolves its model at deploy time. Running `finetune` doesn't train the classifier:
+
+```bash
+flyte run train_artifact.py train_classifier
+```
+
 
 Then mount the artifact into a `FastAPIAppEnvironment` with a parameter:
 
@@ -118,6 +124,12 @@ For a model vLLM and SGLang don't serve, such as a classifier, return it the sam
 {{< code file="/unionai-examples/v2/user-guide/inference/deploy-trained-models/train_output.py" fragment="train-classifier" lang="python" >}}
 
 {{< markdown >}}
+Run the task once on your cluster before you deploy the app, because the app resolves its model at deploy time. Running `finetune` doesn't train the classifier:
+
+```bash
+flyte run train_output.py train_classifier
+```
+
 
 Then mount the task's output into a `FastAPIAppEnvironment` with a parameter:
 

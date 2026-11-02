@@ -135,7 +135,7 @@ Calling a provider directly needs the fewest moving parts. The [LLM Gateway](../
 | **Prompt and answer checks** | Write them into each task or app | Global guardrails on every call |
 | **Spend across teams** | One view per provider account | One view per virtual key |
 
-To move to the gateway, [add the provider](../../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps).
+To move to the gateway, [add the provider](../../llm-gateway/providers#add-a-hosted-provider), which stores the key as an organization-wide secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps).
 
 {{< /markdown >}}
 {{< /variant >}}

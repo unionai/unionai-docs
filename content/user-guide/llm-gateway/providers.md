@@ -15,8 +15,10 @@ A provider is a source of models behind the gateway: a hosted API such as OpenAI
 1. Store the provider's API key as a Union secret:
 
    ```bash
-   flyte create secret openai-api-key <your-openai-api-key>
+   flyte create secret openai-api-key
    ```
+
+   The command prompts for the value, so the key stays out of your shell history.
 
 2. Open **Settings → LLM Gateway → Providers** and click **Add provider**.
 3. Fill in the provider:
