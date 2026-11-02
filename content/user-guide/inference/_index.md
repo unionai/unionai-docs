@@ -16,6 +16,7 @@ Choose how to run a model based on where it lives and how you call it:
 | Serve an open-weight LLM on your own GPUs at high throughput | [vLLM endpoint](./self-hosted-endpoints/vllm) or [SGLang endpoint](./self-hosted-endpoints/sglang) |
 | Serve a small LLM with minimal setup | [Ollama endpoint](./self-hosted-endpoints/ollama) |
 | Serve quantized GGUF weights, a model larger than VRAM, or a model on CPU only | [llama.cpp endpoint](./self-hosted-endpoints/llamacpp) |
+| Serve any model behind your own API | [FastAPI endpoint](./self-hosted-endpoints/fastapi) or [Other frameworks](./self-hosted-endpoints/other-frameworks) such as Ray Serve, LitServe, and BentoML |
 | Copy Hugging Face weights into your storage before serving them | [Prefetching models](./prefetching-models) |
 | Serve a model you trained in a task | [Deploy trained models](./deploy-trained-models) |
 | Score a dataset on GPUs as a job, with no endpoint | [Batch inference](./batch-inference) |
