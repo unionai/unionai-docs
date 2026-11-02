@@ -1,12 +1,12 @@
 ---
-title: vLLM app
+title: vLLM
 description: Deploy a high-throughput vLLM model server.
 icon: cpu
-weight: 11
+weight: 1
 variants: +flyte +union
 ---
 
-# vLLM app
+# vLLM
 
 vLLM is a high-performance library for serving large language models (LLMs). Flyte provides `VLLMAppEnvironment` for deploying vLLM model servers.
 
@@ -18,7 +18,7 @@ First, install the vLLM plugin:
 pip install flyteplugins-vllm
 ```
 
-## Basic vLLM app
+## Basic vLLM endpoint
 
 Here's a simple example serving a HuggingFace model:
 
@@ -67,7 +67,7 @@ See the [vLLM documentation](https://docs.vllm.ai/en/stable/configuration/engine
 
 ## Using the OpenAI-compatible API
 
-Once deployed, your vLLM app exposes an OpenAI-compatible API:
+Once deployed, your vLLM endpoint exposes an OpenAI-compatible API:
 
 ```python
 from openai import OpenAI
@@ -89,7 +89,7 @@ print(response.choices[0].message.content)
 
 > [!TIP]
 > If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
-> See [secret-based authentication](../build-apps/secret-based-authentication#deploy-vllm-app-with-authentication) for more details on how to pass auth secrets to your app.
+> See [secret-based authentication](../../apps/build-apps/secret-based-authentication#deploy-vllm-app-with-authentication) for more details on how to pass auth secrets to your app.
 
 ## Multi-GPU inference (Tensor parallelism)
 
@@ -130,11 +130,11 @@ vllm_app = VLLMAppEnvironment(
 )
 ```
 
-See [Prefetching models](../serve-and-deploy-apps/prefetching-models) for more details on sharding.
+See [Prefetching models](../prefetching-models) for more details on sharding.
 
 ## Autoscaling
 
-vLLM apps work well with autoscaling:
+vLLM endpoints work well with autoscaling:
 
 ```python
 vllm_app = VLLMAppEnvironment(

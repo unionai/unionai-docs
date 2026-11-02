@@ -2,14 +2,14 @@
 title: Prefetching models
 description: Download and shard a HuggingFace model before an inference app starts.
 icon: download
-weight: 6
+weight: 3
 variants: +flyte +union
 ---
 
 # Prefetching models
 
 Prefetching allows you to download and prepare HuggingFace models (including sharding for multi-GPU inference) before
-deploying [vLLM](../native-app-integrations/vllm-app) or [SGLang](../native-app-integrations/sglang-app) apps. This speeds up deployment and ensures models are ready when your app starts.
+deploying [vLLM](./self-hosted-endpoints/vllm) or [SGLang](./self-hosted-endpoints/sglang) apps. This speeds up deployment and ensures models are ready when your app starts.
 
 ## Why prefetch?
 
@@ -41,7 +41,7 @@ flyte prefetch hf-model Qwen/Qwen3-0.6B --wait
 
 ## Using prefetched models
 
-Use the prefetched model in your vLLM or SGLang app:
+Use the prefetched model in your vLLM or SGLang endpoint:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=using-prefetched-models lang=python >}}
 
@@ -61,7 +61,7 @@ If the model requires authentication:
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/prefetch_examples.py" fragment=hf-token lang=python >}}
 
 The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
-HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../../tasks/task-configuration/secrets).
+HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../tasks/task-configuration/secrets).
 
 Public models need no token at all. Pass `hf_token_key=None` to prefetch anonymously, and no secret is attached to the prefetch task.
 
@@ -157,7 +157,7 @@ A successful prefetch registers the weights as a versioned model artifact, with 
 Hugging Face commit as its version and the repo README as its model card. For what
 that means for the registry, how to retrieve a prefetched model by name or by source
 repo, and how it appears in lineage, see
-[Prefetch Hugging Face models](../../artifacts/prefetch-models).
+[Prefetch Hugging Face models](../artifacts/prefetch-models).
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -15,8 +15,10 @@ A provider is a source of models behind the gateway: a hosted API such as OpenAI
 1. Store the provider's API key as a Union secret:
 
    ```bash
-   flyte create secret openai-api-key <your-openai-api-key>
+   flyte create secret openai-api-key
    ```
+
+   The command prompts for the value, so the key stays out of your shell history.
 
 2. Open **Settings → LLM Gateway → Providers** and click **Add provider**.
 3. Fill in the provider:
@@ -40,11 +42,13 @@ The gateway meters hosted providers from its built-in price catalog, so budgets 
 
 The console lists the providers your gateway supports when you add one.
 
+To call a provider directly from a task or app instead, without the gateway, see [Providers](../inference/providers/_index) in the Inference section.
+
 ## Add a self-hosted model
 
 You can put a model you serve on Union behind the gateway, next to hosted providers. Callers reach it with the same client, the same virtual keys, and the same guardrails.
 
-1. Deploy the model as a [vLLM](../apps/native-app-integrations/vllm-app) or [SGLang](../apps/native-app-integrations/sglang-app) app on the gateway's cluster.
+1. Deploy the model as a [vLLM](../inference/self-hosted-endpoints/vllm) or [SGLang](../inference/self-hosted-endpoints/sglang) app on the gateway's cluster.
 2. In **Settings → LLM Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
 3. Fill in the provider:
 

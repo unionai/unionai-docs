@@ -2,7 +2,7 @@
 title: Software development lifecycle
 description: Automate your own development process with Flyte, using event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
 icon: arrow-repeat
-weight: 11
+weight: 13
 variants: +flyte +union
 sidebar_expanded: false
 ---

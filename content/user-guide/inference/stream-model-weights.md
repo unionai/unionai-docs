@@ -1,7 +1,7 @@
 ---
 title: Stream model weights
 description: Load a model's safetensors weights from object storage onto the GPU inside a task, without writing them to local disk.
-weight: 5
+weight: 6
 variants: +flyte +union
 icon: download
 ---
@@ -15,16 +15,11 @@ The safetensors weights are not written to local disk.
 
 Requires `flyte` 2.11.1 or later. The streamer needs `torch`, `load_hf_model()` also needs `transformers`, and the vLLM load format needs `vllm` and `flyteplugins-vllm` 2.11.1 or later.
 
-> [!NOTE] Examples pending
-> Tested, runnable examples for this page are pending.
-> For runnable code, see `examples/genai/vllm/vllm_task_streamed.py`, `examples/ml/embed_streamed.py`, and `examples/ml/batch_inference_streamed.py` in the [flyte-sdk repository at v2.11.1](https://github.com/flyteorg/flyte-sdk/tree/v2.11.1/examples).
-> Those examples have not been verified on GPUs, and neither has loading into GPU memory through vLLM.
-
 ## Model location
 
 Every entry point takes `path`, the object-store prefix of a Hugging Face–style model directory, such as `s3://bucket/models/qwen2.5-7b`.
 The prefix holds the `*.safetensors` files, optionally a `model.safetensors.index.json`, and the config and tokenizer files.
-To copy a Hub model there, use `flyte.prefetch.hf_model()` (see [Prefetching models](../apps/serve-and-deploy-apps/prefetching-models)).
+To copy a Hub model there, use `flyte.prefetch.hf_model()` (see [Prefetching models](./prefetching-models)).
 A task that takes the model as a `flyte.io.Dir` passes `model.path`.
 
 A local filesystem path, with or without `file://`, is not supported.
@@ -46,6 +41,17 @@ It returns the model in eval mode and the local directory holding the config and
 
 Checkpoint tensors that the model has no parameter for are logged and ignored. A parameter that no tensor fills raises `KeyError`.
 
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> [Reusable containers](../tasks/task-configuration/reusable-containers) need a Union backend. On open-source Flyte, remove `reusable` and `unionai-reuse` from this example and the vLLM example below. The streaming calls work the same, but each task execution loads the model again.
+{{< /markdown >}}
+{{< /variant >}}
+
+This task embeds text on a reusable GPU container, and `alru_cache` loads the model once per container:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/stream-model-weights/load_hf_model.py" fragment="load" lang="python" >}}
+
 ## Stream into any module
 
 `ModelStreamer(path, chunk_size=None, max_concurrency=None)` is the streamer underneath, for models that are not `transformers` models.
@@ -57,6 +63,10 @@ It uses the same `chunk_size` and `max_concurrency` defaults as `load_hf_model()
 - `load_into(module, device=None, dtype=None, strict=True, key_mapping=None)`: streams the weights into a module's parameters and buffers, replacing each entry as it arrives. Build the module with `with empty_weights():` so its parameters are on `meta` and never allocated twice. Then pass `device`: a `meta` entry with no `device` raises `ValueError`. After the stream ends, `load_into()` calls the module's `tie_weights()` if it has one. With `strict=True`, a parameter left on `meta` or an unmatched checkpoint tensor raises `KeyError`. With `strict=False`, it returns a `LoadResult` listing `missing_keys` and `unexpected_keys`.
 - `download_metadata(local_dir)`: downloads everything under the prefix except the `*.safetensors` files.
 
+This task streams a checkpoint into a PyTorch module:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/stream-model-weights/load_into.py" fragment="load-into" lang="python" >}}
+
 ## Load weights into vLLM
 
 `flyteplugins-vllm` registers a vLLM load format, `flyte-streaming`, through vLLM's `vllm.general_plugins` entry point.
@@ -65,6 +75,10 @@ Pass any other engine arguments alongside them.
 It takes the same `local_dir`, `chunk_size`, and `max_concurrency` arguments as `load_hf_model()`.
 
 In an async task, build the engine off the event loop, for example `await asyncio.to_thread(LLM, **args, max_model_len=4096)`, because `LLM()` blocks for the whole load.
+
+This task builds the engine once per reusable container and shares it between calls:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/stream-model-weights/vllm_task.py" fragment="vllm" lang="python" >}}
 
 `engine_args()` also sets `VLLM_WORKER_MULTIPROC_METHOD=spawn` unless it is already set. Keep it at `spawn`.
 obstore's runtime does not survive `fork()`, and vLLM forks its engine-core process by default.
@@ -77,4 +91,4 @@ obstore's runtime does not survive `fork()`, and vLLM forks its engine-core proc
 
 ## Related pages
 
-To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM app](../apps/native-app-integrations/vllm-app#model-streaming) or an [SGLang app](../apps/native-app-integrations/sglang-app#model-streaming).
+To serve a model behind an endpoint instead of loading it inside a task, use `stream_model=True` on a [vLLM endpoint](./self-hosted-endpoints/vllm#model-streaming) or an [SGLang endpoint](./self-hosted-endpoints/sglang#model-streaming).
