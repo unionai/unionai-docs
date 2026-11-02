@@ -1,12 +1,12 @@
 ---
-title: llama.cpp endpoint
+title: llama.cpp
 description: Serve quantized GGUF models with llama-server as a Flyte app, on GPU or CPU, behind an OpenAI-compatible API.
 icon: cpu
 weight: 4
 variants: +flyte +union
 ---
 
-# llama.cpp endpoint
+# llama.cpp
 
 The `flyteplugins-llamacpp` plugin serves GGUF models with [llama.cpp](https://github.com/ggml-org/llama.cpp)'s `llama-server` as a Flyte app. `LlamaCppAppEnvironment` exposes an OpenAI-compatible API under `/v1` and the llama.cpp Web UI at `/`.
 

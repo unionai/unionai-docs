@@ -1,5 +1,5 @@
 ---
-title: FastAPI endpoint
+title: FastAPI
 description: "Serve any Python model behind a custom REST API on your own compute with FastAPI, for models and request shapes an LLM server doesn't cover."
 icon: cpu
 weight: 5
@@ -11,7 +11,7 @@ keywords:
   - REST API for ML models
 ---
 
-# FastAPI endpoint
+# FastAPI
 
 [FastAPI](https://fastapi.tiangolo.com/) gives you full control over an endpoint's routes, request schema, and pre- and post-processing. Use it for models an LLM server doesn't cover, such as classifiers, embedding models, and scikit-learn or PyTorch models, or when an LLM needs custom logic around it.
 

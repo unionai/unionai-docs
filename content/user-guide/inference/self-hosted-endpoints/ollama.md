@@ -1,12 +1,12 @@
 ---
-title: Ollama endpoint
+title: Ollama
 description: Serve open models locally with Ollama's OpenAI-compatible API.
 icon: cpu
 weight: 3
 variants: +flyte +union
 ---
 
-# Ollama endpoint
+# Ollama
 
 [Ollama](https://ollama.com/) is a lightweight runtime for serving open large language models (LLMs) locally, with a built-in OpenAI-compatible API. It is a good fit for smaller models and quick local-style serving, and complements the higher-throughput [vLLM](./vllm) and [SGLang](./sglang) integrations.
 

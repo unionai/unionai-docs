@@ -1,12 +1,12 @@
 ---
-title: SGLang endpoint
+title: SGLang
 description: Deploy an SGLang model server for fast structured generation.
 icon: cpu
 weight: 2
 variants: +flyte +union
 ---
 
-# SGLang endpoint
+# SGLang
 
 SGLang is a fast structured generation library for large language models (LLMs). Flyte provides `SGLangAppEnvironment` for deploying SGLang model servers.
 

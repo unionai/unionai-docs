@@ -1,12 +1,12 @@
 ---
-title: vLLM endpoint
+title: vLLM
 description: Deploy a high-throughput vLLM model server.
 icon: cpu
 weight: 1
 variants: +flyte +union
 ---
 
-# vLLM endpoint
+# vLLM
 
 vLLM is a high-performance library for serving large language models (LLMs). Flyte provides `VLLMAppEnvironment` for deploying vLLM model servers.
 
