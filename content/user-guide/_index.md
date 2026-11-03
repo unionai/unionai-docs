@@ -45,7 +45,7 @@ See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways t
 
 ## Basics
 
-Learn the basics of Flyte, covering all the core concepts around tasks, apps, agents, and typed model calls.
+Learn the basics of Flyte, covering the core concepts around tasks, apps, and triggers.
 
 {{< grid >}}
 
@@ -61,12 +61,28 @@ Configure, build, and deploy the durable batch workloads that everything else is
 Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
-{{< link-card target="inference" icon="cpu" title="Inference" >}}
-Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
-{{< /link-card >}}
-
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
 Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+## AI workloads
+
+Train, post-train, and serve models, and build agents, with the Flyte constructs each workload relies on.
+
+{{< grid >}}
+
+{{< link-card target="model-training" icon="gpu-card" title="Model training" >}}
+Train models with Flyte, from multi-node pretraining and LLM fine-tuning to classical machine learning, with every stage cached, recoverable, and sized to its own hardware.
+{{< /link-card >}}
+
+{{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement learning" >}}
+Run reinforcement learning loops with Flyte, with environments, rewards, rollouts, and the trainer each on their own hardware, and a loop that survives failures.
+{{< /link-card >}}
+
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
 {{< /link-card >}}
 
 {{< link-card target="agents" icon="robot" title="Agents" >}}
