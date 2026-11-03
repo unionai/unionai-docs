@@ -14,9 +14,9 @@ To specify resource requirements for your task, instantiate a `Resources` object
 the `resources` parameter of the `TaskEnvironment` or the `resources` parameter of the `override` function (for invocation overrides).
 
 Every task defined using that `TaskEnvironment` will run with the specified resources.
-If a specific task has its own `resources` defined in the decorator, it will override the environment's resources for that task only.
+The task decorator takes no `resources` argument. To give one task different resources, define it in its own `TaskEnvironment` or call `override(resources=...)` when you invoke it. If the environment sets `reusable`, also pass `reusable="off"` in the same `override` call.
 
-If neither `TaskEnvironment` nor the task decorator specifies `resources`, the default resource allocation will be used.
+If neither the `TaskEnvironment` nor an `override` specifies `resources`, the default resource allocation will be used.
 
 ## Resources data class
 
@@ -87,7 +87,7 @@ You can request an accelerator in three ways:
 - **Integer count** — `gpu=2` requests that many GPUs of whatever type is available.
 - **Device object** — `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, `flyte.APPLE_SILICON()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
 
-The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above.
+The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above. If the environment sets `reusable`, the `override` must also pass `reusable="off"`.
 
 > [!NOTE]
 > Which accelerator types are actually available depends on your deployment and the node pools configured in your cluster. Requesting a type that no node provides will leave the task's pod `Pending`. For Apple Silicon, see [Apple Silicon (devbox only)](#apple-silicon-devbox-only).
@@ -131,7 +131,7 @@ Use `flyte.TPU()` with the device type and, optionally, a slice topology:
 resources=flyte.Resources(gpu=flyte.TPU(device="V5P", partition="2x2x1"))
 ```
 
-Supported TPU device types are `V5P` and `V6E`.
+Supported TPU device types are `V5E`, `V5P`, and `V6E`. `V5E` requires `flyte` 2.8.0 or later.
 
 ### AMD GPUs
 
