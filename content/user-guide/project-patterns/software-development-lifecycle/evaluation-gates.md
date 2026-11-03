@@ -105,7 +105,7 @@ An evaluation gate has to do four things:
 
 {{< variant union >}}
 {{< markdown >}}
-To version the evaluation set, register it as an [artifact](../artifacts/_index).
+To version the evaluation set, register it as an [artifact](../../artifacts/_index).
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -119,28 +119,28 @@ To version the evaluation set, register it as an [artifact](../artifacts/_index)
 
 ## Record the result
 
-[MLflow](../../integrations/mlflow/_index) and [Weights & Biases](../../integrations/wandb/_index) both log from inside a task, so the recorded metrics trace back to the run that produced them.
+[MLflow](../../../integrations/mlflow/_index) and [Weights & Biases](../../../integrations/wandb/_index) both log from inside a task, so the recorded metrics trace back to the run that produced them.
 
-For the readable half, `report=True` gives the gate a task report, which the example fills with `flyte.report.replace.aio`. Add per-slice scores and the worst-scoring cases there. If the reviewer needs plots and tables, [Papermill](../../integrations/papermill/_index) runs a parameterized notebook as a task, so the notebook is the gate's output.
+For the readable half, `report=True` gives the gate a task report, which the example fills with `flyte.report.replace.aio`. Add per-slice scores and the worst-scoring cases there. If the reviewer needs plots and tables, [Papermill](../../../integrations/papermill/_index) runs a parameterized notebook as a task, so the notebook is the gate's output.
 
 ## Gate the input
 
 Validating inputs catches a problem before any scoring compute is spent:
 
-- [Pandera](../../integrations/pandera/_index) validates dataframes at task boundaries. A column that changed type, or an unexpected null, fails at the step that introduced it instead of surfacing later as a regression.
-- [TypeSafe AI](../../integrations/typesafe-ai/_index) returns typed, confidence-scored answers from a model, which you can check directly instead of parsing free text. [System one types](../system-one-types/_index) covers the pattern.
+- [Pandera](../../../integrations/pandera/_index) validates dataframes at task boundaries. A column that changed type, or an unexpected null, fails at the step that introduced it instead of surfacing later as a regression.
+- [TypeSafe AI](../../../integrations/typesafe-ai/_index) returns typed, confidence-scored answers from a model, which you can check directly instead of parsing free text. [System one types](../../inference/system-one-types/_index) covers the pattern.
 
 ## Scale the compute
 
-- [`flyte.map`](../tasks/task-programming/fanout) for per-case fan-out. This is usually enough.
-- [Ray](../../integrations/ray/_index), [Spark](../../integrations/spark/_index), or [Dask](../../integrations/dask/_index) when scoring needs a cluster rather than many independent tasks.
-- Per-task [resources](../tasks/task-configuration/resources), so only the step that needs a GPU holds one.
-- [Snowflake](../../integrations/snowflake/_index), [BigQuery](../../integrations/bigquery/_index), or [Databricks](../../integrations/databricks/_index) when the evaluation set is in a warehouse.
-- [Polars](../../integrations/polars/_index), [Lance](../../integrations/lance/_index), [JSONL](../../integrations/jsonl/_index), or [Hugging Face](../../integrations/huggingface/_index) to pass scored data between steps without writing your own serialization.
+- [`flyte.map`](../../tasks/task-programming/fanout) for per-case fan-out. This is usually enough.
+- [Ray](../../../integrations/ray/_index), [Spark](../../../integrations/spark/_index), or [Dask](../../../integrations/dask/_index) when scoring needs a cluster rather than many independent tasks.
+- Per-task [resources](../../tasks/task-configuration/resources), so only the step that needs a GPU holds one.
+- [Snowflake](../../../integrations/snowflake/_index), [BigQuery](../../../integrations/bigquery/_index), or [Databricks](../../../integrations/databricks/_index) when the evaluation set is in a warehouse.
+- [Polars](../../../integrations/polars/_index), [Lance](../../../integrations/lance/_index), [JSONL](../../../integrations/jsonl/_index), or [Hugging Face](../../../integrations/huggingface/_index) to pass scored data between steps without writing your own serialization.
 
 ## Record the configuration
 
-A score is only comparable if you know how it was produced. [Hydra](../../integrations/hydra/_index) and [OmegaConf](../../integrations/omegaconf/_index) pass structured configuration between tasks as typed inputs, so the configuration is recorded with the run instead of living in environment variables.
+A score is only comparable if you know how it was produced. [Hydra](../../../integrations/hydra/_index) and [OmegaConf](../../../integrations/omegaconf/_index) pass structured configuration between tasks as typed inputs, so the configuration is recorded with the run instead of living in environment variables.
 
 ## Evaluate agents
 
@@ -151,7 +151,7 @@ An agent's output is a trajectory, not a single value. A correct answer reached 
 - Cost and turn count. These often regress first when a prompt changes.
 - Safety behaviors, on cases chosen to provoke them.
 
-[Agent plugins](../../integrations/agents/_index) run each tool call as a child action and record each model turn, so the trajectory is already in the run. Completed turns replay on retry instead of calling the model again.
+[Agent plugins](../../../integrations/agents/_index) run each tool call as a child action and record each model turn, so the trajectory is already in the run. Completed turns replay on retry instead of calling the model again.
 
 ## See also
 

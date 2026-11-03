@@ -22,7 +22,7 @@ Requires `flyteplugins-union` 0.19.1 or later. The `guardrails` extra adds FastA
 
 This guardrail refuses prompts that contain a Social Security number or an email address, and answers one known question from a cache:
 
-{{< code file="/unionai-examples/v2/user-guide/llm-gateway/pii_guardrail.py" fragment=checks lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/pii_guardrail.py" fragment=checks lang=python >}}
 
 A check receives a `GuardrailRequest` and returns a `Verdict`:
 
@@ -43,7 +43,7 @@ A check receives a `GuardrailRequest` and returns a `Verdict`:
 
 Wrap the check in a `GuardrailAppEnvironment`:
 
-{{< code file="/unionai-examples/v2/user-guide/llm-gateway/pii_guardrail.py" fragment=env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/pii_guardrail.py" fragment=env lang=python >}}
 
 `GuardrailAppEnvironment` accepts every `flyte.app.AppEnvironment` option, such as `resources`, `scaling`, `secrets`, and `image`. The default image installs `flyteplugins-union[guardrails]`. If your checks need more packages, pass your own image and include `flyteplugins-union[guardrails]>=0.19.1` in it.
 
@@ -61,7 +61,7 @@ Leave `requires_auth` at its default. The gateway reaches the app over the clust
 
 Pass a `post` function to check the model's answer. One app can serve both stages. Checks can be `async`:
 
-{{< code file="/unionai-examples/v2/user-guide/llm-gateway/post_guardrail.py" fragment=checks lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/post_guardrail.py" fragment=checks lang=python >}}
 
 Register the app under both stages to use both checks. A stage with no function returns pass.
 
@@ -69,7 +69,7 @@ Register the app under both stages to use both checks. A stage with no function 
 
 If you already run a FastAPI app, mount the guardrail routes on it with `guardrail_router()`, and give the environment the `Guardrail` type:
 
-{{< code file="/unionai-examples/v2/user-guide/llm-gateway/fastapi_guardrail.py" fragment=router lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/fastapi_guardrail.py" fragment=router lang=python >}}
 
 `GuardrailAppEnvironment` also accepts an existing app, as `app=`, and adds the routes to it.
 

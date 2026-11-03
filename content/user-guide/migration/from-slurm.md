@@ -369,7 +369,7 @@ work arrives. And when a queue hits its depth limit, new submissions are rejecte
 `RESOURCE_EXHAUSTED` instead of sitting in `PENDING` for an unknown length of time. That rejection
 is a back-pressure signal for the submitting process to slow down.
 
-Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../cluster-workload-management/queues)
+Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../clusters-and-queues/queues)
 
 ---
 

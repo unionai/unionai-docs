@@ -22,13 +22,13 @@ For the third kind of change there is no pull request to attach a check to. The 
 
 {{< variant union >}}
 {{< markdown >}}
-Register the model or dataset as an artifact, and use an [artifact trigger](../triggers/artifact-triggers) to start the evaluation when a new version is published.
+Register the model or dataset as an artifact, and use an [artifact trigger](../../triggers/artifact-triggers) to start the evaluation when a new version is published.
 {{< /markdown >}}
 {{< /variant >}}
 
 ## Gate a pull request
 
-The [GitHub integration](../../integrations/software-development-tools/github) receives the pull request event and launches a task. The receiver is the one shown in [Event-driven automation](./event-driven-automation#launch-once-per-event). The launched task does the work and writes the result back to the pull request. This one labels the pull request by size:
+The [GitHub integration](../../../integrations/software-development-tools/github) receives the pull request event and launches a task. The receiver is the one shown in [Event-driven automation](./event-driven-automation#launch-once-per-event). The launched task does the work and writes the result back to the pull request. This one labels the pull request by size:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_tasks.py" fragment=task lang=python >}}
 
@@ -36,10 +36,10 @@ To make the result a required status, have the task publish a check run through 
 
 Running the gate as a Flyte task instead of a CI job lets it:
 
-- Hold a GPU for only the step that needs it, with per-task [resources](../tasks/task-configuration/resources).
-- Skip the expensive work on a re-run, with [caching](../tasks/task-configuration/caching).
-- Run a thousand-case suite in parallel, with [fan-out](../tasks/task-programming/fanout).
-- Absorb a provider's transient 503 with [retries](../tasks/task-configuration/retries-and-timeouts), instead of failing the build.
+- Hold a GPU for only the step that needs it, with per-task [resources](../../tasks/task-configuration/resources).
+- Skip the expensive work on a re-run, with [caching](../../tasks/task-configuration/caching).
+- Run a thousand-case suite in parallel, with [fan-out](../../tasks/task-programming/fanout).
+- Absorb a provider's transient 503 with [retries](../../tasks/task-configuration/retries-and-timeouts), instead of failing the build.
 
 ## Gate on a person's review
 
@@ -53,7 +53,7 @@ See [Human gates and approvals](./human-gates-and-approvals) for timeouts, who m
 
 Treat a release as a promotion: the same versioned code moves between domains as it passes each gate, instead of being rebuilt for each environment.
 
-1. On every merge, deploy to `development` pinned to the commit, with `flyte deploy --version ${{ github.sha }}`. See [CI/CD deployments](../project-patterns/cicd).
+1. On every merge, deploy to `development` pinned to the commit, with `flyte deploy --version ${{ github.sha }}`. See [CI/CD deployments](../cicd).
 2. Run the gate there, against real data.
 3. If it passes, promote the same version to `staging`, then to `production`.
 
@@ -72,13 +72,13 @@ Installation tokens expire after one hour. That is long enough for a clone or a 
 **Review load.** An agent can open more pull requests than reviewers can read carefully. To keep review meaningful:
 
 - Make an automated gate the only gate for mechanical changes, and reserve human review for changes that alter behavior.
-- Test generated code before review. The [code generation integration](../../integrations/codegen/_index) runs it in a sandbox first.
+- Test generated code before review. The [code generation integration](../../../integrations/codegen/_index) runs it in a sandbox first.
 
-[Agent frameworks](../../integrations/agents/_index) covers running agent SDKs as durable tasks, and [Agents](../agents/_index) covers Flyte's own agent harness.
+[Agent frameworks](../../../integrations/agents/_index) covers running agent SDKs as durable tasks, and [Agents](../../agents/_index) covers Flyte's own agent harness.
 
 ## Gate a dataset change
 
-Gate a dataset change like a model change, and add a schema check in front of it. [Pandera](../../integrations/pandera/_index) validates dataframes at task boundaries, so a changed column type or an unexpected null fails at the step that introduced it. See [Evaluation gates](./evaluation-gates#gate-the-input) for input checks on model output.
+Gate a dataset change like a model change, and add a schema check in front of it. [Pandera](../../../integrations/pandera/_index) validates dataframes at task boundaries, so a changed column type or an unexpected null fails at the step that introduced it. See [Evaluation gates](./evaluation-gates#gate-the-input) for input checks on model output.
 
 ## Gates to avoid
 
@@ -92,4 +92,4 @@ A gate that people work around gives false assurance. Avoid these:
 
 - [Evaluation gates](./evaluation-gates) for measuring quality well enough to gate on it.
 - [Human gates and approvals](./human-gates-and-approvals) for putting a person in the loop.
-- [CI/CD deployments](../project-patterns/cicd) for deployment from CI.
+- [CI/CD deployments](../cicd) for deployment from CI.

@@ -2,7 +2,7 @@
 title: System one types
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
-weight: 10
+weight: 8
 mermaid: true
 variants: +flyte +union
 ---
@@ -258,7 +258,7 @@ Everything on this page — the battery, the composition rule, the confidence ga
 
 {{< grid >}}
 
-{{< link-card target="../../tutorials/agents/system-one-agents" icon="mortarboard" title="Typed decisions for agentic pipelines" >}}
+{{< link-card target="../../../tutorials/agents/system-one-agents" icon="mortarboard" title="Typed decisions for agentic pipelines" >}}
 Interleave a System One model with a generative one — typed guards, tool fan-out, a durable loop, and an A/B that prices both arms.
 {{< /link-card >}}
 
@@ -266,7 +266,7 @@ Interleave a System One model with a generative one — typed guards, tool fan-o
 
 ## Related
 
-- [TypeSafe AI integration](../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
-- [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
-- [Agents](../agents/_index): the loop these decisions most often sit inside.
-- [Tasks](../tasks/_index): the unit each call runs in.
+- [TypeSafe AI integration](../../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
+- [Typed decisions for agentic pipelines](../../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
+- [Agents](../../agents/_index): the loop these decisions most often sit inside.
+- [Tasks](../../tasks/_index): the unit each call runs in.

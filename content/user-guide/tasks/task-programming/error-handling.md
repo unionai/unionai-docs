@@ -162,7 +162,7 @@ async def main(epochs: int = 3) -> str:
     raise RuntimeError("No queue had capacity")
 ```
 
-Queues are created by your platform admin; see [Managing queues](../../cluster-workload-management/queues).
+Queues are created by your platform admin; see [Managing queues](../../clusters-and-queues/queues).
 
 {{< /markdown >}}
 {{< /variant >}}

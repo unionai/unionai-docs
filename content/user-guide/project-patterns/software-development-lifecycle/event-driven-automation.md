@@ -14,16 +14,16 @@ Every automation starts with a cause. The cause determines whether the automatio
 
 | The cause is | Use |
 |---|---|
-| A person acted in GitHub, Slack, Linear, ClickUp, Jira, or GitLab | A [software development tool webhook](../../integrations/software-development-tools/_index). It fires when the action happens and carries who did what. |
-| Time | A [schedule](../triggers/schedules). |
-| Another external system calls you | A [custom provider](../../integrations/software-development-tools/_index) or a [FastAPI app](../apps/native-app-integrations/fastapi-app). |
-| An outside system needs to drive Flyte itself | A [Flyte webhook](../apps/native-app-integrations/flyte-webhook), which exposes Flyte's own operations over HTTP. |
+| A person acted in GitHub, Slack, Linear, ClickUp, Jira, or GitLab | A [software development tool webhook](../../../integrations/software-development-tools/_index). It fires when the action happens and carries who did what. |
+| Time | A [schedule](../../triggers/schedules). |
+| Another external system calls you | A [custom provider](../../../integrations/software-development-tools/_index) or a [FastAPI app](../../apps/native-app-integrations/fastapi-app). |
+| An outside system needs to drive Flyte itself | A [Flyte webhook](../../apps/native-app-integrations/flyte-webhook), which exposes Flyte's own operations over HTTP. |
 
 Use a schedule only when time is the cause, such as a weekly report or a nightly compaction. A nightly job that rebuilds a dataset "after the upstream load finishes" runs late when the load is early, and on stale data when the load is late. Neither failure raises an error.
 
 {{< variant union >}}
 {{< markdown >}}
-When the cause is new data, use an [artifact trigger](../triggers/artifact-triggers). Register the upstream output as an artifact, and the downstream run starts when a new version is published.
+When the cause is new data, use an [artifact trigger](../../triggers/artifact-triggers). Register the upstream output as an artifact, and the downstream run starts when a new version is published.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -58,7 +58,7 @@ How it behaves:
 > [!WARNING] Make side effects idempotent
 > `run_once` guarantees one run per event, not one side effect. Two deliveries that arrive at the same moment can both launch, because the label check is a read followed by a launch.
 >
-> Where a duplicate would be visible or harmful, such as a second comment or a second charge, make the task idempotent as well. The [ClickUp example](../../integrations/software-development-tools/clickup) reads the current state and does nothing if it is already correct.
+> Where a duplicate would be visible or harmful, such as a second comment or a second charge, make the task idempotent as well. The [ClickUp example](../../../integrations/software-development-tools/clickup) reads the current state and does nothing if it is already correct.
 
 ## Keep the receiver thin
 
@@ -88,5 +88,5 @@ When nothing happens, the cause could be credentials, parsing, or networking. Te
 ## See also
 
 - [Review and release gates](./review-and-release-gates) for what the launched run can do.
-- [Software development tools](../../integrations/software-development-tools/_index) for each provider's events and setup.
-- [Triggers](../triggers/_index) for schedules.
+- [Software development tools](../../../integrations/software-development-tools/_index) for each provider's events and setup.
+- [Triggers](../../triggers/_index) for schedules.
