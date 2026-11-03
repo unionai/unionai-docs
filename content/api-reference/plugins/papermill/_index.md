@@ -2,7 +2,7 @@
 title: Papermill
 description: ".. currentmodule:: flytekitplugins.papermill."
 icon: book
-version: 1.16.30
+version: 1.16.32
 variants: +flyte +union
 layout: py_api
 ---
