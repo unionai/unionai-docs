@@ -21,7 +21,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 | GCP | [GCP](../gcp/legacy) | `gcp` | `values.gcp.yaml` |
 | Azure | [Azure](../azure/legacy) | `azure` | `values.azure.yaml` |
 | OCI | [OCI](../infrastructure-recommendations/oci) | `oci` | `values.yaml` (base) |
-| Generic | [Generic Kubernetes](../infrastructure-recommendations/generic) | `custom` | `values.yaml` (base) |
+| Generic | [Generic Kubernetes](../infrastructure-recommendations/generic) | `metal` | `values.yaml` (base) |
 
 > [!NOTE] GPU-optimized providers
 > CoreWeave, Crusoe, and Nebius have their own deployment guides with provider-specific GPU, storage, and registry steps: [CoreWeave](./coreweave) · [Crusoe](./crusoe) · [Nebius](./nebius).
@@ -99,27 +99,20 @@ Before you start, provision your cloud infrastructure using the matching page an
      --create-namespace
    ```
 
-6. Once deployed, check that the cluster registered with the control plane:
+6. Once deployed, check that the data plane has connected to the control plane:
 
    ```bash
    flyte get cluster
    ```
 
-   The command groups clusters by state. A successfully registered cluster appears under **Enabled Clusters**:
-
-   ```text
-   Enabled Clusters
-   NAME        ORG     STATE     HEALTH
-   <cluster>   <org>   enabled   healthy
-   ```
+   The command groups clusters by state. Once the data plane is connected, your cluster appears in the **Enabled Clusters** table with health `🟢 healthy`.
 
 7. Follow the [Quickstart](../../../user-guide/get-started/quickstart) to run your first workflow and verify your cluster is working correctly.
 
 ## Next: manage your cluster and pools
 
-`uctl selfserve provision-dataplane-resources` provisions the data plane and
-registers this cluster with the control plane. Once it is connected, you manage
-the **cluster pool** it belongs to, and route work to it with queues, from the
+`flyte create cluster` registers this cluster with the control plane in step 2. Once the data plane
+is connected, you manage the **cluster pool** it belongs to, and route work to it with queues, from the
 [Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
 user guide:
 
