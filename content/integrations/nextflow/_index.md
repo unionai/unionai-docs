@@ -13,7 +13,12 @@ The Nextflow plugin runs [Nextflow](https://www.nextflow.io/) pipelines on Flyte
 - Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
 - Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
 - Aborting the Flyte run aborts the pipeline and its running tasks.
-- Each task action's **Code** tab shows the script Nextflow ran for that task.
+
+{{< variant union >}}
+{{< markdown >}}
+Each task action's **Code** tab shows the script Nextflow ran for that task.
+{{< /markdown >}}
+{{< /variant >}}
 
 Use this plugin to run existing Nextflow pipelines, such as those from [nf-core](https://nf-co.re/), without rewriting them, and to chain them with Python tasks in the same Flyte run.
 
@@ -121,7 +126,7 @@ When the task runs locally (`flyte run --local`), Nextflow uses its own executor
 
 nf-flyte also works without a Flyte task: run `nextflow run` on a laptop or in CI with the `flyte` executor, and nf-flyte creates the Flyte run and prints its URL. Its root action stands for the Nextflow head. It ends with the pipeline's result, is aborted when you stop Nextflow (Ctrl+C), and fails if the head stops sending heartbeats.
 
-This needs Nextflow 25.10.0 or later, and Java, on the machine you launch from. Save this config as `flyte.config`:
+This needs Nextflow 25.10.0 or later, and Java, on the machine you launch from. The nf-core/demo 1.2.0 example below needs Nextflow 25.10.4 or later. Save this config as `flyte.config`:
 
 {{< variant union >}}
 {{< markdown >}}
@@ -211,6 +216,6 @@ image = nextflow_image(
 
 ## Requirements
 
-- `flyte` 2.12.0 or later, and `flyteplugins-nextflow` 2.12.2 or later. Earlier `flyteplugins-nextflow` releases install nf-flyte 0.1.0, without the **Code** tab and `ENTRYPOINT` support described on this page.
+- `flyte` 2.12.0 or later, and `flyteplugins-nextflow` 2.12.2 or later. Earlier `flyteplugins-nextflow` releases install nf-flyte 0.1.0, without the nf-flyte 0.2 features described on this page, such as `ENTRYPOINT` support.
 - On a cluster, the work directory must be on an object store Flyte can read (S3, GCS, or Azure). The default, under the task's raw data prefix, always is.
 - Every process container needs `bash`. If the image has an `ENTRYPOINT`, it runs first, as with Docker, so it must run the command it's given (for example, end with `exec "$@"`). The Wave images used by nf-core modules do.
