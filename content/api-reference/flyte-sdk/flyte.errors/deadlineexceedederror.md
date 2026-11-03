@@ -2,7 +2,7 @@
 title: DeadlineExceededError
 description: "This error is raised when a task does not finish within `flyte.Timeout.deadline`, across all attempts."
 icon: exclamation-triangle
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

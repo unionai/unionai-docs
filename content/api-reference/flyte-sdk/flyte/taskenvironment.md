@@ -2,7 +2,7 @@
 title: TaskEnvironment
 description: "Define an execution environment for a set of tasks."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -109,6 +109,7 @@ class TaskEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
+| `orchestrator` | `_OrchestratorNamespace` | Access the orchestrator namespace for creating orchestrator tasks. |
 | `sandbox` | `_SandboxNamespace` | Access the sandbox namespace for creating sandboxed tasks. |
 | `tasks` | `Dict[str, TaskTemplate]` | Get all tasks defined in the environment. |
 
