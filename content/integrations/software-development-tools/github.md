@@ -91,7 +91,7 @@ The token the task uses to read the pull request is a separate credential from t
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_tasks.py" fragment=review-gate lang=python >}}
 
-The condition is stored on the backend, so the run can wait for days and survives restarts.
+The condition is stored on the backend. The task that calls `review_pr` keeps its pod running until the review is answered or times out. See [Resources while waiting](../../user-guide/tasks/task-programming/conditions#resources-while-waiting).
 
 `review_pr` returns a `ReviewDecision`:
 

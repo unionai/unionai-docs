@@ -10,7 +10,7 @@ variants: +flyte +union
 
 Use a human gate for decisions that should not be automated, such as a production deploy, a schema migration, or an agent action with real consequences. The gate is an [external condition](../tasks/task-programming/conditions): an action that pauses a run until a signal arrives.
 
-The wait is durable. The condition is stored on the backend, not held by a running process, so the run survives restarts, redeploys, and node failures, and can wait for days without using compute. A script that blocks on an HTTP long-poll loses the decision when its pod is rescheduled.
+The condition and its answer are stored on the backend. The task that waits on the condition is not suspended: its pod keeps running and holds its resources until the condition is answered or times out. See [Resources while waiting](../tasks/task-programming/conditions#resources-while-waiting).
 
 ## Choose where the person answers
 

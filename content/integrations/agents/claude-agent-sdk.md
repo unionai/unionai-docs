@@ -93,7 +93,7 @@ async def support(request: str) -> str:
 
 ## Human in the loop
 
-A tool that pauses for human approval is a durable gate the SDK has no equivalent for. The run genuinely suspends and survives restarts while it waits.
+A tool can wait on a Flyte condition for human approval. The condition is stored on the backend. The tool task's pod keeps running while it waits.
 
 ```python{hl_lines=[5, 10]}
 @tool
