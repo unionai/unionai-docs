@@ -16,7 +16,7 @@ Fine-tuning needs one GPU environment for training and evaluation, and a CPU env
 
 {{< code file="/unionai-examples/v2/tutorials/llm_fine_tuning_lora_qlora/llm_fine_tuning_lora_qlora.py" fragment="env" lang=python >}}
 
-- `flyte.Image.from_uv_script` builds the image from the script's own PEP 723 dependency header, so the image and your local environment use the same pins.
+- `flyte.Image.from_uv_script` builds the image from the script's own PEP 723 dependency header, so the image and your local environment install the same dependency list.
 - The Hugging Face token comes from a [secret](../tasks/task-configuration/secrets) and is set as `HF_TOKEN`, which `transformers` and `datasets` read automatically.
 - `depends_on=[gpu_env]` lets a driver in the CPU environment call the GPU tasks.
 
@@ -58,7 +58,7 @@ With `retries` set on the task, a failed attempt restarts from the last saved ep
 {{< variant union >}}
 {{< markdown >}}
 
-Publish the trained model as an [artifact](../artifacts/_index). A vLLM or FastAPI app can then serve the latest version by name, and each version records the run that produced it. See [Deploy trained models](../inference/deploy-trained-models).
+Publish the trained model as an [artifact](../artifacts/_index): set `produces_artifacts=True` on the task and wrap its return value with `flyte.artifacts.new()`. A vLLM or FastAPI app can then serve the latest version by name, and each version records the run that produced it. See [Deploy trained models](../inference/deploy-trained-models).
 
 {{< /markdown >}}
 {{< /variant >}}

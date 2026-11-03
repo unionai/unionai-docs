@@ -15,7 +15,7 @@ RL has more moving parts than supervised training, and they need different hardw
 
 ```mermaid
 flowchart LR
-    L(["training loop<br/>CPU driver"]) --> R["inference rollouts<br/>warm GPU pool"]
+    L(["training loop<br/>CPU driver"]) --> R["inference rollouts<br/>GPU workers"]
     R --> E["environment<br/>sandboxes, simulators"]
     E --> W["reward<br/>CPU, verifiers, judges"]
     W --> T["trainer<br/>GPU or multi-node"]
@@ -27,7 +27,7 @@ flowchart LR
     class L,E,W cpu
 ```
 
-In Flyte, each part is a task environment, and the loop is a Python `for` loop in a driver task. Nothing runs that a stage doesn't need: the reward tier is CPU only, the trainer only holds GPUs during an update, and the rollout pool scales with the number of prompts in flight.
+In Flyte, each part is a task environment, and the loop is a Python `for` loop in a driver task. Nothing runs that a stage doesn't need: the reward tier is CPU only, the trainer only holds GPUs during an update, and the number of rollout workers follows the number of prompts in flight.
 
 ## What Flyte adds to an RL loop
 
@@ -74,5 +74,5 @@ The examples on these pages come from a GRPO loop with LoRA adapters and an agen
 {{< /markdown >}}
 {{< /variant >}}
 
-- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): an agentic RL loop with sandboxes, verifiers, and judges.
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): an agentic RL loop with sandboxes, verifiers, and judges. It has an open-source version, which the open-source code on these pages comes from.
 - [Code sandboxing](../agents/sandboxing/code-sandboxing): run model-written code safely inside an environment or a reward.

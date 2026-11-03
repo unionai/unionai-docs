@@ -63,11 +63,11 @@ Running an episode as its own task gives it the properties an environment needs:
 - **Reproducibility.** Seed the episode's randomness from its ID, so a retry produces the same trajectory instead of a different one.
 - **Separate sizing.** The environment tier gets CPU and memory for the simulator or tools, with no GPU.
 
-Episodes are independent, so the driver launches all of them at once with `asyncio.gather`. A failed episode can be dropped from the batch with `return_exceptions=True` instead of failing the iteration. See [Training loop](./training-loop).
+Episodes are independent, so the driver launches all of them at once with `asyncio.create_task` and collects them with `asyncio.as_completed`. It awaits each episode in a `try` block, so an episode that still fails after its retries is skipped instead of failing the iteration. See [Training loop](./training-loop).
 
 ## Run model-written code safely
 
-When the policy writes code that the environment runs, such as in coding tasks, run it in a sandbox rather than in the task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing).
+When the policy writes code that runs during an episode or during scoring, such as a generated function and the test suite that checks it, run that code in a sandbox rather than in the task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing).
 
 ## Serve the environment as an app
 

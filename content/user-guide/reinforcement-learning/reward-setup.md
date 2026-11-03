@@ -46,7 +46,7 @@ A judge call is an API request that costs money and can fail after it returns, f
 
 Reward design is iterative. When you change the rubric, the rollouts from earlier steps are still valid inputs, and regenerating them costs GPU time. Pass the rubric to the loop as an input, and choose how to reuse the rollouts:
 
-**Recover the finished run with a new rubric.** Every action whose inputs didn't change is reused, and only judging and training run again:
+**Recover the finished run with a new rubric.** Every action whose inputs didn't change is reused, and judging and training run again:
 
 {{< code file="/unionai-examples/v2/tutorials/skyrl/agentic_rl_durable.py" fragment="fork" lang=python >}}
 
@@ -58,12 +58,9 @@ See [Recover a failed run](../tasks/task-deployment/recover-runs#changing-inputs
 
 Either way, the first step's rollouts are reused, because the worlds and starting weights are the same. After the new reward changes the weights, later rollouts have different inputs and run again. Flyte finds that boundary from the inputs, without any extra code.
 
-## Run model-written code in a sandbox
-
-When the reward runs code the policy wrote, such as a test suite against a generated function, run it in a sandbox instead of the reward task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing).
-
 ## Related
 
 - [Training environment](./training-environment): what produces the trajectories you score.
 - [Training loop](./training-loop): how rewards become advantages for the policy update.
+- [Run model-written code safely](./training-environment#run-model-written-code-safely): sandbox the code a reward executes.
 - [Evaluation gates](../project-patterns/software-development-lifecycle/evaluation-gates): score a model before it is promoted.

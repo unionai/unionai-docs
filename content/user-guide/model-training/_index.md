@@ -13,7 +13,7 @@ A training job is more than a training loop. Data has to be prepared, the loop n
 
 ## The shape of a training pipeline
 
-Every page in this section uses the same structure. Separate task environments hold each kind of work, and a lightweight driver task calls them in plain Python:
+Most pipelines in this section follow the same structure. Separate task environments hold each kind of work, and a lightweight driver task calls them in plain Python:
 
 ```mermaid
 flowchart LR

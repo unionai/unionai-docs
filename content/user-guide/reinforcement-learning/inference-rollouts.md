@@ -33,7 +33,7 @@ Loading a base model into vLLM takes much longer than generating a group, so don
 
 - `replicas=(1, 4)` scales the pool from one to four GPU workers with the number of groups in flight.
 - `concurrency=1` sends one call at a time to each worker. A single vLLM engine batches internally and isn't safe to drive from several calls at once.
-- `idle_ttl` keeps idle workers alive. Set it longer than one training step, so the pool is still warm when the next iteration starts.
+- `idle_ttl=300` shuts the whole pool down after 300 seconds with no calls, and `scaledown_ttl=120` removes each idle worker after 120 seconds. Set `idle_ttl` longer than one training step, so the pool survives while the trainer runs. To keep every worker warm across the step, not just one, set `scaledown_ttl` longer than the step too.
 
 Load the engine once per worker and cache it at module level:
 
@@ -60,9 +60,35 @@ Each adapter version is downloaded once per worker. The base weights in GPU memo
 
 ## Amortize the engine load
 
-Each task starts a fresh container, and loading a base model into vLLM takes longer than generating one group. Give each rollout task enough work to amortize the load: pass it a batch of prompts and generate all of their groups in one vLLM call. Fan out a few of these batch tasks per iteration rather than one task per prompt. [Prefetching models](../inference/prefetching-models) cuts the load time further by reading the base model from your object store instead of Hugging Face.
+Each task starts a fresh container, and loading a base model into vLLM takes longer than generating one group. Give each rollout task enough work to amortize the load: pass it a batch of prompts and generate all of their groups in one vLLM call. Fan out a few of these batch tasks per iteration rather than one task per prompt:
 
-To keep an engine loaded across iterations, serve the policy as a [vLLM app](../inference/self-hosted-endpoints/vllm) and send rollout requests to it. The app keeps the base model in GPU memory, scales its replicas, and serves the OpenAI-compatible API that agent frameworks expect.
+```python
+import flyte
+
+rollout_env = flyte.TaskEnvironment(
+    name="rollout",
+    image=image,
+    resources=flyte.Resources(cpu=4, memory="24Gi", gpu="L4:1"),
+)
+
+
+@rollout_env.task(retries=2)
+async def generate_batch(
+    base: flyte.io.Dir, prompts: list[str], adapter: flyte.io.Dir, version: int, seed: int
+) -> list[list[str]]:
+    from vllm import LLM, SamplingParams
+    from vllm.lora.request import LoRARequest
+
+    engine = LLM(model=await base.download(), enable_lora=True)
+    lora = LoRARequest(f"policy-v{version}", version + 1, await adapter.download())
+    sampling = SamplingParams(n=GROUP_SIZE, temperature=1.0, seed=seed)
+    outputs = engine.generate(prompts, sampling, lora_request=lora)
+    return [[o.text for o in out.outputs] for out in outputs]
+```
+
+The base model loads once per batch, and every prompt in the batch shares it. [Prefetching models](../inference/prefetching-models) cuts the load time further by reading the base model from your object store instead of Hugging Face.
+
+To keep an engine loaded across iterations, serve the policy as a [vLLM app](../inference/self-hosted-endpoints/vllm) and send rollout requests to it. The app keeps the base model in GPU memory, scales its replicas, and serves the OpenAI-compatible API that agent frameworks expect. To move a new adapter into the running app, start vLLM with `--enable-lora` and `VLLM_ALLOW_RUNTIME_LORA_UPDATING=True`, then load each adapter version by name through its `/v1/load_lora_adapter` endpoint.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -79,7 +105,7 @@ The weights travel through your object store, so the trainer and the generators 
 
 ## Keep rollouts on-policy
 
-Training on rollouts from an older policy biases the update. Record which policy version produced each rollout, so the trainer can detect stale samples or correct for them. Pass the version number into the rollout task and return it with each rollout. To compute importance ratios, also store the sampling log-probabilities the engine returns.
+Training on rollouts from an older policy biases the update. Record which policy version produced each rollout, so the trainer can detect stale samples or correct for them. Pass the version number into the rollout task and return it with each rollout. To compute importance ratios, also store the token IDs and sampling log-probabilities the engine returns: set `SamplingParams(logprobs=0)`, which returns only the sampled token's log-probability, and keep it with the completion. Sample at `temperature=1.0` with `top_p=1.0`: vLLM reports log-probabilities after its sampling adjustments, so they equal the policy's own only at those settings. See [Overlap generation with training](./training-loop#overlap-generation-with-training) for the loss that uses them.
 
 ## Related
 
