@@ -2,7 +2,7 @@
 title: Factories
 description: Declare how artifacts are made from other artifacts, then ask for any artifact for a partition or a range and let Union build only what is missing or stale.
 icon: diagram-3
-weight: 6
+weight: 8
 variants: -flyte +union
 mermaid: true
 ---

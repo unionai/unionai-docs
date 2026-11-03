@@ -2,7 +2,7 @@
 title: flyteplugins.union
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: box-seam
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---

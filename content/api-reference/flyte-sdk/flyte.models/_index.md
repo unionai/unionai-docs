@@ -1,7 +1,7 @@
 ---
 title: flyte.models
 icon: box-seam
-version: 2.12.1
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ layout: py_api
 | Property | Type | Description |
 |-|-|-|
 | `CLUSTERED_WORKER_ENV` | `str` |  |
+| `MAX_GROUP_NAME_LENGTH` | `int` |  |
 | `MAX_INLINE_IO_BYTES` | `int` |  |
 | `NULL_TASK_CONTEXT` | `_NullTaskContext` |  |
 | `TYPE_CHECKING` | `bool` |  |

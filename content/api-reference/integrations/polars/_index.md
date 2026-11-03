@@ -1,7 +1,7 @@
 ---
 title: Polars
 icon: book
-version: 2.12.1
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

@@ -142,7 +142,7 @@ Deploy long-running services.
   → [FastAPI app](../../apps/native-app-integrations/fastapi-app)
 
 - **LLM serving**: Serve large language models with vLLM or SGLang
-  → [vLLM app](../../apps/native-app-integrations/vllm-app), [SGLang app](../../apps/native-app-integrations/sglang-app)
+  → [vLLM endpoint](../../inference/self-hosted-endpoints/vllm), [SGLang endpoint](../../inference/self-hosted-endpoints/sglang)
 
 - **Autoscaling**: Scale apps up and down based on traffic, including scale-to-zero
   → [Autoscaling apps](../../apps/configure-apps/auto-scaling-apps)

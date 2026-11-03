@@ -1,12 +1,12 @@
 ---
-title: Manual setup on AWS (legacy)
+title: Legacy steps
 description: Create the EKS cluster, S3 bucket, ECR repository, and IAM roles the data plane needs.
 icon: amazon
 weight: 1
 variants: -flyte +union
 ---
 
-# Manual setup on AWS (legacy)
+# Legacy steps: manual setup on AWS
 
 > [!NOTE] For deployments set up with Helm
 > These are the earlier instructions: you provision AWS resources and install the data plane yourself with

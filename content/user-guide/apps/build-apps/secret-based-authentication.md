@@ -259,4 +259,4 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 
 - Learn more about [managing secrets](../../tasks/task-configuration/secrets) in Flyte
 - See [hybrid graphs](./hybrid-graphs) for webhook examples and authentication patterns
-- Learn about [vLLM apps](../native-app-integrations/vllm-app) and [SGLang apps](../native-app-integrations/sglang-app) for serving LLMs
+- Learn about [vLLM endpoints](../../inference/self-hosted-endpoints/vllm) and [SGLang endpoints](../../inference/self-hosted-endpoints/sglang) for serving LLMs

@@ -2,7 +2,7 @@
 title: flyteplugins.union.factory
 description: "Factories: a declared graph of partitioned artifacts the platform can materialize on demand."
 icon: box-seam
-version: 0.20.1
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---

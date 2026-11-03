@@ -86,7 +86,7 @@ async def main(queue_name: str):
 ## What a queue controls
 
 Queues are configured by your platform admin (see
-[Managing queues](../../cluster-workload-management/queues) for how they are created
+[Managing queues](../../clusters-and-queues/queues) for how they are created
 and managed), but it helps to understand the knobs so you can pick the right
 queue for a workload:
 
@@ -116,7 +116,7 @@ queue for a workload:
   `greedy_capacity` queue skips it and starts the tasks behind it that do fit.
 
 Resource caps and scheduling policies are described in
-[Resource caps and scheduling](../../cluster-workload-management/resource-caps-and-scheduling).
+[Resource caps and scheduling](../../clusters-and-queues/resource-caps-and-scheduling).
 
 ## When to use queues
 
@@ -184,7 +184,7 @@ With resource-aware scheduling, the check also covers the clusters behind a
 queue: a task that asks for an accelerator none of the queue's clusters has,
 for a container larger than any of their nodes, or that is interruptible when
 none of them has a spot node pool it fits, fails the same way. See
-[Infeasible requests fail fast](../../cluster-workload-management/resource-caps-and-scheduling#infeasible-requests-fail-fast).
+[Infeasible requests fail fast](../../clusters-and-queues/resource-caps-and-scheduling#infeasible-requests-fail-fast).
 
 ## Queues and timeouts
 

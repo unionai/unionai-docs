@@ -2,7 +2,7 @@
 title: ResourceMeta
 description: "This is the metadata for the job."
 icon: braces
-version: 2.12.1
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

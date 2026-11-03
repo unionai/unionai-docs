@@ -1,7 +1,7 @@
 ---
 title: TaskDetails
 icon: braces
-version: 2.12.1
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,6 +33,7 @@ class TaskDetails(
 |-|-|-|
 | `cache` | `flyte.Cache` | The cache policy of the task. |
 | `default_input_args` | `Tuple[str, ...]` | The default input arguments of the task. |
+| `input_names` | `Optional[Tuple[str, ...]]` | The task's inputs in the order its signature declares them, or None if the task was deployed before the order was recorded, in which case it takes keyword arguments only. |
 | `interface` | `NativeInterface` | The interface of the task. |
 | `name` | `str` | The name of the task. |
 | `queue` | `Optional[str]` | Get the queue name to use for task execution, if overridden. |
@@ -112,6 +113,7 @@ def override(
     cache: Optional[flyte.Cache] = None,
     queue: Optional[str] = None,
     produces_artifacts: Optional[bool] = None,
+    reusable: Union[flyte.ReusePolicy, Literal['off'], None] = None,
     **kwargs: Any,
 ) -> TaskDetails
 ```
@@ -132,6 +134,7 @@ Create a new TaskDetails with overridden properties.
 | `cache` | `Optional[flyte.Cache]` | Cache configuration. |
 | `queue` | `Optional[str]` | Queue name for task execution. |
 | `produces_artifacts` | `Optional[bool]` | Whether the platform publishes this call's declared outputs as artifacts (see `flyte.artifacts.produces`). |
+| `reusable` | `Union[flyte.ReusePolicy, Literal['off'], None]` | Run this call on a reusable (warm) pool with the given `flyte.ReusePolicy`, or `"off"` to run it as a one-off pod. The overridden call lands on its own warm pool, separate from the deployed one and keyed by the policy, the deployed pool's version (else the task version) and the pod spec, so combine it with `resources=` to get a warm pool of bigger pods. Every call with the same overrides shares that pool. |
 | `**kwargs` | `Any` | |
 
 **Returns:** A new TaskDetails instance with the overrides applied.
