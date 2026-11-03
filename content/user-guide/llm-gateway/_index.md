@@ -67,6 +67,9 @@ Add hosted providers such as OpenAI and Anthropic, and self-hosted models served
 **[Virtual keys](./virtual-keys)**
 Issue keys with budgets, rate limits, model allowlists, and fallbacks.
 
+**[Usage](./usage)**
+Track spend, requests, errors, tokens, and latency over time for each key.
+
 **[Use from tasks and apps](./use-from-tasks-and-apps)**
 Call the gateway from code running on Union.
 

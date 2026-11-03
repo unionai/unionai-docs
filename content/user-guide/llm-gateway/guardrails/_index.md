@@ -2,7 +2,7 @@
 title: Guardrails
 description: Check every prompt before it reaches a model, and every answer before it reaches the caller, with your own code.
 icon: shield-check
-weight: 6
+weight: 7
 variants: -flyte +union
 ---
 
