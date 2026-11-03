@@ -9,14 +9,12 @@ mermaid: true
 
 # LLM Gateway
 
-Say five teams build on LLMs. Each one has its own OpenAI key in a secret, nobody knows which key is behind last month's invoice, an Anthropic outage takes down two production apps, and a prompt containing a customer's Social Security number went to a third-party model last week.
-
-The Union LLM Gateway fixes this by putting one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
+The Union LLM Gateway puts one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
 
 ## Why use a gateway
 
 **One provider key, many virtual keys.**
-You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls, so a runaway agent loop costs what you allowed and no more. Revoking a virtual key never means rotating the provider key that everyone else depends on.
+You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls. Budgets and rate limits are counted per gateway replica: see [Size the gateway](./deploy-gateway#size-the-gateway) if a limit must be exact. Revoking a virtual key never means rotating the provider key that everyone else depends on.
 
 **Fallbacks when a provider fails.**
 A request can name fallback models, for example `anthropic/claude-haiku-4-5` behind `openai/gpt-4.1-mini`. If the primary provider errors, is down, or rejects the call for that key, the gateway tries the next model in the list. Your application keeps answering through a provider outage.
