@@ -64,7 +64,7 @@ A gate on every merge trains people to approve without reading. Gate on changes 
 
 Reviewing AI output, such as a generated summary or an agent's proposed action, differs from approving a change because its volume grows with traffic. Send only the uncertain cases to a person:
 
-1. Get a typed answer with a confidence score instead of free text. [TypeSafe AI](../../../integrations/typesafe-ai/_index) does this, and [System one types](../../inference/system-one-types/_index) covers the pattern.
+1. Get a typed answer with a confidence score instead of free text. [TypeSafe AI](../../../integrations/typesafe-ai/_index) does this, and [Decision models](../../inference/decision-models/_index) covers the pattern.
 2. Act automatically on confident answers.
 3. Pause the uncertain ones on a condition.
 4. Record each human answer. These answers are labeled data for your next [evaluation set](./evaluation-gates).

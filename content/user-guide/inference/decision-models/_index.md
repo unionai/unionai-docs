@@ -1,5 +1,5 @@
 ---
-title: System one types
+title: Decision models
 description: Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 icon: sliders
 weight: 8
@@ -7,7 +7,7 @@ mermaid: true
 variants: +flyte +union
 ---
 
-# System one types
+# Decision models
 
 Most of what a program asks a model is not open-ended:
 

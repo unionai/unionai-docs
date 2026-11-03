@@ -21,7 +21,7 @@ Choose how to run a model based on where it lives and how you call it:
 | Serve a model you trained in a task | [Deploy trained models](./deploy-trained-models) |
 | Score a dataset on GPUs as a job, with no endpoint | [Batch inference](./batch-inference) |
 | Load weights inside a task from object storage | [Stream model weights](./stream-model-weights) |
-| Ask a model many typed questions in one call and branch on calibrated answers | [System one types](./system-one-types/_index) |
+| Ask a model many typed questions in one call and branch on calibrated answers | [Decision models](./decision-models/_index) |
 
 Most hosted providers, and vLLM, SGLang, Ollama, and llama.cpp endpoints, expose the OpenAI API or an API compatible with it. Code written against the OpenAI SDK moves between them by changing the base URL, the API key, and the model name. Some providers, such as Anthropic, need their own SDK. See [Providers](./providers/_index#providers-with-their-own-sdk).
 

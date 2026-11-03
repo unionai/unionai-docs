@@ -128,7 +128,7 @@ For the readable half, `report=True` gives the gate a task report, which the exa
 Validating inputs catches a problem before any scoring compute is spent:
 
 - [Pandera](../../../integrations/pandera/_index) validates dataframes at task boundaries. A column that changed type, or an unexpected null, fails at the step that introduced it instead of surfacing later as a regression.
-- [TypeSafe AI](../../../integrations/typesafe-ai/_index) returns typed, confidence-scored answers from a model, which you can check directly instead of parsing free text. [System one types](../../inference/system-one-types/_index) covers the pattern.
+- [TypeSafe AI](../../../integrations/typesafe-ai/_index) returns typed, confidence-scored answers from a model, which you can check directly instead of parsing free text. [Decision models](../../inference/decision-models/_index) covers the pattern.
 
 ## Scale the compute
 
