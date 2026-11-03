@@ -17,7 +17,7 @@ pipeline outputs using `RunOutput`.
 The `AppEnvironment` defines how the Streamlit application runs and connects to
 the batch report pipeline:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/serve.py" lang="python" fragment="app-env" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/serve.py" lang="python" fragment="app-env" >}}
 
 ### Key configuration
 
@@ -56,13 +56,13 @@ The app can then scan this directory for all generated reports.
 
 The app loads and displays all generated reports from the batch pipeline:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/app.py" lang="python" fragment="load-reports" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="load-reports" >}}
 
 ### Displaying multiple reports
 
 The app provides a sidebar for selecting between reports when multiple are available:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/app.py" lang="python" fragment="display-reports" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="display-reports" >}}
 
 Features:
 
@@ -75,13 +75,13 @@ Features:
 
 The app includes instructions for generating new reports:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/app.py" lang="python" fragment="generation-ui" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/app.py" lang="python" fragment="generation-ui" >}}
 
 ## Deploying the app
 
 To deploy the report generator application:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/serve.py" lang="python" fragment="main" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/serve.py" lang="python" fragment="main" >}}
 
 ```bash
 uv run serve.py
@@ -149,7 +149,7 @@ advanced-project/
 2. **Run the pipeline**:
 
    ```bash
-   cd /path/to/unionai-examples/v2/user-guide/project-patterns/advanced-project
+   cd /path/to/unionai-examples/v2/user-guide/advanced-project
    uv run generate.py
    ```
 

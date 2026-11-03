@@ -32,7 +32,7 @@ flowchart TD
 The critique function evaluates the current draft and returns structured feedback.
 It's a traced function (not a separate task) that runs inside `refine_report`:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/generate.py" lang="python" fragment="critique-content" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="critique-content" >}}
 
 Key points:
 
@@ -45,7 +45,7 @@ Key points:
 
 The revise function takes the current draft and specific improvements to address:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/generate.py" lang="python" fragment="revise-content" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="revise-content" >}}
 
 The prompt includes:
 
@@ -60,7 +60,7 @@ from scratch.
 The `refine_report` task orchestrates the iterative refinement. It runs in the
 reusable `llm_env` because it makes multiple LLM calls through traced functions:
 
-{{< code file="/unionai-examples/v2/user-guide/project-patterns/advanced-project/generate.py" lang="python" fragment="refinement-loop" >}}
+{{< code file="/unionai-examples/v2/user-guide/advanced-project/generate.py" lang="python" fragment="refinement-loop" >}}
 
 ### How it works
 

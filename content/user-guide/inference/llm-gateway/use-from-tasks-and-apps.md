@@ -23,11 +23,11 @@ Tasks and apps on any of your Union clusters call the gateway like any OpenAI-co
 
 Mount the secret on the environment:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/call_from_task.py" fragment=env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/llm-gateway/call_from_task.py" fragment=env lang=python >}}
 
 Then point the client at the gateway. Address models as `provider/model`:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/call_from_task.py" fragment=task lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/llm-gateway/call_from_task.py" fragment=task lang=python >}}
 
 The `fallbacks` list is optional. If `openai/gpt-4.1-mini` fails, the gateway retries the call on `anthropic/claude-haiku-4-5`. See [Fallbacks](./virtual-keys#fallbacks).
 
@@ -35,7 +35,7 @@ The `fallbacks` list is optional. If `openai/gpt-4.1-mini` fails, the gateway re
 
 Apps use the same pattern. This FastAPI app has its own key, so its budget and allowed models are separate from every task's. The `x-un-dim-app` header tags its requests for [spend attribution](./virtual-keys#attribute-spend-with-custom-dimensions):
 
-{{< code file="/unionai-examples/v2/user-guide/inference/llm-gateway/call_from_app.py" fragment=app lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/llm-gateway/call_from_app.py" fragment=app lang=python >}}
 
 ## Use other clients
 

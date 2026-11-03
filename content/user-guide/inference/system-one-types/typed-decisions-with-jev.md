@@ -53,9 +53,9 @@ The dataclass is the schema. Where each question comes from depends on the field
 
 A `Noul` has no enum to read. It is a bare yes/no, so there is nothing to infer a question from, and the question must be supplied in `dataclasses.field(metadata=...)`. A `Noul` declared without one is an error that names the offending field rather than silently asking something vague. Criteria are optional there but worth adding when "yes" is ambiguous — pinning down what counts is what keeps a one-line question calibrated.
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=vocabulary lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=vocabulary lang=python >}}
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=battery lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=battery lang=python >}}
 
 Notice which fields carry metadata and which do not: `intent` and `severity` say nothing beyond their type, because `Intent` and `Severity` above already document themselves, while every `Noul` spells out its question. Two fields route the ticket, two guard it, and the rest are the symptoms the tool choice is composed from.
 
@@ -63,19 +63,19 @@ Adding another question would be another field and still one request — the [tu
 
 ## Coerce
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=guard-task lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=guard-task lang=python >}}
 
 `ask()` compiles the whole dataclass into a **single** request. Three separate `ask()` calls are three round trips; one battery is one. `ask_with_info()` returns the model name, question count, token usage and latency alongside the answers, which is what you want when you are measuring the fan-out.
 
 The environment mounts the API key as an environment variable and nothing else:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=env lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=env lang=python >}}
 
 ## Derive the verdict from the fields
 
 Do not add a `verdict` field and let the model fill it in. Coerce the symptoms, then derive:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=compose lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=compose lang=python >}}
 
 Because the composition is a function rather than a prompt, it is unit-testable against hand-labelled cases, reviewable in a pull request, and changeable without re-validating a model's behavior.
 
@@ -83,7 +83,7 @@ Because the composition is a function rather than a prompt, it is unit-testable 
 
 Every `Choice` and `Score` field carries calibrated confidence, which gives routing a second axis beyond the answer itself:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/agent_guard.py" fragment=handle lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/agent_guard.py" fragment=handle lang=python >}}
 
 `escalate` is a real abstention, not a label. The pipeline stops, hands over to a human, and never spends a generative call on a decision it is not sure about. That is where most of the cost saving comes from in practice — not from the cheaper model, but from the calls that never happen.
 
@@ -91,15 +91,15 @@ Every `Choice` and `Score` field carries calibrated confidence, which gives rout
 
 The same coercion drives a loop. Instead of an all-purpose model picking the next move in free text and a regex fishing it back out, one `Step` object per turn carries the action, the confidence, and the stop conditions:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/typed_loop.py" fragment=actions lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/typed_loop.py" fragment=actions lang=python >}}
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/typed_loop.py" fragment=step lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/typed_loop.py" fragment=step lang=python >}}
 
 Each turn asks all five questions in one request. Tools are ordinary tasks, so every step of the loop is a durable child action:
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/typed_loop.py" fragment=tools lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/typed_loop.py" fragment=tools lang=python >}}
 
-{{< code file="/unionai-examples/v2/user-guide/inference/system-one-types/typed_loop.py" fragment=loop lang=python >}}
+{{< code file="/unionai-examples/v2/user-guide/system-one/typed_loop.py" fragment=loop lang=python >}}
 
 Two things to notice. The gate is the **confidence**, not the `Choice` — a confident wrong action is rarer than a low-confidence right one. And `made_progress` is what stops a loop that has started spinning, which is otherwise the failure mode you only discover from the bill.
 
