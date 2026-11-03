@@ -23,7 +23,7 @@ pip install flyteplugins-typesafe-ai
 ```
 
 > [!NOTE]
-> This page is the how-to. For the category — what a System One model is, where it fits, and the discipline that makes it pay off — see [System one types](./_index). For installation detail and the full API, see the [TypeSafe AI integration](../../integrations/typesafe-ai/_index).
+> This page is the how-to. For the category — what a System One model is, where it fits, and the discipline that makes it pay off — see [Decision models](./_index). For installation detail and the full API, see the [TypeSafe AI integration](../../../integrations/typesafe-ai/_index).
 
 ## The three field types
 
@@ -59,7 +59,7 @@ A `Noul` has no enum to read. It is a bare yes/no, so there is nothing to infer 
 
 Notice which fields carry metadata and which do not: `intent` and `severity` say nothing beyond their type, because `Intent` and `Severity` above already document themselves, while every `Noul` spells out its question. Two fields route the ticket, two guard it, and the rest are the symptoms the tool choice is composed from.
 
-Adding another question would be another field and still one request — the [tutorial battery](../../tutorials/agents/system-one-agents/_index) pushes the same shape to nineteen fields, eight of which are never read, because in one call they cost almost nothing.
+Adding another question would be another field and still one request — the [tutorial battery](../../../tutorials/agents/system-one-agents/_index) pushes the same shape to nineteen fields, eight of which are never read, because in one call they cost almost nothing.
 
 ## Coerce
 
@@ -117,7 +117,7 @@ The caller gets a real `Choice` back, with the picked member, its confidence, an
 
 ## Related
 
-- [System one types](./_index): the category, the use cases, and when not to reach for one.
-- [TypeSafe AI integration](../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
-- [Typed decisions for agentic pipelines](../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
-- [Build an agent](../agents/build-agent/_index): the loop this slots into.
+- [Decision models](./_index): the category, the use cases, and when not to reach for one.
+- [TypeSafe AI integration](../../../integrations/typesafe-ai/_index): installation, the full API, and how answer types are serialized.
+- [Typed decisions for agentic pipelines](../../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
+- [Build an agent](../../agents/build-agent/_index): the loop this slots into.

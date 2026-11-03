@@ -60,7 +60,7 @@ A 429 means you've reached a rate limit on your Fireworks account. You can move 
 
 ## Route calls through the LLM Gateway
 
-To add budgets, fallbacks, and guardrails, [add Fireworks AI to the LLM Gateway](../../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add Fireworks AI to the LLM Gateway](../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../llm-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
