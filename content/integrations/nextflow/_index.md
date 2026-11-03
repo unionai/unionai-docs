@@ -13,7 +13,7 @@ The Nextflow plugin runs [Nextflow](https://www.nextflow.io/) pipelines on Flyte
 {{< variant union >}}
 {{< markdown >}}
 
-- Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
+- Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image needs `bash` and, if it has an `ENTRYPOINT`, an entrypoint that runs the command it's given (see [Requirements](#requirements)). Flyte stages the task's files.
 - Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
 - Aborting the Flyte run aborts the pipeline and its running tasks.
 - Each task action's **Code** tab shows the script Nextflow ran for that task.
@@ -23,7 +23,7 @@ The Nextflow plugin runs [Nextflow](https://www.nextflow.io/) pipelines on Flyte
 {{< variant flyte >}}
 {{< markdown >}}
 
-- Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
+- Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image needs `bash` and, if it has an `ENTRYPOINT`, an entrypoint that runs the command it's given (see [Requirements](#requirements)). Flyte stages the task's files.
 - Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
 - Aborting the Flyte run aborts the pipeline and its running tasks.
 
