@@ -10,13 +10,23 @@ variants: +flyte +union
 
 The Nextflow plugin runs [Nextflow](https://www.nextflow.io/) pipelines on Flyte. The Nextflow head runs inside a Flyte task, and the [nf-flyte](https://github.com/unionai/nf-flyte) Nextflow plugin runs every Nextflow task as a child action of that task. A pipeline therefore shows up in Flyte as one run, with one action per Nextflow task. (You can also [launch from `nextflow run`](#launch-from-nextflow-run) without a Flyte task.)
 
+{{< variant union >}}
+{{< markdown >}}
+
+- Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
+- Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
+- Aborting the Flyte run aborts the pipeline and its running tasks.
+- Each task action's **Code** tab shows the script Nextflow ran for that task.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
 - Each process runs in its own `container`, with its `cpus`, `memory`, `disk`, `accelerator`, and `time` directives. The image only needs `bash`: Flyte stages the task's files.
 - Nextflow keeps its own retries (`errorStrategy`) and `-resume`. Flyte caches task results across runs.
 - Aborting the Flyte run aborts the pipeline and its running tasks.
 
-{{< variant union >}}
-{{< markdown >}}
-Each task action's **Code** tab shows the script Nextflow ran for that task.
 {{< /markdown >}}
 {{< /variant >}}
 
