@@ -43,7 +43,7 @@ it calls run as ordinary tasks, in their own containers, with their own resource
 
 > [!NOTE] Union only
 > Orchestrator tasks are available in Union only. Install the latest `flyte` SDK to use them:
-> `pip install -U flyte`.
+> `pip install -U "flyte[sandbox]>=2.12.3"`. The `sandbox` extra installs the Monty interpreter that local runs use.
 
 ## Why use orchestrator tasks
 
