@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.huggingface.sd_transformers
 icon: box-seam
-version: 1.16.30
+version: 1.16.32
 variants: +flyte +union
 layout: py_api
 ---
