@@ -233,7 +233,7 @@ def pipeline(x: int) -> int:
 
 The worker also applies limits that you cannot set on the decorator:
 
-- **Memory:** 256 MiB per orchestrator. Going over it fails the run with `MemoryError`.
+- **Memory:** 256 MiB per orchestrator by default, the same for every orchestrator on a worker. Going over it fails the run with `MemoryError`.
 - **Task calls:** 10,000 per run. Going over it fails the run with `TooManyTaskCalls`, which the
   function cannot catch.
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
