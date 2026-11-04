@@ -42,13 +42,14 @@ container. When the function calls a task, it is suspended until the result come
 it calls run as ordinary tasks, in their own containers, with their own resources.
 
 > [!NOTE] Union only
-> Orchestrator tasks are available in Union only. Install the latest `flyte` SDK to use them:
-> `pip install -U "flyte[sandbox]>=2.12.3"`. The `sandbox` extra installs the Monty interpreter that local runs use.
+> Orchestrator tasks are available in Union only. Install the latest `flyte` SDK, 2.12.3 or later,
+> with the `sandbox` extra: `pip install -U "flyte[sandbox]>=2.12.3"`. The extra installs the Monty
+> interpreter that local runs use.
 
 ## Why use orchestrator tasks
 
 - **No busy waiting.** A regular driver task sits in a pod doing nothing while its children run.
-  A suspended orchestrator holds no container, CPU, memory or quota until a result comes back.
+  A suspended orchestrator holds no container, CPU, memory, or quota until a result comes back.
 - **Fast starts.** There is no pod to schedule and no image to pull, so an orchestrator starts in
   milliseconds rather than seconds. This matters for short control logic and for agent loops that
   take many quick steps, where container start-up would otherwise dominate.
@@ -59,7 +60,7 @@ it calls run as ordinary tasks, in their own containers, with their own resource
   Nothing finishes. Orchestrators do not take up task pod resources, so they cannot starve their own
   children.
 
-An orchestrator is still a task. Each call it makes is a child action, recorded, retried and shown
+An orchestrator is still a task. Each call it makes is a child action, recorded, retried, and shown
 in the UI like any other.
 
 ## When not to use orchestrator tasks
@@ -74,13 +75,13 @@ cheap, and it also sets clear limits. Use a regular `@env.task` instead when:
   about with its dependencies, keep it in a regular task.
 - **The driver reads or converts large data.** Every value that passes between the orchestrator
   and its tasks is converted at the sandbox boundary, and each orchestrator has a fixed memory limit
-  (256 MiB by default). Pass references such as `flyte.io.File`, `flyte.io.Dir` and dataframes
-  through the orchestrator, and do the reading, parsing and transforming inside tasks.
+  (256 MiB by default). Pass references such as `flyte.io.File`, `flyte.io.Dir`, and dataframes
+  through the orchestrator, and do the reading, parsing, and transforming inside tasks.
 
 ## Write an orchestrator task
 
 Decorate a function with `@flyte.orchestrator.task`. Inside it you can use loops, conditions,
-`try`/`except` and plain values, and call tasks without `await`:
+`try`/`except`, and plain values, and call tasks without `await`:
 
 ```python
 import flyte
@@ -106,7 +107,9 @@ if __name__ == "__main__":
 The orchestrator finds the tasks it calls in the module's globals. They can be:
 
 - **Remote tasks**, fetched with `flyte.remote.Task.get()`. Nothing is built, so the run is
-  submitted straight away. See [Remote tasks](./remote-tasks).
+  submitted straight away. See [Remote tasks](./remote-tasks). To pass positional arguments to a
+  remote task with more than one input, that task must have been deployed with `flyte` 2.12.3 or
+  later. Tasks deployed with an older SDK must be called with keyword arguments.
 - **Local tasks** defined with `@env.task` in your code. Their image and code bundle are built when
   you run the orchestrator, as for any `flyte.run`, and their specs travel with it. Nothing has to be
   deployed first.
@@ -162,6 +165,9 @@ A task that fails raises an error inside the orchestrator, where you can catch i
 runs without the SDK's exception classes, so catch the built-in exception:
 
 ```python
+import flyte.orchestrator
+import flyte.remote
+
 check = flyte.remote.Task.get("math.fail_if_negative", auto_version="latest")
 
 @flyte.orchestrator.task
@@ -179,6 +185,13 @@ API, using `flyte.new_condition` and the condition's `wait()`, without `await`. 
 nothing runs and no pod is held, whether that is for an hour or a week:
 
 ```python
+import flyte
+import flyte.orchestrator
+import flyte.remote
+
+evaluate = flyte.remote.Task.get("models.evaluate", auto_version="latest")
+publish = flyte.remote.Task.get("models.publish", auto_version="latest")
+
 @flyte.orchestrator.task
 def deploy(model: str) -> str:
     report = evaluate(model)
@@ -192,7 +205,7 @@ def deploy(model: str) -> str:
     return "rejected"
 ```
 
-A condition's `data_type` can be `bool`, `int`, `float` or `str`, and `timeout` is in seconds or a
+A condition's `data_type` can be `bool`, `int`, `float`, or `str`, and `timeout` is in seconds or a
 `timedelta`. Only the function's source is shipped, so import `timedelta` inside the function if you
 use it. Webhooks are not supported in orchestrator tasks.
 
@@ -207,7 +220,7 @@ can only look inside some of them:
 | Value | Inside the orchestrator |
 |-------|-------------------------|
 | `None`, `bool`, `int`, `float`, `str`, and lists and string-keyed dicts of them | Readable and writable |
-| `File` and `Dir` | A named tuple of `path`, `name`, `format` and `hash`. The fields are readable, but the contents cannot be opened. |
+| `File` and `Dir` | A named tuple of `path`, `name`, `format`, and `hash`. The fields are readable, but the contents cannot be opened. |
 | Dataframes, dataclasses, Pydantic models (including volumes) | Opaque. The orchestrator can pass them on, return them, or keep them in a list or dict, but cannot read their fields. |
 
 To read the contents of a file or a dataframe, call a task.
@@ -220,12 +233,14 @@ To read the contents of a file or a dataframe, call a task.
 |----------|---------|-------------|
 | `name` | `<module>.<function>` | Task name. |
 | `queue` | The run's queue | Queue to run on. The tasks the orchestrator calls run on the same queue. |
-| `timeout_ms` | `30000` | Time the function may spend executing. Time spent waiting for tasks or conditions does not count. |
+| `timeout_ms` | `30000` | Time the function may spend executing, and separately the total time it may sleep. Time spent waiting for tasks or conditions does not count. The worker caps it at its own limit. |
 | `max_stack_depth` | `256` | Maximum recursion depth. |
 | `cache` | `"disable"` | Cache policy for the orchestrator itself. The tasks it calls keep their own cache settings. |
 | `retries` | `0` | Retries for the orchestrator itself. |
 
 ```python
+import flyte.orchestrator
+
 @flyte.orchestrator.task(timeout_ms=5_000, retries=2, queue="critical")
 def pipeline(x: int) -> int:
     ...
@@ -234,7 +249,7 @@ def pipeline(x: int) -> int:
 The worker also applies limits that you cannot set on the decorator:
 
 - **Memory:** 256 MiB per orchestrator by default, the same for every orchestrator on a worker. Going over it fails the run with `MemoryError`.
-- **Task calls:** 10,000 per run. Going over it fails the run with `TooManyTaskCalls`, which the
+- **Task calls:** 10,000 per run by default. Going over it fails the run with `TooManyTaskCalls`, which the
   function cannot catch.
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
 - **Error messages:** kept to their first 10 KiB.
@@ -249,15 +264,21 @@ on a `TaskEnvironment`. It runs the same restricted Python, but inside a contain
 environment's image, so it starts like a regular task and holds a pod:
 
 ```python
+import flyte
+
 env = flyte.TaskEnvironment(name="pipelines")
 
+@env.task
+def add(x: int, y: int) -> int:
+    return x + y
+
 @env.orchestrator.task
-def pipeline(n: int) -> int:
-    ...
+def pipeline(x: int, y: int) -> int:
+    return add(add(x, y), 1)
 ```
 
 `env.orchestrator.task` also accepts code as a string, for orchestration logic generated at runtime,
-for example by an LLM:
+for example by an LLM. With the `env` and `add` task from the previous example:
 
 ```python
 pipeline = env.orchestrator.task(
