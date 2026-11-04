@@ -10,6 +10,14 @@ variants: +flyte +union
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
+## Flyte 1 support timeline
+
+Union.ai supports open-source Flyte 1 (`flytekit` 1.x and the Flyte 1 backend) on this schedule:
+
+- **Until December 31, 2026:** Union.ai reviews, merges, and releases bug fixes and security fixes for Flyte 1.
+- **After December 31, 2026:** Union.ai releases no more fixes for Flyte 1, security fixes included.
+  The `flytekit` repository and the `master` branch of the `flyte` repository (where Flyte 1 lives) stay available, and the community can fork them to keep maintaining Flyte 1.
+
 ## Pure Python execution
 
 Write workflows in pure Python, enabling a more natural development experience and removing the constraints of a
