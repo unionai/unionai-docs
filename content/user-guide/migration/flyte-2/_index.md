@@ -10,9 +10,6 @@ variants: +flyte +union
 
 Flyte 2 represents a fundamental shift in how Flyte workflows are written and executed.
 
-> [!WARNING] Flyte 1 reaches end of life on December 31, 2026.
-> Until then it gets bug and security fixes; after that, none. To keep using it, you can fork `flyte` and `flytekit`.
-
 ## Pure Python execution
 
 Write workflows in pure Python, enabling a more natural development experience and removing the constraints of a
