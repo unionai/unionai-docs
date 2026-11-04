@@ -10,6 +10,31 @@ top_menu: true
 {{< variant flyte >}}
 {{< markdown >}}
 
+> [!WARNING] Flyte 1 reaches end of life on December 31, 2026.
+> Until then, Flyte 1 gets bug fixes and security fixes.
+> After that date there will be no further updates or releases of any kind, including security fixes.
+> The `flyte` and `flytekit` repositories stay available, and you can fork them to keep maintaining Flyte 1 yourself.
+> To move to Flyte 2, see [From Flyte 1 to 2]({{< docs_home flyte v2 >}}/user-guide/migration/flyte-2/).
+{.large-title}
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+
+> [!WARNING] Flyte 1 reaches end of life on December 31, 2026.
+> Until then, Flyte 1 gets bug fixes and security fixes.
+> After that date there will be no further updates or releases of any kind, including security fixes.
+> The `flyte` and `flytekit` repositories stay available, and you can fork them to keep maintaining Flyte 1 yourself.
+> To move to Flyte 2, see [From Flyte 1 to 2]({{< docs_home union v2 >}}/user-guide/migration/flyte-2/).
+{.large-title}
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+
 Flyte is an open source project that is built and maintained by a community of contributors.
 Union AI is the primary maintainer of Flyte and developer of Union.ai, a closed source commercial product that is built on top of Flyte.
 
