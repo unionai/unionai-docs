@@ -86,6 +86,25 @@ Open [http://localhost:8080/v2](http://localhost:8080/v2), and run a workflow as
 
 Anyone who can reach port `80` can use onebox until you put an authenticating proxy in front of it. See [Authentication](./authentication).
 
+## Serve under a path of a shared host
+
+To serve onebox under a path of a host something else owns, such as `https://platform.example.com/onebox/`, set `basePath`. This works with any of the install guides:
+
+```yaml
+basePath: /onebox
+```
+
+The UI is then at `/onebox/v2`, and the API, `/login`, and `/logout` are under `/onebox`. Point the SDK and CLI at `https://platform.example.com/onebox`. Each `basePath` segment must be a lowercase DNS label. It needs `onebox-server` and `onebox-console` images with base path support.
+
+The proxy in front must:
+
+- forward `/onebox/` to onebox's Service **with the path unchanged** (with nginx, give `proxy_pass` no URI);
+- keep the `Host` header and set `X-Forwarded-Proto`;
+- pass WebSocket upgrades;
+- not buffer responses.
+
+[Apps](./apps#apps-under-a-path) can share the host too, each under its own path.
+
 ## Settings to review
 
 | Setting | Default | When to change it |
@@ -95,6 +114,8 @@ Anyone who can reach port `80` can use onebox until you put an authenticating pr
 | `storage.region` | `us-east-1` | Set the region your store expects; most S3-compatible stores accept any value. |
 | `resources` | 1 CPU, 2 GiB requested | Raise them for many concurrent runs. |
 | `networkPolicy.enabled` | On when `authz.enabled` is | Needs a CNI that enforces NetworkPolicy. See [Authorization](./authorization#network-policy). |
+| `caBundle` | Unset | Your store, database, or identity provider uses a certificate from a private CA. See [A private CA, extra mounts and proxies](./_index#a-private-ca-extra-mounts-and-proxies). |
+| `taskPods.extraEnv` | Unset | Task pods reach the internet through an outbound proxy (`HTTPS_PROXY`, `NO_PROXY`). |
 
 ## Troubleshooting
 

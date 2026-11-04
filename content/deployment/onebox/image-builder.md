@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Image builder
 
-With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks onebox whether the image already exists, so an image is built once and reused. You install BuildKit and the registry; onebox registers the `build-image` task itself. Onebox doesn't depend on any of them to start.
+With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks onebox whether the image already exists, so an image is built once and reused. Onebox registers the `build-image` task itself. You bring BuildKit and the registry, or, on a single-user or evaluation cluster, have the chart run both. Onebox doesn't depend on any of them to start.
 
 ## Requirements
 
@@ -19,88 +19,49 @@ With the image builder, the SDK builds a task's container image inside your clus
   - onebox can read anonymously, possibly at a different address.
 
   Registries that require credentials aren't supported.
-- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `public.ecr.aws/g1m2l3c1/imagebuilder-canary`, for amd64 and arm64. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the tag in the chart's `imageBuilder.taskImages.tag`, and point onebox at it:
+- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `ghcr.io/unionai/imagebuilder` with each release, for amd64 and arm64. The chart uses them at its `appVersion` unless you set `imageBuilder.taskImages.tag`. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the chart's `appVersion`, and point onebox at it:
 
   ```yaml
   imageBuilder:
     taskImages:
       repository: registry.example.com/imagebuilder   # holds build-image and frontend-v2
-      tag: <tag>
   ```
 
-  > [!NOTE] Canary images
-  > Onebox currently uses Union's canary builds of these images, because the production builds (`imagebuilder`) don't include arm64 yet. A later chart switches to the production images. The tag names a single build, so the images don't change under you.
+## Run BuildKit and a registry with the chart
 
-## Example: k3d
-
-On a single-node k3d cluster, BuildKit and the kubelet both run on the node, so a registry exposed on a NodePort is `localhost:30000` to both, and containerd and BuildKit accept plain HTTP for `localhost`.
-
-> [!WARNING] Local clusters only
-> BuildKit here is privileged, on the node's network, and listening without TLS, and the registry accepts anonymous pushes. Anything that can reach them can run builds as root on the node or overwrite images. On a shared cluster, run BuildKit with mutual TLS (`--tlscacert`, `--tlscert`, `--tlskey`) or rootless, restrict access with a NetworkPolicy, and use a registry with TLS.
-
-```yaml
-# image-builder.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata: {name: registry}
-spec:
-  selector: {matchLabels: {app: registry}}
-  template:
-    metadata: {labels: {app: registry}}
-    spec:
-      containers:
-        - name: registry
-          image: mirror.gcr.io/library/registry:2
-          volumeMounts: [{name: data, mountPath: /var/lib/registry}]
-      volumes: [{name: data, emptyDir: {}}]
----
-apiVersion: v1
-kind: Service
-metadata: {name: registry}
-spec:
-  type: NodePort
-  selector: {app: registry}
-  ports: [{port: 5000, nodePort: 30000}]
----
-apiVersion: apps/v1
-kind: Deployment
-metadata: {name: buildkit}
-spec:
-  selector: {matchLabels: {app: buildkit}}
-  template:
-    metadata: {labels: {app: buildkit}}
-    spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
-      containers:
-        - name: buildkit
-          image: moby/buildkit:buildx-stable-1
-          args: [--addr, unix:///run/buildkit/buildkitd.sock, --addr, tcp://0.0.0.0:30234]
-          securityContext: {privileged: true}
----
-apiVersion: v1
-kind: Service
-metadata: {name: buildkit}
-spec:
-  selector: {app: buildkit}
-  ports: [{port: 1234, targetPort: 30234}]
-```
-
-```shell
-kubectl -n union apply -f image-builder.yaml
-```
-
-Turn the image builder on in onebox's values:
+`imageBuilder.bundled.enabled` runs a BuildKit daemon and a registry in onebox's namespace and points onebox at them:
 
 ```yaml
 imageBuilder:
   enabled: true
-  buildkitURI: tcp://buildkit.union.svc:1234
-  repository: localhost:30000/onebox                       # where nodes pull from
-  lookupURL: http://registry.union.svc:5000/onebox         # where onebox checks
+  bundled:
+    enabled: true
 ```
 
-Onebox then creates the `system` project and registers the `build-image` task in its `production` domain, a few seconds after it starts. It registers the task again when `imageBuilder.taskImages` changes, or when an upgrade brings new images; otherwise there's nothing to do.
+- BuildKit runs privileged and on the node's network, listening without TLS on port `imageBuilder.bundled.buildkit.hostPort` (`30234`) of its node, behind a Service on port `1234`.
+- The registry listens on NodePort `imageBuilder.bundled.registry.nodePort` (`30000`) of every node and accepts anonymous pushes. BuildKit pushes to `localhost:30000/onebox` and nodes pull from there, since containerd and BuildKit accept plain HTTP for `localhost`. Onebox checks for existing images at the registry's in-cluster Service.
+- Images are kept on an `emptyDir`, so they're rebuilt after the registry restarts. Set `imageBuilder.bundled.registry.storage` (for example `20Gi`) to keep them on a PersistentVolumeClaim instead; `helm uninstall` leaves the claim behind.
+
+Any of `imageBuilder.buildkitURI`, `imageBuilder.repository`, and `imageBuilder.lookupURL` you set yourself wins over the bundled address. `lookupURL` points at the bundled registry only while `repository` does.
+
+> [!WARNING] Single-user or evaluation clusters only
+> Anything that can reach the bundled BuildKit can run builds as root on its node, and anything that can reach the registry can overwrite images. Don't use them on a shared cluster.
+
+## Bring your own BuildKit and registry
+
+On a shared cluster, run BuildKit with mutual TLS (`--tlscacert`, `--tlscert`, `--tlskey`) or rootless, restrict access to it with a NetworkPolicy, and use a registry with TLS. Then point onebox at them:
+
+```yaml
+imageBuilder:
+  enabled: true
+  buildkitURI: tcp://buildkit.buildkit.svc:1234            # as task pods reach BuildKit
+  repository: registry.example.com/onebox                  # where nodes pull from
+  lookupURL: https://registry.example.com/onebox           # where onebox checks
+```
+
+`lookupURL` defaults to `https://<repository>`; set it when onebox reaches the registry at another address.
+
+Either way, onebox then creates the `system` project and registers the `build-image` task in its `production` domain, a few seconds after it starts. It registers the task again when `imageBuilder.taskImages` changes, or when an upgrade brings new images; otherwise there's nothing to do.
 
 ## Build an image
 

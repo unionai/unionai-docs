@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Task metrics
 
-The Metrics tab shows each task's CPU and memory usage against what it requested. Onebox reads these series from a Prometheus you run, installed separately; onebox doesn't depend on it to start.
+The Metrics tab shows each task's CPU and memory usage against what it requested. Onebox reads these series from a Prometheus: one the chart runs for you, or one you run yourself. Onebox doesn't depend on it to start.
 
 ## What Prometheus needs
 
@@ -20,7 +20,20 @@ The Metrics tab shows each task's CPU and memory usage against what it requested
 
 The `prometheus-community/prometheus` chart scrapes cAdvisor and its bundled kube-state-metrics with its default configuration.
 
-## Install Prometheus
+## Run Prometheus with the chart
+
+```yaml
+prometheus:
+  enabled: true
+```
+
+The chart then runs the `prometheus-community/prometheus` chart (version 25.30.2) in onebox's namespace, with only its server and kube-state-metrics, and points onebox at the server's Service, unless you set `metrics.prometheusURL` yourself. It scrapes cAdvisor and kube-state-metrics across the cluster, so it creates a ClusterRole for scraping nodes. Any of that chart's values can be set under `prometheus`.
+
+The server keeps `prometheus.server.retention` (`3d`) of data on an `emptyDir`, so a restart loses the history. For GPU charts, also run dcgm-exporter; Prometheus scrapes it through its `prometheus.io/scrape` annotations.
+
+## Bring your own Prometheus
+
+To install one separately:
 
 ```yaml
 # prometheus-values.yaml
@@ -43,7 +56,7 @@ helm install prometheus prometheus --repo https://prometheus-community.github.io
 
 The chart creates a ClusterRole for scraping nodes. To reuse a Prometheus you already run, check that it has the series above, with their `namespace` and `pod` labels.
 
-## Point onebox at it
+Then point onebox at it:
 
 ```yaml
 metrics:

@@ -20,7 +20,7 @@ Unlike a [self-managed](../selfmanaged/_index) or [BYOC](../byoc/_index) deploym
 | `onebox` Deployment, `console` container | `onebox-console` | The Union.ai UI, served by onebox under `/v2`. |
 | `onebox-node-agent` DaemonSet | `onebox-server` | Runs on every node: the CSI driver (`volumes.union.ai`) that mounts Union Volumes into task pods, and the node-shared Volume cache. |
 
-With [apps](./apps) on, the chart also runs Union's Kourier controller (from the `onebox-server` image) and its Envoy gateway (`envoy`).
+With [apps](./apps) on, the chart also runs Knative Serving, Union's Kourier controller (from the `onebox-server` image), and its Envoy gateway (`envoy`). It can also run BuildKit and a registry for the [image builder](./image-builder), and Prometheus for [task metrics](./metrics).
 
 Everything is served on **one port**: the UI, the API that the SDK and CLI use, and the REST routes. There is no ingress controller, Redis, or ScyllaDB to install. Task pods run in the namespace you install onebox into.
 
@@ -44,6 +44,7 @@ For an airgapped install or a private mirror, copy each image with all its archi
 | A bucket in Amazon S3, Google Cloud Storage, or an S3-compatible store, with a CORS rule for the UI | `storage.type`, `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
 | Optionally, an authenticating proxy in front of onebox | `identity.*`; see [Authentication](./authentication) |
 | Optionally, role-based access control | `authz.enabled`; see [Authorization](./authorization) |
+| Optionally, a license key | `license.*`; see [License key](#license-key) |
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
 
@@ -67,6 +68,32 @@ To install onebox on a Kubernetes cluster, use the guide for [Amazon EKS](./eks)
 | `8082` | Task pods, calling back to launch and track child actions. In-cluster only. |
 | `15606` | Workers of reusable containers. In-cluster only. |
 | `9443` | The Kubernetes API server, calling the pod admission webhook. |
+| `8083` | With [apps](./apps) on: the apps gateway, asking onebox who may call an app. Only the gateway. |
+
+## License key
+
+Without a valid key and with `license.enforce` on, onebox is read-only: reads work, changes are refused, and runs in flight finish. Account admins add keys in the UI, which shows the install ID a key is issued for and links to `license.issueURL` with it. You can also mount a key from a Secret:
+
+```shell
+kubectl -n union create secret generic onebox-license --from-literal=license-key=<key>
+helm upgrade onebox unionai/onebox -n union -f values.yaml \
+  --set license.existingSecret=onebox-license \
+  --set license.enforce=true --set license.issueURL=<where users get a key>
+```
+
+`license.enforce` needs `license.issueURL`. Onebox picks up a rotated key in the Secret without a restart. `license.trustedKeys` adds the public keys of a license issuer you host; keys from Union.ai's issuer verify without it. The chart renders nothing for licensing while the `license` values are unset; they need an `onebox-server` image with licensing.
+
+## A private CA, extra mounts and proxies
+
+`caBundle` names a ConfigMap (`caBundle.configMap`) or Secret (`caBundle.secret`) key holding a PEM bundle that onebox, the UI, and every task pod trust: for an S3 endpoint, database, identity provider, or registry signed by a private CA. It replaces the system trust store (`SSL_CERT_FILE`, `REQUESTS_CA_BUNDLE`, `AWS_CA_BUNDLE`, and others), so include the public roots if anything is reached over the internet:
+
+```shell
+cat /etc/ssl/certs/ca-certificates.crt corp-ca.pem > ca-bundle.pem
+kubectl -n union create configmap ca-bundle --from-file=ca-bundle.pem
+helm upgrade onebox unionai/onebox -n union -f values.yaml --set caBundle.configMap=ca-bundle
+```
+
+`extraVolumes` and `extraVolumeMounts` add volumes to the onebox container. Task pods get theirs from `taskPods.extraVolumes`, `taskPods.extraVolumeMounts`, and `taskPods.extraEnv`, for example an outbound proxy's `HTTPS_PROXY` and `NO_PROXY`, or a shared dataset. Whenever any of these, or `caBundle`, is set, the chart renders a PodTemplate that every task pod starts from, the `build-image` task included. A task's own `pod_template` still applies on top.
 
 ## Upgrade
 
@@ -80,21 +107,20 @@ Onebox runs one replica and migrates the database on start, so an upgrade restar
 
 ```shell
 helm uninstall onebox -n union
-kubectl delete mutatingwebhookconfiguration onebox
 ```
 
-Onebox registers its pod admission webhook itself when it starts, so `helm uninstall` leaves the `MutatingWebhookConfiguration` behind. It is named after the release's Service (`onebox` for a release named `onebox`). Delete it, or pods created later in that namespace fail admission. The database and the bucket are yours and are left as they are.
+The chart installs the pod admission webhook's `MutatingWebhookConfiguration` and its serving certificate, so `helm uninstall` removes them. What onebox created while running, such as task pods, apps, and secrets, stays until you delete the namespace. Helm never deletes the Knative CRDs the chart installed. The database and the bucket are yours and are left as they are.
 
 ## Add-ons
 
-Four features need components you install beside onebox. Onebox starts without them and never waits for them:
+Four features need components beside onebox. The chart can run three of them for you; onebox starts without any of them and never waits for them:
 
-| Feature | Needs | Page |
-|---|---|---|
-| Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | [Task logs](./logs) |
-| The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | [Task metrics](./metrics) |
-| Building images in the cluster | BuildKit and a registry | [Image builder](./image-builder) |
-| Apps and LLM gateways | Knative Serving with Kourier | [Apps and LLM gateways](./apps) |
+| Feature | Needs | Chart value | Page |
+|---|---|---|---|
+| Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | None: you install it | [Task logs](./logs) |
+| The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | `prometheus.enabled`, or your own in `metrics.prometheusURL` | [Task metrics](./metrics) |
+| Building images in the cluster | BuildKit and a registry | `imageBuilder.bundled.enabled` (evaluation only), or your own | [Image builder](./image-builder) |
+| Apps and LLM gateways | Knative Serving with Kourier | `serving.enabled` | [Apps and LLM gateways](./apps) |
 
 The Logs tab streams logs of running tasks without any add-on.
 
@@ -109,9 +135,8 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 ## Limitations
 
 - One replica, and one data plane: the cluster onebox runs in.
-- Apps and serving, and artifacts aren't included.
+- Artifacts aren't included.
 - The dashboards' queue panels show no data.
-- Union Volumes aren't supported.
 
 ## License
 
