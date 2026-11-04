@@ -1,6 +1,6 @@
 ---
 title: Python guardrails
-description: Write an LLM Gateway guardrail as a Python function with GuardrailAppEnvironment.
+description: Write an Inference Gateway guardrail as a Python function with GuardrailAppEnvironment.
 icon: code
 weight: 1
 variants: -flyte +union
@@ -53,7 +53,7 @@ Deploy it on the gateway's cluster:
 flyte deploy pii_guardrail.py env
 ```
 
-Then [register it](./_index#register-a-guardrail) in **Settings → LLM Gateway → Guardrails** as the pre-call guardrail.
+Then [register it](./_index#register-a-guardrail) in **Settings → Inference Gateway → Guardrails** as the pre-call guardrail.
 
 Leave `requires_auth` at its default. The gateway reaches the app over the cluster-local network and never goes through the app's public endpoint.
 

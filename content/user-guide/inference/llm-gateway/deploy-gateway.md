@@ -1,6 +1,6 @@
 ---
 title: Deploy the gateway
-description: Place the LLM Gateway on a cluster, size it for your request rate, and choose who can reach it.
+description: Place the Inference Gateway on a cluster, size it for your request rate, and choose who can reach it.
 icon: rocket-takeoff
 weight: 1
 variants: -flyte +union
@@ -12,7 +12,7 @@ Deploy a gateway on the cluster where your LLM traffic originates. It runs as a 
 
 ## Deploy from the console
 
-1. Open **Settings → LLM Gateway** in the Union console and start a new gateway.
+1. Open **Settings → Inference Gateway** in the Union console and start a new gateway.
 2. Fill in the gateway:
 
    | Field | Meaning |
