@@ -34,7 +34,7 @@ First, let's configure our task environment.
 We need an API key to call GPT-4.1 (our optimization model). Add it as a Flyte secret:
 
 ```
-flyte create secret openai_api_key <YOUR_OPENAI_API_KEY>
+flyte create secret openai_api_key --value <YOUR_OPENAI_API_KEY>
 ```
 
 We also define CSS styles for live HTML reports that track prompt optimization in real time:

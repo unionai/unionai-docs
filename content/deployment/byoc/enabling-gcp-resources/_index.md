@@ -31,7 +31,7 @@ Broadly speaking, there are two categories of access that you are likely to have
 * **Infrastructure access**:
   Enabling access to a resource for your data plane infrastructure.
   The most common case occurs when you are using Artifact Registry for your task container images and it resides in a project other than the one containing your data plane.
-  In that case, some configuration is required to enable the Union.ai operator on your data plane to pull images from the registry when registering your workflows and tasks.
+  In that case, some configuration is required to enable the nodes of your data plane's Kubernetes cluster to pull images from the registry when they run your tasks.
   **If you are using an Artifact Registry instance within the same project as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
   Enabling access to a resource for your task code.
@@ -61,7 +61,7 @@ There are two main options for setting this up:
 > In AWS-based data planes, scoping by both project _and_ domain is supported.
 > However, due to intrinsic architectural constraints, GCP-based data planes only support scoping by domain.
 
-Global access is recommended for most use cases since it is simpler, but if you have a compelling reason to restrict access, then the project-domain-scoped access is available, at the cost of some additional complexity in setup.
+Global access is recommended for most use cases since it is simpler, but if you have a compelling reason to restrict access, then domain-scoped access is available, at the cost of some additional complexity in setup.
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a domain.
@@ -96,8 +96,11 @@ To enable access to a resource in GCP you grant `<UserFlyteGSA>`access to that r
 > Here we refer to the default global-access GSA as`<UserFlyteGSA>`because the precise name differs across installations.
 > This GSA is identified by name and email of the following form:
 >
-> * Name: `<OrgName>-userflyterol-<Suffix>`
-> * Email: `<OrgName>-userflyterol-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
+> * Name: `<ClusterPrefix>-userflyterol-<Suffix>`
+> * Email: `<ClusterPrefix>-userflyterol-<Suffix>@<DataPlaneProjectID>.iam.gserviceaccount.com`
+>
+> `<ClusterPrefix>` is the first 12 characters of your data plane's cluster name with hyphens removed.
+> `<DataPlaneProjectID>` is the ID of the GCP project that contains your data plane.
 
 > [!NOTE] Google Service Account (GSA)
 > We use the term Google Service Account (GSA) to refer to the accounts that are managed in the GCP console under **IAM & Admin > Service Accounts**.
@@ -108,8 +111,8 @@ To enable access to a resource in GCP you grant `<UserFlyteGSA>`access to that r
 
 In this section we refer to the default global-access GSA as`<UserFlyteGSA>`because the precise name differs across installations. The actual name and email of this GSA have the following forms:
 
-* Name: `<OrgName>-userflyterol-<Suffix>`
-* Email: `<OrgName>-userflyterol-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
+* Name: `<ClusterPrefix>-userflyterol-<Suffix>`
+* Email: `<ClusterPrefix>-userflyterol-<Suffix>@<DataPlaneProjectID>.iam.gserviceaccount.com`
 
 **You will need to have the email identifier of this role on hand when you enable access to resources for your task code.**
 

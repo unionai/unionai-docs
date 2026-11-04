@@ -162,7 +162,7 @@ async def main(epochs: int = 3) -> str:
     raise RuntimeError("No queue had capacity")
 ```
 
-Queues are created by your platform admin; see [Managing queues](../../cluster-workload-management/queues).
+Queues are created by your platform admin; see [Managing queues](../../clusters-and-queues/queues).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -198,6 +198,13 @@ very different things:
   fell off the bus, or an NVLink error. The platform retries these without charging your retry budget and
   reschedules onto other hardware where it can. You only see this error after the platform has given up, so
   retrying in place is unlikely to help. Move to a different GPU type, queue, or cluster instead.
+
+{{< variant union >}}
+{{< markdown >}}
+**Availability:** platform-side GPU fault detection is not enabled on Union clusters, so the platform does not
+raise these errors. The classes are available in the SDK.
+{{< /markdown >}}
+{{< /variant >}}
 
 Catch `flyte.errors.GPUFaultError` to handle both, then branch on the attributes:
 
@@ -250,7 +257,8 @@ their clauses must come before the generic `RuntimeUserError` clause.
 A task (or a script) can also launch a whole *run* with `flyte.run` rather than calling a task as a sub-action,
 for example to compose several independent runs into a larger pipeline. A sub-action failure raises in the
 parent automatically. A run you launched doesn't, because `flyte.run` returns a `flyte.remote.Run` handle
-immediately. Wait on the handle, then call `flyte.remote.Run.raise_for_status()`:
+immediately. Wait on the handle, then call `flyte.remote.Run.raise_for_status()`
+(requires `flyte` 2.10.3 or later):
 
 ```python
 run = await flyte.run.aio(train, epochs=3)
@@ -359,8 +367,11 @@ async def large_inline_io() -> str:
 ```
 
 The small string passes through, but the ~1 MiB string breaches the 100 KiB limit and raises
-`flyte.errors.InlineIOMaxBytesBreached`. When you expect large values, raise `max_inline_io_bytes` or pass the
-data as a `flyte.io.File` or `flyte.io.Dir` so it is offloaded to blob storage instead of travelling inline. A
+`flyte.errors.InlineIOMaxBytesBreached`. The calling task raises the error, and only in remote runs; local runs
+don't enforce the limit. See
+[Inline I/O threshold](../task-configuration/additional-task-settings#where-the-limit-is-checked).
+When you expect large values, raise `max_inline_io_bytes` or pass the
+data as a `flyte.io.File` or `flyte.io.Dir` so it is offloaded to blob storage instead of traveling inline. A
 runnable version of this example is available as
 [`large_inline_io.py`](https://github.com/flyteorg/flyte-sdk/blob/main/examples/advanced/large_inline_io.py).
 

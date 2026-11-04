@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.11.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,6 +54,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Method | Description |
 |-|-|
 | [`AMD_GPU()`](#amd_gpu) | Create an AMD GPU device instance. |
+| [`APPLE_SILICON()`](#apple_silicon) | Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on. |
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`HABANA_GAUDI()`](#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
@@ -118,13 +119,27 @@ Create an AMD GPU device instance.
 
 **Returns:** Device instance.
 
+#### APPLE_SILICON()
+
+```python
+def APPLE_SILICON()
+```
+Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on.
+
+The same as `gpu="AppleSilicon"`. The workload runs natively on the Mac, so its code can use Metal
+(`torch.device("mps")`, `mlx`); it needs a devbox started with `flyte start devbox --apple-silicon`.
+
+
+
+**Returns:** Device instance.
+
 #### GPU()
 
 ```python
 def GPU(
-    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
-    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType] = None,
+    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType] = None,
 ) -> flyte._resources.Device
 ```
 Create a GPU device instance.
@@ -133,9 +148,9 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared']` | The type of GPU (e.g., "T4", "A100"). A "&lt;model&gt; shared" device such as "T4 shared" requests time-sliced (or MPS) capacity on a pool that advertises the shared accelerator. |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
-| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). A shared device takes no partition. |
 
 **Returns:** Device instance.
 
@@ -205,6 +220,7 @@ def build(
     dry_run: bool = False,
     force: bool = False,
     wait: bool = True,
+    queue: str | None = None,
 ) -> ImageBuild
 ```
 Build an image. The existing async context will be used.
@@ -224,6 +240,7 @@ if __name__ == "__main__":
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
 | `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
+| `queue` | `str \| None` | Queue for a remote image build run. Ignored by local builders. |
 
 **Returns**
 
@@ -242,6 +259,7 @@ def build_images(
     *envs: Environment,
     copy_style: 'CopyFiles' = 'loaded_modules',
     seed_cache: ImageCache | None = None,
+    queue: str | None = None,
 ) -> ImageCache
 ```
 Build the images for the given environment(s).
@@ -253,6 +271,7 @@ Build the images for the given environment(s).
 | `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 | `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
+| `queue` | `str \| None` | Queue for remote image build runs. None uses the build task default. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -350,6 +369,7 @@ def deploy(
     interactive_mode: bool | None = None,
     copy_style: CopyFiles = 'loaded_modules',
     dryrun: bool | None = None,
+    queue: str | None = None,
 ) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
@@ -364,6 +384,7 @@ Deploy the given environment or list of environments.
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
 | `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
+| `queue` | `str \| None` | Deploy every environment (and its tasks and triggers) to this queue, overriding the `queue` configured in code. The code bundle and trigger inputs are uploaded to that queue's cluster pool. When None, each environment keeps its own queue. |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
 
@@ -528,6 +549,8 @@ def init_from_api_key(
     image_builder: ImageBuildEngine.ImageBuilderType = 'local',
     images: typing.Dict[str, str] | None = None,
     sync_local_sys_paths: bool = True,
+    insecure_skip_verify: bool = False,
+    ca_cert_file_path: str | None = None,
 )
 ```
 Initialize the Flyte system using an API key for authentication. This is a convenience
@@ -552,6 +575,8 @@ or cloud provider.
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration |
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True) |
+| `insecure_skip_verify` | `bool` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `str \| None` | Optional path to a CA certificate bundle used to verify the server certificate. Useful behind TLS-intercepting corporate proxies that re-sign traffic with a private CA. Note that if insecure_skip_verify is also set, it takes precedence and certificate verification against this bundle is skipped. |
 
 **Returns:** None
 
@@ -1094,8 +1119,9 @@ app = flyte.serve(env)
 print(f"App URL: {app.url}")
 ```
 
-See Also:
-    with_servecontext: For customizing deployment settings
+**See Also:**
+
+- `with_servecontext`: For customizing deployment settings
 
 
 | Parameter | Type | Description |
@@ -1219,7 +1245,7 @@ if __name__ == "__main__":
 | `user_log_level` | `int \| None` | |
 | `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
-| `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `queue` | `Optional[str]` | Optional queue for the run and its remote image builds. Overrides the task queue. |
 | `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |

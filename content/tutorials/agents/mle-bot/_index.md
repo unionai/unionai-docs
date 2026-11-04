@@ -266,8 +266,8 @@ uv run main.py run \
 The agent connects to your cluster via `~/.flyte/config.yaml`, uploads the CSV, and submits the agent task. You'll see a URL to track the execution in the Flyte UI, and logs will stream to your terminal.
 
 > [!NOTE]
-> You'll need to register your OpenAI API key as a cluster secret before running:
-> `flyte create secret openai-api-key <YOUR_KEY>`
+> You'll need to register your OpenAI API key as a cluster secret named `OPENAI_API_KEY` before running:
+> `flyte create secret OPENAI_API_KEY --value <YOUR_KEY>`
 
 If you want to see the self-healing retry loop in action, add the `--inject-failure` flag. This deliberately corrupts the first experiment so the agent has to detect the error and recover, which makes for a nice demo of the durability guarantees.
 

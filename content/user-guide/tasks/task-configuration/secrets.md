@@ -83,10 +83,10 @@ flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project -
 
 ## Org-wide secrets in a multi-cluster deployment
 
-Each [cluster pool](../../cluster-workload-management/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
+Each [cluster pool](../../clusters-and-queues/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
 A secret therefore lives in the secret store of one particular pool, not in a single global store.
 
-If your organization has more than one [cluster pool](../../cluster-workload-management/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
+If your organization has more than one [cluster pool](../../clusters-and-queues/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
 All three secret commands accept it:
 
 ```bash
@@ -210,9 +210,8 @@ For example:
 {{< markdown >}}
 The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
 Secrets read directly from an external store use a different, provider-specific path:
-see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager),
-[Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault),
-or [Google Secret Manager](../../../deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager).
+see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager)
+or [Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
 {{< /markdown >}}
 {{< /variant >}}
 

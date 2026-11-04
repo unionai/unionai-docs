@@ -2,7 +2,7 @@
 title: Parameter
 description: "Parameter for application."
 icon: braces
-version: 2.11.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

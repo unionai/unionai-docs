@@ -121,8 +121,8 @@ This flexibility lets us mix and match models for planning, summarization, and f
 First, create the required secrets:
 
 ```
-flyte create secret TOGETHER_API_KEY <>
-flyte create secret TAVILY_API_KEY <>
+flyte create secret together_api_key --value <YOUR_TOGETHER_API_KEY>
+flyte create secret tavily_api_key --value <YOUR_TAVILY_API_KEY>
 ```
 
 Run the agent:

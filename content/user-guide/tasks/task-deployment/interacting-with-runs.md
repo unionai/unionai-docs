@@ -310,6 +310,11 @@ For all available options, see the [CLI reference](../../../api-reference/flyte-
 
 ### Handling failures
 
+To raise a finished run's failure as a typed exception, wait on the run and call
+`flyte.remote.Run.raise_for_status()`. It raises the same exception a parent task gets when a sub-action fails.
+Requires `flyte` 2.10.3 or later. For details, see
+[Handling the failure of a run you launched](../task-programming/error-handling#handling-the-failure-of-a-run-you-launched).
+
 If an action fails, outputs are not available, but you can retrieve error information:
 
 ```python

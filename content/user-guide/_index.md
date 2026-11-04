@@ -19,8 +19,8 @@ Flyte is Apache 2.0 licensed and a Linux Foundation AI & Data project, and you r
 
 > [!TIP] Try Flyte on Union.ai, free for 30 days
 > [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
-> Subscribe to Union Team on AWS Marketplace and try it free for 30 days.
-> See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and try it free for 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -37,8 +37,8 @@ On it, you build model factories, production agents, and model serving in plain 
 See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways to run it.
 
 > [!TIP] Try Union.ai free for 30 days
-> Subscribe to Union Team on AWS Marketplace and set up {{< key product_name >}} yourself, free for the first 30 days.
-> See [Setup from Marketplace]({{< docs_home union v2 >}}/deployment/marketplace/).
+> Sign up and set up {{< key product_name >}} yourself, free for the first 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -61,16 +61,16 @@ Configure, build, and deploy the durable batch workloads that everything else is
 Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
+{{< /link-card >}}
+
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
 Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
 {{< /link-card >}}
 
 {{< link-card target="agents" icon="robot" title="Agents" >}}
 Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
-{{< /link-card >}}
-
-{{< link-card target="system-one-types" icon="sliders" title="System one types" >}}
-Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 
 {{< /grid >}}
@@ -119,7 +119,7 @@ Manage users, roles, and policies for your Union cluster.
 
 {{< markdown >}}
 
-## Cluster and workload management
+## Clusters and queues
 
 Stand up clusters and govern where your workloads run.
 
@@ -127,7 +127,7 @@ Stand up clusters and govern where your workloads run.
 
 {{< grid >}}
 
-{{< link-card target="cluster-workload-management" icon="cloud" title="Clusters and queues" >}}
+{{< link-card target="clusters-and-queues" icon="cloud" title="Clusters and queues" >}}
 Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 {{< /link-card >}}
 
@@ -143,19 +143,11 @@ other workflow orchestrators.
 {{< grid >}}
 
 {{< link-card target="project-patterns" icon="folder" title="Project patterns" >}}
-Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
-{{< /link-card >}}
-
-{{< link-card target="software-development-lifecycle" icon="arrow-repeat" title="Software development lifecycle" >}}
-Automate your own development process with Flyte, using event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
+Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
 {{< /link-card >}}
 
 {{< link-card target="run-scaling" icon="box" title="Run scaling" >}}
 Tune task overhead, batching, reusable containers, and fanout to scale your workflows.
-{{< /link-card >}}
-
-{{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
-An advanced guide for building an LLM reporting agent on Flyte.
 {{< /link-card >}}
 
 {{< link-card target="migration" icon="arrow-right" title="Migration" >}}
@@ -163,3 +155,15 @@ Port a Flyte 1 codebase to Flyte 2, or map Airflow concepts to their Flyte 2 equ
 {{< /link-card >}}
 
 {{< /grid >}}
+
+{{< variant flyte >}}
+
+{{< grid >}}
+
+{{< link-card target="telemetry" icon="eye-slash" title="Telemetry" >}}
+What telemetry is sent and how to turn it off with DO_NOT_TRACK.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< /variant >}}

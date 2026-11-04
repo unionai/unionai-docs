@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.11.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,38 @@ A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node trai
 Inherits all fields from TaskEnvironment (name, image, resources, env_vars, secrets,
 pod_template, queue, cache, reusable). The fields below are specific to clustered execution.
 
+**Restarts and retries:**
+
+A clustered task can start over at three levels; only the second uses the task's `retries`.
+
+1. **JobSet restarts** (`failure_policy`): when a worker fails, every pod of the JobSet is
+   recreated in place, up to `failure_policy.max_restarts` times (node maintenance is free
+   with `restart_on_host_maintenance`). `flyte.ctx().restart_attempt` counts them.
+2. **User retries** (`retries=` on `env.task`): a new attempt with a new JobSet. Each uses one
+   of the task's `retries` and waits `RetryStrategy.backoff` first. Causes: the task failed
+   after its JobSet restarts were used up, or the gang was preempted by higher-priority work
+   after it started. If the task can be preempted, set `retries > 0`, otherwise the first
+   preemption fails it. Limit run time with `timeout=flyte.Timeout(max_runtime=...)`.
+3. **System retries**: the same attempt with a new JobSet, after an infrastructure problem
+   such as the queue being stopped or nodes failing. They do not use `retries`.
+
+The failure message names the cause and, for user retries, how many retries are left.
+
+**Waiting and queues:**
+
+The task waits until every worker is ready. Bound the wait with
+`timeout=flyte.Timeout(max_queued_time=..., deadline=...)` on `env.task`: `max_queued_time`
+covers each attempt until all workers are ready, `deadline` the whole run across attempts and
+retries.
+
+With Kueue on the cluster, choose the queue with a pod-template label:
+
+```python
+env = ClusteredTaskEnvironment(
+    ...,
+    pod_template=flyte.PodTemplate(labels={"kueue.x-k8s.io/queue-name": "training"}),
+)
+```
 
 
 ## Parameters
@@ -73,6 +105,7 @@ class ClusteredTaskEnvironment(
 
 | Property | Type | Description |
 |-|-|-|
+| `orchestrator` | `_OrchestratorNamespace` | Access the orchestrator namespace for creating orchestrator tasks. |
 | `sandbox` | `_SandboxNamespace` | Access the sandbox namespace for creating sandboxed tasks. |
 | `tasks` | `Dict[str, TaskTemplate]` | Get all tasks defined in the environment. |
 
@@ -205,6 +238,7 @@ The created TaskEnvironment.
 ```python
 def task(
     short_name: Optional[str] = None,
+    prefix: Optional[str] = None,
     cache: CacheRequest | None = None,
     retries: Union[int, RetryStrategy] = 0,
     timeout: TimeoutType = 0,
@@ -228,7 +262,8 @@ Decorate a function to be a task.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). Overriding `short_name` does not change the task's fully-qualified name. |
+| `short_name` | `Optional[str]` | Optional friendly name for the task or action, used in parts of the UI (defaults to the function name). With `prefix`, it becomes `<prefix>-<short_name>`. Overriding `short_name` does not change the task's fully-qualified name. |
+| `prefix` | `Optional[str]` | Optional prefix for the function name, so the task's fully-qualified name becomes `<env_name>.<prefix>-<function_name>` and its short name `<prefix>-<short_name>`. Use it to keep same-named functions from different modules apart while they share one environment (for example a reusable one). The name keeps a single `.`, between environment and task, so the prefix may not contain `.`: use letters, digits and underscores, separated by `-` (e.g. `"myproject-train"`). Use a fixed string rather than `__name__`: a module's `__name__` differs between `flyte run <file>`, a script run and the import inside the task container, which would give the task a different name in each. Note that a change of `prefix` invalidates the cache. |
 | `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
 | `retries` | `Union[int, RetryStrategy]` | Number of user retries (`int`) or a `RetryStrategy` object. `RetryStrategy` accepts an optional `backoff=Backoff(base, factor, cap)` to pace retries exponentially. Defaults to `0` (no retries). |
 | `timeout` | `TimeoutType` | Task timeout. Accepts a `timedelta`, an integer number of seconds, or a `Timeout` object carrying any combination of `max_runtime`, `max_queued_time`, and `deadline`. A bare `timedelta`/`int` is interpreted as `max_runtime`. A bound is treated as unlimited when unset (`None`) or zero (`0` / `timedelta(0)`); `timeout=0` is the default and means no time bound. |

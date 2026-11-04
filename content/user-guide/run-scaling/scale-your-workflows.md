@@ -291,9 +291,9 @@ async def process_metadata(metadata: dict) -> dict:
 
 **Guideline**:
 
-- **< 10 MB**: Use inline types (primitives, small dicts, lists)
-- **> 10 MB**: Use reference types (File, Dir, DataFrame)
-- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` to change the threshold
+- **< 10 MiB**: Use inline types (primitives, small dicts, lists)
+- **> 10 MiB**: Use reference types (File, Dir, DataFrame)
+- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` or `override()` to change the threshold. See [Inline I/O threshold](../tasks/task-configuration/additional-task-settings#inline-io-threshold).
 
 See [Data flow](./data-flow) for details on data types and transport.
 

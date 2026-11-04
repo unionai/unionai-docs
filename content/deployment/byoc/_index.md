@@ -11,8 +11,12 @@ variants: -flyte +union
 In a BYOC (Bring Your Own Cloud) deployment, Union.ai manages the data plane infrastructure in your cloud account.
 You provide the cloud account and network configuration; Union.ai handles Kubernetes cluster operations, upgrades, and monitoring.
 
-Your code, data, container images, and logs remain entirely in your data plane.
-The Union.ai control plane orchestrates workflow execution but has no access to your proprietary data.
+Your code, container images, logs, and runtime task inputs and outputs remain in your data plane.
+The Union.ai control plane orchestrates workflow execution and stores orchestration metadata.
+This metadata includes task, run, app, and reusable-environment definitions, run state, and error messages.
+Definitions can contain default input values, environment variables, and app inputs as plain text.
+Error messages may include data from Python tracebacks.
+See [Data privacy](./platform-architecture#data-privacy) and [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives) for details.
 
 ## Getting started
 

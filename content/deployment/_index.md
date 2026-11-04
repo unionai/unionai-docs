@@ -1,6 +1,6 @@
 ---
 title: Platform deployment
-description: Deploy Union.ai as a self-managed or BYOC deployment, or set it up yourself from AWS Marketplace.
+description: Subscribe and sign up, then run Union.ai's data plane in your own cloud account, self-managed or as a BYOC deployment.
 icon: server
 weight: 5
 variants: -flyte +union
@@ -18,14 +18,14 @@ You can deploy Union.ai on all major cloud providers, on neocloud providers, and
 
 In both cases, the control plane runs in Union.ai's cloud account, but due to Union's [Zero Trust architecture](../security/_index), your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own cloud account. See [Two-plane separation](../security/architecture/two-plane-separation) for how the split works.
 
-## The fastest way to get started: Union Team on AWS Marketplace
+## Get started
 
-The quickest route to a working Union.ai deployment is **Union Team**, a self-managed deployment you buy through AWS Marketplace and set up yourself, without waiting on anyone. The charges appear on your existing AWS bill, so there is no separate procurement process, and new subscriptions start with a 30-day free trial.
+You can set up a self-managed deployment on AWS, GCP, or Azure yourself, from the Union.ai UI, without waiting on anyone:
 
-You don't need a cluster to try it. As soon as your organization exists, you can run a workflow on your own machine and follow it in the Union.ai UI. When you are ready to run workloads on your own infrastructure, you connect a cluster in your AWS account and Union.ai installs the data plane into it. The agent connects outwards, so you never open a port, expose an endpoint, or hand over cluster credentials.
+1. **[Subscribe and sign up](./sign-up/_index).** Create your organization, your team's workspace in Union.ai. How you pay is separate from where your data plane runs: subscribe on AWS Marketplace to have the charges appear on your AWS bill, wherever your cluster is, or sign up directly. New organizations start with a 30-day free trial. You can [run a workflow on your own machine](./sign-up/run-locally) as soon as your organization exists, with no cluster.
+2. **Provision your cloud resources** on [AWS](./selfmanaged/aws/_index), [GCP](./selfmanaged/gcp/_index), or [Azure](./selfmanaged/azure/_index). Create the Kubernetes cluster, object store, image registry, and identities the data plane runs on, in your own cloud account.
+3. **[Connect your cluster](./selfmanaged/connect-a-cluster).** Enter your resources' details in the Union.ai UI and install the agent it gives you. The agent connects outwards and installs the data plane, so you never open a port, expose an endpoint, or hand over cluster credentials.
 
-See [Setup from Marketplace](./marketplace/_index) for the step-by-step path.
-
-If you need a platform AWS Marketplace doesn't cover, or you want Union.ai to run your data plane for you, see the [manual self-managed setup](./selfmanaged/_index) or [BYOC deployment](./byoc/_index).
+The UI flow covers AWS, GCP, and Azure today. If your data plane runs on OCI or a neocloud provider such as CoreWeave, Crusoe, or Nebius, or on your own Kubernetes cluster, follow the [self-managed setup with Helm](./selfmanaged/_index#other-providers-set-up-with-helm). If you want Union.ai to run your data plane for you, see [BYOC deployment](./byoc/_index).
 
 {{< subpage-cards >}}

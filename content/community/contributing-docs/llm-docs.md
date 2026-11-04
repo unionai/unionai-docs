@@ -58,12 +58,10 @@ This makes the file self-contained with no broken references.
 
 ## Regenerating
 
-LLM documentation is regenerated automatically as part of `make dist`.
-To regenerate only the LLM files without a full rebuild:
-
-```
-make llm-docs
-```
+LLM documentation is regenerated automatically as part of `make dist`. To regenerate it, run
+`make dist` again. `make llm-docs` does not work on its own: it only processes a variant whose
+`make variant` build has run since the last `make llm-docs`, so after a `make dist` it fails with
+`Error: No variants found`.
 
 New pages are included automatically if linked via `## Subpages` in their parent's Hugo output.
 

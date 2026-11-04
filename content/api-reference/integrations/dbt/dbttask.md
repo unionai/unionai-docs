@@ -2,7 +2,7 @@
 title: DbtTask
 description: "A Flyte task that maps one dbtRunner.invoke(...) call to one task."
 icon: braces
-version: 2.11.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

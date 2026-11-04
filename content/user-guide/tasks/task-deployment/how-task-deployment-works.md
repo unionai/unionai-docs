@@ -133,7 +133,9 @@ When `image.builder` is set to `local` in [your `config.yaml`](../../get-started
 - Requires Docker to be installed and running on your development machine
 - Uses Docker BuildKit to build images from generated Dockerfiles or your custom Dockerfile
 - Pushes built images to the container registry specified in your `Image` configuration
-- Is the only option available for Flyte OSS instances
+- Is one of the two options available for Flyte OSS instances (the other is `local-podman`, below)
+
+When `image.builder` is set to `local-podman` (requires flyte 2.10.6 or later), images are built and pushed on your local machine with Podman instead of Docker. Podman must be on your `PATH`. See [Local image building](../task-configuration/container-images#local-image-building).
 
 ### Remote image building
 
@@ -154,7 +156,7 @@ When `image.builder` is set to `remote` in [your `config.yaml`](../../get-starte
 - Provides faster, more consistent builds by leveraging cloud resources
 
 > [!NOTE]
-> Remote building is currently exclusive to Union backends. OSS Flyte installations must use `local`
+> Remote building is currently exclusive to Union backends. OSS Flyte installations must use `local` or `local-podman`.
 
 ## 6. Source-code link discovery
 

@@ -85,7 +85,7 @@ pip install "flyteplugins-agento11y[pydantic-ai] @ git+https://github.com/flyteo
 
 To instrument more than one framework, list several extras, as in `[openai,langgraph]`. The same string works in `with_pip_packages()`. Installing from Git needs `git` wherever the install runs, which is why the image above adds it with `with_apt_packages("git")`: the default Debian base image does not include it.
 
-Nothing else has to be configured: `init()` registers an instrumentor for every framework whose integration package it finds. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
+Nothing else has to be configured. `init()` registers instrumentation for every framework whose integration package it finds: an instrumentor for most, and a call wrapper for `claude`. `instrumented_frameworks()` returns the ones that were registered, which is the quickest way to confirm the extra actually installed.
 
 ```python
 from flyteplugins.agento11y import instrumented_frameworks
@@ -271,9 +271,19 @@ Putting the call inside a [`flyte.trace`](../../user-guide/tasks/task-programmin
 
 ## Content capture
 
-agento11y sends metadata by default (model, token usage, tool names, timing) and keeps prompts and responses local unless you opt in.
+By default, agento11y exports the content of every generation: the prompts and the model's responses go to Grafana along with the metadata (model, token usage, tool names, timing). The framework integrations also capture tool arguments and results by default. This plugin does not change those defaults. (Grafana's coding-agent integrations, set up with `agento11y login`, default to metadata only; the Python SDK this plugin uses does not.)
 
-That is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so content capture is switched on exactly as it would be outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the current field names and defaults; they belong to that library, not to this plugin.
+To export metadata only, pass the mode through `client_options`. This works in local and remote runs alike:
+
+```python
+from agento11y import ContentCaptureMode
+
+init(service_name="my-agent", client_options={"content_capture": ContentCaptureMode.METADATA_ONLY})
+```
+
+Or set the `AGENTO11Y_CONTENT_CAPTURE_MODE` environment variable to `metadata_only` before `init()` runs. In remote runs, set it on the task environment with `env_vars={"AGENTO11Y_CONTENT_CAPTURE_MODE": "metadata_only"}`. A local run doesn't apply the task environment's variables, so export it in your shell as well.
+
+Content capture is an agento11y setting rather than a Flyte one. `client_options` is the passthrough for it: every key becomes a field on agento11y's own `ClientConfig`, so you set the mode exactly as you would outside Flyte. Check the [agento11y documentation](https://grafana.com/docs/grafana-cloud/monitor-applications/agent-observability/) for the other modes; they belong to that library, not to this plugin.
 
 The same passthrough covers anything else `init()` does not surface: auth mode and token, protocol or a custom generation exporter.
 
@@ -320,7 +330,7 @@ register_call_wrapper("claude", wrap)
 
 Framework names match the adapter directory: `langchain`, `langgraph`, `openai`, `claude`, `google`, `pydantic_ai`.
 
-Both registries are best-effort by construction. If your instrumentor or wrapper raises, the adapter logs at debug level and runs the agent uninstrumented, because observing an agent must never be the reason it stops working. The flip side is that a handler which never attaches fails quietly, so confirm registration with `flyteplugins.agents.core.instrumented_frameworks()` rather than assuming it.
+Both registries are best-effort by construction. If your instrumentor or wrapper raises, the adapter logs at debug level and runs the agent uninstrumented, because observing an agent must never be the reason it stops working. The flip side is that a handler which never attaches fails quietly, so confirm registration rather than assuming it. `flyteplugins.agents.core.instrumented_frameworks()` lists only frameworks registered with `register_instrumentor`. No public function lists call wrappers, so to confirm a wrapper registered with `register_call_wrapper`, check that a test run produces the output you expect. This differs from `flyteplugins.agento11y.instrumented_frameworks()`, which returns everything agento11y's `init()` registered, including the `claude` call wrapper.
 
 ## Limitations
 

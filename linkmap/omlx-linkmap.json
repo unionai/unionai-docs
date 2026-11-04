@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "flyteplugins.omlx": "/api-reference/integrations/omlx/"
+  },
+  "identifiers": {
+    "flyteplugins.omlx.OMLXAppEnvironment": "/api-reference/integrations/omlx/omlxappenvironment/",
+    "OMLXAppEnvironment": "/api-reference/integrations/omlx/omlxappenvironment/"
+  },
+  "methods": {}
+}

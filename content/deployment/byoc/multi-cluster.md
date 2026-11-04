@@ -30,11 +30,11 @@ If you choose project isolation, then you would have one GCP project or AWS suba
 | `development/project-2` | `gcp-project-union-development-project-2`   |
 | `development/project-3` | `gcp-project-union-development-project-3`   |
 | `staging/project-1`     | `gcp-project-union-staging-project-1`       |
-| `staging/project-2`     | `gcp-project-union-staging-project-1`       |
-| `staging/project-3`     | `gcp-project-union-staging-project-1`       |
+| `staging/project-2`     | `gcp-project-union-staging-project-2`       |
+| `staging/project-3`     | `gcp-project-union-staging-project-3`       |
 | `production/project-1`  | `aws-subaccount-union-production-project-1` |
-| `production/project-2`  | `aws-subaccount-union-production-project-1` |
-| `production/project-3`  | `aws-subaccount-union-production-project-1` |
+| `production/project-2`  | `aws-subaccount-union-production-project-2` |
+| `production/project-3`  | `aws-subaccount-union-production-project-3` |
 
 The precise set of GCP projects and/or AWS subaccounts depends on the number of Union.ai domains and projects that you have.
 

@@ -147,7 +147,8 @@ Where that build runs depends on your deployment.
 
 Set `image.builder` to `remote` in your config file to build with Union's `ImageBuilder`, which runs
 the build on the cluster and needs no Docker and no registry credentials on your machine. Set it to
-`local` to build with Docker locally and push to a registry your cluster can pull from.
+`local` to build with Docker locally and push to a registry your cluster can pull from, or, with flyte
+2.10.6 or later, to `local-podman` to do the same with Podman.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -155,8 +156,9 @@ the build on the cluster and needs no Docker and no registry credentials on your
 {{< markdown >}}
 
 Images are built locally and pushed to a registry your cluster can pull from, so `image.builder`
-must be set to `local`, Docker must be running on your machine, and you must have run
-`docker login` against that registry.
+must be set to `local` (Docker must be running, and you must have run `docker login` against that
+registry) or, with flyte 2.10.6 or later, `local-podman` (Podman must be on your `PATH`, and you
+must have run `podman login` against that registry).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -367,7 +369,7 @@ work arrives. And when a queue hits its depth limit, new submissions are rejecte
 `RESOURCE_EXHAUSTED` instead of sitting in `PENDING` for an unknown length of time. That rejection
 is a back-pressure signal for the submitting process to slow down.
 
-Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../cluster-workload-management/queues)
+Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../clusters-and-queues/queues)
 
 ---
 
@@ -416,7 +418,7 @@ Kubernetes pod spec: volumes, node selectors, tolerations, service accounts, and
 
 {{< variant union >}}
 {{< markdown >}}
-[Volumes](../tasks/task-programming/volumes) are the other option, a durable, versioned filesystem
+[Volumes](../tasks/task-programming/volumes/_index) are the other option, a durable, versioned filesystem
 backed by object storage that tasks mount and read like a local directory, with copy-on-write forks
 for parallel branches of work.
 

@@ -328,9 +328,9 @@ Any of these sets the base registry for all image builds, so your `Image` defini
 {{< /markdown >}}
 {{< /variant >}}
 
-For Flyte OSS instances, this property must be set to `local`.
+For Flyte OSS instances, this property must be set to `local` or `local-podman`.
 
-For Union instances, this property can be set to `remote` to use the Union `ImageBuilder`, or `local` to build the image locally on your machine.
+For Union instances, this property can be set to `remote` to use the Union `ImageBuilder`, or `local` or `local-podman` to build the image locally on your machine.
 
 ### Local image building
 
@@ -352,6 +352,8 @@ You must ensure that:
 * Docker is running on your local machine.
 * You have successfully run `docker login` to that registry from your local machine (For example GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Union/Flyte installation has read access to that registry.
+
+To build with Podman instead of Docker, set `image.builder` to `local-podman` (requires flyte 2.10.6 or later). The image is built with `podman build` and pushed with `podman push` (`podman manifest push` for a multi-platform image). In place of the Docker requirements above, make sure that Podman is on your `PATH`, that a Podman machine is running on macOS and Windows (`podman machine start`), and that you have run `podman login` to the registry.
 
 > [!NOTE]
 > If you are using the GitHub container registry (`ghcr.io`)
@@ -430,6 +432,88 @@ The format of this secret matches the standard Kubernetes [image pull secret](ht
 
 > [!NOTE]
 > The `auth` field contains the base64-encoded credentials for your registry (username and password or token).
+
+#### Pulling a private base image with a credential helper
+
+`ImageBuilder` only authenticates to its own default registry.
+If your base image lives in any other private registry, `ImageBuilder` pulls it anonymously and the build fails with `401 Unauthorized`, even if registry permissions or IAM policies allow access, because no credentials are sent at all.
+To fix this, pass an `image_pull` secret as `registry_secret`. The secret can hold either:
+
+* **Static credentials**, as shown in the previous section. This works with any registry, but you have to rotate the credentials when they expire.
+* **A credential helper mapping**, which stores no credentials. `ImageBuilder` runs the helper on every build to fetch a fresh token with the data plane's own cloud identity, so there is nothing to rotate.
+  This works only when the registry is on the same cloud provider as your data plane.
+
+Credential helpers are currently supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
+For registries on other clouds, use static credentials.
+
+##### Amazon ECR in another AWS account
+
+This setup uses the [`ecr-login` credential helper](https://github.com/awslabs/amazon-ecr-credential-helper).
+A static ECR token would expire after 12 hours.
+
+1. In the AWS account that owns the image, add a repository policy that lets your data plane's account pull from it (replace `<DATA_PLANE_ACCOUNT_ID>`):
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Sid": "AllowDataPlanePull",
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "arn:aws:iam::<DATA_PLANE_ACCOUNT_ID>:root"
+         },
+         "Action": [
+           "ecr:BatchCheckLayerAvailability",
+           "ecr:BatchGetImage",
+           "ecr:GetDownloadUrlForLayer"
+         ]
+       }
+     ]
+   }
+   ```
+
+2. Save a Docker config file, `config.json`, that maps the registry to the `ecr-login` helper.
+   It contains no credentials. List more registries under `credHelpers` if you pull from several accounts.
+
+   ```json
+   {
+     "auths": {},
+     "credHelpers": {
+       "<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com": "ecr-login"
+     }
+   }
+   ```
+
+3. Store the file as an `image_pull` secret:
+
+   ```bash
+   flyte create secret --type image_pull ecr-cross-account --from-file config.json
+   ```
+
+   If your organization has more than one cluster pool, add `--cluster-pool <POOL_NAME>`.
+
+4. Pass the secret to `ImageBuilder` with `registry_secret`.
+   `from_base()` doesn't accept a secret, so set it on `clone()`, which you already need in order to add layers on top of the base image:
+
+   ```python
+   image = (
+       flyte.Image.from_base("<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY>:<TAG>")
+       .clone(name="my-image", registry_secret="ecr-cross-account", extendable=True)
+       .with_pip_packages("pandas")
+   )
+
+   env = flyte.TaskEnvironment(name="my_task_env", image=image)
+   ```
+
+   Leave `registry` unset so the built image is pushed to your Union instance's default registry, as usual.
+   Tasks pull it from there, so the `TaskEnvironment` doesn't need the secret.
+
+{{< variant union >}}
+{{< markdown >}}
+For BYOC data planes, see also [Enabling AWS ECR](../../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr) for running tasks directly on images stored in another account.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Install private PyPI packages
 

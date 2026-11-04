@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.gitlab": "/api-reference/integrations/software-development-tools/gitlab/"
+  },
+  "identifiers": {
+    "flyteplugins.gitlab.GitLabProvider": "/api-reference/integrations/software-development-tools/gitlab/gitlabprovider/",
+    "GitLabProvider": "/api-reference/integrations/software-development-tools/gitlab/gitlabprovider/"
+  },
+  "methods": {
+    "flyteplugins.gitlab.parse": "/api-reference/integrations/software-development-tools/gitlab/#parse",
+    "flyteplugins.gitlab.verify": "/api-reference/integrations/software-development-tools/gitlab/#verify"
+  }
+}

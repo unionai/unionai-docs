@@ -2,7 +2,7 @@
 title: ApiKey
 description: "Represents a Union API Key (OAuth Application)."
 icon: braces
-version: 0.15.3
+version: 0.20.2
 variants: -flyte +union
 layout: py_api
 ---
@@ -168,8 +168,9 @@ def listall(
 ```
 List all API keys.
 
-Yields:
-    ApiKey instances
+**Yields:**
+
+ApiKey instances
 
 
 

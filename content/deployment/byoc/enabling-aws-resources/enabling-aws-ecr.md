@@ -25,7 +25,7 @@ If you want to store your task container images in an ECR instance in an AWS acc
 Here are the details:
 
 * Your Union.ai data plane comes pre-configured with a specific role, which we will refer to here as `<FlyteWorkerNodeGroupRole>`.
-* The actual name of this role depends on your organization's name. It will be of the form `unionai-<YourOrganizationName>-flyteworker-node-group`.
+* The actual name of this role is of the form `unionai-<ClusterName>-eks-flyteworker-node-group`, where `<ClusterName>` is your EKS cluster's name without the `opta-` prefix. To find it, search **IAM > Roles** for `flyteworker-node-group`.
 
 To enable access to the ECR instance in the other account, do the following:
 
@@ -63,3 +63,10 @@ We will call this `<FlyteWorkerNodeGroupRoleARN>`.
 * Select **Save**.
 
 Your Union.ai data plane infrastructure should now be able to pull images from the ECR instance. For more information see [How can I allow a secondary account to push or pull images in my Amazon ECR image repository?](https://repost.aws/knowledge-center/secondary-account-access-ecr)
+
+## Building on a base image from another account
+
+The policy above lets tasks _run_ on images stored in the other account.
+If you instead use one of those images as a base and build on top of it with the remote `ImageBuilder` (for example, `flyte.Image.from_base(...)` followed by `with_*` layers), the policy is not enough on its own: the build fails with `401 Unauthorized` because `ImageBuilder` doesn't send credentials to that registry by default.
+To fix this, create an `image_pull` secret that configures the `ecr-login` credential helper for the registry and pass it as `registry_secret`.
+See [Amazon ECR in another AWS account](../../../user-guide/tasks/task-configuration/container-images#amazon-ecr-in-another-aws-account).

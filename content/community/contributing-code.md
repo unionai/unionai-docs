@@ -67,8 +67,8 @@ for dependency management and a `Makefile` for common tasks.
 - [`git`](https://git-scm.com/)
 - [`uv`](https://docs.astral.sh/uv/getting-started/installation/) manages the
   Python toolchain and virtual environment for you
-- A running [Docker](https://docs.docker.com/install/) daemon, because the build produces
-  a wheel so the default `Image()` picks up your local changes
+- A running [Docker](https://docs.docker.com/install/) daemon, which the default local
+  image builder uses to build the default `Image()` with your local wheel baked in
 
 ### Set up your local environment
 
@@ -93,7 +93,9 @@ make dist    # Build a wheel so the default Image() uses your local changes
 ```
 
 `uv sync` installs the package in editable mode, so your source edits take effect
-immediately. `make dist` requires a running Docker daemon.
+immediately. `make dist` builds the wheel into `dist/` and does not need Docker.
+You need the Docker daemon when a remote run builds the default `Image()` with the
+default local image builder, which bakes the wheel from `dist/` into the image.
 
 ### Set up prek pre-commit hooks
 

@@ -103,13 +103,13 @@ env = flyte.TaskEnvironment(
         cpu="4",
         memory="32Gi",
         gpu="A100:2",              # Type:count
-        # gpu="A100 80G:1"         # 80GB variant
+        # gpu="A100_80G:1"         # 80GB variant (flyte >= 2.11.3; earlier: "A100 80G:1")
         # gpu=flyte.GPU("A100", quantity=1, partition="1g.5gb")   # MIG partition
     ),
 )
 ```
 
-Supported GPU types include A10, A10G, A100, A100 80G, B200, H100, H200, L4, L40s, T4, V100, RTX PRO 6000, and GB10. See [Resources](../../tasks/task-configuration/resources) for more.
+Supported GPU types include A10, A10G, A100, A100_80G, B200, H100, H200, L4, L40s, T4, V100, RTX_PRO_4500, RTX_PRO_6000, and GB10. The underscore names need `flyte` 2.11.3 or later; earlier releases use `A100 80G` and `RTX PRO 6000`. See [Resources](../../tasks/task-configuration/resources) for more.
 
 ## Caching
 

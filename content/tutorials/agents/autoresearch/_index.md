@@ -76,8 +76,8 @@ Get an Anthropic API key from the [Anthropic console](https://console.anthropic.
 Register both as Flyte secrets. The key names must match those declared in the `TaskEnvironment`:
 
 ```
-flyte create secret github_token <YOUR_GITHUB_TOKEN>
-flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret github_token --value <YOUR_GITHUB_TOKEN>
+flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 ```
 
 See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.

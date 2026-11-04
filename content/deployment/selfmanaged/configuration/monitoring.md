@@ -172,25 +172,15 @@ This deploys a full [kube-prometheus-stack](https://github.com/prometheus-commun
 
 The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs with your own Prometheus instead, see [Scraping Union services from your own Prometheus](#scraping-union-services-from-your-own-prometheus).
 
-To install the CRDs, use the `dataplane-crds` chart:
-
-```yaml
-# dataplane-crds values
-crds:
-  flyte: true
-  prometheusOperator: true  # Install Prometheus Operator CRDs
-```
-
-Then install or upgrade the CRDs chart before the data plane chart:
+To install the Prometheus Operator CRDs, apply them using server-side apply from the `crds/kube-prometheus-stack/` directory in the `helm-charts` repository:
 
 ```shell
-helm upgrade --install union-dataplane-crds unionai/dataplane-crds \
-  --namespace union \
-  --set crds.prometheusOperator=true
+git clone --depth 1 --branch dataplane-<CHART_VERSION> https://github.com/unionai/helm-charts.git
+kubectl apply --server-side --force-conflicts -f helm-charts/crds/kube-prometheus-stack/
 ```
 
-> [!NOTE] CRD installation order
-> CRDs must be installed before the data plane chart. The `dataplane-crds` chart should be deployed first, and the monitoring stack's own CRD installation is disabled (`monitoring.crds.enabled: false`) to avoid conflicts.
+> [!NOTE] Server-side apply for large CRDs
+> Prometheus Operator CRDs exceed the 256 KiB limit of Kubernetes client-side annotations (`kubectl.kubernetes.io/last-applied-configuration`). Using `kubectl apply --server-side --force-conflicts` bypasses this annotation limit. In the dataplane chart, the monitoring subchart's own CRD installation is disabled (`monitoring.crds.enabled: false`) to prevent conflicts.
 
 ### Customizing the monitoring stack
 
@@ -289,7 +279,7 @@ spec:
       interval: 30s
 ```
 
-This requires the Prometheus Operator CRDs. Install them via the `dataplane-crds` chart with `crds.prometheusOperator: true`.
+This requires the Prometheus Operator CRDs. Install them via server-side apply from `crds/kube-prometheus-stack/` in the `unionai/helm-charts` repository.
 
 ## Further reading
 

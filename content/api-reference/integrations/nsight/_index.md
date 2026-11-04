@@ -2,7 +2,7 @@
 title: NVIDIA Nsight Systems
 description: "Flyte NVIDIA Nsight Systems plugin."
 icon: book
-version: 2.11.1.dev3+gd91bf539f
+version: 2.11.1.dev3+g825fdbe57
 variants: +flyte +union
 layout: py_api
 ---

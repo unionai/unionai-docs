@@ -210,12 +210,12 @@ Once your VPC is set up, provide the following to Union.ai:
 
 * VPC name
 * Subnet region and name
-* The secondary range name for the /15 CIDR mask and /16 CIDR mask
-* The /18 CIDR block that was left unallocated for the Kubernetes Master
+* The secondary range name for the /15 CIDR mask and /18 CIDR mask
+* The /28 CIDR block that was left unallocated for the Kubernetes Master
 
 ### Example VPC CIDR block allocation
 
 * 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes
-* 10.32.0.0/14 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods
+* 10.32.0.0/15 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods
 * 10.64.0.0/18 Service secondary IPv4 range named `gke-services` → Used for Kubernetes Services
 * 10.65.0.0/28 Unallocated for Kubernetes Master

@@ -14,7 +14,7 @@ You can customize this mapping by setting the `namespace_mapping.template` value
 
 ## Template syntax
 
-The template uses Go template syntax with two variables:
+The template is not a Go template. The services replace these exact placeholder strings, so keep one space inside each pair of braces (`{{project}}` is not substituted):
 
 - `{{ project }}`: the project name
 - `{{ domain }}`: the domain name (e.g., `development`, `staging`, `production`)
@@ -36,11 +36,11 @@ Set the `namespace_mapping` value at the top level of your dataplane Helm values
 
 ```yaml
 namespace_mapping:
-  template: "myorg-{{ '{{' }} project {{ '}}' }}-{{ '{{' }} domain {{ '}}' }}"
+  template: "myorg-{{ `{{ project }}` }}-{{ `{{ domain }}` }}"
 ```
 
 > [!NOTE]
-> The template uses Helm's backtick escaping for Go template delimiters. In your values file, wrap `{{ project }}` and `{{ domain }}` with backtick-escaped `{{` and `}}` delimiters as shown above.
+> The value is rendered by Helm, so the placeholders must be escaped. Wrap each one in a Go raw string inside a Helm action, for example ``{{ `{{ project }}` }}``, so that Helm outputs `{{ project }}` unchanged for the services to substitute.
 
 ## How it works
 

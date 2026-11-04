@@ -2,7 +2,7 @@
 title: Config
 description: "This the parent configuration object and holds all the underlying configuration object types."
 icon: braces
-version: 2.11.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

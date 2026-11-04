@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.nextflow": "/api-reference/integrations/nextflow/"
+  },
+  "identifiers": {
+    "flyteplugins.nextflow.NextflowError": "/api-reference/integrations/nextflow/nextflowerror/",
+    "NextflowError": "/api-reference/integrations/nextflow/nextflowerror/"
+  },
+  "methods": {
+    "flyteplugins.nextflow.nextflow_image": "/api-reference/integrations/nextflow/#nextflow_image",
+    "flyteplugins.nextflow.run_nextflow": "/api-reference/integrations/nextflow/#run_nextflow"
+  }
+}
