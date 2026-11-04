@@ -61,7 +61,7 @@ Overlapping generation with a multi-node trainer step can hide the trainer's tim
 | [Training loop](./training-loop) | The driver task that ties the parts together, the policy update, multi-node trainers, and overlapping generation with training |
 | [Evaluation](./evaluation) | Sampling the policy on held-out problems, training-health metrics, and catching reward hacking |
 
-The examples on these pages come from a GRPO loop with LoRA adapters and an agentic RL loop with sandboxed environments. To fine-tune on labeled data instead, see [Post-training and fine-tuning](../model-training/post-training).
+The examples on these pages come from a GRPO loop with LoRA adapters and an agentic RL loop with sandboxed environments. To fine-tune on labeled data instead, see [Post-training](../model-training/post-training).
 
 {{< subpage-cards >}}
 

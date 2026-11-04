@@ -36,7 +36,7 @@ The driver is an ordinary `async` function. It can loop, branch on a metric, or 
 | Need | Construct |
 |---|---|
 | Put each stage on the right hardware | One `flyte.TaskEnvironment` per stage, with `flyte.Resources` for CPU, memory, GPU type and count, and shared memory. See [Resources](../tasks/task-configuration/resources). |
-| Train across several nodes | `flyte.clustered.ClusteredTaskEnvironment` runs torchrun across a group of pods. See [Pretraining](./pretraining). |
+| Train across several nodes | `flyte.clustered.ClusteredTaskEnvironment` runs torchrun across a group of pods. See [Pre-training](./pretraining). |
 | Skip work that already ran | `cache="auto"` on data prep and training. A rerun with the same inputs and code returns the stored outputs. See [Caching](../tasks/task-configuration/caching). |
 | Resume after a crash or preemption | `retries` plus `flyte.Checkpoint` restarts the loop from its last checkpoint. See [Resilient training](./resilient-training). |
 | Pass datasets, checkpoints, and weights between stages | `flyte.io.Dir`, `flyte.io.File`, and DataFrames store data in your object store and pass a reference. See [Files and directories](../tasks/task-programming/files-and-directories). |
@@ -55,8 +55,8 @@ On {{< key product_name >}}, trained models can also be published as [artifacts]
 
 | You want to | Read |
 |---|---|
-| Train a model from scratch, or on more GPUs than one node has | [Pretraining](./pretraining) |
-| Adapt a pretrained model with SFT, LoRA, or preference tuning | [Post-training and fine-tuning](./post-training) |
+| Train a model from scratch, or on more GPUs than one node has | [Pre-training](./pretraining) |
+| Adapt a pretrained model with SFT, LoRA, or preference tuning | [Post-training](./post-training) |
 | Train scikit-learn or XGBoost models | [Classical machine learning](./classical-ml) |
 | Sweep hyperparameters and stop weak trials early | [Hyperparameter optimization](./hyperparameter-optimization) |
 | Measure a model on held-out data and compare it with a baseline | [Evaluation](./evaluation) |

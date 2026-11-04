@@ -74,7 +74,7 @@ When the policy is too large to update on one node, make the trainer a `flyte.cl
 
 {{< code file="/unionai-examples/v2/tutorials/multinode_rl_grpo_lora/rl_grpo_lora_clustered.py" fragment="clustered_env" lang=python >}}
 
-`resources` applies to each pod, and the train task runs on every rank, as in [Pretraining](../model-training/pretraining#run-torchrun-across-nodes). Rank 0 saves the new adapter and broadcasts its path, so every rank returns the same values of the declared types. Rank 0's return value becomes the task's output, so the driver's loop doesn't change. A multi-node trainer has a cold start of its own, because every pod has to be scheduled before the step begins. The next section hides it.
+`resources` applies to each pod, and the train task runs on every rank, as in [Pre-training](../model-training/pretraining#run-torchrun-across-nodes). Rank 0 saves the new adapter and broadcasts its path, so every rank returns the same values of the declared types. Rank 0's return value becomes the task's output, so the driver's loop doesn't change. A multi-node trainer has a cold start of its own, because every pod has to be scheduled before the step begins. The next section hides it.
 
 ## Overlap generation with training
 

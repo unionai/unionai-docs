@@ -1,12 +1,12 @@
 ---
-title: Post-training and fine-tuning
+title: Post-training
 description: Adapt a pretrained model with supervised fine-tuning, LoRA, or preference tuning, then evaluate it and hand it to serving.
 icon: sliders
 weight: 2
 variants: +flyte +union
 ---
 
-# Post-training and fine-tuning
+# Post-training
 
 Post-training starts from a pretrained model and adapts it with your data: supervised fine-tuning (SFT), parameter-efficient methods such as LoRA and QLoRA, or preference tuning such as DPO. The training code is usually a library call, such as TRL's `SFTTrainer` or the Hugging Face `Trainer`. Flyte runs the stages around it: getting the base model and data onto the GPU, keeping the run recoverable, comparing the result with the base model, and handing the weights to serving.
 

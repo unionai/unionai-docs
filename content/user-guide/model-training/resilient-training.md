@@ -119,5 +119,5 @@ A pipeline that fails at evaluation shouldn't retrain the model. Two features ke
 - [Retries and timeouts](../tasks/task-configuration/retries-and-timeouts)
 - [Distributed LLM pretraining](../../tutorials/frontier-ai/distributed-pretraining/_index): checkpointing and fault tolerance for a multi-node pretraining run.
 - [Fine-tuning a VLM](../../tutorials/computer-vision/qwen-vl-finetuning/_index): multi-node fine-tuning with recovery checkpoints.
-- [Pretraining](./pretraining)
-- [Post-training and fine-tuning](./post-training)
+- [Pre-training](./pretraining)
+- [Post-training](./post-training)

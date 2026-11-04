@@ -1,12 +1,12 @@
 ---
-title: Pretraining
+title: Pre-training
 description: Train a model from scratch across many GPUs and nodes, with data prep cached and sized separately from the training job.
 icon: stack
 weight: 1
 variants: +flyte +union
 ---
 
-# Pretraining
+# Pre-training
 
 Pretraining runs one training loop across more GPUs than a single machine holds. Flyte launches the nodes as one group, wires up `torch.distributed`, and runs the data pipeline and the driver on cheaper hardware next to it.
 
