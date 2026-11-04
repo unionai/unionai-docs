@@ -109,6 +109,15 @@ Training on rollouts from an older policy biases the update. Record which policy
 
 ## Related
 
+{{< variant union >}}
+{{< markdown >}}
+
+- [RL for LLMs with GRPO and LoRA](../../tutorials/reinforcement-learning/grpo-lora/_index): the rollout pool on this page, with the full loop around it.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): rollouts that are multi-turn agent trajectories.
 - [Training environment](./training-environment): where the policy's actions run.
 - [Training loop](./training-loop): how the driver fans out rollouts and overlaps them with training.
 - [Batch inference](../inference/batch-inference): the same engine patterns for scoring a dataset.

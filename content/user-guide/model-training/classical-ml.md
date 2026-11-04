@@ -68,6 +68,9 @@ When each trial takes seconds, starting a container for each one costs more than
 
 ## Related
 
+- [Hyperparameter optimization](../../tutorials/model-training/hpo/_index): an Optuna study where every trial is a Flyte task.
+- [Fraud detection with Feast](../../tutorials/financial-services/fraud-detection-feast/_index): train an XGBoost classifier on features from a feature store.
+- [MLE bot](../../tutorials/agents/mle-bot/_index): an agent that designs and runs XGBoost experiments in parallel.
 - [Mapping over inputs](../tasks/task-programming/map): `flyte.map` for sweeps over a list.
 - [MLflow](../../integrations/mlflow/_index) and [Weights & Biases](../../integrations/wandb/_index): log each trial to an experiment tracker.
 - [Deploy trained models](../inference/deploy-trained-models): serve the fitted model behind a FastAPI app.

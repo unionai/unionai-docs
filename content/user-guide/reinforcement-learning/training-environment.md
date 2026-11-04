@@ -67,7 +67,7 @@ Episodes are independent, so the driver launches all of them at once with `async
 
 ## Run model-written code safely
 
-When the policy writes code that runs during an episode or during scoring, such as a generated function and the test suite that checks it, run that code in a sandbox rather than in the task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing).
+When the policy writes code that runs during an episode or during scoring, such as a generated function and the test suite that checks it, run that code in a sandbox rather than in the task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing), and the [MLE bot](../../tutorials/agents/mle-bot/_index) tutorial for an agent whose generated code runs in a sandbox.
 
 ## Serve the environment as an app
 

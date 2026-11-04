@@ -24,7 +24,7 @@ The longer a training job runs, the more likely something under it fails: a spot
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/pytorch_checkpoint.py" fragment="task" lang=python >}}
 
-Save the optimizer state and the step or epoch along with the weights, so the resumed attempt continues the same schedule. To connect a framework's own checkpointing, such as the Hugging Face `Trainer` or Lightning's `ModelCheckpoint`, use a callback. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints).
+Save the optimizer state and the step or epoch along with the weights, so the resumed attempt continues the same schedule. To connect a framework's own checkpointing, such as the Hugging Face `Trainer` or Lightning's `ModelCheckpoint`, use a callback. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints), and the [Brain tumor MRI classification](../../tutorials/biotech-healthcare/tumor-detection/_index) tutorial for a Lightning training task that resumes this way.
 
 ## Use spot capacity
 
@@ -117,5 +117,7 @@ A pipeline that fails at evaluation shouldn't retrain the model. Two features ke
 ## Related
 
 - [Retries and timeouts](../tasks/task-configuration/retries-and-timeouts)
+- [Distributed LLM pretraining](../../tutorials/frontier-ai/distributed-pretraining/_index): checkpointing and fault tolerance for a multi-node pretraining run.
+- [Fine-tuning a VLM](../../tutorials/computer-vision/qwen-vl-finetuning/_index): multi-node fine-tuning with recovery checkpoints.
 - [Pretraining](./pretraining)
 - [Post-training and fine-tuning](./post-training)

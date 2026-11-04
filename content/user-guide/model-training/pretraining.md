@@ -91,6 +91,7 @@ To find out whether a step is bound by compute, communication, or data loading, 
 ## Related
 
 - [Distributed LLM pretraining](../../tutorials/frontier-ai/distributed-pretraining/_index): a GPT model pretrained on multiple H200 nodes, end to end.
+- [Fine-tuning a VLM](../../tutorials/computer-vision/qwen-vl-finetuning/_index): multi-node DeepSpeed training with checkpoints you can resume from.
 - [PyTorch](../../integrations/pytorch/_index): the `Elastic` plugin config, an alternative to the clustered environment.
 - [Ray](../../integrations/ray/_index): run a Ray cluster from a task.
 - [Weights & Biases distributed training](../../integrations/wandb/distributed_training): log from every rank.

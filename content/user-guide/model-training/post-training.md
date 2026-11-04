@@ -47,7 +47,7 @@ Then load the previous attempt's checkpoint at the start of the task and pass it
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/huggingface_trainer_checkpoint.py" fragment="task" lang=python >}}
 
-With `retries` set on the task, a failed attempt restarts from the last saved epoch. The same pattern works for PyTorch Lightning, plain PyTorch loops, and Unsloth. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints).
+With `retries` set on the task, a failed attempt restarts from the last saved epoch. The same pattern works for PyTorch Lightning, plain PyTorch loops, and Unsloth. The [Brain tumor MRI classification](../../tutorials/biotech-healthcare/tumor-detection/_index) tutorial does it for Lightning. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints).
 
 ## Watch training while it runs
 
@@ -75,4 +75,6 @@ Return the trained model as a `flyte.io.Dir`. A vLLM or FastAPI app can then loa
 - [LLM fine-tuning with LoRA and QLoRA](../../tutorials/model-training/llm-fine-tuning-lora-qlora/_index): the full pipeline on this page, with live reports.
 - [Fine-tuning a VLM](../../tutorials/computer-vision/qwen-vl-finetuning/_index): multi-node fine-tuning with DeepSpeed and Lightning.
 - [BERT emotion classification](../../tutorials/model-training/bert-fine-tuning-emotion/_index): fine-tuning an encoder with the Hugging Face `Trainer`.
+- [RT-DETR object detection](../../tutorials/computer-vision/detr-object-detection/_index): fine-tuning a detector with cached data prep, live training charts, and mAP evaluation.
+- [Brain tumor MRI classification](../../tutorials/biotech-healthcare/tumor-detection/_index): two-phase transfer learning with checkpoints that survive preemption.
 - [Reinforcement learning](../reinforcement-learning/_index): post-training with rewards instead of labels.

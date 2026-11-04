@@ -63,3 +63,9 @@ On {{< key product_name >}}, trained models can also be published as [artifacts]
 To optimize a model with rewards instead of labels, see [Reinforcement learning](../reinforcement-learning/_index). To serve the model you train, see [Deploy trained models](../inference/deploy-trained-models).
 
 {{< subpage-cards >}}
+
+## Related
+
+- [Model training tutorials](../../tutorials/model-training/_index): complete pipelines for fine-tuning and hyperparameter optimization.
+- [Distributed LLM pretraining](../../tutorials/frontier-ai/distributed-pretraining/_index): a GPT model pretrained on multiple H200 nodes, end to end.
+- [Computer vision tutorials](../../tutorials/computer-vision/_index): fine-tuning detectors and vision-language models.
