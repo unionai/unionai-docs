@@ -24,7 +24,7 @@ async def train_pipeline(dataset: str) -> str:
 ```
 
 `train_pipeline` does almost no work itself, but it runs in its own pod for the full four and a half
-hours, holding that pod's CPU and memory while it waits for `prepare`, `train` and `evaluate`. The
+hours, holding that pod's CPU and memory while it waits for `prepare`, `train`, and `evaluate`. The
 same function written as an orchestrator task has no pod at all:
 
 ```python
