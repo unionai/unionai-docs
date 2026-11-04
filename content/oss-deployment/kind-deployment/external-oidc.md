@@ -176,8 +176,7 @@ resolve `flyte.local` to the local Traefik node port (do this once):
 echo "127.0.0.1 flyte.local" | sudo tee -a /etc/hosts
 ```
 
-`http://127.0.0.1/v2` won't work in its place. Traefik has no route for that host, and
-the OIDC issuer is `flyte.local`, so login fails on an issuer mismatch. Then open
+`http://127.0.0.1/v2` won't work in its place: Traefik has no route for that host. Then open
 `http://flyte.local/v2`. Traefik bounces you through the IdP and back into the console.
 
 ### Split the API and discovery paths off the browser middleware
@@ -187,9 +186,11 @@ path breaks the SDK (the cloud walkthrough avoids this by splitting into three i
 `ingress` / `apiJwtIngress` / `wellknownIngress`, since ALB can't mix cookie-OIDC and JWT
 auth on one). Two path groups need different handling:
 
-- **Auth-discovery** (`AuthMetadataService`, `IdentityService`): the SDK reads these
-  *before* it has a token, so they must **bypass auth**. Gated, they return a `text/plain`
-  401 that ConnectRPC reports as `UNAVAILABLE`, and the SDK never starts login.
+- **Auth-discovery** (`AuthMetadataService`): the SDK reads it *before* it has a token,
+  so it must **bypass auth**. Gated, it returns oauth2-proxy's sign-in page instead of
+  the metadata, and the SDK never starts login. If that response keeps its 401 status,
+  ConnectRPC reports it as `UNAUTHENTICATED`; if it arrives as a 200, the SDK raises
+  `InitializationError: InvalidEndpoint`.
 - **The `flyteidl2.*` API**: needs `oauth2-auth` (Bearer validation) but **not**
   `oauth2-signin`, so an unauthenticated call gets a clean gRPC 401 the SDK retries after
   login, not sign-in HTML.
@@ -199,8 +200,8 @@ so these win over the `flyte-http` Ingress for their paths:
 
 ```bash
 kubectl apply -f - <<'EOF'
-# Discovery — highest priority, NO middleware. The SDK reads these before it has a
-# token; they must reach Flyte directly so it returns the real metadata (issuer,
+# Discovery — highest priority, NO middleware. The SDK reads it before it has a
+# token; it must reach Flyte directly so it returns the real metadata (issuer,
 # client ID), not oauth2-proxy's unparseable 401. (Equivalent of wellknownIngress.)
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -212,7 +213,7 @@ spec:
   routes:
     - kind: Rule
       priority: 300
-      match: Host(`flyte.local`) && (PathPrefix(`/flyteidl2.auth.AuthMetadataService`) || PathPrefix(`/flyteidl2.auth.IdentityService`))
+      match: Host(`flyte.local`) && PathPrefix(`/flyteidl2.auth.AuthMetadataService`)
       services:
         - name: flyte-http
           port: 8090
@@ -249,7 +250,7 @@ discovery path returns JSON rather than oauth2-proxy's 401:
 curl -s -X POST --resolve flyte.local:443:127.0.0.1 -k \
   https://flyte.local/flyteidl2.auth.AuthMetadataService/GetPublicClientConfig \
   -H 'Content-Type: application/json' -d '{}' | head -c 120
-# → {"clientId":"flytectl", ...}   (JSON, not "Unauthorized")
+# → a JSON body, not "Unauthorized"
 ```
 
 ## Advertise your IdP to the SDK/CLI
@@ -312,7 +313,8 @@ with the resulting token.
 | Symptom | Cause and fix |
 |---|---|
 | `flyte.run` fails the upload with `Unauthorized`, **no browser opens** | The SDK is on plain HTTP (`insecure: True`) and skipped auth. Use `insecure: False` + `https://flyte.local`. |
-| `InitializationError: Service is unavailable` / `EndpointUnavailable`, **no browser opens** | The SDK couldn't reach the API or discovery paths. Two common causes: the auth-discovery/API paths are still behind `oauth2-signin` (apply the two `IngressRoute`s in [Split the API and discovery paths](#split-the-api-and-discovery-paths-off-the-browser-middleware)); or the TLS cert is rejected (see the cert section of the [Kind deployment guide](_index#replace-the-default-cert-with-one-for-flytelocal)). |
+| `Unauthorized` or `InitializationError: InvalidEndpoint` over `https://flyte.local`, **no browser opens** | The auth-discovery path is still behind auth, so the SDK can't read the login metadata. Which error you see depends on whether the sign-in page comes back with a 401 or a 200. Apply the two `IngressRoute`s in [Split the API and discovery paths](#split-the-api-and-discovery-paths-off-the-browser-middleware). |
+| `InitializationError: Service is unavailable` / `EndpointUnavailable`, **no browser opens** | The SDK couldn't reach the API. A common cause is a rejected TLS cert (see the cert section of the [Kind deployment guide](_index#replace-the-default-cert-with-one-for-flytelocal)). |
 | `Connection refused` to `https://flyte.local` | No TLS listener: Traefik's `websecure` isn't exposed, or the cluster lacks the `30443 → 443` mapping. See [step 2 of the Kind deployment guide](_index#2-create-the-kind-cluster) / the [Traefik install](#install-the-ingress-controller). |
 | Upload still 401 *after* a successful browser login | oauth2-proxy rejects the Bearer token. Confirm `skip-jwt-bearer-tokens=true` and `oidc-extra-audience=<your-client-id>` ([oauth2-proxy install](#deploy-oauth2-proxy)); check its logs for `audience ... does not match`. |
 | Browser: `Unregistered redirect_uri` | The exact callback isn't registered on the IdP app. Add `http://flyte.local/oauth2/callback` **and** `https://flyte.local/oauth2/callback` (opening `/v2` over TLS uses the `https` one). |
