@@ -145,7 +145,7 @@ Two helpers are the exception, because each pauses a run until a person decides:
 
 ## Next steps
 
-- [Software development lifecycle](../../user-guide/software-development-lifecycle/_index) for what to build on top of these, and how the pieces fit into review, release, and incident response.
+- [Software development lifecycle](../../user-guide/project-patterns/software-development-lifecycle/_index) for what to build on top of these, and how the pieces fit into review, release, and incident response.
 - [API reference](../../api-reference/integrations/software-development-tools/_index) for the GitHub, Slack, Linear, ClickUp, and Jira packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared receiver.
 
 {{< subpage-cards >}}

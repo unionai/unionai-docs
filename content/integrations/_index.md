@@ -180,7 +180,7 @@ Software development tool integrations launch Flyte runs from events in GitHub, 
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 | [GitLab](./software-development-tools/gitlab) | Merge request, issue, comment, push, pipeline, release, and deployment webhooks, authenticated with a shared token | Merge request triage, pipeline and deployment follow-up |
 
-See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/project-patterns/software-development-lifecycle/_index) guide for what to build on top.
 
 ## Data transformation
 

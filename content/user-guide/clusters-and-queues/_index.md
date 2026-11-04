@@ -1,5 +1,5 @@
 ---
-title: Cluster and workload management
+title: Clusters and queues
 description: Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 icon: cloud
 weight: 11
@@ -7,7 +7,7 @@ variants: -flyte +union
 mermaid: true
 ---
 
-# Cluster and workload management
+# Clusters and queues
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte` cluster, pool, and queue commands and the Python objects on these

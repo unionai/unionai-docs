@@ -43,9 +43,9 @@ An `AppEnvironment` takes the same `secrets` argument, and the app reads the sam
 {{< variant union >}}
 {{< markdown >}}
 
-## Route calls through the LLM Gateway
+## Route calls through the Inference Gateway
 
-To add budgets, fallbacks, and guardrails, [add OpenAI to the LLM Gateway](../../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add OpenAI to the Inference Gateway](../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../llm-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -36,7 +36,7 @@ Each guardrail is a Union app of type `Guardrail`, running on the gateway's clus
 ## Register a guardrail
 
 1. Deploy the guardrail app on the gateway's cluster.
-2. Open **Settings → LLM Gateway → Guardrails**, and choose the pre-call or post-call stage.
+2. Open **Settings → Inference Gateway → Guardrails**, and choose the pre-call or post-call stage.
 3. Fill in the guardrail:
 
    | Field | Meaning |

@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Human gates and approvals
 
-Use a human gate for decisions that should not be automated, such as a production deploy, a schema migration, or an agent action with real consequences. The gate is an [external condition](../tasks/task-programming/conditions): an action that pauses a run until a signal arrives.
+Use a human gate for decisions that should not be automated, such as a production deploy, a schema migration, or an agent action with real consequences. The gate is an [external condition](../../tasks/task-programming/conditions): an action that pauses a run until a signal arrives.
 
 The wait is durable. The condition is stored on the backend, not held by a running process, so the run survives restarts, redeploys, and node failures, and can wait for days without using compute. A script that blocks on an HTTP long-poll loses the decision when its pod is rescheduled.
 
@@ -16,9 +16,9 @@ The wait is durable. The condition is stored on the backend, not held by a runni
 
 | Approach | The person answers in | Use it when |
 |---|---|---|
-| A [condition](../tasks/task-programming/conditions) | The {{< key product_name >}} UI | The approver works in {{< key product_name >}}, or needs the run's context to decide |
-| A [Slack approval](../../integrations/software-development-tools/slack) | Slack, with a button | The approver works in chat |
-| A [GitHub review gate](../../integrations/software-development-tools/github) | The {{< key product_name >}} UI, with the PR's metadata shown | The decision is about a specific pull request |
+| A [condition](../../tasks/task-programming/conditions) | The {{< key product_name >}} UI | The approver works in {{< key product_name >}}, or needs the run's context to decide |
+| A [Slack approval](../../../integrations/software-development-tools/slack) | Slack, with a button | The approver works in chat |
+| A [GitHub review gate](../../../integrations/software-development-tools/github) | The {{< key product_name >}} UI, with the PR's metadata shown | The decision is about a specific pull request |
 
 A Slack approval is a condition underneath. If nobody clicks the button in Slack, the same condition can still be answered in the {{< key product_name >}} UI.
 
@@ -52,7 +52,7 @@ Anyone who can see a Slack channel can click its buttons. For a low-stakes deplo
 
 {{< variant union >}}
 {{< markdown >}}
-See [Resource management](../project-patterns/resource-management) for the RBAC primitives.
+See [Resource management](../resource-management) for the RBAC primitives.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -64,13 +64,13 @@ A gate on every merge trains people to approve without reading. Gate on changes 
 
 Reviewing AI output, such as a generated summary or an agent's proposed action, differs from approving a change because its volume grows with traffic. Send only the uncertain cases to a person:
 
-1. Get a typed answer with a confidence score instead of free text. [TypeSafe AI](../../integrations/typesafe-ai/_index) does this, and [System one types](../system-one-types/_index) covers the pattern.
+1. Get a typed answer with a confidence score instead of free text. [TypeSafe AI](../../../integrations/typesafe-ai/_index) does this, and [Decision models](../../inference/decision-models/_index) covers the pattern.
 2. Act automatically on confident answers.
 3. Pause the uncertain ones on a condition.
 4. Record each human answer. These answers are labeled data for your next [evaluation set](./evaluation-gates).
 
 ## See also
 
-- [External conditions](../tasks/task-programming/conditions) for the full condition API.
+- [External conditions](../../tasks/task-programming/conditions) for the full condition API.
 - [Evaluation gates](./evaluation-gates) for measurements that reduce how often a person must decide.
-- [Slack integration](../../integrations/software-development-tools/slack) for approvals, messages, and the receiver.
+- [Slack integration](../../../integrations/software-development-tools/slack) for approvals, messages, and the receiver.

@@ -1,6 +1,6 @@
 ---
 title: Usage
-description: Track spend, requests, errors, tokens, and latency over time for each virtual key on your LLM Gateway.
+description: Track spend, requests, errors, tokens, and latency over time for each virtual key on your Inference Gateway.
 icon: graph-up
 weight: 4
 variants: -flyte +union
@@ -10,11 +10,11 @@ variants: -flyte +union
 
 The **Usage** tab shows what each virtual key has done over a time range you pick: how much it spent, how many requests it sent, how many failed, how many tokens it used, and how fast the calls were. Use it to see which team or user is driving spend, catch a key whose error rate suddenly climbs, or check a month's total before the invoice arrives.
 
-![The Usage tab of an LLM Gateway, showing spend over time by virtual key](../../_static/images/user-guide/llm-gateway/usage/usage-tab.png)
+![The Usage tab of an Inference Gateway, showing spend over time by virtual key](../../../_static/images/user-guide/inference/llm-gateway/usage/usage-tab.png)
 
 ## Open the Usage tab
 
-Open **Settings → LLM Gateway** in the Union console and select the **Usage** tab.
+Open **Settings → Inference Gateway** in the Union console and select the **Usage** tab.
 
 Viewing usage requires permission to manage the gateway's virtual keys, because it shows per-key spend. If you can see the gateway but not its keys, the tab tells you that you lack this permission.
 

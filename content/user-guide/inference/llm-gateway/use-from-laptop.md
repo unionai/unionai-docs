@@ -1,6 +1,6 @@
 ---
 title: Use from your laptop
-description: Reach the LLM Gateway from local tools, either through a public endpoint or behind Union sign-in with flyte proxy app.
+description: Reach the Inference Gateway from local tools, either through a public endpoint or behind Union sign-in with flyte proxy app.
 icon: laptop
 weight: 6
 variants: -flyte +union
@@ -88,4 +88,4 @@ Responses stream back unchanged, so streaming completions work.
 > [!WARNING] Keep the proxy on localhost
 > Anyone who can reach the proxy's port uses the gateway with your Union identity. Leave `--address` at `127.0.0.1` unless you mean to share it, and the proxy warns if you bind it to any other address.
 
-See the [`flyte proxy app` reference](../../api-reference/flyte-cli#flyte-proxy-app) for every option.
+See the [`flyte proxy app` reference](../../../api-reference/flyte-cli#flyte-proxy-app) for every option.

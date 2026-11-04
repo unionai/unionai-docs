@@ -1,6 +1,6 @@
 ---
 title: Providers
-description: Add hosted model providers and self-hosted vLLM or SGLang models to the LLM Gateway.
+description: Add hosted model providers and self-hosted vLLM or SGLang models to the Inference Gateway.
 icon: cloud
 weight: 2
 variants: -flyte +union
@@ -20,7 +20,7 @@ A provider is a source of models behind the gateway: a hosted API such as OpenAI
 
    The command prompts for the value, so the key stays out of your shell history.
 
-2. Open **Settings → LLM Gateway → Providers** and click **Add provider**.
+2. Open **Settings → Inference Gateway → Providers** and click **Add provider**.
 3. Fill in the provider:
 
    | Field | Meaning |
@@ -42,14 +42,14 @@ The gateway meters hosted providers from its built-in price catalog, so budgets 
 
 The console lists the providers your gateway supports when you add one.
 
-To call a provider directly from a task or app instead, without the gateway, see [Providers](../inference/providers/_index) in the Inference section.
+To call a provider directly from a task or app instead, without the gateway, see [Providers](../providers/_index) in the Inference section.
 
 ## Add a self-hosted model
 
 You can put a model you serve on Union behind the gateway, next to hosted providers. Callers reach it with the same client, the same virtual keys, and the same guardrails.
 
-1. Deploy the model as a [vLLM](../inference/self-hosted-endpoints/vllm) or [SGLang](../inference/self-hosted-endpoints/sglang) app on the gateway's cluster.
-2. In **Settings → LLM Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
+1. Deploy the model as a [vLLM](../self-hosted-endpoints/vllm) or [SGLang](../self-hosted-endpoints/sglang) app on the gateway's cluster.
+2. In **Settings → Inference Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
 3. Fill in the provider:
 
    | Field | Meaning |
@@ -70,4 +70,4 @@ The gateway reaches the app over its cluster-local address, so no API key or pub
 
 ## Remove a provider
 
-Delete the provider in **Settings → LLM Gateway → Providers**. Virtual keys that list it can no longer reach its models; requests to them fail, or go to a fallback if the request names one.
+Delete the provider in **Settings → Inference Gateway → Providers**. Virtual keys that list it can no longer reach its models; requests to them fail, or go to a fallback if the request names one.

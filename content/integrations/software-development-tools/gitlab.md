@@ -102,4 +102,4 @@ The replay posts the sample twice, showing the same `dedupe_key` both times, and
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
-- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across ticketing and source-control events.
+- [Event-driven automation](../../user-guide/project-patterns/software-development-lifecycle/event-driven-automation) for the pattern across ticketing and source-control events.

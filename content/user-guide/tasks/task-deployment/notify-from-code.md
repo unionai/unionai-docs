@@ -41,7 +41,7 @@ Each cluster has its own secret store. Create `SLACK_WEBHOOK_URL` on each cluste
 
 {{< variant union >}}
 {{< markdown >}}
-Each [cluster pool](../../cluster-workload-management/cluster-pools) has its own secret store. To post to a different webhook from each pool, create `SLACK_WEBHOOK_URL` in each one with `--cluster-pool`. See [Secrets](../task-configuration/secrets).
+Each [cluster pool](../../clusters-and-queues/cluster-pools) has its own secret store. To post to a different webhook from each pool, create `SLACK_WEBHOOK_URL` in each one with `--cluster-pool`. See [Secrets](../task-configuration/secrets).
 {{< /markdown >}}
 {{< /variant >}}
 

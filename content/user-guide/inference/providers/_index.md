@@ -22,7 +22,7 @@ Tasks and apps can call a hosted model API using a key from your own provider ac
 {{< variant union >}}
 {{< markdown >}}
 
-This works on both BYOC and Self-managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [LLM Gateway](#choose-direct-calls-or-the-gateway).
+This works on both BYOC and Self-managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [Inference Gateway](#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -125,9 +125,9 @@ The override replaces the environment's secrets for that call. On a [reusable co
 
 ## Choose direct calls or the gateway
 
-Calling a provider directly needs the fewest moving parts. The [LLM Gateway](../../llm-gateway/_index) supports all of the providers above, including Fireworks, behind one endpoint.
+Calling a provider directly needs the fewest moving parts. The [Inference Gateway](../llm-gateway/_index) supports all of the providers above, including Fireworks, behind one endpoint.
 
-| | Direct call | LLM Gateway |
+| | Direct call | Inference Gateway |
 |---|---|---|
 | **Key your code holds** | The provider's API key | A virtual key with its own budget and rate limit |
 | **Change provider** | Change the base URL, key, and model | Change the model name |
@@ -135,7 +135,7 @@ Calling a provider directly needs the fewest moving parts. The [LLM Gateway](../
 | **Prompt and answer checks** | Write them into each task or app | Global guardrails on every call |
 | **Spend across teams** | One view per provider account | One view per virtual key |
 
-To move to the gateway, [add the provider](../../llm-gateway/providers#add-a-hosted-provider), which stores the key as an organization-wide secret, then [point your client at the gateway](../../llm-gateway/use-from-tasks-and-apps).
+To move to the gateway, [add the provider](../llm-gateway/providers#add-a-hosted-provider), which stores the key as an organization-wide secret, then [point your client at the gateway](../llm-gateway/use-from-tasks-and-apps).
 
 {{< /markdown >}}
 {{< /variant >}}
