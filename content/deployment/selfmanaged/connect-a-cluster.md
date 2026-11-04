@@ -21,7 +21,7 @@ The steps are the same on AWS, GCP, and Azure: create a cluster pool, register t
 
 ## What this installs
 
-You install the agent, in the `dataplane-agent` namespace, and Union.ai installs the data plane through it. Your cloud provider bills you for the resources the data plane runs on even while it is idle. See [What Union.ai installs in your cluster](./whats-installed) for the components, their permissions and the cost on each provider.
+You install the agent, in the `dataplane-agent` namespace, and Union.ai installs the data plane through it: about a dozen services, almost all in one namespace, that request about 6.7 vCPU and 12.7 GiB of memory. They run all the time, so your cloud bill includes a fixed amount even when no tasks run: on AWS, about $400–450 per month at on-demand prices. See [What Union.ai installs in your cluster](./whats-installed) for each service, its permissions and the cost breakdown.
 
 ## 1. Create the cluster pool
 
