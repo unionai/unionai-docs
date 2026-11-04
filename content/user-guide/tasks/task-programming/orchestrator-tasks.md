@@ -239,7 +239,7 @@ The worker also applies limits that you cannot set on the decorator:
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
 - **Error messages:** kept to their first 10 KiB.
 
-Hitting a limit is a user error, so the run is not retried.
+Hitting a limit is a user error, so the run is not retried. The exception is `WorkerMemoryPressure`: an orchestrator stopped because another one on the same worker went over the memory limit fails with this system error, and it is retried.
 
 ## Orchestrators that need a container
 
