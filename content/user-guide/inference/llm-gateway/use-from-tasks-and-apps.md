@@ -1,6 +1,6 @@
 ---
 title: Use from tasks and apps
-description: Call models through the LLM Gateway from tasks and apps running on Union.
+description: Call models through the Inference Gateway from tasks and apps running on Union.
 icon: braces
 weight: 4
 variants: -flyte +union
@@ -12,7 +12,7 @@ Tasks and apps on any of your Union clusters call the gateway like any OpenAI-co
 
 ## Prerequisites
 
-- A deployed gateway and its endpoint, from **Settings → LLM Gateway**. See [Deploy the gateway](./deploy-gateway).
+- A deployed gateway and its endpoint, from **Settings → Inference Gateway**. See [Deploy the gateway](./deploy-gateway).
 - A [virtual key](./virtual-keys) for the task or app, stored as a Union secret:
 
   ```bash
