@@ -1,6 +1,6 @@
 ---
 title: Zero Trust security
-description: Union's Zero Trust model, in which customer data, code, and secrets stay in the customer's own data plane.
+description: Union's Zero Trust model, in which customer data, code, and secrets stay in the customer's own data plane, apart from condition (human-in-the-loop) values.
 icon: shield-check
 weight: 6
 variants: -flyte +union
@@ -9,28 +9,29 @@ top_menu: true
 
 # Zero Trust security
 
-Union.ai is built on a **Zero Trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets stay in the customer's own data plane and never enter Union.ai's infrastructure.
+Union.ai is built on a **Zero Trust security** model: no component is trusted by default, every request is authenticated and authorized, and customer data, code, and secrets stay in the customer's own data plane. One exception is condition (human-in-the-loop) actions, described under Data protection below.
 This section provides a comprehensive overview of that model (Union.ai's security architecture, practices, and compliance posture) for enterprise security professionals evaluating the platform.
 Beyond describing the model, it provides concrete verification steps so that reviewers can independently confirm each claim against a running system.
 
-> **Zero Trust, in one line:** No customer data, code, or logs ever touch Union.ai's control plane. Not in flight. Not at rest. Not ever.
+> **Zero Trust, in one line:** Apart from condition (human-in-the-loop) actions, no customer data, code, or logs touch Union.ai's control plane.
 
 ## Overview
 
 **[Architecture](./architecture/_index)**
 The system is divided into a control plane hosted by Union.ai and a data plane hosted on the customer's infrastructure.
-The only connection between the two planes is an outbound-only route from the data plane to the control plane that carries orchestration metadata.
+The only connection between the two planes is an outbound-only route from the data plane to the control plane that carries orchestration metadata and condition (human-in-the-loop) values.
 Enterprise customers can further restrict the client-to-data-plane path with the [Sovereign Data Plane](./architecture/sovereign-data-plane) option.
 No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
 **[Data protection](./data-protection/_index)**
-No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret writes, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
-The control plane holds orchestration metadata only (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph), always encrypted at rest.
+Workflow inputs and outputs, code bundles, secret writes, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
+Condition (human-in-the-loop) actions are the exception. The value a user supplies with `flyte.remote.Condition.signal()` is sent to the control plane. The control plane stores each condition's prompt, description, and signaled value inline and serves them from there.
+Otherwise, the control plane holds orchestration metadata only (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph), always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
 Authentication is done via OIDC/SSO, API keys, and service accounts.
 Role-based access control enforces least-privilege.
-No customer data transits Union.ai's control plane, and secret values cannot be read back through the API.
+Apart from condition (human-in-the-loop) values, no customer data transits Union.ai's control plane. Secret values cannot be read back through the API.
 Union.ai personnel who hold a role in a customer's tenant see what that role authorizes, served from the customer's data plane and subject to the same RBAC and audit logging as any other user.
 See [Human access controls](./identity-and-access/human-access) for what that access covers in each deployment model.
 
@@ -49,7 +50,8 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
+Union.ai has no access to the customer's infrastructure: apart from condition webhooks, the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata and condition (human-in-the-loop) values.
+If a condition is configured with a webhook, Union.ai's backend may also POST the condition's details to the URL the user supplies.
 
 Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN: no third-party network on the path, and no client route into the data plane from outside the customer's corporate network.
 
