@@ -1,6 +1,6 @@
 ---
 title: Virtual keys
-description: Issue LLM Gateway keys with budgets, rate limits, model allowlists, and fallbacks.
+description: Issue Inference Gateway keys with budgets, rate limits, model allowlists, and fallbacks.
 icon: key
 weight: 3
 variants: -flyte +union
@@ -12,7 +12,7 @@ A virtual key (`sk-un-...`) is the credential every caller presents to the gatew
 
 ## Issue a key
 
-1. Open **Settings → LLM Gateway → Virtual keys** and issue a new key.
+1. Open **Settings → Inference Gateway → Virtual keys** and issue a new key.
 2. Fill in the key:
 
    | Field | Meaning |
@@ -84,4 +84,4 @@ A request that exceeds the key's rate limit is rejected until the minute window 
 
 Keys can't be edited. To change a key's providers, models, fallbacks, budget, or rate limit, issue a new key with the settings you want, update the callers' secret, then revoke the old key.
 
-Revoking a key in **Settings → LLM Gateway → Virtual keys** takes effect on the gateway in under a second.
+Revoking a key in **Settings → Inference Gateway → Virtual keys** takes effect on the gateway in under a second.
