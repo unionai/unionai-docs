@@ -10,7 +10,7 @@ variants: -flyte +union
 
 The **Usage** tab shows what each virtual key has done over a time range you pick: how much it spent, how many requests it sent, how many failed, how many tokens it used, and how fast the calls were. Use it to see which team or user is driving spend, catch a key whose error rate suddenly climbs, or check a month's total before the invoice arrives.
 
-![The Usage tab of an Inference Gateway, showing spend over time by virtual key](../../../_static/images/user-guide/inference/llm-gateway/usage/usage-tab.png)
+![The Usage tab of an Inference Gateway, showing spend over time by virtual key](../../../_static/images/user-guide/inference/inference-gateway/usage/usage-tab.png)
 
 ## Open the Usage tab
 

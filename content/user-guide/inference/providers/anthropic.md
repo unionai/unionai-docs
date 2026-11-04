@@ -48,7 +48,7 @@ Anthropic also has an OpenAI-compatible endpoint, which its docs describe as bei
 
 ## Route calls through the Inference Gateway
 
-To add budgets, fallbacks, and guardrails, [add Anthropic to the Inference Gateway](../llm-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../llm-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add Anthropic to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
