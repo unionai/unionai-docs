@@ -104,7 +104,7 @@ The trainer's time, including its cold start, now runs under generation, and eac
 
 `old_logp` comes from the rollout, `new_logp` from the policy being trained, and `ref_logp` from the base model with the adapter turned off. The ratio of new to old is clipped, so a stale sample can't move the policy far, and the KL term keeps the policy close to the base model. See [Keep rollouts on-policy](./inference-rollouts#keep-rollouts-on-policy).
 
-Run held-out evaluation off the critical path too. Launch the evaluation of step N with `asyncio.create_task` and await it after step N+1 trains, so it never sits between iterations.
+Run held-out evaluation off the critical path too. Launch the evaluation of step N with `asyncio.create_task` and await it after step N+1 trains, so it never sits between iterations. See [Evaluation](./evaluation).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -122,6 +122,49 @@ Checkpointing the driver protects the loop's position. To also protect the work 
 - Seed each rollout from its prompt and iteration, for example with vLLM's `SamplingParams(seed=...)`, so a retried rollout produces the same result. Without a seed, sampling at a nonzero temperature gives a different result on every attempt, and caching the rollout isn't sound.
 - Pass weights and optimizer state in and out of the train task as `flyte.io.Dir`, instead of keeping them in a long-lived process. A replayed step then recomputes the same outputs.
 - Set `cache="auto"` on steps that are pure, so a rerun of the loop returns finished steps from the cache.
+
+{{< variant union >}}
+{{< markdown >}}
+
+## Keep rollouts on a volume
+
+Weights and optimizer state move best as a `flyte.io.Dir`, because every task that receives them reads all of them. See [Move weights from the trainer to the generators](./inference-rollouts#move-weights-from-the-trainer-to-the-generators). Rollouts are different: they accumulate across iterations, and later work often reads only part of them. An off-policy trainer samples from a replay buffer, an analysis reads the completions from a few iterations, and an evaluation rescores them with a new verifier.
+
+Store them on a [volume](../tasks/task-programming/volumes/_index) that each iteration forks and adds to:
+
+```python
+import json
+
+import flyte
+from flyteplugins.union.io import ROVolume, allow_volumes
+
+buffer_env = flyte.TaskEnvironment(
+    name="rollout-buffer",
+    image=image.with_pip_packages("flyteplugins-union"),
+    pod_template=allow_volumes(cache_size="20Gi"),
+    resources=flyte.Resources(cpu=2, memory="4Gi"),
+)
+
+
+@buffer_env.task
+async def add_rollouts(
+    buffer: ROVolume, it: int, completions: list[str], rewards: list[float]
+) -> ROVolume:
+    rw = await buffer.fork(name=f"rollouts-iter-{it}")
+    data = await rw.mount()
+    rows = (json.dumps({"iteration": it, "completion": c, "reward": r}) for c, r in zip(completions, rewards))
+    (data / f"iter-{it:05d}.jsonl").write_text("\n".join(rows))
+    return await rw.finalize(message=f"iteration {it}")
+```
+
+- **Each version is cheap.** A fork is copy-on-write, so each iteration's version stores only its own new file and shares the rest with the version before it.
+- **Readers mount only what they need.** A trainer task that receives the `ROVolume` mounts it and reads the iterations it samples from, without downloading the whole buffer.
+- **Every version stays addressable.** The driver keeps the `ROVolume` for each iteration, and any later task or run can mount the buffer as it was after any iteration.
+
+Create the first, empty version with `Volume.new()` in a task before the loop, and pass the version each call returns to the next one, so the buffer is a chain of versions. Each fork has one writer, so writes never collide.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Related
 

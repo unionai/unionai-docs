@@ -41,7 +41,7 @@ The driver is an ordinary `async` function. It can loop, branch on a metric, or 
 | Resume after a crash or preemption | `retries` plus `flyte.Checkpoint` restarts the loop from its last checkpoint. See [Resilient training](./resilient-training). |
 | Pass datasets, checkpoints, and weights between stages | `flyte.io.Dir`, `flyte.io.File`, and DataFrames store data in your object store and pass a reference. See [Files and directories](../tasks/task-programming/files-and-directories). |
 | Watch a run while it trains | `report=True` and `flyte.report` publish live charts to the run's UI. See [Reports](../tasks/task-programming/reports). |
-| Run many trials at once | `asyncio.gather` or `flyte.map` fans out one task per trial. See [Classical machine learning](./classical-ml). |
+| Run many trials at once | `asyncio.gather` or `flyte.map` fans out one task per trial. See [Hyperparameter optimization](./hyperparameter-optimization). |
 
 {{< variant union >}}
 {{< markdown >}}
@@ -57,7 +57,9 @@ On {{< key product_name >}}, trained models can also be published as [artifacts]
 |---|---|
 | Train a model from scratch, or on more GPUs than one node has | [Pretraining](./pretraining) |
 | Adapt a pretrained model with SFT, LoRA, or preference tuning | [Post-training and fine-tuning](./post-training) |
-| Train scikit-learn or XGBoost models and tune their hyperparameters | [Classical machine learning](./classical-ml) |
+| Train scikit-learn or XGBoost models | [Classical machine learning](./classical-ml) |
+| Sweep hyperparameters and stop weak trials early | [Hyperparameter optimization](./hyperparameter-optimization) |
+| Measure a model on held-out data and compare it with a baseline | [Evaluation](./evaluation) |
 | Keep a long job from losing progress | [Resilient training](./resilient-training) |
 
 To optimize a model with rewards instead of labels, see [Reinforcement learning](../reinforcement-learning/_index). To serve the model you train, see [Deploy trained models](../inference/deploy-trained-models).

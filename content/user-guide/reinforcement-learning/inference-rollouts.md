@@ -95,13 +95,37 @@ To keep an engine loaded across iterations, serve the policy as a [vLLM app](../
 
 ## Move weights from the trainer to the generators
 
+### Pass the weights as a directory
+
 The trainer returns the new policy as a `flyte.io.Dir`, and the next round of rollout tasks receives it as an input:
 
 1. The train task saves the weights, or only the LoRA adapter, and returns `await flyte.io.Dir.from_local(path)`.
 2. The driver passes that `Dir` to the next round of rollout calls.
 3. Each rollout task downloads it, or reads it by its path, before generating.
 
-The weights travel through your object store, so the trainer and the generators never have to run at the same time or share a network connection. A LoRA adapter is a few megabytes, so the transfer is fast even when the base model is large. With full-weight updates, write the checkpoint once from rank 0 and pass the same `Dir` to every worker.
+The weights travel through your object store, so the trainer and the generators never have to run at the same time or share a network connection. A LoRA adapter is a few megabytes, so the transfer is fast even when the base model is large. With full-weight updates, write the checkpoint once from rank 0 and pass the same `Dir` to every worker. To load full weights onto the GPU without writing them to local disk first, pass the `Dir`'s path to the model streamer. See [Stream model weights](../inference/stream-model-weights).
+
+{{< variant union >}}
+{{< markdown >}}
+
+### When a volume helps
+
+A [volume](../tasks/task-programming/volumes/_index) is a versioned file system that tasks mount. For moving weights, it doesn't beat a `Dir`:
+
+- **Speed.** A rollout task reads the whole adapter or checkpoint, which a `Dir` download or the model streamer already does at object-store speed. Reads through a volume pass through a file-system layer, and loading weights into memory that way is slower than streaming them. See [Performance and trade-offs](../tasks/task-programming/volumes/performance#performance-and-trade-offs).
+- **Durability.** Both are stored in your object store, and both are immutable once a task returns them.
+
+A volume does help in these cases:
+
+- **Many rollout pods on one node.** With `allow_volumes(shared_node_cache=True)`, read-only mounts on a node share one cache, so each node fetches the weights once instead of once per pod. This matters when you pack several single-GPU rollout pods onto each multi-GPU node.
+- **Reading part of a large tree.** A task that needs only some files, such as one shard of a sharded checkpoint, mounts the volume and reads those files, instead of downloading the whole `Dir`.
+- **Data that grows across iterations.** A rollout buffer that every iteration adds to can live on a volume, with each version storing only what changed. See [Keep rollouts on a volume](./training-loop#keep-rollouts-on-a-volume).
+- **A browsable history of policies.** A volume declared as an artifact publishes each committed version with a parent edge to the one before it. See [Versions, artifacts and lineage](../tasks/task-programming/volumes/versions).
+
+A volume has one writer while it is mounted, so in a multi-node trainer only one rank can write to it.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Keep rollouts on-policy
 

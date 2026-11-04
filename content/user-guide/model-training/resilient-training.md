@@ -2,7 +2,7 @@
 title: Resilient training
 description: Keep long training jobs from losing progress to preemption, node failures, out-of-memory errors, and scarce GPU capacity.
 icon: shield-check
-weight: 4
+weight: 6
 variants: +flyte +union
 ---
 

@@ -48,13 +48,9 @@ The driver builds the grid in plain Python and launches every trial at once with
 
 `flyte.group("sweep")` collects the trials under one node in the UI. The driver picks the winner with ordinary Python, publishes a results table to the run's report, and calls `fit` with the best settings. The model comes back as a `flyte.io.File`, ready to pass to an evaluation task or a serving app. To limit how many trials run at once, see [Controlling parallel execution](../tasks/task-programming/controlling-parallelism).
 
-## Search adaptively with Optuna
+## Search more efficiently
 
-A grid tries every combination. To let earlier trials decide which settings to try next, drive an Optuna study from the driver task. The study asks for a setting, and `self.objective` is a Flyte task that scores it, so each trial runs as its own action:
-
-{{< code file="/unionai-examples/v2/tutorials/ml/optimizer.py" fragment="optimizer-spawn" lang=python >}}
-
-A semaphore bounds the number of trials in flight, and a trial that raises `flyte.errors.RuntimeUserError` is recorded as failed instead of stopping the study. See the [Hyperparameter optimization](../../tutorials/model-training/hpo/_index) tutorial for the full optimizer.
+A grid tries every combination. To sample settings at random, stop weak trials early, or let an Optuna study choose the next setting from earlier results, see [Hyperparameter optimization](./hyperparameter-optimization).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -68,7 +64,6 @@ When each trial takes seconds, starting a container for each one costs more than
 
 ## Related
 
-- [Hyperparameter optimization](../../tutorials/model-training/hpo/_index): an Optuna study where every trial is a Flyte task.
 - [Fraud detection with Feast](../../tutorials/financial-services/fraud-detection-feast/_index): train an XGBoost classifier on features from a feature store.
 - [MLE bot](../../tutorials/agents/mle-bot/_index): an agent that designs and runs XGBoost experiments in parallel.
 - [Mapping over inputs](../tasks/task-programming/map): `flyte.map` for sweeps over a list.

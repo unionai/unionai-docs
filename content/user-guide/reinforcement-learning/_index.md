@@ -59,6 +59,7 @@ Overlapping generation with a multi-node trainer step can hide the trainer's tim
 | [Reward setup](./reward-setup) | Verifiers, reward functions, and LLM judges, and how to change the reward without regenerating rollouts |
 | [Inference rollouts](./inference-rollouts) | Generating completions or trajectories from the current policy, and getting new weights to the generators |
 | [Training loop](./training-loop) | The driver task that ties the parts together, the policy update, multi-node trainers, and overlapping generation with training |
+| [Evaluation](./evaluation) | Sampling the policy on held-out problems, training-health metrics, and catching reward hacking |
 
 The examples on these pages come from a GRPO loop with LoRA adapters and an agentic RL loop with sandboxed environments. To fine-tune on labeled data instead, see [Post-training and fine-tuning](../model-training/post-training).
 
