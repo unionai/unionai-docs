@@ -143,7 +143,7 @@ advanced-project/
 1. **Set up the secret**:
 
    ```bash
-   flyte secret create openai-api-key
+   flyte create secret openai-api-key
    ```
 
 2. **Run the pipeline**:
