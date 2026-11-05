@@ -77,7 +77,7 @@ Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outpu
 - **Fast-registered code bundles**: what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
 - **Image-build contexts**: when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
-The layout under your bucket is `<project>/<domain>/...`, with the bulk of execution artifacts under per-run, per-action subprefixes (`<run-name>/<action>/...` for outputs / Decks / checkpoints) and sibling prefixes for offloaded inputs and SDK uploads (code bundles, image-build contexts). You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+By default, inputs (including inputs uploaded ahead of a run), outputs, Decks and `@flyte.trace` records live under per-run, per-action subprefixes of `metadata/v2/<org>/<project>/<domain>/<run-name>/<action>/...`. Offloaded values (`File`, `Dir`, `DataFrame` contents and similar) and task checkpoints go to a separate per-run raw-output prefix, and SDK uploads (code bundles, image-build contexts) have their own prefixes. You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
 
 ## What "literal" and "raw data" mean
 
