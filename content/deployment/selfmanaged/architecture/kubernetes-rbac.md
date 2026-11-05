@@ -35,7 +35,7 @@ The data plane supports two RBAC modes:
 
 A data plane installed with Helm runs in low-privilege mode unless you set `low_privilege: false`. A data plane
 connected from the Union.ai UI on AWS, GCP, or Azure runs in standard mode, but still runs tasks only in the namespace
-you registered.
+you registered: see [What Union.ai installs in your cluster](../whats-installed).
 
 In low-privilege mode:
 
