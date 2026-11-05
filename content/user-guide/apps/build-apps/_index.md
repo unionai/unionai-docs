@@ -19,12 +19,8 @@ Flyte supports various types of apps:
 
 - **UI dashboard apps**: Interactive web dashboards and data visualization tools like Streamlit and Gradio
 - **Web API apps**: REST APIs, webhooks, and backend services like FastAPI and Flask
-- **Model serving apps**: High-performance LLM serving with vLLM and SGLang, or lightweight serving with Ollama
-{{< variant union >}}
-{{< markdown >}}
-- **Connector apps**: Long-running services that delegate task execution to external systems
-{{< /markdown >}}
-{{< /variant >}}
+- **Model serving apps**: High-performance LLM serving with vLLM and SGLang, or lightweight serving with Ollama{{% variant union %}}
+- **Connector apps**: Long-running services that delegate task execution to external systems{{% /variant %}}
 
 For ready-to-use environments for these frameworks, see [Native app integrations](../native-app-integrations/_index).
 
@@ -48,11 +44,7 @@ Apps and tasks can interact in various ways: calling each other via HTTP, webhoo
 - [**Hybrid graphs**](./hybrid-graphs): Tasks calling apps and apps calling tasks (webhooks, APIs)
 - [**WebSocket apps**](./websocket-apps): Real-time, bidirectional communication with WebSockets
 - [**Browser apps**](./browser-apps): User-facing dashboards and UIs
-- [**Secret-based authentication**](./secret-based-authentication): Authenticate FastAPI apps using Flyte secrets
-{{< variant union >}}
-{{< markdown >}}
-- [**Connector app**](./connector-app): Deploy a connector as a long-running service
-{{< /markdown >}}
-{{< /variant >}}
+- [**Secret-based authentication**](./secret-based-authentication): Authenticate FastAPI apps using Flyte secrets{{% variant union %}}
+- [**Connector app**](./connector-app): Deploy a connector as a long-running service{{% /variant %}}
 
 {{< subpage-cards >}}

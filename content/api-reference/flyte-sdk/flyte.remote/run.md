@@ -2,7 +2,7 @@
 title: Run
 description: "A class representing a run of a task."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

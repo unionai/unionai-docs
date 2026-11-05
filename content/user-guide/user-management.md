@@ -2,7 +2,7 @@
 title: User management
 description: Manage users, roles, and policies for your Union cluster.
 icon: person
-weight: 8
+weight: 10
 variants: -flyte +union
 ---
 
@@ -242,9 +242,9 @@ Navigate to **Settings > User Management** to:
 | `edit_cluster_related_attributes` | Edit cluster-related attributes (cluster resources, cluster assignment) |
 | `edit_unused_attributes` | Edit execution queue, execution cluster label, quality of service, and plugin override attributes |
 | `support_system_logs` | View system logs |
-| `view_llm_gateway` | View the LLM gateway, its providers, virtual keys, and usage |
-| `manage_llm_gateway` | Deploy and delete the LLM gateway and manage its upstream providers |
-| `manage_llm_gateway_keys` | Issue and revoke LLM gateway virtual keys |
+| `view_llm_gateway` | View the inference gateway, its providers, virtual keys, and usage |
+| `manage_llm_gateway` | Deploy and delete the inference gateway and manage its upstream providers |
+| `manage_llm_gateway_keys` | Issue and revoke inference gateway virtual keys |
 
 ## CLI command reference
 

@@ -2,7 +2,7 @@
 title: TimePartition
 description: "A time partition value with an explicit granularity."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

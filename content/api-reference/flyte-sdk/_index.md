@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -211,6 +211,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.notify.Slack`](flyte.notify/slack) | Send Slack notifications with optional Block Kit formatting. |
 | [`flyte.notify.Teams`](flyte.notify/teams) | Send Microsoft Teams notifications with optional Adaptive Cards. |
 | [`flyte.notify.Webhook`](flyte.notify/webhook) | Send custom HTTP webhook notifications (most flexible option). |
+| [`flyte.orchestrator.OrchestratorTaskTemplate`](flyte.orchestrator/orchestratortasktemplate) | An orchestrator task whose source is shipped in the task template. |
 | [`flyte.prefetch.HuggingFaceModelInfo`](flyte.prefetch/huggingfacemodelinfo) | Information about a HuggingFace model to store. |
 | [`flyte.prefetch.ShardConfig`](flyte.prefetch/shardconfig) | Configuration for model sharding. |
 | [`flyte.prefetch.StoredModelInfo`](flyte.prefetch/storedmodelinfo) | Information about a stored model. |
@@ -346,6 +347,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.git.config_from_root()`](flyte.git/_index#config_from_root) | Get the config file from the git root directory. |
 | [`flyte.models.generate_random_name()`](flyte.models/_index#generate_random_name) | Generate a random name for the task. |
 | [`flyte.models.is_clustered_worker_env()`](flyte.models/_index#is_clustered_worker_env) | True for any worker process of a clustered/jobset task, regardless of which launcher started it. |
+| [`flyte.orchestrator.task()`](flyte.orchestrator/_index#task) | Turn a function that only calls other tasks into an orchestrator task. |
 | [`flyte.prefetch.hf_model()`](flyte.prefetch/_index#hf_model) | Store a HuggingFace model to remote storage. |
 | [`flyte.remote.auth_metadata()`](flyte.remote/_index#auth_metadata) | This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system. |
 | [`flyte.remote.upload_dir()`](flyte.remote/_index#upload_dir) | Uploads a directory to a remote location and returns the remote URI. |
@@ -409,6 +411,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.io.extend`](flyte.io.extend/_index) |  |
 | [`flyte.models`](flyte.models/_index) |  |
 | [`flyte.notify`](flyte.notify/_index) | Task Notifications API for Flyte 2.0. |
+| [`flyte.orchestrator`](flyte.orchestrator/_index) | Tasks that orchestrate other tasks. |
 | [`flyte.prefetch`](flyte.prefetch/_index) | Prefetch utilities for Flyte. |
 | [`flyte.remote`](flyte.remote/_index) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report/_index) |  |

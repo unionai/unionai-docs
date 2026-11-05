@@ -2,7 +2,7 @@
 title: Noul
 description: "Truthfulness in 0..1."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
