@@ -12,19 +12,19 @@ The network architecture reinforces the [two-plane separation](./two-plane-separ
 
 ## Outbound-only model
 
-All network connections between the data plane and Union.ai are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
+All network connections between the data plane and Union.ai are initiated by the data plane: every connection is outbound-initiated. Requests arriving over the Direct-to-Data-Plane tunnel can come from clients or, under the conditions described in [Direct-to-Data-Plane tunnel](#direct-to-data-plane-tunnel), from Union.ai's control plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
 
 At the external perimeter, this model eliminates the inbound attack surface entirely. There are no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
-The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
+The trust model is customer-initiated: the data plane decides when and whether to connect (though not which requests arrive over a connection once it is up), and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
 
 Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the client-to-data-plane path runs through a customer-managed internal load balancer inside the customer's VPC instead of the Cloudflare-backed tunnel; the data-plane-to-control-plane gRPC channel remains outbound-only. The external perimeter still requires no inbound rules; the internal load balancer is reachable only from inside the customer's corporate network.
 
-The client-to-data-plane path is direct: client → tunnel (or internal load balancer under the Sovereign Data Plane tier) → Envoy router → `dataproxy` → customer storage. Log streaming, structured I/O retrieval, and large input uploads complete with low first-byte and end-to-end latency.
+When a client dispatches to the data plane directly, the path is: client → tunnel (or internal load balancer under the Sovereign Data Plane tier) → Envoy router → `dataproxy` → customer storage. Under the default tier, the control plane can also forward requests to the data plane over the tunnel, depending on how the control plane is deployed and except for organizations with zero trust enabled; see [Direct-to-Data-Plane tunnel](#direct-to-data-plane-tunnel).
 
 ## Direct-to-Data-Plane tunnel
 
-The Direct-to-Data-Plane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries only client-to-data-plane traffic; the data-plane-to-control-plane channel is the separate direct gRPC connection described below. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union.ai control plane is not on this path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
+The Direct-to-Data-Plane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane; the data-plane-to-control-plane channel is the separate direct gRPC connection described below. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each client request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union.ai control plane can also be a client of the tunnel, depending on how the control plane is deployed. When the control-plane `dataproxy` is configured to route through the tunnel (the default in its code), it forwards some of the requests it receives for an organization (including input uploads, secret operations, and signed-URL requests) to that organization's data plane over the tunnel, authenticating with Cloudflare Access service tokens. The alternative, direct routing, is for self-hosted deployments, where the customer runs the control plane alongside the data plane: there the control plane connects to an address the data plane reports, without the tunnel. The outbound-only model and the communication paths on this page describe a control plane that Union.ai hosts. The control plane refuses to route requests over the tunnel for organizations with zero trust enabled. Zero trust in this sense is a per-organization setting that Union configures, separate from the [Zero Trust security](../_index) model that Union.ai as a whole is built on. When it is enabled, clients dispatch to the data plane directly instead of through the control plane. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
 
 Under the default tier, all traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union.ai and picks up updated tokens when issued.
 
@@ -34,7 +34,7 @@ The tunnel carries every kind of customer-data request: structured task input up
 
 ### Per-cluster routing
 
-In multi-cluster deployments, each data plane cluster has its own dedicated tunnel domain (e.g. `<cluster-id>.<base-domain>`). The SDK and UI resolve the right cluster for a given request via the `SelectCluster` RPC and dispatch directly to that cluster's tunnel domain. This keeps log streaming, I/O retrieval, and metrics requests terminating at the correct cluster without round-tripping through any shared aggregator.
+In multi-cluster deployments, each data plane cluster has its own dedicated tunnel domain (e.g. `<cluster-id>.<base-domain>`). The SDK and UI resolve the right cluster for a given request via the `SelectCluster` RPC and dispatch directly to that cluster's tunnel domain. When `SelectCluster` returns no cluster endpoint, the SDK sends the request to the control plane instead.
 
 ### Sovereign Data Plane
 
@@ -48,6 +48,7 @@ All communication paths in the system use encryption. No unencrypted communicati
 |---|---|---|
 | Client to control plane (orchestration API) | HTTPS | TLS 1.2+ |
 | Client to data plane (customer-data requests, default tier) | Direct-to-Data-Plane tunnel | TLS 1.3 + mTLS |
+| Control plane to data plane (forwarded customer-data requests; default tier, control plane configured to route through the tunnel, organizations without zero trust enabled) | Direct-to-Data-Plane tunnel, with Cloudflare Access service tokens | mTLS + Cloudflare Tunnel encryption |
 | Client to data plane (customer-data requests, Sovereign Data Plane tier) | Customer-managed internal LB (corporate VPN) | TLS (customer-managed) |
 | Data plane → control plane (orchestration metadata, outbound-initiated) | gRPC over TLS (TCP 443) | TLS 1.2+ |
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
@@ -130,7 +131,7 @@ We are currently transition from ingress-nginx to envoy-gateway so please allowl
 
 ### Direct-to-Data-Plane tunnel
 
-**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-Data-Plane tunnel directly to the data plane (no Union.ai control plane on the path).
+**Reviewer focus:** Confirm that bulk data (files, DataFrames, code bundles) transfers directly between clients and the customer's object store via presigned URLs, and that structured task I/O and log streams flow through the Direct-to-Data-Plane tunnel to the data plane.
 
 **How to verify:**
 
@@ -144,4 +145,4 @@ We are currently transition from ingress-nginx to envoy-gateway so please allowl
 
 2. Analyze VPC Flow Logs for traffic patterns. Bulk data transfers (files, DataFrames, code bundles) should flow directly between task pods and the customer's object store endpoints (S3/GCS/Azure Blob), not through Cloudflare IPs. Structured task I/O and log streams will flow through the tunnel as documented.
 
-3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the data plane through the Direct-to-Data-Plane tunnel (resolving to a per-cluster tunnel domain, not a control plane endpoint).
+3. Use browser developer tools (Network tab) in the Union.ai UI to confirm that binary output artifacts are fetched via presigned URLs (resolving to the customer's storage domain), while structured outputs are fetched via the data plane through the Direct-to-Data-Plane tunnel (resolving to a per-cluster tunnel domain). Requests that resolve to the control plane endpoint instead are not necessarily a failed check: under the conditions described in [Direct-to-Data-Plane tunnel](#direct-to-data-plane-tunnel), the control plane can forward them to the data plane.
