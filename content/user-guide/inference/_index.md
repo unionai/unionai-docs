@@ -30,7 +30,7 @@ Most hosted providers, and vLLM, SGLang, Ollama, and llama.cpp endpoints, expose
 
 ## Route calls through the Inference Gateway
 
-The [Inference Gateway](./llm-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers/_index#choose-direct-calls-or-the-gateway).
+The [Inference Gateway](./inference-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers/_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
