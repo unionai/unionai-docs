@@ -81,6 +81,8 @@ These figures assume us-east-2, on-demand prices, EKS Auto Mode, the default set
 
 Cover the always-on nodes with your cloud's commitment discount, such as AWS Savings Plans, GCP committed use discounts, or Azure reservations.
 
+Union.ai is continually working to make this baseline cheaper and to reduce the resources its services need.
+
 ## See it yourself
 
 ```shell
