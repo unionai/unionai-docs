@@ -10,7 +10,7 @@ variants: -flyte +union
 
 The Sovereign Data Plane is an Enterprise-tier deployment option that replaces the Direct-to-Data-Plane tunnel with a customer-managed load balancer inside the customer's VPC, reachable only from inside the customer's corporate network. In this mode, **the data plane is unreachable from any third-party network -- including Cloudflare's -- and Union.ai employees cannot reach customer data even with full Union.ai credentials.**
 
-This is a strictly stronger network perimeter than the default tier. The identity perimeter (Union RBAC and SSO) is unchanged, and every visualization feature -- input/output inspection, log streaming, auxiliary UIs -- continues to work for users who are connected to the corporate network.
+This is a strictly stronger network perimeter than the default tier. The identity perimeter (Union RBAC and SSO) is unchanged, and input/output inspection and log streaming continue to work for users who are connected to the corporate network.
 
 ## When to use it
 
@@ -31,6 +31,7 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 | TLS termination | Cloudflare edge, then mTLS to the data plane | Customer-controlled, end-to-end inside the VPC |
 | Who can reach the data plane network | Any authenticated, RBAC-authorized user | Only users on the customer's VPN |
 | Union.ai employee access to data | Possible only if granted access by customer for support purposes and authenticated by RBAC with full audit trails | **Not possible** without being on the customer's VPN |
+| Control plane on the metrics and auxiliary-UI path | Yes: the control plane's `dataproxy` reverse-proxies Prometheus and ClickHouse queries, the Spark history server, and task and action auxiliary UIs to the data plane through the Cloudflare tunnel | No, if the organization has zero-trust enabled: the control plane then refuses to reach the data plane over the Cloudflare tunnel |
 | Setup ownership | Provisioned and managed by Union.ai | Customer's SRE/DevOps team stands up the load balancer; Union.ai deploys the data plane behind it |
 
 ## What stays the same
@@ -38,9 +39,9 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 Switching to the Sovereign Data Plane changes the **network** perimeter only. Everything else carries over from the default architecture:
 
 - **Identity and access control.** Union RBAC and SSO continue to authenticate and authorize every request. The Envoy router inside the customer's cluster enforces RBAC on every data-path request, just as in the default tier.
-- **Visualization features.** Workflow inputs and outputs, live and persisted logs, reports, Ray and Spark dashboards, and the in-task debugger all continue to work, served directly from the data plane.
+- **Visualization features.** Workflow inputs and outputs, live and persisted logs, and reports continue to work.
 - **Two-plane separation.** The control plane still orchestrates runs and holds metadata; the data plane still holds and serves all customer data.
-- **Data residency.** All customer data continues to reside in the customer's chosen cloud account and region. No customer data ever transits Union infrastructure under either tier.
+- **Data residency.** All customer data continues to reside in the customer's chosen cloud account and region.
 - **`dataproxy` service.** The data plane `dataproxy` service that handles signed URL generation, log fetching, I/O retrieval, and auxiliary UI proxying is the same component under both tiers.
 
 ## Topology
@@ -64,7 +65,7 @@ The Sovereign Data Plane request flow mirrors the default tier with one substitu
  k8s API · auxiliary UIs]               customer-managed KMS
 ```
 
-The data plane never accepts a connection from any third-party network. The load balancer is configured as internal-only, so only hosts inside the customer's corporate network can reach it. Union.ai's control plane continues to communicate with the data plane only over the outbound-only direct gRPC channel for orchestration metadata; no customer data flows on that channel.
+The data plane never accepts a connection from any third-party network. The load balancer is configured as internal-only, so only hosts inside the customer's corporate network can reach it. Under this tier, Union.ai's control plane communicates with the data plane over the outbound-only direct gRPC channel for orchestration metadata; no customer data flows on that channel.
 
 ## Setup
 
