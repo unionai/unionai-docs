@@ -42,9 +42,10 @@ container. When the function calls a task, it is suspended until the result come
 it calls run as ordinary tasks, in their own containers, with their own resources.
 
 > [!NOTE] Union only
-> Orchestrator tasks are available in Union only. Install the latest `flyte` SDK, 2.12.3 or later,
-> with the `sandbox` extra: `pip install -U "flyte[sandbox]>=2.12.3"`. The extra installs the Monty
-> interpreter that local runs use.
+> Orchestrator tasks are available in Union only, and need Union platform version x or later.
+> Install the latest `flyte` SDK, 2.12.3 or later, with the `sandbox` extra:
+> `pip install -U "flyte[sandbox]>=2.12.3"`. The extra installs the Monty interpreter that local
+> runs use.
 
 ## Why use orchestrator tasks
 
