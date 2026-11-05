@@ -62,7 +62,7 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `overwrite_cache` | `bool` | `False` | Re-execute all tasks even if a cached result exists, and overwrite the cache with new results. |
-| `disable_run_cache` | `bool` | `False` | Skip cache lookups and writes entirely for this run. |
+| `disable_run_cache` | `bool` | `False` | In local runs, skip task cache lookups and writes entirely. As of flyte 2.12, remote runs don't send this setting to the backend, so cached task results are still used. |
 | `cache_lookup_scope` | `"global"` \| ... | `"global"` | Scope for cache lookups. |
 
 ### Identity and resources
@@ -113,7 +113,7 @@ For setting the logging level (including via environment variables), the framewo
 
 ## Reading context inside a task with `flyte.ctx()`
 
-Inside a running task, `flyte.ctx()` returns a `TaskContext` object with information about the current execution. Outside of a task, it returns `None`.
+Inside a running task, `flyte.ctx()` returns a `TaskContext` object with information about the current execution. Outside of a task, it returns a null context that is falsy and whose fields are all `None`. It is never `None` itself, so check it with `if flyte.ctx():` rather than `is None`.
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-context/run_context.py" fragment="read-ctx" lang="python" >}}
 
@@ -127,7 +127,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
 | `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. |
 | `custom_context` | `Dict[str, str]` | Propagated context metadata from `with_runcontext()`. |
-| `disable_run_cache` | `bool` | Whether run caching is disabled for this run. |
+| `disable_run_cache` | `bool` | Whether `disable_run_cache` was set for this run. Set only in local runs; as of flyte 2.12, in remote runs it is `False`. |
 | `is_in_cluster()` | method | Returns `True` when `mode == "remote"`. Useful for branching local/remote behavior. |
 
 ### `ActionID` fields
