@@ -195,7 +195,7 @@ Union separates infrastructure-level access from workload-level access using two
 
 | Identity | Used by | Needs access to |
 |----------|---------|-----------------|
-| `union-backend` | Operator, propeller, clusterresourcesync | Storage account, Key Vault |
+| `union-backend` | Union.ai platform services (operator, leaseworker, and clusterresourcesync when enabled) | Storage account, Key Vault |
 | `union-executions` | Task execution pods (user workloads) | Storage account + any customer Azure services |
 
 ```bash

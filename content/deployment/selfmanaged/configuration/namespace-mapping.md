@@ -32,7 +32,7 @@ The template is not a Go template. The services replace these exact placeholder 
 
 ## Data plane configuration
 
-Set the `namespace_mapping` value at the top level of your dataplane Helm values. This single value cascades to all services that need it: clusterresourcesync, propeller, operator, and executor.
+Set the `namespace_mapping` value at the top level of your dataplane Helm values. This single value cascades to all services that need it: the operator, the leaseworker, and, when they are enabled, clusterresourcesync and propeller.
 
 ```yaml
 namespace_mapping:
@@ -49,9 +49,9 @@ Namespace mapping controls several components:
 | Component | Role |
 |-----------|------|
 | **Clusterresourcesync** | Creates Kubernetes namespaces and per-namespace resources (service accounts, resource quotas) based on the mapping |
-| **Propeller** | Resolves the target namespace when scheduling workflow pods |
 | **Operator** | Resolves the target namespace for operator-managed resources |
-| **Executor** | Resolves the target namespace for task execution |
+| **Leaseworker** | Resolves the target namespace for task execution |
+| **Propeller** (when enabled) | Resolves the target namespace when scheduling workflow pods |
 | **Flyteadmin** (control plane) | Determines the target namespace when creating V1 executions |
 
-All components must agree on the mapping. The dataplane chart's top-level `namespace_mapping` value is the canonical source that cascades to clusterresourcesync, propeller, operator, and executor automatically. You should **not** set per-service overrides.
+All components must agree on the mapping. The dataplane chart's top-level `namespace_mapping` value is the canonical source that cascades to these components automatically. You should **not** set per-service overrides.

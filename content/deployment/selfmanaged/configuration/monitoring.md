@@ -1,6 +1,6 @@
 ---
 title: Monitoring
-description: The Prometheus instance the data plane deploys, and the metrics it collects.
+description: The Prometheus instance the data plane deploys, the metrics it collects, and the optional cluster monitoring stack.
 icon: graph-up
 weight: 5
 variants: -flyte +union
@@ -8,171 +8,128 @@ variants: -flyte +union
 
 # Monitoring
 
-The Union.ai data plane deploys a static [Prometheus](https://prometheus.io/) instance that collects metrics required for platform features like cost tracking, task-level resource monitoring, and execution observability. This Prometheus instance is pre-configured and requires no additional setup.
+The Union.ai data plane runs its own [Prometheus](https://prometheus.io/) instance, which collects the metrics that
+platform features rely on: cost tracking, task-level resource monitoring, and execution observability. It is
+pre-configured and needs no setup.
 
-For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, etc.), the data plane chart includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance that can be enabled separately.
+For operational monitoring of the cluster itself (node health, API server metrics, CoreDNS, and so on), the data plane
+chart also includes an optional [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack),
+which you turn on separately.
 
-## Architecture overview
+| Concern | What it monitors | Deployed by | On by default |
+|---------|------------------|-------------|---------------|
+| **Union.ai features** | Task resource usage, cost, GPU utilization, app serving, Union.ai services | The `prometheus` subchart | Yes |
+| **Cluster health** | Kubernetes components, nodes, alerting, Grafana dashboards | The `kube-prometheus-stack` subchart, under `monitoring` | No (`monitoring.enabled`) |
 
-The data plane supports two independent monitoring concerns:
+## Union.ai features Prometheus
 
-| Concern | What it monitors | How it's deployed | Configurable |
-|---------|-----------------|-------------------|--------------|
-| **Union features** | Task execution metrics, cost tracking, GPU utilization, container resources | Prometheus with pre-built scrape config (`prometheus` or `prometheus-simple`) | Retention, resources, scheduling |
-| **Cluster health** (optional) | Kubernetes components, node health, alerting, Grafana dashboards | `kube-prometheus-stack` via `monitoring.enabled` | Full kube-prometheus-stack values |
+The chart deploys the community [`prometheus` chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus)
+as a subchart, with kube-state-metrics, in the release namespace. It needs no Prometheus Operator and no CRDs: the
+chart writes the scrape configuration and recording rules into the `union-prometheus` ConfigMap. This instance is a
+platform dependency. Don't replace it or change its scrape configuration.
 
-The chart offers two Prometheus deployment options for Union features:
-
-| Option | Helm key | CRDs required | Cluster-wide RBAC | Best for |
-|--------|----------|--------------|-------------------|----------|
-| **Static Prometheus** (default) | `prometheus` | No | Yes | Standard deployments |
-| **Prometheus Simple** | `prometheus-simple` | No | No | Low-privilege / single-namespace deployments |
-
-> [!NOTE] Mutual exclusivity
-> `prometheus` and `prometheus-simple` cannot be enabled at the same time. The chart will fail validation if both are enabled.
+Other data plane components reach it at:
 
 ```
-                    ┌─────────────────────────────────────┐
-                    │          Data plane cluster         │
-                    │                                     │
-                    │  ┌──────────────────────┐           │
-                    │  │  Prometheus          │           │
-                    │  │  (Union features)    │           │
-                    │  │  ┌────────────────┐  │           │
-                    │  │  │ Scrape targets │  │           │
-                    │  │  │ - kube-state   │  │           │
-                    │  │  │ - cAdvisor     │  │           │
-                    │  │  │ - propeller    │  │           │
-                    │  │  │ - opencost     │  │           │
-                    │  │  │ - dcgm (GPU)   │  │           │
-                    │  │  │ - envoy        │  │           │
-                    │  │  └────────────────┘  │           │
-                    │  └─────────────────────-┘           │
-                    │                                     │
-                    │  ┌──────────────────────┐           │
-                    │  │  kube-prometheus     │           │
-                    │  │  -stack (optional)   │           │
-                    │  │  - Prometheus        │           │
-                    │  │  - Alertmanager      │           │
-                    │  │  - Grafana           │           │
-                    │  │  - node-exporter     │           │
-                    │  └──────────────────────┘           │
-                    └─────────────────────────────────────┘
+http://union-operator-prometheus.<NAMESPACE>.svc/prometheus
 ```
-
-## Union features Prometheus
-
-The static Prometheus instance is always deployed and pre-configured to scrape the metrics that Union.ai requires. No Prometheus Operator or CRDs are needed. This instance is a platform dependency and should not be replaced or reconfigured.
 
 ### Scrape targets
 
-The following targets are scraped automatically:
-
-| Job | Target | Metrics collected |
-|-----|--------|------------------|
-| `kube-state-metrics` | Pod/node resource requests, limits, status, capacity | Cost calculations, resource tracking |
-| `kubernetes-cadvisor` | Container CPU and memory usage via kubelet | Task-level resource monitoring |
-| `flytepropeller` | Execution round info, fast task duration | Execution observability |
-| `opencost` | Node hourly cost rates (CPU, RAM, GPU) | Cost tracking |
-| `gpu-metrics` | DCGM exporter metrics (when `dcgm-exporter.enabled`) | GPU utilization |
-| `serving-envoy` | Envoy upstream request counts and latency (when `serving.enabled`) | Inference serving metrics |
-
-### Configuration
-
-The static Prometheus instance is configured under the `prometheus` key in your data plane values:
-
-```yaml
-prometheus:
-  image:
-    repository: prom/prometheus
-    tag: v3.3.1
-  # Data retention period
-  retention: 3d
-  # Route prefix for the web UI and API
-  routePrefix: /prometheus/
-  resources:
-    limits:
-      cpu: "3"
-      memory: "3500Mi"
-    requests:
-      cpu: "1"
-      memory: "1Gi"
-  serviceAccount:
-    create: true
-    annotations: {}
-  priorityClassName: system-cluster-critical
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-```
-
-> [!NOTE] Retention and storage
-> The default 3-day retention is sufficient for Union.ai features. Increase `retention` if you query historical feature metrics directly.
-
-### Internal service endpoint
-
-Other data plane components reach Prometheus at:
-
-```
-http://union-operator-prometheus.<NAMESPACE>.svc:80/prometheus
-```
-
-OpenCost is pre-configured to use this endpoint. You do not need to change it unless you rename the Helm release.
-
-## Prometheus simple (low-privilege mode)
-
-For deployments that cannot use cluster-wide RBAC (e.g., single-namespace or low-privilege mode), enable `prometheus-simple` instead of the default static Prometheus:
-
-```yaml
-prometheus:
-  enabled: false
-prometheus-simple:
-  enabled: true
-  rbac:
-    create: false  # Namespace-scoped Role is created by the dataplane chart
-  kube-state-metrics:
-    enabled: true
-    rbac:
-      useClusterRole: false
-    releaseNamespace: true
-```
-
-This deploys a standalone Prometheus instance with namespace-scoped RBAC. The dataplane chart creates the necessary Role and RoleBinding automatically.
-
-> [!NOTE] Node-level metrics
-> In low-privilege mode, kube-state-metrics only watches the release namespace. Pod-level metrics (`kube_pod_*`, `kube_pod_container_*`) are available, but node-level metrics (`kube_node_*`) are not, since nodes are cluster-scoped resources.
+| Job | What it scrapes | Notes |
+|-----|-----------------|-------|
+| `kube-state-metrics` | Pod and node resource requests, limits, status and capacity | Keeps only the series cost and resource tracking use |
+| `union-services` | The Union.ai services' own metrics: operator, operator proxy, data proxy, leaseworker | Services labeled `platform.union.ai/prometheus-group: union-services`, on their `debug` port |
+| `kubernetes-cadvisor` | Container CPU and memory usage, from the kubelet through the API server proxy | Needs cluster-wide access to nodes: standard mode only |
+| `serving-envoy` | Envoy request counts and latency for app serving | No targets unless app serving is on (`apps.enabled`, on by default) |
+| `gpu-metrics` | DCGM exporter GPU metrics | No targets unless `dcgm-exporter.enabled` |
+| `opencost` | Node hourly cost rates | No targets unless `opencost.enabled` (off by default) |
+| `flytepropeller` | Propeller execution metrics | No targets unless `flytepropeller.enabled` (off by default) |
 
 ### Recording rules
 
-The chart includes pre-built recording rules for cost tracking and execution observability (GPU allocation, execution metadata, workspace metrics). These rules are:
+When `cost.enabled` is `true`, the default, the chart loads its cost and GPU recording rules into this Prometheus.
 
-- Embedded in a `PrometheusRule` when using `kube-prometheus-stack`
-- Embedded in a ConfigMap when using `prometheus-simple`
-- Only enabled when `cost.enabled: true` and the deployment is not in low-privilege mode
+### Metrics sent to the control plane
 
-The chart also ships **operational** recording rules and alerts, gated by `monitoring.prometheusRules.enabled` (rules) and `monitoring.alerting.enabled` (alerts) — independent of `cost.enabled`. Alongside propeller and leaseworker health, these cover pod scheduling: `union:dp:pods_unschedulable:sum` counts task pods that cannot be scheduled, per namespace, and the `UnionDPPodsUnschedulable` alert fires when a namespace has pods stuck Pending due to scheduling constraints (for example, insufficient node capacity or untolerated taints) for 15 minutes. This is the primary signal for answering “why are my task pods Pending due to scheduling?”. Ensure your Prometheus scrapes kube-state-metrics and retains the underlying `kube_pod_status_unschedulable` series (it may be filtered in static scrape configs).
+In zero-trust mode (`zero_trust.enabled`, the default), Prometheus also forwards the metrics it collects to the
+control plane, with Prometheus remote write to `https://<CONTROLPLANE_HOST>/metrics/remote_write`. It authenticates
+with OAuth2 as the cluster's app, `secrets.admin.clientId`, using the client secret in the `union-secret-auth` secret,
+so the chart requires `secrets.admin.enable: true` in this mode. With `zero_trust.enabled: false`, nothing is
+forwarded.
 
-## Enabling cluster health monitoring
+### RBAC
 
-To enable operational monitoring with Prometheus Operator, Alertmanager, Grafana, and node-exporter:
+Which permissions Prometheus has depends on the [RBAC mode](../architecture/kubernetes-rbac):
+
+- **Low-privilege mode (the chart default).** The chart creates a namespace-scoped Role for Prometheus and
+  kube-state-metrics. kube-state-metrics reports only the release namespace, so node-level metrics (`kube_node_*`) are
+  missing, and Prometheus can't scrape cAdvisor, so task-level CPU and memory charts show no data.
+- **Standard mode (`low_privilege: false`).** The chart creates no RBAC for Prometheus. Turn on the subcharts' own
+  ClusterRoles, or Prometheus can't scrape anything:
+
+  ```yaml
+  prometheus:
+    rbac:
+      create: true
+    kube-state-metrics:
+      rbac:
+        create: true
+  ```
+
+A data plane connected from the Union.ai UI runs in standard mode with these ClusterRoles already on.
+
+### Configuration
+
+Configure the instance under `prometheus.server`, using the community chart's
+[values](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus#configuration). The chart's
+defaults:
+
+```yaml
+prometheus:
+  server:
+    retention: "3d"
+    persistentVolume:
+      enabled: false
+    emptyDir:
+      sizeLimit: "10Gi"
+    resources:
+      limits:
+        cpu: "3"
+        memory: "3500Mi"
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+```
+
+> [!NOTE] Retention and storage
+> The data lives in an `emptyDir` volume and is lost when the pod is deleted or rescheduled. The 3-day retention is
+> enough for Union.ai's features. Increase `retention`, and give the server a persistent volume, only if you query the
+> metrics directly.
+
+## Cluster health monitoring
+
+To turn on operational monitoring with the Prometheus Operator, Grafana, and node-exporter:
 
 ```yaml
 monitoring:
   enabled: true
 ```
 
-This deploys a full [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) instance with sensible defaults:
+This deploys [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
+with these defaults:
 
 - Prometheus with 7-day retention
-- Grafana with admin credentials (override `monitoring.grafana.adminPassword` in production)
-- Node exporter, kube-state-metrics, kubelet, CoreDNS, API server, etcd, and scheduler monitoring
-- Default alerting and recording rules
+- Grafana, with the admin password `admin`: set `monitoring.grafana.adminPassword` in production
+- Node exporter, kubelet, kube-state-metrics, API server and CoreDNS monitoring. Etcd, scheduler, controller manager
+  and kube-proxy monitoring are off.
+- Default alerting and recording rules. Alertmanager is off.
 
 ### Prometheus Operator CRDs
 
-The `kube-prometheus-stack` uses the Prometheus Operator, which discovers scrape targets and alerting rules through Kubernetes CRDs (ServiceMonitor, PodMonitor, PrometheusRule, etc.). If you prefer to use static scrape configs with your own Prometheus instead, see [Scraping Union services from your own Prometheus](#scraping-union-services-from-your-own-prometheus).
-
-To install the Prometheus Operator CRDs, apply them using server-side apply from the `crds/kube-prometheus-stack/` directory in the `helm-charts` repository:
+The stack's Prometheus Operator discovers scrape targets and rules through CRDs (ServiceMonitor, PodMonitor,
+PrometheusRule, and others). The chart doesn't install them (`monitoring.crds.enabled: false`), so apply them yourself,
+with server-side apply, from the `helm-charts` repository at your chart version:
 
 ```shell
 git clone --depth 1 --branch dataplane-<CHART_VERSION> https://github.com/unionai/helm-charts.git
@@ -180,11 +137,36 @@ kubectl apply --server-side --force-conflicts -f helm-charts/crds/kube-prometheu
 ```
 
 > [!NOTE] Server-side apply for large CRDs
-> Prometheus Operator CRDs exceed the 256 KiB limit of Kubernetes client-side annotations (`kubectl.kubernetes.io/last-applied-configuration`). Using `kubectl apply --server-side --force-conflicts` bypasses this annotation limit. In the dataplane chart, the monitoring subchart's own CRD installation is disabled (`monitoring.crds.enabled: false`) to prevent conflicts.
+> The Prometheus Operator CRDs exceed the 256 KiB limit of the client-side `kubectl.kubernetes.io/last-applied-configuration`
+> annotation. `kubectl apply --server-side --force-conflicts` avoids it.
+
+### Union.ai monitoring resources
+
+When the Prometheus Operator CRDs are installed, by this stack or by a Prometheus Operator you already run, the chart
+also creates these resources in the release namespace, each labeled `release: <RELEASE>`. The PrometheusRules are
+named after the release, for example `union-dataplane-dataplane-rules` for a release named `union`:
+
+| Resource | What it is | Controlled by |
+|----------|------------|---------------|
+| ServiceMonitor `union-service-monitor` | Scrapes the Union.ai services on their `debug` port | `monitoring.serviceMonitors.enabled` (on) |
+| ServiceMonitor `cost` | Scrapes OpenCost, when it runs | `monitoring.serviceMonitors.enabled` and `cost.enabled` (on) |
+| PrometheusRule `…-dataplane-rules` | The cost and GPU recording rules | `monitoring.prometheusRules.enabled` and `cost.enabled` (on) |
+| PrometheusRule `…-monitoring-rules` | Operational recording rules, plus alerts | `monitoring.prometheusRules.enabled` (on); alerts need `monitoring.alerting.enabled` (off), SLO rules `monitoring.slos.enabled` (off) |
+
+The operational rules cover the health of the Union.ai services and pod scheduling.
+`union:dp:pods_unschedulable:sum` counts the task pods that can't be scheduled, per namespace, and the
+`UnionDPPodsUnschedulable` alert fires when a namespace has pods stuck Pending for 15 minutes, for example on
+insufficient node capacity or a taint the pods don't tolerate. It's the main signal for "why are my task pods
+Pending?". It reads `kube_pod_status_unschedulable`, which the stack's kube-state-metrics collects but the Union.ai
+features instance drops.
+
+The chart also ships Grafana dashboards as ConfigMaps labeled `grafana_dashboard: "1"`
+(`monitoring.dashboards.enabled`, on), which the Grafana sidecar picks up.
 
 ### Customizing the monitoring stack
 
-The monitoring stack accepts all [kube-prometheus-stack values](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack#configuration) under the `monitoring` key. Common overrides:
+The `monitoring` key accepts all [kube-prometheus-stack values](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack#configuration).
+Common overrides:
 
 ```yaml
 monitoring:
@@ -214,7 +196,8 @@ monitoring:
     # Configure receivers, routes, etc.
 ```
 
-The monitoring stack's Prometheus supports [remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for forwarding metrics to external time-series databases (Amazon Managed Prometheus, Grafana Cloud, Thanos, etc.):
+The stack's Prometheus supports [remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write)
+for forwarding metrics to an external time-series database, such as Amazon Managed Prometheus, Grafana Cloud, or Thanos:
 
 ```yaml
 monitoring:
@@ -226,65 +209,36 @@ monitoring:
             region: <REGION>
 ```
 
-For the full set of configurable values, see the [kube-prometheus-stack chart documentation](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
+## Scraping Union.ai services from your own Prometheus
 
-## Scraping Union services from your own Prometheus
+If you already run Prometheus, you can scrape the Union.ai services for operational visibility. This adds to the
+built-in instance; it doesn't replace it.
 
-If you already run Prometheus in your cluster, you can scrape Union.ai data plane services for operational visibility. All services expose metrics on standard ports.
+With the Prometheus Operator, you don't need to write anything: the chart's `union-service-monitor` ServiceMonitor
+(see [Union.ai monitoring resources](#unionai-monitoring-resources)) selects the services. Make sure your Prometheus
+selects ServiceMonitors in the data plane namespace, or with the label `release: <RELEASE>`.
 
-> [!NOTE] Union features Prometheus
-> The built-in static Prometheus handles all metrics required for Union.ai platform features. Scraping from your own Prometheus is for additional operational visibility only -- it does not replace the built-in instance.
-
-### Static scrape configs
-
-Add these jobs to your Prometheus configuration:
+Without it, add a static scrape job:
 
 ```yaml
 scrape_configs:
-  # Data plane service metrics (operator, propeller, etc.)
   - job_name: union-dataplane-services
     kubernetes_sd_configs:
       - role: endpoints
         namespaces:
-          names: [union]
+          names: [<NAMESPACE>]
     relabel_configs:
-      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_instance]
-        regex: union-dataplane
+      - source_labels: [__meta_kubernetes_service_label_platform_union_ai_prometheus_group]
+        regex: union-services
         action: keep
       - source_labels: [__meta_kubernetes_endpoint_port_name]
         regex: debug
         action: keep
 ```
 
-### ServiceMonitor (Prometheus Operator)
-
-If you run the Prometheus Operator, create a ServiceMonitor instead:
-
-```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: union-dataplane-services
-  namespace: union
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: union-dataplane
-  namespaceSelector:
-    matchNames:
-      - union
-  endpoints:
-    - port: debug
-      path: /metrics
-      interval: 30s
-```
-
-This requires the Prometheus Operator CRDs. Install them via server-side apply from `crds/kube-prometheus-stack/` in the `unionai/helm-charts` repository.
-
 ## Further reading
 
-- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/) -- guide to Prometheus configuration, querying, and operation
-- [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) -- forwarding metrics to external storage
-- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) -- Kubernetes service discovery for scrape targets
-- [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) -- full monitoring stack with Grafana and alerting
-- [OpenCost documentation](https://www.opencost.io/docs/) -- cost allocation and tracking
+- [Prometheus documentation](https://prometheus.io/docs/introduction/overview/): configuration, querying, and operation
+- [Prometheus remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write): forwarding metrics to external storage
+- [Prometheus `kubernetes_sd_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config): Kubernetes service discovery for scrape targets
+- [kube-prometheus-stack chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack): the full monitoring stack with Grafana and alerting

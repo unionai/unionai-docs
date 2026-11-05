@@ -130,7 +130,7 @@ mc admin policy attach myminio readwrite --user union-service
 Ensure you have push/pull credentials for your container registry. The specifics depend on your registry choice (Docker Registry basic auth, Harbor robot accounts, etc.).
 
 > [!NOTE] Worker pod authentication
-> Worker pods (task executions) use the same storage credentials as the platform services. The credentials are injected into per-project namespaces via the cluster resource sync mechanism.
+> Worker pods (task executions) use the same storage credentials as the platform services. By default, task pods run in the data plane's own namespace and get the credentials there. In multi-namespace mode, cluster resource sync copies them into each task namespace.
 
 ## Deploy configuration
 
