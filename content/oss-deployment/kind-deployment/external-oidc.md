@@ -108,7 +108,8 @@ spec:
   forwardAuth:
     address: http://oauth2-proxy.flyte.svc.cluster.local/oauth2/auth
     trustForwardHeader: true
-    # Forwarded to Flyte; these feed executed_by run attribution.
+    # Forwarded to Flyte. The chart's default runs config doesn't read them for
+    # executed_by run attribution. That needs flyte-core-components.runs.identityHeaders.
     authResponseHeaders:
       - X-Auth-Request-User
       - X-Auth-Request-Email
