@@ -124,7 +124,14 @@ run = flyte.with_runcontext(
 ).run(my_task, x=1)
 ```
 
-This is the supported way to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+Use it to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't apply `raw_data_path` to remote runs. It accepts the value, but writes offloaded data under each action's output location, next to its `outputs.pb`.
+{{< /markdown >}}
+{{< /variant >}}
 
 Any scheme Flyte's storage layer can resolve works here, not just `s3://`, `gs://` and local paths. `s3://`, `gs://`, `abfs://` and `abfss://` are served by the built-in obstore backend; anything else falls back to the filesystem `fsspec` has registered for that scheme. Hugging Face storage buckets are one such target, so `raw_data_path="hf://buckets/<username>/<bucket>/..."` sends offloaded values to the Hub. See [Hugging Face buckets as raw data storage](../../../integrations/huggingface/_index#hugging-face-buckets-as-raw-data-storage) for a worked example.
 
@@ -157,3 +164,9 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 - **Values** = every task input/output is a **literal**, stored either *inline* in `inputs.pb`/`outputs.pb` or *by reference* to **raw data** offloaded in the bucket.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data plane bucket. It does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
+
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [the note above](#per-run-customization-raw_data_path).
+{{< /markdown >}}
+{{< /variant >}}
