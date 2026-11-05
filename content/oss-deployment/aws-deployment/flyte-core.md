@@ -539,22 +539,29 @@ To keep the **database password** out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
-  (the Secret is projected whole into `/etc/flyte/config.d` and loaded as `*.yaml`, so
-  its key must end in `.yaml` and hold a config fragment, for example a key
-  `012-db-secret.yaml` setting `database.postgres.password`; a key named `password` is
-  never read), or
+  (see below), or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
 
-When `authType: accesskey`, keep the **S3 secret key** out of the values file the
-same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
-either:
+A Secret in `extraInlineSecretRefs` is projected whole into `/etc/flyte/config.d` and
+loaded as `*.yaml`, so its key must end in `.yaml` and hold a config fragment. A key
+named `password` is never read. Set the password twice: the `runs` LISTEN/NOTIFY listener reads its connection
+from `runs.database`, not `database`.
 
-- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
-  (same `.yaml`-key requirement as above — the fragment sets
-  `storage.providerConfig.s3.secretKey`), or
-- mount the secret key as a file and point
-  `configuration.storage.providerConfig.s3.secretKeyPath` at it.
+```yaml
+# key: 012-db-secret.yaml
+database:
+  postgres:
+    password: <password>
+runs:
+  database:
+    postgres:
+      password: <password>
+```
+
+When `authType: accesskey`, keep the **S3 secret key** out of the values file too:
+leave `configuration.storage.providerConfig.s3.secretKey` empty, mount the secret key
+as a file, and point `configuration.storage.providerConfig.s3.secretKeyPath` at it.
 
 On the recommended `authType: iam` path there is no storage secret to manage.
 
