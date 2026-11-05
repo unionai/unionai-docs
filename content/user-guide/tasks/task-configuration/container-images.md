@@ -443,7 +443,7 @@ To fix this, pass an `image_pull` secret as `registry_secret`. The secret can ho
 * **A credential helper mapping**, which stores no credentials. `ImageBuilder` runs the helper on every build to fetch a fresh token with the data plane's own cloud identity, so there is nothing to rotate.
   This works only when the registry is on the same cloud provider as your data plane.
 
-Credential helpers are currently supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
+Credential helpers are supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
 For registries on other clouds, use static credentials.
 
 ##### Amazon ECR in another AWS account
@@ -474,6 +474,7 @@ A static ECR token would expire after 12 hours.
    ```
 
 2. Save a Docker config file, `config.json`, that maps the registry to the `ecr-login` helper.
+   Replace `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` with the account and region that own the image.
    It contains no credentials. List more registries under `credHelpers` if you pull from several accounts.
 
    ```json
@@ -500,7 +501,7 @@ A static ECR token would expire after 12 hours.
    image = (
        flyte.Image.from_base("<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY>:<TAG>")
        .clone(name="my-image", registry_secret="ecr-cross-account", extendable=True)
-       .with_pip_packages("pandas")
+       .with_pip_packages("flyte", "pandas")
    )
 
    env = flyte.TaskEnvironment(name="my_task_env", image=image)
