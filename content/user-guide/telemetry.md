@@ -22,7 +22,7 @@ The same variable turns off telemetry in the `flyte` SDK and CLI, the backend, a
 |---|---|
 | `flyte` SDK and CLI | Crash reports for unexpected errors, and counts of runs, deploys, and their outcomes. Errors caused by user code or input are not reported. |
 | Flyte backend | Error reports for internal server errors, and counts of runs, task deploys, trigger deploys, and app deploys. |
-| Web console | Product analytics through Google Tag Manager. It also sends errors, browser console messages, traces of its network requests, and page performance data through Grafana Faro. |
+| Web console | Product analytics through Google Tag Manager. |
 
 ## Turn off telemetry on your machine
 
@@ -76,4 +76,4 @@ If you deploy without these charts, set `DO_NOT_TRACK=1` on the backend and cons
 |---|---|
 | `DO_NOT_TRACK=1` | Turns off Flyte telemetry and that of other tools that honor the convention. |
 | `FLYTE_DISABLE_TELEMETRY=true` | Turns off Flyte telemetry only. |
-| `FLYTE_DISABLE_SENTRY=true` | Older name for `FLYTE_DISABLE_TELEMETRY`, honored by the SDK and CLI and the backend. |
+| `FLYTE_DISABLE_SENTRY=true` | Older name for `FLYTE_DISABLE_TELEMETRY`, honored by the SDK and CLI and the backend. The web console doesn't read it: set `FLYTE_DISABLE_TELEMETRY` or `DO_NOT_TRACK` there. |
