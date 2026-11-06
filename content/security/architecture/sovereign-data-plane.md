@@ -31,7 +31,7 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 | TLS termination | Cloudflare edge, then mTLS to the data plane | Customer-controlled, end-to-end inside the VPC |
 | Who can reach the data plane network | Any authenticated, RBAC-authorized user | Only users on the customer's VPN |
 | Union.ai employee access to data | Possible only if granted access by customer for support purposes and authenticated by RBAC with full audit trails | **Not possible** without being on the customer's VPN |
-| Control plane on the metrics and auxiliary-UI path | Yes: the control plane's `dataproxy` reverse-proxies Prometheus and ClickHouse queries, the Spark history server, and task and action auxiliary UIs to the data plane through the Cloudflare tunnel | No, if the organization has zero-trust enabled: the control plane then refuses to reach the data plane over the Cloudflare tunnel |
+| Control plane on the metrics and auxiliary-UI path | Yes: the control plane's `dataproxy` reverse-proxies Prometheus and ClickHouse queries, the Spark history server, and task and action auxiliary UIs to the data plane through the Cloudflare tunnel | No, but only if the organization's zero-trust setting (`zero_trust_enabled`) is on: the control plane then refuses to reach the data plane over the Cloudflare tunnel. The setting is separate from this tier, and choosing the Sovereign Data Plane doesn't turn it on |
 | Setup ownership | Provisioned and managed by Union.ai | Customer's SRE/DevOps team stands up the load balancer; Union.ai deploys the data plane behind it |
 
 ## What stays the same
@@ -65,7 +65,7 @@ The Sovereign Data Plane request flow mirrors the default tier with one substitu
  k8s API · auxiliary UIs]               customer-managed KMS
 ```
 
-The data plane never accepts a connection from any third-party network. The load balancer is configured as internal-only, so only hosts inside the customer's corporate network can reach it. Under this tier, Union.ai's control plane communicates with the data plane over the outbound-only direct gRPC channel for orchestration metadata; no customer data flows on that channel.
+The data plane never accepts a connection from any third-party network. The load balancer is configured as internal-only, so only hosts inside the customer's corporate network can reach it. Union.ai's control plane communicates with the data plane over the outbound-only direct gRPC channel for orchestration metadata; no customer data flows on that channel. The control plane refuses to reach the data plane over the Cloudflare tunnel only if the organization's zero-trust setting is on, and choosing this tier doesn't turn that setting on.
 
 ## Setup
 
