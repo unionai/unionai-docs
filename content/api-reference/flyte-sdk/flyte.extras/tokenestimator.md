@@ -2,7 +2,7 @@
 title: TokenEstimator
 description: "Protocol for records that can estimate their own token count."
 icon: diagram-3
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

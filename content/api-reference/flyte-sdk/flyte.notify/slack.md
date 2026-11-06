@@ -2,7 +2,7 @@
 title: Slack
 description: "Send Slack notifications with optional Block Kit formatting."
 icon: braces
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

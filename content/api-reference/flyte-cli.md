@@ -1,6 +1,6 @@
 ---
 title: "Flyte CLI"
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 weight: 3
@@ -212,7 +212,7 @@ $ flyte --config /path/to/config.yaml run ...
 | `--output-format` `-of` | `choice` | `table` | Output format for commands that support it. Defaults to `table`. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to `console` which is meant to be human readable. `json` is meant for machine parsing. |
 | `--user-log-level` | `choice` | `info` | Log level for user task logs. Independent of the internal Flyte log level (-v). |
-| `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
+| `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style, and Python warnings logged through it |
 | `--no-progress` | `boolean` | `False` | Disable the animated progress spinner — useful in CI / non-interactive logs. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
