@@ -13,12 +13,13 @@ designed for use by AI coding agents and AI search engines.
 
 ## Output files
 
-The `make dist` command (specifically the `make llm-docs` step) produces the following
-in each variant's `dist/docs/v2/{variant}/` directory:
+The `make dist` command produces the following in each variant's `dist/docs/v2/{variant}/`
+directory. Each variant's `make variant` step writes the `<page>.md` twins. The `make llm-docs`
+step then post-processes them and writes `llms.txt` and `llms-full.txt`:
 
 | File | Description |
 |------|-------------|
-| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
+| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page directly beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
 | `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. |
 | `llms-full.txt` | The entire documentation for one variant as a single file, with all internal links converted to hierarchical bold references (e.g. `**Configure tasks > Resources**`). |
 

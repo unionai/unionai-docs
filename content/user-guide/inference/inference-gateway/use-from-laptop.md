@@ -1,6 +1,6 @@
 ---
 title: Use from your laptop
-description: Reach the LLM Gateway from local tools, either through a public endpoint or behind Union sign-in with flyte proxy app.
+description: Reach the Inference Gateway from local tools, either through a public endpoint or behind Union sign-in with flyte proxy app.
 icon: laptop
 weight: 5
 variants: -flyte +union
