@@ -16,7 +16,7 @@ Flyte 2 provides intelligent **task output caching** that automatically avoids r
 
 ## Overview
 
-By default, caching is disabled, except for shell tasks.
+By default, caching is disabled, except for shell tasks and code sandbox tasks.
 
 If caching is enabled for a task, then Flyte determines a **cache key** for the task.
 The key is composed of the following:
@@ -27,7 +27,7 @@ The key is composed of the following:
 * Cache version: The cache version string.
 
 If the cache behavior is set to `"auto"`, the cache version is automatically generated using a hash of the task's source code (or according to the custom policy if one is specified).
-For container and shell tasks, `flyte` 2.12.0 or later generates it from what the container runs (see [Container and shell tasks](#container-and-shell-tasks)).
+For container, shell and code sandbox tasks, `flyte` 2.12.0 or later generates it from what the container runs (see [Container and shell tasks](#container-and-shell-tasks)).
 If the cache behavior is set to `"override"`, the cache version can be specified explicitly using the `version_override` parameter.
 
 When the task runs, Flyte checks if a cache entry exists for the key.
@@ -66,7 +66,7 @@ Since the cache key is fixed as part of the code, it can be manually changed whe
 ### `"disable"` - No caching
 
 To explicitly disable caching, use the `"disable"` behavior.
-**This is the default behavior, except for shell tasks.**
+**This is the default behavior, except for shell tasks and code sandbox tasks.**
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable" lang="python" >}}
 
@@ -211,7 +211,7 @@ The default `FunctionBodyPolicy` generates cache versions from the function's so
 
 ### Container and shell tasks
 
-A container task (`ContainerTask`) or a shell task (`flyte.extras.shell`) has no Python function to hash.
+A container task (`ContainerTask`), a shell task (`flyte.extras.shell`) or a code sandbox task (`flyte.sandbox.create()`) has no Python function to hash.
 With `behavior="auto"` and `flyte` 2.12.0 or later, its cache version is a hash of the following:
 
 * The image
@@ -220,9 +220,11 @@ With `behavior="auto"` and `flyte` 2.12.0 or later, its cache version is a hash 
 
 Changing any of these invalidates the cache.
 
-Shell tasks use `cache="auto"` by default.
+Shell tasks and code sandbox tasks use `cache="auto"` by default.
 Container tasks don't cache unless you set `cache`.
-Set `cache` when you create the task, because `ContainerTask.override()` raises a `TypeError` in `flyte` 2.12.0.
+In `flyte` 2.12.0 through 2.12.2, `ContainerTask.override()` raises a `TypeError`, so on those versions set `cache` when you create the task.
+
+A code sandbox passes your code to the container as an input file identified by a hash of its content, so editing the code also invalidates the cache, through the inputs rather than the cache version.
 
 * `env_vars` are not part of the cache version.
   Changing an environment variable doesn't invalidate the cache.
