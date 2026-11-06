@@ -62,9 +62,9 @@ To record every trial's settings and metrics in an experiment tracker, log from 
 
 ## Size trials for the hardware
 
-- **GPU trials.** Give each trial one GPU, and cap concurrency at the number of GPUs you want the sweep to use. A trial that runs out of memory raises `flyte.errors.OOMError` to the driver, which can record it as failed. See [Resilient training](./resilient-training#recover-from-out-of-memory-errors).
+- **GPU trials.** Give each trial one GPU, and cap concurrency at the number of GPUs you want the sweep to use. A trial that runs out of memory raises `flyte.errors.OOMError` to the driver, which can record it as failed. See [Durable training](./durable-training#recover-from-out-of-memory-errors).
 - **Multi-node trials.** Make the trial task a `flyte.clustered.ClusteredTaskEnvironment`. The driver doesn't change. See [Pre-training](./pretraining).
-- **Preemptible capacity.** Trials are short and retry on their own, so they suit `interruptible=True`. Keep the driver on on-demand capacity. See [Use spot capacity](./resilient-training#use-spot-capacity).
+- **Preemptible capacity.** Trials are short and retry on their own, so they suit `interruptible=True`. Keep the driver on on-demand capacity. See [Use spot capacity](./durable-training#use-spot-capacity).
 
 {{< variant union >}}
 {{< markdown >}}

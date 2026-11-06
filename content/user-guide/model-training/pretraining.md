@@ -66,7 +66,7 @@ A pretraining run can take days, so save progress as it trains. Write to `flyte.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/clustered-task-environment/fsdp_train.py" fragment="checkpoint" lang=python >}}
 
-The checkpoint lives in your object store, not on the pod, so it survives a restart of the whole group and a retry of the task. Load it at the start of the task to continue from the last save. See [Resilient training](./resilient-training).
+The checkpoint lives in your object store, not on the pod, so it survives a restart of the whole group and a retry of the task. Load it at the start of the task to continue from the last save. See [Durable training](./durable-training).
 
 ## Schedule all nodes together
 
@@ -74,7 +74,7 @@ A multi-node job can't start until every node is available. If pods start one at
 
 {{< code file="/unionai-examples/v2/tutorials/gang_scheduling/main.py" fragment="gang-env" lang=python >}}
 
-If a higher-priority job can preempt yours after it starts, set `failure_policy=ClusterFailurePolicy(resume_after_preemption=True)`, so the job waits to be readmitted and resumes from its checkpoint without using a retry. See [Resilient training](./resilient-training#restart-a-multi-node-job).
+If a higher-priority job can preempt yours after it starts, set `failure_policy=ClusterFailurePolicy(resume_after_preemption=True)`, so the job waits to be readmitted and resumes from its checkpoint without using a retry. See [Durable training](./durable-training#restart-a-multi-node-job).
 
 {{< variant union >}}
 {{< markdown >}}

@@ -1,12 +1,12 @@
 ---
-title: Resilient training
+title: Durable training
 description: Keep long training jobs from losing progress to preemption, node failures, out-of-memory errors, and scarce GPU capacity.
 icon: shield-check
 weight: 6
 variants: +flyte +union
 ---
 
-# Resilient training
+# Durable training
 
 The longer a training job runs, the more likely something under it fails: a spot node is reclaimed, a node fails, a batch runs out of memory, or the cluster has no free H100s. Flyte turns each of these into something your code handles, instead of a run you start over.
 

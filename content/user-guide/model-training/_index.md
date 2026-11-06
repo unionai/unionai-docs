@@ -38,7 +38,7 @@ The driver is an ordinary `async` function. It can loop, branch on a metric, or 
 | Put each stage on the right hardware | One `flyte.TaskEnvironment` per stage, with `flyte.Resources` for CPU, memory, GPU type and count, and shared memory. See [Resources](../tasks/task-configuration/resources). |
 | Train across several nodes | `flyte.clustered.ClusteredTaskEnvironment` runs torchrun across a group of pods. See [Pre-training](./pretraining). |
 | Skip work that already ran | `cache="auto"` on data prep and training. A rerun with the same inputs and code returns the stored outputs. See [Caching](../tasks/task-configuration/caching). |
-| Resume after a crash or preemption | `retries` plus `flyte.Checkpoint` restarts the loop from its last checkpoint. See [Resilient training](./resilient-training). |
+| Resume after a crash or preemption | `retries` plus `flyte.Checkpoint` restarts the loop from its last checkpoint. See [Durable training](./durable-training). |
 | Pass datasets, checkpoints, and weights between stages | `flyte.io.Dir`, `flyte.io.File`, and DataFrames store data in your object store and pass a reference. See [Files and directories](../tasks/task-programming/files-and-directories). |
 | Watch a run while it trains | `report=True` and `flyte.report` publish live charts to the run's UI. See [Reports](../tasks/task-programming/reports). |
 | Run many trials at once | `asyncio.gather` or `flyte.map` fans out one task per trial. See [Hyperparameter optimization](./hyperparameter-optimization). |
@@ -60,7 +60,7 @@ On {{< key product_name >}}, trained models can also be published as [artifacts]
 | Train scikit-learn or XGBoost models | [Classical machine learning](./classical-ml) |
 | Sweep hyperparameters and stop weak trials early | [Hyperparameter optimization](./hyperparameter-optimization) |
 | Measure a model on held-out data and compare it with a baseline | [Evaluation](./evaluation) |
-| Keep a long job from losing progress | [Resilient training](./resilient-training) |
+| Keep a long job from losing progress | [Durable training](./durable-training) |
 
 To optimize a model with rewards instead of labels, see [Reinforcement learning](../reinforcement-learning/_index). To serve the model you train, see [Deploy trained models](../inference/deploy-trained-models).
 
