@@ -424,7 +424,8 @@ components:
 Also available per component: `image`, `extraEnv`, `envFrom`, `affinity`,
 `priorityClassName`, `podLabels`, `podAnnotations`, `livenessProbe`, `readinessProbe`,
 `startupProbe`, `initContainers`, `sidecars`, `extraVolumes`, `extraVolumeMounts`,
-`strategy`, `extraPodSpec`, and `service.{type,annotations,labels,clusterIP}`.
+`strategy`, `extraPodSpec`, `autoscaling` (see [Horizontal autoscaling](#horizontal-autoscaling)),
+and `service.{type,annotations,labels,clusterIP}`.
 
 > [!WARNING] The executor is always one replica
 > `components.executor` has no `replicaCount` and no `autoscaling` — the chart
@@ -478,6 +479,19 @@ While autoscaling is enabled, the chart leaves `replicas` out of the Deployment,
 
 Rendering fails if `minReplicas` is less than `1` or greater than `maxReplicas`, or if
 you set `targetCPUUtilizationPercentage: null` without a memory target or `metrics`.
+
+Before you turn it on:
+
+- **Set resource requests.** The chart sets none by default (`resources: {}`), and a
+  utilization target is a percentage of the request. Without requests the chart still
+  renders, but the HorizontalPodAutoscaler can't compute utilization and never scales.
+- **Install a metrics source.** CPU and memory targets read the Kubernetes metrics API,
+  which needs [metrics-server](https://github.com/kubernetes-sigs/metrics-server). EKS
+  doesn't install it by default.
+- **Expect a brief drop when you switch an existing release.** Enabling autoscaling removes
+  `replicas` from the Deployment, and Kubernetes then falls back to one replica until the
+  autoscaler scales up again. If the component runs more than one replica, upgrade at a
+  quiet time.
 
 ## Default task resources
 
