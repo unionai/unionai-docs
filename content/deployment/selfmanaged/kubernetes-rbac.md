@@ -1,8 +1,8 @@
 ---
-title: Kubernetes Access Controls
+title: Kubernetes access controls
 description: The Kubernetes RBAC the Helm chart applies, and what each role can reach.
 icon: shield-lock
-weight: 4
+weight: 12
 variants: -flyte +union
 ---
 
@@ -22,7 +22,7 @@ Prometheus and kube-state-metrics run under their own service accounts, `union-o
 You can disable the common service account and configure per-component service accounts instead. When
 `commonServiceAccount` is disabled, each component falls back to its own service account (for example,
 `operator-system` for the operator, `fluentbit-system` for Fluent Bit). See the
-[dataplane Helm chart reference](../helm-chart-reference/dataplane) for the per-component service account values.
+[dataplane Helm chart reference](./helm-chart-reference/dataplane) for the per-component service account values.
 
 ## Low-privilege mode vs. standard mode
 
@@ -35,7 +35,7 @@ The data plane supports two RBAC modes:
 
 A data plane installed with Helm runs in low-privilege mode unless you set `low_privilege: false`. A data plane
 connected from the Union.ai UI on AWS, GCP, or Azure runs in standard mode, but still runs tasks only in the namespace
-you registered: see [What Union.ai installs in your cluster](../whats-installed).
+you registered: see [What Union.ai installs in your cluster](./whats-installed).
 
 In low-privilege mode:
 
@@ -69,7 +69,7 @@ prometheus:
 
 By default, task pods run in the release namespace in both modes. To run each project-domain in its own namespace,
 set `namespaces.enabled: true` and `clusterresourcesync.enabled: true` in standard mode. Clusterresourcesync then
-creates the task namespaces and their resources. See [Namespace mapping](../configuration/namespace-mapping).
+creates the task namespaces and their resources. See [Namespace mapping](./configuration/namespace-mapping).
 
 ## Roles in every mode
 
