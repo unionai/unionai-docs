@@ -12,7 +12,7 @@ For Union.ai customers whose data plane is in GCP, we walk through setting up ac
 
 > [!NOTE] Google Cloud Storage in the Union.ai environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are several Google Cloud Storage (GCS) buckets used internally by the Union.ai operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
+> Among these are several Google Cloud Storage (GCS) buckets used internally by the Union.ai operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the GCS buckets we are talking about in this section.**
 >

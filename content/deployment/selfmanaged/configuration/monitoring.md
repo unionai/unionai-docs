@@ -60,7 +60,7 @@ forwarded.
 
 ### RBAC
 
-Which permissions Prometheus has depends on the [RBAC mode](../architecture/kubernetes-rbac):
+Which permissions Prometheus has depends on the [RBAC mode](../kubernetes-rbac):
 
 - **Low-privilege mode (the chart default).** The chart creates a namespace-scoped Role for Prometheus and
   kube-state-metrics. kube-state-metrics reports only the release namespace, so node-level metrics (`kube_node_*`) are
