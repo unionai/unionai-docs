@@ -72,7 +72,7 @@ See [Data retention policy](./data-retention-policy) for more details.
 
 ## Worker node groups
 
-Specify the worker node groups (in AWS) or worker node pools (in Azure and GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](./platform-architecture).
+Specify the worker node groups (in AWS) or worker node pools (in Azure and GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Data plane nodes](../platform-architecture#data-plane-nodes).
 
 ### Node group name
 

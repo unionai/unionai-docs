@@ -54,7 +54,7 @@ The figures were measured on an idle AWS cluster connected in October 2026, with
 
 ## Permissions
 
-A data plane connected from the Union.ai UI runs in standard mode. The chart creates cluster-wide ClusterRoles as well as Roles in its own namespace, so some of Union.ai's permissions span the whole cluster. Your tasks still run only in the namespace you registered. [Kubernetes access controls](./architecture/kubernetes-rbac) lists the roles and what each can reach.
+A data plane connected from the Union.ai UI runs in standard mode. The chart creates cluster-wide ClusterRoles as well as Roles in its own namespace, so some of Union.ai's permissions span the whole cluster. Your tasks still run only in the namespace you registered. [Kubernetes access controls](./kubernetes-rbac) lists the roles and what each can reach.
 
 Two services run privileged pods: the image builder, which runs BuildKit in rootful mode, and the volume mount broker.
 
