@@ -2,7 +2,7 @@
 title: Use from tasks and apps
 description: Call models through the Inference Gateway from tasks and apps running on Union.
 icon: braces
-weight: 4
+weight: 5
 variants: -flyte +union
 ---
 

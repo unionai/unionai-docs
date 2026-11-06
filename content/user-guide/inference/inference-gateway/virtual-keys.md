@@ -37,7 +37,7 @@ Callers send the key the way any OpenAI-compatible client sends an API key, as `
 
 A budget is a dollar ceiling per window: per day, per week, or per month. The gateway keeps a running total for each key and rejects calls with `402` as soon as the ceiling is reached. Enforcement happens in the gateway itself, so it keeps working when the control plane is unreachable. The total resets at the start of each window.
 
-Spend is computed from token counts and each provider's price. A self-hosted provider with no cost set is not metered. See [Providers](./providers).
+Spend is computed from token counts and each provider's price. To see each key's spend over time, see [Usage](./usage). A self-hosted provider with no cost set is not metered. See [Providers](./providers).
 
 For how replicas and restarts affect the running total, see [Size the gateway](./deploy-gateway#size-the-gateway).
 
