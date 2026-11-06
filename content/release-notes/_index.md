@@ -9,6 +9,155 @@ top_menu: true
 
 # Release notes
 
+## October 2026
+
+
+### :gear: Fairer Queue Scheduling
+
+A `strict_fifo` queue whose first action is waiting for resources now reserves only what that action needs, and keeps that reservation until the action fits. Work from other queues that fits in the remaining room keeps running, so CPU-only work runs beside an action waiting for a GPU. A same-priority queue can no longer take every freed slot ahead of the waiting action, and higher-priority queues are never held back.
+
+GPU caps and accounting now follow the GPU model a task actually runs on. A task that requests GPUs without naming a model runs on the accelerator the scheduler counted it against, so queue GPU caps and cluster usage match where the pod lands. If `task_resource.default_accelerator` is set, such a task is pinned to that type, and Ray head and worker groups are pinned the same way. A device or MIG partition that a task names is kept as written. Untyped GPU requests count as "any NVIDIA GPU" instead of T4 unless a default accelerator is set, and untyped TPU, Neuron, AMD, and Gaudi requests count under their own class. A class-only `max_accelerators` entry such as `nvidia_gpu=64` now caps GPUs requested without naming a model, while requests that name a model count against that model's entry (see Breaking Changes below). A Ray task with `reuse_policy` counts against queue caps once per environment, head plus workers, instead of once per action. See [Resource caps and scheduling](../user-guide/clusters-and-queues/resource-caps-and-scheduling).
+
+
+### :mag: Live Queue Activity
+
+Queue details gain an Actions tab that lists the queue's pending and in-flight actions across runs, live, with each action's phase and how long it has been queued. You can search, open an action, or abort it if you have permission. The Overview tab shows Waiting depth separately from Total depth. Run details show the queue each action ran on, not only the run's default, and rerunning or debugging an action uses that action's queue. The launch form lets you choose a different queue when you rerun. See [Managing queues](../user-guide/clusters-and-queues/queues).
+
+
+### :globe_with_meridians: Runs Follow Their Queue Across Cluster Pools
+
+With `flyte run --queue`, the code bundle, inputs, and image builds go to the queue's cluster pool, so a run on a queue in another pool or cloud finds its data. `flyte deploy --queue` and `flyte.deploy(queue=...)` are new. Reruns and trigger runs re-upload inputs when the queue changes, and artifact-trigger runs launch on the trigger's queue. A run whose inputs or code bundle are in a different cluster pool than its queue is now rejected at submission, with an error that names the fix: run on a queue in the right pool, or redeploy with `--queue`. The Console launch form shows the same guidance. Previously these runs failed inside the task pod. Requires Flyte SDK 2.12.2. See [Cluster pools](../user-guide/clusters-and-queues/cluster-pools).
+
+
+### :gear: Cluster Health From What Is Running
+
+Every cluster component now gets a status from its own pods, including components with no health check of their own. A component is Unhealthy when a pod is crash looping, has been not ready for 5 minutes, or should have pods but has had none for 5 minutes. A workload scaled to 0 makes its component Unhealthy at once. A crash-looping pod is reported as a crash loop, with its restart count and last exit, instead of "pods not ready". Isolated connector probe failures, dependency checks that fail while a component restarts, and routine plugin operator rollouts no longer mark the cluster Degraded, and stopping a connector app no longer leaves it Degraded. Sustained failures are still reported. When a cluster stops reporting, it shows Unhealthy with the time of its last report, and the details page marks its snapshot and Components tab as stale.
+
+
+### :bar_chart: Redesigned Cluster Details
+
+The Components tab groups workloads and health checks by category, lists tunnels with their connection state, and opens a details drawer with resource requests and limits, replicas, pod diagnostics, configuration, and plugin dashboards. Data already loaded stays on screen if the live connection drops. Each component and pod shows whether its configuration is current, rolling out, or needs a restart to pick up a change, with the time the configuration last changed. A new Node pools tab shows each node pool's node and pod availability and its resource and accelerator usage next to its configured scaling, with a read-only drawer for capacity type, shapes, taints, and labels.
+
+Cluster CPU and memory now describe the cluster itself: used is the total requests of the pods running on it, and capacity is the ceiling its node groups declare. These figures previously came from project quotas. The details page also shows reported software versions, region, storage configuration, log-link settings, and connector resource requests, each with a copy action. Client secrets in a cluster's configuration show as `<redacted>` in the Console and the API. From the CLI, `flyte get node-groups CLUSTER` lists a cluster's node groups with capacity types, weight, and limits, and `-of json` adds `max_pods`. On self-managed clusters, users with cluster-management permission can edit node groups with `flyte update node-groups`, in `$EDITOR` or from a file. See [Clusters](../user-guide/clusters-and-queues/clusters).
+
+
+### :infinity: Reusable Environments Scale to Zero
+
+An environment declared with `replicas=(0, N)` starts with no replicas, scales up to N with demand, and removes idle replicas after `scaledown_ttl`. Previously the pool was created at its maximum size. Idle replicas are reclaimed even while another task is still registered on the environment, very large environments clean up idle replicas on time, and an environment no longer drops below its minimum after idle replicas are removed. Workers are no longer removed while tasks are queued for, running on, or finishing on them, which fixes "Reusable worker ... was unexpectedly disconnected" errors. A retried task in a reusable environment reuses its completed sub-actions. See [Reusable containers](../user-guide/tasks/task-configuration/reusable-containers).
+
+
+### :floppy_disk: Volumes on Your Laptop
+
+`flyte mount volume` uses NFS on macOS, so you don't need macFUSE. It forks by default, and Ctrl-C commits the fork; use `--read-only`, `--no-commit`, or `--transport fuse|nfs` to change that. `flyte create volume NAME --mount` creates and mounts a volume in one step, without `--bucket`. The local working copy is durable, and the next `flyte mount volume` picks up unpublished local work, even offline. `flyte status volume`, `flyte unmount volume`, and `flyte forget volume` manage local mounts, and `forget` refuses to discard unpublished work without `--discard`. `flyte warmup volume` fills the local cache for offline use. Name the volume to mount with `--artifact NAME [--version V]`, `--run/--action`, or `--locator`. Mount and explore both accept `--project`, `--domain`, and `--region`, missing credentials fail in under a second, and AWS SSO profiles are resolved. See [Work with a volume on your machine](../user-guide/tasks/task-programming/volumes/local).
+
+
+### :floppy_disk: Copy, Release, and Inspect Volumes
+
+`Volume.clone(destination, ...)` copies a volume server-side within a bucket on S3, GCS, and Azure, and between S3 buckets when `boto3` is installed. Repeated promotions into the same destination copy only new chunks, and `publish_artifact=` registers the copy as an artifact version. `Volume.abandon(timeout=30)` releases a mount whose client died, without committing, so the pod can remount. An `AppEnvironment` accepts a pod template whose primary container is not named `app`, so `pod_template=allow_volumes()` mounts volumes in apps without elevated privileges, and volumes now mount on EKS Auto Mode clusters that Union provisions for self-serve organizations. In run details, volumes, files, and directories in a run's inputs and outputs appear as cards with size, storage location, and read-only or read-write mode. Every path has a copy button, and a volume input links to the run that produced it. Block volumes run the first trim after a mount in the background, throttle later trims, and bound the volume client's memory, which roughly halves peak memory at checkpoints and reduces out-of-memory kills. See [Volumes](../user-guide/tasks/task-programming/volumes/_index).
+
+
+### :rocket: Run Tasks on Slurm
+
+`flyteplugins-slurm` runs Flyte tasks on an existing Slurm cluster, including Soperator-managed clusters, with no changes to the cluster. A `slurm` task runs its container image as an sbatch job under Pyxis/Enroot, with typed inputs and outputs, caching, retries, and error reporting. Remove `plugin_config` and the same task runs on Kubernetes. A `slurm_script` task submits an existing sbatch script unchanged. The connector runs in the data plane's `flyteconnector` image and reaches the cluster over SSH to a login node. See [Slurm](../integrations/slurm/_index).
+
+
+### :sparkles: dbt, Nextflow, and GitLab Integrations
+
+`flyteplugins-dbt` adds `DbtTask`, which runs a dbt CLI invocation as a Flyte task. The command, selection, target, and extra arguments are task inputs, so one task serves several commands, and results come back as `DbtNodeResult` summaries. `flyteplugins-nextflow` runs a Nextflow pipeline inside a Flyte task with `run_nextflow("nf-core/demo", ...)` and `nextflow_image()`, and each Nextflow task appears as its own child action. `GitLabProvider`, in the new `flyteplugins-gitlab` package, joins the GitHub, Slack, Linear, ClickUp, and Jira webhook providers. It verifies GitLab's shared token and normalizes deliveries into typed events. See [dbt](../integrations/dbt/_index), [Nextflow](../integrations/nextflow/_index), and [GitLab](../integrations/software-development-tools/gitlab).
+
+
+### :label: Pin a Trigger to a Task Version
+
+`flyte.Trigger(name="prod", task_version="v1.4.0")` keeps a trigger on that task version when other versions are deployed. To promote or roll back, change the pin and redeploy. Triggers without a pin keep following each deploy. Requires Flyte SDK 2.12.5. See [Triggers](../user-guide/triggers/_index).
+
+
+### :hourglass_flowing_sand: LLM Serving Metrics and Model Streaming
+
+On BYOC clusters, the app details page for vLLM and SGLang apps charts Time to First Token, Time per Output Token, and generated tokens per second. `flyte.extras.model_streamer` streams safetensors weights from object storage as parallel byte ranges, with nothing written to local disk. `ModelStreamer` offers `stream()`, `state_dict()`, and `load_into(module)`, and `load_hf_model(path, device="cuda")` loads a Hugging Face model and returns `(model, path)`. In `flyteplugins-vllm`, `load_format="flyte-streaming"` streams weights into an offline `vllm.LLM` inside a task. See [Stream model weights](../user-guide/inference/stream-model-weights).
+
+
+### :robot: Inference Gateway Updates
+
+`POST /v1/decisions` takes a state and named questions and returns typed answers: a probability, a chosen option, or a score. Providers can be TypeSafe models (a new hosted provider), hosted LLMs, or Union-served vLLM and SGLang apps with **Answers decisions** turned on, and the gateway overview gains an Endpoints card with a `curl` example. A Google Vertex AI provider takes a GCP project and region, and either a Union secret holding a service-account key or the gateway's own Google identity. Call its models as `vertex/<model>`; budgets and spend are tracked as for other providers. `GuardrailAppEnvironment(name=..., pre=..., post=...)` in `flyteplugins-union[guardrails]` turns a Python function into a guardrail app. Return `Verdict.allow()`, `Verdict.block(message, reason)`, or `Verdict.cached(content)`, and use `guardrail_router()` to add the routes to an existing FastAPI app. Existing gateways show "update available" until they are redeployed. The Inference Gateway is in preview. See [Inference Gateway](../user-guide/inference/inference-gateway/_index) and [Python guardrails](../user-guide/inference/inference-gateway/guardrails/python-guardrails).
+
+
+### :sparkles: Edit Deployment Values in the Console
+
+For self-serve organizations, a cluster's Config tab has a `values.yaml` editor. Browse and link to deployment revisions, edit and apply values, and watch deployment progress and errors. The editor warns about unsaved changes, asks before overwriting a newer revision, and keeps your draft if a deployment fails.
+
+
+### :wrench: SDK Updates
+
+- `flyte run --custom-context KEY=VALUE` and `--custom-context-from-env VAR` set a run's custom context, for file tasks, `--local`, `--tui`, and deployed tasks.
+- `@env.task(prefix=...)` names a task `<env>.<prefix>-<function>`, so one environment can hold same-named functions. Defining two different functions under one task name logs a warning.
+- `flyte create secret --type image_pull NAME --from-file ~/.docker/config.json` works with credential-helper configs, such as cross-account Amazon ECR.
+- `File.from_local`, `Dir.from_local`, `storage.put`, and `storage.put_stream` take `chunk_size` and `max_concurrency`, with defaults from `FLYTE_IO_UPLOAD_CHUNK_SIZE` and `FLYTE_IO_UPLOAD_MAX_CONCURRENCY`. `batch_size` is honored on S3, GCS, and Azure, which helps avoid S3 SlowDown errors.
+- `flyte.init_from_api_key()` takes `ca_cert_file_path` and `insecure_skip_verify`, for API keys behind TLS-inspecting proxies.
+- Set the image builder to `local-podman` to build images with Podman.
+- `RTX_PRO_4500` and `"RTX_PRO_6000:2"` can be requested by name, RTX PRO 6000 MIG profiles (`1g.24gb`, `2g.48gb`, `4g.96gb`) can be requested with `flyte.GPU(..., partition=...)`, and `"T4 shared"`, `"L4 shared"`, `"A10G shared"`, `"A10 shared"`, and `"L40S shared"` request a time-sliced share of one GPU. Canonical accelerator names now use underscores, such as `A100_80G`, and space-separated names such as `"A100 80G"` are deprecated.
+- Pydantic `Field(pattern=...)`, `Field(ge=..., le=...)`, `annotated_types` constraints, titles, descriptions, and `json_schema_extra` carry into a task's JSON schema. Discriminated unions and `Annotated` enums work.
+- `DO_NOT_TRACK=1` or `FLYTE_DISABLE_TELEMETRY=true` turns off the SDK's crash reports and usage counts.
+- Task error messages include the exception type, for example `KeyError: 'price'` instead of `'price'`.
+- `Action.details()`, `Action.wait()`, the input and output methods of `ActionDetails` and `RunDetails`, `Artifact.to_python()`, and `Trigger.get_details()` can be called without `await`. Awaiting a synchronous remote method, such as `await details.outputs()`, is deprecated in favor of `.aio()`; it still works and raises a `DeprecationWarning`.
+- A `PodTemplate(labels={...})` without a pod spec works, for example to set a Kueue queue name.
+- The CLI loads about three times faster, and local runs and no-op tasks start about 100 ms sooner. Task pods skip build, deploy, and dataframe imports unless a task uses them. `flyte get` tables fit narrow terminals.
+- `flyte.sandbox` (alpha) is deterministic: reading the clock, unseeded `random`, and `os.urandom()` raise inside it, and sleeps count against the timeout.
+- `asyncssh` moves to the `flyte[ssh]` extra. The default image still includes it, and other images install it when a debug session starts.
+- With `cache="auto"`, the cache version for `ContainerTask` and `flyte.extras.shell` tasks now covers the image, command, and arguments.
+- `flyte get queue` fits the terminal and points to `-of json` for the columns it drops. A limit of 0 reads as unlimited, and a queue with no scheduling policy reads as `unspecified`.
+- Flyte SDK 2.11 and 2.12 need `flyteplugins-union` 0.18.0 or later, and SDK 2.12.2 needs 0.20.2 or later. With an older plugin, `flyteplugins.union.remote` fails to import, which breaks `flyte debug` and the Union CLI commands. Plugin 0.18.0 is the first release that installs alongside SDK 2.11 and 2.12, and it no longer downgrades `flyte` on install; releases 0.15.2 through 0.17.0 require SDK below 2.11. Plugin 0.15.5 was published only for Linux x86_64, and other platforms resolve to 0.15.3, so upgrade to 0.18.0 or later.
+
+
+### :wrench: Reliability and Fixes
+
+A run input or output with a large string value shows a compact, labeled preview, with copy and download for the full value. Runs with more than 200,000 actions show accurate phase counts that update every few seconds, and a cached action shows which run, action, and attempt its result came from, with a link. Task logs for completed or evicted pods that the node has already removed load from the cluster's persisted logs instead of failing with `unable to retrieve container logs`. Logs for an older attempt no longer show a newer attempt's output, and the logs tab stays live when you refresh or switch attempts.
+
+A task sent to a worker right after another finished no longer waits about five minutes for the slot. Cached outputs are copied within the object store, so many cache hits at once no longer exhaust a worker's memory, and reading a succeeded action's outputs right after `run.wait()` no longer fails with NotFound for cache hits and retried actions. On failure, early exit, or cancellation, `flyte.map` aborts in-flight children, so runs no longer stay active. When Kueue preempts a task's pod, the task error shows Kueue's reason instead of "object deleted". A cluster's default pod templates now apply to Flyte 2 task pods, as they already did for Flyte 1 tasks, and connector tasks resolve Union and Flyte secrets correctly again. Running in an organization with no data plane says to connect one, instead of a generic "unavailable" error, and registering a project no longer leaves a domain without its access policy. An API request that names an organization other than the caller's is rejected with PermissionDenied. Authenticated responses from apps, the data plane, and the control plane are marked `Cache-Control: private`, and login redirects and authentication errors `Cache-Control: no-store`. The platform handles more concurrent task-coordination requests, and status.union.ai marks an API degraded or down only when a failure affects many organizations. Images built with SDK 2.12.1 or later get updated CA roots; rebuild images to pick them up.
+
+In the SDK and plugins, a readmitted clustered task loads its own checkpoint, trigger list and dict inputs keep their element types, `File.download()` skips the copy for local files, and `File` and `Dir` no longer take over custom-transformer blobs. Remote builds through a localhost endpoint get a valid registry, and the threaded local cache no longer hits SQLite errors. `flyte debug --api-key` no longer deadlocks, the volume client no longer crashes on a canceled read, which had left block volumes returning I/O errors, and a second container in the same pod can mount a volume.
+
+In the Console, trace details show the trace name, the action ID, and a copyable link to the selected trace. Actions restored by Recover have their own icon, and their cache tooltip shows cache disabled. Sign-in and device authorization are one centered form, and going back to a sign-in link that was already used says so. Creating an organization requires a work email, so `onmicrosoft.com`, Hotmail, and QQ Mail addresses are asked for a company address, and returning users go to their last organization. Links from run details to a queue or cluster return to the original run, action, and tab, Settings links keep search and the selected cluster pool, and entity pages show the entity's name in the browser tab. The Busiest Users dashboard shows names for shared apps and for runs created before a sign-in provider change. Tabs use text labels, the Apps card view has empty, loading, search, filter, and error states, the action timeline stops counting at a terminal phase, and opening one task group no longer opens another that shares its environment. Restoring many run tabs no longer drives the browser to high CPU, live run views stay connected while many task versions deploy, and after an AWS Marketplace purchase, setup returns you to the linked organization.
+
+
+### :gear: Self-Managed Dataplane Updates
+
+Update the Union dataplane Helm chart to 2026.11.0 or later. Before you upgrade:
+
+- Chart 2026.10.1 makes zero trust the default: `zero_trust.enabled` defaults to `true`. If you host your own control plane, set `zero_trust.enabled: false` before upgrading, because zero trust is not supported for self-hosted control planes. If your data plane still uses the `knative-operator` path, run the `knative-migration` chart before upgrading, because skipping it deadlocks the upgrade. Then set `gateway.enabled: true` and `knative-operator.enabled: false`. Zero trust needs `secrets.admin` enabled; with `secrets.admin.enable: false` the chart fails to render.
+- Chart 2026.10.1 sets Prometheus's Go memory limit from its container limit (`enable-feature=auto-gomemlimit`), so short spikes no longer kill it. If you override `prometheus.server.extraFlags`, add that flag along with `web.enable-lifecycle` and `enable-feature=expand-external-labels`, or append flags with `prometheus.server.extraArgs` instead.
+- Union workloads restart once on the upgrade to 2026.10.1, because their config checksum changes. Later changes to ConfigMap labels or template whitespace no longer restart them.
+
+The upgrade brings:
+
+- Per-component cluster health from pods, named crash loops, fewer false alarms, secret redaction, and configuration rollout status. Until a data plane is upgraded, its components read "unknown".
+- Reusable environments that scale to zero, release idle replicas promptly, and keep busy workers.
+- Untyped GPU tasks pinned to the type they were counted under, or to your default accelerator.
+- Logs for cleaned-up pods from persisted logs, and correct logs per attempt.
+- Faster task starts on a full worker, and cache hits that copy outputs within the object store.
+- Cluster default pod templates for Flyte 2 task pods, and Kueue preemption reasons in task errors.
+- On a data plane installed into one namespace, event details on task errors, cleanup of orphaned worker pods, and Ray cluster cleanup.
+- Fixed connector secrets, and a default `flyteconnector` image that includes the BigQuery, Snowflake, Databricks, Spark, and Slurm connectors, so you no longer need to override `flyteconnector.image` to use them.
+- `telemetry.enabled: false`, which sets `DO_NOT_TRACK=1` on every task pod and turns off the SDK's crash reports and usage counts. See [Telemetry](../deployment/selfmanaged/configuration/telemetry).
+- Opt-in Nydus lazy image pulls: set `nodeBootstrap.enabled` and then `imageBuilder.enableImageOptimization` to pull images lazily, as BYOC data planes do. See the chart's release notes for node requirements.
+
+See [Upgrade the data plane](../deployment/selfmanaged/upgrade).
+
+
+### :warning: Breaking Changes
+
+- **VS Code and Jupyter links into a task pod need run permission.** These links run code with the task's credentials, so opening one now requires permission to run executions in the project. Requests forwarded to the pod no longer carry your authorization header, identity headers, or Union session cookies. Spark, Ray, and Dask dashboard links still need only view access. Grant run permission on the project to users who need VS Code or Jupyter access.
+- **Class-only GPU caps no longer cover requests that name a model.** A class-only entry such as `nvidia_gpu=64` now caps only GPUs requested without a model, class-only entries for non-NVIDIA classes are rejected, and untyped GPU requests are no longer counted as T4. Add a per-model entry, for example `nvidia-h100=8`, for typed requests, name the device for non-NVIDIA caps, and set `task_resource.default_accelerator` if untyped requests should count as a specific type.
+- **Finished Flyte 1 task pods are deleted on BYOC clusters**, as Flyte 2 task pods already were. To read finished-task logs, use the Console's log links, which read persisted logs, instead of `kubectl`.
+- **`asyncssh` is not installed with `flyte`** (SDK 2.12.2). SSH debugging on images that can't reach a package index, such as air-gapped images, needs `flyte[ssh]` in the image.
+- **Container and shell task caches miss once** (SDK 2.12.0). Entries for `ContainerTask` and `flyte.extras.shell` tasks with `cache="auto"` made before the upgrade miss one time. No action is needed.
+- **Task error message text changes** (SDK 2.12.2). Messages now start with the exception type. Code that matches on error text should match on the exception type, or update its pattern.
+- **Badger is the only volume metadata store** (plugin 0.18.0). Re-create volumes published with the SQLite or Redis metadata store, and remove uses of `with_high_throughput_volume_deps`, `Volume.migrate_metadata_store_type`, `VolumeMigrateNoop`, and `UNION_VOLUME_METADATA_STORE`. Volumes cannot be mounted on Windows for now.
+- **`flyte mount volume` names the volume with a flag** (plugin 0.19.1). Use `--artifact`, `--run/--action`, or `--locator`. `--keep-artifact` is replaced by `--detach-artifact`.
+- **`--fairness` is removed from queues** (plugin 0.16.0). Remove `flyte create queue --fairness`, the `fairness` edit key, and `Queue.fairness`, and use `--scheduling` instead.
+- **`max_nodes: 0` means unbounded in node-group files** (plugin 0.20.0). Remove the key or set the limit you want where you used 0 to mean "unset".
+- **Upgrade the plugin with the SDK.** SDK 2.11 and 2.12 need `flyteplugins-union` 0.18.0 or later, and SDK 2.12.2 needs 0.20.2.
+
+
 ## September 2026
 
 
