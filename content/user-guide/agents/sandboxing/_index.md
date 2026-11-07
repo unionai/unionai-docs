@@ -64,7 +64,7 @@ This is the right choice when you need full Python capabilities: third-party pac
 |---|---|---|
 | **Runtime** | Monty (Rust-based Python interpreter) | Ephemeral Docker container |
 | **Startup** | Microseconds | Seconds (image build + container spin-up) |
-| **Capabilities** | Pure Python control flow only: no imports, no I/O, no network | Full Python environment: any package, any library, full I/O |
+| **Capabilities** | Python with a subset of the standard library: no third-party packages, no I/O, no network | Full Python environment: any package, any library, full I/O |
 | **Use case** | LLM-generated orchestration logic that calls registered tools | Arbitrary computation: data processing, test execution, ETL, shell pipelines |
 | **State** | Runs within a worker container process | Stateless: fresh container per invocation |
 | **Security model** | Dangerous operations are structurally impossible | Isolated container |
