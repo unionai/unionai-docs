@@ -81,7 +81,7 @@ flyte.init(
 | `log_level` | `int` | `LOG_LEVEL` env var, else `WARNING` | Level for the framework logger (`flyte`). |
 | `user_log_level` | `int` | `USER_LOG_LEVEL` env var, else `INFO` | Level for the user logger (`flyte.user`). |
 | `log_format` | `"console"` \| `"json"` | `LOG_FORMAT` env var, else `"console"` | Output format. |
-| `reset_root_logger` | `bool` | `False` | When `True`, Flyte clears the root logger's existing handlers and installs its own. When `False` (the default), Flyte leaves your existing root handlers in place and wraps their formatters so third-party log lines also carry the run/action context. |
+| `reset_root_logger` | `bool` | `False` | When `True`, Flyte clears the root logger's existing handlers and installs its own. With `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler. When `False` (the default), Flyte leaves your existing root handlers in place and wraps their formatters so third-party log lines also carry the run/action context. |
 
 > [!NOTE]
 > Explicit `flyte.init()` arguments take precedence over the environment variables. An argument left unset falls back to the corresponding environment variable, then to the built-in default.
@@ -103,7 +103,7 @@ Setting `LOG_FORMAT=json` (or `log_format="json"`) switches Flyte's output to JS
 
 This matters when you ship logs to a cloud logging backend — Google Cloud Logging (Stackdriver), AWS CloudWatch, Datadog — that expects one consistent JSON format across every line.
 
-To make third-party lines JSON as well, also set `reset_root_logger=True`. Flyte then clears the root logger's existing handlers and attaches a JSON handler at the root, so every library that propagates to the root logger is captured as JSON:
+To make third-party lines JSON as well, also set `reset_root_logger=True`. Flyte then clears the root logger's existing handlers and attaches a JSON handler at the root, so every library that propagates to the root logger is captured as JSON. With `flyte` 2.12.5 or later, Flyte also routes Python warnings (`warnings.warn()`) through that handler, as `WARNING` records from the `py.warnings` logger, instead of leaving them as plain text on stderr:
 
 ```python
 import flyte
