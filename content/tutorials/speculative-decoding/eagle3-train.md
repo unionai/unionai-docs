@@ -109,6 +109,8 @@ Every data task also renders a report:
   called tools, with a rendered example episode.
 - `build_dataset` shows the final mix: chat against agent tokens, and per-shard totals.
 
+![The build_dataset report: 4,000 chat rows and 4,000 agent episodes, with target tokens by source and per example](../../_static/images/tutorials/speculative-decoding/dataset-report.png)
+
 Check these before you spend GPU hours on training. A shard with many failed episodes or a
 response length distribution piled up at `--max-tokens` means the data, not the trainer,
 needs fixing.
@@ -157,6 +159,8 @@ metrics per epoch, and records the configuration. Position 0 is the first drafte
 Each later position counts only when every earlier one was accepted, so acceptance length
 is roughly `1 + acc0 + acc0 × acc1 + …`. Watch position 0: if it does not rise above the
 public head's starting point, more training will not help.
+
+![The EAGLE-3 training report from the full run: loss, accuracy at each draft position, and the kept checkpoint](../../_static/images/tutorials/speculative-decoding/eagle3-training-report.png)
 
 Things to know about the training settings:
 

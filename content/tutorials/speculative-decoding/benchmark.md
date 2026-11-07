@@ -89,6 +89,17 @@ python compare.py --smoke   # 20 training steps, 12 prompts per workload
 python compare.py           # the full run
 ```
 
+In the run, the three trainings sit in a `train` group and the eight benchmarks in a
+`benchmarks` group. Each benchmark has its own report, with decode speed and throughput by
+concurrency for each workload:
+
+![The benchmark_server report for dflash-finetuned: tokens per second and acceptance length per workload, by concurrency](../../_static/images/tutorials/speculative-decoding/benchmark-server-report.png)
+
+`run_benchmarks` renders the comparison: the best speedup per workload, the GSM8K accuracy
+range, and speedup charts for every configuration:
+
+![The run_benchmarks report comparing all eight configurations](../../_static/images/tutorials/speculative-decoding/compare-report.png)
+
 ## Verify that outputs are unchanged
 
 Speculative sampling is lossless in theory: every accepted token is one the target would

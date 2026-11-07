@@ -58,6 +58,12 @@ python dspark.py --smoke   # 20 training steps
 python dspark.py           # the full run
 ```
 
+Training from scratch takes the longest of the three families: about 30,000 steps over five
+epochs, nearly seven hours on one L40S. The report shows the loss falling across all five
+epochs and which epoch's checkpoint was kept:
+
+![The DSpark training report from the full run: about 30,000 steps from scratch, with loss and per-position accuracy](../../_static/images/tutorials/speculative-decoding/dspark-training-report.png)
+
 [Benchmark draft models](./benchmark) compares the DSpark drafter with the public and
 fine-tuned EAGLE-3 and DFlash drafters.
 

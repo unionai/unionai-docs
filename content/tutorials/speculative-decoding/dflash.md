@@ -58,8 +58,14 @@ python dflash.py --smoke   # 20 training steps
 python dflash.py           # the full run
 ```
 
-The training report charts draft accuracy at each block position. Expect position 0 to be
-close to EAGLE-3's first token, and accuracy to fall steadily across the block.
+The training report charts draft accuracy at each block position. Expect accuracy to fall
+steadily across the block, and even position 0 to trail EAGLE-3's: in the full run, 78%
+against EAGLE-3's 95%. DFlash drafts every position of the block in one pass, without seeing
+its own earlier guesses. It wins on speed by proposing 15 tokens per step, not by drafting
+each one better.
+
+![The DFlash training report from the full run: accuracy falls from 78% at the first block position to 46% at the third](../../_static/images/tutorials/speculative-decoding/dflash-training-report.png)
+
 [Benchmark draft models](./benchmark) compares the fine-tuned drafter with the public DFlash
 head and with every other family.
 
