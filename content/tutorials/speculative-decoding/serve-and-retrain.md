@@ -73,6 +73,11 @@ python serve.py --agent 500                    # through the EAGLE-3 app
 python serve.py --method dflash --agent 500    # through the DFlash app
 ```
 
+Each model call appears in the run as its own `call_model` trace, next to the report. This
+run sent 250 episodes through the EAGLE-3 app in under a minute:
+
+![The agent_job run: one call_model trace per model call, and a report of 250 episodes with no failures and 412 tool calls](../../_static/images/tutorials/speculative-decoding/agent-traffic-report.png)
+
 These are the traces the retraining loop consumes. Every response in them is the target's,
 whichever drafter served it, so one stream of traffic trains every family. In your own
 application, any task or app that logs its prompts, tool schemas, and the model's responses in
@@ -100,6 +105,13 @@ which training did not see:
 Each cycle's report records the decision: the family and trace window, how many traces
 trained the candidate and how many prompts tested it, both acceptance lengths, and whether the
 candidate was promoted.
+
+In this cycle, the candidate trained on 225 traces and drafted no better than the current
+head on the 46 held-out prompts, so the gate kept the current head. The traffic came from
+the same tool-calling dataset the head was fine-tuned on, so there was nothing new to
+learn. The loop pays off when traffic drifts away from what the drafter last trained on.
+
+![A retrain report: 250 traces in the window, and the current head kept because the candidate's acceptance length was 0.2% lower](../../_static/images/tutorials/speculative-decoding/retrain-gate-report.png)
 
 Design choices that keep the loop safe:
 
