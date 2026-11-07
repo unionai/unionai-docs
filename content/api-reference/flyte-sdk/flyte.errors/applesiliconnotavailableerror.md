@@ -2,7 +2,7 @@
 title: AppleSiliconNotAvailableError
 description: "Raised when `gpu=\"AppleSilicon\"` is requested anywhere but a devbox on an Apple Silicon Mac: another OS or architecture, a devbox started without `--apple-silicon`, or a remote cluster."
 icon: exclamation-triangle
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

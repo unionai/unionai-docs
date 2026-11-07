@@ -2,7 +2,7 @@
 title: BatteryError
 description: "The questions cannot be compiled."
 icon: exclamation-triangle
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ClusteredTaskEnvironment
 description: "A TaskEnvironment that emits a Kubernetes JobSet for distributed multi-node training."
 icon: braces
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -27,7 +27,9 @@ A clustered task can start over at three levels; only the second uses the task's
    of the task's `retries` and waits `RetryStrategy.backoff` first. Causes: the task failed
    after its JobSet restarts were used up, or the gang was preempted by higher-priority work
    after it started. If the task can be preempted, set `retries > 0`, otherwise the first
-   preemption fails it. Limit run time with `timeout=flyte.Timeout(max_runtime=...)`.
+   preemption fails it, or set `failure_policy.resume_after_preemption` to wait out
+   preemptions in the same attempt instead. Limit run time with
+   `timeout=flyte.Timeout(max_runtime=...)`.
 3. **System retries**: the same attempt with a new JobSet, after an infrastructure problem
    such as the queue being stopped or nodes failing. They do not use `retries`.
 

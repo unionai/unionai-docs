@@ -2,7 +2,7 @@
 title: SessionAddress
 description: "Where a session can be reached, as its worker reported it."
 icon: braces
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

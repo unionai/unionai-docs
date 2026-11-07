@@ -2,7 +2,7 @@
 title: AgentTool
 description: "A normalized tool descriptor used by `flyte.ai.agents.Agent`."
 icon: braces
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---

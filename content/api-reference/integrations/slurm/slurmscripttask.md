@@ -2,7 +2,7 @@
 title: SlurmScriptTask
 description: "An existing sbatch script run as a Flyte task, unmodified."
 icon: braces
-version: 2.12.4
+version: 2.13.0
 variants: +flyte +union
 layout: py_api
 ---
