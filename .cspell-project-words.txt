@@ -5,6 +5,8 @@
 
 # --- Products / brands / orgs ---
 Apptainer
+dflash
+dspark
 Enroot
 GRES
 nsys
@@ -234,7 +236,9 @@ statefulsets
 sxid
 Tanimoto
 Tavily
+TPOT
 tqdm
+TTFT
 Uctl
 Umare
 unkeyed
