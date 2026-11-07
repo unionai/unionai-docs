@@ -51,7 +51,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 
 {{< variant flyte >}}
 {{< markdown >}}
-The open-source Flyte backend doesn't apply `raw_data_path` (or `--raw-data-path`) to remote runs; see [Where your data lives](../../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+On the open-source Flyte backend, remote runs apply `raw_data_path` (or `--raw-data-path`) only with flyteorg/flyte `v2.0.54` or later.
 {{< /markdown >}}
 {{< /variant >}}
 
