@@ -77,7 +77,7 @@ When a task returns data:
 
 {{< variant flyte >}}
 {{< markdown >}}
-The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [Where your data lives](../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+On the open-source Flyte backend, remote runs apply `raw_data_path` only with flyteorg/flyte `v2.0.54` or later.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -161,9 +161,3 @@ run = flyte.with_runcontext(
 ```
 
 This allows you to control where raw data (files, directories, DataFrames) is stored for specific runs. See [Run context](../tasks/task-deployment/run-context) for the full set of options.
-
-{{< variant flyte >}}
-{{< markdown >}}
-The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [Where your data lives](../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
-{{< /markdown >}}
-{{< /variant >}}
