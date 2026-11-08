@@ -71,7 +71,8 @@ The chart and the CRDs are released together under one calendar version (for exa
    any one-time migration step.
 2. **Check for one-time migrations** before upgrading. If your cluster previously enabled
    `knative-operator`, complete the [Moving off the knative-operator path](#one-time-migrations)
-   step before running `helm upgrade`.
+   step before running `helm upgrade`. If you are upgrading from a version before 2026.10.1 to
+   2026.10.1 or later, also read [Upgrade to 2026.10.1 or later](#upgrade-to-2026101-or-later).
 3. **Save your current values and note the release revision.** The saved file includes
    everything you passed with `--set` at install time, such as your client ID and secret, so
    store it securely:
@@ -195,3 +196,45 @@ Some releases include a step that runs once, outside the normal flow. These are 
     --set adoption.targetNamespace="$NS" \
     --wait --wait-for-jobs --timeout 15m
   ```
+
+  Then set `gateway.enabled: true` and `knative-operator.enabled: false` in your upgrade values
+  file. If you switch to the built-in gateway without running the migration, the upgrade
+  deadlocks. From 2026.10.1, zero trust requires that switch.
+
+### Upgrade to 2026.10.1 or later
+
+From chart 2026.10.1, `zero_trust.enabled` defaults to `true`. With
+no values change, the chart installs the Envoy gateway, the dataproxy backend and the
+tunnel-service data plane ingress, and Prometheus forwards metrics to the control plane (see
+[Monitoring](./configuration/monitoring#metrics-sent-to-the-control-plane)). Before you upgrade to
+2026.10.1 or later:
+
+- **If you host your own control plane, set `zero_trust.enabled: false`.** Zero trust is not
+  supported for self-hosted control planes.
+- **Keep `gateway.enabled: true`.** Zero trust requires the built-in gateway. With
+  `gateway.enabled: false` the chart fails to render:
+
+  ```text
+  zero_trust.enabled requires the vendored gateway: set gateway.enabled=true (knative-operator delivery is not supported with zero trust)
+  ```
+
+  If the data plane still uses the `knative-operator` path, complete
+  [Moving off the `knative-operator` path](#one-time-migrations) first.
+- **Keep `secrets.admin.enable: true`.** Prometheus authenticates its forwarding with the
+  `union-secret-auth` secret. With `secrets.admin.enable: false` and Prometheus on (the default),
+  the chart fails to render:
+
+  ```text
+  zero_trust metrics remote_write requires secrets.admin.enable=true so union-secret-auth provides the app_secret used as the prometheus oauth2 client_secret_file
+  ```
+
+- **If you override `prometheus.server.extraFlags`, add the 2026.10.1 default flag.** Chart 2026.10.1
+  adds `enable-feature=auto-gomemlimit`, which sets Prometheus's Go memory limit from its container
+  memory limit. A list you set replaces the chart's list, so it must include
+  `web.enable-lifecycle`, `enable-feature=expand-external-labels` and
+  `enable-feature=auto-gomemlimit`. To add flags without replacing the defaults, use
+  `prometheus.server.extraArgs` instead.
+
+Upgrading from a version before 2026.10.1 to 2026.10.1 or later restarts the Union workloads
+once. From 2026.10.1, the `configChecksum` the chart stamps on their pods is a hash of the
+ConfigMap's data, so only data changes restart them.
