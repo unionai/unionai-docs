@@ -71,6 +71,9 @@ The examples on these pages come from a GRPO loop with LoRA adapters and an agen
 {{< markdown >}}
 
 - [RL for LLMs with GRPO and LoRA](../../tutorials/reinforcement-learning/grpo-lora/_index): the GRPO loop on these pages, end to end, and its multi-node version.
+- [Teach a humanoid to run](../../tutorials/reinforcement-learning/humanoid-locomotion/_index): a simulator compiled onto the GPU, with a live video report of the policy as it learns.
+- [Reward design with Claude and sandboxes](../../tutorials/reinforcement-learning/eureka-reward-design/_index): model-written reward functions, each trained in a sandbox.
+- [Self-play league for Connect Four](../../tutorials/reinforcement-learning/self-play-league/_index): a learner, a league of its past snapshots, and Elo ratings.
 
 {{< /markdown >}}
 {{< /variant >}}
