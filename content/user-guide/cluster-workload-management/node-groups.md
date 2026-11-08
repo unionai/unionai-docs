@@ -96,8 +96,6 @@ flyte update node-groups my-cluster -f node-groups.yaml
 An update **replaces the cluster's complete set** of node groups. A group you
 leave out of the edited YAML or the file is removed from the cluster. To change
 one group with `-f`, export the current set, edit it, and apply the whole file.
-A provisioning run that writes the cluster's spec also replaces its node groups
-with the set that spec declares.
 
 Before it writes, the command prints which groups are added, removed, or
 changed, by name. If any group would be removed, it asks you to confirm. Pass
@@ -139,7 +137,8 @@ the file always replaces whatever is stored.
 The control plane decides whether you may write a cluster's node groups. Node
 groups of a cluster that {{< key product_name >}} provisions (BYOC) are managed
 by provisioning, so a write to one is refused, and the CLI shows the control
-plane's error. A cluster with no recorded type is refused the same way.
+plane's error. A cluster with no recorded type is refused the same way. On a
+cluster you manage, you need permission to manage that cluster.
 
 If your control plane doesn't accept node group writes, every update fails
 with `this control plane does not accept node group writes yet`.
