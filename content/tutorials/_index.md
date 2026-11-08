@@ -28,7 +28,7 @@ Financial research, trading, and other fintech workloads.
 {{< /link-card >}}
 
 {{< link-card target="frontier-ai" icon="stars" title="Frontier AI" >}}
-Frontier-model pretraining, automated experimentation, and large-scale AI workloads.
+The everyday workloads of frontier AI labs: pretraining, data curation for text and video, evals on every checkpoint, interpretability, and AI-driven science.
 {{< /link-card >}}
 
 {{< /grid >}}

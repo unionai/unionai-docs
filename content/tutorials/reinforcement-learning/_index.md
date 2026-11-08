@@ -1,7 +1,7 @@
 ---
 title: Reinforcement learning
 icon: trophy
-description: Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, humanoid locomotion, model-written rewards, and self-play.
+description: "Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, humanoid locomotion, model-written rewards, and self-play."
 weight: 10
 variants: +flyte +union
 sidebar_expanded: true
