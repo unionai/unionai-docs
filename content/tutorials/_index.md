@@ -57,11 +57,9 @@ Training, fine-tuning, and hyperparameter optimization of models at scale.
 Train, benchmark, serve, and continually retrain draft models that make an LLM generate faster without changing its outputs.
 {{< /link-card >}}
 
-{{< variant union >}}
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
-Reinforcement learning on Union, from RL for LLMs to humanoid locomotion, model-written rewards, and self-play.
+Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, humanoid locomotion, model-written rewards, and self-play.
 {{< /link-card >}}
-{{< /variant >}}
 
 {{< variant union >}}
 {{< link-card target="data-processing" icon="stack" title="Data Processing" >}}

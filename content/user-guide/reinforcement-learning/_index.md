@@ -78,5 +78,5 @@ The examples on these pages come from a GRPO loop with LoRA adapters and an agen
 {{< /markdown >}}
 {{< /variant >}}
 
-- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): an agentic RL loop with sandboxes, verifiers, and judges. It has an open-source version, which the open-source code on these pages comes from.
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/reinforcement-learning/agentic-rl-skyrl/_index): an agentic RL loop with sandboxes, verifiers, and judges. It has an open-source version, which the open-source code on these pages comes from.
 - [Code sandboxing](../agents/sandboxing/code-sandboxing): run model-written code safely inside an environment or a reward.
