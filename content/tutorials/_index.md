@@ -59,7 +59,7 @@ Train, benchmark, serve, and continually retrain draft models that make an LLM g
 
 {{< variant union >}}
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
-RL for LLMs, humanoid locomotion, model-written rewards, and self-play.
+Reinforcement learning on Union, from RL for LLMs to humanoid locomotion, model-written rewards, and self-play.
 {{< /link-card >}}
 {{< /variant >}}
 

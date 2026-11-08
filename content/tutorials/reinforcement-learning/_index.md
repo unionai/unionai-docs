@@ -28,15 +28,15 @@ Train a reasoning-style RL loop for an LLM with GRPO and LoRA, orchestrated by p
 {{< /link-card >}}
 
 {{< link-card target="humanoid-locomotion" icon="person-walking" title="Teach a humanoid to run" >}}
-Train a running gait for the Unitree G1 with Brax PPO over MuJoCo MJX, 8,192 robots on one GPU, and watch it learn in a live report.
+Train a running gait for the Unitree G1 humanoid with Brax PPO over MuJoCo MJX, 8,192 simulated robots on one GPU, with a live video report and a published policy.
 {{< /link-card >}}
 
 {{< link-card target="eureka-reward-design" icon="magic" title="Reward design with Claude and sandboxes" >}}
-An Eureka-style loop: Claude writes reward functions, each one trains a policy in a sandbox, and the best one guides the next generation.
+An Eureka-style loop where Claude writes reward functions, every candidate trains a policy inside a sandbox, and the best one's training statistics guide the next generation.
 {{< /link-card >}}
 
 {{< link-card target="self-play-league" icon="grid-3x3" title="Self-play league for Connect Four" >}}
-Train against a league of past selves, rate every snapshot with Elo, and play the champion in your browser.
+Train a Connect Four agent by self-play against a league of its past selves, rate every snapshot with Elo, and serve the champion as an app you can play against.
 {{< /link-card >}}
 
 {{< /grid >}}
