@@ -540,6 +540,9 @@ The `override()` method on remote tasks accepts the following parameters:
 - **max_inline_io_bytes** (`int`): Maximum size for inline IO in bytes
 - **cache** (`flyte.Cache`): Cache behavior and settings
 - **queue** (`str`): Execution queue to use
+- **reusable** (`flyte.ReusePolicy | "off"`): Run the call on a [reusable container](../task-configuration/reusable-containers) pool, or pass `"off"` to run it in a one-off container. Requires `flyte` 2.12.4 or later.
+
+Overriding `reusable` with a `flyte.ReusePolicy` runs the call on its own warm pool, separate from the deployed task's pool. Calls with the same overrides share that pool. To get a warm pool of bigger containers, pass `resources=` in the same `override()` call. You can apply the override to `python` tasks and to tasks that are already reusable. The task's image must include `unionai-reuse`. Other task types, such as Spark, raise `flyte.errors.RemoteTaskUsageError`. Reusable containers run only on a Union backend.
 
 ### Override examples
 

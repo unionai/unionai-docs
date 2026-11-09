@@ -39,7 +39,7 @@ In addition to the client-to-data-plane path, the data plane operator establishe
 
 ## Object store layout
 
-Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. Within that prefix, objects are organized by namespace: `<project>/<domain>/<run-name>/<action-name>/...` for per-run execution artifacts (task inputs, outputs, Decks, checkpoints), with sibling prefixes for offloaded inputs and SDK-uploaded code bundles and image-build contexts. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control plane database, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives).
+Each data plane cluster is configured with one or more object-store buckets in the customer's cloud account, accessed via a configurable storage prefix. By default, run metadata (task inputs, including offloaded inputs, outputs, Decks and action metadata) lives under `metadata/v2/<org>/<project>/<domain>/<run-name>/<action-name>/...` within that prefix. Raw output data, such as file and DataFrame payloads and checkpoints, goes to a separate per-run raw-output prefix, which a run can redirect elsewhere. SDK-uploaded code bundles and image-build contexts have their own prefixes. This layout provides isolation: IAM policies and bucket policies can scope access to specific organizational boundaries. For the developer-facing map of what the bucket contains versus what lives in the control plane database, see [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives).
 
 ## Kubernetes security
 
@@ -61,7 +61,7 @@ When a user defines an `Image` specification, source code is uploaded to the cus
 
 Base images are pulled from registries configured by the customer, allowing the use of hardened or pre-approved base images. Customers can apply their own image tagging conventions, vulnerability scanning policies, and registry access controls.
 
-Task pods mount code bundles via presigned URLs with limited time-to-live (TTL). These URLs expire after a short window, limiting the exposure if a URL is intercepted.
+The SDK uploads code bundles via presigned URL, but task pods do not use presigned URLs to fetch them: they download the bundle from the customer's object store with their own workload-identity credentials (see [IAM and workload identity](#iam-and-workload-identity)).
 
 ## IAM and workload identity
 

@@ -2,7 +2,7 @@
 title: ABFS
 description: "Any Azure Blob Storage specific configuration."
 icon: braces
-version: 2.12.0
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -12,6 +12,16 @@ layout: py_api
 **Package:** `flyte.storage`
 
 Any Azure Blob Storage specific configuration.
+
+`auto()` reads the Flyte-prefixed environment variables (`FLYTE_AZURE_STORAGE_ACCOUNT_NAME`,
+`FLYTE_AZURE_STORAGE_ACCOUNT_KEY`, `FLYTE_AZURE_TENANT_ID`, `FLYTE_AZURE_CLIENT_ID`,
+`FLYTE_AZURE_CLIENT_SECRET`) when any of them is set, and otherwise falls back to the generic
+`AZURE_*` names. The generic names are shared with adlfs, deltalake, the Azure SDKs and others,
+so set the prefixed ones when a task uses the generic names for its own data access.
+
+When a URI names its storage account (`abfs://container@account.dfs.core.windows.net/...`),
+that account takes precedence over a configured `account_name` that differs from it, and the
+configured `account_key` (which belongs to the other account) is not sent.
 
 
 ## Parameters

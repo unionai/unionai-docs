@@ -29,18 +29,20 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 |---|---|---|
 | [Streamlit app](./streamlit-app) | [Streamlit](https://streamlit.io/) | Interactive dashboards and data apps |
 | [FastAPI app](./fastapi-app) | [FastAPI](https://fastapi.tiangolo.com/) | REST APIs, webhooks, and backend services |
-| [vLLM app](./vllm-app) | [vLLM](https://docs.vllm.ai/) | High-throughput LLM inference with an OpenAI-compatible API |
-| [SGLang app](./sglang-app) | [SGLang](https://docs.sglang.io/) | Structured generation and LLM serving with an OpenAI-compatible API |
-| [Ollama app](./ollama-app) | [Ollama](https://ollama.com/) | Lightweight local-style LLM serving with an OpenAI-compatible API |
+| [vLLM endpoint](../../inference/self-hosted-endpoints/vllm) | [vLLM](https://docs.vllm.ai/) | High-throughput LLM inference with an OpenAI-compatible API |
+| [SGLang endpoint](../../inference/self-hosted-endpoints/sglang) | [SGLang](https://docs.sglang.io/) | Structured generation and LLM serving with an OpenAI-compatible API |
+| [Ollama endpoint](../../inference/self-hosted-endpoints/ollama) | [Ollama](https://ollama.com/) | Lightweight local-style LLM serving with an OpenAI-compatible API |
 | [Flyte webhook](./flyte-webhook) | [FastAPI](https://fastapi.tiangolo.com/) | Pre-built HTTP endpoints for common Flyte control plane operations |
+
+See [Inference](../../inference/_index) for choosing between serving a model yourself and calling a hosted provider.
 
 ## Next steps
 
 - [**Streamlit app**](./streamlit-app): Build interactive Streamlit dashboards
 - [**FastAPI app**](./fastapi-app): Create REST APIs and backend services
-- [**vLLM app**](./vllm-app): Serve large language models with vLLM
-- [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
-- [**Ollama app**](./ollama-app): Serve lightweight LLMs with Ollama
+- [**vLLM endpoint**](../../inference/self-hosted-endpoints/vllm): Serve large language models with vLLM
+- [**SGLang endpoint**](../../inference/self-hosted-endpoints/sglang): Serve LLMs with SGLang for structured generation
+- [**Ollama endpoint**](../../inference/self-hosted-endpoints/ollama): Serve lightweight LLMs with Ollama
 - [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
 
 {{< subpage-cards >}}

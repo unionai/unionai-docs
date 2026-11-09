@@ -58,7 +58,7 @@ The `flyte[mcp]` extra ships a `flyte-mcp` CLI entrypoint. Run it with [`uvx`](h
 uvx --from "flyte[mcp]>=2.5.18" flyte-mcp --transport stdio
 ```
 
-`uvx` downloads `flyte[mcp]` into an isolated environment, runs `flyte-mcp`, and exits cleanly when you're done. The server reads your active Flyte config (the same one used by the `flyte` CLI or `flyte.init_from_config()`), so whichever project and cluster you're pointed at is what the tools operate on.
+`uvx` downloads `flyte[mcp]` into an isolated environment, runs `flyte-mcp`, and exits cleanly when you're done. The server finds its Flyte config with the same search order as the `flyte` CLI, so whichever project and cluster that config points at is what the tools operate on.
 
 Two parts of that command matter:
 
@@ -68,7 +68,34 @@ Two parts of that command matter:
 > [!TIP]
 > Pin to an exact version instead of a floor: `uvx --from "flyte[mcp]==2.5.18" flyte-mcp --transport stdio`
 
-The server starts even when no Flyte config is present. In that case the tools fail when the assistant calls them, rather than the server failing to start.
+The server starts even when the search order finds no Flyte config. In that case the tools fail when the assistant calls them, rather than the server failing to start. From `flyte` 2.12.2, a `--config` or `FLYTE_MCP_CONFIG` path that doesn't exist does stop the server at startup.
+
+#### Pin the server to a tenant
+
+Requires `flyte` 2.12.2 or later.
+
+The config search prefers `./config.yaml`, `./.flyte/config.yaml`, and the git root's `.flyte/config.yaml` over `FLYTECTL_CONFIG`. An MCP client often launches the server from your project directory, so a config checked into that repo wins, and the tools act on that repo's tenant.
+
+To choose the tenant explicitly, pass `--config`, and optionally `--endpoint` to override the config file's endpoint:
+
+```bash
+uvx --from "flyte[mcp]>=2.12.2" flyte-mcp --transport stdio --config ~/.flyte/config.yaml
+```
+
+| Option | Environment variable | Effect |
+|--------|----------------------|--------|
+| `--config` | `FLYTE_MCP_CONFIG` | Flyte config file to initialize from, instead of the search order. |
+| `--endpoint` | `FLYTE_MCP_ENDPOINT` | Endpoint to connect to. Overrides the endpoint in the config file. |
+
+Combining either option with `--no-init-from-config` is a usage error.
+
+At startup the server prints the config file and endpoint it resolved, and where each came from, to stderr:
+
+```text
+flyte-mcp: config /home/me/.flyte/config.yaml (from --config), endpoint dns:///my-tenant.example.com (from config file)
+```
+
+If the search order found the config in the working directory or its git repo, the server also prints a warning naming that file. The `whoami` tool reports the config file as `config_file`, so the assistant can check which tenant it is acting on.
 
 > [!NOTE] Skip the search corpus
 > The three `search_*` tools grep a local copy of the Flyte SDK examples, the docs examples, and `llms.txt`. Enabling them makes the CLI clone roughly 120 MB into `~/.flyte/mcp` on first launch. Pass `--tool-groups` without `search` to skip it:
@@ -137,7 +164,7 @@ mcp_env = FlyteMCPAppEnvironment(
 | `project` | `list_projects`, `get_project` | Discovering projects and domains |
 | `secret` | `list_secrets`, `create_secret`, `delete_secret` | Managing secrets (names only — values are never returned) |
 | `condition` | `list_conditions`, `signal_condition` | Answering human-in-the-loop gates |
-| `identity` | `whoami` | Confirming which identity and org the server is acting as |
+| `identity` | `whoami` | Confirming which identity and org the server is acting as, and (for a server started with `flyte-mcp` 2.12.2 or later) which config file it was started from |
 | `search` | `search_flyte_sdk_examples`, `search_flyte_docs_examples`, `search_full_docs` | Grounding answers in SDK/docs |
 
 ### 2. Individual tools

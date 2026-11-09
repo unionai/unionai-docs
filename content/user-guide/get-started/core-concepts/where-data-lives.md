@@ -77,7 +77,7 @@ Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outpu
 - **Fast-registered code bundles**: what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
 - **Image-build contexts**: when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
-The layout under your bucket is `<project>/<domain>/...`, with the bulk of execution artifacts under per-run, per-action subprefixes (`<run-name>/<action>/...` for outputs / Decks / checkpoints) and sibling prefixes for offloaded inputs and SDK uploads (code bundles, image-build contexts). You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+By default, inputs (including inputs uploaded ahead of a run), outputs, Decks and `@flyte.trace` records live under per-run, per-action subprefixes of `metadata/v2/<org>/<project>/<domain>/<run-name>/<action>/...`. Offloaded values (`File`, `Dir`, `DataFrame` contents and similar) and task checkpoints go to a separate per-run raw-output prefix, and SDK uploads (code bundles, image-build contexts) have their own prefixes. You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
 
 ## What "literal" and "raw data" mean
 
@@ -124,7 +124,14 @@ run = flyte.with_runcontext(
 ).run(my_task, x=1)
 ```
 
-This is the supported way to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+Use it to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't apply `raw_data_path` to remote runs. It accepts the value, but writes offloaded data under each action's output location, next to its `outputs.pb`.
+{{< /markdown >}}
+{{< /variant >}}
 
 Any scheme Flyte's storage layer can resolve works here, not just `s3://`, `gs://` and local paths. `s3://`, `gs://`, `abfs://` and `abfss://` are served by the built-in obstore backend; anything else falls back to the filesystem `fsspec` has registered for that scheme. Hugging Face storage buckets are one such target, so `raw_data_path="hf://buckets/<username>/<bucket>/..."` sends offloaded values to the Hub. See [Hugging Face buckets as raw data storage](../../../integrations/huggingface/_index#hugging-face-buckets-as-raw-data-storage) for a worked example.
 
@@ -157,3 +164,9 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 - **Values** = every task input/output is a **literal**, stored either *inline* in `inputs.pb`/`outputs.pb` or *by reference* to **raw data** offloaded in the bucket.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data plane bucket. It does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
+
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [the note above](#per-run-customization-raw_data_path).
+{{< /markdown >}}
+{{< /variant >}}

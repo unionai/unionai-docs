@@ -169,7 +169,7 @@ What each adapter actually persists differs, because the SDKs represent conversa
 `memory_key` should be a single segment, such as a user or thread ID. Memory is best-effort by design: if no durable store can be resolved, the adapter logs a warning and the run continues without memory rather than failing.
 
 > [!NOTE] Memory needs a configured context
-> The store path is derived from the active org, project and domain. Run with `flyte.init_from_config()` or against a backend. Local runs without a context skip memory silently.
+> The store path is derived from the active org, project and domain. Run with `flyte.init_from_config()` or against a backend. Local runs without a context log a warning and skip memory.
 
 ## Observability
 
@@ -183,7 +183,7 @@ async def city_agent(question: str) -> str:
 
 Turn it off with `observability=False`.
 
-Token accounting is honest about replay. On a retried run, turns served from their durable records are counted as cached rather than presented as fresh spend.
+With the [Mistral](./mistral) adapter, turns served from their durable records on a retried run are counted as cached tokens rather than presented as fresh spend. The other adapters do not count replayed turns as cached.
 
 ## Human in the loop
 
