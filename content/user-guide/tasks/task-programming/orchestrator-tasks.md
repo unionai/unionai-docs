@@ -53,12 +53,12 @@ memory, for up to a week while it waits for one signal. As an orchestrator task 
 all. It holds nothing while it waits, and the three tasks it calls start their own pods only when
 they run.
 
-Union runs the body of an orchestrator task in a small sandbox on a shared worker instead of in a
+Union.ai runs the body of an orchestrator task in a small sandbox on a shared worker instead of in a
 container. When the function calls a task, it is suspended until the result comes back. The tasks
 it calls run as ordinary tasks, in their own containers, with their own resources.
 
-> [!NOTE] Union only
-> Orchestrator tasks are available in Union only, and need Union platform version x or later.
+> [!NOTE] Union.ai only
+> Orchestrator tasks are available in Union.ai only, and need Union.ai platform version x or later.
 > Install the latest `flyte` SDK, 2.12.3 or later, with the `sandbox` extra:
 > `pip install -U "flyte[sandbox]>=2.12.3"`. The extra installs the Monty interpreter that local
 > runs use.
@@ -276,7 +276,10 @@ The worker also applies limits that you cannot set on the decorator:
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
 - **Error messages:** kept to their first 64 KiB.
 
-Hitting a limit is a user error, so the run is not retried. The exception is `WorkerMemoryPressure`: an orchestrator stopped because another one on the same worker went over the memory limit fails with this system error, and it is retried.
+Hitting a limit is a user error, so it counts against `retries` like any other failure of the
+orchestrator. The exception is `WorkerMemoryPressure`: an orchestrator stopped because another one
+on the same worker went over the memory limit fails with this system error, and it is retried
+without using up `retries`.
 
 ## Orchestrators that need a container
 

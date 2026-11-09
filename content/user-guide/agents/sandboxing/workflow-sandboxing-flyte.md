@@ -25,7 +25,7 @@ The result: LLMs generate the orchestration code (control flow, conditionals, lo
 {{< variant union >}}
 {{< markdown >}}
 > [!NOTE] Orchestrators without a container
-> The orchestrators on this page run inside a worker container. In Union, an
+> The orchestrators on this page run inside a worker container. In Union.ai, an
 > [orchestrator task](../../tasks/task-programming/orchestrator-tasks) runs the same kind of
 > sandboxed code with no container of its own, for drivers that only call tasks.
 {{< /markdown >}}
