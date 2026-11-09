@@ -135,7 +135,7 @@ If the code execution fails, we reflect on the error and retry until we reach th
 ## Running the code agent
 
 If things are working properly, the run produces output similar to the following.
-The tasks run on the cluster, so this output isn't printed in your terminal: `uv run agent.py` prints only the run's URL.
+The tasks run on the cluster, so this output isn't printed in your terminal: `uv run agent.py` prints the run's URL and then follows the run's progress until it finishes.
 Open that URL to find the `---…---` lines in the logs of the `generate`, `code_check` and `main` tasks, and the solution summary and code in the output of `main`:
 
 ```
