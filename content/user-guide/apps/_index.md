@@ -31,7 +31,7 @@ Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, 
 {{< /link-card >}}
 
 {{< link-card target="native-app-integrations" icon="plugin" title="Native app integrations" >}}
-Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama.
+Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, Ollama, and oMLX.
 {{< /link-card >}}
 
 {{< link-card target="serve-and-deploy-apps" icon="rocket" title="Serve and deploy apps" >}}
@@ -43,6 +43,10 @@ Use `flyte serve` for fast iteration or `flyte deploy` for production deployment
 ## Related
 
 {{< grid >}}
+
+{{< link-card target="../inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, or deploying the models your tasks train.
+{{< /link-card >}}
 
 {{< link-card target="../tasks" icon="gear" title="Tasks" >}}
 The batch workloads an app usually serves the results of.

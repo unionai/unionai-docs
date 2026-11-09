@@ -230,6 +230,12 @@ By default, Union is designed to use Azure [Workload Identity Federation](https:
 
 Follow guidance in this section to integrate Image Builder with private registries:
 
+#### Amazon ECR in another AWS account
+
+The ECR policies above grant access, but Image Builder only sends credentials to the registry configured in `defaultRepository`.
+To build on a base image from an ECR registry in another account, create an `image_pull` secret that configures the `ecr-login` credential helper for that registry and pass it as `registry_secret`.
+See [Amazon ECR in another AWS account](../../../user-guide/tasks/task-configuration/container-images#amazon-ecr-in-another-aws-account).
+
 #### GitHub Container Registry
 
 1. Follow the [GitHub guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) to log in to the registry locally.

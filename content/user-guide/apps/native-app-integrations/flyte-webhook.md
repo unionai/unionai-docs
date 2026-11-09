@@ -2,7 +2,7 @@
 title: Flyte webhook
 description: A prebuilt app exposing HTTP endpoints for common Flyte operations, with no FastAPI code to write.
 icon: broadcast
-weight: 15
+weight: 14
 variants: +flyte +union
 ---
 
