@@ -83,10 +83,10 @@ in the UI like any other.
 ## When not to use orchestrator tasks
 
 The function runs in a [Monty](https://github.com/pydantic/monty) sandbox, Pydantic's restricted
-Python interpreter, inside a micro sandbox that many orchestrators share. That makes it fast and
+Python interpreter, on a worker that many orchestrators share. That makes it fast and
 cheap, and it also sets clear limits. Use a regular `@env.task` instead when:
 
-- **The driver needs libraries.** An orchestrator cannot import your dependencies, read files or
+- **The driver needs libraries.** An orchestrator cannot import your dependencies, read files, or
   make network calls. Only a small part of the standard library, such as `asyncio` and `datetime`,
   is available. If the driver logic depends on packages, or on code whose behavior you need to reason
   about with its dependencies, keep it in a regular task.
@@ -120,6 +120,10 @@ if __name__ == "__main__":
     run = flyte.run(sum_of_squares, numbers=[1, 2, 3])
     print(run.url)
 ```
+
+Start an orchestrator task with `flyte.run`, as above, or with `flyte run` on the command line.
+`flyte deploy` does not deploy orchestrator tasks, so you cannot fetch one later with
+`flyte.remote.Task.get()`.
 
 The orchestrator finds the tasks it calls in the module's globals. They can be:
 
@@ -270,7 +274,7 @@ The worker also applies limits that you cannot set on the decorator:
 - **Task calls:** 10,000 per run by default. Going over it fails the run with `TooManyTaskCalls`, which the
   function cannot catch.
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
-- **Error messages:** kept to their first 10 KiB.
+- **Error messages:** kept to their first 64 KiB.
 
 Hitting a limit is a user error, so the run is not retried. The exception is `WorkerMemoryPressure`: an orchestrator stopped because another one on the same worker went over the memory limit fails with this system error, and it is retried.
 
