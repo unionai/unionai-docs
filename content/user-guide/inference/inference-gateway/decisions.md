@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Decisions
 
-`POST /v1/decisions` asks a model several typed questions about one piece of state in a single call. Each named question gets its own answer: a probability, a chosen option, or a score. Use it for the narrow judgments described in [Decision models](../decision-models/_index), such as routing, moderation, and guards, through the same endpoint and virtual keys as the rest of your model traffic.
+`POST /v1/decisions` asks a model several typed questions about one piece of state in a single call. Each named question gets its own answer: a probability or a chosen option. Use it for the narrow judgments described in [Decision models](../decision-models/_index), such as routing, moderation, and guards, through the same endpoint and virtual keys as the rest of your model traffic.
 
 ## Call the endpoint
 
