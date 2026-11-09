@@ -42,6 +42,23 @@ Reading the metrics in that order answers most questions:
 | Actions fail without a user error | `leaseworker:dispatcher:system_errors_exhausted` | `leasor:retries_total{cause="system"}`, `leasor:expirations_total` |
 | A leaseworker looks unhealthy | `leaseworker:stream:reconnections`, `leaseworker:heartbeater:request_errors` | `leasor:stream_connections_total` for that org vs `leasor:workers_connected` |
 
+## Dashboards
+
+The charts ship Grafana dashboards that plot a subset of these metrics. They are installed as ConfigMaps
+carrying the `grafana_dashboard: "1"` label (`monitoring.dashboards.enabled`, on by default; change the
+label with `monitoring.dashboards.label` and `labelValue`), which a Grafana dashboard sidecar picks up.
+Point each dashboard's `$datasource` variable at the Prometheus that scrapes the cluster.
+
+| Dashboard | Chart | Row | Panels |
+| --- | --- | --- | --- |
+| [Union Dataplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/dataplane/dashboards/union-dataplane-overview.json) | `dataplane` | **V2 — leaseworker** | Active leases (run and finalize), Available capacity, Dispatcher queue depth, Dispatcher rounds: success vs errors, FastTask backlog vs limit, Task assignment (no capacity / no workers) |
+| [Union Controlplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/dashboards/union-controlplane-overview.json) | `controlplane` | **V2 — leasor** | Queue depth, Active runs / actions, Enqueue to dispatch latency (p99), Leaseworker fleet (capacity, active, available) |
+| | | **V2 — actions** | Actions in memory, Active watchers, Archive queue depth and drain rate |
+
+The dataplane dashboard does not plot `actions_terminated`, `system_errors`, `system_errors_exhausted`,
+or the heartbeater and stream metrics. Add panels for those from the tables below if you alert on them.
+The controlplane dashboard applies to a self-hosted control plane only.
+
 ## Leaseworker
 
 Every leaseworker metric carries the standard Kubernetes labels Prometheus adds at scrape time
