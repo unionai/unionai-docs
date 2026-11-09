@@ -58,7 +58,7 @@ What makes it durable is how the loop maps onto Flyte's execution model:
 | Flaky sandbox kills a trial | Each trial is its own task with `retries=1` and a timeout; a trial that fails after retries is **skipped, never fatal** to the step |
 | Judge task fails after the LLM call | The judge call is wrapped in `@flyte.trace`, so the retry **replays** the recorded result instead of re-billing the API |
 | Training step re-executes | The trainer actor tracks applied steps, so an update is applied **exactly once** |
-| New rubric, old rollouts | `flyte.rerun(recover=True, rubric=new)` **forks** the finished run: every rollout whose inputs are unchanged is recovered; only judging and training re-run |
+| New rubric, old rollouts | `flyte.rerun(recover=True, rubric=new)` **forks** the finished run: step 0's rollouts are recovered; judging, training, and later steps' rollouts re-run |
 
 Three of these lean on Union-backend capabilities — [reusable containers](../../../user-guide/tasks/task-configuration/reusable-containers) for the warm Ray cluster, [volumes](../../../user-guide/tasks/task-programming/volumes/_index) for instant per-trial world copies, and [run forking](../../../user-guide/tasks/task-deployment/fork-runs) for rubric re-scoring. The rest is core Flyte 2.
 
@@ -73,7 +73,7 @@ Three of these lean on Union-backend capabilities — [reusable containers](../.
 | Flaky sandbox kills a trial | Each trial is its own task with `retries=1` and a timeout; a trial that fails after retries is **skipped, never fatal** to the step |
 | Judge task fails after the LLM call | The judge call is wrapped in `@flyte.trace`, so the retry **replays** the recorded result instead of re-billing the API |
 | Training step re-executes | The training step is a **pure, deterministic function** of its inputs, so re-execution recomputes the identical update |
-| New rubric, old rollouts | Rollout generation is cached with `cache="auto"`; a new run with a new rubric **reuses** every rollout whose inputs are unchanged and re-runs only judging and training |
+| New rubric, old rollouts | Rollout generation is cached with `cache="auto"`; a new run with a new rubric **reuses** step 0's rollouts from the cache; judging, training, and later steps' rollouts re-run |
 
 {{< /markdown >}}
 {{< /variant >}}
