@@ -5,6 +5,8 @@
 
 # --- Products / brands / orgs ---
 Apptainer
+dflash
+dspark
 Enroot
 GRES
 nsys
@@ -234,7 +236,9 @@ statefulsets
 sxid
 Tanimoto
 Tavily
+TPOT
 tqdm
+TTFT
 Uctl
 Umare
 unkeyed
@@ -281,3 +285,10 @@ Unsloth
 Xids
 # RLHF: reinforcement learning from human feedback.
 RLHF
+# Brax: JAX physics simulator for RL. Nsight: NVIDIA profiler.
+Brax
+Nsight
+AIME
+ASHA
+BLEU
+seqeval

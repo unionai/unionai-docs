@@ -159,7 +159,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, `flytepropeller`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator`, `union-operator-proxy`, `union-operator-buildkit`, `leaseworker`, and `flyteconnector`.
 
 9. Verify the cluster is registered with the control plane:
 

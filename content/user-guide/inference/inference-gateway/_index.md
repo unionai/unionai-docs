@@ -1,5 +1,5 @@
 ---
-title: LLM Gateway
+title: Inference Gateway
 description: One endpoint in your own cloud for every model call, with virtual keys and budgets, fallbacks when a provider fails, and guardrails on every prompt and answer.
 icon: signpost-split
 weight: 7
@@ -7,11 +7,11 @@ variants: -flyte +union
 mermaid: true
 ---
 
-# LLM Gateway
+# Inference Gateway
 
 Say five teams build on LLMs. Each one has its own OpenAI key in a secret, nobody knows which key is behind last month's invoice, an Anthropic outage takes down two production apps, and a prompt containing a customer's Social Security number went to a third-party model last week.
 
-The Union LLM Gateway fixes this by putting one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
+The Union Inference Gateway fixes this by putting one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
 
 ## Why use a gateway
 
@@ -32,7 +32,7 @@ The gateway is a single endpoint for all of your LLM traffic:
 - **Laptops** call it too, so notebooks, coding assistants, and scripts get the same budgets and guardrails as production. You can expose the endpoint publicly, or keep it behind Union sign-in and reach it with `flyte proxy app`. See [Use from your laptop](./use-from-laptop).
 - **Self-hosted models** served with vLLM or SGLang on Union sit behind the same endpoint as hosted providers, so callers switch between them by changing a model name.
 
-Spend, token counts, latency, and blocked requests for every key show up in one place: **Settings → LLM Gateway** in the Union console.
+Spend, token counts, latency, and blocked requests for every key show up in one place: **Settings → Inference Gateway** in the Union console.
 
 ## Runs in your cloud
 
@@ -41,7 +41,7 @@ The gateway runs in your data plane, on your compute, as a Union app.
 ```mermaid
 flowchart LR
     subgraph dp["Your cloud (data plane)"]
-        tasks["Tasks and apps"] --> gw["LLM Gateway"]
+        tasks["Tasks and apps"] --> gw["Inference Gateway"]
         gw <--> gr["Guardrail apps"]
         gw --> self["vLLM / SGLang apps"]
     end

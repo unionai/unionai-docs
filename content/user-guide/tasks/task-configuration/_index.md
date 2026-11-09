@@ -69,6 +69,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **reusable** | `TaskEnvironment`, `override` | [Reusable containers](./reusable-containers) &bull; [`ReusePolicy` API ref](../../../api-reference/flyte-sdk/flyte/reusepolicy) |
 | **interruptible** | All three levels | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **short_name** | `@env.task`, `override` | [Additional task settings](./additional-task-settings) |
+| **prefix** | `@env.task` only | [Additional task settings](./additional-task-settings#prefix) |
 | **retries** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../../api-reference/flyte-sdk/flyte/retrystrategy) |
 | **timeout** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../../api-reference/flyte-sdk/flyte/timeout) |
 | **max_inline_io_bytes** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#inline-io-threshold) |
@@ -99,6 +100,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **interruptible** | All three levels | [Interruptible tasks](./interruptible-tasks-and-queues) |
 | **queue** | All three levels | [Queues](./queues) |
 | **short_name** | `@env.task`, `override` | [Additional task settings](./additional-task-settings) |
+| **prefix** | `@env.task` only | [Additional task settings](./additional-task-settings#prefix) |
 | **retries** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`RetryStrategy` API ref](../../../api-reference/flyte-sdk/flyte/retrystrategy) |
 | **timeout** | `@env.task`, `override` | [Retries and timeouts](./retries-and-timeouts) &bull; [`Timeout` API ref](../../../api-reference/flyte-sdk/flyte/timeout) |
 | **max_inline_io_bytes** | `@env.task`, `override` | [Additional task settings](./additional-task-settings#inline-io-threshold) |

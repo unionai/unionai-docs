@@ -75,6 +75,12 @@ When a task returns data:
 2. **Raw data**: Stored under the same bucket prefix by default, or routed to a different location using `flyte.with_runcontext(raw_data_path=...)`.
 3. **Separate prefixes**: Each task creates one output per retry attempt in separate prefixes, making data incorruptible by design.
 
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [Where your data lives](../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Task-to-task data flow
 
 When a task invokes downstream tasks:
@@ -155,3 +161,9 @@ run = flyte.with_runcontext(
 ```
 
 This allows you to control where raw data (files, directories, DataFrames) is stored for specific runs. See [Run context](../tasks/task-deployment/run-context) for the full set of options.
+
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [Where your data lives](../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+{{< /markdown >}}
+{{< /variant >}}

@@ -1,6 +1,6 @@
 ---
 title: Guardrail protocol
-description: The HTTP contract between the LLM Gateway and a guardrail, for writing guardrails in any language.
+description: The HTTP contract between the Inference Gateway and a guardrail, for writing guardrails in any language.
 icon: braces
 weight: 2
 variants: -flyte +union
