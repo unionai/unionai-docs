@@ -83,9 +83,9 @@ flyte deploy \
 3. **Test first**: Test with serve before deploying to production.
 4. **Manage dependencies**: Use `depends_on` to manage app dependencies.
 5. **Activation strategy**: Have a strategy for activating/deactivating apps.
-7. **Use dry-run**: Test deployments with `dryrun=True` first (`--dry-run` on the CLI).
-8. **Separate environments**: Use different projects/domains for different environments.
-9. **Parameter management**: Consider using environment-specific parameter values.
+6. **Use dry-run**: Test deployments with `dry_run=True` first (`--dry-run` on the CLI). `dry_run` needs `flyte` v2.8.0 or later; earlier versions take `dryrun`. From v2.8.0, `dryrun` is a deprecated alias that still works but raises a `FutureWarning`. The example above still uses it.
+7. **Separate environments**: Use different projects/domains for different environments.
+8. **Parameter management**: Consider using environment-specific parameter values.
 
 ## Deployment status and return value
 
