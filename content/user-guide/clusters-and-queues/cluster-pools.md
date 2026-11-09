@@ -31,6 +31,41 @@ Create additional pools when you have clusters with **distinct** data planes:
 for example, separate development and production cloud accounts, each with its own
 bucket, secrets vault, and registry. Each such environment becomes its own pool.
 
+## Run on a queue in another pool
+
+A run's data must be in the object store of the pool its queue belongs to. Name
+the queue when you submit the run, and the SDK uploads the run's code bundle and
+inputs to that queue's pool, and places any remote image build the run needs on
+that queue:
+
+```bash
+flyte run --queue <queue> hello.py main
+```
+
+`flyte.with_runcontext(queue=...)` does the same from Python. Without an explicit
+queue, the task's own queue is used. Requires `flyte` 2.12.2 or later, and a
+control plane that routes uploads by queue. Otherwise the code bundle and inputs
+go to the project/domain default pool.
+
+For deployed tasks, `flyte deploy --queue <queue>` (or
+`flyte.deploy(..., queue=...)`) uploads the code bundle and trigger inputs to
+that queue's pool, under the same conditions.
+
+A run can be rejected at submission when its data is in a different pool's
+object store than its queue:
+
+- Its inputs were uploaded to another pool.
+- Its task was deployed to the project/domain's default pool, and the run is on
+  a queue in another pool.
+
+Runs fired by triggers aren't checked; they fail in the task pod instead. The
+error names two of these fixes:
+
+- With `flyte` 2.12.2 or later, submit the run with `--queue <queue>` so its
+  inputs are uploaded to that pool.
+- Run it on a queue in the pool that holds its data.
+- With `flyte` 2.12.2 or later, redeploy the task with `--queue <queue>`.
+
 ## Create a pool
 
 A pool's config is the data plane contract its member clusters must satisfy:
