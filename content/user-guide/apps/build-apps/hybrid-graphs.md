@@ -71,7 +71,7 @@ flowchart LR
     fanout --> R
 ```
 
-See [Batch inference](../../run-scaling/batch-inference) implementation details.
+See [Batch inference](../../inference/batch-inference) implementation details.
 
 {{< /markdown >}}
 {{< /variant >}}

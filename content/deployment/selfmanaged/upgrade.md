@@ -8,8 +8,13 @@ variants: -flyte +union
 
 # Upgrade the data plane
 
-In a self-managed deployment you own the data plane's version. This page covers what you keep
+When you install the data plane with Helm, you own its version. This page covers what you keep
 current, the supported way to do it, and how to automate it.
+
+> [!NOTE] For data planes installed with Helm
+> This page is for a data plane you installed with Helm: on OCI, CoreWeave, Crusoe, Nebius, or generic Kubernetes,
+> or an existing AWS, GCP, or Azure deployment set up that way. On a data plane connected from the Union.ai UI, the
+> agent installs and manages the chart, so this page doesn't apply.
 
 ## What you maintain
 
@@ -128,11 +133,13 @@ VERSION=2026.9.7
 
    ```bash
    kubectl get pods -n "$NS"
-   kubectl logs -n "$NS" -l app.kubernetes.io/name=clusterresourcesync --tail=50
+   kubectl logs -n "$NS" deploy/union-operator --tail=50
    ```
 
-   All pods should be `Running` and `clusterresourcesync` should log a successful connection
-   to the control plane. Run a test execution to verify end-to-end task scheduling:
+   All pods should be `Running`, and the operator's log should show no connection errors to the
+   control plane. If you run in multi-namespace mode, with `clusterresourcesync.enabled: true`,
+   also check `kubectl logs -n "$NS" -l app.kubernetes.io/name=clusterresourcesync --tail=50`.
+   Run a test execution to verify end-to-end task scheduling:
 
    ```bash
    flyte run hello

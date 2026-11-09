@@ -571,7 +571,8 @@ spec:
   forwardAuth:
     address: http://oauth2-proxy.flyte.svc.cluster.local/oauth2/auth
     trustForwardHeader: true
-    # Forwarded to Flyte; these feed executed_by run attribution.
+    # Forwarded to Flyte. The chart's default runs config doesn't read them for
+    # executed_by run attribution. That needs flyte-core-components.runs.identityHeaders.
     authResponseHeaders:
       - X-Auth-Request-User
       - X-Auth-Request-Email
@@ -777,9 +778,10 @@ curl -s -o /dev/null -w "%{url_effective}\n" -L --max-redirs 5 \
 > verified by checks 2 and 3.
 
 Then open `http://flyte.local/v2` in a browser, log in as **`admin@example.com` /
-`password`**, and you should land in the console. The `X-Auth-Request-Email` header Dex
-supplies flows through oauth2-proxy to Flyte and populates `executed_by` on runs you
-create. See [Authentication and SSO](../authentication#run-attribution-executed_by).
+`password`**, and you should land in the console. With the chart's default runs config,
+Flyte doesn't read the `X-Auth-Request-*` headers oauth2-proxy forwards, so runs you
+create in the browser get no `executed_by`. On a Flyte release that has the `identityHeaders`
+setting, set it as in [Authentication and SSO](../authentication#behind-a-non-alb-proxy-oauth2-proxy--traefik).
 
 ### Letting the SDK/CLI authenticate (with auth enabled)
 
@@ -932,8 +934,9 @@ an old token fails oauth2-proxy's signature check with `403 Forbidden` on
 `SelectCluster` and **no browser opens**. Clear it after any cluster/Dex recreate:
 
 ```bash
-# macOS; "not found" is fine. Linux: keyring del flyte.local access_token / refresh_token
-for k in access_token refresh_token; do security delete-generic-password -s flyte.local -a "$k" 2>/dev/null; done
+# macOS; "not found" is fine. Linux: keyring del flyte.local <account>, for each account below.
+# flyte 2.5.10 and later store one "tokens" item. Older SDKs store access_token and refresh_token.
+for k in tokens access_token refresh_token; do security delete-generic-password -s flyte.local -a "$k" 2>/dev/null; done
 ```
 
 Then `flyte.run` opens a browser to Dex, you log in (`admin@example.com` / `password`),

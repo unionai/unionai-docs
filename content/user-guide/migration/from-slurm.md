@@ -369,7 +369,7 @@ work arrives. And when a queue hits its depth limit, new submissions are rejecte
 `RESOURCE_EXHAUSTED` instead of sitting in `PENDING` for an unknown length of time. That rejection
 is a back-pressure signal for the submitting process to slow down.
 
-Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../cluster-workload-management/queues)
+Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../clusters-and-queues/queues)
 
 ---
 
@@ -418,7 +418,7 @@ Kubernetes pod spec: volumes, node selectors, tolerations, service accounts, and
 
 {{< variant union >}}
 {{< markdown >}}
-[Volumes](../tasks/task-programming/volumes) are the other option, a durable, versioned filesystem
+[Volumes](../tasks/task-programming/volumes/_index) are the other option, a durable, versioned filesystem
 backed by object storage that tasks mount and read like a local directory, with copy-on-write forks
 for parallel branches of work.
 

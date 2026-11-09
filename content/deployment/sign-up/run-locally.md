@@ -12,9 +12,13 @@ Your Union.ai account can display locally run workflows before you connect any c
 
 ## What you'll need
 
-- A Union.ai organization. See [Sign up for Union.ai](./create-organization).
+- A Union.ai organization. See [Create your account and organization](./create-organization).
 - Your organization's address, in the form `<your-org>.hosted.unionai.cloud`. It is in your browser's address bar when you are signed in to the Union.ai UI.
 - Python 3.10+ in a virtual environment.
+
+The **Run something locally** card on your organization's home page has a **Show me how** button, which opens a short in-app guide to the same steps.
+
+![The Run locally guide in the Union.ai UI, with steps to install the SDK, create a config, and write a first workflow](../../_static/images/deployment/marketplace/sign-up/show-me-how.png)
 
 ## Set up the CLI
 

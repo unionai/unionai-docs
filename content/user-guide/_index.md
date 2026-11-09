@@ -45,7 +45,7 @@ See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways t
 
 ## Basics
 
-Learn the basics of Flyte, covering all the core concepts around tasks, apps, agents, and typed model calls.
+Learn the basics of Flyte, covering the core concepts around tasks, apps, and triggers.
 
 {{< grid >}}
 
@@ -62,15 +62,31 @@ Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
 {{< link-card target="triggers" icon="alarm" title="Triggers" >}}
-Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
+Run tasks automatically on a schedule, or save named launch configurations to fire on demand.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+## AI workloads
+
+Train, post-train, and serve models, and build agents, with the Flyte constructs each workload relies on.
+
+{{< grid >}}
+
+{{< link-card target="model-training" icon="gpu-card" title="Model training" >}}
+Train models with Flyte, from multi-node pretraining and LLM fine-tuning to classical machine learning, with every stage cached, recoverable, and sized to its own hardware.
+{{< /link-card >}}
+
+{{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement learning" >}}
+Run reinforcement learning loops with Flyte, with environments, rewards, rollouts, and the trainer each on their own hardware, and a loop that survives failures.
+{{< /link-card >}}
+
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
 {{< /link-card >}}
 
 {{< link-card target="agents" icon="robot" title="Agents" >}}
 Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
-{{< /link-card >}}
-
-{{< link-card target="system-one-types" icon="sliders" title="System one types" >}}
-Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 
 {{< /grid >}}
@@ -119,7 +135,7 @@ Manage users, roles, and policies for your Union cluster.
 
 {{< markdown >}}
 
-## Cluster and workload management
+## Clusters and queues
 
 Stand up clusters and govern where your workloads run.
 
@@ -127,7 +143,7 @@ Stand up clusters and govern where your workloads run.
 
 {{< grid >}}
 
-{{< link-card target="cluster-workload-management" icon="cloud" title="Clusters and queues" >}}
+{{< link-card target="clusters-and-queues" icon="cloud" title="Clusters and queues" >}}
 Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 {{< /link-card >}}
 
@@ -143,19 +159,11 @@ other workflow orchestrators.
 {{< grid >}}
 
 {{< link-card target="project-patterns" icon="folder" title="Project patterns" >}}
-Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
-{{< /link-card >}}
-
-{{< link-card target="software-development-lifecycle" icon="arrow-repeat" title="Software development lifecycle" >}}
-Automate your own development process with Flyte, using event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
+Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
 {{< /link-card >}}
 
 {{< link-card target="run-scaling" icon="box" title="Run scaling" >}}
 Tune task overhead, batching, reusable containers, and fanout to scale your workflows.
-{{< /link-card >}}
-
-{{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
-An advanced guide for building an LLM reporting agent on Flyte.
 {{< /link-card >}}
 
 {{< link-card target="migration" icon="arrow-right" title="Migration" >}}

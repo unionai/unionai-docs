@@ -91,7 +91,7 @@ workflow to decide, in order, if the resource must be in or out:
 Every package that the API generator processes, the SDK and all plugins, emits a linkmap file (`linkmap/<name>-linkmap.json`) that maps identifiers to their API reference URLs. Two scripts in the shared infra consume those linkmaps at runtime to turn mentions of those identifiers in docs prose and code samples into links to the API reference:
 
 - `assets/js/inline-code-linker.js`: wraps inline `` `code` `` whose text matches a linkmap key.
-- `assets/js/codeblock-linker.js`: wraps matching identifiers inside Python code blocks based on the block's `import` statements.
+- `assets/js/codeblock-linker.js`: wraps matching identifiers inside Python code blocks, based on the block's `import` statements and on linkmap keys that appear in the block's text.
 
 **Registration is automatic.** At build time, `layouts/_default/baseof.html` scans `linkmap/` and exposes every `*-linkmap.json` file as `window.__LINKMAP_SOURCES`. Both linker scripts read that variable and fetch the linkmaps on page load. There is no per-package wiring step: adding an entry to `api-packages.toml` is enough; the generator produces its linkmap and the linkers pick it up.
 
@@ -109,7 +109,7 @@ To check whether an identifier autolinks, search `linkmap/*.json` for it: fully-
 ### How auto-linking works
 
 - **Inline code**: `` `flyte.io.File` `` (or the short class name `` `File` ``) is wrapped with a link to its API reference. A trailing `()` and a leading `@` (for decorators) are stripped before lookup. `ClassName.method` syntax falls back to `<class-url>#method` when the class is in the linkmap. That fallback does not cover `module.function`: a module-qualified short function name such as `nsys.range` does not link.
-- **Code blocks**: identifiers inside Python code blocks are linked based on the block's `from … import …` and `import …` statements: only names that resolve through one of those imports get wrapped.
+- **Code blocks**: identifiers inside Python code blocks are linked based on the block's `from … import …` and `import …` statements. A linkmap key used as a name in the block's code (not in a string or comment) is also wrapped with no import needed, if it is a short class name such as `File` or has a single dot, such as `flyte.TaskEnvironment`. A deeper name such as `flyte.io.File` isn't wrapped as a whole unless the block imports `flyte.io`; without the import, only its short class name `File` links.
 
 ### Sigils for inline code
 
