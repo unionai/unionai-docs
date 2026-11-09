@@ -209,8 +209,6 @@ tunnel-service data plane ingress, and Prometheus forwards metrics to the contro
 [Monitoring](./configuration/monitoring#metrics-sent-to-the-control-plane)). Before you upgrade to
 2026.10.1 or later:
 
-- **If you host your own control plane, set `zero_trust.enabled: false`.** Zero trust is not
-  supported for self-hosted control planes.
 - **Keep `gateway.enabled: true`.** Zero trust requires the built-in gateway. With
   `gateway.enabled: false` the chart fails to render:
 
