@@ -382,6 +382,12 @@ When `image.builder` in the `config.yaml` is set to `remote` (and you are runnin
 
 There is no set up of Docker nor any other local configuration required on your part.
 
+{{< variant union >}}
+{{< markdown >}}
+Images built by `ImageBuilder` also start in seconds on a fresh node, because the node reads files from the image on demand instead of pulling every layer first. See [Fast cold boot](./fast-cold-boot).
+{{< /markdown >}}
+{{< /variant >}}
+
 > [!NOTE]
 > The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
