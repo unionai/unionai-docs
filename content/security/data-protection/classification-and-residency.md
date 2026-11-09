@@ -46,7 +46,7 @@ For details on the architectural separation that enforces these residency guaran
 
 **How to verify:**
 
-The task definition schema is derived from the open-source Flyte protobuf definitions under [`flyteidl2/` in the flyte repository](https://github.com/flyteorg/flyte/tree/main/flyteidl2). Review the `TaskTemplate` (`flyteidl2/core/tasks.proto`) and `RunSpec` (`flyteidl2/task/run.proto`) protobuf schemas and compare them to the field enumeration in the classification table above to confirm that the fields stored match the documented classifications.
+The task definition schema is derived from the open-source Flyte protobuf definitions under [`flyteidl2/` in the flyte repository](https://github.com/flyteorg/flyte/tree/main/flyteidl2). Review the `TaskTemplate` (`flyteidl2/core/tasks.proto`), `TaskSpec` (`flyteidl2/task/task_definition.proto`, which holds default input values) and `RunSpec` (`flyteidl2/task/run.proto`) protobuf schemas and compare them to the field enumeration in the classification table above to confirm that the fields stored match the documented classifications.
 
 Then run a workflow with recognizable data (e.g., a known string or file), and verify the location of each data type:
 

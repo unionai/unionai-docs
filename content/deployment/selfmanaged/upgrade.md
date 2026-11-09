@@ -235,4 +235,4 @@ tunnel-service data plane ingress, and Prometheus forwards metrics to the contro
 
 Upgrading from a version before 2026.10.1 to 2026.10.1 or later restarts the Union workloads
 once. From 2026.10.1, the `configChecksum` the chart stamps on their pods is a hash of the
-ConfigMap's data, so only data changes restart them.
+ConfigMap's data, so a change to a ConfigMap's labels or template whitespace no longer restarts them.

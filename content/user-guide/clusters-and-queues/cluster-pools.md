@@ -58,13 +58,15 @@ object store than its queue:
 - Its task was deployed to the project/domain's default pool, and the run is on
   a queue in another pool.
 
-Runs fired by triggers aren't checked; they fail in the task pod instead. The
-error names two of these fixes:
+Runs fired by triggers aren't checked; they fail in the task pod instead.
 
-- With `flyte` 2.12.2 or later, submit the run with `--queue <queue>` so its
-  inputs are uploaded to that pool.
-- Run it on a queue in the pool that holds its data.
-- With `flyte` 2.12.2 or later, redeploy the task with `--queue <queue>`.
+Each rejection's error names the two fixes that apply:
+
+- **Inputs in another pool:** submit the run with `--queue <queue>` (`flyte`
+  2.12.2 or later) so its inputs are uploaded to that queue's pool, or run it on
+  a queue in the pool that holds its inputs.
+- **Task deployed to the default pool:** run it on a queue in the default pool,
+  or redeploy the task with `--queue <queue>` (`flyte` 2.12.2 or later).
 
 ## Create a pool
 
