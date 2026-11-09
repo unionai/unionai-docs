@@ -60,7 +60,7 @@ What makes it durable is how the loop maps onto Flyte's execution model:
 | Training step re-executes | The trainer actor tracks applied steps, so an update is applied **exactly once** |
 | New rubric, old rollouts | `flyte.rerun(recover=True, rubric=new)` **forks** the finished run: every rollout whose inputs are unchanged is recovered; only judging and training re-run |
 
-Three of these lean on Union-backend capabilities — [reusable containers](../../../user-guide/tasks/task-configuration/reusable-containers) for the warm Ray cluster, [volumes](../../../user-guide/tasks/task-programming/volumes) for instant per-trial world copies, and [run forking](../../../user-guide/tasks/task-deployment/fork-runs) for rubric re-scoring. The rest is core Flyte 2.
+Three of these lean on Union-backend capabilities — [reusable containers](../../../user-guide/tasks/task-configuration/reusable-containers) for the warm Ray cluster, [volumes](../../../user-guide/tasks/task-programming/volumes/_index) for instant per-trial world copies, and [run forking](../../../user-guide/tasks/task-deployment/fork-runs) for rubric re-scoring. The rest is core Flyte 2.
 
 {{< /markdown >}}
 {{< /variant >}}

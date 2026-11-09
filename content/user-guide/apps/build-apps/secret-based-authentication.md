@@ -57,25 +57,17 @@ python basic_auth.py
 Or use the Flyte CLI:
 
 ```bash
-flyte serve basic_auth.py
+flyte serve basic_auth.py env
 ```
 
-Deploying the application will stream the status to the console and display the app URL:
-
-```
-✨ Deploying Application: authenticated-api
-🔎 Console URL: https://<union-tenant>/console/projects/my-project/domains/development/apps/fastapi-with-auth
-[Status] Pending: App is pending deployment
-[Status] Started: Service is ready
-🚀 Deployed Endpoint: https://rough-meadow-97cf5.apps.<union-tenant>
-```
+To find the app's public URL, run `flyte get app` and use the `endpoint` value in the `authenticated-api` row. The URL that `flyte serve` prints opens the app in the UI. It isn't the public endpoint.
 
 ## Invoke the endpoint
 
 Once deployed, you can invoke the authenticated endpoint using curl:
 
 ```bash
-curl -X GET "https://rough-meadow-97cf5.apps.<union-tenant>/protected" \
+curl -X GET "https://your-app-url/protected" \
   -H "Authorization: Bearer <your-api-key-value>"
 ```
 
@@ -84,7 +76,7 @@ Replace `<your-api-key-value>` with the actual API key value you used when creat
 For example, if you created the secret with value `my-secret-api-key-12345`:
 
 ```bash
-curl -X GET "https://rough-meadow-97cf5.apps.<union-tenant>/protected" \
+curl -X GET "https://your-app-url/protected" \
   -H "Authorization: Bearer my-secret-api-key-12345"
 ```
 
@@ -136,7 +128,7 @@ python vllm_with_auth.py
 Or use the Flyte CLI:
 
 ```bash
-flyte serve vllm_with_auth.py
+flyte serve vllm_with_auth.py vllm_app
 ```
 
 ### Deploy SGLang app with authentication
@@ -160,7 +152,7 @@ python sglang_with_auth.py
 Or use the Flyte CLI:
 
 ```bash
-flyte serve sglang_with_auth.py
+flyte serve sglang_with_auth.py sglang_app
 ```
 
 ### Invoke authenticated LLM endpoints
@@ -204,9 +196,9 @@ You should receive a response with the model's completion.
 
 ## Accessing Swagger documentation
 
-The app also includes a public health check endpoint and Swagger UI documentation:
+The app also includes a public endpoint and Swagger UI documentation:
 
-- **Health check**: `https://your-app-url/health`
+- **Public endpoint**: `https://your-app-url/public`
 - **Swagger UI**: `https://your-app-url/docs`
 - **ReDoc**: `https://your-app-url/redoc`
 
@@ -259,4 +251,4 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 
 - Learn more about [managing secrets](../../tasks/task-configuration/secrets) in Flyte
 - See [hybrid graphs](./hybrid-graphs) for webhook examples and authentication patterns
-- Learn about [vLLM apps](../native-app-integrations/vllm-app) and [SGLang apps](../native-app-integrations/sglang-app) for serving LLMs
+- Learn about [vLLM endpoints](../../inference/self-hosted-endpoints/vllm) and [SGLang endpoints](../../inference/self-hosted-endpoints/sglang) for serving LLMs

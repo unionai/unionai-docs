@@ -2,7 +2,7 @@
 title: Agents
 description: Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 icon: robot
-weight: 7
+weight: 8
 variants: +flyte +union
 ---
 
@@ -48,7 +48,7 @@ Run agents from OpenAI, Claude, LangGraph, CrewAI, and more as durable Flyte tas
 The unit each reasoning step is built from.
 {{< /link-card >}}
 
-{{< link-card target="../system-one-types" icon="sliders" title="System one types" >}}
+{{< link-card target="../inference/decision-models" icon="sliders" title="Decision models" >}}
 Answer many typed questions in one call, with calibrated confidence, and decide what happens next in code.
 {{< /link-card >}}
 

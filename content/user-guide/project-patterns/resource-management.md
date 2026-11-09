@@ -136,7 +136,7 @@ This requires governance around versioning and backward compatibility, but it sc
 
 ### Route work to the right cluster pool in multi-cluster deployments
 
-In a multi-cluster deployment, work reaches a cluster through a [queue](../cluster-workload-management/queues), which routes to a [cluster pool](../cluster-workload-management/cluster-pools). To pin a project or domain's work to a specific pool (for example, a GPU pool), create a queue in that pool and set it as the default queue for the scope:
+In a multi-cluster deployment, work reaches a cluster through a [queue](../clusters-and-queues/queues), which routes to a [cluster pool](../clusters-and-queues/cluster-pools). To pin a project or domain's work to a specific pool (for example, a GPU pool), create a queue in that pool and set it as the default queue for the scope:
 
 ```bash
 flyte edit settings --domain production --project team-alpha
@@ -148,7 +148,7 @@ Set `run.default_queue` to a queue that lives in the target pool:
 run.default_queue: gpu-queue
 ```
 
-An individual task environment can also target a queue directly with the `queue` parameter. See [Managing queues](../cluster-workload-management/queues) for how queues bind to pools and clusters.
+An individual task environment can also target a queue directly with the `queue` parameter. See [Managing queues](../clusters-and-queues/queues) for how queues bind to pools and clusters.
 
 ### Treat production as a managed service
 

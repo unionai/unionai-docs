@@ -2,12 +2,18 @@
 title: Infrastructure recommendations
 description: Size the data plane, check prerequisites, and plan control plane connectivity before you install.
 icon: rulers
-weight: 2
+weight: 6
 variants: -flyte +union
 sidebar_expanded: true
 ---
 
 # Infrastructure recommendations
+
+> [!NOTE] For the Helm setup
+> This page is for installing the data plane yourself with Helm: on OCI, CoreWeave, Crusoe, Nebius, or any other
+> Kubernetes environment, and for existing AWS, GCP, and Azure deployments set up that way. For a new deployment on
+> AWS, GCP, or Azure, provision your resources on [AWS](../aws/_index), [GCP](../gcp/_index), or
+> [Azure](../azure/_index) and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
 In a self-managed deployment, Union.ai runs the **control plane** and you
 run the **data plane** on your own Kubernetes cluster. This page covers the infrastructure
@@ -25,8 +31,7 @@ ensure the best performance and reliability of your data plane.
 > The **control plane** (admin, identity, queue service, database, control-plane object
 > storage) is hosted and operated by Union.ai — you do not provision any of it.
 > Your responsibility is the **data plane**: the cluster that runs the operator, executor,
-> and your task pods. Deployments where you also run the control plane are a separate,
-> self-hosted model and are out of scope for this page.
+> and your task pods.
 
 ## Sizing model
 
@@ -63,15 +68,15 @@ in detail; the concrete `aws` / `gcloud` / `az` commands live on the per-cloud
 3. **Kubernetes cluster** — managed control plane (EKS / GKE / AKS) plus a system node pool
    and worker pool(s). See [Kubernetes cluster](#kubernetes-cluster).
 4. **Workload identity foundation** — IRSA OIDC provider (AWS) or Workload Identity
-   Federation (GCP), so the `union-system` service account can call cloud APIs without
-   static credentials. See [Identity and workload binding](#identity-and-workload-binding).
+   Federation (GCP), so the `union-system` service account and the task-pod service account
+   can call cloud APIs without static credentials. See [Identity and workload binding](#identity-and-workload-binding).
 5. **Object storage buckets** — metadata bucket and fast-registration bucket. See
    [Object storage](#object-storage).
 6. **Container image registry** — a private registry for task images (the image builder
    writes here; nodes pull from here), plus credentials to pull Union.ai
    system images. See [Container image registry](#container-image-registry).
-7. **Service-account IAM bindings** — bind the `union-system` identity to the buckets and
-   registry above. See [Identity and workload binding](#identity-and-workload-binding).
+7. **Service-account IAM bindings** — bind the `union-system` identity and the task-pod
+   identity to the buckets and registry above. See [Identity and workload binding](#identity-and-workload-binding).
 8. **Logging backend** (optional to change) — where task-pod stdout/stderr is collected for
    the console's live and post-GC log views. See [Logging](#logging).
 
@@ -145,8 +150,8 @@ cloud's infrastructure page for suggested sizes and the pod-density math:
 
 | Cloud | Networking and capacity guidance |
 | --- | --- |
-| AWS | [Prepare infrastructure (AWS) → Networking and IP capacity](./aws#networking-and-ip-capacity) |
-| GCP | [Prepare infrastructure (GCP) → Networking and IP capacity](./gcp#networking-and-ip-capacity) |
+| AWS | [Prepare infrastructure (AWS) → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) |
+| GCP | [Prepare infrastructure (GCP) → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity) |
 | Azure / OCI / other | Pod IPs come from your VNet/VPC subnets (Azure CNI, Calico, Cilium). Size the node subnet for peak concurrent pods and prefer a large private range up front; if the CNI has a fixed per-node pod cap, the same [pod-density math](./scaling-constraints#pod-density-and-ip-allocation) applies. |
 
 ### Public vs. private subnets
@@ -183,9 +188,16 @@ equivalent) with an egress path from each AZ.
 
 The cluster needs a managed identity mechanism so pods can call cloud APIs (object storage,
 image registry, secrets) without static credentials. The Union.ai data plane
-uses a **single Kubernetes service account, `union-system`**, shared by all platform
-components (operator, executor, webhook, proxy, and FluentBit), and the same identity is
-assumed by task pods across per-project namespaces.
+uses two Kubernetes service accounts:
+
+- **`union-system`** — shared by the platform components (operator, webhook, proxy, and
+  FluentBit).
+- **The task-pod service account** — task pods do not run as `union-system`. By default
+  they run as the `union` service account in the data plane namespace. If you enable
+  multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`),
+  they run as the `default` service account in each task namespace. Multi-namespace mode
+  also needs `clusterresourcesync.enabled: true`: clusterresourcesync creates the task
+  namespaces and annotates their `default` service accounts, and it is off by default.
 
 | Cloud | Mechanism |
 | --- | --- |
@@ -196,18 +208,31 @@ assumed by task pods across per-project namespaces.
 The `union-system` identity needs:
 
 - **Object storage** (S3 / GCS / Azure Blob) — read/write the metadata and fast-registration
-  buckets (task inputs/outputs, bundled code).
-- **Container registry** (ECR / Artifact Registry / ACR) — pull task images; push images when
-  the [image builder](../configuration/image-builder) is enabled.
+  buckets.
+- **Container registry** (ECR / Artifact Registry / ACR) — read access, to check whether an
+  image exists, when the [image builder](../configuration/image-builder) is enabled.
 
-The concrete IAM policy, role, and service-account annotation for each cloud live on the
-per-cloud [cloud provider setup](#cloud-provider-setup) pages. Review the
+The task-pod identity needs:
+
+- **Object storage** — read/write the metadata and fast-registration buckets (task
+  inputs/outputs, bundled code).
+- **Container registry** — push images when the image builder is enabled.
+
+Bind both service accounts. You can bind them to one cloud identity that holds both sets of
+permissions, as the [AWS](../aws/legacy) and [GCP](../gcp/legacy) pages do, or give each its own identity, as
+the [Azure](../azure/legacy) page does. Separate identities keep registry push access off the platform
+components. If you bind only `union-system`, task pods get no bucket or registry access.
+
+The concrete IAM policy, role, and identity binding for each cloud live on the per-cloud
+[cloud provider setup](#cloud-provider-setup) pages. The chart annotates the task-pod
+service account with the worker identity you set in your Helm values:
+`global.WORKER_IAM_ROLE_ARN` on AWS and GCP, `global.AZURE_WORKER_CLIENT_ID` on Azure (see
+each page's **Deploy configuration** section). Review the
 [common pitfalls](#common-identity-pitfalls) below before you write those bindings.
 
 > [!NOTE] Common service account
-> Earlier versions gave each component its own service account. The consolidated
-> `union-system` service account simplifies IAM: you bind cloud permissions to a single
-> identity.
+> All platform components share the `union-system` service account, so you bind the
+> platform's cloud permissions to a single identity. Task pods still need their own binding.
 
 ### Common identity pitfalls
 
@@ -293,8 +318,8 @@ configurable backing store (Kubernetes secrets by default, or a cloud secrets ma
 
 ## Control-plane connectivity
 
-Unlike a self-hosted deployment, the data plane authenticates to and communicates with a
-**remote, Union.ai-hosted control plane** over the internet. Ensure:
+The data plane authenticates to and communicates with a **remote, Union.ai-hosted control
+plane** over the internet. Ensure:
 
 - **Egress** from worker nodes (via NAT) can reach the Union.ai
   control-plane endpoint (`*.unionai.cloud`) in addition to your container registries.
@@ -302,9 +327,9 @@ Unlike a self-hosted deployment, the data plane authenticates to and communicate
   tier, the Cloudflare Tunnel (**TCP 7844**); no inbound firewall rules are required. For the
   full list of outbound destinations and ports, and guidance on allowlisting by IP address,
   see [Egress requirements](../../../security/architecture/network#egress-requirements).
-- The operator authenticates to the control plane using an **OAuth2 client-credentials
-  ("eager") key**, supplied as a Kubernetes secret. See
-  [Authentication](../configuration/authentication).
+- The data plane's services authenticate to the control plane with an **OAuth2 client ID and
+  secret** that you generate before installing and pass to the Helm chart. See step 3 of
+  [Deploy the data plane](../deploy/_index).
 - If you run **multiple data-plane clusters** under one Union.ai control
   plane, each cluster registers independently — see [Multi-cluster](../configuration/multi-cluster).
 
@@ -313,6 +338,8 @@ Unlike a self-hosted deployment, the data plane authenticates to and communicate
 Each page below covers the concrete resource-creation commands and the data-plane Helm values
 for one provider — the cloud-specific realization of the requirements on this page. Pick yours
 after working through the requirements above, then follow [Deploy the data plane](../deploy/_index).
+For AWS, GCP, and Azure, the Helm setup is under each provider: [AWS](../aws/legacy),
+[GCP](../gcp/legacy), [Azure](../azure/legacy).
 
 {{< subpage-cards >}}
 

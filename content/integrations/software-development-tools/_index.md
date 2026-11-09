@@ -131,12 +131,14 @@ Step 2 separates a credentials problem from a delivery problem. From the receive
 
 ## Calling the product's API
 
-These packages don't wrap the products' APIs. To act on GitHub, Slack, Linear, ClickUp, Jira, or GitLab from a task, call the vendor's client, such as `PyGithub` or `slack_sdk`, directly.
+These packages don't provide general clients for the products' APIs. To act on GitHub, Slack, Linear, ClickUp, Jira, or GitLab from a task, call the vendor's client, such as `PyGithub` or `slack_sdk`, directly.
 
-Two helpers are the exception, because each pauses a run until a person decides:
+The GitHub and Slack packages include a few task helpers:
 
 - [`review_pr`](./github#human-review-gates) in `flyteplugins-github` waits for a pull-request review decision in the Flyte UI.
+- [`mint_installation_token`](./github#github-app-tokens) in `flyteplugins-github` creates a short-lived GitHub App installation token from the App's secrets. Without them it returns `GITHUB_TOKEN` or `GH_TOKEN` as-is, or `None` if neither is set.
 - [`approval.request`](./slack#approvals) in `flyteplugins-slack` waits for a button click in Slack.
+- [`notify`](./slack#send-messages-from-tasks) in `flyteplugins-slack` posts, updates, and deletes messages through the Slack Web API.
 
 ## Related features
 
@@ -145,7 +147,7 @@ Two helpers are the exception, because each pauses a run until a person decides:
 
 ## Next steps
 
-- [Software development lifecycle](../../user-guide/software-development-lifecycle/_index) for what to build on top of these, and how the pieces fit into review, release, and incident response.
+- [Software development lifecycle](../../user-guide/project-patterns/software-development-lifecycle/_index) for what to build on top of these, and how the pieces fit into review, release, and incident response.
 - [API reference](../../api-reference/integrations/software-development-tools/_index) for the GitHub, Slack, Linear, ClickUp, and Jira packages, and [`flyte.extras.webhooks`](../../api-reference/flyte-sdk/flyte.extras.webhooks/_index) for the shared receiver.
 
 {{< subpage-cards >}}

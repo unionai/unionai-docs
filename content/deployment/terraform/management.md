@@ -184,7 +184,7 @@ resource "unionai_application_access" "example" {
 
 ## Available data sources
 
-Data sources allow you to query existing Union resources for use in your Terraform configuration. Each is looked up by its `id`; attributes such as `name` and `email` are read-only outputs, not lookup keys.
+Data sources allow you to query existing Union resources for use in your Terraform configuration. Most are looked up by their `id`; attributes such as a project's `name` are read-only outputs, not lookup keys. The `unionai_user` data source is the exception: look a user up by `email`.
 
 ### Projects
 
@@ -202,7 +202,7 @@ Look up user information:
 
 ```hcl
 data "unionai_user" "existing" {
-  id = "user-id"
+  email = "user@example.com"
 }
 ```
 
