@@ -169,10 +169,6 @@ execution = remote.execute(wf, inputs={"x": x}, wait=True)
 ## See also
 
 - [Remote tasks](../../tasks/task-programming/remote-tasks) — fetching and running deployed Flyte 2 tasks
-- [Run on a deployed cluster](../../get-started/run-modes/running-remote) — authentication methods, including `flyte.init_from_api_key()`
-{{< variant union >}}
-{{< markdown >}}
-- [Authenticating](../../authenticating#api-key) — API key authentication in depth
-{{< /markdown >}}
-{{< /variant >}}
+- [Run on a deployed cluster](../../get-started/run-modes/running-remote) — authentication methods, including `flyte.init_from_api_key()`{{% variant union %}}
+- [Authenticating](../../authenticating#api-key) — API key authentication in depth{{% /variant %}}
 - [Migration](./overview) — mapping Flyte 1 workload patterns to Flyte 2

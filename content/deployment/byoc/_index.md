@@ -2,7 +2,7 @@
 title: BYOC deployment
 description: Union manages the data plane infrastructure inside your cloud account; you supply the account and network configuration.
 icon: cloud-check
-weight: 3
+weight: 4
 variants: -flyte +union
 ---
 
@@ -16,11 +16,11 @@ The Union.ai control plane orchestrates workflow execution and stores orchestrat
 This metadata includes task, run, app, and reusable-environment definitions, run state, and error messages.
 Definitions can contain default input values, environment variables, and app inputs as plain text.
 Error messages may include data from Python tracebacks.
-See [Data privacy](./platform-architecture#data-privacy) and [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives) for details.
+See [Data privacy](../platform-architecture#data-privacy) and [Where your data lives](../../user-guide/get-started/core-concepts/where-data-lives) for details.
 
 ## Getting started
 
-1. Review the [platform architecture](./platform-architecture) to understand the control plane and data plane split.
+1. Review the [platform architecture](../platform-architecture) to understand the control plane and data plane split.
 2. Set up your data plane on your cloud provider:
    - [AWS](./data-plane-setup-on-aws)
    - [Azure](./data-plane-setup-on-azure)

@@ -12,7 +12,7 @@ For Union.ai customers whose data plane is in Azure, we walk through setting up 
 
 > [!NOTE] Azure Blob Storage in the Union.ai environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are several Azure Storage containers used internally by the Union.ai operator running in the cluster (see [Platform architecture](../platform-architecture)) to store things like workflow metadata.
+> Among these are several Azure Storage containers used internally by the Union.ai operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the Azure Blob Storage containers we are talking about in this section.**
 >

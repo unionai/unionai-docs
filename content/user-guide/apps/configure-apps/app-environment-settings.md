@@ -19,6 +19,11 @@ variants: +flyte +union
 - **Secrets**: See [Secrets](../../tasks/task-configuration/secrets) for injecting secrets into your app
 - **Environment variables**: Set via the `env_vars` parameter (same as tasks)
 - **Cluster pools**: Specify via the `cluster_pool` parameter
+{{< variant union >}}
+{{< markdown >}}
+- **Volumes**: Mount a Volume with `pod_template=allow_volumes()`. See [Volumes in apps](../../tasks/task-programming/volumes/_index#volumes-in-apps)
+{{< /markdown >}}
+{{< /variant >}}
 
 ## App-specific environment settings
 

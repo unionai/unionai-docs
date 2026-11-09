@@ -115,6 +115,8 @@ To hand JSONL data to columnar tooling, stream it as Arrow `RecordBatch`es with 
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="arrow-batches" lang="python" >}}
 
+Collecting every batch and combining them with `pa.Table.from_batches()` holds the whole dataset in memory, whatever the example's docstring says. To keep memory bounded, aggregate each batch as it arrives instead.
+
 ## Common use cases
 
 - **LLM dataset pipelines**: stream prompt/completion or eval records between preprocessing, generation, and scoring tasks.

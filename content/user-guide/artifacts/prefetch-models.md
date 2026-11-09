@@ -37,7 +37,7 @@ flyte prefetch hf-model HuggingFaceTB/SmolLM2-135M-Instruct --wait
 {{< /tab >}}
 {{< /tabs >}}
 
-For the full how-to, including sharding for multi-GPU inference, resources, tokens for gated repos, CLI usage, and serving the result from a vLLM or SGLang app, see [Prefetching models](../apps/serve-and-deploy-apps/prefetching-models). This page covers what a prefetch means for the artifact registry.
+For the full how-to, including sharding for multi-GPU inference, resources, tokens for gated repos, CLI usage, and serving the result from a vLLM or SGLang endpoint, see [Prefetching models](../inference/prefetching-models). This page covers what a prefetch means for the artifact registry.
 
 ## What gets registered
 

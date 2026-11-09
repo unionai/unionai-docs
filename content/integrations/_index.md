@@ -180,7 +180,7 @@ Software development tool integrations launch Flyte runs from events in GitHub, 
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 | [GitLab](./software-development-tools/gitlab) | Merge request, issue, comment, push, pipeline, release, and deployment webhooks, authenticated with a shared token | Merge request triage, pipeline and deployment follow-up |
 
-See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/project-patterns/software-development-lifecycle/_index) guide for what to build on top.
 
 ## Data transformation
 
@@ -414,10 +414,13 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                                          | Description                                         | Common use cases             |
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [llama.cpp](./llamacpp/_index) | Serve quantized GGUF models with llama-server, on GPU or CPU | Quantized models, CPU-only serving, models larger than VRAM |
+| [SGLang](../user-guide/inference/self-hosted-endpoints/sglang) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/inference/self-hosted-endpoints/vllm)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/self-hosted-endpoints/sglang) and [vLLM endpoint](../user-guide/inference/self-hosted-endpoints/vllm) pages.
+
+To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers/_index).
 
 ## Notebook execution
 
