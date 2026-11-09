@@ -275,7 +275,7 @@ The worker also applies limits that you cannot set on the decorator:
 - **Task calls:** 10,000 per run by default. Going over it fails the run with `TooManyTaskCalls`, which the
   function cannot catch.
 - **Value nesting:** values passed to tasks can be nested at most 32 levels deep.
-- **Error messages:** kept to their first 64 KiB.
+- **Error messages:** kept to their first 10 KiB.
 
 Hitting a limit is a user error, so it counts against `retries` like any other failure of the
 orchestrator. The exception is `WorkerMemoryPressure`: an orchestrator stopped because another one
