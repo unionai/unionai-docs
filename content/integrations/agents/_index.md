@@ -17,7 +17,7 @@ Ten frameworks are supported, each as a separate package on a shared core. The c
 
 > [!NOTE] Not every decision needs a generative model
 > The plugins on this page make a framework's *generative* loop durable. Many of the decisions inside that loop — is this input hostile, which of five intents is it, is there enough information to answer yet — are narrow enough to answer with a typed question instead, in one call and with calibrated confidence.
-> See [System one types](../../user-guide/system-one-types/_index) for the pattern, and the [TypeSafe AI integration](../typesafe-ai/_index) for the plugin that supplies it.
+> See [Decision models](../../user-guide/inference/decision-models/_index) for the pattern, and the [TypeSafe AI integration](../typesafe-ai/_index) for the plugin that supplies it.
 
 ## Supported frameworks
 
@@ -146,7 +146,7 @@ The adapters share a contract but the underlying SDKs differ, so durability land
 |---|---|---|---|---|
 | [OpenAI](./openai) | Per turn | `FunctionTool` | Conversation transcript | 3.10+ |
 | [Claude](./claude-agent-sdk) | Per session, via resume | In-process MCP tool | Conversation transcript | 3.10+ |
-| [Google ADK](./google-adk) | Per turn | Plain callable | Session events | 3.10+ |
+| [Google ADK](./google-adk) | Per turn, built agents | Plain callable | Session events | 3.10+ |
 | [Mistral](./mistral) | Per turn | Plain callable | Server-side conversation ID | 3.10+ |
 | [LangChain](./langchain) | Per turn, built agents | `StructuredTool` | Conversation transcript | 3.10+ |
 | [LangGraph](./langgraph) | Per turn, via `ai_node` | `StructuredTool` | Conversation transcript | 3.10+ |
@@ -170,7 +170,7 @@ The plugins do not have an opinion here. Pick the framework you would have picke
 
 - [How it works](./how-it-works): the runtime model, from the durable parent down to the trace leaf.
 - Pick a framework page above for SDK-specific setup, options and limitations.
-- [System one types](../../user-guide/system-one-types/_index): typed guards, routing and control flow to put in front of the generative loop — and the [TypeSafe AI integration](../typesafe-ai/_index) behind it.
+- [Decision models](../../user-guide/inference/decision-models/_index): typed guards, routing and control flow to put in front of the generative loop — and the [TypeSafe AI integration](../typesafe-ai/_index) behind it.
 - [Build an agent](../../user-guide/agents/build-agent/_index): Flyte's own agent harness, if you would rather not bring a framework at all.
 
 {{< subpage-cards >}}

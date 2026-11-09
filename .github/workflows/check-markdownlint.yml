@@ -51,7 +51,7 @@ jobs:
         if: steps.changed.outputs.any_changed == 'true'
         # Advisory during rollout — annotate, don't block. See header TODO.
         continue-on-error: true
-        uses: DavidAnson/markdownlint-cli2-action@v24
+        uses: DavidAnson/markdownlint-cli2-action@v25
         with:
           globs: ${{ steps.changed.outputs.all_changed_files }}
 
