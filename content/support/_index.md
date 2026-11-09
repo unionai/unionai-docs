@@ -11,7 +11,7 @@ variants: -flyte +union
 You can reach the support team through any of the channels below for all severity levels.
 
 > [!NOTE] Urgent (Sev 1) issues
-> For blocking issues that require immediate attention, include **Sev 1 - Urgent** in your request through any channel. This pages the 24×7 on-call team.
+> For blocking issues that require immediate attention, include **Sev 1 - Urgent** in your request through the shared Slack channel, the support portal, or email. This pages the 24×7 on-call team.
 
 ## Severity levels
 
@@ -43,7 +43,7 @@ The support portal at [support.union.ai](https://support.union.ai) lets you file
 
 ## Union Cloud console
 
-Click the **Get help** button within the Union web console to open a support request. You can attach a screenshot or record a video directly from the console to include with your report.
+If you created your organization yourself by [signing up](../deployment/sign-up/_index) (a self-serve organization), click **Help** in the console's navigation sidebar, then choose **Contact support** or **Report a bug or send feedback**. For organizations that Union.ai set up for you, the console shows a **Documentation** link there instead and has no support option. If your sidebar has no **Help** item, use one of the other channels on this page.
 
 ## Email
 
