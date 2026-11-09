@@ -133,11 +133,13 @@ VERSION=2026.9.7
 
    ```bash
    kubectl get pods -n "$NS"
-   kubectl logs -n "$NS" -l app.kubernetes.io/name=clusterresourcesync --tail=50
+   kubectl logs -n "$NS" deploy/union-operator --tail=50
    ```
 
-   All pods should be `Running` and `clusterresourcesync` should log a successful connection
-   to the control plane. Run a test execution to verify end-to-end task scheduling:
+   All pods should be `Running`, and the operator's log should show no connection errors to the
+   control plane. If you run in multi-namespace mode, with `clusterresourcesync.enabled: true`,
+   also check `kubectl logs -n "$NS" -l app.kubernetes.io/name=clusterresourcesync --tail=50`.
+   Run a test execution to verify end-to-end task scheduling:
 
    ```bash
    flyte run hello

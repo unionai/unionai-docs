@@ -2,7 +2,7 @@
 title: Condition
 description: "A remote Condition registered within an action of a run."
 icon: braces
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

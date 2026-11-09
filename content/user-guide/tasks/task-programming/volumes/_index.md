@@ -93,7 +93,7 @@ commits it and hands the next task an `ROVolume`.
 
 ## Setup
 
-Volumes are mounted inside the task pod, so the task environment needs two
+Volumes are mounted inside the task or app pod, so the environment needs two
 things: an **image** with the volume client (`flyteplugins-union`), and a **pod
 template** that lets the pod reach the mount.
 
@@ -123,6 +123,43 @@ env = flyte.TaskEnvironment(
 > It relies on a mount broker running on the cluster. The Union data plane ships
 > one; on a self-managed cluster an administrator
 > [enables it](../../../../deployment/selfmanaged/configuration/volumes).
+
+### Volumes in apps
+
+An [app](../../../apps/_index) mounts Volumes with the same pod template as a
+task. Requires `flyte` 2.12.2 or later.
+
+```python
+from flyte.app.extras import FastAPIAppEnvironment
+
+app_env = FastAPIAppEnvironment(
+    name="volume-app",
+    app=app,
+    image=image,
+    pod_template=allow_volumes(),
+)
+```
+
+The apps backend requires the app's primary container to be named `app`. When
+the app is deployed, the SDK renames the pod template's primary container to
+`app`, so you don't need to set `primary_container_name`. A pod template with
+a sidecar container already named `app` is rejected.
+
+To hand an app a committed version, pass its locator as a string
+[app parameter](../../../apps/configure-apps/passing-parameters) and load it
+with `Volume.from_locator()`. The app mounts that version read-only. See
+[Reference a volume across runs](./versions#reference-a-volume-across-runs).
+This page covers only that read-only pattern, not mounting a writable volume in
+an app.
+
+The app's Knative Serving must allow inline CSI volumes and mount propagation
+(the `kubernetes.podspec-volumes-csi` and
+`kubernetes.podspec-volumes-mount-propagation` features). On a self-managed
+data plane, an administrator must confirm that both features are enabled in the
+Knative Serving configuration. A data plane that still serves apps through the
+`knative-operator` chart (Knative Serving 1.16) supports neither, so complete
+[Moving off the knative-operator path](../../../../deployment/selfmanaged/upgrade#one-time-migrations)
+first.
 
 ## Where to go next
 

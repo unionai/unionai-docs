@@ -2,7 +2,7 @@
 title: ProviderFactory
 description: "What a plugin's exported provider class must look like."
 icon: diagram-3
-version: 2.12.2
+version: 2.12.4
 variants: +flyte +union
 layout: py_api
 ---

@@ -83,10 +83,10 @@ flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project -
 
 ## Org-wide secrets in a multi-cluster deployment
 
-Each [cluster pool](../../cluster-workload-management/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
+Each [cluster pool](../../clusters-and-queues/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
 A secret therefore lives in the secret store of one particular pool, not in a single global store.
 
-If your organization has more than one [cluster pool](../../cluster-workload-management/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
+If your organization has more than one [cluster pool](../../clusters-and-queues/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
 All three secret commands accept it:
 
 ```bash

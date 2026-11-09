@@ -125,7 +125,7 @@ An endpoint is one app, so it serves one partition at a time. It can have at mos
 
 ## Sharded models
 
-A model imported with [prefetch](../apps/serve-and-deploy-apps/prefetching-models) and sharded for tensor parallelism can only be loaded with the GPU count and engine it was sharded for. The factory reads both from the artifact and refuses to deploy an app that asks for a different number of GPUs or runs a different engine.
+A model imported with [prefetch](../inference/prefetching-models) and sharded for tensor parallelism can only be loaded with the GPU count and engine it was sharded for. The factory reads both from the artifact and refuses to deploy an app that asks for a different number of GPUs or runs a different engine.
 
 ## Examples
 

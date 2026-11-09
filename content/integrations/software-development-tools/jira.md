@@ -48,7 +48,7 @@ Set a narrow `scopes` allowlist as well.
 The provider reads the token from `JIRA_WEBHOOK_TOKEN`, which the app mounts automatically. Jira doesn't issue this token, so generate one yourself:
 
 ```bash
-flyte create secret jira-webhook-token --value "$(openssl rand -hex 32)"
+flyte create secret JIRA_WEBHOOK_TOKEN --value "$(openssl rand -hex 32)"
 ```
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/jira/jira_webhooks.py" fragment=handler lang=python >}}
@@ -109,5 +109,5 @@ Both files are in [`v2/integrations/flyte-plugins/jira`](https://github.com/unio
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
-- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
+- [Event-driven automation](../../user-guide/project-patterns/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [Jira API reference](../../api-reference/integrations/software-development-tools/jira/_index).
