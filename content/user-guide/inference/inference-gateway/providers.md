@@ -58,7 +58,7 @@ You can put a model you serve on Union behind the gateway, next to hosted provid
    | **Model id** | The model the app serves (its `--served-model-name`). Filled in from the app when it records one. |
    | **Name** | The provider name, which callers use as the model prefix. |
    | **Cost** | USD per 1 million input tokens and per 1 million output tokens. |
-   | **Answers decisions** | Lets callers send this app `POST /v1/decisions`. The model must support tool calling. |
+   | **Answers decisions** | Lets callers send this app `POST /v1/decisions`. The model must support tool calling. See [Decisions](./decisions). |
    | **Weight** | The load-balancing weight among providers. Defaults to `1`. |
 
 A provider named `qwen` whose app serves `qwen3-8b` is called as `qwen/qwen3-8b`.
