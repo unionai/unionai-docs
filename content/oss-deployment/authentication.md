@@ -42,11 +42,12 @@ flyte-core-components:
           - offline_access
 ```
 
-The `redirectUri` (default `http://localhost:53593/callback`) is the SDK/CLI's local
-PKCE callback and must be registered as a redirect URI on the IdP application.
+The `redirectUri` is the SDK/CLI's local PKCE callback and must be registered as a
+redirect URI on the IdP application. It has no default: if you leave it unset, browser
+(PKCE) login fails with `InvalidRedirectURI`.
 
 > **Okta note.** PKCE needs an Okta **native app** client ID with the
-> `http://localhost:53593/callback` redirect registered; the `client_credentials`
+> `redirectUri` you configured (`http://localhost:53593/callback` above) registered; the `client_credentials`
 > (machine) flow needs a custom scope on the auth server. Adjust `clientId` / `scopes`
 > for the flow you use.
 
@@ -58,8 +59,8 @@ chart can render up to **three ingresses**:
 
 | Ingress (values key) | Purpose |
 |---|---|
-| `ingress` (`httpAnnotations`) | Serves the console (`/v2`) and API; challenges **browsers** with cookie-OIDC SSO ([walkthrough below](#single-sign-on-for-the-console-at-the-alb)). |
-| `ingress.apiJwtIngress` | **JWT-validates** the `flyteidl2.*` API paths for requests carrying `Authorization: Bearer` (SDK / CLI / machine clients). Give it higher controller precedence than the http ingress so Bearer requests match it first. |
+| `ingress` (`httpAnnotations`) | Serves the console (`/v2`), plus the API paths when `apiJwtIngress` is disabled; challenges **browsers** with cookie-OIDC SSO ([walkthrough below](#single-sign-on-for-the-console-at-the-alb)). |
+| `ingress.apiJwtIngress` | When enabled, serves the `flyteidl2.*` API paths in place of the http ingress and **JWT-validates** them for requests carrying `Authorization: Bearer` (SDK / CLI / machine clients). Give it higher controller precedence than the http ingress so Bearer requests match it first. |
 | `ingress.wellknownIngress` | Serves the **unauthenticated** auth-discovery endpoints (`/.well-known/oauth-authorization-server`, `AuthMetadataService`). Clients need these *before* they hold a token, so give it the highest precedence to bypass auth. |
 
 Enable the JWT and discovery ingresses and supply your controller/JWT config via their
@@ -89,8 +90,8 @@ at the ALB, so that
 hitting `https://<host>/v2` challenges the user to log in at your IdP before the
 request ever reaches the console. ALB's native `authenticate-oidc` action handles the
 login and manages the session cookie; the Flyte binary is unchanged. SDK/machine
-clients that send an `Authorization: Bearer` token are matched by higher-precedence
-API rules and bypass the cookie flow.
+clients that send an `Authorization: Bearer` token are matched by the higher-precedence
+`apiJwtIngress` rules (when enabled) and bypass the cookie flow.
 
 ```
 Browser ──GET /v2──▶ ALB ──(no session)──▶ 302 ▶ IdP login
@@ -182,8 +183,9 @@ forbidden` on the ingress and no auth rule is applied.
 ### 4. Add the auth annotations
 
 Add the OIDC annotations to `ingress.httpAnnotations` in your values and
-`helm upgrade`. They apply to every rule on the HTTP ingress, gating the `/v2`
-console:
+`helm upgrade`. They apply to every rule on the HTTP ingress. With `apiJwtIngress`
+enabled (as above), that gates only the `/v2` console. With it disabled, they also gate
+the API paths, and SDK/CLI requests get redirected to the IdP:
 
 ```yaml
 ingress:
@@ -202,11 +204,6 @@ ingress:
 # Console redirects to the IdP:
 curl -s -o /dev/null -D - https://<host>/v2 | grep -i '^location'
 # → 302 … https://<issuer>/v1/authorize?client_id=…&redirect_uri=…%2Foauth2%2Fidpresponse…
-
-# API path is NOT gated (a normal response, not a 302 to the IdP):
-curl -s -o /dev/null -w '%{http_code}\n' -X POST \
-  https://<host>/flyteidl2.project.ProjectService/ListProjects \
-  -H 'Content-Type: application/json' -d '{}'
 ```
 
 Then open `https://<host>/v2` in a browser. You should be bounced through the IdP and

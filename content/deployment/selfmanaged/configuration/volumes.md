@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Volumes
 
-[Volumes](../../../user-guide/tasks/task-programming/volumes) give tasks a durable,
+[Volumes](../../../user-guide/tasks/task-programming/volumes/_index) give tasks a durable,
 versioned file system that they mount and read and write like a local directory.
 A Volume is served **inside the task pod** by
 [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html), so on a
@@ -117,7 +117,7 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 
 ### Enable block volumes
 
-[Block volumes](../../../user-guide/tasks/task-programming/block-volumes) store
+[Block volumes](../../../user-guide/tasks/task-programming/volumes/block-volumes) store
 a Volume as one ext4 image that the broker attaches as a loop device and mounts
 for the pod. Small-file workloads such as build caches then run close to
 local-disk speed. The task pod stays unprivileged, but attaching the image
@@ -284,5 +284,5 @@ Once one of the two DaemonSets is enabled, no further cluster setup is needed.
 Users create and mount Volumes directly from their task code, with
 `allow_volumes()` on the broker, or `flyte.PodTemplate().allow_fuse()` on the
 device plugin. See the
-[Volumes user guide](../../../user-guide/tasks/task-programming/volumes) for the
+[Volumes user guide](../../../user-guide/tasks/task-programming/volumes/_index) for the
 programming model.

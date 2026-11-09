@@ -33,7 +33,7 @@ Go to **Space Settings → Integrations → Webhooks** and set:
 1. **Endpoint**: the `/webhook/clickup` URL from the app's dashboard.
 2. **Events**: the events your handlers match.
 
-ClickUp generates a secret for the webhook. Store it as the `clickup-webhook-secret` Flyte secret.
+ClickUp generates a secret for the webhook. Store it as a Flyte secret with the key `CLICKUP_WEBHOOK_SECRET`.
 
 ## Events
 
@@ -84,5 +84,5 @@ Both files are in [`v2/integrations/flyte-plugins/clickup`](https://github.com/u
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
-- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
+- [Event-driven automation](../../user-guide/project-patterns/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [ClickUp API reference](../../api-reference/integrations/software-development-tools/clickup/_index).

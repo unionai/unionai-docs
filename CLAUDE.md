@@ -12,7 +12,8 @@ https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
 `.claude/rules/` carries subsystem knowledge that loads only when you touch the matching files —
 search indexes, routing and redirects, generated content, the LLM surface, variants and versions,
 and authoring. `contributing.md` there loads always: **sign off every commit (`git commit -s`)**,
-since "Check DCO" is a required status check.
+since "Check DCO" is a required status check. **With the Docsy plugin installed, changes on GitHub
+go through Docsy's tools, not `gh` or `git push`.** That file says how the local work fits around them.
 
 ## Project Overview
 

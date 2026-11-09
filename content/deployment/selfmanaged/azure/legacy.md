@@ -1,12 +1,12 @@
 ---
-title: Manual setup on Azure (legacy)
+title: Legacy steps
 description: Create the AKS cluster, Storage Account, managed identities, and Log Analytics access the data plane needs.
 icon: microsoft
 weight: 1
 variants: -flyte +union
 ---
 
-# Manual setup on Azure (legacy)
+# Legacy steps: manual setup on Azure
 
 > [!NOTE] For deployments set up with Helm
 > These are the earlier instructions: you provision Azure resources and install the data plane yourself with
@@ -195,7 +195,7 @@ Union separates infrastructure-level access from workload-level access using two
 
 | Identity | Used by | Needs access to |
 |----------|---------|-----------------|
-| `union-backend` | Operator, propeller, clusterresourcesync | Storage account, Key Vault |
+| `union-backend` | Union.ai platform services (operator, leaseworker, and clusterresourcesync when enabled) | Storage account, Key Vault |
 | `union-executions` | Task execution pods (user workloads) | Storage account + any customer Azure services |
 
 ```bash
