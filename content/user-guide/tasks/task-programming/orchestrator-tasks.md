@@ -37,12 +37,13 @@ async def order(order_id: str) -> str:
         timeout=7 * 24 * 3600,
     )
     try:
-        if not shipped.wait():  # Pauses here and holds no pod.
-            await refund(order_id)
-            return "refunded"
+        has_shipped = shipped.wait()  # Pauses here and holds no pod.
     except TimeoutError:
         await refund(order_id)
         return "timed out"
+    if not has_shipped:
+        await refund(order_id)
+        return "refunded"
     await email_customer(order_id)
     return "done"
 ```
