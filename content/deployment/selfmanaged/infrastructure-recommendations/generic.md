@@ -11,7 +11,7 @@ variants: -flyte +union
 This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE]
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./aws), [GCP](./gcp), [Azure](./azure), [OCI](./oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../aws/legacy), [GCP](../gcp/legacy), [Azure](../azure/legacy), [OCI](./oci).
 
 ## Kubernetes cluster
 
@@ -74,14 +74,7 @@ Save the following as `cors.json`:
 }
 ```
 
-Apply it to both buckets:
-
-```bash
-mc anonymous set-json cors.json myminio/union-metadata
-mc anonymous set-json cors.json myminio/union-fast-reg
-```
-
-Consult your object storage provider's documentation for the equivalent configuration if you are not using MinIO.
+Apply these CORS rules to your bucket(s) with your object storage provider's CORS tooling. On MinIO releases that support bucket-level CORS, use `mc cors set`. Check the [MinIO Client documentation](https://min.io/docs/minio/linux/reference/minio-mc.html) for whether it accepts this JSON file or needs a different format, and for the MinIO server release it requires.
 
 ### Data retention
 
@@ -130,7 +123,7 @@ mc admin policy attach myminio readwrite --user union-service
 Ensure you have push/pull credentials for your container registry. The specifics depend on your registry choice (Docker Registry basic auth, Harbor robot accounts, etc.).
 
 > [!NOTE] Worker pod authentication
-> Worker pods (task executions) use the same storage credentials as the platform services. The credentials are injected into per-project namespaces via the cluster resource sync mechanism.
+> Worker pods (task executions) use the same storage credentials as the platform services. By default, task pods run in the data plane's own namespace and get the credentials there. In multi-namespace mode, cluster resource sync copies them into each task namespace.
 
 ## Deploy configuration
 

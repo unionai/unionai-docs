@@ -142,10 +142,11 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    helm repo update
    ```
 
-6. Install the Custom Resource Definitions (CRDs):
+6. Install the Custom Resource Definitions (CRDs) via server-side apply:
 
    ```bash
-   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
+   git clone --depth 1 --branch dataplane-<CHART_VERSION> https://github.com/unionai/helm-charts.git
+   kubectl apply --server-side --force-conflicts -f helm-charts/crds/dataplane/
    ```
 
 7. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 4, and `<CLIENT_ID>` / `<CLIENT_SECRET>` with the credentials printed in step 3.
@@ -166,7 +167,7 @@ If you have not yet set up the required CoreWeave resources (CKS cluster, AI Obj
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, `flytepropeller`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator`, `union-operator-proxy`, `union-operator-buildkit`, `leaseworker`, and `flyteconnector`.
 
 9. Verify the cluster is registered with the control plane:
 
@@ -235,12 +236,12 @@ To run a sample workflow, complete the following steps:
 `uctl selfserve provision-dataplane-resources` provisions the data plane and
 registers this cluster with the control plane. Once it is connected, you manage
 the **cluster pool** it belongs to, and route work to it with queues, from the
-[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+[Clusters and queues](../../../user-guide/clusters-and-queues/_index)
 user guide:
 
-- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
-- [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
-- [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
+- [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/clusters-and-queues/clusters): inspect and manage the cluster records registered with the control plane.
+- [Managing queues](../../../user-guide/clusters-and-queues/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
 
 Each cluster is assigned exactly one pool. If no custom pool is specified when the
 cluster is created, it joins the `default` pool that every organization is

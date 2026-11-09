@@ -424,10 +424,12 @@ components:
 Also available per component: `image`, `extraEnv`, `envFrom`, `affinity`,
 `priorityClassName`, `podLabels`, `podAnnotations`, `livenessProbe`, `readinessProbe`,
 `startupProbe`, `initContainers`, `sidecars`, `extraVolumes`, `extraVolumeMounts`,
-`strategy`, `extraPodSpec`, and `service.{type,annotations,labels,clusterIP}`.
+`strategy`, `extraPodSpec`, `autoscaling` (see [Horizontal autoscaling](#horizontal-autoscaling)),
+and `service.{type,annotations,labels,clusterIP}`.
 
 > [!WARNING] The executor is always one replica
-> `components.executor` has no `replicaCount` — the chart hardcodes `replicas: 1`.
+> `components.executor` has no `replicaCount` and no `autoscaling` — the chart
+> hardcodes `replicas: 1`.
 > The executor reconciles `TaskAction` resources and hosts the pod admission webhook,
 > and leader election is off by default (`configuration.executor.leaderElect: false`),
 > so a second replica would duplicate work rather than share it. Give it more CPU and
@@ -438,6 +440,58 @@ Disable a component you don't need with `components.<name>.enabled: false`. Its
 Deployment, Service, ConfigMap, and ingress paths all disappear together. The other
 components address it by URL and will fail their calls to it, so in practice `app` is
 the only one you turn off — and it already is by default.
+
+### Horizontal autoscaling
+
+The chart can create an `autoscaling/v2` HorizontalPodAutoscaler for `runs`, `actions`,
+`events`, `secret`, `cache`, `dataproxy`, `app`, and the console. It is off by default.
+Enable it under `components.<name>.autoscaling`, or `console.autoscaling` for the
+console. For `app`, `components.app.enabled` must also be `true`.
+
+This requires `flyte-core` chart v2.0.52 or later. Older charts silently ignore these
+values, so run `helm repo update` first and check that
+`helm search repo flyteorg/flyte-core --versions` lists v2.0.52 or later.
+
+```yaml
+components:
+  actions:
+    resources:
+      requests: { cpu: "1", memory: 2Gi }   # utilization targets need requests
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 8
+      targetCPUUtilizationPercentage: 70
+```
+
+| Key | Default | Notes |
+|---|---|---|
+| `autoscaling.enabled` | `false` | Creates the HorizontalPodAutoscaler. |
+| `autoscaling.minReplicas` | `1` | |
+| `autoscaling.maxReplicas` | `10` | |
+| `autoscaling.targetCPUUtilizationPercentage` | `80` | Average CPU utilization target. Requires CPU requests on the component. |
+| `autoscaling.targetMemoryUtilizationPercentage` | `null` | Average memory utilization target. Requires memory requests on the component. |
+| `autoscaling.metrics` | `[]` | Additional `autoscaling/v2` metrics (`Pods`, `Object`, `External`, or `Resource`), appended after the CPU and memory targets that are set. To scale on these alone, also set `targetCPUUtilizationPercentage: null`. |
+| `autoscaling.behavior` | `{}` | `autoscaling/v2` `scaleUp` and `scaleDown` policies, passed through as written. |
+
+While autoscaling is enabled, the chart leaves `replicas` out of the Deployment, so
+`replicaCount` is ignored.
+
+Rendering fails if `minReplicas` is less than `1` or greater than `maxReplicas`, or if
+you set `targetCPUUtilizationPercentage: null` without a memory target or `metrics`.
+
+Before you turn it on:
+
+- **Set resource requests.** The chart sets none by default (`resources: {}`), and a
+  utilization target is a percentage of the request. Without requests the chart still
+  renders, but the HorizontalPodAutoscaler can't compute utilization and never scales.
+- **Install a metrics source.** CPU and memory targets read the Kubernetes metrics API,
+  which needs [metrics-server](https://github.com/kubernetes-sigs/metrics-server). EKS
+  doesn't install it by default.
+- **Expect a brief drop when you switch an existing release.** Enabling autoscaling removes
+  `replicas` from the Deployment, and Kubernetes then falls back to one replica until the
+  autoscaler scales up again. If the component runs more than one replica, upgrade at a
+  quiet time.
 
 ## Default task resources
 
@@ -539,22 +593,29 @@ To keep the **database password** out of the values file too, leave
 `configuration.database.postgres.password` empty and either:
 
 - reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
-  (the Secret is projected whole into `/etc/flyte/config.d` and loaded as `*.yaml`, so
-  its key must end in `.yaml` and hold a config fragment, for example a key
-  `012-db-secret.yaml` setting `database.postgres.password`; a key named `password` is
-  never read), or
+  (see below), or
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
 
-When `authType: accesskey`, keep the **S3 secret key** out of the values file the
-same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
-either:
+A Secret in `extraInlineSecretRefs` is projected whole into `/etc/flyte/config.d` and
+loaded as `*.yaml`, so its key must end in `.yaml` and hold a config fragment. A key
+named `password` is never read. Set the password twice: the `runs` LISTEN/NOTIFY listener reads its connection
+from `runs.database`, not `database`.
 
-- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`
-  (same `.yaml`-key requirement as above — the fragment sets
-  `storage.providerConfig.s3.secretKey`), or
-- mount the secret key as a file and point
-  `configuration.storage.providerConfig.s3.secretKeyPath` at it.
+```yaml
+# key: 012-db-secret.yaml
+database:
+  postgres:
+    password: <password>
+runs:
+  database:
+    postgres:
+      password: <password>
+```
+
+When `authType: accesskey`, keep the **S3 secret key** out of the values file too:
+leave `configuration.storage.providerConfig.s3.secretKey` empty, mount the secret key
+as a file, and point `configuration.storage.providerConfig.s3.secretKeyPath` at it.
 
 On the recommended `authType: iam` path there is no storage secret to manage.
 

@@ -53,6 +53,10 @@ Prompt engineering, prompt optimization, and context construction.
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
+{{< link-card target="speculative-decoding" icon="lightning" title="Speculative Decoding Models" >}}
+Train, benchmark, serve, and continually retrain draft models that make an LLM generate faster without changing its outputs.
+{{< /link-card >}}
+
 {{< variant union >}}
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
 RL fine-tuning of language models.
