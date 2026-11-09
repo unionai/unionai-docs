@@ -357,7 +357,7 @@ components:
     replicaCount: 2
     resources:
       requests: { cpu: 500m, memory: 1Gi }
-  # The chart pins the executor to one replica — give it headroom, not replicas.
+  # One executor replica reconciles at a time — give it headroom, not replicas.
   executor:
     resources:
       requests: { cpu: 500m, memory: 2Gi }
@@ -427,14 +427,16 @@ Also available per component: `image`, `extraEnv`, `envFrom`, `affinity`,
 `strategy`, `extraPodSpec`, `autoscaling` (see [Horizontal autoscaling](#horizontal-autoscaling)),
 and `service.{type,annotations,labels,clusterIP}`.
 
-> [!WARNING] The executor is always one replica
-> `components.executor` has no `replicaCount` and no `autoscaling` — the chart
-> hardcodes `replicas: 1`.
-> The executor reconciles `TaskAction` resources and hosts the pod admission webhook,
-> and leader election is off by default (`configuration.executor.leaderElect: false`),
-> so a second replica would duplicate work rather than share it. Give it more CPU and
-> memory instead; `configuration.executor.maxConcurrentReconciles` (default `512`)
-> controls how much it does in parallel.
+> [!WARNING] More than one executor replica requires leader election
+> `components.executor` has no `autoscaling`. Its `replicaCount` defaults to `1`, and
+> the chart refuses to render a higher value unless
+> `configuration.executor.leaderElect` is `true` (default `false`). This requires
+> `flyte-core` chart v2.0.54 or later.
+> The executor reconciles `TaskAction` resources and hosts the pod admission webhook.
+> With leader election, one replica reconciles at a time and the
+> others stand by, so extra replicas add failover, not throughput. To handle more work, give
+> the executor more CPU and memory; `configuration.executor.maxConcurrentReconciles`
+> (default `512`) controls how much it does in parallel.
 
 Disable a component you don't need with `components.<name>.enabled: false`. Its
 Deployment, Service, ConfigMap, and ingress paths all disappear together. The other
