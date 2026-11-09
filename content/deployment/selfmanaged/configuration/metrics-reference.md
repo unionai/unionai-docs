@@ -10,7 +10,9 @@ variants: -flyte +union
 
 This page lists the metrics that the components executing your runs expose, what each one measures,
 and which readings mean something is wrong. It covers the **leaseworker**, which runs in your data plane,
-and the **leasor** and **actions** services, which run in the control plane.
+and the **leasor** and **actions** services, which run in the control plane. Metric names and label
+values are as of release 2026.11.2; they change between releases (for example the dispatcher queue
+gauge was `queue_depth` before it split into `queue_main_depth` and `queue_priority_depth`).
 
 | Component | Runs in | Metric prefix | Scraped by |
 | --- | --- | --- | --- |
@@ -51,13 +53,17 @@ Point each dashboard's `$datasource` variable at the Prometheus that scrapes the
 
 | Dashboard | Chart | Row | Panels |
 | --- | --- | --- | --- |
-| [Union Dataplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/dataplane/dashboards/union-dataplane-overview.json) | `dataplane` | **V2 — leaseworker** | Active leases (run and finalize), Available capacity, Dispatcher queue depth, Dispatcher rounds: success vs errors, FastTask backlog vs limit, Task assignment (no capacity / no workers) |
-| [Union Controlplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/dashboards/union-controlplane-overview.json) | `controlplane` | **V2 — leasor** | Queue depth, Active runs / actions, Enqueue to dispatch latency (p99), Leaseworker fleet (capacity, active, available) |
-| | | **V2 — actions** | Actions in memory, Active watchers, Archive queue depth and drain rate |
+| [Union Dataplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/dataplane/dashboards/union-dataplane-overview.json) | `dataplane` | **V2 — leaseworker** | Active leases (run, finalize, and finished awaiting the leasor), Available capacity, Dispatcher queue depth (main and priority lanes), Dispatcher rounds: success vs errors, Actions terminated (by phase), System errors: transient vs exhausted, Control-plane link: heartbeat errors / stream reconnects, FastTask backlog vs limit, Task assignment (no capacity / no workers) |
+| [Union Controlplane Overview](https://github.com/unionai/helm-charts/blob/main/charts/controlplane/dashboards/union-controlplane-overview.json) | `controlplane` | **V2 — leasor (CP lease queue)** | Queue depth, Active runs / actions, Enqueue to dispatch latency (p99), Leaseworker fleet (capacity, active, available) |
+| | | **V2 — actions (CP action store)** | Actions in memory, Active watchers, Archive queue depth and drain rate |
 
-The dataplane dashboard does not plot `actions_terminated`, `system_errors`, `system_errors_exhausted`,
-or the heartbeater and stream metrics. Add panels for those from the tables below if you alert on them.
-The controlplane dashboard applies to a self-hosted control plane only.
+The links point at the charts' `main` branch. Released dataplane charts through 2026.11.3 ship the
+previous version of the dashboard: its Dispatcher queue depth panel reads a metric the leaseworker does
+not emit and shows "No data", and it has none of the Actions terminated, System errors, or Control-plane
+link panels. Those arrive with the next dataplane chart release; until then, add panels for
+`actions_terminated`, `system_errors`, `system_errors_exhausted`, `heartbeater:request_errors`, and
+`stream:reconnections` from the tables below if you alert on them. The controlplane dashboard applies to
+a self-hosted control plane only.
 
 ## Leaseworker
 
@@ -71,8 +77,8 @@ Every leaseworker metric carries the standard Kubernetes labels Prometheus adds 
 | `leaseworker:active_run_leases` | gauge | Run leases this worker holds whose action is executing | Your running-action count. The chart records it as `union:dp:leaseworker:active_actions`. |
 | `leaseworker:finished_run_leases` | gauge | Run leases whose action finished but whose report the leasor has not accepted yet. They hold no capacity | Growing steadily means the leasor is not accepting reports. Check `heartbeater:request_errors`. |
 | `leaseworker:active_finalize_leases` | gauge | Finalize (cleanup) leases held | Growing without run leases finishing means cleanup is stuck. Check `evaluator:finalize_errors`. |
-| `leaseworker:available_capacity` | gauge | `leaseworker.capacity` minus the run slots in use, floored at 0 | At 0 the worker accepts no new leases and the leasor skips it with `reason="no_capacity"`. The chart default capacity is 100000, so 0 normally means the worker quiesced. |
-| `leaseworker:quiesced` | gauge | 1 after the worker shut itself down because its cluster was deleted on the control plane, else 0 | 1 on a cluster you expect to be live means the cluster record is wrong. The pod exits and restarts. |
+| `leaseworker:available_capacity` | gauge | `leaseworker.capacity` minus the run slots in use, floored at 0 | At 0 the worker accepts no new leases and the leasor skips it with `reason="no_capacity"`. The chart default capacity is 100000, so this gauge does not reach 0 from load. |
+| `leaseworker:quiesced` | gauge | 1 after the worker shut itself down because its cluster was deleted on the control plane, else 0 | The worker sets it (and `available_capacity` to 0) right before it exits, so a scrape rarely sees either value. Detect quiescence from pod restarts plus the `leaseworker quiesced` warning in the pod log. On a cluster you expect to be live it means the cluster record is wrong. |
 | `leaseworker:leases_received` | counter | Leases accepted from the leasor stream | Your inflow. Flat while `leasor:leases_by_state{state="unassigned"}` grows means the stream is down. |
 | `leaseworker:leases_rejected` | counter | Leases refused at capacity or by the tracker | Any sustained rate while `available_capacity` is above 0 is a bug. |
 | `leaseworker:leases_finalized` | counter | Finalize leases reported complete | Should track `active_finalize_leases` draining. |
@@ -179,7 +185,7 @@ The reusable-containers plugin reports under `leaseworker:core_plugins:fast_task
 | `task_assigned` | counter | Tasks handed to a replica. |
 | `task_no_workers_available`, `task_no_capacity_available`, `task_no_capacity_by_reason{reason}` | counter | Assignment attempts that found no replica or no slot. A sustained rate means the environment is undersized or its replicas are not becoming healthy. |
 | `worker_connection_errors{error_type}` | counter | Errors talking to replicas. |
-| `env_builder:*` | counter, gauge | Environment lifecycle: `env_created`, `env_gced`, `pods_created_total`, `pod_creation_errors_total`, `scale_up_buffer_size`, `scale_down_buffer_size`. `pod_creation_errors_total` rising means replicas cannot be scheduled. |
+| `env_builder:fast_task:*` | counter, gauge | Environment lifecycle, under the longer prefix `leaseworker:core_plugins:env_builder:fast_task:`: `env_created`, `env_gced`, `pods_created_total`, `pod_creation_errors_total`, `scale_up_buffer_size`, `scale_down_buffer_size`. `pod_creation_errors_total` rising means replicas cannot be scheduled. |
 
 ### Recording rule
 
@@ -196,10 +202,10 @@ All names carry the `leasor:` prefix. The labels `org` and `queue` appear on mos
 
 | Metric | Type | What it measures | What to watch |
 | --- | --- | --- | --- |
-| `leases_by_state{state,type}` | gauge | Leases in each state: `unassigned`, `sent`, `pending_completion`, `pending_finalize`, `pending_retry`, `pending_abort_cascade`, split by `run_action` and `finalize` | The single most useful gauge. `unassigned` growing is a scheduling bottleneck. `sent` growing with no completions means workers are stuck. `pending_completion` growing means the actions service callback is failing. |
+| `leases_by_state{state,type}` | gauge | Leases in each state: `unassigned`, `sent`, `pending_completion`, `pending_finalize`, `pending_retry`, `pending_abort_cascade`, `pending_abort_completion`, split by `run_action` and `finalize` | The single most useful gauge. `unassigned` growing is a scheduling bottleneck. `sent` growing with no completions means workers are stuck. `pending_completion` growing means the actions service callback is failing. |
 | `workers_connected` | gauge | Leaseworkers with an open lease stream | 0 means nothing can run. A sudden drop is a worker crash, redeploy, or network partition. |
 | `leaseworker_capacity`, `leaseworker_active`, `leaseworker_available{org,worker_cluster,worker}` | gauge | The leasor's view of each worker's slots | Utilization is `leaseworker_active / leaseworker_capacity`. `leaseworker_available` at 0 for a worker means its actions wait with `reason="no_capacity"`. |
-| `work_queue_depth` | gauge | Items in the leasor's internal work channel | Approaching its capacity causes `enqueue_total{result="backpressure"}`. |
+| `work_queue_depth` | gauge | Items in the leasor's internal work channel | When the channel is full, new state-advancement work is left for the anti-entropy sweep rather than rejected. Watch `sweep_recoveries_total` and `work_queue_wait_seconds` alongside it. |
 | `active_actions{org}`, `active_runs{org}` | gauge | Actions and runs the leasor holds per organization | Which org drives the load. |
 
 ### Queues
@@ -210,7 +216,7 @@ All names carry the `leasor:` prefix. The labels `org` and `queue` appear on mos
 | `queue_active_actions`, `queue_active_runs` | gauge | Work holding the queue's action and run concurrency | Compare with `queue_max_action_concurrency` and `queue_max_run_concurrency`. |
 | `queue_max_depth`, `queue_max_action_concurrency`, `queue_max_run_concurrency` | gauge | The queue's configured limits. 0 is unlimited | |
 | `queue_finalizes` | gauge | Outstanding cleanup leases for the queue | A draining queue is only drained once this reaches 0. |
-| `queue_status{status}` | gauge | 1 for the queue's current status: `active`, `draining`, `drained` | |
+| `queue_status{status}` | gauge | 1 for the queue's current status: `active`, `draining`, `drained`, `unknown` | |
 | `queue_in_flight_resources{resource}`, `queue_max_resources{resource}` | gauge | Resources held by the queue's dispatched actions (cpu in millicores, memory and ephemeral storage in bytes) against its cap | In-flight approaching max means the queue is about to hold work. An absent max series means no cap on that resource. |
 | `queue_in_flight_accelerators{accelerator}`, `queue_max_accelerators{accelerator}` | gauge | GPU devices charged against each accelerator cap | Same reading as the resources pair, per GPU type. |
 | `queue_head_blocked` | gauge | 1 while a strict-FIFO queue's head action is held | Stuck at 1 while `queue_in_flight_resources` is flat means the queue's running work is not completing. |
@@ -223,12 +229,12 @@ Query these as rates.
 
 | Metric | Type | What it measures | What to watch |
 | --- | --- | --- | --- |
-| `enqueue_total{result,org}` | counter | Actions accepted (`ok`), refused by a limit (`backpressure`), or failed to store (`error`) | Inflow. `error` means the database write failed. |
-| `enqueue_reject_total{reason,org}` | counter | Enqueues refused before storage for a queue-routing reason | Any `unknown_queue` or `missing_queue` rate is a configuration problem. `not_synced` means the queue reconciler is behind. |
-| `terminal_total{phase,org}` | counter | Actions reaching a terminal phase: `succeeded`, `failed`, `aborted`, `timed_out` | Outflow. Compare `succeeded` against the rest. |
+| `enqueue_total{result,org}` | counter | Actions accepted (`ok`), refused by a limit (`backpressure`: the global active-action limit, the per-org action and run limits, or a queue's `max_depth`), or failed to store (`error`) | Inflow. `error` means the database write failed. |
+| `enqueue_reject_total{reason,org}` | counter | Enqueues refused before storage for a queue-routing reason: `missing_queue`, `not_synced`, `unknown_queue`, `queue_not_active`, `cross_cluster_pool`, `missing_run_spec`, `missing_root_queue` | Any `unknown_queue` or `missing_queue` rate is a configuration problem. `not_synced` means the queue reconciler is behind. `queue_not_active` is expected during an intentional drain. |
+| `terminal_total{phase,org}` | counter | Actions reaching a terminal phase: `succeeded`, `failed`, `aborted`, `timed_out`, `recovered` | Outflow. Compare `succeeded` against the rest. |
 | `retries_total{cause,org}` | counter | Retries by cause: `system` (lease expired or platform error) or `user` (task code failed) | Sustained `system` means pods or workers are dying. |
 | `expirations_total{type}` | counter | Leases that expired because the worker stopped heartbeating | A burst during a deploy is normal. A sustained rate is a worker outage. |
-| `timeouts_total{cause,org}` | counter | Actions reaped before dispatch for `deadline` or `queued_timeout` | Sustained `queued_timeout` for one org means its workers are saturated. |
+| `timeouts_total{cause,org}` | counter | Actions reaped for `deadline` (the absolute budget; fires whether the lease is still queued or already sent to a worker) or `queued_timeout` (the per-attempt budget before dispatch; fires only while queued) | Sustained `queued_timeout` for one org means its workers are saturated. |
 | `dispatch_total{result}` | counter | Lease assignments: `ok`, `worker_gone`, `persist_failed`, `rollback`, `rollback_failed` | `persist_failed` is a database problem. `rollback_failed` should never be sustained. |
 | `heartbeat_total{result}` | counter | Heartbeats accepted or `rejected` because the lease is unknown | A high reject rate means workers and leasor disagree about live leases. |
 | `heartbeat_persist_failures_total` | counter | Individual lease extensions that failed to persist | Only matters across a leasor restart, when stale expiries cause false expirations. |
@@ -316,7 +322,7 @@ equivalent.
 | `executor::v2:system_failures` | `leaseworker:dispatcher:system_errors` | Same meaning. |
 | `executor::v2:system_failures_exhausted` | `leaseworker:dispatcher:system_errors_exhausted` | Same meaning; the limit is `maxConsecutiveErrors`. |
 | `executor::v2:leases_received_count`, `executor::v2:leases_finalized_count` | `leaseworker:leases_received`, `leaseworker:leases_finalized` | Same meaning. |
-| `executor:handler_panic` | `leaseworker:plugin_panic` | Same meaning. |
+| `executor:handler_panic` | `leaseworker:plugin_panic` | Different. `handler_panic` counted panics recovered in RPC handlers; `plugin_panic` counts panics in a plugin's Handle, Abort, or Finalize. It is the closest signal, not an equivalent. |
 | `union:dp:executor:active_actions` (recording rule) | `union:dp:leaseworker:active_actions` | Rewritten to read `leaseworker:active_run_leases`. |
 
 ## See also
