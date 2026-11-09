@@ -67,7 +67,7 @@ The dispatcher runs the per-action evaluation loop. Metrics live under `leasewor
 
 | Metric | Type | What it measures | What to watch |
 | --- | --- | --- | --- |
-| `queue_main_depth` | gauge | Attempt keys waiting in the main work queue | Grows when `dispatcherCount` goroutines cannot keep up. Compare with `round_duration`. |
+| `queue_main_depth` | gauge | Attempt keys waiting in the main work queue | Grows when the `dispatcherCount` dispatchers cannot keep up. Compare with `round_duration`. |
 | `queue_priority_depth` | gauge | Finalize leases waiting in the one-shot priority lane | Normally near 0. A standing depth means finalizes are not being picked up. |
 | `queue_wait_duration` | histogram | Time an attempt key waits in the work queue before dispatch | p99 rising with `queue_main_depth` is dispatcher saturation. |
 | `in_flight` | gauge | Attempt keys being processed right now | Capped by `leaseworker.dispatcherCount`. Pinned at the cap means the worker needs more dispatchers. |
