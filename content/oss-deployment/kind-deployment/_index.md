@@ -691,7 +691,7 @@ so these win over the `flyte-http` Ingress for their paths:
 kubectl apply -f - <<'EOF'
 # Discovery — highest priority, NO middleware. The SDK reads it before it has a
 # token; it must reach Flyte directly so it returns the real metadata (issuer,
-# client ID), not oauth2-proxy's unparseable 401. (Equivalent of wellknownIngress.)
+# client ID), not oauth2-proxy's unparseable sign-in response. (Equivalent of wellknownIngress.)
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -733,7 +733,7 @@ EOF
 Now `flyte.local` routes three ways by precedence: discovery (300) bypasses auth, the
 API (100) requires a Bearer token, and everything else (the `/v2` console) falls
 through to the `flyte-http` Ingress with the full browser middleware chain. Verify the
-discovery path returns JSON rather than oauth2-proxy's 401:
+discovery path returns JSON rather than oauth2-proxy's sign-in response:
 
 ```bash
 curl -s -X POST --resolve flyte.local:443:127.0.0.1 -k \
