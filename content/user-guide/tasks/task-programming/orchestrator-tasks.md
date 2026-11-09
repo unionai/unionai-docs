@@ -58,7 +58,8 @@ container. When the function calls a task, it is suspended until the result come
 it calls run as ordinary tasks, in their own containers, with their own resources.
 
 > [!NOTE] Union.ai only
-> Orchestrator tasks are available in Union.ai only, and need Union.ai platform version x or later.
+> Orchestrator tasks are available in Union.ai only, and need the latest Union.ai platform release.
+> Confirm with your Union.ai solutions team that your deployment has it.
 > Install the latest `flyte` SDK, 2.12.3 or later, with the `sandbox` extra:
 > `pip install -U "flyte[sandbox]>=2.12.3"`. The extra installs the Monty interpreter that local
 > runs use.
