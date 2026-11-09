@@ -8,34 +8,49 @@ variants: -flyte +union
 
 # Orchestrator tasks
 
-Most pipelines have a driver: a task that calls other tasks, waits for their results, and decides
-what to do next. Take a training pipeline written as a regular task:
+Some workflows run for a long time but do very little. Take an order: charge the card, wait up to
+a week for the warehouse to confirm the order has shipped, then email the customer, or refund the
+order if it did not ship. The work takes seconds. The waiting takes days.
 
 ```python
 import flyte
-
-env = flyte.TaskEnvironment(name="training")
-
-@env.task
-async def train_pipeline(dataset: str) -> str:
-    features = await prepare(dataset)      # 20 minutes
-    model = await train(features)          # 4 hours
-    return await evaluate(model)           # 10 minutes
-```
-
-`train_pipeline` does almost no work itself, but it runs in its own pod for the full four and a half
-hours, holding that pod's CPU and memory while it waits for `prepare`, `train`, and `evaluate`. The
-same function written as an orchestrator task has no pod at all:
-
-```python
 import flyte.orchestrator
 
+env = flyte.TaskEnvironment(name="orders")
+
+@env.task
+async def charge_card(order_id: str) -> None: ...
+
+@env.task
+async def refund(order_id: str) -> None: ...
+
+@env.task
+async def email_customer(order_id: str) -> None: ...
+
 @flyte.orchestrator.task
-def train_pipeline(dataset: str) -> str:
-    features = prepare(dataset)
-    model = train(features)
-    return evaluate(model)
+async def order(order_id: str) -> str:
+    await charge_card(order_id)
+    shipped = flyte.new_condition(
+        "shipped",
+        prompt=f"Has order {order_id} shipped?",
+        data_type=bool,
+        timeout=7 * 24 * 3600,
+    )
+    try:
+        if not shipped.wait():  # Pauses here and holds no pod.
+            await refund(order_id)
+            return "refunded"
+    except TimeoutError:
+        await refund(order_id)
+        return "timed out"
+    await email_customer(order_id)
+    return "done"
 ```
+
+Written as a regular `@env.task`, `order` would busy-wait: it would hold a pod, with its CPU and
+memory, for up to a week while it waits for one signal. As an orchestrator task it has no pod at
+all. It holds nothing while it waits, and the three tasks it calls start their own pods only when
+they run.
 
 Union runs the body of an orchestrator task in a small sandbox on a shared worker instead of in a
 container. When the function calls a task, it is suspended until the result comes back. The tasks
@@ -182,8 +197,9 @@ def tolerant(x: int) -> str:
 ### Wait for a person
 
 An orchestrator can pause until someone approves a step or supplies a value from the UI or the
-API, using `flyte.new_condition` and the condition's `wait()`, without `await`. While it waits,
-nothing runs and no pod is held, whether that is for an hour or a week:
+API, using `flyte.new_condition` and the condition's `wait()`. Call `wait()` without `await`, even
+in an `async def` orchestrator. While it waits, nothing runs and no pod is held, whether that is for
+an hour or a week:
 
 ```python
 import flyte
