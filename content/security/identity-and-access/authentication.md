@@ -10,12 +10,12 @@ variants: -flyte +union
 
 ## Authentication methods
 
-Union.ai supports three authentication methods, each designed for a different use case.
+Union.ai supports three authentication methods, each designed for a different use case. API keys and service accounts both authenticate as an OAuth2 application identity with client credentials; they differ in who provisions those credentials.
 
 | Method | Identity Type | Credentials | Use Case |
 |---|---|---|---|
 | OIDC | Human user | Browser SSO | UI access, initial CLI login |
-| API Keys | Application identity | Static bearer token | CI/CD scripts, simple automation |
+| API Keys | Application identity | OAuth2 client_id + client_secret, encoded into the key -> short-lived token | CI/CD scripts, simple automation |
 | Service Accounts | Application identity | OAuth2 client_id + client_secret -> short-lived token | Production pipelines, multi-service systems |
 
 Service accounts are provisioned by the platform, creating OAuth2 applications with distinct, auditable identities independent of any human user.
