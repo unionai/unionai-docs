@@ -22,7 +22,7 @@ The same variable turns off telemetry in the `flyte` SDK and CLI, the backend, a
 |---|---|
 | `flyte` SDK and CLI | Crash reports for unexpected errors, and counts of runs, deploys, and their outcomes. Errors caused by user code or input are not reported. |
 | Flyte backend | Error reports for internal server errors, and counts of runs, task deploys, trigger deploys, and app deploys. |
-| Web console | Product analytics through Google Tag Manager. |
+| Web console | Product analytics through Google Tag Manager, and errors, browser console logs, and performance and tracing data through Grafana Faro. |
 
 ## Turn off telemetry on your machine
 
