@@ -116,7 +116,7 @@ Each data plane uses S3 buckets to store data used in workflow execution.
 Union recommends the use of two S3 buckets:
 
 1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
-2. **Code bundle/Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
+2. **Code bundle/Fast registration bucket**: contains the code bundles that `flyte deploy` and `flyte run` upload and copy into the Flyte task container at runtime (with any `--copy-style` except `none`).
 
 You can also choose to use a single bucket.
 
@@ -357,4 +357,4 @@ Using the [environment variables](#environment-variables) from above, set the fo
 - Set `global.FAST_REGISTRATION_BUCKET` to `${BUCKET_PREFIX}-fast-reg`.
 - Set `global.BACKEND_IAM_ROLE_ARN` to `arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}` (where `AWS_ACCOUNT_ID` is your 12-digit account ID).
 - Set `global.WORKER_IAM_ROLE_ARN` to the same value (or a separate role if you use distinct worker permissions).
-- Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (the chart auto-generates the full ECR URL from the account ID and region).
+- Set `imageBuilder.registryName` to `${ECR_REPO_NAME}` (the chart's default is `union-dataplane`; the chart auto-generates the full ECR URL from the account ID and region).
