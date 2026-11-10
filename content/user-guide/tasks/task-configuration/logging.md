@@ -33,13 +33,15 @@ For example, to see Flyte's internal debug messages:
 LOG_LEVEL=debug flyte run --local my_workflow.py main
 ```
 
-Each level variable accepts either a **named level** (`critical`, `error`, `warning` or `warn`, `info`, `debug`, case-insensitive) or a **numeric** Python logging level, such as `10` (`DEBUG`) or `20` (`INFO`):
+`LOG_LEVEL` accepts either a **named level** (`critical`, `error`, `warning` or `warn`, `info`, `debug`, case-insensitive) or a **numeric** Python logging level, such as `10` (`DEBUG`) or `20` (`INFO`):
 
 ```bash
 LOG_LEVEL=10 USER_LOG_LEVEL=debug flyte run --local my_workflow.py main
 ```
 
-An unrecognized value falls back to the default for that variable.
+An unrecognized `LOG_LEVEL` falls back to `WARNING`.
+
+With the `flyte` CLI, `USER_LOG_LEVEL` is read as the value of the `--user-log-level` option, so it accepts only `debug`, `info`, `warning`, `error` or `critical` (case-insensitive). Any other value, including `warn` or a number, makes the command exit with an `Invalid value for '--user-log-level'` error. Without the CLI, such as when you call `flyte.init()` from your own script, `USER_LOG_LEVEL` accepts the same values as `LOG_LEVEL`, and an unrecognized value falls back to `INFO`.
 
 ## Set the framework verbosity from the CLI
 
@@ -47,7 +49,8 @@ The `flyte` CLI's `-v` flag is a shorthand for the **framework** log level (the 
 
 | Flag | Framework level |
 |------|-----------------|
-| *(none)* or `-v` | `WARNING` |
+| *(none)* | `LOG_LEVEL` env var, else `WARNING` |
+| `-v` | `WARNING` |
 | `-vv` | `INFO` |
 | `-vvv` | `DEBUG` |
 
@@ -84,7 +87,7 @@ flyte.init(
 | `reset_root_logger` | `bool` | `False` | When `True`, Flyte clears the root logger's existing handlers and installs its own, set to the framework `log_level`: third-party log lines below that level aren't shown. With `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler and filtered the same way, so with `log_level` above `WARNING` they aren't shown. When `False` (the default), Flyte leaves your existing root handlers in place and wraps their formatters so third-party log lines also carry the run/action context. |
 
 > [!NOTE]
-> Explicit `flyte.init()` arguments take precedence over the environment variables. An argument left unset falls back to the corresponding environment variable, then to the built-in default.
+> Explicit `flyte.init()` arguments take precedence over the environment variables, except `reset_root_logger`: if `FLYTE_RESET_ROOT_LOGGER` is `1`, the root logger is reset even when you pass `reset_root_logger=False`. An argument left unset falls back to the corresponding environment variable, then to the built-in default.
 
 ## Write to the user logger
 
@@ -116,11 +119,11 @@ flyte.with_runcontext(
 
 By default (`reset_root_logger=False`), Flyte does **not** clear the root logger; it only wraps your existing root handlers so their lines carry the run/action context. The root reset is what makes third-party output uniform JSON.
 
-`reset_root_logger` is also available on `flyte.init()`.
+`flyte.with_runcontext()` applies the reset only in the remote task. To reset the root logger in your local process as well, pass `reset_root_logger=True` to `flyte.init()`, or use the `flyte` CLI's global `--reset-root-logger` flag.
 
 ### Set it at registration with `FLYTE_RESET_ROOT_LOGGER`
 
-Passing `reset_root_logger=True` to `flyte.with_runcontext()` automatically injects `FLYTE_RESET_ROOT_LOGGER=1` into the task container, so the reset happens in the remote task as well as locally.
+Passing `reset_root_logger=True` to `flyte.with_runcontext()` automatically injects `FLYTE_RESET_ROOT_LOGGER=1` into the task container, so the reset happens in the remote task.
 
 To configure it on the task environment instead — resetting the root logger for every run, at registration time rather than per-run — set the environment variable directly. The value must be the string `1`:
 
