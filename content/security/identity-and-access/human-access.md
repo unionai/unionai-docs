@@ -20,7 +20,7 @@ In BYOC deployments, Union.ai personnel additionally have authenticated Kubernet
 
 Separately from BYOC Kubernetes cluster management, Union.ai support staff hold an identity in the customer's tenant so that they can troubleshoot. This applies to both self-managed and BYOC deployments.
 
-Support staff are granted access through the same RBAC framework that governs the customer's own users: an identity in the tenant, bound to a policy that determines what they can do. The access is subject to the same authentication (OIDC/SSO), authorization (RBAC policies), and audit logging as any other user in the customer's organization. Customers can list every identity-to-policy assignment in their organization, including any held by Union.ai staff, with `flyte get assignment`.
+Support staff are granted access through the same RBAC framework that governs the customer's own users: an identity in the tenant, bound to a policy that determines what they can do. The access is subject to the same authentication (OIDC/SSO), authorization (RBAC policies), and audit logging as any other user in the customer's organization. Customers can look up the policies assigned to an identity with `flyte get assignment --user-subject <subject>` (or `--creds-subject <subject>` for an application). The lookup leaves out internal system policies (names starting with `_`), so it shows only the customer-visible policies an identity holds. `flyte get member` and `flyte get user` don't list Union.ai support staff in a customer's tenant, so checking a staff identity requires its subject from Union.ai.
 
 This is distinct from BYOC Kubernetes cluster management access (described above), which is infrastructure-level access for platform operations. Customer-side support access operates at the application level: viewing runs, inspecting logs, diagnosing task failures, and reviewing configuration. It does not grant Kubernetes cluster access, IAM role access, or direct access to the customer's cloud account.
 
@@ -38,7 +38,7 @@ All access by Union.ai personnel is authenticated and logged with caller identit
 
 ### Human access controls
 
-**Reviewer focus:** Confirm that Union.ai personnel access is appropriately scoped for each deployment model, that every grant is visible and auditable, and that no path exists to read secret values or to reach the customer's cloud account directly.
+**Reviewer focus:** Confirm that Union.ai personnel access is appropriately scoped for each deployment model, that access is logged and auditable, and that no path exists to read secret values or to reach the customer's cloud account directly.
 
 **How to verify:**
 
@@ -62,11 +62,13 @@ BYOC:
 
 Customer-side support access:
 
-1. List every identity-to-policy assignment in the organization, which is where any Union.ai staff access appears:
+1. Look up the policies assigned to each identity. For an application, pass `--creds-subject <subject>` instead:
 
    ```bash
-   flyte get assignment
+   flyte get assignment --user-subject <subject>
    ```
+
+   Run the command once for each identity. Without `--user-subject` or `--creds-subject`, `flyte get assignment` doesn't return a complete list of the organization's assignments. Union.ai staff identities don't appear in `flyte get member` or `flyte get user`, and the output shows only customer-visible policies, so this step confirms staff access only for staff subjects you have from Union.ai.
 
 2. Inspect the policy each assignment names. A policy binds roles to resources, so this shows which role applies to which projects and domains:
 
