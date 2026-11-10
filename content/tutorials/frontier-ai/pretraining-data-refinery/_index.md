@@ -76,15 +76,15 @@ flowchart LR
 
 ## Getting started
 
-You need a Union cluster with L40S and L4 GPUs. The data and models are public, so no Hugging
+You need a Union.ai cluster with L40S and L4 GPUs. The data and models are public, so no Hugging
 Face token is needed.
 
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/pretraining_data_refinery
-python refinery.py                     # 15 shards of 20,000 documents, 4,000 LLM labels
-python refinery.py --smoke             # 2 shards of 2,000 documents, 300 labels
-python refinery.py --threshold 2.5     # same corpus, new threshold
+uv run refinery.py                     # 15 shards of 20,000 documents, 4,000 LLM labels
+uv run refinery.py --smoke             # 2 shards of 2,000 documents, 300 labels
+uv run refinery.py --threshold 2.5     # same corpus, new threshold
 ```
 
 ## Images and environments
@@ -111,15 +111,14 @@ for the report:
 
 The input is `HuggingFaceFW/fineweb`, `sample-10BT`, read straight from the Hugging Face Hub as
 Parquet row groups. Each shard is 20 row groups, about 20,000 documents, and the shards are
-spread over the sample's 14 files. The sample is drawn from every snapshot, so each shard
-mixes documents from several Common Crawl snapshots (8 in each 20,000-document slice we
-checked).
+spread over 14 of the sample's 15 files. The sample is drawn from every snapshot, so each shard
+mixes documents from several Common Crawl snapshots, typically 8 in a 20,000-document slice.
 
 The filters are the document-level rules from Gopher, C4, and FineWeb, with their published
 thresholds. They are a dataclass, and the dataclass is an input of every shard task, so
 changing a threshold gives every shard a new cache key. The cache does not see edits to the
 code in `filters.py`, because `cache="auto"` hashes only the task's own source: when you change
-a rule, bump `FILTERS_VERSION`, which is a field of the dataclass.
+a rule, bump `FILTERS_VERSION`, the default of the dataclass's `version` field.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/filters.py" fragment=config lang=python >}}
 
@@ -132,9 +131,8 @@ for near duplicates, as in FineWeb.
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/filters.py" fragment=minhash lang=python >}}
 
 The shard task also checks every document against the eval sets. `build_eval_ngrams` hashes
-every 13-gram of every GSM8K, MMLU, and ARC test question followed by its answer options, the
-same way the shard task hashes documents. (The code also hashes the question alone, which adds
-nothing: its 13-grams are a prefix of the longer text.)
+every 13-gram of every GSM8K, MMLU, and ARC test question followed by its answer options (GSM8K
+has none), the same way the shard task hashes documents.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/refinery.py" fragment=evals lang=python >}}
 
@@ -145,11 +143,12 @@ n-grams. A rerun with the same settings skips it.
 
 ## Global deduplication and decontamination
 
-Deduplication has to see every shard at once. `global_dedup` reads only the hash columns,
-drops exact duplicates, and then treats two documents as near duplicates when they share any
-band key. Candidate pairs become edges of a graph, each connected component is one cluster,
-and each cluster keeps its first document. Documents that survive both and overlap an eval set
-are removed last.
+Deduplication has to see every shard at once. `global_dedup` reads the ID, URL, and hash
+columns of every shard, drops exact duplicates, and then treats two documents as near
+duplicates when they share any band key. Candidate pairs become edges of a graph, each
+connected component is one cluster, and each cluster keeps its first document. Documents that
+survive both and overlap an eval set are removed last. For the report's examples it then reads
+every shard again, this time with the text column, and keeps the text of a few duplicate pairs.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/refinery.py" fragment=dedup lang=python >}}
 
@@ -168,11 +167,13 @@ replica starts it; a later call with the same model finds it running.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/labeler.py" fragment=label lang=python >}}
 
-The driver splits the 4,000-document sample into four chunks and labels them one after
-another. Each chunk is a cached task, so a rerun never pays for labels it already has, and a
-failure costs at most the chunk in flight: a retry relabels that one chunk, not the sample. `cache="auto"` hashes the task's own source, not the modules it calls, so the task
-salts its cache with `labeler.VERSION`: change the prompt, bump the version, and the labels are
-recomputed.
+The driver splits the 4,000-document sample into four chunks and launches them together. With
+one warm replica they queue on it: the first call loads the model, and the rest find it loaded.
+With more replicas they label in parallel. Each chunk is a cached task, so a rerun never pays
+for labels it already has, and a failure costs only the chunk that failed: a retry relabels
+that one chunk, not the sample. `cache="auto"` hashes the task's own source, not the modules it
+calls, so the task salts its cache with `labeler.VERSION`: change the prompt, bump the version,
+and the labels are recomputed.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/refinery.py" fragment=label-task lang=python >}}
 
@@ -217,11 +218,13 @@ made.
 
 ## Results
 
-A run with the defaults read 299,906 FineWeb documents in 15 shards. The CPU stages took about
-5 minutes for the shards and 20 seconds for the global step. Labeling 4,000 documents with
-Qwen2.5-14B-Instruct took 12 minutes on one L40S, plus 6 minutes to download and load the model
-on the first call. Training the head took 41 seconds and scoring every surviving document took
-7 minutes on the L4 pool. A cold run takes about 30 minutes.
+A run with the defaults read 299,906 FineWeb documents in 15 shards. From an empty cache, the
+shard stage took 10 minutes and the global step 16 seconds. Labeling 4,000 documents with
+Qwen2.5-14B-Instruct took 3 minutes per chunk of 1,000 on one L40S, plus 8 minutes to download
+and load the model on the first call. Training the head took under a minute, and scoring every
+surviving document took 8 minutes on the L4 pool. The run took 46 minutes on a shared cluster,
+and the stage times in the report include waiting for nodes: the four labeling calls queue on
+the single L40S replica, so the labeling stage took 26 minutes from start to end.
 
 | Stage | Documents kept | Share of raw |
 | --- | --- | --- |
@@ -230,10 +233,10 @@ on the first call. Training the head took 41 seconds and scoring every surviving
 | No exact duplicate | 290,159 | 96.7% |
 | No near duplicate | 290,100 | 96.7% |
 | No eval overlap | 290,068 | 96.7% |
-| Educational score of at least 3 | 3,454 | 1.2% (3.8M tokens) |
-| Educational score of at least 2.5 | 17,967 | 6.0% (19.0M tokens) |
+| Educational score of at least 3 | 3,534 | 1.2% (3.6M tokens) |
+| Educational score of at least 2.5 | 17,194 | 5.7% (17.6M tokens) |
 
-![The refinery report: documents kept at each stage, the distilled classifier's scores, its agreement with the LLM labels, GPU time per document, and the rules that rejected the most documents](../../../_static/images/tutorials/pretraining-data-refinery/refinery-report.png)
+![The refinery report: documents kept at each stage, the distilled classifier's scores, its agreement with the LLM labels, GPU time per document, the time of each stage, and the agreement table](../../../_static/images/tutorials/pretraining-data-refinery/refinery-report.png)
 
 The early stages remove little because FineWeb already ran the same kind of pipeline:
 Trafilatura extraction, language identification, Gopher and C4 filters, and MinHash
@@ -243,7 +246,7 @@ duplicates are the same URL crawled in two snapshots, which FineWeb deduplicated
 snapshot but not across them; the rest are templated pages. On raw crawl, the heuristic and deduplication stages remove far more; on
 FineWeb, as in FineWeb-Edu, the quality classifier does most of the filtering.
 
-The 32 documents removed as eval overlap are worth reading. The ones in the report match MMLU
+The report lists the 32 documents removed as eval overlap. The ones it shows match MMLU
 questions that quote a famous public text, such as the Declaration of Independence, a Patrick Henry speech, or
 the boilerplate of a US statute. A 13-gram match finds exactly these documents, and whether to
 drop them is a policy decision: they contain the source passage, not the question or its answer.
@@ -252,10 +255,10 @@ drop them is a policy decision: they contain the source passage, not the questio
 
 | | GPU time per document | GPU |
 | --- | --- | --- |
-| LLM labeler, Qwen2.5-14B-Instruct | 174 ms | L40S |
+| LLM labeler, Qwen2.5-14B-Instruct | 178 ms | L40S |
 | Distilled classifier | 2.6 ms | L4 |
 
-The classifier is 66 times cheaper per document, on a smaller GPU. Labeling all 290,068
+The classifier is 68 times cheaper per document, on a smaller GPU. Labeling all 290,068
 surviving documents with the LLM would have taken about 14 L40S-hours; the classifier took 13
 L4-minutes. At FineWeb's scale of billions of documents, only the classifier is affordable.
 
@@ -265,52 +268,56 @@ comes first:
 
 | Comparison | F1 at a score of 3 | Spearman | Within 1 point |
 | --- | --- | --- | --- |
-| Distilled classifier against the LLM labels | 0.20 | 0.61 | 98% |
+| Distilled classifier against the LLM labels | 0.16 | 0.65 | 99% |
 | Public FineWeb-Edu classifier against the LLM labels | 0.31 | 0.65 | 98% |
-| Distilled classifier against the public classifier | 0.21 | 0.74 | 99% |
+| Distilled classifier against the public classifier | 0.24 | 0.73 | 98% |
 
 At the threshold, the distilled head is clearly worse than the public classifier, which was
-trained on 450,000 labels from a 70B model; on ranking, the gap is smaller. Read these numbers
+trained on 450,000 labels from a 70B model; on ranking, the two are level. Read these numbers
 with two caveats. The held-out labels come from the distilled head's own teacher, so they
 measure how well it learned the 14B model, not how good the 14B model is. And both classifiers
 put a head on the same frozen `arctic-embed-m` encoder, which inflates their agreement with
-each other (0.74). Only 43 held-out documents have an LLM score of 3 or more, so the F1 values
+each other (0.73). Only 50 held-out documents have an LLM score of 3 or more, so the F1 values
 are noisy too.
 
 The distilled scores are also compressed toward the middle: the head rarely predicts above
-3.5, so at FineWeb-Edu's threshold of 3 it keeps 1.2% of the corpus, while the LLM gave 4.8% of
-its sample a 3 or more. A threshold of 2.5 keeps 6.0%.
+3.5, so at FineWeb-Edu's threshold of 3 it keeps 1.2% of the corpus, while the LLM gave 5.2% of
+its sample a 3 or more. A threshold of 2.5 keeps 5.7%.
 
 ### Changing the threshold
 
-Rerunning with `--threshold 2.5` took 33 seconds. 38 of the 39 tasks were cache hits: every
-shard, the global step, the labels, the classifier, and every score. Only `curate` ran, and
-the artifact got a new version with 17,967 documents.
+Rerunning with `--threshold 2.5` took 21 seconds. Of the 39 tasks, all but `curate` were cache
+hits: every shard, the global step, the labels, the classifier, and every score. Only `curate`
+ran, and the artifact got a new version with 17,194 documents.
 
 ![The rerun with a new threshold: every shard, the labels, and the classifier come back from cache, and only curate runs](../../../_static/images/tutorials/pretraining-data-refinery/cached-rerun.png)
 
-### What the iterations taught us
+### Check the labeler before you distill
 
-The first full run used Qwen2.5-3B-Instruct as the labeler. It was fast, 47 ms per document,
-but lenient: it gave 54% of the sample a 3 or more, against 5% for the 14B model. The public classifier agreed with its labels at an F1 of 0.08
-at the threshold, and the classifier distilled from them kept 17% of the corpus. A distilled
-classifier is only as good as its labels, and its agreement with its own teacher hides that.
-Check the teacher against an independent reference, here the public classifier, before you
-distill it.
+A distilled classifier is only as good as its labels, and its agreement with its own teacher
+hides that. Check the teacher against an independent reference, here the public classifier,
+before you distill it. A smaller labeler, such as Qwen2.5-3B-Instruct (`--label-model`), is
+about four times faster per document but much more lenient: it gives about half of the sample
+a 3 or more, against 5% for the 14B model, and the public classifier agrees with its labels at
+an F1 below 0.1 at the threshold. A classifier distilled from those labels keeps several times
+more of the corpus, and its agreement with its teacher looks just as good.
 
-With the 14B labels, the first head was trained with a plain MSE. It ranked well, at a Spearman
-of 0.64, but almost every prediction fell between 0 and 2.5, and the threshold of 3 kept 30
-documents. Weighting the loss by inverse score frequency spread the predictions out at a small
-cost in rank correlation.
+Unweighted MSE has the opposite problem. Web text is mostly scores 0 to 2, so a head trained
+with a plain MSE ranks well but predicts almost everything between 0 and 2.5, and a threshold
+of 3 keeps only a few dozen documents. The inverse-frequency weights in `train_head` spread the
+predictions out at a small cost in rank correlation.
 
 ## At real scale
 
 - **More data.** The shard task is the unit of work. Point `shard_specs` at more files and
-  raise the pool's `replicas`; the global step reads only the hash columns, so it stays small.
-  Past a few hundred million documents, run deduplication as a distributed join instead.
+  raise the pool's `replicas`. The global step holds the hash columns of every document in
+  memory, and its report examples reread every shard's text, so drop those examples or read
+  them from only the shards they come from. Past a few hundred million documents, run
+  deduplication as a distributed join instead.
 - **More labels, a stronger labeler.** FineWeb-Edu used 450,000 labels from a 70B model. Raise
-  `n_labels` and `label_chunks`, and give `label_env` more replicas or GPUs; every chunk is
-  cached, so a long labeling job survives a failure.
+  `n_labels` and `label_chunks`, and give `label_env` more replicas: the driver launches every
+  chunk at once, so each replica takes its own. Every chunk is cached, so a long labeling job
+  survives a failure.
 - **A raw crawl.** Replace the FineWeb reader with text extracted from Common Crawl WARC files
   and add a language identification stage. The heuristic and deduplication stages then do much
   more of the filtering.

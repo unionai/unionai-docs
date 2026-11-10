@@ -66,27 +66,35 @@ flowchart LR
 
 ## Getting started
 
-You need a Union cluster with an NVIDIA L40S, or another GPU with at least 40 GB of memory. To
-use a different card, change `gpu_env` in `learn_to_run.py`.
+You need a Union.ai cluster with an NVIDIA L40S, or another GPU with at least 40 GB of memory,
+and a Flyte config that points at it (see the
+[quickstart](../../../user-guide/get-started/quickstart)). To use a different card, change
+`gpu_env` in `learn_to_run.py`. The script declares its dependencies in an inline header, so
+`uv run` installs them.
 
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/humanoid_locomotion
-python learn_to_run.py
+uv run learn_to_run.py
 ```
 
 {{< code file="/unionai-examples/v2/tutorials/humanoid_locomotion/learn_to_run.py" fragment=run lang=python >}}
 
-The first run builds the image, which takes a while because of the CUDA build of JAX. Later
-runs reuse it. `--smoke` trains 20 million steps in a few minutes, which is enough to check
-the plumbing but not enough for the robot to stay up. `--checkpoint` skips training and only
-replays and reports an existing policy.
+The first run builds the image, which takes a while because of the CUDA wheels for JAX. Later
+runs reuse it. `--smoke` trains 20 million steps in about 8 minutes, which is enough to check
+the plumbing but not enough for the robot to stay up. `--checkpoint <uri>` skips training and
+only replays and reports an existing policy, without publishing a new `g1-run-policy` version.
+`<uri>` is the storage URI of a `train_policy` output: open the `train_policy` action of an
+earlier run in the UI and copy the URI from its Outputs tab.
 
 ## The image and environments
 
-The image pins JAX to 0.9 because Brax 0.14 still calls a JAX API that 0.10 removed. The last
-layer downloads the robot models into Playground's package directory at build time. Without
-it, every pod would clone the `mujoco_menagerie` repository at startup.
+The image pins Python 3.12 and every package that affects the physics, including MuJoCo-Warp's
+`warp-lang` through the `mujoco-mjx[warp]` extra. JAX stays on 0.9 because Brax 0.14 still calls
+a JAX API that 0.10 removed. The last layer downloads the robot models from
+[MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie) (the G1 model is
+BSD-3-Clause) into Playground's package directory at build time. The G1 environment can't be
+built without them, and a pod without them clones the repository from GitHub at startup.
 
 {{< code file="/unionai-examples/v2/tutorials/humanoid_locomotion/learn_to_run.py" fragment=image lang=python >}}
 
@@ -101,16 +109,22 @@ The driver only waits on the other tasks, so it is small.
 
 The environment is DeepMind's `G1JoystickFlatTerrain`: the policy gets a velocity command and
 proprioception, and it is rewarded for tracking the command while staying upright, with feet
-in the air on schedule. Upstream it learns to walk at up to 1 m/s. Two changes make it run:
+in the air on schedule. Upstream it learns to walk at up to 1 m/s. This version changes the
+commands, the reward, and the gait clock so that it runs:
 
-- forward commands go up to `max_speed`, 2.5 m/s by default;
+- forward commands run from 0 to `max_speed`, 2.5 m/s by default (upstream: -1 to 1 m/s);
+- lateral commands narrow to ±0.3 m/s (upstream ±0.5) and yaw commands to ±0.5 rad/s (upstream
+  ±1.0), so most of the training goes to running forward;
+- the `tracking_lin_vel` reward weight rises from 1.0 to 1.5, and `feet_air_time` from 2.0 to
+  2.5, which pays for flight;
 - the gait clock speeds up with the command, so a fast command asks for a faster cadence
   instead of ever-longer strides.
 
-It also raises `njmax`, the constraint budget: upstream's value is a little too small for a G1
-in ground contact, and when MJX runs out it drops constraints silently and the feet sink into
-the floor. And it turns off a Warp solver warning that is printed for every world on every
-step, which otherwise dominates the wall-clock time.
+It also raises `njmax`, the constraint budget, from 90 to 128: a G1 in ground contact needs
+about 93. When MJX runs out of constraint rows, the feet sink into the floor, and MuJoCo-Warp
+prints an `nefc > njmax` warning. That warning stays on. The two solver iteration-limit
+warnings are turned off, because Warp prints them for every world on every step, which
+otherwise dominates the wall-clock time.
 
 {{< code file="/unionai-examples/v2/tutorials/humanoid_locomotion/g1.py" fragment=env lang=python >}}
 
@@ -145,8 +159,9 @@ run from a fast walk.
 ## The driver and the artifact
 
 The driver trains, replays, writes the final report, and publishes the checkpoint as a model
-artifact. A later run, an evaluation job, or an app can load it with
-`flyte.remote.Artifact.get("g1-run-policy")`.
+artifact. A later run, an evaluation job, or an app can look it up with
+`flyte.remote.Artifact.get("g1-run-policy")`, which returns the artifact record; downloading the
+checkpoint it points at is a separate step.
 
 {{< code file="/unionai-examples/v2/tutorials/humanoid_locomotion/learn_to_run.py" fragment=driver lang=python >}}
 
@@ -154,12 +169,12 @@ artifact. A later run, an evaluation job, or an app can load it with
 
 ## Results
 
-A run with the defaults trained 150 million steps in 19 minutes on one L40S, and took 36
-minutes end to end. Each replay holds one command for 10 seconds (500 control steps):
+A run with the defaults trained 150 million steps in 19 minutes on one L40S, about 131,000
+steps per second. Each replay holds one command for 10 seconds (500 control steps):
 
 | Replay | Speed reached | Flight phase | Distance | Upright |
 | --- | --- | --- | --- | --- |
-| Random policy, 2.5 m/s command | 0.05 m/s | n/a | 0.1 m | fell at step 8 |
+| Random policy, 2.5 m/s command | 0.05 m/s | 33%, while falling | 0.1 m | fell at step 8 |
 | Trained, 1.0 m/s command | 0.97 m/s | 7% | 8.9 m | 500 of 500 steps |
 | Trained, 2.5 m/s command | 2.42 m/s | 15% | 22.3 m | 500 of 500 steps |
 
@@ -183,10 +198,12 @@ The `g1-run-policy` artifact carries the same results in its model card:
 
 ## Going further
 
-- **Train longer.** The speed and the flight phase keep improving past 150 million steps. A
-  billion steps takes under 2 hours on one L40S.
-- **Rough terrain.** Playground has a `G1JoystickRoughTerrain` environment. Change `BASE_ENV`,
-  and train from the flat-terrain checkpoint.
+- **Train longer.** Upstream's G1 config trains for 200 million steps. At the measured rate, a
+  billion steps takes about 2.1 hours on one L40S.
+- **Rough terrain.** Pass `terrain="rough"` to `learn_to_run` to train on Playground's
+  heightfield instead of the flat floor. Training starts from scratch: `train_policy` doesn't
+  load an earlier checkpoint. The heightfield adds contacts, so watch the logs for the
+  `nefc > njmax` warning and raise `njmax` in `g1.py` if it appears.
 - **Scale out instead.** To run a simulator that cannot be compiled to the GPU, fan rollouts
   out to a warm pool of CPU workers, as the [GRPO tutorial](../grpo-lora/_index) does for LLM
   generation.

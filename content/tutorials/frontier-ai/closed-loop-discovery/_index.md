@@ -14,8 +14,8 @@ mermaid: true
 
 AI-for-science labs no longer screen a library once and stop. They run a loop: a model proposes
 candidates, a simulation or a robotic lab measures the most promising ones, the measurements
-retrain the model, and the next batch is better. [Lila Sciences](https://www.lila.ai/news/scaling-autonomous-science-to-build-scientific-superintelligence)
-builds whole "AI Science Factories" around this loop. [A-Lab](https://www.nature.com/articles/s41586-023-06734-w)
+retrain the model, and the next batch is better. [Lila Sciences](https://www.lila.ai/)
+builds autonomous science factories around this loop. [A-Lab](https://www.nature.com/articles/s41586-023-06734-w)
 ran it for 17 days on inorganic materials, with robots doing the synthesis. EvolutionaryScale's
 [esmGFP](https://www.evolutionaryscale.ai/blog/esm3) came out of a model that generated thousands
 of candidate proteins, of which a small fraction were made and tested in the lab. And for molecules,
@@ -29,7 +29,7 @@ crash in round 7 should not throw away rounds 1 to 6. And a person usually signs
 goes to the lab, because lab time is the scarce resource, which means the loop has to stop and
 wait for an answer without stalling when nobody is around.
 
-This tutorial runs the loop on Union at a scale that finishes in under an hour. By the end
+This tutorial runs the loop on Union.ai at a scale that finishes in under an hour. By the end
 you will have:
 
 - a pool of 20,000 drug-like molecules from ZINC250k, and an *oracle* that computes each one's
@@ -70,7 +70,7 @@ flowchart LR
     class P,D,R,S,M1,M2,M3,A cpu
 ```
 
-## What Union adds
+## What Union.ai adds
 
 | Need | Construct |
 | --- | --- |
@@ -79,24 +79,27 @@ flowchart LR
 | Keep the surrogate's imports and data warm between rounds | A one-replica reusable environment for `propose` |
 | Let a scientist approve each batch | `flyte.new_condition`, with a timeout that auto-approves |
 | Resume a crashed loop from the last finished round | Each round is a cached task whose output is the whole loop state |
-| See the loop's progress while it runs | A live report, with tabs for the surrogate, the batches, and the oracle |
+| See the loop's progress while it runs | A live report refreshed every round, plus tabs for the surrogate, the batches, and the oracle, written at the end |
 | Keep the result | `flyte.artifacts` with a dataset card |
 
 ## Getting started
 
-You need a Union cluster. The pool is downloaded from a public URL inside the run, and every
-package comes from PyPI.
+You need a Union.ai cluster. The pool is downloaded from a public URL inside the run, and every
+package comes from PyPI. The script's header pins `flyte`, so `uv run` installs it; to point it
+at your cluster, create a configuration as described in the
+[quickstart](../../../user-guide/get-started/quickstart).
 
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/closed_loop_discovery
-python discovery.py            # 10 rounds of 64 over 20,000 molecules, about 45 minutes
-python discovery.py --smoke    # 2 rounds of 16 over 2,000 molecules, about 6 minutes
+uv run discovery.py            # 10 rounds of 64 over 20,000 molecules, about 45 minutes
+uv run discovery.py --smoke    # 2 rounds of 16 over 2,000 molecules, about 6 minutes
 ```
 
 The 45 minutes assume someone approves each batch within a few seconds of it being proposed.
 Each round waits up to 3 minutes (`approval_timeout_s=180`) for an answer, so an unattended run
-adds about 30 minutes of waiting. To run without the gate, launch with `approval_timeout_s=0`:
+adds about 30 minutes of waiting. The smoke run waits up to 60 seconds per round. To run without
+the gate, launch with `approval_timeout_s=0`:
 
 ```python
 flyte.run(discover, approval_timeout_s=0)
@@ -123,7 +126,11 @@ flyte signal condition <run-name> <action-name> true
 ## The image and environments
 
 One image serves every task: RDKit for molecules, `tblite` and ASE for GFN2-xTB, scikit-learn
-for the surrogate, and `unionai-reuse`, which reusable environments need. The oracle runs on a
+for the surrogate, and `unionai-reuse`, which reusable environments need. RDKit's drawing code
+loads `libXrender` and `libexpat`, which the slim Debian base image leaves out, so the image
+installs them with `with_apt_packages`; without them the report shows SMILES strings instead
+of drawings. `tblite` ships Linux wheels for x86_64 only, so the image is built for
+`linux/amd64`. The oracle runs on a
 pool of 2-CPU replicas that grows to 12 while a round is in flight. Each call measures one
 molecule, so a slow molecule holds up one slot, not a batch. The surrogate gets a single warm
 replica with 4 CPUs.
@@ -134,7 +141,8 @@ replica with 4 CPUs.
 
 The pool is a random sample of ZINC250k. GFN2-xTB in the gas phase gives ions and zwitterions
 gaps that are far too small, so the pool keeps neutral molecules: it neutralizes what it can,
-and drops any charged atom that is not part of a nitro group. The fingerprints are computed
+and drops any molecule with a charged atom that is not part of a nitro group. Zwitterions such
+as amino acids would otherwise get gaps near 0.1 eV and fill the top of the ranking. The fingerprints are computed
 once here and shipped with the pool, so the surrogate never recomputes them.
 
 {{< code file="/unionai-examples/v2/tutorials/closed_loop_discovery/discovery.py" fragment=pool lang=python >}}
@@ -189,6 +197,12 @@ A loop that runs overnight must not stall on a question nobody is awake to answe
 condition has a timeout. If it expires, `wait()` raises `ConditionTimedoutError` and the batch is
 approved automatically. Set `approval_timeout_s=0` to turn the gate off.
 
+Waiting is not free. `wait()` blocks inside the round's task, so its pod keeps running for the
+whole wait, and so do the driver, the warm `model_env` replica, and the oracle pool's two
+minimum replicas: about 12 CPUs held per open gate. See
+[Resources while waiting](../../../user-guide/tasks/task-programming/conditions#resources-while-waiting).
+Keep the timeout short for an unattended run.
+
 {{< code file="/unionai-examples/v2/tutorials/closed_loop_discovery/discovery.py" fragment=approval lang=python >}}
 
 ## One round, durably
@@ -242,16 +256,16 @@ smoke run, which happened to sample the same molecules, and were never recompute
 
 Both arms start from the same seed library, which held one molecule below 1 eV. Random search
 found 3 more in 640 calls, the rate you would expect when fewer than 1 molecule in 100 qualifies.
-Active learning found 30 more with the same budget. Its first two batches were no better than
-random, and the second was worse, with a mean gap of 3.5 eV: trained on 128 molecules, the model's
-uncertainty dominated the bound and it explored. From round 4 on, every batch averaged about 2 eV,
+Active learning found 30 more with the same budget. Its first two batches found no new molecules
+below 1 eV, and the second had a mean gap of 3.5 eV, worse than random: trained on 128 molecules,
+the model's uncertainty dominated the bound and it explored. From round 4 on, every batch averaged about 2 eV,
 and the count of small-gap molecules climbed in almost every round.
 
 ![The discovery report: molecules below 1 eV for each arm, the best gap found against oracle calls, the mean gap of each batch, and the top molecules](../../../_static/images/tutorials/closed-loop-discovery/discovery-report.png)
 
-The Surrogate tab is the honest part of the report. On the random control, which the model never
-chose, its error stayed between 0.7 and 0.9 eV and its rank correlation between 0.2 and 0.45: it
-is a poor predictor of the gap of an average molecule. On its own batches, its error fell from
+The Surrogate tab shows how good the model is. On the random control, which the model never
+chose, from round 3 on its error stayed between 0.7 and 0.9 eV and its rank correlation between
+0.2 and 0.45: it is a poor predictor of the gap of an average molecule. On its own batches, its error fell from
 1.8 eV to under 0.5 eV, because those batches are where it has learned the most. That is enough to
 rank the small-gap tail, which is all the loop needs. The ensemble is overconfident: at round 10,
 33% of control molecules fell inside one predicted standard deviation and 53% inside two, against
@@ -268,10 +282,9 @@ are real push-pull chromophores, and GFN2-xTB also underestimates their gaps, so
 you would send to a DFT calculation next, not a final answer.
 
 No calculation in the run failed, and none needed a retry. Failures are rare for neutral
-drug-like molecules at this level of theory. In local testing, one small-gap molecule broke a bond
-during the xTB optimization on its first two attempts and was measured on the third, with random
-coordinates and a higher electronic temperature. The handling is there for the molecules and
-oracles where failures are common.
+drug-like molecules at this level of theory. A small-gap molecule can break a bond during the
+xTB optimization; the later attempts, with random coordinates and a higher electronic
+temperature, are for those molecules, and for oracles where failures are common.
 
 ### The approval gate in practice
 
@@ -279,7 +292,7 @@ Every round opened a condition named `approve-round-N` on the run, which pauses 
 shows the Markdown prompt in the UI's signal form. Round 1 was approved with the
 `signal_condition` tool of the Flyte MCP server, and the others with `Condition.signal(True)` from a
 script, 20 to 30 seconds after they opened. Round 7 was left alone: its condition timed out after
-180 seconds, the driver caught `ConditionTimedoutError`, and the round went ahead as auto-approved.
+180 seconds, the round caught `ConditionTimedoutError` and went ahead as auto-approved.
 The Oracle tab records each decision and how long it waited.
 
 ### Resuming a finished loop
@@ -294,17 +307,15 @@ The 50 smallest-gap molecules are published as the `closed-loop-top-candidates` 
 with the measured orbital energies, which arm found each molecule, and what the model predicted
 before it was measured. Its card has the same charts and the top molecules.
 
-### What we changed along the way
+### Design choices in the pool and the oracle
 
-- **The pool.** The first pool kept ZINC's charged molecules. In the gas phase, GFN2-xTB gives
-  zwitterions such as amino acids gaps near 0.1 eV, and those artifacts filled the top of the
-  ranking. The pool now neutralizes molecules and keeps only nitro groups as charged atoms.
-- **The oracle.** A single-point calculation on a force-field geometry takes 20 milliseconds, which
-  is a table lookup in all but name. Conformer search and an xTB geometry optimization made each
-  measurement 10 seconds of real compute, and made the gaps depend on a converged structure.
-- **The drawings.** RDKit's drawing code loads `libXrender` and `libexpat`, which the slim Debian
-  base image leaves out. Without them the report fell back to SMILES strings. The image now installs
-  them with `with_apt_packages`.
+- **A neutral pool.** In the gas phase, GFN2-xTB gives zwitterions such as amino acids gaps near
+  0.1 eV, and those artifacts would fill the top of the ranking. The pool neutralizes molecules
+  and keeps only nitro groups as charged atoms.
+- **A geometry optimization in the oracle.** A single-point calculation on a force-field geometry
+  takes 20 milliseconds, which is a table lookup in all but name. Conformer search and an xTB
+  geometry optimization make each measurement about 10 seconds of real compute, and make the gaps
+  depend on a converged structure.
 
 ## At real scale
 

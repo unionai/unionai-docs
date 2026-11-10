@@ -28,7 +28,7 @@ Financial research, trading, and other fintech workloads.
 {{< /link-card >}}
 
 {{< link-card target="frontier-ai" icon="stars" title="Frontier AI" >}}
-The everyday workloads of frontier AI labs: pretraining, data curation for text and video, evals on every checkpoint, interpretability, and AI-driven science.
+Tutorials for the workloads that frontier AI labs run day to day.
 {{< /link-card >}}
 
 {{< /grid >}}
@@ -58,7 +58,7 @@ Train, benchmark, serve, and continually retrain draft models that make an LLM g
 {{< /link-card >}}
 
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
-Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, humanoid locomotion, model-written rewards, and self-play.
+Tutorials that train a policy from rewards instead of labels.
 {{< /link-card >}}
 
 {{< variant union >}}

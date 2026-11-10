@@ -16,8 +16,8 @@ Text-to-video and world models are trained on short clips, a few seconds each, w
 that says what happens in them. Nobody films clips like that. Labs start from long footage
 (films, stock video, gameplay, dashcams) and build the clips themselves: cut the footage at
 shot boundaries, throw away the shots a model should not learn from (black frames, blur, title
-cards, still images, ugly frames), and caption what is left. The published recipes all have
-this shape. [Open-Sora 2.0](https://arxiv.org/abs/2503.09642) splits video with scene detection
+cards, still images, ugly frames), and caption what is left. Published recipes follow this
+shape. [Open-Sora 2.0](https://arxiv.org/abs/2503.09642) splits video with scene detection
 and then filters on aesthetic, motion, blur and OCR scores before captioning
 ([its data tools](https://github.com/hpcaitech/Open-Sora/blob/main/tools/datasets/README.md));
 [Stable Video Diffusion](https://arxiv.org/abs/2311.15127) showed that this kind of curation
@@ -80,16 +80,17 @@ on different chunks.
 
 ## Getting started
 
-You need a Union cluster with NVIDIA L4 GPUs (any CUDA GPU with 16 GB works; change
+You need a Union.ai cluster with NVIDIA L4 GPUs (any CUDA GPU with 16 GB works; change
 `score_env` and `caption_env` in `curate.py`). The tasks download the films and the models
-over the internet.
+over the internet. The script's header pins `flyte`, so `uv run` installs it; to point it at
+your cluster, create a configuration as described in the [quickstart](../../../user-guide/get-started/quickstart).
 
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/video_data_curation
-python curate.py                          # all five films: 31 chunks, 56 minutes
-python curate.py --smoke                  # 4 one-minute chunks from two films, no artifact
-python curate.py --set min_aesthetic=5.0  # change a threshold; everything upstream is cached
+uv run curate.py                          # all five films: 31 chunks, 56 minutes
+uv run curate.py --smoke                  # 4 one-minute chunks from two films, no artifact
+uv run curate.py --set min_aesthetic=5.0  # change a threshold; everything upstream is cached
 ```
 
 ## The footage
@@ -100,7 +101,7 @@ have what a curation pipeline has to deal with: animation and live action, fast 
 takes, dark scenes, title cards and scrolling credits.
 
 Tears of Steel and Elephants Dream are read straight from download.blender.org. Blender serves
-Big Buck Bunny and Sintel only as zip archives now, which can't be read partway, and Spring
+Big Buck Bunny and Sintel only as zip archives, which can't be read partway, and Spring
 isn't on that server, so those three come from their 720p transcodes on Wikimedia Commons.
 
 {{< code file="/unionai-examples/v2/tutorials/video_data_curation/sources.py" fragment=sources lang=python >}}
@@ -191,7 +192,9 @@ takes four calls at a time, so the next clip's frames download while the current
 
 Each stage gets the hardware it needs and its own warm pool. The CPU pool grows up to five
 replicas while chunks are waiting. The scoring pool keeps two GPU replicas, and the captioning
-pool grows from one to two.
+pool grows from one to two. With `idle_ttl=600`, each pool stays up for 10 minutes after its
+last call, so a rerun soon after finds it warm, and the GPUs keep running for that long after
+every run. Lower `idle_ttl` to release them sooner.
 
 {{< code file="/unionai-examples/v2/tutorials/video_data_curation/curate.py" fragment=envs lang=python >}}
 
@@ -235,10 +238,10 @@ A run with the defaults processed all five films, 56 minutes of footage, in 31 c
 | Rejected for motion | 52 |
 | **Kept and captioned** | **369 (65%), 29.9 minutes** |
 
-The films differ. Sintel kept the fewest clips (52%), mostly because its dark scenes fail the
-exposure filter. Tears of Steel lost the most to the text filter, in its titles and
-credits. Elephants Dream and Spring lost the most to the motion
-filter, on long still shots.
+The films differ. Sintel kept the smallest share of its clips (52%), mostly because its dark
+scenes fail the exposure filter. Tears of Steel lost the most to the text filter, in its titles
+and credits. Big Buck Bunny, Elephants Dream and Spring lost the most to the motion filter, on
+long still shots.
 
 ![The report's overview: the funnel, kept clips per film, throughput per stage, and every task call on a timeline](../../../_static/images/tutorials/video-data-curation/report-overview.png)
 
@@ -247,18 +250,22 @@ Throughput per stage, measured inside the tasks:
 | Stage | Pool | Clips per busy minute | Notes |
 | --- | --- | --- | --- |
 | Decode and shot detection | 3 CPU replicas, 4 cores each | 54 | about 21 s of work per two-minute chunk |
-| Scoring | 2 L4 replicas | 244 | aesthetic 1,768, motion 592, text 541 clips per GPU-minute; models load once per replica, in about 10 s |
-| Captioning | 2 L4 replicas | 97 | the 2.2B model loads once per replica, in about 23 s |
+| Scoring | 2 L4 replicas | 244 | aesthetic 1,768, motion 592, text 541 clips per GPU-minute; the models load once per replica |
+| Captioning | 2 L4 replicas | 97 | the 2.2B model loads once per replica |
+
+On replicas that start cold, loading the three scoring models takes about 10 seconds and
+loading the captioner about 23 seconds. The run in the screenshot found the models already
+loaded, so its timeline shows no load time.
 
 Decoding is the slowest stage per clip, and it has the most replicas. On the GPU, the text
 detector and RAFT cost three times as much as CLIP; captioning costs more than all three
 scorers together, which is why it runs only on the clips that pass.
 
-With the images built and nodes available, the run took 5.8 minutes, including copying the
-369 kept clips into the dataset. The CPU pool got three replicas that time, and decoding set
-the pace. An earlier run on a cold cluster, before the copy step, took 8.8 minutes, most of it
-waiting for the replicas to start; one that found five replicas warm took 3.9 minutes. A run
-started within ten minutes of the previous one finds the replicas still warm.
+With the images built and nodes available, the run took 5.8 minutes. The report's wall clock
+reads 5.6 minutes, because it stops before the driver copies the 369 kept clips into the
+dataset. The CPU pool got three replicas that time, and decoding set the pace. On a cold
+cluster, most of a run's time goes to waiting for the replicas to start; a run started within
+10 minutes of the previous one finds them still warm.
 
 ### What each filter rejects
 
@@ -280,29 +287,29 @@ The aesthetic filter barely mattered in the default run: the LAION scores of the
 between 4 and 6, and the aesthetic filter was the first to reject only 22 clips. Raising the threshold to 5.0 is one flag:
 
 ```bash
-python curate.py --set min_aesthetic=5.0
+uv run curate.py --set min_aesthetic=5.0
 ```
 
 That run took 13 seconds. All 31 cut and 31 score calls and all 222 caption calls were cache
 hits; the driver only reapplied the thresholds, rebuilt the manifest and the report, copied the
-kept clips, and published a new version of the artifact. The aesthetic filter now rejects 195
+kept clips, and published a new version of the artifact. At 5.0 the aesthetic filter rejects 195
 clips, and 222 remain. Lowering the threshold to 4.3 instead kept 383 clips and captioned only
 the 14 that were new. That run took 54 seconds, most of it starting two caption replicas.
 
 ![The rerun with a stricter aesthetic threshold: every task call is a cache hit](../../../_static/images/tutorials/video-data-curation/threshold-rerun.png)
 
-### What the first runs taught us
+### Choosing the captioner, the motion threshold, and the timing
 
-- **The 500M captioner was not good enough.** SmolVLM2-500M wrote three-sentence paragraphs and
-  invented details: a man "talking to the camera" in a shot of rocket engines. The 2.2B model,
-  asked for one sentence of what it can see, wrote captions like the ones above at 97 clips per
-  GPU-minute on an L4.
-- **The motion threshold was set by looking.** A first threshold of 0.3 pixels per frame
-  rejected slow pans and characters talking in Big Buck Bunny, which score 0.1 to 0.3. Truly
-  still shots score under 0.05. The default is now 0.1.
-- **Timestamps have to come from inside the task.** Timing each call from the driver counted the
-  time a call waited for a free replica as work, and showed every queued chunk as running from
-  the start of the run.
+- **Use a captioner large enough to stay literal.** SmolVLM2-500M writes three-sentence
+  paragraphs and invents details, such as a man "talking to the camera" in a shot of rocket
+  engines. The 2.2B model, asked for one sentence of what it can see, writes captions like the
+  ones above at 97 clips per GPU-minute on an L4.
+- **Set the motion threshold by looking at clips.** Slow pans and characters talking in Big
+  Buck Bunny score 0.1 to 0.3 pixels per frame, and truly still shots score under 0.05. A
+  threshold of 0.3 rejects the pans and the dialogue; the default, 0.1, keeps them.
+- **Take timestamps inside the task.** Timing each call from the driver counts the time a call
+  waits for a free replica as work, and shows every queued chunk as running from the start of
+  the run.
 
 ## At real scale
 
@@ -324,11 +331,23 @@ The pipeline is the same at a million hours; the numbers around it change.
 
 ## Credits
 
-Big Buck Bunny (c) copyright 2008, Blender Foundation, peach.blender.org, CC BY 3.0. Sintel
-(c) copyright Blender Foundation, durian.blender.org, CC BY 3.0. Tears of Steel (CC) Blender
-Foundation, mango.blender.org, CC BY 3.0. Elephants Dream (c) copyright 2006, Blender
-Foundation, Netherlands Media Art Institute, orange.blender.org, CC BY 2.5. Spring (CC)
-Blender Foundation, studio.blender.org, CC BY 4.0. The frames on this page are from these films.
+The frames on this page come from these films. They are changed: cut into clips, re-encoded to
+360p, and resized into contact sheets and frame strips.
+
+- [Big Buck Bunny](https://peach.blender.org/), (c) copyright 2008, Blender Foundation,
+  peach.blender.org, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+- [Sintel](https://durian.blender.org/), (c) copyright Blender Foundation, durian.blender.org,
+  [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+- [Tears of Steel](https://mango.blender.org/), (CC) Blender Foundation, mango.blender.org,
+  [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+- [Elephants Dream](https://orange.blender.org/), (c) copyright 2006, Blender Foundation,
+  Netherlands Media Art Institute, orange.blender.org,
+  [CC BY 2.5](https://creativecommons.org/licenses/by/2.5/)
+- [Spring](https://studio.blender.org/films/spring/), (CC) Blender Foundation,
+  studio.blender.org, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+The published dataset carries the same attribution, with the license links and a note of the
+changes, in `ATTRIBUTION.txt`.
 
 ## Related
 

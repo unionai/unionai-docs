@@ -82,7 +82,7 @@ before it starts only so that a first run works with one command.
 
 ## Getting started
 
-You need a cluster with one NVIDIA L40S for training and NVIDIA L4s for evals. Each eval run
+You need a Union.ai cluster with one NVIDIA L40S for training and NVIDIA L4s for evals. Each eval run
 uses three L4s, and early checkpoints arrive faster than an eval run finishes, so up to about
 nine L4s are busy at once. Any GPU with 24 GB or more works; change `train_env` in `train.py`
 (shown below) and the environments in `evals.py`.
@@ -90,13 +90,13 @@ nine L4s are busy at once. Any GPU with 24 GB or more works; change `train_env` 
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/checkpoint_evals
-python train.py
+uv run train.py
 ```
 
 {{< code file="/unionai-examples/v2/tutorials/checkpoint_evals/train.py" fragment=run lang=python >}}
 
 `train.py` deploys the evaluator first, because its trigger has to be active before the first
-checkpoint is published. You can also deploy it on its own with `python evals.py`, or with
+checkpoint is published. You can also deploy it on its own with `uv run evals.py`, or with
 `flyte deploy evals.py eval_env`. The first run builds two images. The GPU image, with vLLM,
 transformers and datasets, takes a while to build; later runs reuse it. `--smoke` trains on 1,600 problems, publishes step 0 and two checkpoints,
 and scores 40 problems per benchmark, which takes about three minutes once the images exist.
@@ -169,8 +169,10 @@ scores as a version of the results artifact, with the same partitions as the che
 
 Each benchmark task is cached. Its inputs are the checkpoint, the benchmark name, the
 benchmark version, and the sample size, and the cache version is fixed in code. So the cache
-key is (checkpoint, benchmark, benchmark version), and changing a report or the driver does
-not throw finished scores away.
+key is (checkpoint, benchmark, benchmark version, sample size), and changing a report or the
+driver does not throw finished scores away. The key does not see the code either: when you
+change a benchmark's prompt or scorer, bump that benchmark's version in `config.py`, or the
+cached scores come back unchanged.
 
 {{< code file="/unionai-examples/v2/tutorials/checkpoint_evals/evals.py" fragment=benchmark_tasks lang=python >}}
 
@@ -232,7 +234,7 @@ training, and the whole run took 19 minutes.
 | 0 (base) | 3.1 | 68.1 | 35.9 | base model |
 | 49 | 6.1 | 59.7 | 36.1 | passes |
 | 98 | 11.1 | 57.7 | 35.5 | passes |
-| 195 | 15.1 | 57.2 | 35.5 | passes |
+| 195 | 15.1 | 57.1 | 35.5 | passes |
 | 390 | 16.3 | 54.7 | 34.8 | passes |
 | 586 | 20.2 | 55.0 | 34.4 | passes |
 | 781 | 21.6 | 55.1 | 34.5 | passes |
@@ -249,18 +251,19 @@ the problem step by step and ends with "The answer is", the MetaMathQA format.
 
 ![The timeline of eval runs against training, with the early evals overlapping each other and every eval running while training continues, and GSM8K answers from the base model and the release candidate](../../../_static/images/tutorials/checkpoint-evals/timeline-generations.png)
 
-MMLU drifts down by about two points, which is exactly the guard's limit. Step 1172 fails the
-guard at 33.6, and step 1562 passes at 33.85, so the last checkpoint became the release
-candidate. In an earlier run with the same settings, both of the last two checkpoints scored
-just under the limit and the ship rule picked step 781 instead. The limit is 2 points, and one
-standard error of a single MMLU score is 1.1 points, but what the rule compares is the
-difference between two scores on the same 2,000 questions. A fixed threshold on that difference
-decides on noise near the boundary. A paired test, such as McNemar's test on the per-question
+MMLU drifts down by about two points, which is exactly the guard's limit. The base model scored
+35.85, so the floor is 33.85. Step 1172 fails the guard at 33.6, and step 1562 passes exactly
+at the floor, so the last checkpoint became the release candidate. Scores this close to the
+floor can land on either side of it: another run with the same settings can fail both of the
+last two checkpoints and ship step 781 instead. The limit is 2 points, and one standard error
+of a single MMLU score is 1.1 points, but what the rule compares is the difference between two
+scores on the same 2,000 questions. A fixed threshold on that difference decides on noise near
+the boundary. A paired test, such as McNemar's test on the per-question
 right and wrong answers of the base model and the checkpoint, tells whether a drop is real;
 a larger guard set narrows the noise.
 
-ARC-Easy is the surprise: it falls 13 points, most of it in the first 49 steps. The ship rule
-does not look at it, so this regression would ship.
+ARC-Easy falls almost 14 points, most of it in the first 49 steps. The ship rule does not look
+at it, so this regression would ship.
 
 ## Add a benchmark to every checkpoint
 
@@ -279,14 +282,21 @@ and register ARC-Challenge with the same prompt.
 ```
 
 `--backfill` re-runs the suite on every checkpoint of a training run, with extra benchmarks
-added. It passes the checkpoint artifacts as run inputs.
+added. It passes the checkpoint artifacts as run inputs. `<train_run>` is the name of the
+training run, the last part of its URL, which the leaderboard also shows in its title.
 
 {{< code file="/unionai-examples/v2/tutorials/checkpoint_evals/evals.py" fragment=backfill lang=python >}}
 
 ```bash
-python evals.py --backfill <train_run> arc_challenge
-python train.py --leaderboard <train_run>
+uv run evals.py --backfill <train_run> arc_challenge
+uv run train.py --leaderboard <train_run>    # once the backfill runs have finished
 ```
+
+The leaderboard reads whatever scores exist when you run it, so wait for the backfill's eval
+runs to finish first. The backfill does not change the deployed trigger: new checkpoints still
+get `DEFAULT_SUITE` from `config.py` as it was when the evaluator was deployed. To score every
+future checkpoint on the new benchmark too, add it to `DEFAULT_SUITE` and redeploy with
+`uv run evals.py`.
 
 The backfill started nine eval runs. In each one, GSM8K and MMLU came back from the cache in a
 tenth of a second, and only ARC-Easy v2 and ARC-Challenge ran, about 30 and 50 seconds on an L4.
@@ -297,15 +307,15 @@ the leaderboard from before the backfill (ARC-Easy v1) with the one after it:
 | --- | --- | --- | --- |
 | 0 (base) | 68.1 | 69.7 | 37.5 |
 | 49 | 59.7 | 64.4 | 37.5 |
-| 195 | 57.2 | 59.5 | 36.1 |
+| 195 | 57.1 | 59.5 | 36.1 |
 | 781 | 55.1 | 58.7 | 35.8 |
 | 1562 | 54.4 | 56.4 | 35.6 |
 
 The new prompt slows the drop in the first steps, but ARC-Easy still loses 13 points by the
 end. The drop survives a second prompt format. ARC-Challenge, where the base model scores
 37.5% against 25% for chance, moves by two points. The next ship rule should guard ARC-Easy
-too. With that rule, no checkpoint of this run ships, and the fix belongs in the training data,
-for example by mixing general text back into the math SFT.
+too. With that rule, no checkpoint of this run ships. The fix belongs in the training data: a
+likely one is to mix general text back into the math SFT.
 
 ## At real scale
 

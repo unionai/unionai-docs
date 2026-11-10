@@ -1,7 +1,7 @@
 ---
 title: Frontier AI
 icon: stars
-description: "The everyday workloads of frontier AI labs: pretraining, data curation for text and video, evals on every checkpoint, interpretability, and AI-driven science."
+description: Tutorials for the workloads that frontier AI labs run day to day.
 weight: 4
 variants: +flyte +union
 sidebar_expanded: true
@@ -25,7 +25,7 @@ around it falls into three kinds:
   look inside the model.
 
 These tutorials follow those workloads at a scale that runs in minutes, each tested end to end
-on a Union cluster. Each one names the labs and papers it is modeled on.
+on a Union.ai cluster. Each one names the labs and papers it is modeled on.
 
 | Tutorial | Who does this | What makes it hard at scale |
 | --- | --- | --- |
@@ -35,6 +35,11 @@ on a Union cluster. Each one names the labs and papers it is modeled on.
 | [Curate a video dataset for generative video](./video-data-curation/_index) | Generative video and world-model labs, as in Open-Sora and Stable Video Diffusion | Hours of footage through decoders, scoring models, and captioners on different hardware |
 | [Find features in a language model with sparse autoencoders](./sparse-autoencoders/_index) | Interpretability teams, as in Scaling Monosemanticity and Gemma Scope | Terabytes of activations, a grid of training runs, and thousands of LLM calls to label features |
 | [Closed-loop molecular discovery](./closed-loop-discovery/_index) | AI-for-science labs that run autonomous experiments | A slow, failure-prone oracle, a loop that runs for days, and a scientist who approves each batch |
+
+The scripts of every tutorial here except distributed pretraining declare their dependencies in
+an inline header, so `uv run <script>.py` installs them and runs it. First point `flyte` at your
+cluster with `flyte create config`, as in
+[Run on a deployed cluster](../../user-guide/get-started/run-modes/running-remote).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -79,5 +84,5 @@ An active learning loop where a surrogate model proposes molecules, a quantum ch
 
 ## Related
 
-- [Reinforcement learning](../reinforcement-learning/_index): RL for LLMs, agents, robots, and games, including durable agentic RL with SkyRL and Harbor.
+- [Reinforcement learning](../reinforcement-learning/_index): train a policy from rewards, including durable agentic RL with SkyRL and Harbor.
 - [Speculative decoding models](../speculative-decoding/_index): train and serve draft models that make an LLM generate faster.

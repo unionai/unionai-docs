@@ -12,16 +12,17 @@ mermaid: true
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/sparse_autoencoders).
 
-A language model's neurons rarely mean one thing each. A single neuron fires on Korean text,
-on HTTP headers, and on the word "however", because the model packs more concepts into its
-activations than it has dimensions. Interpretability teams undo this packing with a
+A language model's neurons rarely mean one thing each. In a one-layer transformer, Anthropic
+found a single neuron that fires on academic citations, English dialogue, HTTP requests, and
+Korean text ([Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features/index.html)),
+because the model packs more concepts into its activations than it has dimensions. Interpretability teams undo this packing with a
 *sparse autoencoder* (SAE): a wide, one-layer autoencoder trained to rewrite each activation
 vector as a sparse sum of learned directions. Each direction is a *feature*, and many of them
 turn out to mean one thing a person can name.
 
 Anthropic used SAEs to find millions of such features in Claude 3 Sonnet
 ([Scaling Monosemanticity](https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html)),
-OpenAI trained a 16-million-feature SAE on GPT-4 and introduced the TopK SAE this tutorial uses
+OpenAI trained a 16-million-feature SAE on GPT-4 and popularized the TopK SAE this tutorial uses
 ([Gao et al., 2024](https://arxiv.org/abs/2406.04093)), and Google DeepMind released SAEs for
 every layer of Gemma 2 ([Gemma Scope](https://arxiv.org/abs/2408.05147)). The work has the
 same shape at every lab:
@@ -40,7 +41,8 @@ per (layer, width, sparsity). And the labeling is hundreds of thousands of LLM c
 do not want to pay for twice when a job retries.
 
 This tutorial runs the whole loop on Pythia-70m, a small open model, with
-[Claude](https://www.anthropic.com/claude) as the labeler. By the end you will have:
+[Claude](https://www.anthropic.com/claude) as the labeler: `claude-opus-5-5` at low effort,
+about 360 calls for a run with the defaults. By the end you will have:
 
 - a cached activation harvest, stored as one directory of shards per layer;
 - a grid of TopK SAEs, one GPU task per (layer, width), each training three sparsities at once;
@@ -69,7 +71,7 @@ flowchart LR
     class D,A cpu
 ```
 
-## What Flyte adds
+## What Union.ai adds
 
 | Need | Construct |
 | --- | --- |
@@ -82,17 +84,21 @@ flowchart LR
 
 ## Getting started
 
-You need a Union cluster with NVIDIA L4 GPUs (or any CUDA GPU with 24 GB of memory), and an
+You need a Union.ai cluster with NVIDIA L4 GPUs (or any CUDA GPU with 24 GB of memory), and an
 Anthropic API key stored as a secret. The code reads a secret named `anthropic-api-key`. To use
 a secret with another name, set `ANTHROPIC_SECRET` when you launch.
 
 ```bash
-flyte create secret anthropic-api-key
+flyte create secret anthropic-api-key   # paste the key when prompted
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/sparse_autoencoders
-python find_features.py            # 3 layers x 2 widths, 8M tokens
-python find_features.py --smoke    # 1 layer x 1 width, 0.5M tokens
+uv run find_features.py            # 3 layers x 2 widths, 8M tokens
+uv run find_features.py --smoke    # 1 layer x 1 width, 0.5M tokens
 ```
+
+The data and the model are openly licensed: the
+[FineWeb](https://huggingface.co/datasets/HuggingFaceFW/fineweb) sample is ODC-By 1.0, and
+[Pythia-70m-deduped](https://huggingface.co/EleutherAI/pythia-70m-deduped) is Apache 2.0.
 
 ## The image and environments
 
@@ -100,12 +106,16 @@ One image serves every task: PyTorch, Transformers and Datasets for the model, a
 Anthropic SDK for the labeler. The harvest and the trainers each take one GPU. Autointerp is
 API calls, so it runs on CPU, and its environment is the only one that holds the API key.
 
+`include=["sae.py"]` puts `sae.py` in the code bundle. The tasks import it inside their bodies,
+so it does not appear among `find_features.py`'s top-level imports, which is how the bundle
+finds `autointerp.py` and `reports.py`.
+
 {{< code file="/unionai-examples/v2/tutorials/sparse_autoencoders/find_features.py" fragment=envs lang=python >}}
 
 ## Harvest the activations once
 
 The harvest streams [FineWeb](https://huggingface.co/datasets/HuggingFaceFW/fineweb) and takes
-the first 128 tokens of each document as one context. A forward hook on each chosen layer of
+the first 128 tokens of each document at least 128 tokens long as one context. A forward hook on each chosen layer of
 Pythia-70m-deduped records the residual stream, the output of that transformer block, for every
 token. The activations are saved as float16 shards, one directory per layer, so each trainer
 downloads only the layer it trains on. The token ids are saved too, so that every feature can
@@ -114,14 +124,22 @@ later be shown in the text it fired on.
 {{< code file="/unionai-examples/v2/tutorials/sparse_autoencoders/find_features.py" fragment=harvest lang=python >}}
 
 The environment sets `cache="auto"`, so the harvest's output is stored under a key made from its
-inputs and the task function's own code. Any later run with the same layers, token count, and
-dataset gets the same `Dir`s back without starting a GPU.
+inputs and the task function's own code. Any later run with the same layers, token count,
+dataset, and model gets the same `Dir`s back without starting a GPU.
 
-`cache="auto"` hashes only the body of the task function, not the modules it calls. `train_sae`
-does its work in `sae.py`, and `label_features` in `autointerp.py`, so each of those tasks salts
-its cache with a version string: `flyte.Cache("auto", salt=SAE_VERSION)` and
-`flyte.Cache("auto", salt=autointerp.VERSION)`. Bump the version when you change the module, or
-a re-run returns results computed with the old code.
+`cache="auto"` hashes only the body of the task function, not the modules, helper functions, or
+module-level constants it uses. So everything a cached result depends on is either a task input
+or in a salt:
+
+- The model to study is the harvest's `model` input, and every later task reads it from the
+  harvest.
+- The Claude model is `label_features`' `claude_model` input. Pass `claude_model` to
+  `find_features` to label with another model; the activations and SAEs stay cached.
+- `train_sae` does its work in `sae.py`, and `label_features` in `autointerp.py` and the Claude
+  helpers below, so each of those tasks salts its cache with a version string:
+  `flyte.Cache("auto", salt=SAE_VERSION)` and `flyte.Cache("auto", salt=autointerp.VERSION)`.
+  Bump the version when you change that code, or a re-run returns results computed with the old
+  code.
 
 ## The TopK sparse autoencoder
 
@@ -216,11 +234,10 @@ The model card goes with the weights:
 ## Results
 
 A run with the defaults trains 18 SAEs (3 layers, 2 widths, 3 values of k) on 8 million tokens
-of FineWeb. An earlier run of the same harvest and training code took 18 minutes from an empty
-cache: 3 minutes for the harvest, 3 to 6 minutes for each 4,096-feature trainer, 11 to 14 minutes
-for each 16,384-feature trainer, all six running at once, and about a minute for the 360 Claude
-calls of autointerp. The numbers and screenshots below are from a run of the code as published
-here, which reused that cached harvest, retrained every SAE, and took 16 minutes.
+of FineWeb. From an empty cache, the harvest ran for 3 minutes on one L4. Then the six trainers
+ran at once: about 3.5 minutes for each 4,096-feature trainer, and 12 to 13 minutes for each
+16,384-feature trainer. The 360 Claude calls of autointerp took about a minute. The run took 49
+minutes on a shared cluster, 28 of them spent waiting for a GPU for the harvest.
 
 ![The run's overview: loss recovered, SAEs trained, features labeled, mean detection score, and the metrics of every SAE](../../../_static/images/tutorials/sparse-autoencoders/sae-metrics.png)
 
@@ -237,7 +254,7 @@ token (a larger k) reconstruct better, and so do more features in the dictionary
 k. Later layers are harder: at layer 5, even the best SAE loses 5% of the loss. Variance
 explained alone would rank the layers differently, since layer 3 has the highest variance
 explained and only the middle loss recovered. That is why the evaluation splices the SAE into the
-model. Almost no feature is dead: the AuxK loss keeps them alive.
+model. Almost no feature is dead, which is what the AuxK loss is designed to do.
 
 ![Variance explained and loss recovered against L0 for every SAE, and the autointerp scores per layer](../../../_static/images/tutorials/sparse-autoencoders/sae-frontier.png)
 
@@ -247,20 +264,20 @@ among those that fire in at least 56 contexts:
 | Layer | Mean detection score | Mismatched explanation | Features scoring 0.85 or more |
 | --- | --- | --- | --- |
 | 1 | 0.77 | 0.50 | 15 of 40 |
-| 3 | 0.70 | 0.50 | 9 of 40 |
-| 5 | 0.72 | 0.53 | 13 of 40 |
+| 3 | 0.70 | 0.48 | 10 of 40 |
+| 5 | 0.70 | 0.52 | 12 of 40 |
 
-The mean is 0.73 over all 120, against 0.51 for the control, and every call returned a finished
+The mean is 0.72 over all 120, against 0.50 for the control, and every call returned a finished
 answer, so no feature was left unlabeled. The control stays at chance, so the score measures the
-explanation, not the test. The 12 features that score 1.0 are the ones a reader believes at a
-glance: the word "iPhone", the plural "systems", "covered", "billion" and "trillion" in money
-amounts, "use" as a noun, sentence-initial "These", and "especially" after a comma adding a
-condition. Close behind, at 0.94, are "Learn" opening a call to action, "out of" and the phrase
-after it, and closing quotation marks. In this sample, layer 1 has more single-word features,
-which are easy to predict, and the later layers have more features about syntax and position,
-which are harder to explain in a sentence. The ones at the bottom of the browser are mostly
-fragments of split words and diffuse features that fire on function words, which is also what
-the papers find.
+explanation, not the test. Among the 12 features that score 1.0 are the ones a reader believes
+at a glance: "billion" and "trillion" after numbers in money amounts, "especially" after a comma,
+"Learn" opening a call to action, "use" as a noun, "covered", the plural "systems", the word
+"iPhone", and sentence-initial "These". Close behind, at 0.94, are "Jackson", "details", "out
+of" and the phrase after it, and "PDF" as a link label. Eight of the 12 come from layer 1, where
+more features are single words, which are easy to predict; the later layers have more features
+about syntax and position, which are harder to explain in a sentence. The ones at the bottom of
+the browser are mostly fragments of split words and diffuse features that fire on function
+words, which is also what the papers find.
 
 ![The feature browser: features sorted by detection score, with Claude's explanation and the activating tokens highlighted](../../../_static/images/tutorials/sparse-autoencoders/feature-browser.png)
 
@@ -268,18 +285,17 @@ The SAE whose features scored best, layer 1 with 16,384 features at k = 32, is p
 `pythia-70m-topk-sae` artifact, with a card that shows its metrics and its five most
 interpretable sampled features.
 
-### What the first run taught us
+### Show Claude more than the strongest contexts
 
-The first full run showed Claude only each feature's 20 strongest contexts, and the mean
-detection score was 0.64. The explanations read well, but they failed the test. One feature's
-20 strongest contexts were all the word "iPhone", and Claude's explanation, the word "iPhone", scored
-0.62. Its held-out contexts showed why: at a third of its peak, the same feature fires on
-"Angela", "Explorer", and other names. The strongest contexts were not the whole feature. Showing
-Claude 12 top contexts and 8 sampled from the rest of its clear firings, as
-[Paulo et al.](https://arxiv.org/abs/2410.13928) recommend, raised the mean score to 0.72 on the
-same SAEs. Only the sample that Claude explained changed. The iPhone feature's new explanation
-also named a weaker meaning, and scored 1.0. A review then made every excerpt the same length,
-so that length could not hint at the answer, and the final run above scored 0.73.
+A feature's strongest contexts are not the whole feature. The iPhone feature's top contexts are
+all the word "iPhone", but the held-out test also samples its weaker firings, on other words. An
+explanation written from the top contexts alone reads well and fails that test. So
+`explain_prompt` shows Claude the 12 strongest contexts and 8 sampled from the rest of the
+feature's clear firings, as [Paulo et al.](https://arxiv.org/abs/2410.13928) recommend, and the
+explanation can name a weaker meaning. Every excerpt is also the same length, so that length
+cannot hint at the answer. If you change what Claude sees, bump `autointerp.VERSION` and compare
+the mean detection score before and after on the same SAEs: the cached SAEs make that a
+labeling-only rerun.
 
 ## Add a width without redoing the rest
 
@@ -287,16 +303,13 @@ Every task is cached, so a run that changes one input only redoes the work that 
 Add a third width:
 
 ```bash
-python find_features.py --widths 4096 16384 32768
+uv run find_features.py --widths 4096 16384 32768
 ```
 
-We ran this demo before the last changes to the autointerp code and the cache salts, so the
-numbers in this section come from that earlier run; the SAE training code was the same, and its
-4,096 and 16,384-feature SAEs matched the ones above to every digit. In that run, the harvest and
-the six existing trainers came back from the cache in under a second each, and so did the three
-autointerp tasks, since their inputs had not changed. Only the three
-32,768-feature trainers ran, about 25 minutes each on one L4. The driver still writes a fresh
-report with all 27 SAEs in it.
+On the run above, the harvest and the six existing trainers came back from the cache in under a
+second each, and so did the three autointerp tasks, since their inputs had not changed. Only the
+three 32,768-feature trainers ran, 20 to 25 minutes each on one L4, and the run took 25
+minutes. The driver still writes a fresh report with all 27 SAEs in it.
 
 The new width was not worth it at this data size:
 

@@ -1,7 +1,7 @@
 ---
 title: Reward design with Claude and sandboxes
 icon: magic
-description: An Eureka-style loop where Claude writes reward functions, every candidate trains a policy inside a sandbox, and the best one's training statistics guide the next generation.
+description: A Eureka-style loop where Claude writes reward functions, every candidate trains a policy inside a sandbox, and the best one's training statistics guide the next generation.
 weight: 3
 variants: -flyte +union
 mermaid: true
@@ -29,11 +29,14 @@ writing the rewards, a warm pool of CPU workers training the candidates, and a
 By the end you will have:
 
 - a driver that runs generations of propose, train, and reflect, with Claude's answers recorded
-  as traces so that a retried driver never pays for them twice;
-- candidates trained in sandbox sessions that block the network, limit the filesystem to a
-  working directory, and cap memory and wall-clock time;
-- two hostile candidates, one that never returns and one that tries to steal the pod's
+  as traces so that a retried driver replays them instead of calling the API again;
+- candidates trained in sandbox sessions that block the network, limit writes to a working
+  directory and the sandbox's `/tmp`, and cap memory and wall-clock time;
+- policies graded outside the sandbox, so a candidate can't touch its own score;
+- two hostile candidates, one that never returns and one that tries to read the pod's
   credentials, stopped by the sandbox in the same run;
+- the winner and both baselines trained again on fresh seeds, for a comparison the search didn't
+  select for;
 - the winning reward function published as an artifact, with a card.
 
 ## The task
@@ -48,7 +51,8 @@ flag.
 Every reward function is graded the same way: train PPO with it for 150,000 environment steps
 on 5 seeds, then run the greedy policy on the real task and count how often it reaches the flag.
 The policy is never graded on the reward it was trained with, so a reward that is easy to farm
-without solving the task scores zero.
+without solving the task scores zero. Grading runs in the task, outside the sandbox, on the
+policy's saved weights, so the candidate's code never runs while its policy is scored.
 
 ```mermaid
 flowchart LR
@@ -65,29 +69,36 @@ flowchart LR
     class D,E1,E2,E3,R,A cpu
 ```
 
-## What Flyte adds
+## What Union.ai adds
 
 | Need | Construct |
 | --- | --- |
 | Train a generation's candidates in parallel without a pod per candidate | A reusable environment, `flyte.ReusePolicy(replicas=(1, 6))` |
 | Run model-written code safely | A `unionai-sandbox` session per training run: network blocked, filesystem allow-list, memory and time limits |
-| Never pay twice for the same Claude call | `@flyte.trace` on the call, so a retried driver replays the recorded answer |
+| Never pay twice for the same Claude call | `@flyte.trace` on the call, and `retries=1` on the driver, so a retried driver replays the recorded answer |
 | Keep the API key away from model-written code | A `flyte.Secret` on the driver only; the sandboxes never see it |
 | See every candidate and what happened to it | `flyte.group` per generation, and a report with a Candidates tab |
 | Keep the winner | `flyte.artifacts` with a card |
 
 ## Getting started
 
-You need a Union cluster and an Anthropic API key stored as a secret. The code reads a secret
-named `anthropic-api-key`. To use a secret with another name, set `ANTHROPIC_SECRET` when you
-launch.
+You need:
+
+- a Union.ai cluster, and a Flyte config that points at it (see the
+  [quickstart](../../../user-guide/get-started/quickstart) for `flyte create config`);
+- [uv](https://docs.astral.sh/uv/). `uv run` reads the script's inline header and installs what it
+  pins: `flyte==2.13.0`, and `unionai-sandbox==0.0.1b15`, which `eureka.py` imports at the top.
+  `unionai-sandbox` is a pre-release, so its API can change between versions;
+- an Anthropic API key stored as a secret. `flyte create secret` prompts for the key. The code
+  reads a secret named `anthropic-api-key`; to use a secret with another name, set
+  `ANTHROPIC_SECRET` when you launch.
 
 ```bash
 flyte create secret anthropic-api-key
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/eureka_reward_design
-python eureka.py            # 4 generations of 6 candidates, about 25 minutes
-python eureka.py --smoke    # 2 generations of 3 candidates
+uv run eureka.py            # 4 generations of 6 candidates
+uv run eureka.py --smoke    # 2 generations of 3 candidates
 ```
 
 ## The image and environments
@@ -100,8 +111,9 @@ reusable environments need.
 
 Candidates are evaluated on a warm pool. Each call trains one candidate on 5 seeds at once, one
 sandbox session per seed, on a 6-CPU replica. The pool grows to 6 replicas while a generation
-is in flight, and shrinks back after it, without a pod start per candidate once it is warm. The harness that runs inside the sandbox is copied into each session rather than
-imported, so the environment lists it in `include`.
+is in flight, and shrinks back after it, without a pod start per candidate once it is warm. The
+harness is copied into each session, and the task imports it only to grade policies, so the
+environment lists it in `include`.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/eureka.py" fragment=envs lang=python >}}
 
@@ -122,31 +134,53 @@ Claude can see which directions failed.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/prompts.py" fragment=prompt lang=python >}}
 
-The Claude call asks for structured output, so the answer is always a valid list of candidates.
+The Claude call asks for structured output, so the answer is schema-valid JSON.
 It streams, because the answer is long, and it enables the server-side fallback for refusals.
-The function is a `flyte.trace`: its inputs and output are recorded in the run, so if the driver
-crashes after Claude answers, the retry replays the answer instead of calling the API again.
+The function is a `flyte.trace`: its inputs and output are recorded in the run. The driver has
+`retries=1`, so if it crashes after Claude answers, the retry replays the answer instead of
+calling the API again.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/eureka.py" fragment=propose lang=python >}}
 
 ## Training inside a sandbox
 
 The harness is a short PPO implementation that never imports Flyte. It loads the candidate
-from `reward.py`, calls it on every environment step in place of the environment's reward, and
-prints one JSON line with the task metric, the training curve, and the term statistics.
+from `reward.py`, calls it on every environment step in place of the environment's reward,
+saves the policy's weights, and prints one JSON line with the training curve and the term
+statistics. Its vector environment uses same-step autoreset, so the reward sees the real final
+observation of each episode, never a jump back to the valley.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/harness.py" fragment=train lang=python >}}
 
-Each training run gets its own sandbox session inside the task's pod. No pod is created, so a
-session opens in tens of milliseconds. The session can read the Python installation and write
-only its own working directory, has no network, and is capped at 2 GiB of memory and a
-wall-clock limit:
+Each training run gets its own sandbox session inside the task's pod, with no pod of its own.
+The session uses the sandbox's `userns` backend, which isolates the process with user
+namespaces, Landlock, a seccomp deny-list, and per-process resource limits:
+
+- **Reads.** The system directories (`/usr`, `/lib`, `/etc`, `/proc`, `/sys` and a few
+  others) and the image's Python installation, read-only.
+- **Writes.** Its own working directory, plus `/tmp` and `/dev/shm`. The working directories
+  live outside `/tmp`, so one seed's session can't reach another's.
+- **Network.** None.
+- **Limits.** 1 CPU, 2 GiB of memory as a per-process limit, and a wall-clock limit.
+
+`userns` runs in an ordinary unprivileged pod, on nodes whose kernel allows unprivileged user
+namespaces. If it can't start, the session fails rather than running the code without
+isolation. Landlock needs Linux 5.13 or later; on older kernels the filesystem allow-list is not
+enforced. The stronger `bubblewrap` backend adds full namespace isolation through `bwrap`, and
+needs `CAP_SYS_ADMIN` and an unconfined AppArmor profile, which
+`flyte.PodTemplate.allow_nested_sandboxing()` sets on the environment.
+
+The policy is graded after the session closes. `grade` loads the saved weights with
+`weights_only=True` and runs the greedy rollouts in the task itself. The candidate ran in the
+same process as the harness, so it could rewrite anything the harness prints; the driver takes
+only the training curve and the term statistics from it, which go back to Claude as feedback.
+Every failure, in the sandbox or in grading, becomes that seed's result:
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/eureka.py" fragment=session lang=python >}}
 
 `evaluate_reward` runs all of a candidate's seeds at once and folds them into one result. A
-candidate whose every seed fails returns the reason, and that reason goes back to Claude like
-any other feedback.
+seed that fails counts as 0. A candidate whose every seed fails returns the reason, and that
+reason goes back to Claude like any other feedback.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/eureka.py" fragment=evaluate lang=python >}}
 
@@ -154,7 +188,10 @@ any other feedback.
 
 A model that writes code will sooner or later write code that misbehaves, by mistake or
 because something in its context told it to. Generation 1 adds two candidates written to
-misbehave, so you can see the sandbox handle them in the same run as everything else:
+misbehave, so you can see the sandbox handle them in the same run as everything else. The
+network call goes to `192.0.2.1`, an address reserved for documentation that is never routed,
+so nothing leaves the cluster even if the sandbox failed. Set `include_hostile=False` to leave
+them out.
 
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/prompts.py" fragment=hostile lang=python >}}
 
@@ -164,60 +201,70 @@ The driver starts the two baselines, the environment's reward and an energy-base
 person would write, and then runs the generations. Each generation is a `flyte.group`, so the
 UI shows one Claude call and its fan-out of evaluations per generation.
 
+The winner's search score is the one that picked it out of every candidate, so it is biased
+upward. Before publishing, the driver trains the winner and both baselines again on 5 seeds
+that none of them has seen, and reports both scores.
+
 {{< code file="/unionai-examples/v2/tutorials/eureka_reward_design/eureka.py" fragment=driver lang=python >}}
 
 ## Results
 
-A run with the defaults, 4 generations of 6 candidates plus the 2 hostile ones, took 23
-minutes. Every candidate trained on 5 seeds for 150,000 steps, so the run trained 130 policies
-in sandboxes.
+In this run, with the defaults (4 generations of 6 candidates, plus the 2 hostile ones), the
+whole pipeline took 24 minutes, most of it in generation 1 while the pool scaled up. The search
+evaluated 28 rewards: 24 from Claude, the 2 hostile candidates, and the 2 baselines. Each ran on
+5 seeds, so the search opened 140 sandbox sessions, and 130 of them trained a policy (the
+hostile candidates never got that far). The fresh-seed check added 15 more.
 
-| Reward | Flag reached, mean of 5 seeds | Steps to the flag |
+| Reward | Flag reached in the search, mean of 5 seeds | On 5 fresh seeds | Steps to the flag (search) |
+| --- | --- | --- | --- |
+| The environment's reward (-1 per step) | 0% | 0% | |
+| A person's energy-based shaping | 74% | 35% | |
+| Claude, best of generation 1 | 43% | | 171 |
+| Claude, best of generation 4 (the winner) | 94% | 46% | 127 |
+
+Within the search, the reflection's effect shows up across each generation, not just in its
+best candidate:
+
+| Generation | Candidates that reached the flag at least 75% of the time | Candidates that never reached it |
 | --- | --- | --- |
-| The environment's reward (-1 per step) | 0% | |
-| A person's energy-based shaping | 36% | |
-| Claude, best of generation 1 | 100% | 143 |
-| Claude, best of generation 4 (the winner) | 100% | 135 |
+| 1 | 0 of 6 | 5 |
+| 2 | 0 of 6 | 4 |
+| 3 | 4 of 6 | 1 |
+| 4 | 3 of 6 | 0 |
 
-Claude's first generation already contained a reward that reached the flag on every seed:
-potential-based shaping on the car's mechanical energy, the textbook fix for MountainCar, with
-its scale and goal bonus tuned so that PPO picks it up within the budget. The person's version of
-the same idea, with a different scale and goal bonus, reached the flag in only 36% of
-evaluation episodes.
+Generation 1 found one reward that worked some of the time, a direct mechanical-energy gain.
+The reflection on it steered later generations toward variations of that idea, and by
+generation 3 most candidates reached the flag on most seeds. The winner adds two terms to the
+energy gain: a bonus for rightward speed once the car is on the final slope, and a large goal
+bonus.
 
-The reflection's effect shows up in the rest of each generation, not just its best candidate:
+The fresh seeds tell a more modest story. The winner's 94% is the score that picked it out of
+26 candidates, so it is biased upward. Trained again on 5 seeds it hadn't seen, it reached the
+flag in 46% of episodes, against 35% for the person's reward, with per-seed results from 25% to
+90%. In this run Claude's reward beat both baselines on fresh seeds, by less than the search
+scores suggest.
 
-| Generation | Candidates that reached the flag at least 85% of the time | Candidates that never reached it |
-| --- | --- | --- |
-| 1 | 3 of 6 | 1 |
-| 2 | 3 of 6 | 2 |
-| 3 | 4 of 6 | 0 |
-| 4 | 4 of 6, two of them at 100% | 0 |
+![The Eureka report: best task metric, generations, contained candidates, the baselines against each generation, the winner filmed, and the fresh-seed check](../../../_static/images/tutorials/eureka-reward-design/eureka-report.png)
 
-By generation 4, Claude was varying a reward that worked instead of guessing. The winner caps
-the energy potential at the energy needed to reach the flag, so the car is not paid for
-swinging higher than it needs to, and it reaches the flag in 135 steps on average.
-
-![The Eureka report: best task metric, generations, contained candidates, the baselines against each generation, the winner filmed, and its code](../../../_static/images/tutorials/eureka-reward-design/eureka-report.png)
-
-Every candidate, with its result on each seed. The two hostile candidates were stopped by the
-sandbox: `never_returns` at the wall-clock limit, and `exfiltrates` with a `PermissionError` when
-it tried to read the pod's service-account token, before it got to the network.
+Every candidate, with its result on each seed. The sandbox stopped both hostile candidates:
+`never_returns` at the wall-clock limit, and `exfiltrates` with a `PermissionError` when it
+tried to read the pod's service-account token. It never reached its network call.
 
 ![Every candidate in the run, with its result per seed and its steps to the flag](../../../_static/images/tutorials/eureka-reward-design/candidates-table.png)
 
-The winner is published as the `mountaincar-reward-function` artifact:
+The winner is published as the `mountaincar-reward-function` artifact. Its card shows the search
+score; the artifact's `fresh_seed_success` label holds the fresh-seed score.
 
 ![The mountaincar-reward-function artifact card](../../../_static/images/tutorials/eureka-reward-design/reward-card.png)
 
-### What the noise taught us
+### Check the noise before you rank
 
-An earlier version trained each candidate on 3 seeds for 80,000 steps. At that budget, the same
-reward reached the flag in anywhere from 0% to 100% of episodes depending on the seed, and two
-near-identical energy rewards scored 97% in one run and 57% in another. The search was ranking noise, and later
-generations looked worse than the first. A larger budget and 5 seeds made the ranking reliable.
-If the scores of a reward search jump around between runs, measure the noise of a single
-candidate across seeds before you trust the ranking.
+At this budget, one reward's result swings widely from seed to seed: the same candidate can reach
+the flag on every evaluation episode with one seed and on none with another. A search that picks
+the best of many candidates by a 5-seed mean picks partly for lucky seeds. Before you trust a
+ranking, train a single candidate on more seeds to measure its spread, and re-evaluate the winner
+on seeds the search never used, as this driver does. To shrink the noise, raise `seeds` or
+`total_steps`, at the cost of a longer search.
 
 ## Going further
 
