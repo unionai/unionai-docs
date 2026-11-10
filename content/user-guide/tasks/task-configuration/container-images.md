@@ -371,7 +371,7 @@ There is no set up of Docker nor any other local configuration required on your 
 > [!NOTE]
 > The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `build-image` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
-> See [User management](../../user-management) for creating and assigning custom roles and policies.
+> See [User management]({{< docs_home union v2 >}}/user-guide/user-management) for creating and assigning custom roles and policies.
 
 #### ImageBuilder with external registries
 
