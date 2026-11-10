@@ -77,4 +77,4 @@ Some environments are long-running servers that clients step through over HTTP, 
 
 - [Reward setup](./reward-setup): score what happened in each episode.
 - [Inference rollouts](./inference-rollouts): generate the policy's actions.
-- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): the world-building and episode code on this page, in a complete loop.
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/reinforcement-learning/agentic-rl-skyrl/_index): the world-building and episode code on this page, in a complete loop.
