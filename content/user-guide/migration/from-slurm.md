@@ -93,9 +93,9 @@ async def train(lr: float = 3e-4) -> flyte.io.File:
 
 The `#SBATCH` block splits in two. Anything that describes the *environment* (image, resources)
 belongs on the `flyte.TaskEnvironment`, which is shared by every task declared against it. Anything
-that describes *this job* (retries, timeout, caching) belongs on the `@env.task` decorator. Both
-can be overridden per invocation with `task.override(...)`, which has no Slurm equivalent: the same
-task can run with 1 GPU in one call and 8 in the next.
+that describes *this job* (retries, timeout, caching) belongs on the `@env.task` decorator. All of
+these except the image can be overridden per invocation with `task.override(...)`, which has no Slurm
+equivalent: the same task can run with 1 GPU in one call and 8 in the next.
 
 The function signature also does more work than a job script's argv. `lr: float` and
 `-> flyte.io.File` are the task's interface, and Flyte records the value of every input and output
@@ -295,7 +295,8 @@ Docs: [Retries and timeouts](../tasks/task-configuration/retries-and-timeouts) &
 ## Multi-node jobs become clustered tasks
 
 `--nodes=4 --ntasks-per-node=8` maps onto a `ClusteredTaskEnvironment`, which launches all replicas
-together as a single Kubernetes JobSet with `torchrun` handling rendezvous:
+together as a single Kubernetes JobSet. With the default `TorchRun` runtime, `torchrun` handles
+rendezvous:
 
 ```python
 import flyte
@@ -330,9 +331,10 @@ available from `flyte.ctx()` (`rank`, `local_rank`, `node_rank`, `nnodes`, `worl
 for maintenance, without spending the `max_restarts` budget you set aside for actual crashes.
 
 > [!NOTE]
-> Clustered tasks are new and currently target `torchrun` workloads. There is no MPI launcher, so
-> `mpirun`-based applications stay on Slurm. For Ray, Spark, or Dask, use the corresponding
-> integration, which brings up a per-task cluster and tears it down when the task finishes.
+> Clustered tasks support `torchrun` (`TorchRun`) and JAX (`JaxRun`) workloads. There is no MPI
+> launcher, so `mpirun`-based applications stay on Slurm. For Ray, Spark, or Dask, use the
+> corresponding integration, which brings up a per-task cluster and tears it down when the task
+> finishes.
 
 Docs: [Clustered task environments](../../api-reference/flyte-sdk/flyte.clustered/_index)
 
@@ -364,10 +366,10 @@ await train.override(queue="prod-high")(cfg)
 | `squeue -p gpu` | `flyte get queue gpu --watch` |
 
 Two differences from Slurm's accounting model will affect how you plan capacity. Queue priority
-controls *ordering*, not preemption: a running low-priority task is not evicted when higher-priority
-work arrives. And when a queue hits its depth limit, new submissions are rejected immediately with
-`RESOURCE_EXHAUSTED` instead of sitting in `PENDING` for an unknown length of time. That rejection
-is a back-pressure signal for the submitting process to slow down.
+controls *ordering*, not preemption: queue priority alone never evicts a running low-priority task
+when higher-priority work arrives. And when a queue hits its depth limit, new submissions are
+rejected immediately with `RESOURCE_EXHAUSTED` instead of sitting in `PENDING` for an unknown
+length of time. That rejection is a back-pressure signal for the submitting process to slow down.
 
 Docs: [Queues](../tasks/task-configuration/queues) &middot; [Managing queues](../clusters-and-queues/queues)
 
@@ -435,7 +437,7 @@ Docs: [Files and directories](../tasks/task-programming/files-and-directories) &
 
 ```bash
 flyte get run                # recent runs and their phases
-flyte get run <run-name>     # actions within a run
+flyte get action <run-name>  # actions within a run
 flyte get logs <run-name>    # streaming logs
 ```
 
@@ -527,16 +529,17 @@ Docs: [Running locally](../get-started/run-modes/running-locally) &middot; [Cont
 
 ---
 
-## Scheduler features without an equivalent
+## Gang admission, preemption, and topology
 
-Three things Slurm's scheduler does are not available, and if your workload depends on them, plan
-around them explicitly:
+Three things Slurm's scheduler does have no equivalent in Flyte itself. If your workload depends on
+them, plan around them explicitly:
 
-- **Gang admission.** A clustered task's replicas are launched together and `torchrun` waits for the
-  full group before training starts, but there is no scheduler-level all-or-nothing admission.
-- **Topology-aware placement.** There is no way to request workers on the same rack or switch.
-- **Preemption.** Nothing evicts running low-priority work to make room for high-priority work the
-  way a Slurm QOS can. Priority affects the order work starts in, not what happens to work that has
-  already started.
+- **Gang admission.** A clustered task's replicas are launched together and training waits for the
+  full group before it starts (through `torchrun` rendezvous with the default `TorchRun` runtime, or
+  `flyte.clustered.jax_initialize` with `JaxRun`), but Flyte does no all-or-nothing admission of its
+  own.
+- **Preemption.** Flyte does not evict running low-priority work to make room for high-priority work
+  the way a Slurm QOS can.
+- **Topology-aware placement.** Flyte has no setting to request workers on the same rack or switch.
 
-These are gaps in the Kubernetes batch ecosystem rather than anything specific to Flyte.
+Docs: [Schedule all nodes together](../model-training/pretraining#schedule-all-nodes-together) &middot; [Restart a multi-node job](../model-training/durable-training#restart-a-multi-node-job)
