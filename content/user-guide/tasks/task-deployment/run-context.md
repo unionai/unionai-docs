@@ -51,7 +51,7 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 
 {{< variant flyte >}}
 {{< markdown >}}
-The open-source Flyte backend doesn't apply `raw_data_path` (or `--raw-data-path`) to remote runs; see [Where your data lives](../../get-started/core-concepts/where-data-lives#per-run-customization-raw_data_path).
+On the open-source Flyte backend, remote runs apply `raw_data_path` (or `--raw-data-path`) only with flyteorg/flyte `v2.0.54` or later.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -95,7 +95,7 @@ To list and filter runs by their labels, see [Filtering runs by label](./interac
 | `log_level` | `int` | *from config* | Python log level for the framework logger (`flyte`), e.g. `logging.DEBUG`. |
 | `user_log_level` | `int` | *from config* | Python log level for the user logger (`flyte.user`, i.e. `flyte.logger`). |
 | `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
-| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
+| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own; with `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
 
 For setting the logging level (including via environment variables), the framework-vs-user logger split, and capturing third-party library logs as JSON with `reset_root_logger`, see [Logging](../task-configuration/logging).
 

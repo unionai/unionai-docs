@@ -128,8 +128,7 @@ Use it to send a sensitive run to an isolated bucket, point at a bucket with dif
 
 {{< variant flyte >}}
 {{< markdown >}}
-> [!NOTE]
-> The open-source Flyte backend doesn't apply `raw_data_path` to remote runs. It accepts the value, but writes offloaded data under each action's output location, next to its `outputs.pb`.
+On the open-source Flyte backend, remote runs apply `raw_data_path` only with flyteorg/flyte `v2.0.54` or later.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -164,9 +163,3 @@ For how retention policies are configured in your deployment, see [BYOC data ret
 - **Values** = every task input/output is a **literal**, stored either *inline* in `inputs.pb`/`outputs.pb` or *by reference* to **raw data** offloaded in the bucket.
 - **"Metadata" in docs** usually means database-side records. **"Metadata bucket" in Helm/ops** is legacy naming for the data plane bucket. It does *not* hold database metadata.
 - **`flyte.with_runcontext(raw_data_path=...)`** is your knob to send offloaded data elsewhere per run.
-
-{{< variant flyte >}}
-{{< markdown >}}
-The open-source Flyte backend doesn't apply `raw_data_path` to remote runs; see [the note above](#per-run-customization-raw_data_path).
-{{< /markdown >}}
-{{< /variant >}}
