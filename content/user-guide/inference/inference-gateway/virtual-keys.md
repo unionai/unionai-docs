@@ -35,7 +35,7 @@ Callers send the key the way any OpenAI-compatible client sends an API key, as `
 
 ## Budgets
 
-A budget is a dollar ceiling per window: per day, per week, or per month. The gateway keeps a running total for each key and rejects calls with `402` as soon as the ceiling is reached. Enforcement happens in the gateway itself, so it keeps working when the control plane is unreachable. The total resets at the start of each window.
+A budget is a dollar ceiling per window: per day, per week, or per month. The gateway keeps a running total for each key and rejects calls with `402` as soon as the ceiling is reached. The total resets at the start of each window.
 
 Spend is computed from token counts and each provider's price. A self-hosted provider with no cost set is not metered. See [Providers](./providers).
 
@@ -84,4 +84,4 @@ A request that exceeds the key's rate limit is rejected until the minute window 
 
 Keys can't be edited. To change a key's providers, models, fallbacks, budget, or rate limit, issue a new key with the settings you want, update the callers' secret, then revoke the old key.
 
-Revoking a key in **Settings → Inference Gateway → Virtual keys** takes effect on the gateway in under a second.
+Revoking a key in **Settings → Inference Gateway → Virtual keys** takes effect on the gateway within about 15 seconds.
