@@ -70,11 +70,11 @@ The checkpoint lives in your object store, not on the pod, so it survives a rest
 
 ## Schedule all nodes together
 
-A multi-node job can't start until every node is available. If pods start one at a time, the first nodes sit idle while the rest wait for capacity. Admit the job as one gang through a Kueue queue on the cluster:
+A multi-node job can't start until every node is available. If pods start one at a time, the first nodes sit idle while the rest wait for capacity. Admit the job as one gang through a Kueue queue on the cluster (on the open-source Flyte backend, this needs v2.0.49 or later, and v2.0.52 or later to show a suspended job as suspended and to classify evictions as user or system retries):
 
 {{< code file="/unionai-examples/v2/tutorials/gang_scheduling/main.py" fragment="gang-env" lang=python >}}
 
-If a higher-priority job can preempt yours after it starts, set `failure_policy=ClusterFailurePolicy(resume_after_preemption=True)`, so the job waits to be readmitted and resumes from its checkpoint without using a retry. See [Durable training](./durable-training#restart-a-multi-node-job).
+If a higher-priority job can preempt yours after it starts, set `failure_policy=ClusterFailurePolicy(resume_after_preemption=True)`, so the job waits to be readmitted and resumes from its checkpoint without using a retry. This needs `flyte` 2.12.5 or later and, on the open-source Flyte backend, v2.0.54 or later. See [Durable training](./durable-training#restart-a-multi-node-job).
 
 {{< variant union >}}
 {{< markdown >}}
