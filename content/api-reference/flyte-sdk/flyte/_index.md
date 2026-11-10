@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -137,7 +137,7 @@ The same as `gpu="AppleSilicon"`. The workload runs natively on the Mac, so its 
 
 ```python
 def GPU(
-    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'B300', 'H100', 'H200', 'L4', 'L40s', 'T4', 'T4g', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType] = None,
 ) -> flyte._resources.Device
@@ -148,7 +148,7 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared']` | The type of GPU (e.g., "T4", "A100"). A "&lt;model&gt; shared" device such as "T4 shared" requests time-sliced (or MPS) capacity on a pool that advertises the shared accelerator. |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'B300', 'H100', 'H200', 'L4', 'L40s', 'T4', 'T4g', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared']` | The type of GPU (e.g., "T4", "A100"). A "&lt;model&gt; shared" device such as "T4 shared" requests time-sliced (or MPS) capacity on a pool that advertises the shared accelerator. |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). A shared device takes no partition. |
 
@@ -240,7 +240,7 @@ if __name__ == "__main__":
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
 | `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
-| `queue` | `str \| None` | Queue for a remote image build run. Ignored by local builders. |
+| `queue` | `str \| None` | Queue of the cluster pool a remote build is for (the current run's queue when None): the image is looked up there, its spec and context are uploaded to storage that pool reads, the build run goes to that queue, and it is cached for that queue. Ignored by the local builders. |
 
 **Returns**
 
@@ -271,7 +271,7 @@ Build the images for the given environment(s).
 | `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 | `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
-| `queue` | `str \| None` | Queue for remote image build runs. None uses the build task default. |
+| `queue` | `str \| None` | Queue the images are for (see `_build_images`); None builds each environment's for its own queue. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -497,7 +497,7 @@ remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
-| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Python warnings are logged through it too. Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `user_log_level` | `int \| None` | |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
@@ -652,7 +652,10 @@ Credentials are resolved in this order:
 1. An explicit `api_key` argument.
 2. A mounted config file, when the pod has `UCTL_CONFIG` or `FLYTECTL_CONFIG` set.
 3. Auth env vars set on the pod (see below).
-4. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
+4. Workload identity, when the platform tells the pod which attempt it runs (`_U_WORKLOAD`) and where its
+   projected service-account token is (`_U_WORKLOAD_TOKEN_FILE`): the pod presents that token, and acts as the
+   run's creator within the run's project and domain.
+5. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
 
 Deployments that do not want to hand task pods a long-lived API key can skip issuing one
 entirely and set the standard credentials config env vars as default env vars on the pod:
@@ -1243,7 +1246,7 @@ if __name__ == "__main__":
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
 | `user_log_level` | `int \| None` | |
-| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Python warnings are logged through it too. Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional queue for the run and its remote image builds. Overrides the task queue. |
 | `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |

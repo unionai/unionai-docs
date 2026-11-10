@@ -22,6 +22,15 @@ Three properties of Flyte make it a natural fit for sandboxed code execution:
 
 The result: LLMs generate the orchestration code (control flow, conditionals, loops), and Flyte tasks handle the heavy lifting (data access, computation, external APIs) in full containers.
 
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE] Orchestrators without a container
+> The orchestrators on this page run inside a worker container. In Union.ai, an
+> [orchestrator task](../../tasks/task-programming/orchestrator-tasks) runs the same kind of
+> sandboxed code with no container of its own, for drivers that only call tasks.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## How it works
 
 Your generated code runs inside one or more **Monty sandboxes**: lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it, either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):

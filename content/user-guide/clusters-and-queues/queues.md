@@ -367,27 +367,51 @@ Go to **Settings > Queues** to see all your queues.
 ![The console Queues list, grouped by cluster pool](../../_static/images/user-guide/cluster-workload-management/queues/queues-list.png)
 
 Queues are grouped by cluster pool (the **View by Pool** toggle), and each row
-shows its status, priority, and live **Queued**, **Runs**, and **Actions** counts.
-Use the **Status** filter or the search box to narrow the list.
+shows its status, priority, and live **Depth**, **Runs**, and **Actions** counts
+against the queue's limits. Use the **Status** filter or the search box to narrow the list.
 
-Click a queue to open its detail view, which has three tabs.
+Click a queue to open its detail view, which has four tabs: **Overview**,
+**Actions**, **Usage**, and **Settings**.
 
 **Overview** shows the queue's live state: its cluster pool, the clusters it is
-connected to and their CPU, GPU, and memory capacity, and the in-flight **Queued**,
-**Runs**, and **Actions** counts.
+connected to and their CPU, GPU, and memory capacity, and live counts against the
+queue's limits:
 
-![The Overview tab of a queue's detail view in the console](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-overview.png)
+- **Total depth**: every admitted action the queue is still processing, whether
+  waiting, in flight, or finishing up. This is what counts against `depth`.
+- **Waiting**: the subset of actions not yet dispatched to a worker.
+- **Runs in flight** and **Actions in flight**, against `run_concurrency` and
+  `action_concurrency`.
+
+When the action at the head of a `strict_fifo` queue is waiting for resources,
+**Overview** shows a banner naming it, how long it has waited, and whether the
+queue's cap or cluster capacity is holding it, with links to its run and to the
+queue's settings. The queue list marks that queue with a badge.
+
+**Actions** lists the queue's pending and
+in-flight task actions across all runs, refreshing every 15 seconds. Each row shows the action, its phase, its run, its
+project and domain, and its **Time in Queue**: how long it waited from entering
+the queue until a worker picked it up. The time keeps counting while the action is
+still waiting and stops at worker assignment, so later resource waits and
+initialization don't count. It shows `—` when the enqueue or assignment time
+wasn't recorded. An action shown as **Assigned** has been picked up by a worker
+but hasn't reported an execution phase yet. Use the search box to filter by action
+name, run, project, or domain. From a row's menu you can open the action, its run,
+or its project, copy the action or run ID, or abort the action or its whole run.
+Seeing this tab requires the `view_flyte_executions` action in the queue's scope,
+and aborting requires `create_flyte_executions` in the action's project (see
+[User management](../user-management)).
+
+In a run's details, the **Queue** pill shows the queue the selected task action
+was routed to, including a queue set on that task that overrides the run's
+default. Click it to open that queue's detail view.
 
 **Usage** gives ready-to-copy snippets for routing work to this queue, at run level
 and per task, with the queue's name already filled in. These are the same routing
 methods described in [Queues in Configure tasks](../tasks/task-configuration/queues).
 
-![The Usage tab of a queue's detail view, showing run-level and task-level routing snippets](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-usage.png)
-
 **Settings** lists the queue's current configuration: its pool, connected clusters,
 and scope, plus its priority, depth, and run and action concurrency limits.
-
-![The Settings tab of a queue's detail view, listing its configuration](../../_static/images/user-guide/cluster-workload-management/queues/queues-detail-settings.png)
 
 {{< /markdown >}}
 {{< /tab >}}

@@ -455,6 +455,8 @@ export AZURE_CLIENT_SECRET="your-client-secret"
 export AZURE_STORAGE_ACCOUNT_NAME="your-storage-account"
 ```
 
+`flyte.storage.ABFS.auto()` also reads Flyte-prefixed versions of these variables: `FLYTE_AZURE_STORAGE_ACCOUNT_NAME`, `FLYTE_AZURE_STORAGE_ACCOUNT_KEY`, `FLYTE_AZURE_TENANT_ID`, `FLYTE_AZURE_CLIENT_ID`, and `FLYTE_AZURE_CLIENT_SECRET`. If any of them is set, it reads only the prefixed names and ignores the generic `AZURE_*` ones. Use the prefixed names when the generic names are already set for other Azure tools, such as adlfs, deltalake, or the Azure SDKs, and point to a different storage account. Requires `flyte` 2.12.3 or later.
+
 **2. Initialize Flyte with Azure storage configuration:**
 
 ```python
