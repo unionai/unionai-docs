@@ -233,7 +233,7 @@ mcp_env = FlyteMCPAppEnvironment(
 
 ## Putting it together: a filtered server
 
-This example combines tool groups, an allowlist, search paths, and instructions to build a scoped server. Its `task_allowlist` restricts only the task tools and `rerun_run`. The `run` group also includes `abort_run`, which no allowlist covers, so an agent on this server can abort any run its identity has access to, in any project and domain it names. To rule that out, pass an explicit `tools` list without `abort_run` instead of `tool_groups`:
+This example combines an explicit tool list, an allowlist, search paths, and instructions to build a scoped server. It lists its tools instead of using `tool_groups=["task", "run", "search"]` so that it can leave out `abort_run`: the `run` group includes it, and no allowlist covers it, so it would let an agent abort any run its identity has access to, in any project and domain it names. The `task_allowlist` then restricts every task tool and `rerun_run`:
 
 {{< code file="/unionai-examples/v2/user-guide/build-mcp/flyte_mcp_app_filtered.py" fragment=flyte-mcp-filtered lang=python >}}
 
@@ -306,7 +306,7 @@ OpenCode spawns the `uvx` command for you:
 ## Best practices
 
 1. **Start broad locally, scope down for sharing**: Run with `all` tools via `uvx` while exploring, then enable only the groups or tools you need before deploying a shared server.
-2. **Always allowlist mutating tools**: If `run_task` or app/trigger management is enabled on a shared server, set the corresponding allowlist so an agent can't touch arbitrary resources. No allowlist applies to `abort_run`, `abort_action`, `create_secret`, `delete_secret`, or `signal_condition`, so leave out any of them that the server's agent shouldn't use.
+2. **Always allowlist mutating tools**: If `run_task` or app/trigger management is enabled on a shared server, set the corresponding allowlist so an agent can't touch arbitrary resources. No allowlist applies to `abort_run`, `abort_action`, `create_secret`, `delete_secret`, or `signal_condition`, and each belongs to a group (`run`, `action`, `secret`, `condition`). To keep one from the server's agent, pass an explicit `tools=[...]` list that leaves it out, instead of `tool_groups`.
 3. **Prefer `tools` over `tool_groups` for read-only servers**: An explicit allowlist of read tools is the clearest way to guarantee an agent can't change anything.
 4. **Write specific `instructions`**: Describe what the server does and any constraints (e.g. "only allowlisted tasks can be run"). This guides tool selection and reduces wasted calls.
 5. **Keep auth on**: Leave `requires_auth=True` so only authenticated clients can reach a deployed server.
