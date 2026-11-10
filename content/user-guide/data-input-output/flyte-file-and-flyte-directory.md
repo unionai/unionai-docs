@@ -633,7 +633,7 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index) defines some aliases of `FlyteFile` with specific type annotations.
+The {{< key kit_name >}} SDK defines some aliases of `FlyteFile` with specific type annotations.
 Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/flytekit.types.file.file):
 
 * `HDF5EncodedFile`

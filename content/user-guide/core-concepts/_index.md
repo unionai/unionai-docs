@@ -171,7 +171,7 @@ $ {{< key ctl >}} get workflow \
        <workflow-version>
 ```
 
-See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/{{< key ctl >}}-cli/_index) for more details.
 
 ### Inspecting tasks on the command line with `{{% key ctl %}}`
 
@@ -193,7 +193,7 @@ $ {{< key ctl >}} get task \
        <task-version>
 ```
 
-See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/{{< key ctl >}}-cli/_index) for more details.
 
 ### Inspecting tasks and workflows in Python with `{{% key kit_remote %}}`
 

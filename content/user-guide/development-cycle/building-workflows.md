@@ -11,7 +11,7 @@ variants: +flyte +union
 There are several reasons why one may choose to decompose a task into smaller tasks.
 Doing so may result in better computational performance, improved cache performance, and taking advantage of interruptible tasks.
 However, decomposition comes at the cost of the overhead among tasks, including spinning up nodes and downloading data.
-In some cases, these costs may be remediated by using [Actors](../core-concepts/actors).
+In some cases, these costs may be remediated by using [Actors]({{< docs_home union v1 >}}/user-guide/core-concepts/actors/).
 
 ### Differing runtime requirements
 
@@ -46,7 +46,7 @@ A lot of {{< key product_name >}}’s powerful ergonomics like caching and workf
 Decomposing into smaller tasks and parallelizing enables for a performant and fault-tolerant workflow.
 
 One caveat is for very short duration tasks, where the overhead of spinning up a pod and cleaning it up negates any benefits of parallelism.
-With reusable containers via [Actors](../core-concepts/actors), however, these overheads are transparently obviated, providing the best of both worlds at the cost of some up-front work in setting up that environment.
+With reusable containers via [Actors]({{< docs_home union v1 >}}/user-guide/core-concepts/actors/), however, these overheads are transparently obviated, providing the best of both worlds at the cost of some up-front work in setting up that environment.
 In any case, it may be useful to batch the inputs and outputs to amortize any overheads.
 Please be mindful to keep the sequencing of inputs within a batch, and of the batches themselves, to ensure reliable cache hits.
 
