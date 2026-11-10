@@ -200,6 +200,37 @@ def tolerant(x: int) -> str:
         return "recovered: " + str(e)
 ```
 
+### Retry an orchestrator, or stop it from retrying
+
+Set `retries` to run the orchestrator again when it raises an error. Each attempt runs the function
+from the start. The tasks it calls are not run twice: a call with the same task, inputs, and
+position in the run gets the result of the task the earlier attempt launched.
+
+To fail the run without using up `retries`, raise `flyte.errors.NonRecoverableError`. This needs
+`flyte` 2.13.1 or later. A failed task surfaces in the orchestrator as a `RuntimeError`, so to stop
+retrying when a task fails, catch that error and raise `NonRecoverableError` yourself:
+
+```python
+import flyte.errors
+import flyte.orchestrator
+import flyte.remote
+
+check = flyte.remote.Task.get("math.fail_if_negative", auto_version="latest")
+
+@flyte.orchestrator.task(retries=3)
+def strict(x: int) -> int:
+    if x > 1_000:
+        raise flyte.errors.NonRecoverableError(f"{x} is too large")
+    try:
+        return check(x)
+    except RuntimeError as e:
+        raise flyte.errors.NonRecoverableError("check failed: " + str(e))
+```
+
+The run fails with the error code `NonRecoverableError`. Inside the orchestrator,
+`NonRecoverableError` is a `RuntimeError`, so an `except RuntimeError` block around the `raise`
+catches it.
+
 ### Wait for a person
 
 An orchestrator can pause until someone approves a step or supplies a value from the UI or the
