@@ -18,7 +18,7 @@ from datetime import datetime
 env = flyte.TaskEnvironment(name="trigger_env")
 
 
-@env.task(triggers=flyte.Trigger.hourly())
+@env.task(triggers=flyte.Trigger.hourly("trigger_time"))
 def hourly_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Hourly example executed at {trigger_time.isoformat()} with x={x}"
 ```

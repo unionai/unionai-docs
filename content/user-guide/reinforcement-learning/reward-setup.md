@@ -68,7 +68,7 @@ Either way, the first step's rollouts are reused, because the worlds and startin
 {{< /markdown >}}
 {{< /variant >}}
 
-- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): the judge on this page, and re-scoring old rollouts with a new rubric.
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/reinforcement-learning/agentic-rl-skyrl/_index): the judge on this page, and re-scoring old rollouts with a new rubric.
 - [Training environment](./training-environment): what produces the trajectories you score.
 - [Training loop](./training-loop): how rewards become advantages for the policy update.
 - [Run model-written code safely](./training-environment#run-model-written-code-safely): sandbox the code a reward executes.

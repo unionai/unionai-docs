@@ -47,10 +47,9 @@ Each [cluster pool](../../clusters-and-queues/cluster-pools) has its own secret 
 
 ## Notify once per run
 
-Three details keep the message from being sent more than once:
+While the driver runs without interruption, two details make it post once and still report the failure. A driver that resumes after an interruption can post again; see [Limitations](#limitations).
 
 - **Put retries on the child tasks, not the driver.** `train` retries up to three times, and the driver sees the exception only after the last attempt fails, so it posts once. If the driver had `retries`, each driver attempt would post again.
-- **Make the post a [traced function](../task-programming/traces).** A completed trace is a checkpoint. If the driver resumes after an interruption, it doesn't send the message again.
 - **Re-raise after posting.** The run still ends as failed, and the error stays in the run.
 
 The exception from a failed child task reaches the driver as `flyte.errors.RuntimeUserError`, with the original error message. The example catches `Exception` so that system errors notify too.
@@ -61,3 +60,5 @@ The driver sends the notification, so nothing is sent if the driver itself doesn
 
 - The driver task runs out of memory, times out, or crashes.
 - The run is aborted.
+
+If the driver resumes after an interruption, it can send the message again. `post_slack` is a [traced function](../task-programming/traces) that returns `None`, so a resumed driver has no recorded result to replay and runs it again. A traced function that returns a value other than `None`, such as the response's status code, is replayed instead. Even then, a post that was sent but not yet recorded when the driver stopped is sent again.

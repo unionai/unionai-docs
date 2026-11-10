@@ -825,7 +825,7 @@ On execution, this is what this example looks like at the Kubernetes level:
 
 ![](./images/reusable-containers-k8s.png)
 
-This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task]({{< docs_home union v2 >}}/user-guide/considerations/#driver-pod-requirements).
+This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task](../../../user-guide/migration/flyte-2/gotchas-and-caveats#driver-pod-requirements).
 
 ## Batch Size Selection
 

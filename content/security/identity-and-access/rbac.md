@@ -65,6 +65,6 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    flyte -of json get policy
    ```
 
-6. For Union.ai employee access, list every identity-to-policy assignment in the organization with `flyte get assignment`, inspect the policies they name with `flyte get policy <name>`, then inspect the roles those policies bind with `flyte get role <name>`. The role carries the action list, so the last step is the one that shows the effective access. See [Human access controls](./human-access).
+6. For Union.ai employee access, get the subjects of the staff identities in your tenant from Union.ai (`flyte get member` and `flyte get user` don't list support staff). Look up the policies assigned to each identity with `flyte get assignment --user-subject <subject>`, inspect those policies with `flyte get policy <name>`, then inspect the roles those policies bind with `flyte get role <name>`. The role carries the action list, so the last step is the one that shows the effective access. See [Human access controls](./human-access).
 
-This verification is fully self-service.
+Steps 1–5 are fully self-service. Step 6 also needs the staff subjects from Union.ai, and assignment output shows only customer-visible policies, not internal system policies.

@@ -1,6 +1,6 @@
 ---
 title: Human gates and approvals
-description: Put a person in the loop with a durable condition, and decide what happens when nobody answers.
+description: Put a person in the loop with a condition, and decide what happens when nobody answers.
 icon: person-check
 weight: 3
 variants: +flyte +union
