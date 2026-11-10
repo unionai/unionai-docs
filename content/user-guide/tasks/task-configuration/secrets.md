@@ -13,6 +13,20 @@ Secrets reside in a secret store on the data plane of your Union/Flyte backend.
 You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
 Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
 
+{{< variant union >}}
+{{< markdown >}}
+On {{< key product_name >}}, the secret store is in your own infrastructure.
+It is your cloud provider's secret manager (AWS Secrets Manager, Google Secret Manager, or Azure Key Vault) or Kubernetes Secrets, depending on how your data plane is configured.
+Secret values never pass through the {{< key product_name >}} control plane.
+See [Secrets management](../../../security/data-protection/secrets).
+
+A task can also read a secret that already exists in AWS Secrets Manager or Azure Key Vault, without creating it with `flyte create secret`.
+See [Enabling AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager) and [Enabling Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
+Flyte 2 tasks can't read a secret created directly in Google Secret Manager.
+See [Enabling Google Secret Manager](../../../deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Creating a literal string secret
 
 You can create a secret using the [`flyte create secret`](../../../api-reference/flyte-cli#flyte-create-secret) command like this:
