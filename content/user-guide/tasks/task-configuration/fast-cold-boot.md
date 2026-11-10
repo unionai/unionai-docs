@@ -2,7 +2,7 @@
 title: Fast cold boot
 description: Start containers in seconds by building images with the remote image builder.
 icon: lightning-charge
-weight: 1
+weight: 2
 variants: -flyte +union
 ---
 
@@ -12,15 +12,19 @@ variants: -flyte +union
 Most of it is spent pulling the image.
 On a fresh node, a 10 GB GPU image takes 4 to 5 minutes to pull.
 
-Images built by the [remote `ImageBuilder`](./container-images#remote-imagebuilder) start in seconds instead, even when they are many gigabytes.
-You don't change your Dockerfile or your tasks.
-The only requirement is that the image is built by the remote builder.
+With fast cold boot, images built by the [remote `ImageBuilder`](./container-images#remote-imagebuilder) start in seconds instead, even when they are many gigabytes.
+You don't change your tasks.
+If you build from a Dockerfile, keep building it your way and pass the result through the remote builder, as shown in [Use an image from your existing build system](#use-an-image-from-your-existing-build-system).
+
+Fast cold boot is a data-plane setting, off by default.
+On BYOC, ask Union.ai support to enable it.
+On a self-managed data plane, set `nodeBootstrap.enabled` and then `imageBuilder.enableImageOptimization` in the [dataplane chart](../../../deployment/selfmanaged/helm-chart-reference/dataplane).
 
 ## How it works
 
 The remote builder stores each image in a format that can be read lazily:
 
-1. When a task lands on a node, the node downloads a small index of the image (around 14 MB for a multi-gigabyte image) instead of every layer.
+1. When a task lands on a node, the node downloads a small index of the image (around 14 MB for a 353 MB image) instead of every layer.
 2. The container starts as soon as the index is mounted.
 3. Files are fetched from the registry the first time the task reads them. Data is cached on the node's local disk and shared with other images on the same node.
 
@@ -58,6 +62,8 @@ async def train(epochs: int) -> float:
 ```
 
 `flyte deploy` and `flyte run` build the image the first time, then reuse it until its definition changes.
+An image built before fast cold boot was enabled keeps its standard format.
+To convert it, rebuild it with `flyte.build(image, force=True)`.
 
 ## Use an image from your existing build system
 
@@ -99,10 +105,12 @@ Inside the task container the variable is unset, so the default value is never u
 
 Keep these points in mind:
 
+* **The base image must already run Flyte tasks.** It needs the `flyte` package installed and your task code importable. Because `clone()` adds no layers, a missing `flyte` package builds successfully and fails when the task starts. To adapt an image that isn't Flyte-ready, see [Bring your own image](../../project-patterns/bring-your-own-image).
+* **The rebuilt image runs only on your data plane.** It is stored in a lazy-pull format that only nodes set up for fast cold boot can run. To run the image locally or in CI, use your original image, not the `clone()` output.
 * **`clone()` triggers the remote build.** A bare `flyte.Image.from_base("...")` is used as-is and is never rebuilt, so it starts with a standard image pull.
 * **Use an immutable tag for the base image**, such as a Git SHA or a digest. The remote builder rebuilds when the base image reference changes. If you push a new image under the same tag, such as `:latest`, the reference doesn't change and the old build is reused.
 * **Leave `registry` unset in `clone()`.** The image is then stored in your data plane's internal registry, close to your nodes. Because files are fetched while the task runs, a registry outside your cloud network makes those reads slower.
-* **Private base images** need registry credentials for the remote builder to pull them. Pass `registry_secret` to `clone()`, as shown in [ImageBuilder with external registries](./container-images#imagebuilder-with-external-registries).
+* **Private base images** need registry credentials for the remote builder to pull them. Pass `registry_secret` to `clone()`, and leave out the `registry` argument shown in [ImageBuilder with external registries](./container-images#imagebuilder-with-external-registries).
 * **To add layers** on top of the base image, pass `extendable=True` to `clone()` and chain `with_*` methods as usual.
 
 ## Benchmarks

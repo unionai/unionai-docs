@@ -370,7 +370,7 @@ There is no set up of Docker nor any other local configuration required on your 
 
 {{< variant union >}}
 {{< markdown >}}
-Images built by `ImageBuilder` also start in seconds on a fresh node, because the node reads files from the image on demand instead of pulling every layer first. See [Fast cold boot](./fast-cold-boot).
+When fast cold boot is enabled for your data plane, images built by `ImageBuilder` also start in seconds on a fresh node, because the node reads files from the image on demand instead of pulling every layer first. See [Fast cold boot](./fast-cold-boot).
 {{< /markdown >}}
 {{< /variant >}}
 
