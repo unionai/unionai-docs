@@ -76,4 +76,7 @@ Reach the gateway from any local tool, with or without exposing it publicly.
 **[Guardrails](./guardrails/_index)**
 Check every prompt and every answer with your own code.
 
+**[Decisions](./decisions)**
+Ask a model typed questions about a state with `POST /v1/decisions`.
+
 {{< subpage-cards >}}

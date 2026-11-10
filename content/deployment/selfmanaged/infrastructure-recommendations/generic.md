@@ -11,7 +11,7 @@ variants: -flyte +union
 This page walks you through creating the resources needed for a Union data plane on generic (on-premise) Kubernetes. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE]
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](../aws/legacy), [GCP](../gcp/legacy), [Azure](../azure/legacy), [OCI](./oci).
+> If you are installing at a cloud provider, use the cloud provider specific instructions. For a new deployment on AWS, GCP, or Azure, [set up from the Union.ai UI](../_index); for an existing Helm install, see [AWS](../aws/legacy), [GCP](../gcp/legacy), or [Azure](../azure/legacy). On OCI, see [OCI](./oci).
 
 ## Kubernetes cluster
 

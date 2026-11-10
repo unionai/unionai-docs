@@ -2,7 +2,7 @@
 title: Durable agentic RL with SkyRL and Harbor
 icon: arrow-repeat
 description: Make SkyRL/Harbor-style agentic RL rollouts durable — trials that survive driver crashes, judges that are never re-billed, and training steps that apply exactly once.
-weight: 2
+weight: 5
 variants: +flyte +union
 ---
 
