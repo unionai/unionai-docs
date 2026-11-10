@@ -169,8 +169,9 @@ UI shows one Claude call and its fan-out of evaluations per generation.
 ## Results
 
 A run with the defaults, 4 generations of 6 candidates plus the 2 hostile ones, took 23
-minutes. Every candidate trained on 5 seeds for 150,000 steps, so the run trained 130 policies
-in sandboxes.
+minutes. Every reward, including the 2 baselines and the 2 hostile candidates, ran on 5 seeds for
+150,000 steps, each seed in its own sandbox session: 140 sandboxed training runs. The 10 runs of
+the hostile candidates are stopped before they train a policy, so at most 130 runs train one.
 
 | Reward | Flag reached, mean of 5 seeds | Steps to the flag |
 | --- | --- | --- |
@@ -210,13 +211,13 @@ The winner is published as the `mountaincar-reward-function` artifact:
 
 ![The mountaincar-reward-function artifact card](../../../_static/images/tutorials/eureka-reward-design/reward-card.png)
 
-### What the noise taught us
+### Check the noise before you rank
 
-An earlier version trained each candidate on 3 seeds for 80,000 steps. At that budget, the same
-reward reached the flag in anywhere from 0% to 100% of episodes depending on the seed, and two
-near-identical energy rewards scored 97% in one run and 57% in another. The search was ranking noise, and later
-generations looked worse than the first. A larger budget and 5 seeds made the ranking reliable.
-If the scores of a reward search jump around between runs, measure the noise of a single
+In test runs with 3 seeds of 80,000 steps per candidate, the same reward reached the flag in
+anywhere from 0% to 100% of episodes depending on the seed, and two near-identical energy rewards
+scored 97% in one run and 57% in another. At that budget the search ranked noise, and later
+generations looked worse than the first. The defaults, 5 seeds of 150,000 steps, made the ranking
+reliable in the run reported above. If the scores of a reward search jump around between runs, measure the noise of a single
 candidate across seeds before you trust the ranking.
 
 ## Going further
