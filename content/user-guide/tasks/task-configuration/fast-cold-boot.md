@@ -24,7 +24,7 @@ On a self-managed data plane, set `nodeBootstrap.enabled` and then `imageBuilder
 
 The remote builder stores each image in a format that can be read lazily:
 
-1. When a task lands on a node, the node downloads a small index of the image (around 14 MB for a 353 MB image) instead of every layer.
+1. When a task lands on a node, the node downloads a small index of the image instead of every layer.
 2. The container starts as soon as the index is mounted.
 3. Files are fetched from the registry the first time the task reads them. Data is cached on the node's local disk and shared with other images on the same node.
 
