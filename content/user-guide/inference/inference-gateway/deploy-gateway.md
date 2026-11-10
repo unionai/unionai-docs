@@ -21,7 +21,7 @@ Deploy a gateway on the cluster where your LLM traffic originates. It runs as a 
    | **Cluster pool** | Where the gateway runs. |
    | **Cluster (optional)** | Pins the gateway to one named cluster, for organizations with several clusters. |
    | **Allow anonymous access** | Whether callers need Union sign-in. See [Choose who can reach the gateway](#choose-who-can-reach-the-gateway). |
-   | **Providers** | Optional. Providers you add here are mounted on the first deploy, so you skip a redeploy. See [Providers](./providers). |
+   | **Providers** | Optional. Providers you add here are mounted on the first deploy. See [Providers](./providers). |
 
 3. Deploy the gateway.
 
@@ -72,7 +72,6 @@ Redeploying without changing the access mode keeps the current setting.
 
 Every change you make, such as a new key, a revoked key, a budget, a provider, or a guardrail, is part of the gateway's *policy*. The gateway keeps a watch open on the control plane and applies policy changes in under a second, with a 15-second check-in as a backstop. The control plane never connects in to the gateway.
 
-Two changes need a redeploy, because they change what is mounted on the gateway:
+Adding a hosted provider changes what is mounted on the gateway, so the gateway redeploys automatically. If that redeploy fails, the provider shows **Pending deploy** until you deploy the gateway again.
 
-- Adding a provider that uses a new secret. The provider shows **Pending** until you redeploy.
-- Updating the gateway's proxy image. The console shows when a newer image is available.
+Updating the gateway's proxy image needs a redeploy. The console shows when a newer image is available.
