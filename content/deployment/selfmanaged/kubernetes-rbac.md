@@ -311,7 +311,7 @@ Also:
   takes effect, so bind each new service account to a cloud identity before you upgrade.
 - Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
 - Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values.
-- In templated values, replace `.Values.low_privilege` with `include "singleNamespace"`.
+- In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
 a values snippet for each case.
