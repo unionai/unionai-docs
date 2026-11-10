@@ -370,9 +370,8 @@ Queues are grouped by cluster pool (the **View by Pool** toggle), and each row
 shows its status, priority, and live **Depth**, **Runs**, and **Actions** counts
 against the queue's limits. Use the **Status** filter or the search box to narrow the list.
 
-Click a queue to open its detail view, which has **Overview**, **Usage**, and
-**Settings** tabs, plus an **Actions** tab when your Union control plane supports
-queue-scoped action listing.
+Click a queue to open its detail view, which has four tabs: **Overview**,
+**Actions**, **Usage**, and **Settings**.
 
 **Overview** shows the queue's live state: its cluster pool, the clusters it is
 connected to and their CPU, GPU, and memory capacity, and live counts against the
@@ -384,7 +383,12 @@ queue's limits:
 - **Runs in flight** and **Actions in flight**, against `run_concurrency` and
   `action_concurrency`.
 
-**Actions**, when your control plane provides it, lists the queue's pending and
+When the action at the head of a `strict_fifo` queue is waiting for resources,
+**Overview** shows a banner naming it, how long it has waited, and whether the
+queue's cap or cluster capacity is holding it, with links to its run and to the
+queue's settings. The queue list marks that queue with a badge.
+
+**Actions** lists the queue's pending and
 in-flight task actions across all runs, refreshing every 15 seconds. Each row shows the action, its phase, its run, its
 project and domain, and its **Time in Queue**: how long it waited from entering
 the queue until a worker picked it up. The time keeps counting while the action is
