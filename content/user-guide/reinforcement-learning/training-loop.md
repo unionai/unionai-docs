@@ -176,6 +176,6 @@ Create the first, empty version with `Volume.new()` in a task before the loop, a
 {{< /markdown >}}
 {{< /variant >}}
 
-- [Durable agentic RL with SkyRL and Harbor](../../tutorials/frontier-ai/agentic-rl-skyrl/_index): an agentic loop with sandboxed episodes and a judge.
+- [Durable agentic RL with SkyRL and Harbor](../../tutorials/reinforcement-learning/agentic-rl-skyrl/_index): an agentic loop with sandboxed episodes and a judge.
 - [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints): the checkpoint store the driver uses.
 - [Grouping actions](../tasks/task-programming/grouping-actions): how `flyte.group` organizes the run's UI.

@@ -35,7 +35,7 @@ The challenge is scale. A 30B parameter model doesn't fit on a single GPU. The t
 We’ll build a Flyte pipeline that takes care of all of this, using three tasks with clearly defined responsibilities:
 
 1. **Data preparation**: Tokenizes your dataset and converts it to MDS (MosaicML Data Shard) format for streaming. This Flyte task is cached, so it only needs to be run once and can be reused across runs.
-2. **Distributed training**: Runs FSDP across 8 H200 GPUs. Flyte's `Elastic` plugin handles the distributed setup. Checkpoints upload to S3 automatically via Flyte's `File` abstraction.
+2. **Distributed training**: Runs FSDP across 8 H200 GPUs. A `ClusteredTaskEnvironment` launches the training nodes together and starts torchrun on each one. Checkpoints upload to S3 automatically via Flyte's `File` abstraction.
 3. **Real-time reporting**: Streams loss curves and training metrics to Flyte Reports, a live dashboard integrated into the Flyte UI.
 
 Why three separate tasks? Flyte makes this separation efficient:
@@ -54,11 +54,11 @@ Every distributed training job needs a consistent environment across all nodes. 
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="imports" lang="python" >}}
 
-The imports tell the story: `flyte` for orchestration, `flyte.report` for live dashboards, `lightning` for training loop management, and `Elastic` from Flyte's PyTorch plugin. This last one is key as it configures PyTorch's distributed launch without you writing any distributed setup code.
+The imports tell the story: `flyte` for orchestration, `flyte.report` for live dashboards, `lightning` for training loop management, and `flyte.clustered` for multi-node training. That last one is built into the Flyte SDK. It launches PyTorch's distributed training across nodes, so you write no distributed setup code.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="constants" lang="python" >}}
 
-These constants define the distributed topology. We're using 1 node with 8 GPUs, but you can scale this up by changing `NUM_NODES`. The vocabulary size (50,257 tokens) and sequence length (2,048 tokens) match GPT-2's [Byte Pair Encoding (BPE) tokenizer](https://huggingface.co/learn/llm-course/en/chapter6/5).
+These constants define the distributed topology. The `h200` shape is the full setup: 1 node with 8 H200 GPUs. You can scale it up by changing `nodes`. The `l4-test` shape runs the same code on 2 nodes with one L4 GPU each, a cheap way to test the multi-node setup before you rent H200s. Set `PRETRAIN_CLUSTER` to choose a shape. The vocabulary size (50,257 tokens) and sequence length (2,048 tokens) match GPT-2's [Byte Pair Encoding (BPE) tokenizer](https://huggingface.co/learn/llm-course/en/chapter6/5).
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="image" lang="python" >}}
 
@@ -66,17 +66,18 @@ Flyte builds this container automatically when the pipeline is run. All dependen
 
 ### Declaring resource requirements
 
-Different parts of the pipeline need different resources. Data tokenization needs CPU and memory. Training needs GPUs. The driver just coordinates. Flyte's `TaskEnvironment` lets you declare exactly what each task needs:
+Different parts of the pipeline need different resources. Data tokenization needs CPU and memory. Training needs GPUs. The driver just coordinates. Each task gets its own environment that declares exactly what it needs:
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="task-envs" lang="python" >}}
 
 Let's break down the training environment, since this is where most of the complexity lives:
 
-- **`gpu=f"H200:{DEVICES_PER_NODE}"`**: Flyte provisions exactly 8 H200 GPUs. These have 141GB of memory each, enough to train 30B+ parameter models with FSDP.
+- **`ClusteredTaskEnvironment`**: Runs the training task on `replicas` identical pods, one per node, and starts them as a group. On each pod it runs torchrun with `nproc_per_node` processes, one per GPU. torchrun assigns each process its rank and sets the master address and world size, which replaces the launch scripts you would otherwise write.
+- **`resources`**: These apply to each node. With the `h200` shape, `gpu="H200:8"` gives each node 8 H200 GPUs with 141GB of memory each, enough to train 30B+ parameter models with FSDP. Two replicas would be a 16-GPU job.
 - **`shm="16Gi"`**: This allocates explicit shared memory. NCCL (NVIDIA's communication library) uses shared memory for inter-GPU communication on the same node. Without this, you'll see cryptic errors like "NCCL error: unhandled system error", which can be difficult to debug.
-- **`Elastic(nnodes=NUM_NODES, nproc_per_node=DEVICES_PER_NODE)`**: This is Flyte's integration with PyTorch's elastic launch. It handles process spawning (one process per GPU), rank assignment (each process knows its ID), and environment setup (master address, world size). This replaces the boilerplate typically written in shell scripts.
+- **`failure_policy=ClusterFailurePolicy(max_restarts=1)`**: If a worker fails, Flyte recreates every pod in the group once before failing the task. A restarted group starts training from scratch unless you resume from a checkpoint; see [Durable training](../../../user-guide/model-training/durable-training).
 
-The `driver_env` is intentionally lightweight, using 2 CPUs and 4 GB of memory. Its role is limited to orchestrating tasks and passing data between them, so allocating GPUs here would be unnecessary.
+The `driver_env` is intentionally lightweight, using 2 CPUs and 4 GB of memory. Its role is limited to orchestrating tasks and passing data between them, so allocating GPUs here would be unnecessary. It also gets `PRETRAIN_CLUSTER`, because the driver builds the training task's spec when it calls the task, so it must pick the same cluster shape as your machine.
 
 ### Model configurations
 
@@ -208,6 +209,7 @@ One subtle detail: gradient clipping. With FSDP, gradients are sharded across ra
 
 The trainer configuration brings together all the pieces we've discussed:
 
+- **`devices` and `num_nodes`**: torchrun has already started one process per GPU on every node, and Lightning attaches to those processes instead of spawning its own. The two values must match the cluster, so they come from `flyte.ctx()`, which reports the processes per node and the node count.
 - **`precision="bf16-mixed"`**: BFloat16 mixed precision training. BF16 has the same dynamic range as FP32 (unlike FP16), so you don't need loss scaling. This is the standard choice for modern GPU training.
 - **`gradient_clip_val=1.0`**: Clips gradients to prevent exploding gradients during training. Combined with value-based clipping for FSDP compatibility.
 - **`accumulate_grad_batches`**: Accumulates gradients over multiple forward passes before updating weights. This lets us hit a larger effective batch size than what fits in GPU memory.
@@ -233,9 +235,9 @@ With everything defined, running is simple:
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining/train.py" fragment="main" lang="python" >}}
 
-This configuration is designed for testing and demonstration. Notice `max_train_samples=5_000_000`: that's 5 million samples from a dataset with 627 billion tokens. A tiny fraction, enough to verify everything works without burning through compute.
+The `h200` configuration is designed for testing and demonstration at real model sizes. Notice `max_train_samples=5_000_000`: that's 5 million samples from a dataset with 627 billion tokens. A tiny fraction, enough to verify everything works without burning through compute.
 
-For a real pretraining run, you would remove this limit by setting `max_train_samples=None`, or increase it significantly. You would also increase `max_steps` to match your compute budget, likely scale to multiple nodes by setting `NUM_NODES=4` or higher, and allocate more resources. The rest of the pipeline remains unchanged.
+For a real pretraining run, you would remove this limit by setting `max_train_samples=None`, or increase it significantly. You would also increase `max_steps` to match your compute budget, likely scale to multiple nodes by setting `nodes` to 4 or higher in the `h200` shape, and allocate more resources. The rest of the pipeline remains unchanged.
 
 ```bash
 flyte create config --endpoint <FLYTE_OR_UNION_ENDPOINT> --project <PROJECT_NAME> --domain <DOMAIN_NAME> --builder remote
@@ -247,8 +249,20 @@ When you run this, Flyte:
 1. **Builds the container** (cached after first run)
 2. **Schedules data prep** on CPU nodes
 3. **Waits for data prep** (or skips if cached)
-4. **Provisions H200 nodes** and launches distributed training
+4. **Provisions the training nodes** and starts them together, then launches torchrun on each one
 5. **Streams logs and metrics** to the UI in real-time
+
+### Test on small GPUs first
+
+Before you rent H200s, run the same code on the `l4-test` shape:
+
+```bash
+PRETRAIN_CLUSTER=l4-test uv run train.py
+```
+
+This trains the 125M model on 2 nodes with one L4 GPU each, on 512-token sequences from WikiText-103, for 200 steps. The two nodes form one torchrun group, so it exercises the same multi-node path as a larger job: rendezvous across pods, FSDP sharding over the network, and checkpoint upload from rank 0.
+
+In our test run, data prep produced 51,315 training samples (26.3 million tokens) in about four minutes. The 200 training steps took 30 minutes and covered roughly one pass over the data. Validation loss fell from 7.51 to 6.27, which shows the model learning but is far from a useful language model.
 
 Open the Flyte UI to observe the workflow execution. The data preparation task completes first, followed by the training task spinning up. As training begins, the Flyte Reports dashboard starts plotting loss curves. If anything goes wrong, the logs are immediately available in the UI.
 
@@ -262,7 +276,7 @@ If you've run through this tutorial, here's where to go next depending on what y
 
 **You want to train on your own data.** The data prep task accepts any HuggingFace dataset with a `text` column. If your data isn't on HuggingFace, you can modify `load_and_prepare_streaming_dataset` to read from S3, local files, or any other source. The key is getting your data into MDS format. Once it's there, the streaming and sharding just works. For production training, look at SlimPajama, [RedPajama](https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T), or [The Pile](https://huggingface.co/datasets/EleutherAI/pile) as starting points.
 
-**You want to scale to more GPUs.** Bump `NUM_NODES` and Flyte handles the rest. The main thing to watch is the effective batch size. As you add more GPUs, you may want to reduce gradient accumulation steps to keep the same global batch size, or increase them if you want to experiment with larger batches.
+**You want to scale to more GPUs.** Raise `nodes` in the cluster shape and Flyte handles the rest: the `ClusteredTaskEnvironment` starts that many pods together. The main thing to watch is the effective batch size. As you add more GPUs, you may want to reduce gradient accumulation steps to keep the same global batch size, or increase them if you want to experiment with larger batches.
 
 **Your training keeps failing.** Add `retries=3` to your task decorator for automatic retry on transient failures. This handles spot instance preemption, temporary network issues, and the occasional GPU that decides to stop working. Combined with checkpointing, you get fault-tolerant training that can survive most infrastructure hiccups. For persistent failures, the Flyte UI logs are your friend as they capture stdout/stderr from all ranks.
 
