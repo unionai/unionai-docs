@@ -13,8 +13,8 @@ the Kubernetes RBAC resources that Union.ai's data plane components need. There 
 
 | Value | Default | Decides |
 |-------|---------|---------|
-| `singleNamespace` | `true` | Whether tasks and apps run in the (Helm) release namespace, or in a namespace per project and domain. This is the default. |
-| `namespaces.enabled`, `namespaces.static` | `false` | Which namespaces the chart creates and binds at install. Applies only when `singleNamespace` is `false`. It brings back the per project-domain namespace structure. |
+| `singleNamespace` | `true` | Whether tasks and apps run in the (Helm) release namespace, or in a namespace per project and domain. |
+| `namespaces.enabled`, `namespaces.static` | `enabled.false` , and `static` lists six names | Whether the chart pre-creates the namespaces listed in `namespaces.static` and binds the work-namespace role in each. It applies only when `singleNamespace` is `false`. The scope comes from `singleNamespace` alone. |
 | `commonServiceAccount.enabled` | `true` | Whether the Union backend components share one service account or each get their own. Defaults to `true`. |
 
 
@@ -27,11 +27,11 @@ the Kubernetes RBAC resources that Union.ai's data plane components need. There 
 
 | | Single-namespace (`singleNamespace: true`) | Multi-namespace (`singleNamespace: false`) |
 |---|---|---|
-| Where tasks and apps run (the `work` namespace)| The (Helm) release namespace | One namespace per project and domain, set by `namespaces.enabled:true`.|
+| Work namespaces where tasks and apps run| The (Helm) release namespace | One namespace per project and domain, created by `clusterresourcesync`, `namespaces.static`, or your own tooling.|
 | Grants in the namespaces where work runs | A Role in the release namespace | A RoleBinding in each work namespace, mapped to one shared ClusterRole |
 | Cluster-scoped grants | A fixed list of reads, plus Knative's reads when app serving is on | The same, plus cluster-wide `list` and `watch` for components that watch every work namespace |
-| What you must provide | Nothing | (Optional) Something that creates each work namespace and its RoleBinding. With `clusterresourcesync.enabled.true` the chart creates the namespaces and bindings. |
-| Can a task-launching component reach Union.ai's own Secrets and Deployments? | Yes. The release namespace is also the work namespace | No. Work-namespace grants are never bound in the release namespace |
+| What you must provide | Nothing | Something that creates each work namespace and its RoleBinding. Set `clusterresourcesync.enabled: true`, list the namespaces in `namespaces.static`, or use your own tooling. If none of these runs, tasks fail with `Forbidden` |
+| Is the work-namespace role bound in the release namespace? | Yes. The release namespace is also the work namespace | No. Work-namespace grants are never bound in the release namespace |
 
 Choose single-namespace mode when:
 
@@ -41,7 +41,7 @@ Choose single-namespace mode when:
 Choose multi-namespace mode when:
 
 - You want each project and domain isolated in its own namespace, with its own quota and cloud identity.
-- The components that launch tasks must not be able to reach the release namespace.
+- The work-namespace role, which carries a wildcard, must stay out of the release namespace.
 - You run CRD-based task plugins such as Spark, Ray, Dask, or Kubeflow across namespaces.
 
 Monitoring, usage collection, and app serving work in both modes.
@@ -209,8 +209,7 @@ commonServiceAccount:
   enabled: false
 ```
 
-This changes which identity holds each grant, not the grants. The components then run as
-`operator-system`, `proxy-system`, `leaseworker`, `union-webhook-system`, `union-clustersync-system`,
+This changes which identity holds each grant, not the grants. The rules stay the same, and every component that uses `work-ns` still gets the whole pooled role, so splitting the accounts leaves work-namespace access as it is. The components then run as `operator-system`, `proxy-system`, `leaseworker`, `union-webhook-system`, `union-clustersync-system`,
 `dataproxy-system`, `union-imagebuilder`, `flyteconnector`, and, with app serving on, `knative-controller`,
 `knative-activator`, `knative-autoscaler`, `knative-webhook`, and `net-kourier`.
 
@@ -256,7 +255,8 @@ With release namespace `union`, app serving on, and the default `commonServiceAc
 | `union-operator-cluster-read` | ClusterRole | Both. Nodes and the API server `/metrics` endpoint |
 | `union-prometheus-cluster-read`, `union-kube-state-metrics-cluster-read` | ClusterRole | Both. Node discovery, cAdvisor through the API server proxy, and cluster-scoped metrics |
 | `union-knative-<component>-cluster-read`, `union-knative-webhook-cluster-write` | ClusterRole | Both, with app serving on. Every webhook write is pinned to a named object |
-| `flyte-webhook-cleanup-union` | ClusterRole | Both. Used by a pre-upgrade hook that deletes webhook objects left by older chart versions, pinned to those objects |
+| `flyte-webhook-cleanup-union` | ClusterRole and Role | Both. Used by a pre-upgrade hook that deletes webhook objects left by older chart versions, pinned to those objects |
+| `union-prometheus-apiserver-discovery` | Role in `default` | Both. Prometheus' discovery of the API server endpoints |
 | `union-work-ns` | Role | Single-namespace |
 | `union-work-ns` | ClusterRole | Multi-namespace |
 | `union-<component>-work-ns-cluster-read` | ClusterRole | Multi-namespace. The operator, proxy, leaseworker, and pod webhook |
@@ -294,18 +294,24 @@ can do, list every RoleBinding and ClusterRoleBinding that names it.
 
 ## Upgrade from `low_privilege`
 
-Depending on the setup you have now and want to maintain, there are a few options you need to adjust to upgrade from any release prior to `2026.11.4`:
+Find the row that matches your values on the chart you run now. When you set `singleNamespace`, remove
+`low_privilege`, because the render fails when the two keys disagree.
 
-| Your current setup | Set for migration |
-|-------------|-----|
-|All apps and tasks running on a single namespace (the Helm release namespaces)             | `singleNamespace: true`   |
-| Tasks and apps running on a namespace per project and domain. No internal tooling to create namespaces and RoleBindings                      |   `singleNamespace.false` and `clusterresourcesync.enabled: true`. Adjust the default namespaces at `namespaces.static` if needed.                        |
-|  Task and apps running in a namespace per project and domain. You need control over namespace and RoleBinding provisioning.                     |    `singleNamespace.false` and `clusterresourcesync.enabled: false`                      |
+| Your values before 2026.11.4 | Change to |
+|------------------------------|-----------|
+| Neither key set, or `low_privilege: true` | Nothing. You can rename the key to `singleNamespace: true`. |
+| `low_privilege: false` with `namespaces.enabled` unset or `false` | `singleNamespace: true`. This install ran single-namespace. If you keep `low_privilege: false`, it becomes multi-namespace, and every task fails with `Forbidden` until each work namespace has its RoleBinding. |
+| `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces.  If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to every namespace.  From 2026.11.4, that RoleBinding is their only grant in a work namespace.
 
 Also:
 
+- Keep every name in `namespaces.static` during this upgrade. The upgrade adds `helm.sh/resource-policy: keep` to each listed namespace, so a name you drop now is deleted with everything in it. Add names freely, and remove them in a later upgrade.
+- In multi-namespace mode, list the custom resources of Spark, Ray, Dask, Kubeflow, or JobSet tasks in `taskPluginClusterReadRules`. Before 2026.11.4, a cluster-wide grant covered them.
+- Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. Now it
+  takes effect, so bind each new service account to a cloud identity before you upgrade.
+- Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
 - Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values.
-- In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
+- In templated values, replace `.Values.low_privilege` with `include "singleNamespace"
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
 a values snippet for each case.
