@@ -216,4 +216,4 @@ flyte deploy --recursive --copy-style loaded_modules ./project
 > [!NOTE]
 > All discovered environments share the same code bundle.
 
-For a full overview of all deployment options, see [Deploy command options](/api-reference/flyte-cli#flyte-deploy).
+For a full overview of all deployment options, see [Deploy command options](../../../api-reference/flyte-cli#flyte-deploy).
