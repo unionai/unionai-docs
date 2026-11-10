@@ -49,16 +49,16 @@ flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 
 {{< variant union >}}
 {{< markdown >}}
-Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the version of `T` being deployed, except triggers [pinned to a task version](#pinning-a-trigger-to-a-task-version), which stay on their pinned version on a {{< key product_name >}} control plane that supports pinning.
+Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the version of `T` being deployed, except triggers [pinned to a task version](#pinning-a-trigger-to-a-task-version), which stay on their pinned version.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the version of `T` being deployed.
+Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the version of `T` being deployed. The open-source Flyte backend ignores a trigger's `task_version`, so pinned triggers also switch to the deployed version.
 {{< /markdown >}}
 {{< /variant >}}
 
-Triggers on task `T` which are defined elsewhere (i.e. in the UI) will be deleted unless they have been referenced in the task definition of `T`
+Triggers on task `T` that are defined elsewhere, such as in the UI, are deleted unless the task definition of `T` references them.
 
 <!-- TODO
 Add link to workflow deployment docs when available.
@@ -69,7 +69,7 @@ Add link to workflow deployment docs when available.
 
 ## Pinning a trigger to a task version
 
-Set `task_version` on a trigger to keep it on one version of its task while you deploy other versions. A pinned trigger can serve as a stable production entrypoint while CI keeps deploying pre-releases. Requires `flyte` 2.12.5 or later and a {{< key product_name >}} control plane release that supports pinning.
+Set `task_version` on a trigger to keep it on one version of its task while you deploy other versions. A pinned trigger can serve as a stable production entrypoint while CI keeps deploying pre-releases. Requires `flyte` 2.12.5 or later.
 
 ```python
 import flyte
@@ -83,7 +83,7 @@ async def entrypoint() -> None:
     ...
 ```
 
-On a control plane that supports pinning, when you deploy another version of the task, the pinned trigger keeps launching the pinned version. The rest of the trigger's definition (automation, inputs, activation, and run settings) is still updated from your code on each deploy. Triggers without `task_version` keep following each deploy.
+When you deploy another version of the task, the pinned trigger keeps launching the pinned version. The rest of the trigger's definition (automation, inputs, activation, and run settings) is still updated from your code on each deploy. Triggers without `task_version` keep following each deploy.
 
 To promote or roll back, change `task_version` and deploy again. The pinned version must already be deployed for the task, or be the version you are deploying. Otherwise the deploy fails.
 
