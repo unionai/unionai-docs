@@ -40,7 +40,8 @@ http://union-operator-prometheus.<NAMESPACE>.svc/prometheus
 |-----|-----------------|-------|
 | `kube-state-metrics` | Pod and node resource requests, limits, status and capacity | Keeps only the series cost and resource tracking use |
 | `union-services` | The Union.ai services' own metrics: operator, operator proxy, data proxy, leaseworker | Services labeled `platform.union.ai/prometheus-group: union-services`, on their `debug` port |
-| `kubernetes-cadvisor` | Container CPU and memory usage, from the kubelet through the API server proxy | Needs cluster-wide access to nodes: standard mode only |
+| `kubernetes-apiservers` | API server object counts and request rates | Each API server endpoint behind the `default/kubernetes` Service |
+| `kubernetes-cadvisor` | Container CPU and memory usage, from the kubelet through the API server proxy | |
 | `serving-envoy` | Envoy request counts and latency for app serving | No targets unless app serving is on (`apps.enabled`, on by default) |
 | `gpu-metrics` | DCGM exporter GPU metrics | No targets unless `dcgm-exporter.enabled` |
 | `opencost` | Node hourly cost rates | No targets unless `opencost.enabled` (off by default) |
@@ -60,24 +61,33 @@ forwarded.
 
 ### RBAC
 
-Which permissions Prometheus has depends on the [RBAC mode](../kubernetes-rbac):
+The chart writes Prometheus' and kube-state-metrics' RBAC itself, from the scrape jobs and collectors it configures.
+Every scrape job, cAdvisor included, works in both [scope modes](../kubernetes-rbac#choose-a-scope). Requires
+`dataplane` chart 2026.11.4 or later. With the release namespace `union`:
 
-- **Low-privilege mode (the chart default).** The chart creates a namespace-scoped Role for Prometheus and
-  kube-state-metrics. kube-state-metrics reports only the release namespace, so node-level metrics (`kube_node_*`) are
-  missing, and Prometheus can't scrape cAdvisor, so task-level CPU and memory charts show no data.
-- **Standard mode (`low_privilege: false`).** The chart creates no RBAC for Prometheus. Turn on the subcharts' own
-  ClusterRoles, or Prometheus can't scrape anything:
+| Service account | Role | Grants |
+|-----------------|------|--------|
+| `union-operator-prometheus` | `union-operator-prometheus-rbac` (Role) | `list` and `watch` on endpoints, services, and pods in the release namespace |
+| | `union-prometheus-apiserver-discovery` (Role in `default`) | The same, in the `default` namespace, to discover the API server endpoints |
+| | `union-prometheus-cluster-read` (ClusterRole) | `list` and `watch` on nodes, `get` on `nodes/proxy` for cAdvisor, and `get` on the `/metrics` endpoint |
+| `union-kube-state-metrics` | `union-kube-state-metrics-cluster-read` (ClusterRole) | `list` and `watch` on nodes and namespaces |
+| | `union-kube-state-metrics` | `list` and `watch` on pods, deployments, daemonsets, and resource quotas. A Role in the release namespace by default, or a ClusterRole when kube-state-metrics collects from every namespace |
 
-  ```yaml
-  prometheus:
-    rbac:
-      create: true
-    kube-state-metrics:
-      rbac:
-        create: true
-  ```
+kube-state-metrics collects namespaced resources from the release namespace only
+(`prometheus.kube-state-metrics.releaseNamespace: true`). In multi-namespace mode, tasks run in other namespaces, so
+set it to `false` to include them. The chart widens the grant to a ClusterRole to match. See
+[Multi-namespace mode](../kubernetes-rbac#multi-namespace-mode).
 
-A data plane connected from the Union.ai UI runs in standard mode with these ClusterRoles already on.
+Leave the subcharts' own RBAC off. The chart refuses to render if any of these is set:
+
+- `prometheus.rbac.create: true` or `prometheus.kube-state-metrics.rbac.create: true`
+- `prometheus.kube-state-metrics.rbac.extraRules`
+- `prometheus.kube-state-metrics.kubeRBACProxy.enabled`, `customResourceState.enabled`, or `autosharding.enabled`
+- A templated entry in `prometheus.kube-state-metrics.namespaces`, in single-namespace mode
+
+To collect another resource, add its collector to `prometheus.kube-state-metrics.collectors`. The chart grants the reads
+for each collector it knows, and refuses one it has no rule for. If you add a scrape job of your own that discovers
+targets outside the release namespace, create a Role for Prometheus in that namespace.
 
 ### Configuration
 

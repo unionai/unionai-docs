@@ -20,9 +20,8 @@ the Kubernetes RBAC that Union.ai's data plane components need. Three Helm value
 This page covers data planes you install with Helm. For a data plane connected from the Union.ai UI,
 see [What Union.ai installs in your cluster](./whats-installed).
 
-<!-- TODO(version): replace with the first chart release that includes unionai/helm-charts#661. -->
 > [!NOTE] Chart version
-> This page describes `dataplane` chart `<version>` or later. Earlier versions name the scope value
+> This page describes `dataplane` chart 2026.11.4 or later. Earlier versions name the scope value
 > `low_privilege`. See [Upgrade from `low_privilege`](#upgrade-from-low_privilege).
 
 ## Choose a scope
