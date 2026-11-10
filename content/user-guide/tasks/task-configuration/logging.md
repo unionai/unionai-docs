@@ -81,7 +81,7 @@ flyte.init(
 | `log_level` | `int` | `LOG_LEVEL` env var, else `WARNING` | Level for the framework logger (`flyte`). |
 | `user_log_level` | `int` | `USER_LOG_LEVEL` env var, else `INFO` | Level for the user logger (`flyte.user`). |
 | `log_format` | `"console"` \| `"json"` | `LOG_FORMAT` env var, else `"console"` | Output format. |
-| `reset_root_logger` | `bool` | `False` | When `True`, Flyte clears the root logger's existing handlers and installs its own. With `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler, at the framework `log_level`: with `log_level` above `WARNING`, they're no longer shown. When `False` (the default), Flyte leaves your existing root handlers in place and wraps their formatters so third-party log lines also carry the run/action context. |
+| `reset_root_logger` | `bool` | `False` | When `True`, Flyte clears the root logger's existing handlers and installs its own, set to the framework `log_level`: third-party log lines below that level aren't shown. With `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler and filtered the same way, so with `log_level` above `WARNING` they aren't shown. When `False` (the default), Flyte leaves your existing root handlers in place and wraps their formatters so third-party log lines also carry the run/action context. |
 
 > [!NOTE]
 > Explicit `flyte.init()` arguments take precedence over the environment variables. An argument left unset falls back to the corresponding environment variable, then to the built-in default.

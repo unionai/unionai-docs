@@ -319,3 +319,5 @@ if __name__ == "__main__":
     )
     print(f"Deployment successful: {deployment[0].summary_repr()}")
 ```
+
+`dry_run` requires `flyte` 2.8.0 or later; earlier versions take `dryrun`.
