@@ -9,16 +9,14 @@ variants: -flyte +union
 # Kubernetes access controls
 
 The [`dataplane` Helm chart](https://github.com/unionai/helm-charts/tree/main/charts/dataplane) creates
-the Kubernetes RBAC that Union.ai's data plane components need. Three Helm values decide what it creates:
+the Kubernetes RBAC resources that Union.ai's data plane components need. There are three Helm values that decide what it creates:
 
 | Value | Default | Decides |
 |-------|---------|---------|
-| `singleNamespace` | `true` | Whether tasks and apps run in the release namespace, or in a namespace per project and domain |
-| `namespaces.enabled`, `namespaces.static` | `false` | Which work namespaces the chart creates and binds at install. Applies only when `singleNamespace` is `false` |
-| `commonServiceAccount.enabled` | `true` | Whether the components share one service account or each get their own |
+| `singleNamespace` | `true` | Whether tasks and apps run in the (Helm) release namespace, or in a namespace per project and domain. This is the default. |
+| `namespaces.enabled`, `namespaces.static` | `false` | Which namespaces the chart creates and binds at install. Applies only when `singleNamespace` is `false`. It brings back the per project-domain namespace structure. |
+| `commonServiceAccount.enabled` | `true` | Whether the Union backend components share one service account or each get their own. Defaults to `true`. |
 
-This page covers data planes you install with Helm. For a data plane connected from the Union.ai UI,
-see [What Union.ai installs in your cluster](./whats-installed).
 
 > [!NOTE] Chart version
 > This page describes `dataplane` chart 2026.11.4 or later. Earlier versions name the scope value
@@ -26,18 +24,19 @@ see [What Union.ai installs in your cluster](./whats-installed).
 
 ## Choose a scope
 
+
 | | Single-namespace (`singleNamespace: true`) | Multi-namespace (`singleNamespace: false`) |
 |---|---|---|
-| Where tasks and apps run | The release namespace | One namespace per project and domain, set by [namespace mapping](./configuration/namespace-mapping) |
-| Grants in the namespaces where work runs | A Role in the release namespace | A RoleBinding in each work namespace, to one shared ClusterRole |
-| Cluster-scoped grants | A fixed list of reads, plus Knative's reads while app serving is on | The same, plus cluster-wide `list` and `watch` for components that watch every work namespace |
-| What you must provide | Nothing | Something that creates each work namespace and its RoleBinding |
+| Where tasks and apps run (the `work` namespace)| The (Helm) release namespace | One namespace per project and domain, set by `namespaces.enabled:true`.|
+| Grants in the namespaces where work runs | A Role in the release namespace | A RoleBinding in each work namespace, mapped to one shared ClusterRole |
+| Cluster-scoped grants | A fixed list of reads, plus Knative's reads when app serving is on | The same, plus cluster-wide `list` and `watch` for components that watch every work namespace |
+| What you must provide | Nothing | (Optional) Something that creates each work namespace and its RoleBinding. With `clusterresourcesync.enabled.true` the chart creates the namespaces and bindings. |
 | Can a task-launching component reach Union.ai's own Secrets and Deployments? | Yes. The release namespace is also the work namespace | No. Work-namespace grants are never bound in the release namespace |
 
 Choose single-namespace mode when:
 
-- Union.ai is a tenant on a shared cluster, or your policies limit it to one namespace.
-- One namespace for every project and domain is acceptable.
+- The Union.ai stack is a tenant on a shared cluster, or your policies limit it to one namespace.
+- A single namespace for all projects and domains is acceptable.
 
 Choose multi-namespace mode when:
 
@@ -47,7 +46,7 @@ Choose multi-namespace mode when:
 
 Monitoring, usage collection, and app serving work in both modes.
 
-Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
+> Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
 
 ## Single-namespace mode
 
@@ -59,23 +58,17 @@ singleNamespace: true
 
 In this mode:
 
-- Union.ai's workloads, tasks and apps included, run in the release namespace. Every grant that can be
+- Union.ai's workloads, tasks and apps included, run in the Helm release namespace. Every grant that can be
   namespaced is a Role in the release namespace.
 - Cluster-scoped reads are limited to resources that have no namespaced form: nodes, node and API server
   metrics, IngressClass, and Knative's informers.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
+- App serving is on by default and adds Knative's cluster-wide reads. 
+- Knative's controllers watch every
+namespace however their RBAC is written. 
 
-App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every
-namespace however their RBAC is written. To keep an install to the list of cluster-scoped reads above,
-turn app serving off:
-
-```yaml
-apps:
-  enabled: false
-```
-
-> [!WARNING] The install identity needs cluster permissions
+> [!WARNING] The install identity needs cluster permissions.  
 > Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable
 > by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
 > CSIDriver. Subcharts such as ingress-nginx and metrics-server, when enabled, create their own cluster
@@ -105,7 +98,7 @@ prometheus:
 
 Union.ai's components reach each work namespace through a RoleBinding named `<release-ns>-work-ns`,
 which points at the ClusterRole of the same name. Every work namespace needs this binding. If nothing
-creates it, the chart renders without errors and the first task fails with `Forbidden`.
+creates it, the chart renders without errors but the tasks fail with `Forbidden`.
 
 Use one or more of these ways to create the namespaces and their bindings:
 
@@ -301,21 +294,17 @@ can do, list every RoleBinding and ClusterRoleBinding that names it.
 
 ## Upgrade from `low_privilege`
 
-`low_privilege` is the earlier name for `singleNamespace` and still works. The chart refuses to render
-if the two disagree, including across layered values files. Use one name in every file.
+Depending on the setup you have now and want to maintain, there are a few options you need to adjust to upgrade from any release prior to `2026.11.4`:
 
-| Your values | Set |
+| Your current setup | Set for migration |
 |-------------|-----|
-| `low_privilege: true`, or neither value set | `singleNamespace: true`, or nothing |
-| `low_privilege: false` and `namespaces.enabled: false` | `singleNamespace: true` to keep tasks in the release namespace. With `singleNamespace: false` alone, the install becomes multi-namespace |
-| `low_privilege: false` and `namespaces.enabled: true` | `singleNamespace: false`, plus one of the [ways to create the work-namespace RoleBinding](#create-the-work-namespace-rolebinding) |
+|All apps and tasks running on a single namespace (the Helm release namespaces)             | `singleNamespace: true`   |
+| Tasks and apps running on a namespace per project and domain. No internal tooling to create namespaces and RoleBindings                      |   `singleNamespace.false` and `clusterresourcesync.enabled: true`. Adjust the default namespaces at `namespaces.static` if needed.                        |
+|  Task and apps running in a namespace per project and domain. You need control over namespace and RoleBinding provisioning.                     |    `singleNamespace.false` and `clusterresourcesync.enabled: false`                      |
 
 Also:
 
 - Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values.
-- Don't remove any name from `namespaces.static` in the same upgrade. That upgrade adds
-  `helm.sh/resource-policy: keep` to the listed namespaces, so a name you remove in it is deleted with
-  everything inside. Add names freely, and remove names in a later upgrade.
 - In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
