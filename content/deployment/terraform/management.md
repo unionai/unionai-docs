@@ -36,6 +36,7 @@ provider "unionai" {
 
 - **`api_key`** (Optional): Your Union API key for authentication. You can set the `UNIONAI_API_KEY` environment variable instead. If both are set, `UNIONAI_API_KEY` takes precedence. If neither is set, the provider reports an error.
 - **`allowed_orgs`** (Optional): List of organization names to restrict operations to, preventing unintended operations across multiple organizations
+- **`org`** (Optional): Your Union organization name. It takes precedence over the organization encoded in the API key or inferred from the API key's host. Set it when your control plane's organization name differs from the URL it's served from.
 
 ## Authentication
 
