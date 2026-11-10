@@ -77,7 +77,29 @@ Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outpu
 - **Fast-registered code bundles**: what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
 - **Image-build contexts**: when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
-By default, inputs (including inputs uploaded ahead of a run), outputs, Decks and `@flyte.trace` records live under per-run, per-action subprefixes of `metadata/v2/<org>/<project>/<domain>/<run-name>/<action>/...`. Offloaded values (`File`, `Dir`, `DataFrame` contents and similar) and task checkpoints go to a separate per-run raw-output prefix, and SDK uploads (code bundles, image-build contexts) have their own prefixes. You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+{{< variant union >}}
+{{< markdown >}}
+By default, inputs (including inputs uploaded ahead of a run), outputs, Decks and `@flyte.trace` records live under per-run, per-action subprefixes of `metadata/v2/<org>/<project>/<domain>/<run-name>/<action>/...`.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+By default, the open-source Flyte backend stores a run's inputs and outputs under its configured run storage prefix (`runs.storagePrefix` in the `flyte-binary` chart). Inputs uploaded ahead of a run go to the backend's storage container instead. Setting `run_base_dir` in `flyte.with_runcontext` puts both under one base.
+{{< /markdown >}}
+{{< /variant >}}
+
+Offloaded values (`File`, `Dir`, `DataFrame` contents and similar) and task checkpoints go to a separate per-run raw-output prefix, and SDK uploads (code bundles, image-build contexts) have their own prefixes.
+
+{{< variant union >}}
+{{< markdown >}}
+You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You don't typically need to know the exact paths; you do need to know that **run data and uploads can live in different buckets**: run data lives in the bucket of the configured `storagePrefix`, and uploads live under the backend's storage container.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## What "literal" and "raw data" mean
 
@@ -104,15 +126,37 @@ This is the sense most relevant to you: the database is durable, and losing the 
 
 ### 2. "Metadata bucket" (a deployment/ops term you may see)
 
-The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above. It holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
+The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above.
+
+{{< variant union >}}
+{{< markdown >}}
+It holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source backend it is the storage container that holds uploads, such as code bundles and inputs uploaded ahead of a run. Run inputs and outputs (`inputs.pb`, `outputs.pb`) go to the bucket of the configured `runs.storagePrefix` instead, which with the `flyte-binary` chart's defaults is a different bucket.
+{{< /markdown >}}
+{{< /variant >}}
 
 If you see "metadata bucket" in an ops context, read it as **"the data plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
 
-You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and `metadata_path` on `RunContext`, which is a local scratch directory used only by `from_local()` execution). Those are small property bags or local scratch paths and don't change where your data is stored.
+You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and the `/tmp/flyte/metadata` scratch directory that local-mode runs write to). Those are small property bags or local scratch paths and don't change where your data is stored.
 
 ## Per-run customization: `raw_data_path`
 
-By default, offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) land alongside everything else under the deployment's configured bucket prefix. You can route them to a different prefix, including a different bucket entirely, for a single run:
+{{< variant union >}}
+{{< markdown >}}
+By default, offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) land alongside everything else under the deployment's configured bucket prefix.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+By default, the open-source backend writes offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) next to each action's outputs, in the bucket of the configured `storagePrefix`.
+{{< /markdown >}}
+{{< /variant >}}
+
+You can route them to a different prefix, including a different bucket entirely, for a single run:
 
 ```python
 import flyte
