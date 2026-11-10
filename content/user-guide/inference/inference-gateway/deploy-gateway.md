@@ -42,12 +42,12 @@ You size the gateway in requests per second, not replicas. Edit the gateway to s
 
 Union runs one replica per 1,000 rps and autoscales between the two bounds on the observed request rate. Redeploying without changing these values keeps the current sizing.
 
-Budgets and rate limits are counted in each replica's memory, with no round trip to the control plane. Two consequences follow:
+Each replica gets its share of a key's budget from the control plane, which never grants more in total than the key's budget. Two consequences follow:
 
-- With more than one replica, each replica counts only the calls it serves, so a key can spend more than its budget in total. If a budget must be exact, keep the gateway at one replica (min and max of 1,000 or less).
-- When a replica restarts, its running total for the current budget window starts again from zero.
+- Running more than one replica doesn't let a key spend more than its budget.
+- A replica restart doesn't reset a key's spend for the current budget window. The share the replica held before the restart stays counted against the budget, as if spent, so after a restart a key can be refused with `402` before its actual spend reaches the budget.
 
-The spend history in the console is computed separately, from usage records, and is not affected.
+The spend history in the console is computed separately, from usage records.
 
 ## Choose who can reach the gateway
 
@@ -70,7 +70,7 @@ Redeploying without changing the access mode keeps the current setting.
 
 ## How changes reach the gateway
 
-Every change you make, such as a new key, a revoked key, a budget, a provider, or a guardrail, is part of the gateway's *policy*. The gateway keeps a watch open on the control plane and applies policy changes in under a second, with a 15-second check-in as a backstop. The control plane never connects in to the gateway.
+Every change you make, such as a new key, a revoked key, a budget, a provider, or a guardrail, is part of the gateway's *policy*. The gateway keeps a watch open on the control plane, which checks for policy changes every 15 seconds, so a change reaches the gateway within about 15 seconds. The control plane never connects in to the gateway.
 
 Adding a hosted provider changes what is mounted on the gateway, so the gateway redeploys automatically. If that redeploy fails, the provider shows **Pending deploy** until you deploy the gateway again.
 
