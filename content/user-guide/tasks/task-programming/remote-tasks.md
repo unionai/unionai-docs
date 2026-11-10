@@ -420,7 +420,7 @@ flyte.init_from_config()
 # Fetch the task
 remote_task = flyte.remote.Task.get("package-example.calculate_average", auto_version="latest")
 
-# Create a run. Pass keyword arguments: flyte.run binds positional arguments to a remote task's inputs in alphabetical order, not the order the task declares them.
+# Create a run. Pass keyword arguments: flyte.run doesn't bind positional arguments to a remote task's inputs in the order the task declares them.
 run = flyte.run(remote_task, numbers=[1.0, 2.0, 3.0])
 
 print(f"Execution URL: {run.url}")
