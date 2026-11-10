@@ -34,7 +34,7 @@ provider "unionai" {
 
 ### Configuration parameters
 
-- **`api_key`** (Required): Your Union API key for authentication
+- **`api_key`** (Optional): Your Union API key for authentication. You can set the `UNIONAI_API_KEY` environment variable instead. If both are set, `UNIONAI_API_KEY` takes precedence. If neither is set, the provider reports an error.
 - **`allowed_orgs`** (Optional): List of organization names to restrict operations to, preventing unintended operations across multiple organizations
 
 ## Authentication
@@ -134,7 +134,7 @@ resource "unionai_policy" "example" {
 }
 ```
 
-A policy binds a role to a subject at a given scope. Use an `organization`, `project`, or `domain` block (each takes an `id` and a `role_id`); the `project` block also accepts an optional `domains` set.
+A policy binds a role to a subject at a given scope. Use an `organization`, `project`, or `domain` block (each takes an `id` and a `role_id`); the `project` block also requires a `domains` set.
 
 ### API keys
 
@@ -154,7 +154,6 @@ Configure OAuth applications for external integrations:
 
 ```hcl
 resource "unionai_application" "example" {
-  client_id   = "external-app"
   client_name = "External Application"
 
   grant_types   = ["AUTHORIZATION_CODE"]
@@ -162,7 +161,7 @@ resource "unionai_application" "example" {
 }
 ```
 
-The required arguments are `client_id` and `client_name`. `redirect_uris` is a set of strings (not a single value). The client `secret` is a read-only, sensitive attribute available only at creation time.
+The only required argument is `client_name`. This requires provider v0.2.6 or later. Earlier releases also require `client_id`. Union assigns the client ID on the server and exposes it as `id`. The `client_id` argument is deprecated. `redirect_uris` is a set of strings (not a single value). The client `secret` is a read-only, sensitive attribute available only at creation time.
 
 ### Access assignments
 
@@ -171,14 +170,14 @@ Access is policy-based: a policy carries the role-to-scope binding, and an acces
 ```hcl
 # Assign a policy to a user
 resource "unionai_user_access" "example" {
-  user_id   = unionai_user.example.id
-  policy_id = unionai_policy.example.id
+  user   = unionai_user.example.id
+  policy = unionai_policy.example.id
 }
 
 # Assign a policy to an application
 resource "unionai_application_access" "example" {
-  app_id    = unionai_application.example.id
-  policy_id = unionai_policy.example.id
+  app    = unionai_application.example.id
+  policy = unionai_policy.example.id
 }
 ```
 
@@ -399,13 +398,14 @@ resource "unionai_policy" "ml_pipeline_access" {
   project {
     id      = unionai_project.ml_pipeline.id
     role_id = unionai_role.ml_engineer.id
+    domains = ["development", "staging", "production"]
   }
 }
 
 # Assign the policy to the user
 resource "unionai_user_access" "scientist_access" {
-  user_id   = unionai_user.data_scientist.id
-  policy_id = unionai_policy.ml_pipeline_access.id
+  user   = unionai_user.data_scientist.id
+  policy = unionai_policy.ml_pipeline_access.id
 }
 
 # Create an API key for automation
