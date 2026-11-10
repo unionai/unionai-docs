@@ -28,7 +28,7 @@ variants: +flyte +union
 
 For complete parameter documentation, type signatures, and defaults, see the [`AppEnvironment` API reference](../../../api-reference/flyte-sdk/flyte.app/appenvironment).
 
-Key app-specific parameters include `type`, `port`, `args`, `command`, `requires_auth`, `scaling`, `domain`, `links`, `parameters`, `cluster_pool`, and `timeouts`. See also:
+Key app-specific parameters include `type`, `port`, `args`, `command`, `requires_auth`, `scaling`, `domain`, `links`, `parameters`, `cluster_pool`, `cluster`, and `timeouts`. See also:
 
 - [Including additional files](./including-additional-files) in your app deployment
 - [Passing parameters](./passing-parameters) to your app
@@ -37,7 +37,7 @@ Key app-specific parameters include `type`, `port`, `args`, `command`, `requires
 
 ### Environment variable substitution in `args`
 
-Environment variables are automatically substituted in `args` strings when they start with the `$` character. This works for both:
+When you use the default `fserve` command, environment variables in `args` that start with the `$` character are substituted at runtime. This works for both:
 
 - Values from `env_vars`
 - Secrets that are specified as environment variables (via `as_env_var` in `flyte.Secret`)
@@ -113,8 +113,8 @@ The difference between `args` and `command` is crucial for properly configuring 
   cases, you don't need to specify `command` as it's automatically configured, and uses the `fserve` executable to
   run the app. `fserve` does additional setup for you, like setting up the code bundle and loading [parameters](./passing-parameters) if provided, so it's highly recommended to use the default command.
 - **`args`**: Arguments to pass to your app's command (used with the default Flyte command or your custom command). The
-  `fserve` executable takes in additional arguments, which you can specify as the arguments needed to run your app, e.g.
-  `uvicorn run main.py --server.port 8080`.
+  `fserve` executable takes in additional arguments, which you can specify as the arguments needed to run your app, for example,
+  `streamlit run main.py --server.port 8080`.
 
 #### Default startup behavior
 
