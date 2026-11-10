@@ -107,7 +107,8 @@ flyte.new_condition(
 | `timeout` | `timedelta` \| `int` \| `float` \| `None` | `None` | Maximum wait. If it elapses with no signal, `wait()` raises `flyte.errors.ConditionTimedoutError`. |
 
 The `webhook` parameter takes a `flyte.ConditionWebhook`. In a local run, the SDK POSTs the payload to
-its URL when the condition is created. Don't rely on it in a remote run: the SDK passes the webhook to
+its URL when the condition is created, with `{callback_uri}` set to a `local://` URI that only the local
+run can use. Don't rely on it in a remote run: the SDK passes the webhook to
 the backend, but the backend doesn't currently POST to the URL.
 
 ## Signaling a condition
