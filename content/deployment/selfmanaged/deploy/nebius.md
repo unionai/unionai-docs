@@ -118,7 +118,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator`, `union-operator-proxy`, `union-operator-buildkit`, `leaseworker`, and `flyteconnector`.
 
 8. Verify the data plane has connected to the control plane:
 
