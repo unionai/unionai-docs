@@ -2,7 +2,7 @@
 title: Databricks
 description: "Configuration for a Databricks task."
 icon: braces
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
