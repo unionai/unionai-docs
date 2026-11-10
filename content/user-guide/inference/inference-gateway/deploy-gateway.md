@@ -45,7 +45,7 @@ Union runs one replica per 1,000 rps and autoscales between the two bounds on th
 Each replica gets its share of a key's budget from the control plane, which never grants more in total than the key's budget. Two consequences follow:
 
 - Running more than one replica doesn't let a key spend more than its budget.
-- A replica restart doesn't reset a key's spend for the current budget window. The share the replica held before the restart stays counted against the budget.
+- A replica restart doesn't reset a key's spend for the current budget window. The share the replica held before the restart stays counted against the budget, as if spent, so after a restart a key can be refused with `402` before its actual spend reaches the budget.
 
 The spend history in the console is computed separately, from usage records.
 

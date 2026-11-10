@@ -14,7 +14,7 @@ The Union Inference Gateway puts one OpenAI-compatible endpoint in front of ever
 ## Why use a gateway
 
 **One provider key, many virtual keys.**
-You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls. Budgets and rate limits are counted per gateway replica: see [Size the gateway](./deploy-gateway#size-the-gateway) if a limit must be exact. Revoking a virtual key never means rotating the provider key that everyone else depends on.
+You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls, so a runaway agent loop costs what you allowed and no more, however many gateway replicas are running. Revoking a virtual key never means rotating the provider key that everyone else depends on.
 
 **Fallbacks when a provider fails.**
 A request can name fallback models, for example `anthropic/claude-haiku-4-5` behind `openai/gpt-4.1-mini`. If the primary provider errors, is down, or rejects the call for that key, the gateway tries the next model in the list. Your application keeps answering through a provider outage.
