@@ -14,6 +14,7 @@ order if it did not ship. The work takes seconds. The waiting takes days.
 
 ```python
 import flyte
+import flyte.errors
 import flyte.orchestrator
 
 env = flyte.TaskEnvironment(name="orders")
@@ -38,7 +39,7 @@ async def order(order_id: str) -> str:
     )
     try:
         has_shipped = shipped.wait()  # Pauses here and holds no pod.
-    except TimeoutError:
+    except flyte.errors.ConditionTimedoutError:
         await refund(order_id)
         return "timed out"
     if not has_shipped:
@@ -263,7 +264,9 @@ A condition's `data_type` can be `bool`, `int`, `float`, or `str`, and `timeout`
 `timedelta`. Only the function's source is shipped, so import `timedelta` inside the function if you
 use it. Webhooks are not supported in orchestrator tasks.
 
-If a condition is not signaled in time, `wait()` raises `TimeoutError`. If it fails or is aborted,
+If a condition is not signaled in time, `wait()` raises `flyte.errors.ConditionTimedoutError`, as it
+does in any task. Inside an orchestrator this is the built-in `TimeoutError`, so `except TimeoutError`
+catches it too, but only there. If it fails or is aborted,
 `wait()` raises `RuntimeError`. See [External conditions](./conditions) for how to signal a condition.
 
 ## Values inside an orchestrator
