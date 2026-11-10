@@ -13,7 +13,7 @@ Your Union.ai account can display locally run workflows before you connect any c
 ## What you'll need
 
 - A Union.ai organization. See [Create your account and organization](./create-organization).
-- Your organization's address, in the form `<your-org>.hosted.unionai.cloud`. It is in your browser's address bar when you are signed in to the Union.ai UI.
+- Your organization's address. It is in your browser's address bar when you are signed in to the Union.ai UI. Its form depends on your organization's region: `<your-org>.hosted.unionai.cloud` for `us-east-2`, and `<your-org>.<region>.unionai.cloud` for the other regions (for example, `<your-org>.eu-west-2.unionai.cloud`).
 - Python 3.10+ in a virtual environment.
 
 The **Run something locally** card on your organization's home page has a **Show me how** button, which opens a short in-app guide to the same steps.
@@ -28,11 +28,11 @@ Install the Flyte SDK, which includes the `flyte` command:
 pip install flyte
 ```
 
-Create a configuration file that points the CLI at your organization. Replace the endpoint with your organization's address:
+Create a configuration file that points the CLI at your organization. Replace `<your-org-address>` with your organization's address:
 
 ```bash
 flyte create config \
-    --endpoint <your-org>.hosted.unionai.cloud \
+    --endpoint <your-org-address> \
     --domain development \
     --project default \
     --builder remote

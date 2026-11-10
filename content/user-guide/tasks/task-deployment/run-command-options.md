@@ -215,6 +215,12 @@ Use a local directory for development:
 flyte run --local --raw-data-path ./output/ my_example.py my_task
 ```
 
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source Flyte backend, remote runs apply `--raw-data-path` only with flyteorg/flyte `v2.0.54` or later.
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Use cases
 
 - **Custom storage locations**: Direct outputs to specific S3 buckets or paths
