@@ -186,7 +186,7 @@ Used by the web console for user authentication.
 | Type | Web (confidential client) |
 | Grant types | `authorization_code`, `refresh_token`, `client_credentials` |
 | Redirect URI | `https://<your-domain>/callback` |
-| Post-logout redirect URI | `https://<your-domain>/logout` |
+| Post-logout redirect URIs | `https://<your-domain>/logout`, `https://<your-domain>/v2`, `https://<your-domain>/v2/projects` |
 | Scopes | `openid`, `profile`, `offline_access` |
 
 Note the **Client ID** (set as `flyte.configmap.adminServer.auth.userAuth.openId.clientId`) and the **Client Secret** (stored in the dedicated `flyteadmin-oidc-client-secret` Secret under the key `client_secret`, read via `userAuth.openId.clientSecretFile` — see [Step 3](#step-3-create-kubernetes-secrets-control-plane)).
@@ -416,6 +416,11 @@ flyte:
           cookieSetting:
             sameSitePolicy: LaxMode
             domain: "<your-domain>"
+      private:
+        app:
+          logoutUrl: "https://auth.pingone.com/<environment-id>/as/signoff"
+          revokeUrl: "https://auth.pingone.com/<environment-id>/as/revoke"
+          supportsTokenRevocation: true
 ```
 
 Set globals:
@@ -425,6 +430,9 @@ global:
   AUTH_TOKEN_URL: "https://auth.pingone.com/<environment-id>/as/token"
   OIDC_S2S_SCOPE: ""   # PingOne worker apps do not require custom scopes
 ```
+
+> [!NOTE]
+> The `private.app` block configures console sign-out. On sign-out the control plane revokes the user's refresh token at `revokeUrl`, then redirects the browser to `logoutUrl` to end the PingOne session. The defaults (`<baseUrl>/v1/revoke` and `<baseUrl>/v1/logout`) are Okta paths that PingOne does not serve, so set both. If revocation fails, the control plane logs the error, increments the `revoke_failure` metric under the `logout` scope, and still completes sign-out.
 
 > [!NOTE]
 > PingOne worker tokens (Apps 3–5) carry an audience of `https://api.pingone.com`. Both `https://<your-domain>` and `https://api.pingone.com` must be included in `allowedAudience` so token validation succeeds.
@@ -748,6 +756,13 @@ If flyteadmin logs show `subject claim not found`, your IdP's client_credentials
 ### PingOne: `403 Access Denied` on worker token requests
 
 Worker applications in PingOne require an environment role assignment before the token endpoint permits `client_credentials` grants. In the PingOne Admin Console, navigate to **Applications > [Your App] > Roles > Grant Roles** and assign **Identity Data Read Only** (or equivalent environment role).
+
+### PingOne: Sign-out returns an error, or the next sign-in reuses the previous user
+
+Check these in order:
+
+1. `private.app.logoutUrl` and `private.app.revokeUrl` are set to the PingOne `signoff` and `revoke` endpoints (see the PingOne tab in [Step 2](#step-2-configure-control-plane)). With the Okta-style defaults, the revoke call fails and the control plane logs `failed to revoke refresh_token`.
+2. The browser-login application lists `https://<your-domain>/v2/projects` (and `/v2`, `/logout`) as post-logout redirect URIs. If the redirect target is not registered, PingOne rejects the sign-off request and the PingOne session stays active, so the next sign-in silently reuses it.
 
 ### PingOne: Token audience does not match
 
