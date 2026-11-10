@@ -10,10 +10,10 @@ variants: -flyte +union
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte get node-groups` and `flyte update node-groups` commands are
-> provided by `flyteplugins-union` 0.19.0 or later. Reading and writing the
-> `limits` and `max_pods` fields needs `flyteplugins-union` 0.20.0 or later.
-> Install it with
-> `pip install flyteplugins-union`.
+> provided by `flyteplugins-union`. Use 0.20.2 or later: with `flyte` 2.12.2 or
+> later, earlier versions fail to import and the `flyte` CLI drops their
+> subcommands. Install it with
+> `pip install 'flyteplugins-union>=0.20.2'`.
 
 A cluster's **node groups** are the node shapes it can schedule onto: for each
 group, the instance types, the node count range, the allocatable CPU and memory

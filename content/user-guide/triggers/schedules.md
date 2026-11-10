@@ -93,7 +93,7 @@ flyte.Trigger.weekly() == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
 flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
 ```
 
-All predefined trigger methods accept the same parameters as `flyte.Trigger`, plus a `trigger_time_input_key`. For the full parameter list, see the [`Trigger` API reference](../../api-reference/flyte-sdk/flyte/trigger).
+Each predefined trigger method takes `trigger_time_input_key` as its first argument, and the other parameters of `flyte.Trigger` as keyword arguments, except `automation`, `notifications`, and `task_version`. `name` and `description` have defaults; `name` defaults to the method's name, such as `hourly`. For the full parameter list, see the [`Trigger` API reference](../../api-reference/flyte-sdk/flyte/trigger).
 
 ### Trigger time in predefined triggers
 
