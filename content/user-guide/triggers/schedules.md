@@ -97,10 +97,9 @@ All predefined trigger methods accept the same parameters as `flyte.Trigger`, pl
 
 ### Trigger time in predefined triggers
 
-By default, predefined triggers will pass the execution time to the parameter `trigger_time` of type `datetime`,if that parameter exists on the task.
-If no such parameter exists, the task will still be executed without error.
+A predefined trigger passes its fire time to a task input only when you name that input with `trigger_time_input_key`. With no key, the trigger passes the fire time to no input.
 
-Optionally, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter (in this case the absence of this custom parameter on the task will raise an error at trigger deployment time):
+Set `trigger_time_input_key` to the name of a `datetime` input. If the task has no input with that name, deployment fails with an error:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-input-key" lang="python">}}
 

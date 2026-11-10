@@ -28,9 +28,8 @@ You install the agent, in the `dataplane-agent` namespace, and Union.ai installs
 A cluster pool groups clusters that share an object store, a secret store and an image registry. A new organization has none, so you create one first.
 
 1. In the Union.ai UI, select **Connect your cluster**, on the home page or in the sidebar.
-2. The dialog tells you there is no cluster pool yet. Select **Create cluster pool**.
-3. Select your cloud provider, and fill in its form as shown below. Your first pool is always named `default`, so the **Pool name** field is already filled in.
-4. Select **Create cluster pool**.
+2. The dialog opens on the **Create a cluster pool** form. Select your cloud provider, and fill in its form as shown below. Your first pool is always named `default`, so the **Pool name** field is already filled in.
+3. Select **Create cluster pool**.
 
 {{< tabs "cluster-pool-form" >}}
 {{< tab "AWS" >}}

@@ -18,7 +18,6 @@ variants: +flyte +union
 - **Resources**: See [Resources](../../tasks/task-configuration/resources) for CPU, memory, GPU, and storage configuration
 - **Secrets**: See [Secrets](../../tasks/task-configuration/secrets) for injecting secrets into your app
 - **Environment variables**: Set via the `env_vars` parameter (same as tasks)
-- **Cluster pools**: Specify via the `cluster_pool` parameter
 {{< variant union >}}
 {{< markdown >}}
 - **Volumes**: Mount a Volume with `pod_template=allow_volumes()`. See [Volumes in apps](../../tasks/task-programming/volumes/_index#volumes-in-apps)
@@ -29,7 +28,7 @@ variants: +flyte +union
 
 For complete parameter documentation, type signatures, and defaults, see the [`AppEnvironment` API reference](../../../api-reference/flyte-sdk/flyte.app/appenvironment).
 
-Key app-specific parameters include `type`, `port`, `args`, `command`, `requires_auth`, `scaling`, `domain`, `links`, `include`, `parameters`, `cluster_pool`, and `timeouts`. See also:
+Key app-specific parameters include `type`, `port`, `args`, `command`, `requires_auth`, `scaling`, `domain`, `links`, `parameters`, `cluster_pool`, `cluster`, and `timeouts`. See also:
 
 - [Including additional files](./including-additional-files) in your app deployment
 - [Passing parameters](./passing-parameters) to your app
@@ -38,7 +37,7 @@ Key app-specific parameters include `type`, `port`, `args`, `command`, `requires
 
 ### Environment variable substitution in `args`
 
-Environment variables are automatically substituted in `args` strings when they start with the `$` character. This works for both:
+When you use the default `fserve` command, environment variables in `args` that start with the `$` character are substituted at runtime. This works for both:
 
 - Values from `env_vars`
 - Secrets that are specified as environment variables (via `as_env_var` in `flyte.Secret`)
@@ -93,14 +92,14 @@ with a server start command like `uvicorn.run`, [`HTTPServer.serve_forever`](htt
 
 #### Startup hook
 
-The server function is called after the app is started up, and before the app is shut down. It is defined using the `@app_env.on_startup` decorator. This is useful if you need to load any state or external connections needed to run the
+The startup hook runs before the server function is called. It is defined using the `@app_env.on_startup` decorator. This is useful if you need to load any state or external connections needed to run the
 app before it starts.
 
 {{< code file="/unionai-examples/v2/user-guide/configure-apps/fastapi-server-example.py" fragment=on-startup-decorator lang=python >}}
 
 #### Shutdown hook
 
-The server function is called before the app instance shuts down during scale down. It is defined using the
+The shutdown hook is called before the app instance shuts down during scale down. It is defined using the
 `@app_env.on_shutdown` decorator. This is useful if you need to clean up any state or external connections in the
 container running the app.
 
@@ -114,8 +113,8 @@ The difference between `args` and `command` is crucial for properly configuring 
   cases, you don't need to specify `command` as it's automatically configured, and uses the `fserve` executable to
   run the app. `fserve` does additional setup for you, like setting up the code bundle and loading [parameters](./passing-parameters) if provided, so it's highly recommended to use the default command.
 - **`args`**: Arguments to pass to your app's command (used with the default Flyte command or your custom command). The
-  `fserve` executable takes in additional arguments, which you can specify as the arguments needed to run your app, e.g.
-  `uvicorn run main.py --server.port 8080`.
+  `fserve` executable takes in additional arguments, which you can specify as the arguments needed to run your app, for example,
+  `streamlit run main.py --server.port 8080`.
 
 #### Default startup behavior
 
@@ -166,15 +165,25 @@ You can combine both, though this is less common:
 
 #### FastAPIAppEnvironment example
 
-When using `FastAPIAppEnvironment`, the command is automatically configured to run uvicorn:
+When using `FastAPIAppEnvironment`, you don't need to set `command` or `args`. The app runs with the default `fserve` command, which serves your FastAPI app with uvicorn:
 
-{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=fastapi-auto-command lang=python >}}
+```python
+from flyte.app.extras import FastAPIAppEnvironment
+from fastapi import FastAPI
+
+app = FastAPI()
+
+# FastAPIAppEnvironment serves the app with uvicorn; no command or args needed
+env = FastAPIAppEnvironment(
+    name="my-api",
+    app=app,
+)
+```
 
 The `FastAPIAppEnvironment` automatically:
 
-1. Detects the module and variable name of your FastAPI app
-2. Uses an internal server function to start the app via `uvicorn.run`.
-3. Handles all the startup configuration for you
+1. Uses an internal server function to start the app with `uvicorn.Server(...).serve()`.
+2. Handles all the startup configuration for you
 
 ## Shared settings
 
