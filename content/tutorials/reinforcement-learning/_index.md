@@ -39,7 +39,7 @@ Train a reasoning-style RL loop for an LLM with GRPO and LoRA, orchestrated by p
 
 {{< variant union >}}
 {{< link-card target="multi-lora-rl" icon="layers" title="Concurrent RL runs on a shared base model" >}}
-Train several skills at once on the same GPUs and base model, review each run's result, and serve every approved model with autoscaling.
+End-to-end RL for several skills at once: concurrent GRPO runs share warm GPUs and one copy of the base model, checkpoint every iteration, autoscale, pause for a review, and serve each approved model.
 {{< /link-card >}}
 {{< /variant >}}
 
