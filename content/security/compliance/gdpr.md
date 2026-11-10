@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # GDPR alignment
 
-Union.ai's architecture inherently supports GDPR through its data residency model. On this page, an EU region is a cloud region located in an EU member state. EU West-2 (London) is in the United Kingdom, which is outside the EU, so it is not an EU region. For EU-region data planes, all customer data remains within the European Union. At signup, an organization's control plane can be placed in two European regions: EU West-2 (London) and EU Central (Frankfurt). Full EU data residency requires the EU Central control plane.
+Union.ai's architecture inherently supports GDPR through its data residency model. Here, an *EU region* is a cloud region in an EU member state; EU West-2 (London) is in the UK, so it isn't one. For EU-region data planes, all customer data remains within the European Union. At signup, an organization's control plane can be placed in two European regions: EU West-2 (London) and EU Central (Frankfurt). Full EU data residency requires the EU Central control plane.
 
 The control plane stores orchestration metadata (including task definitions), encrypted at rest. When the data plane is in an EU region and the control plane is in EU Central, all data and metadata (both at rest and in transit) stay within the EU.
 
@@ -24,6 +24,6 @@ For details on how data residency is enforced architecturally, see [Data classif
 
 1. Follow the data residency verification steps described in [Data classification and residency](../data-protection/classification-and-residency#data-residency). All data resides in EU-region infrastructure.
 
-2. Confirm that the organization's control plane endpoint is deployed in EU Central (eu-central-1).
+2. Confirm that the organization's control plane endpoint is deployed in EU Central (eu-central-1), using the endpoints listed in [Resolving control plane IP addresses](../architecture/network#resolving-control-plane-ip-addresses).
 
 3. This is architectural verification. The [two-plane separation](../architecture/two-plane-separation) ensures data never leaves the customer's cloud account.
