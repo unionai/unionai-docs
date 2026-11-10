@@ -12,7 +12,7 @@ By default, return values in Python are materialized - meaning the actual data i
 
 To avoid downloading large datasets into memory, Flyte V2 exposes [`flyte.io.DataFrame`](../../../api-reference/flyte-sdk/flyte.io/dataframe): a thin,  uniform wrapper type for DataFrame-style objects that allows you to pass a reference to the data, rather than the fully materialized contents.
 
-The `flyte.io.DataFrame` type provides serialization support for common engines like `pandas`, `polars`, `pyarrow`, `dask`, etc.; enabling you to move data between different DataFrame backends.
+The `flyte.io.DataFrame` type provides built-in serialization for `pandas` and `pyarrow`, and plugins such as `flyteplugins-polars` add more engines. This lets you move data between different DataFrame backends.
 
 DataFrame contents are written to the data plane object store and passed between tasks by reference. For the full map of what goes in the bucket versus what stays in the control plane database, see [Where your data lives](../../get-started/core-concepts/where-data-lives).
 
@@ -40,8 +40,7 @@ Flyte supports auto-serialization for the following DataFrame types:
 
 * `pandas.DataFrame`
 * `pyarrow.Table`
-* `dask.dataframe.DataFrame`
-* `polars.DataFrame`
+* `polars.DataFrame` and `polars.LazyFrame` (requires `flyteplugins-polars`; see [Polars DataFrames](#polars-dataframes))
 * `flyte.io.DataFrame` (see below)
 
 ## Create a flyte.io.DataFrame
