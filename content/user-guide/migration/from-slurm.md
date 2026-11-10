@@ -539,7 +539,9 @@ them, plan around them explicitly:
   `flyte.clustered.jax_initialize` with `JaxRun`), but Flyte does no all-or-nothing admission of its
   own.
 - **Preemption.** Flyte does not evict running low-priority work to make room for high-priority work
-  the way a Slurm QOS can.
+  the way a Slurm QOS can. If Kueue on your cluster preempts a running clustered task, the attempt
+  ends and uses one of the task's `retries`, unless you set `resume_after_preemption` (Flyte backend
+  v2.0.54 or later). See [Restart a multi-node job](../model-training/durable-training#restart-a-multi-node-job).
 - **Topology-aware placement.** Flyte has no setting to request workers on the same rack or switch.
 
 Docs: [Schedule all nodes together](../model-training/pretraining#schedule-all-nodes-together) &middot; [Restart a multi-node job](../model-training/durable-training#restart-a-multi-node-job)
