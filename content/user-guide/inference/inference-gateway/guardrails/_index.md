@@ -45,7 +45,7 @@ Each guardrail is a Union app of type `Guardrail`, running on the gateway's clus
    | **Timeout (ms)** | How long the gateway waits for a verdict. Defaults to 5,000. At most 30,000. |
    | **Fail open** | What happens when the guardrail can't answer. See [When a guardrail fails](#when-a-guardrail-fails). |
 
-The gateway picks up the guardrail in under a second. To use one app for both stages, register it under each stage.
+The gateway picks up the guardrail within about 15 seconds. To use one app for both stages, register it under each stage.
 
 ## When a guardrail fails
 
