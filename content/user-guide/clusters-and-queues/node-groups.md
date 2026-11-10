@@ -11,17 +11,16 @@ variants: -flyte +union
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte get node-groups` and `flyte update node-groups` commands are
 > provided by `flyteplugins-union` 0.19.0 or later. Reading and writing the
-> `limits` and `max_pods` fields needs `flyteplugins-union` 0.20.0 or later and
-> a control plane that supports them. Install it with
+> `limits` and `max_pods` fields needs `flyteplugins-union` 0.20.0 or later.
+> Install it with
 > `pip install flyteplugins-union`.
 
 A cluster's **node groups** are the node shapes it can schedule onto: for each
 group, the instance types, the node count range, the allocatable CPU and memory
 of one node, the pod slots per node, accelerators, architecture, capacity
 types, weight, limits, labels, and taints. Use `flyte get node-groups` to see
-what a [cluster](./clusters) declares. On a cluster you manage, and on a
-control plane that accepts node group writes, use `flyte update node-groups`
-to change it (see [Who can write node groups](#who-can-write-node-groups)).
+what a [cluster](./clusters) declares. On a self-managed cluster, use
+`flyte update node-groups` to change it (see [Who can write node groups](#who-can-write-node-groups)).
 
 ## Inspect node groups
 
@@ -70,8 +69,7 @@ node_groups:
 Karpenter NodePool weight). `capacity_types` takes `CAPACITY_TYPE_ON_DEMAND`,
 `CAPACITY_TYPE_SPOT`, and `CAPACITY_TYPE_RESERVED`.
 
-`max_pods` and `limits` appear with `flyteplugins-union` 0.20.0 or later. On a
-control plane that supports them:
+`max_pods` and `limits` appear with `flyteplugins-union` 0.20.0 or later:
 
 - `max_nodes: 0` means the group has no node-count bound. Only `limits`, if
   set, caps it.
@@ -139,6 +137,3 @@ groups of a cluster that {{< key product_name >}} provisions (BYOC) are managed
 by provisioning, so a write to one is refused, and the CLI shows the control
 plane's error. A cluster with no recorded type is refused the same way. On a
 cluster you manage, you need permission to manage that cluster.
-
-If your control plane doesn't accept node group writes, every update fails
-with `this control plane does not accept node group writes yet`.
