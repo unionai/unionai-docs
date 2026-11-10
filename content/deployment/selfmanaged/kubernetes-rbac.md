@@ -42,7 +42,6 @@ Choose multi-namespace mode when:
 
 - You want each project and domain isolated in its own namespace, with its own quota and cloud identity.
 - The work-namespace role, which carries a wildcard, must stay out of the release namespace.
-- You run CRD-based task plugins such as Spark, Ray, Dask, or Kubeflow across namespaces.
 
 Monitoring, usage collection, and app serving work in both modes.
 
@@ -59,7 +58,8 @@ singleNamespace: true
 In this mode:
 
 - Union.ai's workloads, tasks and apps included, run in the Helm release namespace. Every grant that can be
-  namespaced is a Role in the release namespace.
+  namespaced is a Role in the release namespace. The one exception is `<release-ns>-prometheus-apiserver-discovery`,
+  a Role in `default` that Prometheus uses to discover the API server endpoints.
 - Cluster-scoped reads are limited to resources that have no namespaced form: nodes, node and API server
   metrics, IngressClass, and Knative's informers.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
@@ -311,7 +311,7 @@ Also:
   takes effect, so bind each new service account to a cloud identity before you upgrade.
 - Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
 - Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values.
-- In templated values, replace `.Values.low_privilege` with `include "singleNamespace"
+- In templated values, replace `.Values.low_privilege` with `include "singleNamespace"`.
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
 a values snippet for each case.
