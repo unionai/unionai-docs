@@ -39,14 +39,15 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 Install the Union CLI plugin:
 
 ```bash
-pip install 'flyteplugins-union>=0.20.1'
+pip install 'flyteplugins-union>=0.20.2'
 ```
 
 This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
 
 > [!WARNING]
-> Use `flyteplugins-union` 0.20.1 or later.
-> Older versions don't support the actions listed after the table in [Available actions](#available-actions) (all except `view_identities`), which the built-in policies hold.
+> Use `flyteplugins-union` 0.20.2 or later.
+> With `flyte` 2.12.2 or later, earlier versions fail to import and the `flyte` CLI drops their subcommands.
+> Versions before 0.20.1 also don't support the actions listed after the table in [Available actions](#available-actions) (all except `view_identities`), which the built-in policies hold.
 > On a role that holds one, `Role.actions` and `flyte update role` fail,
 > and `Role.update` silently removes those actions.
 
@@ -212,7 +213,7 @@ Navigate to **Settings > User Management** to:
 | Action | Description |
 |---|---|
 | `administer_project` | Archive/update projects, manage customizable resources |
-| `manage_permissions` | Manage users, applications, and policy assignments |
+| `manage_permissions` | View and edit roles and policies, and manage users, applications, and policy assignments |
 | `create_flyte_executions` | Launch runs and upload inputs |
 | `register_flyte_inventory` | Register and deploy workflows, tasks, and launch plans |
 | `view_flyte_executions` | View runs and actions |
@@ -226,12 +227,12 @@ Navigate to **Settings > User Management** to:
 | `edit_unused_attributes` | Edit execution queue, execution cluster label, quality of service, and plugin override attributes |
 | `support_system_logs` | View system logs |
 | `view_llm_gateway` | View the inference gateway, its providers, guardrails, and virtual keys (without their values) |
-| `manage_llm_gateway` | Deploy and delete the inference gateway and manage its upstream providers |
+| `manage_llm_gateway` | Deploy and delete the inference gateway, and manage its upstream providers and guardrails |
 | `manage_llm_gateway_keys` | Issue, revoke, and view inference gateway virtual keys, and view inference gateway usage |
 
 Roles also accept the following actions, but no Union service checks them, so granting one has no effect:
 `view_secrets`, `manage_secrets`, `view_apps`, `manage_apps`, `view_triggers`, `manage_triggers`, `view_workspaces`, `manage_workspaces`, `view_artifacts`, `manage_artifacts`, `view_settings`, `edit_settings`, `manage_api_keys`, `view_clusters`, `view_permissions`, `view_usage`, `view_identities`.
-Access to secrets requires `create_flyte_executions`.
+A role that holds `create_flyte_executions` can list, get, create, update, and delete secrets at the scope it's bound to.
 Viewing triggers requires `view_flyte_inventory`.
 Creating, activating, deactivating, and deleting triggers requires `register_flyte_inventory`.
 
