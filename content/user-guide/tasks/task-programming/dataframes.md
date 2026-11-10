@@ -40,7 +40,7 @@ Flyte supports auto-serialization for the following DataFrame types:
 
 * `pandas.DataFrame`
 * `pyarrow.Table`
-* `polars.DataFrame` (requires `flyteplugins-polars`, see [Polars DataFrames](#polars-dataframes))
+* `polars.DataFrame` and `polars.LazyFrame` (requires `flyteplugins-polars`; see [Polars DataFrames](#polars-dataframes))
 * `flyte.io.DataFrame` (see below)
 
 ## Create a flyte.io.DataFrame
