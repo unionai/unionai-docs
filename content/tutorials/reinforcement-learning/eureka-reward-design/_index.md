@@ -170,8 +170,8 @@ UI shows one Claude call and its fan-out of evaluations per generation.
 
 A run with the defaults, 4 generations of 6 candidates plus the 2 hostile ones, took 23
 minutes. Every reward, including the 2 baselines and the 2 hostile candidates, ran on 5 seeds for
-150,000 steps, each seed in its own sandbox session: 140 sandboxed training runs. The 10 runs of
-the hostile candidates are stopped before they train a policy, so at most 130 runs train one.
+150,000 steps, each seed in its own sandbox session: 140 sessions. The 10 sessions of the hostile
+candidates stop before they train a policy, so at most 130 train one.
 
 | Reward | Flag reached, mean of 5 seeds | Steps to the flag |
 | --- | --- | --- |
