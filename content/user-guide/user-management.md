@@ -259,7 +259,7 @@ Navigate to **Settings > User Management** to:
 | `flyte update policy <name>` | Edit a policy in `$EDITOR` |
 | `flyte delete policy <name>` | Delete a policy |
 | `flyte create assignment --email <email> \| --user-subject <id> \| --creds-subject <id> --policy <name>` | Assign a policy to a user or application |
-| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | List all assignments or view a specific one |
+| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | View the policies assigned to a user or application |
 | `flyte delete assignment --user-subject <id> \| --creds-subject <id> --policy <name>` | Unassign a policy from a user or application |
 | `flyte get user [<subject>]` | List all users or view a specific one |
 | `flyte delete user <subject>` | Delete a user |

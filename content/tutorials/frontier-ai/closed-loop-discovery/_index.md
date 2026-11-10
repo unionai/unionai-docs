@@ -294,16 +294,17 @@ The 50 smallest-gap molecules are published as the `closed-loop-top-candidates` 
 with the measured orbital energies, which arm found each molecule, and what the model predicted
 before it was measured. Its card has the same charts and the top molecules.
 
-### What we changed along the way
+### Design choices in the pool, the oracle, and the image
 
-- **The pool.** The first pool kept ZINC's charged molecules. In the gas phase, GFN2-xTB gives
-  zwitterions such as amino acids gaps near 0.1 eV, and those artifacts filled the top of the
-  ranking. The pool now neutralizes molecules and keeps only nitro groups as charged atoms.
-- **The oracle.** A single-point calculation on a force-field geometry takes 20 milliseconds, which
-  is a table lookup in all but name. Conformer search and an xTB geometry optimization made each
-  measurement 10 seconds of real compute, and made the gaps depend on a converged structure.
+- **The pool.** The pool neutralizes molecules and keeps only nitro groups as charged atoms. In the
+  gas phase, GFN2-xTB gives zwitterions such as amino acids gaps near 0.1 eV, and those artifacts
+  would fill the top of the ranking.
+- **The oracle.** Each measurement runs a conformer search and an xTB geometry optimization, about
+  10 seconds of real compute, so the gaps depend on a converged structure. A single-point
+  calculation on a force-field geometry takes 20 milliseconds, which is a table lookup in all but
+  name.
 - **The drawings.** RDKit's drawing code loads `libXrender` and `libexpat`, which the slim Debian
-  base image leaves out. Without them the report fell back to SMILES strings. The image now installs
+  base image leaves out. Without them the report falls back to SMILES strings. The image installs
   them with `with_apt_packages`.
 
 ## At real scale

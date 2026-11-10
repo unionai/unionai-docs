@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Standards compliance
 
-Union.ai aligns with ISO 27001 and CIS control frameworks through its private data plane architecture. The private connectivity model described in [Private connectivity](../architecture/private-connectivity) directly addresses the management interface controls in both frameworks.
+Union.ai aligns with ISO 27001 and CIS control frameworks through its private data plane architecture. When a BYOC cluster on EKS or GKE is configured with a private endpoint, the private connectivity model described in [Private connectivity](../architecture/private-connectivity) addresses the management interface controls in both frameworks. Without a private endpoint, which is the default, the cluster's Kubernetes API endpoint is public.
 
 | Framework | Control | Description |
 |---|---|---|
@@ -26,12 +26,12 @@ Union.ai also holds CIS 1.4 AWS certification and is pursuing CIS 3.0.
 
 ### Standards compliance
 
-**Reviewer focus:** Confirm that the private connectivity architecture satisfies the referenced ISO 27001 and CIS controls.
+**Reviewer focus:** For a BYOC cluster on EKS or GKE configured with a private endpoint, confirm that the private connectivity architecture satisfies the referenced ISO 27001 and CIS management-interface controls.
 
 **How to verify:**
 
-1. The private connectivity architecture described in [Private connectivity](../architecture/private-connectivity) IS the demonstration of these controls: management interfaces are not exposed to the public internet.
+1. For a BYOC cluster configured with a private endpoint (EKS or GKE only), the private connectivity architecture described in [Private connectivity](../architecture/private-connectivity) is the demonstration of the management-interface controls (ISO 27001 A.5.15, A.8.20 and A.8.22, and CIS Control 12): the Kubernetes API isn't reachable from the public internet. Follow the verification steps on that page to confirm it. By default, a BYOC cluster has no private endpoint, and its Kubernetes API endpoint is public.
 
 2. The [Trust Center](https://trust.union.ai) covers continuous monitoring of compliance status.
 
-3. This is architectural and audit-only verification.
+3. Apart from the private-endpoint checks in step 1, this is architectural and audit-only verification.

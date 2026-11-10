@@ -112,8 +112,8 @@ for the report:
 The input is `HuggingFaceFW/fineweb`, `sample-10BT`, read straight from the Hugging Face Hub as
 Parquet row groups. Each shard is 20 row groups, about 20,000 documents, and the shards are
 spread over the sample's 14 files. The sample is drawn from every snapshot, so each shard
-mixes documents from several Common Crawl snapshots (8 in each 20,000-document slice we
-checked).
+mixes documents from several Common Crawl snapshots (8 in each 20,000-document slice checked
+for this tutorial).
 
 The filters are the document-level rules from Gopher, C4, and FineWeb, with their published
 thresholds. They are a dataclass, and the dataclass is an input of every shard task, so
@@ -133,8 +133,7 @@ for near duplicates, as in FineWeb.
 
 The shard task also checks every document against the eval sets. `build_eval_ngrams` hashes
 every 13-gram of every GSM8K, MMLU, and ARC test question followed by its answer options, the
-same way the shard task hashes documents. (The code also hashes the question alone, which adds
-nothing: its 13-grams are a prefix of the longer text.)
+same way the shard task hashes documents.
 
 {{< code file="/unionai-examples/v2/tutorials/pretraining_data_refinery/refinery.py" fragment=evals lang=python >}}
 
@@ -289,19 +288,19 @@ the artifact got a new version with 17,967 documents.
 
 ![The rerun with a new threshold: every shard, the labels, and the classifier come back from cache, and only curate runs](../../../_static/images/tutorials/pretraining-data-refinery/cached-rerun.png)
 
-### What the iterations taught us
+### Check the labeler before you distill
 
-The first full run used Qwen2.5-3B-Instruct as the labeler. It was fast, 47 ms per document,
-but lenient: it gave 54% of the sample a 3 or more, against 5% for the 14B model. The public classifier agreed with its labels at an F1 of 0.08
-at the threshold, and the classifier distilled from them kept 17% of the corpus. A distilled
-classifier is only as good as its labels, and its agreement with its own teacher hides that.
-Check the teacher against an independent reference, here the public classifier, before you
-distill it.
+A distilled classifier is only as good as its labels, and its agreement with its own teacher
+hides that. In the runs for this tutorial, Qwen2.5-3B-Instruct as the labeler was fast, 47 ms
+per document, but lenient: it gave 54% of the sample a 3 or more, against 5% for the 14B model.
+The public classifier agreed with its labels at an F1 of 0.08 at the threshold, and a classifier
+distilled from them kept 17% of the corpus. Check the teacher against an independent reference, here the public
+classifier, before you distill it.
 
-With the 14B labels, the first head was trained with a plain MSE. It ranked well, at a Spearman
-of 0.64, but almost every prediction fell between 0 and 2.5, and the threshold of 3 kept 30
-documents. Weighting the loss by inverse score frequency spread the predictions out at a small
-cost in rank correlation.
+The loss matters too. In the same runs, a head trained on the 14B labels with a plain MSE ranked
+well, at a Spearman of 0.64, but almost every prediction fell between 0 and 2.5, and the
+threshold of 3 kept 30 documents. Weighting the loss by inverse score frequency spread the
+predictions out at a small cost in rank correlation.
 
 ## At real scale
 
