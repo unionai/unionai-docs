@@ -84,7 +84,7 @@ By default, inputs (including inputs uploaded ahead of a run), outputs, Decks an
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-By default, the open-source Flyte backend writes a run's inputs under `<storagePrefix>/<project>/<domain>/<run-name>/inputs`, where `storagePrefix` is the backend's configured run storage prefix. Each action's outputs go to the same bucket, under a short shard prefix inserted right after the bucket name: `<bucket>/<shard>/<rest-of-storagePrefix>/<project>/<domain>/<run-name>/<action>/<attempt>/`. Inputs uploaded ahead of a run go under `uploads/[<org>/]<project>/<domain>/offloaded-inputs/<hash>/` in the backend's storage container instead. Setting `run_base_dir` in `flyte.with_runcontext` replaces both bases.
+By default, the open-source Flyte backend stores a run's inputs and outputs under its configured run storage prefix (`runs.storagePrefix` in the `flyte-binary` chart). Inputs uploaded ahead of a run go to the backend's storage container instead. Setting `run_base_dir` in `flyte.with_runcontext` puts both under one base.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -135,7 +135,7 @@ It holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloa
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-On the open-source backend it is the storage container that holds uploads, such as code bundles and inputs uploaded ahead of a run. Run inputs and outputs (`inputs.pb`, `outputs.pb`) go to the bucket of the configured `runs.storagePrefix` instead, which can be a different bucket (with the `flyte-binary` chart's defaults, it is).
+On the open-source backend it is the storage container that holds uploads, such as code bundles and inputs uploaded ahead of a run. Run inputs and outputs (`inputs.pb`, `outputs.pb`) go to the bucket of the configured `runs.storagePrefix` instead, which with the `flyte-binary` chart's defaults is a different bucket.
 {{< /markdown >}}
 {{< /variant >}}
 
