@@ -48,7 +48,7 @@ On success the platform records a model artifact for the stored weights:
 * The searchable metadata carries the model facts (framework, architecture, task, modality, serialization format) plus the source repo and commit.
 * The repo's README, if it has one, is attached as the model card.
 
-The prefetch task is cached on its inputs (the repo, `artifact_name`, the model metadata, `shard_config` and `raw_data_path`), not on the upstream commit. Re-running a prefetch with the same inputs reuses the cached result and doesn't pick up a newer upstream commit, even if you change `resources` or `hf_token_key`. To download the repo's latest commit again, increment `force` (`--force 1`, `--force 2`, and so on, on the CLI). If the commit has moved, it registers as a new version you can [trigger on](../triggers/artifact-triggers).
+The prefetch task is cached. Its cache key covers the task's inputs (the repo, `artifact_name`, the model metadata, `shard_config` and `raw_data_path`) and its configuration (`resources`, `hf_token_key` and `force`), but not the upstream commit, which the task looks up only when it runs. Re-running a prefetch with the same arguments reuses the cached result and doesn't pick up a newer upstream commit. To download the repo's latest commit, increment `force` (`--force 1`, `--force 2`, and so on, on the CLI). If the commit has moved, it registers as a new version you can [trigger on](../triggers/artifact-triggers).
 
 ## Finding a prefetched model
 
