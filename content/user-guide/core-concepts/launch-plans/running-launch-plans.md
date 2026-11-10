@@ -32,7 +32,7 @@ $ uctl create execution \
        --execFile <execution-spec-file-name>.yaml
 ```
 
-See [Uctl CLI](../../../api-reference/uctl-cli) for more details.
+See [{{< key ctl_name >}} CLI](../../../api-reference/{{< key ctl >}}-cli/_index) for more details.
 
 ## Running a launch plan in Python with `{{% key kit_remote %}}`
 

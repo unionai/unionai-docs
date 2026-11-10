@@ -34,13 +34,13 @@ page's directory rather than inside it. For example, this page is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v1 >}}/api-reference/flyte-context/`](.)
+* [`{{< docs_home union v1 >}}/api-reference/flyte-context/`]({{< docs_home union v1 >}}/api-reference/flyte-context/)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context/`](.)
+* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context/`]({{< docs_home flyte v1 >}}/api-reference/flyte-context/)
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -48,13 +48,13 @@ and its LLM-optimized version is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v1 >}}/api-reference/flyte-context.md`](flyte-context.md)
+* [`{{< docs_home union v1 >}}/api-reference/flyte-context.md`]({{< docs_home union v1 >}}/api-reference/flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context.md`](flyte-context.md)
+* [`{{< docs_home flyte v1 >}}/api-reference/flyte-context.md`]({{< docs_home flyte v1 >}}/api-reference/flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 

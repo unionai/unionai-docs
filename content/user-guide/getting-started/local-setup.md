@@ -88,7 +88,7 @@ To set up a local cluster you must first install the `flytectl` CLI.
 > It is the primary command-line tool used during Flyte development.
 >
 > `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
-> (see [Flytectl](../../api-reference/uctl-cli) for details)
+> (see [Flytectl](../../api-reference/flytectl-cli/_index) for details)
 
 To install `flytectl`, follow these instructions:
 
