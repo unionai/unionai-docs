@@ -124,7 +124,11 @@ local-disk speed. The task pod stays unprivileged, but attaching the image
 makes the **node's kernel parse a file system whose bytes the task controls**,
 so the broker only allows it for pods matching `uvolMountBroker.block.allow`.
 
-The chart default is `[{namespace: "*"}]`, so every pod may use block volumes.
+When `block.allow` is unset, the default depends on `low_privilege`:
+
+- `low_privilege: false`: every pod may use block volumes
+  (`[{namespace: "*"}]`).
+- `low_privilege: true` (the chart default): block volumes are disabled.
 
 On a cluster that runs untrusted workloads, set an explicit list to allow only
 specific trusted ones:
@@ -147,10 +151,11 @@ cannot forge them. Fields are glob patterns: `team-*` matches a prefix, and
 `[{namespace: "*"}]` allows every pod on the cluster.
 
 > [!WARNING]
-> Allowing every pod, as the chart default does, lets any task that can run on
-> the cluster present a crafted file system image to the node kernel. On a
-> cluster shared by tenants who don't trust each other, set an explicit list,
-> or `allow: []` to disable block volumes.
+> Allowing every pod, whether explicitly or through the `low_privilege: false`
+> default, lets any task that can run on the cluster present a crafted file
+> system image to the node kernel. On a cluster shared by tenants who don't
+> trust each other, set an explicit list, or `allow: []` to disable block
+> volumes.
 
 A rule that sets neither field is rejected when the broker starts, so a typo
 cannot silently widen the opt-in. A pod that isn't allowed gets a mount error
@@ -158,7 +163,7 @@ naming the reason.
 
 | Key | Default | Description |
 |---|---|---|
-| `uvolMountBroker.block.allow` | `[{namespace: "*"}]` | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. The default allows every pod. `[]` disables block volumes. |
+| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `low_privilege` is false, none when it is true. `[]` disables block volumes. |
 | `uvolMountBroker.block.freezeMax` | `60s` | Thaw a block volume that a client froze for a commit after this long, so a client that dies mid-commit cannot stall the volume's writers. |
 
 ## The FUSE device plugin (legacy path)
@@ -212,8 +217,9 @@ helm upgrade <release> <chart> -n <namespace> \
   --set fuseDevicePlugin.enabled=true
 ```
 
-Enabling it is the only required cluster-side step. Because the chart renders nothing for this
-feature when it is off, turning it on does not affect any other workloads.
+Enabling it is the only required cluster-side step. Because the chart renders
+nothing for this feature when it is off, turning it on does not affect any other
+workloads.
 
 ### Restrict the plugin to specific nodes (optional)
 
@@ -244,7 +250,7 @@ fuseDevicePlugin:
 After the upgrade, confirm the DaemonSet is rolled out:
 
 ```bash
-kubectl get daemonset -n <namespace> -l app=union-fuse-device-plugin
+kubectl get daemonset -n <namespace> -l app.kubernetes.io/name=fuse-device-plugin
 ```
 
 Then confirm a node advertises the extended resource:
@@ -267,11 +273,9 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 | `fuseDevicePlugin.devices` | `[{ devicematch: ^fuse$, nummaxdevices: 1000 }]` | Devices the plugin advertises. `nummaxdevices` is the per-node claim count. |
 | `fuseDevicePlugin.nodeSelector` | `{}` | Restrict the DaemonSet to selected nodes; empty means all nodes. |
 | `fuseDevicePlugin.tolerations` | `[{ operator: Exists }]` | Tolerate everything so it lands on every selected node, including tainted ones. |
-| `fuseDevicePlugin.priorityClassName` | `system-node-critical` | Priority class for the plugin pods. Set it to `""` to leave it unset. |
+| `fuseDevicePlugin.securityContext` | drops `ALL`, adds `SYS_ADMIN` | The plugin needs `SYS_ADMIN` to read host devices and register with kubelet; the workloads it serves stay unprivileged. |
+| `fuseDevicePlugin.priorityClassName` | `""` | Override the priority class (defaults to `operator.priorityClassName`). |
 | `fuseDevicePlugin.resources` | `cpu: 10m–100m`, `memory: 15Mi` | Resource requests and limits for the plugin pod. |
-
-The plugin container's security context (drops `ALL`, adds `SYS_ADMIN`) is
-fixed in the chart template. No chart value changes it.
 
 ## Using Volumes
 
