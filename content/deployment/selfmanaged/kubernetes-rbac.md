@@ -65,7 +65,7 @@ In this mode:
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
 - App serving is on by default and adds Knative's cluster-wide reads. 
-- Knative's controllers watch every
+- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written.
 namespace however their RBAC is written. 
 
 > [!WARNING] The install identity needs cluster permissions.  
