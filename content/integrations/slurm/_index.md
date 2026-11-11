@@ -571,13 +571,111 @@ Then restart the deployment so the pods pick up the new identity. This is not ne
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+### Running the connector
+
+The backend doesn't run the plugin. It calls a connector server over gRPC. On Kubernetes, deploy the connector with the `flyteconnector` chart from [flyteorg/flyte](https://github.com/flyteorg/flyte/tree/main/charts/flyteconnector). `flyte-binary` installs it as a subchart by default. On `flyte-core`, set `flyteconnector.enabled: true`.
+
+Create the secret holding the SSH key and the `known_hosts` file:
+
+```bash
+kubectl -n <namespace> create secret generic slurm-login \
+  --from-file=ssh-privatekey=./slurm-connector \
+  --from-file=known_hosts=./known_hosts
+```
+
+Then point the connector at your image and give it the connection:
+
+```yaml
+flyteconnector:
+  image:
+    repository: <your-registry>/slurm-connector
+    tag: <your-tag>
+  podEnv:
+    - { name: FLYTE_SLURM_HOST, value: "<login-host>" }
+    - { name: FLYTE_SLURM_USERNAME, value: "flyte" }
+    - name: FLYTE_SLURM_SSH_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef: { name: slurm-login, key: ssh-privatekey }
+    - { name: FLYTE_SLURM_KNOWN_HOSTS, value: /etc/slurm-login/known_hosts }
+  additionalVolumeMounts:
+    - { name: slurm-login, mountPath: /etc/slurm-login, readOnly: true }
+  additionalVolumes:
+    - name: slurm-login
+      secret:
+        secretName: slurm-login
+        items: [{ key: known_hosts, path: known_hosts }]
+```
+
+`FLYTE_SLURM_KNOWN_HOSTS` is a path, so its file is mounted. To avoid the mount, use `known_hosts_secret` on the task instead.
+
+The chart names the Service `flyteconnector` and serves on port 8000.
+
+To run the connector outside Kubernetes, install the plugin, export the connection and start `c0`:
+
+```bash
+pip install flyteplugins-slurm
+export FLYTE_SLURM_HOST=<login-host>
+export FLYTE_SLURM_USERNAME=flyte
+export FLYTE_SLURM_SSH_PRIVATE_KEY="$(cat ./slurm-connector)"
+export FLYTE_SLURM_KNOWN_HOSTS="$PWD/known_hosts"
+c0
+```
+
+Without these variables, each task must set `host`, `username` and `ssh_private_key` itself.
+
+`c0` loads every installed connector plugin and listens on port 8000. Use `--port` to change it.
+
+### Routing task types to the connector
+
+Add both task types to the backend's plugin configuration, and set the connector's endpoint:
+
+```yaml
+tasks:
+  task-plugins:
+    default-for-task-types:
+      slurm: connector-service
+      slurm_script: connector-service
+plugins:
+  connector-service:
+    defaultConnector:
+      endpoint: "flyteconnector.<namespace>:8000"
+```
+
+For a connector running as a host process, use its `<host>:8000` as the endpoint.
+
+In the Helm charts, the `tasks` block goes under `enabled_plugins` (`flyte-binary`) or `enabledPlugins` (`flyte-core`). The `plugins` block goes under `configuration.inline` in both charts. Before you upgrade, run `helm template` and check that the executor's rendered configuration contains both blocks.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Verifying the connector
 
-Task types are discovered at runtime from the connector's metadata service, so there is no task-type routing to configure. Confirm the connector advertises them:
+{{< variant union >}}
+{{< markdown >}}
+Task types are discovered at runtime from the connector's metadata service, so there is no task-type routing to configure.
+{{< /markdown >}}
+{{< /variant >}}
+
+Confirm the connector advertises the task types:
 
 ```bash
 kubectl -n <namespace> logs deploy/flyteconnector | grep -A6 "Connector Metadata"
 ```
+
+The table lists both task types:
+
+```
+│ Slurm Connector │ slurm (0) slurm_script (0)  │
+```
+
+{{< variant flyte >}}
+{{< markdown >}}
+A connector running as a host process prints the same table when `c0` starts.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Credentials
 
