@@ -14,7 +14,7 @@ The same deployment can then post to a different webhook on each cluster.
 
 {{< variant flyte >}}
 {{< markdown >}}
-Open-source Flyte doesn't deliver built-in notifications yet, so use this pattern to notify on run outcomes.
+Open-source Flyte doesn't deliver built-in notifications, so use this pattern to notify on run outcomes.
 {{< /markdown >}}
 {{< /variant >}}
 

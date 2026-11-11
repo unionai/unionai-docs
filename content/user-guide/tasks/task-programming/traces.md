@@ -23,7 +23,7 @@ At the task level, observability and resumption of failed executions is provided
 This is where **traced functions** come in. By decorating helper functions with `@flyte.trace`, you enable:
 
 - **Detailed observability**: Track execution time, inputs/outputs, and errors for each function call.
-- **Fine-grained resumption**: If a workflow fails, resume from the last successful traced function instead of re-running the entire task.
+- **Fine-grained resumption**: If a task fails and is retried, each traced call that already returned a value replays its recorded result instead of running again. A traced function that returns `None` has nothing to replay, so it runs again.
 Each traced function is effectively a checkpoint within its task.
 
 Here is an example:
@@ -38,9 +38,9 @@ Traces capture detailed execution information:
 - **Inputs and outputs**: Function parameters and return values.
 - **Checkpoints**: State that enables workflow resumption.
 
-### Errors are not recorded
+### Errors
 
-Only successful trace executions are recorded in the checkpoint system. When a traced function fails, the exception propagates up to your task code where you can handle it with standard error handling patterns.
+When a traced function raises, the exception propagates up to your task code, where you can handle it with standard error handling patterns. Only traced calls that returned a value are replayed when the task is retried.
 
 ### Supported function types
 
@@ -111,13 +111,9 @@ Traces capture comprehensive execution information for debugging and monitoring:
 - **Action IDs**: Unique identifiers for each execution
 
 **Error handling:**
-- Errors from traced functions are not recorded in checkpoints
 - Exceptions propagate to your task code for standard error handling
+- On a retry, only traced calls that returned a value are replayed
 - The error_handling example shows how to catch and handle these exceptions in your task
-
-TODO:
-Ketan Umare:
-we should show an example where tasks and traces can be used interchangeably
 
 ## Examples in practice
 
