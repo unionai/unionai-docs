@@ -87,7 +87,7 @@ The dispatcher runs the per-action evaluation loop. Metrics live under `leasewor
 | `round_success`, `round_errors`, `round_idle`, `round_pending` | counter | Rounds by outcome: progressed, failed, no state change, yielded for async state hydration | `round_errors` as a share of all rounds is the dispatcher error rate. The overview dashboard plots success vs errors. |
 | `actions_terminated` | counter, `phase` | Actions this worker drove to a terminal phase, labeled by the phase name: `ACTION_PHASE_SUCCEEDED`, `ACTION_PHASE_FAILED`, `ACTION_PHASE_ABORTED`, `ACTION_PHASE_TIMED_OUT` | Your outflow. Compare succeeded against the other three. |
 | `system_errors` | counter | Transient system errors while executing an action (not user code errors) | A rising rate means pods are failing to create, the API server is erroring, or storage is slow. |
-| `system_errors_exhausted` | counter | Actions failed because consecutive system errors reached `maxConsecutiveErrors` | Each increment is an action that failed for a platform reason. Alert on any sustained rate. |
+| `system_errors_exhausted` | counter | Actions failed because consecutive system errors reached the leaseworker's `maxConsecutiveErrors` limit, default 3. Set it under the chart's free-form `leaseworker.config` block (`leaseworker.config.maxConsecutiveErrors`) | Each increment is an action that failed for a platform reason. Alert on any sustained rate. |
 | `streak_length` | histogram | Evaluation rounds per streak before the dispatcher yields | Diagnostic only. |
 | `finalize_first_arrival_wait_seconds` | histogram | Wait from a finalize lease's admission to its first dispatch | Rising means cleanup is being starved. |
 
@@ -154,7 +154,7 @@ Each pool the worker uses for control plane calls exposes metrics under `leasewo
 
 | Metric | Type | What to watch |
 | --- | --- | --- |
-| `queue_depth`, `async_backlog` | gauge | Work waiting in the pool. Growing means the control plane is slow to answer. |
+| `queue_depth`, `async_backlog` | gauge | Work waiting in the pool. Growing means the control plane is slow to answer. On the event pool, `queue_depth` is always 0: watch `async_backlog`. |
 | `in_flight` | gauge | Calls executing. |
 | `duration`, `queue_wait_duration` | histogram | Call latency and time spent waiting for a slot. |
 | `errors`, `dropped` | counter | Internal pool errors and requests dropped because the channel was full. Both should be 0. |
@@ -206,7 +206,7 @@ equivalent.
 | `executor::v2:queue_depth` | `leaseworker:dispatcher:queue_main_depth` | The work queue now has two lanes; `leaseworker:dispatcher:queue_priority_depth` is the finalize lane. |
 | `executor::v2:actions_terminated{phase}` | `leaseworker:dispatcher:actions_terminated{phase}` | Same meaning and label. |
 | `executor::v2:system_failures` | `leaseworker:dispatcher:system_errors` | Same meaning. |
-| `executor::v2:system_failures_exhausted` | `leaseworker:dispatcher:system_errors_exhausted` | Same meaning; the limit is `maxConsecutiveErrors`. |
+| `executor::v2:system_failures_exhausted` | `leaseworker:dispatcher:system_errors_exhausted` | Same meaning; the limit is `maxConsecutiveErrors` (default 3, under `leaseworker.config`). |
 | `executor::v2:leases_received_count`, `executor::v2:leases_finalized_count` | `leaseworker:leases_received`, `leaseworker:leases_finalized` | Same meaning. |
 | `executor:handler_panic` | `leaseworker:plugin_panic` | Different. `handler_panic` counted panics recovered in RPC handlers; `plugin_panic` counts panics in a plugin's Handle, Abort, or Finalize. It is the closest signal, not an equivalent. |
 | `union:dp:executor:active_actions` (recording rule) | `union:dp:leaseworker:active_actions` | Rewritten to read `leaseworker:active_run_leases`. |

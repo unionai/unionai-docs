@@ -103,7 +103,6 @@ GitHub
 GitLab
 
 leasor
-millicores
 
 # --- Python / tooling ---
 dataclass
