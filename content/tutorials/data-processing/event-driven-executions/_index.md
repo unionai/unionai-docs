@@ -273,6 +273,29 @@ there is no state to keep outside the platform and no reconciliation to build. A
 payload to decode and no mapping to maintain — the mapping in the queue versions has no
 type checking against the task signature and breaks silently when either side changes.
 
+### Choosing the version a trigger runs
+
+The subscribers launch the version they name, which is why the task is deployed under
+`prod`. A trigger launches the version deployed with it unless you set `task_version`,
+as `on_new_data` does above. Deploy the version the trigger should run first, then deploy
+other builds with the pin set:
+
+```bash
+flyte deploy --version prod artifact_chain.py env
+CONSUME_VERSION=prod flyte deploy --version 2026-11-10-b71c2e4 artifact_chain.py env
+```
+
+New artifact versions keep firing `consume` on `prod`, and its output names the version it
+ran on. You can still launch the new build by hand to try it. To promote it, deploy again
+with `CONSUME_VERSION` set to the new version. To roll back, set it to the previous one.
+
+`task_version` must name a version of the task that is already deployed. Otherwise the
+deploy fails with `trigger on_new_dataset pins task version "<version>", which is not
+deployed for task artifact_chain.consume; deploy that version first or remove the pin`.
+
+Every deploy also sets whether the trigger is active from `auto_activate`, which defaults
+to `True`.
+
 ## Choosing an approach
 
 | | Message queue | Artifact trigger |
@@ -284,6 +307,7 @@ type checking against the task signature and breaks silently when either side ch
 | Duplicate handling | message-id-derived run names | platform-managed |
 | Event to task inputs | a mapping you maintain | typed, bound directly |
 | Run to event lineage | build it yourself | recorded on the run |
+| Version that runs | named by the subscriber | `task_version` on the trigger |
 
 The deciding question is where the event comes from, regardless of the cloud provider.
 
