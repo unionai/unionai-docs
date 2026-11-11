@@ -57,7 +57,6 @@ Training, fine-tuning, and hyperparameter optimization of models at scale.
 Benchmarks that measure the cost of validating training data with pandera, and the cost of not validating it.
 {{< /link-card >}}
 
-{{< variant union >}}
 {{< link-card target="speculative-decoding" icon="lightning" title="Speculative Decoding Models" >}}
 Train, benchmark, serve, and continually retrain draft models that make an LLM generate faster without changing its outputs.
 {{< /link-card >}}
