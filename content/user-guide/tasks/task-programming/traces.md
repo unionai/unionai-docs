@@ -38,11 +38,9 @@ Traces capture detailed execution information:
 - **Inputs and outputs**: Function parameters and return values.
 - **Checkpoints**: State that enables workflow resumption.
 
-### Errors are recorded
+### Errors
 
-When a traced function raises, the error is recorded with the trace, and the exception propagates up to your task code, where you can handle it with standard error handling patterns.
-
-If the task is retried, a traced call that failed with an ordinary exception runs again. A traced call that raised `flyte.errors.NonRecoverableError` doesn't run again: the recorded error is raised again, because running it again would fail the same way.
+When a traced function raises, the exception propagates up to your task code, where you can handle it with standard error handling patterns. Only traced calls that returned a value are replayed when the task is retried.
 
 ### Supported function types
 
@@ -113,9 +111,8 @@ Traces capture comprehensive execution information for debugging and monitoring:
 - **Action IDs**: Unique identifiers for each execution
 
 **Error handling:**
-- Errors from traced functions are recorded with the trace
 - Exceptions propagate to your task code for standard error handling
-- On a retry, a traced call that raised an ordinary exception runs again; one that raised `flyte.errors.NonRecoverableError` raises its recorded error again
+- On a retry, only traced calls that returned a value are replayed
 - The error_handling example shows how to catch and handle these exceptions in your task
 
 ## Examples in practice

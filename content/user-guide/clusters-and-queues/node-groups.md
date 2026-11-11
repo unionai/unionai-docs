@@ -39,8 +39,8 @@ The output shows the node groups as stored, including every label and taint.
 The table has one row per group, with the columns **Name**, **Instance types**,
 **Nodes**, **Limits**, **Cpu**, **Memory**, **Accelerators**, **Arch**,
 **Capacity**, **Weight**, **Spot**, **Labels**, and **Taints**. **Nodes** shows
-`min-max`, or, with `flyteplugins-union` 0.20.0 or later, `min+ (no node limit)`
-when `max_nodes` is `0`. **Limits** (0.20.0 or later) shows the group's limits,
+`min-max`, or `min+ (no node limit)` when `max_nodes` is `0`. **Limits** shows
+the group's limits,
 for example `cpu=20000, nvidia.com/gpu=2`.
 
 The exported YAML lists every editable field of each group, using the field
@@ -69,7 +69,7 @@ node_groups:
 Karpenter NodePool weight). `capacity_types` takes `CAPACITY_TYPE_ON_DEMAND`,
 `CAPACITY_TYPE_SPOT`, and `CAPACITY_TYPE_RESERVED`.
 
-`max_pods` and `limits` appear with `flyteplugins-union` 0.20.0 or later:
+`max_pods` and `limits` appear in the output:
 
 - `max_nodes: 0` means the group has no node-count bound. Only `limits`, if
   set, caps it.
