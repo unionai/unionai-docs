@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte` cluster, pool, queue, and node-groups commands and the Python objects on these
 > pages are provided by the `flyteplugins-union` package. Install it with
-> `pip install flyteplugins-union`. The node-groups commands need version 0.19.0 or later.
+> `pip install flyteplugins-union`. The node-groups commands need version 0.20.2 or later.
 
 As a {{< key product_name >}} deployment grows past a single cluster, you need to
 control *where* a workload runs and *under what limits*. Three primitives do this:
