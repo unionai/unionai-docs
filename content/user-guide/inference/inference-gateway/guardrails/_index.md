@@ -41,7 +41,7 @@ Each guardrail is a Union app of type `Guardrail`, running on the gateway's clus
 
    | Field | Meaning |
    |---|---|
-   | **Guardrail app** | The app to call. Only running apps of type `Guardrail` on the gateway's cluster are listed. |
+   | **Guardrail app** | The app to call. Apps of type `Guardrail` on the gateway's cluster are listed in any state, with a grey dot on any app that isn't active. Saving fails if the app has never been placed on a cluster, such as one still on its first deploy. You can still save an app that has failed or stopped, so check that it's active. |
    | **Timeout (ms)** | How long the gateway waits for a verdict. Defaults to 5,000. At most 30,000. |
    | **Fail open** | What happens when the guardrail can't answer. See [When a guardrail fails](#when-a-guardrail-fails). |
 
