@@ -3,7 +3,7 @@ title: Inference
 icon: lightning-charge
 description: Serving models and building inference applications as Flyte apps.
 weight: 11
-variants: -flyte +union
+variants: +flyte +union
 sidebar_expanded: true
 ---
 

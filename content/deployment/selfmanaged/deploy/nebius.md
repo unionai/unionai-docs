@@ -52,7 +52,7 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
    The command outputs the client ID and client secret your data plane uses to communicate with Union's control plane. Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
@@ -118,21 +118,15 @@ If you have not yet set up the required Nebius resources (MK8s cluster, Object S
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator`, `union-operator-proxy`, `union-operator-buildkit`, `leaseworker`, and `flyteconnector`.
 
-8. Verify the cluster is registered with the control plane:
+8. Verify the data plane has connected to the control plane:
 
    ```bash
    flyte get cluster
    ```
 
-   The output is similar to the following:
-
-   ```text
-   Enabled Clusters
-   NAME            ORG       STATE     HEALTH
-   union-nebius    my-org    enabled   healthy
-   ```
+   Once the data plane is connected, the cluster appears in the **Enabled Clusters** table with health `🟢 healthy`.
 
 ## GPU node configuration (Nebius-specific)
 
@@ -295,15 +289,14 @@ To run a sample workflow, complete the following steps:
 
 ## Next: manage your cluster and pools
 
-`uctl selfserve provision-dataplane-resources` provisions the data plane and
-registers this cluster with the control plane. Once it is connected, you manage
-the **cluster pool** it belongs to, and route work to it with queues, from the
-[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+`flyte create cluster` registers this cluster with the control plane in step 2. Once the data plane
+is connected, you manage the **cluster pool** it belongs to, and route work to it with queues, from the
+[Clusters and queues](../../../user-guide/clusters-and-queues/_index)
 user guide:
 
-- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
-- [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
-- [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
+- [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/clusters-and-queues/clusters): inspect and manage the cluster records registered with the control plane.
+- [Managing queues](../../../user-guide/clusters-and-queues/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
 
 Each cluster is assigned exactly one pool. If no custom pool is specified when the
 cluster is created, it joins the `default` pool that every organization is

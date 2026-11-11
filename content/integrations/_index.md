@@ -35,14 +35,15 @@ Flyte 2 integrations fall into the following categories:
 3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, Jira, and GitLab, and launch runs from them.
 4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
 5. **Data transformation**: Run data transformation tools as Flyte tasks and capture their results.
-6. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-7. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-8. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
-9. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-10. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-11. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-12. **Observability**: Export task and agent telemetry to external tracing and observability backends.
-13. **Profiling**: Profile GPU tasks and get the results back in the task's report.
+6. **Pipeline frameworks**: Run pipelines written for other workflow systems on Flyte, with each pipeline step as a Flyte action.
+7. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+8. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+9. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+10. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+11. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+12. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+13. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+14. **Profiling**: Profile GPU tasks and get the results back in the task's report.
 
 ## Distributed compute
 
@@ -179,7 +180,7 @@ Software development tool integrations launch Flyte runs from events in GitHub, 
 | [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
 | [GitLab](./software-development-tools/gitlab) | Merge request, issue, comment, push, pipeline, release, and deployment webhooks, authenticated with a shared token | Merge request triage, pipeline and deployment follow-up |
 
-See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/software-development-lifecycle/_index) guide for what to build on top.
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/project-patterns/software-development-lifecycle/_index) guide for what to build on top.
 
 ## Data transformation
 
@@ -190,6 +191,16 @@ Data transformation integrations let you run transformation tools as Flyte tasks
 | Plugin                  | Description                       | Common use cases                                      |
 | ----------------------- | --------------------------------- | ----------------------------------------------------- |
 | [dbt](./dbt/_index)     | Run dbt CLI invocations as tasks  | Analytics engineering, data quality checks, reporting |
+
+## Pipeline frameworks
+
+Pipeline framework integrations run pipelines written for another workflow system inside a Flyte task, with each step of the pipeline running as its own Flyte action.
+
+### Supported pipeline framework integrations
+
+| Plugin                        | Description                                                    | Common use cases                                       |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------------------------------------ |
+| [Nextflow](./nextflow/_index) | Run Nextflow pipelines, with every Nextflow task as a Flyte action | nf-core pipelines, bioinformatics, genomics workflows |
 
 ## Experiment tracking
 
@@ -403,10 +414,13 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                                          | Description                                         | Common use cases             |
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [llama.cpp](./llamacpp/_index) | Serve quantized GGUF models with llama-server, on GPU or CPU | Quantized models, CPU-only serving, models larger than VRAM |
+| [SGLang](../user-guide/inference/self-hosted-endpoints/sglang) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/inference/self-hosted-endpoints/vllm)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/self-hosted-endpoints/sglang) and [vLLM endpoint](../user-guide/inference/self-hosted-endpoints/vllm) pages.
+
+To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers/_index).
 
 ## Notebook execution
 

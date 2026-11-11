@@ -50,7 +50,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
    ```bash
    uctl config init --host=<ORG_NAME>.union.ai
-   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider custom
+   uctl selfserve provision-dataplane-resources --clusterName <CLUSTER_NAME> --provider metal
    ```
 
    * The command will output the ID, name, and a secret that will be used by the Union services to communicate with your control plane.
@@ -58,7 +58,7 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
 
    * Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
 
-   We use `--provider custom` for Crusoe because the Union operator treats Crusoe as a generic S3-compatible / Kubernetes environment rather than a first-class cloud provider integration (like AWS/GCP/Azure).
+   `--provider metal` passes validation on every uctl version. On current uctl builds it also makes the printed install guidance use the base `values.yaml`, which step 4 starts from.
 
 4. Create a values file for the data plane chart. Start from the base values file and layer your Crusoe-specific storage configuration on top, replacing the placeholders with your actual credentials and settings:
 
@@ -134,10 +134,11 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    helm repo update
    ```
 
-6. Install the Custom Resource Definitions (CRDs):
+6. Install the Custom Resource Definitions (CRDs) via server-side apply:
 
    ```bash
-   helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
+   git clone --depth 1 --branch dataplane-<CHART_VERSION> https://github.com/unionai/helm-charts.git
+   kubectl apply --server-side --force-conflicts -f helm-charts/crds/dataplane/
    ```
 
 7. Install the data plane. Replace `<PATH_TO_VALUES_FILE>` with the path to the Helm values file you customized in step 4, and `<CLIENT_ID>` / `<CLIENT_SECRET>` with the credentials printed in step 3.
@@ -158,21 +159,15 @@ If you have not yet set up the required Crusoe resources (CMK cluster, Cloud Sto
    kubectl get pods -n union
    ```
 
-   When the deployment succeeds, all pods show a `Running` status, including `union-operator-proxy`, `union-operator-buildkit`, `flytepropeller`, and `executor`.
+   When the deployment succeeds, all pods show a `Running` status, including `union-operator`, `union-operator-proxy`, `union-operator-buildkit`, `leaseworker`, and `flyteconnector`.
 
-9. Verify the cluster is registered with the control plane:
+9. Verify the data plane has connected to the control plane:
 
    ```bash
    flyte get cluster
    ```
 
-   The output is similar to the following:
-
-   ```text
-   Enabled Clusters
-   NAME            ORG       STATE     HEALTH
-   union-crusoe    my-org    enabled   healthy
-   ```
+   Once the data plane is connected, the cluster appears in the **Enabled Clusters** table with health `🟢 healthy`.
 
 ## Test a workflow
 
@@ -227,15 +222,14 @@ To run a sample workflow, complete the following steps:
 
 ## Next: manage your cluster and pools
 
-`uctl selfserve provision-dataplane-resources` provisions the data plane and
-registers this cluster with the control plane. Once it is connected, you manage
-the **cluster pool** it belongs to (and route work to it with queues) from the
-[Cluster and workload management](../../../user-guide/cluster-workload-management/_index)
+`flyte create cluster` registers this cluster with the control plane in step 2. Once the data plane
+is connected, you manage the **cluster pool** it belongs to (and route work to it with queues) from the
+[Clusters and queues](../../../user-guide/clusters-and-queues/_index)
 user guide:
 
-- [Cluster pools](../../../user-guide/cluster-workload-management/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
-- [Clusters](../../../user-guide/cluster-workload-management/clusters): inspect and manage the cluster records registered with the control plane.
-- [Managing queues](../../../user-guide/cluster-workload-management/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
+- [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/clusters-and-queues/clusters): inspect and manage the cluster records registered with the control plane.
+- [Managing queues](../../../user-guide/clusters-and-queues/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
 
 Each cluster is assigned exactly one pool. If no custom pool is specified when the
 cluster is created, it joins the `default` pool that every organization is

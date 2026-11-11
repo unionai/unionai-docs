@@ -2,7 +2,7 @@
 title: Secret
 description: "Secrets are used to inject sensitive information into tasks or image build context."
 icon: braces
-version: 2.12.0
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,7 +38,7 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 class Secret(
     key: str,
     group: typing.Optional[str] = None,
-    mount: pathlib.Path | None = None,
+    mount: pathlib.PurePath | None = None,
     as_env_var: typing.Optional[str] = None,
 )
 ```
@@ -46,7 +46,7 @@ class Secret(
 |-|-|-|
 | `key` | `str` | The name of the secret in the secret store. |
 | `group` | `typing.Optional[str]` | The group of the secret in the secret store. |
-| `mount` | `pathlib.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
+| `mount` | `pathlib.PurePath \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
 | `as_env_var` | `typing.Optional[str]` | The name of the environment variable that the secret should be mounted as. |
 
 ## Methods

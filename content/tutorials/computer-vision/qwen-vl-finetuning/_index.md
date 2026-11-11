@@ -12,7 +12,7 @@ Large vision-language models like Qwen2.5-VL are remarkably capable out of the b
 
 Usually, no. The **frozen backbone pattern** is a practical alternative: keep all pretrained weights frozen and train only a small, task-specific adapter inserted before the vision encoder. The adapter learns to transform its input in a way that makes the frozen model perform well on your task without touching the underlying billions of parameters. The result is faster training, lower memory pressure, and a much smaller set of weights to store and version.
 
-This tutorial makes that pattern concrete. We take a partially-occluded image classification task (CIFAR-10 images with random black rectangles covering 22 to 45% of the frame) and train a tiny Conv2d adapter to "see through" the occlusion before the frozen VLM processes it. The adapter has approximately **10,500 trainable parameters**. The backbone has 3 billion.
+This tutorial makes that pattern concrete. We take a partially-occluded image classification task (CIFAR-10 images with random black rectangles covering about 5 to 20% of the frame) and train a tiny Conv2d adapter to "see through" the occlusion before the frozen VLM processes it. The adapter has approximately **10,500 trainable parameters**. The backbone has 3 billion.
 
 The machine learning is interesting, but the real focus here is on shipping a production-grade training pipeline:
 
@@ -32,7 +32,7 @@ The pipeline has four tasks with clearly defined responsibilities:
 1. **Dataset preparation** (`prepare_occlusion_dataset`): Downloads CIFAR-10, applies random occlusions, and writes image manifests as streaming JSONL files to object storage. Runs on CPU and is cached, so it only runs once regardless of how many times you rerun the pipeline with the same config.
 2. **Multi-node training** (`train_qwen_adapter_multinode`): Runs PyTorch Lightning with DeepSpeed Stage 2 across 2 nodes × 4 L40s GPUs. Only the adapter trains; the 3B backbone stays frozen.
 3. **Evaluation** (`evaluate_qwen_adapter`): Loads the saved adapter, runs inference on validation examples, and produces a predictions report. Runs on a single GPU.
-4. **Driver** (`qwen_vl_multinode_deepspeed`): The pipeline entry point. Orchestrates the three tasks above, manages WandB initialization, handles recovery from training failures, and produces a final HTML report in the Flyte UI.
+4. **Driver** (`qwen_vl_multinode_deepspeed`): The pipeline entry point. Orchestrates the three tasks above, supplies the WandB settings for the training run, handles recovery from training failures, and produces a final HTML report in the Flyte UI.
 
 Why this separation? It mirrors how production pipelines should be structured. Data prep is cheap and deterministic so we cache it. Training is expensive and failure-prone so we isolate it with fault tolerance. Evaluation needs different hardware than training. The driver is pure coordination, so it gets minimal resources.
 
@@ -74,7 +74,7 @@ The dataset task handles everything: downloading CIFAR-10, generating occlusions
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/data.py" fragment="prepare-dataset-task" lang="python" >}}
 
-Each image gets a randomly-placed black rectangle. The occlusion covers 22 to 42% of the image area during training and 28 to 45% during evaluation. The occlusion is deliberately harder at eval time to test how robust the adapter is. The bounding box coordinates are written into each manifest record alongside the image path and ground-truth label, so the training task can reconstruct the binary occlusion mask as the adapter's fourth input channel.
+Each image gets a randomly-placed black rectangle. The rectangle's width and height are each 22 to 42% of the image side during training and 28 to 45% during evaluation, so it covers about 5 to 18% of the image area in training and 8 to 20% in evaluation. The occlusion is deliberately harder at eval time to test how robust the adapter is. The bounding box coordinates are written into each manifest record alongside the image path and ground-truth label, so the training task can reconstruct the binary occlusion mask as the adapter's fourth input channel.
 
 Two Flyte primitives handle data persistence without any manual storage management:
 
@@ -113,7 +113,7 @@ The training task is a standard PyTorch Lightning training loop with distributed
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/tasks.py" fragment="training-task-signature" lang="python" >}}
 
-The `@wandb_init` decorator integrates with the `wandb_config` context created in the driver task. It retrieves the initialized WandB run and attaches a `WandbLogger` to the trainer. The `report=True` flag on the task decorator enables Flyte Reports for live dashboard streaming from this task.
+The `@wandb_init` decorator starts a WandB run with `wandb.init`, using the settings from the `wandb_config` context created in the driver task. With the default settings, only global rank 0 starts a run. The task body retrieves that run with `get_wandb_run()` and passes it to the trainer as a `WandbLogger` (other ranks get no run and train without a logger). The `report=True` flag on the task decorator enables Flyte Reports for live dashboard streaming from this task.
 
 ![Live Training](../../../_static/images/tutorials/qwen-vl-finetuning/live_training_graph.png)
 ![Live Training Contd](../../../_static/images/tutorials/qwen-vl-finetuning/losses.png)
@@ -146,7 +146,7 @@ If training fails, the driver task catches the error and returns the last recove
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/tasks.py" fragment="recovery-handler" lang="python" >}}
 
-A failed run still produces useful output: the best checkpoint reached before the failure, along with a partial training report. To resume from that point, pass the recovery artifact as `resume_training_artifacts` on the next run. The training task downloads it, finds the most recent `.ckpt` file, and passes it to `trainer.fit()` as `ckpt_path`. Training picks up at the last saved epoch with optimizer state and metrics history intact.
+A failed run still produces useful output: the latest checkpoint saved before the failure (`latest.ckpt`, not the best-scoring checkpoint), along with a partial training report. To resume from that point, pass the recovery artifact as `resume_training_artifacts` on the next run. The training task downloads it, finds the most recent `.ckpt` file, and passes it to `trainer.fit()` as `ckpt_path`. Training picks up at the last saved epoch with optimizer state and metrics history intact.
 
 The recovery URI is constructed from the configurable base path and the run name:
 
@@ -178,9 +178,9 @@ After training completes, a separate task runs inference on a single GPU:
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/tasks.py" fragment="evaluation-task-header" lang="python" >}}
 
-The task is async so the driver can `asyncio.gather` the downloads of training artifacts and images in parallel rather than sequentially, a simple speedup that matters when downloading hundreds of megabytes from object storage.
+The task is async so it can `asyncio.gather` the downloads of the validation manifest, the images and the training artifacts in parallel rather than sequentially, a simple speedup that matters when downloading hundreds of megabytes from object storage.
 
-The evaluation task loads the adapter state dict from `adapter_artifact.pt`, rebuilds the frozen backbone fresh from HuggingFace (there's no need to checkpoint 3B weights, only the ~10,500 adapter weights travel with the artifact), and runs greedy decoding on each validation example. The metric is exact-match accuracy between the model's predicted class token and the ground-truth CIFAR-10 label.
+The evaluation task loads the adapter state dict from `adapter_artifact.pt`, rebuilds the frozen backbone fresh from HuggingFace (there's no need to checkpoint 3B weights, only the ~10,500 adapter weights travel with the artifact), and runs greedy decoding on each validation example. The metric is accuracy against the ground-truth CIFAR-10 label: a prediction counts as correct when the normalized label is one of the words in the generated text, or equals the whole generated text.
 
 ### Putting it all together
 
@@ -188,7 +188,7 @@ The driver task is the pipeline entry point that all other tasks flow through:
 
 {{< code file="/unionai-examples/v2/tutorials/qwen_vl_frozen_backbone_finetuning/tasks.py" fragment="driver-task-signature" lang="python" >}}
 
-The driver constructs the recovery URI from `checkpoint_base_uri` and the current run name, prepares the dataset (or retrieves it from cache), then executes training inside a `wandb_config` context. The `wandb_config` context manager creates and registers a WandB run; the `@wandb_init` decorator on the training task retrieves it, updates it with the full `Config` dataclass, and attaches a `WandbLogger`. Neither the training task nor the callbacks need any WandB initialization code of their own.
+The driver constructs the recovery URI from `checkpoint_base_uri` and the current run name, prepares the dataset (or retrieves it from cache), then executes training inside a `wandb_config` context. The `wandb_config` context manager records the WandB settings in the Flyte context; the `@wandb_init` decorator on the training task reads them and starts the run. The training task then retrieves the run with `get_wandb_run()`, updates its config with the full `Config` dataclass, and wraps it in a `WandbLogger` for the trainer. Neither the training task nor the callbacks call `wandb.init` themselves.
 
 The recovery handler (shown in the previous section) wraps the training call. If training succeeds, evaluation runs next. The driver then downloads both the training and evaluation artifacts concurrently and assembles a final HTML report with training curves, evaluation summary, per-epoch metrics table, and sample prediction cards with the actual occluded images, which is pushed to Flyte Reports.
 
@@ -214,7 +214,7 @@ When you run this, the pipeline:
 2. **Prepares the dataset**: downloads CIFAR-10, generates occlusions, writes JSONL manifests; cached on subsequent runs with the same config
 3. **Launches multi-node training**: provisions 2 × 4 L40s GPUs and starts the Elastic job
 4. **Streams metrics to the live dashboard**: the Flyte Reports view starts updating as soon as the first step logs
-5. **Runs evaluation**: a single-GPU task loads the adapter and runs inference, computing exact-match accuracy
+5. **Runs evaluation**: a single-GPU task loads the adapter and runs inference, computing accuracy
 6. **Generates the final report**: training curves, evaluation summary, and sample prediction cards appear in the Flyte UI
 
 ![Final Report](../../../_static/images/tutorials/qwen-vl-finetuning/final_report.png)

@@ -32,8 +32,8 @@ therefore what runs out first — differs by cloud:
 
 The concrete per-node math, sizing tables, and tuning strategy live on the cloud-specific
 infrastructure pages:
-[AWS → Networking and IP capacity](./aws#networking-and-ip-capacity) ·
-[GCP → Networking and IP capacity](./gcp#networking-and-ip-capacity).
+[AWS → Networking and IP capacity](../aws/legacy#networking-and-ip-capacity) ·
+[GCP → Networking and IP capacity](../gcp/legacy#networking-and-ip-capacity).
 
 ## vCPU quotas
 
@@ -141,8 +141,7 @@ particularly unreliable.
 ## Queue and executor action limits
 
 V2 execution has a chain of configurable limits. The most common binding constraint is the
-data plane's **executor**: each active action holds a Watch connection to the control-plane
-queue service, so the executor caps how many actions can be in flight at once.
+data plane's **executor**, which caps how many actions can be in flight at once.
 
 The exact configuration keys, defaults, and override paths live in the chart's `values.yaml`
 and may shift between releases. Refer to the published chart sources for current settings:
@@ -152,8 +151,7 @@ and may shift between releases. Refer to the published chart sources for current
 
 **Resolution**:
 
-- Raise the executor's action limit to match expected concurrency. Higher gives more
-  throughput at the cost of more queue-service Watch connections.
+- Raise the executor's action limit to match expected concurrency.
 - Monitor executor health and tune it vertically (CPU/memory limits) if it becomes the
   bottleneck.
 

@@ -313,9 +313,11 @@ if __name__ == "__main__":
     # Comprehensive deployment configuration
     deployment = flyte.deploy(
         env,                          # Environment to deploy
-        dryrun=False,                 # Set to True for dry run
+        dry_run=False,                # Set to True for a dry run
         version="v1.2.0",             # Explicit version tag
         copy_style="loaded_modules"   # Code bundling strategy
     )
     print(f"Deployment successful: {deployment[0].summary_repr()}")
 ```
+
+`dry_run` requires `flyte` 2.8.0 or later; earlier versions take `dryrun`.

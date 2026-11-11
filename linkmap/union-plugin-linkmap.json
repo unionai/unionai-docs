@@ -45,6 +45,10 @@
     "MetricSeries": "/api-reference/union-plugin/flyteplugins.union.remote/metricseries/",
     "flyteplugins.union.remote.Metrics": "/api-reference/union-plugin/flyteplugins.union.remote/metrics/",
     "Metrics": "/api-reference/union-plugin/flyteplugins.union.remote/metrics/",
+    "flyteplugins.union.remote.NodeGroup": "/api-reference/union-plugin/flyteplugins.union.remote/nodegroup/",
+    "NodeGroup": "/api-reference/union-plugin/flyteplugins.union.remote/nodegroup/",
+    "flyteplugins.union.remote.NodeGroups": "/api-reference/union-plugin/flyteplugins.union.remote/nodegroups/",
+    "NodeGroups": "/api-reference/union-plugin/flyteplugins.union.remote/nodegroups/",
     "flyteplugins.union.remote.Policy": "/api-reference/union-plugin/flyteplugins.union.remote/policy/",
     "Policy": "/api-reference/union-plugin/flyteplugins.union.remote/policy/",
     "flyteplugins.union.remote.Queue": "/api-reference/union-plugin/flyteplugins.union.remote/queue/",
@@ -74,7 +78,6 @@
     "flyteplugins.union.factory.serve": "/api-reference/union-plugin/flyteplugins.union.factory/#serve",
     "flyteplugins.union.factory.source": "/api-reference/union-plugin/flyteplugins.union.factory/#source",
     "flyteplugins.union.io.allow_volumes": "/api-reference/union-plugin/flyteplugins.union.io/#allow_volumes",
-    "flyteplugins.union.io.with_high_throughput_volume_deps": "/api-reference/union-plugin/flyteplugins.union.io/#with_high_throughput_volume_deps",
     "flyteplugins.union.io.with_local_flyteplugins": "/api-reference/union-plugin/flyteplugins.union.io/#with_local_flyteplugins",
     "flyteplugins.union.utils.with_local_flyteplugins_union": "/api-reference/union-plugin/flyteplugins.union.utils/#with_local_flyteplugins_union"
   }

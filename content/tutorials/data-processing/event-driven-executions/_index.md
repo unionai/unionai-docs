@@ -12,26 +12,39 @@ mermaid: true
 
 An event happens outside Flyte — a file lands in a bucket, a partner drops a batch, an
 upstream service finishes a job — and a task should run. This tutorial builds that with
-AWS SQS or Google Cloud Pub/Sub, then shows the version that needs no queue at
-all, and ends with how to choose.
+AWS SQS or Google Cloud Pub/Sub, then shows the approach that uses Union's Artifact triggers without cloud message queues.
 
-Every approach launches the same task:
+The goal of this tutorial is to show you how to go from an architecture that uses a cloud message queue:
+
+![Cloud message queue feeding a Union App subscriber that launches task executions](../../../_static/images/tutorials/event-driven-executions/event-driven-cloud.png)
+
+To one that leverages Union's automation and data lineage capabilities:
+
+![Union Artifact triggers launch downstream task executions when new artifact versions are published](../../../_static/images/tutorials/event-driven-executions/event-driven-union.png)
+
+**Why would you like to do that?** 
+
+We believe using Union's Artifact triggers can help you achieve the automation your ML pipelines need with fewer components to maintain and better consistency guarantees. This page will guide you to demonstrate this.
+
+## Implementation
+
+In this tutorial we go with a Union App acting as an always-on subscriber that pulls messages from the queue and passes them to the Union Control Plane to create executions.
+You could implement that piece also with AWS Lambda or other serverless products.
+
+On every cloud we launch the same task:
 
 {{< code file="/unionai-examples/v2/tutorials/event_driven_executions/pipeline.py" fragment=task lang=python >}}
 
-Deploy it twice — once under a tag that is a permanent record, and once under a label the
+Deploy the task twice — once under a version that names this build, and once under a label the
 caller pins:
 
 ```bash
-flyte deploy --version 2026-09-23-a3f9c21 pipeline.py env   # immutable record
+flyte deploy --version 2026-09-23-a3f9c21 pipeline.py env   # names this build
 flyte deploy --version prod               pipeline.py env   # what production runs
 ```
 
-The caller then names `prod` and never changes. Releases and rollbacks happen on the
-Flyte side. Avoid resolving "latest" in the caller: every deploy would become an
-immediate production change with no way to pin or roll back.
 
-## Reading from SQS
+## Reading from AWS SQS
 
 ```mermaid
 flowchart LR
@@ -57,7 +70,7 @@ flowchart LR
     app -->|"3 - delete message"| q
 ```
 
-Steps 2 and 3 are in that order on purpose: the message is deleted once the run exists,
+Steps 2 and 3 in the diagram are in that order on purpose: the message is deleted once the run exists,
 not once it finishes.
 
 A subscriber reads the queue and launches a run per message. It runs as a Union app, so
@@ -76,9 +89,14 @@ flyte create api-key --name sqs-subscriber
 flyte create secret flyte-api-key --value <the-key-value>
 ```
 
-The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It also
-inherits the permissions of whoever minted it — scope it to the project and domain the
-subscriber launches into rather than reusing a personal key.
+The key carries the endpoint, so `flyte.init_from_api_key` needs nothing else. It does not
+inherit your permissions and is not scoped to a project or domain: by default it gets the
+org-wide Contributor policy. To restrict it to the project and domain the subscriber
+launches into, create it with `--no-default-policies`, create a policy bound to that
+project and domain with `flyte create policy`, and assign it to the key with
+`flyte create assignment --creds-subject <client-id> --policy <policy-name>` (see
+[Custom roles and policies](../../../user-guide/user-management#custom-roles-and-policies)).
+Every key also keeps a baseline `_system-provisioned-access` policy.
 
 Two settings matter. Apps scale to zero by default and autoscale on request volume, so it needs `Scaling(replicas=(1, 1))` or it will be scaled
 away. It also needs something listening on the app port, which the health endpoint
@@ -100,7 +118,7 @@ A newly configured notification also sends an `s3:TestEvent` with no `Records` a
 Treat it as nothing to do rather than as an error, or it will be retried until it reaches
 the dead-letter queue.
 
-### Queue configuration
+### SQS Queue configuration
 
 | Setting | Recommendation |
 |---|---|
@@ -181,7 +199,14 @@ same on both clouds.
 **Delivery is at-least-once.** Both services can deliver a message more than once. The run
 name is derived from the message id, so a redelivery collides with the run that already
 exists rather than starting a second one. Uniqueness is enforced by Flyte, which means
-this holds even across several subscriber replicas.
+this holds even across several subscriber replicas — provided the name is deterministic and
+fits Flyte's 30-character limit on run names.
+
+The SQS subscriber above does not fit that limit: `sqs-` plus an SQS `MessageId` is
+longer than 30 characters. Flyte rejects the run name as an invalid run identifier, no run
+is created, and the message is redelivered until it reaches the dead-letter queue. Derive
+the SQS run name deterministically from the `MessageId` (a short hash, for example) and keep
+it to 30 characters or fewer, so a redelivery still maps to the same run.
 
 **Acknowledge on launch, not on completion.** Waiting for a run to finish exhausts the
 visibility timeout or ack deadline, and the message is redelivered while the first run is
@@ -210,7 +235,7 @@ colliding with the message-id-derived run name that exists to prevent duplicates
 It is a second system holding state about the first, and it has to
 stay correct as both change.
 
-## The version without a queue
+## Using Union's Artifact triggers
 
 ```mermaid
 flowchart LR
@@ -248,7 +273,7 @@ there is no state to keep outside the platform and no reconciliation to build. A
 payload to decode and no mapping to maintain — the mapping in the queue versions has no
 type checking against the task signature and breaks silently when either side changes.
 
-## Choosing between them
+## Choosing an approach
 
 | | Message queue | Artifact trigger |
 |---|---|---|
@@ -265,9 +290,8 @@ The deciding question is where the event comes from, regardless of the cloud pro
 If an upstream Flyte task can publish the artifact — including one that ingests from a
 bucket on a schedule — the artifact trigger is simpler than the queue in every dimension.
 
-If the producer is a partner, another team, or a system you cannot change, nothing
-publishes an artifact and nothing fires. The event has to be observed, and the queue is the
-right tool. Registering an externally created object as an artifact does not bridge the
+If the producer is a partner, another team, or a system you cannot change, the message queue is the
+right tool. Registering an externally created object as a Union Artifact is possible but does not bridge the
 gap: you would still need to notice the object before you could register it, which is the
 original problem.
 

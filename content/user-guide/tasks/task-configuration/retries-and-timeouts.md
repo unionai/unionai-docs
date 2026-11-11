@@ -48,7 +48,7 @@ gantt
     Running (your code)     :r1, 6, 11
 
     section Per-attempt bounds
-    max_queued_time         :crit, 0, 5
+    max_queued_time         :crit, 0, 6
     max_runtime             :active, 6, 11
 
     section Attempt 2 (after a retry + backoff)
@@ -60,11 +60,24 @@ gantt
 
 In short:
 
-- **`max_queued_time`** bounds the time spent *waiting to run* (Queued + Waiting for resources). It resets on every attempt.
+- **`max_queued_time`** bounds the time spent *waiting to run* (Queued + Waiting for resources + Initializing). It resets on every attempt.
 - **`max_runtime`** bounds the time spent *running your code*. It resets on every attempt.
 - **`deadline`** bounds the *total* wall-clock from the first time the action was queued until it reaches a terminal phase: across every attempt, user retries and platform retries alike.
 
-(The brief *Initializing* phase is charged to neither per-attempt bound.)
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't enforce `max_queued_time`. It accepts the setting, but an attempt
+> can wait to run for any length of time. Everything this page says about `max_queued_time` applies only on a Union backend.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> `max_queued_time` is enforced only on Union deployments whose control plane records when each attempt was queued.
+> On a deployment with an older control plane, the bound isn't applied.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Retries
 
@@ -98,7 +111,7 @@ so a recovering dependency gets breathing room:
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/retries-and-timeouts/retries.py" fragment="retry-backoff" lang="python" >}}
 
 The delay before the n-th retry (0-indexed) is `min(base * factor**n, cap)`. With the values
-above the delays are 10s, 20s, 40s, 80s, then capped at 5m. The `cap` is what keeps an
+above the five delays are 10s, 20s, 40s, 80s and 160s. The `cap` is what keeps an
 aggressive `factor` from growing into hours; it is required whenever `factor > 1`.
 
 ### Skip retries for failures that can't be fixed
@@ -154,11 +167,26 @@ each retry.
 
 ### `max_queued_time`: fail fast when capacity isn't available
 
-`max_queued_time` caps the time an attempt spends *waiting to run* (the **Queued** and
-**Waiting for resources** phases) before execution begins. It answers "how long am I willing
+`max_queued_time` caps the time an attempt spends *waiting to run* (the **Queued**,
+**Waiting for resources** and **Initializing** phases) before execution begins. It answers "how long am I willing
 to wait for this to even start?" When a task asks for a scarce resource (a specific GPU, a
 large node) that the cluster can't currently supply, this bound makes it fail fast instead of
 stalling indefinitely. It is per-attempt and resets on each retry.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> Only a Union backend enforces this bound. On the open-source Flyte backend, an attempt is never
+> failed for exceeding `max_queued_time`, so `MaxQueuedTimeExceededError` is not raised.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant union >}}
+{{< markdown >}}
+> [!NOTE]
+> On a Union deployment whose control plane is too old to record when an attempt was queued, this bound
+> isn't applied and `MaxQueuedTimeExceededError` is not raised.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/retries-and-timeouts/timeouts.py" fragment="max-queued-time" lang="python" >}}
 

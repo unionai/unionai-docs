@@ -2,7 +2,7 @@
 title: User management
 description: Manage users, roles, and policies for your Union cluster.
 icon: person
-weight: 8
+weight: 10
 variants: -flyte +union
 ---
 
@@ -14,7 +14,7 @@ The system has four core concepts:
 * **Role**: A named set of actions (e.g. view inventory, create executions).
 * **Policy**: Binds one or more roles to specific projects, domains, or the entire organization.
 * **User / Application**: An actor assigned to policies. Users are identified by email; applications by ID.
-* **Action**: An operation like `view_flyte_inventory` or `create_flyte_executions`.
+* **Action**: An operation like `view_flyte_inventory`, `create_flyte_executions` or `register_flyte_inventory`. See [Available actions](#available-actions).
 
 ## Built-in policies
 
@@ -23,8 +23,10 @@ Union ships with three built-in policies:
 | Policy | Actions | Summary |
 |---|---|---|
 | **Admin** | All actions | Full control including user management and billing |
-| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory` | Register and run workflows |
-| **Viewer** | `view_flyte_executions`, `view_flyte_inventory` | Read-only access |
+| **Contributor** | `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`, `edit_execution_related_attributes`, `edit_cluster_related_attributes`, `view_llm_gateway`, `manage_llm_gateway_keys`, `view_secrets`, `manage_secrets`, `view_apps`, `manage_apps`, `view_triggers`, `manage_triggers`, `view_workspaces`, `manage_workspaces`, `view_artifacts`, `manage_artifacts`, `view_settings`, `edit_settings`, `manage_api_keys`, `view_clusters`, `view_usage`, `view_identities` | Register and run workflows |
+| **Viewer** | `view_flyte_executions`, `view_flyte_inventory`, `view_llm_gateway`, `view_apps`, `view_triggers`, `view_workspaces`, `view_artifacts`, `view_settings`, `view_clusters`, `view_usage`, `view_identities` | Read-only access |
+
+Built-in policies are managed by Union. Custom roles only hold the actions you give them.
 
 Users can hold multiple policies: permissions are the union of all assigned policies.
 
@@ -37,10 +39,17 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 Install the Union CLI plugin:
 
 ```bash
-pip install flyteplugins-union
+pip install 'flyteplugins-union>=0.20.2'
 ```
 
 This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
+
+> [!WARNING]
+> Use `flyteplugins-union` 0.20.2 or later.
+> With `flyte` 2.12.2 or later, earlier versions fail to import and the `flyte` CLI drops their subcommands.
+> Versions before 0.20.1 also don't support the actions listed after the table in [Available actions](#available-actions) (all except `view_identities`), which the built-in policies hold.
+> On a role that holds one, `Role.actions` and `flyte update role` fail,
+> and `Role.update` silently removes those actions.
 
 ### Walkthrough: restrict a team to run workflows in production only
 
@@ -204,11 +213,28 @@ Navigate to **Settings > User Management** to:
 | Action | Description |
 |---|---|
 | `administer_project` | Archive/update projects, manage customizable resources |
-| `manage_permissions` | Manage users, applications, and policy assignments |
-| `create_flyte_executions` | Launch executions |
-| `register_flyte_inventory` | Register workflows, tasks, and launch plans |
-| `view_flyte_executions` | View execution history |
+| `manage_permissions` | View and edit roles and policies, and manage users, applications, and policy assignments |
+| `create_flyte_executions` | Launch runs and upload inputs |
+| `register_flyte_inventory` | Register and deploy workflows, tasks, and launch plans |
+| `view_flyte_executions` | View runs and actions |
 | `view_flyte_inventory` | View registered workflows, tasks, and launch plans |
+| `administer_account` | Manage billing and account-wide settings |
+| `manage_cluster` | Manage clusters |
+| `manage_queue` | Manage cluster queues |
+| `view_cluster_config` | View the component configuration of a cluster |
+| `edit_execution_related_attributes` | Edit execution-related attributes (task resources, workflow execution config, external resources) |
+| `edit_cluster_related_attributes` | Edit cluster-related attributes (cluster resources, cluster assignment) |
+| `edit_unused_attributes` | Edit execution queue, execution cluster label, quality of service, and plugin override attributes |
+| `support_system_logs` | View system logs |
+| `view_llm_gateway` | View the inference gateway, its providers, guardrails, and virtual keys (without their values) |
+| `manage_llm_gateway` | Deploy and delete the inference gateway, and manage its upstream providers and guardrails |
+| `manage_llm_gateway_keys` | Issue, revoke, and view inference gateway virtual keys, and view inference gateway usage |
+
+Roles also accept the following actions, but no Union service checks them, so granting one has no effect:
+`view_secrets`, `manage_secrets`, `view_apps`, `manage_apps`, `view_triggers`, `manage_triggers`, `view_workspaces`, `manage_workspaces`, `view_artifacts`, `manage_artifacts`, `view_settings`, `edit_settings`, `manage_api_keys`, `view_clusters`, `view_permissions`, `view_usage`, `view_identities`.
+A role that holds `create_flyte_executions` can list, get, create, update, and delete secrets at the scope it's bound to.
+Viewing triggers requires `view_flyte_inventory`.
+Creating, activating, deactivating, and deleting triggers requires `register_flyte_inventory`.
 
 ## CLI command reference
 
@@ -223,7 +249,7 @@ Navigate to **Settings > User Management** to:
 | `flyte update policy <name>` | Edit a policy in `$EDITOR` |
 | `flyte delete policy <name>` | Delete a policy |
 | `flyte create assignment --email <email> \| --user-subject <id> \| --creds-subject <id> --policy <name>` | Assign a policy to a user or application |
-| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | List all assignments or view a specific one |
+| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | View the policies assigned to a user or application |
 | `flyte delete assignment --user-subject <id> \| --creds-subject <id> --policy <name>` | Unassign a policy from a user or application |
 | `flyte get user [<subject>]` | List all users or view a specific one |
 | `flyte delete user <subject>` | Delete a user |

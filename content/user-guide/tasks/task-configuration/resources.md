@@ -14,9 +14,9 @@ To specify resource requirements for your task, instantiate a `Resources` object
 the `resources` parameter of the `TaskEnvironment` or the `resources` parameter of the `override` function (for invocation overrides).
 
 Every task defined using that `TaskEnvironment` will run with the specified resources.
-If a specific task has its own `resources` defined in the decorator, it will override the environment's resources for that task only.
+The task decorator takes no `resources` argument. To give one task different resources, define it in its own `TaskEnvironment` or call `override(resources=...)` when you invoke it. If the environment sets `reusable`, also pass `reusable="off"` in the same `override` call.
 
-If neither `TaskEnvironment` nor the task decorator specifies `resources`, the default resource allocation will be used.
+If neither the `TaskEnvironment` nor an `override` specifies `resources`, the default resource allocation will be used.
 
 ## Resources data class
 
@@ -87,7 +87,7 @@ You can request an accelerator in three ways:
 - **Integer count** — `gpu=2` requests that many GPUs of whatever type is available.
 - **Device object** — `flyte.GPU()`, `flyte.TPU()`, `flyte.AMD_GPU()`, `flyte.APPLE_SILICON()`, or `flyte.Device()` for advanced configuration such as GPU partitioning (MIG) and TPU slice topologies.
 
-The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above.
+The `gpu` value can be set on the `TaskEnvironment` (applying to every task in it) or on a per-task `override`, exactly like the other resource fields shown above. If the environment sets `reusable`, the `override` must also pass `reusable="off"`.
 
 > [!NOTE]
 > Which accelerator types are actually available depends on your deployment and the node pools configured in your cluster. Requesting a type that no node provides will leave the task's pod `Pending`. For Apple Silicon, see [Apple Silicon (devbox only)](#apple-silicon-devbox-only).
@@ -107,7 +107,11 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-Supported NVIDIA types include `T4`, `L4`, `L40s`, `A10`, `A10G`, `A100`, `A100 80G`, `B200`, `H100`, `H200`, and `V100`.
+Supported NVIDIA types include `T4`, `L4`, `L40s`, `A10`, `A10G`, `A100`, `A100_80G`, `B200`, `H100`, `H200`, `V100`, `RTX_PRO_4500`, and `RTX_PRO_6000`.
+
+The names `A100_80G`, `RTX_PRO_4500`, and `RTX_PRO_6000` require `flyte` 2.11.3 or later. Earlier releases spell `A100_80G` and `RTX_PRO_6000` as `A100 80G` and `RTX PRO 6000`, and have no RTX PRO 4500 type.
+From `flyte` 2.11.4, the earlier spellings `A100 80G` and `RTX PRO 6000` still work as deprecated aliases and log a deprecation warning. `flyte` 2.11.3 rejects them.
+In the string form, `RTX_PRO_4500` is accepted only with a count of 1 (`"RTX_PRO_4500:1"`).
 
 #### GPU partitioning (MIG)
 
@@ -117,7 +121,7 @@ To request a Multi-Instance GPU (MIG) partition, use `flyte.GPU()` with a `parti
 resources=flyte.Resources(gpu=flyte.GPU(device="A100", quantity=1, partition="1g.5gb"))
 ```
 
-Partitioning is available on `A100`, `A100 80G`, `H100`, and `H200`.
+Partitioning is available on `A100`, `A100_80G` (`A100 80G` before `flyte` 2.11.3), `H100`, `H200`, and, from `flyte` 2.12.0, `RTX_PRO_6000`.
 
 ### Google TPUs
 
@@ -127,7 +131,7 @@ Use `flyte.TPU()` with the device type and, optionally, a slice topology:
 resources=flyte.Resources(gpu=flyte.TPU(device="V5P", partition="2x2x1"))
 ```
 
-Supported TPU device types are `V5P` and `V6E`.
+Supported TPU device types are `V5E`, `V5P`, and `V6E`. `V5E` requires `flyte` 2.8.0 or later.
 
 ### AMD GPUs
 

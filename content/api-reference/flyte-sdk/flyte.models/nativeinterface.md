@@ -2,7 +2,7 @@
 title: NativeInterface
 description: "A class representing the native interface for a task."
 icon: braces
-version: 2.12.0
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -87,6 +87,7 @@ def from_types(
     inputs: Dict[str, Tuple[Type, Type[_has_default] | Type[inspect._empty]]],
     outputs: Dict[str, Type],
     default_inputs: Optional[Dict[str, literals_pb2.Literal]] = None,
+    input_literal_types: Optional[Dict[str, types_pb2.LiteralType]] = None,
 ) -> NativeInterface
 ```
 Create a new NativeInterface from the given types. This is used to create a native interface for the task.
@@ -98,6 +99,7 @@ Create a new NativeInterface from the given types. This is used to create a nati
 | `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` | A dictionary of input names and their types and a value indicating if they have a default value. |
 | `outputs` | `Dict[str, Type]` | A dictionary of output names and their types. |
 | `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` | Optional dictionary of default inputs for remote tasks. |
+| `input_literal_types` | `Optional[Dict[str, types_pb2.LiteralType]]` | Optional dictionary of the registered literal types of a remote task's inputs. |
 
 **Returns:** A NativeInterface object with the given inputs and outputs.
 

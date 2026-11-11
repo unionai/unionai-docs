@@ -127,7 +127,7 @@ task:
 {{< /variant >}}
 
 > [!NOTE]
-> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
+> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local` or `local-podman`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -210,6 +210,7 @@ See the [CLI reference](../../../api-reference/flyte-cli#flyte-create-config) fo
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../../tasks/task-configuration/container-images#image-building).
+  - `local-podman`: Images built on your machine with Podman instead of Docker. Requires flyte 2.10.6 or later. See [Local image building](../../tasks/task-configuration/container-images#local-image-building).
 - `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
 **`task`**: Default settings for task execution.

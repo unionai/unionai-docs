@@ -33,7 +33,7 @@ Go to **Settings → API → Webhooks → New webhook** and set:
 1. **URL**: the `/webhook/linear` URL from the app's dashboard.
 2. **Resource types**: the entities your handlers match.
 
-Linear generates a signing secret for the webhook. Store it as the `linear-webhook-secret` Flyte secret.
+Linear generates a signing secret for the webhook. Store it as the `LINEAR_WEBHOOK_SECRET` Flyte secret.
 
 ## Events
 
@@ -84,5 +84,5 @@ Both files are in [`v2/integrations/flyte-plugins/linear`](https://github.com/un
 ## See also
 
 - [Software development tools](./_index) for the event model, `run_once`, and scopes.
-- [Event-driven automation](../../user-guide/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
+- [Event-driven automation](../../user-guide/project-patterns/software-development-lifecycle/event-driven-automation) for the pattern across Linear, Jira, and ClickUp.
 - [Linear API reference](../../api-reference/integrations/software-development-tools/linear/_index).

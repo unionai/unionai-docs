@@ -1,8 +1,8 @@
 ---
 title: Project patterns
-description: Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
+description: Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
 icon: folder
-weight: 10
+weight: 12
 variants: +flyte +union
 ---
 
@@ -32,5 +32,13 @@ How to deploy a Flyte project from CI. Uses GitHub Actions as the reference, but
 Projects, domains, quotas, RBAC, and secrets: the primitives to set up before you have ten teams and a noisy-neighbor problem.
 {{< /link-card >}}
 {{< /variant >}}
+
+{{< link-card target="software-development-lifecycle" icon="arrow-repeat" title="Software development lifecycle" >}}
+Automate your own development process with Flyte, using event-driven runs, review and release gates, human approvals, and evaluation gates for systems whose behavior depends on data and models.
+{{< /link-card >}}
+
+{{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
+An advanced guide for building an LLM reporting agent on Flyte.
+{{< /link-card >}}
 
 {{< /grid >}}

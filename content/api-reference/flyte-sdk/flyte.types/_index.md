@@ -2,7 +2,7 @@
 title: flyte.types
 description: "The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows."
 icon: box-seam
-version: 2.12.0
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -68,6 +68,9 @@ def guess_interface(
 ) -> flyte.models.NativeInterface
 ```
 Returns the interface of the task with guessed types, as types may not be present in current env.
+
+A variable whose type cannot be rebuilt does not fail the interface: it falls back to its structural shape (a
+STRUCT becomes `dict`), or to an `UnresolvedType` when even that fails.
 
 
 | Parameter | Type | Description |

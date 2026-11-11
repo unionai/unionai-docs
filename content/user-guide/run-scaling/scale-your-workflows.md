@@ -86,6 +86,14 @@ If task runtime is comparable to or less than overhead, consider:
 3. **Reusable containers**: Eliminate container creation overhead (`t`)
 4. **Local execution**: Run lightweight operations within the parent task
 
+{{< variant union >}}
+{{< markdown >}}
+A driver task that only calls other tasks has the same overhead problem in reverse: it holds a pod
+for as long as its children run. An [orchestrator task](../tasks/task-programming/orchestrator-tasks)
+has no pod of its own, so it starts in milliseconds and holds nothing while it waits.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## System architecture and data flow
 
 To optimize performance, understand how tasks flow through the system:
@@ -291,9 +299,9 @@ async def process_metadata(metadata: dict) -> dict:
 
 **Guideline**:
 
-- **< 10 MB**: Use inline types (primitives, small dicts, lists)
-- **> 10 MB**: Use reference types (File, Dir, DataFrame)
-- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` to change the threshold
+- **< 10 MiB**: Use inline types (primitives, small dicts, lists)
+- **> 10 MiB**: Use reference types (File, Dir, DataFrame)
+- **Adjust**: Use the `max_inline_io_bytes` parameter of `@env.task` or `override()` to change the threshold. See [Inline I/O threshold](../tasks/task-configuration/additional-task-settings#inline-io-threshold).
 
 See [Data flow](./data-flow) for details on data types and transport.
 

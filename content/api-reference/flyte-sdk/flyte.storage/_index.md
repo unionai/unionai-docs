@@ -1,7 +1,7 @@
 ---
 title: flyte.storage
 icon: box-seam
-version: 2.12.0
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -190,8 +190,10 @@ def join(
     *paths: str,
 ) -> str
 ```
-Join multiple paths together. This is a wrapper around os.path.join.
-# TODO replace with proper join with fsspec root etc
+Join multiple paths together. For URIs (e.g. s3://, gs://, abfs://, file://),
+joins using forward slashes regardless of the host operating system to prevent Windows
+backslash corruption while avoiding URL parsing so characters like '#' or '?' in
+keys are preserved. For local filesystem paths, uses os.path.join.
 
 
 
