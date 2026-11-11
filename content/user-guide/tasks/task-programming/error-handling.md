@@ -41,7 +41,7 @@ your recovery logic needs to be.
 
 The most common pattern is to catch a specific exception and re-run the failing task with a different
 configuration. The following example intentionally triggers an out-of-memory error, catches the
-`flyte.errors.OOMError`, and retries the task with more memory:
+`flyte.errors.OOMError`, and tries to run the task again with more memory:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
 
@@ -49,14 +49,18 @@ In this code, we do the following:
 
 * Import the necessary modules, including `flyte.errors`.
 * Set up the task environment with a modest resource allocation of 1 CPU and 250 MiB of memory.
-* Define two tasks: `oomer`, which allocates a large list and is likely to run out of memory, and
-  `always_succeeds`, which always returns cleanly.
+* Define the `oomer` task, which allocates a large list and is likely to run out of memory.
 * Define the `main` task (the top-level workflow task) that contains the failure-recovery logic.
 
 The `try...except` block in `main` runs `oomer`. If it exhausts memory, `main` catches the
-`flyte.errors.OOMError` and retries by calling `oomer.override(resources=...)` with a larger memory allocation.
-If the retry also runs out of memory, `main` gives up and re-raises the error. The `finally` block runs
-`always_succeeds` regardless of the outcome.
+`flyte.errors.OOMError` and calls `oomer.override(resources=...)` with a larger memory allocation. A nested
+`try...except` re-raises the error if that call also runs out of memory.
+
+> [!WARNING] Broken retry call
+> As currently published, the example calls the overridden task as `oomer.override(resources=...)(5)`, but `oomer`
+> takes no arguments.
+> The call raises `flyte.errors.RuntimeUserError` ("Too many positional arguments provided") before the retry
+> runs. The inner `except flyte.errors.OOMError` doesn't catch it, so `main` fails with that error.
 
 This type of dynamic error handling lets you gracefully recover from user-level errors in your workflows using
 patterns you already know from ordinary Python. For a complete, self-tuning version of this pattern that caches
