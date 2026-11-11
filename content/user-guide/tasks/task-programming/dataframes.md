@@ -34,7 +34,7 @@ Now, let's create a task that returns a native Pandas DataFrame:
 This is the most basic use-case of how to pass DataFrames (of all kinds, not just Pandas).
 We simply create the DataFrame as normal, and return it.
 
-Because the task has been declared to return a supported native DataFrame type (in this case `pandas.DataFrame` Flyte will automatically detect it, serialize it correctly and upload it at task completion enabling it to be passed transparently to the next task.
+Because the task has been declared to return a supported native DataFrame type (in this case `pandas.DataFrame`), Flyte will automatically detect it, serialize it correctly and upload it at task completion enabling it to be passed transparently to the next task.
 
 Flyte supports auto-serialization for the following DataFrame types:
 
@@ -53,7 +53,7 @@ The `flyte.io.DataFrame` class creates a thin wrapper around objects of any stan
 
 As with native DataFrame types, Flyte will automatically serialize and upload the data at task completion.
 
-The advantage of the unified `flyte.io.DataFrame` wrapper is that you can be explicit about the storage format that makes sense for your use case, by using an `Annotated` type where the second argument encodes format or other lightweight hints. For example, here we specify that the DataFrame should be stored as Parquet:
+The advantage of the unified `flyte.io.DataFrame` wrapper is that you can be explicit about the storage format that makes sense for your use case, by using an `Annotated` type where the second argument encodes format or other lightweight hints. The example above does this: its return type, `Annotated[flyte.io.DataFrame, "parquet"]`, stores the DataFrame as Parquet.
 
 ## Automatically convert between types
 
