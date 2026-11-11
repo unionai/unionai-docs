@@ -42,7 +42,7 @@ The experiment task stacks `@tool(call_handler=tools.right_size)` on `@experimen
 
 {{< code file="/unionai-examples/v2/tutorials/parallelized_autoresearch/parallelized_autoresearch.py" fragment=run_experiment lang=python >}}
 
-Batch fan-out calls `flyte.map.aio(run_experiment, ...)` from `run_experiment_batch`. That path invokes `run_experiment.aio()` directly (**not** through the agent registry) so the example binds `call_llm` and `model` on the tool after construction (see the `dataclasses.replace` block above). With Flyte SDK ≥ 2.5.5, `AgentTool.aio` routes through `call_handler`, so every mapped experiment gets LLM right-sizing even when the agent only exposes `run_experiment_batch` in code mode.
+Batch fan-out calls `flyte.map.aio(run_experiment, ...)` from `run_experiment_batch`. That path invokes `run_experiment.aio()` directly (**not** through the agent registry) so the example binds `call_llm` and `model` on the tool after construction (see the `dataclasses.replace` block above). With Flyte SDK ≥ 2.5.6, `AgentTool.aio` routes through `call_handler`, so every mapped experiment gets LLM right-sizing even when the agent only exposes `run_experiment_batch` in code mode.
 
 ## The fan-out agent task
 
@@ -80,6 +80,6 @@ flyte run parallelized_autoresearch.py parallelized_autoresearch \
 ```
 
 > [!NOTE]
-> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks. Requires **Flyte SDK ≥ 2.5.5** for `call_handler` support in code mode and on `AgentTool.aio` (used by `flyte.map` fan-out).
+> The first run downloads climbmix data shards and trains a BPE tokenizer. Subsequent runs reuse cached bundle tasks. Requires **Flyte SDK ≥ 2.5.6** for `call_handler` support in code mode and on `AgentTool.aio` (used by `flyte.map` fan-out).
 
 See also the single-task [Autoresearch agent](../autoresearch/_index) tutorial for the Claude Code + pull-request workflow.
