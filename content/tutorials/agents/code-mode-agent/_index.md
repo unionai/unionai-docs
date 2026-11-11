@@ -21,7 +21,7 @@ Most tool-using agents call tools one at a time. The model asks for a tool, the 
 
 In [code mode](../../../user-guide/agents/sandboxing/code-mode), the model writes a single program that orchestrates the tools instead, with real control flow and composition. A question like "compare three tickers, indexed to 100 at the start, then rank them by volatility" becomes one script that does a few fetches and runs one query. It doesn't glue together a dozen tools with model turns.
 
-The code runs inside Monty, a restricted interpreter with no imports, no filesystem access, no network access, and near-instant startup. It can only use the tools you explicitly make available to the sandbox. That means the model isn't running arbitrary Python with unrestricted access. It can only work within the boundaries you've defined.
+The code runs inside Monty, a restricted interpreter with no third-party packages, only a subset of the standard library, no filesystem access, no network access, and near-instant startup. It can only use the tools you explicitly make available to the sandbox. That means the model isn't running arbitrary Python with unrestricted access. It can only work within the boundaries you've defined.
 
 ## What runs where
 
@@ -38,7 +38,7 @@ The example splits work by how expensive and how worth-tracking each piece is.
 
 ## The heavy tool: a durable query
 
-The agent fetches prices at runtime from a Yahoo Finance MCP server (covered below). Each fetch returns one ticker's closing prices as a JSON string; `query` parses those into a `prices(ticker, date, close)` table and runs read-only DuckDB SQL against it, coercing dates to ISO strings on the way out. The reshape lives in the task, not the sandbox, because the sandbox has no `json` or `pandas`:
+The agent fetches prices at runtime from a Yahoo Finance MCP server (covered below). Each fetch returns one ticker's closing prices as a JSON string; `query` parses those into a `prices(ticker, date, close)` table and runs read-only DuckDB SQL against it, coercing dates to ISO strings on the way out. The reshape lives in the task, not the sandbox, because the sandbox has no `pandas`:
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/tools.py" fragment=query_tool lang=python >}}
 
@@ -99,7 +99,7 @@ External tools plug in over MCP with `MCPServerSpec`. The agent connects on firs
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=mcp lang=python >}}
 
-`tool_prefix` namespaces the server's tools (`yf_get_historical_stock_prices`) to avoid collisions, and `tool_filter` narrows the server's twelve tools down to the one the analytics needs, the same surface-shrinking move as the SQL guard: the model never even sees the tools it should not use, and the prompt stays small. Because the sandbox has no `json`, the model never parses the tool's raw output. It passes the string straight to `query`, which does the reshape. Fetching a ticker becomes one more function call in the model's program, sitting alongside the durable query.
+`tool_prefix` namespaces the server's tools (`yf_get_historical_stock_prices`) to avoid collisions, and `tool_filter` narrows the server's twelve tools down to the one the analytics needs, the same surface-shrinking move as the SQL guard: the model never even sees the tools it should not use, and the prompt stays small. The prompt tells the model not to parse the tool's raw output, so it passes the string straight to `query`, which does the reshape. Fetching a ticker becomes one more function call in the model's program, sitting alongside the durable query.
 
 ## The analysis task
 
