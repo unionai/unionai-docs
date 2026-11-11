@@ -2,7 +2,7 @@
 title: OOMError
 description: "This error is raised when the underlying task execution fails because of an out-of-memory error."
 icon: exclamation-triangle
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---

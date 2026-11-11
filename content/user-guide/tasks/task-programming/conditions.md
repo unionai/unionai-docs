@@ -10,8 +10,8 @@ variants: +flyte +union
 
 An **external condition** is a first-class action that pauses a running task until an external
 signal arrives: a human approval, a callback from an external service, or a value supplied at
-runtime. The paused action stays observable, resumable, and governable like any other action, so
-you no longer need polling loops or side processes to wait on something the workflow can't produce
+runtime. The condition stays observable and governable like any other action, so
+you don't need polling loops or side processes to wait on something the workflow can't produce
 itself.
 
 Inside a task, `await flyte.new_condition.aio(...)` registers a condition action and returns a
@@ -106,8 +106,10 @@ flyte.new_condition(
 | `description` | `str` | `""` | Longer explanation rendered alongside the prompt. |
 | `timeout` | `timedelta` \| `int` \| `float` \| `None` | `None` | Maximum wait. If it elapses with no signal, `wait()` raises `flyte.errors.ConditionTimedoutError`. |
 
-An optional advanced `webhook` parameter accepts a `flyte.ConditionWebhook` so the backend POSTs a
-callback URL when the condition is created; see the API reference for details.
+The `webhook` parameter takes a `flyte.ConditionWebhook`. In a local run, the SDK POSTs the payload to
+its URL when the condition is created, with `{callback_uri}` set to a `local://` URI that only the local
+run can use. Don't rely on it in a remote run: the SDK passes the webhook to
+the backend, but the backend doesn't currently POST to the URL.
 
 ## Signaling a condition
 
@@ -159,6 +161,13 @@ async def with_default():
     except ConditionTimedoutError:
         threshold = 0.5   # proceed with a default if no one responds
 ```
+
+## Resources while waiting
+
+`wait()` blocks inside the task's own process. The waiting task's pod keeps running for the whole
+wait and holds the `Resources` its environment requests. The condition itself is stored on the
+backend as a separate action. Give the task that waits small resources, and account for one running pod
+per waiting task when many tasks wait at once.
 
 ## Errors
 

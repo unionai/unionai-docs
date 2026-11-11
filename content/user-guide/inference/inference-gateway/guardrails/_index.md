@@ -45,7 +45,7 @@ Each guardrail is a Union app of type `Guardrail`, running on the gateway's clus
    | **Timeout (ms)** | How long the gateway waits for a verdict. Defaults to 5,000. At most 30,000. |
    | **Fail open** | What happens when the guardrail can't answer. See [When a guardrail fails](#when-a-guardrail-fails). |
 
-The gateway picks up the guardrail in under a second. To use one app for both stages, register it under each stage.
+The gateway picks up the guardrail within about 15 seconds. To use one app for both stages, register it under each stage.
 
 ## When a guardrail fails
 
@@ -68,7 +68,7 @@ Every guardrail outcome other than pass is recorded with the request's usage, wi
 
 For a streamed answer, the post-call check runs once, on the full text, after the last chunk. Chunks already sent to the caller can't be recalled: a fail ends the stream with an error event, after the text that was already delivered. If your post-call guardrail must stop text from ever reaching the caller, have callers turn off streaming.
 
-The gateway buffers at most 1 MiB of text per stream and 64 MiB across all streams on a replica. Change both limits under **Stream buffering** on the **Guardrails** tab. Past either limit, the check sees a prefix of the answer with `truncated` set.
+The gateway buffers at most 1 MiB of text per stream and 64 MiB across all streams on a replica. To change both limits, click **Edit** at the top of the gateway's page and set **Stream buffering**. Past either limit, the check sees a prefix of the answer with `truncated` set.
 
 A cache hit on a streamed request is delivered as a single chunk.
 

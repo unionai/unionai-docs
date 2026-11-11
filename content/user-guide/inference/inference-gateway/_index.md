@@ -9,14 +9,12 @@ mermaid: true
 
 # Inference Gateway
 
-Say five teams build on LLMs. Each one has its own OpenAI key in a secret, nobody knows which key is behind last month's invoice, an Anthropic outage takes down two production apps, and a prompt containing a customer's Social Security number went to a third-party model last week.
-
-The Union Inference Gateway fixes this by putting one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
+The Union Inference Gateway puts one OpenAI-compatible endpoint in front of every model provider you use. Every task, app, and laptop calls the gateway instead of calling providers directly, and the gateway applies your policy to every call.
 
 ## Why use a gateway
 
 **One provider key, many virtual keys.**
-You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls, so a runaway agent loop costs what you allowed and no more. Revoking a virtual key never means rotating the provider key that everyone else depends on.
+You store each provider's API key once, as a Union secret. Teams, apps, and developers get *virtual keys* (`sk-un-...`) instead. Each virtual key has its own budget, rate limit, and list of allowed models. When a key reaches its budget the gateway rejects further calls, so a runaway agent loop costs what you allowed and no more, however many gateway replicas are running. Revoking a virtual key never means rotating the provider key that everyone else depends on.
 
 **Fallbacks when a provider fails.**
 A request can name fallback models, for example `anthropic/claude-haiku-4-5` behind `openai/gpt-4.1-mini`. If the primary provider errors, is down, or rejects the call for that key, the gateway tries the next model in the list. Your application keeps answering through a provider outage.
@@ -54,7 +52,7 @@ flowchart LR
 - **Prompts and answers never reach Union's control plane.** Traffic goes from your callers to the gateway to the provider, and nowhere else. The control plane sends the gateway its policy (providers, keys, budgets, guardrails) and receives usage records: which key, which model, how many tokens, what it cost, how long it took. A usage record never contains a prompt or an answer.
 - **Provider credentials stay in your data plane.** Provider API keys are Union secrets mounted on the gateway. The policy refers to them by environment variable name and never carries the value.
 - **Zero trust.** Every call presents a virtual key. The gateway reaches guardrail apps and self-hosted models over cluster-local addresses, not through ingress. The gateway pulls its policy from the control plane, and the control plane never connects in to the gateway. See [Zero Trust security](../../../security/_index).
-- **Built for proxying.** The gateway is a lightweight proxy written in Go. It enforces budgets and rate limits in memory, without a round trip to the control plane, so enforcement keeps working when the control plane is unreachable. It scales out with request rate.
+- **Built for proxying.** The gateway is a lightweight proxy written in Go. It scales out with request rate.
 
 ## In this section
 
@@ -75,5 +73,8 @@ Reach the gateway from any local tool, with or without exposing it publicly.
 
 **[Guardrails](./guardrails/_index)**
 Check every prompt and every answer with your own code.
+
+**[Decisions](./decisions)**
+Ask a model typed questions about a state with `POST /v1/decisions`.
 
 {{< subpage-cards >}}

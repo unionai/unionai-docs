@@ -18,7 +18,7 @@ The task programming section covers key patterns for building effective Flyte wo
 
 - [**Files and directories**](./files-and-directories): Work with large datasets using Flyte's efficient file and directory types that automatically handle data upload, storage, and transfer between tasks.{{% variant union %}}
 - [**Volumes**](./volumes/_index): Mount a persistent file system and use it from within your task like an ordinary local directory.{{% /variant %}}
-- [**DataFrames**](./dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, Dask, and other DataFrame backends.
+- [**DataFrames**](./dataframes): Pass DataFrames between tasks without downloading data into memory, with support for Pandas, Polars, PyArrow, and other DataFrame backends.
 - [**Data classes and structures**](./dataclasses-and-structures): Use Python data classes and Pydantic models as task inputs and outputs to create well-structured, type-safe workflows.
 - [**Custom context**](./custom-context): Use custom context to pass metadata through your task execution hierarchy without adding parameters to every task.
 
@@ -31,6 +31,11 @@ The task programming section covers key patterns for building effective Flyte wo
 - [**Streaming map-reduce**](./streaming-map-reduce): Process fanout results as they complete with `asyncio.as_completed`, reducing in batches incrementally instead of waiting for every task to finish.
 - [**Task dependencies and ordering**](./task-dependencies): Replicate DAG-like behavior (sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling) using `asyncio` in Flyte 2's implicit dependency model.
 - [**Structured concurrency with anyio**](./structured-concurrency-anyio): Use `anyio` task groups as a top-level structured-concurrency alternative to raw `asyncio`, with automatic sibling cancellation when one task fails.
+{{< variant union >}}
+{{< markdown >}}
+- [**Orchestrator tasks**](./orchestrator-tasks): Run driver tasks that only call other tasks without a pod of their own, so they start in milliseconds and hold no compute while they wait.
+{{< /markdown >}}
+{{< /variant >}}
 - [**External conditions**](./conditions): Pause a task until an external signal arrives: a human approval, a callback from an external service, or a value supplied at runtime.
 - [**Grouping actions**](./grouping-actions): Organize related task executions into logical groups for better visualization and management in the UI.
 - [**Container tasks**](./container-tasks): Run arbitrary containers in any language without the Flyte SDK installed, using Flyte's copilot sidecar for data flow.

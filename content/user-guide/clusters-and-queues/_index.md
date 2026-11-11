@@ -10,9 +10,9 @@ mermaid: true
 # Clusters and queues
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` cluster, pool, and queue commands and the Python objects on these
+> The `flyte` cluster, pool, queue, and node-groups commands and the Python objects on these
 > pages are provided by the `flyteplugins-union` package. Install it with
-> `pip install flyteplugins-union`.
+> `pip install flyteplugins-union`. The node-groups commands need version 0.20.2 or later.
 
 As a {{< key product_name >}} deployment grows past a single cluster, you need to
 control *where* a workload runs and *under what limits*. Three primitives do this:
@@ -43,14 +43,14 @@ administrator. These are administrative tasks; most workflow authors only need
 
 The pages here manage the **control-plane records** for pools, clusters, and
 queues. They do not provision the **data plane** itself: the cloud resources
-(object store, secret store, registry) and the Helm release that registers a
-cluster with the control plane.
+(object store, secret store, registry) and the install of the data plane on the
+cluster (by the agent from the Union.ai UI, or by a Helm release you run).
 
 If you run a self-managed deployment, provision the data plane first with
 [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-[Data plane setup on AWS](../../deployment/selfmanaged/aws/legacy)),
-then use the commands here to manage the pool, cluster, and queue records that
-route work to it.
+[Provision your AWS resources](../../deployment/selfmanaged/aws/_index)),
+then use the commands here to add or change the pool, cluster, and queue records
+that route work to it.
 
 ## How they fit together
 
@@ -142,6 +142,10 @@ Create and manage the scheduling lanes that route workloads to a pool and enforc
 
 {{< link-card target="resource-caps-and-scheduling" icon="sliders" title="Resource caps and scheduling" >}}
 Share clusters across teams with per-queue CPU, memory, and GPU caps, and choose how a queue schedules work when capacity is tight.
+{{< /link-card >}}
+
+{{< link-card target="node-groups" icon="server" title="Node groups" >}}
+Inspect and update the node groups a cluster declares, the node shapes it can schedule onto.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -28,9 +28,9 @@ A provider is a source of models behind the gateway: a hosted API such as OpenAI
    | **Provider** | One of the supported providers listed below. |
    | **API key secret** | The Union secret that holds the API key, for example `openai-api-key`. |
    | **Models** | A comma-separated allowlist, for example `gpt-4.1, gpt-4.1-mini`. Leave it empty to allow every model. |
-   | **Weight** | The load-balancing weight among providers. Defaults to `1`. |
+   | **Weight** | The load-balancing weight of the provider's API key among that provider's keys. The gateway gives each hosted provider one key, so the weight doesn't split traffic between providers. Defaults to `1`. |
 
-4. Redeploy the gateway so it mounts the new secret. The provider shows **Pending** until then, and **Deployed** after.
+When you add the provider, the gateway redeploys automatically to mount the new secret, and the provider shows **Deployed**. If that redeploy fails, the provider shows **Pending deploy** until you deploy the gateway again.
 
 The secret is mounted on the gateway and stays in your data plane. The control plane never reads it, and the gateway's policy refers to it only by name.
 
@@ -49,7 +49,7 @@ To call a provider directly from a task or app instead, without the gateway, see
 You can put a model you serve on Union behind the gateway, next to hosted providers. Callers reach it with the same client, the same virtual keys, and the same guardrails.
 
 1. Deploy the model as a [vLLM](../self-hosted-endpoints/vllm) or [SGLang](../self-hosted-endpoints/sglang) app on the gateway's cluster.
-2. In **Settings → Inference Gateway → Providers**, click **Add provider** and choose the vLLM or SGLang provider type.
+2. In **Settings → Inference Gateway → Providers**, click **Add provider** and choose **Union LLM (vLLM / SGLang app)**.
 3. Fill in the provider:
 
    | Field | Meaning |
@@ -58,8 +58,8 @@ You can put a model you serve on Union behind the gateway, next to hosted provid
    | **Model id** | The model the app serves (its `--served-model-name`). Filled in from the app when it records one. |
    | **Name** | The provider name, which callers use as the model prefix. |
    | **Cost** | USD per 1 million input tokens and per 1 million output tokens. |
-   | **Answers decisions** | Lets callers send this app `POST /v1/decisions`. The model must support tool calling. |
-   | **Weight** | The load-balancing weight among providers. Defaults to `1`. |
+   | **Answers decisions** | Lets callers send this app `POST /v1/decisions`. The model must support tool calling. See [Decisions](./decisions). |
+   | **Weight** | Stored with the provider, but not sent to the gateway, so it has no effect. Defaults to `1`. |
 
 A provider named `qwen` whose app serves `qwen3-8b` is called as `qwen/qwen3-8b`.
 

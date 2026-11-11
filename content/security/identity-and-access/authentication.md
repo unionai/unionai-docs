@@ -10,7 +10,7 @@ variants: -flyte +union
 
 ## Authentication methods
 
-Union.ai supports three authentication methods, each designed for a different use case. API keys and service accounts both authenticate as an OAuth2 application identity with client credentials; they differ in who provisions those credentials.
+Union.ai supports three authentication methods, each designed for a different use case. API keys and service accounts both authenticate as an OAuth2 application identity with client credentials.
 
 | Method | Identity Type | Credentials | Use Case |
 |---|---|---|---|

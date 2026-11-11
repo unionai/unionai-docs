@@ -187,7 +187,7 @@ With the [Mistral](./mistral) adapter, turns served from their durable records o
 
 ## Human in the loop
 
-A tool is a Flyte task, and a Flyte task can suspend on a condition. That gives you an approval gate no agent SDK has an equivalent for, because the run genuinely suspends rather than blocking a thread, and survives a restart while it waits.
+A tool is a Flyte task, and a Flyte task can wait on a condition, which puts a human approval gate on a tool call. The condition is stored on the backend. The tool task's pod keeps running while it waits.
 
 ```python
 @tool

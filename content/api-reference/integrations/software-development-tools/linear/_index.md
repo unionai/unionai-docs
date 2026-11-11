@@ -2,7 +2,7 @@
 title: Linear
 description: "Linear webhooks for Flyte."
 icon: book
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
