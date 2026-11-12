@@ -2,7 +2,7 @@
 title: AppleSiliconModelNotFoundError
 description: "Raised when the model an Apple Silicon workload asks the MLX daemon to serve cannot be found or loaded."
 icon: exclamation-triangle
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
