@@ -14,8 +14,8 @@ the Kubernetes RBAC resources that Union.ai's data plane components need. There 
 | Value | Default | Decides |
 |-------|---------|---------|
 | `singleNamespace` | `true` | Whether tasks and apps run in the (Helm) release namespace, or in a namespace per project and domain. |
-| `namespaces.enabled`, `namespaces.static` | `enabled.false` , and `static` lists six names | Whether the chart pre-creates the namespaces listed in `namespaces.static` and binds the work-namespace role in each. It applies only when `singleNamespace` is `false`. The scope comes from `singleNamespace` alone. |
-| `commonServiceAccount.enabled` | `true` | Whether the Union backend components share one service account or each get their own. Defaults to `true`. |
+| `namespaces.enabled`, `namespaces.static` | `enabled.false`; `static` lists six names | Whether the chart pre-creates the namespaces listed in `namespaces.static` and binds the work-namespace role in each. It applies only when `singleNamespace` is `false`. The scope comes from `singleNamespace` alone. |
+| `commonServiceAccount.enabled` | `true` | Whether the Union backend components share one service account or each get their own. |
 
 
 > [!NOTE] Chart version
@@ -45,7 +45,7 @@ Choose multi-namespace mode when:
 
 Monitoring, usage collection, and app serving work in both modes.
 
-> Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
+> [!WARNING] Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
 
 ## Single-namespace mode
 
@@ -60,19 +60,16 @@ In this mode:
 - Union.ai's workloads, tasks and apps included, run in the Helm release namespace. Every grant that can be
   namespaced is a Role in the release namespace. The one exception is `<release-ns>-prometheus-apiserver-discovery`,
   a Role in `default` that Prometheus uses to discover the API server endpoints.
-- Cluster-scoped reads are limited to resources that have no namespaced form: nodes, node and API server
+- Cluster-scoped reads are limited to resources that have no namespaced form: nodes, namespaces, node and API server metrics, IngressClass, and Knative's informers.
   metrics, IngressClass, and Knative's informers.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
-- App serving is on by default and adds Knative's cluster-wide reads. 
 - App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written.
 namespace however their RBAC is written. 
 
 > [!WARNING] The install identity needs cluster permissions.  
-> Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable
-> by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
-> CSIDriver. Subcharts such as ingress-nginx and metrics-server, when enabled, create their own cluster
-> RBAC.
+> Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
+> CSIDriver. Subcharts such as ingress-nginx and metrics-server, when enabled, create their own cluster RBAC.
 
 ## Multi-namespace mode
 
@@ -262,7 +259,7 @@ With release namespace `union`, app serving on, and the default `commonServiceAc
 | `union-<component>-work-ns-cluster-read` | ClusterRole | Multi-namespace. The operator, proxy, leaseworker, and pod webhook |
 | `union-clusterresourcesync-cluster-write` | ClusterRole | Multi-namespace, with `clusterresourcesync` on |
 | `union-secret-read` | Role | Multi-namespace. Secret reads in `proxy.secretsNamespace` |
-| `union-kube-state-metrics` | Role in single-namespace mode, ClusterRole in multi-namespace mode | Both |
+| `union-kube-state-metrics` | Role, or ClusterRole with `prometheus.kube-state-metrics.releaseNamespace: false`| Both |
 
 Enabling more components, such as propeller, `nodeobserver`, or `node-bootstrap`, adds roles named the
 same way.
@@ -304,13 +301,12 @@ Find the row that matches your values on the chart you run now. When you set `si
 | `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces.  If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to every namespace.  From 2026.11.4, that RoleBinding is their only grant in a work namespace.
 
 Also:
-
 - Keep every name in `namespaces.static` during this upgrade. The upgrade adds `helm.sh/resource-policy: keep` to each listed namespace, so a name you drop now is deleted with everything in it. Add names freely, and remove them in a later upgrade.
 - In multi-namespace mode, list the custom resources of Spark, Ray, Dask, Kubeflow, or JobSet tasks in `taskPluginClusterReadRules`. Before 2026.11.4, a cluster-wide grant covered them.
 - Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. Now it
   takes effect, so bind each new service account to a cloud identity before you upgrade.
 - Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
-- Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values.
+- Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values. From `2026.11.4` it takes effect.
 - In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
