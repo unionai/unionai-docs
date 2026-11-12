@@ -34,6 +34,8 @@ The chart pulls three public images from GitHub's container registry, tagged wit
 | `ghcr.io/unionai/onebox-console` | `console.image.repository` |
 | `ghcr.io/unionai/envoy` (only with apps on) | `serving.gateway.envoy.image.repository` |
 
+With the [image builder](./image-builder), task pods also pull `ghcr.io/unionai/imagebuilder/build-image` and `frontend-v2`. [`flyte start onebox`](./try-locally) runs a different image, `ghcr.io/unionai/onebox-local`, which has all of these inside it.
+
 For an airgapped install or a private mirror, copy each image with all its architectures, point these values at your copies, and add the mirror's pull secret to `imagePullSecrets` if it needs one.
 
 ## What you provide
@@ -41,12 +43,14 @@ For an airgapped install or a private mirror, copy each image with all its archi
 | You provide | Chart values |
 |---|---|
 | A PostgreSQL database onebox can reach, and a user that owns it | `database.host`, `database.name`, `database.user`, and a password in `database.existingSecret` |
-| A bucket in Amazon S3, Google Cloud Storage, or an S3-compatible store, with a CORS rule for the UI | `storage.type`, `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
+| A bucket in Amazon S3, Google Cloud Storage, Azure Blob Storage, or an S3-compatible store (MinIO, R2, Ceph), with a CORS rule for the UI | `storage.type` (`s3`, `gcs`, or `azure`), `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
 | Optionally, an authenticating proxy in front of onebox | `identity.*`; see [Authentication](./authentication) |
 | Optionally, role-based access control | `authz.enabled`; see [Authorization](./authorization) |
 | Optionally, a license key | `license.*`; see [License key](#license-key) |
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
+
+The cluster needs Kubernetes 1.28 or later, and nodes with at least 4 CPUs and 8 GiB of memory to spare for onebox, the UI, and a few task pods. `flyte install onebox --preflight-only` checks these, along with permissions and the database secret; see [Install with the CLI](./kubernetes#install-with-the-cli).
 
 ## Bucket CORS
 
@@ -56,7 +60,7 @@ The UI reads some objects straight from the bucket, through presigned URLs: a ta
 
 For a proof of concept, start with [Try Union.ai on your machine](./try-locally): one command, `flyte start onebox`, runs everything in one Docker container on your laptop, with nothing to set up first.
 
-To install onebox on a Kubernetes cluster, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
+To install onebox on a Kubernetes cluster, `flyte install onebox` checks the cluster, asks for the database and bucket, and installs the chart; see [Install with the CLI](./kubernetes#install-with-the-cli). For each step by hand, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
 
 {{< subpage-cards >}}
 
@@ -72,16 +76,36 @@ To install onebox on a Kubernetes cluster, use the guide for [Amazon EKS](./eks)
 
 ## License key
 
-Without a valid key and with `license.enforce` on, onebox is read-only: reads work, changes are refused, and runs in flight finish. Account admins add keys in the UI, which shows the install ID a key is issued for and links to `license.issueURL` with it. You can also mount a key from a Secret:
+A license key is what lets an install make changes. Without a valid key and with `license.enforce` on, onebox is read-only: reads work, changes are refused, and runs in flight finish. Every key is for one install, named by the 32-character install ID onebox generates on first start and keeps across upgrades.
+
+### Get a key
+
+1. In the onebox UI, open **Settings > License** and select **Get a key**. It shows the install ID and links to `license.issueURL` with it, by default Union.ai's sign-up.
+2. Sign in to your Union.ai organization, or sign up and create one. You land on the organization's **License Keys** page with the issue dialog open for this install. An account admin issues the key there. Without a contract it's a 30-day trial, one per organization and shared by all its installs. With a contract, the key lasts until the contract ends.
+3. Back in onebox, select **Add key** and paste it. An account admin adds keys when [authorization](./authorization) is on. Read-only lifts right away.
+
+You can also mount a key from a Secret:
 
 ```shell
 kubectl -n union create secret generic onebox-license --from-literal=license-key=<key>
 helm upgrade onebox unionai/onebox -n union -f values.yaml \
-  --set license.existingSecret=onebox-license \
-  --set license.enforce=true --set license.issueURL=<where users get a key>
+  --set license.existingSecret=onebox-license --set license.enforce=true
 ```
 
-`license.enforce` needs `license.issueURL`. Onebox picks up a rotated key in the Secret without a restart. `license.trustedKeys` adds the public keys of a license issuer you host; keys from Union.ai's issuer verify without it. The chart renders nothing for licensing while the `license` values are unset; they need an `onebox-server` image with licensing.
+Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against public keys built into each release; nothing is sent to Union.ai. `license.trustedKeys` adds the public keys of a license issuer you host. `license.issueURL` points **Get a key** somewhere else, for example your own issuer.
+
+### Limits and entitlements
+
+A key carries the limits and entitlements of the organization it was issued for, such as the maximum number of clusters, users, or concurrent runs, as they were when it was issued. With `license.enforce` on, onebox reports them as the organization's own, and its limit checks hold the install to them. A key issued before keys carried limits, or no key at all, gets the Teams tier's defaults built into the release. The limits can't be changed inside onebox: when the organization's limits change, issue the key again and add the new one.
+
+The checks start in log-only mode: a request over a limit is logged and counted, not refused. To enforce a limit, set its mode in onebox's configuration through the chart's `extraConfig`:
+
+```yaml
+extraConfig:
+  quotaEnforcement:
+    limits:
+      max_clusters: enforce
+```
 
 ## A private CA, extra mounts and proxies
 
@@ -135,7 +159,6 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 ## Limitations
 
 - One replica, and one data plane: the cluster onebox runs in.
-- Artifacts aren't included.
 - The dashboards' queue panels show no data.
 
 ## License

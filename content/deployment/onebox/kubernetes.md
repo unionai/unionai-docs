@@ -34,6 +34,39 @@ aws s3api put-bucket-cors --endpoint-url https://<store endpoint> --bucket <buck
 
 Some stores configure CORS differently, for example per deployment rather than per bucket; follow your store's documentation.
 
+## Install with the CLI
+
+`flyte install onebox`, from `flyteplugins-union` 0.21.0 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
+
+```shell
+uv pip install flyte "flyteplugins-union>=0.21.0"
+flyte install onebox --db-host <postgres host> --db-password-secret onebox-db \
+  --bucket <bucket> --endpoint https://<store endpoint>
+```
+
+Before installing, it checks:
+
+- that the cluster is reachable and runs Kubernetes 1.28 or later;
+- the namespace, and whether you can create what the chart installs;
+- the permissions onebox itself needs;
+- that the nodes have at least 4 CPUs and 8 GiB of memory to spare;
+- the database, the bucket, and the database password's Secret;
+- with apps on, whether the chart can run Knative Serving or the cluster already runs it;
+- the namespace's Pod Security level.
+
+Whatever is missing, with a terminal, it opens an editor on a values template to fill in. Without one, it lists the missing inputs. Inputs can also come from `--values`/`-f` files and `--set`, and `--db-password-secret`, `--storage-type` (`s3`, `gcs`, or `azure`), `--region`, `--gcp-project`, and `--azure-account` name the rest.
+
+| Flag | What it does |
+|---|---|
+| `--preflight-only` | Run the checks and stop. |
+| `--dry-run` | Render the install against the cluster without applying it. |
+| `--serving` | Turn on [apps and LLM gateways](./apps). |
+| `--edit` | Review the inputs in the editor even when nothing is missing. |
+| `--skip-preflight` | Install even if a check fails. |
+| `-n`/`--namespace`, `--release`, `--version`, `--kubeconfig`, `--context` | Where and what to install. |
+
+It keeps the values it installed with in `~/.flyte/onebox/<release>-values.yaml` (readable only by you, since it can hold the database password) for later `helm upgrade -f` runs. The rest of this guide does each step by hand.
+
 ## Install onebox
 
 Create the namespace and two Secrets: the database password, and the store's access key:

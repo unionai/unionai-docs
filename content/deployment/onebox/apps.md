@@ -135,5 +135,5 @@ The gateway's image, `ghcr.io/unionai/union-llm-gateway`, must be pullable from 
 ## Limitations
 
 - Knative Serving is the only way onebox runs apps.
-- Onebox's local image runs Union's Kourier with the union-apps filter off: apps there are routed but not authorized per app.
-- Apps and gateways were verified on a onebox whose apps run on a Union cluster through a test bridge rather than on Knative in the same cluster. Serving, the app's URL through onebox, status in the UI, and a gateway's policy sync and virtual keys all worked. Provider secrets reaching a gateway's pods weren't covered.
+- Onebox's local image (`flyte start onebox --with apps`) runs Union's Kourier with the union-apps filter off: apps there are routed but not authorized per app.
+- Provider secrets reaching a gateway's pods haven't been verified yet.
