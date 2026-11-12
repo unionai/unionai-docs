@@ -2,7 +2,7 @@
 title: Inference
 description: Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
 icon: cpu
-weight: 4
+weight: 7
 variants: +flyte +union
 ---
 
@@ -28,9 +28,9 @@ Most hosted providers, and vLLM, SGLang, Ollama, and llama.cpp endpoints, expose
 {{< variant union >}}
 {{< markdown >}}
 
-## Route calls through the LLM Gateway
+## Route calls through the Inference Gateway
 
-The [LLM Gateway](./llm-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers/_index#choose-direct-calls-or-the-gateway).
+The [Inference Gateway](./inference-gateway/_index) puts one endpoint in front of hosted providers, including Fireworks, and the models you serve with vLLM or SGLang. It adds budgets, fallbacks between providers, and guardrails. See [Choose direct calls or the gateway](./providers/_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -2,7 +2,7 @@
 title: TaskEnvironment
 description: "Define an execution environment for a set of tasks."
 icon: braces
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---

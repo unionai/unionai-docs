@@ -8,14 +8,14 @@ variants: -flyte +union
 
 # Subscribe and sign up
 
-Every Union.ai deployment starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
+Every self-managed deployment on AWS, GCP, or Azure starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
 
 **How you pay is separate from where your data plane runs.** A subscription is a billing relationship, not infrastructure: you can subscribe on AWS Marketplace and run your data plane on GCP or Azure.
 
 - **On AWS Marketplace.** Buy **Union Team** on AWS Marketplace, so the charges appear on your AWS bill. Start at [AWS Marketplace](./aws-marketplace), which hands you on to sign-up.
 - **Directly.** Start at [Create your account and organization](./create-organization). There is no GCP or Azure Marketplace listing yet.
 
-Either way, a new organization starts with a 30-day free trial.
+Either way, a new organization starts with a 30-day free trial. The trial covers Union.ai's charges, not your cloud provider's: the resources your data plane runs on are billed to your own cloud account during the trial too. See [What it costs when nothing is running](../selfmanaged/whats-installed#what-it-costs-when-nothing-is-running).
 
 **You can try it before you set up a cluster.** Once your organization exists, a workflow you run on your own machine reports to it and appears in the Union.ai UI. That is enough to see how Union.ai works before you create any cloud resources.
 

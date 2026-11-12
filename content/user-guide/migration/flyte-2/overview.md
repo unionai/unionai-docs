@@ -159,12 +159,8 @@ The migration patterns are grouped by theme. Start with **Tasks and workflows**,
 - **[Parallelism and fan-out](./parallelism)** — `map_task` → `flyte.map` / `asyncio.gather`, plus a data-backfill example.
 - **[Data types and I/O](./data-io)** — `FlyteFile`/`FlyteDirectory` → `flyte.io.File`/`Dir`, `StructuredDataset` → `flyte.io.DataFrame`, dataclasses, and an ETL example.
 - **[ML workloads](./ml-workloads)** — small-model training, hyperparameter optimization, deep learning, batch inference, and an end-to-end pipeline.
-- **[New in Flyte 2](./new-in-flyte-2)** — patterns that weren't possible in Flyte 1 at all: real-time model serving, batch inference, apps, and sandboxed code execution.
-{{< variant union >}}
-{{< markdown >}}
-- **[Union features](./union-features)** — migrating Union-specific Actors (→ reusable containers) and Apps (→ the Flyte SDK).
-{{< /markdown >}}
-{{< /variant >}}
+- **[New in Flyte 2](./new-in-flyte-2)** — patterns that weren't possible in Flyte 1 at all: real-time model serving, batch inference, apps, and sandboxed code execution.{{% variant union %}}
+- **[Union features](./union-features)** — migrating Union-specific Actors (→ reusable containers) and Apps (→ the Flyte SDK).{{% /variant %}}
 - **[Hybrid v1 and v2 pipelines](./hybrid-pipelines)** — calling between v1 and v2 in both directions during the transition.
 - **[Gotchas and caveats](./gotchas-and-caveats)** — common gotchas plus the deeper caveats of the new execution model, including non-deterministic behavior and keeping orchestration lightweight.
 

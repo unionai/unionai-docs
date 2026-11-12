@@ -600,7 +600,6 @@ Copy entire directories into the container:
 ```python
 image = flyte.Image.from_debian_base().with_source_folder(
     src=pathlib.Path(__file__).parent,
-    dst="/app",
     copy_contents_only=False  # Copy folder itself
 )
 ```
@@ -609,7 +608,7 @@ image = flyte.Image.from_debian_base().with_source_folder(
 
 - `src`: Source directory path
 - `dst`: Destination path in container (optional, defaults to workdir)
-- `copy_contents_only`: If `True`, copies folder contents; if `False`, copies folder itself
+- `copy_contents_only`: If `True`, copies folder contents; if `False` and `dst` is left out, copies the folder itself. With any other `dst`, the folder's contents are copied into `dst` either way
 
 ##### `copy_contents_only=True` (Recommended)
 
@@ -626,9 +625,9 @@ image = flyte.Image.from_debian_base().with_source_folder(
     copy_contents_only=True
 )
 
-# Container will have:
-# /app/app.py
-# /app/utils.py
+# Container will have (in the image's working directory, /home/flyte for from_debian_base()):
+# /home/flyte/app.py
+# /home/flyte/utils.py
 
 # Set root_dir to match:
 flyte.init_from_config(root_dir=pathlib.Path(__file__).parent)
@@ -636,7 +635,7 @@ flyte.init_from_config(root_dir=pathlib.Path(__file__).parent)
 
 ##### `copy_contents_only=False`
 
-Copies the folder itself with its name:
+When `dst` is left out, copies the folder itself, with its name, into the image's working directory:
 
 ```python
 # Project structure:
@@ -650,9 +649,9 @@ image = flyte.Image.from_debian_base().with_source_folder(
     copy_contents_only=False
 )
 
-# Container will have:
-# /app/my_project/app.py
-# /app/my_project/utils.py
+# Container will have (in the image's working directory, /home/flyte for from_debian_base()):
+# /home/flyte/my_project/app.py
+# /home/flyte/my_project/utils.py
 
 # Set root_dir to parent to match:
 flyte.init_from_config(root_dir=pathlib.Path(__file__).parent.parent)
@@ -697,7 +696,7 @@ if __name__ == "__main__":
     # Run with copy_style="none" and explicit version
     run = flyte.with_runcontext(
         copy_style="none",
-        version="v1.0.0"  # Explicit version for image tagging
+        version="v1.0.0"  # Explicit task version
     ).run(main, n=10)
 
     print(f"Run URL: {run.url}")
@@ -723,7 +722,7 @@ python full_build.py
 This will:
 
 1. Build a container image with `full_build.py` and `dep.py` embedded
-2. Tag it as `v1.0.0`
+2. Tag it with a hash of the image's contents, including the copied source
 3. Push to registry
 4. Execute remotely without code bundling
 
@@ -1002,25 +1001,17 @@ if __name__ == "__main__":
 **Problem:** On-cluster execution uses old code despite local changes
 
 > [!NOTE]
-> This is rare with code bundling - Flyte automatically versions based on content hash, so code changes should be detected automatically. This issue typically occurs with caching problems or when using `copy_style="none"`.
+> This is rare with code bundling - Flyte automatically versions based on content hash, so code changes should be detected automatically. This issue typically occurs with caching problems, or with `copy_style="none"` when the task's image isn't rebuilt from your source: for example, an image built outside Flyte and referenced with `Image.from_base()` or `Image.from_ref_name()`.
 
 **Solutions:**
 
-1. **Use explicit version bump** (mainly for container-based deployments):
+1. **Use explicit version bump** (with code bundling):
 
    ```python
    run = flyte.with_runcontext(version="v2").run(my_task)
    ```
 
-2. **Check if `copy_style="none"`** is set - this requires image rebuild:
-
-   ```python
-   # If using copy_style="none", rebuild image
-   run = flyte.with_runcontext(
-       copy_style="none",
-       version="v2"  # Bump version to force rebuild
-   ).run(my_task)
-   ```
+2. **Check if `copy_style="none"`** is set - the code then comes from the image. Source copied into the image is part of the image's content hash, so changing it produces a new image tag and a new build. Changing `version` alone doesn't rebuild the image. If the code was baked into an image built outside Flyte, rebuild that image with the new code, push it under a new tag, and point the task at that tag.
 
 ### Files missing in container
 

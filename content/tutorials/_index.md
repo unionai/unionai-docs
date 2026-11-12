@@ -28,7 +28,7 @@ Financial research, trading, and other fintech workloads.
 {{< /link-card >}}
 
 {{< link-card target="frontier-ai" icon="stars" title="Frontier AI" >}}
-Frontier-model pretraining, automated experimentation, and large-scale AI workloads.
+The everyday workloads of frontier AI labs: pretraining, data curation for text and video, evals on every checkpoint, interpretability, and AI-driven science.
 {{< /link-card >}}
 
 {{< /grid >}}
@@ -53,11 +53,17 @@ Prompt engineering, prompt optimization, and context construction.
 Training, fine-tuning, and hyperparameter optimization of models at scale.
 {{< /link-card >}}
 
-{{< variant union >}}
-{{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
-RL fine-tuning of language models.
+{{< link-card target="data-validation" icon="shield-check" title="Data Validation" >}}
+Benchmarks that measure the cost of validating training data with pandera, and the cost of not validating it.
 {{< /link-card >}}
-{{< /variant >}}
+
+{{< link-card target="speculative-decoding" icon="lightning" title="Speculative Decoding Models" >}}
+Train, benchmark, serve, and continually retrain draft models that make an LLM generate faster without changing its outputs.
+{{< /link-card >}}
+
+{{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
+Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, humanoid locomotion, model-written rewards, and self-play.
+{{< /link-card >}}
 
 {{< variant union >}}
 {{< link-card target="data-processing" icon="stack" title="Data Processing" >}}

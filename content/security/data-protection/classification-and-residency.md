@@ -16,7 +16,7 @@ Every data type in the Union.ai platform is classified by its residency and acce
 |---|---|---|---|---|
 | Bulk Customer Data | Files, directories, DataFrames, code bundles, container images, reports | Customer infrastructure (S3 SSE / GCS / Azure SSE) | HTTPS via presigned URL | **No**: served via signed URL direct to/from object store |
 | Inline Customer Data | Structured task inputs/outputs, secret values (during creation), execution log streams | Customer infrastructure (S3 SSE / GCS / Azure SSE; cloud secret managers) | Direct-to-Data-Plane tunnel (default tier) or customer-managed internal LB (Sovereign Data Plane tier) | **No**: served from data plane |
-| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
+| Orchestration Metadata | Task definitions (including env vars, default values, SQL, pod specs), run/action state, error messages, condition (human-in-the-loop) prompts/descriptions/signaled values, trigger specs | Control plane databases (AES-256/KMS) | TLS (API) + TLS (gRPC events) | **Yes**: read from DB into memory for API responses |
 | Platform Metadata | User identity/RBAC records, cluster records | Control plane databases (AES-256/KMS) | TLS (API) | **Yes**: read from DB into memory for API responses |
 
 > [!NOTE] On the word "metadata"
@@ -26,15 +26,15 @@ Every data type in the Union.ai platform is classified by its residency and acce
 
 **Inline customer data** (structured task inputs and outputs, secret values during creation/update, and execution log streams) is stored at rest in the customer's infrastructure and served directly from the data plane through the Direct-to-Data-Plane tunnel. No customer data enters Union.ai's control plane in any form, not even transiently in memory.
 
-**Orchestration metadata** is stored in the control plane databases (encrypted at rest). This includes task definitions, which contain structural information (container image references, typed interfaces) and fields that may be customer-sensitive: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, plugin configuration, and config key-value pairs. Error messages from task executions (which may contain data from Python tracebacks) are also stored. A full task definition (TaskSpec) is stored on every run submission.
+**Orchestration metadata** is stored in the control plane databases (encrypted at rest). This includes task definitions, which contain structural information (container image references, typed interfaces) and fields that may be customer-sensitive: environment variables, default input literal values, SQL query statements, Kubernetes pod specs, plugin configuration, and config key-value pairs. Error messages from task executions (which may contain data from Python tracebacks) are also stored. So are the prompt and description of each condition (human-in-the-loop) action, and the value a user signals to resolve it. Whatever a developer writes into a condition's prompt or description (for example, a report interpolated into the prompt) is stored in the control plane, so keep sensitive data out of it. A full task definition (TaskSpec) is stored on every run submission.
 
 ## Data residency
 
 All customer data resides in the customer's own cloud account and region. The customer chooses the region for their data plane deployment, and all data plane resources (object storage, container registry, secrets backend, log aggregator, and compute) are provisioned within that region.
 
-The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-1 (Ireland), EU West-2 (London), and EU Central (eu-central-1). No customer data of any kind is replicated to, cached in, or routed through Union.ai infrastructure; inline data is served from the customer's data plane through the Direct-to-Data-Plane tunnel and never traverses the control plane region. Only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph) resides in the control plane region.
+The control plane is available in the following regions: US West (us-west-2), US East (us-east-2), EU West-2 (London), and EU Central (eu-central-1). No customer data of any kind is replicated to, cached in, or routed through Union.ai infrastructure; inline data is served from the customer's data plane through the Direct-to-Data-Plane tunnel and never traverses the control plane region. Only orchestration metadata (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph) resides in the control plane region.
 
-Customers whose data-residency policy extends to orchestration metadata (e.g., GDPR, or jurisdiction-specific policies that cover operational records about workflows in addition to the workflow data itself) should select a control plane region consistent with that policy. For EU-deployed data planes using an EU control plane region, all data and metadata (both at rest and in transit) stay within the EU, supporting GDPR data residency requirements.
+Customers whose data-residency policy extends to orchestration metadata (e.g., GDPR, or jurisdiction-specific policies that cover operational records about workflows in addition to the workflow data itself) should select a control plane region consistent with that policy. For data planes in an EU member state (not eu-west-2, London) using the EU Central (eu-central-1) control plane, all data and metadata (both at rest and in transit) stay within the EU, supporting GDPR data residency requirements.
 
 For details on the architectural separation that enforces these residency guarantees, see [Two-plane separation](../architecture/two-plane-separation).
 
@@ -46,7 +46,7 @@ For details on the architectural separation that enforces these residency guaran
 
 **How to verify:**
 
-The task definition schema is derived from the open-source Flyte protobuf definitions in the [flyte-sdk repository](https://github.com/flyteorg/flyte-sdk). Review the `TaskTemplate` and `RunSpec` protobuf schemas and compare them to the field enumeration in the classification table above to confirm that the fields stored match the documented classifications.
+The task definition schema is derived from the open-source Flyte protobuf definitions under [`flyteidl2/` in the flyte repository](https://github.com/flyteorg/flyte/tree/main/flyteidl2). Review the `TaskTemplate` (`flyteidl2/core/tasks.proto`), `TaskSpec` (`flyteidl2/task/task_definition.proto`, which holds default input values) and `RunSpec` (`flyteidl2/task/run.proto`) protobuf schemas and compare them to the field enumeration in the classification table above to confirm that the fields stored match the documented classifications.
 
 Then run a workflow with recognizable data (e.g., a known string or file), and verify the location of each data type:
 

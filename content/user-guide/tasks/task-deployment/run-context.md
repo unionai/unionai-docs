@@ -49,6 +49,12 @@ All parameters are optional. Unset parameters inherit from the configuration fil
 | `raw_data_path` | `str` | *from config* | Storage prefix for offloaded data types ([Files](../task-programming/files-and-directories), [Dirs](../task-programming/files-and-directories), [DataFrames](../task-programming/dataframes), checkpoints). Accepts local paths and any remote scheme the storage layer resolves: `s3://`, `gs://`, `abfs://` and `abfss://` natively, plus any other scheme `fsspec` has a filesystem for (such as `hf://`). |
 | `run_base_dir` | `str` | *auto-generated* | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. Distinct from `raw_data_path`. |
 
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source Flyte backend, remote runs apply `raw_data_path` (or `--raw-data-path`) only with flyteorg/flyte `v2.0.54` or later.
+{{< /markdown >}}
+{{< /variant >}}
+
 For the difference between what `raw_data_path` controls (offloaded values) and what stays at the deployment-configured location (`inputs.pb`, `outputs.pb`, Decks) or in the control plane database, see [Where your data lives](../../get-started/core-concepts/where-data-lives).
 
 To direct all task outputs to a specific bucket for a run:
@@ -62,7 +68,7 @@ The equivalent CLI flag is `--raw-data-path`. See [Run command options](./run-co
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `overwrite_cache` | `bool` | `False` | Re-execute all tasks even if a cached result exists, and overwrite the cache with new results. |
-| `disable_run_cache` | `bool` | `False` | Skip cache lookups and writes entirely for this run. |
+| `disable_run_cache` | `bool` | `False` | In local runs, skip task cache lookups and writes entirely. As of flyte 2.12, remote runs don't send this setting to the backend, so cached task results are still used. |
 | `cache_lookup_scope` | `"global"` \| ... | `"global"` | Scope for cache lookups. |
 
 ### Identity and resources
@@ -89,7 +95,7 @@ To list and filter runs by their labels, see [Filtering runs by label](./interac
 | `log_level` | `int` | *from config* | Python log level for the framework logger (`flyte`), e.g. `logging.DEBUG`. |
 | `user_log_level` | `int` | *from config* | Python log level for the user logger (`flyte.user`, i.e. `flyte.logger`). |
 | `log_format` | `"console"` \| `"json"` | `"console"` | Log output format. |
-| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
+| `reset_root_logger` | `bool` | `False` | If `True`, clear the root logger's existing handlers and install Flyte's own; with `flyte` 2.12.5 or later, Python warnings are also routed through Flyte's root handler. If `False` (the default), leave existing root handlers in place and wrap their formatters with the run/action context. |
 
 For setting the logging level (including via environment variables), the framework-vs-user logger split, and capturing third-party library logs as JSON with `reset_root_logger`, see [Logging](../task-configuration/logging).
 
@@ -113,7 +119,7 @@ For setting the logging level (including via environment variables), the framewo
 
 ## Reading context inside a task with `flyte.ctx()`
 
-Inside a running task, `flyte.ctx()` returns a `TaskContext` object with information about the current execution. Outside of a task, it returns `None`.
+Inside a running task, `flyte.ctx()` returns a `TaskContext` object with information about the current execution. Outside of a task, it returns a null context that is falsy and whose fields are all `None`. It is never `None` itself, so check it with `if flyte.ctx():` rather than `is None`.
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-context/run_context.py" fragment="read-ctx" lang="python" >}}
 
@@ -127,7 +133,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
 | `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. |
 | `custom_context` | `Dict[str, str]` | Propagated context metadata from `with_runcontext()`. |
-| `disable_run_cache` | `bool` | Whether run caching is disabled for this run. |
+| `disable_run_cache` | `bool` | Whether `disable_run_cache` was set for this run. Set only in local runs; as of flyte 2.12, in remote runs it is `False`. |
 | `is_in_cluster()` | method | Returns `True` when `mode == "remote"`. Useful for branching local/remote behavior. |
 
 ### `ActionID` fields

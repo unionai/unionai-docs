@@ -2,7 +2,7 @@
 title: flyte.orchestrator
 description: "Tasks that orchestrate other tasks."
 icon: box-seam
-version: 2.12.4
+version: 2.13.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -123,6 +123,21 @@ exception classes, so inside it these are the builtins `TimeoutError`,
 `RuntimeError` and `RuntimeError`: `except
 flyte.errors.ConditionTimedoutError` catches only timeouts, but `except
 RuntimeError` does not catch them.
+
+An exception the orchestrator does not catch fails its attempt, and
+`retries` applies, as for any task. To fail without retrying, raise
+`flyte.errors.NonRecoverableError`, again as in any task:
+
+```python
+@flyte.orchestrator.task(retries=3)
+def checked(x: int) -> int:
+    if x < 0:
+        raise flyte.errors.NonRecoverableError(f"{x} is negative")
+    return add(x, 1)
+```
+
+Inside the orchestrator it is a `RuntimeError`, so `except RuntimeError`
+catches it. It takes only a message.
 
 
 

@@ -53,15 +53,10 @@ For example:
 > A registry is only needed when the image is **built locally** (it's where the built image is pushed); it isn't required when using the Union backend `ImageBuilder`, which builds on the cluster.
 > The easiest way to set it is once in your config, `image.registry` (or the `FLYTE_IMAGE_REGISTRY` environment variable), so you don't have to repeat it in every `Image`. Set `registry=` on an `Image` only to override. See [Image building](#image-building).
 
-> [!NOTE]
-> Images built with `[[Image.from_debian_base()]]` do not include CA certificates by default, which can cause TLS
-> validation errors and block access to HTTPS-based storage such as Amazon S3. Libraries like Polars (e.g., `polars.scan_parquet()`) are particularly affected.
-> **Solution:** Add `"ca-certificates"` using `.with_apt_packages()` in your image definition.
-
 ## Example: Defining an image based on uv script metadata
 
 Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
-The `from_uv_script` method starts with the default Flyte image and adds the dependencies specified in the `uv` metadata.
+The `from_uv_script` method starts from `python:{version}-slim-bookworm` without the Flyte SDK and adds the dependencies specified in the `uv` metadata.
 For example:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
@@ -69,18 +64,14 @@ For example:
 The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
 This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
 
-In the above example you can see how to use `flyte.init_from_config()` for remote runs and `flyte.init()` for local runs.
-Uncomment the `flyte.init()` line (and comment out `flyte.init_from_config()`) to enable local runs.
-Do the opposite to enable remote runs.
-
 > [!NOTE]
 > When using `uv` metadata in this way, be sure to include the `flyte` package in your `uv` script dependencies.
 > This will ensure that `flyte` is installed when running the script locally using `uv run`.
-> When running on the Flyte/Union backend, the `flyte` package from the uv script dependencies will overwrite the one included automatically from the default Flyte image.
+> The image that `from_uv_script()` builds doesn't otherwise include `flyte`, so the uv script dependencies are also what installs `flyte` on the Flyte/Union backend.
 
 ## Customizing an image with `with_*` methods
 
-Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable &mdash; calling a `with_*` method on one raises an error; customize those at their source instead.)
+Images from `from_debian_base()` and `from_uv_script()` are *extendable*: you can layer additional customizations on top using the `with_*` methods. (Images from `from_base()` and `from_dockerfile()` are **not** extendable &mdash; calling a `with_*` method on one raises an error. Customize a `from_dockerfile()` image in its Dockerfile. To add layers to a `from_base()` image, clone it first, as shown in [Starting from an existing image](#starting-from-an-existing-image).)
 Each method returns a new `flyte.Image`, so you can chain them together in a fluent style:
 
 ```python
@@ -199,10 +190,10 @@ image = Image.from_base("ghcr.io/my-org/my-base-image:latest")
 ```
 
 > [!NOTE]
-> An image from `from_base()` is **not extendable** by default &mdash; chaining `with_*` methods onto it raises an error. To add layers, first clone it with `extendable=True`, then chain as usual:
+> An image from `from_base()` is **not extendable** by default &mdash; chaining `with_*` methods onto it raises an error. To add layers, first clone it with a `name` and `extendable=True`, then chain as usual:
 >
 > ```python
-> image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(extendable=True).with_pip_packages("pandas")
+> image = Image.from_base("ghcr.io/my-org/my-base-image:latest").clone(name="my-image", extendable=True).with_pip_packages("pandas")
 > ```
 >
 > Otherwise, bake any extra dependencies into the pre-built image itself, or start from `from_debian_base()` / `from_uv_script()`.
@@ -336,16 +327,11 @@ For Union instances, this property can be set to `remote` to use the Union `Imag
 
 When `image.builder` in the `config.yaml` is set to `local`, `flyte.run()` does the following:
 
-* Builds the Docker image using your local Docker installation, installing the dependencies specified in the `uv` inline script metadata.
+* Builds the image with your local Docker installation, using the layers in your `Image` definition.
 * Pushes the image to the configured registry (`image.registry`, or a per-`Image` `registry=`).
 * Deploys your code to the backend.
 * Kicks off the execution of your workflow
 * Before the task that uses your custom image is executed, the backend pulls the image from the registry to set up the container.
-
-> [!NOTE]
-> Above, we used `registry="ghcr.io/my_gh_org"`.
->
-> Be sure to change `ghcr.io/my_gh_org` to the URL of your actual container registry.
 
 You must ensure that:
 
@@ -382,10 +368,16 @@ When `image.builder` in the `config.yaml` is set to `remote` (and you are runnin
 
 There is no set up of Docker nor any other local configuration required on your part.
 
+{{< variant union >}}
+{{< markdown >}}
+When fast cold boot is enabled for your data plane, images built by `ImageBuilder` also start in seconds on a fresh node, because the node reads files from the image on demand instead of pulling every layer first. See [Fast cold boot](./fast-cold-boot).
+{{< /markdown >}}
+{{< /variant >}}
+
 > [!NOTE]
-> The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `image_build` task is deployed in the `system` project within the `production` domain.
+> The Flyte SDK checks whether the image builder is enabled for your cluster by verifying that the `build-image` task is deployed in the `system` project within the `production` domain.
 > If you are using custom roles and policies, ensure that users are granted the `view_flyte_inventory` action for the `production/system` project-domain pair.
-> See the [V1 user management documentation]({{< docs_home union v1 >}}/user-guide/administration/user-management) for more details on creating and assigning custom roles and policies (V2 user management currently works identically to V1).
+> See [User management]({{< docs_home union v2 >}}/user-guide/user-management) for creating and assigning custom roles and policies.
 
 #### ImageBuilder with external registries
 
@@ -443,7 +435,7 @@ To fix this, pass an `image_pull` secret as `registry_secret`. The secret can ho
 * **A credential helper mapping**, which stores no credentials. `ImageBuilder` runs the helper on every build to fetch a fresh token with the data plane's own cloud identity, so there is nothing to rotate.
   This works only when the registry is on the same cloud provider as your data plane.
 
-Credential helpers are currently supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
+Credential helpers are supported for Amazon ECR, for example a base image in a different AWS account from your data plane.
 For registries on other clouds, use static credentials.
 
 ##### Amazon ECR in another AWS account
@@ -474,6 +466,7 @@ A static ECR token would expire after 12 hours.
    ```
 
 2. Save a Docker config file, `config.json`, that maps the registry to the `ecr-login` helper.
+   Replace `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` with the account and region that own the image.
    It contains no credentials. List more registries under `credHelpers` if you pull from several accounts.
 
    ```json
@@ -500,7 +493,7 @@ A static ECR token would expire after 12 hours.
    image = (
        flyte.Image.from_base("<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<REPOSITORY>:<TAG>")
        .clone(name="my-image", registry_secret="ecr-cross-account", extendable=True)
-       .with_pip_packages("pandas")
+       .with_pip_packages("flyte", "pandas")
    )
 
    env = flyte.TaskEnvironment(name="my_task_env", image=image)
