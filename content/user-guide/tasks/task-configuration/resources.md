@@ -143,6 +143,8 @@ resources=flyte.Resources(gpu="MI300X:1")
 
 Supported AMD types include `MI100`, `MI210`, `MI250`, `MI250X`, `MI300A`, `MI300X`, `MI325X`, `MI350X`, and `MI355X`.
 
+The string form and `flyte.AMD_GPU()` accept a count of 1 or a full 8-GPU node, for example `"MI355X:8"` or `flyte.AMD_GPU("MI355X", 8)`. The 8-GPU form requires `flyte` 2.13.2 or later. For any other count, use `flyte.Device(quantity=..., device_class="AMD_GPU", device=...)`.
+
 ### AWS Trainium and Inferentia (Neuron)
 
 Request AWS Neuron accelerators — Trainium (`Trn`) or Inferentia (`Inf`) — by type and count:
