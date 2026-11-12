@@ -20,6 +20,7 @@ different shapes of it.
 | Tutorial | Policy | What makes it hard | What Union contributes |
 | --- | --- | --- | --- |
 | [RL for LLMs with GRPO and LoRA](./grpo-lora/_index) | An LLM, fine-tuned with a LoRA adapter | Generation, scoring, and training need different hardware in a tight loop | A warm pool of vLLM generators, a GPU trainer, and CPU reward workers, with checkpoints |
+| [Concurrent RL runs on a shared base model](./multi-lora-rl/_index) | One LoRA adapter per skill on a shared LLM | Several runs at once, each needing GPUs, a review, and an endpoint | Shared warm GPU replicas, autoscaling, checkpoints, a review per run, and an autoscaling app per approved model |
 | [Teach a humanoid to run](./humanoid-locomotion/_index) | A Unitree G1 humanoid in MuJoCo | Hundreds of millions of simulation steps | 8,192 simulated robots on one GPU, a live video report, and a published policy |
 | [Reward design with Claude and sandboxes](./eureka-reward-design/_index) | PPO on MountainCar, with rewards written by Claude | Every candidate reward is untrusted code and a training run | A sandbox per training run, a warm CPU pool for the fan-out, and traced LLM calls |
 | [Self-play league for Connect Four](./self-play-league/_index) | A Connect Four agent trained against its past selves | Measuring progress when the opponent keeps changing | A warm GPU learner, match fan-out on CPUs, Elo, and an app to play the champion |
@@ -33,6 +34,12 @@ different shapes of it.
 {{< variant union >}}
 {{< link-card target="grpo-lora" icon="trophy" title="RL for LLMs with GRPO and LoRA" >}}
 Train a reasoning-style RL loop for an LLM with GRPO and LoRA, orchestrated by plain Flyte async tasks on a warm vLLM pool.
+{{< /link-card >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< link-card target="multi-lora-rl" icon="layers" title="Concurrent RL runs on a shared base model" >}}
+End-to-end RL for several skills at once: concurrent GRPO runs share warm GPUs and one copy of the base model, checkpoint every iteration, autoscale, pause for a review, and serve each approved model.
 {{< /link-card >}}
 {{< /variant >}}
 

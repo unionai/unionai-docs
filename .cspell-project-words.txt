@@ -285,6 +285,8 @@ Unsloth
 Xids
 # RLHF: reinforcement learning from human feedback.
 RLHF
+# RLVR: reinforcement learning with verifiable rewards.
+RLVR
 # Brax: JAX physics simulator for RL. Nsight: NVIDIA profiler.
 Brax
 Nsight
