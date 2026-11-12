@@ -23,8 +23,8 @@ At the task level, observability and resumption of failed executions is provided
 This is where **traced functions** come in. By decorating helper functions with `@flyte.trace`, you enable:
 
 - **Detailed observability**: Track execution time, inputs/outputs, and errors for each function call.
-- **Fine-grained resumption**: If a task fails and is retried, each traced call that already returned a value replays its recorded result instead of running again. A traced function that returns `None` has nothing to replay, so it runs again.
-Each traced function is effectively a checkpoint within its task.
+- **Fine-grained resumption**: If a task fails and is retried, a traced call replays its recorded result instead of running again, but only if its function declares a return type and the call returned something other than `None`. Otherwise it runs again. A function with no return type annotation records no result to replay, even if it returns a value at run time.
+Each call that can replay is effectively a checkpoint within its task.
 
 Here is an example:
 
@@ -40,7 +40,7 @@ Traces capture detailed execution information:
 
 ### Errors
 
-When a traced function raises, the exception propagates up to your task code, where you can handle it with standard error handling patterns. Only traced calls that returned a value are replayed when the task is retried.
+When a traced function that declares a return value raises, the error is recorded with the trace. In every case the exception propagates up to your task code, where you can handle it with standard error handling patterns.
 
 ### Supported function types
 
@@ -91,7 +91,7 @@ Lets use better typing for all of these examples, we have the opportunity to mak
 2. **Cache Check**: Flyte checks if identical task execution exists in cache
 3. **Cache Hit**: If cached, return cached result immediately (no traces needed)
 4. **Cache Miss**: Begin fresh execution
-5. **Trace Checkpoints**: Each `@flyte.trace` function creates resumption points
+5. **Trace Checkpoints**: Each `@flyte.trace` call that returns a value from a function with a declared return type creates a resumption point
 6. **Failure Recovery**: If workflow fails, resume from last successful checkpoint
 7. **Task Completion**: Final result is cached for future identical inputs
 
@@ -111,8 +111,8 @@ Traces capture comprehensive execution information for debugging and monitoring:
 - **Action IDs**: Unique identifiers for each execution
 
 **Error handling:**
-- Exceptions propagate to your task code for standard error handling
-- On a retry, only traced calls that returned a value are replayed
+- When a traced function that declares a return value raises, the error is recorded with the trace
+- In every case the exception propagates to your task code for standard error handling
 - The error_handling example shows how to catch and handle these exceptions in your task
 
 ## Examples in practice
