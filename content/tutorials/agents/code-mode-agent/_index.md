@@ -85,7 +85,7 @@ The LLM callback uses the official Anthropic SDK. The agent's default callback g
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=llm lang=python >}}
 
 > [!NOTE]
-> This does not have to be Claude. Four parts are Claude-specific: the `call_llm` callback, `model="claude-opus-4-8"` in the agent declaration (the agent passes it to `call_llm` on every turn), the `anthropic` package in the image, and the `anthropic_api_key` secret. Change them together; the rest is model-agnostic. Point it at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/inference/self-hosted-endpoints/vllm) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
+> This does not have to be Claude. Four parts are Claude-specific: the `call_llm` callback, `model="claude-opus-4-8"` in the agent declaration (the agent passes it to `call_llm` on every turn), the `anthropic` package in the image, and the `anthropic_api_key` secret. Change them together; the rest is model-agnostic. Point `call_llm` at any chat-completion endpoint, including an open model you host yourself, for example [an LLM served with vLLM](../../../user-guide/inference/self-hosted-endpoints/vllm) as its own app right alongside this one. That keeps the data and the model on your own infrastructure and drops the per-call API cost in exchange for running the inference yourself.
 
 ## The report collector
 
@@ -107,7 +107,7 @@ External tools plug in over MCP with `MCPServerSpec`. The agent connects on firs
 
 {{< code file="/unionai-examples/v2/tutorials/code_mode_agent/analysis.py" fragment=analyze lang=python >}}
 
-Because `analyze` runs inside a task context, the `query` calls made by the sandboxed code dispatch as durable child tasks. You can run this half on its own with `python analysis.py`, which submits one analysis as a `flyte.run` and prints the run URL, no app required.
+Because `analyze` runs inside a task context, each `query` call made by the sandboxed code awaits `_query_task`, which dispatches a durable child task. You can run this half on its own with `python analysis.py`, which submits one analysis as a `flyte.run` and prints the run URL, no app required.
 
 ## Serving it: the native chat app
 
