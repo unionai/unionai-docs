@@ -449,7 +449,7 @@ Remote tasks solve common collaboration and dependency management challenges:
 
 **Platform reusability**: Platform teams can create common, reusable tasks (data validation, feature engineering, model serving) that other teams can use without duplicating code or managing complex dependencies.
 
-**Microservices for data workflows**: Remote tasks work like microservices for long-running tasks or agents, enabling secure sharing while maintaining isolation.
+**Microservices for data workflows**: Remote tasks work like microservices for long-running tasks or agents, letting teams share deployed functionality without sharing code.
 
 ## When to use remote tasks
 
@@ -465,12 +465,9 @@ Use remote tasks when you need to:
 
 ### Security model
 
-Remote tasks run in the **caller's project and domain** using the caller's compute resources, but execute with the **callee's service accounts, IAM roles, and secrets**. This ensures:
+By default, remote tasks run in the **caller's project and domain**. A remote task called from inside a task becomes an action in the caller's run, so the callee's code and image run with the **caller's** Kubernetes service account and the IAM role bound to it, not the callee's.
 
-- Tasks are secure from misuse
-- Resource usage is properly attributed
-- Authentication and authorization are maintained
-- Collaboration remains safe and controlled
+To run a remote task with the callee project's identity, fetch it with `flyte.remote.Task.get(..., project=..., domain=...)` and start it as a separate run in the callee's project and domain with `flyte.with_runcontext(project=..., domain=...).run(...)`. This is a separate run, not an action in the caller's run: the caller gets a `Run` handle to `wait()` on and read `outputs()` from, not the task's return value. The identity that starts the run (from inside a task, the credentials the task runs with) must be allowed to create runs in the callee's project.
 
 ### Type system
 
