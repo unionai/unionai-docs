@@ -31,7 +31,7 @@ You will need to send the following details to the Union.ai team:
 ## Cloud provider
 
 You can choose AWS, Azure, or GCP as your cloud provider.
-If you choose to have multiple clusters, they must all be in the same provider.
+If you choose to have multiple clusters, the Enterprise plan lets you put them in different providers. See [Multi-cluster and multi-cloud](./multi-cluster).
 
 ## Multi-cluster
 
@@ -45,7 +45,7 @@ The most common set up is to have a separate cluster for each Flyte domain: deve
 
 You can further partition your deployment so that each Flyte domain-project pair has its own cluster in its own account.
 
-In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by region or by the type of workloads that will run on them.
+In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by the type of workloads that will run on them, or by region (Enterprise plan).
 
 See [Multi-cluster](./multi-cluster) for more information.
 

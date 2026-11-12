@@ -33,7 +33,7 @@ The result: LLMs generate the orchestration code (control flow, conditionals, lo
 
 ## How it works
 
-Your generated code runs inside one or more **Monty sandboxes**: lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, imports, or OS. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it, either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):
+Your generated code runs inside one or more **Monty sandboxes**: lightweight Python interpreters embedded within a **worker container**. Each sandbox can execute pure Python (variables, loops, conditionals, function calls) but has no access to the filesystem, network, or OS, and can import only a subset of the standard library. A **bridge layer** acts as a hypervisor between the worker container and the sandboxes, handling opaque IO and routing callable tasks. When your code calls an external task, the bridge dispatches it, either as a method in the outer Python process or as a durable remote call through the Flyte controller (via the Queue Service):
 
 ```mermaid
 flowchart TB
@@ -109,7 +109,7 @@ def pipeline(n: int) -> dict[str, int]:
 
 When `pipeline` runs, Monty executes the control flow in the sandbox. Each call to `fib`, `multiply`, and `add` pauses the sandbox, runs the worker task in a container, and resumes with the result.
 
-Both `def` and `async def` orchestrators are supported; Monty natively handles `await` expressions.
+Both `def` and `async def` orchestrators are supported. In an `@env.sandbox.orchestrator`, call tasks without `await`: a task call returns its result directly, and awaiting it raises `TypeError`.
 
 ## Example: dynamic code execution
 
@@ -211,44 +211,44 @@ See [Programmatic tool calling for agents](./code-mode) for the full concept, ag
 
 ## Syntax restrictions
 
-Monty enforces strict syntax restrictions to guarantee sandbox safety.
-These restrictions are a feature, not a limitation: they ensure that sandboxed code is deterministic and side-effect free.
+Monty runs a subset of Python.
+The tables below apply to `flyte` 2.10.6 or later, which runs the sandbox on Monty 1.0.
 
 ### Allowed
 
 | Feature | Notes |
 |---------|-------|
-| Variables and assignment | `x = 1` |
+| Variables and assignment | `x = 1`, `d["key"] = v`, `l[0] = v` |
+| Augmented assignment | `x += 1` |
+| Walrus operator | `(y := 3)` |
 | Arithmetic and comparisons | `x + y`, `x > y` |
-| String operations | Concatenation, formatting |
+| String operations | Concatenation, f-strings, `str.format()` |
 | `if`/`elif`/`else` | Conditional logic |
 | `for` loops | Iteration over lists, ranges, dicts |
 | `while` loops | Condition-based loops |
-| Function definitions (`def`) | Local helper functions |
-| `async def` and `await` | Async orchestrators |
-| List/dict/tuple literals | `[1, 2, 3]`, `{"key": "value"}` |
-| List comprehensions | `[x * 2 for x in items]` |
-| `.append()` on lists | Building lists incrementally |
-| Subscript reading | `x = d["key"]`, `x = l[0]` |
+| Function definitions (`def`, `lambda`) | Local helper functions |
+| `async def` and `await` | Async helper functions; call tasks without `await` |
+| `class` definitions | Local helper classes |
+| `with` statements | |
+| `try`/`except` and `raise` | |
+| `assert` statements | |
+| `global`/`nonlocal` | |
+| List/dict/tuple/set literals | `[1, 2, 3]`, `{"key": "value"}`, `{1, 2}` |
+| Comprehensions and generator expressions | `[x * 2 for x in items]`, `sum(i for i in range(3))` |
+| `import` | A subset of the standard library, such as `math`, `json`, `re`, `datetime` and `collections`; no third-party packages |
 | External task calls | Calling registered `@env.task` workers |
-| `raise` | Raising exceptions |
 
 ### Not allowed
 
 | Feature | Workaround |
 |---------|------------|
-| `import` | All available functions are provided directly |
-| Subscript assignment (`d[k] = v`, `l[i] = v`) | Build dicts as literals; use `.append()` for lists |
-| Augmented assignment (`x += 1`) | Use `x = x + 1` |
-| `class` definitions | Use dicts or tuples |
-| `with` statements | Not needed: no resource management in sandbox |
-| `try`/`except` | Errors propagate to the controller |
-| Walrus operator (`:=`) | Use separate assignment |
-| `yield`/`yield from` | Not supported |
-| `global`/`nonlocal` | Not supported |
-| Set literals/comprehensions | Use lists |
+| `yield`/`yield from` (generator functions) | Build and return a list |
 | `del` statements | Not supported |
-| `assert` statements | Use `if` + `raise` |
+| `match` statements | Use `if`/`elif` |
+| `await` on a task call | Call the task without `await` |
+| Reading the clock (`time.time()`, `datetime.now()`) | Pass dates in as inputs; date arithmetic works |
+| Unseeded randomness (`random.random()`) | Use a seeded `random.Random(seed)` |
+| Standard-library modules outside the subset, such as `statistics`, `string`, `hashlib`, `enum` and `subprocess` | Not supported |
 
 ### Type restrictions
 
@@ -256,7 +256,7 @@ These restrictions are a feature, not a limitation: they ensure that sandboxed c
 - **Collection types**: `list`, `dict`, `tuple` (including generic forms like `list[int]`, `dict[str, float]`)
 - **Opaque IO handles**: `File`, `Dir`, `DataFrame`; pass-through only, cannot be inspected in the sandbox
 - **Union types**: `Optional[T]` and `Union` of allowed types
-- **Not allowed**: Custom classes, dataclasses, Pydantic models, or any user-defined types
+- **Not allowed as inputs or outputs**: Custom classes, dataclasses, Pydantic models, or any user-defined types. A class defined inside the sandbox can still be used there.
 
 ## Security model
 
@@ -265,7 +265,7 @@ The sandboxed orchestrator provides security through restriction, not trust:
 - **No filesystem access**: Cannot read, write, or list files
 - **No network access**: Cannot make HTTP requests, open sockets, or resolve DNS
 - **No OS access**: Cannot spawn processes, read environment variables, or access system resources
-- **No imports**: Cannot load any Python modules
+- **Limited imports**: Only a subset of the standard library can be imported; no third-party packages
 - **Opaque IO**: `File`, `Dir`, and `DataFrame` values pass through the sandbox without inspection; the sandbox can route them between tasks but cannot read their contents
 - **Type-checked boundaries**: Inputs and outputs are validated against declared types at the sandbox boundary
 - **Deterministic execution**: The same inputs always produce the same outputs (excluding external task results)

@@ -48,8 +48,6 @@ The `automation` argument of `flyte.Trigger` decides what fires it. Each kind ca
 
 Every trigger, whatever its automation, can also be [fired on demand](./manual-triggers#firing-a-trigger-on-demand).
 
-Support is coming for webhook triggers, which will hit an API endpoint to run your task.
-
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -63,11 +61,6 @@ Support is coming for webhook triggers, which will hit an API endpoint to run yo
 | Manual | None | Only when fired from the UI or with `flyte.run(trigger)` | None | [Manual triggers](./manual-triggers) |
 
 Every trigger, whatever its automation, can also be [fired on demand](./manual-triggers#firing-a-trigger-on-demand).
-
-Support is coming for other trigger types, such as:
-
-* Webhook triggers: Hit an API endpoint to run your task.
-* Artifact triggers: Run a task when a specific artifact is produced.
 
 {{< /markdown >}}
 {{< /variant >}}

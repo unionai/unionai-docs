@@ -31,10 +31,10 @@ Uses [TypeSafe](https://docs.typesafe.ai/introduction)'s System One model throug
 
 | Pattern | What it means here |
 |---|---|
-| **Speculative fan-out** | Every question goes in one call, including the ones the verdict never reads. Eight of the nineteen questions below are never read by the verdict; they exist because a real reviewer wants them and they cost almost nothing. |
+| **Speculative fan-out** | Every question goes in one call, including the ones the verdict never reads. Eleven of the nineteen questions below are never read by the verdict: `severity`, which routing reads, and ten speculative questions that exist because a real reviewer wants them and cost almost nothing. |
 | **Atomic decomposition, verdict in code** | The model is never asked "what is the verdict?". It is asked one question per symptom, and a precedence rule in Python composes the verdict. |
-| **Composite scoring** | Severity and the tool plan are both derived from the symptoms — a dependency audit only runs if a dependency actually changed. |
-| **Confidence-gated routing** | `auto` / `review` / `escalate`, with thresholds that scale with risk. Escalation is a real abstention: the pipeline stops and never spends a generation. |
+| **Composite scoring** | The tool plan is derived from the symptoms — a dependency audit only runs if a dependency actually changed. |
+| **Confidence-gated routing** | `auto` / `review` / `escalate`, with fixed confidence thresholds; a malicious verdict or critical severity always escalates. Escalation is a real abstention: the pipeline stops and never spends a generation. |
 
 ## Setting up the environment
 
@@ -54,7 +54,7 @@ Nineteen questions in one request. Note what is *not* here: there is no `verdict
 
 {{< code file="/unionai-examples/v2/tutorials/typesafe_ai/battery.py" fragment=battery lang=python >}}
 
-The first five are hard guards: any one of them firing means the change must not be merged. The next three are what the verdict falls back to. The last ten are speculative — a human reviewer wants to know whether tests were added and whether a hot path got slower, and asking costs almost nothing once the call is already in flight.
+The first, `severity`, is what routing gates on. The next five are hard guards: any one of them firing means the change must not be merged. The next three are what the verdict falls back to. The last ten are speculative — a human reviewer wants to know whether tests were added and whether a hot path got slower, and asking costs almost nothing once the call is already in flight.
 
 ## Composing the verdict
 
@@ -92,9 +92,9 @@ flyte run agents.py guard_review
 
 The middle shape, and the one where the runtime earns its keep:
 
-> System 1 structures the request → code composes a tool plan → **Flyte fans every selected tool out in parallel** → System 1 aggregates the pooled output → System 2 writes the answer.
+> System 1 structures the request → code composes a tool plan → **Flyte fans every selected tool out in parallel** → System 1 aggregates the pooled output.
 
-Each tool is its own cached, retryable child action:
+Each tool is its own cached child action:
 
 {{< code file="/unionai-examples/v2/tutorials/typesafe_ai/agents.py" fragment=tool-task lang=python >}}
 
@@ -158,7 +158,7 @@ flyte run benchmark.py run_benchmark --repeats 3 --num_cases 8
 | **latency** | Mean and standard deviation. "Faster" without an error bar is not a claim. |
 | **$ / case** | Every token priced at its vendor's published list rate, split System 1 versus System 2. |
 | **verdict** | Label accuracy against ground truth — the check that cheaper did not mean worse. |
-| **guard** | Hostile diffs escalated. With fewer than eight cases this column is meaningless, because the hostile cases sit at positions 4 through 7. |
+| **guard** | Share of units with `guard_ok`. That is true for every benign unit, and for a hostile unit only if it was escalated. `--num_cases` takes cases from the front of the list, and the hostile cases sit at positions 4 through 7. With fewer than four cases, the column has no hostile case to measure. |
 | **agreement** | Share of repeats that agree on the modal verdict. This is the reproducibility number. |
 | **escalated** | Units that abstained. A high number here is why the cost column is low — the savings come from the generations that never happened. |
 
@@ -185,9 +185,9 @@ flyte create secret ANTHROPIC_API_KEY --value <your key>
 
 ## Adapting it to your own task
 
-Everything task-specific is in `battery.py`: the vocabulary, the battery, the composition rule, the thresholds, the tools and the cases. The three pipelines and the benchmark import from it and are otherwise task-agnostic — swap that one file and the same harness triages support tickets or reviews draft contracts instead.
+Most of what is task-specific is in `battery.py`: the vocabulary, the battery, the composition rule, the thresholds, the tools and the cases. The three pipelines and the benchmark import from it, but swapping that file alone does not retarget them. `agents.py` also holds pull-request-specific content — the `NextAction` enum, the `Step` questions and the `aggregate` questions — and the System 2 prompts in `system2.py` describe a pull-request review.
 
-When you do, keep the discipline that makes it work: one question per symptom, the verdict composed in code, the thresholds where a reviewer can see them, and an escalation tier that genuinely stops.
+When you retarget it, keep the discipline that makes it work: one question per symptom, the verdict composed in code, the thresholds where a reviewer can see them, and an escalation tier that genuinely stops.
 
 ## Related
 
