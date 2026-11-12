@@ -465,9 +465,9 @@ Use remote tasks when you need to:
 
 ### Security model
 
-By default, remote tasks run in the **caller's project and domain**. A remote task called from inside a task becomes an action in the caller's run, so the callee's code and image run with the **caller's** Kubernetes service account and the IAM role bound to it, not the callee's.
+By default, remote tasks run in the **caller's project and domain**. A remote task called from inside a task becomes an action in the caller's run, so its pod runs in the **caller's** Kubernetes namespace. Its service account, and the IAM role bound to it, are resolved there, not in the callee's project. If the callee's task environment names a `service_account`, that account must exist in the caller's namespace.
 
-To run a remote task with the callee project's identity, fetch it with `flyte.remote.Task.get(..., project=..., domain=...)` and start it as a separate run in the callee's project and domain with `flyte.with_runcontext(project=..., domain=...).run(...)`. This is a separate run, not an action in the caller's run: the caller gets a `Run` handle to `wait()` on and read `outputs()` from, not the task's return value. The identity that starts the run (from inside a task, the credentials the task runs with) must be allowed to create runs in the callee's project.
+You can instead start a remote task as a separate run in the callee's project and domain: fetch it with `flyte.remote.Task.get(..., project=..., domain=...)` and start it with `flyte.with_runcontext(project=..., domain=...).run(...)`. This is a separate run, not an action in the caller's run: the caller gets a `Run` handle to `wait()` on and read `outputs()` from, not the task's return value. The identity that starts the run (from inside a task, the credentials the task runs with) must be allowed to create runs in the callee's project.
 
 ### Type system
 
