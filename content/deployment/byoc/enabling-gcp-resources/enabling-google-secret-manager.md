@@ -1,6 +1,6 @@
 ---
 title: Enabling Google Secret Manager
-description: Give the data plane access to Secret Manager secrets, whether they live in the data plane project or another one.
+description: On a GCP data plane, Union.ai secrets are stored in Google Secret Manager in your own GCP project.
 icon: safe
 weight: 3
 variants: -flyte +union
@@ -8,53 +8,22 @@ variants: -flyte +union
 
 # Enabling Google Secret Manager
 
+On a GCP data plane, {{< key product_name >}} secrets are stored in Google Secret Manager in your own GCP project.
+Secret values stay in your project and never pass through the {{< key product_name >}} control plane.
+See [Secrets management](../../../security/data-protection/secrets).
+
+## Set up Secret Manager
+
+The Union.ai team sets up Secret Manager when they set up your data plane: they enable the Secret Manager API in your GCP project and give the data plane access to it.
+There is nothing else to configure.
+
+## Create and use secrets
+
+Manage secrets with `flyte create secret`, `flyte get secret`, and `flyte delete secret`, or in the UI, and request them with `flyte.Secret`:
+
+* In tasks, including reusable environments, declare secrets on the task environment. See [Secrets](../../../user-guide/tasks/task-configuration/secrets).
+* In apps, declare secrets on the app environment. See [App environment settings](../../../user-guide/apps/configure-apps/app-environment-settings).
+
 > [!NOTE]
-> This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than Google Secret Manager.
-
-The `<UserFlyteGSA>` can access secrets in Secret Manager in the same GCP project as the data plane by default.
-
-To access a secret in a GCP project other than the one that holds your data plane, grant the `<UserFlyteGSA>` (see [Enabling GCP resources](./_index)) access to the secret in that project.
-
-> [!WARNING]
-> Flyte 2 tasks cannot request a Secret Manager secret.
-> The data plane fetches a Secret Manager secret only when the task's request names both the secret and a secret version.
-> `flyte.Secret` has no field for a secret version.
-> Use the [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) instead.
-
-## Create your secrets
-
-Create your secrets in **Secret Manager** (see the [Secret Manager documentation](https://cloud.google.com/secret-manager/docs) for details):
-
-* Go to **Security > Secret Manager**.
-* Select **CREATE SECRET** at the top of the page.
-* Fill in the **Name**, **Value,** and (optionally) the other parameters.
-* Select **CREATE SECRET** at the bottom of the page.
-
-Your secret should now be on the secrets list:
-
-![Google Secret Manager secrets list showing a secret named example-secret](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-manager.png)
-
-Above we see a secret named `example-secret`.
-Clicking on it will bring us to the **Secret details** page:
-
-![Google Secret Manager Secret details page for the example-secret secret](../../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager/secret-details.png)
-
-The secret has three important identifiers:
-
-* The **GCP secret name**, in this case `example-secret`.
-* The **GCP secret path**, in this case `projects/956281974034/secrets/example-secret`.
-* The **GCP secret version**, in this case `1`.
-
-## Cross-project secrets
-
-If your secret is stored in the Secret Manager of a project other than the one containing your data plane, grant the `<UserFlyteGSA>` permission to access it:
-
-* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](./_index) for details).
-* Go to **Security > Secret Manager** in the GCP project that contains your secret.
-* Select the secret that you want to access and select **GRANT ACCESS**.
-* In the subsequent panel, under **Add principals**, paste in the email identifier of the `<UserFlyteGSA>` that you found above.
-* Under **Assign roles** add at least the role **Secret Manager Secret Accessor**.
-* Save the changes.
-
-At this point, the `<UserFlyteGSA>` has access to the secret in the other project.
+> A task can't request a Secret Manager secret that wasn't created through {{< key product_name >}}.
+> To use such a value in a task, create it as a {{< key product_name >}} secret with `flyte create secret` or in the UI.
