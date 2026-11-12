@@ -69,12 +69,10 @@ would.
 
 {{< code file="/unionai-examples/v2/tutorials/pandera_cost_of_not_validating/main.py" lang="python" fragment="rollback" >}}
 
-Two harness bugs turned up while building this, and both would have inflated the cost of not validating:
-
-- Without the poisoned-checkpoint handling, a run could roll back to `NaN` weights forever.
-- `Optimizer.load_state_dict` keeps references to the tensors it's given, so restoring a checkpoint directly let
-  the next `NaN` update write into the stored checkpoint. Its weights stayed finite while its Adam state went `NaN`,
-  and one run crashed 574 times. The loop now loads copies and checks optimizer state for finiteness.
+`Optimizer.load_state_dict` keeps references to the tensors it's given. If you restore an optimizer from a stored
+state dict without copying it, the next `NaN` update writes into the stored checkpoint: its weights stay finite
+while its optimizer state goes `NaN`, and every later rollback to it crashes again. The loop loads copies and
+checks optimizer state, not only weights, for finiteness.
 
 ## Fanning out the cells
 
@@ -143,7 +141,8 @@ How to read it:
 ## Run it
 
 ```bash
-# On your cluster; builds the image remotely, then writes results/ locally
+# From v2/tutorials/pandera_cost_of_not_validating in your unionai-examples clone.
+# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
 uv run main.py
 
 # Locally, with a short configuration
