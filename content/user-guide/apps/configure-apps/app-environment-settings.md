@@ -167,18 +167,7 @@ You can combine both, though this is less common:
 
 When using `FastAPIAppEnvironment`, you don't need to set `command` or `args`. The app runs with the default `fserve` command, which serves your FastAPI app with uvicorn:
 
-```python
-from flyte.app.extras import FastAPIAppEnvironment
-from fastapi import FastAPI
-
-app = FastAPI()
-
-# FastAPIAppEnvironment serves the app with uvicorn; no command or args needed
-env = FastAPIAppEnvironment(
-    name="my-api",
-    app=app,
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=fastapi-auto-command lang=python >}}
 
 The `FastAPIAppEnvironment` automatically:
 

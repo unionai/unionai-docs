@@ -130,7 +130,7 @@ Inside a running task, `flyte.ctx()` returns a `TaskContext` object with informa
 | `action` | `ActionID` | Identity of this specific action (task invocation) within the run. |
 | `mode` | `"local"` \| `"remote"` | Execution mode of the current run. |
 | `version` | `str` | Version of the deployed task code bundle. |
-| `raw_data_path` | `str` | Storage prefix where offloaded outputs are written. |
+| `raw_data_path` | `RawDataPath` | Storage prefix where offloaded outputs are written, as a string in its `.path` attribute. |
 | `run_base_dir` | `str` | Base directory for the run's inputs, outputs, and intermediate per-action artifacts in the data plane object store. |
 | `custom_context` | `Dict[str, str]` | Propagated context metadata from `with_runcontext()`. |
 | `disable_run_cache` | `bool` | Whether `disable_run_cache` was set for this run. Set only in local runs; as of flyte 2.12, in remote runs it is `False`. |

@@ -52,7 +52,7 @@ cd v2/tutorials/detr_object_detection
 uv run --script detr_object_detection.py
 ```
 
-Quick local smoke test with one epoch:
+Quick smoke test with one epoch on your cluster:
 
 ```
 flyte run detr_object_detection.py pipeline --epochs 1 --batch_size 2

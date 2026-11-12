@@ -28,7 +28,7 @@ A virtual key (`sk-un-...`) is the credential every caller presents to the gatew
 3. Copy the key value from the confirmation dialog and store it where the caller reads it, for example as a Union secret:
 
    ```bash
-   flyte create secret support-bot-llm-key sk-un-...
+   flyte create secret support-bot-llm-key --value sk-un-...
    ```
 
 Callers send the key the way any OpenAI-compatible client sends an API key, as `Authorization: Bearer sk-un-...`.

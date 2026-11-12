@@ -16,7 +16,7 @@ This tutorial combines [LangGraph](https://langchain-ai.github.io/langgraph/) fo
 Flyte provides:
 
 - **Per-step tasks** visible in the Flyte UI while LangGraph orchestrates the graph.
-- **Secrets** for OpenAI and Tavily API keys.
+- **Secrets** for Anthropic and Tavily API keys.
 - **Live HTML reports** with Mermaid graph visualizations and the final synthesized report.
 
 ## Define the task environment
@@ -29,7 +29,7 @@ Flyte provides:
 # dependencies = [
 #    "flyte>=2.4.0",
 #    "langgraph>=1.0.7",
-#    "langchain-openai",
+#    "langchain-anthropic",
 #    "tavily-python",
 #    ...
 # ]
