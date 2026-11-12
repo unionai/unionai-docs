@@ -111,7 +111,7 @@ import flyte
 env = flyte.TaskEnvironment(name="my_env")
 
 @env.task
-async def process(data: list, batch_size: int = 32, verbose: bool = False) -> dict:
+async def process(data: list[int], batch_size: int = 32, verbose: bool = False) -> dict:
     # batch_size defaults to 32, verbose defaults to False
     ...
 ```
@@ -123,7 +123,7 @@ When running via `flyte run`, parameters with defaults are optional:
 flyte run my_file.py process --data '[1, 2, 3]'
 
 # Override a default
-flyte run my_file.py process --data '[1, 2, 3]' --batch-size 64
+flyte run my_file.py process --data '[1, 2, 3]' --batch_size 64
 ```
 
 When invoking programmatically, Python's normal default argument rules apply:

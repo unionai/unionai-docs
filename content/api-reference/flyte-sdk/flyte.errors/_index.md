@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,6 +54,7 @@ unknown error.
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](../flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`OnlyAsyncIOSupportedError`](../flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
+| [`OrgLimitExceededError`](../flyte.errors/orglimitexceedederror) | This error is raised when the server refuses to launch an action because the organization is at one of its limits, for example `max_actions_per_run`. |
 | [`ParameterMaterializationError`](../flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`PrimaryContainerNotFoundError`](../flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`RemoteTaskNotFoundError`](../flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |

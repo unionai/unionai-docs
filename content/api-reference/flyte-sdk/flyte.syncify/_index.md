@@ -2,7 +2,7 @@
 title: flyte.syncify
 description: "This module provides the `syncify` decorator and the `Syncify` class."
 icon: box-seam
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

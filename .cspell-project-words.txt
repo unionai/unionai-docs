@@ -102,6 +102,8 @@ Notion
 GitHub
 GitLab
 
+leasor
+
 # --- Python / tooling ---
 dataclass
 dataclasses

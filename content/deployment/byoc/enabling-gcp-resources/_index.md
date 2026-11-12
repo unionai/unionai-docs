@@ -11,7 +11,7 @@ variants: -flyte +union
 Components of your Union.ai data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage), [Artifact Registry](./enabling-google-artifact-registry), [BigQuery](./enabling-bigquery), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
+> Use the [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) for secrets. On a GCP data plane, it stores secret values in Google Secret Manager in your own GCP project. See [Enabling Google Secret Manager](./enabling-google-secret-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the Union.ai team when they set up your data plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.

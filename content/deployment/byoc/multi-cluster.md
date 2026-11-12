@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Multi-cluster and multi-cloud
 
-When [configuring your data plane](./configuring-your-data-plane), you can map each domain or project to its own GCP project or AWS subaccount. You can even mix cloud providers: Some of your domains and/or projects can be mapped to AWS subaccounts while others can be mapped to GCP projects.
+When [configuring your data plane](./configuring-your-data-plane), you can map each domain or project to its own GCP project or AWS subaccount. On the Enterprise plan, you can even mix cloud providers: Some of your domains and/or projects can be mapped to AWS subaccounts while others can be mapped to GCP projects.
 
 ## Domain isolation
 
