@@ -15,11 +15,12 @@ the accelerators on it, and how far the pool can scale. For how queues, resource
 policies work, see [Resource caps and scheduling](../../../user-guide/clusters-and-queues/resource-caps-and-scheduling)
 in the user guide. This page covers what a self-managed data plane contributes and what you configure.
 
-The node pool configuration is held by Union for each cluster and is not set in the data plane
-values. Until a cluster has it, the scheduler treats the cluster as able to run anything and places
-work on any healthy cluster the queue routes to. Resource caps and the scheduling policy apply either
-way. Two things are configured on the data plane: reporting observed node capacity, and, on a
-self-hosted control plane, the scheduling strategy.
+You declare the node pool configuration for each cluster with `flyte update node-groups`; the
+scheduler reads only what is declared, not what the operator observes. Until a cluster has a
+declaration, the scheduler treats it as able to run anything and places work on any healthy cluster
+the queue routes to. Resource caps and the scheduling policy apply either way. This page covers the
+declaration, the optional reporting of observed capacity, and, on a self-hosted control plane, the
+scheduling strategy.
 
 > [!NOTE] Data planes connected from the Union.ai UI
 > The Helm values on this page are for a data plane installed with Helm. On a data plane connected from
@@ -32,8 +33,8 @@ The scheduler reads two kinds of information about a cluster. Only the first one
 
 | Information | Source | Used for |
 | --- | --- | --- |
-| Node pool configuration | Held by Union for the cluster | Which clusters can run an action, how much room a cluster has at full scale, and which cluster is least loaded |
-| Observed node capacity | Reported by the data plane operator when `nodeCapacity` is on | The **Node pools** tab on the cluster page: nodes, pods, CPU, memory, and accelerators in use per pool |
+| Node pool configuration | Declared by you with `flyte update node-groups` | Which clusters can run an action, how much room a cluster has at full scale, and which cluster is least loaded |
+| Observed node capacity | Reported by the data plane operator when `nodeCapacity` is on; never used for placement | The **Node pools** tab on the cluster page: nodes, pods, CPU, memory, and accelerators in use per pool |
 
 A queue's resource caps are a third limit, set on the queue itself. The scheduler applies them with or
 without the node pool configuration.
@@ -42,14 +43,75 @@ without the node pool configuration.
 
 - Resource-aware scheduling enabled for your organization.
 - Data plane chart 2026.11.0 or later, to report observed node capacity.
-- `flyteplugins-union` 0.16.0 or later, for the `flyte create queue` and `flyte update queue` commands
+- `flyteplugins-union` 0.20.2 or later, for the `flyte update node-groups` command and the queue commands
   that set resource caps.
+- Permission to manage the cluster (the `MANAGE_CLUSTER` action on it), to write its node groups.
+
+## Declare your node pools
+
+The declaration is the list of node pools that task pods can land on, with what one node in each pool
+offers and how far the pool can scale. The scheduler decides from it which clusters can run an action,
+how much room a cluster has at full scale, and which cluster is least loaded.
+
+Export the current declaration, edit it, and apply it back. `update` replaces the whole set, so always
+work from the complete list:
+
+```bash
+flyte get node-groups <cluster> --export > node-groups.yaml
+# edit node-groups.yaml
+flyte update node-groups <cluster> -f node-groups.yaml
+```
+
+Without `-f`, `flyte update node-groups <cluster>` opens the declaration in `$EDITOR`. Either way the
+command prints which groups are added, removed, or changed, and asks before removing one.
+
+A declaration with two pools, one on-demand CPU pool with a node-count ceiling and one GPU pool bounded
+by Karpenter limits instead of a node count:
+
+```yaml
+node_groups:
+- name: cpu-workers
+  min_nodes: 1
+  max_nodes: 20
+  node_instance_types: [m6i.4xlarge]
+  capacity_types: [CAPACITY_TYPE_ON_DEMAND]
+  labels:
+    union.ai/node-role: worker
+- name: gpu-h100
+  min_nodes: 0
+  max_nodes: 0            # 0 means no node-count bound; `limits` is the ceiling
+  node_instance_types: [p5.48xlarge]
+  capacity_types: [CAPACITY_TYPE_ON_DEMAND, CAPACITY_TYPE_SPOT]
+  limits:
+    cpu: "3840"
+    nvidia.com/gpu: "160"
+  labels:
+    union.ai/node-role: worker
+    platform.union.ai/accelerator: nvidia-h100
+```
+
+The export shows every field the scheduler reads, in the format the server stores: allocatable
+resources per node, accelerators with their partition size, taints, and CPU architecture. Fill them from
+`kubectl describe node` on a node of the pool and from the pool's definition in your cloud provider or
+autoscaler. Quantities in `limits` are strings. Leave out pools reserved for Union services or other
+workloads: a declared pool is a pool the scheduler counts on.
+
+> [!WARNING] Keep the declaration in sync with the cluster
+> The scheduler decides from the declaration, not from the nodes that exist. Update it in the same
+> change that adds, resizes, or removes a node pool. A GPU pool you added but did not declare is
+> invisible to the scheduler: a task that asks for that GPU fails as `INFEASIBLE`, because no declared
+> pool offers it. A pool you removed but left declared still counts as room, so work is placed on the
+> cluster and then pends in Kubernetes. Turn on observed capacity (below) to see the declaration next to
+> what the cluster is actually running on the cluster page's **Node pools** tab.
+
+`NodeGroups.get` and `NodeGroups.set` in `flyteplugins.union.remote` do the same from Python; see the
+[NodeGroups reference](../../../api-reference/union-plugin/flyteplugins.union.remote/nodegroups).
 
 ## Report observed node capacity
 
 Turn on `nodeCapacity` to have the operator report each node pool's nodes, pods, CPU, memory, and
-accelerators into cluster health. The cluster page's **Node pools** tab then shows the recorded
-configuration next to what the cluster is doing.
+accelerators into cluster health. The cluster page's **Node pools** tab then shows your declaration
+next to what the cluster is doing. The report is for you to read; the scheduler does not use it.
 
 ```yaml
 config:
@@ -93,10 +155,11 @@ services:
             strategy: v2
 ```
 
-With `v2`, queue resource caps and scheduling policies are enforced. The node pool configuration is
-not available on a self-hosted control plane, so the checks that need it (which clusters can run an
-action, room at full scale, and cluster-level infeasibility) are not active; `v3` behaves the same as
-`v2` there. Observed node capacity still shows on the **Node pools** tab when `nodeCapacity` is on.
+With `v2`, queue resource caps and scheduling policies are enforced. A self-hosted control plane does
+not hold a managed-cluster record for its data planes, so `flyte update node-groups` returns `NotFound`
+there and the checks that need a declaration (which clusters can run an action, room at full scale, and
+cluster-level infeasibility) are not active; `v3` behaves the same as `v2`. Observed node capacity still
+shows on the **Node pools** tab when `nodeCapacity` is on.
 
 The console's resource cap fields are hidden on a self-hosted control plane. Set caps with
 `flyte create queue` and `flyte update queue`, or with `Queue.create` and `Queue.update` in Python.
@@ -106,13 +169,15 @@ The console's resource cap fields are hidden on a self-hosted control plane. Set
 - `flyte get queue <name> --watch` shows each cap with its usage.
 - The cluster page's **Node pools** tab lists your pools with live counts once `nodeCapacity` is on
   and the operator has pushed a snapshot.
+- `flyte get node-groups <cluster>` shows the declaration the scheduler reads.
 - With resource-aware scheduling enabled for your organization, a task that requests an accelerator no
-  node pool in the cluster's configuration offers fails within seconds with error code `INFEASIBLE`,
-  and the message names what each pool offers instead.
+  declared pool offers fails within seconds with error code `INFEASIBLE`, and the message names what
+  each pool offers instead.
 
 ## See also
 
 - [Resource caps and scheduling](../../../user-guide/clusters-and-queues/resource-caps-and-scheduling): caps, scheduling policies, and infeasible requests.
+- [Clusters](../../../user-guide/clusters-and-queues/clusters): registering and inspecting clusters.
 - [Interruptible task scheduling](./interruptible-scheduling): labeling spot and on-demand nodes.
 - [Node pools](./node-pools): separating Union services from worker pods.
 - [Data plane Helm chart reference](../helm-chart-reference/dataplane): `config.operator.clusterHealth.nodeCapacity`.
