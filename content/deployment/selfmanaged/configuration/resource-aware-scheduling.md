@@ -47,7 +47,7 @@ without the node pool configuration.
 | `flyte get node-groups` and `flyte update node-groups`, and `NodeGroups` in Python | `flyteplugins-union` 0.20.2 or later, which runs with `flyte` 2.10.1 through 2.12.x |
 | Queue resource caps from the CLI or Python | `flyteplugins-union` 0.16.0 or later (covered by the line above) |
 | Writing node groups | Permission to manage the cluster (the `MANAGE_CLUSTER` action on it) |
-| A managed-cluster record for the cluster | Created by the **Connect your cluster** flow in the Union.ai UI, which installs the agent-managed data plane. A cluster added with **Create cluster** in Settings > Clusters or with `flyte create cluster` has none until Union.ai creates it; see the note under *Declare your node pools* |
+| A managed-cluster record for the cluster | Created by the **Connect your cluster** flow, which only organizations created through self-serve sign-up have in the Union.ai UI, and which installs the agent-managed data plane. Every other registration path (**Create cluster** in Settings > Clusters, `flyte create cluster`) creates none; Union.ai creates the record for those clusters. See the note under *Declare your node pools* |
 | Observed node capacity on the **Node pools** tab | Data plane chart 2026.11.0 or later for the `nodeCapacity` switch. On a self-hosted control plane, also controlplane chart 2026.11.0 or later for the tab itself |
 | Scheduling strategy on a self-hosted control plane | Controlplane chart `2026.9.7` or later |
 
@@ -73,12 +73,13 @@ Without `-f`, `flyte update node-groups <cluster>` opens the declaration in `$ED
 command prints which groups are added, removed, or changed, and asks before removing one.
 
 > [!NOTE] The declaration attaches to the cluster's managed-cluster record
-> The **Connect your cluster** flow in the Union.ai UI, which installs the agent-managed data plane,
-> creates that record. **Create cluster** in Settings > Clusters, `flyte create cluster`, and
-> `Cluster.create()` register the cluster without one, so on a data plane installed with Helm both
-> node-groups commands fail with `cluster '<name>' not found: missing entity of type ManagedCluster`
-> until Union.ai creates the record for the cluster. The scheduler treats such a cluster as able to run
-> anything, as described above.
+> The **Connect your cluster** flow creates that record along with the agent-managed data plane it
+> installs. It appears on the home page and in Settings > Clusters only for organizations created
+> through self-serve sign-up. For every other organization, Settings > Clusters offers **Create
+> cluster**, which, like `flyte create cluster` and `Cluster.create()`, registers the cluster without a
+> record. On such a cluster both node-groups commands fail with
+> `cluster '<name>' not found: missing entity of type ManagedCluster` until Union.ai creates the record
+> for it. The scheduler treats the cluster as able to run anything in the meantime, as described above.
 
 A declaration with two pools, one on-demand CPU pool with a node-count ceiling and one GPU pool bounded
 by Karpenter limits instead of a node count:
