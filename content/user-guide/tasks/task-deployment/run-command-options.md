@@ -174,7 +174,7 @@ flyte run --copy-style none --version v1 my_example.py my_task
 
 - **`loaded_modules` (default)**: Bundles only imported Python modules from your project
 - **`all`**: Includes all files in the project directory
-- **`none`**: No bundling; the task's code must be in the container image. Requires `--version`
+- **`none`**: No bundling; the task's code must be in the container image. Requires `--version`. Use `Image.with_code_bundle()` to bake your source into the image (see [Bring your own image](../../project-patterns/bring-your-own-image))
 
 ## `--root-dir`
 
@@ -294,7 +294,7 @@ flyte run --follow --name "training-session" my_example.py train_model
 
 - **Log streaming**: Real-time output from task execution
 - **Blocking execution**: Command waits until task completes
-- **Exit codes**: The command exits normally whether the task succeeds or fails
+- **Exit codes**: Once the run is submitted, the command exits with code 0 whether the task succeeds or fails. Check the run's status separately
 
 ## `--image`
 
