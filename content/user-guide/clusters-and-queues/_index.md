@@ -117,10 +117,15 @@ destination data plane. Then move its drained queue or follow a
 
 > [!NOTE] The simple case is invisible
 > Each cluster is assigned exactly one pool. If no custom pool is specified when
-> the cluster is created, it joins the `default` pool that every organization is
-> provisioned with. So if you run a single cluster, or several clusters that share
-> one bucket, secret store, and registry, you never need to think about pools: your
-> cluster lands in `default`, queues route to `default`, and you can skip straight
+> the cluster is created, it joins the `default` pool. No organization starts with
+> one: if Union.ai set up your organization, `default` is created when its first
+> cluster is registered; if you created your organization yourself by
+> [signing up](../../deployment/sign-up/_index), you
+> [create `default`](../../deployment/selfmanaged/connect-a-cluster) before you
+> register your first cluster. So if you run a single cluster, or several
+> clusters that share one bucket, secret store, and registry, you don't need to
+> think about pools once `default` exists: your cluster lands in `default`,
+> queues route to `default`, and you can skip straight
 > to [Managing queues](./queues). Pools only matter once you have clusters with **distinct**
 > data planes (for example, separate dev and prod cloud accounts).
 

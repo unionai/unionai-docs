@@ -23,7 +23,8 @@ secrets.
 
 Most deployments need exactly one pool. Each cluster is assigned exactly one
 pool, and if no custom pool is specified when the cluster is created, it joins
-the `default` pool that every organization is provisioned with. If your clusters
+the `default` pool. No organization starts with one; see
+[Clusters and queues](./_index) for how `default` comes to exist. If your clusters
 share a bucket, secret store, and registry, leave them in `default` and move on
 to [Clusters](./clusters).
 
