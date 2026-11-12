@@ -19,10 +19,6 @@ On {{< key product_name >}}, the secret store is in your own infrastructure.
 It is your cloud provider's secret manager (AWS Secrets Manager, Google Secret Manager, or Azure Key Vault) or Kubernetes Secrets, depending on how your data plane is configured.
 Secret values never pass through the {{< key product_name >}} control plane.
 See [Secrets management](../../../security/data-protection/secrets).
-
-A task can also read a secret that already exists in AWS Secrets Manager or Azure Key Vault, without creating it with `flyte create secret`.
-See [Enabling AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager) and [Enabling Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
-For Google Secret Manager, including how Union.ai names the secrets it stores there, see [Enabling Google Secret Manager](../../../deployment/byoc/enabling-gcp-resources/enabling-google-secret-manager).
 {{< /markdown >}}
 {{< /variant >}}
 
