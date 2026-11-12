@@ -62,13 +62,13 @@ Make SkyRL/Harbor-style agentic RL rollouts durable — trials that survive driv
 
 {{< variant union >}}
 {{< link-card target="agentic-rl-evals" icon="clipboard-check" title="Harness evals and trace audits for agentic RL" >}}
-Version the agent harness, cache every eval cell, and label the failures in published RL traces with an LLM.
+Treat the agent harness as a versioned input, cache every eval cell, and mine published RL traces for failure modes before you train.
 {{< /link-card >}}
 {{< /variant >}}
 
 {{< variant union >}}
 {{< link-card target="lora-ablation-screen" icon="sliders" title="Can a LoRA screen pick the right RL ablation?" >}}
-Train the same loss-aggregation arms as LoRA adapters and at full weight, and check whether the rankings agree.
+Train the same GRPO loss-aggregation arms as LoRA adapters and at full weight, one durable action per arm, and check whether the two rankings agree.
 {{< /link-card >}}
 {{< /variant >}}
 
