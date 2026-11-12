@@ -151,7 +151,7 @@ A false completion is a trajectory where the agent declares the task done and th
 
 ## Gotchas
 
-- **Concurrent calls to the same cached task can both run.** If two evaluations call `build_world("w5")` at the same moment, both can miss the cache. Each then keys its trials on a different output. Build shared inputs once before fanning out. The drivers here call `warm_worlds` first.
+- **Concurrent calls to the same cached task can both run.** If two evaluations call `build_world("w5")` at the same moment, both can miss the cache. Each then keys its trials on a different output. Give shared inputs `cache=flyte.Cache(behavior="auto", serialize=True)`, as `build_world` does here: one call runs and the others wait for its cached result.
 - **Child task specs are built in the parent's container.** Module-level configuration, such as a secret name read from an environment variable, is evaluated again in every container. Pass it to the parent's environment with `env_vars` so child tasks get the same value.
 - **Warm replicas keep the secrets they started with.** If you rotate the API key, give the reusable environment a new name or let the pool idle out.
 - **Bump `Harness.version` when tool code changes.** Cache keys don't include imported helper modules.
