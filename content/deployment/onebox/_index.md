@@ -46,7 +46,7 @@ For an airgapped install or a private mirror, copy each image with all its archi
 | A bucket in Amazon S3, Google Cloud Storage, Azure Blob Storage, or an S3-compatible store (MinIO, R2, Ceph), with a CORS rule for the UI | `storage.type` (`s3`, `gcs`, or `azure`), `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
 | Optionally, an authenticating proxy in front of onebox | `identity.*`; see [Authentication](./authentication) |
 | Optionally, role-based access control | `authz.enabled`; see [Authorization](./authorization) |
-| Optionally, a license key | `license.*`; see [License key](#license-key) |
+| A license key: a 30-day trial or a contract key, from your Union.ai organization | Added in the UI, or `license.existingSecret`; see [License key](#license-key) |
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
 
@@ -76,7 +76,7 @@ To install onebox on a Kubernetes cluster, `flyte install onebox` checks the clu
 
 ## License key
 
-A license key is what lets an install make changes. Without a valid key and with `license.enforce` on, onebox is read-only: reads work, changes are refused, and runs in flight finish. Every key is for one install, named by the 32-character install ID onebox generates on first start and keeps across upgrades.
+A license key is what lets an install make changes. Without a valid key, onebox is read-only: reads work, changes are refused, and runs in flight finish. Every key is for one install, named by the 32-character install ID onebox generates on first start and keeps across upgrades.
 
 ### Get a key
 
@@ -89,17 +89,14 @@ You can also mount a key from a Secret:
 ```shell
 kubectl -n union create secret generic onebox-license --from-literal=license-key=<key>
 helm upgrade onebox unionai/onebox -n union -f values.yaml \
-  --set license.existingSecret=onebox-license --set license.enforce=true \
-  --set license.issueURL=https://signup.hosted.unionai.cloud/
+  --set license.existingSecret=onebox-license
 ```
 
-Newer charts use that `issueURL` by default when `license.enforce` is on; older ones refuse to render without it.
-
-Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against public keys built into each release; nothing is sent to Union.ai. `license.trustedKeys` adds the public keys of a license issuer you host. `license.issueURL` points **Get a key** somewhere else, for example your own issuer.
+Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against Union.ai's public keys built into each release; nothing is sent to Union.ai. Only keys Union.ai issues are accepted. `license.issueURL` points **Get a key** somewhere else.
 
 ### Limits and entitlements
 
-A key carries the limits and entitlements of the organization it was issued for, such as the maximum number of clusters, users, or concurrent runs, as they were when it was issued. With `license.enforce` on, onebox reports them as the organization's own, and its limit checks hold the install to them. A key issued before keys carried limits, or no key at all, gets the Teams tier's defaults built into the release. The limits can't be changed inside onebox: when the organization's limits change, issue the key again and add the new one.
+A key carries the limits and entitlements of the organization it was issued for, such as the maximum number of clusters, users, or concurrent runs, as they were when it was issued. Onebox reports them as the organization's own, and its limit checks hold the install to them. A key issued before keys carried limits, or no key at all, gets the Teams tier's defaults built into the release. The limits can't be changed inside onebox: when the organization's limits change, issue the key again and add the new one.
 
 The checks start in log-only mode: a request over a limit is logged and counted, not refused. To enforce a limit, set its mode in onebox's configuration through the chart's `extraConfig`:
 

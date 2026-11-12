@@ -32,7 +32,18 @@ The first start pulls the image and takes a few minutes; later starts take secon
 | UI | `http://localhost:30080/v2` |
 | SDK and CLI configuration | `~/.flyte/onebox/config.yaml` (endpoint `dns:///127.0.0.1:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
 | Kubernetes | `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods` (the container's k3s, on port `36443`) |
+| License | Read-only until you add a key; see [Add a license key](#add-a-license-key) |
 | Terms | The [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license) |
+
+## Add a license key
+
+Union.ai on your machine starts read-only: you can look around, but not run anything, until you add a license key. A 30-day trial key is free:
+
+1. Open the UI, then **Settings > License**, and select **Get a key**. `flyte start onebox` also prints the link.
+2. Sign in to Union.ai, or sign up. You land on your organization's **License Keys** page with this install filled in. Issue the key.
+3. Back in the UI, select **Add key** and paste it.
+
+See [License key](./_index#license-key) for trial and contract keys, and the limits a key carries.
 
 ## Run a workflow
 
