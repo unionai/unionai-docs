@@ -12,7 +12,7 @@ This guide installs onebox on an existing GKE cluster, with a Cloud SQL for Post
 
 ## Prerequisites
 
-- A GKE cluster with Workload Identity enabled. Autopilot clusters have it; on a Standard cluster, enable it on the cluster and its node pools.
+- A GKE Standard cluster with Workload Identity enabled on the cluster and its node pools. Autopilot isn't supported: it refuses the privileged, hostPath-mounting node agent (`onebox-node-agent`) that serves Union Volumes.
 - `gcloud`, `kubectl` configured for the cluster, and [Helm](https://helm.sh) 3.
 
 Set these for the commands below:

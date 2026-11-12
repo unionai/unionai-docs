@@ -30,7 +30,7 @@ The first start pulls the image and takes a few minutes; later starts take secon
 | | |
 |---|---|
 | UI | `http://localhost:30080/v2` |
-| SDK and CLI configuration | `~/.flyte/onebox/config.yaml` (endpoint `dns:///localhost:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
+| SDK and CLI configuration | `~/.flyte/onebox/config.yaml` (endpoint `dns:///127.0.0.1:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
 | Kubernetes | `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods` (the container's k3s, on port `36443`) |
 | Terms | The [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license) |
 
@@ -75,17 +75,19 @@ Choose add-ons when the container is created, with `--with` and a comma-separate
 | `apps` | [Apps and LLM gateways](./apps), served at `http://<name>.apps.127-0-0-1.nip.io:30080`. |
 
 ```shell
-flyte start onebox --with logs,metrics,image-builder,apps
+flyte start onebox --with logs,metrics,image-builder,apps            # a new container
+flyte start onebox --recreate --with logs,metrics,image-builder,apps # change an existing one
 ```
 
-`--with none` turns them all off. A container keeps the add-ons it was created with: a later `flyte start onebox` resumes it as it is, and `flyte start onebox --recreate` replaces the container with the same add-ons unless you pass `--with` again. A `--with` list replaces the add-ons; it doesn't add to them.
+`--with none` turns them all off. A container keeps the add-ons it was created with: a later `flyte start onebox` resumes it as it is, and asking for other add-ons without `--recreate` is refused. `--recreate` replaces the container, keeping runs and data in the Docker volume, with the same add-ons unless you pass `--with` again. A `--with` list replaces the add-ons; it doesn't add to them.
 
 ## Use your Mac's GPU
 
 On a Mac with Apple Silicon, `--apple-silicon` runs the work of tasks and apps that request the Apple Silicon GPU natively on your Mac, where it can use Metal and MLX, instead of inside the Linux container:
 
 ```shell
-flyte start onebox --apple-silicon --with logs,apps
+flyte start onebox --apple-silicon              # a new container
+flyte start onebox --recreate --apple-silicon   # add it to an existing one
 ```
 
 ```python

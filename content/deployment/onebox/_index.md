@@ -34,7 +34,7 @@ The chart pulls three public images from GitHub's container registry, tagged wit
 | `ghcr.io/unionai/onebox-console` | `console.image.repository` |
 | `ghcr.io/unionai/envoy` (only with apps on) | `serving.gateway.envoy.image.repository` |
 
-With the [image builder](./image-builder), task pods also pull `ghcr.io/unionai/imagebuilder/build-image` and `frontend-v2`. [`flyte start onebox`](./try-locally) runs a different image, `ghcr.io/unionai/onebox-local`, which has all of these inside it.
+With the [image builder](./image-builder), task pods also pull `ghcr.io/unionai/imagebuilder/build-image` and `frontend-v2`. [`flyte start onebox`](./try-locally) runs a different image, `ghcr.io/unionai/onebox-local`, with the server and UI images preloaded; its add-ons and image builds pull the rest when they need them.
 
 For an airgapped install or a private mirror, copy each image with all its architectures, point these values at your copies, and add the mirror's pull secret to `imagePullSecrets` if it needs one.
 
@@ -89,8 +89,11 @@ You can also mount a key from a Secret:
 ```shell
 kubectl -n union create secret generic onebox-license --from-literal=license-key=<key>
 helm upgrade onebox unionai/onebox -n union -f values.yaml \
-  --set license.existingSecret=onebox-license --set license.enforce=true
+  --set license.existingSecret=onebox-license --set license.enforce=true \
+  --set license.issueURL=https://signup.hosted.unionai.cloud/
 ```
+
+Newer charts use that `issueURL` by default when `license.enforce` is on; older ones refuse to render without it.
 
 Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against public keys built into each release; nothing is sent to Union.ai. `license.trustedKeys` adds the public keys of a license issuer you host. `license.issueURL` points **Get a key** somewhere else, for example your own issuer.
 

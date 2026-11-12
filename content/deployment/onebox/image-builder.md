@@ -49,7 +49,7 @@ Any of `imageBuilder.buildkitURI`, `imageBuilder.repository`, and `imageBuilder.
 
 ## Bring your own BuildKit and registry
 
-On a shared cluster, run BuildKit with mutual TLS (`--tlscacert`, `--tlscert`, `--tlskey`) or rootless, restrict access to it with a NetworkPolicy, and use a registry with TLS. Then point onebox at them:
+On a shared cluster, run BuildKit rootless, and restrict access to it with a NetworkPolicy that admits only onebox's namespace: the `build-image` task connects to BuildKit without client TLS, so a BuildKit that requires mutual TLS can't be used. Use a registry with TLS. Then point onebox at them:
 
 ```yaml
 imageBuilder:
