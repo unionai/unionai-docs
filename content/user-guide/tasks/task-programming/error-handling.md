@@ -41,7 +41,7 @@ your recovery logic needs to be.
 
 The most common pattern is to catch a specific exception and re-run the failing task with a different
 configuration. The following example intentionally triggers an out-of-memory error, catches the
-`flyte.errors.OOMError`, and tries to run the task again with more memory:
+`flyte.errors.OOMError`, and retries the task with more memory:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
 
@@ -53,14 +53,8 @@ In this code, we do the following:
 * Define the `main` task (the top-level workflow task) that contains the failure-recovery logic.
 
 The `try...except` block in `main` runs `oomer`. If it exhausts memory, `main` catches the
-`flyte.errors.OOMError` and calls `oomer.override(resources=...)` with a larger memory allocation. A nested
-`try...except` re-raises the error if that call also runs out of memory.
-
-> [!WARNING] Broken retry call
-> As currently published, the example calls the overridden task as `oomer.override(resources=...)(5)`, but `oomer`
-> takes no arguments.
-> The call raises `flyte.errors.RuntimeUserError` ("Too many positional arguments provided") before the retry
-> runs. The inner `except flyte.errors.OOMError` doesn't catch it, so `main` fails with that error.
+`flyte.errors.OOMError` and retries by calling `oomer.override(resources=...)()` with a larger memory allocation.
+A nested `try...except` re-raises the error if the retry also runs out of memory.
 
 This type of dynamic error handling lets you gracefully recover from user-level errors in your workflows using
 patterns you already know from ordinary Python. For a complete, self-tuning version of this pattern that caches
