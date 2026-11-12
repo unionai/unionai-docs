@@ -66,7 +66,7 @@ Every leaseworker metric carries the standard Kubernetes labels Prometheus adds 
 | `leaseworker:active_run_leases` | gauge | Run leases this worker holds whose action is executing | Your running-action count. The chart records it as `union:dp:leaseworker:active_actions`. |
 | `leaseworker:finished_run_leases` | gauge | Run leases whose action finished but whose report the leasor has not accepted yet. They hold no capacity | Growing steadily means the leasor is not accepting reports. Check `heartbeater:request_errors`. |
 | `leaseworker:active_finalize_leases` | gauge | Finalize (cleanup) leases held | Growing without run leases finishing means cleanup is stuck. Check `evaluator:finalize_errors`. |
-| `leaseworker:available_capacity` | gauge | `leaseworker.capacity` minus the run slots in use, floored at 0 | At 0 the worker accepts no new leases and the leasor skips it with `reason="no_capacity"`. The chart default capacity is 100000, so this gauge does not reach 0 from load. |
+| `leaseworker:available_capacity` | gauge | `leaseworker.capacity` minus the run slots in use, floored at 0 | At 0 the worker refuses new run leases (it still accepts finalize leases), and they count in `leases_rejected`. The chart default capacity is 100000, so this gauge does not reach 0 from load. |
 | `leaseworker:quiesced` | gauge | 1 after the worker shut itself down because its cluster was deleted on the control plane, else 0 | The worker sets it (and `available_capacity` to 0) right before it exits, so a scrape rarely sees either value. Detect quiescence from pod restarts plus the `leaseworker quiesced` warning in the pod log. On a cluster you expect to be live it means the cluster record is wrong. |
 | `leaseworker:leases_received` | counter | Leases accepted from the control plane's lease stream | Your inflow. Flat while runs are being submitted means the stream is down; check `stream:reconnections`. |
 | `leaseworker:leases_rejected` | counter | Leases refused at capacity or by the tracker | Any sustained rate while `available_capacity` is above 0 is a bug. |
@@ -102,7 +102,7 @@ Metrics under `leaseworker:heartbeater:`. The heartbeater extends every active l
 | `request_duration` | histogram | Heartbeat RPC latency | |
 | `round_duration` | histogram | Wall time of a full heartbeat round across all chunks | A round longer than the heartbeat interval means leases can expire. |
 | `chunks_per_round` | histogram | Chunk RPCs per round | Grows with the number of active leases. |
-| `nacks` | counter | Leases the leasor refused to extend because it no longer knows them | Should be near 0. A spike after a leasor restart is expected. |
+| `nacks` | counter | Leases the leasor refused to extend because it no longer knows them | Should be near 0. A short spike that clears on its own is not actionable; a sustained rate means leases are being lost. |
 
 ### Stream
 
