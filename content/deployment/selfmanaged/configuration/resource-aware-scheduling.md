@@ -39,13 +39,19 @@ The scheduler reads two kinds of information about a cluster. Only the first one
 A queue's resource caps are a third limit, set on the queue itself. The scheduler applies them with or
 without the node pool configuration.
 
-## Prerequisites
+## Version requirements
 
-- Resource-aware scheduling enabled for your organization.
-- Data plane chart 2026.11.0 or later, to report observed node capacity.
-- `flyteplugins-union` 0.20.2 or later, for the `flyte update node-groups` command and the queue commands
-  that set resource caps.
-- Permission to manage the cluster (the `MANAGE_CLUSTER` action on it), to write its node groups.
+| What | Needs |
+| --- | --- |
+| Resource-aware scheduling for your organization | Enabled by Union.ai per organization |
+| `flyte get node-groups` and `flyte update node-groups`, and `NodeGroups` in Python | `flyteplugins-union` 0.20.2 or later, which runs with `flyte` 2.10.1 through 2.12.x |
+| Queue resource caps from the CLI or Python | `flyteplugins-union` 0.16.0 or later (covered by the line above) |
+| Writing node groups | Permission to manage the cluster (the `MANAGE_CLUSTER` action on it) |
+| Observed node capacity on the **Node pools** tab | Data plane chart 2026.11.0 or later for the `nodeCapacity` switch. On a self-hosted control plane, also controlplane chart 2026.11.0 or later for the tab itself |
+| Scheduling strategy on a self-hosted control plane | Controlplane chart 2026.9.3 or later for `v2`; 2026.9.7 or later for `v3` |
+
+On a self-managed deployment the control plane is Union.ai's and always current, so only the plugin,
+permission, and data plane chart rows apply.
 
 ## Declare your node pools
 
