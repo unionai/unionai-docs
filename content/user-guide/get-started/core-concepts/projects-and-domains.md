@@ -130,7 +130,7 @@ import flyte
 flyte.init_from_config()
 
 # Get a specific project
-project = flyte.remote.Project.get(name="my-project", org="my-org")
+project = flyte.remote.Project.get(name="my-project")
 
 # List all projects
 for project in flyte.remote.Project.listall():
@@ -144,11 +144,11 @@ for project in flyte.remote.Project.listall(sort_by=("created_at", "desc")):
 Both `get()` and `listall()` support async execution via `.aio()`:
 
 ```python
-project = await flyte.remote.Project.get.aio(name="my-project", org="my-org")
+project = await flyte.remote.Project.get.aio(name="my-project")
 ```
 
 > [!NOTE]
-> The Python SDK provides read-only access to projects. To create or modify projects, use the `flyte` CLI or the UI.
+> `flyte.remote.Project` also has `create()`, `update()`, `archive()`, and `unarchive()` methods. The `flyte create project` and `flyte update project` commands call `create()` and `update()`.
 
 ## Managing projects via the UI
 

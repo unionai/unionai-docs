@@ -266,7 +266,7 @@ must permit cluster pods to read/write them.
 | Bucket | Purpose | Notes |
 | --- | --- | --- |
 | Metadata bucket | Workflow execution data — task inputs/outputs, node state | Versioning recommended |
-| Fast-registration bucket | Local code artifacts copied into the task container at runtime (`flyte deploy`, `flyte run --copy-style all`) | Apply a TTL / lifecycle rule (e.g. delete after 7 days) to bound cost |
+| Fast-registration bucket | Code bundles that `flyte deploy` and `flyte run` upload and copy into the task container at runtime (any `--copy-style` except `none`; with `none`, only the files an environment lists in `include`) | Apply a TTL / lifecycle rule (e.g. delete after 7 days) to bound cost, but keep it longer than you run tasks deployed with `flyte deploy`: a deployed task copies its bundle from this bucket each time it runs |
 
 You can use a single bucket for both, but two is recommended so you can apply different
 retention policies. Throughput scales with concurrent action count. See

@@ -17,7 +17,7 @@ The control plane handles only orchestration metadata. Customer data -- workflow
 The control plane stores **orchestration metadata** -- the operational scaffolding plus the task definitions and execution records that drive it. None of it is customer data payload. Concretely:
 
 - **Action state**: run and action identifiers, phase, timestamps, cluster assignment, and scheduling configuration.
-- **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). Trigger specs carry default input values for scheduled runs.
+- **Task and run definitions**: each run submission includes a full TaskSpec (container image, typed interface, resource requirements, security context) and a RunSpec (environment variables, labels, annotations). When you register a trigger that has inputs with `flyte` 2.5.0 or later, its input values are uploaded to the data plane, and its trigger spec carries only a URI and hash referencing them.
 - **Error and event information**: error messages from task executions (which may contain customer data from Python tracebacks), Kubernetes event messages, and per-attempt plugin state.
 - **Platform metadata**: user identity records, the RBAC graph, and data plane cluster registrations.
 

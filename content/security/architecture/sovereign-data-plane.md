@@ -27,7 +27,7 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 | | Default (Direct-to-Data-Plane) | Sovereign Data Plane |
 |---|---|---|
 | Client → data plane path | Direct-to-Data-Plane tunnel terminating at the Envoy router inside the customer's cluster | Customer-managed load balancer inside the customer's VPC, terminating at the same Envoy router |
-| Reachable from | Public internet, gated by Cloudflare + Envoy AuthN/RBAC | Only from inside the customer's corporate network (VPN) |
+| Reachable from | Public internet, gated by Cloudflare, Envoy authentication, and `dataproxy` RBAC | Only from inside the customer's corporate network (VPN) |
 | TLS termination | Cloudflare edge, then mTLS to the data plane | Customer-controlled, end-to-end inside the VPC |
 | Who can reach the data plane network | Any authenticated, RBAC-authorized user | Only users on the customer's VPN |
 | Union.ai employee access to data | Possible only if granted access by customer for support purposes and authenticated by RBAC with full audit trails | **Not possible** without being on the customer's VPN |
@@ -37,7 +37,7 @@ The Sovereign Data Plane is available on the Enterprise tier on customer request
 
 Switching to the Sovereign Data Plane changes the **network** perimeter only. Everything else carries over from the default architecture:
 
-- **Identity and access control.** Union RBAC and SSO continue to authenticate and authorize every request. The Envoy router inside the customer's cluster enforces RBAC on every data-path request, just as in the default tier.
+- **Identity and access control.** Union RBAC and SSO continue to authenticate and authorize every request. The Envoy router inside the customer's cluster authenticates every data-path request, and the `dataproxy` service enforces RBAC on it by asking the control plane's authorizer, just as in the default tier.
 - **Visualization features.** Workflow inputs and outputs, live and persisted logs, reports, Ray and Spark dashboards, and the in-task debugger all continue to work, served directly from the data plane.
 - **Two-plane separation.** The control plane still orchestrates runs and holds metadata; the data plane still holds and serves all customer data.
 - **Data residency.** All customer data continues to reside in the customer's chosen cloud account and region. No customer data ever transits Union infrastructure under either tier.
@@ -54,11 +54,11 @@ The Sovereign Data Plane request flow mirrors the default tier with one substitu
 [Customer-managed load balancer]      ─ inside the customer's VPC,
         │                               reachable only from the corporate VPN
         ▼
-[Envoy router (data plane)]           ★ AuthN against Union identity,
-        │                               RBAC enforced on every request
-        ▼
-[Dataproxy service (data plane)]
+[Envoy router (data plane)]           ★ AuthN against Union identity
         │
+        ▼
+[Dataproxy service (data plane)]      ★ RBAC enforced on every request,
+        │                               decided by the control plane's authorizer
         ▼
 [Object store · KMS · logs ·          ─ customer IAM / Workload Identity /
  k8s API · auxiliary UIs]               customer-managed KMS
@@ -90,7 +90,7 @@ The Sovereign Data Plane is strictly stronger than the default tier on network r
 
 1. From a host outside the corporate VPN, attempt to resolve the data plane's load balancer hostname. The resolution should return a private RFC 1918 address (or fail entirely), and any connection attempt should fail.
 
-2. From a host inside the corporate VPN, the same resolution and connection should succeed, subject to Union RBAC at the Envoy router.
+2. From a host inside the corporate VPN, the same resolution and connection should succeed, subject to Union authentication at the Envoy router and RBAC at the `dataproxy` service.
 
 3. Inspect the load balancer configuration in the customer's cloud console to confirm it is provisioned as internal-only:
 

@@ -49,14 +49,12 @@ In this code, we do the following:
 
 * Import the necessary modules, including `flyte.errors`.
 * Set up the task environment with a modest resource allocation of 1 CPU and 250 MiB of memory.
-* Define two tasks: `oomer`, which allocates a large list and is likely to run out of memory, and
-  `always_succeeds`, which always returns cleanly.
+* Define the `oomer` task, which allocates a large list and is likely to run out of memory.
 * Define the `main` task (the top-level workflow task) that contains the failure-recovery logic.
 
 The `try...except` block in `main` runs `oomer`. If it exhausts memory, `main` catches the
-`flyte.errors.OOMError` and retries by calling `oomer.override(resources=...)` with a larger memory allocation.
-If the retry also runs out of memory, `main` gives up and re-raises the error. The `finally` block runs
-`always_succeeds` regardless of the outcome.
+`flyte.errors.OOMError` and retries by calling `oomer.override(resources=...)()` with a larger memory allocation.
+A nested `try...except` re-raises the error if the retry also runs out of memory.
 
 This type of dynamic error handling lets you gracefully recover from user-level errors in your workflows using
 patterns you already know from ordinary Python. For a complete, self-tuning version of this pattern that caches

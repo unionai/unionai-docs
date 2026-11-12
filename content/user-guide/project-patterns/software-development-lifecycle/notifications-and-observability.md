@@ -29,7 +29,7 @@ They are declarative, need no code, and fire even if the task itself crashed.
 
 {{< variant flyte >}}
 {{< markdown >}}
-Open-source Flyte doesn't deliver built-in notifications yet. Send the message from the run's driver task instead: catch the failure, post, and re-raise. [Send notifications from your code](../../tasks/task-deployment/notify-from-code) shows how to post once per run, with the webhook read from a secret at runtime.
+Open-source Flyte doesn't deliver built-in notifications. Send the message from the run's driver task instead: catch the failure, post, and re-raise. [Send notifications from your code](../../tasks/task-deployment/notify-from-code) shows how to post once per run, with the webhook read from a secret at runtime.
 {{< /markdown >}}
 {{< /variant >}}
 
