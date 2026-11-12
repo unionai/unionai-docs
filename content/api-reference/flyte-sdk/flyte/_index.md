@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -107,15 +107,19 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 ```python
 def AMD_GPU(
     device: typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X'],
+    quantity: typing.Literal[1, 8] = 1,
 ) -> flyte._resources.Device
 ```
 Create an AMD GPU device instance.
+
+The same as the `gpu="<device>:<quantity>"` string form, e.g. `AMD_GPU("MI355X", 8)` is `gpu="MI355X:8"`.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `device` | `typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X']` | Device type (e.g., "MI100", "MI210", "MI250", "MI250X", "MI300A", "MI300X", "MI325X", "MI350X", "MI355X"). |
+| `quantity` | `typing.Literal[1, 8]` | The number of AMD GPUs of this type: 1, or 8 for a full 8-GPU node. Defaults to 1. For any other count, use `Device(quantity=..., device_class="AMD_GPU", device=...)`. |
 
 **Returns:** Device instance.
 
