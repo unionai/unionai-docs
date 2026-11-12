@@ -628,6 +628,26 @@ Without these variables, each task must set `host`, `username` and `ssh_private_
 
 `c0` loads every installed connector plugin and listens on port 8000. Use `--port` to change it.
 
+### The connector's own object-storage access
+
+Script tasks default to `output_upload="connector"`, so the connector uploads their outputs to object storage itself. On Kubernetes, the `flyteconnector` service account has no cloud identity by default, so these uploads fail with `403 Forbidden` (`AccessDenied` on S3) after the job has succeeded.
+
+Annotate the service account with an identity that can write the metadata bucket, such as an IAM role (IRSA) on AWS or a Workload Identity service account on GCP:
+
+```yaml
+flyteconnector:
+  serviceAccount:
+    annotations:
+      # AWS
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/<role>
+      # GCP
+      # iam.gke.io/gcp-service-account: <name>@<project>.iam.gserviceaccount.com
+```
+
+On GKE, also bind `roles/iam.workloadIdentityUser` for `serviceAccount:<project>.svc.id.goog[<namespace>/flyteconnector]` to that service account. Then restart the deployment so the pods pick up the new identity.
+
+Alternatively, set `output_upload="job"` on the task, so the job uploads with its own credentials. Native `slurm` tasks don't need either change.
+
 ### Routing task types to the connector
 
 Add both task types to the backend's plugin configuration, and set the connector's endpoint:
@@ -642,6 +662,7 @@ plugins:
   connector-service:
     defaultConnector:
       endpoint: "flyteconnector.<namespace>:8000"
+      insecure: true
 ```
 
 For a connector running as a host process, use its `<host>:8000` as the endpoint.
