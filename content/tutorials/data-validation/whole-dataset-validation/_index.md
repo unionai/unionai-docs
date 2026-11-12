@@ -119,7 +119,8 @@ tab.
 ## Run it
 
 ```bash
-# On your cluster; builds the image remotely, then writes results/ locally
+# From v2/tutorials/pandera_dataset_validation in your unionai-examples clone.
+# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
 uv run main.py
 
 # Locally, with small sizes
