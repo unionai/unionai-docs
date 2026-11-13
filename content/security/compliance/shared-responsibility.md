@@ -33,7 +33,7 @@ In BYOC deployments, Union.ai assumes additional operational responsibility for 
 | Cloud account (VPC, IAM) | Customer | Customer |
 | IAM role provisioning | Customer | Union.ai |
 | Secrets management | Customer (backend + values) | Union.ai (default backend) + Customer (values) |
-| Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + PrivateLink) + Customer (VPC) |
+| Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel, plus PrivateLink/PSC when an EKS or GKE cluster has the optional private endpoint) + Customer (VPC) |
 
 For the deployment-model summary, see the [security overview](../_index).
 
