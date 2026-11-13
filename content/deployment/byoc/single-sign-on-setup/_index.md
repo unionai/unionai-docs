@@ -21,6 +21,10 @@ To configure Google OpenID Connect, see [Google OpenID Connect](./google-oidc).
 
 To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](./microsoft-entra-id).
 
+## PingOne (Ping Identity)
+
+To configure PingOne, see [PingOne (Ping Identity)](./pingone).
+
 ## Other identity providers
 
 To configure other identity providers, see [Other identity providers](./other-identity-providers).
