@@ -2,7 +2,7 @@
 title: ContainerTask
 description: "This is an intermediate class that represents Flyte Tasks that run a container at execution time."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -32,6 +32,7 @@ class ContainerTask(
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'] = 'JSON',
     local_logs: bool = True,
     file_input_layout: typing.Literal['DIRECT', 'NAMED_DIR'] = 'DIRECT',
+    data_loading: bool = True,
     **kwargs,
 )
 ```
@@ -48,6 +49,7 @@ class ContainerTask(
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
 | `file_input_layout` | `typing.Literal['DIRECT', 'NAMED_DIR']` | How CoPilot stages File / list[File] inputs on disk. "DIRECT" (default) uses the bare path/index; "NAMED_DIR" preserves each input's original basename (and extension), so extension-sniffing tools work. |
+| `data_loading` | `bool` | If True (default), CoPilot downloads inputs into `input_data_dir` before the container starts and uploads outputs from `output_data_dir` after it exits. Set False for a container that reads its inputs from template arguments (e.g. "{{.inputs.x}}") and writes its outputs itself (e.g. to "{{.outputPrefix}}"): no CoPilot containers are added to the pod. Only affects remote execution. |
 | `**kwargs` |  | |
 
 ## Properties
@@ -155,7 +157,7 @@ configure the task execution environment at runtime. This is usually used by plu
 ```python
 def data_loading_config(
     sctx: flyte.models.SerializationContext,
-) -> flyteidl2.core.tasks_pb2.DataLoadingConfig
+) -> typing.Optional[flyteidl2.core.tasks_pb2.DataLoadingConfig]
 ```
 This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
 Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container

@@ -2,7 +2,7 @@
 title: flyteplugins.union.utils
 description: "Public utilities for ``flyteplugins.union``."
 icon: box-seam
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 ---

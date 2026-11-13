@@ -2,7 +2,7 @@
 title: ROBlockVolume
 description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -36,6 +36,7 @@ class ROBlockVolume(
     metadata_store_type: typing.Optional[str] = None,
     block_size: typing.Optional[str] = None,
     block_journal_blocks: typing.Optional[typing.List[int]] = None,
+    block_mount_path: typing.Optional[str] = None,
     metadata_prefix: typing.Optional[str] = None,
     chunk_branch: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
@@ -72,6 +73,7 @@ validated to form a valid model.
 | `metadata_store_type` | `typing.Optional[str]` | |
 | `block_size` | `typing.Optional[str]` | |
 | `block_journal_blocks` | `typing.Optional[typing.List[int]]` | |
+| `block_mount_path` | `typing.Optional[str]` | |
 | `metadata_prefix` | `typing.Optional[str]` | |
 | `chunk_branch` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
@@ -93,7 +95,7 @@ validated to form a valid model.
 | `family` | `str` | The STORAGE identity: exactly the set of versions whose chunk keys are interchangeable.  This is ``chunk_prefix`` -- JuiceFS's ``Format.Name``, the name the volume was *formatted* under, which is where its chunks live relative to the bucket root. It is inherited by every fork and commit, because a fork copies the metadata index forward and only a fresh volume is formatted. That is what makes a local chunk cache warmed on version N still valid for N+1, and it is why the cache and the local working copy are keyed on this rather than on ``name``, which a fork changes.  Falls back to ``name`` for a volume old enough to have no recorded ``chunk_prefix``. That fallback is not equivalent -- such a volume's forks each get their own family and so cannot share a cache -- but it is the pre-existing behaviour and better than failing to mount.  Not the same as ``artifact``, which is the *catalog* identity: optional, and the only name a human can type. |
 | `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
-| `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
+| `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. For a block volume it is the ext4 filesystem's path, the one `mount` returned. |
 | `size` | `str` | The image size this version was committed with. |
 
 ## Methods

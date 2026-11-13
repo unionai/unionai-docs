@@ -2,7 +2,7 @@
 title: flyteplugins.union
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: box-seam
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -85,6 +85,8 @@ def fork(
     task_template: TaskTemplate | None = None,
     force_rerun_actions: Sequence[str] | None = None,
     allow_missing_source_outputs: bool = False,
+    task_action_inputs: Mapping[str, Mapping[str, Any]] | None = None,
+    target_action: str | None = None,
     **inputs: Any,
 ) -> Run
 ```
@@ -103,6 +105,8 @@ anything downstream of them. Pass keyword inputs to change the root action's par
 | `task_template` | `TaskTemplate \| None` | Substitute task to run instead of the source run's code. |
 | `force_rerun_actions` | `Sequence[str] \| None` | Names of actions that must re-execute even though they succeeded in the source run. A listed parent re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
 | `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. |
+| `task_action_inputs` | `Mapping[str, Mapping[str, Any]] \| None` | Input overrides for task actions of the source run, keyed by action name (`{"<action name>": {"<input>": <value>}}`); see `_ForkRunner.fork`. |
+| `target_action` | `str \| None` | The task action to apply the code update (*task_template*) to; defaults to the root. See `_ForkRunner.fork`. |
 | `**inputs` | `Any` | Native keyword inputs to change the root action's parameters; omit an input to keep the source run's value. |
 
 **Returns:** the new Run.

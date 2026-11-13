@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -72,6 +72,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ai.chat.app.CustomTheme`](flyte.ai.chat.app/customtheme) | Declarative color theme for the Agent Chat UI. |
 | [`flyte.ai.mcp.FlyteMCPAppEnvironment`](flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
 | [`flyte.ai.mcp.MCPAppEnvironment`](flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
+| [`flyte.ai.mcp.ProtectedResourceMetadata`](flyte.ai.mcp/protectedresourcemetadata) | What an MCP server advertises about its own authorization, per RFC 9728. |
 | [`flyte.app.AppEndpoint`](flyte.app/appendpoint) | Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](flyte.app/appenvironment) | Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ArtifactValue`](flyte.app/artifactvalue) | Use a published artifact as an app parameter value. |

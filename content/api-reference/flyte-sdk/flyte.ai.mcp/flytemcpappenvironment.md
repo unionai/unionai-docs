@@ -2,7 +2,7 @@
 title: FlyteMCPAppEnvironment
 description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -49,6 +49,34 @@ Set `allowed_hosts` / `allowed_origins` (or `FLYTE_MCP_ALLOWED_HOSTS` /
 `FLYTE_MCP_ALLOWED_ORIGINS`) to turn on MCP's DNS-rebinding protection. Any deployment
 reachable over HTTP wants it. When neither is configured the protection stays off,
 preserving the behavior existing deployments were built against.
+
+**OAuth discovery for MCP clients**
+
+Set `protected_resource_metadata` to let MCP clients that implement the MCP authorization
+spec discover how to sign in, per RFC 9728, instead of needing a token pasted into their
+configuration. The server then:
+
+- serves the metadata document, without authentication, at
+  `/.well-known/oauth-protected-resource{endpoint path}` (for example
+  `/.well-known/oauth-protected-resource/flyte-mcp/mcp`) and at the root
+  `/.well-known/oauth-protected-resource`, which clients fall back to;
+- answers any other request without an `Authorization: Bearer` header with `401` and
+  `WWW-Authenticate: Bearer resource_metadata="<metadata URL>"`;
+- forwards the bearer token of every other request to Flyte, as with `requires_auth=True`.
+
+Clients can only reach the metadata if the platform ingress lets unauthenticated requests
+through, so pair it with `requires_auth=False`. The server still refuses the MCP endpoint
+without a bearer token, but it does not validate the token itself: the Flyte endpoint
+validates it on every remote call, so a tool that makes none (the `search` group) answers
+any bearer value.
+
+```python
+env = FlyteMCPAppEnvironment(
+    name="flyte-mcp",
+    requires_auth=False,
+    protected_resource_metadata=ProtectedResourceMetadata(),
+)
+```
 
 **Image**
 
@@ -98,6 +126,7 @@ class FlyteMCPAppEnvironment(
     trigger_allowlist: list[str] | None = None,
     allowed_hosts: list[str] | None = None,
     allowed_origins: list[str] | None = None,
+    protected_resource_metadata: ProtectedResourceMetadata | None = None,
     sdk_examples_path: str | None = '/root/flyte-sdk/examples',
     docs_examples_path: str | None = '/root/unionai-examples/v2',
     full_docs_path: str | None = '/root/llms.txt',
@@ -142,6 +171,7 @@ class FlyteMCPAppEnvironment(
 | `trigger_allowlist` | `list[str] \| None` | |
 | `allowed_hosts` | `list[str] \| None` | |
 | `allowed_origins` | `list[str] \| None` | |
+| `protected_resource_metadata` | `ProtectedResourceMetadata \| None` | |
 | `sdk_examples_path` | `str \| None` | |
 | `docs_examples_path` | `str \| None` | |
 | `full_docs_path` | `str \| None` | |

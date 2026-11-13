@@ -1,7 +1,7 @@
 ---
 title: flyte.ai.mcp
 icon: box-seam
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,6 +16,7 @@ layout: py_api
 |-|-|
 | [`FlyteMCPAppEnvironment`](../flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
 | [`MCPAppEnvironment`](../flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
+| [`ProtectedResourceMetadata`](../flyte.ai.mcp/protectedresourcemetadata) | What an MCP server advertises about its own authorization, per RFC 9728. |
 
 ### Methods
 

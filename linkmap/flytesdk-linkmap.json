@@ -140,6 +140,8 @@
     "FlyteMCPAppEnvironment": "/api-reference/flyte-sdk/flyte.ai.mcp/flytemcpappenvironment/",
     "flyte.ai.mcp.MCPAppEnvironment": "/api-reference/flyte-sdk/flyte.ai.mcp/mcpappenvironment/",
     "MCPAppEnvironment": "/api-reference/flyte-sdk/flyte.ai.mcp/mcpappenvironment/",
+    "flyte.ai.mcp.ProtectedResourceMetadata": "/api-reference/flyte-sdk/flyte.ai.mcp/protectedresourcemetadata/",
+    "ProtectedResourceMetadata": "/api-reference/flyte-sdk/flyte.ai.mcp/protectedresourcemetadata/",
     "flyte.app.AppEndpoint": "/api-reference/flyte-sdk/flyte.app/appendpoint/",
     "AppEndpoint": "/api-reference/flyte-sdk/flyte.app/appendpoint/",
     "flyte.app.AppEnvironment": "/api-reference/flyte-sdk/flyte.app/appenvironment/",

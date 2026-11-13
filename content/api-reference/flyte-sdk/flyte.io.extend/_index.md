@@ -1,7 +1,7 @@
 ---
 title: flyte.io.extend
 icon: box-seam
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

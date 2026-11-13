@@ -2,7 +2,7 @@
 title: OrchestratorTaskTemplate
 description: "An orchestrator task whose source is shipped in the task template."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

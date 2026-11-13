@@ -2,7 +2,7 @@
 title: LogsNotYetAvailableError
 description: "This error is raised when the logs are not yet available for a task."
 icon: exclamation-triangle
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

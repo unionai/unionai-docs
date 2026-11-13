@@ -2,7 +2,7 @@
 title: Member
 description: "Represents a Union organization member (user or application)."
 icon: braces
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: Trackio
 description: "Flyte Trackio plugin."
 icon: book
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---
