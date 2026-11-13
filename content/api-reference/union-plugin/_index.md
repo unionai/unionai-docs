@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -47,6 +47,26 @@ weight: 5
 | [`flyteplugins.union.remote.User`](flyteplugins.union.remote/user) | Represents a Union user. |
 | [`flyteplugins.union.remote.VolumeExplore`](flyteplugins.union.remote/volumeexplore) | A resolved `Volume` plus the IO to inspect and walk its lineage. |
 | [`flyteplugins.union.remote.VolumeResolveError`](flyteplugins.union.remote/volumeresolveerror) | No (or ambiguous) Volume-typed value could be resolved on an action. |
+| [`flyteplugins.union.sandbox.CommandResult`](flyteplugins.union.sandbox/commandresult) | A finished command: what `Sandbox.run` returns. |
+| [`flyteplugins.union.sandbox.FileEntry`](flyteplugins.union.sandbox/fileentry) | One entry from `FileSystem.ls` or `FileSystem.stat`. |
+| [`flyteplugins.union.sandbox.FileSystem`](flyteplugins.union.sandbox/filesystem) | File access inside a sandbox (``sb.fs``). |
+| [`flyteplugins.union.sandbox.Network`](flyteplugins.union.sandbox/network) | Outbound network for a sandbox. |
+| [`flyteplugins.union.sandbox.Process`](flyteplugins.union.sandbox/process) | A running command, from `Sandbox.start`. |
+| [`flyteplugins.union.sandbox.ProcessError`](flyteplugins.union.sandbox/processerror) | A command ended abnormally: the session failed or its stream broke. |
+| [`flyteplugins.union.sandbox.ProcessUnsupported`](flyteplugins.union.sandbox/processunsupported) | The sandbox cannot give a command what was asked for it: its node runs a version from before commands had a stdin or a terminal. |
+| [`flyteplugins.union.sandbox.Sandbox`](flyteplugins.union.sandbox/sandbox) | A running sandbox session, from ``async with env.session("build") as sb``. |
+| [`flyteplugins.union.sandbox.SandboxCommandFailed`](flyteplugins.union.sandbox/sandboxcommandfailed) | A command run with ``sb.run(...)`` exited with a nonzero code (``check`` is on by default). |
+| [`flyteplugins.union.sandbox.SandboxCommandTimedOut`](flyteplugins.union.sandbox/sandboxcommandtimedout) | A command ran past its ``timeout`` and was stopped. |
+| [`flyteplugins.union.sandbox.SandboxEnvironment`](flyteplugins.union.sandbox/sandboxenvironment) | A sandbox definition: secrets, env vars, resources, network and lifetime. |
+| [`flyteplugins.union.sandbox.SandboxSessionEnded`](flyteplugins.union.sandbox/sandboxsessionended) | A call into a sandbox failed because its session has ended: its microVM was lost (e.g. its node restarted), it ran past its maximum duration, or it was aborted. |
+| [`flyteplugins.union.sandbox.SandboxSessionError`](flyteplugins.union.sandbox/sandboxsessionerror) | A sandbox session could not be started, or ended before it was ready. |
+| [`flyteplugins.union.sandbox.SandboxSnapshot`](flyteplugins.union.sandbox/sandboxsnapshot) | A sandbox session's disk, memory and processes at one instant (``sb.snapshot()``, ``sb.suspend()``). |
+| [`flyteplugins.union.sandbox.SandboxUsageError`](flyteplugins.union.sandbox/sandboxusageerror) | A sandbox session was used in a way that can't work: started outside a task, with a flyte that has no sessions, or used after its ``async with`` block ended. |
+| [`flyteplugins.union.sandbox.SandboxVolume`](flyteplugins.union.sandbox/sandboxvolume) | A sandbox session's disk at a commit (``sb.commit()``, ``sb.fork_close()``). |
+| [`flyteplugins.union.sandbox.ScratchVolume`](flyteplugins.union.sandbox/scratchvolume) | A session's disk that stays on the node and ends with the session: ``env.session(volume=ScratchVolume())``. |
+| [`flyteplugins.union.sandbox.SessionStartup`](flyteplugins.union.sandbox/sessionstartup) | How long each step of starting a session took, in seconds (``sb.startup``). |
+| [`flyteplugins.union.sandbox.SnapshotFuture`](flyteplugins.union.sandbox/snapshotfuture) | A snapshot taken, from ``await sb.snapshot(wait=False)``: what it holds is fixed and its session runs on. |
+| [`flyteplugins.union.sandbox.Tty`](flyteplugins.union.sandbox/tty) | A terminal for a command to run on (``sb.start(command, tty=Tty(30, 120))``). |
 
 ### Functions
 
@@ -74,5 +94,6 @@ weight: 5
 | [`flyteplugins.union.factory`](flyteplugins.union.factory/_index) | Factories: a declared graph of partitioned artifacts the platform can materialize on demand. |
 | [`flyteplugins.union.io`](flyteplugins.union.io/_index) | Persistent, mountable `Volume` type for the Flyte SDK v2. |
 | [`flyteplugins.union.remote`](flyteplugins.union.remote/_index) | Union remote control plane objects. |
+| [`flyteplugins.union.sandbox`](flyteplugins.union.sandbox/_index) | Interactive sandbox sessions for agents and other tasks that run untrusted code. |
 | [`flyteplugins.union.utils`](flyteplugins.union.utils/_index) | Public utilities for ``flyteplugins.union``. |
 

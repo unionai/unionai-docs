@@ -2,7 +2,7 @@
 title: VLLMShardArgs
 description: "Arguments for sharding a model using vLLM."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

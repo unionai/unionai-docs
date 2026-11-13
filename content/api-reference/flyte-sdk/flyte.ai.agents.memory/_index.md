@@ -2,7 +2,7 @@
 title: flyte.ai.agents.memory
 description: "Dir-backed memory for `flyte.ai.agents.Agent`."
 icon: box-seam
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

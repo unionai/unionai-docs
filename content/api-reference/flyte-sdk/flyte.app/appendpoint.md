@@ -2,7 +2,7 @@
 title: AppEndpoint
 description: "Embed an upstream app's endpoint as an app parameter."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

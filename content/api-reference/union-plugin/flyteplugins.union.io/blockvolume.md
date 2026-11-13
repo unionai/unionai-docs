@@ -2,7 +2,7 @@
 title: BlockVolume
 description: "A writable Volume whose content is one ext4 filesystem image."
 icon: braces
-version: 0.20.2
+version: 0.21.1
 variants: -flyte +union
 layout: py_api
 ---
@@ -28,6 +28,24 @@ its journal when a fork mounts it -- and does not stall writers;
 ``commit(freeze=True)`` takes a clean snapshot at the cost of a brief
 write stall.
 
+`mount` returns the path it was given (``mount_path``, or the
+per-volume default), and the ext4 filesystem is reachable there. In a
+privileged pod without the broker, ext4 is mounted at that path itself.
+Behind the uvol mount broker the path is a symlink, because the broker can
+only mount inside the pod's channel volume and the pod cannot bind-mount;
+it points at ``/uvol/blk-<hash of the path>`` (``/uvol`` being the
+channel volume's default location). That target depends only on
+the path, so it is the same in every pod that mounts the volume or a fork
+of it at the same ``mount_path``. Absolute paths recorded at build time
+(a virtualenv's shebangs and ``pyvenv.cfg``, compiler caches) then stay
+valid in forks, whether they were recorded through the symlink or through
+the ``/uvol`` path that ``os.getcwd()`` reports after a ``cd`` into the
+mount. A mount without ``mount_path`` uses the path the volume was last
+mounted at (``block_mount_path``, recorded at each mount and carried by
+commits and forks), so forks land where the writer was mounted even
+though each has its own name. Only a volume never mounted before uses the
+name-keyed default.
+
 Trade-offs versus a plain Volume:
 
 * **Trusted workloads only.** Attaching makes the node kernel parse the
@@ -42,10 +60,10 @@ Trade-offs versus a plain Volume:
 
 ```python
 cache = BlockVolume.new(size="64G")
-path = await cache.mount()          # ext4 mount point
+path = await cache.mount(mount_path="/home/flyte/cache")  # ext4 is here
 ...
-await cache.grow("128G")             # online
-return cache                         # finalized at task return
+await cache.grow("128G")  # online
+return cache  # finalized at task return
 ```
 
 
@@ -64,6 +82,7 @@ class BlockVolume(
     metadata_store_type: typing.Optional[str] = None,
     block_size: typing.Optional[str] = None,
     block_journal_blocks: typing.Optional[typing.List[int]] = None,
+    block_mount_path: typing.Optional[str] = None,
     metadata_prefix: typing.Optional[str] = None,
     chunk_branch: typing.Optional[str] = None,
     report: typing.Optional[bool] = None,
@@ -100,6 +119,7 @@ validated to form a valid model.
 | `metadata_store_type` | `typing.Optional[str]` | |
 | `block_size` | `typing.Optional[str]` | |
 | `block_journal_blocks` | `typing.Optional[typing.List[int]]` | |
+| `block_mount_path` | `typing.Optional[str]` | |
 | `metadata_prefix` | `typing.Optional[str]` | |
 | `chunk_branch` | `typing.Optional[str]` | |
 | `report` | `typing.Optional[bool]` | |
@@ -121,7 +141,7 @@ validated to form a valid model.
 | `family` | `str` | The STORAGE identity: exactly the set of versions whose chunk keys are interchangeable.  This is ``chunk_prefix`` -- JuiceFS's ``Format.Name``, the name the volume was *formatted* under, which is where its chunks live relative to the bucket root. It is inherited by every fork and commit, because a fork copies the metadata index forward and only a fresh volume is formatted. That is what makes a local chunk cache warmed on version N still valid for N+1, and it is why the cache and the local working copy are keyed on this rather than on ``name``, which a fork changes.  Falls back to ``name`` for a volume old enough to have no recorded ``chunk_prefix``. That fallback is not equivalent -- such a volume's forks each get their own family and so cannot share a cache -- but it is the pre-existing behaviour and better than failing to mount.  Not the same as ``artifact``, which is the *catalog* identity: optional, and the only name a human can type. |
 | `is_block` | `bool` | Whether this is a block-mode volume (one ext4 image; see `BlockVolume`). Carried on every version, so a task receiving any Volume can tell: forks of a block volume are block volumes, and they mount read-write only. |
 | `locator` | `Optional[str]` | The object-store address of *this* published version, or ``None`` if the volume has never been sealed (a fresh `new` / `empty`).  It's the path of this version's metadata object (``produced_by.locator`` — the JSON value `_publish_metadata` writes), which carries the complete Volume: ``index``, ``bucket``, ``metadata_store_type``, stats, and lineage. Persist it anywhere (a task output, your own store, a config) and recover the exact version later with `from_locator` — that's the across-run handle that doesn't depend on name or live task context.  Available immediately off a `RWVolume.commit` / ``finalize`` / `fork` result, since each stamps ``produced_by`` on the version it publishes. ``None`` before the first seal — there's no version to point at yet.  Durability note: the address lives under the producing action's output path, so it stays resolvable as long as that action's artifacts are retained. |
-| `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. |
+| `mount_path` | `Optional[Path]` | Where this handle is currently mounted, or ``None`` if not mounted.  Set by `mount` and cleared by the terminal seal (`RWVolume.finalize` / auto-finalize). Use it to locate files without re-deriving the path: ``(vol.mount_path / "data.bin")``. For a block volume it is the ext4 filesystem's path, the one `mount` returned. |
 | `size` | `str` | The image size this volume was declared or last grown to. |
 
 ## Methods

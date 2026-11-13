@@ -2,7 +2,7 @@
 title: CallCounter
 description: "Numbers identical sub-action calls made from one action scope: `foo(); foo(); foo()` → 1, 2, 3."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---

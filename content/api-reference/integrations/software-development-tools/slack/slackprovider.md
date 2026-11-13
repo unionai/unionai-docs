@@ -2,7 +2,7 @@
 title: SlackProvider
 description: "Slack's webhook provider, with its defaults pre-wired."
 icon: braces
-version: 2.13.2
+version: 2.13.4
 variants: +flyte +union
 layout: py_api
 ---
