@@ -133,7 +133,14 @@ Run the agent:
 uv run agent.py
 ```
 
-If you want to test it locally first, run the following commands:
+If you want to test it locally first, temporarily change the `flyte.run(main)` call at the bottom of `agent.py` to pass the local copy of the prompts file (change it back to `run = flyte.run(main)` before you run the agent remotely).
+The default `prompts_file`, `/root/prompts.yaml`, exists only inside the container image:
+
+```python
+run = flyte.with_runcontext(mode="local").run(main, prompts_file="prompts.yaml")
+```
+
+Then run the following commands from the `deep_research_agent` directory:
 
 ```
 brew install pandoc
