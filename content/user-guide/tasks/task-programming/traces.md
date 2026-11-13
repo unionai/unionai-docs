@@ -23,7 +23,7 @@ At the task level, observability and resumption of failed executions is provided
 This is where **traced functions** come in. By decorating helper functions with `@flyte.trace`, you enable:
 
 - **Detailed observability**: Track execution time, inputs/outputs, and errors for each function call.
-- **Fine-grained resumption**: If a task fails and is retried, a traced call replays its recorded result instead of running again, but only if its function declares a return type and the call returned something other than `None`. Otherwise it runs again. A function with no return type annotation records no result to replay, even if it returns a value at run time.
+- **Fine-grained resumption**: If a task fails and is retried, a traced call that returned replays its recorded result instead of running again, but only if its function declares a return type and the call returned something other than `None`. A call that returned without a replayable result, because its function declares no return type or the call returned `None`, runs again. A function with no return type annotation records no result to replay, even if it returns a value at run time.
 Each call that can replay is effectively a checkpoint within its task.
 
 Here is an example:
