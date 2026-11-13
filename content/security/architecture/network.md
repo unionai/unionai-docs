@@ -12,9 +12,9 @@ The network architecture reinforces the [two-plane separation](./two-plane-separ
 
 ## Outbound-only model
 
-All network connections between the data plane and Union.ai are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
+All network connections between the data plane and the Union.ai control plane are initiated by the data plane. The one exception is BYOC cluster management, where Union.ai connects to the cluster's Kubernetes API (see [Communication paths](#communication-paths)). Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
 
-At the external perimeter, this model eliminates the inbound attack surface entirely. There are no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
+At the external perimeter, this model eliminates the inbound attack surface for orchestration and customer-data traffic. Union.ai opens no externally-listening services on the customer's network for those paths that an attacker could find by port scanning or exploit through service vulnerabilities. In BYOC, the cluster's Kubernetes API endpoint is public by default unless you use the optional private endpoint (EKS and GKE only). The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
 The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
 
@@ -53,9 +53,9 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
-| Union.ai to Customer Kubernetes API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
+| Union.ai to Customer Kubernetes API (BYOC only) | Public API endpoint by default; PrivateLink / PSC with the optional private endpoint (EKS and GKE only) | TLS |
 
-For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
+For details on the BYOC management connection and its optional private endpoint, see [Private connectivity (BYOC)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
 
 ## Egress requirements
 
