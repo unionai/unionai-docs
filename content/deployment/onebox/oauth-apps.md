@@ -15,19 +15,19 @@ Choose who creates apps with `apps.provider`:
 | `apps.provider` | Apps are created | Use when |
 |---|---|---|
 | `none` (default) | In your identity provider, by its admins | Your IdP doesn't support Dynamic Client Registration, or you manage clients there anyway. |
-| `dcr` | By users, through onebox, at your IdP's Dynamic Client Registration endpoint (RFC 7591), and managed with RFC 7592 | Your IdP supports both RFCs, such as Keycloak. |
+| `dcr` | By users, through onebox | Your IdP lets applications create and manage OAuth clients through an API, such as Keycloak. |
 
 Either way, the proxy in front of onebox must accept the apps' tokens. See [Authentication](./authentication).
 
 ## Apps created in your IdP (`none`)
 
-Create a client with the client credentials grant in your IdP, and use its ID and secret. Every app call through onebox, from the CLI or the UI, fails with `FAILED_PRECONDITION` and says apps are managed in your identity provider.
+Create a client with the client credentials grant in your IdP, and use its ID and secret. Creating, listing, or deleting apps through onebox, from the CLI or the UI, fails with `FAILED_PRECONDITION` and says apps are managed in your identity provider. Clients you created in the IdP still authenticate through the proxy.
 
 With authorization on, an app is identified by the subject its tokens carry, and gets `authz.defaultRole` the first time it makes a request.
 
 ## Apps registered by onebox (`dcr`)
 
-Onebox registers the client at your IdP and returns its secret once. Onebox keeps each app's ID, name, creator, and the per-client management credentials RFC 7592 requires, in its database. It doesn't keep the secret. Deleting an app deletes the client at the IdP.
+This needs OAuth Dynamic Client Registration (RFC 7591) and client management (RFC 7592) at your IdP. Onebox registers the client at your IdP and returns its secret once. Onebox keeps each app's ID, name, creator, and the credentials it needs to manage the client, in its database. It doesn't keep the secret. Deleting an app deletes the client at the IdP.
 
 ### Keycloak
 

@@ -1,6 +1,6 @@
 ---
 title: Self-hosted (single-cluster install)
-description: Run the whole Union.ai platform, control plane and data plane, in your own Kubernetes cluster, installed with one Helm chart.
+description: Run Union.ai, its workflow services and UI, in your own Kubernetes cluster, installed with one Helm chart.
 icon: box
 weight: 4
 variants: -flyte +union
@@ -8,21 +8,19 @@ variants: -flyte +union
 
 # Self-hosted Union.ai
 
-Self-hosted Union.ai runs the whole platform **in your own Kubernetes cluster**: the control plane, the data plane that launches your tasks, and the UI, all from one `onebox` binary and the UI's image. You install it with one Helm chart, `onebox`, and give it two things: a PostgreSQL database and an object store bucket. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants a self-contained deployment with no external dependencies.
-
-Unlike a [self-managed](../selfmanaged/_index) or [BYOC](../byoc/_index) deployment, nothing runs in Union.ai's cloud: the control plane is in the same pod as the data plane.
+Self-hosted Union.ai runs **in your own Kubernetes cluster**: the services that store and run your workflows, and the web UI. You install it with one Helm chart, `onebox`, and connect it to a PostgreSQL database and an object storage bucket. Nothing runs in Union.ai's cloud. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants everything in its own cluster.
 
 ## What runs
 
-| Workload | Image | What it does |
-|---|---|---|
-| `onebox` Deployment, `onebox` container | `onebox-server` | The control plane (runs, actions, projects, identity, authorization), the data plane worker that creates task pods, and the pod admission webhook that injects secrets into them. |
-| `onebox` Deployment, `console` container | `onebox-console` | The Union.ai UI, served by onebox under `/v2`. |
-| `onebox-node-agent` DaemonSet | `onebox-server` | Runs on every node: the CSI driver (`volumes.union.ai`) that mounts Union Volumes into task pods, and the node-shared Volume cache. |
+| Component | What it does |
+|---|---|
+| **onebox** | Runs your workflows: it stores runs, projects, users, and their permissions, launches each task as a pod, and serves the API that the SDK and CLI use. |
+| **The UI** | The Union.ai web app, in the same pod as onebox and served by it at `/v2`. |
+| **Node agent** | One per node: mounts [Union Volumes](../../user-guide/tasks/task-programming/volumes/_index) (shared, persistent storage for tasks) into task pods. |
 
-With [apps](./apps) on, the chart also runs Knative Serving, Union's Kourier controller (from the `onebox-server` image), and its Envoy gateway (`envoy`). It can also run BuildKit and a registry for the [image builder](./image-builder), and Prometheus for [task metrics](./metrics).
+Users, the SDK, and the CLI reach the UI, the API, and sign-in through one port, `80`; the other [ports](#ports) are for traffic inside the cluster. Task pods run in the namespace you install onebox into.
 
-Everything is served on **one port**: the UI, the API that the SDK and CLI use, and the REST routes. There is no ingress controller, Redis, or ScyllaDB to install. Task pods run in the namespace you install onebox into.
+Some features need more components, which the chart can run for you: Knative Serving and a gateway for [apps](./apps), BuildKit and a registry for the [image builder](./image-builder), and Prometheus for [task metrics](./metrics). See [Add-ons](#add-ons).
 
 ## Images
 
@@ -40,13 +38,15 @@ For an airgapped install or a private mirror, copy each image with all its archi
 
 ## What you provide
 
-| You provide | Chart values |
+| Requirement | Configuration |
 |---|---|
-| A PostgreSQL database onebox can reach, and a user that owns it | `database.host`, `database.name`, `database.user`, and a password in `database.existingSecret` |
-| A bucket in Amazon S3, Google Cloud Storage, Azure Blob Storage, or an S3-compatible store (MinIO, R2, Ceph), with a CORS rule for the UI | `storage.type` (`s3`, `gcs`, or `azure`), `storage.bucket`, and the credentials the bucket needs; see [Bucket CORS](#bucket-cors) |
-| Optionally, an authenticating proxy in front of onebox | `identity.*`; see [Authentication](./authentication) |
-| Optionally, role-based access control | `authz.enabled`; see [Authorization](./authorization) |
-| A license key: a 30-day trial or a contract key, from your Union.ai organization | Added in the UI, or `license.existingSecret`; see [License key](#license-key) |
+| A PostgreSQL database, and a user that owns it | `database.host`, `database.name`, `database.user`, and the password in `database.existingSecret` |
+| An object storage bucket | `storage.type`, `storage.bucket`, and the bucket's credentials |
+| A license key | Added in the UI, or `license.existingSecret`; see [License key](#license-key) |
+
+The bucket can be in Amazon S3, Google Cloud Storage (`storage.type: gcs`), Azure Blob Storage (`azure`), or an S3-compatible store such as MinIO, Cloudflare R2, or Ceph (`s3`). It needs a CORS rule for the UI; see [Bucket CORS](#bucket-cors).
+
+Before you give anyone else access, put an authenticating proxy in front of onebox and turn on role-based access control; see [Authentication](./authentication) and [Authorization](./authorization).
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
 
@@ -68,21 +68,21 @@ To install onebox on a Kubernetes cluster, `flyte install onebox` checks the clu
 
 | Service port | Who calls it |
 |---|---|
-| `80` | Users, the SDK, and the CLI: the UI, the API, and the REST routes. Put your authenticating proxy in front of this port. |
-| `8082` | Task pods, calling back to launch and track child actions. In-cluster only. |
-| `15606` | Workers of reusable containers. In-cluster only. |
-| `9443` | The Kubernetes API server, calling the pod admission webhook. |
+| `80` | Users, the SDK, and the CLI: the UI, the API, and sign-in. Put your authenticating proxy in front of this port. |
+| `8082` | Task pods, to start and track the tasks they call. In-cluster only. |
+| `15606` | Task workers that [reuse a running container](../../user-guide/tasks/task-configuration/reusable-containers) across tasks. In-cluster only. |
+| `9443` | The Kubernetes API server, calling onebox's webhook that adds secrets to task pods. |
 | `8083` | With [apps](./apps) on: the apps gateway, asking onebox who may call an app. Only the gateway. |
 
 ## License key
 
-A license key is what lets an install make changes. Without a valid key, onebox is read-only: reads work, changes are refused, and runs in flight finish. Every key is for one install, named by the 32-character install ID onebox generates on first start and keeps across upgrades.
+A license key is what lets an installation make changes. Without a valid key, onebox is read-only: reads work, changes are refused, and runs in flight finish. Each installation needs its own key, issued for its 32-character install ID, which onebox generates on first start and keeps across upgrades.
 
 ### Get a key
 
-1. In the onebox UI, open **Settings > License** and select **Get a key**. It shows the install ID and links to `license.issueURL` with it, by default Union.ai's sign-up.
-2. Sign in to your Union.ai organization, or sign up and create one. You land on the organization's **License Keys** page with the issue dialog open for this install. An account admin issues the key there. Without a contract it's a 30-day trial, one per organization and shared by all its installs. With a contract, the key lasts until the contract ends.
-3. Back in onebox, select **Add key** and paste it. An account admin adds keys when [authorization](./authorization) is on. Read-only lifts right away.
+1. In the onebox UI, open **Settings → License** and select **Get a key**. It opens Union.ai's sign-up with this installation's ID.
+2. Sign in to your Union.ai organization, or sign up and create one. You land on the organization's **License Keys** page with this installation filled in. An administrator of your Union.ai organization issues the key there. Without a contract, it's a 30-day trial; an organization has one trial period, shared by all its installations. With a contract, the key lasts until the contract ends.
+3. Back in the onebox UI, select **Add key** and paste it. With [authorization](./authorization) on, adding a key needs the installation's `admin` role. Read-only lifts right away.
 
 You can also mount a key from a Secret:
 
@@ -92,19 +92,21 @@ helm upgrade onebox unionai/onebox -n union -f values.yaml \
   --set license.existingSecret=onebox-license
 ```
 
-Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against Union.ai's public keys built into each release; nothing is sent to Union.ai. Only keys Union.ai issues are accepted. `license.issueURL` points **Get a key** somewhere else.
+Onebox picks up a rotated key in the Secret without a restart. Keys are verified offline, against Union.ai's public keys built into each release; nothing is sent to Union.ai. Only keys Union.ai issues are accepted.
+
+To send **Get a key** to your own license-request page instead, set `license.issueURL`. Keys still have to come from Union.ai.
 
 ### Limits and entitlements
 
-A key carries the limits and entitlements of the organization it was issued for, such as the maximum number of clusters, users, or concurrent runs, as they were when it was issued. Onebox reports them as the organization's own, and its limit checks hold the install to them. A key issued before keys carried limits, or no key at all, gets the Teams tier's defaults built into the release. The limits can't be changed inside onebox: when the organization's limits change, issue the key again and add the new one.
+A key records your organization's limits and features when it is issued, such as the maximum number of users or concurrent runs. Onebox holds the installation to them. They can't be changed inside onebox: when your organization's limits change, issue the key again and add the new one.
 
-The checks start in log-only mode: a request over a limit is logged and counted, not refused. To enforce a limit, set its mode in onebox's configuration through the chart's `extraConfig`:
+By default, a request over a limit is logged and counted, not refused. To refuse it, set the limit's mode through the chart's `extraConfig`:
 
 ```yaml
 extraConfig:
   quotaEnforcement:
     limits:
-      max_clusters: enforce
+      max_users: enforce
 ```
 
 ## A private CA, extra mounts and proxies
@@ -117,7 +119,7 @@ kubectl -n union create configmap ca-bundle --from-file=ca-bundle.pem
 helm upgrade onebox unionai/onebox -n union -f values.yaml --set caBundle.configMap=ca-bundle
 ```
 
-`extraVolumes` and `extraVolumeMounts` add volumes to the onebox container. Task pods get theirs from `taskPods.extraVolumes`, `taskPods.extraVolumeMounts`, and `taskPods.extraEnv`, for example an outbound proxy's `HTTPS_PROXY` and `NO_PROXY`, or a shared dataset. Whenever any of these, or `caBundle`, is set, the chart renders a PodTemplate that every task pod starts from, the `build-image` task included. A task's own `pod_template` still applies on top.
+`extraVolumes` and `extraVolumeMounts` add volumes to the onebox container. Task pods get theirs from `taskPods.extraVolumes`, `taskPods.extraVolumeMounts`, and `taskPods.extraEnv`, for example an outbound proxy's `HTTPS_PROXY` and `NO_PROXY`, or a shared dataset. These task-pod settings, and `caBundle`, apply to every task, image builds included. A task's own `pod_template` applies on top of them.
 
 ## Upgrade
 
@@ -144,7 +146,7 @@ Four features need components beside onebox. The chart can run three of them for
 | Logs of finished tasks | A log shipper (fluent-bit) writing to the bucket | None: you install it | [Task logs](./logs) |
 | The Metrics tab | Prometheus with cAdvisor and kube-state-metrics | `prometheus.enabled`, or your own in `metrics.prometheusURL` | [Task metrics](./metrics) |
 | Building images in the cluster | BuildKit and a registry | `imageBuilder.bundled.enabled` (evaluation only), or your own | [Image builder](./image-builder) |
-| Apps and LLM gateways | Knative Serving with Kourier | `serving.enabled` | [Apps and LLM gateways](./apps) |
+| Apps and LLM gateways | Knative Serving and a gateway | `serving.enabled` | [Apps and LLM gateways](./apps) |
 
 The Logs tab streams logs of running tasks without any add-on.
 
@@ -158,7 +160,8 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 
 ## Limitations
 
-- One replica, and one data plane: the cluster onebox runs in.
+- Onebox runs as a single replica, without high availability.
+- Tasks run only in the cluster onebox is installed in.
 - The dashboards' queue panels show no data.
 
 ## License

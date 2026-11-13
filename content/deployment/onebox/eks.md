@@ -142,7 +142,7 @@ helm repo update
 helm install onebox unionai/onebox -n ${NAMESPACE} -f values.yaml --wait --timeout 10m
 ```
 
-Install onebox in a namespace of its own: task pods, their secrets, and the objects plugins create all live in it.
+Install onebox in a namespace of its own: task pods, their secrets, and the other Kubernetes objects created for tasks all live in it.
 
 ## Check it
 

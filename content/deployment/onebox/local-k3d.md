@@ -185,7 +185,7 @@ Run it:
 flyte run hello.py main
 ```
 
-The run, and the `fn` actions it fans out, appear in the UI. Each action runs as a pod in the `union` namespace.
+The run appears in the UI, with one entry for each call of `fn`; Union.ai calls each of these task invocations an action. Each action runs as a pod in the `union` namespace.
 
 ## Clean up
 

@@ -46,14 +46,14 @@ kubectl -n union create secret generic onebox-s3 \
   --from-literal=AWS_SECRET_ACCESS_KEY='<secret access key>'
 ```
 
-Install onebox in a namespace of its own: task pods, their secrets, and the objects plugins create all live in it. Task pods get the store's access key from the same Secret.
+Install onebox in a namespace of its own: task pods, their secrets, and the other Kubernetes objects created for tasks all live in it. Task pods get the store's access key from the same Secret.
 
 ## Install with the CLI
 
 `flyte install onebox`, from `flyteplugins-union` 0.21.0 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
 
 ```shell
-uv pip install flyte "flyteplugins-union>=0.21.0"
+pip install flyte "flyteplugins-union>=0.21.0"
 flyte install onebox -n union --db-host <postgres host> --db-name <database> --db-user <user> \
   --db-password-secret onebox-db --bucket <bucket> --endpoint https://<store endpoint> \
   --set storage.authType=accesskey --set storage.existingSecret=onebox-s3
@@ -80,7 +80,10 @@ Whatever is missing (the database host or password, the bucket, or what the stor
 | `--serving` | Turn on [apps and LLM gateways](./apps). |
 | `--edit` | Review the inputs in the editor even when nothing is missing. |
 | `--skip-preflight` | Install even if a check fails. |
-| `-n`/`--namespace`, `--release`, `--version`, `--kubeconfig`, `--context` | Where and what to install. |
+| `-n`/`--namespace` | The namespace to install into (default `union`). |
+| `--release` | The Helm release name (default `onebox`). |
+| `--version` | The chart version (default: the latest). |
+| `--kubeconfig`, `--context` | The Kubernetes configuration file and context to use. |
 
 It keeps the values it installed with in `~/.flyte/onebox/<release>-values.yaml` (readable only by you, since it can hold the database password) for later `helm upgrade -f` runs. Then go on to [Check it](#check-it).
 
@@ -132,7 +135,7 @@ To serve onebox under a path of a host something else owns, such as `https://pla
 basePath: /onebox
 ```
 
-The UI is then at `/onebox/v2`, and the API, `/login`, and `/logout` are under `/onebox`. Point the SDK and CLI at `https://platform.example.com/onebox`. Each `basePath` segment must be a lowercase DNS label. It needs `onebox-server` and `onebox-console` images with base path support.
+The UI is then at `/onebox/v2`, and the API, `/login`, and `/logout` are under `/onebox`. Point the SDK and CLI at `https://platform.example.com/onebox`. Each `basePath` segment must be a lowercase DNS label.
 
 The proxy in front must:
 

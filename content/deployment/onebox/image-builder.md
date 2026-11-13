@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Image builder
 
-With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks onebox whether the image already exists, so an image is built once and reused. Onebox registers the `build-image` task itself. You bring BuildKit and the registry, or, on a single-user or evaluation cluster, have the chart run both. Onebox doesn't depend on any of them to start.
+With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks onebox whether the image already exists, so an image is built once and reused. Onebox sets up the build task itself. You bring BuildKit and the registry, or, on a single-user or evaluation cluster, have the chart run both. Onebox doesn't depend on any of them to start.
 
 ## Requirements
 
@@ -61,7 +61,7 @@ imageBuilder:
 
 `lookupURL` defaults to `https://<repository>`; set it when onebox reaches the registry at another address.
 
-Either way, onebox then creates the `system` project and registers the `build-image` task in its `production` domain, a few seconds after it starts. It registers the task again when `imageBuilder.taskImages` changes, or when an upgrade brings new images; otherwise there's nothing to do.
+Either way, onebox sets up the image builder a few seconds after it starts, and again when its images change. There's nothing to register by hand. The build task lives in the `system` project's `production` domain, which matters only for troubleshooting (below).
 
 ## Build an image
 

@@ -12,7 +12,7 @@ This guide installs onebox on an existing GKE cluster, with a Cloud SQL for Post
 
 ## Prerequisites
 
-- A GKE Standard cluster with Workload Identity enabled on the cluster and its node pools. Autopilot isn't supported: it refuses the privileged, hostPath-mounting node agent (`onebox-node-agent`) that serves Union Volumes.
+- A GKE Standard cluster with Workload Identity enabled on the cluster and its node pools. Autopilot isn't supported: onebox's node agent (`onebox-node-agent`) needs privileged containers and `hostPath` mounts, which Autopilot refuses.
 - `gcloud`, `kubectl` configured for the cluster, and [Helm](https://helm.sh) 3.
 
 Set these for the commands below:
@@ -117,7 +117,7 @@ helm repo update
 helm install onebox unionai/onebox -n ${NAMESPACE} -f values.yaml --wait --timeout 10m
 ```
 
-Install onebox in a namespace of its own: task pods, their secrets, and the objects plugins create all live in it.
+Install onebox in a namespace of its own: task pods, their secrets, and the other Kubernetes objects created for tasks all live in it.
 
 ## Check it
 

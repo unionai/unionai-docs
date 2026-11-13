@@ -42,7 +42,7 @@ Users are identified by the **subject** your proxy reports, which isn't always t
 
 ## Tasks
 
-Tasks call back to onebox to launch and follow their child actions. They do this on an in-cluster port, `8082`, where every request acts as a built-in application with role `authz.tasksRole` (default `contributor`). No credentials are placed in task pods.
+Tasks call back to onebox to start and follow the tasks they call (their child actions). They do this on an in-cluster port, `8082`, where every request acts as a built-in application with role `authz.tasksRole` (default `contributor`). No credentials are placed in task pods.
 
 Whatever can reach port `8082` gets that role, so keep it private with a network policy.
 
@@ -74,4 +74,4 @@ Set `networkPolicy.enabled: false` only if you enforce the same rules another wa
 |---|---|
 | Every request returns `401` after turning authorization on | Requests reach onebox without identity headers. Check that they go through the proxy, and that `identity.subjectHeaders` names the header your proxy sets. |
 | A user listed in `adminUsers` isn't an admin | The entry doesn't match their subject. Compare it with `subject` from `/me`. |
-| Child actions fail with `PermissionDenied` | `authz.tasksRole` is `viewer`. Tasks need `contributor` to launch child actions. |
+| Tasks a task calls fail with `PermissionDenied` | `authz.tasksRole` is `viewer`. Tasks need `contributor` to start the tasks they call. |

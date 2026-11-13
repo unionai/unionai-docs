@@ -8,36 +8,46 @@ variants: -flyte +union
 
 # Try Union.ai on your machine
 
-`flyte start onebox` runs the whole Union.ai platform on your machine, in one Docker container: onebox (the control plane and the data plane), the UI, and a throwaway PostgreSQL database and S3-compatible store for it. It is the quickest way to evaluate Union.ai: the same workflows, CLI, and UI as any other deployment, with nothing to set up first.
+`flyte start onebox` runs Union.ai on your machine, in one Docker container: the services that store and run your workflows, the web UI, and a PostgreSQL database and S3-compatible storage for them. Runs and data are kept in a Docker volume. It is the quickest way to evaluate Union.ai.
 
 Nothing is authenticated and everything runs on one machine, so use it to try things out, not for production or shared use. To install Union.ai on a Kubernetes cluster, follow one of the [deployment guides](./_index#choose-a-guide).
 
 ## Prerequisites
 
-- Docker, with at least 4 CPUs and 8 GB of memory available to it. Docker Desktop and OrbStack work. Apple's `container` runtime (and socktainer, which serves the Docker API from it) doesn't: it can't map `host.docker.internal` or forward the container's ports to your machine.
-- Python 3.10 or later, and `flyteplugins-union` 0.21.0 or later, which adds `flyte start onebox`.
+- Docker, with at least 4 CPUs and 8 GB of memory available to it. Docker Desktop and OrbStack work; Apple's `container` runtime and socktainer don't.
+- Python 3.10 or later.
 - Ports `30080`, `30566`, and `36443` free on your machine.
 
 ## Start Union.ai
 
+Union.ai uses the Flyte Python SDK and its `flyte` CLI; the `flyteplugins-union` package adds the `flyte start onebox` command. Install both, then start Union.ai:
+
 ```shell
-uv pip install flyte "flyteplugins-union>=0.21.0"
+pip install flyte "flyteplugins-union>=0.21.0"
 flyte start onebox
 ```
 
 The first start pulls the image and takes a few minutes; later starts take seconds. When it is ready, it prints where to find everything:
 
-| | |
+| Resource | Address or file |
 |---|---|
 | UI | `http://localhost:30080/v2` |
-| SDK and CLI configuration | `~/.flyte/onebox/config.yaml` (endpoint `dns:///127.0.0.1:30080`, org `onebox`, project `flytesnacks`, domain `development`) |
-| Kubernetes | `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods` (the container's k3s, on port `36443`) |
-| License | Read-only until you add a key; see [Add a license key](#add-a-license-key) |
-| Terms | The [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license) |
+| SDK and CLI configuration | `~/.flyte/onebox/config.yaml` |
+| Kubernetes configuration | `~/.flyte/onebox/kubeconfig` |
+
+The SDK configuration points at organization `onebox`, project `flytesnacks`, and domain `development`. Union.ai organizes work into projects, and each project into domains (`development`, `staging`, `production`); these are Union.ai names, not Kubernetes namespaces or DNS names.
+
+To see the pods inside the container:
+
+```shell
+kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods
+```
+
+Union.ai is under the [Union License](https://www.union.ai/licensing/union-license); see [License](./_index#license).
 
 ## Add a license key
 
-Union.ai on your machine starts read-only: you can look around, but not run anything, until you add a license key. A 30-day trial key is free:
+Union.ai on your machine starts read-only: you can look around, but not run anything, until you add a license key. Get a 30-day trial key:
 
 1. Open the UI, then **Settings > License**, and select **Get a key**. `flyte start onebox` also prints the link.
 2. Sign in to Union.ai, or sign up. You land on your organization's **License Keys** page with this install filled in. Issue the key.
@@ -72,7 +82,7 @@ flyte --config ~/.flyte/onebox/config.yaml run hello.py main
 
 To use it for every command, set `export FLYTECTL_CONFIG=~/.flyte/onebox/config.yaml` instead.
 
-The run, and the `fn` actions it fans out, appear in the UI. Each action runs as a pod inside the container. Secrets (`flyte create secret`), logs, schedules, and triggers work as on any other deployment.
+The run appears in the UI, with one entry for each call of `fn`; Union.ai calls each of these task invocations an action. Each action runs as a pod inside the container. You can also create [secrets](../../user-guide/tasks/task-configuration/secrets) with `flyte create secret`, view task logs, and [trigger runs](../../user-guide/triggers/_index) on a schedule or an event.
 
 ## Add-ons
 
@@ -150,6 +160,7 @@ To pin a release instead, pass `--image ghcr.io/unionai/onebox-local:<version>`.
 | Symptom | Cause and fix |
 |---|---|
 | `flyte start onebox` says Docker is not reachable | Start Docker and try again. |
+| It fails with Apple's `container` runtime or socktainer | They can't map `host.docker.internal` or forward the container's ports to your machine. Use Docker Desktop or OrbStack. |
 | It times out waiting for Union.ai to be ready | Docker has too little memory or CPU. Check `docker logs union-onebox` and `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods`. |
 | A port is already in use | Something else listens on `30080`, `30566`, or `36443`. Stop it, then run `flyte start onebox --recreate`. |
 | `docker pull` says `denied` for `ghcr.io/unionai/onebox-local` | The images are public; Docker is sending expired GHCR credentials. Run `docker logout ghcr.io` and pull again. |
