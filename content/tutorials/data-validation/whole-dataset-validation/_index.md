@@ -44,7 +44,7 @@ object-based `TensorDictSchema` API: `TensorDictModel` fields don't accept custo
 ## Proving the checks scan everything
 
 A schema that could pass without scanning every row would make validation look cheaper than it is. Before timing a
-dataset, the benchmark corrupts one value in the last row of a small copy and asserts that validation raises. If it
+dataset, the benchmark corrupts the last row of a small copy and asserts that validation raises. If it
 doesn't, the benchmark refuses to run. The check also serves as a warmup, so first-call costs don't land on the
 smallest size.
 
@@ -120,7 +120,8 @@ tab.
 
 ```bash
 # From v2/tutorials/pandera_dataset_validation in your unionai-examples clone.
-# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
+# On the cluster in your Flyte config; builds the image with the config's image builder
+# (a local Docker build if none is set), then writes results/ locally
 uv run main.py
 
 # Locally, with small sizes
