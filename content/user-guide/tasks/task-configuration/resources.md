@@ -65,9 +65,9 @@ For how ephemeral-storage sizing plays out as you scale across teams and quotas,
 
 ## Examples
 
-### Usage in TaskEnvironment
+### Usage in `TaskEnvironment`
 
-Here's a complete example of defining a TaskEnvironment with resource specifications for a machine learning training workload:
+Here's a complete example of defining a `TaskEnvironment` with resource specifications for a machine learning training workload:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/resources/resources.py" fragment="task-env" lang="python" >}}
 

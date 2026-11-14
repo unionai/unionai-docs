@@ -1,18 +1,18 @@
 ---
-title: TaskEnvironment
+title: Task environments
 description: The container image, resources, and secrets a group of tasks runs with.
 icon: box-seam
 weight: 1
 variants: +flyte +union
 ---
 
-# TaskEnvironment
+# Task environments
 
 A `TaskEnvironment` defines the hardware and software environment where your tasks run. Think of it as the container configuration for your code.
 
 ## A minimal example
 
-Here's the simplest possible TaskEnvironment:
+Here's the simplest possible task environment:
 
 ```python
 import flyte
@@ -26,9 +26,9 @@ def hello() -> str:
 
 With just a `name`, you get Flyte's default container image and resource allocation. This is enough for simple tasks that only need Python and the Flyte SDK.
 
-## What TaskEnvironment controls
+## What a task environment controls
 
-A TaskEnvironment specifies two things:
+A task environment specifies two things:
 
 **Hardware environment** - The compute resources allocated to each task:
 
@@ -128,4 +128,4 @@ def train_model(data: str) -> dict:
 
 ## Next steps
 
-Now that you understand TaskEnvironments, let's look at how to define [tasks](./tasks) that run inside them.
+Now that you understand task environments, let's look at how to define [tasks](./tasks) that run inside them.

@@ -1,6 +1,6 @@
 ---
 title: App environments
-description: Control an app's image, resources, secrets, startup behavior, and autoscaling through AppEnvironment.
+description: Control an app's image, resources, secrets, startup behavior, and autoscaling through `AppEnvironment`.
 icon: sliders
 weight: 1
 variants: +flyte +union
@@ -163,7 +163,7 @@ You can combine both, though this is less common:
 
 {{< code file="/unionai-examples/v2/user-guide/configure-apps/app-startup-examples.py" fragment=command-with-args lang=python >}}
 
-#### FastAPIAppEnvironment example
+#### `FastAPIAppEnvironment` example
 
 When using `FastAPIAppEnvironment`, you don't need to set `command` or `args`. The app runs with the default `fserve` command, which serves your FastAPI app with uvicorn:
 

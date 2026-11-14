@@ -49,7 +49,7 @@ A `@workflow` invoked by another `@workflow` (for example, a reusable preprocess
 {{< /tab >}}
 {{< /tabs >}}
 
-## TaskEnvironment configuration
+## `TaskEnvironment` configuration
 
 The `TaskEnvironment` holds the configuration that Flyte 1 spread across the `@task` decorator. The task decorator can still override a few settings per-task.
 

@@ -64,11 +64,11 @@ This example demonstrates:
 
 Once deployed, your app will be accessible at the generated URL or your custom subdomain.
 
-## Differences from TaskEnvironment
+## Differences from `TaskEnvironment`
 
 While `AppEnvironment` inherits from `Environment` (the same base class as `TaskEnvironment`), it has several app-specific parameters:
 
-| Parameter | AppEnvironment | TaskEnvironment | Description |
+| Parameter | `AppEnvironment` | `TaskEnvironment` | Description |
 |-----------|----------------|-----------------|-------------|
 | `type` | ✅ | ❌ | Type of app (e.g., "FastAPI", "Streamlit") |
 | `port` | ✅ | ❌ | Port the app listens on |

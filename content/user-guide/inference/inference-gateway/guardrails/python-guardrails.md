@@ -1,6 +1,6 @@
 ---
 title: Python guardrails
-description: Write an Inference Gateway guardrail as a Python function with GuardrailAppEnvironment.
+description: Write an Inference Gateway guardrail as a Python function with `GuardrailAppEnvironment`.
 icon: code
 weight: 1
 variants: -flyte +union
