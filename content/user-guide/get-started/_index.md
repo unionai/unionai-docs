@@ -119,7 +119,7 @@ Run the same task code locally in your Python process, or remotely on a devbox o
 {{< /link-card >}}
 
 {{< link-card target="cheatsheet" icon="card-checklist" title="Cheatsheet" >}}
-The most-used SDK constructs and CLI commands on one page, each linked to its full page.
+One-page reference for the most-used Flyte 2 SDK constructs and CLI commands, each linked to its full page.
 {{< /link-card >}}
 
 {{< /grid >}}
