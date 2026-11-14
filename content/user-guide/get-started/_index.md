@@ -118,4 +118,8 @@ The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actio
 Run the same task code locally in your Python process, or remotely on a devbox or a deployed cluster.
 {{< /link-card >}}
 
+{{< link-card target="cheatsheet" icon="card-checklist" title="Cheatsheet" >}}
+One-page reference for the most-used Flyte 2 SDK constructs and CLI commands, each linked to its full page.
+{{< /link-card >}}
+
 {{< /grid >}}
