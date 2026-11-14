@@ -180,7 +180,7 @@ After training completes, a separate task runs inference on a single GPU:
 
 The task is async so it can `asyncio.gather` the downloads of the validation manifest, the images and the training artifacts in parallel rather than sequentially, a simple speedup that matters when downloading hundreds of megabytes from object storage.
 
-The evaluation task loads the adapter state dict from `adapter_artifact.pt`, rebuilds the frozen backbone fresh from HuggingFace (there's no need to checkpoint 3B weights, only the ~10,500 adapter weights travel with the artifact), and runs greedy decoding on each validation example. The metric is accuracy against the ground-truth CIFAR-10 label: a prediction counts as correct when the normalized label is one of the words in the generated text, or equals the whole generated text.
+The evaluation task loads the adapter state dict from `adapter_artifact.pt`, rebuilds the frozen backbone fresh from HuggingFace (there's no need to checkpoint 3B weights, only the ~10,500 adapter weights travel with the artifact), and runs greedy decoding on the first `eval_examples` validation examples (16 by default). The metric is accuracy against the ground-truth CIFAR-10 label: a prediction counts as correct when the normalized label is one of the words in the generated text, or equals the whole generated text.
 
 ### Putting it all together
 
