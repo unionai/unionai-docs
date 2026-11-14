@@ -13,10 +13,11 @@ versioned file system that they mount and read and write like a local directory.
 A Volume is served **inside the task pod** by
 [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html), so on a
 self-managed cluster the data plane must give task pods a way to get a FUSE
-mount. By default it gives them none, and you enable one of two DaemonSets per
-cluster:
+mount. The dataplane chart does this with one of two DaemonSets, depending on
+its version: the mount broker from chart version 2026.9.4 (on by default from
+2026.9.7), or the FUSE device plugin in versions before 2026.9.4:
 
-| | **Mount broker** (recommended) | **FUSE device plugin** (legacy) |
+| | **Mount broker** (recommended) | **FUSE device plugin** (legacy, chart before 2026.9.4) |
 |---|---|---|
 | Chart value | `uvolMountBroker.enabled` | `fuseDevicePlugin.enabled` |
 | Task pod privileges | **None** | `CAP_SYS_ADMIN` + the `smarter-devices/fuse` device |
@@ -26,10 +27,11 @@ cluster:
 
 Prefer the **mount broker**: it is the only option that leaves the task pod
 completely unprivileged, so Volumes work under restricted Pod Security
-Standards. The device plugin remains supported for clusters already using it,
-and the two can be enabled together during a migration. Each task pod picks its
-path from its own pod template, so existing `allow_fuse()` workloads keep
-running unchanged.
+Standards. The device plugin exists only in dataplane chart versions before
+2026.9.4, and no released chart version has both. Upgrading to 2026.9.4 or later
+removes the device plugin, and any pod that requests `smarter-devices/fuse`, such
+as one using `allow_fuse()`, becomes unschedulable. Helm gives no warning, so
+check for such pods before upgrading.
 
 ## Enable the mount broker
 
@@ -42,7 +44,8 @@ Privilege is confined to the DaemonSet; the workloads it serves stay fully
 unprivileged. The broker holds no object-storage credentials: the data plane
 authenticates in-pod under the pod's own identity.
 
-It is **disabled by default**. Enable it in your data plane values:
+It is **enabled by default** from dataplane chart version 2026.9.7. On 2026.9.4
+through 2026.9.6, or if you turned it off, enable it in your data plane values:
 
 ```yaml
 uvolMountBroker:
@@ -56,24 +59,13 @@ helm upgrade <release> <chart> -n <namespace> \
 ```
 
 > [!WARNING]
-> The broker's default `nodeSelector` is `flyte.org/node-role: worker`, and it
-> **must cover every node a volume-using task pod can land on**. A pod that
-> lands on a node without the broker fails to start with
-> `driver volumes.union.ai not found` (or whatever `driverName` you set). If your task pods are not confined to
-> nodes carrying that label, widen the selector or remove it:
->
-> ```yaml
-> uvolMountBroker:
->   enabled: true
->   nodeSelector: null   # run on every node
-> ```
->
-> Use `null`, not `{}`. Helm merges your values over the chart's, and an empty
-> map contributes nothing to that merge, so `nodeSelector: {}` leaves the
-> default `flyte.org/node-role: worker` in place. Only an explicit `null`
-> removes the key. This one fails quietly: the DaemonSet stays pinned to the
-> labeled nodes while you believe it is running everywhere, which is the
-> failure this warning is about.
+> The broker **must cover every node a volume-using task pod can land on**. A
+> pod that lands on a node without the broker fails to start with
+> `driver volumes.union.ai not found` (or whatever `driverName` you set). By
+> default the broker's `nodeSelector` is empty and its tolerations tolerate
+> every taint, so it runs on every node. If you narrow `nodeSelector` or
+> `tolerations`, make sure the nodes it still runs on include every node your
+> task pods can schedule to.
 
 ### Verify the broker
 
@@ -98,17 +90,17 @@ Once both look healthy, tasks using `allow_volumes()` can mount Volumes.
 
 | Key | Default | Description |
 |---|---|---|
-| `uvolMountBroker.enabled` | `false` | Enable the mount-broker DaemonSet and its `CSIDriver`. |
+| `uvolMountBroker.enabled` | `true` | Enable the mount-broker DaemonSet and its `CSIDriver`. The default is `true` from chart version 2026.9.7 and `false` before it. |
 | `uvolMountBroker.driverName` | `volumes.union.ai` | CSI driver name. Task pods reference it; change it only if it collides. |
-| `uvolMountBroker.nodeSelector` | `{"flyte.org/node-role": "worker"}` | Nodes to run on. Must cover every node a volume task pod can schedule to. Set it to `null` (not `{}`) to run on every node. |
-| `uvolMountBroker.tolerations` | `[{ effect: NoSchedule, operator: Exists }]` | Tolerate `NoSchedule` taints so it reaches tainted worker nodes. |
+| `uvolMountBroker.nodeSelector` | `{}` | Nodes to run on; empty means all nodes. Must cover every node a volume task pod can schedule to. |
+| `uvolMountBroker.tolerations` | `[{ operator: Exists }]` | Tolerate every taint, so it reaches tainted nodes that still run task pods. |
 | `uvolMountBroker.kubeletDir` | `/var/lib/kubelet` | Kubelet root. Change it if your kubelet uses a non-standard directory. |
 | `uvolMountBroker.socketDir` | `/run/uvol` | Host directory for the per-volume unix sockets. |
 | `uvolMountBroker.stateDir` | `/var/lib/uvol/state` | Host directory for the broker's state journal (lets channels survive a broker restart). |
 | `uvolMountBroker.profilerPort` | `10254` | Port serving `/metrics`, `/healthcheck` and the `/readyz` readiness endpoint. |
 | `uvolMountBroker.metricsScope` | `uvol_broker` | Prefix for the metrics the broker emits. |
-| `uvolMountBroker.priorityClassName` | `system-node-critical` | Priority class for the DaemonSet pods. |
-| `uvolMountBroker.resources` | `requests: cpu 500m, memory 32Mi`; `limits: memory 256Mi` | The broker sits on the task's `open()` hot path, so the CPU request is a scheduling-latency knob rather than a utilization estimate. There is deliberately no CPU limit. |
+| `uvolMountBroker.priorityClassName` | `""` | Priority class for the DaemonSet pods. Empty, with `priorityClass.create: true` (the default), uses a class the chart creates for the release. Don't set a reserved system class such as `system-node-critical`: GKE rejects those outside `kube-system`. |
+| `uvolMountBroker.resources` | `requests: cpu 30m, memory 32Mi`; `limits: memory 256Mi` | The broker sits on the task's `open()` hot path, so the CPU request is a scheduling-latency knob rather than a utilization estimate. There is deliberately no CPU limit. |
 
 > [!NOTE]
 > The broker is safe to upgrade in place: existing kernel mounts and the file
@@ -128,7 +120,8 @@ When `block.allow` is unset, the default depends on `low_privilege`:
 
 - `low_privilege: false`: every pod may use block volumes
   (`[{namespace: "*"}]`).
-- `low_privilege: true` (the chart default): block volumes are disabled.
+- `low_privilege: true` (the chart default): pods in the release namespace,
+  where every Union task runs at this setting, may use block volumes.
 
 On a cluster that runs untrusted workloads, set an explicit list to allow only
 specific trusted ones:
@@ -163,12 +156,14 @@ naming the reason.
 
 | Key | Default | Description |
 |---|---|---|
-| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `low_privilege` is false, none when it is true. `[]` disables block volumes. |
+| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `low_privilege` is false, pods in the release namespace when it is true. `[]` disables block volumes. |
 | `uvolMountBroker.block.freezeMax` | `60s` | Thaw a block volume that a client froze for a commit after this long, so a client that dies mid-commit cannot stall the volume's writers. |
 
 ## The FUSE device plugin (legacy path)
 
-Use this only on clusters that cannot run the mount broker. Task pods take the
+The device plugin exists only in dataplane chart versions before 2026.9.4.
+Later versions removed `fuseDevicePlugin`: setting it there does nothing, and
+Helm gives no warning, so use the mount broker. Task pods take the
 mount themselves, so they need `CAP_SYS_ADMIN` and their images need `fuse3`.
 
 ### Why a device plugin is required
@@ -181,29 +176,17 @@ devices-cgroup allowlist. The only thing that adds a device to that allowlist is
 kubelet, and kubelet only does so when the pod **requests the device as a
 device-plugin resource**.
 
-The dataplane chart ships an opt-in **FUSE device-plugin DaemonSet** that
+Dataplane chart versions before 2026.9.4 ship an opt-in **FUSE device-plugin DaemonSet** that
 advertises the host `/dev/fuse` device as the Kubernetes extended resource
 `smarter-devices/fuse`. When it is enabled, a task pod that requests
 `smarter-devices/fuse` gets `/dev/fuse` injected into its devices-cgroup
 allowlist and can complete the mount with only the `CAP_SYS_ADMIN` capability:
 **no privileged container and no `/dev/fuse` hostPath**.
 
-{{< variant union >}}
-{{< markdown >}}
-
-> [!NOTE]
-> Union.ai adds the `smarter-devices/fuse` request and the
-> `CAP_SYS_ADMIN` capability to volume-mounting task pods automatically. You only
-> need to enable the device plugin; your users do not change their task code.
-> Privilege is confined to the DaemonSet; the workloads it serves stay
-> unprivileged.
-
-{{< /markdown >}}
-{{< /variant >}}
-
 ### Enable the FUSE device plugin
 
-The DaemonSet is **disabled by default**. Enable it in your data plane values:
+On a dataplane chart version before 2026.9.4, the DaemonSet is **disabled by
+default**. Enable it in your data plane values:
 
 ```yaml
 fuseDevicePlugin:
@@ -266,7 +249,7 @@ mount Volumes.
 
 ### Device-plugin configuration reference
 
-The `fuseDevicePlugin` values block in the dataplane chart:
+The `fuseDevicePlugin` values block in dataplane chart versions before 2026.9.4:
 
 | Key | Default | Description |
 |---|---|---|
@@ -280,7 +263,8 @@ The `fuseDevicePlugin` values block in the dataplane chart:
 
 ## Using Volumes
 
-Once one of the two DaemonSets is enabled, no further cluster setup is needed.
+Once one of the two DaemonSets is running (the device plugin only on a chart
+version before 2026.9.4), no further cluster setup is needed.
 Users create and mount Volumes directly from their task code, with
 `allow_volumes()` on the broker, or `flyte.PodTemplate().allow_fuse()` on the
 device plugin. See the
