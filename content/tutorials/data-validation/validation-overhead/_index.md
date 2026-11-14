@@ -116,7 +116,8 @@ How to read it:
 `run_step_size_sweep` keeps everything about validation fixed (the same 256-row batches, the same schema, the same
 8 corrupt batches out of 200) and grows the MLP's hidden width from 64 to 4,096, so the forward and backward pass
 gets more expensive while pandera's work per step stays the same. Growing the batch instead would grow validation along with it. Each
-width runs enough steps to take about 15 seconds per run, five runs per mode, alternating which mode goes first.
+width runs enough steps to take about 15 seconds per run, capped at 3,000 steps, five runs per mode, alternating which
+mode goes first. Widths 64 and 256 hit the cap, so their runs took about 3 to 4 and 5 to 6 seconds.
 
 {{< code file="/unionai-examples/v2/tutorials/pandera_validation_overhead/main.py" lang="python" fragment="step-size-sweep" >}}
 
@@ -156,7 +157,8 @@ tab. `main` runs the two benchmarks one after the other on separate pods and ret
 
 ```bash
 # From v2/tutorials/pandera_validation_overhead in your unionai-examples clone.
-# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
+# On the cluster in your Flyte config; builds the image with the config's image builder
+# (local unless the config sets `builder: remote`), then writes results/ locally
 uv run main.py
 
 # Locally, with a short configuration
