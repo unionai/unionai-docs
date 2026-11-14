@@ -41,7 +41,7 @@ Compute plugins create temporary, isolated clusters within the same Kubernetes e
 To use a compute plugin, you need to:
 
 1. **Install the plugin package**: Each plugin has a corresponding Python package (e.g., `flyteplugins-ray` for Ray)
-2. **Configure the TaskEnvironment**: Set the `plugin_config` parameter with the plugin-specific configuration
+2. **Configure the task environment**: Set the `plugin_config` parameter with the plugin-specific configuration
 3. **Write your task**: Use the framework's native APIs within your task function
 
 #### Example: Ray plugin

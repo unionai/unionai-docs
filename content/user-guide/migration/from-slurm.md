@@ -101,7 +101,7 @@ The function signature also does more work than a job script's argv. `lr: float`
 `-> flyte.io.File` are the task's interface, and Flyte records the value of every input and output
 of every run, so a checkpoint six months old can be traced back to the arguments that produced it.
 
-Docs: [TaskEnvironment](../get-started/core-concepts/task-environment) &middot; [Resources](../tasks/task-configuration/resources) &middot; [Overrides](../tasks/task-configuration/overrides)
+Docs: [Task environments](../get-started/core-concepts/task-environment) &middot; [Resources](../tasks/task-configuration/resources) &middot; [Overrides](../tasks/task-configuration/overrides)
 
 ---
 
