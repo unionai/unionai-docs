@@ -132,7 +132,7 @@ flyte.init_from_config()
 # Get a specific project
 project = flyte.remote.Project.get(name="my-project")
 
-# List all projects
+# List active projects (pass archived=True to list archived projects instead)
 for project in flyte.remote.Project.listall():
     print(project.to_dict())
 
