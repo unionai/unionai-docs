@@ -11,7 +11,7 @@ variants: +flyte +union
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/fraud_detection_feast).
 
-This tutorial builds a credit-card fraud detection pipeline that combines [Feast](https://feast.dev/) feature store materialization with an XGBoost classifier on the Sparkov simulated transactions dataset. The workflow engineers transaction and user-level features, trains a model, registers features in Feast, and materializes online feature values for low-latency scoring.
+This tutorial builds a credit-card fraud detection pipeline that combines [Feast](https://feast.dev/) feature store materialization with an XGBoost classifier on the Sparkov simulated transactions dataset. The workflow engineers transaction and user-level features, registers features in Feast and materializes online feature values for low-latency scoring, then trains a model.
 
 Flyte provides:
 
@@ -39,7 +39,7 @@ Flyte provides:
 
 ## Orchestrate the pipeline
 
-The `fraud_detection_pipeline` task downloads data, trains XGBoost, applies Feast feature definitions, and materializes features.
+The `fraud_detection_pipeline` task downloads data, applies Feast feature definitions and materializes features, then trains XGBoost on user features fetched from Feast.
 
 {{< code file="/unionai-examples/v2/tutorials/fraud_detection_feast/fraud_detection_feast.py" fragment=pipeline lang=python >}}
 
