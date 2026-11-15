@@ -23,6 +23,9 @@ replayed except where it is unchanged.
 > [!NOTE] Availability
 > `flyte fork` ships in `flyteplugins-union` 0.8.1 and later (`pip install flyteplugins-union`),
 > alongside `flyte` 2.6.5. It is remote-only: forking a run has no local equivalent.
+> `--task-action-inputs` and `--target-action` require `flyteplugins-union` 0.21.1 and `flyte`
+> 2.13.4 or later, both where you fork and in the image of every task in the run, and a Union.ai
+> backend that supports action overrides.
 
 ## How it relates to rerun and recover
 
@@ -44,15 +47,16 @@ flowchart LR
     L["Your working tree"] -- "new code" --> C
 ```
 
-Fork can also change the root action's inputs. In Python the substitute code is optional too:
-`fork(run, threshold=0.9)` with no `task_template` replays the source run's task spec against new
-inputs, which makes fork the way to recover a run with different inputs. On the CLI the file and
-task are always given, since the command is built from them.
+Fork can also change the root action's inputs, or the inputs of any task action inside the run.
+The substitute code is optional too: `fork(run, threshold=0.9)` with no `task_template` replays the
+source run's task spec against new inputs, which makes fork the way to recover a run with different
+inputs. On the CLI the file and task can be left out only when you pass `--task-action-inputs`.
 
 ## Fork from the CLI
 
-`flyte fork` takes the run first, then the file and task. `flyte run`'s options (image, copy
-style, service account, env, labels, queue) come before the run name:
+`flyte fork` takes the run first, then the file and task (optional with `--task-action-inputs`).
+`flyte run`'s options (image, copy style, service account, env, labels, queue) come before the run
+name:
 
 ```bash
 flyte fork <run-name> main.py main
@@ -87,6 +91,48 @@ flyte fork <run-name> main.py main --threshold 0.9
 When the inputs you pass cover the whole interface, the source run's inputs are never fetched, so a
 run whose inputs have been cleaned up from storage can still be forked.
 
+### Changing the inputs of actions inside the run
+
+`--task-action-inputs` sets new inputs on specific task actions, as JSON keyed by action name, or
+`@` followed by the path of a JSON file. Without a file and task, the fork replays the source run's
+code:
+
+```bash
+flyte fork <run-name> --task-action-inputs '{"a3": {"learning_rate": 0.01}}'
+flyte fork <run-name> --task-action-inputs @overrides.json main.py main
+```
+
+Each overridden action re-runs with its new inputs, and so does everything that consumes its
+outputs. Its ancestors re-run to call it again, without the task cache. Everything else is
+recovered from the source run. Inputs you leave out keep the value the forked run computes. The
+key `a0` is the root action, the same as passing its inputs as options.
+
+Every action name must be a task action of the source run, and every input must be on that
+action's interface; otherwise the fork is refused before anything is submitted. Values convert the
+way `flyte run` JSON inputs do (ints for floats, ISO dates, enums by member name, dataclasses as
+objects). For `File` and `Dir` inputs, pass a remote URI, or a local path that is uploaded when the
+fork is submitted; a local directory must be non-empty and contain no subdirectories. `DataFrame`
+inputs take a remote URI.
+
+The fork logs a warning when an override may not apply: when it is nested under another overridden
+action, or when you also change the root inputs. Either can rename the overridden action, and
+actions are matched by name.
+
+### Changing one action's code
+
+`--target-action` applies your local code to one task action instead of the whole run. That action
+and the tasks it calls run your code; every other action keeps the source run's code. The task you
+name must be the one that action runs, and its input options set that action's inputs:
+
+```bash
+flyte fork <run-name> --target-action a2 main.py train
+flyte fork <run-name> --target-action a2 --task-action-inputs '{"a3": {"x": 1}}' main.py train
+```
+
+Only the action's code is replaced. Its interface, image, resources, cache settings and retries
+still come from its parent's copy of the task, so a local change to the task's interface is
+refused: fork the whole run instead. The target action re-runs without the task cache.
+
 ## Fork programmatically
 
 ```python
@@ -96,7 +142,13 @@ fork("<run-name>", task_template=main)                          # new code
 fork("<run-name>", task_template=main, threshold=0.9)           # new code and inputs
 fork("<run-name>", threshold=0.9)                               # source code, new inputs
 fork("<run-name>", task_template=main, force_rerun_actions=["a3"])
+fork("<run-name>", task_action_inputs={"a3": {"learning_rate": 0.01}})  # one action's inputs
+fork("<run-name>", task_template=train, target_action="a2")            # one action's code
 ```
+
+`task_action_inputs` and `target_action` follow the same rules as `--task-action-inputs` and
+`--target-action`, and have the same requirements. With `target_action`, keyword inputs are that
+action's inputs.
 
 `with_forkcontext()` accepts the same keyword arguments as `flyte.with_runcontext()` and returns a
 runner that can also `fork()`:
@@ -107,8 +159,9 @@ with_forkcontext(name="fix-1", env_vars={"LOG_LEVEL": "debug"}).fork("<run-name>
 
 ## What re-executes
 
-A fork reuses an action when its **action name** matches one that succeeded in the source run, and
-action names are computed rather than assigned:
+A fork reuses an action when its **action name** matches one that succeeded in the source run,
+unless it is forced to re-run (`--force-rerun-action`, an action whose inputs or code you override,
+and that action's ancestors). Action names are computed rather than assigned:
 
 ```mermaid
 flowchart LR
