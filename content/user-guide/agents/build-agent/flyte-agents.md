@@ -175,7 +175,7 @@ agent = Agent(
 
 ## Observability
 
-Every step of the loop emits a typed `AgentEvent` (`agent_start`, `turn_start`, `tool_start`, `tool_end`, `approval_request`, …). Subscribe by setting the `agent_progress_cb` context variable to forward events to logs, NDJSON streams, websockets, or {{< key product_name >}} reports. The built-in chat UI uses this hook to stream progress; see [Add a chat UI](./agent-chat-ui).
+Every step of the loop emits a typed `AgentEvent` (`agent_start`, `turn_start`, `tool_start`, `tool_end`, `approval_request`, …). Subscribe by setting the `agent_progress_cb` context variable to forward events to logs, NDJSON streams, websockets, or {{< key product_name >}} reports. When no `task_entrypoint` is set, the built-in chat UI uses this hook to stream progress; see [Add a chat UI](./agent-chat-ui).
 
 ## Extending the agent class
 

@@ -22,7 +22,7 @@ Both reuse the same agent object, so you can start with the built-in shell and g
 
 {{< code file="/unionai-examples/v2/user-guide/build-agent/agent-chat-ui/agent_chat_ui.py" fragment="all" lang="python" >}}
 
-The `task_entrypoint` is a parent task that owns the agent loop, so the nested durable tool tasks run correctly under it. The chat shell streams progress by subscribing to the agent's `agent_progress_cb` events.
+The `task_entrypoint` is a parent task that owns the agent loop, so the nested durable tool tasks run correctly under it. Because the agent loop runs in that task, `flyte.ai.agents.agent_progress_cb` events never reach the chat app. The shell shows progress from the run's phases (`QUEUED`, `RUNNING`, and so on) instead.
 
 ## Option 2: a custom FastAPI chat app
 
@@ -112,17 +112,19 @@ if __name__ == "__main__":
 
 `CHAT_HTML` is the embedded front-end (a single HTML string with the chat markup, styles, and a small fetch-based client that POSTs to `/api/chat` and renders the returned charts and summary). `ALL_TOOLS` is the agent's tool registry. Keeping both in their own modules means adding a tool is the only change required; the agent auto-generates its system prompt from each tool's signature and docstring.
 
+To serve locally, install the app's packages and export `ANTHROPIC_API_KEY` in your shell: local serving doesn't fetch secrets from {{< key product_name >}}.
+
 Run it locally during development, then deploy with one command:
 
 ```bash
 # Local development
-python chat_app.py
+flyte serve --local chat_app.py env
 
 # Deploy to {{< key product_name >}}
 flyte deploy chat_app.py env
 ```
 
-{{< key product_name >}} assigns a URL, handles TLS, and auto-scales the app.
+With `scaling=flyte.app.Scaling(replicas=1)`, the app runs exactly one replica and doesn't auto-scale.
 
 > [!TIP]
 > Drop `code_mode=True` to serve a standard tool-use [`Agent`](./flyte-agents) (or plug in any object implementing the `AgentProtocol`) behind the same UI. The endpoints only depend on `run.aio` and `tool_descriptions`.
