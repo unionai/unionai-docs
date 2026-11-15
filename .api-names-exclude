@@ -28,5 +28,9 @@
 # A migration page that renders each variant's Flyte 1 names on purpose
 ^user-guide/migration/flyte-2/hybrid-pipelines\.md:\{\{< key kit(_remote)? >\}\}$
 
+# VM sandboxes are early access: flyteplugins.union.sandbox and remote.Sandbox
+# have no generated API reference yet
+^(user-guide/vm-sandboxes|tutorials/reinforcement-learning/swe-gym-sandboxes)/.*:flyteplugins\.union\.(sandbox|remote\.Sandbox)
+
 # --- Known defects: fix the page, then delete the line ---
 

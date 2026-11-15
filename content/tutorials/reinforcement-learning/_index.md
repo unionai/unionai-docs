@@ -24,6 +24,7 @@ different shapes of it.
 | [Reward design with Claude and sandboxes](./eureka-reward-design/_index) | PPO on MountainCar, with rewards written by Claude | Every candidate reward is untrusted code and a training run | A sandbox per training run, a warm CPU pool for the fan-out, and traced LLM calls |
 | [Self-play league for Connect Four](./self-play-league/_index) | A Connect Four agent trained against its past selves | Measuring progress when the opponent keeps changing | A warm GPU learner, match fan-out on CPUs, Elo, and an app to play the champion |
 | [Durable agentic RL with SkyRL and Harbor](./agentic-rl-skyrl/_index) | An LLM agent acting in a sandboxed world over many turns | Long, failure-prone trials and LLM judges that are expensive to re-run | Durable trials, a memoized judge, exactly-once training steps, and re-scoring by caching |
+| [SWE-Gym rollouts on VM sandboxes](./swe-gym-sandboxes/_index) | A coding model fixing real GitHub bugs | Model-written commands, many attempts at once, and minutes of setup per repository | A testbed built once, each attempt in its own microVM on a copy-on-write fork, and published testbeds |
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -51,6 +52,12 @@ An Eureka-style loop where Claude writes reward functions, every candidate train
 {{< variant union >}}
 {{< link-card target="self-play-league" icon="grid-3x3" title="Self-play league for Connect Four" >}}
 Train a Connect Four agent by self-play against a league of its past selves, rate every snapshot with Elo, and serve the champion as an app you can play against.
+{{< /link-card >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< link-card target="swe-gym-sandboxes" icon="bug" title="SWE-Gym rollouts on VM sandboxes" >}}
+Run reinforcement learning rollouts for a coding model on real GitHub bugs, with every attempt in its own microVM on a copy-on-write fork of a testbed built once.
 {{< /link-card >}}
 {{< /variant >}}
 

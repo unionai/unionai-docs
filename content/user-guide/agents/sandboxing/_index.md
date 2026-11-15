@@ -58,6 +58,16 @@ The container is built on demand from declared dependencies, executed once, and 
 
 This is the right choice when you need full Python capabilities: third-party packages, file I/O, shell commands, or any computation that goes beyond pure control flow.
 
+{{< variant union >}}
+{{< markdown >}}
+
+### VM sandboxes
+
+Union.ai also offers [VM sandboxes](../../vm-sandboxes/_index): interactive sessions in microVMs with their own kernel, running on your own clusters. Use them when untrusted code needs a full Linux machine over many commands, with a closed network by default and disks and memory you can save, fork, and restore.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ### When to use which
 
 | | Workflow sandbox | Code sandbox |

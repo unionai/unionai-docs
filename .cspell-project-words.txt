@@ -313,3 +313,5 @@ Enamine
 cloze
 acryloyl
 McNemar
+MONAI
+nftables
