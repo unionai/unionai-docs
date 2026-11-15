@@ -31,7 +31,7 @@ Build dashboards, REST APIs, and model endpoints with FastAPI, Streamlit, vLLM, 
 {{< /link-card >}}
 
 {{< link-card target="native-app-integrations" icon="plugin" title="Native app integrations" >}}
-Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama.
+Use pre-built environments for FastAPI, vLLM, and SGLang, or serve frameworks like Streamlit and Ollama with the generic `AppEnvironment`.
 {{< /link-card >}}
 
 {{< link-card target="serve-and-deploy-apps" icon="rocket" title="Serve and deploy apps" >}}
