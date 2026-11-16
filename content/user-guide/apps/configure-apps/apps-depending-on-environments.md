@@ -84,7 +84,7 @@ frontend_env = flyte.app.AppEnvironment(
 ```
 
 The `backend_url` parameter will be automatically set to the backend app's endpoint URL.
-You can get this value in your app code using `flyte.app.get_input("backend_url")`.
+You can get this value in your app code using `flyte.app.get_parameter("backend_url")`.
 
 ## Deployment behavior
 
@@ -96,7 +96,8 @@ deployments = flyte.deploy(env2)
 
 # All dependencies are included in the deployment plan
 for deployment in deployments:
-    print(f"Deployed: {deployment.env.name}")
+    for env_name in deployment.envs:
+        print(f"Deployed: {env_name}")
 ```
 
 Flyte will:
@@ -125,7 +126,7 @@ Deploying the app then also deploys the task environment, which is useful if the
 1. **Explicit dependencies**: Always use `depends_on` to make app dependencies explicit
 2. **Circular dependencies**: Avoid circular dependencies (app A depends on B, B depends on A)
 3. **Dependency order**: Design your dependency graph to be a DAG (Directed Acyclic Graph)
-4. **Endpoint access**: Use `AppEndpoint` to pass dependency URLs as inputs
+4. **Endpoint access**: Use `AppEndpoint` to pass dependency URLs as app parameters
 5. **Document dependencies**: Make sure your app documentation explains its dependencies
 
 ## Example: A/B testing with dependencies
