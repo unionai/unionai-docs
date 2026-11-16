@@ -71,8 +71,12 @@ through the mount cannot touch the version you named. A fork copies no data.
 The command then holds the terminal. Press **Ctrl-C** to drain, unmount, and
 publish your writes as a new version, whose locator it prints - as do `kill`
 and closing the terminal, so a mount does not get orphaned by a closed window.
-`--no-commit` throws the writes away instead, and `--read-only` mounts without
-forking at all - use it when you only have read access, or only want to look.
+`--no-commit` skips publishing: where the mount keeps a local working copy
+(the default) the writes stay on this machine, the next mount resumes them, and on exit the command prints the
+`flyte forget volume ... --discard` command that throws them away - even though
+its start-up panel says Ctrl-C will discard your changes. Where no working copy
+can be kept (a platform without `flock`), the writes are discarded.
+`--read-only` mounts without forking at all - use it when you only have read access, or only want to look.
 
 ## A local mount is a durable working copy
 
@@ -82,9 +86,10 @@ another one - and **if the first mount ended without publishing, the work is
 still there and the mount picks it up.** Losing your connection, your
 credentials expiring, or the machine restarting all leave the work recoverable.
 
-**Resuming needs no network.** The fork's own record is kept with the working
-copy, so rebuilding it does not re-read anything from the bucket. That is the
-difference between resuming on a plane and resuming after you land.
+**Resuming needs the network.** `mount volume` first resolves the volume you
+name - reading its metadata from the bucket for `--locator`, asking the control
+plane for `--artifact` or `--run` - and only then looks for the working copy, so
+it cannot resume with no connection.
 
 A mount also outlives the credentials it started with. By default
 (`--credentials auto`) the client reads them from a refreshing loopback endpoint
@@ -148,8 +153,7 @@ there is nothing to ask but the control file - so it is refused on macOS, and on
 any mount you started with `--transport nfs`.
 
 > [!NOTE]
-> `flyte create volume --mount` is **not** resumable, and says so when you use
-> it. A volume you have just declared has no published version yet, so there is
+> `flyte create volume --mount` is **not** resumable. A volume you have just declared has no published version yet, so there is
 > nothing to fork and come back to. Create it, then `flyte mount volume` the
 > locator it printed - that path resumes.
 
