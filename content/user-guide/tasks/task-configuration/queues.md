@@ -170,7 +170,8 @@ queue, small tasks and tasks for a
 [reusable environment](./reusable-containers) that is already running keep
 starting while a large task waits for room. On a `strict_fifo` queue, tasks start
 strictly in the order they were submitted, which suits a job that needs many
-GPUs at the same moment and must not be overtaken by smaller work.
+GPUs at the same moment. Smaller tasks from other queues that share its
+clusters can still take the room such a job is waiting for.
 
 ## Requests that can never run
 
