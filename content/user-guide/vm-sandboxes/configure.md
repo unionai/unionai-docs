@@ -39,8 +39,8 @@ test_runner = sandbox.SandboxEnvironment(
 | `queue` | The run's queue | The queue sessions go to. See [Queues](../clusters-and-queues/queues). |
 | `labels` | None | Labels on the runs of sessions started outside a task. |
 | `publish` | `False` | Publish each session's disk as an artifact when it ends. See [Save and fork disks](./persist-and-fork#publish-a-disk-as-an-artifact). |
-| `snapshot_every` | None | How often to write a running session's disk to storage, at least 30 seconds. Only useful with `publish`. |
-| `expiry` | None | How long disks committed from these sessions are kept. Recorded on each volume as `expires_at`. |
+| `snapshot_every` | None | How often to write a running session's disk to storage, at least 30 seconds. Only useful with `publish`. It does not create a `SandboxSnapshot`. |
+| `expiry` | None | How long disks committed from these sessions should be kept. Recorded on each volume as `expires_at`, and not enforced yet. |
 
 ## Size the VM
 
@@ -74,6 +74,14 @@ You can also pass `env` for a single command with `sb.run(command, env={...})`.
 
 A session ends when its `async with` block exits, or when it reaches `max_duration`, whichever comes first. A session that reaches `max_duration` is ended, and any later call on it raises `SandboxSessionEnded`.
 
+When a session closes, its commands get `SIGTERM`, then `SIGKILL` if they are still running 10 seconds later. Leaving the block returns once the sandbox has closed. To change the grace period (60 seconds at most), or to wait until the session itself has ended, close it yourself before the block exits:
+
+```python
+await sb.close(grace=30, wait=True)
+```
+
+`await sb.cancel()` aborts the session instead. Its commands are killed at once and the session ends as aborted, not succeeded.
+
 There is no idle timeout. A session that you open and forget lives until `max_duration`, so set it close to the longest you expect a session to need.
 
 Each `env.session()` call also takes a `ready_timeout` (default 120 seconds). If the session isn't ready in that time, the call raises `SandboxSessionError` and stops the session it asked for.
@@ -104,4 +112,4 @@ Inside a task, a session is an action of the task's run and uses the run's label
 
 A session runs the platform's base image: Debian 13 with Python, running as root, with `apt-get` and `pip`. It does not include `curl`, `git`, or `sudo` until you install them. To use your own tools, install them at runtime and commit the disk, then start later sessions on that disk. See [Save and fork disks](./persist-and-fork).
 
-Custom images (`image=`) are not supported. See [Limits](./limits).
+Custom images (`image=`) are not supported. See [Limits and errors](./limits) for the full description of the machine.

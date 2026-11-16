@@ -34,7 +34,7 @@ How the rules apply:
 - **Your cluster is closed unless you open it.** Private ranges (your cluster's pods, services, and nodes) are refused in every mode unless `cidrs` names them.
 - **The cloud metadata server is always unreachable.** Link-local addresses, including `169.254.169.254`, are refused in every mode, even with `Network.internet()`. Code in a sandbox cannot read the node's cloud credentials.
 - **TLS is end to end.** The agent checks the server name a connection asks for, but does not terminate TLS.
-- **Nothing connects in.** No one can open a connection to a sandbox except its own client. Servers in the sandbox are reached through `sb.port_url()`. See [Run commands](./commands#reach-a-server-in-the-sandbox).
+- **Nothing connects in from the network.** A sandbox is reached only through its session API, which takes the session's token. Servers in the sandbox are reached through `sb.port_url()`. Inside your cluster, that URL carries the token. See [Port URLs](#port-urls).
 
 A network is either open or an allowlist. Setting both raises a `ValueError`.
 
@@ -67,7 +67,7 @@ A secret declared on a `SandboxEnvironment` is mounted into the VM. Every comman
 
 If a sandbox needs a credential, scope it to what that code needs: a read-only token, and a network allowlist with only the host it is for. An allowlist limits where a stolen secret can be sent.
 
-Secrets work only on microVM nodes configured for them. On a node without that configuration, a session that declares a secret fails with `SecretNotFound`. Ask your Union.ai account team.
+Secrets work only on microVM nodes configured for them. On a node without that configuration, a session that declares a secret fails with `SecretNotFound`. Ask your Union.ai solutions team.
 
 ### Snapshots and forks with memory
 
@@ -78,6 +78,15 @@ Secrets work only on microVM nodes configured for them. On a node without that c
 A committed or published disk holds every file the session left on it, including files the untrusted code wrote. If a published disk is the starting point for later sessions, anything the code planted on it, such as a modified `~/.bashrc` or a patched package, runs in every later session. Publish disks from sessions whose code you trust, such as a build step, and start untrusted work on copies of them.
 
 Published disks are artifacts in your project. Anyone who can read artifacts in that project can start a session on them.
+
+### Port URLs
+
+`sb.port_url(port)` is how your code reaches a server in the sandbox. What the URL exposes depends on where it was made:
+
+- **From a task or an app**, the URL is the session's address in your cluster and includes the session's token. Anyone who has the URL, and can reach your cluster's network, can call into the sandbox. Keep it in the driver. Do not send it to a browser, log it, or return it from an API.
+- **From outside the cluster**, the URL is a Union.ai data proxy URL with no token in it. Each request needs the caller's own Union.ai credentials.
+
+To show a sandbox's server to a user, have your app proxy the requests and keep the URL on the server side.
 
 ### Where the driver runs
 

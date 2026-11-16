@@ -10,7 +10,7 @@ mermaid: true
 # VM sandboxes
 
 > [!NOTE] Early access preview
-> VM sandboxes are in early access. The API can change between releases. They need microVM node pools in your data plane, which are not enabled by default. Talk to your Union.ai account team to enable them.
+> VM sandboxes are in early access. The API can change between releases. They are not enabled by default. MicroVM support needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team.
 >
 > VM sandboxes require `flyteplugins-union` 0.21.2 or later: `pip install "flyteplugins-union>=0.21.2"`.
 
@@ -39,7 +39,7 @@ env = flyte.TaskEnvironment(
 async def run_untrusted(code: str) -> str:
     async with code_runner.session("run-model-code") as sb:
         await sb.fs.write_text("main.py", code)
-        result = await sb.run("python main.py", check=False)
+        result = await sb.run("python main.py", check=False)  # a failing script is a result, not an error
         return result.stdout + result.stderr
 ```
 
@@ -54,6 +54,8 @@ The code runs in a microVM that has no network and none of your task's secrets. 
 - **Part of Union.ai.** A sandbox started from a task is an action of that task's run, so it shows up in the run in the UI, and it uses the same identity, projects, and queues as the rest of your workloads.
 
 ## How it works
+
+Three terms recur in these pages. A `SandboxEnvironment` is the template: size, network, secrets, and lifetime. A session is one running microVM started from that template. A `Sandbox`, usually named `sb`, is the object your code uses to drive a session.
 
 ```mermaid
 flowchart LR
@@ -77,17 +79,9 @@ flowchart LR
 3. The session is yielded as a `Sandbox` object once it answers. You call `sb.run()`, `sb.start()`, and `sb.fs` to work in it.
 4. When the block exits, the session's commands are stopped and the VM is torn down.
 
-Sandboxes need nodes that can run hardware virtualization: bare-metal instances, or instance types with nested virtualization enabled. Your Union.ai account team adds a node pool of these to your data plane when they enable VM sandboxes.
+Sandboxes need nodes that can run hardware virtualization: bare-metal instances, or instance types with nested virtualization enabled. These nodes also need configuration that ordinary task nodes do not have, so you cannot enable VM sandboxes by adding a node pool yourself. Your Union.ai solutions team sets up the microVM node pool in your data plane when they enable VM sandboxes.
 
-You can open sessions from three places:
-
-| From | What a session is | Reached |
-| --- | --- | --- |
-| A task | A child action of the task's run | Directly, inside your cluster |
-| An app | A sandbox of its own, in the app's project and domain | Directly, inside your cluster |
-| A laptop or a script outside your cluster | A sandbox of its own, in the project and domain you initialize `flyte` with | Through the Union.ai data proxy, as your own sign-in |
-
-The fastest path is from a task or an app, which talk to the sandbox directly. From a laptop, every call goes through the data proxy, which adds latency to each command. See [Use sandboxes outside a task](./outside-tasks).
+You can open sessions from a task, from an app, or from a laptop or script outside your cluster. Tasks and apps talk to the sandbox directly, which is the fastest path. From outside the cluster, every call goes through the Union.ai data proxy, signed in as you, which adds latency to each command. See [Use sandboxes outside a task](./outside-tasks).
 
 ## When to use VM sandboxes
 
@@ -109,36 +103,9 @@ Use VM sandboxes for:
 - **Code execution in live products.** Run user or model code inside a data analysis assistant or an in-app code runner, at interactive speed.
 - **Long-lived workspaces.** Suspend an agent's sandbox while it waits on a person or a long tool call, and resume it with its processes intact.
 
-## Coming from other sandbox services
-
-If you have used a hosted sandbox service, the concepts map as follows.
-
-| Concept | VM sandboxes |
-| --- | --- |
-| Sandbox template or configuration | `sandbox.SandboxEnvironment(...)` |
-| Create a sandbox | `async with env.session("name") as sb:` |
-| Run a command and wait | `await sb.run("pytest -x")` |
-| Run a command and stream its output | `p = await sb.start(...)`, then `async for line in p.stdout` |
-| Interactive terminal (PTY) | `sb.start("bash", tty=sandbox.Tty(rows, cols))` |
-| File system | `sb.fs.read_text`, `write_text`, `ls`, `upload_dir`, `download_dir` |
-| Network policy | `sandbox.Network.blocked()`, `.pypi()`, `.allow(...)`, `.internet()` |
-| Preview URL for a port | `sb.port_url(8080)` |
-| Named sandbox, reconnect later | `env.attach(name)` |
-| Tags | `SandboxEnvironment(labels={...})` |
-| Filesystem snapshot | `await sb.commit()` returns a `SandboxVolume` |
-| Memory snapshot | `await sb.snapshot()` returns a `SandboxSnapshot` |
-| Pause and resume | `await sb.suspend()`, then `env.session(name, snapshot=s)` |
-| Persistent volume | `SandboxEnvironment(publish=...)` and `SandboxVolume.from_artifact(name)` |
-| Terminate | Leave the `async with` block, or `await sb.cancel()` |
-
-Two differences matter most:
-
-- **Everything runs in your cloud.** The VMs, the code, and every saved disk and snapshot stay in your data plane. Scheduling goes through the Union.ai control plane, as it does for tasks.
-- **Sandboxes are part of your runs.** A session opened from a task is an action in that task's run. Retries, caching, traces, and the run view in the UI apply to the code that drives the sandbox. Saved disks can be task inputs and outputs.
-
 ## Requirements
 
-- A Union.ai data plane with microVM node pools enabled. Talk to your Union.ai account team.
+- A Union.ai data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team to enable it.
 - `flyteplugins-union` 0.21.2 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
 - Python 3.10 or later.
 

@@ -11,7 +11,7 @@ This page takes you from an empty file to code running in a VM sandbox, first fr
 
 ## Prerequisites
 
-- A Union.ai data plane with VM sandboxes enabled. See [Requirements](./_index#requirements).
+- A Union.ai data plane with VM sandboxes enabled. MicroVM support needs special node configuration and setup, so talk to your Union.ai solutions team if it is not enabled yet. See [Requirements](./_index#requirements).
 - A working `flyte` configuration for your Union.ai control plane. See [Get started](../get-started/_index).
 - Permission to create runs in the project you use. Opening a sandbox takes the same permission.
 
@@ -26,8 +26,6 @@ pip install "flyteplugins-union>=0.21.2"
 Create `sandbox_hello.py`:
 
 ```python
-import asyncio
-
 import flyte
 from flyteplugins.union import sandbox
 
@@ -61,16 +59,6 @@ async def hello() -> str:
         return result.stdout.strip()
 
 
-@env.task
-async def fanout(n: int = 4) -> list[str]:
-    async def one(i: int) -> str:
-        async with code_runner.session(f"square-{i}") as sb:
-            result = await sb.run(["python", "-c", f"print({i} * {i})"])
-            return result.stdout.strip()
-
-    return list(await asyncio.gather(*(one(i) for i in range(n))))
-
-
 if __name__ == "__main__":
     flyte.init_from_config()
     run = flyte.run(hello)
@@ -87,10 +75,13 @@ or with the CLI:
 
 ```bash
 flyte run sandbox_hello.py hello
-flyte run sandbox_hello.py fanout --n 8
 ```
 
-Open the run in the UI. The sandbox session appears as a child action of `hello`, named `run-generated-code`. In `fanout`, the four sessions start in parallel.
+Open the run in the UI. The sandbox session appears as a child action of `hello`, named `run-generated-code`. The task's output is `45 from` followed by the VM's hostname, and its logs show how long the sandbox took to start:
+
+```text
+sandbox run-generated-code ready in ... ms
+```
 
 Here is what happened:
 
@@ -98,6 +89,30 @@ Here is what happened:
 2. `code_runner.session("run-generated-code")` asks for a microVM, waits until it answers, and yields a `Sandbox`. The name says what the session is for. It names the session's action, so a run's sessions read in order.
 3. `sb.fs.write_text` writes a file into the VM. `sb.run` runs a command to the end and returns its exit code, stdout, and stderr.
 4. Leaving the block closes the session. Its commands are stopped and the VM is torn down.
+
+## Run several sandboxes at once
+
+Each session is its own VM, so sessions run side by side. Add a task to `sandbox_hello.py` that opens one session per input with `asyncio.gather`:
+
+```python
+import asyncio
+
+
+@env.task
+async def fanout(n: int = 4) -> list[str]:
+    async def one(i: int) -> str:
+        async with code_runner.session(f"square-{i}") as sb:
+            result = await sb.run(["python", "-c", f"print({i} * {i})"])
+            return result.stdout.strip()
+
+    return list(await asyncio.gather(*(one(i) for i in range(n))))
+```
+
+```bash
+flyte run sandbox_hello.py fanout --n 8
+```
+
+The run shows eight child actions, `square-0` to `square-7`, that start in parallel. The task returns `["0", "1", "4", "9", "16", "25", "36", "49"]`.
 
 ## Open a sandbox from your laptop
 

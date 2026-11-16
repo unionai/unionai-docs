@@ -21,7 +21,7 @@ async with code_runner.session("agent-turn") as sb:
 `sb.run(command)` waits for the command to exit and returns a `CommandResult`.
 
 - A string runs as a shell command line: `sb.run("ls -la | wc -l")`.
-- A list runs without a shell: `sb.run(["python", "main.py", "--fast"])`. Use a list when arguments come from untrusted input, so nothing is parsed as shell syntax.
+- A list runs as one command with those arguments: `sb.run(["python", "main.py", "--fast"])`. Each argument is quoted before it reaches the sandbox's shell, so nothing in it is read as shell syntax. Use a list when arguments come from untrusted input.
 
 | Argument | Default | What it does |
 | --- | --- | --- |
@@ -126,6 +126,11 @@ ws_url = sb.port_url(9222, scheme="ws")  # WebSockets pass through too
 ```
 
 From a task or an app, the URL is the session's own address in your cluster. From outside the cluster, it is a Union.ai data proxy URL, and requests to it need your Union.ai credentials. See [Use sandboxes outside a task](./outside-tasks).
+
+> [!WARNING] Inside your cluster, a port URL carries the session's token
+> From a task or an app, the URL from `sb.port_url()` includes the session's token. Anyone who has the URL can call into the sandbox. Use it from your own code, and do not send it to a browser, write it to logs, or return it to a user. To expose a sandbox's server to users, proxy requests through your app.
+>
+> The URL is the session's address, so it changes when a suspended session is restored as a new session. Call `sb.port_url()` again after you resume.
 
 For example, Playwright can drive a Chromium started in the sandbox with `--remote-debugging-port=9222` through `connect_over_cdp(sb.port_url(9222, scheme="ws") + path)`.
 

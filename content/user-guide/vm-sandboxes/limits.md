@@ -61,7 +61,7 @@ async def open_session(env: sandbox.SandboxEnvironment, name: str, tries: int = 
         yield sb
 ```
 
-Ask your Union.ai account team to size your microVM node pool for your peak number of concurrent sessions.
+Ask your Union.ai solutions team to size your microVM node pool for your peak number of concurrent sessions.
 
 ## Errors
 
@@ -74,4 +74,5 @@ All are in `flyteplugins.union.sandbox`. Each is a Flyte user error: a task that
 | `SandboxCommandFailed` | A command run with `sb.run()` or waited on with `p.wait()` exited nonzero and `check` was on. `.result` is its `CommandResult`. |
 | `SandboxCommandTimedOut` | A command ran past its `timeout`. A subclass of `SandboxCommandFailed`. |
 | `SandboxUsageError` | A session was used in a way that can't work: after its block ended, while suspended, or committing a `ScratchVolume` session. |
-| `ProcessError` | A started command could not be reattached with `sb.process(id)`, for example because it ended more than 10 minutes ago. |
+| `ProcessError` | A started command could not be reattached with `sb.process(id)`, for example because it ended more than 10 minutes ago. A subclass of `SandboxSessionError`. |
+| `ProcessUnsupported` | `sb.start()` with `stdin` or `tty`, or `sb.process(id)`, was called on a microVM node that predates those features. A subclass of `ProcessError`. Ask your Union.ai solutions team to update the node pool. |

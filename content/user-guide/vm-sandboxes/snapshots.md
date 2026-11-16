@@ -91,8 +91,9 @@ from flyteplugins.union.sandbox import SandboxSnapshot
 @env.task
 async def warm_up() -> SandboxSnapshot:
     async with sandbox_env.session("warm-up") as sb:
-        await sb.run("python -c 'import torch'")  # warms the page cache
-        return await sb.snapshot()
+        await sb.start("python serve_model.py")  # loads weights, then writes /tmp/ready
+        await sb.run("until [ -f /tmp/ready ]; do sleep 0.5; done")
+        return await sb.snapshot()  # the server is in the snapshot, already loaded
 
 
 @env.task

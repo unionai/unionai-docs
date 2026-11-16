@@ -68,15 +68,18 @@ from pydantic import BaseModel
 from flyteplugins.union import sandbox
 
 vm = sandbox.SandboxEnvironment(name="app-vm", max_duration=1800)
-app = FastAPI()
 
 # Sessions this replica started, kept open until they are deleted.
 _open: dict[str, contextlib.AsyncExitStack] = {}
 
 
-@app.on_event("startup")
-async def startup() -> None:
-    await flyte.init_in_cluster.aio()
+@contextlib.asynccontextmanager
+async def lifespan(app: FastAPI):
+    await flyte.init_in_cluster.aio()  # sets the project and domain sessions are created in
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.post("/sandboxes")
@@ -107,8 +110,11 @@ async def delete(name: str) -> dict:
     if stack is not None:
         await stack.aclose()  # this replica started it: leaving its block closes it
         return {"closed": name}
-    async with vm.attach(name) as sb:  # another replica's: close it from here
-        await sb.close()
+    try:
+        async with vm.attach(name) as sb:  # another replica's: close it from here
+            await sb.close()
+    except sandbox.SandboxSessionError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
     return {"closed": name}
 
 
