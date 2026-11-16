@@ -1,6 +1,6 @@
 ---
 title: GDPR alignment
-description: How the data residency model keeps EU customer data in the EU, and which control plane endpoints serve it.
+description: How the data residency model keeps EU customer data in the EU, which control plane endpoints serve it, and where to find Union.ai's sub-processor list.
 icon: flag
 weight: 3
 variants: -flyte +union
@@ -13,6 +13,10 @@ Union.ai's architecture inherently supports GDPR through its data residency mode
 The control plane stores orchestration metadata (including task definitions), encrypted at rest. When the data plane is in an EU region and the control plane is in EU Central, all data and metadata (both at rest and in transit) stay within the EU.
 
 For details on how data residency is enforced architecturally, see [Data classification and residency](../data-protection/classification-and-residency) and [Two-plane separation](../architecture/two-plane-separation).
+
+## Sub-processors
+
+Union.ai's sub-processor list is available through the [Trust Center](https://trust.union.ai).
 
 ## Verification
 
