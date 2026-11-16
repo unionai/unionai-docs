@@ -2,7 +2,7 @@
 title: External conditions
 description: Pause a task until an external signal arrives, such as a human approval or a callback.
 icon: pause-circle
-weight: 20
+weight: 25
 variants: +flyte +union
 ---
 
