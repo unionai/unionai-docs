@@ -34,7 +34,7 @@ You can also serve custom HTML/JS applications using FastAPI's static file servi
 
 ## Best practices
 
-1. **Authentication**: For sensitive apps, enable authentication with `requires_auth=True`.
+1. **Authentication**: Leave `requires_auth` at its default, `True`, unless an app is meant to be public.
 2. **Responsive design**: Design UIs that work on various screen sizes.
 3. **Loading states**: Show loading indicators for long-running operations.
 4. **Error handling**: Display user-friendly error messages.
