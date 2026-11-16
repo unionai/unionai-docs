@@ -428,7 +428,8 @@ active. Fix whichever side is wrong:
   and so on) and redeploy the cluster. The control plane picks up the new values
   on the cluster's next status report.
 - **The pool's config**: run `flyte update cluster-pool <pool>`, which opens the
-  pool in your `$EDITOR`. See [Update a pool](./cluster-pools#update-a-pool).
+  pool in your `$EDITOR`, or edit the pool in the console. See
+  [Update a pool](./cluster-pools#update-a-pool).
 
 ## Delete a cluster
 
