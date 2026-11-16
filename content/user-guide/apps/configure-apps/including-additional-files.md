@@ -28,7 +28,7 @@ Use `include` when:
 - You want to ensure specific files are available in the container
 
 > [!NOTE]
-> If you're using specialized app environments like `FastAPIAppEnvironment`, Flyte automatically detects and includes the necessary files, so you may not need to specify `include` explicitly.
+> By default (`copy_style="loaded_modules"`), Flyte bundles the file that defines your app environment and the local Python modules it imports, whichever app environment class you use. Files the deploy doesn't import, such as a script your app's command runs (for example, `streamlit run main.py`), configuration files or data files, still need to be listed in `include`.
 
 ## Examples
 
@@ -54,7 +54,7 @@ include=["app.py", "config.yaml", "templates/"]
 
 ## File discovery
 
-When using specialized app environments like `FastAPIAppEnvironment`, Flyte uses code introspection to automatically discover and include the necessary files. This means you often don't need to manually specify `include`.
+Which files Flyte discovers depends on the deploy's `copy_style`, not on the app environment class. With the default, `loaded_modules`, Flyte bundles the Python modules under the root directory that the deploying process imported. This works the same for `AppEnvironment`, `FastAPIAppEnvironment` and task environments, so you often don't need to list imported modules in `include`.
 
 However, if you have files that aren't automatically detected (like configuration files, data files, or templates), you should explicitly list them in `include`.
 
@@ -82,7 +82,7 @@ include=["utils.py", "config.yaml"]  # Relative to apps/ directory
 2. **Use relative paths**: Always use paths relative to your app definition file
 3. **Include directories**: You can include entire directories, but be mindful of size
 4. **Test locally**: Verify your includes work by testing locally before deploying
-5. **Check automatic discovery**: Specialized app environments may already include files automatically
+5. **Check automatic discovery**: With the default `copy_style`, local modules imported by the file that defines your app environment are already bundled
 
 ## Limitations
 
