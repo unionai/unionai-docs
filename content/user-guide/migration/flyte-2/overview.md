@@ -208,5 +208,5 @@ if __name__ == "__main__":
 # CLI
 flyte run my_module.py main --items '[1,2,3,4,5]'   # remote (default)
 flyte run --local my_module.py main --items '[1,2,3,4,5]'
-flyte deploy my_module.py my_env
+flyte deploy my_module.py env
 ```
