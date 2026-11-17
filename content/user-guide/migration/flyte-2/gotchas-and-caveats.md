@@ -15,7 +15,7 @@ This page starts with a quick list of common gotchas you'll hit during a migrati
 ## Common gotchas
 
 - **`flyte.map` returns a generator.** Wrap it in `list()` to materialize results, unlike `map_task` which returned a list directly.
-- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits` — a single value serves as both.
+- **`memory`, not `mem`.** The `Resources` parameter was renamed, and there are no separate `requests`/`limits` arguments. To set a request and a limit, pass a `(request, limit)` tuple to `cpu` or `memory`, for example `cpu=(1, 2)` or `memory=("1Gi", "4Gi")`.
 - **GPUs use a `"T4:1"` string.** Type and count are combined; the separate `accelerator=` argument is gone.
 - **Image, resources, and cache live on the `TaskEnvironment`.** Set them once at the env level instead of repeating them on every task decorator.
 - **`current_context()` is gone.** Read secrets from environment variables and use `flyte.ctx()` for runtime context.
