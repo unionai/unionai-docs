@@ -14,16 +14,14 @@ the Kubernetes RBAC resources that Union.ai's data plane components need. There 
 | Value | Default | Decides |
 |-------|---------|---------|
 | `singleNamespace` | `true` | Whether tasks and apps run in the (Helm) release namespace, or in a namespace per project and domain. |
-| `namespaces.enabled`, `namespaces.static` | `enabled.false`; `static` lists six names | Whether the chart pre-creates the namespaces listed in `namespaces.static` and binds the work-namespace role in each. It applies only when `singleNamespace` is `false`. The scope comes from `singleNamespace` alone. |
+| `namespaces.enabled`, `namespaces.static` | `enabled: false`; `static` lists six names | Whether the chart pre-creates the namespaces listed in `namespaces.static` and binds the work-namespace role in each. It applies only when `singleNamespace` is `false`. The scope comes from `singleNamespace` alone. |
 | `commonServiceAccount.enabled` | `true` | Whether the Union backend components share one service account or each get their own. |
-
 
 > [!NOTE] Chart version
 > This page describes `dataplane` chart 2026.11.4 or later. Earlier versions name the scope value
 > `low_privilege`. See [Upgrade from `low_privilege`](#upgrade-from-low_privilege).
 
 ## Choose a scope
-
 
 | | Single-namespace (`singleNamespace: true`) | Multi-namespace (`singleNamespace: false`) |
 |---|---|---|
@@ -45,7 +43,8 @@ Choose multi-namespace mode when:
 
 Monitoring, usage collection, and app serving work in both modes.
 
-> [!WARNING] Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
+> [!WARNING] Unquoted boolean
+> Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
 
 ## Single-namespace mode
 
@@ -61,11 +60,9 @@ In this mode:
   namespaced is a Role in the release namespace. The one exception is `<release-ns>-prometheus-apiserver-discovery`,
   a Role in `default` that Prometheus uses to discover the API server endpoints.
 - Cluster-scoped reads are limited to resources that have no namespaced form: nodes, namespaces, node and API server metrics, IngressClass, and Knative's informers.
-  metrics, IngressClass, and Knative's informers.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
-- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written.
-namespace however their RBAC is written. 
+- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written. 
 
 > [!WARNING] The install identity needs cluster permissions.  
 > Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
@@ -301,12 +298,16 @@ Find the row that matches your values on the chart you run now. When you set `si
 | `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces.  If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to every namespace.  From 2026.11.4, that RoleBinding is their only grant in a work namespace.
 
 Also:
+
 - Keep every name in `namespaces.static` during this upgrade. The upgrade adds `helm.sh/resource-policy: keep` to each listed namespace, so a name you drop now is deleted with everything in it. Add names freely, and remove them in a later upgrade.
 - In multi-namespace mode, list the custom resources of Spark, Ray, Dask, Kubeflow, or JobSet tasks in `taskPluginClusterReadRules`. Before 2026.11.4, a cluster-wide grant covered them.
-- Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. Now it
-  takes effect, so bind each new service account to a cloud identity before you upgrade.
+- Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. From `2026.11.4` it takes effect, so bind each new service account to a cloud identity before you upgrade.
 - Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
+- Set `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` This says the opposite of line 271 and of the Monitoring page. From 2026.11.4 the chart refuses to render with either key set to true. Also, with helm upgrade --reuse-values, a key you remove keeps its old value from the previous release, so the render still fails. Setting both keys to false explicitly is safer.
+
+Suggested change
 - Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values. From `2026.11.4` it takes effect.
+- Set `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` to `false`, or remove them. From 2026.11.4 the chart refuses to render if either is `true`. If you upgrade with `--reuse-values`, set them to `false` explicitly: a removed key keeps its old value.
 - In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
 
 The chart's [migration guide](https://github.com/unionai/helm-charts/blob/main/charts/MIGRATION.md) has
