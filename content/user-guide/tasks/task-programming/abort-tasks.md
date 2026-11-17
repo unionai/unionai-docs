@@ -65,7 +65,7 @@ When an action is externally aborted, the parent action that awaits it receives 
 To abort a specific action:
 
 ```bash
-flyte abort <run-name> <action-name>
+flyte abort action <run-name> <action-name>
 ```
 
 Use `--project` and `--domain` to target a specific [project-domain pair](../../get-started/core-concepts/projects-and-domains).
