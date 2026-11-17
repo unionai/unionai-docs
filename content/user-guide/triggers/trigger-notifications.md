@@ -35,7 +35,14 @@ To notify on multiple phases with the same notification:
 
 ## Template variables
 
-All message fields support template variables that are substituted at delivery time:
+The backend substitutes template variables at delivery time in these fields:
+
+- `notify.Slack`: `message` and `blocks`
+- `notify.Teams`: `title`, `message`, and `card`
+- `notify.Email`: `subject`, `body`, and `html_body`
+- `notify.Webhook`: `body`
+
+The available variables:
 
 | Variable           | Description                                            |
 |--------------------|--------------------------------------------------------|
@@ -61,7 +68,7 @@ Use `blocks` instead of `message` for structured layouts. When `blocks` is provi
 
 ## Email notifications
 
-`notify.Email` sends an email notification. You can provide a plain-text `body`, an `html_body`, or both (the email is sent as multipart when both are present).
+`notify.Email` sends an email notification. Set `body` for the plain-text part and `html_body` for the HTML part. Every email includes an HTML part. If you don't set `html_body`, that part contains the text "No HTML body". Mail clients that display HTML show that text instead of `body`, so set `html_body` whenever you set `body`.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="email-extended-notification" lang="python">}}
 
@@ -73,7 +80,7 @@ Use `blocks` instead of `message` for structured layouts. When `blocks` is provi
 
 ## Custom webhook notifications
 
-`notify.Webhook` sends an HTTP request to any endpoint. All string values in `headers` and `body` support template variables.
+`notify.Webhook` sends an HTTP request to any endpoint. String values in `body` support template variables. Values in `headers` are sent exactly as written, without substitution.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="webhook-notification" lang="python">}}
 
