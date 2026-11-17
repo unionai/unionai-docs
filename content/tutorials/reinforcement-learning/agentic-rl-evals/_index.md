@@ -18,7 +18,7 @@ Both follow the same lesson from that guide: harness fixes alone raised Mercor's
 > [!NOTE]
 > Full code is available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/agentic_rl_evals).
 > You need an Anthropic API key stored as a secret named `ANTHROPIC_API_KEY`.
-> To use a secret with another name, set `ANTHROPIC_SECRET=<name>` when you launch.
+> Create it with `flyte create secret ANTHROPIC_API_KEY --value <your key>` (see [Secrets](../../../user-guide/tasks/task-configuration/secrets)).
 
 ## Run it
 
@@ -29,8 +29,10 @@ cd unionai-examples/v2/tutorials/agentic_rl_evals
 flyte run harness_eval.py compare_harnesses   # harness v1 vs v2 on claude-haiku-5-5
 flyte run harness_eval.py leaderboard         # several models on harness v2
 flyte run trace_audit.py audit                # Mercor's Terminal-Bench 2.1 traces
-flyte run trace_audit.py audit --classify false   # features only, no LLM calls
+flyte run trace_audit.py audit --no-classify       # features only, no LLM calls
 ```
+
+If your key is stored under another name, set `ANTHROPIC_SECRET` in your shell when you launch, for example `ANTHROPIC_SECRET=my-anthropic-key flyte run harness_eval.py compare_harnesses`. The example reads the name at import time and passes it to the driver's environment with `env_vars`, so child tasks resolve the same secret.
 
 ## The harness is an input
 
@@ -47,6 +49,7 @@ A harness is everything between the model and the world: tool implementations, t
 | `pdfplumber` and `python-pptx` missing from the code sandbox | `ModuleNotFoundError` from `run_python` | Install them |
 | Email search has no timeout in front of a flaky server | A call that never returns, so the trial hits its deadline | 10-second tool timeout and one retry |
 | No budget nudge | Nothing | "N turns left. Submit your best answer soon." at 75% of the turn budget |
+| Spreadsheet tool returns cell values only | Computed numbers with no formulas, so the agent can't see how a figure was derived | Return each formula next to its value |
 
 Bump `Harness.version` whenever tool code changes. Cache keys come from a task's inputs and its own function body, not from helper modules it imports, so a change to `harness_world.py` alone doesn't invalidate cached trials.
 
@@ -122,7 +125,7 @@ The audit named the PDF layout bug and the email hang without being told what to
 
 {{< code file="/unionai-examples/v2/tutorials/agentic_rl_evals/harness_eval.py" fragment="leaderboard" lang="python" >}}
 
-Running `leaderboard` for `claude-haiku-5-5` and `claude-sonnet-5-5` after `compare_harnesses` reused 60 of Haiku's 72 v2 cells and ran 72 new Sonnet cells. Each trajectory records `produced_by_run`, so the summary can count cells executed in the current run and cells reused from earlier ones.
+Running `leaderboard` for `claude-haiku-5-5` and `claude-sonnet-5-5` after `compare_harnesses` reused 60 of Haiku's 72 v2 cells and ran 72 new Sonnet cells. The 12 Haiku cells that re-ran are all one world, `w5`. In the first comparison, the v1 and v2 evaluations built `w5` at the same moment, both missed the cache, and the v2 cells were keyed on the build that lost. That run predates `serialize=True` on `build_world`. With it, the second call waits for the first build and all 72 cells are reused. Each trajectory records `produced_by_run`, so the summary can count cells executed in the current run and cells reused from earlier ones.
 
 ## Audit published traces
 
@@ -154,9 +157,8 @@ A false completion is a trajectory where the agent declares the task done and th
 - **Concurrent calls to the same cached task can both run.** If two evaluations call `build_world("w5")` at the same moment, both can miss the cache. Each then keys its trials on a different output. Give shared inputs `cache=flyte.Cache(behavior="auto", serialize=True)`, as `build_world` does here: one call runs and the others wait for its cached result.
 - **Child task specs are built in the parent's container.** Module-level configuration, such as a secret name read from an environment variable, is evaluated again in every container. Pass it to the parent's environment with `env_vars` so child tasks get the same value.
 - **Warm replicas keep the secrets they started with.** If you rotate the API key, give the reusable environment a new name or let the pool idle out.
-- **Bump `Harness.version` when tool code changes.** Cache keys don't include imported helper modules.
 
 ## Related
 
 - [Durable agentic RL with SkyRL and Harbor](../agentic-rl-skyrl/_index) builds the training side: durable trials, a memoized judge, and exactly-once training steps.
-- [Can a LoRA screen pick the right ablation?](../lora-ablation-screen/_index) compares LoRA and full-weight rankings of RL loss aggregations.
+- [Can a LoRA screen pick the right RL ablation?](../lora-ablation-screen/_index) compares LoRA and full-weight rankings of RL loss aggregations.

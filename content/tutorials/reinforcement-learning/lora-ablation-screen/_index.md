@@ -20,6 +20,7 @@ Mercor's 397B SkyRL guide picked `prompt_mean` from 13 full-weight ablations on 
 > Full code is available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/lora_ablation_screen).
 > The default screen runs 12 arms (3 aggregations, 2 modes, 2 seeds), each on one `L4` GPU. Set `SCREEN_GPU_TYPE` to use another GPU type.
 > You need a Hugging Face token stored as a secret named `HF_TOKEN`.
+> Create it with `flyte create secret HF_TOKEN --value <your token>` (see [Secrets](../../../user-guide/tasks/task-configuration/secrets)).
 
 ## Run it
 

@@ -25,7 +25,7 @@ different shapes of it.
 | [Self-play league for Connect Four](./self-play-league/_index) | A Connect Four agent trained against its past selves | Measuring progress when the opponent keeps changing | A warm GPU learner, match fan-out on CPUs, Elo, and an app to play the champion |
 | [Durable agentic RL with SkyRL and Harbor](./agentic-rl-skyrl/_index) | An LLM agent acting in a sandboxed world over many turns | Long, failure-prone trials and LLM judges that are expensive to re-run | Durable trials, a memoized judge, exactly-once training steps, and re-scoring by caching |
 | [Harness evals and trace audits for agentic RL](./agentic-rl-evals/_index) | A tool-using agent before training, and published trajectories after it | Harness bugs move reward like training does, and traces are too many to read by hand | A versioned harness, a cached cell per (task, harness, model, pass), and re-labeling without re-downloading |
-| [Can a LoRA screen pick the right RL ablation?](./lora-ablation-screen/_index) | Qwen3-0.6B trained with GRPO, as LoRA adapters and at full weight | Full-weight ablations are expensive, and a cheap screen is only useful if it ranks arms the same way | One durable, checkpointed action per arm on its own GPU, and a cached screen that runs only new arms |
+| [Can a LoRA screen pick the right RL ablation?](./lora-ablation-screen/_index) | Qwen3-0.6B trained with GRPO, as LoRA adapters and at full weight | Full-weight ablations are expensive, and a cheap screen is only useful if it ranks arms the same way | One durable action per arm on its own GPU, and a cached screen that runs only new arms |
 
 {{< /markdown >}}
 {{< /variant >}}
