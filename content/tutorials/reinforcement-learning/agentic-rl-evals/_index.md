@@ -125,7 +125,7 @@ The audit named the PDF layout bug and the email hang without being told what to
 
 {{< code file="/unionai-examples/v2/tutorials/agentic_rl_evals/harness_eval.py" fragment="leaderboard" lang="python" >}}
 
-Running `leaderboard` for `claude-haiku-5-5` and `claude-sonnet-5-5` after `compare_harnesses` reused 60 of Haiku's 72 v2 cells and ran 72 new Sonnet cells. The 12 Haiku cells that re-ran are all one world, `w5`. In the first comparison, the v1 and v2 evaluations built `w5` at the same moment, both missed the cache, and the v2 cells were keyed on the build that lost. That run predates `serialize=True` on `build_world`. With it, the second call waits for the first build and all 72 cells are reused. Each trajectory records `produced_by_run`, so the summary can count cells executed in the current run and cells reused from earlier ones.
+Running `leaderboard` for `claude-haiku-5-5` and `claude-sonnet-5-5` after `compare_harnesses` reuses Haiku's 72 v2 cells and runs only the 72 Sonnet cells. Each trajectory records `produced_by_run`, so the summary can count cells executed in the current run and cells reused from earlier ones.
 
 ## Audit published traces
 
