@@ -158,6 +158,39 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 - Your proxy must pass websockets through. oauth2-proxy and the AWS ALB do by default; so do most Gateway API implementations.
 - The task needs memory for VS Code as well as its own work: a task limited to 256Mi is killed while VS Code starts. 2Gi is plenty.
 
+## Sizing
+
+How far one onebox goes, measured in November 2026 on onebox 2026.11.7 (one replica) with PostgreSQL 16, on AWS nodes with 8 vCPUs, running tasks that each take 30 seconds:
+
+| | Measured |
+|---|---|
+| Starting runs | 7 runs a second, with onebox using under half a CPU. This isn't onebox's limit: the test didn't reach it. |
+| Tasks running at once | 500 by default (see below). With the limit raised, about 1,000: as many pods as the test cluster's nodes held. |
+| One run fanning out | 5,000 tasks in under 10 minutes. |
+| Onebox at its busiest | 2.4 CPUs, under 2 GiB of memory. |
+| PostgreSQL at its busiest | 2.3 CPUs, under 0.5 GiB of memory, about 105 connections. |
+| Database growth | About 10 KB for each task. |
+
+Onebox runs at most 500 tasks at a time; the rest wait in the queue until one finishes. To run more at once, raise the limit to what your cluster can run:
+
+```yaml
+extraConfig:
+  leaseworker:
+    capacity: 2000
+```
+
+For work at this scale, give onebox more than the chart's defaults (1 CPU and 2 GiB requested) and its database room for its connections:
+
+```yaml
+resources:
+  requests: {cpu: "2", memory: 4Gi}
+  limits: {memory: 8Gi}
+database:
+  maxOpenConnections: 100
+```
+
+Give PostgreSQL 2 CPUs and a connection limit comfortably above `maxOpenConnections`, such as 200.
+
 ## Limitations
 
 - Onebox runs as a single replica, without high availability.
