@@ -153,6 +153,7 @@ cpus
 crewai
 crio
 cubin
+DAPO
 Dask
 Daytona
 DBFS
