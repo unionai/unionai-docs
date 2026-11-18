@@ -10,7 +10,7 @@ mermaid: true
 # Capacity planning with covariates
 
 > [!NOTE]
-> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series](../_index) for setup, the container image, and the metrics.
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series models](../_index) for setup, the container image, and the metrics.
 
 Electricity demand in Texas follows the temperature: a hot afternoon in Houston means air conditioning across the coast. This tutorial forecasts hourly demand for the eight ERCOT weather zones with Timestral, conditioned on temperature and the calendar. It then plans next week's capacity:
 

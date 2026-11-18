@@ -1,13 +1,13 @@
 ---
-title: Time series
+title: Time series models
 icon: graph-up
 description: Forecasting, backtesting, anomaly detection, and capacity planning with time-series foundation models.
-weight: 12
+weight: 13
 variants: +flyte +union
 sidebar_expanded: true
 ---
 
-# Time series
+# Time series models
 
 Tutorials for forecasting and monitoring time series with [Timestral](https://github.com/mistralai/timestral), Mistral AI's family of time-series foundation models.
 
@@ -50,10 +50,31 @@ The code for all four tutorials is in one directory and shares a `common.py` mod
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/timestral
 pip install "flyte>=2.12.0" fastapi uvicorn numpy
+```
+
+{{< variant union >}}
+{{< markdown >}}
+
+```bash
 flyte create config --endpoint <your-endpoint> --project <your-project> --domain development --builder remote
 ```
 
 Replace `<your-endpoint>` with your {{< key product_name >}} endpoint. The remote image builder builds the images on the cluster, so you don't need Docker locally.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+```bash
+flyte create config --endpoint <your-endpoint> --project <your-project> --domain development --builder local --registry <your-registry>
+```
+
+Replace `<your-endpoint>` with your {{< key product_name >}} endpoint and `<your-registry>` with a container registry your cluster can pull from, such as `ghcr.io/<your-org>`. Images are built on your machine and pushed to that registry, so Docker must be running and logged in to it (`docker login ghcr.io`).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## The container image
 

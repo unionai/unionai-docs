@@ -10,7 +10,7 @@ mermaid: true
 # Online forecasting API
 
 > [!NOTE]
-> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series](../_index) for setup, the container image, and model loading.
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series models](../_index) for setup, the container image, and model loading.
 
 This tutorial serves Timestral over HTTP as a Flyte app. A client posts a history and a horizon, and gets back the median and the quantiles it asked for. The app:
 
@@ -96,7 +96,10 @@ FastAPI's `lifespan` hook loads the checkpoint and starts the batcher before the
 | `metric` | `Scaling.Concurrency(val=32)` | A replica is added when each replica has more than 32 requests in flight. |
 | `scaledown_after` | `300` | Extra replicas are removed after five idle minutes. |
 
-If a replica crashes, the platform replaces it, and the others keep serving in the meantime. The example sets `requires_auth=False` so you can call it with `curl`. That makes the endpoint public: anyone with the URL can send requests and scale up replicas. Beyond a demo, remove that line to require a {{< key product_name >}} token on every request.
+If a replica crashes, the platform replaces it, and the others keep serving in the meantime.
+
+> [!WARNING] Public endpoint
+> The example sets `requires_auth=False` so you can call it with `curl` and `forecast_client.py`. That deploys a public, unauthenticated endpoint: anyone with the URL can send requests and scale the app up to four replicas. Beyond a demo, remove that line to require a {{< key product_name >}} token on every request.
 
 ## Test it without deploying
 

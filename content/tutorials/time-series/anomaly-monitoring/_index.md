@@ -10,7 +10,7 @@ mermaid: true
 # Anomaly monitoring
 
 > [!NOTE]
-> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series](../_index) for setup, the container image, and model loading.
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series models](../_index) for setup, the container image, and model loading.
 
 A forecast with calibrated quantiles is also an anomaly detector: if a sensor's readings land outside the forecast's 1-99% band, something changed that the history didn't predict. This tutorial monitors a fleet of three pumps, each reporting vibration, bearing temperature, and discharge pressure every minute. For each 30-minute window, a monitor:
 
@@ -19,7 +19,7 @@ A forecast with calibrated quantiles is also an anomaly detector: if a sensor's 
 3. flags the window if the readings leave the forecast band, and
 4. after two flagged windows in a row, pauses for an operator to decide whether to dispatch a maintenance crew.
 
-A monitor is a long-running loop with side effects: it pages people and waits for hours. The loop is built from traces, durable sleep, and an external condition, so a crash never repeats an alert, loses the wait, or forgets a decision.
+A monitor is a long-running loop with side effects: it pages people and waits for hours. The loop is built from traces, durable sleep, and an external condition, so a crash doesn't re-send alerts that were already recorded, lose the wait, or forget a decision.
 
 ```mermaid
 flowchart LR
@@ -113,6 +113,7 @@ The trigger is created inactive (`auto_activate=False`). Activate it in the UI, 
 
 ## Adapt it to your plant
 
-- Replace `read_sensors` with a query against your historian, and `send_alert` with your pager or ticketing call. Keep both traced.
+- Replace `read_sensors` with a query against your historian, and `send_alert` with your pager or ticketing call. Keep both traced. A trace records an output only after the call returns, so if the process dies after the pager accepts an alert but before the trace is recorded, the retry sends it again. Pass a stable deduplication key, such as `(asset, window_start)`, so the pager drops the duplicate.
+- Check for an open work order before asking for a dispatch. Within a run, each pump is dispatched at most once, but runs don't share state. The simulated feed replays the same fault every run, so with the hourly trigger active, every run asks again, and dispatches the crew if nobody answers.
 - Replace the simulated duty cycle with your real production schedule, or with any other state you know in advance.
 - Tune `alert_threshold`, the fraction of readings outside the band that flags a window. With a 1-99% band, about 2% of healthy readings fall outside by chance.

@@ -10,7 +10,7 @@ mermaid: true
 # Batch forecasting and backtesting
 
 > [!NOTE]
-> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series](../_index) for setup, the container image, and the metrics.
+> Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/timestral). See [Time series models](../_index) for setup, the container image, and the metrics.
 
 This tutorial forecasts next week's hourly electricity consumption for 321 customers. It first backtests all four Timestral checkpoints on the last four weeks of history, picks the one with the lowest weighted quantile loss, and then forecasts every customer with it.
 
@@ -99,11 +99,13 @@ The first output is a plain string, so the [online forecasting API](../forecast-
 
 ## Scale it up
 
-- **More series.** The work per shard is fixed by `n_shards`. For larger datasets, raise `n_shards` so each task stays a few minutes long. A shorter task loses less work to a preemption.
+- **More series.** `n_shards` fixes the number of shards, so each shard's work grows with the dataset. For larger datasets, raise `n_shards` so each task stays a few minutes long. A shorter task loses less work to a preemption.
 - **Longer context.** Timestral reads up to 32,768 steps. A longer `context_length` costs more compute per forecast but lets the model see yearly seasonality in hourly data.
 
 {{< variant union >}}
 {{< markdown >}}
+
 - **Reusable containers.** Each shard task loads its checkpoint from scratch. With [reusable containers](../../../user-guide/tasks/task-configuration/reusable-containers), shard tasks run in warm containers that keep the checkpoint loaded between tasks, because `load_forecaster` caches it per process. Add `unionai-reuse` to the image and a `reusable=flyte.ReusePolicy(replicas=8, concurrency=1)` to `forecast_env`.
+
 {{< /markdown >}}
 {{< /variant >}}
