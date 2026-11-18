@@ -76,7 +76,7 @@ One request is one series, but a batched forward pass is much cheaper per series
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/forecast_api.py" fragment=batching lang=python >}}
 
-Histories differ in length, so `_process` left-pads the shorter ones with NaN. Timestral reads NaN as missing, so the padding doesn't change the forecast. Requests with covariates have their own shapes and go straight to the model. A lock keeps forward passes one at a time, because PyTorch already uses every core of the replica.
+Histories differ in length, so `_process` left-pads the shorter ones with NaN. Timestral reads NaN as missing, so the padding doesn't change the forecast. Requests with covariates have their own shapes and go straight to the model. That path checks each covariate row's length, allows at most 16 rows, and trims the history to `MAX_CONTEXT` like the batched path. A lock keeps forward passes one at a time, because PyTorch already uses every CPU the replica requests.
 
 ## The app
 
@@ -96,7 +96,15 @@ FastAPI's `lifespan` hook loads the checkpoint and starts the batcher before the
 | `metric` | `Scaling.Concurrency(val=32)` | A replica is added when each replica has more than 32 requests in flight. |
 | `scaledown_after` | `300` | Extra replicas are removed after five idle minutes. |
 
-If a replica crashes, the platform replaces it, and the others keep serving in the meantime. The example sets `requires_auth=False` so you can call it with `curl`. Remove that line to require a {{< key product_name >}} token on every request.
+If a replica crashes, the platform replaces it, and the others keep serving in the meantime. The example sets `requires_auth=False` so you can call it with `curl`. That makes the endpoint public: anyone with the URL can send requests and scale up replicas. Beyond a demo, remove that line to require a {{< key product_name >}} token on every request.
+
+## Test it without deploying
+
+`smoke_test` runs the service once as a task, through both the batched and the covariate paths, without deploying the app:
+
+```bash
+flyte run --local forecast_api.py smoke_test
+```
 
 ## Serve the champion from the pipeline
 

@@ -98,7 +98,7 @@ For each zone, the plan records the median of the scenarios' peak median forecas
 
 ## Approve and publish
 
-`capacity_plan` fans out the downloads, backtests, and scenario forecasts across zones, renders the report, and waits for a planner.
+`capacity_plan` fans out the downloads, backtests, and scenario forecasts across zones, renders the report, and waits for a planner. `render_report` passes `do_flush=True`, so the report is visible in the UI while the run waits on the approval that points to it.
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/capacity_planning.py" fragment=capacity_plan lang=python >}}
 

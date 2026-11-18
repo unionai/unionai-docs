@@ -49,7 +49,7 @@ The code for all four tutorials is in one directory and shares a `common.py` mod
 ```bash
 git clone https://github.com/unionai/unionai-examples
 cd unionai-examples/v2/tutorials/timestral
-pip install "flyte>=2.12.0" fastapi uvicorn
+pip install "flyte>=2.12.0" fastapi uvicorn numpy
 flyte create config --endpoint <your-endpoint> --project <your-project> --domain development --builder remote
 ```
 
@@ -63,14 +63,14 @@ Timestral isn't on PyPI, so the image installs it from GitHub, pinned to a commi
 
 ## Loading a checkpoint
 
-`load_forecaster` loads each checkpoint once per process. Within a task, every forecast reuses the loaded model. In an app, every request on a replica reuses it.
+`load_forecaster` loads each checkpoint once per process. Within a task, every forecast reuses the loaded model. In an app, every request on a replica reuses it. `num_threads` sets the PyTorch thread count to the CPUs the task or app requests. Inside a pod, `os.cpu_count()` reports the node's cores, not the pod's CPU quota, and threads beyond the quota get throttled.
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/common.py" fragment=load_forecaster lang=python >}}
 
 A forecast takes a context array shaped `(series, variates, time)`, or `(series, time)` for one variate. NaN marks a missing value. The result holds a quantile tensor shaped `(series, variates, horizon, 21)`:
 
 ```python
-forecaster = load_forecaster("mistralai/Timestral-28M")
+forecaster = load_forecaster("mistralai/Timestral-28M", num_threads=4)
 forecast = forecaster.forecast(context, prediction_length=168)
 forecast.quantiles  # (series, variates, 168, 21)
 forecast.median     # (series, variates, 168)

@@ -314,3 +314,8 @@ Enamine
 cloze
 acryloyl
 McNemar
+Timestral
+covariate
+covariates
+ERCOT
+MASE
