@@ -147,6 +147,10 @@ Stand up clusters and govern where your workloads run.
 Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 {{< /link-card >}}
 
+{{< link-card target="costs" icon="currency-dollar" title="Costs" >}}
+See what the compute behind your tasks, environments and apps costs, from the whole organization down to a single action.
+{{< /link-card >}}
+
 {{< /grid >}}
 
 {{< /variant >}}
