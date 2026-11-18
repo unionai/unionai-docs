@@ -1,7 +1,7 @@
 ---
 title: Run commands
 description: Run commands in a VM sandbox, stream their output, send them input, give them a terminal, and reach servers they start.
-weight: 3
+weight: 4
 variants: -flyte +union
 ---
 

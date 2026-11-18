@@ -1,7 +1,7 @@
 ---
 title: Coming from other sandbox services
 description: Map the concepts of a hosted sandbox service, such as templates, snapshots, and preview URLs, to their VM sandbox equivalents.
-weight: 10
+weight: 12
 variants: -flyte +union
 ---
 

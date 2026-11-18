@@ -1,7 +1,7 @@
 ---
 title: Network and security
 description: What code in a VM sandbox can and cannot reach, how to open the network safely, and where secrets, snapshots, and published disks can expose data.
-weight: 5
+weight: 6
 variants: -flyte +union
 ---
 
@@ -45,6 +45,8 @@ sandbox.Network.allow("pypi.internal.example.com", cidrs=("10.20.0.0/24",))
 ```
 
 ## What isolates a sandbox
+
+This table describes the default runtime, a microVM. A gVisor sandbox (`runtime_class="gvisor"`) isolates code with a user-space kernel instead of a virtual machine, and can run on the nodes that run your other workloads. See [Isolation trade-offs](./runtimes#isolation-trade-offs) before you choose it for hostile code.
 
 | Layer | What it gives you |
 | --- | --- |

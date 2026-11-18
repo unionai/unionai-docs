@@ -1,7 +1,7 @@
 ---
 title: Use sandboxes outside a task
 description: Open VM sandboxes from a laptop, a script, or an app, reconnect to them by name, and manage them with the remote API.
-weight: 8
+weight: 9
 variants: -flyte +union
 ---
 
@@ -134,6 +134,8 @@ Deploy it with `flyte deploy`. See [Apps](../apps/_index).
 `env.attach(name)` connects to a session that is already running: one another replica started, or one this process started before it restarted. It waits up to `ready_timeout` for a session that is still starting, and raises `SandboxSessionError` if there is no session of that name or it has ended.
 
 Leaving an `attach` block only disconnects. The session keeps running until whoever started it closes it, or it reaches `max_duration`. Call `sb.close()` or `sb.cancel()` inside the block to end it.
+
+To reach a sandbox by a name you choose, create it if it is missing, and start it again after it has ended, use `env.connect(name)`. See [Keep a sandbox and come back to it](./reconnect).
 
 A session that a task started belongs to that task. You cannot attach to it from outside the cluster.
 

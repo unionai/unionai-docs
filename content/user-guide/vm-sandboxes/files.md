@@ -1,7 +1,7 @@
 ---
 title: Work with files
 description: Read, write, list, and remove files in a VM sandbox, and copy files and directories between the sandbox and your code.
-weight: 4
+weight: 5
 variants: -flyte +union
 ---
 

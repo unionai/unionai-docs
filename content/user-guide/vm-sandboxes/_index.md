@@ -10,11 +10,11 @@ mermaid: true
 # VM sandboxes
 
 > [!NOTE] Early access preview
-> VM sandboxes are in early access. The API can change between releases. They are not enabled by default. MicroVM support needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team.
+> VM sandboxes are in early access. The API can change between releases. A sandbox runs as a microVM, the default, or as a gVisor sandbox. MicroVM support is not enabled by default: it needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team. gVisor sandboxes need no special node resources. See [Choose a runtime](./runtimes).
 >
 > VM sandboxes require `flyteplugins-union` 0.21.2 or later: `pip install "flyteplugins-union>=0.21.2"`.
 
-A VM sandbox is a lightweight virtual machine with its own Linux kernel. You start one from Python, run commands and move files in it, and throw it away when you are done. Use VM sandboxes when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
+A VM sandbox is a lightweight virtual machine with its own Linux kernel. Where you don't have nodes that can run virtual machines, the same API runs a [gVisor sandbox](./runtimes) on any node. You start one from Python, run commands and move files in it, and throw it away when you are done. Use VM sandboxes when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
 
 ## Why VM sandboxes
 
@@ -47,7 +47,8 @@ The code runs in a microVM that has no network and none of your task's secrets. 
 
 ## What you get
 
-- **A kernel per sandbox.** Each session is a Firecracker microVM with its own guest kernel, not a container that shares the node's kernel.
+- **A kernel per sandbox.** By default, each session is a Firecracker microVM with its own guest kernel, not a container that shares the node's kernel.
+- **A choice of runtime.** Set `runtime_class="gvisor"` to run sessions as gVisor sandboxes on the nodes you already have, with no special node resources. Both runtimes work from a task, an app, or a laptop, and both suspend and resume. See [Choose a runtime](./runtimes).
 - **Closed network by default.** A sandbox starts with no outbound network. You can open it to the internet, or allow a list of hostnames such as PyPI or your package mirror. The cloud metadata server is unreachable in every mode, so code in a sandbox cannot read your node's cloud credentials.
 - **Runs in your cloud.** Sandboxes run on your own Kubernetes clusters, in your data plane. The code, the data it touches, and the VMs themselves stay in your cloud account.
 - **Durable state.** Commit a sandbox's disk and start new sandboxes on copies of it. Fork a running sandbox into several. Snapshot or suspend one with its memory and processes, and resume it later. Publish a disk as an artifact that later runs can start from. Saved disks and snapshots are stored in your data plane's object store.
@@ -75,11 +76,11 @@ flowchart LR
 ```
 
 1. You declare a `sandbox.SandboxEnvironment` once: its CPU and memory, network, secrets, environment variables, and how long a session may live.
-2. Your code opens a session with `env.session(name)`. Union.ai schedules a microVM on a node in your microVM node pool. No pod is started for it.
+2. Your code opens a session with `env.session(name)`. Union.ai schedules a microVM on a node in your microVM node pool, or a gVisor sandbox on any node if the environment sets `runtime_class="gvisor"`. No pod is started for it.
 3. The session is yielded as a `Sandbox` object once it answers. You call `sb.run()`, `sb.start()`, and `sb.fs` to work in it.
 4. When the block exits, the session's commands are stopped and the VM is torn down.
 
-Sandboxes need nodes that can run hardware virtualization: bare-metal instances, or instance types with nested virtualization enabled. These nodes also need configuration that ordinary task nodes do not have, so you cannot enable VM sandboxes by adding a node pool yourself. Your Union.ai solutions team sets up the microVM node pool in your data plane when they enable VM sandboxes.
+MicroVMs need nodes that can run hardware virtualization: bare-metal instances, or instance types with nested virtualization enabled. These nodes also need configuration that ordinary task nodes do not have, so you cannot enable microVMs by adding a node pool yourself. Your Union.ai solutions team sets up the microVM node pool in your data plane. gVisor sandboxes need none of this. See [Choose a runtime](./runtimes).
 
 You can open sessions from a task, from an app, or from a laptop or script outside your cluster. Tasks and apps talk to the sandbox directly, which is the fastest path. From outside the cluster, every call goes through the Union.ai data proxy, signed in as you, which adds latency to each command. See [Use sandboxes outside a task](./outside-tasks).
 
@@ -89,7 +90,7 @@ Flyte offers other ways to run untrusted code. See [Sandboxing](../agents/sandbo
 
 | | VM sandbox | [Code sandbox](../agents/sandboxing/code-sandboxing) | [Workflow sandbox](../agents/sandboxing/workflow-sandboxing-flyte) |
 | --- | --- | --- | --- |
-| Isolation | microVM with its own kernel | Container | Sandboxed Python interpreter |
+| Isolation | microVM with its own kernel, or a gVisor sandbox | Container | Sandboxed Python interpreter |
 | Interaction | Interactive: many commands, files, and processes over one session | One script or command, then discarded | One orchestration program |
 | State | Disk, memory, and processes can be saved, forked, and restored | None | None |
 | Start | About 0.25 seconds | Seconds | Microseconds |
@@ -105,7 +106,8 @@ Use VM sandboxes for:
 
 ## Requirements
 
-- A Union.ai data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team to enable it.
+- For microVMs, the default runtime: a Union.ai data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team to enable it.
+- For gVisor sandboxes: no special node resources, and `flyteplugins-union` 0.22.0 or later. See [Choose a runtime](./runtimes).
 - `flyteplugins-union` 0.21.2 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
 - Python 3.10 or later.
 

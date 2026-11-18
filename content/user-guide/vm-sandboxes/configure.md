@@ -1,7 +1,7 @@
 ---
 title: Configure a sandbox
 description: Size a VM sandbox, set its environment variables and secrets, bound its lifetime, and choose its queue and labels.
-weight: 2
+weight: 3
 variants: -flyte +union
 ---
 
@@ -34,6 +34,7 @@ test_runner = sandbox.SandboxEnvironment(
 | `resources` | 1 vCPU, 1 GiB | The VM's size, from the `cpu` and `memory` of a `flyte.Resources`. |
 | `env_vars` | None | Environment variables for every command in the session. |
 | `secrets` | None | Union.ai secrets the session gets, as a task with them would. |
+| `runtime_class` | `"microvm"` | What sessions run in: `"microvm"` or `"gvisor"`. Needs `flyteplugins-union` 0.22.0 or later. See [Choose a runtime](./runtimes). |
 | `network` | `Network.blocked()` | Outbound network. See [Network and security](./network-and-security). |
 | `max_duration` | 3600 seconds | The longest one session lives if its block doesn't exit first. Seconds or a `timedelta`. |
 | `queue` | The run's queue | The queue sessions go to. See [Queues](../clusters-and-queues/queues). |

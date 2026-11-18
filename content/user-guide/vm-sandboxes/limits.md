@@ -1,7 +1,7 @@
 ---
 title: Limits and errors
 description: What a VM sandbox's machine looks like, what sandboxes don't support, and the errors they raise.
-weight: 9
+weight: 11
 variants: -flyte +union
 ---
 
@@ -20,7 +20,7 @@ variants: -flyte +union
 | Command output kept | The last 64 MiB of stdout and of stderr per command |
 | cgroups | Not mounted. Mount `cgroup2` yourself if a program needs it, such as a Docker daemon. |
 
-A VM has its own kernel, so it can run software a container usually cannot, such as a Docker daemon of its own. Docker's `overlay2` driver needs a disk image of its own to live on, because the root disk is an overlay. The kernel has no nftables, so a Docker daemon must use iptables.
+A microVM has its own kernel, so it can run software a container usually cannot, such as a Docker daemon of its own. A gVisor sandbox cannot: use `runtime_class="microvm"` for Docker, kernel modules, and mounts. See [Choose a runtime](./runtimes). Docker's `overlay2` driver needs a disk image of its own to live on, because the root disk is an overlay. The kernel has no nftables, so a Docker daemon must use iptables.
 
 ## Not supported
 

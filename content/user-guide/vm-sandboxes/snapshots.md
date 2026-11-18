@@ -1,7 +1,7 @@
 ---
 title: Snapshot, suspend, and resume
 description: Save a VM sandbox's disk, memory, and running processes, restore new sandboxes from that point, and pause a sandbox while it waits.
-weight: 7
+weight: 8
 variants: -flyte +union
 ---
 
@@ -75,6 +75,8 @@ Without `memory=True`, `fork` copies only the disk. See [Save and fork disks](./
 - **`keep` bounds the pause.** The VM stays paused for `keep` (default 5 minutes, at most 1 hour), and no longer than the session's `max_duration`, which keeps counting while it is paused.
 - **Restore after `keep`.** If it isn't resumed in time, the session ends and succeeds. Its snapshot outlives it, and `env.session(name, snapshot=snap)` restores a new session from it, in this task or another.
 - **Discard it.** `await sb.cancel()` discards a suspended session.
+
+You hold the `SandboxSnapshot` yourself here. To have a suspended sandbox's state recorded as an artifact and found again by name, from Python or the CLI, use `env.connect(name)`. See [Keep a sandbox and come back to it](./reconnect).
 
 Suspending takes about 2 seconds for a 1 GiB VM, most of it committing the snapshot. The VM is paused within the first few hundred milliseconds. `sb.suspend(wait=False)` returns as soon as the VM is paused, with a `SnapshotFuture`. You can pass the future straight to `env.session(snapshot=fut)`, which waits for the commit if it is still running.
 
