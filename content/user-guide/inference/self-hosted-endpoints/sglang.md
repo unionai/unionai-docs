@@ -54,7 +54,7 @@ sglang_app = SGLangAppEnvironment(
     model_hf_path="Qwen/Qwen3-0.6B",
     model_id="qwen3-0.6b",
     extra_args=[
-        "--max-model-len", "8192",  # Maximum context length
+        "--context-length", "8192",  # Maximum context length
         "--mem-fraction-static", "0.8",  # Memory fraction for static allocation
         "--trust-remote-code",  # Trust remote code in models
     ],
@@ -101,7 +101,7 @@ The tensor parallelism size (`--tp`) should match the number of GPUs specified i
 
 ## Model sharding with prefetch
 
-You can prefetch and shard models for multi-GPU inference using SGLang's sharding:
+You can prefetch a model, shard it with vLLM for multi-GPU inference, and serve the sharded model with SGLang:
 
 ```python
 # Prefetch with sharding configuration
@@ -162,7 +162,7 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 4. **Use tensor parallelism**: For large models, use multiple GPUs with `--tp`
 5. **Set autoscaling**: Use appropriate idle TTL to balance cost and performance
 6. **Configure memory**: Use `--mem-fraction-static` to control memory allocation
-7. **Limit context length**: Use `--max-model-len` for smaller models to reduce memory usage
+7. **Limit context length**: Use `--context-length` for smaller models to reduce memory usage
 
 ## Troubleshooting
 
@@ -174,7 +174,7 @@ SGLang is particularly well-suited for structured generation tasks. The deployed
 
 **Out of memory errors:**
 
-- Reduce `--max-model-len`
+- Reduce `--context-length`
 - Lower `--mem-fraction-static`
 - Use a smaller model or more GPUs
 
