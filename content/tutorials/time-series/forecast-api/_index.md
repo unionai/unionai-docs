@@ -72,7 +72,7 @@ curl -X POST <app-url>/forecast -H 'content-type: application/json' \
 
 ## Batch concurrent requests
 
-One request is one series, but a batched forward pass is much cheaper per series: on a laptop CPU, Timestral-28M forecasts 64 series of 1,024 steps about 5 times faster in one batch than one at a time. `DynamicBatcher` collects requests that arrive within 10 ms of each other, up to 64, and hands them to `_process` as one batch. Each caller awaits a future for its own result.
+One request is one series, but a batched forward pass is much cheaper per series: on a laptop CPU, Timestral-28M forecasts 64 series of 1,024 steps about 5 times faster in one batch than one at a time. `DynamicBatcher` starts a batch with the first waiting request, adds requests that arrive in the next 10 ms, up to 64, and hands them to `_process` as one batch. Each caller awaits a future for its own result.
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/forecast_api.py" fragment=batching lang=python >}}
 
@@ -103,19 +103,27 @@ If a replica crashes, the platform replaces it, and the others keep serving in t
 
 ## Test it without deploying
 
-`smoke_test` runs the service once as a task, through both the batched and the covariate paths, without deploying the app:
+`smoke_test` runs the service once as a task, through both the batched and the covariate paths, without deploying the app. It runs in the app's image, so it needs nothing beyond the setup install:
 
 ```bash
+flyte run forecast_api.py smoke_test
+```
+
+To run it on your machine instead, with `--local`, first install PyTorch and Timestral, pinned to the same commit as the image:
+
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install "timestral @ git+https://github.com/mistralai/timestral.git@a534bdbd244d64f3d9d743f46c7bf6fc330ed4ff"
 flyte run --local forecast_api.py smoke_test
 ```
 
 ## Serve the champion from the pipeline
 
-`--champion` swaps the literal model ID for a `flyte.app.RunOutput`. At deploy time, it resolves to the first output of the latest run of `forecast_pipeline`, the champion's Hugging Face repo ID.
+`--champion` swaps the literal model ID for a `flyte.app.RunOutput`. At deploy time, it resolves to the first output of the latest successful run of `forecast_pipeline`, the champion's Hugging Face repo ID. If no run of the pipeline has succeeded, the deploy fails.
 
 {{< code file="/unionai-examples/v2/tutorials/timestral/forecast_api.py" fragment=deploy lang=python >}}
 
-Re-run the batch pipeline when new data arrives, then redeploy with `--champion`. The API serves whichever checkpoint scored best on the latest data, and the pipeline run that chose it is recorded in the app's spec.
+Re-run the batch pipeline when new data arrives, then redeploy with `--champion`. The API serves whichever checkpoint scored best on the latest data.
 
 ## Load-test it
 

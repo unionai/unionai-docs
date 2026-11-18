@@ -111,7 +111,7 @@ Each tutorial uses {{< key product_name >}} features that keep a forecasting wor
 | --- | --- | --- |
 | Task caching | A re-run skips every shard, download, and API call that already finished. | Batch, capacity planning |
 | Intra-task checkpoints | A preempted task resumes from its last completed backtest window. | Batch |
-| Retries on spot capacity | Preemptions and transient failures are retried, with backoff for rate-limited APIs. | Batch, capacity planning |
+| Retries | Batch tasks on spot capacity retry after a preemption, and capacity planning retries the rate-limited weather API with backoff. | Batch, capacity planning |
 | Traces and durable sleep | A crashed loop replays completed steps from the record, without re-reading, re-forecasting, or re-alerting. | Anomaly monitoring |
 | External conditions | A run pauses for a typed human decision, with a timeout and a default. | Anomaly monitoring, capacity planning |
 | Triggers | A deployed task runs on a schedule. | Anomaly monitoring |
