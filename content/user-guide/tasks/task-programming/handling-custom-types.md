@@ -168,20 +168,20 @@ The entry point group `flyte.plugins.types` tells Flyte to automatically load th
 
 ### Automatic loading
 
-When your plugin package is installed, Flyte automatically loads the type transformer at runtime. This happens during `flyte.init()` or `flyte.init_from_config()`.
+When your plugin package is installed, Flyte automatically loads the type transformer at runtime. This happens during `flyte.init()` or `flyte.init_from_config()`, or the first time Flyte looks up a type transformer, whichever comes first.
 
 ## Controlling plugin loading
 
-Loading many type plugins can add overhead to initialization. You can disable automatic plugin loading:
+By default, `flyte.init()` loads every installed type plugin. To skip this step during initialization, pass `load_plugin_type_transformers=False`:
 
 ```python
 import flyte
 
-# Disable automatic loading of type transformer plugins
+# Don't load type transformer plugins during initialization
 flyte.init(load_plugin_type_transformers=False)
 ```
 
-By default, `load_plugin_type_transformers` is `True`.
+By default, `load_plugin_type_transformers` is `True`. Setting it to `False` doesn't turn plugin loading off. Flyte still loads every installed type plugin the first time it looks up a type transformer.
 
 ## Using custom types in tasks
 
