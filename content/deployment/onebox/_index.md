@@ -160,36 +160,38 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 
 ## Sizing
 
-How far one onebox goes, measured in November 2026 on onebox 2026.11.7 (one replica) with PostgreSQL 16, on AWS nodes with 8 vCPUs, running tasks that each take 30 seconds:
+Size onebox by how many runs you start a second and how many actions are in flight (queued or running) at once. Memory grows with actions in flight, about 1 GiB plus 1 MiB for each; CPU grows with the rate runs start. If onebox runs out of memory, it restarts: accepted work isn't lost, but new runs fail until it is back.
 
-| | Measured |
-|---|---|
-| Starting runs | 7 runs a second, with onebox using under half a CPU. This isn't onebox's limit: the test didn't reach it. |
-| Tasks running at once | 500 by default (see below). With the limit raised, about 1,000: as many pods as the test cluster's nodes held. |
-| One run fanning out | 5,000 tasks in under 10 minutes. |
-| Onebox at its busiest | 2.4 CPUs, under 2 GiB of memory. |
-| PostgreSQL at its busiest | 2.3 CPUs, under 0.5 GiB of memory, about 105 connections. |
-| Database growth | About 10 KB for each task. |
+Measured in November 2026 with onebox as one replica limited to 2 CPUs, PostgreSQL 16, and short tasks on AWS:
+
+| | 2 CPUs, 4 GiB | 2 CPUs, 8 GiB |
+|---|---|---|
+| Runs started a second, sustained | 32, accepted in under 0.1 seconds | 128 with no errors, accepted in under 1 second (95th percentile) |
+| Tasks running at once | 1,000 | 4,000 (as many as the test cluster held) |
+| What runs out first | Memory: above about 2,000 actions in flight, onebox is killed and restarts | CPU: at 64 runs a second and above, onebox uses its full 2 CPUs |
+| PostgreSQL at its busiest | 1.8 CPUs, 1.1 GiB, about 260 connections | 2.5 CPUs, 1.5 GiB, about 150 connections |
+
+Each task adds about 10 KB to the database.
 
 Onebox runs at most 500 tasks at a time; the rest wait in the queue until one finishes. To run more at once, raise the limit to what your cluster can run:
 
 ```yaml
 extraConfig:
   leaseworker:
-    capacity: 2000
+    capacity: 4000
 ```
 
-For work at this scale, give onebox more than the chart's defaults (1 CPU and 2 GiB requested) and its database room for its connections:
+For more than a few hundred tasks at once, give onebox more than the chart's defaults (1 CPU and 2 GiB requested) and room for its database connections:
 
 ```yaml
 resources:
-  requests: {cpu: "2", memory: 4Gi}
+  requests: {cpu: "2", memory: 8Gi}
   limits: {memory: 8Gi}
 database:
   maxOpenConnections: 100
 ```
 
-Give PostgreSQL 2 CPUs and a connection limit comfortably above `maxOpenConnections`, such as 200.
+Give PostgreSQL 2 to 3 CPUs and a connection limit of at least 300.
 
 ## Limitations
 
