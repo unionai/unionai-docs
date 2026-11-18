@@ -59,12 +59,14 @@ In this mode:
 - Union.ai's workloads, tasks and apps included, run in the Helm release namespace. Every grant that can be
   namespaced is a Role in the release namespace. The one exception is `<release-ns>-prometheus-apiserver-discovery`,
   a Role in `default` that Prometheus uses to discover the API server endpoints.
-- Cluster-scoped reads are limited to resources that have no namespaced form: nodes, namespaces, node and API server metrics, IngressClass, and Knative's informers.
+- Cluster-scoped reads come from a fixed list, each entry tied to the code that needs it. The list covers nodes,
+  node and API server metrics, namespaces for kube-state-metrics, IngressClass when ingress-nginx is on, and
+  Knative's informers when app serving is on.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
-- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written. 
+- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written.
 
-> [!WARNING] The install identity needs cluster permissions.  
+> [!WARNING] Install identity needs cluster permissions
 > Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
 > CSIDriver. Subcharts such as ingress-nginx and metrics-server, when enabled, create their own cluster RBAC.
 
@@ -130,7 +132,7 @@ namespaces:
   `argocd.argoproj.io/sync-options: Prune=false,Delete=false`.
 
 If your own tooling creates the bindings, copy the subjects from a chart render, such as
-`helm template ... --set singleNamespace=false --set namespaces.enabled=true`. Don't write them by hand.
+`helm template ... -f <your-values>.yaml --set namespaces.enabled=true`. Don't write them by hand.
 The list changes with the components you enable, and any extra subject gets the whole role.
 
 ### Confirm the binding
@@ -233,8 +235,9 @@ resources from the leaseworker and propeller. A component that can create pods i
 controls that namespace, so the boundary is where the role is bound: only in work namespaces in
 multi-namespace mode, and in the release namespace in single-namespace mode.
 
-The chart refuses any rule with a wildcard verb, or with `escalate`, `impersonate`, or `bind`. It refuses
-`apiGroups: ["*"]` outside `work-ns`.
+The chart refuses any rule a component declares with a wildcard verb, or with `escalate`, `impersonate`, or
+`bind`. It refuses `apiGroups: ["*"]` outside `work-ns`. The one `bind` it writes is its own, for
+`clusterresourcesync`, pinned to `<release-ns>-work-ns`.
 
 ### Roles at the default values
 
@@ -295,18 +298,18 @@ Find the row that matches your values on the chart you run now. When you set `si
 |------------------------------|-----------|
 | Neither key set, or `low_privilege: true` | Nothing. You can rename the key to `singleNamespace: true`. |
 | `low_privilege: false` with `namespaces.enabled` unset or `false` | `singleNamespace: true`. This install ran single-namespace. If you keep `low_privilege: false`, it becomes multi-namespace, and every task fails with `Forbidden` until each work namespace has its RoleBinding. |
-| `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces.  If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to every namespace.  From 2026.11.4, that RoleBinding is their only grant in a work namespace.
+| `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces. |
+
+If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing
+one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to
+every namespace. From 2026.11.4, that RoleBinding is their only grant in a work namespace.
 
 Also:
 
 - Keep every name in `namespaces.static` during this upgrade. The upgrade adds `helm.sh/resource-policy: keep` to each listed namespace, so a name you drop now is deleted with everything in it. Add names freely, and remove them in a later upgrade.
 - In multi-namespace mode, list the custom resources of Spark, Ray, Dask, Kubeflow, or JobSet tasks in `taskPluginClusterReadRules`. Before 2026.11.4, a cluster-wide grant covered them.
-- Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. From `2026.11.4` it takes effect, so bind each new service account to a cloud identity before you upgrade.
+- Before 2026.11.4, the chart ignored `commonServiceAccount.enabled: false` in single-namespace mode. From 2026.11.4 it takes effect, so bind each new service account to a cloud identity before you upgrade.
 - Propeller and `clusterresourcesync` run as the shared `union-system` account by default. A cloud identity bound to the old propeller or clusterresourcesync account must also trust `union-system`.
-- Set `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` This says the opposite of line 271 and of the Monitoring page. From 2026.11.4 the chart refuses to render with either key set to true. Also, with helm upgrade --reuse-values, a key you remove keeps its old value from the previous release, so the render still fails. Setting both keys to false explicitly is safer.
-
-Suggested change
-- Remove `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` from your values. From `2026.11.4` it takes effect.
 - Set `prometheus.rbac.create` and `prometheus.kube-state-metrics.rbac.create` to `false`, or remove them. From 2026.11.4 the chart refuses to render if either is `true`. If you upgrade with `--reuse-values`, set them to `false` explicitly: a removed key keeps its old value.
 - In templated values, replace `.Values.low_privilege` with `include "singleNamespace" .`.
 
