@@ -314,6 +314,9 @@ Enamine
 cloze
 acryloyl
 McNemar
+MONAI
+nftables
+gvisor
 Timestral
 covariate
 covariates
