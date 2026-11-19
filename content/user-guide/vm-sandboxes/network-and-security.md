@@ -1,13 +1,13 @@
 ---
 title: Network and security
-description: What code in a VM sandbox can and cannot reach, how to open the network safely, and where secrets, snapshots, and published disks can expose data.
+description: What code in a Sandbox VM can and cannot reach, how to open the network safely, and where secrets, snapshots, and published disks can expose data.
 weight: 6
 variants: -flyte +union
 ---
 
 # Network and security
 
-Your agent needs `pip install` to work, but it should not be able to send your repository to an address it read in a web page. A VM sandbox starts with no network at all. You open exactly what the code needs, and the policy is enforced outside the VM, where the code cannot change it.
+Your agent needs `pip install` to work, but it should not be able to send your repository to an address it read in a web page. A Sandbox VM starts with no network at all. You open exactly what the code needs, and the policy is enforced outside the VM, where the code cannot change it.
 
 ```python
 from flyteplugins.union import sandbox

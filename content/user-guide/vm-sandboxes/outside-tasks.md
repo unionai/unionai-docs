@@ -1,6 +1,6 @@
 ---
 title: Use sandboxes outside a task
-description: Open VM sandboxes from a laptop, a script, or an app, reconnect to them by name, and manage them with the remote API.
+description: Open Sandbox VMs from a laptop, a script, or an app, reconnect to them by name, and manage them with the remote API.
 weight: 9
 variants: -flyte +union
 ---

@@ -95,7 +95,7 @@ Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 
 {{< grid >}}
 
-{{< link-card target="vm-sandboxes" icon="shield-lock" title="VM sandboxes" >}}
+{{< link-card target="vm-sandboxes" icon="shield-lock" title="Sandbox VMs" >}}
 Run untrusted code in fast, isolated microVMs on your own Kubernetes clusters, with disks and memory you can save, fork, and restore.
 {{< /link-card >}}
 

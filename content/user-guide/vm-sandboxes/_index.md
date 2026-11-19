@@ -1,5 +1,5 @@
 ---
-title: VM sandboxes
+title: Sandbox VMs
 description: Run untrusted code in fast, isolated microVMs on your own Kubernetes clusters, with disks and memory you can save, fork, and restore.
 icon: shield-lock
 weight: 8
@@ -7,20 +7,20 @@ variants: -flyte +union
 mermaid: true
 ---
 
-# VM sandboxes
+# Sandbox VMs
 
 > [!NOTE] Early access preview
-> VM sandboxes are in early access. The API can change between releases. A sandbox runs as a microVM, the default, or as a gVisor sandbox. MicroVM support is not enabled by default: it needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team. gVisor sandboxes need no special node resources. See [Choose a runtime](./runtimes).
+> Sandbox VMs are in early access. The API can change between releases. A sandbox runs as a microVM, the default, or as a gVisor sandbox. MicroVM support is not enabled by default: it needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team. gVisor sandboxes need no special node resources. See [Choose a runtime](./runtimes).
 >
-> VM sandboxes require `flyteplugins-union` 0.23.0 or later: `pip install "flyteplugins-union>=0.23.0"`.
+> Sandbox VMs require `flyteplugins-union` 0.23.0 or later: `pip install "flyteplugins-union>=0.23.0"`.
 
-A VM sandbox is a lightweight virtual machine with its own Linux kernel. Where you don't have nodes that can run virtual machines, the same API runs a [gVisor sandbox](./runtimes) on any node. You start one from Python, run commands and move files in it, and throw it away when you are done. Use VM sandboxes when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
+A Sandbox VM is a lightweight virtual machine with its own Linux kernel. Where you don't have nodes that can run virtual machines, the same API runs a [gVisor sandbox](./runtimes) on any node. You start one from Python, run commands and move files in it, and throw it away when you are done. Use Sandbox VMs when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
 
-## Why VM sandboxes
+## Why Sandbox VMs
 
 A coding agent is fixing a bug in a customer's repository. Every turn, the model writes a shell command, and your agent has to run it somewhere. The command might be `pytest`. It might also be `curl` to an address the model picked up from a prompt injection, a `pip install` of a typosquatted package, or `rm -rf /`.
 
-If you run that command in your task's container, it runs with your task's identity. It can read the task's secrets, call your cloud's metadata server for credentials, and reach other services in your cluster. A VM sandbox gives the command a machine of its own instead:
+If you run that command in your task's container, it runs with your task's identity. It can read the task's secrets, call your cloud's metadata server for credentials, and reach other services in your cluster. A Sandbox VM gives the command a machine of its own instead:
 
 ```python
 import flyte
@@ -106,11 +106,11 @@ MicroVMs need nodes that can run hardware virtualization: bare-metal instances, 
 
 You can open sessions from a task, from an app, or from a laptop or script outside your cluster. Tasks and apps talk to the sandbox directly, which is the fastest path. From outside the cluster, every call goes through the Union.ai data proxy, signed in as you, which adds latency to each command. See [Use sandboxes outside a task](./outside-tasks).
 
-## When to use VM sandboxes
+## When to use Sandbox VMs
 
 Flyte offers other ways to run untrusted code. See [Sandboxing](../agents/sandboxing/_index) for the full picture.
 
-| | VM sandbox | [Code sandbox](../agents/sandboxing/code-sandboxing) | [Workflow sandbox](../agents/sandboxing/workflow-sandboxing-flyte) |
+| | Sandbox VM | [Code sandbox](../agents/sandboxing/code-sandboxing) | [Workflow sandbox](../agents/sandboxing/workflow-sandboxing-flyte) |
 | --- | --- | --- | --- |
 | Isolation | microVM with its own kernel, or a gVisor sandbox | Container | Sandboxed Python interpreter |
 | Interaction | Interactive: many commands, files, and processes over one session | One script or command, then discarded | One orchestration program |
@@ -119,7 +119,7 @@ Flyte offers other ways to run untrusted code. See [Sandboxing](../agents/sandbo
 | Capabilities | Root in a full Linux VM: `apt`, `pip`, Docker, servers | Full Python and shell in a container image | Pure Python control flow that calls registered tasks |
 | Best for | Coding agents, RL rollouts, live code execution in apps, per-user environments | One-shot jobs with known dependencies | LLM-generated orchestration code |
 
-Use VM sandboxes for:
+Use Sandbox VMs for:
 
 - **Coding agents.** Give each agent task its own machine to write files, install packages, and run tests. Allow only the package hosts it needs. Discard the VM when the task ends.
 - **Reinforcement learning rollouts.** Build an environment once, then start each rollout on its own copy-on-write fork of it, in parallel. See the [SWE-Gym rollouts tutorial](../../tutorials/reinforcement-learning/swe-gym-sandboxes/_index).

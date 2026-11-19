@@ -1,6 +1,6 @@
 ---
 title: Snapshot, suspend, and resume
-description: Save a VM sandbox's disk, memory, and running processes, restore new sandboxes from that point, and pause a sandbox while it waits.
+description: Save a Sandbox VM's disk, memory, and running processes, restore new sandboxes from that point, and pause a sandbox while it waits.
 weight: 8
 variants: -flyte +union
 ---

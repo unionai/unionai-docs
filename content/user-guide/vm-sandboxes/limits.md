@@ -1,6 +1,6 @@
 ---
 title: Limits and errors
-description: What a VM sandbox's machine looks like, what sandboxes don't support, and the errors they raise.
+description: What a Sandbox VM's machine looks like, what sandboxes don't support, and the errors they raise.
 weight: 11
 variants: -flyte +union
 ---

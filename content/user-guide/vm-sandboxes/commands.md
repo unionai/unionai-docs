@@ -1,13 +1,13 @@
 ---
 title: Run commands
-description: Run commands in a VM sandbox, stream their output, send them input, give them a terminal, and reach servers they start.
+description: Run commands in a Sandbox VM, stream their output, send them input, give them a terminal, and reach servers they start.
 weight: 4
 variants: -flyte +union
 ---
 
 # Run commands
 
-An agent loop runs a command, reads the output, and decides what to do next. A test suite streams results for minutes. A REPL needs input. A dev server listens on a port. VM sandboxes cover each of these with two calls: `sb.run()` runs a command to the end, and `sb.start()` starts one and hands you its streams.
+An agent loop runs a command, reads the output, and decides what to do next. A test suite streams results for minutes. A REPL needs input. A dev server listens on a port. Sandbox VMs cover each of these with two calls: `sb.run()` runs a command to the end, and `sb.start()` starts one and hands you its streams.
 
 ```python
 async with code_runner.session("agent-turn") as sb:

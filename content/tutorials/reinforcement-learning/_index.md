@@ -26,7 +26,7 @@ different shapes of it.
 | [Durable agentic RL with SkyRL and Harbor](./agentic-rl-skyrl/_index) | An LLM agent acting in a sandboxed world over many turns | Long, failure-prone trials and LLM judges that are expensive to re-run | Durable trials, a memoized judge, exactly-once training steps, and re-scoring by caching |
 | [Harness evals and trace audits for agentic RL](./agentic-rl-evals/_index) | A tool-using agent before training, and published trajectories after it | Harness bugs move reward like training does, and traces are too many to read by hand | A versioned harness, a cached cell per (task, harness, model, pass), and re-labeling without re-downloading |
 | [Can a LoRA screen pick the right RL ablation?](./lora-ablation-screen/_index) | Qwen3-0.6B trained with GRPO, as LoRA adapters and at full weight | Full-weight ablations are expensive, and a cheap screen is only useful if it ranks arms the same way | One durable action per arm on its own GPU, and a cached screen that runs only new arms |
-| [SWE-Gym rollouts on VM sandboxes](./swe-gym-sandboxes/_index) | A coding model fixing real GitHub bugs | Model-written commands, many attempts at once, and minutes of setup per repository | A testbed built once, each attempt in its own microVM on a copy-on-write fork, and published testbeds |
+| [SWE-Gym rollouts on Sandbox VMs](./swe-gym-sandboxes/_index) | A coding model fixing real GitHub bugs | Model-written commands, many attempts at once, and minutes of setup per repository | A testbed built once, each attempt in its own microVM on a copy-on-write fork, and published testbeds |
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -58,7 +58,7 @@ Train a Connect Four agent by self-play against a league of its past selves, rat
 {{< /variant >}}
 
 {{< variant union >}}
-{{< link-card target="swe-gym-sandboxes" icon="bug" title="SWE-Gym rollouts on VM sandboxes" >}}
+{{< link-card target="swe-gym-sandboxes" icon="bug" title="SWE-Gym rollouts on Sandbox VMs" >}}
 Run reinforcement learning rollouts for a coding model on real GitHub bugs, with every attempt in its own microVM on a copy-on-write fork of a testbed built once.
 {{< /link-card >}}
 {{< /variant >}}

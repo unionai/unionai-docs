@@ -1,6 +1,6 @@
 ---
 title: Configure a sandbox
-description: Size a VM sandbox, set its environment variables and secrets, bound its lifetime, and choose its queue and labels.
+description: Size a Sandbox VM, set its environment variables and secrets, bound its lifetime, and choose its queue and labels.
 weight: 3
 variants: -flyte +union
 ---

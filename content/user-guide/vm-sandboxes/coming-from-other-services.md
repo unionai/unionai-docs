@@ -1,6 +1,6 @@
 ---
 title: Coming from other sandbox services
-description: Map the concepts of a hosted sandbox service, such as templates, snapshots, and preview URLs, to their VM sandbox equivalents.
+description: Map the concepts of a hosted sandbox service, such as templates, snapshots, and preview URLs, to their Sandbox VM equivalents.
 weight: 12
 variants: -flyte +union
 ---
@@ -9,7 +9,7 @@ variants: -flyte +union
 
 You have an agent that already runs on a hosted sandbox service, and you want to move it into your own cloud. Most of what you use has a direct equivalent. This table maps each concept to the call that replaces it.
 
-| Concept | VM sandboxes |
+| Concept | Sandbox VMs |
 | --- | --- |
 | Sandbox template or configuration | `sandbox.SandboxEnvironment(...)` |
 | Create a sandbox | `async with env.session("name") as sb:` |

@@ -1,13 +1,13 @@
 ---
 title: Get started
-description: Install the plugin, open your first VM sandbox from a task and from your laptop, and run code in it.
+description: Install the plugin, open your first Sandbox VM from a task and from your laptop, and run code in it.
 weight: 1
 variants: -flyte +union
 ---
 
-# Get started with VM sandboxes
+# Get started with Sandbox VMs
 
-This page takes you from an empty file to code running in a VM sandbox, first from a task and then from a script on your laptop.
+This page takes you from an empty file to code running in a Sandbox VM, first from a task and then from a script on your laptop.
 
 ## Prerequisites
 

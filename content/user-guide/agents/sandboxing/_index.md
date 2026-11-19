@@ -61,9 +61,9 @@ This is the right choice when you need full Python capabilities: third-party pac
 {{< variant union >}}
 {{< markdown >}}
 
-### VM sandboxes
+### Sandbox VMs
 
-Union.ai also offers [VM sandboxes](../../vm-sandboxes/_index): interactive sessions in microVMs with their own kernel, running on your own clusters. Use them when untrusted code needs a full Linux machine over many commands, with a closed network by default and disks and memory you can save, fork, and restore.
+Union.ai also offers [Sandbox VMs](../../vm-sandboxes/_index): interactive sessions in microVMs with their own kernel, running on your own clusters. Use them when untrusted code needs a full Linux machine over many commands, with a closed network by default and disks and memory you can save, fork, and restore.
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -1,5 +1,5 @@
 ---
-title: SWE-Gym rollouts on VM sandboxes
+title: SWE-Gym rollouts on Sandbox VMs
 icon: bug
 description: Run reinforcement learning rollouts for a coding model on real GitHub bugs, with every attempt in its own microVM on a copy-on-write fork of a testbed built once.
 weight: 6
@@ -7,10 +7,10 @@ variants: -flyte +union
 mermaid: true
 ---
 
-# SWE-Gym rollouts on VM sandboxes
+# SWE-Gym rollouts on Sandbox VMs
 
 > [!NOTE] Early access preview
-> This tutorial uses [VM sandboxes](../../../user-guide/vm-sandboxes/_index), which are in early access and need microVM node pools in your data plane. It requires `flyteplugins-union` 0.23.0 or later.
+> This tutorial uses [Sandbox VMs](../../../user-guide/vm-sandboxes/_index), which are in early access and need microVM node pools in your data plane. It requires `flyteplugins-union` 0.23.0 or later.
 
 You have a model that writes code, and you want to know how well it fixes real bugs, or you want training data from its attempts. A rollout system hands the model a bug, lets it run commands in a safe copy of the repository, and scores the fix with tests the model never saw.
 
@@ -437,6 +437,6 @@ A sandbox runs the platform's base image, not the benchmark's per-instance Docke
 
 ## Next steps
 
-- [VM sandboxes](../../../user-guide/vm-sandboxes/_index): the full API.
+- [Sandbox VMs](../../../user-guide/vm-sandboxes/_index): the full API.
 - [Save and fork disks](../../../user-guide/vm-sandboxes/persist-and-fork): commit, fork, and publish.
 - [Reinforcement learning](../../../user-guide/reinforcement-learning/_index): the trainer, rollout workers, and reward tiers around a loop like this one.

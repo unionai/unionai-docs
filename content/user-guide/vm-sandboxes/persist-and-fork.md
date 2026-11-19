@@ -1,13 +1,13 @@
 ---
 title: Save and fork disks
-description: Commit a VM sandbox's disk, start new sandboxes on copy-on-write copies of it, fork running sandboxes, pass disks between tasks, and publish them as artifacts.
+description: Commit a Sandbox VM's disk, start new sandboxes on copy-on-write copies of it, fork running sandboxes, pass disks between tasks, and publish them as artifacts.
 weight: 7
 variants: -flyte +union
 ---
 
 # Save and fork disks
 
-Setting up an environment is slow. Cloning a repository and installing its dependencies can take minutes, and a coding agent might want to try ten fixes against it. VM sandboxes let you do the setup once, commit the disk, and start every attempt on its own copy. Each copy is copy-on-write, so it starts in a couple of seconds and no attempt sees another's writes.
+Setting up an environment is slow. Cloning a repository and installing its dependencies can take minutes, and a coding agent might want to try ten fixes against it. Sandbox VMs let you do the setup once, commit the disk, and start every attempt on its own copy. Each copy is copy-on-write, so it starts in a couple of seconds and no attempt sees another's writes.
 
 ```python
 from flyteplugins.union import sandbox
