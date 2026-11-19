@@ -101,17 +101,14 @@ Common options:
 | `-e`, `--env KEY=VALUE` | Override an environment variable for the new run. Repeatable. |
 | `--label KEY=VALUE` | Set a label on the new run. Repeatable. |
 | `-f`, `--follow` | Stream the parent action's logs after launch. |
-
-> [!NOTE]
-> `flyte rerun` reuses the prior run's inputs as-is. To change input values from the command line,
-> use the programmatic `flyte.rerun(<run-name>, key=value)` form shown below.
+| `--<input> VALUE` | Change a task input for the new run (for example, `--n 10`). A boolean input takes `--<input>` or `--no-<input>`. Inputs you leave out keep the prior run's value. An input whose name matches a `flyte rerun` option, such as `name` or `project`, gets no option and keeps the prior run's value, as does one the CLI can't express, such as an uppercase name. Run `flyte rerun <run-name> --help` to list the inputs you can change; it lists them only when the CLI can connect to the backend. |
 
 ### Rerun compared with a fresh run
 
 | Command | Code | Inputs |
 |---|---|---|
 | `flyte run <file> <task>` | local | from CLI |
-| `flyte rerun <run>` | fetched from backend | prior run's |
+| `flyte rerun <run>` | fetched from backend | prior run's, except any you change from CLI |
 
 Both start the run over from the beginning. To instead keep the successful actions of a failed
 run and re-execute only what failed, add `--recover` to `flyte rerun`. See
