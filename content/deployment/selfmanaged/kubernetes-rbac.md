@@ -43,6 +43,8 @@ Choose multi-namespace mode when:
 
 Monitoring, usage collection, and app serving work in both modes.
 
+A data plane connected from the Union.ai UI on chart 2026.11.4 or later runs in single-namespace mode.
+
 > [!WARNING] Unquoted boolean
 > Write `singleNamespace` as an unquoted boolean. The chart refuses a quoted string such as `"false"`.
 
@@ -64,7 +66,8 @@ In this mode:
   Knative's informers when app serving is on.
 - Cluster-scoped writes are pinned to named objects. The exceptions are `nodeobserver` and
   `node-bootstrap`, both off by default, which each remove a startup taint from their own node.
-- App serving is on by default and adds Knative's cluster-wide reads. Knative's controllers watch every namespace however their RBAC is written.
+- App serving is on by default and adds Knative's cluster-wide reads, because Knative's controllers watch
+  every namespace however their RBAC is written. Set `apps.enabled: false` to drop them.
 
 > [!WARNING] Install identity needs cluster permissions
 > Single-namespace mode limits what Union.ai's components can do. It doesn't make the chart installable by an identity confined to one namespace. The chart still creates ClusterRoles, a PriorityClass, and a
@@ -196,7 +199,8 @@ To reduce this:
 ## Service accounts
 
 By default, Union.ai's components share one service account, `union-system`. Prometheus and
-kube-state-metrics run as `union-operator-prometheus` and `union-kube-state-metrics`.
+kube-state-metrics run as `union-operator-prometheus` and `<release-name>-kube-state-metrics`, where
+`<release-name>` is your Helm release name (`union-kube-state-metrics` for a release named `union`).
 
 To give each component its own service account, set:
 
@@ -241,7 +245,9 @@ The chart refuses any rule a component declares with a wildcard verb, or with `e
 
 ### Roles at the default values
 
-With release namespace `union`, app serving on, and the default `commonServiceAccount`:
+With a Helm release named `union` in the release namespace `union`, app serving on, and the default
+`commonServiceAccount`. The kube-state-metrics role takes its name from the release, as
+`<release-name>-kube-state-metrics`:
 
 | Role | Kind | Mode |
 |------|------|------|
@@ -259,7 +265,7 @@ With release namespace `union`, app serving on, and the default `commonServiceAc
 | `union-<component>-work-ns-cluster-read` | ClusterRole | Multi-namespace. The operator, proxy, leaseworker, and pod webhook |
 | `union-clusterresourcesync-cluster-write` | ClusterRole | Multi-namespace, with `clusterresourcesync` on |
 | `union-secret-read` | Role | Multi-namespace. Secret reads in `proxy.secretsNamespace` |
-| `union-kube-state-metrics` | Role, or ClusterRole with `prometheus.kube-state-metrics.releaseNamespace: false`| Both |
+| `union-kube-state-metrics` | Role, or ClusterRole with `prometheus.kube-state-metrics.releaseNamespace: false` | Both |
 
 Enabling more components, such as propeller, `nodeobserver`, or `node-bootstrap`, adds roles named the
 same way.
@@ -298,7 +304,7 @@ Find the row that matches your values on the chart you run now. When you set `si
 |------------------------------|-----------|
 | Neither key set, or `low_privilege: true` | Nothing. You can rename the key to `singleNamespace: true`. |
 | `low_privilege: false` with `namespaces.enabled` unset or `false` | `singleNamespace: true`. This install ran single-namespace. If you keep `low_privilege: false`, it becomes multi-namespace, and every task fails with `Forbidden` until each work namespace has its RoleBinding. |
-| `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Layer `examples/values.full-privilege.yaml` so kube-state-metrics collects from the work namespaces. |
+| `low_privilege: false` with `namespaces.enabled: true` | `singleNamespace: false`, with `namespaces.enabled: true` and your `namespaces.static` list unchanged. Add `clusterresourcesync.enabled: true` or your own tooling for namespaces outside the list. Set `prometheus.kube-state-metrics.releaseNamespace: false` so kube-state-metrics collects from the work namespaces. `examples/values.full-privilege.yaml` sets this and also turns on `clusterresourcesync`. |
 
 If your own tooling creates work namespaces, create the `<release-ns>-work-ns` RoleBinding in every existing
 one before you upgrade. Before 2026.11.4, a ClusterRoleBinding gave the leaseworker and propeller access to

@@ -63,7 +63,8 @@ forwarded.
 
 The chart writes Prometheus' and kube-state-metrics' RBAC itself, from the scrape jobs and collectors it configures.
 Every scrape job, cAdvisor included, works in both [scope modes](../kubernetes-rbac#choose-a-scope). Requires
-`dataplane` chart 2026.11.4 or later. With the release namespace `union`:
+`dataplane` chart 2026.11.4 or later. With the release namespace `union` and a Helm release named `union`
+(kube-state-metrics' service account and role take the release name):
 
 | Service account | Role | Grants |
 |-----------------|------|--------|
