@@ -63,7 +63,7 @@ You can use Flyte to automatically download and convert the DataFrame between ty
 
 This task takes two DataFrames as input. We'll pass one raw Pandas DataFrame, and one `flyte.io.DataFrame`.
 Flyte automatically converts the `flyte.io.DataFrame` to a Pandas DataFrame (since we declared that as the input type) before passing it to the task.
-The actual download and conversion happens only when we access the data, in this case, when we do the merge.
+Because both inputs are declared as `pd.DataFrame`, the download and conversion happen while the task's inputs are converted, before the merge runs. Only an input declared as `flyte.io.DataFrame` waits until you open it.
 
 ## Downloading DataFrames
 
@@ -105,7 +105,7 @@ Use `pl.LazyFrame` when you want to defer computation and let Polars optimize th
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/dataframes/polars_dataframes.py" fragment="polars-lazyframe" lang="python" >}}
 
-The `collect()` call in `aggregate_by_department` is what triggers execution of the lazy plan. The `LazyFrame` passed between tasks is serialized as Parquet at that point.
+The `collect()` call in `aggregate_by_department` is what triggers execution of the lazy plan. The `LazyFrame` returned by `create_lazyframe` is written to Parquet when that task returns, and `aggregate_by_department` receives a `LazyFrame` that scans that Parquet file.
 
 ### Run the example
 
