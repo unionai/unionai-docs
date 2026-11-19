@@ -34,7 +34,7 @@ When you invoke a task using `flyte.run()`:
 
 ```python
 run = flyte.run(my_task, x=10, y=20)
-result = run.outputs()
+result = run.outputs()[0]
 ```
 
 **Flyte features ARE invoked**, including:
@@ -101,7 +101,7 @@ When you need to test how Flyte handles data types, serialization, or caching, u
 @pytest.mark.asyncio
 async def test_add_with_flyte_run():
     run = flyte.run(add, 3, 5)
-    assert run.outputs() == 8
+    assert run.outputs()[0] == 8
 ```
 
 ### Testing nested tasks with serialization
@@ -112,7 +112,7 @@ You can also test nested task execution with Flyte's full machinery:
 @pytest.mark.asyncio
 async def test_nested_with_run():
     run = flyte.run(nested, 3, 5)
-    assert run.outputs() == 8
+    assert run.outputs()[0] == 8
 ```
 
 ## Testing traced functions
@@ -188,12 +188,12 @@ async def test_subtract_logic():
 @pytest.mark.asyncio
 async def test_add_serialization():
     run = flyte.run(add, 3, 5)
-    assert run.outputs() == 8
+    assert run.outputs()[0] == 8
 
 @pytest.mark.asyncio
 async def test_subtract_serialization():
     run = flyte.run(subtract, a=10, b=4)
-    assert run.outputs() == 6
+    assert run.outputs()[0] == 6
 ```
 
 ## Future improvements
