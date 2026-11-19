@@ -78,7 +78,7 @@ Without `memory=True`, `fork` copies only the disk. See [Save and fork disks](./
 
 You hold the `SandboxSnapshot` yourself here. To have a suspended sandbox's state recorded as an artifact and found again by name, from Python or the CLI, use `env.connect(name)`. See [Keep a sandbox and come back to it](./reconnect).
 
-Suspending takes about 2 seconds for a 1 GiB VM, most of it committing the snapshot. The VM is paused within the first few hundred milliseconds. `sb.suspend(wait=False)` returns as soon as the VM is paused, with a `SnapshotFuture`. You can pass the future straight to `env.session(snapshot=fut)`, which waits for the commit if it is still running.
+Suspending takes about 2 seconds for a 1 GiB VM, most of it committing the snapshot. The VM is paused within the first few hundred milliseconds. `sb.suspend(wait=False)` returns as soon as the VM is paused, with a `SnapshotFuture`. You can pass the future straight to `env.session(name, snapshot=fut)`, which waits for the commit if it is still running.
 
 After a suspend, `Process` handles from `sb.start()` end. Their commands keep running in the VM, and you can reattach to them with `sb.process(id)` after resuming. A `sb.run()` in flight is cut.
 

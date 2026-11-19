@@ -11,14 +11,14 @@ This page takes you from an empty file to code running in a VM sandbox, first fr
 
 ## Prerequisites
 
-- A Union.ai data plane that can run the runtime you use. The examples on this page use the default, a microVM, which needs special node configuration and setup: talk to your Union.ai solutions team if it is not enabled yet. To run them without microVM nodes, add `runtime_class="gvisor"` to each `SandboxEnvironment` and install `flyteplugins-union` 0.22.0 or later. See [Choose a runtime](./runtimes).
+- A Union.ai data plane that can run the runtime you use. The examples on this page use the default, a microVM, which needs special node configuration and setup: talk to your Union.ai solutions team if it is not enabled yet. To run them without microVM nodes, add `runtime_class="gvisor"` to each `SandboxEnvironment`. See [Choose a runtime](./runtimes).
 - A working `flyte` configuration for your Union.ai control plane. See [Get started](../get-started/_index).
 - Permission to create runs in the project you use. Opening a sandbox takes the same permission.
 
 Install the plugin locally:
 
 ```bash
-pip install "flyteplugins-union>=0.21.2"
+pip install "flyteplugins-union>=0.23.0"
 ```
 
 ## Open a sandbox from a task
@@ -39,7 +39,7 @@ code_runner = sandbox.SandboxEnvironment(
 # The task that drives it. Its image needs the plugin.
 env = flyte.TaskEnvironment(
     name="sandbox-hello",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.21.2"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
     resources=flyte.Resources(cpu=1, memory="1Gi"),
 )
 

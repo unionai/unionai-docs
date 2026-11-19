@@ -27,7 +27,7 @@ async with vm.connect("agent-7") as sb:  # "resumed": files and processes as the
 ```
 
 > [!NOTE]
-> `env.connect`, `flyte connect sandbox`, and `flyte get sandbox` require `flyteplugins-union` 0.22.0 or later. They work with both [runtimes](./runtimes), from a script, an app, or a laptop. Initialize `flyte` with a project and a domain first, as for any [sandbox outside a task](./outside-tasks).
+> `env.connect`, `flyte connect sandbox`, and `flyte get sandbox` work with both [runtimes](./runtimes), from a script, an app, or a laptop. Initialize `flyte` with a project and a domain first, as for any [sandbox outside a task](./outside-tasks).
 
 ## What connect finds
 
@@ -61,9 +61,9 @@ Each run is still bounded by the environment's `max_duration`, however often you
 
 ## State is recorded as an artifact
 
-A sandbox you connect to is always kept resumable. You do not call `commit()` or set `publish`:
+A sandbox you connect to is always kept resumable. You do not call `commit()` or set `publish_on_exit`:
 
-- **The disk is recorded when a run ends.** When the sandbox's run ends, because it was closed, stayed suspended past its `keep`, or reached `max_duration`, its disk is published as an [artifact](../artifacts/_index) named after the sandbox. This happens whatever the environment's `publish` says.
+- **The disk is recorded when a run ends.** When the sandbox's run ends, because it was closed, stayed suspended past its `keep`, or reached `max_duration`, its disk is published as an [artifact](../artifacts/_index) named after the sandbox. This happens whatever the environment's `publish_on_exit` says.
 - **A suspended sandbox keeps its memory too.** A run that ended while suspended also keeps its snapshot: the memory and processes it had when it was paused.
 - **The next connect starts from there.** Connecting to a sandbox whose run has ended starts its next run from that disk, and from its memory too when the last run ended suspended. `sb.connected` is `"restored"` and `sb.generation` is one higher.
 
@@ -129,13 +129,26 @@ flyte get sandbox my-agent
 
 Each time a sandbox is restored after its run ended, it gets a new run, counted by its generation.
 
-## Attach without creating
+## Find a sandbox without creating one
 
-`env.attach(name)` connects to a sandbox that is already running and never creates or restores one. Pass `resume=True` to also resume it if it is suspended:
+Sometimes a missing sandbox is an error, not a reason to make one. An app that receives a command for sandbox `agent-7` should answer "not found" if there is no such sandbox. Pass `create=False`:
 
 ```python
-async with vm.attach("agent-7", resume=True) as sb:
-    await sb.run("ls")
+try:
+    async with vm.connect("agent-7", create=False) as sb:
+        await sb.run("ls")
+except sandbox.SandboxSessionError:
+    ...  # no sandbox of that name, or its run has ended
 ```
 
-See [Reconnect to a session](./outside-tasks#reconnect-to-a-session).
+With `create=False`, `connect` only finds a sandbox:
+
+- It connects to one that is running, and waits for one that is starting.
+- It resumes one that is suspended within its `keep`.
+- It never creates a sandbox, and never starts one again after its run has ended. Both raise `SandboxSessionError`.
+- It takes no `volume`, because it creates no disk.
+
+It also reaches a sandbox that `env.session(name)` started outside a task, by its `sb.name`. Leaving the block does `on_exit`, as for any connect: by default the sandbox keeps running. See [Reconnect to a session](./outside-tasks#reconnect-to-a-session).
+
+> [!NOTE] Coming from an earlier release
+> `env.connect(name, create=False)` replaces `env.attach(name)` and `env.attach(name, resume=True)`. Unlike `attach` without `resume`, it resumes a suspended sandbox.

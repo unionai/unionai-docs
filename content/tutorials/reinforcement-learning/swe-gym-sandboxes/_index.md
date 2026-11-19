@@ -10,7 +10,7 @@ mermaid: true
 # SWE-Gym rollouts on VM sandboxes
 
 > [!NOTE] Early access preview
-> This tutorial uses [VM sandboxes](../../../user-guide/vm-sandboxes/_index), which are in early access and need microVM node pools in your data plane. It requires `flyteplugins-union` 0.21.2 or later.
+> This tutorial uses [VM sandboxes](../../../user-guide/vm-sandboxes/_index), which are in early access and need microVM node pools in your data plane. It requires `flyteplugins-union` 0.23.0 or later.
 
 You have a model that writes code, and you want to know how well it fixes real bugs, or you want training data from its attempts. A rollout system hands the model a bug, lets it run commands in a safe copy of the repository, and scores the fix with tests the model never saw.
 
@@ -81,7 +81,7 @@ Steps 1 and 2 happen once per instance and are reused by later runs. Steps 3 to 
 ## Setup
 
 ```bash
-pip install "flyteplugins-union>=0.21.2"
+pip install "flyteplugins-union>=0.23.0"
 ```
 
 You need a `flyte` configuration for your Union.ai control plane and a project you can create runs in. For a run with nobody at the keyboard, sign in with an API key so an expired browser sign-in doesn't stop the run:
@@ -167,7 +167,7 @@ The session runs on a copy of the testbed, so the gold patch never touches the s
 
 ### Publish testbeds for later runs
 
-Building every testbed on every run wastes minutes per instance. Set `publish` on the build environment, and each build's disk is published as an artifact when its session closes. The next run starts from it:
+Building every testbed on every run wastes minutes per instance. Set `publish_on_exit` on the build environment, and each build's disk is published as an artifact when its session closes. The next run starts from it:
 
 ```python
 async def get_testbed(inst: dict) -> SandboxVolume:
@@ -182,7 +182,7 @@ async def get_testbed(inst: dict) -> SandboxVolume:
         resources=build_env.resources,
         max_duration=build_env.max_duration,
         network=build_env.network,
-        publish=artifact,
+        publish_on_exit=artifact,
     )
     ...  # build in publishing_env, as above
 ```
@@ -387,7 +387,7 @@ import json
 
 env = flyte.TaskEnvironment(
     name="swe_gym_rl",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.21.2"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
     resources=flyte.Resources(cpu=1, memory="2Gi"),
     secrets=[flyte.Secret(key="TINKER_API_KEY", as_env_var="TINKER_API_KEY")],
 )

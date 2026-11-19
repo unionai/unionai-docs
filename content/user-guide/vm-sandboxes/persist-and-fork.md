@@ -28,17 +28,17 @@ Sandboxes are durable this way. A committed disk is stored in your data plane's 
 
 ## Choose how to save state
 
-Every way to keep a sandbox's state answers two questions: what is kept, and what happens to the session you took it from.
+There are two things you can keep. `sb.commit()` keeps the disk, as a `SandboxVolume`. `sb.snapshot()` keeps the disk, the memory, and the running processes, as a `SandboxSnapshot`. Every other call is one of these two combined with what happens to the session you took it from:
 
 | Call | Keeps | The session afterwards | A new session from it starts in | Use it to |
 | --- | --- | --- | --- | --- |
 | `sb.commit()` | Disk | Keeps running | About 2 seconds | Build an environment once and start many sessions on copies of it. |
-| `sb.fork_close()` | Disk | Closed | About 2 seconds | Keep the result of a session that is finished. |
+| `sb.close(commit=True)` | Disk | Closed | About 2 seconds | Keep the result of a session that is finished. |
 | `sb.fork(name)` | Disk | Parent and child both run | About 2 seconds | Try alternatives side by side from the same files. |
 | `sb.fork(name, memory=True)` | Disk, memory, processes | Parent and child both run | About 2 seconds | Branch a running process, such as a loaded interpreter. |
 | `sb.snapshot()` | Disk, memory, processes | Keeps running, after a pause of about half a second for a 1 GiB VM | About 2 seconds | Start many sessions from one warmed-up state. |
 | `sb.suspend()` | Disk, memory, processes | Paused for up to `keep` (1 hour at most) | Milliseconds when resumed in place, about 2 seconds otherwise | Wait on a person or a long tool call. |
-| `SandboxEnvironment(publish=...)` | Disk | Published when the session ends cleanly | About 2 seconds | Keep a disk beyond a run and find it by name. |
+| `SandboxEnvironment(publish_on_exit=...)` | Disk | Published when the session ends cleanly | About 2 seconds | Keep a disk beyond a run and find it by name. |
 
 This page covers the calls that keep a disk. For the ones that keep memory and processes, see [Snapshot, suspend, and resume](./snapshots).
 
@@ -60,13 +60,13 @@ Use `ScratchVolume()` for throwaway work you never need to keep. Committing, for
 
 A `SandboxVolume` is immutable. Any number of sessions, on any node in the same cluster, can start on copies of it at the same time.
 
-To close a session and keep its disk in one step, use `fork_close()`. Its commands are stopped first, so the disk is committed as they left it:
+To close a session and keep its disk in one step, pass `commit=True` to `close()`. Its commands are stopped first, so the disk is committed as they left it:
 
 ```python
-volume = await sb.fork_close()
+volume = await sb.close(commit=True)
 ```
 
-Leaving the `async with` block after `fork_close()` does nothing more.
+The call returns once the session has ended. Leaving the `async with` block afterwards does nothing more.
 
 ## Fork a running sandbox
 
@@ -85,7 +85,7 @@ from flyteplugins.union.sandbox import SandboxVolume
 runner = sandbox.SandboxEnvironment(name="fix-runner", max_duration=600)
 env = flyte.TaskEnvironment(
     name="fix-bug",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.21.2"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
 )
 
 STATS = "def mean(xs):\n    return sum(xs) / len(xs)\n"
@@ -107,7 +107,7 @@ async def fix_bug() -> SandboxVolume:
             async with workspace.fork(f"trial-{i}") as trial:
                 await trial.fs.write_text("stats.py", fix)
                 result = await trial.run(["python", "test_stats.py"], check=False)
-                return await trial.fork_close() if result.ok else None
+                return await trial.close(commit=True) if result.ok else None
 
         results = await asyncio.gather(*(attempt(i, fix) for i, fix in enumerate(CANDIDATES)))
 
@@ -149,14 +149,13 @@ async def build_testbed(repo: str, commit: str) -> SandboxVolume:
 
 ## Publish a disk as an artifact
 
-To keep a disk beyond a run, have the platform publish it as an [artifact](../artifacts/_index). Set `publish` on the environment. When each session ends, its disk is committed and published, with no call in your code:
+To keep a disk beyond a run, have the platform publish it as an [artifact](../artifacts/_index). Set `publish_on_exit` on the environment. When each session ends, its disk is committed and published, with no call in your code:
 
 ```python
 builder = sandbox.SandboxEnvironment(
     name="builder",
     network=sandbox.Network.internet(),
-    publish="python-data-stack",  # True names the artifact after the session
-    snapshot_every=60,
+    publish_on_exit="python-data-stack",  # True names the artifact after the session
 )
 
 async with builder.session("build") as sb:
@@ -176,23 +175,14 @@ async with runner.session("analysis", volume=disk) as sb:
 
 How publishing works:
 
-- **Named by you, versioned by content.** `publish="name"` names the artifact. `publish=True` names it after the session. Each version is the disk's own hash.
+- **Named by you, versioned by content.** `publish_on_exit="name"` names the artifact. `publish_on_exit=True` names it after the session. Each version is the disk's own hash.
 - **Only clean endings publish.** A session that is closed, or reaches its `max_duration`, publishes its disk. Closing stops its commands first (`SIGTERM`, then `SIGKILL` after a grace period), so the disk is published as they left it. A session that is cancelled or fails publishes nothing. If a build fails partway, call `await sb.cancel()` so the half-built disk is not published.
 - **Published by the worker.** The session's worker commits the disk and reports it, and the platform registers the artifact shortly after the session's action succeeds. A task that reads the artifact right after the session closes may need to wait and retry.
-- **`snapshot_every` shortens the final commit.** It writes a running session's disk to storage that often (at least every 30 seconds), without committing it. Despite its name, it does not produce a `SandboxSnapshot` or a `SandboxVolume`, and nothing can start from these writes. They leave less to write when the session ends.
+- **`snapshot_interval` shortens the final commit.** For a session that writes a lot, `SandboxEnvironment(snapshot_interval=60)` writes its disk to storage every 60 seconds while it runs, without committing it. This leaves less to write when the session ends. Despite its name, it does not produce a `SandboxSnapshot` or a `SandboxVolume`, and nothing can start from these writes.
 - **Same cluster.** A published disk starts sessions on the cluster that committed it.
 
 Publishing needs task artifacts enabled on your cluster. Ask your Union.ai solutions team if `from_artifact` finds nothing after a session closes cleanly.
 
-## Record an expiry on disks
+## Disks are not removed by age
 
-Set `expiry` to record how long disks committed from an environment's sessions should be kept. Each volume carries it as `expires_at`.
-
-```python
-from datetime import timedelta
-
-sandbox.SandboxEnvironment(name="scratchpad", expiry=timedelta(days=7))
-```
-
-> [!NOTE] Expiry is recorded, not enforced
-> In this release, `expires_at` is only recorded on the volume. Nothing deletes a disk when it passes. Do not rely on `expiry` to remove data, such as disks that hold files written by untrusted code.
+A committed or published disk stays in your data plane's object store after the session and the run that made it. Nothing removes a disk by age: `SandboxVolume.expires_at` is a reserved field that nothing sets or enforces, and the `expiry` option of earlier releases has been removed. Plan for this when a disk holds files written by untrusted code.

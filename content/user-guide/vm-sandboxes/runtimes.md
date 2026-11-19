@@ -21,9 +21,6 @@ image_builder = sandbox.SandboxEnvironment(name="image-builder", runtime_class="
 
 Everything else is the same. You open sessions, run commands, and move files with the same calls, whichever runtime you choose.
 
-> [!NOTE]
-> `runtime_class` requires `flyteplugins-union` 0.22.0 or later. Earlier releases run every sandbox as a microVM.
-
 ## Compare the runtimes
 
 | | `"microvm"` (default) | `"gvisor"` |
@@ -103,6 +100,6 @@ For code you consider hostile, or for workloads where sandboxes of different cus
 
 ## Requirements
 
-- `flyteplugins-union` 0.22.0 or later for `runtime_class`.
+- `flyteplugins-union` 0.23.0 or later.
 - For `"microvm"`: a data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team.
 - For `"gvisor"` inside a task: a `flyte` release recent enough to schedule gVisor sessions. With an older one, opening the session raises `SandboxUsageError` with a message that says to upgrade `flyte`. Sessions opened outside a task do not have this requirement.

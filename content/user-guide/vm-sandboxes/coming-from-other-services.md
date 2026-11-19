@@ -19,12 +19,12 @@ You have an agent that already runs on a hosted sandbox service, and you want to
 | File system | `sb.fs.read_text`, `write_text`, `ls`, `upload_dir`, `download_dir` |
 | Network policy | `sandbox.Network.blocked()`, `.pypi()`, `.allow(...)`, `.internet()` |
 | Preview URL for a port | `sb.port_url(8080)` |
-| Named sandbox, reconnect later | `env.attach(name)` |
+| Named sandbox, reconnect later | `async with env.connect(name) as sb:` |
 | Tags | `SandboxEnvironment(labels={...})` |
 | Filesystem snapshot | `await sb.commit()` returns a `SandboxVolume` |
 | Memory snapshot | `await sb.snapshot()` returns a `SandboxSnapshot` |
 | Pause and resume | `await sb.suspend()`, then `env.session(name, snapshot=s)` |
-| Persistent volume | `SandboxEnvironment(publish=...)` and `SandboxVolume.from_artifact(name)` |
+| Persistent volume | `SandboxEnvironment(publish_on_exit=...)` and `SandboxVolume.from_artifact(name)` |
 | Terminate | Leave the `async with` block, or `await sb.cancel()` |
 
 Two differences matter most:

@@ -34,7 +34,8 @@ These are not available:
 
 - **An idle timeout.** A session lives until its block exits or it reaches `max_duration`.
 - **Passing `flyte.io.File` or `flyte.io.Dir` into a sandbox directly.** Download them in the task and copy them with `sb.fs`. See [Work with files](./files).
-- **Reaching a task's session from outside the cluster.** A script outside the cluster can only reach sessions it started or attached to.
+- **Reaching a task's session from outside the cluster.** A script outside the cluster can only reach sessions it started or connected to.
+- **Removing disks by age.** Nothing deletes a committed or published disk when it gets old. See [Save and fork disks](./persist-and-fork#disks-are-not-removed-by-age).
 
 ## Full nodes
 
@@ -69,7 +70,7 @@ All are in `flyteplugins.union.sandbox`. Each is a Flyte user error: a task that
 
 | Error | Raised when |
 | --- | --- |
-| `SandboxSessionError` | A session could not start, was not ready within `ready_timeout`, or ended before it was ready. Also raised by `attach` when no session has that name. |
+| `SandboxSessionError` | A session could not start, was not ready within `ready_timeout`, or ended before it was ready. Also raised by `env.connect(name, create=False)` when no sandbox has that name or it has ended. |
 | `SandboxSessionEnded` | A call failed because the session had ended: its VM was lost, it reached `max_duration`, or it was cancelled. The message says which. A subclass of `SandboxSessionError`. |
 | `SandboxCommandFailed` | A command run with `sb.run()` or waited on with `p.wait()` exited nonzero and `check` was on. `.result` is its `CommandResult`. |
 | `SandboxCommandTimedOut` | A command ran past its `timeout`. A subclass of `SandboxCommandFailed`. |

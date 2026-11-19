@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE] Early access preview
 > VM sandboxes are in early access. The API can change between releases. A sandbox runs as a microVM, the default, or as a gVisor sandbox. MicroVM support is not enabled by default: it needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team. gVisor sandboxes need no special node resources. See [Choose a runtime](./runtimes).
 >
-> VM sandboxes require `flyteplugins-union` 0.21.2 or later: `pip install "flyteplugins-union>=0.21.2"`.
+> VM sandboxes require `flyteplugins-union` 0.23.0 or later: `pip install "flyteplugins-union>=0.23.0"`.
 
 A VM sandbox is a lightweight virtual machine with its own Linux kernel. Where you don't have nodes that can run virtual machines, the same API runs a [gVisor sandbox](./runtimes) on any node. You start one from Python, run commands and move files in it, and throw it away when you are done. Use VM sandboxes when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
 
@@ -31,7 +31,7 @@ code_runner = sandbox.SandboxEnvironment(name="code-runner")
 
 env = flyte.TaskEnvironment(
     name="agent",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.21.2"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
 )
 
 
@@ -54,9 +54,31 @@ The code runs in a microVM that has no network and none of your task's secrets. 
 - **Durable state.** Commit a sandbox's disk and start new sandboxes on copies of it. Fork a running sandbox into several. Snapshot or suspend one with its memory and processes, and resume it later. Publish a disk as an artifact that later runs can start from. Saved disks and snapshots are stored in your data plane's object store.
 - **Part of Union.ai.** A sandbox started from a task is an action of that task's run, so it shows up in the run in the UI, and it uses the same identity, projects, and queues as the rest of your workloads.
 
+## The API in one minute
+
+You declare a `SandboxEnvironment` once. It is the template: size, network, secrets, and lifetime. Everything else is two choices.
+
+**Two ways to get a sandbox.** Both give you a `Sandbox`, usually named `sb`, that you run commands and move files with.
+
+| Call | What you get | When the block exits |
+| --- | --- | --- |
+| `env.session(name)` | A new sandbox for this block. The name is a label that says what it is for. | The sandbox is closed. |
+| `env.connect(name)` | The sandbox of that exact name, created if there is none. The same one every time, from any process. | The sandbox keeps running, unless you ask to suspend or close it. |
+
+Use `session` for work that starts and ends in one place: run this code, run this attempt. Use `connect` for a sandbox you come back to, such as an agent's workspace. See [Keep a sandbox and come back to it](./reconnect).
+
+**Two ways to keep its state.** A sandbox's state is gone when it ends, unless you keep it.
+
+| Call | What it keeps | What you get |
+| --- | --- | --- |
+| `sb.commit()` | The disk | A `SandboxVolume`. Start new sandboxes on copies of it with `env.session(name, volume=v)`. |
+| `sb.snapshot()` | The disk, memory, and running processes | A `SandboxSnapshot`. Restore new sandboxes from it with `env.session(name, snapshot=s)`. |
+
+The other calls are these two combined with something else. `sb.fork(name)` is a commit and a new sandbox on it. `sb.close(commit=True)` closes the sandbox and returns its disk. `sb.suspend()` pauses the sandbox and returns its snapshot. See [Save and fork disks](./persist-and-fork) and [Snapshot, suspend, and resume](./snapshots).
+
 ## How it works
 
-Three terms recur in these pages. A `SandboxEnvironment` is the template: size, network, secrets, and lifetime. A session is one running microVM started from that template. A `Sandbox`, usually named `sb`, is the object your code uses to drive a session.
+These pages call one running sandbox a session, whichever of the two calls started it.
 
 ```mermaid
 flowchart LR
@@ -107,8 +129,8 @@ Use VM sandboxes for:
 ## Requirements
 
 - For microVMs, the default runtime: a Union.ai data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team to enable it.
-- For gVisor sandboxes: no special node resources, and `flyteplugins-union` 0.22.0 or later. See [Choose a runtime](./runtimes).
-- `flyteplugins-union` 0.21.2 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
+- For gVisor sandboxes: no special node resources. See [Choose a runtime](./runtimes).
+- `flyteplugins-union` 0.23.0 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
 - Python 3.10 or later.
 
 {{< subpage-cards >}}
