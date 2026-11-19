@@ -317,3 +317,8 @@ McNemar
 MONAI
 nftables
 gvisor
+Timestral
+covariate
+covariates
+ERCOT
+MASE
