@@ -135,7 +135,7 @@ resource "unionai_policy" "example" {
 }
 ```
 
-A policy binds a role to a subject at a given scope. Use an `organization`, `project`, or `domain` block (each takes an `id` and a `role_id`); the `project` block also requires a `domains` set.
+A policy binds a role to a scope. It names no user or application: assign it to one with an access resource (see [Access assignments](#access-assignments)). Use an `organization`, `project`, or `domain` block (each takes an `id` and a `role_id`); the `project` block also requires a `domains` set.
 
 ### API keys
 
@@ -157,12 +157,14 @@ Configure OAuth applications for external integrations:
 resource "unionai_application" "example" {
   client_name = "External Application"
 
-  grant_types   = ["AUTHORIZATION_CODE"]
-  redirect_uris = ["https://example.com/callback"]
+  grant_types                = ["AUTHORIZATION_CODE"]
+  redirect_uris              = ["https://example.com/callback"]
+  consent_method             = "CONSENT_METHOD_REQUIRED"
+  token_endpoint_auth_method = "CLIENT_SECRET_BASIC"
 }
 ```
 
-The only required argument is `client_name`. This requires provider v0.2.6 or later. Earlier releases also require `client_id`. Union assigns the client ID on the server and exposes it as `id`. The `client_id` argument is deprecated. `redirect_uris` is a set of strings (not a single value). The client `secret` is a read-only, sensitive attribute available only at creation time.
+Set `client_name`, `consent_method`, and `token_endpoint_auth_method`. In provider v0.2.7, the schema marks only `client_name` as required, but apply fails with "Invalid Consent Method" or "Invalid Token Endpoint Auth Method" when either of the other two is unset. `consent_method` takes `CONSENT_METHOD_NONE`, `CONSENT_METHOD_TRUSTED`, or `CONSENT_METHOD_REQUIRED`. `token_endpoint_auth_method` takes `NONE`, `CLIENT_SECRET_POST`, or `CLIENT_SECRET_BASIC`. Provider releases before v0.2.6 also require `client_id`. Union assigns the client ID on the server and exposes it as `id`. The `client_id` argument is deprecated. `redirect_uris` is a set of strings (not a single value). The client `secret` is a read-only, sensitive attribute stored in state. An in-place update of the application can issue a new secret, which the provider writes to state. After an update, read the secret from state instead of reusing an earlier copy.
 
 ### Access assignments
 
