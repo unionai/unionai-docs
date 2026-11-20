@@ -13,7 +13,7 @@ This guide installs onebox on any conformant Kubernetes cluster, on-premises or 
 ## Prerequisites
 
 - A Kubernetes cluster, and `kubectl` and [Helm](https://helm.sh) 3 configured for it.
-- A PostgreSQL database the cluster's pods can reach, with a user that owns it.
+- A PostgreSQL database the cluster's pods can reach, with a user that owns it. For more than a few hundred tasks at once, give it 2 to 3 CPUs and a connection limit of at least 300; see [Sizing](./_index#sizing).
 - A bucket in an S3-compatible store, and an access key that can read, write, list, and delete objects in it.
 
 ## Make the store reachable
@@ -151,9 +151,10 @@ The proxy in front must:
 | Setting | Default | When to change it |
 |---|---|---|
 | `database.sslMode` | `require` | `disable` for a database without TLS on a network you trust; `verify-full` to check the server certificate. |
-| `database.maxOpenConnections` | `40` | Keep it under your database's connection limit. |
+| `database.maxOpenConnections` | `40` | Keep it under your database's connection limit. `100` for more than a few hundred tasks at once. |
 | `storage.region` | `us-east-1` | Set the region your store expects; most S3-compatible stores accept any value. |
-| `resources` | 1 CPU, 2 GiB requested | Raise them for many concurrent runs. |
+| `resources` | 1 CPU, 2 GiB requested | 2 CPUs and 8 GiB for more than a few hundred tasks at once. Memory grows by about 1 MiB for each action queued or running. See [Sizing](./_index#sizing). |
+| `extraConfig.leaseworker.capacity` | `500` | You want more than 500 tasks running at once. Set it to what your cluster can run. |
 | `networkPolicy.enabled` | On when `authz.enabled` is | Needs a CNI that enforces NetworkPolicy. See [Authorization](./authorization#network-policy). |
 | `caBundle` | Unset | Your store, database, or identity provider uses a certificate from a private CA. See [A private CA, extra mounts and proxies](./_index#a-private-ca-extra-mounts-and-proxies). |
 | `taskPods.extraEnv` | Unset | Task pods reach the internet through an outbound proxy (`HTTPS_PROXY`, `NO_PROXY`). |
@@ -165,3 +166,5 @@ The proxy in front must:
 | `flyte run` fails while uploading the code bundle | The SDK can't reach `storage.endpoint` from your machine. Use an endpoint that resolves outside the cluster too. |
 | Tasks fail reading their inputs | The pods can't reach `storage.endpoint`, or the access key can't read the bucket. |
 | The onebox pod restarts with TLS errors from the database | The database doesn't offer TLS. Set `database.sslMode: disable`, only on a network you trust. |
+| The onebox pod restarts with `OOMKilled` | More actions are in flight than its memory holds: it needs about 1 GiB, plus 1 MiB for each action queued or running. Raise `resources`; see [Sizing](./_index#sizing). |
+| Tasks stay queued while the cluster has room for them | Onebox runs at most 500 tasks at once. Raise `extraConfig.leaseworker.capacity`; see [Sizing](./_index#sizing). |

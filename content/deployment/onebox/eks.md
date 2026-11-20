@@ -36,6 +36,8 @@ CREATE DATABASE union OWNER union;
 
 Onebox connects with TLS (`database.sslMode: require`), which RDS supports by default.
 
+For more than a few hundred tasks at once, give the instance 2 to 3 vCPUs and a `max_connections` of at least 300. RDS sets `max_connections` from the instance's memory, so a small instance can allow fewer; raise it in the instance's parameter group. See [Sizing](./_index#sizing).
+
 ## Create the bucket
 
 ```shell
@@ -161,3 +163,5 @@ Anyone who can reach port `80` can use onebox until you put an authenticating pr
 | The onebox pod restarts with `connection refused` or a timeout to the database | The RDS security group doesn't allow the nodes. Allow port `5432` from the nodes' security group. |
 | `AccessDenied` from S3 in onebox's logs | The `onebox` service account can't assume the role. Check the annotation, and that the trust policy names `system:serviceaccount:<namespace>:onebox`. |
 | Tasks fail reading their inputs with `AccessDenied` | The namespace's `default` service account isn't annotated, or the trust policy doesn't name it. |
+| The onebox pod restarts with `OOMKilled` | More actions are in flight than its memory holds: it needs about 1 GiB, plus 1 MiB for each action queued or running. Raise `resources`; see [Sizing](./_index#sizing). |
+| Tasks stay queued while the cluster has room for them | Onebox runs at most 500 tasks at once. Raise `extraConfig.leaseworker.capacity`; see [Sizing](./_index#sizing). |

@@ -153,6 +153,7 @@ To pin a release instead, pass `--image ghcr.io/unionai/onebox-local:<version>`.
 |---|---|
 | Sign-in, users, and roles | [Authentication](./authentication) and [Authorization](./authorization), on a cluster |
 | Your own PostgreSQL and object store | [Amazon EKS](./eks), [Google GKE](./gke), or [any Kubernetes cluster](./kubernetes) |
+| Sizing for real workloads | A cluster install, sized as in [Sizing](./_index#sizing) |
 | Durable task logs, metrics, and image builds | [Task logs](./logs), [Task metrics](./metrics), and [Image builder](./image-builder), on a cluster. The add-ons above keep them inside the container only. |
 
 ## Troubleshooting

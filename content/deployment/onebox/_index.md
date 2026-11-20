@@ -50,7 +50,17 @@ Before you give anyone else access, put an authenticating proxy in front of oneb
 
 Everything else has a working default. Onebox creates its tables on first start and upgrades them on every upgrade.
 
-The cluster needs Kubernetes 1.28 or later, and nodes with at least 4 CPUs and 8 GiB of memory to spare for onebox, the UI, and a few task pods. `flyte install onebox --preflight-only` checks these, along with permissions and the database secret; see [Install with the CLI](./kubernetes#install-with-the-cli).
+## Minimum requirements
+
+| | Minimum |
+|---|---|
+| Kubernetes | 1.28 or later. On GKE, a Standard cluster: Autopilot isn't supported. |
+| Cluster capacity | 4 CPUs and 8 GiB of memory to spare across the nodes that accept pods, for onebox, the UI, and a few task pods. Your tasks need room of their own beyond that. |
+| Onebox | One pod, requesting 1 CPU and 2 GiB of memory (the chart's default). That's enough for a few hundred tasks at once; for more, see [Sizing](#sizing). |
+| PostgreSQL | A connection limit above `database.maxOpenConnections`, which is 40 by default. Beyond an evaluation, use a managed database such as Amazon RDS or Cloud SQL. |
+| On your machine | Docker with 4 CPUs and 8 GB of memory, to [try Union.ai locally](./try-locally). |
+
+`flyte install onebox --preflight-only` checks the Kubernetes version and the cluster's capacity, along with permissions and the database secret; see [Install with the CLI](./kubernetes#install-with-the-cli).
 
 ## Bucket CORS
 
