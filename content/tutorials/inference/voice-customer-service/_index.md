@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/voice_customer_service).
 
-Talk to a customer-support agent in your browser and hear it answer back. This tutorial builds that agent as two Flyte apps: a small Qwen model served with vLLM on a GPU, and a web app that serves a single-page voice UI and proxies the model. Speech recognition runs in the browser, the reply streams back as text, and the text is spoken aloud. Once Union is set up, bringing the whole thing online is two `python` commands.
+Talk to a customer-support agent in your browser and hear it answer back. This tutorial builds that agent as two Flyte apps: a small Qwen model served with vLLM on a GPU, and a web app that serves a single-page voice UI and proxies the model. The browser's Web Speech API handles speech recognition, the reply streams back as text, and the text is spoken aloud. Once Union is set up, bringing the whole thing online is two `python` commands.
 
 ![Voice customer-service agent in the browser](../../../_static/images/tutorials/voice_customer_service/demo.gif)
 
@@ -20,7 +20,7 @@ By the end you will understand, and have running:
 
 - how to serve an LLM as a Flyte app with `VLLMAppEnvironment`, exposing an OpenAI-compatible endpoint,
 - how to build a web app with `FastAPIAppEnvironment` that serves a UI and proxies the model,
-- how the two apps compose, with the browser only ever talking to its own origin,
+- how the two apps compose, with the page's JavaScript calling only its own origin,
 - how text-to-speech is switchable between the browser and a neural voice served on Union, with a live latency comparison, and
 - how Flyte app features like health checks, warm replicas, and per-app routing turn this into something that feels like a product.
 
@@ -35,7 +35,7 @@ The demo is two apps plus the browser:
 | `llm_app` | `VLLMAppEnvironment`    | L4 GPU   | serve Qwen with vLLM, OpenAI-compatible `/v1`                    |
 | `ui_app`  | `FastAPIAppEnvironment` | CPU      | serve the voice page, proxy chat to `llm_app`, synthesize speech |
 
-Speech recognition and the default text-to-speech run in the browser through the Web Speech API, so there is no audio model to host for input and the GPU footprint stays tiny. The browser talks only to the UI app, and the UI app talks to the model. That keeps the model internal and avoids any cross-origin setup in the browser.
+Speech recognition and the default text-to-speech are handled by the browser through the Web Speech API, so there is no audio model to host for input and the GPU footprint stays tiny. The page's JavaScript calls only the UI app, and the UI app calls the model, which avoids any cross-origin setup in the browser. The model still has its own URL: `llm_app` sets `requires_auth=False`, which deploys that URL without authentication, so on Union anyone who has it can call the model.
 
 ```mermaid
 flowchart LR
@@ -62,7 +62,7 @@ flowchart LR
     class B br;
 ```
 
-Serving the UI as a Flyte app, rather than hosting it somewhere separate, means the web tier gets the same treatment as the model: a managed endpoint, autoscaling, logs, and one deploy and auth story across both apps, with no separate web server to stand up or operate. It sits next to the model it proxies instead of reaching across the internet to it. Serving over HTTPS by default is part of that same package, and it happens to clear a practical hurdle for voice, since the browser only grants microphone access and speech recognition on a secure origin. So the page works the moment it deploys.
+Serving the UI as a Flyte app, rather than hosting it somewhere separate, means the web tier gets the same treatment as the model: a managed endpoint, autoscaling, logs, and one deploy and auth story across both apps, with no separate web server to stand up or operate. Serving over HTTPS by default is part of that same package, and it happens to clear a practical hurdle for voice, since the browser only grants microphone access and speech recognition on a secure origin. So the page works the moment it deploys.
 
 ## Serving the model
 
@@ -95,13 +95,13 @@ The agent's whole personality is a system prompt. Because the replies are spoken
 
 {{< code file="/unionai-examples/v2/tutorials/voice_customer_service/app.py" fragment=system_prompt lang=python >}}
 
-The proxy is what the browser actually calls. It injects the system prompt, forwards the turn to the selected model backend, and streams the reply back as plain text token by token. Keeping the model behind this proxy is what lets the browser talk only to its own origin.
+The proxy is what the browser actually calls. It injects the system prompt, forwards the turn to the selected model backend, and streams the reply back as plain text token by token. Because the page calls only this proxy, its JavaScript talks only to its own origin.
 
 {{< code file="/unionai-examples/v2/tutorials/voice_customer_service/app.py" fragment=chat_proxy lang=python >}}
 
 ## Speech in, speech out
 
-Speech recognition happens in the browser through the Web Speech API, so the microphone is transcribed locally and only text is sent to the model. This needs Chrome or Edge.
+Speech recognition goes through the browser's Web Speech API, and only the transcribed text is sent to the model. The page doesn't ask for on-device recognition, so the browser can send the microphone audio to an online speech service to be transcribed. Chrome sends it to Google's. This needs Chrome or Edge.
 
 For the reply, the page offers two voices you can switch between live:
 
