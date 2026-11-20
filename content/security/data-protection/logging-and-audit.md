@@ -16,7 +16,7 @@ Log data does not transit the control plane. Live and persisted logs alike are s
 
 ## Observability metrics
 
-A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-Data-Plane tunnel. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
+A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries against the monitoring instance are served from the data plane through the Direct-to-Data-Plane tunnel. By default, the monitoring instance also pushes operator metrics, and usage metrics for cost attribution, to the Union.ai control plane over Prometheus remote write. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
 
 ## Audit trail
 
@@ -40,11 +40,13 @@ Every API request is authenticated with the identity context captured. Run and a
 
 3. Open the Union.ai UI task logs panel and use browser developer tools (Network tab) to verify that log data comes through the tunnel.
 
-4. Confirm Fluent Bit is running on every node:
+4. On AWS, confirm Fluent Bit is running on every node:
 
    ```bash
    kubectl get ds -n union | grep fluent
    ```
+
+   On GCP and Azure the data plane doesn't run Fluent Bit: GKE's own logging agent (GCP) or the AKS Container Insights addon (Azure) ships the logs.
 
 This verification is fully self-service.
 
