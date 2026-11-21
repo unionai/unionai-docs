@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.13.2
+version: 2.14.0
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.20.2
+  flyteplugins-union: 0.24.0
 ---
 
 # Flyte CLI
@@ -70,6 +70,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `action` | [`abort`](#flyte-abort-action), [`get`](#flyte-get-action)  |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `sandbox` | [`connect⁺`](#flyte-connect-sandbox), [`get⁺`](#flyte-get-sandbox)  |
 | `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `artifact` | [`create`](#flyte-create-artifact), [`get`](#flyte-get-artifact)  |
 | `assignment` | [`create⁺`](#flyte-create-assignment), [`delete⁺`](#flyte-delete-assignment), [`get⁺`](#flyte-get-assignment)  |
@@ -102,11 +103,14 @@ This is the command line interface for Flyte.
 | `member` | [`get⁺`](#flyte-get-member)  |
 | `metrics` | [`get⁺`](#flyte-get-metrics)  |
 | `node-groups` | [`get⁺`](#flyte-get-node-groups), [`update⁺`](#flyte-update-node-groups)  |
+| `org` | [`get⁺`](#flyte-get-org)  |
 | `system-logs` | [`get⁺`](#flyte-get-system-logs)  |
 | `task` | [`get`](#flyte-get-task)  |
+| `onebox` | [`install⁺`](#flyte-install-onebox), [`start⁺`](#flyte-start-onebox), [`stop⁺`](#flyte-stop-onebox)  |
 | `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `hello` | [`run`](#flyte-run-hello)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+| `selfhosted-base` | [`start⁺`](#flyte-start-selfhosted-base), [`stop⁺`](#flyte-stop-selfhosted-base)  |
 | `tui` | [`start`](#flyte-start-tui)  |
 {{< /markdown >}}
 {{< markdown >}}
@@ -114,6 +118,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`action`](#flyte-abort-action), [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
+| `connect⁺` | [`sandbox⁺`](#flyte-connect-sandbox)  |
 | `create` | [`api-key⁺`](#flyte-create-api-key), [`artifact`](#flyte-create-artifact), [`assignment⁺`](#flyte-create-assignment), [`cluster⁺`](#flyte-create-cluster), [`cluster-pool⁺`](#flyte-create-cluster-pool), [`config`](#flyte-create-config), [`policy⁺`](#flyte-create-policy), [`project`](#flyte-create-project), [`queue⁺`](#flyte-create-queue), [`role⁺`](#flyte-create-role), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger), [`user⁺`](#flyte-create-user), [`volume⁺`](#flyte-create-volume)  |
 | [`debug⁺`](#flyte-debug) | - |
 | `delete` | [`api-key⁺`](#flyte-delete-api-key), [`app`](#flyte-delete-app), [`assignment⁺`](#flyte-delete-assignment), [`cluster⁺`](#flyte-delete-cluster), [`cluster-pool⁺`](#flyte-delete-cluster-pool), [`devbox`](#flyte-delete-devbox), [`local-cache`](#flyte-delete-local-cache), [`policy⁺`](#flyte-delete-policy), [`queue⁺`](#flyte-delete-queue), [`role⁺`](#flyte-delete-role), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger), [`user⁺`](#flyte-delete-user)  |
@@ -124,7 +129,8 @@ This is the command line interface for Flyte.
 | `forget⁺` | [`volume⁺`](#flyte-forget-volume)  |
 | [`fork⁺`](#flyte-fork) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`node-groups⁺`](#flyte-get-node-groups), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`artifact`](#flyte-get-artifact), [`assignment⁺`](#flyte-get-assignment), [`cluster⁺`](#flyte-get-cluster), [`cluster-config⁺`](#flyte-get-cluster-config), [`cluster-pool⁺`](#flyte-get-cluster-pool), [`code`](#flyte-get-code), [`condition`](#flyte-get-condition), [`config`](#flyte-get-config), [`devbox`](#flyte-get-devbox), [`environment⁺`](#flyte-get-environment), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`member⁺`](#flyte-get-member), [`metrics⁺`](#flyte-get-metrics), [`node-groups⁺`](#flyte-get-node-groups), [`org⁺`](#flyte-get-org), [`policy⁺`](#flyte-get-policy), [`project`](#flyte-get-project), [`queue⁺`](#flyte-get-queue), [`role⁺`](#flyte-get-role), [`run`](#flyte-get-run), [`sandbox⁺`](#flyte-get-sandbox), [`secret`](#flyte-get-secret), [`settings`](#flyte-get-settings), [`system-logs⁺`](#flyte-get-system-logs), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger), [`user⁺`](#flyte-get-user)  |
+| `install⁺` | [`onebox⁺`](#flyte-install-onebox)  |
 | `mount⁺` | [`volume⁺`](#flyte-mount-volume)  |
 | `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `proxy` | [`app`](#flyte-proxy-app)  |
@@ -132,9 +138,9 @@ This is the command line interface for Flyte.
 | `run` | [`hello`](#flyte-run-hello), [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `signal` | [`condition`](#flyte-signal-condition)  |
-| `start` | [`devbox`](#flyte-start-devbox), [`tui`](#flyte-start-tui)  |
+| `start` | [`devbox`](#flyte-start-devbox), [`onebox⁺`](#flyte-start-onebox), [`selfhosted-base⁺`](#flyte-start-selfhosted-base), [`tui`](#flyte-start-tui)  |
 | `status⁺` | [`volume⁺`](#flyte-status-volume)  |
-| `stop` | [`devbox`](#flyte-stop-devbox)  |
+| `stop` | [`devbox`](#flyte-stop-devbox), [`onebox⁺`](#flyte-stop-onebox), [`selfhosted-base⁺`](#flyte-stop-selfhosted-base)  |
 | `undelete⁺` | [`cluster⁺`](#flyte-undelete-cluster), [`cluster-pool⁺`](#flyte-undelete-cluster-pool), [`queue⁺`](#flyte-undelete-queue)  |
 | `unmount⁺` | [`volume⁺`](#flyte-unmount-volume)  |
 | `update` | [`app`](#flyte-update-app), [`cluster⁺`](#flyte-update-cluster), [`cluster-pool⁺`](#flyte-update-cluster-pool), [`node-groups⁺`](#flyte-update-node-groups), [`policy⁺`](#flyte-update-policy), [`project`](#flyte-update-project), [`queue⁺`](#flyte-update-queue), [`role⁺`](#flyte-update-role), [`trigger`](#flyte-update-trigger)  |
@@ -281,6 +287,70 @@ flyte build --all --recursive ./src
 | `--all` | `boolean` | `Sentinel.UNSET` | Build the images for all environments in the file or directory, ignoring the file name. |
 | `--ignore-load-errors` `-i` | `boolean` | `Sentinel.UNSET` | Ignore errors when loading environments, especially when using `--recursive` or `--all`. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+
+{{< variant union >}}
+{{< markdown >}}
+### flyte connect
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte connect COMMAND [ARGS]...`**
+
+Connect to something running in Union, by its name.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte connect sandbox
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte connect sandbox [OPTIONS] NAME`**
+
+Open a shell in the sandbox named NAME, creating it if there is none.
+
+The same sandbox every time: leave it (Ctrl-] detaches, or exit the
+shell) and connect again later to carry on. Leaving suspends it for
+--keep by default, so a connect within that resumes it where it was, its
+processes as they were; the shell is found again by its name unless it
+exited. A sandbox suspended for longer than --keep has ended: a platform
+with sandbox resume starts it again from its disk, one without says so.
+
+A sandbox this creates is made from --env, or from --cpu, --memory,
+--max-duration, --runtime and --network. One that exists keeps its own
+settings, and these are ignored.
+
+Examples:
+
+```bash
+$ flyte connect sandbox my-agent
+
+$ flyte connect sandbox my-agent --cpu 2 --memory 4Gi --network internet
+
+$ flyte connect sandbox my-agent --env agents/env.py:sandbox_env --on-exit detach
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--env` | `text` | `Sentinel.UNSET` | A SandboxEnvironment to create the sandbox from: module:var or file.py:var. |
+| `--image` | `text` | `Sentinel.UNSET` | The sandbox's image, for one this creates (sandboxes run the platform's base today). |
+| `--cpu` | `text` | `Sentinel.UNSET` | vCPUs, for a sandbox this creates. |
+| `--memory` | `text` | `Sentinel.UNSET` | Memory (e.g. 4Gi), for a sandbox this creates. |
+| `--max-duration` | `text` | `Sentinel.UNSET` | The longest each run of a sandbox this creates lives (e.g. 2h). |
+| `--runtime` | `choice` |  | What a sandbox this creates runs in. [default: microvm] |
+| `--network` | `choice` |  | Outbound network of a sandbox this creates. [default: none] |
+| `--shell` | `text` | `bash` | The shell to start. |
+| `--shell-id` | `text` | `cli-shell` | The shell's name in the sandbox. |
+| `--new-shell` | `boolean` | `Sentinel.UNSET` | Start a new shell, rather than attach to the running one. |
+| `--on-exit` | `choice` | `suspend` | What leaving does to the sandbox: suspend it for --keep, leave it running, or close it. |
+| `--keep` | `text` | `10m` | How long a suspended sandbox is kept (at most 1h). |
+| `--ready-timeout` | `text` | `5m` | How long to wait for the sandbox. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 ### flyte create
 
@@ -866,6 +936,9 @@ Remove resources from a Flyte deployment.
 **`flyte delete api-key [OPTIONS] CLIENT_ID`**
 
 Delete an API key.
+
+CLIENT-ID can be the key's client ID or, on organizations using the Zitadel
+identity provider, its name.
 
 Examples:
 
@@ -1571,7 +1644,8 @@ either of them stale.
 
 **`flyte fork [OPTIONS] COMMAND [ARGS]...`**
 
-Fork a prior run: reuse its succeeded actions, but run your *current* local code.
+Fork a run — finished or still running: reuse its succeeded actions, but run your *current* local
+code.
 
 ```bash
 flyte fork ul56wcvgqrb9vzhzz5l2 hello.py my_task
@@ -1587,6 +1661,26 @@ How it differs from the built-in verbs:
 flyte rerun <run>            # same code, same inputs, everything re-executes
 flyte rerun <run> --recover  # same code, reuse succeeded actions (failure recovery)
 flyte fork <run> ...         # NEW code, reuse succeeded actions
+```
+
+Change the inputs of specific task actions (by action name). Each overridden action and everything
+that consumes it re-runs, and its ancestors re-run to call it again. Without `<file.py> <task>`,
+the source run's code is replayed:
+
+```bash
+flyte fork <run> --task-action-inputs '{"<action>": {"learning_rate": 0.01}}'
+flyte fork <run> --task-action-inputs @overrides.json hello.py my_task
+```
+
+Apply your code update to one task action instead of the whole run with `--target-action`. Only
+that action and the tasks it calls run the updated code; every other action keeps the source run's
+code. `<task>` is the task the target action runs, and its input options set that action's inputs.
+A fork updates the code of one action; input overrides can go on any number of actions alongside
+it:
+
+```bash
+flyte fork <run> --target-action a2 hello.py my_task
+flyte fork <run> --target-action a2 --task-action-inputs '{"a3": {"x": 1}}' hello.py my_task
 ```
 
 Force specific actions to re-execute even though they succeeded:
@@ -1605,6 +1699,27 @@ Every input option is optional. An input you leave out keeps the value the sourc
 launched with, so passing none replays the source inputs as they were. Actions recovered from
 the source run keep the outputs they produced under its inputs; use `--force-rerun-action` for
 any that must re-execute against the new ones.
+
+**Forking a running run.** Where the organization allows it, the source may still be running.
+Each action is decided as the fork reaches it: one the source already succeeded at is reused, and
+one the source is still running (or has not started) runs again in the fork. So an action in
+flight in both runs is computed twice, unless it succeeds in the source first. The source keeps
+running unless you pass `--abort-source`. Before submitting, the CLI prints the reuse plan to
+stderr (`--no-plan` skips it):
+
+```bash
+flyte fork <run> --plan                                  # show the reuse plan; do not fork
+flyte -of json fork <run> --plan                         # ...as JSON
+flyte fork <run> --wait-for n3-build_features hello.py my_task   # wait for it to succeed first
+flyte fork <run> --wait-for n3 --wait-timeout 30m hello.py my_task
+flyte fork <run> --abort-source hello.py my_task         # abort the source once the fork exists
+```
+
+`--wait-for ACTION` (repeatable) waits for that source action to succeed, so the fork reuses it;
+if it fails, is aborted or times out, nothing is forked, and `--wait-timeout` (e.g. `90s`, `30m`,
+`2h`) bounds the wait. `--abort-source` aborts the source only after the fork is created, so a
+failed fork never costs you the source. Overrides (`--task-action-inputs`, `--target-action`) can
+only name actions the running source has already reached, or reaches while `--wait-for` waits.
 
 `flyte fork` takes the run to fork first, then the file and task, with `flyte run`'s options
 (image, copy-style, service-account, env, labels, queue and the rest) before them. Forking is
@@ -1636,7 +1751,14 @@ remote-only, since a fork reuses a prior run's actions from the control plane.
 | `--queue` | `text` |  | Queue for the run and its remote image builds. Overrides any queue set on the task. |
 | `--custom-context` | `text` | `Sentinel.UNSET` | Custom context to propagate to every action in the run, readable in tasks via `flyte.get_custom_context()`. Format: KEY=VALUE. Can be specified multiple times, e.g. `--custom-context experiment=calibration`. Takes precedence over `--custom-context-from-env` for the same key. |
 | `--custom-context-from-env` | `text` | `Sentinel.UNSET` | Add a local environment variable to the run's custom context. Format: VAR (key is VAR) or KEY=VAR. Fails if VAR is not set. Can be specified multiple times. Custom context is stored as run metadata, so do not use it for secrets. |
+| `--task-action-inputs` | `text` |  | Input overrides for task actions of the forked run, as JSON keyed by action name: '{"&lt;action&gt;": {"&lt;input&gt;": &lt;value&gt;}}'. Prefix a path with @ to read the JSON from a file. File and Dir inputs take a remote URI or a local path, which is uploaded to the data plane; DataFrame inputs take a remote URI. Each overridden action and everything that consumes it re-runs; its ancestors re-run to call it again. `a0` is the root action. |
+| `--target-action` | `text` |  | Apply the local code update to this task action, by action name, instead of the whole run. Defaults to the root action `a0`, whose code is the whole run's. &lt;task&gt; must be the task that action runs, and its input options set that action's inputs. The target action and the tasks it calls run the updated code; every other action keeps the source run's code. |
 | `--force-rerun-action` | `text` | `Sentinel.UNSET` | Name of an action to re-execute even though it succeeded in the forked run. Repeatable. A listed parent re-enqueues its children (list them too to force the whole subtree); unknown names are ignored. |
+| `--abort-source` | `boolean` | `False` | Abort the source run once the fork is created, if it is still running, with the reason "superseded by fork &lt;new run&gt;". The fork is created first, so a failed fork never aborts the source. A source that already finished is left alone. |
+| `--wait-for` | `text` | `Sentinel.UNSET` | Before forking, wait for this action of the source run to succeed, so the fork reuses it instead of running it a second time. Repeatable. Only applies while the source is running: then, if the action fails, is aborted or times out in the source, nothing is forked. A source that already finished is forked right away. The fork's inputs, code and the overrides of actions the source has reached are checked before the wait; whether the organization allows forking a running run is checked when the fork is submitted, after it. |
+| `--wait-timeout` | `duration` |  | Give up waiting for --wait-for after this long (e.g. 90s, 30m, 2h) without forking. Waits indefinitely by default. |
+| `--plan` | `boolean` | `False` | Print which source actions the fork would reuse, which are still in flight, and which re-run, then exit without forking. Honors the output format (`flyte -of json fork ...`). |
+| `--no-plan` | `boolean` | `False` | When forking a running source, skip the reuse plan printed before submitting, which lists every source action (up to 1000) first. Useful for scripts and for runs with a large fan-out. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -1706,8 +1828,9 @@ Get all actions for a run or details for a specific action.
 
 Get or list API keys.
 
-If CLIENT-ID is provided, gets a specific API key.
-Otherwise, lists all API keys.
+If CLIENT-ID is provided, gets a specific API key. CLIENT-ID can be the key's
+client ID or, on organizations using the Zitadel identity provider, its name.
+Otherwise, lists all API keys with their names and client IDs.
 
 Examples:
 
@@ -1720,6 +1843,9 @@ $ flyte get api-key --limit 10
 
 # Get a specific API key
 $ flyte get api-key my-client-id
+
+# Get a specific API key by name
+$ flyte get api-key ci-pipeline
 ```
 
 | Option | Type | Default | Description |
@@ -2191,6 +2317,37 @@ $ flyte get node-groups my-cluster --export > node-groups.yaml
 
 {{< variant union >}}
 {{< markdown >}}
+#### flyte get org
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get org [OPTIONS]`**
+
+Show the org's limits and entitlements.
+
+Every limit and entitlement, with the value the org runs with, its tier
+default, and a marker where they differ: (lifted) for a per-org override,
+(enterprise) for one gated to the Enterprise tier. A limit of 0 is unlimited.
+
+Examples:
+
+```bash
+$ flyte --org acme-prod get org
+
+$ flyte --org acme-prod -of json get org
+
+$ flyte --org acme-prod get org --limit max_concurrent_actions
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `text` | `Sentinel.UNSET` | Only show this limit or entitlement (e.g. max_concurrent_actions). Repeatable. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
 #### flyte get policy
 
 > **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
@@ -2362,6 +2519,42 @@ $ flyte get run --paused-only
 | `-d` `--domain` | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
+{{< variant union >}}
+{{< markdown >}}
+#### flyte get sandbox
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte get sandbox [OPTIONS] [NAME]`**
+
+Get or list sandboxes.
+
+Without NAME, lists the sandboxes of the project and domain. With NAME,
+shows that sandbox as it is now (the phase of the run that is it now, that
+run, and which of its runs that is), then the runs it has had: a sandbox started
+again after its run ended is on its next run, from what the last kept.
+Where the platform can't list a sandbox's runs yet, its current run alone
+is shown.
+
+Examples:
+
+```bash
+$ flyte get sandbox
+
+$ flyte get sandbox my-agent
+
+$ flyte -of json get sandbox my-agent
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Most sandboxes to list. |
+| `-p` `--project` | `text` |  | Project to which this command applies. |
+| `-d` `--domain` | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte get secret
 
 **`flyte get secret [OPTIONS] [NAME]`**
@@ -2513,6 +2706,70 @@ $ flyte --org my-org get user --email jane@example.com
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Maximum number of users to list |
 | `--email` | `text` |  | Filter by email address |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+### flyte install
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte install COMMAND [ARGS]...`**
+
+Install Union on infrastructure you have.
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte install onebox
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte install onebox [OPTIONS]`**
+
+Install Union (onebox) on a Kubernetes cluster, against your Postgres and bucket.
+
+Give the database and bucket as flags or in --values. Whatever is missing,
+an editor opens on a values template to fill in (with a terminal; without
+one, the missing inputs are listed). To try Union on this machine instead,
+use `flyte start onebox`. `flyte install onebox` is the older name of this command
+and installs the onebox chart, the same chart under its older name.
+
+The chart and Union's images are under the Union License:
+https://www.union.ai/licensing/union-license
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--namespace` `-n` | `text` | `union` | Namespace to install into. |
+| `--release` | `text` | `onebox` | Helm release name. |
+| `--db-host` | `text` |  | Postgres host. |
+| `--db-port` | `integer` |  | Postgres port [default: 5432]. |
+| `--db-name` | `text` |  | Database name [default: union]. |
+| `--db-user` | `text` |  | Database user [default: union]. |
+| `--db-sslmode` | `text` |  | disable, require, verify-ca or verify-full [default: require]. |
+| `--db-password-secret` | `text` |  | Secret in the namespace with the password (key: password). |
+| `--storage-type` | `text` |  | s3, gcs or azure [default: s3]. |
+| `--bucket` | `text` |  | Bucket for task data and code bundles. |
+| `--region` | `text` |  | Bucket region (s3). |
+| `--endpoint` | `text` |  | S3-compatible endpoint (MinIO, R2, Ceph). |
+| `--gcp-project` | `text` |  | GCP project (gcs). |
+| `--azure-account` | `text` |  | Storage account (azure). |
+| `--db-password` | `text` |  | Database password, stored in a Secret the chart creates (env: ONEBOX_DB_PASSWORD). Prefer --db-password-secret. |
+| `--values` `-f` | `path` | `Sentinel.UNSET` | Helm values file. |
+| `--set` | `text` | `Sentinel.UNSET` | Helm value, key=value (repeatable). |
+| `--edit` | `boolean` | `Sentinel.UNSET` | Review the inputs in an editor even when nothing is missing. |
+| `--chart` | `text` |  | Chart name in https://unionai.github.io/helm-charts, or a local chart directory or .tgz (default: selfhosted-base, or onebox for `flyte install onebox`). |
+| `--version` | `text` |  | Chart version (default: latest). |
+| `--serving` | `boolean` | `Sentinel.UNSET` | Turn on apps and LLM gateways (needs Knative Serving). |
+| `--kubeconfig` | `text` |  | Kubeconfig (default: $KUBECONFIG or ~/.kube/config). |
+| `--context` | `text` |  | Kubeconfig context. |
+| `--preflight-only` | `boolean` | `Sentinel.UNSET` | Run the checks and stop. |
+| `--skip-preflight` | `boolean` | `Sentinel.UNSET` | Install even if a check fails. |
+| `--dry-run` | `boolean` | `Sentinel.UNSET` | Render the install against the cluster without applying it. |
+| `--timeout` | `text` | `15m` | How long to wait for onebox to be ready. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -3050,6 +3307,52 @@ Start a local Flyte devbox cluster.
 | `--apple-silicon` | `boolean` | `False` | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run natively on the Mac, so their code can use Metal (torch mps, mlx). This runs workload code outside any sandbox, so the devbox's ports are bound to 127.0.0.1: unreachable from the network, though not from other software on this Mac. Needs uv (https://docs.astral.sh/uv/). |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 
+{{< variant union >}}
+{{< markdown >}}
+#### flyte start onebox
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte start onebox [OPTIONS]`**
+
+Start Union on this machine, in one Docker container.
+
+Union in the image is under the Union License: https://www.union.ai/licensing/union-license
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--image` | `text` | `ghcr.io/unionai/onebox-local:latest` | The onebox image to run. |
+| `--with` | `text` |  | Add-ons, comma separated: logs (task logs kept after pods are gone), metrics (Metrics tab), image-builder (flyte.Image builds), apps (apps and LLM gateways), or none. Default for a new container: logs. |
+| `--apple-silicon` | `boolean` |  | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run their work on it, natively on this Mac. Publishes onebox on this machine only. Kept by later starts. |
+| `--timeout` | `integer` | `900` | Seconds to wait for Union to be ready. |
+| `--recreate` | `boolean` | `Sentinel.UNSET` | Replace the onebox container (its data volume stays). |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte start selfhosted-base
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte start selfhosted-base [OPTIONS]`**
+
+Start Union on this machine, in one Docker container.
+
+Union in the image is under the Union License: https://www.union.ai/licensing/union-license
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--image` | `text` | `ghcr.io/unionai/onebox-local:latest` | The onebox image to run. |
+| `--with` | `text` |  | Add-ons, comma separated: logs (task logs kept after pods are gone), metrics (Metrics tab), image-builder (flyte.Image builds), apps (apps and LLM gateways), or none. Default for a new container: logs. |
+| `--apple-silicon` | `boolean` |  | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run their work on it, natively on this Mac. Publishes onebox on this machine only. Kept by later starts. |
+| `--timeout` | `integer` | `900` | Seconds to wait for Union to be ready. |
+| `--recreate` | `boolean` | `Sentinel.UNSET` | Replace the onebox container (its data volume stays). |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
 #### flyte start tui
 
 **`flyte start tui [OPTIONS]`**
@@ -3120,6 +3423,42 @@ Stop various Flyte services.
 **`flyte stop devbox`**
 
 Pause the local Flyte devbox cluster without removing it.
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte stop onebox
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte stop onebox [OPTIONS]`**
+
+Stop the Union started by `flyte start onebox`.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--delete` | `boolean` | `Sentinel.UNSET` | Remove the container instead of pausing it. |
+| `--volume` | `boolean` | `Sentinel.UNSET` | With --delete, also remove the data volume. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+#### flyte stop selfhosted-base
+
+> **Note:** This command is provided by the [`flyteplugins-union`](#plugin-commands) plugin.
+
+**`flyte stop selfhosted-base [OPTIONS]`**
+
+Stop the Union started by `flyte start onebox`.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--delete` | `boolean` | `Sentinel.UNSET` | Remove the container instead of pausing it. |
+| `--volume` | `boolean` | `Sentinel.UNSET` | With --delete, also remove the data volume. |
+| `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< markdown >}}

@@ -2,7 +2,7 @@
 title: ApiKey
 description: "Represents a Union API Key (OAuth Application)."
 icon: braces
-version: 0.20.2
+version: 0.24.0
 variants: -flyte +union
 layout: py_api
 ---
@@ -41,6 +41,7 @@ class ApiKey(
 | `client_id` | `str` | The OAuth client ID. |
 | `client_name` | `str` | The human-readable name of the API key. |
 | `client_secret` | `str` | The OAuth client secret (only available on creation). |
+| `display_name` | `str` | The name to show for the key: its human-readable name, or the client ID if it has none.  With the Zitadel identity provider the client ID is a generated numeric ID, so the name is the only way to tell keys apart. |
 
 ## Methods
 
