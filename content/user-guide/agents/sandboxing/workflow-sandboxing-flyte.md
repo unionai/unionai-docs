@@ -255,8 +255,9 @@ The tables below apply to `flyte` 2.10.6 or later, which runs the sandbox on Mon
 - **Primitive types**: `int`, `float`, `str`, `bool`, `bytes`, `None`
 - **Collection types**: `list`, `dict`, `tuple` (including generic forms like `list[int]`, `dict[str, float]`)
 - **Opaque IO handles**: `File`, `Dir`, `DataFrame`; pass-through only, cannot be inspected in the sandbox
+- **Dataclasses and Pydantic models** (`flyte` 2.12.3 or later): opaque handles, like `File`. The sandbox can pass them to tasks and return them, but cannot read their fields.
 - **Union types**: `Optional[T]` and `Union` of allowed types
-- **Not allowed as inputs or outputs**: Custom classes, dataclasses, Pydantic models, or any user-defined types. A class defined inside the sandbox can still be used there.
+- **Not allowed as inputs or outputs**: Other custom classes and user-defined types. A class defined inside the sandbox can still be used there.
 
 ## Security model
 
@@ -266,7 +267,7 @@ The sandboxed orchestrator provides security through restriction, not trust:
 - **No network access**: Cannot make HTTP requests, open sockets, or resolve DNS
 - **No OS access**: Cannot spawn processes, read environment variables, or access system resources
 - **Limited imports**: Only a subset of the standard library can be imported; no third-party packages
-- **Opaque IO**: `File`, `Dir`, and `DataFrame` values pass through the sandbox without inspection; the sandbox can route them between tasks but cannot read their contents
+- **Opaque IO**: `File`, `Dir`, and `DataFrame` values, and (with `flyte` 2.12.3 or later) dataclasses and Pydantic models, pass through the sandbox without inspection. The sandbox can route them between tasks but cannot read their contents.
 - **Type-checked boundaries**: Inputs and outputs are validated against declared types at the sandbox boundary
 - **Deterministic execution**: The same inputs always produce the same outputs (excluding external task results)
 
