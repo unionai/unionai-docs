@@ -14,7 +14,7 @@ variants: -flyte +union
 The Costs page shows what the compute behind your tasks, environments, and apps costs on your cloud provider. Start with the whole organization, then drill down through projects, tasks, and runs to a single action.
 
 > [!NOTE] Recent hours are still settling
-> Cost is recalculated every 5 minutes, so new usage usually appears within minutes. The cost of the last two hours can still rise as late usage data arrives. **Data as of**, next to the range selector, shows where the time range ends.
+> Cost is recalculated every 5 minutes. The cost of the last two hours can still rise as late usage data arrives. **Data as of**, next to the range selector, shows where the time range ends.
 
 ![The organization Costs page, with summary tiles above a map of cost by project](../_static/images/user-guide/costs/org-summary.png)
 
@@ -98,7 +98,7 @@ The chart under the map shows how cost moved across the range, in one-hour bars,
 
 Bars from the last two hours are drawn lighter, because their cost can still rise.
 
-![Cost over time at the organization level, split into workloads, idle and system](../_static/images/user-guide/costs/cost-over-time.png)
+![Cost over time at the organization level, split into workloads, idle, and system](../_static/images/user-guide/costs/cost-over-time.png)
 
 ## Cost by instance type
 
@@ -130,4 +130,4 @@ A run's cost page lists its 100 most expensive actions, with the same sort optio
 - If your organization limits how long it keeps run history, the range starts no earlier than that limit, and the page says so.
 - Cost data cannot be exported, and there is no API or CLI access.
 - You cannot override list prices with your own negotiated rates.
-- The map shows at most 500 projects, 200 tasks, 100 runs, and 100 actions, and its caption says when it reached a limit. **Top 100 runs** and the run cost page show at most 100 rows.
+- The map shows at most 500 projects, 200 tasks, environments, and apps in a project, 200 workers in a reusable environment, 100 runs of a task, and 100 actions of a run. Its caption says when it reached a limit. **Top 100 runs** and the run cost page show at most 100 rows.
