@@ -9,7 +9,7 @@ variants: +flyte +union
 # Grouping actions
 
 Groups are an organizational feature in Flyte that allow you to logically cluster related task invocations (called "actions") for better visualization and management in the UI.
-Groups help you organize task executions into manageable, hierarchical structures regardless of whether you're working with large fanouts or smaller, logically-related sets of operations.
+Groups help you organize task executions into manageable units regardless of whether you're working with large fanouts or smaller, logically-related sets of operations.
 
 ## What are groups?
 
@@ -26,7 +26,7 @@ Without groups, complex workflows can become visually overwhelming in the Flyte 
 
 Groups solve this by:
 
-- **Organizing actions**: Multiple task executions within a group are presented as a hierarchical "folder" structure
+- **Organizing actions**: Multiple task executions within a group are presented as a "folder"
 - **Improving UI visualization**: Instead of many individual nodes cluttering the view, you see logical groups that can be collapsed or expanded
 - **Aggregating status information**: Groups show aggregated run status (success/failure) of their contained actions when you hover over them in the UI
 - **Maintaining execution parallelism**: Tasks still run concurrently as normal, but are organized for display
@@ -51,6 +51,8 @@ The key points about groups:
 3. **UI folders**: Groups appear as collapsible/expandable folders in the Flyte UI run tree.
 4. **Status aggregation**: Hover over a group in the UI to see aggregated success/failure information.
 5. **Execution unchanged**: Tasks still execute in parallel as normal; groups only affect organization and visualization.
+6. **Flat, not nested**: Each action belongs to at most one group, and groups have no sub-groups. A `with flyte.group()` block nested inside another replaces the enclosing group, so task invocations in the inner block belong only to the inner group. When the inner block exits, invocations belong to the enclosing group again.
+7. **Name length**: A group name can be at most 255 characters. A longer name raises a `ValueError` when the `with flyte.group()` block is entered (flyte 2.12.3 or later; earlier releases don't check the length).
 
 **Important**: Groups do not aggregate outputs. Each task execution still produces its own individual outputs. Groups are purely for organization and UI presentation.
 
