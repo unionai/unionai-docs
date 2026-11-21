@@ -272,7 +272,7 @@ Users send natural language requests (`"Show me monthly revenue trends for 2024"
 ## Example: durable agent
 
 For production workloads, wrap the tools as `@env.task` so the sandbox dispatches them as durable Flyte tasks through the controller.
-This gives you execution history, retries, caching, and full observability.
+This gives you execution history and full observability, and lets you configure retries and caching per task.
 
 ```python
 from _agent import CodeModeAgent
@@ -320,7 +320,9 @@ async def analyze(request: str) -> str:
 ```
 
 The key difference from the chat app: each tool call goes through the Flyte controller as a durable task.
-If `fetch_data` fails, Flyte retries it automatically.
+To have Flyte retry `fetch_data` when it raises an error, set `retries` on the task, for example `@env.task(retries=3)`.
+The tasks in this example don't set it.
+The agent's own retry loop can still call `fetch_data` again in the code it regenerates.
 Every tool invocation is recorded and visible in the execution timeline.
 
 Run it with:
