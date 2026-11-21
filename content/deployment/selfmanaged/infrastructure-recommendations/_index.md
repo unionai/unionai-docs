@@ -193,11 +193,11 @@ uses two Kubernetes service accounts:
 - **`union-system`** — shared by the platform components (operator, webhook, proxy, and
   FluentBit).
 - **The task-pod service account** — task pods do not run as `union-system`. By default
-  they run as the `union` service account in the data plane namespace. If you enable
-  multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`),
-  they run as the `default` service account in each task namespace. Multi-namespace mode
-  also needs `clusterresourcesync.enabled: true`: clusterresourcesync creates the task
-  namespaces and annotates their `default` service accounts, and it is off by default.
+  they run as the `union` service account in the data plane namespace. In multi-namespace
+  mode (`singleNamespace: false`), they run as the `default` service account in each work
+  namespace. `clusterresourcesync` annotates that account with the worker identity when it
+  creates the namespace. For a namespace it doesn't create, add the annotation yourself. See
+  [Choose a scope](../kubernetes-rbac#choose-a-scope).
 
 | Cloud | Mechanism |
 | --- | --- |
