@@ -10,15 +10,44 @@ variants: +flyte +union
 
 As a project grows, the number of deployed tasks in a project/domain grows with it. Every `@env.task` you deploy shows up as a flat entry in the **Tasks list** alongside every other task, including internal helpers, leaf tasks, and intermediate steps that users aren't meant to invoke directly. Finding the handful of tasks that are actually meant to be *run* becomes a navigation problem.
 
-**Entrypoint tasks** solve this by letting you mark which tasks in an environment are the ones intended to be invoked by humans or other services. It's a purely declarative hint (it doesn't change how the task executes), but it makes the task easy to surface in the CLI, UI, and remote API.
+{{< variant union >}}
+{{< markdown >}}
+
+**Entrypoint tasks** solve this by letting you mark which tasks in an environment are the ones intended to be invoked by humans or other services. It's a purely declarative hint: it doesn't change how the task executes.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+**Entrypoint tasks** let you mark which tasks in an environment are the ones intended to be invoked by humans or other services. It's a purely declarative hint: it doesn't change how the task executes.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## When to use entrypoints
 
 Mark a task as an entrypoint when:
 
+{{< variant union >}}
+{{< markdown >}}
+
 - **It is meant to be run directly**, by a user, a teammate, or a service, rather than only being called from another task.
-- **You want it to be discoverable** in the UI's entrypoint view or via filtered CLI queries.
+- **You want it to be discoverable** in the ways listed under [Discover entrypoint tasks](#discover-entrypoint-tasks).
 - **You are sharing tasks with team members** and want the "start here" tasks to stand out from internal helpers.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+- **It is meant to be run directly**, by a user, a teammate, or a service, rather than only being called from another task.
+- **You are sharing tasks with team members** and want to record in the code which tasks are the "start here" tasks.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Conversely, don't mark a task as an entrypoint if it only exists as a subtask called by another task, or if it's a utility helper not intended to be invoked on its own.
 
@@ -59,6 +88,18 @@ The default is `entrypoint=False`. If you don't mark anything, nothing is treate
 
 ## Discover entrypoint tasks
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!NOTE]
+> The open-source Flyte backend ignores the entrypoint filter. On it, `flyte get task` with the `--entrypoint` flag, and `flyte.remote.Task.listall()` with `entrypoint=True`, return all tasks, not only entrypoints.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< markdown >}}
+
 Once deployed, entrypoint tasks can be surfaced in three ways.
 
 ### CLI
@@ -69,11 +110,11 @@ Filter `flyte get task` to only entrypoint tasks:
 flyte get task --entrypoint
 ```
 
-This lists every task in the configured project/domain that was deployed with `entrypoint=True`.
+This lists the tasks in the configured project/domain that were deployed with `entrypoint=True`, up to `--limit` tasks (100 by default).
 
 ### Programmatic
 
-Use `flyte.remote.Task.listall()` with the `entrypoint` filter:
+Pass `entrypoint=True` to `flyte.remote.Task.listall()`:
 
 ```python
 import flyte
@@ -89,3 +130,6 @@ This is useful for building your own catalogs, dashboards, or tooling on top of 
 ### UI
 
 The **Tasks list** in the UI has an **entrypoints** toggle that filters the view to only tasks marked as entrypoints. Use this when you're browsing a project and want to see only the tasks meant to be run.
+
+{{< /markdown >}}
+{{< /variant >}}
