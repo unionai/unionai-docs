@@ -134,6 +134,23 @@ async def build(cache: ROBlockVolume) -> ROBlockVolume:
     return await work.finalize(message="after build")
 ```
 
+A block volume records the path it was mounted at, and its commits and forks
+carry that path. A fork mounted without `mount_path` mounts at the same path as
+the volume it was forked from. Absolute paths recorded inside the file system,
+such as a virtualenv's scripts or a build cache's entries, then resolve the
+same way in every fork. Pass `mount_path` to choose a different path.
+
+If the recorded path is already in use in the pod, for example by another fork
+mounted earlier in the same task, `mount()` logs a warning and mounts at the
+volume's default path instead. Absolute paths recorded under the original path
+don't resolve there.
+
+Requires `flyteplugins-union` 0.21.0 or later, both where the source volume was
+mounted and where the fork is mounted. A version committed with an earlier
+client records no path, so its forks mount at their default path. Earlier
+versions also mount a block volume at a different path every time, so absolute
+paths recorded in one task don't resolve in its forks.
+
 Declaring the input as `ROBlockVolume` makes the requirement part of the task
 signature: passing a regular volume fails at the task boundary, not partway
 through the task. An input declared `ROVolume` accepts either kind. A block
