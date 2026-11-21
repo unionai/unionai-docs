@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE]
 > Code available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/rl_grpo_lora).
 
-This tutorial builds a reinforcement learning loop for an LLM, the same shape of loop the major labs use to train reasoning models, and runs it entirely on the Flyte SDK. Flyte orchestrates the tasks and supplies the pieces that make the loop fast and reliable: a warm pool of reusable GPU containers for generation, right-sized environments for each stage, automatic recovery after failures, and a live report you can watch as training moves. Once you have Union and the Flyte SDK installed, running the whole thing is a single `python` command.
+This tutorial builds a reinforcement learning loop for an LLM, the same shape of loop the major labs use to train reasoning models, and runs it entirely on the Flyte SDK. Flyte orchestrates the tasks and supplies the pieces that make the loop fast and reliable: a warm pool of reusable GPU containers for generation, right-sized environments for each stage, checkpointed loop state to resume from, and a live report you can watch as training moves. Once you have Union and the Flyte SDK installed, running the whole thing is a single `python` command.
 
 By the end you will understand, and have running:
 
@@ -20,7 +20,7 @@ By the end you will understand, and have running:
 - how Flyte keeps a vLLM engine warm across iterations so you never reload the base model,
 - how a small LoRA adapter is trained with one policy-gradient step and handed back to the generator,
 - how generation and reward scoring overlap so the GPU stays busy, and
-- how the run resumes after a preemption and streams a live progress report.
+- how the driver checkpoints its loop state so a later attempt resumes mid-run, and how it streams a live progress report.
 
 The example uses a small policy (Qwen3-0.6B) on a single L4 GPU so the loop is cheap to run end to end. It was validated on a Union cluster across three GRPO iterations. With a model this size and a toy dataset, the run proves the machinery rather than convergence, so scale the model and dataset once the loop is working for you.
 
@@ -33,8 +33,8 @@ What you get without writing any of it yourself:
 - **The right hardware for each step.** Generation, reward, and training have different needs, so each is its own task environment with its own resources. GPU for rollouts and the trainer, cheap CPU for reward and the driver. You never pay for a GPU to run a reward function.
 - **Warm pools for the expensive parts.** Loading a model into vLLM is slow, so the generator runs in a reusable environment. Flyte holds a pool of warm replicas with the model already resident, and every iteration reuses them. This is the single biggest speedup in an RL-for-LLMs loop, and it costs one line of config.
 - **Autoscaling to the resources you have.** The warm pool scales between a minimum and maximum replica count with demand, so the rollout fan-out spreads across whatever GPUs are available and scales back down when the loop is idle. You do not size a cluster up front.
-- **Isolation across concurrent runs.** Every run is its own set of containers with its own warm pool, state, and report. You and your teammates can run many experiments at once without them stepping on each other.
-- **Long runs that survive failures.** RL runs for hours or days, and spot preemptions and OOMs happen. `flyte.Checkpoint` resumes the loop mid-run, task retries recover transient errors, and the pool recovers replicas on its own. There is no control plane for you to write.
+- **Per-run state and reports.** Every run has its own driver, checkpointed state, and report. The warm pool is not per run: concurrent runs of the same code share one pool of rollout replicas, including their in-process caches, whatever `scope` you set on `ReusePolicy` (see [Reusable containers](../../../user-guide/tasks/task-configuration/reusable-containers)).
+- **Long runs that survive failures.** RL runs for hours or days, and infrastructure failures and OOMs happen. `flyte.Checkpoint` lets a later attempt of the driver resume the loop mid-run. The platform retries infrastructure failures on its own, tasks that set `retries` are also retried after their own errors, and the pool recovers replicas on its own. There is no control plane for you to write.
 - **Observability and data plumbing, handled.** Every rollout, reward, and gradient step is a tracked task with logs and lineage. `flyte.group` organizes iterations in the workflow, and `report=True` streams a live report. The LoRA adapter flows from trainer to generator as a `flyte.io.Dir`, and the base model is prefetched into object storage once, so there is no shared filesystem and no manual file shuffling.
 
 The rest of this tutorial shows each of these in action.
@@ -167,7 +167,7 @@ That prefetches the base model and launches the training loop. The very first ru
 
 ## The image and environments
 
-A single image backs every environment. It is built explicitly rather than from the `uv` script header so it can pull vLLM's flashinfer kernels as precompiled cubin wheels. Without them, vLLM tries to JIT-compile attention at runtime and fails because there is no CUDA toolkit in the base image. The `unionai-reuse` package provides the actor bridge that the reusable rollout environment needs. The module top level only imports `flyte` and `pydantic`, while torch, vLLM, transformers, and PEFT are imported lazily inside the GPU tasks.
+A single image backs every environment. It is built explicitly rather than from the `uv` script header so it can pull vLLM's flashinfer kernels as precompiled cubin wheels. Without them, vLLM tries to JIT-compile attention at runtime and fails because there is no CUDA toolkit in the base image. The `unionai-reuse` package provides the actor bridge that the reusable rollout environment needs. Beyond the standard library, the module top level only imports `flyte`, `pydantic`, `async_lru` (a dependency of `flyte`), and the sibling `report_helpers.py`, while torch, vLLM, transformers, and PEFT are imported lazily inside the GPU tasks.
 
 {{< code file="/unionai-examples/v2/tutorials/rl_grpo_lora/rl_grpo_lora.py" fragment=image lang=python >}}
 
@@ -263,7 +263,7 @@ Here is the loop itself:
 
 This is where Flyte's reliability shows up with almost no code:
 
-- `flyte.Checkpoint` persists the iteration number, the adapter location, and the report history each step. If the driver is preempted by a spot reclaim or an OOM, it resumes mid-run instead of starting over.
+- `flyte.Checkpoint` persists the iteration number, the adapter location, and the report history each step. When the driver runs again after a failure, it reads the checkpoint and resumes mid-run instead of starting over. An OOM counts as a user error, so it's retried only up to the task's `retries`. That defaults to 0 and the example's driver doesn't set it, so an OOM in `train_rl` fails the run.
 - `flyte.group("iter-N")` nests each iteration's tasks in the UI so the DAG stays readable.
 - The fan-out and scoring use `asyncio.create_task` with `asyncio.as_completed`, so reward overlaps in-flight generation across the warm pool, with one reward task per group.
 
@@ -294,4 +294,4 @@ The example is deliberately the smallest thing that runs end to end. Because it 
 - **Serving the result.** Merge the final adapter into the base with `merge_and_unload()` and serve it with a vLLM app environment.
 - **The full GRPO objective.** Add the PPO-style clipped ratio and a KL penalty against a reference model for stability over many steps.
 
-An RL training loop, with warm GPU pools, CPU reward fan-out, a resumable driver, and live reporting, usually means standing up and operating a distributed system. On Flyte with Union it is a handful of decorated Python functions that autoscale to your hardware and stay isolated per run. Start with this small example, then scale the model, the reward, and the hardware without changing the shape of your code.
+An RL training loop, with warm GPU pools, CPU reward fan-out, a resumable driver, and live reporting, usually means standing up and operating a distributed system. On Flyte with Union it is a handful of decorated Python functions that autoscale to your hardware. Start with this small example, then scale the model, the reward, and the hardware without changing the shape of your code.
