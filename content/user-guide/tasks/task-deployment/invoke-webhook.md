@@ -77,7 +77,7 @@ app.add_middleware(
 async def run_task():
     # No need to manually extract headers!
     # The middleware automatically sets auth context
-    task = remote.Task.get(project="my-project", domain="development", name="my_task")
+    task = remote.Task.get(project="my-project", domain="development", name="my_env.my_task", auto_version="latest")
     run = await flyte.run.aio(task, x=42)
     return {"run_url": run.url}
 ```
@@ -124,7 +124,7 @@ async def run_task(request: Request):
     # Use auth_metadata to forward the caller's credentials
     with remote.auth_metadata(("authorization", auth_header)):
         # Get and run the task with the caller's identity
-        task = remote.Task.get(project="my-project", domain="development", name="my_task")
+        task = remote.Task.get(project="my-project", domain="development", name="my_env.my_task", auto_version="latest")
         run = await flyte.run.aio(task, x=42)
         return {"run_url": run.url}
 ```
@@ -273,10 +273,10 @@ For a complete working example, see [`examples/apps/run_webhook.py`](https://git
 
 Once deployed, you can call your webhook using standard HTTP tools:
 
-Get your API key:
+Create an API key. The command comes from the Union plugin (`pip install flyteplugins-union`) and prints the key only once, so copy it then:
 
 ```bash
-flyte get api-key my-webhook-key
+flyte create api-key --name my-webhook-key
 ```
 
 Call the webhook to run a task:
@@ -286,7 +286,7 @@ curl -X POST \
   -H "Authorization: Bearer <your-api-key>" \
   -H "Content-Type: application/json" \
   -d '{"x": 42, "y": "hello"}' \
-  https://your-app.apps.unionai.cloud/run-task/my-project/development/my_task
+  https://your-app.apps.unionai.cloud/run-task/my-project/development/my_env.my_task
 ```
 
 The task will execute with the permissions associated with the API key used in the request.
@@ -326,7 +326,7 @@ The middleware returns this error when no authentication headers are found. Ensu
 Verify:
 
 - The task exists in the specified project/domain
-- The task name is correct (use the fully qualified name: `package.module.task_name`)
+- The task name is correct: the `TaskEnvironment` name and the function name, joined by a dot (`<env>.<func>`)
 - The caller has permission to view the task
 
 ### Tasks run with wrong permissions
