@@ -195,9 +195,9 @@ uses two Kubernetes service accounts:
 - **The task-pod service account** — task pods do not run as `union-system`. By default
   they run as the `union` service account in the data plane namespace. In multi-namespace
   mode (`singleNamespace: false`), they run as the `default` service account in each work
-  namespace. `clusterresourcesync` annotates that account with the worker identity when it
-  creates the namespace. For a namespace it doesn't create, add the annotation yourself. See
-  [Choose a scope](../kubernetes-rbac#choose-a-scope).
+  namespace. If `clusterresourcesync` is enabled, it annotates that account with the worker
+  identity in every work namespace it syncs, whatever created the namespace. Otherwise, add
+  the annotation yourself. See [Choose a scope](../kubernetes-rbac#choose-a-scope).
 
 | Cloud | Mechanism |
 | --- | --- |
@@ -225,7 +225,8 @@ components. If you bind only `union-system`, task pods get no bucket or registry
 
 The concrete IAM policy, role, and identity binding for each cloud live on the per-cloud
 [cloud provider setup](#cloud-provider-setup) pages. The chart annotates the task-pod
-service account with the worker identity you set in your Helm values:
+service account (through `clusterresourcesync` in multi-namespace mode) with the worker
+identity you set in your Helm values:
 `global.WORKER_IAM_ROLE_ARN` on AWS and GCP, `global.AZURE_WORKER_CLIENT_ID` on Azure (see
 each page's **Deploy configuration** section). Review the
 [common pitfalls](#common-identity-pitfalls) below before you write those bindings.

@@ -261,7 +261,7 @@ az identity federated-credential create \
   --audiences api://AzureADTokenExchange
 ```
 
-In multi-namespace mode (`singleNamespace: false`; see [Choose a scope](../kubernetes-rbac#choose-a-scope)), task pods run as the `default` service account in each work namespace. `values.azure.yaml` maps work namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
+In multi-namespace mode (`singleNamespace: false`; see [Choose a scope](../kubernetes-rbac#choose-a-scope)), task pods run as the `default` service account in each work namespace. If `clusterresourcesync` is enabled, it annotates that account with `azure.workload.identity/client-id` set to `global.AZURE_WORKER_CLIENT_ID` in every work namespace. Otherwise, add the annotation yourself. `values.azure.yaml` maps work namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
 
 ```bash
 for ns in development staging production; do
