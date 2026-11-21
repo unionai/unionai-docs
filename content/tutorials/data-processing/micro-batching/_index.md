@@ -60,7 +60,7 @@ This example demonstrates a production-ready micro-batching pattern that combine
 The `@flyte.trace` decorator creates automatic checkpoints:
 - **What it does:** Records inputs and outputs of decorated functions
 - **Why it matters:** If a task fails, it resumes from the last successful checkpoint
-- **Result:** No re-execution of completed work
+- **Result:** Traced calls that already finished are not re-executed
 
 ### 2. Reusable Containers for Efficiency
 Instead of creating a new container for each task:
@@ -72,8 +72,8 @@ Instead of creating a new container for each task:
 ### Key Benefits:
 - **Automatic checkpointing** at batch and operation boundaries  
 - **Resume from last successful point** on any failure  
-- **No wasted compute** - never re-execute completed work  
-- **Massive parallelism** - process thousands of batches concurrently  
+- **Less wasted compute** - phases that already finished are replayed from their checkpoint, not re-executed  
+- **Controlled parallelism** - launch thousands of batches, with a semaphore capping how many run at once  
 - **Cost efficient** - container reuse minimizes cold-start overhead  
 
 ### Architecture Flow:
@@ -165,7 +165,7 @@ NUMBER_OF_INPUTS = 1_000_000  # 1 million items
 BATCH_SIZE = 1000
 
 # Example calculations:
-# 1M items ÷ 1K batch = 1,000 parallel batch tasks
+# 1M items ÷ 1K batch = 1,000 batch tasks (Step 6 runs at most 10 at a time)
 # Each batch processes 1K items concurrently within its container
 ```
 
@@ -243,8 +243,9 @@ batch_env = flyte.TaskEnvironment(
 # - Maximum concurrent processing: 10 replicas × 5 concurrency = 50 operations
 #
 # For 1,000 batches with these settings:
-# - Best case: 50 batches processing simultaneously
-# - Time to process all: ~20 rounds of execution
+# - The pool can run up to 50 batches simultaneously, but the orchestrator
+#   in Step 6 runs at most 10 at a time (asyncio.Semaphore(10))
+# - Time to process all: ~100 rounds of execution
 ```
 
 #### Understanding TaskEnvironment Parameters
@@ -290,9 +291,8 @@ The orchestrator task coordinates all batch processing but doesn't need containe
 orchestrator_env = flyte.TaskEnvironment(
     name="orchestrator",
 
-    # depends_on: Use the same image as batch_env (avoids rebuilding)
-    # Flyte will build batch_env's image first, then reuse it here.
-    # This is also needed as the orchestrator task calls batch tasks that use batch_env.
+    # depends_on: Deploy batch_env alongside this environment.
+    # This is needed as the orchestrator task calls batch tasks that use batch_env.
     depends_on=[batch_env],
 
     # Orchestrator needs more memory to track all batch executions
@@ -511,7 +511,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
         WHY @flyte.trace HERE:
         - If polling fails partway through, we resume with cached job_mapping
         - Don't re-submit jobs that were already submitted
-        - Each successful poll is checkpointed
+        - The checkpoint is recorded only after all polls finish
 
         ERROR HANDLING:
         - Jobs that failed in submit_phase (None) are skipped
@@ -571,7 +571,8 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 #
 # Scenario 3: Task fails during wait_phase
 # → Resumes wait_phase with cached job_mapping
-# → Already-polled jobs are not polled again (Flyte makes operations idempotent)
+# → wait_phase runs again from the start and polls every job again
+#   (its checkpoint is recorded only after the whole call finishes)
 
 ```
 
@@ -580,7 +581,7 @@ async def process_batch(batch_start: int, batch_end: int) -> List[int]:
 **Why use it for both phases:**
 - Submit phase checkpoint = "These jobs were submitted successfully"
 - Wait phase checkpoint = "These results were retrieved successfully"
-- Without it: A failure in submit or wait phase would re-submit or re-poll everything
+- Without it: a failure after a phase has finished would re-run that phase (re-submit or re-poll everything); a failure in the middle of a phase re-runs that phase either way
 
 **Best Practices:**
 - Use `@flyte.trace` for non-deterministic operations (API calls, random operations)
@@ -598,7 +599,7 @@ The orchestrator is the top-level task that:
 3. Aggregates results from all batches
 4. Reports overall statistics
 
-**This is where the magic happens:** All batches run concurrently, limited only by your reusable container pool configuration.
+**This is where the magic happens:** The orchestrator schedules every batch at once, but a semaphore in the code below lets at most 10 run at a time, within the limits of your reusable container pool configuration.
 
 
 ```python
@@ -644,14 +645,14 @@ async def microbatch_workflow(
     print(f"Processing {total_items:,} items in {len(batches):,} batches of size {batch_size:,}")
     print(f"Expected parallelism: {batch_env.reusable.replicas[0]}-{batch_env.reusable.replicas[1]} replicas")
     print(f"Concurrency per replica: {batch_env.reusable.concurrency}")
-    print(f"Max simultaneous batches: {batch_env.reusable.replicas[1] * batch_env.reusable.concurrency}")
+    print(f"Container pool capacity (batches): {batch_env.reusable.replicas[1] * batch_env.reusable.concurrency}")
 
     # ========================================
     # STEP 2: LAUNCH ALL BATCHES IN PARALLEL
     # ========================================
     # This is the key to massive parallelism:
-    # - Creates as many async tasks as concurrent operations your API supports
-    # - All execute concurrently within container pool limits
+    # - Creates one async task per batch; the semaphore below caps how many run at once
+    # - Up to max_concurrent_batches execute concurrently, within container pool limits
     # - Reusable containers handle the workload efficiently
     # - return_exceptions=True prevents one batch failure from stopping all
 
@@ -732,11 +733,12 @@ async def microbatch_workflow(
 #   │ 5 batches    │  │ 5 batches    │
 #   └──────────────┘  └──────────────┘
 #
-# With 10 replicas × 5 concurrency = 50 batches processing simultaneously
-# Time to complete 1,000 batches ≈ 1,000 / 50 = 20 waves
+# With 10 replicas × 5 concurrency, the pool can run 50 batches simultaneously,
+# but the semaphore (max_concurrent_batches = 10) runs at most 10 at a time.
+# Time to complete 1,000 batches ≈ 1,000 / 10 = 100 waves
 #
 # Optimization Tips:
-# 1. Increase replicas for more parallelism (if cluster allows)
+# 1. Raise max_concurrent_batches (within API rate limits) before adding replicas; the pool already fits 50
 # 2. Adjust concurrency based on task I/O vs CPU profile
 # 3. Tune batch_size to balance granularity vs overhead
 # 4. Monitor actual execution to find bottlenecks
@@ -757,7 +759,7 @@ Now let's run the entire workflow remotely on your Union cluster.
 3. Orchestrator calculates batches and launches batch tasks
 4. Reusable container pool starts spinning up (min: 3 replicas in this example)
 5. Batches are distributed across available replicas
-6. Pool scales up to max replicas (10 in this example) as needed
+6. If demand exceeds the running replicas, the pool scales up, to at most 10 replicas in this example
 7. Results are aggregated and returned
 
 
@@ -825,7 +827,7 @@ On execution, this is what this example looks like at the Kubernetes level:
 
 ![](./images/reusable-containers-k8s.png)
 
-This is, 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task](../../../user-guide/migration/flyte-2/gotchas-and-caveats#driver-pod-requirements).
+This screenshot shows a run in which the pool reached its maximum of 10 replicas (as defined in the `TaskEnvironment`) and the driver Pod that runs the parent task (`a0`). [Learn more about the parent task](../../../user-guide/migration/flyte-2/gotchas-and-caveats#driver-pod-requirements).
 
 ## Batch Size Selection
 
