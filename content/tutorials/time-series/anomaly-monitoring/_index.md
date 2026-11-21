@@ -41,7 +41,11 @@ flowchart LR
 python anomaly_monitor.py
 ```
 
-The script crashes each monitor once, in its fifth window, to show recovery. When pump-02 trips, the run pauses on a condition named `dispatch-pump-02-<minute>`. Answer in the UI, or from the CLI. `flyte get condition` lists the paused conditions with their action names, and `flyte signal condition` takes the action name:
+The script crashes each monitor in its fifth window, before that window is scored. [Replay after a crash](#replay-after-a-crash) describes what happens next.
+
+{{< variant flyte >}}{{< markdown >}}On open-source Flyte, the monitors don't get past this crash, so the run never reaches the pause described next. To run the tutorial without the crash, run the task directly: `flyte run anomaly_monitor.py monitor_fleet`. `crash_at_cycle` defaults to `-1`, which disables the crash.{{< /markdown >}}{{< /variant >}}
+
+When pump-02 trips, the run pauses on a condition named `dispatch-pump-02-<minute>`. Answer in the UI, or from the CLI. `flyte get condition` lists the paused conditions with their action names, and `flyte signal condition` takes the action name:
 
 ```bash
 flyte get condition <run-name>
@@ -79,7 +83,11 @@ Each step with an external effect or a costly result is a function decorated wit
 
 ### Replay after a crash
 
-The example raises `flyte.errors.RuntimeSystemError` in cycle 4 of the first attempt. The task has `retries=2`, so it runs again from the top. The retry replays cycles 0 through 3 from the trace record: no sensor reads, no forecasts, and no repeated alerts for windows that were already alerted on. It resumes live work at cycle 4.
+The example raises `flyte.errors.RuntimeSystemError` in cycle 4 of the first attempt. That is a system error, so the task's `retries=2` doesn't apply to it.
+
+{{< variant union >}}{{< markdown >}}Union retries a system error under its own system-retry limit, and the task runs again from the top as a new attempt. The retry replays cycles 0 through 3 from the trace record: no sensor reads, no forecasts, and no repeated alerts for windows that were already alerted on. It resumes live work at cycle 4.{{< /markdown >}}{{< /variant >}}
+
+{{< variant flyte >}}{{< markdown >}}Open-source Flyte restarts the action after a system error without advancing its attempt number, so `attempt == 0` is still true when the restarted task reaches cycle 4, and it crashes again. The monitor never gets past cycle 4.{{< /markdown >}}{{< /variant >}}
 
 Replay requires the loop to make the same calls in the same order on every attempt. Here, everything the loop decides comes from traced outputs or from the task's inputs, so a replayed attempt reaches the same state as the first one. Don't branch on the wall clock or unseeded randomness in a loop like this. For the current time, use `flyte.durable.now()`, which is recorded once and replayed.
 
