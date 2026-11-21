@@ -97,7 +97,7 @@ This command:
 
 1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
 2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
-3. **Returns** the execution results and displays them in the terminal.
+3. **Prints** the run's name and a link to the run in the UI, then exits without waiting for the run to finish.
 
 For how to pass inputs of other types (datetimes, durations, enums, files, dataclasses, and more) on the command line, see [Passing inputs by type](./run-command-options#passing-inputs-by-type).
 {{< /markdown >}}
@@ -217,7 +217,7 @@ Notice that now that the task environment is deployed, you use its name (`greeti
 The task environment name plus the task name (`greet`) are combined with a dot (`.`) to form the full task reference: `greeting_env.greet`.
 The special `deployed-task` keyword tells the CLI that you are referring to a task that has already been deployed. In effect, it replaces the file path argument used for ephemeral runs.
 
-When executed, this command will run the already-deployed `greet` task with argument `message` set to `"World"`. You will see the result printed in the terminal. You can also, of course, observe the execution in the **Runs list** UI.
+When executed, this command runs the already-deployed `greet` task with argument `message` set to `"World"`. The terminal shows the run's name and a link to the run in the UI. The command then exits without waiting for the run to finish. You can observe the execution and its outputs in the **Runs list** UI.
 
 To execute a deployed task in a different project or domain than your configured defaults, use `--run-project` and `--run-domain`:
 
