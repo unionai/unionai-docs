@@ -1,6 +1,6 @@
 ---
 title: Core concepts
-description: 'The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actions, and apps.'
+description: 'The building blocks of every Flyte program: task environments, tasks, runs, actions, and apps.'
 icon: book
 weight: 2
 variants: +flyte +union
@@ -15,7 +15,7 @@ explains it, one concept at a time, each with an example you can run yourself.
 
 Four pieces do most of the work:
 
-1. A **TaskEnvironment** declares the container image, the resources, and the secrets that a
+1. A **task environment** declares the container image, the resources, and the secrets that a
    group of tasks share.
 2. A **task** is a Python function you decorate with `@env.task`. It runs remotely, in that
    environment.

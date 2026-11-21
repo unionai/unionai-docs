@@ -111,7 +111,7 @@ Install the SDK and run your first workflow locally in a few minutes.
 {{< /link-card >}}
 
 {{< link-card target="core-concepts" icon="book" title="Core concepts" >}}
-The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actions, and apps.
+The building blocks of every Flyte program: task environments, tasks, runs, actions, and apps.
 {{< /link-card >}}
 
 {{< link-card target="run-modes" icon="play-circle" title="Run modes" >}}
