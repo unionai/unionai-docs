@@ -27,6 +27,7 @@ You supply two values: your Google Cloud project ID and the address of your Unio
 > - The bucket is private, with the CORS rule from [step 4](#4-create-the-bucket-and-image-repository).
 > - The Artifact Registry repository is a private Docker repository.
 > - The service accounts have the roles from [step 5](#5-create-the-service-accounts-and-grant-access) and the Workload Identity binding from [step 7](#7-bind-the-cluster-to-the-service-accounts).
+> - For a Google Cloud Marketplace purchase, add the [consumption tracking label](#label-resources-for-google-cloud-marketplace) to these resources.
 >
 > Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](../connect-a-cluster).
 
@@ -316,6 +317,39 @@ gcloud container clusters describe "$CLUSTER_NAME" \
 Check that the initial nodes become `Ready`, and that the cluster description shows node auto-provisioning with the CPU and memory ceilings. GKE creates more node pools only when pending pods need them. If `kubectl` cannot connect, check the authorized network address and your VPN or proxy.
 
 This example provisions CPU capacity only. To run GPU tasks, add GPU resource limits to the node auto-provisioning configuration, and check your GPU quota and driver requirements. See [Run GPUs in GKE Standard node pools](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus).
+
+### Label resources for Google Cloud Marketplace
+
+If you purchased Union.ai Team through Google Cloud Marketplace, add its [consumption tracking label](https://docs.cloud.google.com/marketplace/docs/partners/integrated-saas/partner-consumption-tracking) to the resources in your project. Skip this section for other purchases. Google requires the label on resources, not only on the project. The value below is specific to the Union.ai Team Marketplace product.
+
+Run these commands after creating the cluster, bucket, and repository. If you use existing resources, inspect their labels first. The GKE update replaces cluster labels, so include any existing labels that you want to keep.
+
+```bash
+export SOLUTION_URN="isol_plb32_0014m00002nszgtqal_4r4ha2fxyugy4d2xvud6erkd6g7k4u7b"
+
+gcloud storage buckets update "gs://$BUCKET_NAME" \
+  --update-labels="goog-partner-solution=$SOLUTION_URN"
+
+gcloud artifacts repositories update "$CLUSTER_NAME" \
+  --location="$REGION" --project="$PROJECT_ID" \
+  --update-labels="goog-partner-solution=$SOLUTION_URN"
+
+gcloud container clusters update "$CLUSTER_NAME" \
+  --region="$REGION" --project="$PROJECT_ID" \
+  --update-labels="goog-partner-solution=$SOLUTION_URN"
+```
+
+GKE propagates cluster labels to its node VMs and attached disks. Check the labels on each resource:
+
+```bash
+gcloud storage buckets describe "gs://$BUCKET_NAME" --format='json(labels)'
+gcloud artifacts repositories describe "$CLUSTER_NAME" \
+  --location="$REGION" --project="$PROJECT_ID" --format='json(labels)'
+gcloud container clusters describe "$CLUSTER_NAME" \
+  --region="$REGION" --project="$PROJECT_ID" --format='json(resourceLabels)'
+```
+
+[GKE label propagation](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-managing-labels#label_propagation) can take up to one hour. If a node pool already has a conflicting `goog-partner-solution` value, its label overrides the cluster label. Updating node pool labels recreates nodes, so plan that change around running workloads.
 
 ## 7. Bind the cluster to the service accounts
 
