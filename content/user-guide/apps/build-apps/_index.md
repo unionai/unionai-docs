@@ -11,7 +11,7 @@ variants: +flyte +union
 This section covers how to build different types of apps with Flyte, from single-script apps to multi-file projects, common usage patterns, and authentication.
 
 > [!TIP]
-> Go to [Introducing apps](../../get-started/core-concepts/introducing-apps) for an overview of apps and a quick example. For pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama, see [Native app integrations](../native-app-integrations/_index).
+> Go to [Introducing apps](../../get-started/core-concepts/introducing-apps) for an overview of apps and a quick example. For pre-built environments for FastAPI, vLLM, and SGLang, and for serving Streamlit and Ollama with the generic `AppEnvironment`, see [Native app integrations](../native-app-integrations/_index).
 
 ## App types
 
@@ -22,7 +22,7 @@ Flyte supports various types of apps:
 - **Model serving apps**: High-performance LLM serving with vLLM and SGLang, or lightweight serving with Ollama{{% variant union %}}
 - **Connector apps**: Long-running services that delegate task execution to external systems{{% /variant %}}
 
-For ready-to-use environments for these frameworks, see [Native app integrations](../native-app-integrations/_index).
+For pre-built environments for FastAPI, vLLM, and SGLang, and examples of serving Streamlit and Ollama with the generic `AppEnvironment`, see [Native app integrations](../native-app-integrations/_index).
 
 ## Usage patterns
 
