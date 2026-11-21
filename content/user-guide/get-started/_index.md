@@ -21,9 +21,46 @@ Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS
 
 Flyte lets you write workflows in standard Python: no domain-specific language, no special syntax, no restrictions.
 
-Your "workflow" is simply a task that calls other tasks:
+In Flyte, your "workflow" is a task that calls other tasks.
+Compare the same code as plain Python and as Flyte tasks: the Flyte version adds a `TaskEnvironment` and the `@env.task` decorators, and the function bodies stay the same.
+
+{{< tabs "pure-python" >}}
+{{< tab "Plain Python" >}}
+{{< markdown >}}
 
 ```python
+def should_process(item: str) -> bool:
+    return bool(item)
+
+async def process_item(item: str) -> str:
+    return item.upper()
+
+async def my_workflow(data: list[str]) -> list[str]:
+    results = []
+    for item in data:
+        if should_process(item):
+            result = await process_item(item)
+            results.append(result)
+    return results
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Flyte" >}}
+{{< markdown >}}
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+def should_process(item: str) -> bool:
+    return bool(item)
+
+@env.task()
+async def process_item(item: str) -> str:
+    return item.upper()
+
 @env.task()
 async def my_workflow(data: list[str]) -> list[str]:
     results = []
@@ -33,6 +70,10 @@ async def my_workflow(data: list[str]) -> list[str]:
             results.append(result)
     return results
 ```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 You can use everything Python offers:
 
