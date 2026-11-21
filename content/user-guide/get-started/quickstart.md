@@ -32,6 +32,24 @@ pip install 'flyte[tui]'
 We also install the `tui` extra to enable the terminal user interface.
 {{< /note >}}
 
+{{< variant union >}}
+{{< markdown >}}
+
+Install the {{< key product_name >}} plugin too:
+
+```bash
+pip install 'flyteplugins-union>=0.20.2'
+```
+
+It adds {{< key product_name >}}-only commands to the `flyte` CLI, including those for:
+
+- API keys: see [Authenticating](../authenticating#api-key).
+- Users, roles, and policies: see [User management](../user-management).
+- Clusters, cluster pools, and queues: see [Clusters and queues](../clusters-and-queues/_index), [Clusters](../clusters-and-queues/clusters), [Cluster pools](../clusters-and-queues/cluster-pools), and [Queues](../clusters-and-queues/queues).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 Verify it worked:
 
 ```bash
