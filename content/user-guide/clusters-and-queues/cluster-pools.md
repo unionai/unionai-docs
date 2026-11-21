@@ -240,7 +240,7 @@ whichever side is wrong — the pool here, or the cluster in its own deployment.
 
 ## Manage membership
 
-Cluster pool membership is normally set when clusters are registered:
+Cluster pool membership is set when clusters are registered:
 
 {{< tabs "cluster-pool-membership" >}}
 {{< tab "CLI" >}}
@@ -265,9 +265,9 @@ Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 {{< /tab >}}
 {{< /tabs >}}
 
-You can also list clusters under `member_clusters` in the pool manifest to add
-them to the pool. That route only adds: it cannot remove a cluster from a pool
-or move one elsewhere.
+Listing clusters under `member_clusters` in the pool manifest, or passing
+`member_clusters` to `ClusterPool.create` or `ClusterPool.update`, does not
+change membership: the control plane ignores the field when it saves the pool.
 
 An existing cluster can be reassigned to another pool, but its co-named queue
 must be `drained` first; the simplest way to get there is to
