@@ -94,8 +94,18 @@ phase until capacity appears.
 
 Bound that wait with
 [`max_queued_time`](./retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available).
-When it fires, the parent receives `flyte.errors.MaxQueuedTimeExceededError`. Catch it and re-run
-the task on on-demand compute with `interruptible=False`:
+On a Union backend that applies the bound (see the linked section), a task that exceeds it fails
+with `flyte.errors.MaxQueuedTimeExceededError`, which the parent can catch to re-run the task on
+on-demand compute with `interruptible=False`:
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't enforce `max_queued_time`. On it, a queued task is never
+> failed for exceeding `max_queued_time`, so `MaxQueuedTimeExceededError` is not raised and this
+> fallback never runs. The rest of this section applies only on a Union backend.
+{{< /markdown >}}
+{{< /variant >}}
 
 ```python
 from datetime import timedelta
