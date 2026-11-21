@@ -65,7 +65,7 @@ Please work directly with the Union.ai team if you have requirements that involv
 
 ## Globally-scoped access
 
-Union.ai creates a managed identity prefixed with `flyteuser` within the resource group that contains the other Union.ai-managed data plane Azure resources. Navigate to [Azure portal Managed Identities](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) to find respective managed identity details.
+Union.ai creates a user-assigned managed identity prefixed with `userflyterole` within the resource group that contains the other Union.ai-managed data plane Azure resources. Navigate to [Azure portal Managed Identities](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) to find respective managed identity details.
 
 Follow [Azure's official assigned roles documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to assign an appropriate role to scope.
 
