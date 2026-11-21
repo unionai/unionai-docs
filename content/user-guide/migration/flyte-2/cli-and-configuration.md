@@ -67,7 +67,7 @@ pyflyte register my_module.py -p my-project -d development
 {{< markdown >}}
 ```shell
 # Deploy a task environment
-flyte deploy my_module.py my_env --project my-project --domain development
+flyte deploy --project my-project --domain development my_module.py my_env
 
 # Deploy all environments in a file
 flyte deploy --all my_module.py
