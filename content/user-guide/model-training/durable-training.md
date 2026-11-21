@@ -66,7 +66,7 @@ env = ClusteredTaskEnvironment(
 
 - `max_restarts` is the number of in-place restarts before the attempt fails. They don't count against the task's `retries`.
 - `restart_on_host_maintenance=True` makes a restart caused by a node eviction free, so planned maintenance doesn't use up `max_restarts`.
-- `resume_after_preemption=True` keeps the attempt when Kueue preempts the job after it started. The job waits to be readmitted and then resumes, without using a retry. It needs Flyte backend v2.0.54 or later. Without it, a preemption ends the attempt, so set `retries` on the task.
+- `resume_after_preemption=True` keeps the attempt when Kueue preempts the job after it started. The job waits to be readmitted and then resumes, without using a retry. It needs `flyte` 2.12.5 or later and, on the open-source Flyte backend, v2.0.54 or later. Without it, a preemption ends the attempt, so set `retries` on the task.
 
 Pod-local disk is wiped on a restart, so write checkpoints from rank 0 to `flyte.ctx().checkpoint`. `flyte.ctx().restart_attempt` counts the in-place restarts, which is useful for logging. See [Clustered task environment](../tasks/task-configuration/clustered-task-environment#checkpointing).
 
