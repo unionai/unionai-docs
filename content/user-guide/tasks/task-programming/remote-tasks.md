@@ -430,7 +430,6 @@ print(f"Current Phase: {run.phase}")
 # You can wait for the execution
 run.wait()
 
-# Only available after flyte >= 2.0.0b39
 print(f"Current phase: {run.phase}")
 
 # Phases can be compared to
