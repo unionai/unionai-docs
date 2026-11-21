@@ -1,6 +1,6 @@
 ---
 title: Project patterns
-description: Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
+description: Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, an advanced end-to-end project, and reference architectures.
 icon: folder
 weight: 12
 variants: +flyte +union
@@ -39,6 +39,10 @@ Automate your own development process with Flyte, using event-driven runs, revie
 
 {{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
 An advanced guide for building an LLM reporting agent on Flyte.
+{{< /link-card >}}
+
+{{< link-card target="reference-architectures" icon="diagram-3" title="Reference architectures" >}}
+End-to-end designs for training and serving, batch inference, and an agent platform, showing which constructs to combine and how data moves between them.
 {{< /link-card >}}
 
 {{< /grid >}}
