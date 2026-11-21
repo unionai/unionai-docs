@@ -153,6 +153,7 @@ cpus
 crewai
 crio
 cubin
+DAPO
 Dask
 Daytona
 DBFS
@@ -313,3 +314,8 @@ Enamine
 cloze
 acryloyl
 McNemar
+Timestral
+covariate
+covariates
+ERCOT
+MASE
