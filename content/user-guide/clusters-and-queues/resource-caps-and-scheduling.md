@@ -369,7 +369,7 @@ policies consider actions in the order they were queued.
 | When the next action does not fit | Skips it and schedules the actions behind it that fit | Stops and waits for it |
 | Order | First come, first served among the actions that fit | First come, first served (on very deep queues, ordering is best effort) |
 | Idle capacity while work is waiting | No | Yes, while the head of the line is blocked |
-| Can a large action be starved? | Yes, while smaller actions keep fitting | No |
+| Can a large action be starved? | Yes, while smaller actions keep fitting | Not by actions on its own queue. Smaller actions from other queues can still take the cluster room it waits for |
 | Reusable containers (warm pools) | Actions for a running warm pool keep being scheduled | Actions for a running warm pool wait behind the blocked head |
 | Use it for | Most queues | Gang-style jobs and strict ordering |
 
@@ -401,10 +401,9 @@ runs in reusable containers, and when you want the capacity you pay for to stay
 in use.
 
 A very large action can wait a long time when smaller ones keep arriving and
-keep fitting. If a queue carries both, move the large jobs to their own strict
-FIFO queue, or give them a
+keep fitting. To limit that wait, give it a
 [`max_queued_time`](../tasks/task-configuration/retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available)
-so they fail after a set wait.
+so it fails after a set wait.
 
 ### Strict FIFO
 
@@ -413,13 +412,18 @@ Set with `--scheduling strict_fifo`.
 The queue schedules actions in arrival order. When the action at the head of
 the line does not fit, the queue schedules nothing behind it until it does. On
 a very deep queue, the order is best effort: the scheduler sorts each batch of
-waiting actions it reads, not the whole queue. As running work finishes, the freed capacity accumulates for the head of
-the line, and later, smaller actions cannot take it.
+waiting actions it reads, not the whole queue. Room under the queue's caps
+stays free for the head of the line, because nothing behind it is scheduled.
+With [resource-aware scheduling](#resource-aware-scheduling), the scheduler
+also tries to keep room on the clusters for the head, but this is best effort.
+Queues of higher priority can always take that room. When many actions are
+waiting, smaller actions from other queues that route to the same clusters can
+take it too, so a large action can wait behind them.
 
 Use it for gang-style jobs. A distributed training job that needs 32 GPUs at
 once starts only when 32 are free together. Under greedy capacity, a steady
-stream of one-GPU actions can take each GPU as it frees up, and the large job
-never starts. Also use it when work must start in the order it was submitted.
+stream of one-GPU actions on the same queue can take each GPU as it frees up,
+and the large job never starts. Also use it when work must start in the order it was submitted.
 
 Capacity sits idle while the head of the line waits, and every action behind it
 waits too, including the ones that would fit.
