@@ -41,14 +41,16 @@ Replace `<project>`, `<location>`, and `<model-id>` with your own values.
 
 ## Call Vertex AI from an app
 
-An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
+An `AppEnvironment` takes the same `secrets` argument, and the app reads the same key file. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
 
 {{< variant union >}}
 {{< markdown >}}
 
 ## Route calls through the Inference Gateway
 
-To add budgets, fallbacks, and guardrails, [add Google Vertex AI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add Google Vertex AI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider), then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+
+The gateway can use only org-wide secrets, so it doesn't list the project-scoped secret you created above. To have the gateway authenticate with this service account, store the key again as an org-wide secret: run the same `flyte create secret` command without `--project` and `--domain`. If your organization has more than one cluster pool, add `--cluster-pool` with the gateway's pool.
 
 {{< /markdown >}}
 {{< /variant >}}
