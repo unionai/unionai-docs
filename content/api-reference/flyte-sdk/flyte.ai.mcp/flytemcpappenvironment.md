@@ -2,7 +2,7 @@
 title: FlyteMCPAppEnvironment
 description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
 icon: braces
-version: 2.13.2
+version: 2.14.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -43,12 +43,90 @@ resolve in this order: the explicit argument, then `FLYTE_MCP_PROJECT` /
 `FLYTE_MCP_DOMAIN`, then whatever the initialized config carries. If nothing resolves,
 the tool fails with a message telling the caller to pass them explicitly.
 
+**Secrets**
+
+By default `create_secret` and `update_secret` take no value. Anything a tool takes as an
+argument is written by the model, so a value passed that way sits in the conversation, the
+client's logs and the model provider's context. Instead the tool returns a one-time URL
+(`/secret-input/{token}` on this server, valid for 10 minutes) that the human opens in a
+browser to type the value into a password field; the value goes from the browser to Flyte
+and never passes through the model. Clients that support MCP URL elicitation are sent the
+URL as an elicitation request; others get it in the tool result. (`streamable-http` runs
+stateless here, so the server never sees the capabilities a client announced at
+initialize and always answers in the tool result; elicitation applies to `sse`.) Over stdio there is no
+HTTP surface, so the tools point at `flyte create secret`, which prompts with hidden input.
+
+The tokens live in this process's memory: run a single replica, or the URL may be opened on
+a replica that did not mint it. Set `allow_inline_secret_values=True` to restore the old
+behavior where both tools take a `value` argument (for automation where no human is in the
+loop and the model is already trusted with the value).
+
+`generate_secret` covers the other way a secret gets in without passing through the chat:
+the server generates an SSH key pair (`ssh-ed25519`, or 4096-bit `ssh-rsa` for hosts that
+need it), stores the private half as a secret and returns only the public key and its
+fingerprint, for the human to install, for example as a GitHub deploy key. It needs no form,
+so it works over stdio too, and it never overwrites an existing secret.
+
+To check a value before it is saved (a bad token otherwise goes unnoticed until a task
+fails), register validators with `secret_validators`. Only the owner knows what a value is
+for and which hosts this server may call, so there are no built-in ones. A validator returns
+an error sentence, or `None` when the value is valid; the model then passes its name as
+`validator` to `create_secret`/`update_secret`. The form rejects an invalid value with that
+sentence and keeps the link usable so the human can retype it; with
+`allow_inline_secret_values` the tool call fails with the sentence instead. A validator that
+raises or runs longer than 15 seconds counts as a rejection. The sentence is shown to the
+human (and, inline, to the model), so it must not quote the value.
+
+```python
+async def token_ok(token: str) -> str | None:
+    async with httpx.AsyncClient() as client:
+        r = await client.get(WHOAMI_URL, headers={"Authorization": f"Bearer {token}"})
+    return None if r.is_success else f"The provider rejected the token (HTTP {r.status_code})."
+
+env = FlyteMCPAppEnvironment(name="flyte-mcp", secret_validators={"example-token": token_ok})
+```
+
 **Transport security**
 
 Set `allowed_hosts` / `allowed_origins` (or `FLYTE_MCP_ALLOWED_HOSTS` /
 `FLYTE_MCP_ALLOWED_ORIGINS`) to turn on MCP's DNS-rebinding protection. Any deployment
 reachable over HTTP wants it. When neither is configured the protection stays off,
 preserving the behavior existing deployments were built against.
+
+**Log reads**
+
+`get_logs` reads for at most the caller's `timeout_s` (default 30), clamped to
+`[1, log_read_timeout_ceiling_s]` (default 120). Once lines are flowing, a gap of
+`log_idle_timeout_s` (default 5) ends the read. Both are server settings; callers cannot
+raise them.
+
+**OAuth discovery for MCP clients**
+
+Set `protected_resource_metadata` to let MCP clients that implement the MCP authorization
+spec discover how to sign in, per RFC 9728, instead of needing a token pasted into their
+configuration. The server then:
+
+- serves the metadata document, without authentication, at
+  `/.well-known/oauth-protected-resource{endpoint path}` (for example
+  `/.well-known/oauth-protected-resource/flyte-mcp/mcp`) and at the root
+  `/.well-known/oauth-protected-resource`, which clients fall back to;
+- answers any other request without an `Authorization: Bearer` header with `401` and
+  `WWW-Authenticate: Bearer resource_metadata="<metadata URL>"`;
+- forwards the bearer token of every other request to Flyte, as with `requires_auth=True`.
+
+Clients can only reach the metadata if the platform ingress lets unauthenticated requests
+through, so pair it with `requires_auth=False`. The server still refuses the MCP endpoint
+without a bearer token, but it does not validate the token itself: the Flyte endpoint
+validates it on every remote call, so a tool that makes none (the `search` group) answers
+any bearer value.
+
+```python
+env = FlyteMCPAppEnvironment(
+    name="flyte-mcp",
+    requires_auth=False,
+    protected_resource_metadata=ProtectedResourceMetadata(),
+)
+```
 
 **Image**
 
@@ -93,14 +171,19 @@ class FlyteMCPAppEnvironment(
     tool_groups: list[str] | None = None,
     tools: list[str] | None = None,
     read_only: bool = False,
+    allow_inline_secret_values: bool = False,
+    secret_validators: dict[str, SecretValidator] | None = None,
     task_allowlist: list[str] | None = None,
     app_allowlist: list[str] | None = None,
     trigger_allowlist: list[str] | None = None,
     allowed_hosts: list[str] | None = None,
     allowed_origins: list[str] | None = None,
+    protected_resource_metadata: ProtectedResourceMetadata | None = None,
     sdk_examples_path: str | None = '/root/flyte-sdk/examples',
     docs_examples_path: str | None = '/root/unionai-examples/v2',
     full_docs_path: str | None = '/root/llms.txt',
+    log_read_timeout_ceiling_s: float = 120.0,
+    log_idle_timeout_s: float = 5.0,
     config_file: str | None = None,
 )
 ```
@@ -137,14 +220,19 @@ class FlyteMCPAppEnvironment(
 | `tool_groups` | `list[str] \| None` | |
 | `tools` | `list[str] \| None` | |
 | `read_only` | `bool` | |
+| `allow_inline_secret_values` | `bool` | |
+| `secret_validators` | `dict[str, SecretValidator] \| None` | |
 | `task_allowlist` | `list[str] \| None` | |
 | `app_allowlist` | `list[str] \| None` | |
 | `trigger_allowlist` | `list[str] \| None` | |
 | `allowed_hosts` | `list[str] \| None` | |
 | `allowed_origins` | `list[str] \| None` | |
+| `protected_resource_metadata` | `ProtectedResourceMetadata \| None` | |
 | `sdk_examples_path` | `str \| None` | |
 | `docs_examples_path` | `str \| None` | |
 | `full_docs_path` | `str \| None` | |
+| `log_read_timeout_ceiling_s` | `float` | |
+| `log_idle_timeout_s` | `float` | |
 | `config_file` | `str \| None` | |
 
 ## Properties
