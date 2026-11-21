@@ -14,7 +14,7 @@ In self-managed deployments, Union.ai personnel have no infrastructure access to
 
 ## BYOC
 
-In BYOC deployments, Union.ai personnel additionally have authenticated Kubernetes cluster access for operational purposes: upgrades, node pool provisioning, Helm chart updates, health monitoring, and troubleshooting. This access uses cloud-native private connectivity (PrivateLink/PSC) and is scoped to Kubernetes cluster management. All cluster management actions are logged.
+In BYOC deployments, Union.ai personnel additionally have authenticated Kubernetes cluster access for operational purposes: upgrades, node pool provisioning, Helm chart updates, health monitoring, and troubleshooting. This access is scoped to Kubernetes cluster management. It goes through the cluster's Kubernetes API endpoint, which is public by default; for EKS and GKE clusters configured with the optional private endpoint, it uses private connectivity (PrivateLink/PSC). All cluster management actions are logged.
 
 ## Customer-side support access
 
@@ -28,7 +28,7 @@ This is distinct from BYOC Kubernetes cluster management access (described above
 
 When Union.ai personnel hold a role in a customer's tenant (in BYOC, or through support access in self-managed), that role lets them: view orchestration metadata, view whatever it authorizes in the console and CLI (including run inputs and outputs, logs, code bundles, and reports), and perform administrative operations as authorized by the customer's RBAC policy.
 
-In BYOC, Union.ai personnel also manage the Kubernetes cluster. That capability comes from the separate private-connectivity management path described above, not from any tenant role.
+In BYOC, Union.ai personnel also manage the Kubernetes cluster. That capability comes from the separate cluster-management path described above, not from any tenant role.
 
 They *cannot*: read secret values (the API is write-only), or reach the customer's cloud account, IAM roles, object stores, secrets backends, container registries, or log aggregators directly. Every request for run data follows the same authenticated, RBAC-gated path as any other user's, and the path depends on what is being fetched: bulk artifacts (files, directories, DataFrames, code bundles, and reports) are read through a per-request presigned URL that is not retained, while structured inputs and outputs and log streams are served back through the data plane's `dataproxy` service. Customer data never transits Union.ai's control plane in any form, so personnel with control plane infrastructure access cannot observe customer data even in flight; every customer-data request is served from the data plane through the Direct-to-Data-Plane tunnel. Envoy authenticates each request inside the customer's cluster. The data plane's `dataproxy` service then enforces RBAC by asking the control plane's authorizer, which receives identity and action, not customer data.
 
