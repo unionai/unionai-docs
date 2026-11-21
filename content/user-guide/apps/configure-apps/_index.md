@@ -78,11 +78,10 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 | `scaling` | ✅ | ❌ | Autoscaling configuration |
 | `domain` | ✅ | ❌ | Custom domain/subdomain |
 | `links` | ✅ | ❌ | Links to include in the App UI page |
-| `include` | ✅ | ❌ | Files to include in app |
 | `parameters` | ✅ | ❌ | Parameters to pass to app |
 | `cluster_pool` | ✅ | ❌ | Cluster pool for deployment |
 
-Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../../tasks/task-configuration/_index) docs for details on these shared parameters.
+Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../../tasks/task-configuration/_index) docs for details on these shared parameters. `include`, which bundles extra files with the environment's code, is shared too; see [Including additional files](../../tasks/task-deployment/packaging#including-additional-files-with-include) for tasks and [Including additional files](./including-additional-files) for apps.
 
 ## Configuration topics
 
