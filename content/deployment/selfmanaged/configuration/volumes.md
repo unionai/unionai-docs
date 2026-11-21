@@ -116,12 +116,12 @@ local-disk speed. The task pod stays unprivileged, but attaching the image
 makes the **node's kernel parse a file system whose bytes the task controls**,
 so the broker only allows it for pods matching `uvolMountBroker.block.allow`.
 
-When `block.allow` is unset, the default depends on `low_privilege`:
+When `block.allow` is unset, the default depends on the data plane's [scope](../kubernetes-rbac#choose-a-scope):
 
-- `low_privilege: false`: every pod may use block volumes
+- `singleNamespace: false` (multi-namespace): every pod may use block volumes
   (`[{namespace: "*"}]`).
-- `low_privilege: true` (the chart default): pods in the release namespace,
-  where every Union task runs at this setting, may use block volumes.
+- `singleNamespace: true` (the chart default): pods in the release namespace,
+  where every task runs in this mode, may use block volumes.
 
 On a cluster that runs untrusted workloads, set an explicit list to allow only
 specific trusted ones:
@@ -144,7 +144,7 @@ cannot forge them. Fields are glob patterns: `team-*` matches a prefix, and
 `[{namespace: "*"}]` allows every pod on the cluster.
 
 > [!WARNING]
-> Allowing every pod, whether explicitly or through the `low_privilege: false`
+> Allowing every pod, whether explicitly or through the multi-namespace
 > default, lets any task that can run on the cluster present a crafted file
 > system image to the node kernel. On a cluster shared by tenants who don't
 > trust each other, set an explicit list, or `allow: []` to disable block
@@ -156,7 +156,7 @@ naming the reason.
 
 | Key | Default | Description |
 |---|---|---|
-| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `low_privilege` is false, pods in the release namespace when it is true. `[]` disables block volumes. |
+| `uvolMountBroker.block.allow` | unset | Rules (`namespace`, `serviceAccount`, or both; glob patterns) for pods allowed to use block volumes. Unset: every pod when `singleNamespace` is false, pods in the release namespace when it is true. `[]` disables block volumes. |
 | `uvolMountBroker.block.freezeMax` | `60s` | Thaw a block volume that a client froze for a commit after this long, so a client that dies mid-commit cannot stall the volume's writers. |
 
 ## The FUSE device plugin (legacy path)
