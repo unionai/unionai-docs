@@ -15,6 +15,7 @@ sacct
 sbatch
 scancel
 slurmrestd
+socktainer
 Soperator
 squashfs
 squeue
