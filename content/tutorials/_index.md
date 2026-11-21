@@ -66,7 +66,7 @@ Train, benchmark, serve, and continually retrain draft models that make an LLM g
 {{< /link-card >}}
 
 {{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement Learning" >}}
-Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, harness evals and trace audits, LoRA ablation screens, humanoid locomotion, model-written rewards, and self-play.
+Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, harness evals and trace audits, grader red-teaming, LoRA ablation screens, humanoid locomotion, model-written rewards, and self-play.
 {{< /link-card >}}
 
 {{< variant union >}}

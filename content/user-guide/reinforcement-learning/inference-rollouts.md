@@ -88,10 +88,18 @@ async def generate_batch(
 
 The base model loads once per batch, and every prompt in the batch shares it. [Prefetching models](../inference/prefetching-models) cuts the load time further by reading the base model from your object store instead of Hugging Face.
 
-To keep an engine loaded across iterations, serve the policy as a [vLLM app](../inference/self-hosted-endpoints/vllm) and send rollout requests to it. The app keeps the base model in GPU memory, scales its replicas, and serves the OpenAI-compatible API that agent frameworks expect. To move a new adapter into the running app, start vLLM with `--enable-lora` and `VLLM_ALLOW_RUNTIME_LORA_UPDATING=True`, then load each adapter version by name through its `/v1/load_lora_adapter` endpoint.
+To keep an engine loaded across iterations, serve the policy as an app. See [Serve the policy to agentic environments](#serve-the-policy-to-agentic-environments).
 
 {{< /markdown >}}
 {{< /variant >}}
+
+## Serve the policy to agentic environments
+
+In agentic RL, the environment drives the episode: an agent harness in a sandbox, a browser, or a simulator calls the policy turn by turn over an OpenAI-compatible API. Serve the policy as a [vLLM app](../inference/self-hosted-endpoints/vllm), and point every episode at its URL. The app keeps the base model in GPU memory and scales its replicas with the number of episodes in flight.
+
+Start vLLM with `--enable-lora`, and set `VLLM_ALLOW_RUNTIME_LORA_UPDATING=True` in the app's environment. After each training step, the driver posts the new adapter to the app's `/v1/load_lora_adapter` endpoint under a versioned name, such as `policy-v12`, and passes that name to the episodes it launches next. Each episode requests that name as its `model`, so it samples from the policy version it was launched with, and the version is recorded with the trajectory. The base weights never reload, and an episode still running on `policy-v11` finishes on it. Unload an adapter version through `/v1/unload_lora_adapter` once no episode uses it.
+
+The app runs outside the training loop's tasks, so the trainer and the episodes never have to share a node, and episodes from several runs can share one pool of GPUs.
 
 ## Move weights from the trainer to the generators
 

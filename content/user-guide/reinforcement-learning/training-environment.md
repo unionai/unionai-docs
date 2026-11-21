@@ -65,6 +65,15 @@ Running an episode as its own task gives it the properties an environment needs:
 
 Episodes are independent, so the driver launches all of them at once with `asyncio.create_task` and collects them with `asyncio.as_completed`. It awaits each episode in a `try` block, so an episode that still fails after its retries is skipped instead of failing the iteration. See [Training loop](./training-loop).
 
+## Environments that are live machines
+
+For coding agents, computer-use agents, and physical AI, the environment is a running machine: a shell with a repository, a desktop or browser the policy controls through screenshots and input events, or a robot simulator stepped by the policy's actions. Every episode needs its own copy of that machine, and an RL step can launch thousands of them.
+
+- **Give every environment its own image.** A repository's toolchain, a browser with a virtual display, and a physics simulator have nothing in common. Give each its own `TaskEnvironment` with its own `flyte.Image`, so an episode starts on the exact stack it needs.
+- **Start each episode from the same snapshot.** Build the machine's state once, such as a checked-out repository with dependencies installed, a logged-in browser profile, or a scene file, and start every episode from a copy of it. Don't share a running machine between episodes.
+- **Grade in a fresh copy.** Apply the policy's outputs to a new copy of the snapshot and grade there, not in the machine the policy controlled. See [Rewards that resist hacking](./hard-to-game-rewards#grade-outside-the-policys-reach).
+- **Keep the actions with the trajectory.** For computer use, store the screenshots and input events. For simulators, store the action sequence and the seed. A stored trajectory can be replayed, audited, and re-scored without running the policy again.
+
 ## Run model-written code safely
 
 When the policy writes code that runs during an episode or during scoring, such as a generated function and the test suite that checks it, run that code in a sandbox rather than in the task's own process. See [Code sandboxing](../agents/sandboxing/code-sandboxing), and the [MLE bot](../../tutorials/agents/mle-bot/_index) tutorial for an agent whose generated code runs in a sandbox.
@@ -76,5 +85,6 @@ Some environments are long-running servers that clients step through over HTTP, 
 ## Related
 
 - [Reward setup](./reward-setup): score what happened in each episode.
+- [Rewards that resist hacking](./hard-to-game-rewards): grade episodes in a way the policy can't game.
 - [Inference rollouts](./inference-rollouts): generate the policy's actions.
 - [Durable agentic RL with SkyRL and Harbor](../../tutorials/reinforcement-learning/agentic-rl-skyrl/_index): the world-building and episode code on this page, in a complete loop.
