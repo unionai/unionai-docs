@@ -19,7 +19,7 @@ This tutorial walks you through building exactly that. You'll construct an auton
 
 - You'll build an agent that takes a natural language problem description and a CSV file, then produces a trained model and a detailed report comparing the results.
 - The LLM reasons over dataset statistics, never raw data. Trusted tools compute statistics in the cloud, and only those statistics reach the LLM.
-- LLM-generated orchestration code runs inside Flyte's sandbox: no imports, no network access, no filesystem. It can only call pre-approved tool functions.
+- LLM-generated orchestration code runs inside Flyte's sandbox: no third-party packages, no network access, no filesystem. Beyond a subset of the standard library, it can only call pre-approved tool functions.
 - Each tool function runs as a durable Flyte task in the cloud, with retries, observability, and full traceability.
 
 ## The problem with LLMs and ML pipelines
@@ -158,10 +158,9 @@ This is where it gets interesting. The LLM doesn't just pick parameters from a d
 
 That code runs inside Flyte's sandbox, a restricted execution environment that enforces strict constraints:
 
-- No `import` statements. The only callable functions are the ones you explicitly provide.
+- Imports are limited to a subset of the standard library, with no third-party packages. Beyond that, the only callable functions are the ones you explicitly provide.
 - No network access and no filesystem access.
-- No `try`/`except`, no `class` definitions, no augmented assignment (`+=`).
-- No `with` statements, no generators, no `global`/`nonlocal`.
+- No generator functions (`yield`), no `del` statements, no `match` statements.
 
 The sandbox sees your pre-approved tool functions as plain function calls. When the code calls `train_model(...)`, the sandbox pauses execution, dispatches the call to Flyte (which runs it as a durable task on cloud compute with the resources declared on `tool_env`), waits for the result, and resumes. The LLM-generated code looks like synchronous Python, but under the hood each tool call is a full Flyte task execution.
 
@@ -275,7 +274,7 @@ If you want to see the self-healing retry loop in action, add the `--inject-fail
 
 You could build something similar with plain Python and `exec()`. But there are a few things you'd lose.
 
-**Safety.** Flyte's sandbox restricts LLM-generated code to calling your pre-approved functions and nothing else. No imports, no network, no filesystem. If you wouldn't give an intern root access to your production cluster, you probably shouldn't give an LLM unrestricted code execution either.
+**Safety.** Flyte's sandbox restricts LLM-generated code to calling your pre-approved functions and a subset of the standard library. No third-party packages, no network, no filesystem. If you wouldn't give an intern root access to your production cluster, you probably shouldn't give an LLM unrestricted code execution either.
 
 **Durability.** Every tool call is a Flyte task. If the agent process crashes halfway through iteration 3, the experiments that already completed are cached. You restart and pick up where you left off instead of retraining models from scratch. For long-running ML experiments, this matters.
 

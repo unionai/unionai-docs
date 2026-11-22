@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -141,6 +141,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.NotInTaskContextError`](flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
+| [`flyte.errors.OrgLimitExceededError`](flyte.errors/orglimitexceedederror) | This error is raised when the server refuses to launch an action because the organization is at one of its limits, for example `max_actions_per_run`. |
 | [`flyte.errors.ParameterMaterializationError`](flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`flyte.errors.RemoteTaskNotFoundError`](flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |

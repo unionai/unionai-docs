@@ -164,17 +164,17 @@ Include all project files:
 flyte run --copy-style all my_example.py my_task
 ```
 
-No code bundling (task must be pre-deployed):
+No code bundling (the task's code must be in the container image, and `--version` is required):
 
 ```bash
-flyte run --copy-style none deployed-task my_deployed_task
+flyte run --copy-style none --version v1 my_example.py my_task
 ```
 
 ### Copy style options
 
 - **`loaded_modules` (default)**: Bundles only imported Python modules from your project
 - **`all`**: Includes all files in the project directory
-- **`none`**: No bundling; requires permanently deployed tasks
+- **`none`**: No bundling; the task's code must be in the container image. Requires `--version`. Use `Image.with_code_bundle()` to bake your source into the image (see [Bring your own image](../../project-patterns/bring-your-own-image))
 
 ## `--root-dir`
 
@@ -294,7 +294,7 @@ flyte run --follow --name "training-session" my_example.py train_model
 
 - **Log streaming**: Real-time output from task execution
 - **Blocking execution**: Command waits until task completes
-- **Exit codes**: Returns appropriate exit code based on task success/failure
+- **Exit codes**: Once the run is submitted, the command exits with code 0 whether the task succeeds or fails. Check the run's status separately
 
 ## `--image`
 
@@ -489,7 +489,7 @@ flyte.run(greet, message="Good morning!")
 
 Two caveats apply:
 
-- **Deployed tasks are keyword-only.** A task retrieved with `flyte.remote.Task.get()` (or run via the `deployed-task` CLI subcommand) does **not** accept positional arguments. Pass its inputs by keyword (or, on the CLI, as `--<input_name>` options).
+- **Pass a deployed task's inputs by keyword to `flyte.run()`.** For a task retrieved with `flyte.remote.Task.get()`, `flyte.run()` assigns positional arguments to the inputs in alphabetical order of their names, not in signature order. Inside a task, calling the retrieved task directly maps positional arguments in signature order. This requires the task to have been deployed with `flyte` 2.12.3 or later. A task deployed earlier takes keyword arguments only (see [Remote tasks](../task-programming/remote-tasks)).
 - **Don't provide the same input both positionally and by keyword.**
 
 ## SDK options

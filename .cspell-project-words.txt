@@ -15,7 +15,6 @@ sacct
 sbatch
 scancel
 slurmrestd
-socktainer
 Soperator
 squashfs
 squeue
@@ -103,6 +102,8 @@ Notion
 GitHub
 GitLab
 
+leasor
+
 # --- Python / tooling ---
 dataclass
 dataclasses
@@ -152,6 +153,7 @@ cpus
 crewai
 crio
 cubin
+DAPO
 Dask
 Daytona
 DBFS
@@ -312,4 +314,10 @@ Enamine
 cloze
 acryloyl
 McNemar
+Timestral
+covariate
+covariates
+ERCOT
+MASE
+socktainer
 selfhosted

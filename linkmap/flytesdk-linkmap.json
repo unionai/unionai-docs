@@ -279,6 +279,8 @@
     "OOMError": "/api-reference/flyte-sdk/flyte.errors/oomerror/",
     "flyte.errors.OnlyAsyncIOSupportedError": "/api-reference/flyte-sdk/flyte.errors/onlyasynciosupportederror/",
     "OnlyAsyncIOSupportedError": "/api-reference/flyte-sdk/flyte.errors/onlyasynciosupportederror/",
+    "flyte.errors.OrgLimitExceededError": "/api-reference/flyte-sdk/flyte.errors/orglimitexceedederror/",
+    "OrgLimitExceededError": "/api-reference/flyte-sdk/flyte.errors/orglimitexceedederror/",
     "flyte.errors.ParameterMaterializationError": "/api-reference/flyte-sdk/flyte.errors/parametermaterializationerror/",
     "ParameterMaterializationError": "/api-reference/flyte-sdk/flyte.errors/parametermaterializationerror/",
     "flyte.errors.PrimaryContainerNotFoundError": "/api-reference/flyte-sdk/flyte.errors/primarycontainernotfounderror/",

@@ -13,6 +13,11 @@ Tutorials that validate training data with [pandera](https://pandera.readthedocs
 Each one is a benchmark you can run on your own cluster, and each pairs a validated mode with an unvalidated one
 on the same data, so the difference between them is the thing being measured.
 
+To run one, clone [unionai-examples](https://github.com/unionai/unionai-examples) and run its `main.py` from the
+tutorial's directory under `v2/tutorials/`. A cluster run connects to the cluster in your
+[Flyte configuration file](../../user-guide/get-started/run-modes/running-remote#configuration-file); each
+tutorial's "Run it" section also shows a local run.
+
 {{< grid >}}
 
 {{< link-card target="validation-overhead" icon="stopwatch" title="Per-batch validation overhead" >}}

@@ -127,12 +127,13 @@ If multiple teams need to share preprocessing tasks or model wrappers, create a 
 import flyte.remote
 
 shared_preprocess = flyte.remote.Task.get(
-    "shared-utils.preprocess",
+    "shared-utils.preprocess",  # <environment name>.<function name>
+    project="shared-utils",
     auto_version="latest",
 )
 ```
 
-This requires governance around versioning and backward compatibility, but it scales better than copy-paste.
+Without `domain`, the lookup uses the caller's own domain, so deploy the shared tasks to every domain that calls them, or pass `domain=` to pin one. To look the task up, the caller needs the `view_flyte_inventory` action (granted by the Viewer role) on `shared-utils` in that domain. Sharing tasks this way requires governance around versioning and backward compatibility, but it scales better than copy-paste.
 
 ### Route work to the right cluster pool in multi-cluster deployments
 

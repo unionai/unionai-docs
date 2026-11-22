@@ -2,7 +2,7 @@
 title: Score
 description: "A position on a rubric."
 icon: braces
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: ConditionFailedError
 description: "This error is raised when a condition fails during execution."
 icon: exclamation-triangle
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

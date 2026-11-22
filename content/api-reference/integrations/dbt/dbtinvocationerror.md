@@ -2,7 +2,7 @@
 title: DbtInvocationError
 description: "Raised when dbt finishes cleanly but reports failed node results."
 icon: exclamation-triangle
-version: 2.13.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

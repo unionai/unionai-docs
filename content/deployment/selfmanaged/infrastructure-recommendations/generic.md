@@ -39,7 +39,7 @@ Each data plane uses S3-compatible object storage (such as [MinIO](https://min.i
 Union recommends the use of two buckets:
 
 1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
-2. **Fast registration bucket**: contains local code artifacts copied into the Flyte task container at runtime when using `flyte deploy` or `flyte run --copy-style all`.
+2. **Fast registration bucket**: contains the code bundles that `flyte deploy` and `flyte run` upload and copy into the Flyte task container at runtime. Every `--copy-style` except `none` uploads a bundle; with `none`, a bundle of just the files an environment lists in `include` is still uploaded.
 
 You can also choose to use a single bucket.
 

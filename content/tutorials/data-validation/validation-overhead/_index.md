@@ -14,9 +14,10 @@ variants: +flyte +union
 values on every key. The obvious place to do that is inside the training loop, right before each batch reaches the
 model. This benchmark measures what that costs in wall-clock time.
 
-It trains a 3-layer MLP policy (REINFORCE-style loss, Adam) on `TensorDict` batches of RL transitions. 5% of the
-batches are corrupted in one of three ways: `float64` observations, one action outside the action space, or one
-`NaN` reward. Every training length runs in two modes on the same pod:
+It trains a 3-layer MLP policy (REINFORCE-style loss, Adam) on `TensorDict` batches of RL transitions. Each batch
+has a 5% chance of corruption (`corrupt_rate=0.05`, the 5% in the chart footnotes); with the fixed seed, 8 of the
+200 pooled batches (4%) are corrupted, in one of three ways: `float64` observations, one action outside the action
+space, or one `NaN` reward. Every training length runs in two modes on the same pod:
 
 | Mode | How it skips corrupt batches |
 |---|---|
@@ -112,9 +113,9 @@ How to read it:
 
 ## Step-size sweep
 
-`run_step_size_sweep` keeps everything about validation fixed (the same 256-row batches, the same schema, 5% corrupt
-batches) and grows the MLP's hidden width from 64 to 4,096, so the forward and backward pass gets more expensive
-while pandera's work per step stays the same. Growing the batch instead would grow validation along with it. Each
+`run_step_size_sweep` keeps everything about validation fixed (the same 256-row batches, the same schema, the same
+8 corrupt batches out of 200) and grows the MLP's hidden width from 64 to 4,096, so the forward and backward pass
+gets more expensive while pandera's work per step stays the same. Growing the batch instead would grow validation along with it. Each
 width runs enough steps to take about 15 seconds per run, five runs per mode, alternating which mode goes first.
 
 {{< code file="/unionai-examples/v2/tutorials/pandera_validation_overhead/main.py" lang="python" fragment="step-size-sweep" >}}
@@ -154,7 +155,8 @@ tab. `main` runs the two benchmarks one after the other on separate pods and ret
 ## Run it
 
 ```bash
-# On your cluster; builds the image remotely, then writes results/ locally
+# From v2/tutorials/pandera_validation_overhead in your unionai-examples clone.
+# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
 uv run main.py
 
 # Locally, with a short configuration
