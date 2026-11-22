@@ -2,6 +2,7 @@
 # One word per line, case-insensitive. Add product/domain terms here as they
 # come up in review. Keep it sorted-ish and deduplicated. This is the single
 # shared allow-list used by cspell in CI.
+
 # --- Products / brands / orgs ---
 Apptainer
 dflash
@@ -39,6 +40,7 @@ docsy
 BYOC
 Serverless
 Ollama
+
 # --- Flyte / Union domain concepts ---
 ImageSpec
 subworkflow
@@ -63,6 +65,7 @@ lifecycle
 namespace
 namespaces
 containerized
+
 # --- Cloud / infra / ecosystem ---
 Kubernetes
 kubectl
@@ -99,6 +102,7 @@ Algolia
 Notion
 GitHub
 GitLab
+
 # --- Python / tooling ---
 dataclass
 dataclasses
@@ -125,6 +129,7 @@ tooling
 config
 configs
 plaintext
+
 # --- Full-corpus cspell sweep (DOC-967 follow-up) ---
 # Terms surfaced by running cspell over ALL content/**/*.md (not CI's
 # changed-files-only mode). Product/library/dataset names + proper nouns.
@@ -251,6 +256,7 @@ xgboost
 Yunikorn
 zstd
 Kubeflow
+
 # --- TypeSafe System One plugin (flyteplugins-typesafe-ai) ---
 TypeSafe
 typesafe
@@ -263,10 +269,12 @@ autoregressively
 typosquatted
 inodes
 virtualenvs
+
 # --- SaaS webhook provider plugins (flyteplugins-{github,slack,jira,clickup,linear}) ---
 # Keyed-hash message authentication code (RFC 2104); how four of the five
 # providers sign their deliveries.
 HMAC
+
 # --- Surfaced by the Volumes split (these pages were pulled into the
 # incremental spell check by a frontmatter-only weight change) ---
 # anyio: the structured-concurrency library `anyio`, used as an alternative to
