@@ -1,6 +1,6 @@
 ---
 title: Task metrics
-description: Show task CPU and memory usage in the Metrics tab by pointing onebox at a Prometheus that scrapes cAdvisor and kube-state-metrics.
+description: Show task CPU and memory usage in the Metrics tab by pointing Self-hosted Base at a Prometheus that scrapes cAdvisor and kube-state-metrics.
 icon: graph-up
 weight: 8
 variants: -flyte +union
@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Task metrics
 
-The Metrics tab shows each task's CPU and memory usage against what it requested. Onebox reads these series from a Prometheus: one the chart runs for you, or one you run yourself. Onebox doesn't depend on it to start.
+The Metrics tab shows each task's CPU and memory usage against what it requested. Self-hosted Base reads these series from a Prometheus: one the chart runs for you, or one you run yourself. Self-hosted Base doesn't depend on it to start.
 
 ## What Prometheus needs
 
@@ -27,7 +27,7 @@ prometheus:
   enabled: true
 ```
 
-The chart then runs the `prometheus-community/prometheus` chart (version 25.30.2) in onebox's namespace, with only its server and kube-state-metrics, and points onebox at the server's Service, unless you set `metrics.prometheusURL` yourself. It scrapes cAdvisor and kube-state-metrics across the cluster, so it creates a ClusterRole for scraping nodes. Any of that chart's values can be set under `prometheus`.
+The chart then runs the `prometheus-community/prometheus` chart (version 25.30.2) in Self-hosted Base's namespace, with only its server and kube-state-metrics, and points Self-hosted Base at the server's Service, unless you set `metrics.prometheusURL` yourself. It scrapes cAdvisor and kube-state-metrics across the cluster, so it creates a ClusterRole for scraping nodes. Any of that chart's values can be set under `prometheus`.
 
 The server keeps `prometheus.server.retention` (`3d`) of data on an `emptyDir`, so a restart loses the history. For GPU charts, also run dcgm-exporter; Prometheus scrapes it through its `prometheus.io/scrape` annotations.
 
@@ -56,7 +56,7 @@ helm install prometheus prometheus --repo https://prometheus-community.github.io
 
 The chart creates a ClusterRole for scraping nodes. To reuse a Prometheus you already run, check that it has the series above, with their `namespace` and `pod` labels.
 
-Then point onebox at it:
+Then point Self-hosted Base at it:
 
 ```yaml
 metrics:
@@ -71,4 +71,4 @@ Run `helm upgrade`. If your Prometheus serves under a path prefix, include it, f
 |---|---|
 | The Metrics tab says the action ran too briefly | Metrics need at least two scrapes of the task's pod. With a one-minute scrape interval, tasks shorter than about two minutes have no CPU chart. |
 | Memory charts render but CPU charts are empty | CPU usage is a rate over two cAdvisor samples. Wait for a second scrape, or lower the scrape interval. |
-| Requested and limit lines are missing | kube-state-metrics isn't scraped, or doesn't watch onebox's namespace. |
+| Requested and limit lines are missing | kube-state-metrics isn't scraped, or doesn't watch Self-hosted Base's namespace. |

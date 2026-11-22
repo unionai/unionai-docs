@@ -115,7 +115,7 @@ flyte start onebox --recreate --apple-silicon   # add it to an existing one
 env = flyte.TaskEnvironment(name="mlx_env", resources=flyte.Resources(gpu="AppleSilicon"))
 ```
 
-It needs flyte 2.13.1 or later. Onebox starts a bridge on your Mac that runs those tasks and apps, and publishes its ports on `localhost` only, since that work runs as you on your machine. The bridge's log is `~/.flyte/onebox/apple-silicon/bridge.log`. Later starts and `--recreate` keep Apple Silicon on.
+It needs flyte 2.13.1 or later. Self-hosted Base starts a bridge on your Mac that runs those tasks and apps, and publishes its ports on `localhost` only, since that work runs as you on your machine. The bridge's log is `~/.flyte/onebox/apple-silicon/bridge.log`. Later starts and `--recreate` keep Apple Silicon on.
 
 ## Use your own images
 
@@ -131,21 +131,20 @@ kubectl -n onebox patch serviceaccount default -p '{"imagePullSecrets": [{"name"
 ## Stop, resume, and delete
 
 ```shell
-flyte stop onebox                     # pause it; flyte start onebox resumes where it left off
+flyte stop onebox                     # pause it; flyte start Self-hosted Base resumes where it left off
 flyte stop onebox --delete            # remove the container; runs and data stay in a Docker volume
 flyte stop onebox --delete --volume   # remove everything
 ```
 
 ## Upgrade
 
-`flyte start onebox` runs `ghcr.io/unionai/onebox-local:latest`, which follows each Union.ai release, but it pulls the image only when it isn't on your machine. To move to a new release, pull it and replace the container. Runs and data stay in the Docker volume, and the add-ons and Apple Silicon setting carry over:
+`flyte start onebox` runs `ghcr.io/unionai/onebox:latest`, which follows each Union.ai release. It keeps running the container it created and the image already on your machine, so it never changes the version. To move to the newest release, run:
 
 ```shell
-docker pull ghcr.io/unionai/onebox-local:latest
-flyte start onebox --recreate
+flyte update onebox
 ```
 
-To pin a release instead, pass `--image ghcr.io/unionai/onebox-local:<version>`.
+It pulls the image and, if it's newer than the one running, replaces the container. Runs and data stay in the Docker volume, and the add-ons and Apple Silicon setting carry over. `flyte start onebox` shows the running version. To pin a release instead, pass `--image ghcr.io/unionai/onebox:<version>` to `flyte update onebox`. Requires `flyteplugins-union` 0.25.0 or later.
 
 ## What a proof of concept on your machine doesn't cover
 
@@ -164,6 +163,6 @@ To pin a release instead, pass `--image ghcr.io/unionai/onebox-local:<version>`.
 | It fails with Apple's `container` runtime or socktainer | They can't map `host.docker.internal` or forward the container's ports to your machine. Use Docker Desktop or OrbStack. |
 | It times out waiting for Union.ai to be ready | Docker has too little memory or CPU. Check `docker logs union-onebox` and `kubectl --kubeconfig ~/.flyte/onebox/kubeconfig -n onebox get pods`. |
 | A port is already in use | Something else listens on `30080`, `30566`, or `36443`. Stop it, then run `flyte start onebox --recreate`. |
-| `docker pull` says `denied` for `ghcr.io/unionai/onebox-local` | The images are public; Docker is sending expired GHCR credentials. Run `docker logout ghcr.io` and pull again. |
+| `docker pull` says `denied` for `ghcr.io/unionai/onebox` | The images are public; Docker is sending expired GHCR credentials. Run `docker logout ghcr.io` and pull again. |
 | The container exits with `Apple Silicon needs the host gateway` | The Docker runtime can't reach your Mac at `host.docker.internal`. Use Docker Desktop or OrbStack. |
-| A new release doesn't show up | `flyte start onebox` reuses the image on your machine. See [Upgrade](#upgrade). |
+| A new release doesn't show up | `flyte start onebox` keeps the container and image it has. Run `flyte update onebox`; see [Upgrade](#upgrade). |

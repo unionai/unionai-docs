@@ -1,6 +1,6 @@
 ---
 title: Deploy on any Kubernetes cluster
-description: Install onebox on any Kubernetes cluster, on-premises or in any cloud, with your own PostgreSQL database and an S3-compatible object store.
+description: Install Self-hosted Base on any Kubernetes cluster, on-premises or in any cloud, with your own PostgreSQL database and an S3-compatible object store.
 icon: hdd-network
 weight: 4
 variants: -flyte +union
@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Deploy on any Kubernetes cluster
 
-This guide installs onebox on any conformant Kubernetes cluster, on-premises or in any cloud, with a PostgreSQL database and an S3-compatible object store you already run, such as MinIO, Ceph, or Cloudflare R2. Onebox reads the store's access keys from a Secret.
+This guide installs Self-hosted Base on any conformant Kubernetes cluster, on-premises or in any cloud, with a PostgreSQL database and an S3-compatible object store you already run, such as MinIO, Ceph, or Cloudflare R2. Self-hosted Base reads the store's access keys from a Secret.
 
 ## Prerequisites
 
@@ -40,32 +40,32 @@ Create the namespace and two Secrets: the database password, and the store's acc
 
 ```shell
 kubectl create namespace union
-kubectl -n union create secret generic onebox-db --from-literal=password='<database password>'
-kubectl -n union create secret generic onebox-s3 \
+kubectl -n union create secret generic selfhosted-base-db --from-literal=password='<database password>'
+kubectl -n union create secret generic selfhosted-base-s3 \
   --from-literal=AWS_ACCESS_KEY_ID='<access key id>' \
   --from-literal=AWS_SECRET_ACCESS_KEY='<secret access key>'
 ```
 
-Install onebox in a namespace of its own: task pods, their secrets, and the other Kubernetes objects created for tasks all live in it. Task pods get the store's access key from the same Secret.
+Install Self-hosted Base in a namespace of its own: task pods, their secrets, and the other Kubernetes objects created for tasks all live in it. Task pods get the store's access key from the same Secret.
 
 ## Install with the CLI
 
-`flyte install onebox`, from `flyteplugins-union` 0.21.0 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
+`flyte install selfhosted-base`, from `flyteplugins-union` 0.21.0 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
 
 ```shell
 pip install flyte "flyteplugins-union>=0.21.0"
-flyte install onebox -n union --db-host <postgres host> --db-name <database> --db-user <user> \
-  --db-password-secret onebox-db --bucket <bucket> --endpoint https://<store endpoint> \
-  --set storage.authType=accesskey --set storage.existingSecret=onebox-s3
+flyte install selfhosted-base -n union --db-host <postgres host> --db-name <database> --db-user <user> \
+  --db-password-secret selfhosted-base-db --bucket <bucket> --endpoint https://<store endpoint> \
+  --set storage.authType=accesskey --set storage.existingSecret=selfhosted-base-s3
 ```
 
-The two `--set` flags hand onebox the store's access key from the `onebox-s3` Secret. Without them it uses the node's or pod's cloud identity (`storage.authType: iam`), which an S3-compatible store doesn't have.
+The two `--set` flags hand Self-hosted Base the store's access key from the `selfhosted-base-s3` Secret. Without them it uses the node's or pod's cloud identity (`storage.authType: iam`), which an S3-compatible store doesn't have.
 
 Before installing, it checks:
 
 - that the cluster is reachable and runs Kubernetes 1.28 or later;
 - the namespace, and whether you can create what the chart installs;
-- the permissions onebox itself needs;
+- the permissions Self-hosted Base itself needs;
 - the total allocatable CPU and memory of the nodes that accept pods, warning below 4 CPUs and 8 GiB. It doesn't subtract what already runs there;
 - that the database host and the bucket are set, and that the database password's Secret exists. It doesn't connect to either;
 - with apps on, whether the chart can run Knative Serving or the cluster already runs it;
@@ -81,7 +81,7 @@ Whatever is missing (the database host or password, the bucket, or what the stor
 | `--edit` | Review the inputs in the editor even when nothing is missing. |
 | `--skip-preflight` | Install even if a check fails. |
 | `-n`/`--namespace` | The namespace to install into (default `union`). |
-| `--release` | The Helm release name (default `onebox`). |
+| `--release` | The Helm release name. Default `selfhosted-base`, which also names its resources; if the namespace already has a `onebox` release, the command upgrades that one. Requires `flyteplugins-union` 0.25.1 or later. |
 | `--version` | The chart version (default: the latest). |
 | `--kubeconfig`, `--context` | The Kubernetes configuration file and context to use. |
 
@@ -97,7 +97,7 @@ database:
   port: 5432
   name: <database>
   user: <user>
-  existingSecret: onebox-db
+  existingSecret: selfhosted-base-db
   # disable, require, verify-ca or verify-full
   sslMode: require
 storage:
@@ -106,7 +106,7 @@ storage:
   region: us-east-1
   endpoint: https://<store endpoint>
   authType: accesskey
-  existingSecret: onebox-s3
+  existingSecret: selfhosted-base-s3
 ```
 
 Install the chart:
@@ -114,32 +114,32 @@ Install the chart:
 ```shell
 helm repo add unionai https://unionai.github.io/helm-charts
 helm repo update
-helm install onebox unionai/onebox -n union -f values.yaml --wait --timeout 10m
+helm install selfhosted-base unionai/selfhosted-base -n union -f values.yaml --wait --timeout 10m
 ```
 
 ## Check it
 
 ```shell
-kubectl -n union port-forward svc/onebox 8080:80
+kubectl -n union port-forward svc/selfhosted-base 8080:80
 ```
 
 Open [http://localhost:8080/v2](http://localhost:8080/v2), and run a workflow as in [Install the chart on k3d](./local-k3d#run-a-workflow).
 
-Anyone who can reach port `80` can use onebox until you put an authenticating proxy in front of it. See [Authentication](./authentication).
+Anyone who can reach port `80` can use Self-hosted Base until you put an authenticating proxy in front of it. See [Authentication](./authentication).
 
 ## Serve under a path of a shared host
 
-To serve onebox under a path of a host something else owns, such as `https://platform.example.com/onebox/`, set `basePath`. This works with any of the install guides:
+To serve Self-hosted Base under a path of a host something else owns, such as `https://platform.example.com/union/`, set `basePath`. This works with any of the install guides:
 
 ```yaml
-basePath: /onebox
+basePath: /union
 ```
 
-The UI is then at `/onebox/v2`, and the API, `/login`, and `/logout` are under `/onebox`. Point the SDK and CLI at `https://platform.example.com/onebox`. Each `basePath` segment must be a lowercase DNS label.
+The UI is then at `/union/v2`, and the API, `/login`, and `/logout` are under `/union`. Point the SDK and CLI at `https://platform.example.com/union`. Each `basePath` segment must be a lowercase DNS label.
 
 The proxy in front must:
 
-- forward `/onebox/` to onebox's Service **with the path unchanged** (with nginx, give `proxy_pass` no URI);
+- forward `/union/` to Self-hosted Base's Service **with the path unchanged** (with nginx, give `proxy_pass` no URI);
 - keep the `Host` header and set `X-Forwarded-Proto`;
 - pass WebSocket upgrades;
 - not buffer responses.
@@ -165,6 +165,6 @@ The proxy in front must:
 |---|---|
 | `flyte run` fails while uploading the code bundle | The SDK can't reach `storage.endpoint` from your machine. Use an endpoint that resolves outside the cluster too. |
 | Tasks fail reading their inputs | The pods can't reach `storage.endpoint`, or the access key can't read the bucket. |
-| The onebox pod restarts with TLS errors from the database | The database doesn't offer TLS. Set `database.sslMode: disable`, only on a network you trust. |
-| The onebox pod restarts with `OOMKilled` | Its memory limit is too small for the actions in flight; 2 GiB holds about 13,000. Raise `resources`; see [Sizing](./_index#sizing). Self-hosted Base before 2026.11.14 needs about 1 GiB plus 1 MiB for each action queued or running. |
-| Tasks stay queued while the cluster has room for them | Onebox runs at most 500 tasks at once. Raise `extraConfig.leaseworker.capacity`; see [Sizing](./_index#sizing). |
+| The Self-hosted Base pod restarts with TLS errors from the database | The database doesn't offer TLS. Set `database.sslMode: disable`, only on a network you trust. |
+| The Self-hosted Base pod restarts with `OOMKilled` | Its memory limit is too small for the actions in flight; 2 GiB holds about 13,000. Raise `resources`; see [Sizing](./_index#sizing). Self-hosted Base before 2026.11.14 needs about 1 GiB plus 1 MiB for each action queued or running. |
+| Tasks stay queued while the cluster has room for them | Self-hosted Base runs at most 500 tasks at once. Raise `extraConfig.leaseworker.capacity`; see [Sizing](./_index#sizing). |
