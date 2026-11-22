@@ -56,7 +56,7 @@ Everything else has a working default. Onebox creates its tables on first start 
 |---|---|
 | Kubernetes | 1.28 or later. On GKE, a Standard cluster: Autopilot isn't supported. |
 | Cluster capacity | 4 CPUs and 8 GiB of memory to spare across the nodes that accept pods, for onebox, the UI, and a few task pods. Your tasks need room of their own beyond that. |
-| Onebox | One pod, requesting 1 CPU and 2 GiB of memory (the chart's default). That's enough for a few hundred tasks at once; for more, see [Sizing](#sizing). |
+| Onebox | One pod, requesting 1 CPU and 2 GiB of memory (the chart's default). That runs 4,000 tasks at once and starts 128 runs a second; see [Sizing](#sizing). |
 | PostgreSQL | A connection limit above `database.maxOpenConnections`, which is 40 by default. Beyond an evaluation, use a managed database such as Amazon RDS or Cloud SQL. |
 | On your machine | Docker with 4 CPUs and 8 GB of memory, to [try Union.ai locally](./try-locally). |
 
@@ -170,16 +170,17 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 
 ## Sizing
 
-Size onebox by how many runs you start a second and how many actions are in flight (queued or running) at once. Memory grows with actions in flight, about 1 GiB plus 1 MiB for each; CPU grows with the rate runs start. If onebox runs out of memory, it restarts: accepted work isn't lost, but new runs fail until it is back.
+Size onebox by how many runs you start a second: CPU runs out first. Memory stays within the container's limit, because onebox sets its Go memory limit to 90% of it. These numbers need Self-hosted Base 2026.11.14 or later.
 
-Measured in November 2026 with onebox as one replica limited to 2 CPUs, PostgreSQL 16, and short tasks on AWS:
+Measured in November 2026 on AWS, with onebox as one replica (CPU and memory requests equal to limits), PostgreSQL 16, and short tasks. Every run succeeded:
 
-| | 2 CPUs, 4 GiB | 2 CPUs, 8 GiB |
+| | 1 CPU, 2 GiB (the chart's default) | 2 CPUs, 4 GiB |
 |---|---|---|
-| Runs started a second, sustained | 32, accepted in under 0.1 seconds | 128 with no errors, accepted in under 1 second (95th percentile) |
-| Tasks running at once | 1,000 | 4,000 (as many as the test cluster held) |
-| What runs out first | Memory: above about 2,000 actions in flight, onebox is killed and restarts | CPU: at 64 runs a second and above, onebox uses its full 2 CPUs |
-| PostgreSQL at its busiest | 1.8 CPUs, 1.1 GiB, about 260 connections | 2.5 CPUs, 1.5 GiB, about 150 connections |
+| Runs started a second, sustained | 128 with no errors. Accepted within 0.2 seconds at 32 a second, 0.5 seconds at 64, and 1.5 seconds at 128 (95th percentile) | 128 with no errors, accepted within 0.15 seconds (95th percentile) |
+| Tasks running at once | 4,000 (as many as the test cluster held) | 4,000 (as many as the test cluster held) |
+| What runs out first | CPU: onebox uses its full CPU from 64 runs a second | CPU: onebox nears its 2 CPUs at 128 runs a second |
+| Onebox memory at its busiest | 1.8 GiB, with about 13,000 actions in flight | 3.3 GiB |
+| PostgreSQL at its busiest | 0.4 CPUs, 1.2 GiB, about 230 connections | 0.65 CPUs, 1.1 GiB, about 190 connections |
 
 Each task adds about 10 KB to the database.
 
@@ -191,17 +192,17 @@ extraConfig:
     capacity: 4000
 ```
 
-For more than a few hundred tasks at once, give onebox more than the chart's defaults (1 CPU and 2 GiB requested) and room for its database connections:
+To accept runs quickly above about 32 a second, give onebox 2 CPUs. For thousands of tasks at once, also give it more database connections:
 
 ```yaml
 resources:
-  requests: {cpu: "2", memory: 8Gi}
-  limits: {memory: 8Gi}
+  requests: {cpu: "2", memory: 4Gi}
+  limits: {memory: 4Gi}
 database:
   maxOpenConnections: 100
 ```
 
-Give PostgreSQL 2 to 3 CPUs and a connection limit of at least 300.
+Give PostgreSQL 1 CPU and a connection limit of at least 300.
 
 ## Limitations
 

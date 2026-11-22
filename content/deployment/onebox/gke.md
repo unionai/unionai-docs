@@ -36,7 +36,7 @@ gcloud sql users create union --instance=<instance> --password='<password>'
 
 Use the instance's private IP address as `database.host`. Onebox connects with TLS (`database.sslMode: require`).
 
-For more than a few hundred tasks at once, give the instance 2 to 3 vCPUs and a `max_connections` of at least 300. Cloud SQL's default limit depends on the instance's memory and is lower on small instances; set it with the `max_connections` database flag. See [Sizing](./_index#sizing).
+For thousands of tasks at once, give the instance a `max_connections` of at least 300. Cloud SQL's default limit depends on the instance's memory and is lower on small instances; set it with the `max_connections` database flag. See [Sizing](./_index#sizing).
 
 ## Create the bucket
 
@@ -139,5 +139,5 @@ Anyone who can reach port `80` can use onebox until you put an authenticating pr
 | `403` from Cloud Storage in onebox's logs | The `onebox` service account isn't mapped to the Google service account. Check the annotation and the `workloadIdentityUser` binding for `[<namespace>/onebox]`. |
 | `flyte run` fails while uploading the code bundle, and onebox logs `signBlob` permission errors | The Google service account can't sign URLs. Grant it `roles/iam.serviceAccountTokenCreator` on itself. |
 | Tasks fail reading their inputs with `403` | The namespace's `default` service account isn't annotated, or isn't bound with `workloadIdentityUser`. |
-| The onebox pod restarts with `OOMKilled` | More actions are in flight than its memory holds: it needs about 1 GiB, plus 1 MiB for each action queued or running. Raise `resources`; see [Sizing](./_index#sizing). |
+| The onebox pod restarts with `OOMKilled` | Its memory limit is too small for the actions in flight; 2 GiB holds about 13,000. Raise `resources`; see [Sizing](./_index#sizing). Self-hosted Base before 2026.11.14 needs about 1 GiB plus 1 MiB for each action queued or running. |
 | Tasks stay queued while the cluster has room for them | Onebox runs at most 500 tasks at once. Raise `extraConfig.leaseworker.capacity`; see [Sizing](./_index#sizing). |
