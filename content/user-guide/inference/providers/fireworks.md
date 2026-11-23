@@ -39,6 +39,8 @@ flyte create secret fireworks-api-key --project <your-project> --domain developm
 
 Models on Fireworks' serverless tier use the name `accounts/fireworks/models/<model>`. Some catalog models aren't available on that tier and need a dedicated deployment.
 
+To retry rate limits, cache answers, and limit concurrency, see [Make provider calls reliable](./_index#make-provider-calls-reliable).
+
 ## Call Fireworks from an app
 
 An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
@@ -49,11 +51,25 @@ An on-demand deployment runs a model on dedicated GPUs. To use one, change only 
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/call_fireworks.py" fragment="on-demand" lang="python" >}}
 
-A deployment that has scaled to zero returns a 503 while it scales up, so give the task [retries](../../tasks/task-configuration/retries-and-timeouts).
+A deployment that has scaled to zero returns a 503 with the code `DEPLOYMENT_SCALING_UP` and doesn't queue the request. How long it takes to scale up depends on the model's size.
+
+## Run a batch on an on-demand deployment
+
+To send a list of inputs to a deployment, map a task over the list and size the map to the deployment:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/fireworks_on_demand.py" fragment="batch" lang="python" >}}
+
+- **Retries wait for the deployment.** Each call retries with backoff while the deployment scales up from zero, and succeeds once a replica is ready.
+- **Concurrency matches capacity.** A deployment rejects requests above its `maxConcurrencyPerReplica` with a 429. Set `concurrency` to the replica count times that limit, so the map keeps every replica busy without going over.
+- **Reruns skip finished inputs.** Each input is its own cached action. If some inputs fail, rerun the batch, and only those inputs call the deployment again.
+
+Set `REPLICAS` and `MAX_CONCURRENCY_PER_REPLICA` to your deployment's values. A deployment with a minimum replica count of 0 scales to zero after it's idle for its `scaleToZeroWindow`, 1 hour by default. See [Autoscaling](https://docs.fireworks.ai/deployments/autoscaling) in the Fireworks docs.
 
 ## Handle rate limits
 
-A 429 means you've reached a rate limit on your Fireworks account. You can move to an on-demand deployment, but its requests still count toward account-wide limits, and a 429 there usually means the GPUs are saturated.
+On the serverless tier, Fireworks limits tokens per minute for each account and model. Over the limit, or when Fireworks sheds load, it returns a 429 or a 503. [Retries with backoff](./_index#make-provider-calls-reliable) handle both.
+
+You can move to an on-demand deployment, but its requests still count toward account-wide limits, and a 429 there usually means the GPUs are saturated.
 
 {{< variant union >}}
 {{< markdown >}}

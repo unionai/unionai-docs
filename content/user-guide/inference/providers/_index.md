@@ -19,6 +19,8 @@ keywords:
 
 Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
 
+Because each call runs in a task, it gets the task's retries, caching, and concurrency limits, and its inputs and outputs are recorded with the run. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
+
 {{< variant union >}}
 {{< markdown >}}
 
@@ -106,6 +108,33 @@ Declare the secret on the environment and read it from the environment variable.
 
 A task can only read a secret whose scope covers the project and domain it runs in. Provider model IDs change often, so check the provider's model catalog for current names.
 
+## Make provider calls reliable
+
+A provider returns 429 when you reach a rate limit, and some return 503 while they add capacity. Task settings handle both without changing the call:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/reliable_calls.py" fragment="task" lang="python" >}}
+
+| Setting | Effect |
+|---|---|
+| `retries` with `flyte.Backoff` | Retries a failed call after 5, 10, 20, and 40 seconds, then every 60 seconds, up to 10 times. |
+| `cache="auto"` | A rerun with the same input returns the stored answer and doesn't call the provider. |
+| `concurrency=8` | At most 8 calls are in flight at once, so a long list stays under your rate limit. |
+| One task per call | Each call is its own action, with its own retries, logs, inputs, and outputs. If one call fails, the others keep their results. |
+
+- **Cached answers don't change.** Model output varies between calls, and a cache hit returns the first answer. Set `cache="disable"` on a task that should sample again on every run. See [Caching](../../tasks/task-configuration/caching).
+- **The SDK retries first.** The OpenAI and Anthropic SDKs retry a 429 twice by default. Task retries start after the SDK gives up.
+- **Failed calls raise.** With `return_exceptions=False`, a call that fails after its last retry fails `main`. Leave it at the default, `True`, to get the exception in place of that result and keep the rest.
+
+See [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) and [Controlling parallel execution](../../tasks/task-programming/controlling-parallelism).
+
+### Keep finished calls when a task retries
+
+When one task makes several calls in sequence, decorate the call with `@flyte.trace`. If the task fails and retries, the calls that finished replay their recorded answers instead of calling the provider again:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/durable_calls.py" fragment="trace" lang="python" >}}
+
+A traced call replays only if its function declares a return type. See [Traces](../../tasks/task-programming/traces).
+
 ## Call the provider from an app
 
 `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable:
@@ -119,6 +148,19 @@ Override the secret for a single invocation when the same task needs different c
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/override_key.py" fragment="override" lang="python" >}}
 
 The override replaces the environment's secrets for that call. On a [reusable container](../../tasks/task-configuration/reusable-containers) it raises an error unless you also pass `reusable="off"`. See [Overriding secrets](../../tasks/task-configuration/overrides#overriding-secrets).
+
+## Run agents
+
+To run an agent built with a provider's agent SDK, use the matching plugin. Each model turn replays on retry instead of calling the provider again, and each tool runs as its own task.
+
+| Provider | Agent SDK | Guide |
+|---|---|---|
+| OpenAI | OpenAI Agents SDK | [OpenAI Agents SDK](../../../integrations/agents/openai) |
+| Anthropic | Claude Agent SDK | [Claude Agent SDK](../../../integrations/agents/claude-agent-sdk) |
+| Gemini API and Google Vertex AI | Google ADK | [Google ADK](../../../integrations/agents/google-adk) |
+| Mistral AI | Mistral Agents | [Mistral](../../../integrations/agents/mistral) |
+
+For other providers, use a framework that supports several model providers, such as LangChain or Pydantic AI. See [Agent frameworks](../../../integrations/agents/_index).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -155,4 +197,4 @@ The key is invalid, revoked, or was stored with a typo. Test it outside Flyte wi
 The secret's scope doesn't cover the task's project and domain. List secrets with the same `--project` and `--domain` the task uses.
 
 **The provider returns 429:**
-You've reached a rate limit on your provider account. Check its limits and your usage in the provider's console.
+You've reached a rate limit on your provider account. Add retries with backoff and lower the map's `concurrency`, as in [Make provider calls reliable](#make-provider-calls-reliable). Check the limits and your usage in the provider's console.
