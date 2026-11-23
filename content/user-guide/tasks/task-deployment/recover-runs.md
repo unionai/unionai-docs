@@ -1,6 +1,6 @@
 ---
 title: Recover a failed run
-description: Relaunch a failed run so it reuses the actions that already succeeded.
+description: Relaunch a failed run so it reuses the actions that already succeeded (on a Union backend).
 icon: arrow-counterclockwise
 weight: 15
 variants: +flyte +union
@@ -19,6 +19,15 @@ whole run over from the beginning, while a recovery picks up where the failure l
 
 Recovery is one of two behaviours of the same verb, `flyte rerun`. It is remote-only: rerun and
 recover are not supported in local mode.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE] Recovery needs a Union backend
+> The open-source Flyte backend does not implement recovery. A `--recover` run there re-executes
+> every action, like a plain re-run, and no action is marked `RECOVERED`. Everything this page
+> says about reusing succeeded actions applies only on a Union backend.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## What a recovery reuses
 
@@ -80,7 +89,7 @@ involved, and nothing you edit locally is picked up.
 | Call | What happens |
 |---|---|
 | `flyte rerun <run>` | A whole new run with the same inputs. Every action executes again, subject to global caching. |
-| `flyte rerun <run> --recover` | A whole new run, but actions that already succeeded are reused as-is. Only what failed or never ran executes. |
+| `flyte rerun <run> --recover` | A whole new run. On a Union backend, actions that already succeeded are reused as-is, and only what failed or never ran executes. |
 
 Recovery always replays the source run's **code** as-is. It is durability against intermittent
 failures, not a way to patch a run.
