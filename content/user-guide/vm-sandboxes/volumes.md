@@ -61,10 +61,10 @@ A mount path is absolute and normalized. It can't be `/`, and it can't be at or 
 
 ## Mount a regular volume
 
-A sandbox mounts block volumes only: a `BlockVolume` or `ROBlockVolume`, which is one ext4 image. A regular volume, the kind `Volume.new()` creates, stores each file separately and can't be mounted in a sandbox of either runtime. Nothing converts it for you. Passing one raises `SandboxUsageError` before the session starts:
+A sandbox mounts block volumes only: a `BlockVolume` or `ROBlockVolume`, which is one ext4 image. A regular volume, the kind `Volume.new()` creates, stores each file separately and can't be mounted in a sandbox of either runtime. Nothing converts it for you. Passing one raises `SandboxUsageError` before the session starts. The message begins:
 
 ```text
-volume my-data at '/data' is not a block volume: a session mounts BlockVolumes (one ext4 image) only. Convert it with BlockVolume.from_volume()
+volume my-data at '/data' is a regular (file) volume, not a block volume: a sandbox mounts block volumes (one ext4 image) only.
 ```
 
 `flyte connect sandbox --with-volume` fails with the same message, before it creates anything. In the console, the volume picker of **New Sandbox** lists block volumes only. If a volume you expect is missing there, it is a regular volume.
@@ -81,45 +81,44 @@ vol = BlockVolume.new(name="my-data", size="1G", artifact="my-data")
 
 See [Block volumes](../tasks/task-programming/volumes/block-volumes#create-and-use-a-block-volume) for how to fill and commit it.
 
-**Convert a regular volume in a task.** `BlockVolume.from_volume()` copies the files into a new ext4 image. The source isn't changed. A small volume takes a few seconds:
+**Convert a regular volume in a task.** `BlockVolume.from_volume()` copies the files into a new ext4 image. The source isn't changed. A small volume takes a few seconds. This run converts a regular volume and reads it in a sandbox:
 
 ```python
 import flyte
-from flyteplugins.union.io import BlockVolume, ROBlockVolume, Volume, allow_volumes
+from flyteplugins.union import sandbox
+from flyteplugins.union.io import BlockVolume, ROBlockVolume, ROVolume, allow_volumes
 
-convert_env = flyte.TaskEnvironment(
+reader = sandbox.SandboxEnvironment(name="reader")
+env = flyte.TaskEnvironment(
     name="volume-convert",
     image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.26.0"),
-    pod_template=allow_volumes(),
-    resources=flyte.Resources(cpu="1", memory="4Gi"),
+    pod_template=allow_volumes(),  # the task mounts both volumes to copy the files
+    resources=flyte.Resources(cpu=1, memory="4Gi"),
 )
 
 
-@convert_env.task
-async def to_block(locator: str) -> ROBlockVolume:
-    src = await Volume.from_locator(locator)
-    bv = await BlockVolume.from_volume(src, name=f"{src.name}-blk")
-    return await bv.finalize(message=f"block copy of {src.name}")
-```
-
-The image is sized from the source's recorded usage, with headroom. Pass `size=` to choose it yourself. A task can also take the regular volume as an `ROVolume` input instead of a locator.
-
-The task returns an `ROBlockVolume`, which goes straight into `volumes=`. This task converts a regular volume and reads it in a sandbox:
-
-```python
-from flyteplugins.union import sandbox
-
-reader = sandbox.SandboxEnvironment(name="reader")
+@env.task(produces_artifacts=True)
+async def to_block(vol: ROVolume) -> ROBlockVolume:
+    bv = await BlockVolume.from_volume(vol, artifact="my-data-block")
+    return await bv.finalize(message=f"block copy of {vol.name}")
 
 
-@convert_env.task
-async def count_files(locator: str) -> str:
-    data = await to_block(locator)  # regular volume in, block volume out
-    async with reader.session("count", volumes={"/data": data}) as sb:
+@env.task
+async def count_files(vol: ROBlockVolume) -> str:
+    async with reader.session("count", volumes={"/data": vol}) as sb:
         return (await sb.run("find /data -type f | wc -l")).stdout.strip()
+
+
+@env.task
+async def main(vol: ROVolume) -> str:
+    return await count_files(await to_block(vol))  # regular volume in, block volume mounted
 ```
 
-To mount it from the CLI instead, use the block volume's `.locator`.
+- **Size.** The image is sized from the source's recorded usage, with headroom. Pass `size=` to choose it yourself.
+- **Publishing.** `artifact=` with `produces_artifacts=True` publishes the block volume, so `flyte get volumes` and the console's **New Sandbox** form list it. The regular volume's own artifact name is not carried over. `artifact=` on `from_volume` requires a `flyteplugins-union` release later than 0.26.0. Leave it out on 0.26.0.
+- **From a locator.** If you have a locator instead of a task input, load the regular volume with `await Volume.from_locator(locator)`.
+
+To mount the result from the CLI, use the block volume's `.locator`.
 
 ## Commit what a session writes
 
@@ -165,6 +164,8 @@ flyte connect sandbox my-agent --with-volume /data=s3://my-bucket/volumes/<id>.m
 - **Only for a sandbox the command creates.** A sandbox that already exists keeps the volumes it has, and the option is ignored.
 - **Block volumes only.** See [Mount a regular volume](#mount-a-regular-volume).
 
+If you leave out the path and pass only a locator, the command stops and shows the form it expects.
+
 The command reads the volume's metadata from object storage on your machine, not through Union.ai, so your shell needs credentials for the bucket. On AWS, setting `AWS_PROFILE` is not enough. Export the profile's credentials first:
 
 ```bash
@@ -177,7 +178,7 @@ Replace `<your-profile>` with the AWS profile that can read the bucket. Without 
 
 A volume shows up in `flyte get volumes` and in the console only if it is published as an artifact. That takes two things:
 
-- An artifact identity on the volume: `BlockVolume.new(..., artifact="my-data")` or `Volume.new(..., artifact="my-data")`.
+- An artifact identity on the volume: `artifact="my-data"` on `BlockVolume.new()`, `Volume.new()`, or `BlockVolume.from_volume()`.
 - `@env.task(produces_artifacts=True)` on every task that returns the volume. Without it, nothing is registered and no error is raised.
 
 See [Tracking versions as artifacts](../tasks/task-programming/volumes/versions#tracking-versions-as-artifacts). A disk that a sandbox publishes with `publish_on_exit` needs neither.

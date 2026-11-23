@@ -134,5 +134,6 @@ Use Sandbox VMs for:
 - `flyteplugins-union` 0.26.0 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
 - A control plane and sandbox nodes that match the plugin. Sandbox sessions of 0.26.0 are a different task type from those of earlier releases. If a session is refused with a message about its task type, or stays queued until `ready_timeout`, the platform and the plugin don't match: ask your Union.ai solutions team which plugin release your platform runs.
 - Python 3.10 or later.
+- With `flyteplugins-union` 0.26.0, `connectrpc` earlier than 0.11 in the task image. With 0.11, every call to a session opened from a task fails with `SandboxSessionError` and a message that ends in `is not answering: to_binary`. Add `"connectrpc<0.11"` to the image's packages. Later releases of the plugin work with both.
 
 {{< subpage-cards >}}
