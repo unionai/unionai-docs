@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # AWS Marketplace
 
-You can subscribe to Union.ai through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there. New subscriptions start with a 30-day free trial; see the [listing](https://aws.amazon.com/marketplace/pp/prodview-66k3cmidsgv5o) for the current terms.
+You can subscribe to Union.ai through AWS Marketplace, so the charges appear on your AWS bill alongside everything else you buy there. See the [listing](https://aws.amazon.com/marketplace/pp/prodview-66k3cmidsgv5o) for the subscription's current terms, and [Product tiers](./product-tiers) for plan terms.
 
 This page covers the purchase itself, and the handoff to Union.ai that follows it. Buying a subscription sets up the billing relationship. It does not create your Union.ai account, so once you have subscribed you carry on to [Create your account and organization](./create-organization).
 

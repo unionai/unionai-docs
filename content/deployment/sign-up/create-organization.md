@@ -23,7 +23,7 @@ Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and sel
 ![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/marketplace/sign-up/create-account.png)
 
 > [!NOTE] Paying through AWS Marketplace?
-> If you want the charges on your AWS bill, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. That works wherever your cluster runs: how you pay is separate from where your data plane lives. Otherwise, sign up directly. Either way, your organization starts with a 30-day free trial.
+> If you want the charges on your AWS bill, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. That works wherever your cluster runs: how you pay is separate from where your data plane lives. Otherwise, sign up directly, and your organization starts with the first month's minimum waived. See [Product tiers](./product-tiers) for plan terms.
 
 ## Create your organization
 

@@ -75,7 +75,7 @@ These figures assume us-east-2, on-demand prices, EKS Auto Mode, the default set
 
 - Compute for your tasks, which is added when tasks run and removed when they finish.
 - Storage, which grows with your data.
-- Union.ai's subscription fee, which is billed separately. The 30-day free trial covers Union.ai's fee, not your cloud provider's: your cloud costs apply from the moment you create the resources, during the trial too.
+- Union.ai's subscription fee, which is billed separately. If you sign up directly, the first-month waiver described in [Product tiers](../sign-up/product-tiers#your-first-month) applies to Union.ai's fee, not your cloud provider's. Your cloud costs apply from the moment you create the resources, during the first month too.
 
 ## Lower your baseline
 
