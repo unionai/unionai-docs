@@ -11,14 +11,14 @@ variants: -flyte +union
 Union.ai has two plans, **Team** and **Enterprise**. Every self-service sign-up starts on Team.
 To see your plan and what you've used against its limits, go to **Settings → Plan & usage**.
 
-A feature is either in a plan or it isn't. There are no add-ons. All limits and minimums are per month.
+A feature is either in a plan or it isn't. There are no add-ons.
 For rates per action, vCPU, memory, and GPU, see [Union.ai pricing](https://www.union.ai/pricing).
 
 | | Team | Enterprise |
 |---|---|---|
 | **For** | Teams taking AI from experiment to production | Organizations running mission-critical AI, ML, and agents across teams, regions, and clouds |
 | **Price** | $950 per month minimum, credited to usage | Annual commit, credited to usage |
-| **Get started** | [Create your account and organization](../../deployment/sign-up/_index). Your first $950 of usage is free, with no card required. | [Talk to sales](https://www.union.ai/get-a-quote) |
+| **Get started** | [Create your account and organization](./create-organization). Your first $950 of usage is free, with no card required. | [Talk to sales](https://www.union.ai/get-a-quote) |
 
 ## Compare plans
 
@@ -38,11 +38,9 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
-| [Self-managed](../../deployment/selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
-| [Union-managed](../../deployment/byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
-| Self-hosted | – | By contract |
+| [Self-managed](../selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
+| [Union-managed (BYOC)](../byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
 | Clouds | All regions, neoclouds, and hyperscalers | Any cloud |
-| On-prem and air-gapped | – | ✓ |
 | Marketplace commit drawdown | – | ✓ |
 
 ### Limits
@@ -64,8 +62,6 @@ In the tables below, ✓ means included and – means not included.
 | Feature | Team | Enterprise |
 |---|---|---|
 | Login | Federated login (Google and Microsoft) | Federated login (Google and Microsoft), SSO, SAML |
-| SCIM and group sync | ✓ | ✓ |
-| Audit-log export | ✓ | ✓ |
 | HIPAA BAA | On request | On request |
 | Zero-trust architecture | ✓ | ✓ |
 | Managed secrets | ✓ | ✓ |
@@ -81,7 +77,7 @@ In the tables below, ✓ means included and – means not included.
 | BYO-VPC | ✓ | ✓ |
 | Private control-plane endpoint | – | ✓ |
 | Proxy-only egress | – | ✓ |
-| Private image registry | – | ✓ |
+| Private image mirror | – | ✓ |
 
 ### Platform
 
@@ -105,7 +101,6 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
-| Cost Insights (spend by project and workflow, per-task profiling) | – | ✓ |
 | Custom cloud configuration | – | ✓ |
 | Custom RBAC and namespace topology | – | ✓ |
 
