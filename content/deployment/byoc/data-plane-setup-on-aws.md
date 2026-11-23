@@ -35,6 +35,10 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 
 Once the stack exists, Union.ai builds the cluster in about 30 minutes.
 The cluster's page shows progress until the cluster is ready. You can leave the page and come back to it.
+If you open another page in the console while the cluster builds, a short notification with **View progress** takes you back.
+**Clusters** in the sidebar shows **Deploying** while the cluster builds. If the build stops, it shows **Failed** until you open the cluster's page.
+When the build ends, a notification with **View cluster** (ready) or **View details** (stopped) opens the cluster's page. It stays until you close it.
+These notifications and the sidebar status appear only in the browser where you opened the cluster's page during the build.
 
 ### Cluster sizes
 
