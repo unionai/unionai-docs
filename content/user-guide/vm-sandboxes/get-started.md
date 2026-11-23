@@ -18,7 +18,7 @@ This page takes you from an empty file to code running in a Sandbox VM, first fr
 Install the plugin locally:
 
 ```bash
-pip install "flyteplugins-union>=0.23.0"
+pip install "flyteplugins-union>=0.26.0"
 ```
 
 ## Open a sandbox from a task
@@ -39,7 +39,7 @@ code_runner = sandbox.SandboxEnvironment(
 # The task that drives it. Its image needs the plugin.
 env = flyte.TaskEnvironment(
     name="sandbox-hello",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.26.0"),
     resources=flyte.Resources(cpu=1, memory="1Gi"),
 )
 

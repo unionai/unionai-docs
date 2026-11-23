@@ -81,6 +81,12 @@ A committed or published disk holds every file the session left on it, including
 
 Published disks are artifacts in your project. Anyone who can read artifacts in that project can start a session on them.
 
+### Mounted volumes
+
+A volume committed from a read-write mount holds an ext4 filesystem that the sandbox's code wrote. The kernel of whatever mounts it next reads that filesystem, and a crafted one can attack that kernel. A task pod and a gVisor sandbox mount a volume with the node's kernel. A microVM mounts it with its own guest kernel.
+
+For untrusted code, mount volumes read-only or not at all. If such code must write a volume, mount what it committed only in microVM sandboxes. See [Mount volumes](./volumes#volumes-written-by-untrusted-code).
+
 ### Port URLs
 
 `sb.port_url(port)` is how your code reaches a server in the sandbox. What the URL exposes depends on where it was made:

@@ -75,10 +75,11 @@ Without `memory=True`, `fork` copies only the disk. See [Save and fork disks](./
 - **`keep` bounds the pause.** The VM stays paused for `keep` (default 5 minutes, at most 1 hour), and no longer than the session's `max_duration`, which keeps counting while it is paused.
 - **Restore after `keep`.** If it isn't resumed in time, the session ends and succeeds. Its snapshot outlives it, and `env.session(name, snapshot=snap)` restores a new session from it, in this task or another.
 - **Discard it.** `await sb.cancel()` discards a suspended session.
+- **Volumes come along.** A snapshot holds the session's mounted volumes as they were at that instant, and a resumed or restored session mounts them again. See [Mount volumes](./volumes#what-carries-the-volumes).
 
 You hold the `SandboxSnapshot` yourself here. To have a suspended sandbox's state recorded as an artifact and found again by name, from Python or the CLI, use `env.connect(name)`. See [Keep a sandbox and come back to it](./reconnect).
 
-Suspending takes about 2 seconds for a 1 GiB VM, most of it committing the snapshot. The VM is paused within the first few hundred milliseconds. `sb.suspend(wait=False)` returns as soon as the VM is paused, with a `SnapshotFuture`. You can pass the future straight to `env.session(name, snapshot=fut)`, which waits for the commit if it is still running.
+Suspending takes about 2 seconds for a 1 GiB VM, most of it committing the snapshot. The VM is paused within the first few hundred milliseconds. `sb.suspend(wait=False)` returns as soon as the VM is paused, with a `SnapshotFuture`. Pass the future straight to `env.session(name, snapshot=fut)` to resume in place without waiting for the commit: the VM runs again within a second or two of the pause, and the commit finishes behind it. This is the fastest way to pause and carry on. `await fut.wait()` returns the snapshot once it is committed. If the commit fails after the session was resumed, `fut.wait()` raises and the resumed session keeps running.
 
 After a suspend, `Process` handles from `sb.start()` end. Their commands keep running in the VM, and you can reattach to them with `sb.process(id)` after resuming. A `sb.run()` in flight is cut.
 
@@ -105,7 +106,7 @@ async def rollout(warm: SandboxSnapshot, seed: int) -> float:
         return float(result.stdout)
 ```
 
-Snapshots are stored in your data plane's object store.
+Snapshots are stored in your data plane's object store. `flyte get snapshots` lists the snapshots that sandboxes have published, and `flyte get snapshots my-agent` lists the versions of one sandbox's.
 
 > [!WARNING] Snapshots copy memory
 > A snapshot contains everything in the VM's memory, including any secret a process has read. Treat a snapshot with the same care as the secrets the sandbox had. See [Network and security](./network-and-security#snapshots-and-forks-with-memory).

@@ -30,6 +30,8 @@ files**, and the same state should carry over from one run to the next:
   `node_modules`, Cargo and Maven repositories.
 - **Source trees and workspaces.** Checkouts that a build or agent churns through
   file by file.
+- **Data for Sandbox VMs.** A sandbox mounts block volumes only. See
+  [Mount volumes](../../../vm-sandboxes/volumes).
 
 These workloads are dominated by per-file metadata operations, which is exactly
 where a regular Volume pays the most. Measured on the same cluster:
@@ -246,6 +248,10 @@ async def to_regular(src: ROBlockVolume) -> ROVolume:
 bytes and files, with headroom. Pass `size=` to choose it yourself. Both
 methods return the new volume already mounted, so you can keep working in it
 before you finalize it. The source isn't modified.
+
+A [Sandbox VM](../../../vm-sandboxes/volumes) mounts block volumes only. To use
+a regular Volume's files in a sandbox, convert it with `from_volume` first. See
+[Mount a regular volume](../../../vm-sandboxes/volumes#mount-a-regular-volume).
 
 ## Trade-offs
 

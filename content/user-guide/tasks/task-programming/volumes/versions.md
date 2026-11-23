@@ -21,10 +21,11 @@ sealed version to the artifact registry, where it has a stable name, is
 searchable across runs, and carries an explicit parent edge to the version it
 came from.
 
-Declare the identity once, when the volume is created:
+Declare the identity once, when the volume is created, and set
+`produces_artifacts=True` on every task that returns the volume:
 
 ```python
-@env.task
+@env.task(produces_artifacts=True)
 async def build_index() -> RWVolume:
     vol = Volume.new(name="search-index", artifact=True)
     data = await vol.mount()
@@ -33,6 +34,10 @@ async def build_index() -> RWVolume:
 
     return vol    # the committed version is published as artifact "search-index"
 ```
+
+Both are needed. A task without `produces_artifacts=True` registers nothing and
+raises no error, so the volume is missing from `flyte get volumes` and the
+console. See [Task outputs as artifacts](../../../artifacts/task-outputs).
 
 `artifact=True` publishes under the volume's own name. Pass a string to publish
 under a different name, or a `flyte.artifacts.Metadata` when you want a

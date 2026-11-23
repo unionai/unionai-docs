@@ -12,7 +12,7 @@ mermaid: true
 > [!NOTE] Early access preview
 > Sandbox VMs are in early access. The API can change between releases. A sandbox runs as a microVM, the default, or as a gVisor sandbox. MicroVM support is not enabled by default: it needs special node configuration and setup in your data plane. To enable it in your Union.ai environment, talk to your Union.ai solutions team. gVisor sandboxes need no special node resources. See [Choose a runtime](./runtimes).
 >
-> Sandbox VMs require `flyteplugins-union` 0.23.0 or later: `pip install "flyteplugins-union>=0.23.0"`.
+> Sandbox VMs require `flyteplugins-union` 0.26.0 or later: `pip install "flyteplugins-union>=0.26.0"`.
 
 A Sandbox VM is a lightweight virtual machine with its own Linux kernel. Where you don't have nodes that can run virtual machines, the same API runs a [gVisor sandbox](./runtimes) on any node. You start one from Python, run commands and move files in it, and throw it away when you are done. Use Sandbox VMs when you need to run code you did not write and do not trust: code from an LLM, from a coding agent, from your users, or from a reinforcement learning policy.
 
@@ -31,7 +31,7 @@ code_runner = sandbox.SandboxEnvironment(name="code-runner")
 
 env = flyte.TaskEnvironment(
     name="agent",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.26.0"),
 )
 
 
@@ -52,6 +52,7 @@ The code runs in a microVM that has no network and none of your task's secrets. 
 - **Closed network by default.** A sandbox starts with no outbound network. You can open it to the internet, or allow a list of hostnames such as PyPI or your package mirror. The cloud metadata server is unreachable in every mode, so code in a sandbox cannot read your node's cloud credentials.
 - **Runs in your cloud.** Sandboxes run on your own Kubernetes clusters, in your data plane. The code, the data it touches, and the VMs themselves stay in your cloud account.
 - **Durable state.** Commit a sandbox's disk and start new sandboxes on copies of it. Fork a running sandbox into several. Snapshot or suspend one with its memory and processes, and resume it later. Publish a disk as an artifact that later runs can start from. Saved disks and snapshots are stored in your data plane's object store.
+- **Volumes next to the disk.** Mount block volumes in a sandbox, read-only or read-write, for datasets and checkpoints that tasks produce or consume. See [Mount volumes](./volumes).
 - **Part of Union.ai.** A sandbox started from a task is an action of that task's run, so it shows up in the run in the UI, and it uses the same identity, projects, and queues as the rest of your workloads.
 
 ## The API in one minute
@@ -130,7 +131,8 @@ Use Sandbox VMs for:
 
 - For microVMs, the default runtime: a Union.ai data plane with microVM support enabled. This needs special node configuration and setup. Talk to your Union.ai solutions team to enable it.
 - For gVisor sandboxes: no special node resources. See [Choose a runtime](./runtimes).
-- `flyteplugins-union` 0.23.0 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
+- `flyteplugins-union` 0.26.0 or later, which needs `flyte` 2.13.4 or later and earlier than 2.15.0.
+- A control plane and sandbox nodes that match the plugin. Sandbox sessions of 0.26.0 are a different task type from those of earlier releases. If a session is refused with a message about its task type, or stays queued until `ready_timeout`, the platform and the plugin don't match: ask your Union.ai solutions team which plugin release your platform runs.
 - Python 3.10 or later.
 
 {{< subpage-cards >}}

@@ -50,7 +50,7 @@ Set `resources` with a `flyte.Resources` that has `cpu` and `memory`:
 sandbox.SandboxEnvironment(name="builder", resources=flyte.Resources(cpu=4, memory="8Gi"))
 ```
 
-A session's VM is sized by CPU and memory alone. Setting `gpu`, `disk`, or `shm` raises a `ValueError` when the environment is created. Each VM gets 7.8 GiB of disk.
+A session's VM is sized by CPU and memory alone. Setting `gpu`, `disk`, or `shm` raises a `ValueError` when the environment is created. Each VM gets an 8 GiB disk by default, of which about 7.8 GiB is usable. The disk size is set on the node pool, not on the environment, and it can be made larger: ask your Union.ai solutions team.
 
 ## Set environment variables and secrets
 

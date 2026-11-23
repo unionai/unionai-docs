@@ -1,7 +1,7 @@
 ---
 title: Keep a sandbox and come back to it
 description: Reach the same sandbox by name from Python or the CLI, suspend it when you leave, and start it again from the disk and snapshot recorded as an artifact.
-weight: 10
+weight: 11
 variants: -flyte +union
 ---
 
@@ -41,7 +41,7 @@ async with vm.connect("agent-7") as sb:  # "resumed": files and processes as the
 | Is suspended, within its `keep` | Resumes it in place, in milliseconds, with its processes as they were | `"resumed"` |
 | Has ended: suspended past its `keep`, closed, or past `max_duration` | Starts it again as its next run, from what the last run recorded | `"restored"` |
 
-A sandbox that already exists keeps its own settings. The environment's resources, network, and runtime are used only when `connect` creates one.
+A sandbox that already exists keeps its own settings. The environment's resources, network, and runtime are used only when `connect` creates one. The same holds for `volumes=`: a sandbox keeps the volumes it was created with, and mounts them again on every run. See [Mount volumes](./volumes#what-carries-the-volumes).
 
 The name is used exactly as you give it: 1 to 30 letters, digits, `.`, `_`, and `-`, unique in the project and domain.
 
@@ -53,7 +53,7 @@ The name is used exactly as you give it: 1 to 30 letters, digits, `.`, `_`, and 
 | --- | --- | --- |
 | `"detach"` (the default) | The sandbox keeps running, for the next connect. | The work continues without you, such as a long test run. |
 | `"suspend"` | The sandbox is paused for `keep` (10 minutes by default, 1 hour at most). A connect within that resumes it in milliseconds. | You are waiting on a person or a slow tool call and want the node's CPU back. |
-| `"close"` | The sandbox's run ends and its disk is recorded. | The session is finished and you want only its files kept. |
+| `"close"` | The sandbox's run ends and its disk is recorded. Leaving the block waits for that, so a connect right after starts the next run. | The session is finished and you want only its files kept. |
 
 With `on_exit="suspend"` and `keep=0`, the paused sandbox is not kept on its node at all. Its run ends as soon as its snapshot is committed, which frees the node, and the next connect restores it.
 
@@ -116,6 +116,7 @@ Press `Ctrl-]` to detach, or exit the shell. Unlike `env.connect`, leaving suspe
 | `--network` | `none` | `none`, `pypi`, or `internet`, for a sandbox this creates. |
 | `--max-duration` | 1 hour | The longest each run of a sandbox this creates lives, such as `2h`. |
 | `--env` | None | A `SandboxEnvironment` to create the sandbox from: `module:variable` or `path/to/file.py:variable`. |
+| `--with-volume` | None | `PATH=VOLUME`: mount a block volume, by its locator, read-only in a sandbox this creates. Repeatable. See [Mount volumes](./volumes#mount-a-volume-from-the-cli). |
 | `--new-shell` | Off | Start a new shell instead of attaching to the running one. |
 
 There is no separate command to create a sandbox. `flyte connect sandbox NAME` creates it the first time.
@@ -129,6 +130,22 @@ flyte get sandbox my-agent
 
 Each time a sandbox is restored after its run ended, it gets a new run, counted by its generation.
 
+Pause a running sandbox without opening a shell in it. A connect within `--keep` (10 minutes by default, 1 hour at most) resumes it where it was:
+
+```bash
+flyte suspend sandbox my-agent
+flyte suspend sandbox my-agent --keep 1h
+```
+
+Delete sandboxes you are done with:
+
+```bash
+flyte delete sandbox my-agent
+flyte delete sandbox agent-1 agent-2 --yes --reason "experiment finished"
+```
+
+A deleted sandbox is gone for good. Its run is aborted if one is running, the disks its runs kept are dropped, and it can't be connected to or resumed again. Its name is free for a new sandbox. The command asks for confirmation unless you pass `--yes`.
+
 ## Find a sandbox without creating one
 
 Sometimes a missing sandbox is an error, not a reason to make one. An app that receives a command for sandbox `agent-7` should answer "not found" if there is no such sandbox. Pass `create=False`:
@@ -137,16 +154,19 @@ Sometimes a missing sandbox is an error, not a reason to make one. An app that r
 try:
     async with vm.connect("agent-7", create=False) as sb:
         await sb.run("ls")
+except sandbox.SandboxNotFound:
+    ...  # no sandbox of that name
 except sandbox.SandboxSessionError:
-    ...  # no sandbox of that name, or its run has ended
+    ...  # it exists, but its run has ended
 ```
 
 With `create=False`, `connect` only finds a sandbox:
 
 - It connects to one that is running, and waits for one that is starting.
 - It resumes one that is suspended within its `keep`.
-- It never creates a sandbox, and never starts one again after its run has ended. Both raise `SandboxSessionError`.
-- It takes no `volume`, because it creates no disk.
+- It never creates a sandbox. If there is none of that name, it raises `SandboxNotFound`, a kind of `SandboxSessionError`.
+- It never starts a sandbox again after its run has ended. That raises `SandboxSessionError`.
+- It takes no `volume` and no `volumes`, because it creates nothing.
 
 It also reaches a sandbox that `env.session(name)` started outside a task, by its `sb.name`. Leaving the block does `on_exit`, as for any connect: by default the sandbox keeps running. See [Reconnect to a session](./outside-tasks#reconnect-to-a-session).
 

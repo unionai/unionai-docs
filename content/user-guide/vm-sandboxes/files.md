@@ -79,7 +79,7 @@ async def evaluate(data: flyte.io.Dir) -> str:
 
 - One file transfer is at most 512 MiB. A larger file raises `ValueError` before anything is sent.
 - One command may write a file of at most 4 GiB inside the sandbox.
-- A sandbox has 7.8 GiB of disk.
+- A sandbox has an 8 GiB disk by default, about 7.8 GiB of it usable. The size is a node pool setting that your Union.ai solutions team can raise. See [Limits](./limits).
 
 See [Limits and errors](./limits) for the rest of the machine's limits.
 

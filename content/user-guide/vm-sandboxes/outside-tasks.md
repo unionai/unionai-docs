@@ -1,7 +1,7 @@
 ---
 title: Use sandboxes outside a task
 description: Open Sandbox VMs from a laptop, a script, or an app, reconnect to them by name, and manage them with the remote API.
-weight: 9
+weight: 10
 variants: -flyte +union
 ---
 
@@ -122,7 +122,7 @@ app_env = FastAPIAppEnvironment(
     name="sandbox-api",
     app=app,
     image=flyte.Image.from_debian_base().with_pip_packages(
-        "flyteplugins-union>=0.23.0", "fastapi", "uvicorn"
+        "flyteplugins-union>=0.26.0", "fastapi", "uvicorn"
     ),
 )
 ```
@@ -138,7 +138,7 @@ async with vm.connect(name, create=False) as sb:
     await sb.run("ls")
 ```
 
-It waits up to `ready_timeout` for a session that is still starting, and resumes one that is suspended. It never creates a session: it raises `SandboxSessionError` if there is none of that name or it has ended.
+It waits up to `ready_timeout` for a session that is still starting, and resumes one that is suspended. It never creates a session: it raises `SandboxNotFound` if there is none of that name, and `SandboxSessionError` if it has ended.
 
 Leaving the block only disconnects. The session keeps running until whoever started it closes it, or it reaches `max_duration`. Call `sb.close()` or `sb.cancel()` inside the block to end it.
 
@@ -165,9 +165,11 @@ await Sandbox.delete.aio("chat-1a2b3c4d")
 | `Sandbox.get(name)` | The platform's record of the sandbox: its run, that run's phase, and its error. It does not say whether the sandbox is ready, and has no address. |
 | `Sandbox.listall()` | The sandboxes in a project and domain, as `get` has them. |
 | `Sandbox.runs(name)` | The runs a sandbox has had, oldest first, one for each time it was started again. |
-| `Sandbox.delete(name)` | Ends the sandbox by aborting its run. |
+| `Sandbox.delete(name)` | Deletes the sandbox: aborts its run and drops the disks its runs kept. |
 
 Each has an `.aio` form.
+
+A session from `env.session(name)` removes its sandbox once it has closed and its run has ended, so finished sessions don't pile up in `Sandbox.listall()`. A sandbox from `env.connect(name)` stays until you delete it, with `Sandbox.delete(name)` or `flyte delete sandbox NAME`.
 
 ## Find a job's sessions
 

@@ -1,7 +1,7 @@
 ---
 title: Limits and errors
 description: What a Sandbox VM's machine looks like, what sandboxes don't support, and the errors they raise.
-weight: 11
+weight: 12
 variants: -flyte +union
 ---
 
@@ -14,7 +14,7 @@ variants: -flyte +union
 | Operating system | Debian 13, running as root, with Python, `apt-get`, and `pip` |
 | Not installed | `curl`, `git`, `sudo`. Install them with `apt-get`. |
 | CPU and memory | 1 vCPU and 1 GiB by default. Set with `resources`. |
-| Disk | 7.8 GiB. One command may write a file of at most 4 GiB. |
+| Disk | 8 GiB by default, of which about 7.8 GiB is usable. The size is a setting of the node pool, not a fixed limit: ask your Union.ai solutions team for larger disks. One command may write a file of at most 4 GiB. |
 | Working directory | `/work`. Relative paths in `sb.fs` and `cwd` are under it. |
 | File transfers | At most 512 MiB per file through `sb.fs` |
 | Command output kept | The last 64 MiB of stdout and of stderr per command |
@@ -35,6 +35,7 @@ These are not available:
 - **An idle timeout.** A session lives until its block exits or it reaches `max_duration`.
 - **Passing `flyte.io.File` or `flyte.io.Dir` into a sandbox directly.** Download them in the task and copy them with `sb.fs`. See [Work with files](./files).
 - **Reaching a task's session from outside the cluster.** A script outside the cluster can only reach sessions it started or connected to.
+- **Mounting a volume in a running session.** Volumes are named when a session starts. See [Mount volumes](./volumes).
 - **Removing disks by age.** Nothing deletes a committed or published disk when it gets old. See [Save and fork disks](./persist-and-fork#disks-are-not-removed-by-age).
 
 ## Full nodes
@@ -70,10 +71,11 @@ All are in `flyteplugins.union.sandbox`. Each is a Flyte user error: a task that
 
 | Error | Raised when |
 | --- | --- |
-| `SandboxSessionError` | A session could not start, was not ready within `ready_timeout`, or ended before it was ready. Also raised by `env.connect(name, create=False)` when no sandbox has that name or it has ended. |
+| `SandboxSessionError` | A session could not start, was not ready within `ready_timeout`, or ended before it was ready. Also raised by `env.connect(name, create=False)` when the sandbox has ended. |
+| `SandboxNotFound` | `env.connect(name, create=False)` found no sandbox of that name. A subclass of `SandboxSessionError`. |
 | `SandboxSessionEnded` | A call failed because the session had ended: its VM was lost, it reached `max_duration`, or it was cancelled. The message says which. A subclass of `SandboxSessionError`. |
 | `SandboxCommandFailed` | A command run with `sb.run()` or waited on with `p.wait()` exited nonzero and `check` was on. `.result` is its `CommandResult`. |
 | `SandboxCommandTimedOut` | A command ran past its `timeout`. A subclass of `SandboxCommandFailed`. |
-| `SandboxUsageError` | A session was used in a way that can't work: after its block ended, while suspended, or committing a `ScratchVolume` session. |
+| `SandboxUsageError` | A session was used in a way that can't work: after its block ended, while suspended, committing a `ScratchVolume` session, or a `volumes=` that can't be mounted. |
 | `ProcessError` | A started command could not be reattached with `sb.process(id)`, for example because it ended more than 10 minutes ago. A subclass of `SandboxSessionError`. |
 | `ProcessUnsupported` | `sb.start()` with `stdin` or `tty`, or `sb.process(id)`, was called on a microVM node that predates those features. A subclass of `ProcessError`. Ask your Union.ai solutions team to update the node pool. |

@@ -60,6 +60,8 @@ Use `ScratchVolume()` for throwaway work you never need to keep. Committing, for
 
 A `SandboxVolume` is immutable. Any number of sessions, on any node in the same cluster, can start on copies of it at the same time.
 
+`sb.commit()` saves the session's own disk. Volumes mounted with `volumes=` are committed one by one. See [Mount volumes](./volumes#commit-what-a-session-writes).
+
 To close a session and keep its disk in one step, pass `commit=True` to `close()`. Its commands are stopped first, so the disk is committed as they left it:
 
 ```python
@@ -70,7 +72,7 @@ The call returns once the session has ended. Leaving the `async with` block afte
 
 ## Fork a running sandbox
 
-`sb.fork(name)` commits the disk and opens a new session on a copy of it. The child boots fresh with every file the parent had. Both keep running independently.
+`sb.fork(name)` commits the disk and opens a new session on a copy of it. The child boots fresh with every file the parent had. Both keep running independently. If the parent mounts volumes, the child gets a copy of each. See [Mount volumes](./volumes#what-carries-the-volumes).
 
 This example tries three candidate fixes at once, each on its own fork, and keeps the one that passes:
 
@@ -85,7 +87,7 @@ from flyteplugins.union.sandbox import SandboxVolume
 runner = sandbox.SandboxEnvironment(name="fix-runner", max_duration=600)
 env = flyte.TaskEnvironment(
     name="fix-bug",
-    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.23.0"),
+    image=flyte.Image.from_debian_base().with_pip_packages("flyteplugins-union>=0.26.0"),
 )
 
 STATS = "def mean(xs):\n    return sum(xs) / len(xs)\n"
@@ -176,10 +178,19 @@ async with runner.session("analysis", volume=disk) as sb:
 How publishing works:
 
 - **Named by you, versioned by content.** `publish_on_exit="name"` names the artifact. `publish_on_exit=True` names it after the session. Each version is the disk's own hash.
-- **Only clean endings publish.** A session that is closed, or reaches its `max_duration`, publishes its disk. Closing stops its commands first (`SIGTERM`, then `SIGKILL` after a grace period), so the disk is published as they left it. A session that is cancelled or fails publishes nothing. If a build fails partway, call `await sb.cancel()` so the half-built disk is not published.
+- **Only clean endings publish.** A session that is closed, or reaches its `max_duration`, publishes its disk. A closed session has up to 21 minutes to commit its disk. Closing stops its commands first (`SIGTERM`, then `SIGKILL` after a grace period), so the disk is published as they left it. A session that is cancelled or fails publishes nothing. If a build fails partway, call `await sb.cancel()` so the half-built disk is not published.
 - **Published by the worker.** The session's worker commits the disk and reports it, and the platform registers the artifact shortly after the session's action succeeds. A task that reads the artifact right after the session closes may need to wait and retry.
 - **`snapshot_interval` shortens the final commit.** For a session that writes a lot, `SandboxEnvironment(snapshot_interval=60)` writes its disk to storage every 60 seconds while it runs, without committing it. This leaves less to write when the session ends. Despite its name, it does not produce a `SandboxSnapshot` or a `SandboxVolume`, and nothing can start from these writes.
 - **Same cluster.** A published disk starts sessions on the cluster that committed it.
+
+List the published disks in a project, or the versions of one:
+
+```bash
+flyte get volumes
+flyte get volumes python-data-stack
+```
+
+Each row has the volume's size, its locator, and the sandbox run that published it. Disks published by `flyteplugins-union` earlier than 0.26.0 are not listed.
 
 Publishing needs task artifacts enabled on your cluster. Ask your Union.ai solutions team if `from_artifact` finds nothing after a session closes cleanly.
 
