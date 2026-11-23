@@ -11,12 +11,13 @@ secondary_topnav: -flyte +union
 
 # Platform deployment
 
-You can deploy Union.ai on all major cloud providers, on neocloud providers, and on-premises on any Kubernetes cluster. You can also choose between two deployment models, depending on how much of the data plane you want to manage yourself:
+You can deploy Union.ai on all major cloud providers, on neocloud providers, and on-premises on any Kubernetes cluster. You can also choose between three deployment models, depending on how much of the platform you want to manage yourself:
 
 * **[Self-managed deployment](./selfmanaged/_index)**: You run the data plane on infrastructure you control, and you manage the cluster, upgrades, and all operational aspects. Union.ai support has no access to your cluster, giving you the highest level of data isolation. Supported on AWS, GCP, Azure and OCI; on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment.
 * **[BYOC deployment](./byoc/_index)**: Union.ai manages the data plane for you, but it still runs in your cloud account. You manage your cloud account and its resources; Union.ai handles the cluster, upgrades, and monitoring. To do this, Union.ai support has some access to your cluster, strictly for upgrades, provisioning, and maintaining cluster health, but never to your object storage or logs. Supported on AWS, GCP, and Azure.
+* **[Self-hosted deployment](./selfhosted/_index)**: You run both the control plane and the data plane on infrastructure you control, in one Kubernetes cluster or across several. All communication between the planes stays inside your infrastructure. Choose it when you need full data sovereignty or run in an air-gapped or restricted network.
 
-In both cases, the control plane runs in Union.ai's cloud account, but due to Union's [Zero Trust architecture](../security/_index), your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own cloud account. See [Platform architecture](./platform-architecture) for what each plane does and what data each holds, and [Two-plane separation](../security/architecture/two-plane-separation) for the security model behind the split.
+In self-managed and BYOC deployments, the control plane runs in Union.ai's cloud account. In a self-hosted deployment, you run it in your own infrastructure as well. In every model, Union's [Zero Trust architecture](../security/_index) means your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own infrastructure. See [Platform architecture](./platform-architecture) for what each plane does and what data each holds, and [Two-plane separation](../security/architecture/two-plane-separation) for the security model behind the split.
 
 ## Get started
 
@@ -27,19 +28,5 @@ You can set up a self-managed deployment on AWS, GCP, or Azure yourself, from th
 3. **[Connect your cluster](./selfmanaged/connect-a-cluster).** Enter your resources' details in the Union.ai UI and install the agent it gives you. The agent connects outwards and installs the data plane, so you never open a port, expose an endpoint, or hand over cluster credentials. See [What Union.ai installs in your cluster](./selfmanaged/whats-installed) for what ends up in your cluster and what it costs.
 
 The UI flow covers AWS, GCP, and Azure today. If your data plane runs on OCI or a neocloud provider such as CoreWeave, Crusoe, or Nebius, or on your own Kubernetes cluster, follow the [self-managed setup with Helm](./selfmanaged/_index#other-providers-set-up-with-helm). If you want Union.ai to run your data plane for you, see [BYOC deployment](./byoc/_index).
-
-## Self-hosted deployment
-
-For complete data sovereignty, you can host both the control plane and data plane in the same Kubernetes cluster. In this model, all communication stays within your infrastructure via Kubernetes internal networking.
-
-Self-hosted deployment is distinct from Self-managed deployment: in a self-hosted deployment, you manage both the control plane and the data plane, whereas in a self-managed deployment, Union.ai hosts the control plane and you manage the data plane.
-
-{{< grid >}}
-
-{{< link-card target="./selfhosted/_index" icon="server" title="Self-hosted deployment" >}}
-Deploy both control plane and data plane in your own Kubernetes cluster
-{{< /link-card >}}
-
-{{< /grid >}}
 
 {{< subpage-cards >}}
