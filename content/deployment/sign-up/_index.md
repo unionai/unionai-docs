@@ -2,7 +2,7 @@
 title: Subscribe and sign up
 description: "Create your organization and choose how you pay: on AWS Marketplace or directly. Billing is separate from where your data plane runs."
 icon: rocket-takeoff
-weight: 1
+weight: 2
 variants: -flyte +union
 ---
 
