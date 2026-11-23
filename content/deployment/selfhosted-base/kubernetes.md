@@ -81,6 +81,7 @@ Whatever is missing (the database host or password, the bucket, or what the stor
 | `--edit` | Review the inputs in the editor even when nothing is missing. |
 | `--skip-preflight` | Install even if a check fails. |
 | `-n`/`--namespace` | The namespace to install into (default `union`). |
+| `--organization` | The installation's organization: the one you signed up as, which your license key names. Default `onebox`. Set it on the first install; an upgrade keeps it and refuses another. Requires `flyteplugins-union` 0.26.2 or later. |
 | `--release` | The Helm release name. Default `selfhosted-base`, which also names its resources; if the namespace already has a `onebox` release, the command upgrades that one. Requires `flyteplugins-union` 0.25.1 or later. |
 | `--version` | The chart version (default: the latest). |
 | `--kubeconfig`, `--context` | The Kubernetes configuration file and context to use. |

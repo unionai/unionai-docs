@@ -23,7 +23,7 @@ Nothing is authenticated and everything runs on one machine, so use it to try th
 Union.ai uses the Flyte Python SDK and its `flyte` CLI; the `flyteplugins-union` package adds the `flyte start onebox` command. Install both, then start Union.ai:
 
 ```shell
-pip install flyte "flyteplugins-union>=0.21.0"
+pip install flyte "flyteplugins-union>=0.26.2"
 flyte start onebox
 ```
 
@@ -35,7 +35,9 @@ The first start pulls the image and takes a few minutes; later starts take secon
 | SDK and CLI configuration | `~/.flyte/onebox/config.yaml` |
 | Kubernetes configuration | `~/.flyte/onebox/kubeconfig` |
 
-The SDK configuration points at organization `onebox`, project `flytesnacks`, and domain `development`. Union.ai organizes work into projects, and each project into domains (`development`, `staging`, `production`); these are Union.ai names, not Kubernetes namespaces or DNS names.
+The SDK configuration points at the installation's organization, project `flytesnacks`, and domain `development`. Union.ai organizes work into projects, and each project into domains (`development`, `staging`, `production`); these are Union.ai names, not Kubernetes namespaces or DNS names.
+
+The organization is `onebox` unless you choose one. To use the organization you signed up as, the one your license key names, start a new installation with `flyte start onebox --organization <your-organization>`. Requires Self-hosted Base 2026.11.15 or later. The organization can't change once the installation holds data; to start over with another, run `flyte stop onebox --delete --volume`, which deletes everything.
 
 To see the pods inside the container:
 

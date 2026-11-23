@@ -106,6 +106,10 @@ Self-hosted Base picks up a rotated key in the Secret without a restart. Keys ar
 
 To send **Get a key** to your own license-request page instead, set `license.issueURL`. Keys still have to come from Union.ai.
 
+### Organization
+
+The UI greets the organization your key was issued to. The installation also has an organization of its own, which everything it stores and every SDK and CLI configuration uses: `onebox` unless you set it. To make the two match, set it on the first install, with `flyte install selfhosted-base --organization <your-organization>` or the chart's `organization` value. Keep it unchanged afterwards: the installation's data is stored under it. Requires Self-hosted Base 2026.11.15 and `flyteplugins-union` 0.26.2 or later.
+
 ### Limits and entitlements
 
 A key records your organization's limits and features when it is issued, such as the maximum number of users or concurrent runs. Self-hosted Base holds the installation to them. They can't be changed inside Self-hosted Base: when your organization's limits change, issue the key again and add the new one.
