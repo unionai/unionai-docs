@@ -9,7 +9,7 @@ variants: -flyte +union
 # Costs
 
 > [!NOTE] Preview feature
-> The Costs page is in preview and is not turned on for every organization. It is included in the [Enterprise plan](../deployment/sign-up/product-tiers). If you would like to use it, reach out to your Customer Solutions representative.
+> The Costs page is in preview and is not turned on for every organization. It is included in the [Enterprise plan](../deployment/product-tiers). If you would like to use it, reach out to your Customer Solutions representative.
 
 The Costs page shows what the compute behind your tasks, environments, and apps costs on your cloud provider. Start with the whole organization, then drill down through projects, tasks, and runs to a single action.
 
