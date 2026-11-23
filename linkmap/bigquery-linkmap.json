@@ -3,6 +3,8 @@
     "flyteplugins.bigquery": "/api-reference/integrations/bigquery/"
   },
   "identifiers": {
+    "flyteplugins.bigquery.BQToPandasDecodingHandler": "/api-reference/integrations/bigquery/bqtopandasdecodinghandler/",
+    "BQToPandasDecodingHandler": "/api-reference/integrations/bigquery/bqtopandasdecodinghandler/",
     "flyteplugins.bigquery.BigQueryConfig": "/api-reference/integrations/bigquery/bigqueryconfig/",
     "BigQueryConfig": "/api-reference/integrations/bigquery/bigqueryconfig/",
     "flyteplugins.bigquery.BigQueryConnector": "/api-reference/integrations/bigquery/bigqueryconnector/",

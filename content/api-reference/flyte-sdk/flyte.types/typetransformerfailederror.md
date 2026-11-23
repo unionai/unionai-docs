@@ -1,7 +1,7 @@
 ---
 title: TypeTransformerFailedError
 icon: exclamation-triangle
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

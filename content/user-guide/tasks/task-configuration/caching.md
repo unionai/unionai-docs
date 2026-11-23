@@ -16,7 +16,7 @@ Flyte 2 provides intelligent **task output caching** that automatically avoids r
 
 ## Overview
 
-By default, caching is disabled.
+By default, caching is disabled, except for shell tasks and code sandbox tasks.
 
 If caching is enabled for a task, then Flyte determines a **cache key** for the task.
 The key is composed of the following:
@@ -27,6 +27,7 @@ The key is composed of the following:
 * Cache version: The cache version string.
 
 If the cache behavior is set to `"auto"`, the cache version is automatically generated using a hash of the task's source code (or according to the custom policy if one is specified).
+For container, shell and code sandbox tasks, `flyte` 2.12.0 or later generates it from what the container runs (see [Container and shell tasks](#container-and-shell-tasks)).
 If the cache behavior is set to `"override"`, the cache version can be specified explicitly using the `version_override` parameter.
 
 When the task runs, Flyte checks if a cache entry exists for the key.
@@ -65,7 +66,7 @@ Since the cache key is fixed as part of the code, it can be manually changed whe
 ### `"disable"` - No caching
 
 To explicitly disable caching, use the `"disable"` behavior.
-**This is the default behavior.**
+**This is the default behavior, except for shell tasks and code sandbox tasks.**
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="disable" lang="python" >}}
 
@@ -168,7 +169,7 @@ When a task input is a DataFrame (`pandas`, `polars`, or `flyte.io.DataFrame`), 
 To cache on **content** instead, attach a hash of the data at the point where it is produced. Flyte then uses that content hash when computing the cache key of any downstream consuming task, so identical content produces a cache hit regardless of where it is stored.
 
 > [!NOTE]
-> Caching applies only on a remote cluster - local execution does not produce cache hits across runs.
+> In-process runs also use content hashes for DataFrames and for a `Dir` with a `dir_cache_key`. A `File` given a `HashFunction` through `hash_method` is keyed on its location when the run's raw-data path is local, the default for in-process runs, so identical content at a new path is a cache miss. See [Local development caching](#local-development-caching).
 
 ### DataFrames
 
@@ -186,7 +187,7 @@ For `flyte.io.DataFrame`, pass the `HashFunction` to `DataFrame.from_local` via 
 
 ### Files
 
-A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new_remote`). Pass a `HashFunction` that hashes the file's bytes, and the file is cached on its content rather than its remote path:
+A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new_remote`). Pass a `HashFunction` that hashes the file's bytes, and the file is cached on its content rather than its remote path, except in an in-process run with a local raw-data path, where the file isn't hashed (see the note above):
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="file" lang="python" >}}
 
@@ -207,6 +208,32 @@ For `behavior="auto"`, Flyte uses cache policies to generate version hashes.
 The default `FunctionBodyPolicy` generates cache versions from the function's source code:
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="policy" lang="python" >}}
+
+### Container and shell tasks
+
+A container task (`ContainerTask`), a shell task (`flyte.extras.shell`) or a code sandbox task (`flyte.sandbox.create()`) has no Python function to hash.
+With `behavior="auto"` and `flyte` 2.12.0 or later, its cache version is a hash of the following:
+
+* The image
+* The command (for a shell task, the rendered script) and the arguments
+* The input and output data directories, the metadata format and the file input layout
+
+Changing any of these invalidates the cache.
+
+Shell tasks and code sandbox tasks use `cache="auto"` by default.
+Container tasks don't cache unless you set `cache`.
+In `flyte` 2.12.0 through 2.12.2, `ContainerTask.override()` raises a `TypeError`, so on those versions set `cache` when you create the task.
+
+A code sandbox passes your code to the container as an input file identified by a hash of its content, so editing the code also invalidates the cache, through the inputs rather than the cache version.
+
+* `env_vars` are not part of the cache version.
+  Changing an environment variable doesn't invalidate the cache.
+* An image given as a tag reference, such as `"alpine:latest"` or `flyte.Image.from_base("alpine:latest")`, is versioned by the reference string.
+  The cache version stays the same when the tag moves to a new image.
+
+Before `flyte` 2.12.0, every container and shell task gets the same cache version, so editing the command, the script or the image never invalidates the cache.
+On those versions, an edited shell task keeps returning its old result, because shell tasks cache by default.
+To avoid this, upgrade `flyte` or set `cache="disable"`.
 
 ### Custom cache policies
 
@@ -256,16 +283,15 @@ Caches are automatically isolated by:
 
 ## Local development caching
 
-When running locally, Flyte maintains a local cache:
+When running in-process, Flyte keeps a local cache in a SQLite database, so a cached task called again with the same inputs returns its stored outputs, including across runs:
 
 ```python
-# Local execution uses ~/.flyte/local-cache/
-flyte.init()  # Local mode
+flyte.init()  # no endpoint, so runs are in-process
 result = flyte.run(my_cached_task, data="test")
 ```
 
 Local cache behavior:
 
-- Stored in `~/.flyte/local-cache/` directory
+- Stored in `local-cache/cache.db`, in the directory that holds your config file (for example `.flyte/local-cache/`), or in `~/.flyte/local-cache/` when no config file is found
+- Only `behavior="auto"` reads from the local cache
 - No project/domain isolation (since running locally)
-- Disabled by setting `FLYTE_LOCAL_CACHE_ENABLED=false`

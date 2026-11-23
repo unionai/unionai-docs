@@ -183,8 +183,8 @@ Adaptive mesh refinement is the key feature here. When the simulation detects a 
 Before running, set up ERA5 API credentials:
 
 ```bash
-flyte create secret cds_api_key <YOUR_CDS_API_KEY>
-flyte create secret cds_api_url https://cds.climate.copernicus.eu/api
+flyte create secret cds_api_key --value <YOUR_CDS_API_KEY>
+flyte create secret cds_api_url --value https://cds.climate.copernicus.eu/api
 ```
 
 Then launch:

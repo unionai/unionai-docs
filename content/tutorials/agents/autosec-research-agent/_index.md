@@ -55,7 +55,7 @@ Each target flows through four stages: static scan, LLM hypothesis, PoC construc
 Get an Anthropic API key from the [Anthropic console](https://console.anthropic.com/) and register it as a Flyte secret:
 
 ```
-flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 ```
 
 See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.

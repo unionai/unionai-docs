@@ -2,7 +2,7 @@
 title: JsonlFile
 description: "A file type for JSONL (JSON Lines) files, backed by `orjson` for fast serialisation."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -106,8 +106,6 @@ validated to form a valid model.
 | [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
 | [`open_sync()`](#open_sync) | Synchronously open the file and return a file-like object. |
-| [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
-| [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches File schema. |
 | [`writer()`](#writer) | Async context manager returning a `JsonlWriter` for streaming writes. |
 | [`writer_sync()`](#writer_sync) | Sync context manager returning a `JsonlWriterSync` for streaming writes. |
 
@@ -147,7 +145,7 @@ async def download_to_path(f: File) -> str:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. If the file is already on the local filesystem (e.g. a mounted volume) and no other path is requested, it is not copied and its existing path is returned. |
 
 **Returns:** The absolute path to the downloaded file
 
@@ -186,7 +184,7 @@ def download_to_path_sync(f: File) -> str:
 
 | Parameter | Type | Description |
 |-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. If the file is already on the local filesystem (e.g. a mounted volume) and no other path is requested, it is not copied and its existing path is returned. |
 
 **Returns:** The absolute path to the downloaded file
 
@@ -273,6 +271,8 @@ def from_local(
     local_path: Union[str, Path],
     remote_destination: Optional[str] = None,
     hash_method: Optional[HashMethod | str] = None,
+    chunk_size: Optional[int] = None,
+    max_concurrency: Optional[int] = None,
 ) -> File[T]
 ```
 Asynchronously create a new File object from a local file by uploading it to remote storage.
@@ -312,11 +312,10 @@ async def upload_to_specific_path() -> File:
 | `local_path` | `Union[str, Path]` | Path to the local file |
 | `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
 | `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
+| `chunk_size` | `Optional[int]` | Optional minimum multipart part size in bytes. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_CHUNK_SIZE environment variable (default: 5 MiB). A larger part size means fewer upload requests, which helps when the object store throttles on request rate. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `Optional[int]` | Optional number of parts uploaded at once. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_MAX_CONCURRENCY environment variable (default: 12). Peak upload memory is roughly chunk_size x max_concurrency. Applies to S3, GCS and Azure; ignored by other filesystems. |
 
-**Returns**
-
-A new File instance pointing to the uploaded remote file
-
+**Returns:** A new File instance pointing to the uploaded remote file
 
 ### from_local_sync()
 
@@ -325,6 +324,8 @@ def from_local_sync(
     local_path: Union[str, Path],
     remote_destination: Optional[str] = None,
     hash_method: Optional[HashMethod | str] = None,
+    chunk_size: Optional[int] = None,
+    max_concurrency: Optional[int] = None,
 ) -> File[T]
 ```
 Synchronously create a new File object from a local file by uploading it to remote storage.
@@ -364,11 +365,10 @@ def upload_to_specific_path() -> File:
 | `local_path` | `Union[str, Path]` | Path to the local file |
 | `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
 | `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
+| `chunk_size` | `Optional[int]` | Optional minimum multipart part size in bytes. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_CHUNK_SIZE environment variable (default: 5 MiB). A larger part size means fewer upload requests, which helps when the object store throttles on request rate. Applies to S3, GCS and Azure; ignored by other filesystems. |
+| `max_concurrency` | `Optional[int]` | Optional number of parts uploaded at once. If not specified, the default value is determined by the FLYTE_IO_UPLOAD_MAX_CONCURRENCY environment variable (default: 12). Peak upload memory is roughly chunk_size x max_concurrency. Applies to S3, GCS and Azure; ignored by other filesystems. |
 
-**Returns**
-
-A new File instance pointing to the uploaded remote file
-
+**Returns:** A new File instance pointing to the uploaded remote file
 
 ### iter_arrow_batches()
 
@@ -627,34 +627,6 @@ def write_file_sync() -> File:
 | `**kwargs` |  | |
 
 **Returns:** A file-like object that can be used with standard read/write operations
-
-### pre_init()
-
-```python
-def pre_init(
-    data,
-)
-```
-Internal: Pydantic validator to set default name from path. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `data` |  | |
-
-### schema_match()
-
-```python
-def schema_match(
-    incoming: dict,
-)
-```
-Internal: Check if incoming schema matches File schema. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `incoming` | `dict` | |
 
 ### writer()
 

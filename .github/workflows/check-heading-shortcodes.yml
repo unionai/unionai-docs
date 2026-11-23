@@ -1,0 +1,35 @@
+name: Check Heading Shortcodes
+
+# Content lint (DOC-1357): no heading may call a shortcode with `{{< ... >}}`.
+# Hugo resolves that form AFTER goldmark has computed the heading id, so the id
+# ends up built out of Hugo's internal shortcode placeholder, which varies from
+# build to build and breaks deep links on every deploy. Use `{{% ... %}}` (or an
+# explicit `{#my-id}`) instead.
+#
+# This is the one way a content change is known to make the build
+# non-reproducible, so it runs on every PR. The full build-twice comparison runs
+# only on infra changes -- see check-determinism.yml.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-heading-shortcodes:
+    name: "Check Heading Shortcodes"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Check heading shortcode form
+        run: python unionai-docs-infra/tools/check_heading_shortcodes.py content

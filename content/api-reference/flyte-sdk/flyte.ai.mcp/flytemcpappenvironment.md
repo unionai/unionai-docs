@@ -2,7 +2,7 @@
 title: FlyteMCPAppEnvironment
 description: "Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn)."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -82,6 +82,7 @@ class FlyteMCPAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
     type: str = 'FlyteMCPApp',
     mcp_mount_path: str = '/flyte-mcp',
@@ -100,6 +101,7 @@ class FlyteMCPAppEnvironment(
     sdk_examples_path: str | None = '/root/flyte-sdk/examples',
     docs_examples_path: str | None = '/root/unionai-examples/v2',
     full_docs_path: str | None = '/root/llms.txt',
+    config_file: str | None = None,
 )
 ```
 | Parameter | Type | Description |
@@ -124,6 +126,7 @@ class FlyteMCPAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `type` | `str` | |
 | `mcp_mount_path` | `str` | |
@@ -142,6 +145,7 @@ class FlyteMCPAppEnvironment(
 | `sdk_examples_path` | `str \| None` | |
 | `docs_examples_path` | `str \| None` | |
 | `full_docs_path` | `str \| None` | |
+| `config_file` | `str \| None` | |
 
 ## Properties
 

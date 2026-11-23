@@ -63,7 +63,7 @@ Deep-Agents-specific options such as `subagents`, `skills`, `backend` and `inter
 
 **Model turns:** `model` accepts a chat model instance or a `provider:model` string. A string is resolved through `init_chat_model` first, then wrapped in `DurableChatModel`, so both forms get per-turn replay.
 
-**Observability:** The run timeline renders into the task report.
+**Observability:** When the enclosing task has `report=True`, the task report gets a "Deep agent" heading on its **Agent** tab. Tool calls and model turns are not rendered into the report.
 
 ## Bring your own agent
 
@@ -129,9 +129,9 @@ async def pipeline(topic: str) -> str:
 | `model` | `Any` | `None` | A chat model instance or `provider:model` string. Required when `agent` is not given |
 | `instructions` | `str \| None` | `None` | System prompt for the built agent |
 | `agent` | `Any` | `None` | A pre-built compiled `create_deep_agent` graph. Mutually exclusive with `tools` |
-| `name` | `str` | `"deep-agent"` | Agent name, used for debugging and observability |
+| `name` | `str` | `"deep-agent"` | Agent name, used only in the default system prompt (`You are a helpful assistant named {name}.`) when `instructions` is not set. Not passed to `create_deep_agent`. Ignored when `agent` is given |
 | `durable` | `bool` | `True` | Record and replay each model turn. Applies on the builder path |
-| `observability` | `bool` | `True` | Render the timeline into the task report |
+| `observability` | `bool` | `True` | Write a "Deep agent" heading to the task report's **Agent** tab (the task needs `report=True`) |
 | `memory_key` | `str \| None` | `None` | Stable user or thread ID for the conversation and the virtual filesystem |
 | `**agent_kwargs` | | | Forwarded to `create_deep_agent`, including `subagents`, `skills` and `backend` |
 

@@ -103,8 +103,16 @@ gives you a ready-to-paste `~/.ssh/config` block so you can attach your **local*
 - `flyte` (SDK) version **2.5.8 or newer**
 - `flyteplugins-union` version **greater than 0.5.0**
 
-The in-pod SSH server is pure Python (`asyncssh`, bundled with `flyte`), so **no extra packages are
-needed in the task image**: there is no `openssh-server` install and nothing to bake in.
+The in-pod SSH server is pure Python (`asyncssh`), so there is no `openssh-server` install. From
+`flyte` 2.12.2, `asyncssh` is the optional `flyte[ssh]` extra:
+
+- The default task image includes it, and so do images you build on it with
+  `Image.from_debian_base()`. Nothing else is needed.
+- On any other image without it, `flyte` installs `asyncssh` when the SSH session starts, which
+  needs `uv` on the `PATH` or `pip` in the task's Python environment, and access to a package
+  index. Without them, the session fails with an `ImportError` that says to add `flyte[ssh]`. To
+  skip the install, add the extra to the image, for example
+  `.with_pip_packages("flyte[ssh]")`.
 
 Install the plugin:
 

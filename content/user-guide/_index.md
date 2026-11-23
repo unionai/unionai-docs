@@ -13,13 +13,14 @@ site_root: true
 
 # Flyte OSS
 
-Flyte is a free and open source platform that provides a full suite of features for orchestrating AI workflows.
-Flyte enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
-You deploy and manage Flyte yourself, on your own cloud infrastructure.
+Flyte 2 is the durable AI runtime, in open source.
+You write training, serving, and agent workloads in plain Python, and Flyte can recover them from failure, whether your code raised an error or the infrastructure failed under it with an OOM kill or a preempted node.
+Flyte is Apache 2.0 licensed and a Linux Foundation AI & Data project, and you run it yourself on your own Kubernetes cluster.
 
-> [!NOTE]
-> These are the Flyte **2.0** docs.
-> To switch to [version 1.0]({{< docs_home flyte v1 >}}) or to the commercial product, [**Union.ai**]({{< docs_home union v2 >}}), use the selectors above.
+> [!TIP] Try Flyte on Union.ai, free for 30 days
+> [Union.ai]({{< docs_home union v2 >}}) is the commercial platform built on Flyte.
+> Sign up and try it free for 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -28,26 +29,23 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 # {{% key product_name %}}
 
-{{< key product_name >}} enables AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience. With {{< key product_name >}} your team can:
+{{< key product_name >}} is the durable AI runtime your team owns.
+Your workloads run in your own cloud, and your data and code never leave it: they never traverse the {{< key product_name >}} control plane.
+On it, you build model factories, production agents, and model serving in plain Python, as durable steps that can recover from failure.
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
+{{< key product_name >}} is enterprise-grade [Flyte]({{< docs_home flyte v2 >}}), open source at the core.
+See [Platform deployment]({{< docs_home union v2 >}}/deployment/) for the ways to run it.
 
-{{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
-
-{{< key product_name >}} provides all the features of Flyte, plus much more, in an environment where you keep your data and workflow code on your own infrastructure. {{< key product_name >}} is available as [BYOC]({{< docs_home union v2 >}}/deployment/byoc/_index) (Bring Your Own Cloud), where Union.ai manages the infrastructure for you, or [Self-managed]({{< docs_home union v2 >}}/deployment/selfmanaged/_index), where you manage the data plane yourself.
-
-> [!NOTE]
-> These are the Union.ai **2.0** docs.
-> To switch to [version 1.0]({{< docs_home union v1 >}}) or to another product variant, use the selectors above.
+> [!TIP] Try Union.ai free for 30 days
+> Sign up and set up {{< key product_name >}} yourself, free for the first 30 days.
+> See [Platform deployment]({{< docs_home union v2 >}}/deployment/).
 
 {{< /markdown >}}
 {{< /variant >}}
 
 ## Basics
 
-Learn the basics of Flyte, covering all the core concepts around tasks, apps, and agents.
+Learn the basics of Flyte, covering the core concepts around tasks, apps, and triggers.
 
 {{< grid >}}
 
@@ -63,6 +61,30 @@ Configure, build, and deploy the durable batch workloads that everything else is
 Long-running services for dashboards, REST APIs, and model endpoints.
 {{< /link-card >}}
 
+{{< link-card target="triggers" icon="alarm" title="Triggers" >}}
+Run tasks automatically on a schedule, or save named launch configurations to fire on demand.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+## AI workloads
+
+Train, post-train, and serve models, and build agents, with the Flyte constructs each workload relies on.
+
+{{< grid >}}
+
+{{< link-card target="model-training" icon="gpu-card" title="Model training" >}}
+Train models with Flyte, from multi-node pretraining and LLM fine-tuning to classical machine learning, with every stage cached, recoverable, and sized to its own hardware.
+{{< /link-card >}}
+
+{{< link-card target="reinforcement-learning" icon="trophy" title="Reinforcement learning" >}}
+Run reinforcement learning loops with Flyte, with environments, rewards, rollouts, and the trainer each on their own hardware, and a loop that survives failures.
+{{< /link-card >}}
+
+{{< link-card target="inference" icon="cpu" title="Inference" >}}
+Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
+{{< /link-card >}}
+
 {{< link-card target="agents" icon="robot" title="Agents" >}}
 Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 {{< /link-card >}}
@@ -73,9 +95,9 @@ Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 
 {{< markdown >}}
 
-## Artifacts
+## Artifacts and factories
 
-Name and version the datasets and models your tasks produce, and trace where they came from.
+Name and version the datasets and models your tasks produce, trace where they came from, and build them on demand with factories.
 
 {{< /markdown >}}
 
@@ -83,6 +105,10 @@ Name and version the datasets and models your tasks produce, and trace where the
 
 {{< link-card target="artifacts" icon="box-seam" title="Artifacts" >}}
 Register task outputs and uploads as named, versioned artifacts, trigger runs on new versions, mount them into apps, and trace lineage.
+{{< /link-card >}}
+
+{{< link-card target="factories" icon="diagram-3" title="Factories" >}}
+Declare how artifacts are made from other artifacts, then ask for any artifact for a partition or a range and let Union build only what is missing or stale.
 {{< /link-card >}}
 
 {{< /grid >}}
@@ -109,7 +135,7 @@ Manage users, roles, and policies for your Union cluster.
 
 {{< markdown >}}
 
-## Cluster and workload management
+## Clusters and queues
 
 Stand up clusters and govern where your workloads run.
 
@@ -117,7 +143,7 @@ Stand up clusters and govern where your workloads run.
 
 {{< grid >}}
 
-{{< link-card target="cluster-workload-management" icon="cloud" title="Clusters and queues" >}}
+{{< link-card target="clusters-and-queues" icon="cloud" title="Clusters and queues" >}}
 Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
 {{< /link-card >}}
 
@@ -133,15 +159,11 @@ other workflow orchestrators.
 {{< grid >}}
 
 {{< link-card target="project-patterns" icon="folder" title="Project patterns" >}}
-Patterns for BYO images, monorepos with uv, CI/CD, and multi-team resource management.
+Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
 {{< /link-card >}}
 
 {{< link-card target="run-scaling" icon="box" title="Run scaling" >}}
 Tune task overhead, batching, reusable containers, and fanout to scale your workflows.
-{{< /link-card >}}
-
-{{< link-card target="advanced-project" icon="rocket" title="Advanced project" >}}
-An advanced guide for building an LLM reporting agent on Flyte.
 {{< /link-card >}}
 
 {{< link-card target="migration" icon="arrow-right" title="Migration" >}}
@@ -149,3 +171,15 @@ Port a Flyte 1 codebase to Flyte 2, or map Airflow concepts to their Flyte 2 equ
 {{< /link-card >}}
 
 {{< /grid >}}
+
+{{< variant flyte >}}
+
+{{< grid >}}
+
+{{< link-card target="telemetry" icon="eye-slash" title="Telemetry" >}}
+What telemetry is sent and how to turn it off with DO_NOT_TRACK.
+{{< /link-card >}}
+
+{{< /grid >}}
+
+{{< /variant >}}

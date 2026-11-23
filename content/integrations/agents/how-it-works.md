@@ -143,7 +143,7 @@ Two cases, both called out on the relevant framework pages:
 
 **Pre-built agents:** If you construct the agent object yourself and pass it as `run_agent(agent=...)`, Flyte often cannot reach the model inside it to wrap it. The LangChain family exposes `DurableChatModel` for this; Pydantic AI applies the wrapper through `Agent.override`. Tool calls stay durable either way.
 
-**Subprocess loops:** The Claude Agent SDK runs its loop in the Claude Code runtime, a subprocess Flyte does not intercept, so a turn cannot be a trace leaf. That adapter uses the SDK's own session resume against a `flyte.Checkpoint` instead. It is coarser, whole-session rather than per-turn, but it is real. Hermes exposes no per-turn hook at all, so `durable=` is accepted and ignored there.
+**Subprocess loops:** The Claude Agent SDK runs its loop in the Claude Code runtime, a subprocess Flyte does not intercept, so a turn cannot be a trace leaf. That adapter uses the SDK's own session resume against a `flyte.Checkpoint` instead. It is coarser, whole-session rather than per-turn, but it is real. Hermes runs its loop in-process and exposes an `llm_execution` middleware below it, so there each turn is a trace leaf like anywhere else.
 
 ## Cross-run memory
 
@@ -169,7 +169,7 @@ What each adapter actually persists differs, because the SDKs represent conversa
 `memory_key` should be a single segment, such as a user or thread ID. Memory is best-effort by design: if no durable store can be resolved, the adapter logs a warning and the run continues without memory rather than failing.
 
 > [!NOTE] Memory needs a configured context
-> The store path is derived from the active org, project and domain. Run with `flyte.init_from_config()` or against a backend. Local runs without a context skip memory silently.
+> The store path is derived from the active org, project and domain. Run with `flyte.init_from_config()` or against a backend. Local runs without a context log a warning and skip memory.
 
 ## Observability
 
@@ -183,11 +183,11 @@ async def city_agent(question: str) -> str:
 
 Turn it off with `observability=False`.
 
-Token accounting is honest about replay. On a retried run, turns served from their durable records are counted as cached rather than presented as fresh spend.
+With the [Mistral](./mistral) adapter, turns served from their durable records on a retried run are counted as cached tokens rather than presented as fresh spend. The other adapters do not count replayed turns as cached.
 
 ## Human in the loop
 
-A tool is a Flyte task, and a Flyte task can suspend on a condition. That gives you an approval gate no agent SDK has an equivalent for, because the run genuinely suspends rather than blocking a thread, and survives a restart while it waits.
+A tool is a Flyte task, and a Flyte task can wait on a condition, which puts a human approval gate on a tool call. The condition is stored on the backend. The tool task's pod keeps running while it waits.
 
 ```python
 @tool

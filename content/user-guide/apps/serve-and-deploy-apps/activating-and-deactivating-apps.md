@@ -8,15 +8,9 @@ variants: +flyte +union
 
 # Activating and deactivating apps
 
-Apps deployed with `flyte.deploy()` need to be explicitly activated before they can serve traffic. Apps served with `flyte.serve()` are automatically activated.
+Apps deployed with `flyte.deploy()` and apps served with `flyte.serve()` are activated automatically. Use `deactivate()` and `activate()` to turn a deployed app off and on.
 
 ## Activation
-
-### Activate after deployment
-
-After deploying an app, activate it:
-
-{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=activate-after-deployment lang=python >}}
 
 ### Activate an app
 
@@ -73,7 +67,7 @@ For all available options, see the [CLI reference](../../../api-reference/flyte-
 
 ## Best practices
 
-1. **Activate after testing**: Test deployed apps before activating
+1. **Test before deploying**: Test with serve or a dry run before deploying
 2. **Version management**: Keep track of which version is active
 4. **Blue-green deployments**: Use blue-green for zero-downtime
 5. **Monitor**: Monitor apps after activation
@@ -85,7 +79,7 @@ Apps served with `flyte.serve()` are automatically activated:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=automatic-activation lang=python >}}
 
-This is convenient for development but less suitable for production where you want explicit control over activation.
+This is convenient for development. For production, use `flyte.deploy()`, which also activates the app, and use `deactivate()` and `activate()` to control it afterwards.
 
 ## Example: Complete deployment and activation
 

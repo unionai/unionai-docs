@@ -146,8 +146,8 @@ After each trade decision, you can run a `reflect_on_decisions` task. This evalu
 First, set up your OpenAI secret (from [openai.com](https://platform.openai.com/api-keys)) and Finnhub API key (from [finnhub.io](https://finnhub.io/)):
 
 ```
-flyte create secret openai_api_key <YOUR_OPENAI_API_KEY>
-flyte create secret finnhub_api_key <YOUR_FINNHUB_API_KEY>
+flyte create secret openai_api_key --value <YOUR_OPENAI_API_KEY>
+flyte create secret finnhub_api_key --value <YOUR_FINNHUB_API_KEY>
 ```
 
 Then [clone the repo](https://github.com/unionai/unionai-examples), navigate to the `tutorials-v2/trading_agents` directory, and run the following commands:

@@ -10,6 +10,12 @@ name: "Regenerate API docs"
 # Triggers:
 #   repository_dispatch(sdk-release) — the cross-repo signal from flyteorg/flyte-sdk
 #                                      (Part B; harmless until that side is wired up).
+#   repository_dispatch(plugin-release) — the same signal from a plugin repo that
+#                                      releases on its own schedule (today:
+#                                      unionai/flyteplugins-union). Payload carries
+#                                      `package` + `version`. A plugin release is not an
+#                                      SDK release, so the fold below does not cut; the
+#                                      PR lands on /docs/latest until the next cut.
 #   schedule                         — daily backstop poll (catches drift even if the
 #                                      signal misfires, and makes this useful pre-Part-B).
 #   workflow_dispatch                — manual / on-demand.
@@ -25,7 +31,7 @@ name: "Regenerate API docs"
 
 on:
   repository_dispatch:
-    types: [sdk-release]
+    types: [sdk-release, plugin-release]
   schedule:
     - cron: "0 13 * * *"   # daily 13:00 UTC
   workflow_dispatch:
@@ -48,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: "true"
           # fetch-depth: 0 -- the "Fold version promotion" step below runs
@@ -69,35 +75,70 @@ jobs:
       - name: Mint docsy-bot App token
         id: app-token
         if: ${{ env.DOCSY_BOT_APP_ID != '' }}
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.DOCSY_BOT_APP_ID }}
           private-key: ${{ secrets.DOCSY_BOT_PRIVATE_KEY }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v10.3.3
 
       # Belt-and-suspenders: when triggered by the release signal, make sure the
       # announced version is actually installable on PyPI before regenerating
       # (the regen installs from PyPI). No-op for schedule/manual runs.
       - name: Wait for PyPI availability (dispatch only)
         if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
+        env:
+          # Via env, not inline ${{ }}, so a payload value cannot inject shell.
+          # `package` is sent by plugin-release; sdk-release omits it and means flyte.
+          PACKAGE: ${{ github.event.client_payload.package || 'flyte' }}
+          VERSION: ${{ github.event.client_payload.version }}
         run: |
-          VERSION="${{ github.event.client_payload.version }}"
-          LINK="https://pypi.org/project/flyte/${VERSION}/"
+          if ! [[ "$PACKAGE" =~ ^[A-Za-z0-9._-]+$ && "$VERSION" =~ ^[A-Za-z0-9._+-]+$ ]]; then
+            echo "::error::unexpected dispatch payload: package='$PACKAGE' version='$VERSION'"; exit 1
+          fi
+          # The JSON API, not the HTML page: pypi.org/project/<pkg>/<ver>/ answers
+          # 200 for versions that do not exist, so polling it never waited at all.
+          LINK="https://pypi.org/pypi/${PACKAGE}/${VERSION}/json"
           echo "Waiting for $LINK"
           for i in $(seq 1 60); do
-            if curl -L -I -s -f "$LINK" >/dev/null; then
+            if curl -L -s -f -o /dev/null "$LINK"; then
               echo "Found on PyPI: $LINK"; exit 0
             fi
             echo "Attempt $i: not yet available, retrying in 10s..."; sleep 10
           done
           echo "ERROR: timed out waiting for PyPI ($LINK)"; exit 1
+
+      # A released plugin with no api-packages.toml entry never drifts -- it has no
+      # committed docs to fall behind -- so check-api-docs cannot see it. Register
+      # it FIRST: the new entry then reads as drift ("committed=not generated"), and
+      # the regen below documents the plugin in this same PR. Two gates before an
+      # entry is written (see the tool's docstring): every PyPI owner is in
+      # [plugin_discovery].owners, and there is a real release, not a 0.0.0a0 name
+      # claim. A plugin that fails the owner gate is UNVERIFIED: never registered,
+      # reported in the PR body, and the job fails at the end so the run goes red.
+      # Registration alone never cuts: the fold below promotes only an SDK release.
+      - name: Register new plugins
+        id: registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          if make register-plugins 2>&1 | tee /tmp/registry.txt; then
+            echo "failed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          if grep -q '\[REGISTERED\]' /tmp/registry.txt; then
+            echo "registered=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "registered=false" >> "$GITHUB_OUTPUT"
+          fi
 
       # Gate: check-api-docs exits non-zero on drift. Capture, don't fail the job.
       - name: Check API docs freshness
@@ -258,16 +299,41 @@ jobs:
           } > /tmp/pr-body.md
           # Append the surface-delta classification (material/cosmetic + symbols).
           cat /tmp/delta.md >> /tmp/pr-body.md 2>/dev/null || true
+          if [ "${{ steps.registry.outputs.registered }}" = "true" ]; then
+            {
+              echo ""
+              echo "### Newly registered plugins -- check before merging"
+              echo ""
+              echo "These plugins were released since the last regen and had no \`[[plugins]]\` entry. Each passed both gates (every PyPI owner is in \`[plugin_discovery].owners\`; a real release, not a name claim), so this PR registers it in \`api-packages.toml\` and generates its API reference."
+              echo ""
+              echo "**The \`title\` is a guess and the page sits at the default \`integrations/<name>\`.** Fix the title (e.g. \`Gitlab\` -> \`GitLab\`) and, if the plugin belongs in a group such as \`software-development-tools/\`, set \`name\` and \`output_folder\` like its siblings -- then rerun \`make update-api-docs\`. Moving a published page later needs a redirect. The new pages reach \`/docs/latest\` at merge and \`/docs/v2\` at the next cut."
+              echo '```'
+              grep -E '\[REGISTERED\]' /tmp/registry.txt
+              echo '```'
+            } >> /tmp/pr-body.md
+          fi
+          if [ "${{ steps.registry.outputs.failed }}" = "true" ]; then
+            {
+              echo ""
+              echo "### Plugins NOT registered"
+              echo ""
+              echo "Released, but not registered: a PyPI owner is outside \`[plugin_discovery].owners\` (a possible squat -- confirm the package is ours before adding the owner), or discovery could not complete. The job is failed so this is looked at."
+              echo '```'
+              grep -E 'UNVERIFIED|FAILED' /tmp/registry.txt || cat /tmp/registry.txt
+              echo '```'
+            } >> /tmp/pr-body.md
+          fi
 
       - name: Create or update draft PR
         if: steps.drift.outputs.drift == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           branch: docsy/api-ref-refresh-auto
           base: main
           draft: true
           add-paths: |
+            api-packages.toml
             content/api-reference/**
             linkmap/*-linkmap.json
             versions.toml
@@ -290,3 +356,10 @@ jobs:
             api-docs-regen
             ${{ steps.classify.outputs.material == 'true' && 'docsy:api-surface-delta' || '' }}
           delete-branch: false
+
+      - name: Fail on unverified plugins or incomplete discovery
+        if: steps.registry.outputs.failed == 'true'
+        run: |
+          echo "::error title=Plugin registration needs a human::$(grep -E 'UNVERIFIED|FAILED' /tmp/registry.txt | tr -s ' ' | paste -sd ';' -)"
+          echo "UNVERIFIED: a PyPI owner is outside [plugin_discovery].owners. Confirm the package is ours, then add the owner to the allowlist or add a [[plugin_discovery.skip]] entry with a reason."
+          exit 1

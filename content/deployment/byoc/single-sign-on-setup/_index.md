@@ -8,9 +8,9 @@ variants: -flyte +union
 
 # Single sign on setup
 
-{{< key product_name >}} authentication uses OAuth2 with Okta and supports SAML and OIDC-compliant identity providers (IdP) to configure single sign on (SSO).
+Union.ai authentication uses OAuth2 with Okta and supports SAML and OIDC-compliant identity providers (IdP) to configure single sign on (SSO).
 
-To enable SSO, create an app for your preferred identity provider and provide the associated secrets to the {{< key product_name >}} team.
+To enable SSO, create an app for your preferred identity provider and provide the associated secrets to the Union.ai team.
 The team will then complete the process.
 
 ## Google OpenID Connect

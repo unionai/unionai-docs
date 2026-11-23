@@ -6,28 +6,22 @@ weight: 5
 variants: +flyte +union
 ---
 
-{{< variant union >}}
-
-{{< markdown >}}
-
 # Run on the Devbox
 
+{{< variant union >}}
+{{< markdown >}}
+
 The Flyte 2 devbox is a great way to try a simplified Union.ai cluster on your local machine. It's a lightweight
-local cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
-execution without deploying to a cluster in the cloud.
+cluster that runs on your machine with Docker. It includes a UI, scheduler, and object store, so you can test on-cluster
+execution without connecting to a deployed cluster.
 
 {{< /markdown >}}
-
-
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
 
-<!-- markdownlint-disable-next-line MD024 -- same heading as the union variant block; only one renders per variant -->
-# Run on the Devbox
-
-The Flyte devbox is a lightweight local cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test on-cluster execution without connecting to a remote cluster.
+The Flyte devbox is a lightweight cluster that runs on your machine with Docker. It gives you a full Flyte environment, including the UI, scheduler, and object store, so you can test remote execution without connecting to a deployed cluster.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -52,7 +46,7 @@ pip install flyte
 
 ## Start the devbox
 
-Launch the local cluster:
+Launch the devbox:
 
 {{< tabs "cpu" >}}
 {{< tab "CPU" >}}
@@ -75,9 +69,21 @@ flyte start devbox --gpu
 {{< /markdown >}}
 
 {{< note >}}
-The `--gpu` flag requires an NVIDIA-enabled host. It currently *does not* support Apple Silicon or AMD GPUs.
+The `--gpu` flag requires an NVIDIA-enabled host. It does not support AMD GPUs. For a Mac's GPU, use the **Apple Silicon** tab.
 {{< /note>}}
 
+{{< /tab >}}
+
+{{< tab "Apple Silicon" >}}
+{{< markdown >}}
+
+```bash
+flyte start devbox --apple-silicon
+```
+
+Requires `flyte` 2.12.0 or later and [uv](https://docs.astral.sh/uv/). See [Using the Apple Silicon GPU](#using-the-apple-silicon-gpu).
+
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -155,7 +161,7 @@ Run it on the devbox:
 flyte run hello.py main
 ```
 
-Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a remote cluster.
+Without the `--local` flag, the workflow runs on the devbox cluster rather than in your local Python process. Tasks execute inside containers, exactly as they would on a deployed cluster.
 
 ## View results in the UI
 
@@ -235,22 +241,43 @@ def gpu_task() -> bool:
     return torch.cuda.is_available()  # returns True if CUDA (provided by a GPU) is available
 ```
 
+## Using the Apple Silicon GPU
+
+If you started the devbox on a Mac with `flyte start devbox --apple-silicon`, tasks and apps that request the Apple Silicon accelerator run natively on the Mac instead of in their container. Their code can use the Mac's GPU through Metal, for example PyTorch's `mps` device or MLX.
+
+Request it with `gpu="AppleSilicon"` or `gpu=flyte.APPLE_SILICON()`:
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="apple_silicon_env",
+    resources=flyte.Resources(gpu="AppleSilicon"),
+)
+```
+
+`"AppleSilicon:1"` is also accepted. A count above 1, such as `"AppleSilicon:2"`, is rejected.
+
+Requirements:
+
+- `flyte` 2.12.0 or later.
+- [uv](https://docs.astral.sh/uv/) on the Mac. `--apple-silicon` refuses to start without it.
+- A devbox created from the current devbox image. Starting a stopped devbox doesn't pull a new image, so recreate an older devbox:
+
+  ```bash
+  flyte delete devbox && flyte start devbox --apple-silicon
+  ```
+
+`--apple-silicon` can't be combined with `--gpu` or with dev mode (`--dev`). Because workload code runs outside any sandbox, the flag publishes the devbox's ports on `127.0.0.1` only. They aren't reachable from the network, but other software on the Mac can reach them. To restart a stopped Apple Silicon devbox, run `flyte start devbox`. It restarts the Apple Silicon bridge without the flag.
+
+Apple Silicon is a devbox-only accelerator, and a workload that requests it never falls back to the CPU:
+
+- On a devbox started without `--apple-silicon`, the task fails with `APPLE_SILICON_NOT_AVAILABLE`, and the message says to restart the devbox with the flag.
+- On a remote cluster whose backend includes Apple Silicon support, the task fails with `APPLE_SILICON_NOT_AVAILABLE`.
+- On a backend that predates Apple Silicon support, including an older devbox image, the task's pod stays `Pending` instead of failing.
+- Where a task would fail with `APPLE_SILICON_NOT_AVAILABLE`, deploying an app that requests Apple Silicon is refused with the same error.
+
 ## Next steps
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-With your environment fully configured, you're ready to build:
-
 - [**Core concepts**](../core-concepts/_index): Understand `TaskEnvironment`s, tasks, runs, and actions through working examples.
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant union >}}
-{{< markdown >}}
-
-When you're ready to run on a remote Flyte cluster, see [Run on a remote cluster](./running-remote) to configure the CLI and SDK.
-
-{{< /markdown >}}
-{{< /variant >}}
+- [**Run on a deployed cluster**](./running-remote): Configure the CLI and SDK to run on a cluster in the cloud or on-premises.

@@ -94,7 +94,7 @@ flyte deploy --recursive --all ./src
 
 ## Configuration files
 
-The config file lives in the same place (`~/.flyte/config.yaml`), but the environment variable changes from `FLYTECTL_CONFIG` to `FLYTE_CONFIG`, and the format is simpler.
+The config file lives in the same place (`~/.flyte/config.yaml`) and the environment variable is still `FLYTECTL_CONFIG`, but the format is simpler.
 
 {{< tabs "migration-config-format" >}}
 {{< tab "Flyte 1" >}}
@@ -114,7 +114,7 @@ admin:
   endpoint: dns:///your-cluster.hosted.unionai.cloud
 
 image:
-  builder: remote  # or "local"
+  builder: remote  # or "local" or "local-podman"
 
 task:
   domain: development
@@ -132,7 +132,7 @@ task:
 | Project | CLI flag `-p` | `task.project` (default) |
 | Domain | CLI flag `-d` | `task.domain` (default) |
 | Organization | CLI flag `--org` | `task.org` (default) |
-| Image builder | N/A | `image.builder` (`local` or `remote`) |
+| Image builder | N/A | `image.builder` (`local`, `local-podman`, or `remote`) |
 
 ### Configuring in code
 
@@ -151,7 +151,7 @@ flyte.init(
 )
 ```
 
-For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a remote cluster](../../get-started/run-modes/running-remote).
+For API-key authentication in non-interactive environments, use `flyte.init_from_api_key()` — see [Run on a deployed cluster](../../get-started/run-modes/running-remote).
 
 ## Next
 

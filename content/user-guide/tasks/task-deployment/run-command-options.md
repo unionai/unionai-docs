@@ -74,7 +74,7 @@ If not provided, these default to the `task.project` and `task.domain` values in
 
 **`flyte run --local <PATH> <TASK_NAME>`**
 
-The `--local` option runs tasks locally instead of submitting them to the remote Flyte backend:
+The `--local` option runs tasks locally, in-process, instead of submitting them to the remote Flyte backend (a devbox or a deployed cluster, whichever your configuration points at):
 
 ```bash
 flyte run --local my_example.py my_task --input "test_data"
@@ -116,6 +116,8 @@ Because the run is reported to the control plane, `--tracked` needs an endpoint,
 
 Tracking reports the run's actions and attempts, their phases, and their inputs, outputs, reports and cache status. Logs are not reported: your task's output stays in the terminal where you launched the run.
 
+You can abort a tracked run from the console, but this cannot stop the process running on your machine. Per-organization limits apply to tracked runs: concurrent runs and actions, actions per run, and run creations per month.
+
 Reporting is best-effort by design. If the control plane is slow or unreachable, the failure is logged and the local run continues to completion, so tracking never blocks or fails work that would otherwise have succeeded. To debug reporting itself, add `--tracked-strict`, which turns any reporting failure into a loud run failure:
 
 ```bash
@@ -137,6 +139,8 @@ flyte create config --local-tracked
 ```
 
 This sets the `local.tracked` key, after which `flyte run --local` reports to the control plane on its own. The matching key for strict mode is `local.tracked_strict`.
+
+To track a run you start from Python, use `flyte.with_runcontext(mode="local", tracked=True)`, or pass `local_tracked=True` to `flyte.init()`. See [Tracking a local run](./how-task-run-works#tracking-a-local-run).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -160,17 +164,17 @@ Include all project files:
 flyte run --copy-style all my_example.py my_task
 ```
 
-No code bundling (task must be pre-deployed):
+No code bundling (the task's code must be in the container image, and `--version` is required):
 
 ```bash
-flyte run --copy-style none deployed-task my_deployed_task
+flyte run --copy-style none --version v1 my_example.py my_task
 ```
 
 ### Copy style options
 
 - **`loaded_modules` (default)**: Bundles only imported Python modules from your project
 - **`all`**: Includes all files in the project directory
-- **`none`**: No bundling; requires permanently deployed tasks
+- **`none`**: No bundling; the task's code must be in the container image. Requires `--version`. Use `Image.with_code_bundle()` to bake your source into the image (see [Bring your own image](../../project-patterns/bring-your-own-image))
 
 ## `--root-dir`
 
@@ -210,6 +214,12 @@ Use a local directory for development:
 ```bash
 flyte run --local --raw-data-path ./output/ my_example.py my_task
 ```
+
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source Flyte backend, remote runs apply `--raw-data-path` only with flyteorg/flyte `v2.0.54` or later.
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Use cases
 
@@ -284,7 +294,7 @@ flyte run --follow --name "training-session" my_example.py train_model
 
 - **Log streaming**: Real-time output from task execution
 - **Blocking execution**: Command waits until task completes
-- **Exit codes**: Returns appropriate exit code based on task success/failure
+- **Exit codes**: Once the run is submitted, the command exits with code 0 whether the task succeeds or fails. Check the run's status separately
 
 ## `--image`
 
@@ -479,7 +489,7 @@ flyte.run(greet, message="Good morning!")
 
 Two caveats apply:
 
-- **Deployed tasks are keyword-only.** A task retrieved with `flyte.remote.Task.get()` (or run via the `deployed-task` CLI subcommand) does **not** accept positional arguments. Pass its inputs by keyword (or, on the CLI, as `--<input_name>` options).
+- **Pass a deployed task's inputs by keyword to `flyte.run()`.** For a task retrieved with `flyte.remote.Task.get()`, `flyte.run()` assigns positional arguments to the inputs in alphabetical order of their names, not in signature order. Inside a task, calling the retrieved task directly maps positional arguments in signature order. This requires the task to have been deployed with `flyte` 2.12.3 or later. A task deployed earlier takes keyword arguments only (see [Remote tasks](../task-programming/remote-tasks)).
 - **Don't provide the same input both positionally and by keyword.**
 
 ## SDK options

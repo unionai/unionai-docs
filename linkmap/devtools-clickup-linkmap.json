@@ -1,0 +1,13 @@
+{
+  "packages": {
+    "flyteplugins.clickup": "/api-reference/integrations/software-development-tools/clickup/"
+  },
+  "identifiers": {
+    "flyteplugins.clickup.ClickUpProvider": "/api-reference/integrations/software-development-tools/clickup/clickupprovider/",
+    "ClickUpProvider": "/api-reference/integrations/software-development-tools/clickup/clickupprovider/"
+  },
+  "methods": {
+    "flyteplugins.clickup.parse": "/api-reference/integrations/software-development-tools/clickup/#parse",
+    "flyteplugins.clickup.verify": "/api-reference/integrations/software-development-tools/clickup/#verify"
+  }
+}

@@ -12,7 +12,8 @@ https://www.notion.so/3108cc06513d81a08bb1d3b9135385f1
 `.claude/rules/` carries subsystem knowledge that loads only when you touch the matching files —
 search indexes, routing and redirects, generated content, the LLM surface, variants and versions,
 and authoring. `contributing.md` there loads always: **sign off every commit (`git commit -s`)**,
-since "Check DCO" is a required status check.
+since "Check DCO" is a required status check. **With the Docsy plugin installed, changes on GitHub
+go through Docsy's tools, not `gh` or `git push`.** That file says how the local work fits around them.
 
 ## Project Overview
 
@@ -150,8 +151,10 @@ Inline `` `code` `` and Python code blocks are linked to their API reference at 
 
 **Do not write explicit Markdown links for identifiers the autolinker already handles.** Write the
 bare backticked identifier — `` `flyte.io.File` ``, `` `flyte.init()` `` — and let the linker wrap
-it. Keep an explicit link only when the link text isn't a single backticked identifier, the name
-isn't fully qualified, or the target isn't the canonical API page.
+it. Short class names link too; functions link only by their fully-qualified name, so for a short
+function name in prose use a sigil: `` `[[flyteplugins.nsight.nsys.range|nsys.range]]` ``. Keep an
+explicit link only when the link text isn't a single backticked identifier or the target isn't the
+canonical API page.
 
 Full matcher rules, notices, Python example pages and Jupyter frontmatter:
 `.claude/rules/authoring.md` (loads automatically when you edit content).

@@ -9,16 +9,16 @@ variants: -flyte +union
 # Configuring your data plane
 
 After you set up your data plane account(s), the next step is to specify the infrastructure you want to deploy.
-You will need to send the following details to the {{< key product_name >}} team:
+You will need to send the following details to the Union.ai team:
 
 * Which [cloud provider](#cloud-provider) will you use?
 * Will this be a [multi-cluster](#multi-cluster) setup?
   * If so, how will Flyte domains and/or Flyte projects be mapped to clusters?
   * Additionally, how will clusters be grouped into cluster pools? (Each cluster pool will have its own metadata bucket)
 * For each cluster:
-  * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
+  * [Account ID](#account-id) for this cluster (on AWS, several clusters can share one account; if the account already hosts a Union.ai data plane, ask the Union.ai team which setup steps apply)
   * [Region](#region) in which the cluster will be deployed.
-  * [VPC](#vpc) setup (will you use your own VPC or have {{< key product_name >}} provision one for you?)
+  * [VPC](#vpc) setup (will you use your own VPC or have Union.ai provision one for you?)
   * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
   * For each [node group](#node-group-name):
     * [Node type](#node-type)
@@ -31,7 +31,7 @@ You will need to send the following details to the {{< key product_name >}} team
 ## Cloud provider
 
 You can choose AWS, Azure, or GCP as your cloud provider.
-If you choose to have multiple clusters, they must all be in the same provider.
+If you choose to have multiple clusters, the Enterprise plan lets you put them in different providers. See [Multi-cluster and multi-cloud](./multi-cluster).
 
 ## Multi-cluster
 
@@ -39,13 +39,13 @@ You can choose a single or multi-cluster configuration.
 
 In a multi-cluster configuration, you have separate clusters for each of your Flyte domains and/or Flyte projects.
 
-A cluster in this context refers to a distinct EKS (in AWS), AKS (in Azure), or GKE (in GCP) instance in its own AWS account, Azure subscription, or GCP project.
+A cluster in this context refers to a distinct EKS (in AWS), AKS (in Azure), or GKE (in GCP) instance.
 
 The most common set up is to have a separate cluster for each Flyte domain: development, staging, and production.
 
 You can further partition your deployment so that each Flyte domain-project pair has its own cluster in its own account.
 
-In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by region or by the type of workloads that will run on them.
+In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by the type of workloads that will run on them, or by region (Enterprise plan).
 
 See [Multi-cluster](./multi-cluster) for more information.
 
@@ -55,11 +55,11 @@ Provide the ID of the AWS account, Azure subscription, or GCP project in which e
 
 ## Region
 
-For each cluster, specify the region. Available regions are `us-west`, `us-east`, `eu-west`, and `eu-central`.
+For each cluster, specify the cloud provider region in which it will be deployed (for example, `us-west-2` on AWS or `europe-west1` on GCP).
 
 ## VPC
 
-Specify whether you want to set up your own VPC or use one provided by {{< key product_name >}}.
+Specify whether you want to set up your own VPC or use one provided by Union.ai.
 If you are provisioning your own VPC, provide the VPC ID.
 
 ## Data retention policy
@@ -67,12 +67,12 @@ If you are provisioning your own VPC, provide the VPC ID.
 Each cluster has its own internal object store that is used to store data used in the execution of workflows.
 This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
 The data retention policy defines the maximum time this data is stored, after which it is automatically deleted.
-The retention period is set by your {{< key product_name >}} plan.
+The retention period is set by your Union.ai plan.
 See [Data retention policy](./data-retention-policy) for more details.
 
 ## Worker node groups
 
-Specify the worker node groups (in AWS) or worker node pools (in Azure and GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](./platform-architecture).
+Specify the worker node groups (in AWS) or worker node pools (in Azure and GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Data plane nodes](../platform-architecture#data-plane-nodes).
 
 ### Node group name
 
@@ -143,7 +143,7 @@ Values provided by you are in single quotes (').
 - Clusters:
     - 'development'
         - Account ID: 'account-id-1'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-1'
         - Node groups:
             - 'node-group-1'
@@ -162,7 +162,7 @@ Values provided by you are in single quotes (').
                 - Disk: '1500 GiB'
     - 'staging'
         - Account ID: 'account-id-2'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-2'
         - Node groups:
             - 'node-group-1'
@@ -181,7 +181,7 @@ Values provided by you are in single quotes (').
                 - Disk: '1500 GiB'
     - 'production'
         - Account ID: 'account-id-3'
-        - Region: 'us-west'
+        - Region: 'us-west-2'
         - VPC: 'vpc-id-3'
         - Node groups:
             - 'node-group-1'
@@ -202,9 +202,9 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in **Usage > Compute**.
+Once Union.ai has configured and deployed your cluster(s), you will be able to see your data plane setup in **Usage > Compute**.
 
 ## Adjusting your configuration
 
-To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://support.union.ai).
+To make changes to your cluster configuration, go to the [Union.ai Support Portal](https://support.union.ai).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.

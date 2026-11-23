@@ -32,14 +32,18 @@ Flyte 2 integrations fall into the following categories:
 
 1. **Distributed compute**: Provision transient compute clusters to run tasks across multiple nodes, with automatic lifecycle management.
 2. **Agentic AI**: Support for various common aspects of agentic AI applications.
-3. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
-4. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
-5. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
-6. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
-7. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
-8. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
-9. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
-10. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+3. **Software development tools**: Receive webhooks from GitHub, Slack, Linear, ClickUp, Jira, and GitLab, and launch runs from them.
+4. **Configuration**: Compose and pass hierarchical configuration objects between tasks, with type-safe schemas and CLI/YAML composition.
+5. **Data transformation**: Run data transformation tools as Flyte tasks and capture their results.
+6. **Pipeline frameworks**: Run pipelines written for other workflow systems on Flyte, with each pipeline step as a Flyte action.
+7. **Experiment tracking**: Integrate with experiment tracking platforms for logging metrics, parameters, and artifacts.
+8. **Data validation**: Enforce schema contracts on dataframes flowing between tasks, with automatic validation reports.
+9. **Data types**: Add native support for additional file and dataframe types as task inputs and outputs.
+10. **Connectors**: Stateless, long-running services that receive execution requests via gRPC and then submit work to external (or internal) systems.
+11. **LLM Serving**: Deploy and serve large language models with an OpenAI-compatible API.
+12. **Notebook execution**: Run parameterized Jupyter notebooks as typed Flyte tasks with cell-level reports.
+13. **Observability**: Export task and agent telemetry to external tracing and observability backends.
+14. **Profiling**: Profile GPU tasks and get the results back in the task's report.
 
 ## Distributed compute
 
@@ -159,6 +163,44 @@ Agentic AI integrations let you run agents written in a third-party framework as
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
 | [Agent frameworks](./agents/_index) | Adapters for ten agent SDKs, including OpenAI, Claude, Google ADK, Mistral, LangChain, LangGraph, CrewAI and Pydantic AI | Durable agents, tools as tasks, cross-run memory |
 | [Code generation](./codegen/_index) | LLM-driven code generation with automatic testing in sandboxes                                                           | Data processing, ETL, analysis pipelines         |
+| [TypeSafe AI](./typesafe-ai/_index)  | Typed, confidence-scored answers from a System One model, as task inputs and outputs                                     | Model-based I/O guards, intent routing, typed agent control flow |
+
+## Software development tools
+
+Software development tool integrations launch Flyte runs from events in GitHub, Slack, Linear, ClickUp, Jira, and GitLab, such as a pull request opening or a ticket changing status. One app receives webhooks from any combination of these products, verifies each delivery, and launches one run per event. The receiver ships with Flyte in `flyte.extras.webhooks`; each package adds support for one product.
+
+### Supported software development tool integrations
+
+| Plugin | Description | Common use cases |
+| ------ | ----------- | ---------------- |
+| [GitHub](./software-development-tools/github) | Webhooks, human review gates, and GitHub App installation tokens | PR triage, gated merges and releases, coding agents |
+| [Slack](./software-development-tools/slack) | Events, interactivity and slash commands in; messages and button approvals out | ChatOps, deploy approvals, run notifications |
+| [Linear](./software-development-tools/linear) | Issue, comment, and project webhooks | Issue triage, backlog automation |
+| [ClickUp](./software-development-tools/clickup) | Task, list, and goal webhooks | Ticket automation, status-driven workflows |
+| [Jira](./software-development-tools/jira) | Jira Cloud webhooks, authenticated with a shared token | Issue triage, release bookkeeping |
+| [GitLab](./software-development-tools/gitlab) | Merge request, issue, comment, push, pipeline, release, and deployment webhooks, authenticated with a shared token | Merge request triage, pipeline and deployment follow-up |
+
+See [Software development tools](./software-development-tools/_index) for the shared event model, launch-once semantics, and scoping, and the [Software development lifecycle](../user-guide/project-patterns/software-development-lifecycle/_index) guide for what to build on top.
+
+## Data transformation
+
+Data transformation integrations let you run transformation tools as Flyte tasks, compose them with Python tasks, and capture task reports and typed outputs.
+
+### Supported data transformation integrations
+
+| Plugin                  | Description                       | Common use cases                                      |
+| ----------------------- | --------------------------------- | ----------------------------------------------------- |
+| [dbt](./dbt/_index)     | Run dbt CLI invocations as tasks  | Analytics engineering, data quality checks, reporting |
+
+## Pipeline frameworks
+
+Pipeline framework integrations run pipelines written for another workflow system inside a Flyte task, with each step of the pipeline running as its own Flyte action.
+
+### Supported pipeline framework integrations
+
+| Plugin                        | Description                                                    | Common use cases                                       |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------------------------------------ |
+| [Nextflow](./nextflow/_index) | Run Nextflow pipelines, with every Nextflow task as a Flyte action | nf-core pipelines, bioinformatics, genomics workflows |
 
 ## Experiment tracking
 
@@ -220,6 +262,7 @@ Connectors are designed to scale horizontally and reduce load on the core Flyte 
 | [Snowflake](./snowflake/_index)   | Run SQL queries on Snowflake asynchronously | Data warehousing, ETL, analytics queries |
 | [BigQuery](./bigquery/_index)     | Run SQL queries on Google BigQuery          | Data warehousing, ETL, analytics queries |
 | [Databricks](./databricks/_index) | Run PySpark jobs on Databricks clusters     | Large-scale data processing, Spark ETL   |
+| [Slurm](./slurm/_index)           | Run tasks as jobs on an existing Slurm cluster | HPC and GPU model training on Slurm-managed clusters |
 
 ### Creating a new connector
 
@@ -371,10 +414,13 @@ LLM serving integrations let you deploy and serve large language models as Flyte
 
 | Plugin                                                          | Description                                         | Common use cases             |
 | --------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
-| [SGLang](../user-guide/apps/native-app-integrations/sglang-app) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
-| [vLLM](../user-guide/apps/native-app-integrations/vllm-app)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
+| [llama.cpp](./llamacpp/_index) | Serve quantized GGUF models with llama-server, on GPU or CPU | Quantized models, CPU-only serving, models larger than VRAM |
+| [SGLang](../user-guide/inference/self-hosted-endpoints/sglang) | Deploy models with SGLang's high-throughput runtime | LLM inference, model serving |
+| [vLLM](../user-guide/inference/self-hosted-endpoints/vllm)     | Deploy models with vLLM's PagedAttention engine     | LLM inference, model serving |
 
-For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang app](../user-guide/apps/native-app-integrations/sglang-app) and [vLLM app](../user-guide/apps/native-app-integrations/vllm-app) pages.
+For full setup instructions including multi-GPU deployment, model prefetching, and autoscaling, see the [SGLang endpoint](../user-guide/inference/self-hosted-endpoints/sglang) and [vLLM endpoint](../user-guide/inference/self-hosted-endpoints/vllm) pages.
+
+To call a hosted model API such as Fireworks, OpenAI, or Anthropic instead of serving a model yourself, see [Providers](../user-guide/inference/providers/_index).
 
 ## Notebook execution
 
@@ -398,5 +444,15 @@ Observability integrations export telemetry from a Flyte run to an external back
 | [Grafana Agent Observability](./grafana-agent-observability/_index) | Sends agent generations, tool calls, token usage, and cost to Grafana, grouped by Flyte run | LLM cost tracking, prompt iteration, agent debugging                 |
 
 Both carry trace context across task boundaries using Flyte's [custom context](../user-guide/tasks/task-programming/custom-context) primitive, so a run submitted from inside a caller's span joins that caller's trace.
+
+## Profiling
+
+Profiling integrations run a task under a profiler and attach the results to the run.
+
+### Supported profiling integrations
+
+| Plugin                                  | Description                                                              | Common use cases                                                    |
+| --------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [NVIDIA Nsight Systems](./nsight/_index) | Runs a task under `nsys` and adds a GPU report and a downloadable trace | Finding slow CUDA kernels, data-loading stalls, distributed training bottlenecks |
 
 {{< subpage-cards >}}

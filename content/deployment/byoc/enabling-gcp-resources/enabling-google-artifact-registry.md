@@ -10,7 +10,7 @@ variants: -flyte +union
 
 ## Access to Artifact Registry in the same project is enabled by default
 
-When registering tasks and workflows, the {{< key product_name >}} infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
+When your tasks run, the nodes of your data plane's Kubernetes cluster must have access to the container registry that holds the task container images you will be using.
 If your data plane is on GCP then you may want to use Google Artifact Registry (GAR) to store these images.
 
 **In most cases, you will be using a GAR repository in the same GCP project as your data plane.**
@@ -25,11 +25,13 @@ It is mediated by the a specific Google Service Account (GSA) which we will refe
 (recall that this is in contrast to the task code access, which is mediated by a different default GSA, `<UserFlyteGSA>`).
 
 > [!NOTE] `<FlyteWorkerGSA>`
-> Here we refer to the default global-access GSA as`<FlyteWorkerGSA>`because the precise name differs across installations.
+> Here we refer to the node pool GSA as `<FlyteWorkerGSA>` because the precise name differs across installations.
 > This GSA is identified by name and email of the following form:
 >
-> * Name: `<OrgName>-flyteworker-<Suffix>`
-> * Email: `<OrgName>-flyteworker-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
+> * Name: `<ClusterPrefix>-flyteworker-<Suffix>`
+> * Email: `<ClusterPrefix>-flyteworker-<Suffix>@<DataPlaneProjectID>.iam.gserviceaccount.com`
+>
+> For `<ClusterPrefix>` and `<DataPlaneProjectID>`, see [Globally-scoped access](_index#globally-scoped-access).
 
 To enable access to the GAR repository in the other account, do the following:
 
@@ -42,4 +44,4 @@ To enable access to the GAR repository in the other account, do the following:
 * Specify the `<FlyteWorkerGSAEmail>` as a **Principal** and assign (at least) the role **Artifact Registry Reader**.
 * Select **Save**.
 
-Your {{< key product_name >}} data plane infrastructure should now be able to pull images from the GAR repository.
+Your Union.ai data plane infrastructure should now be able to pull images from the GAR repository.

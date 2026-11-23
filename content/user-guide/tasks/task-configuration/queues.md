@@ -57,7 +57,7 @@ definition:
 flyte.with_runcontext(queue="my-queue").run(main, count=10)
 ```
 
-And a [trigger](./triggers) can send its scheduled runs to a specific queue,
+And a [trigger](../../triggers/_index) can send its scheduled runs to a specific queue,
 useful when you want scheduled or automated work to run under different limits
 than ad-hoc runs:
 
@@ -86,7 +86,7 @@ async def main(queue_name: str):
 ## What a queue controls
 
 Queues are configured by your platform admin (see
-[Managing queues](../../cluster-workload-management/queues) for how they are created
+[Managing queues](../../clusters-and-queues/queues) for how they are created
 and managed), but it helps to understand the knobs so you can pick the right
 queue for a workload:
 
@@ -106,6 +106,17 @@ queue for a workload:
   priority work is scheduled ahead of lower priority work. Priority controls
   *ordering*, not preemption: a lower-priority task that has already started is
   not interrupted when higher-priority work arrives.
+- **Resource caps**: the most CPU, memory, and GPUs that the queue's scheduled
+  tasks may request at once, counted across every cluster the queue routes to.
+  GPUs can be capped per device type, and separately for tasks that ask for a
+  GPU without naming a type. A task that would push the queue past a cap waits
+  until enough running work finishes.
+- **Scheduling policy**: what the queue does when the next task in line does not
+  fit. A `strict_fifo` queue waits for it, so nothing behind it starts first. A
+  `greedy_capacity` queue skips it and starts the tasks behind it that do fit.
+
+Resource caps and scheduling policies are described in
+[Resource caps and scheduling](../../clusters-and-queues/resource-caps-and-scheduling).
 
 ## When to use queues
 
@@ -124,7 +135,7 @@ async def nightly_job(fan_out: int = 50) -> list[str]:
     # ...but two nightly_job runs never overlap.
 ```
 
-This pairs naturally with [triggers](./triggers): give the trigger a serialized
+This pairs naturally with [triggers](../../triggers/_index): give the trigger a serialized
 queue and you get self-non-overlapping scheduled jobs for free.
 
 ### Backfill control
@@ -145,6 +156,36 @@ business-critical work to a high-priority queue and bulk or best-effort work to 
 lower-priority one; when they contend for the same capacity, the important work
 is scheduled first.
 
+### Sharing clusters across teams
+
+When several teams run on the same clusters, one team's large job can take all
+of the GPUs and leave everyone else waiting. Give each team a queue with
+**resource caps** and each team gets a ceiling on the CPU, memory, and GPUs its
+scheduled work can use at once. Work beyond the ceiling is still accepted and
+waits in the queue. Because the caps count resources, a team can run many small
+tasks or a few large ones under the same cap.
+
+Which queue you pick also decides how your work waits. On a `greedy_capacity`
+queue, small tasks and tasks for a
+[reusable environment](./reusable-containers) that is already running keep
+starting while a large task waits for room. On a `strict_fifo` queue, tasks start
+strictly in the order they were submitted, which suits a job that needs many
+GPUs at the same moment and must not be overtaken by smaller work.
+
+## Requests that can never run
+
+A task can ask for more than its queue allows, for example 64 CPUs on a queue
+capped at 32. Waiting would not help, so the action fails right away with the
+error code `INFEASIBLE` and is not retried. The error message names the request
+and the cap. Lower the task's `resources`, or route it to a queue with a higher
+cap.
+
+With resource-aware scheduling, the check also covers the clusters behind a
+queue: a task that asks for an accelerator none of the queue's clusters has,
+for a container larger than any of their nodes, or that is interruptible when
+none of them has a spot node pool it fits, fails the same way. See
+[Infeasible requests fail fast](../../clusters-and-queues/resource-caps-and-scheduling#infeasible-requests-fail-fast).
+
 ## Queues and timeouts
 
 How long a task is willing to *wait* in a queue before it gives up is a separate,
@@ -155,3 +196,9 @@ to fail fast when capacity isn't available within your window, and
 [`deadline`](./retries-and-timeouts#deadline-bound-the-total-wall-clock) to put
 an absolute ceiling on total wall-clock including queue wait. See
 [Retries and timeouts](./retries-and-timeouts) for the full picture.
+
+When `max_queued_time` fires, the parent task receives
+`flyte.errors.MaxQueuedTimeExceededError`. Catching it and re-running the task
+with `override(queue=..., resources=...)` lets a workflow fall back to another
+queue that has a different GPU available; see
+[Routing each option to a different queue](../task-programming/error-handling#routing-each-option-to-a-different-queue).

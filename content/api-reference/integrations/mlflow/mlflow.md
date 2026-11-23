@@ -2,7 +2,7 @@
 title: Mlflow
 description: "MLflow UI link for Flyte tasks."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -37,14 +37,12 @@ task.override(links=[Mlflow(link="https://...")])()
 class Mlflow(
     name: str = 'MLflow',
     link: str = '',
-    _decorator_run_mode: str = '',
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `link` | `str` | |
-| `_decorator_run_mode` | `str` | |
 
 ## Methods
 

@@ -1,0 +1,135 @@
+---
+title: Deploy the data plane
+description: Install the data plane Helm chart on AWS, GCP, Azure, OCI, or generic Kubernetes.
+icon: rocket-takeoff
+weight: 7
+variants: -flyte +union
+---
+
+# Deploy the data plane
+
+This walkthrough installs the Union.ai data plane operator on AWS, GCP, Azure, OCI, or a generic (on-premise / S3-compatible) Kubernetes cluster. The steps are the same across providers; only the Helm values file differs, and each provider's values are documented on its infrastructure page.
+
+> [!NOTE] New on AWS, GCP, or Azure?
+> For a new deployment on AWS, GCP, or Azure, you don't install the data plane with Helm: provision your resources on [AWS](../aws/_index), [GCP](../gcp/_index), or [Azure](../azure/_index) and [connect your cluster](../connect-a-cluster) from the Union.ai UI. The AWS, GCP, and Azure rows below are for deployments set up with Helm.
+
+Before you start, provision your cloud infrastructure using the matching page and note its **Deploy configuration** section:
+
+| Provider | Infrastructure page | `--provider` | Values file |
+| --- | --- | --- | --- |
+| AWS | [AWS](../aws/legacy) | `aws` | `values.aws.yaml` |
+| GCP | [GCP](../gcp/legacy) | `gcp` | `values.gcp.yaml` |
+| Azure | [Azure](../azure/legacy) | `azure` | `values.azure.yaml` |
+| OCI | [OCI](../infrastructure-recommendations/oci) | `oci` | `values.yaml` (base) |
+| Generic | [Generic Kubernetes](../infrastructure-recommendations/generic) | `metal` | `values.yaml` (base) |
+
+> [!NOTE] GPU-optimized providers
+> CoreWeave, Crusoe, and Nebius have their own deployment guides with provider-specific GPU, storage, and registry steps: [CoreWeave](./coreweave) · [Crusoe](./crusoe) · [Nebius](./nebius).
+
+> [!NOTE] Planning more than one cluster?
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure.
+
+## Assumptions
+
+* You have a Union.ai organization, and you know the control plane URL for your organization (e.g. `https://your-org-name.us-east-2.unionai.cloud`).
+* You have chosen a name for your cluster. You register it under that name with `flyte create cluster` in the steps below.
+* You have a Kubernetes cluster with workload identity (IRSA / GKE Workload Identity / Entra Workload Identity) or the equivalent credentials enabled, running one of the most recent three minor Kubernetes versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
+* You have provisioned object storage, a container registry, and identity bindings as described on your provider's [infrastructure recommendations](../infrastructure-recommendations/_index) page.
+
+## Prerequisites
+
+* Install [Helm 3](https://helm.sh/docs/intro/install/).
+* Install [uctl](../../../api-reference/uctl-cli/_index).
+* Install the [`flyte` CLI](../../../api-reference/flyte-cli).
+* Install the [`flyteplugins-union` plugin](../../../api-reference/flyte-cli#plugin-commands), which provides the `flyte create cluster` and `flyte get cluster` commands: `pip install flyteplugins-union`.
+
+## Deploy the Union.ai operator
+
+1. Add the Union.ai Helm repo:
+
+   ```bash
+   helm repo add unionai https://unionai.github.io/helm-charts/
+   helm repo update
+   ```
+
+2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
+
+   ```bash
+   flyte create config --endpoint <YOUR_UNION_CONTROL_PLANE_URL> --org <YOUR_ORG_NAME>
+   flyte create cluster <YOUR_SELECTED_CLUSTERNAME> --pool default
+   ```
+
+   `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
+
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+
+3. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your control plane, provision authorization permissions for the app to operate on the cluster name you selected, and provide follow-up instructions. Pass the `--provider` value for your cloud (see the table above):
+
+   ```bash
+   uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
+   uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME> --provider <PROVIDER>
+   ```
+
+   * The command outputs the ID, name, and a secret that the Union.ai services use to communicate with your control plane. You pass the client ID and client secret to the Helm chart in step 5.
+   * Save the secret that is displayed. Union does not store it, and it cannot be retrieved later.
+
+4. Download the values file for your provider (see the table above) and fill in your infrastructure details. The exact keys — object storage, service-account/identity bindings, and any provider-specific settings — are documented in the **Deploy configuration** section of your provider's infrastructure page ([AWS](../aws/legacy#deploy-configuration) · [GCP](../gcp/legacy#deploy-configuration) · [Azure](../azure/legacy#deploy-configuration) · [OCI](../infrastructure-recommendations/oci#deploy-configuration) · [Generic](../infrastructure-recommendations/generic#deploy-configuration)):
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/unionai/helm-charts/main/charts/dataplane/<VALUES_FILE>
+   ```
+
+   Every provider needs these shared `global` keys set:
+
+   - Set `global.UNION_CONTROL_PLANE_HOST` and `global.CONTROLPLANE_HOST` to your control plane hostname (no scheme, no port).
+   - Set `global.CLUSTER_NAME` to the cluster name you registered in step 2.
+   - Set `global.ORG_NAME` to your organization name.
+
+   Set the remaining provider-specific keys as described on your infrastructure page.
+
+5. Install the data plane Helm chart, passing the client ID and client secret from step 3:
+
+   ```bash
+   helm upgrade --install union unionai/dataplane \
+     -f <VALUES_FILE> \
+     --set global.AUTH_CLIENT_ID=<CLIENT_ID> \
+     --set-string secrets.admin.clientId=<CLIENT_ID> \
+     --set secrets.admin.clientSecret=<CLIENT_SECRET> \
+     --namespace union \
+     --create-namespace
+   ```
+
+6. Once deployed, check that the data plane has connected to the control plane:
+
+   ```bash
+   flyte get cluster
+   ```
+
+   The command groups clusters by state. Once the data plane is connected, your cluster appears in the **Enabled Clusters** table with health `🟢 healthy`.
+
+7. Follow the [Quickstart](../../../user-guide/get-started/quickstart) to run your first workflow and verify your cluster is working correctly.
+
+## Next: manage your cluster and pools
+
+`flyte create cluster` registers this cluster with the control plane in step 2. Once the data plane
+is connected, you manage the **cluster pool** it belongs to, and route work to it with queues, from the
+[Clusters and queues](../../../user-guide/clusters-and-queues/_index)
+user guide:
+
+- [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools): group clusters that share one data plane (object store, secrets, registry).
+- [Clusters](../../../user-guide/clusters-and-queues/clusters): inspect and manage the cluster records registered with the control plane.
+- [Managing queues](../../../user-guide/clusters-and-queues/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
+
+Each cluster is assigned exactly one pool. If no custom pool is specified when the
+cluster is created, it joins the `default` pool that every organization is
+provisioned with, so a single-cluster deployment needs no extra pool setup.
+
+## Upgrades and maintenance
+
+When upgrading to newer Helm chart versions, CRDs must be updated out-of-band using server-side apply. See [Upgrade the data plane](../upgrade) for complete upgrade and migration instructions.
+
+## GPU cloud deployment guides
+
+CoreWeave, Crusoe, and Nebius have their own deployment guides, with provider-specific GPU, storage, and registry steps:
+
+{{< subpage-cards >}}

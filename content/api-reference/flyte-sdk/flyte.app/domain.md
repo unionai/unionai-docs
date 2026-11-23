@@ -2,7 +2,7 @@
 title: Domain
 description: "Subdomain to use for the domain."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---

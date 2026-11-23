@@ -2,7 +2,7 @@
 title: AppEnvironment
 description: "Configure a long-running app environment for APIs, dashboards, or model servers."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -16,7 +16,7 @@ Configure a long-running app environment for APIs, dashboards, or model servers.
 ```python
 app_env = flyte.app.AppEnvironment(
     name="my-api",
-    image=flyte.Image.from_debian_base(python="3.12").with_pip_packages("fastapi", "uvicorn"),
+    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages("fastapi", "uvicorn"),
     port=8080,
     scaling=flyte.app.Scaling(replicas=(1, 3)),
 )
@@ -49,6 +49,7 @@ class AppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
 )
 ```
@@ -75,6 +76,7 @@ class AppEnvironment(
 | `links` | `List[Link]` | List of `Link` objects for connecting to other environments. |
 | `parameters` | `List[Parameter]` | List of `Parameter` objects for app inputs. Use `RunOutput` to connect app parameters to task outputs, `ArtifactValue` to resolve a published artifact (e.g. a prefetched model), or `AppEndpoint` to reference other app endpoints. |
 | `cluster_pool` | `str` | Cluster pool for scheduling. Default `"default"`. |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | `Timeouts` object for startup/health check timeouts. |
 
 ## Properties

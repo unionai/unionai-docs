@@ -10,5 +10,7 @@
     "flyteplugins.spark.SparkToParquetEncoder": "/api-reference/integrations/spark/sparktoparquetencoder/",
     "SparkToParquetEncoder": "/api-reference/integrations/spark/sparktoparquetencoder/"
   },
-  "methods": {}
+  "methods": {
+    "flyteplugins.spark.register_spark_df_transformers": "/api-reference/integrations/spark/#register_spark_df_transformers"
+  }
 }

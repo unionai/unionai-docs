@@ -8,11 +8,11 @@ variants: -flyte +union
 
 # Compute plugins
 
-{{< key product_name >}} supports distributed computing plugins that extend the platform with specialized workloads like [Dask](../../../integrations/dask/_index) and [Ray](../../../integrations/ray/_index). These plugins require their respective Kubernetes operators to be installed on your data plane cluster, along with Helm configuration to enable the plugin and configure log and dashboard links.
+Union.ai supports distributed computing plugins that extend the platform with specialized workloads like [Dask](../../../integrations/dask/_index) and [Ray](../../../integrations/ray/_index). These plugins require their respective Kubernetes operators to be installed on your data plane cluster, along with Helm configuration to enable the plugin and configure log and dashboard links.
 
 ## Dask
 
-[Dask](https://www.dask.org/) is a flexible parallel computing library for analytics. The Dask plugin enables you to run distributed Dask workloads on your {{< key product_name >}} cluster.
+[Dask](https://www.dask.org/) is a flexible parallel computing library for analytics. The Dask plugin enables you to run distributed Dask workloads on your Union.ai cluster.
 
 ### Install the Dask operator
 
@@ -71,7 +71,7 @@ config:
             - displayName: Dask Runner logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -114,7 +114,7 @@ config:
             - displayName: Dask Runner logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -123,7 +123,7 @@ config:
 
 ## Ray
 
-[Ray](https://www.ray.io/) is a unified framework for scaling AI and Python applications. The Ray plugin enables you to run distributed Ray workloads on your {{< key product_name >}} cluster.
+[Ray](https://www.ray.io/) is a unified framework for scaling AI and Python applications. The Ray plugin enables you to run distributed Ray workloads on your Union.ai cluster.
 
 ### Install the KubeRay operator
 
@@ -182,7 +182,7 @@ config:
             - displayName: Ray Head logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -223,7 +223,7 @@ config:
             - displayName: Ray Head logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}

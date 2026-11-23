@@ -12,7 +12,7 @@ This site has special blocks that can be used to generate code for Union.
 
 > [!NOTE]
 > You can see examples by running the dev server and visiting
-> [`http://localhost:1313/__docs_builder__/shortcodes/`](`http://localhost:1313/__docs_builder__/shortcodes/`).
+> `http://localhost:1313/__docs_builder__/shortcodes/`.
 > Note that this page is only visible locally. It does not appear in the menus or in the production build.
 >
 > If you need instructions on how to create the local environment and get the
@@ -310,7 +310,10 @@ Parameters:
 - `to`: The line number to stop including at.
 - `lang`: The language of the code snippet.
 - `show_fragments`: Whether to show the fragment names in the code block.
-- `highlight`: Whether to highlight the code snippet.
+- `highlight`: The lines to emphasize, for example `highlight="2-3"` or `highlight="3 15-22"`.
+  Lines are numbered within the rendered snippet: line 1 is the first line shown, after fragment
+  markers, leading blank lines and repeated blank lines are removed. The code is always
+  syntax-highlighted.
 
 The examples in this section uses this file as base:
 

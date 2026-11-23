@@ -53,7 +53,6 @@ Remote tasks use **lazy loading** to keep module imports fast and enable flexibl
 The remote task is fetched from the server only when:
 
 - You call `flyte.run()` with the task
-- You call `flyte.deploy()` with code that uses the task
 - You invoke the task with the `()` operator inside another task
 - You explicitly call `.fetch()` on the lazy reference
 
@@ -421,7 +420,7 @@ flyte.init_from_config()
 # Fetch the task
 remote_task = flyte.remote.Task.get("package-example.calculate_average", auto_version="latest")
 
-# Create a run, note keyword arguments are required currently. In the future this will accept positional args based on the declaration order, but, we still recommend to use keyword args.
+# Create a run. Pass keyword arguments: flyte.run doesn't bind positional arguments to a remote task's inputs in the order the task declares them.
 run = flyte.run(remote_task, numbers=[1.0, 2.0, 3.0])
 
 print(f"Execution URL: {run.url}")
@@ -450,7 +449,7 @@ Remote tasks solve common collaboration and dependency management challenges:
 
 **Platform reusability**: Platform teams can create common, reusable tasks (data validation, feature engineering, model serving) that other teams can use without duplicating code or managing complex dependencies.
 
-**Microservices for data workflows**: Remote tasks work like microservices for long-running tasks or agents, enabling secure sharing while maintaining isolation.
+**Microservices for data workflows**: Remote tasks work like microservices for long-running tasks or agents, letting teams share deployed functionality without sharing code.
 
 ## When to use remote tasks
 
@@ -466,12 +465,9 @@ Use remote tasks when you need to:
 
 ### Security model
 
-Remote tasks run in the **caller's project and domain** using the caller's compute resources, but execute with the **callee's service accounts, IAM roles, and secrets**. This ensures:
+By default, remote tasks run in the **caller's project and domain**. A remote task called from inside a task becomes an action in the caller's run, so its pod runs in the **caller's** Kubernetes namespace. Its service account, and the IAM role bound to it, are resolved there, not in the callee's project. If the callee's task environment names a `service_account`, that account must exist in the caller's namespace.
 
-- Tasks are secure from misuse
-- Resource usage is properly attributed
-- Authentication and authorization are maintained
-- Collaboration remains safe and controlled
+You can instead start a remote task as a separate run in the callee's project and domain: fetch it with `flyte.remote.Task.get(..., project=..., domain=...)` and start it with `flyte.with_runcontext(project=..., domain=...).run(...)`. This is a separate run, not an action in the caller's run: the caller gets a `Run` handle to `wait()` on and read `outputs()` from, not the task's return value. The identity that starts the run (from inside a task, the credentials the task runs with) must be allowed to create runs in the callee's project.
 
 ### Type system
 
@@ -533,13 +529,16 @@ The `override()` method on remote tasks accepts the following parameters:
 
 - **short_name** (`str`): A short name for the task instance
 - **resources** (`flyte.Resources`): CPU, memory, GPU, and storage limits
-- **retries** (`int | flyte.RetryStrategy`): Number of retries or retry strategy
+- **retries** (`flyte.RetryStrategy`): Retry strategy. Passing a nonzero `int` raises `AssertionError`
 - **timeout** (`flyte.TimeoutType`): Task execution timeout
 - **env_vars** (`Dict[str, str]`): Environment variables to set
 - **secrets** (`flyte.SecretRequest`): Secrets to inject
 - **max_inline_io_bytes** (`int`): Maximum size for inline IO in bytes
 - **cache** (`flyte.Cache`): Cache behavior and settings
 - **queue** (`str`): Execution queue to use
+- **reusable** (`flyte.ReusePolicy | "off"`): Run the call on a [reusable container](../task-configuration/reusable-containers) pool, or pass `"off"` to run it in a one-off container. Requires `flyte` 2.12.4 or later.
+
+Overriding `reusable` with a `flyte.ReusePolicy` runs the call on its own warm pool, separate from the deployed task's pool. Calls with the same overrides share that pool. To get a warm pool of bigger containers, pass `resources=` in the same `override()` call. You can apply the override to `python` tasks and to tasks that are already reusable. The task's image must include `unionai-reuse`. Other task types, such as Spark, raise `flyte.errors.RemoteTaskUsageError`. Reusable containers run only on a Union backend.
 
 ### Override examples
 
@@ -559,7 +558,7 @@ large_data_processor = data_processor.override(
     resources=flyte.Resources(
         cpu="16",
         memory="64Gi",
-        storage="200Gi"
+        disk="200Gi"
     )
 )
 
@@ -572,10 +571,12 @@ async def process_large_dataset(data_path: str):
 **Add retries and timeout**:
 
 ```python
+from datetime import timedelta
+
 # Override with retries and timeout for unreliable operations
 reliable_processor = data_processor.override(
-    retries=3,
-    timeout="2h"
+    retries=flyte.RetryStrategy(count=3),
+    timeout=timedelta(hours=2)
 )
 
 @env.task
@@ -605,21 +606,21 @@ custom_processor = data_processor.override(
         "LOG_LEVEL": "DEBUG",
         "REGION": "us-west-2"
     },
-    secrets=flyte.SecretRequest(
-        secrets={"api_key": "my-secret-key"}
-    )
+    secrets=flyte.Secret(key="my-secret-key", as_env_var="API_KEY")
 )
 ```
 
 **Multiple overrides**:
 
 ```python
+from datetime import timedelta
+
 # Combine multiple overrides
 production_processor = data_processor.override(
     short_name="prod_spark_analyzer",
     resources=flyte.Resources(cpu="8", memory="32Gi"),
-    retries=5,
-    timeout="4h",
+    retries=flyte.RetryStrategy(count=5),
+    timeout=timedelta(hours=4),
     env_vars={"ENV": "production"},
     queue="high-priority"
 )
@@ -634,6 +635,8 @@ async def production_pipeline(data_path: str):
 You can chain multiple `override()` calls to incrementally adjust settings:
 
 ```python
+from datetime import timedelta
+
 # Start with base task
 processor = flyte.remote.Task.get("data_team.analyzer", auto_version="latest")
 
@@ -642,7 +645,7 @@ processor = processor.override(resources=flyte.Resources(cpu="4", memory="16Gi")
 
 # Add retries for production
 if is_production:
-    processor = processor.override(retries=5, timeout="2h")
+    processor = processor.override(retries=flyte.RetryStrategy(count=5), timeout=timedelta(hours=2))
 
 # Use the customized task
 result = await processor(input_path="s3://data.parquet")
@@ -656,10 +659,10 @@ Remote tasks are accessed by name, so use clear, descriptive naming:
 
 ```python
 # Good
-customer_segmentation = flyte.remote.Task.get("ml_platform.customer_segmentation")
+customer_segmentation = flyte.remote.Task.get("ml_platform.customer_segmentation", auto_version="latest")
 
 # Avoid
-task1 = flyte.remote.Task.get("team_a.task1")
+task1 = flyte.remote.Task.get("team_a.task1", auto_version="latest")
 ```
 
 ### 2. Document task interfaces
@@ -749,7 +752,7 @@ flyte deploy orchestration_env/
 
 5. **Dictionary inputs**: Pydantic models must be passed as dictionaries, which loses compile-time type checking
 
-6. **No positional arguments**: Remote tasks currently only support keyword arguments (this may change in future versions)
+6. **Positional arguments need a recent deployment**: Inside a task, a remote task call binds positional arguments in the order the task declares its inputs. A task deployed with a `flyte` version earlier than 2.12.3 takes keyword arguments only, and a positional call raises `flyte.errors.RemoteTaskUsageError`. Redeploy it to call it with positional arguments.
 
 ## Next steps
 

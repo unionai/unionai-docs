@@ -2,7 +2,7 @@
 title: flyte
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: box-seam
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,6 +39,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`TaskTemplate`](../flyte/tasktemplate) | Task template is a template for a task that can be executed. |
 | [`Timeout`](../flyte/timeout) | Timeout bounds for a task. |
 | [`Trigger`](../flyte/trigger) | Specification for a trigger that can be associated with any Flyte task. |
+| [`TriggeredPartition`](../flyte/triggeredpartition) | Bind one partition value of the triggering artifact version to a task input of an artifact trigger: `inputs={"day": flyte.TriggeredPartition("date")}` supplies the new version's `date` partition (a datetime for the time partition, a string for a string partition). |
 
 ### Protocols
 
@@ -53,6 +54,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Method | Description |
 |-|-|
 | [`AMD_GPU()`](#amd_gpu) | Create an AMD GPU device instance. |
+| [`APPLE_SILICON()`](#apple_silicon) | Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on. |
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`HABANA_GAUDI()`](#habana_gaudi) | Create a Habana Gaudi device instance. |
 | [`Neuron()`](#neuron) | Create a Neuron device instance. |
@@ -105,15 +107,33 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 ```python
 def AMD_GPU(
     device: typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X'],
+    quantity: typing.Literal[1, 8] = 1,
 ) -> flyte._resources.Device
 ```
 Create an AMD GPU device instance.
+
+The same as the `gpu="<device>:<quantity>"` string form, e.g. `AMD_GPU("MI355X", 8)` is `gpu="MI355X:8"`.
 
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `device` | `typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X']` | Device type (e.g., "MI100", "MI210", "MI250", "MI250X", "MI300A", "MI300X", "MI325X", "MI350X", "MI355X"). |
+| `quantity` | `typing.Literal[1, 8]` | The number of AMD GPUs of this type: 1, or 8 for a full 8-GPU node. Defaults to 1. For any other count, use `Device(quantity=..., device_class="AMD_GPU", device=...)`. |
+
+**Returns:** Device instance.
+
+#### APPLE_SILICON()
+
+```python
+def APPLE_SILICON()
+```
+Create an Apple Silicon device instance: the Metal GPU of the Mac a devbox runs on.
+
+The same as `gpu="AppleSilicon"`. The workload runs natively on the Mac, so its code can use Metal
+(`torch.device("mps")`, `mlx`); it needs a devbox started with `flyte start devbox --apple-silicon`.
+
+
 
 **Returns:** Device instance.
 
@@ -121,9 +141,9 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
+    device: typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'B300', 'H100', 'H200', 'L4', 'L40s', 'T4', 'T4g', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
-    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType] = None,
+    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType] = None,
 ) -> flyte._resources.Device
 ```
 Create a GPU device instance.
@@ -132,9 +152,9 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A2', 'A10', 'A10G', 'A100', 'A100_80G', 'B200', 'B300', 'H100', 'H200', 'L4', 'L40s', 'T4', 'T4g', 'V100', 'RTX_PRO_4500', 'RTX_PRO_6000', 'GB10', 'T4 shared', 'L4 shared', 'A10G shared', 'A10 shared', 'L40S shared']` | The type of GPU (e.g., "T4", "A100"). A "&lt;model&gt; shared" device such as "T4 shared" requests time-sliced (or MPS) capacity on a pool that advertises the shared accelerator. |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
-| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.10gb', '1g.20gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], typing.Literal['1g.24gb', '2g.48gb', '4g.96gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). A shared device takes no partition. |
 
 **Returns:** Device instance.
 
@@ -204,6 +224,7 @@ def build(
     dry_run: bool = False,
     force: bool = False,
     wait: bool = True,
+    queue: str | None = None,
 ) -> ImageBuild
 ```
 Build an image. The existing async context will be used.
@@ -223,6 +244,7 @@ if __name__ == "__main__":
 | `dry_run` | `bool` | Tell the builder to not actually build. Different builders will have different behaviors. |
 | `force` | `bool` | Skip the existence check and force a rebuild. When using the remote builder, this also sets overwrite_cache=True on the build run. |
 | `wait` | `bool` | Wait for the build to finish. If wait is False, the function will return immediately and the build will run in the background. |
+| `queue` | `str \| None` | Queue of the cluster pool a remote build is for (the current run's queue when None): the image is looked up there, its spec and context are uploaded to storage that pool reads, the build run goes to that queue, and it is cached for that queue. Ignored by the local builders. |
 
 **Returns**
 
@@ -241,6 +263,7 @@ def build_images(
     *envs: Environment,
     copy_style: 'CopyFiles' = 'loaded_modules',
     seed_cache: ImageCache | None = None,
+    queue: str | None = None,
 ) -> ImageCache
 ```
 Build the images for the given environment(s).
@@ -252,6 +275,7 @@ Build the images for the given environment(s).
 | `*envs` | `Environment` | One or more environments to build images for. When multiple environments are passed they are planned together in a single pass (mirroring `deploy`), and the resulting image caches are merged into one. |
 | `copy_style` | `'CopyFiles'` | Copy style that the eventual deploy will use. Must match the deploy's `--copy-style` so the image content hashes — and therefore the registry tags — line up, letting deploy reuse the pre-built image. |
 | `seed_cache` | `ImageCache \| None` | Optional ImageCache of environments already built by a prior deploy. Seeded environments reuse the recorded URI and skip the build pipeline entirely; see `_build_images` for details. |
+| `queue` | `str \| None` | Queue the images are for (see `_build_images`); None builds each environment's for its own queue. |
 
 **Returns:** ImageCache containing the built images.
 
@@ -349,6 +373,7 @@ def deploy(
     interactive_mode: bool | None = None,
     copy_style: CopyFiles = 'loaded_modules',
     dryrun: bool | None = None,
+    queue: str | None = None,
 ) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
@@ -363,6 +388,7 @@ Deploy the given environment or list of environments.
 | `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are   considered interactive mode, while scripts are not. This is used to determine how the code bundle is   created. |
 | `copy_style` | `CopyFiles` | Copy style to use when running the task |
 | `dryrun` | `bool \| None` | Deprecated alias for `dry_run`, kept for backwards compatibility. Use `dry_run` instead. |
+| `queue` | `str \| None` | Deploy every environment (and its tasks and triggers) to this queue, overriding the `queue` configured in code. The code bundle and trigger inputs are uploaded to that queue's cluster pool. When None, each environment keeps its own queue. |
 
 **Returns:** Deployment object containing the deployed environments and tasks.
 
@@ -475,7 +501,7 @@ remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
-| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Python warnings are logged through it too. Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `user_log_level` | `int \| None` | |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
@@ -527,6 +553,8 @@ def init_from_api_key(
     image_builder: ImageBuildEngine.ImageBuilderType = 'local',
     images: typing.Dict[str, str] | None = None,
     sync_local_sys_paths: bool = True,
+    insecure_skip_verify: bool = False,
+    ca_cert_file_path: str | None = None,
 )
 ```
 Initialize the Flyte system using an API key for authentication. This is a convenience
@@ -551,6 +579,8 @@ or cloud provider.
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration |
 | `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name |
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True) |
+| `insecure_skip_verify` | `bool` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `str \| None` | Optional path to a CA certificate bundle used to verify the server certificate. Useful behind TLS-intercepting corporate proxies that re-sign traffic with a private CA. Note that if insecure_skip_verify is also set, it takes precedence and certificate verification against this bundle is skipped. |
 
 **Returns:** None
 
@@ -626,7 +656,10 @@ Credentials are resolved in this order:
 1. An explicit `api_key` argument.
 2. A mounted config file, when the pod has `UCTL_CONFIG` or `FLYTECTL_CONFIG` set.
 3. Auth env vars set on the pod (see below).
-4. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
+4. Workload identity, when the platform tells the pod which attempt it runs (`_U_WORKLOAD`) and where its
+   projected service-account token is (`_U_WORKLOAD_TOKEN_FILE`): the pod presents that token, and acts as the
+   run's creator within the run's project and domain.
+5. The api key injected by the control plane (`_UNION_EAGER_API_KEY` / `EAGER_API_KEY`).
 
 Deployments that do not want to hand task pods a long-lived API key can skip issuing one
 entirely and set the standard credentials config env vars as default env vars on the pod:
@@ -1093,8 +1126,9 @@ app = flyte.serve(env)
 print(f"App URL: {app.url}")
 ```
 
-See Also:
-    with_servecontext: For customizing deployment settings
+**See Also:**
+
+- `with_servecontext`: For customizing deployment settings
 
 
 | Parameter | Type | Description |
@@ -1165,7 +1199,6 @@ def with_runcontext(
     debug: bool = False,
     tracked: bool = False,
     tracked_strict: bool = False,
-    _tracker: Any = None,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -1217,9 +1250,9 @@ if __name__ == "__main__":
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
 | `user_log_level` | `int \| None` | |
-| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
+| `reset_root_logger` | `bool` | If True, replace the root logger's handlers with Flyte's own, so lines from third-party libraries that propagate to the root logger are formatted the same way as Flyte's (JSON when `log_format` is `json`, otherwise Rich or plain console). Python warnings are logged through it too. Defaults to False, which leaves those handlers in place and instead wraps each one so its output carries the run and action context. Can also be turned on with the environment variable `FLYTE_RESET_ROOT_LOGGER=1`. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
-| `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `queue` | `Optional[str]` | Optional queue for the run and its remote image builds. Overrides the task queue. |
 | `max_action_concurrency` | `int \| None` | Optional Maximum number of actions that can run concurrently within this run. Only applies to remote runs. If not provided, the platform default (configurable via the `run.max_action_concurrency` setting at org/domain/project scope) applies. Must be 0 (platform default) or at least 2 — a value of 1 would deadlock the run, since the parent action holds a concurrency slot while waiting for its child actions. |
 | `notifications` | `Notification \| Tuple[Notification, ...] \| None` | Optional Notification(s) to send when the run reaches specific execution phases. Accepts a single notification or a tuple of notifications. Supports Email, Slack, Teams, and Webhook types. See `flyte.notify` for available notification types and template variables. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
@@ -1228,7 +1261,6 @@ if __name__ == "__main__":
 | `debug` | `bool` | Optional If true, the task will be run as a VSCode debug task, starting a code-server in the container so users can connect via the UI to interactively debug/run the task. |
 | `tracked` | `bool` | Local-only. If true, report tracked run state (actions, attempts, outputs, reports) to the Flyte control plane via TrackedRunService so the run shows up in the console. Requires an initialized client and a configured project/domain. Can also be enabled globally with the `local.tracked` config key. Reporting is best-effort and never fails the local run. |
 | `tracked_strict` | `bool` | Local-only, for debugging reporting itself. When true (with `tracked`), the first reporting failure — registration, an artifact upload, a rejected or undeliverable ReportActions update, or a flush timeout — fails the run loudly instead of being logged and swallowed. Can also be enabled globally with the `local.tracked_strict` config key. |
-| `_tracker` | `Any` | This is an internal only parameter used by the CLI to render the TUI. |
 
 **Returns:** runner
 
@@ -1245,6 +1277,7 @@ def with_servecontext(
     env_vars: dict[str, str] | None = None,
     parameter_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None = None,
     cluster_pool: str | None = None,
+    cluster: str | None = None,
     log_level: int | None = None,
     log_format: LogFormat = 'console',
     user_log_level: int | None = None,
@@ -1304,6 +1337,7 @@ print(f"App URL: {app.url}")
 | `env_vars` | `dict[str, str] \| None` | Optional environment variables to inject/override in the app container |
 | `parameter_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional parameter values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of parameter names to values. |
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
+| `cluster` | `str \| None` | |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | Optional log format ("console" or "json", default: "console") |
 | `user_log_level` | `int \| None` | |

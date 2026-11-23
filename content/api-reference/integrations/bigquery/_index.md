@@ -2,7 +2,7 @@
 title: BigQuery
 description: "BigQuery connector plugin for Flyte."
 icon: book
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -54,6 +54,7 @@ def run_query(date: str) -> DataFrame[dict]:
 
 | Class | Description |
 |-|-|
+| [`BQToPandasDecodingHandler`](./bqtopandasdecodinghandler) |  |
 | [`BigQueryConfig`](./bigqueryconfig) | Configuration for a BigQuery task. |
 | [`BigQueryConnector`](./bigqueryconnector) |  |
 | [`BigQueryTask`](./bigquerytask) |  |

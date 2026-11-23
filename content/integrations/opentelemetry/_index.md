@@ -2,7 +2,7 @@
 title: OpenTelemetry
 description: Turn a Flyte run into an OpenTelemetry trace, with each task and traced function a span.
 icon: activity
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 That produces one trace shaped like this:
 
 ```text
-main                          ← task span
+my_env.main                   ← task span
 ├── double                    ← flyte.trace step span
 ├── double
 └── double

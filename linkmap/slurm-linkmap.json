@@ -1,0 +1,20 @@
+{
+  "packages": {
+    "flyteplugins.slurm": "/api-reference/integrations/slurm/"
+  },
+  "identifiers": {
+    "flyteplugins.slurm.Slurm": "/api-reference/integrations/slurm/slurm/",
+    "Slurm": "/api-reference/integrations/slurm/slurm/",
+    "flyteplugins.slurm.SlurmConnector": "/api-reference/integrations/slurm/slurmconnector/",
+    "SlurmConnector": "/api-reference/integrations/slurm/slurmconnector/",
+    "flyteplugins.slurm.SlurmFunctionTask": "/api-reference/integrations/slurm/slurmfunctiontask/",
+    "SlurmFunctionTask": "/api-reference/integrations/slurm/slurmfunctiontask/",
+    "flyteplugins.slurm.SlurmJobMetadata": "/api-reference/integrations/slurm/slurmjobmetadata/",
+    "SlurmJobMetadata": "/api-reference/integrations/slurm/slurmjobmetadata/",
+    "flyteplugins.slurm.SlurmScriptConnector": "/api-reference/integrations/slurm/slurmscriptconnector/",
+    "SlurmScriptConnector": "/api-reference/integrations/slurm/slurmscriptconnector/",
+    "flyteplugins.slurm.SlurmScriptTask": "/api-reference/integrations/slurm/slurmscripttask/",
+    "SlurmScriptTask": "/api-reference/integrations/slurm/slurmscripttask/"
+  },
+  "methods": {}
+}

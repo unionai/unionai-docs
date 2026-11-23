@@ -1,0 +1,18 @@
+{
+  "packages": {
+    "flyteplugins.dbt": "/api-reference/integrations/dbt/"
+  },
+  "identifiers": {
+    "flyteplugins.dbt.DbtInvocationError": "/api-reference/integrations/dbt/dbtinvocationerror/",
+    "DbtInvocationError": "/api-reference/integrations/dbt/dbtinvocationerror/",
+    "flyteplugins.dbt.DbtNodeResult": "/api-reference/integrations/dbt/dbtnoderesult/",
+    "DbtNodeResult": "/api-reference/integrations/dbt/dbtnoderesult/",
+    "flyteplugins.dbt.DbtTask": "/api-reference/integrations/dbt/dbttask/",
+    "DbtTask": "/api-reference/integrations/dbt/dbttask/",
+    "flyteplugins.dbt.DbtTaskResolver": "/api-reference/integrations/dbt/dbttaskresolver/",
+    "DbtTaskResolver": "/api-reference/integrations/dbt/dbttaskresolver/"
+  },
+  "methods": {
+    "flyteplugins.dbt.invoke_dbt": "/api-reference/integrations/dbt/#invoke_dbt"
+  }
+}

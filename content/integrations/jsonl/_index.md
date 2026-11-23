@@ -2,7 +2,7 @@
 title: JSONL
 description: Typed JSON Lines inputs and outputs, for a single file or a directory of them.
 icon: filetype-json
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
@@ -114,6 +114,8 @@ The record iterators accept an `on_error` argument: `"raise"` (default), `"skip"
 To hand JSONL data to columnar tooling, stream it as Arrow `RecordBatch`es with `iter_arrow_batches(batch_size=...)`. Memory usage stays bounded by the batch size. Arrow iteration requires the optional `pyarrow` dependency. Install it with `pip install 'flyteplugins-jsonl[arrow]'`:
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/files-and-directories/jsonl.py" fragment="arrow-batches" lang="python" >}}
+
+Collecting every batch and combining them with `pa.Table.from_batches()`, as the example does, holds the whole dataset in memory. To keep memory bounded, aggregate each batch as it arrives instead.
 
 ## Common use cases
 

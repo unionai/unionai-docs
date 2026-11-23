@@ -74,7 +74,7 @@ Manage credentials and automate execution.
   → [Secrets](../../tasks/task-configuration/secrets)
 
 - **Triggers**: Schedule tasks on a cron schedule or trigger them from external events
-  → [Triggers](../../tasks/task-configuration/triggers)
+  → [Triggers](../../triggers/_index)
 
 - **Webhooks**: Build APIs that trigger task execution from external systems
   → [Hybrid graphs](../../apps/build-apps/hybrid-graphs)
@@ -142,7 +142,7 @@ Deploy long-running services.
   → [FastAPI app](../../apps/native-app-integrations/fastapi-app)
 
 - **LLM serving**: Serve large language models with vLLM or SGLang
-  → [vLLM app](../../apps/native-app-integrations/vllm-app), [SGLang app](../../apps/native-app-integrations/sglang-app)
+  → [vLLM endpoint](../../inference/self-hosted-endpoints/vllm), [SGLang endpoint](../../inference/self-hosted-endpoints/sglang)
 
 - **Autoscaling**: Scale apps up and down based on traffic, including scale-to-zero
   → [Autoscaling apps](../../apps/configure-apps/auto-scaling-apps)

@@ -22,9 +22,6 @@ connecting-to-a-cluster\.md:\./projects-and-domains
 # Links inside HTML comments (TODO placeholders for planned pages)
 user-guide/task-configuration/_index\.md
 
-# Link inside variant-conditional block (byoc block on selfmanaged-only page)
-deployment/architecture/overview\.md:\.\./configuring-your-data-plane
-
 integrations/_index\.md:\./openai
 
 # page.md links on flyte-context page (build artifact, not a Hugo page)

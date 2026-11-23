@@ -24,7 +24,7 @@ For serving large language models, the `flyteplugins-vllm` integration gives you
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/vllm/basic_vllm.py" fragment="basic-vllm-app" lang="python" >}}
 
-See [vLLM](../../apps/native-app-integrations/vllm-app) and the other [Native app integrations](../../apps/native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
+See [vLLM](../../inference/self-hosted-endpoints/vllm) and the other [Native app integrations](../../apps/native-app-integrations/_index) (SGLang, Streamlit, FastAPI).
 
 ## App serving (dashboards and APIs)
 
@@ -52,7 +52,7 @@ async with DynamicBatcher(
     results = await asyncio.gather(*futures)
 ```
 
-`submit()` is non-blocking and returns a `Future`; when the queue is full it applies backpressure automatically. See [Batch inference](../../run-scaling/batch-inference), which also covers `TokenBatcher` for token-aware LLM batching.
+`submit()` is non-blocking and returns a `Future`; when the queue is full it applies backpressure automatically. See [Batch inference](../../inference/batch-inference), which also covers `TokenBatcher` for token-aware LLM batching.
 
 ## Sandboxed code execution
 

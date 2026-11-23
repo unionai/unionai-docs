@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # CrewAI
 
-Run [CrewAI](https://docs.crewai.com/) agents on Flyte. CrewAI drives the loop through `Agent.kickoff_async`. Flyte supplies the runtime: tools become durable child actions, model turns are recorded for replay, and the run renders into the task report.
+Run [CrewAI](https://docs.crewai.com/) agents on Flyte. CrewAI drives the loop through `Agent.kickoff_async`. Flyte supplies the runtime: tools become durable child actions, and model turns are recorded for replay.
 
 ## Installation
 
@@ -52,13 +52,13 @@ async def city_agent(question: str) -> str:
 
 ## How it maps to Flyte
 
-**Tools:** CrewAI requires tools attached to `Agent(tools=[...])` to be `crewai.tools.BaseTool` instances; plain callables are rejected by pydantic validation. `tool` therefore produces a real `BaseTool` subclass whose execution dispatches to `task.aio()`. The input schema comes from the Flyte type engine.
+**Tools:** CrewAI requires tools attached to `Agent(tools=[...])` to be `crewai.tools.BaseTool` instances; plain callables are rejected by pydantic validation. `tool` therefore produces a real `BaseTool` subclass whose execution dispatches to `task.aio()`. The input schema is a pydantic model built from the task function's type hints.
 
 CrewAI invokes tools synchronously, which is awkward inside an already-running event loop. The adapter handles this by making the synchronous `_run` path bridge to the task through a dedicated background-thread loop, and by awaiting the task directly on CrewAI's native async path. You do not have to think about it, but it explains why the tool object is a class rather than a function.
 
 **Model turns:** On the builder path the agent is driven by a durable `LLM`, so each turn is recorded via `flyte.trace` and replayed on retry.
 
-**Observability:** The run timeline renders into the task report.
+**Observability:** When the enclosing task has `report=True`, the task report gets a "CrewAI agent" heading on its **Agent** tab. Tool calls and model turns are not rendered into the report.
 
 ## Bring your own agent
 
@@ -106,9 +106,9 @@ The conversation transcript is persisted to a durable, keyed `MemoryStore`. On t
 | `model` | `str \| None` | `None` | Model name, for example `"gpt-4o"`. Required when `agent` is not given |
 | `instructions` | `str \| None` | `None` | Extra guidance folded into the built agent's backstory |
 | `agent` | `Any` | `None` | A pre-built CrewAI `Agent`. Mutually exclusive with `tools` |
-| `name` | `str` | `"crewai-agent"` | Agent name, used for debugging and observability |
+| `name` | `str` | `"crewai-agent"` | Agent name, used only in the built agent's backstory (`You are a helpful assistant named {name}.`). Ignored when `agent` is given |
 | `durable` | `bool` | `True` | Record and replay each model turn. Builder path only |
-| `observability` | `bool` | `True` | Render the timeline into the task report |
+| `observability` | `bool` | `True` | Write a "CrewAI agent" heading to the task report's **Agent** tab (the task needs `report=True`) |
 | `memory_key` | `str \| None` | `None` | Stable user or thread ID for cross-run memory |
 | `**run_kwargs` | | | Forwarded to `Agent.kickoff_async` |
 
@@ -120,7 +120,6 @@ Full runnable examples live in the SDK repository under [`plugins/agents/crewai/
 
 - `crewai_durable_agent.py`: a single durable agent with traced model turns.
 - `crewai_custom_agent.py`: building the `Agent` yourself and passing it as `agent=`.
-- `crewai_sync_agent.py`: driving the same agent from a sync task with `run_agent_sync`.
 - `crewai_multi_agent.py`: a planner, parallel researchers and an editor, each its own durable action.
 - `crewai_crash_resume.py`: the task crashes on its first attempt and replays completed turns on retry.
 - `crewai_memory.py`: two separate runs sharing a `memory_key`.

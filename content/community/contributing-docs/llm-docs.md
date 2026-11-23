@@ -13,12 +13,13 @@ designed for use by AI coding agents and AI search engines.
 
 ## Output files
 
-The `make dist` command (specifically the `make llm-docs` step) produces the following
-in each variant's `dist/docs/v2/{variant}/` directory:
+The `make dist` command produces the following in each variant's `dist/docs/v2/{variant}/`
+directory. Each variant's `make variant` step writes the `<page>.md` twins. The `make llm-docs`
+step then post-processes them and writes `llms.txt` and `llms-full.txt`:
 
 | File | Description |
 |------|-------------|
-| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
+| `<page>.md` | Per-page Markdown, served at each page's own URL with `.md` appended. A section landing page's twin also carries a `## Subpages` block listing every page directly beneath it, with each child's description and H2/H3 headings, so it is the index for its section. |
 | `llms.txt` | Page index listing every page grouped by section, with H2/H3 headings for discoverability. |
 | `llms-full.txt` | The entire documentation for one variant as a single file, with all internal links converted to hierarchical bold references (e.g. `**Configure tasks > Resources**`). |
 
@@ -41,7 +42,7 @@ dist/docs/v2/{variant}/**/<page>.md         # Per-page Markdown, section landing
 ## How the page twins are generated
 
 1. Hugo builds the site into `dist/` and also outputs a Markdown format into `tmp-md/`.
-2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as the page's `.md` twin beside its rendered `index.html`.
+2. `process_shortcodes.py` reads from `tmp-md/`, resolves all shortcodes (variants, code includes, tabs, notes, etc.), and writes the result as the page's `.md` twin beside the page's directory: for a page rendered at `a/b/foo/index.html`, the twin is `a/b/foo.md`.
 3. `fix_internal_links_post_processing()` converts all internal links in the twins to point to other twins using relative paths.
 4. `build_llm_docs.py` then enhances subpage listings with H2/H3 headings, converts all relative links to absolute URLs, and creates the `llms.txt` and `llms-full.txt` index files.
 
@@ -58,12 +59,10 @@ This makes the file self-contained with no broken references.
 
 ## Regenerating
 
-LLM documentation is regenerated automatically as part of `make dist`.
-To regenerate only the LLM files without a full rebuild:
-
-```
-make llm-docs
-```
+LLM documentation is regenerated automatically as part of `make dist`. To regenerate it, run
+`make dist` again. `make llm-docs` does not work on its own: it only processes a variant whose
+`make variant` build has run since the last `make llm-docs`, so after a `make dist` it fails with
+`Error: No variants found`.
 
 New pages are included automatically if linked via `## Subpages` in their parent's Hugo output.
 

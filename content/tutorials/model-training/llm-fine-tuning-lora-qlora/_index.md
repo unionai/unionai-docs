@@ -49,7 +49,7 @@ The GPU environment declares a HuggingFace token secret for gated models.
 Create a HuggingFace token secret if you use a gated base model:
 
 ```
-flyte create secret huggingface-token <YOUR_HF_TOKEN>
+flyte create secret huggingface-token --value <YOUR_HF_TOKEN>
 ```
 
 From the [example directory](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/llm_fine_tuning_lora_qlora):

@@ -18,7 +18,7 @@ You.com returns ranked web and news results with snippets and publication timest
 - **Fan-out parallelism** across competitors with `asyncio.gather`
 - **`cache="auto"`** so converging parallel or repeat runs reuse prior You.com and LLM results when queries overlap
 - **`@flyte.trace`** on every You.com and LLM call for full prompt → query → source lineage
-- **Flyte reports** that render an HTML dashboard grouping deltas by competitor and category
+- **Flyte reports** that render an HTML dashboard with one card per competitor, listing its deltas by confidence, each labeled with its category
 
 ![Competitive intelligence agent report](../../../_static/images/tutorials/competitive_intelligence_agent/competitive-intelligence-agent.png)
 
@@ -85,8 +85,8 @@ Get a You.com API key from the [You.com platform](https://you.com/platform) (see
 Register both keys as Flyte secrets. The secret key names must match those declared in the `TaskEnvironment`:
 
 ```
-flyte create secret youdotcom-api-key <YOUR_YOU_API_KEY>
-flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+flyte create secret youdotcom-api-key --value <YOUR_YOU_API_KEY>
+flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 ```
 
 See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.

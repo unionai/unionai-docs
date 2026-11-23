@@ -2,7 +2,7 @@
 title: MLflow
 description: Track experiments with MLflow from inside a task using the mlflow_run decorator.
 icon: graph-up-arrow
-weight: 1
+weight: 3
 variants: +flyte +union
 ---
 
@@ -235,6 +235,11 @@ Settings are resolved in priority order:
 2. `mlflow_config()` context configuration
 3. Environment variables (for `tracking_uri`)
 4. MLflow defaults
+
+There are two exceptions:
+
+- An `experiment_id` from either source takes precedence over an `experiment_name` from either source. If the decorator sets `experiment_name` and `mlflow_config()` sets `experiment_id`, a task that starts its own run (`run_mode="new"` or `"nested"`, or `"auto"` with no parent run) logs it to the context's experiment ID. A task that reuses its parent's run stays in the parent's experiment.
+- `autolog=False` and `run_mode="auto"` on the decorator don't override the context. `mlflow_config(autolog=True)` or a `run_mode` other than `"auto"` in the context still applies.
 
 ## Distributed training
 

@@ -1,0 +1,19 @@
+{
+  "packages": {
+    "flyteplugins.nsight": "/api-reference/integrations/nsight/flyteplugins.nsight/",
+    "flyteplugins.nsight.nsys": "/api-reference/integrations/nsight/flyteplugins.nsight.nsys/",
+    "flyteplugins.nsight.nvtx": "/api-reference/integrations/nsight/flyteplugins.nsight.nvtx/"
+  },
+  "identifiers": {},
+  "methods": {
+    "flyteplugins.nsight.capture_report_file": "/api-reference/integrations/nsight/flyteplugins.nsight/#capture_report_file",
+    "flyteplugins.nsight.nsys_available": "/api-reference/integrations/nsight/flyteplugins.nsight/#nsys_available",
+    "flyteplugins.nsight.nsys_profile": "/api-reference/integrations/nsight/flyteplugins.nsight/#nsys_profile",
+    "flyteplugins.nsight.session_name": "/api-reference/integrations/nsight/flyteplugins.nsight/#session_name",
+    "flyteplugins.nsight.under_nsys": "/api-reference/integrations/nsight/flyteplugins.nsight/#under_nsys",
+    "flyteplugins.nsight.nsys.profile": "/api-reference/integrations/nsight/flyteplugins.nsight.nsys/#profile",
+    "flyteplugins.nsight.nsys.range": "/api-reference/integrations/nsight/flyteplugins.nsight.nsys/#range",
+    "flyteplugins.nsight.nvtx.mark": "/api-reference/integrations/nsight/flyteplugins.nsight.nvtx/#mark",
+    "flyteplugins.nsight.nvtx.range": "/api-reference/integrations/nsight/flyteplugins.nsight.nvtx/#range"
+  }
+}

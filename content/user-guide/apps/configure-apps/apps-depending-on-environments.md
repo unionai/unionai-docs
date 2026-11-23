@@ -1,6 +1,6 @@
 ---
 title: Apps depending on other environments
-description: Use depends_on so one app or task environment is deployed and ready before another.
+description: Use depends_on so deploying an app or task environment also deploys the environments it needs.
 icon: link-45deg
 weight: 6
 variants: +flyte +union
@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Apps depending on other environments
 
-The `depends_on` parameter allows you to specify that one app depends on another app (or task environment). When you deploy an app with `depends_on`, Flyte ensures that all dependencies are deployed first.
+The `depends_on` parameter allows you to specify that one app depends on another app (or task environment). When you deploy an app with `depends_on`, Flyte deploys its dependencies in the same deployment.
 
 ## Basic usage
 
@@ -19,16 +19,12 @@ app1_env = flyte.app.AppEnvironment(name="backend-api", ...)
 
 app2_env = flyte.app.AppEnvironment(
     name="frontend-app",
-    depends_on=[app1_env],  # Ensure backend-api is deployed first
+    depends_on=[app1_env],  # Deploying frontend-app also deploys backend-api
     # ...
 )
 ```
 
-When you deploy `app2_env`, Flyte will:
-
-1. First deploy `app1_env` (if not already deployed)
-2. Then deploy `app2_env`
-3. Make sure `app1_env` is available before `app2_env` starts
+When you deploy `app2_env`, Flyte puts `app1_env` and `app2_env` in one deployment plan and deploys them together. It doesn't wait for `app1_env` to be ready before it deploys `app2_env`, so code in `app2_env` that calls `app1_env` as soon as it starts should retry until `app1_env` answers.
 
 ## Example: App calling another app
 
@@ -36,12 +32,7 @@ Here's a complete example where one FastAPI app calls another:
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
 
-When you deploy `env2`, Flyte will:
-
-1. Deploy `env1` first (backend-api)
-2. Wait for `env1` to be ready
-3. Deploy `env2` (frontend-api)
-4. `env2` can then access `env1.endpoint` to make requests
+When you deploy `env2`, Flyte deploys `env1` (backend-api) and `env2` (frontend-api) together. `env2` then reaches `env1` through `env1.endpoint`.
 
 ## Dependency chain
 
@@ -52,7 +43,7 @@ app1_env = flyte.app.AppEnvironment(name="service-1", ...)
 app2_env = flyte.app.AppEnvironment(name="service-2", depends_on=[app1_env], ...)
 app3_env = flyte.app.AppEnvironment(name="service-3", depends_on=[app2_env], ...)
 
-# Deploying app3_env will deploy in order: app1_env -> app2_env -> app3_env
+# Deploying app3_env also deploys app2_env and app1_env, all in one deployment
 ```
 
 ## Multiple dependencies
@@ -70,7 +61,7 @@ api_env = flyte.app.AppEnvironment(
 )
 ```
 
-When deploying `api_env`, both `backend_env` and `database_env` will be deployed first (they may be deployed in parallel if they don't depend on each other).
+When you deploy `api_env`, `backend_env` and `database_env` are deployed with it.
 
 ## Using AppEndpoint for dependency URLs
 
@@ -111,8 +102,7 @@ for deployment in deployments:
 Flyte will:
 
 1. Build a deployment plan that includes all dependencies
-2. Deploy dependencies in the correct order
-3. Ensure dependencies are ready before deploying dependent apps
+2. Deploy every environment in the plan at the same time
 
 ## Task environment dependencies
 
@@ -128,7 +118,7 @@ serving_env = flyte.app.AppEnvironment(
 )
 ```
 
-This ensures the task environment is available when the app is deployed (useful if the app needs to call tasks in that environment).
+Deploying the app then also deploys the task environment, which is useful if the app calls tasks in it.
 
 ## Best practices
 
@@ -158,10 +148,10 @@ env_root = FastAPIAppEnvironment(
 )
 ```
 
-The root app can route traffic to either variant A or B based on A/B testing logic, and both variants will be deployed before the root app starts.
+The root app can route traffic to either variant A or B based on A/B testing logic, and both variants are deployed together with it.
 
 ## Limitations
 
 - Circular dependencies are not supported
 - Dependencies must be in the same project/domain
-- Dependency deployment order is deterministic but dependencies at the same level may deploy in parallel
+- `depends_on` decides which environments are deployed, not the order: all of them deploy at the same time

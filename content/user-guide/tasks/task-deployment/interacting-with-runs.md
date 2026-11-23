@@ -22,7 +22,7 @@ Instead, they are simply a result of the task being invoked in a specific way:
 * User with `flyte run`
 * User via the UI
 * Other code calling `flyte.run()`
-* [Trigger](../task-configuration/triggers)
+* [Trigger](../../triggers/_index)
 
 When a task is invoked in one of these ways, it creates a run to represent the execution of that task and all its nested tasks, considered together.
 Each task execution within that run is represented by an **action**.
@@ -310,6 +310,11 @@ For all available options, see the [CLI reference](../../../api-reference/flyte-
 
 ### Handling failures
 
+To raise a finished run's failure as a typed exception, wait on the run and call
+`flyte.remote.Run.raise_for_status()`. It raises the same exception a parent task gets when a sub-action fails.
+Requires `flyte` 2.10.3 or later. For details, see
+[Handling the failure of a run you launched](../task-programming/error-handling#handling-the-failure-of-a-run-you-launched).
+
 If an action fails, outputs are not available, but you can retrieve error information:
 
 ```python
@@ -449,6 +454,8 @@ export AZURE_CLIENT_ID="your-client-id"
 export AZURE_CLIENT_SECRET="your-client-secret"
 export AZURE_STORAGE_ACCOUNT_NAME="your-storage-account"
 ```
+
+`flyte.storage.ABFS.auto()` also reads Flyte-prefixed versions of these variables: `FLYTE_AZURE_STORAGE_ACCOUNT_NAME`, `FLYTE_AZURE_STORAGE_ACCOUNT_KEY`, `FLYTE_AZURE_TENANT_ID`, `FLYTE_AZURE_CLIENT_ID`, and `FLYTE_AZURE_CLIENT_SECRET`. If any of them is set, it reads only the prefixed names and ignores the generic `AZURE_*` ones. Use the prefixed names when the generic names are already set for other Azure tools, such as adlfs, deltalake, or the Azure SDKs, and point to a different storage account. Requires `flyte` 2.12.3 or later.
 
 **2. Initialize Flyte with Azure storage configuration:**
 

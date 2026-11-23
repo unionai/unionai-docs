@@ -27,7 +27,7 @@ Flyte provides:
 > Create an Anthropic API key secret (the key name must match the `TaskEnvironment`):
 >
 > ```
-> flyte create secret internal-anthropic-api-key <YOUR_ANTHROPIC_API_KEY>
+> flyte create secret internal-anthropic-api-key --value <YOUR_ANTHROPIC_API_KEY>
 > ```
 >
 > See [Secrets](../../../user-guide/tasks/task-configuration/secrets) for scoping and file-based secrets.
@@ -54,7 +54,7 @@ The pipeline runs on CPU with RDKit, LiteLLM, and system libraries for 2D struct
 
 ## Define the screening agent
 
-The agent receives a natural-language brief and composes four stage tools in order. Each tool is a durable Flyte task with its own `report=True` surface in the Flyte UI.
+The agent receives a natural-language brief and composes four stage tools in order. Each tool is a durable Flyte task. `compute_properties`, `screen_candidates`, and `generate_report` each declare `report=True` and have their own report in the Flyte UI. `load_molecules` is a cached task without a report.
 
 {{< code file="/unionai-examples/v2/tutorials/drug_molecule_screening/drug_molecule_screening.py" fragment=agent lang=python >}}
 

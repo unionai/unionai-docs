@@ -2,7 +2,7 @@
 title: VLLMAppEnvironment
 description: "App environment backed by vLLM for serving large language models."
 icon: braces
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,8 +39,9 @@ class VLLMAppEnvironment(
     links: List[Link] = <factory>,
     parameters: List[Parameter] = <factory>,
     cluster_pool: str = 'default',
+    cluster: str | None = None,
     timeouts: Timeouts = <factory>,
-    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.8.1', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.26.0',)), PipPackages(index_url='https://flashinfer.ai/whl/cu130', packages=('flashinfer-jit-cache==0.6.14',))), _tag=None, _image_registry_secret=None),
+    image: str | Image | Literal['auto'] = Image(base_image='ghcr.io/flyteorg/flyte:py3.12-v2.13.2', dockerfile=None, registry=None, name='vllm-app-image', platform=('linux/amd64', 'linux/arm64'), python_version=(3, 12), extendable=True, _is_cloned=True, _ref_name=None, _layers=(PipPackages(pre=True, packages=('flyteplugins-vllm',)), PipPackages(packages=('vllm==0.26.0',)), PipPackages(index_url='https://flashinfer.ai/whl/cu130', packages=('flashinfer-jit-cache==0.6.14',))), _tag=None, _image_registry_secret=None),
     type: str = 'vLLM',
     port: int | Port = 8080,
     extra_args: str | list[str] = '',
@@ -73,10 +74,11 @@ class VLLMAppEnvironment(
 | `links` | `List[Link]` | |
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | The target cluster_pool where the app should be deployed. |
+| `cluster` | `str \| None` | |
 | `timeouts` | `Timeouts` | |
 | `image` | `str \| Image \| Literal['auto']` | |
 | `type` | `str` | Type of app. |
-| `port` | `int \| Port` | Port application listens to. Defaults to 8000 for vLLM. |
+| `port` | `int \| Port` | Port application listens to. Defaults to 8080 for vLLM. |
 | `extra_args` | `str \| list[str]` | Extra args to pass to `vllm serve`. See https://docs.vllm.ai/en/stable/configuration/engine_args or run `vllm serve --help` for details. |
 | `model_path` | `str \| RunOutput \| ArtifactValue` | Remote path to model (e.g., s3://bucket/path/to/model), or a `RunOutput`/`ArtifactValue` resolved at deploy time. |
 | `model_hf_path` | `str` | Hugging Face path to model (e.g., Qwen/Qwen3-0.6B). |

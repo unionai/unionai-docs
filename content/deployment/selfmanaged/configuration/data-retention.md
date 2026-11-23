@@ -14,7 +14,7 @@ The data plane uses an object store bucket (S3, GCS, or ABS) to hold the **raw d
 
 It helps to be precise about what "metadata" means here, because the term is used in two very different ways elsewhere in the industry.
 
-**Metadata in {{< key product_name >}} lives in the control plane database.** It includes:
+**Metadata in Union.ai lives in the control plane database.** It includes:
 
 - Task, trigger and app definitions (including their default input values).
 - Execution status, history, schedules, and audit trail.
@@ -38,27 +38,27 @@ A retention policy that purges raw data leaves the metadata in the control plane
 |------|--------|
 | **UI and APIs** | Execution detail views still render (status, timing, structure all come from the DB), but input/output previews for offloaded values, `Deck` views, and artifact payload links resolve to purged blobs and fail with "resource not found." |
 | **Execution engine** | Re-runs or downstream tasks that consume a purged upstream output fail at runtime. In-flight tasks that depend on a node whose output was just purged fail. |
-| **Caching** | A cache hit may resolve to a pointer whose underlying raw data has been purged, producing cache misses, task re-execution, or failure. |
+| **Caching** | Cache entries stay in place when their raw data is purged, and a cache hit doesn't check that the data still exists. The task doesn't re-execute. If the cached `outputs.pb` was purged, the action fails. If only offloaded values were purged, the cache hit succeeds, and downstream tasks that read those values fail. |
 | **Traces** | [Trace](../../../user-guide/tasks/task-programming/traces) checkpoints used by `@flyte.trace` for fine-grained recovery are stored in the bucket; if purged, resume-from-checkpoint is not possible for affected executions. |
 | **Operations** | The DB record of what ran and when, the pointers to each task's inputs/outputs, and the small inline values in `inputs.pb`/`outputs.pb` are preserved. The *large offloaded* inputs/outputs are lost wherever the raw data has been purged. |
 
 ## Applying retention deliberately
 
-Retention on the raw-data bucket is a legitimate cost-management strategy as long as you accept the trade-off: historical executions that referenced purged data will no longer be re-runnable from cache or recoverable from trace checkpoints, and their UI views will show missing blobs. New executions are unaffected.
+Retention on the raw-data bucket is a legitimate cost-management strategy as long as you accept the trade-off: historical executions that referenced purged data will no longer be re-runnable from cache or recoverable from trace checkpoints, and their UI views will show missing blobs. New executions are affected when they consume purged data, either directly or through a cache hit on an entry whose data has been purged.
 
 Be aware of the trade-offs in particular for:
 
-- **Cached task outputs**: purging the cached raw data invalidates the cache; affected tasks re-execute on the next call.
+- **Cached task outputs**: purging the cached raw data doesn't invalidate the cache, and affected tasks don't re-execute. The next call with a matching cache key fails, or gets a cache hit whose offloaded values can't be read.
 - **Trace checkpoints**: purging prevents resume-from-checkpoint for executions whose checkpoints have aged out.
 - **Historical execution previews**: purged raw data will show as "resource not found" in the UI even though the DB still has the rest of the record.
 
-Data correctness is not silently violated: re-runs read from current raw data, and the DB record is the source of truth for what executed. You're trading off the ability to recover or inspect old offloaded values.
+Data correctness is not silently violated: a task that reads purged data fails rather than reading different data, and the DB record is the source of truth for what executed. You're trading off the ability to recover or inspect old offloaded values.
 
 ## Designing lifecycle rules
 
-The {{< key product_name >}} data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
+The Union.ai data plane organizes execution data under a single configured storage prefix, with sub-prefixes per project, domain, run, and action. Two broad categories of object share this layout:
 
-- **Execution working files**: `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** {{< key product_name >}} metadata in the customer-facing sense; that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
+- **Execution working files**: `inputs.pb` and `outputs.pb` per run/attempt, `Deck` HTML reports, and similar small per-execution artifacts. These are required for in-flight workflows to complete and for historical-execution input/output and `Deck` previews to render. Despite some legacy naming conventions, this is **not** Union.ai metadata in the customer-facing sense; that lives in the control plane database (see [above](#where-metadata-vs-raw-data-lives)).
 - **Offloaded raw data**: `flyte.io.File` / `flyte.io.Dir` contents, `flyte.io.DataFrame` payloads, checkpoint data, and other values too large to inline. By default these land under the same configured storage prefix; they can be routed elsewhere per run via `flyte.with_runcontext(raw_data_path=...)` (see [Run context](../../../user-guide/tasks/task-deployment/run-context#storage)).
 
 When designing S3 lifecycle rules (or the GCS/ABS equivalent), **scope expiration to the offloaded raw-data subpaths** rather than applying a bucket-wide rule. The execution working files (`inputs.pb`, `outputs.pb`, Decks) must remain durable for in-flight executions to complete and for historical-execution previews to render. Typical patterns are rules scoped to domain/project prefixes, or to per-run raw-data paths that have been routed to dedicated buckets via `raw_data_path`.

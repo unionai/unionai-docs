@@ -2,7 +2,7 @@
 title: flyte.types
 description: "The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows."
 icon: box-seam
-version: 2.8.1
+version: 2.13.2
 variants: +flyte +union
 layout: py_api
 ---
@@ -33,9 +33,9 @@ It is always possible to bypass the type system and use the `FlytePickle` type t
 
 | Class | Description |
 |-|-|
-| [`FlytePickle`](../flyte.types/flytepickle) | This type is only used by flytekit internally. |
-| [`TypeEngine`](../flyte.types/typeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`TypeTransformer`](../flyte.types/typetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`FlytePickle`](../flyte.types/flytepickle) | This type is only used by Flyte internally. |
+| [`TypeEngine`](../flyte.types/typeengine) | Core extensible type engine of Flyte. |
+| [`TypeTransformer`](../flyte.types/typetransformer) | Base transformer type that should be implemented for every Python native type that Flyte can handle. |
 
 ### Protocols
 
@@ -68,6 +68,9 @@ def guess_interface(
 ) -> flyte.models.NativeInterface
 ```
 Returns the interface of the task with guessed types, as types may not be present in current env.
+
+A variable whose type cannot be rebuilt does not fail the interface: it falls back to its structural shape (a
+STRUCT becomes `dict`), or to an `UnresolvedType` when even that fails.
 
 
 | Parameter | Type | Description |

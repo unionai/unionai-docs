@@ -43,15 +43,17 @@ Primitive and structured types are serialized and passed inline:
 
 | Type Category | Examples | Serialization |
 |--------------|----------|---------------|
-| **Primitives** | `int`, `float`, `str`, `bool`, `None` | MessagePack |
-| **Time types** | `datetime.datetime`, `datetime.date`, `datetime.timedelta` | MessagePack |
-| **Collections** | `list`, `dict`, `tuple` | MessagePack |
+| **Primitives** | `int`, `float`, `str`, `bool`, `None` | Protobuf primitive literal (`None`: protobuf none-type scalar) |
+| **Time types** | `datetime.datetime`, `datetime.date`, `datetime.timedelta` | Protobuf primitive literal |
+| **Typed collections** | `list[T]`, `dict[str, T]` | Protobuf collection or map literal |
+| **Tuples** | `tuple[T1, T2]`, `typing.NamedTuple` | MessagePack |
+| **Untyped dicts** | `dict` | MessagePack |
 | **Data structures** | data classes, Pydantic `BaseModel` | MessagePack |
-| **Enums** | `enum.Enum` subclasses | MessagePack |
-| **Unions** | `Union[T1, T2]`, `Optional[T]` | MessagePack |
-| **Protobuf** | `google.protobuf.Message` | Binary |
+| **Enums** | `enum.Enum` subclasses | Protobuf string literal |
+| **Unions** | `Union[T1, T2]`, `Optional[T]` | Protobuf union literal |
+| **Protobuf** | `google.protobuf.Message` | `google.protobuf.Struct` |
 
-Flyte uses efficient MessagePack serialization for most types, providing compact binary representation with strong type safety.
+Flyte stores primitives, time types, enums, typed collections, and unions as native protobuf literals, and uses MessagePack for typed tuples, untyped dicts, data classes, and Pydantic models.
 
 > [!NOTE]
 > If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, pickled objects smaller than 10KB are passed inline, while larger pickled objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
@@ -63,7 +65,7 @@ Flyte uses efficient MessagePack serialization for most types, providing compact
 When a task starts:
 
 1. **Inline inputs download**: The task downloads inline inputs from the configured Flyte object store.
-2. **Size limits**: By default, inline inputs are limited to 10MB, but this can be adjusted using the `max_inline_io_bytes` parameter of `@env.task`.
+2. **Size limits**: When one task calls another, inline inputs and outputs are limited to 10 MiB by default. Change the limit with the `max_inline_io_bytes` parameter of `@env.task` or `override()`. See [Inline I/O threshold](../tasks/task-configuration/additional-task-settings#inline-io-threshold).
 3. **Memory consideration**: Inline data is materialized in memory, so adjust your task resources accordingly.
 4. **Raw data materialization**: Raw data (files, directories) is passed using special types in `flyte.io`. Dataframes are automatically materialized if using `pd.DataFrame`. Use `flyte.io.DataFrame` to avoid automatic materialization.
 
@@ -74,6 +76,12 @@ When a task returns data:
 1. **Inline data**: Uploaded to the Flyte object store configured at the organization, project, or domain level.
 2. **Raw data**: Stored under the same bucket prefix by default, or routed to a different location using `flyte.with_runcontext(raw_data_path=...)`.
 3. **Separate prefixes**: Each task creates one output per retry attempt in separate prefixes, making data incorruptible by design.
+
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source Flyte backend, remote runs apply `raw_data_path` only with flyteorg/flyte `v2.0.54` or later.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Task-to-task data flow
 
@@ -97,7 +105,6 @@ A cache hit occurs when the following components match:
 - **Task name**: The fully-qualified task name
 - **Computed input hash**: Hash of all inputs (excluding `ignored_inputs`)
 - **Task interface hash**: Hash of input and output types
-- **Task config hash**: Hash of task configuration
 - **Cache version**: User-specified or automatically computed
 
 ### Inline data caching
@@ -112,7 +119,7 @@ Raw data (DataFrames, files, directories) is hashed shallowly by default using t
 
 Control caching behavior using `flyte.with_runcontext`:
 
-- **Scope**: Set `cache_lookup_scope` to `"global"` or `"project/domain"`.
+- **Scope**: Set `cache_lookup_scope` to `"global"` or `"project-domain"`.
 - **Disable cache**: Set `overwrite_cache=True` to force re-execution.
 
 For more details on caching configuration, see [Caching](../tasks/task-configuration/caching).

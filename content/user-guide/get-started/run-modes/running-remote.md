@@ -1,12 +1,12 @@
 ---
-title: Run on a remote cluster
-description: Run tasks and apps on a remote cluster with full production capabilities including GPUs, distributed compute, and cloud-scale resources.
+title: Run on a deployed cluster
+description: Run tasks and apps on a deployed cluster, in the cloud or on-premises, with full production capabilities including GPUs and distributed compute.
 icon: cloud
 weight: 6
 variants: +flyte +union
 ---
 
-# Run on a remote cluster
+# Run on a deployed cluster
 
 This guide covers setting up your local development environment and configuring the `flyte` CLI and SDK to connect to your {{< key product_name >}} instance.
 
@@ -28,14 +28,14 @@ anything? Try Flyte 2 in your browser" linking to the demo URL once it is live.
 {{< markdown >}}
 > [!NOTE]
 > Don't have a Flyte cluster yet? See [Platform deployment](../../../oss-deployment/_index)
-> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+> to stand one up, or use the [Devbox](./running-devbox) to run a cluster on your machine in Docker.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant union >}}
 {{< markdown >}}
 > [!NOTE]
 > Don't have a Union.ai instance yet? See [Platform deployment](../../../deployment/_index)
-> to stand one up, or use the [Devbox](./running-devbox) to run a local cluster in Docker.
+> to stand one up, or use the [Devbox](./running-devbox) to run a cluster on your machine in Docker.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -127,7 +127,7 @@ task:
 {{< /variant >}}
 
 > [!NOTE]
-> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
+> The registry (`--registry`, the `image.registry` config entry, or the `FLYTE_IMAGE_REGISTRY` environment variable) sets where **locally-built** images are pushed. It applies whenever the builder is `local` or `local-podman`: always on Flyte OSS, and on Union if you opt out of remote builds. With `--builder remote` (the Union default) images are built on the cluster, so no registry is required, which is why the Union example above omits it. Setting the registry from config requires flyte 2.5.9 or later.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -210,6 +210,7 @@ See the [CLI reference](../../../api-reference/flyte-cli#flyte-create-config) fo
 - `builder`: How container images are built.
   - `remote` (Union): Images built on Union's infrastructure.
   - `local` (Flyte OSS): Images built on your machine. Requires Docker. See [Image building](../../tasks/task-configuration/container-images#image-building).
+  - `local-podman`: Images built on your machine with Podman instead of Docker. Requires flyte 2.10.6 or later. See [Local image building](../../tasks/task-configuration/container-images#local-image-building).
 - `registry`: Optional registry prefix to use for image builds. This is helpful when you want the SDK to push or pull images from a custom registry without changing your code. You can also set it with the `FLYTE_IMAGE_REGISTRY` environment variable.
 
 **`task`**: Default settings for task execution.

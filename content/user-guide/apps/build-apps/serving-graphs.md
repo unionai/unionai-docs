@@ -234,7 +234,7 @@ variant = experiment.get("variant", "A")
 3. Set the Flyte secret:
 
    ```bash
-   flyte create secret statsig-api-key <your-secret-key-here>
+   flyte create secret statsig-api-key --value <your-secret-key-here>
    ```
 
 ## When to split into a serving graph

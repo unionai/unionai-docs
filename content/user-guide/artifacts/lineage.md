@@ -31,14 +31,37 @@ The neighboring tabs break out the same relationships as lists: **Versions** sho
 
 Before deleting or reworking a dataset, you can see every model trained on it and every app serving those models. When a served model misbehaves, you can walk back to the training run and the exact dataset version it consumed.
 
-You can query the same relationships from the CLI:
+You can query the same relationships in code:
+
+{{< tabs "lineage-query" >}}
+{{< tab "Programmatic" >}}
+{{< markdown >}}
+
+```python
+from flyte.remote import Artifact
+
+Artifact.listall(source_run="my_run")          # what a run produced
+Artifact.listall(source_external_ref="s3://partner-bucket/drop/2026-08-18.csv")
+
+model = Artifact.get("trained-model")
+print(model.source, model.created_by, model.url)
+```
+
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "CLI" >}}
+{{< markdown >}}
 
 ```bash
 flyte get artifact --source-run my_run          # what a run produced
 flyte get artifact --source-external-ref s3://partner-bucket/drop/2026-08-18.csv
 ```
 
-In Python, `flyte.remote.Artifact` exposes `source`, `created_by`, and `url`, which links to the artifact's page in the UI.
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+`url` links to the artifact's page in the UI.
 
 ## What is not recorded
 

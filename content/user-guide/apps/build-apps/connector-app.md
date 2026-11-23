@@ -72,6 +72,7 @@ A run executes locally whenever no Flyte backend connection is configured, or wh
 
 ```python
 # main.py
+import my_connector.connector  # noqa: F401  registers the connector
 from my_connector.task import BatchJobConfig, BatchJobTask
 
 import flyte
@@ -83,6 +84,8 @@ batch_job = BatchJobTask(
     outputs={"result": str},
 )
 
+flyte.TaskEnvironment.from_task("batch-job-env", batch_job)
+
 if __name__ == "__main__":
     flyte.init()  # runs locally
     result = flyte.run(batch_job, name="hello")
@@ -93,13 +96,13 @@ if __name__ == "__main__":
 python main.py
 ```
 
-Or force local mode from the CLI with `--local`, pointing at the same file you run remotely:
+Or force local mode from the CLI with `--local`:
 
 ```bash
-flyte run --local main.py my_batch_job --name hello
+flyte run --local main.py batch_job --name hello
 ```
 
-Because the connector runs in-process, you can set breakpoints in `create` and `get`, inspect intermediate state, and confirm your `ResourceMeta` round-trips — all before you deploy. The connector module must be imported so its `ConnectorRegistry.register()` call runs; importing your task plugin (which imports the connector) is enough.
+Because the connector runs in-process, you can set breakpoints in `create` and `get`, inspect intermediate state, and confirm your `ResourceMeta` round-trips — all before you deploy. The connector module must be imported so its `ConnectorRegistry.register()` call runs. The task plugin in Step 2 doesn't import it, so `main.py` imports `my_connector.connector` itself. Without that import, the run fails with `FlyteConnectorNotFound`. The task must also belong to an environment. Without the `TaskEnvironment.from_task` call, the run fails with `Task my_batch_job has no parent environment name`.
 
 > [!NOTE] Local runs skip the connector service
 > Local execution calls your connector code directly; it does not start the gRPC connector service or route through a deployed `ConnectorEnvironment`. Once the connector is deployed (next step) and you run against a Flyte backend, the same task is routed to the running connector service instead.
@@ -149,7 +152,7 @@ Flyte builds the image, pushes it, and starts the connector service. The service
 
 ## Step 5: Register and run tasks
 
-Create and register a `TaskEnvironment` that points to your connector, then run the task:
+Attach the task to a `TaskEnvironment`, then run the task against your Flyte backend:
 
 ```python
 # main.py
@@ -174,20 +177,20 @@ if __name__ == "__main__":
     print(result.url)
 ```
 
-`TaskEnvironment.from_task` registers the task under a named environment so Flyte knows which connector service to route executions to.
+`TaskEnvironment.from_task` creates an environment and attaches the task to it, which Flyte needs to serialize the task. The environment name plays no part in choosing a connector: Flyte routes the task by its task type and the project and domain it runs in.
 
 Run the task:
 
 ```bash
 python main.py
 # or
-flyte run main.py my_batch_job --name hello
+flyte run main.py batch_job --name hello
 ```
 
 ## How it all fits together
 
 ```
-flyte run main.py my_batch_job
+flyte run main.py batch_job
        │
        ▼
   Flyte executor sees task_type = "batch_job"

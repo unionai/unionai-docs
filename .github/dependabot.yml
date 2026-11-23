@@ -1,0 +1,21 @@
+# Keep the GitHub Actions used by .github/workflows/ current, so runtime
+# deprecations (e.g. Node 20 -> Node 24) arrive as PRs instead of CI warnings.
+#
+# All action bumps are grouped into one weekly PR. Dependabot's commits carry a
+# `Signed-off-by: dependabot[bot]` trailer, so they pass "Check DCO".
+#
+# Scope: `main` only (Dependabot watches the default branch). The `v1` branch has
+# no workflows of its own.
+
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci
