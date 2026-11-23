@@ -120,7 +120,7 @@ Run the same task code locally in your Python process, or remotely on a devbox o
 
 {{< variant union >}}
 {{< link-card target="product-tiers" icon="list-columns" title="Product tiers" >}}
-Compare the Team and Enterprise plans: pricing model, deployment options, limits, security, networking, and support.
+Compare the Team and Enterprise plans for Union.ai, including pricing model, deployment options, limits, security, networking, and support.
 {{< /link-card >}}
 {{< /variant >}}
 
