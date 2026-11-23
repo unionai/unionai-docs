@@ -101,7 +101,7 @@ flyte factory materialize analytics daily_report --partition date=2026-08-01..20
 {{< /tab >}}
 {{< /tabs >}}
 
-`a..b` is an inclusive range, expanded at the partition's granularity, and `a,b` lists values. The range crosses with the other keys, so this builds `events` for every region on every day that a report needs. Partitions build in parallel. Ordering follows the graph, not the calendar: the report for August 31 waits only on its own three-day window.
+`a..b` is an inclusive range, expanded at the partition's granularity, and `a,b` lists values. The range crosses with the other keys, so this builds `events` for every region on every day that a report needs. The factory builds one artifact at a time, in dependency order, and the partitions of that artifact in parallel. So no report starts until every `features` partition in the range has finished.
 
 * **Rerunning resumes.** Run the same command again. Everything already built is a cache hit, so only the failed partitions and what depends on them run. There is no separate backfill object or resume command.
 * **Failures are partial.** Partitions that succeeded are published and usable. A failed partition blocks only what depends on it, and the run fails naming them.
@@ -144,11 +144,11 @@ flyte factory plan analytics daily_report --partition date=2026-08-01..2026-08-3
 
 ## Freshness is the task cache
 
-A partition is fresh if calling its task with the same inputs is a cache hit. That means the same task version, the same upstream artifact versions, the same partition values, and the same constants. So there's nothing to configure:
+A partition is fresh if calling its task with the same inputs is a cache hit. That means the same code version, the same upstream artifact versions, the same partition values, and the same constants. So there's nothing to configure:
 
 * **A code change** to `clean` changes its cache version, so `events` and everything downstream rebuild.
 * **A new upstream version**, such as a corrected `raw_events` for one day, changes the inputs for that day only.
-* **A task without caching** rebuilds every time. Use `cache="auto"` on factory tasks.
+* **A task without caching** still gets cache hits, because the factory caches every build call itself. But the code version is then the task version, so every new version of the task rebuilds, even when the task's own code didn't change. Use `cache="auto"` on factory tasks.
 
 To force work anyway:
 
