@@ -84,6 +84,7 @@ autoscaler
 gRPC
 mTLS
 RBAC
+SCIM
 CRD
 CRDs
 VPC
@@ -142,6 +143,7 @@ asyncio
 BRCA
 Buildkitd
 buildx
+BYOK
 BYOI
 CFTR
 CIFAR
