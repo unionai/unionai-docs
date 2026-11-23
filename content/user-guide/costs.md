@@ -13,7 +13,7 @@ variants: -flyte +union
 
 The Costs page shows what the compute behind your tasks, environments, and apps costs on your cloud provider. Start with the whole organization, then drill down through projects, tasks, and runs to a single action.
 
-> [!NOTE] Recent hours are still settling
+> [!NOTE] Data freshness
 > Cost is recalculated every 5 minutes. The cost of the last two hours can still rise as late usage data arrives. **Data as of**, next to the range selector, shows where the time range ends.
 
 ![The organization Costs page, with summary tiles above a map of cost by project](../_static/images/user-guide/costs/org-summary.png)
@@ -39,7 +39,7 @@ There are two entry points in the sidebar:
 
 Use the range selector to choose the last **6h**, **24h**, **7d**, or **30d**.
 
-To see the Costs pages, you need permission to view runs across the organization. Anyone with that permission sees the costs of every project.
+To see the Costs pages, you need the `view_flyte_executions` action across the whole organization. The built-in Admin, Contributor, and Viewer policies include it. See [User management](./user-management). Anyone with that permission sees the costs of every project.
 
 ## Summary tiles
 
