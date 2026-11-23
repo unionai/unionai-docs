@@ -2,7 +2,7 @@
 title: Product tiers
 description: Compare the Team and Enterprise plans for Union.ai, including pricing model, deployment options, limits, security, networking, and support.
 icon: list-columns
-weight: 4
+weight: 1
 variants: -flyte +union
 ---
 
@@ -18,7 +18,7 @@ For rates per action, vCPU, memory, and GPU, see [Union.ai pricing](https://www.
 |---|---|---|
 | **For** | Teams taking AI from experiment to production | Organizations running mission-critical AI, ML, and agents across teams, regions, and clouds |
 | **Price** | $950 per month minimum, credited to usage | Annual commit, credited to usage |
-| **Get started** | [Create your account and organization](./create-organization). Your first $950 of usage is free, with no card required. | [Talk to sales](https://www.union.ai/get-a-quote) |
+| **Get started** | [Create your account and organization](./sign-up/create-organization). Your first $950 of usage is free, with no card required. | [Talk to sales](https://www.union.ai/get-a-quote) |
 
 ## Compare plans
 
@@ -38,8 +38,8 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
-| [Self-managed](../selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
-| [Union-managed (BYOC)](../byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
+| [Self-managed](./selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
+| [Union-managed (BYOC)](./byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
 | Clouds | All regions, neoclouds, and hyperscalers | Any cloud |
 | Marketplace commit drawdown | – | ✓ |
 
