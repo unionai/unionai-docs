@@ -186,7 +186,7 @@ async def batch_map_reduce(
     return reduce_fn(all_results)
 ```
 
-The map step is a task; the reduce step can be a task or a plain function:
+The map step is a task. The reduce step must be a plain synchronous function, such as the built-in `sum`, because `batch_map_reduce` calls `reduce_fn` without `await`:
 
 ```python
 @env.task
