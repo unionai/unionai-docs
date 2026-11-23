@@ -118,4 +118,10 @@ The building blocks of every Flyte program: TaskEnvironments, tasks, runs, actio
 Run the same task code locally in your Python process, or remotely on a devbox or a deployed cluster.
 {{< /link-card >}}
 
+{{< variant union >}}
+{{< link-card target="product-tiers" icon="list-columns" title="Product tiers" >}}
+Compare the Team and Enterprise plans: pricing model, deployment options, limits, security, networking, and support.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< /grid >}}
