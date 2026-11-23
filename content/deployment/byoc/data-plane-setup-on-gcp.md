@@ -10,7 +10,7 @@ variants: -flyte +union
 
 To set up your data plane on Google Cloud Platform (GCP) you must allow Union.ai to provision and maintain compute resources under your GCP account.
 
-If **Connect your cluster** in the Union.ai console opens a **Cloud account** step on which you can continue with **Google Cloud**, set up the data plane yourself with the **Connect a cluster** wizard.
+If **Connect your cluster** in the Union.ai console opens a **Deployment** step, and on the next step, **Cloud account**, you can continue with **Google Cloud**, set up the data plane yourself with the **Connect a cluster** wizard.
 Otherwise, set it up with the Union.ai team, starting at [Select or create a project](#select-or-create-a-project).
 For setup with the Union.ai team, you provision a service account with sufficient permissions to perform these tasks.
 
@@ -23,11 +23,12 @@ Union.ai then builds the VPC network, a GKE cluster and its node pools, a Cloud 
 To create a cluster you need permission to manage clusters in your Union.ai organization, and to be an owner of the GCP project.
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**.
-2. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
-3. On **Size & region**, enter a **Cluster name** and choose a **Region**.
-4. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
-5. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your project yet.
-6. On the cluster's page, copy the setup script and select **Approve in Cloud Shell**. Cloud Shell opens on your project in a new tab. Paste the script and run it. Any terminal where `gcloud` is signed in as an owner of the project works too. The script is safe to run again.
+2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
+4. On **Size & region**, enter a **Cluster name** and choose a **Region**.
+5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
+6. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your project yet.
+7. On the cluster's page, copy the setup script and select **Approve in Cloud Shell**. Cloud Shell opens on your project in a new tab. Paste the script and run it. Any terminal where `gcloud` is signed in as an owner of the project works too. The script is safe to run again.
 
 Once the script has run, Union.ai builds the cluster in about 20 minutes.
 The cluster's page shows progress until the cluster is ready. You can leave the page and come back to it.

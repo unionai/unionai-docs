@@ -10,7 +10,7 @@ variants: -flyte +union
 
 To set up your data plane on Amazon Web Services (AWS) you must allow Union.ai to provision and maintain compute resources under your AWS account.
 
-If **Connect your cluster** in the Union.ai console opens a **Cloud account** step, set up the data plane yourself with the **Connect a cluster** wizard.
+If **Connect your cluster** in the Union.ai console opens a **Deployment** step, set up the data plane yourself with the **Connect a cluster** wizard.
 Otherwise, set it up with the Union.ai team, starting at [Setting permissions through CloudFormation](#setting-permissions-through-cloudformation).
 For setup with the Union.ai team, you set up an IAM role for Union.ai to use that has sufficient permissions to do this provisioning.
 Setting the permissions can be done either through CloudFormation or the AWS console.
@@ -26,11 +26,12 @@ Union.ai then builds the VPC, an EKS cluster and its node pools, an S3 metadata 
 To create a cluster you need permission to manage clusters in your Union.ai organization, and permission to create a CloudFormation stack that creates IAM resources in your AWS account.
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**.
-2. On **Cloud account**, select **AWS** and enter the 12-digit ID of the AWS account the cluster runs in. Select **Continue**.
-3. On **Size & region**, enter a **Cluster name** and choose a **Region**.
-4. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
-5. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your AWS account yet.
-6. On the cluster's page, select **Approve in AWS**. CloudFormation opens with the stack filled in. Check that you're signed in to the AWS account you entered, acknowledge that the stack creates IAM resources, and create the stack.
+2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+3. On **Cloud account**, select **AWS** and enter the 12-digit ID of the AWS account the cluster runs in. Select **Continue**.
+4. On **Size & region**, enter a **Cluster name** and choose a **Region**.
+5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
+6. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your AWS account yet.
+7. On the cluster's page, select **Approve in AWS**. CloudFormation opens with the stack filled in. Check that you're signed in to the AWS account you entered, acknowledge that the stack creates IAM resources, and create the stack.
 
 Once the stack exists, Union.ai builds the cluster in about 30 minutes.
 The cluster's page shows progress until the cluster is ready. You can leave the page and come back to it.
