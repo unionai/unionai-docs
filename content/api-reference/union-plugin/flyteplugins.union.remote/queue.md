@@ -2,7 +2,7 @@
 title: Queue
 description: "Represents a Union scheduling queue."
 icon: braces
-version: 0.20.2
+version: 0.26.0
 variants: -flyte +union
 layout: py_api
 ---
