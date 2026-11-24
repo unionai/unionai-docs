@@ -26,11 +26,23 @@ In Azure, you need Contributor on the subscription and the right to assign roles
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union-Managed** selected and select **Continue**.
+
+   ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
+
 3. On **Cloud account**, select **Azure** and enter the **Azure subscription ID**: the ID of the subscription the cluster runs in, not its name. It's shown under **Subscriptions** in the Azure portal. Select **Continue**.
+
+   ![The Cloud account step with Azure selected and an Azure subscription ID entered](../../_static/images/deployment/connect-wizard/azure-cloud-account.png)
+
 4. On **Size & region**, enter a **Cluster name** and choose a **Region**. The console offers `centralus` (Iowa) and `eastus2` (Virginia).
 5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
+
+   ![The Size & region step: cluster name prod, region centralus (Iowa), the two sizing questions, and the Basic, Standard and Advanced size cards with Standard recommended](../../_static/images/deployment/connect-wizard/azure-size-and-region.png)
+
 6. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your subscription yet.
 7. On the cluster's page, select **Approve in Cloud Shell**. The console copies the setup script and opens Azure Cloud Shell in a new tab. Choose **Bash**, paste the script, and run it. Any terminal where the Azure CLI (`az`) is signed in works too. The script is safe to run again.
+
+   ![The cluster's page before the line is submitted: Finish setup in Azure, with the setup script, Approve in Cloud Shell, and the Line printed by the setup script field with Submit](../../_static/images/deployment/connect-wizard/azure-approve.png)
+
 8. The script ends with a line that starts with `{"tenantId"`. Copy the whole line, paste it into **Line printed by the setup script** on the cluster's page, and select **Submit**. You can't change the line after you submit it.
 
 Once you submit the line, Union.ai builds the cluster in about 15 minutes.

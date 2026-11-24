@@ -25,11 +25,23 @@ The project must have a billing account linked: the setup script enables the Com
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union-Managed** selected and select **Continue**.
+
+   ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
+
 3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
+
+   ![The Cloud account step with Google Cloud selected and a GCP project ID and project number entered](../../_static/images/deployment/connect-wizard/gcp-cloud-account.png)
+
 4. On **Size & region**, enter a **Cluster name** and choose a **Region**. The console offers `us-central1` (Iowa).
 5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
+
+   ![The Size & region step: cluster name prod, region us-central1 (Iowa), the two sizing questions, and the Basic, Standard and Advanced size cards with Standard recommended](../../_static/images/deployment/connect-wizard/gcp-size-and-region.png)
+
 6. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your project yet.
 7. On the cluster's page, copy the setup script and select **Approve in Cloud Shell**. Cloud Shell opens on your project in a new tab. Paste the script and run it. Any terminal where `gcloud` is signed in as an owner of the project works too. The script is safe to run again.
+
+   ![The cluster's page before the script has run: Finish setup in Google Cloud, with the setup script, a copy button and Approve in Cloud Shell](../../_static/images/deployment/connect-wizard/gcp-approve.png)
+
 
 Once the script has run, Union.ai builds the cluster in about 20 minutes.
 The cluster's page shows progress until the cluster is ready. You can leave the page and come back to it.
