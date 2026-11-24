@@ -24,7 +24,7 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 The project must have a billing account linked: the setup script enables the Compute Engine and GKE APIs, which Google Cloud allows only in a project with billing. See [Ensure billing is linked](#ensure-billing-is-linked).
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
-2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+2. On **Deployment**, keep **Union-Managed** selected and select **Continue**.
 3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
 4. On **Size & region**, enter a **Cluster name** and choose a **Region**. The console offers `us-central1` (Iowa).
 5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.

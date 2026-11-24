@@ -25,7 +25,7 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 In Azure, you need Contributor on the subscription and the right to assign roles. You don't need Owner.
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
-2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+2. On **Deployment**, keep **Union-Managed** selected and select **Continue**.
 3. On **Cloud account**, select **Azure** and enter the **Azure subscription ID**: the ID of the subscription the cluster runs in, not its name. It's shown under **Subscriptions** in the Azure portal. Select **Continue**.
 4. On **Size & region**, enter a **Cluster name** and choose a **Region**. The console offers `centralus` (Iowa) and `eastus2` (Virginia).
 5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.

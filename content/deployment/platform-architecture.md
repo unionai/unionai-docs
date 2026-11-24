@@ -36,7 +36,7 @@ Platform-service nodes, called default nodes in Union-Managed deployments, guara
 Worker nodes execute your workloads, and you have full control over their configuration:
 
 * **Union-Managed**: see [worker node groups](./byoc/configuring-your-data-plane#worker-node-groups).
-* **Self-managed**: see [Node pools](./selfmanaged/configuration/node-pools), which recommends separate node pools for Union.ai services and worker pods.
+* **Self-Managed**: see [Node pools](./selfmanaged/configuration/node-pools), which recommends separate node pools for Union.ai services and worker pods.
 
 When worker nodes are not in use, they scale down to the configured minimum. In a Union-Managed deployment, the default minimum is zero.
 
