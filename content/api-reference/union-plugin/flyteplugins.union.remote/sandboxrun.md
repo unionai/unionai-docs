@@ -2,7 +2,7 @@
 title: SandboxRun
 description: "One run of a sandbox: its first, or one a resume started."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

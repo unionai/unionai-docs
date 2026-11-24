@@ -2,7 +2,7 @@
 title: OrgLimitRow
 description: "One limit or entitlement of an org: what it runs with, the tier default, and why they differ."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

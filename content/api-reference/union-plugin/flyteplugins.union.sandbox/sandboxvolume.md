@@ -2,7 +2,7 @@
 title: SandboxVolume
 description: "A sandbox session's disk at a commit (``sb.commit()``, ``sb.close(commit=True)``)."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

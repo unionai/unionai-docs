@@ -2,7 +2,7 @@
 title: SessionStartup
 description: "How long each step of starting a session took, in seconds (``sb.startup``)."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

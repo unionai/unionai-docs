@@ -2,7 +2,7 @@
 title: LangChain
 description: "LangChain adapter for Flyte."
 icon: book
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

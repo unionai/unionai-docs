@@ -2,7 +2,7 @@
 title: Mount
 description: "A block volume a session mounts: ``volumes={\"/data\": Mount(v, mode=\"rw\")}``."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

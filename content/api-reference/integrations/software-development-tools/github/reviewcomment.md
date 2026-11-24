@@ -2,7 +2,7 @@
 title: ReviewComment
 description: "A single inline review comment."
 icon: braces
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

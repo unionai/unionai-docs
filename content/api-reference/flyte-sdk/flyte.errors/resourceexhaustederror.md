@@ -2,7 +2,7 @@
 title: ResourceExhaustedError
 description: "This error is raised when the server refuses a request for now, for example because the organization is at its `max_concurrent_runs` or `max_queue_depth`: it succeeds once running work finishes."
 icon: exclamation-triangle
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

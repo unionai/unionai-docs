@@ -2,7 +2,7 @@
 title: ProcessUnsupported
 description: "The sandbox cannot give a command what was asked for it: its node runs a version from before commands had a stdin or a terminal."
 icon: exclamation-triangle
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

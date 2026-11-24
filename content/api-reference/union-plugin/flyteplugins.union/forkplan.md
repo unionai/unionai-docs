@@ -2,7 +2,7 @@
 title: ForkPlan
 description: "What a fork of *source_run* would reuse, as of *as_of*."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

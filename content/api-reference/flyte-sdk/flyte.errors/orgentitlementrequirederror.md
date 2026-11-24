@@ -2,7 +2,7 @@
 title: OrgEntitlementRequiredError
 description: "This error is raised when the server refuses a request because the organization isn't entitled to a capability, for example a private control plane endpoint."
 icon: exclamation-triangle
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

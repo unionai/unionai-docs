@@ -1,11 +1,11 @@
 ---
 title: "Flyte CLI"
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 weight: 3
 plugin_versions:
-  flyteplugins-union: 0.26.0
+  flyteplugins-union: 0.26.2
 ---
 
 # Flyte CLI
@@ -2865,6 +2865,7 @@ https://www.union.ai/licensing/union-license
 | `--endpoint` | `text` |  | S3-compatible endpoint (MinIO, R2, Ceph). |
 | `--gcp-project` | `text` |  | GCP project (gcs). |
 | `--azure-account` | `text` |  | Storage account (azure). |
+| `--organization` | `text` |  | The organization: the one you signed up as, which your license key names. Fixed once installed [default: onebox]. |
 | `--db-password` | `text` |  | Database password, stored in a Secret the chart creates (env: ONEBOX_DB_PASSWORD). Prefer --db-password-secret. |
 | `--values` `-f` | `path` | `Sentinel.UNSET` | Helm values file. |
 | `--set` | `text` | `Sentinel.UNSET` | Helm value, key=value (repeatable). |
@@ -3434,6 +3435,7 @@ Union in the image is under the Union License: https://www.union.ai/licensing/un
 | `--apple-silicon` | `boolean` |  | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run their work on it, natively on this Mac. Publishes onebox on this machine only. Kept by later starts. |
 | `--timeout` | `integer` | `900` | Seconds to wait for Union to be ready. |
 | `--recreate` | `boolean` | `Sentinel.UNSET` | Replace the onebox container (its data volume stays). |
+| `--organization` | `text` |  | The organization for a new install: the one you signed up as, which your license key names. Fixed once its data volume exists. Default for a new install: onebox. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}
@@ -3457,6 +3459,7 @@ Union in the image is under the Union License: https://www.union.ai/licensing/un
 | `--apple-silicon` | `boolean` |  | Use this Mac's Apple Silicon GPU: tasks and apps that request flyte.Resources(gpu="AppleSilicon") run their work on it, natively on this Mac. Publishes onebox on this machine only. Kept by later starts. |
 | `--timeout` | `integer` | `900` | Seconds to wait for Union to be ready. |
 | `--recreate` | `boolean` | `Sentinel.UNSET` | Replace the onebox container (its data volume stays). |
+| `--organization` | `text` |  | The organization for a new install: the one you signed up as, which your license key names. Fixed once its data volume exists. Default for a new install: onebox. |
 | `--help` | `boolean` | `Sentinel.UNSET` | Show this message and exit. |
 {{< /markdown >}}
 {{< /variant >}}

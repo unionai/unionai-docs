@@ -2,7 +2,7 @@
 title: TimeFilter
 description: "Filter for time-based fields (e.g. created_at, updated_at)."
 icon: braces
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

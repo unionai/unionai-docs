@@ -2,7 +2,7 @@
 title: Tty
 description: "A terminal for a command to run on (``sb.start(command, tty=Tty(30, 120))``)."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---
