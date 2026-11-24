@@ -486,10 +486,10 @@ scale. With it, the scheduler does the following for every action:
 > cluster when Union has that cluster's configuration. Union records the
 > configuration when it provisions a Union-Managed cluster. For a Self-Managed
 > cluster, declare your node pools with `flyte update node-groups`
-> (`flyteplugins-union` 0.20.2 or later). A queue
-> treats a cluster without the configuration as able to run anything. If none
-> of a queue's clusters has it, the queue places work on any healthy cluster it
-> routes to. Resource caps and the scheduling policy apply either way.
+> (`flyteplugins-union` 0.20.2 or later). A queue treats a cluster without the
+> configuration as able to run anything. If none of a queue's clusters has it,
+> the queue places work on any healthy cluster it routes to. Resource caps and
+> the scheduling policy apply either way.
 
 ## Infeasible requests fail fast
 
@@ -499,7 +499,8 @@ strict FIFO queue it would also block everything behind it. The scheduler fails
 such an action as soon as it sees it.
 
 With [resource-aware scheduling](#resource-aware-scheduling), the check also
-covers the clusters. An action then also fails as infeasible when no cluster its
+covers the clusters, as long as Union has the configuration of every cluster the
+queue routes to. An action then also fails as infeasible when no cluster its
 queue routes to could ever run it:
 
 - It asks for an accelerator that none of those clusters has.
