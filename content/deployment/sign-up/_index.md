@@ -25,6 +25,6 @@ Either way, a new organization starts with a 30-day free trial. The trial covers
 2. **[Create your account and organization](./create-organization).** Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on.
 3. **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. Optional, but the quickest way to see Union.ai working.
 
-Then set up your [Self-Managed deployment](../selfmanaged/_index): provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), and [connect your cluster](../selfmanaged/connect-a-cluster). If **Connect your cluster** opens the **Add a cluster** wizard, you can instead have Union.ai build a [Union-Managed](../byoc/_index) data plane in your cloud account, with no cloud resources to provision first.
+Then set up your [Self-Managed deployment](../selfmanaged/_index): provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), and [connect your cluster](../selfmanaged/connect-a-cluster). Or, in the **Add a cluster** wizard, have Union.ai build a [Union-Managed](../byoc/_index) data plane in your cloud account, with no cloud resources to provision first.
 
 {{< subpage-cards >}}
