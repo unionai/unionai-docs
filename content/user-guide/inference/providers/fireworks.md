@@ -59,9 +59,9 @@ To send a list of inputs to a deployment, map a task over the list and size the 
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/fireworks_on_demand.py" fragment="batch" lang="python" >}}
 
-- **Retries wait for the deployment.** Each call retries with backoff while the deployment scales up from zero, and succeeds once a replica is ready.
-- **Concurrency matches capacity.** A deployment rejects requests above its `maxConcurrencyPerReplica` with a 429. Set `concurrency` to the replica count times that limit, so the map keeps every replica busy without going over.
-- **Reruns skip finished inputs.** Each input is its own cached action. If some inputs fail, rerun the batch, and only those inputs call the deployment again.
+- While the deployment scales up from zero, each call retries with backoff and succeeds once a replica is ready.
+- A deployment returns a 429 for requests above its `maxConcurrencyPerReplica`. With `concurrency` set to the replica count times that limit, the map keeps every replica busy and stays under it.
+- Each input is its own cached action. If some inputs fail, rerun the batch, and only the failed inputs call the deployment again.
 
 Set `REPLICAS` and `MAX_CONCURRENCY_PER_REPLICA` to your deployment's values. A deployment with a minimum replica count of 0 scales to zero after it's idle for its `scaleToZeroWindow`, 1 hour by default. See [Autoscaling](https://docs.fireworks.ai/deployments/autoscaling) in the Fireworks docs.
 

@@ -19,7 +19,7 @@ keywords:
 
 Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
 
-Because each call runs in a task, it gets the task's retries, caching, and concurrency limits, and its inputs and outputs are recorded with the run. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
+Because each call runs in a task, it gets the task's retries, caching, and concurrency limits, and the run records its inputs and outputs. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -121,9 +121,9 @@ A provider returns 429 when you reach a rate limit, and some return 503 while th
 | `concurrency=8` | At most 8 calls are in flight at once, so a long list stays under your rate limit. |
 | One task per call | Each call is its own action, with its own retries, logs, inputs, and outputs. If one call fails, the others keep their results. |
 
-- **Cached answers don't change.** Model output varies between calls, and a cache hit returns the first answer. Set `cache="disable"` on a task that should sample again on every run. See [Caching](../../tasks/task-configuration/caching).
-- **The SDK retries first.** The OpenAI and Anthropic SDKs retry a 429 twice by default. Task retries start after the SDK gives up.
-- **Failed calls raise.** With `return_exceptions=False`, a call that fails after its last retry fails `main`. Leave it at the default, `True`, to get the exception in place of that result and keep the rest.
+- Model output varies between calls, but a cache hit always returns the first answer. To sample again on every run, set `cache="disable"`. See [Caching](../../tasks/task-configuration/caching).
+- The OpenAI and Anthropic SDKs retry a 429 twice by default, so task retries start after the SDK gives up.
+- With `return_exceptions=False`, a call that fails after its last retry fails `main`. With the default, `True`, the map returns the exception in place of that result and keeps the others.
 
 See [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) and [Controlling parallel execution](../../tasks/task-programming/controlling-parallelism).
 
