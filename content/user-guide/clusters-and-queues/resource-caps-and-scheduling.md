@@ -484,8 +484,9 @@ scale. With it, the scheduler does the following for every action:
 > [!NOTE] Cluster configuration required
 > Resource-aware scheduling is on for every organization. It applies to a
 > cluster when Union has that cluster's configuration. Union records the
-> configuration when it provisions a Union-Managed cluster. For a Self-Managed deployment,
-> ask the Union team whether it has your cluster's configuration. A queue
+> configuration when it provisions a Union-Managed cluster. For a Self-Managed
+> cluster, declare your node pools with `flyte update node-groups`
+> (`flyteplugins-union` 0.20.2 or later). A queue
 > treats a cluster without the configuration as able to run anything. If none
 > of a queue's clusters has it, the queue places work on any healthy cluster it
 > routes to. Resource caps and the scheduling policy apply either way.
