@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Subscribe and sign up
 
-Every Self-Managed deployment on AWS, GCP, or Azure starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
+Every self-service deployment on AWS, GCP, or Azure starts here. You create your organization in the Union.ai UI and try out a local workflow that you follow in the UI. When you are ready, you provision your cloud resources and connect your cluster. You don't have to wait on Union.ai to set anything up.
 
 **How you pay is separate from where your data plane runs.** A subscription is a billing relationship, not infrastructure: you can subscribe on AWS Marketplace and run your data plane on GCP or Azure.
 
@@ -25,6 +25,6 @@ Either way, a new organization starts with a 30-day free trial. The trial covers
 2. **[Create your account and organization](./create-organization).** Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on.
 3. **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. Optional, but the quickest way to see Union.ai working.
 
-Then set up your [Self-Managed deployment](../selfmanaged/_index): provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), and [connect your cluster](../selfmanaged/connect-a-cluster).
+Then set up your [Self-Managed deployment](../selfmanaged/_index): provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), and [connect your cluster](../selfmanaged/connect-a-cluster). If **Connect your cluster** opens the **Add a cluster** wizard, you can instead have Union.ai build a [Union-Managed](../byoc/_index) data plane in your cloud account, with no cloud resources to provision first.
 
 {{< subpage-cards >}}

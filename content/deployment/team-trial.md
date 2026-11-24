@@ -9,7 +9,7 @@ variants: -flyte +union
 # Team trial
 
 A new self-service organization starts on a Team trial, the first month with the Team minimum waived (see [Product tiers](./product-tiers#your-first-month)).
-The trial has a number of days and an amount of credit, and it ends when either one runs out.
+The trial lasts 30 days and includes $950 of credit, and it ends when either runs out.
 The Union.ai UI shows what's left in the sidebar and on **Settings → Plan & Invoices**, and every member of the organization can see both.
 
 ## Trial card in the sidebar
