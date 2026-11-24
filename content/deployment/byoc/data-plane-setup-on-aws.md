@@ -2,7 +2,7 @@
 title: Data plane setup on AWS
 description: Create a Union-Managed data plane in your AWS account with the Add a cluster wizard in the Union.ai console.
 icon: cloud
-weight: 5
+weight: 1
 variants: -flyte +union
 ---
 

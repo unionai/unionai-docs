@@ -2,7 +2,7 @@
 title: Enabling AWS resources
 description: 'Connect your data plane to the AWS services it needs: S3, ECR, and Secrets Manager.'
 icon: cloud
-weight: 9
+weight: 5
 variants: -flyte +union
 ---
 
@@ -13,12 +13,7 @@ Components of your Union.ai data plane will need to connect to and communicate w
 > [!NOTE] Secret management
 > We strongly recommend using the [Union.ai secrets manager](../../../user-guide/tasks/task-configuration/secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
-As much as possible, access to the resources you need will be pre-configured by the Union.ai team when they set up your data plane.
-For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
-**You just have to inform the team of your specific requirements before the setup process begins**.
-
-As your projects evolve, your needs may change.
-You can always contact the Union.ai team for help enabling additional resources as required.
+The Union.ai team can enable access to the resources your tasks need, for example a specific S3 bucket or database. Contact them with your requirements.
 
 **There are also some cases where you may want to configure things on your own.**
 **Below we give a general overview of these self-configuration options.**

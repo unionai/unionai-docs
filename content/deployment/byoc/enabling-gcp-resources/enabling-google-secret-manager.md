@@ -14,7 +14,7 @@ See [Secrets management](../../../security/data-protection/secrets).
 
 ## Set up Secret Manager
 
-The Union.ai team sets up Secret Manager when they set up your data plane: they enable the Secret Manager API in your GCP project and give the data plane access to it.
+The setup script you run from the **Add a cluster** wizard enables the Secret Manager API in your GCP project and gives the data plane access to it.
 There is nothing else to configure.
 
 ## Create and use secrets
