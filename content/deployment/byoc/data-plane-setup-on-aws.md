@@ -28,7 +28,7 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
 
-   ![The Deployment step: "How should Union run your cluster?", with Union Managed selected and Self-managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
+   ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
 
 3. On **Cloud account**, select **AWS** and enter the 12-digit ID of the AWS account the cluster runs in. Select **Continue**.
 

@@ -25,7 +25,7 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
 
-   ![The Deployment step: "How should Union run your cluster?", with Union Managed selected and Self-managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
+   ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
 
 3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
 
