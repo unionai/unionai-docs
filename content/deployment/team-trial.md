@@ -28,7 +28,7 @@ If you can upgrade, the card also has an **Upgrade** button (see [Upgrade to Tea
 Once a card is on file, the trial card shows "Team starts when days or credit run out", with the trial's end date.
 
 The card disappears once the trial converts to Team.
-If you [subscribed through a cloud marketplace](./sign-up), the trial converts to Team when it ends and the marketplace bills you, so your organization doesn't become read-only.
+If you [subscribed through a cloud marketplace](./sign-up/_index), the trial converts to Team when it ends and the marketplace bills you, so your organization doesn't become read-only.
 
 ## Trial on Settings → Plan & Invoices
 
