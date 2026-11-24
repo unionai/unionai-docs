@@ -483,12 +483,12 @@ scale. With it, the scheduler does the following for every action:
 
 > [!NOTE] Cluster configuration required
 > Resource-aware scheduling is on for every organization. It applies to a
-> cluster when Union has that cluster's configuration. Union BYOC deployments
-> already have the configuration. For a self-managed deployment, ask the Union
-> team whether it has your cluster's configuration. A queue treats a cluster without the configuration as able to run
-> anything. If none of a queue's clusters has it, the queue places work on any
-> healthy cluster it routes to. Resource caps and the scheduling policy apply
-> either way.
+> cluster when Union has that cluster's configuration. Union-Managed
+> deployments normally have the configuration. For a Self-Managed deployment,
+> ask the Union team whether it has your cluster's configuration. A queue
+> treats a cluster without the configuration as able to run anything. If none
+> of a queue's clusters has it, the queue places work on any healthy cluster it
+> routes to. Resource caps and the scheduling policy apply either way.
 
 ## Infeasible requests fail fast
 
