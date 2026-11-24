@@ -2,7 +2,7 @@
 title: Platform architecture
 description: The control plane and data plane every Union.ai deployment is built from, who runs each, and what data crosses between them.
 icon: diagram-2
-weight: 2
+weight: 3
 variants: -flyte +union
 ---
 
