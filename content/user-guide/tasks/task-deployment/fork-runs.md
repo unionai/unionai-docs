@@ -205,11 +205,12 @@ are two workloads built for this. Both run deterministically on CPU in a few min
 learns to exploit: over 12 steps, held-out accuracy falls from 0.66 to 0.39 while mean answer
 length grows from 375 to 1,176 tokens. Each step is a `train_step` action that takes the training
 state, so editing `state.length_bonus` on step 4 and forking branches training from that
-checkpoint. Steps 0 to 3 are reused, and so are step 4's rollouts, because the policy that
-generated them is unchanged; only grading and the update re-run. The fork ends at 0.76 accuracy
-and 370 tokens, while the source keeps training on the original reward.
+checkpoint. Steps 0 to 3 are reused. Step 4's rollouts are reused too if the source has finished
+generating them by the time the fork needs them, since the policy that generated them is unchanged;
+otherwise they run again (`--wait-for` the step's `generate` action to avoid that). The fork ends at
+0.76 accuracy and 370 tokens, while the source keeps training on the original reward.
 
-![The training fork: steps 0 to 3 reused, and step 4's generate action reused](../../../_static/images/user-guide/task-deployment/fork-runs/fork-reused-steps.png)
+![A training fork where steps 0 to 3 and step 4's generate action were reused](../../../_static/images/user-guide/task-deployment/fork-runs/fork-reused-steps.png)
 
 ## Fork from the CLI
 
