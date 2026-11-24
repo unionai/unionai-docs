@@ -145,7 +145,7 @@ When one task makes several calls in sequence, decorate the call with `@flyte.tr
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/durable_calls.py" fragment="trace" lang="python" >}}
 
-A traced call replays only if its function declares a return type. See [Traces](../../tasks/task-programming/traces).
+A traced call replays only if its function declares a return type and the call returned something other than `None`. See [Traces](../../tasks/task-programming/traces).
 
 ## Call the provider from an app
 
