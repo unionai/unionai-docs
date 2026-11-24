@@ -163,7 +163,7 @@ The override replaces the environment's secrets for that call. On a [reusable co
 
 ## Run agents
 
-To run an agent built with a provider's agent SDK, use the matching plugin. A tool wrapped with the plugin's `tool` runs as its own task. On a retry, the OpenAI, Google ADK, and Mistral plugins replay finished model turns, and the Claude plugin resumes the session from a checkpoint. Each guide covers what the plugin wraps for you and what you wrap yourself.
+To run an agent built with a provider's agent SDK, use the matching plugin. An `@env.task` wrapped with the plugin's `tool` runs as its own task, with its own retries and cache. On a retry, the OpenAI, Google ADK, and Mistral plugins replay finished model turns, and the Claude plugin resumes the session from a checkpoint. Each guide covers what the plugin wraps for you and what you wrap yourself.
 
 | Provider | Agent SDK | Guide |
 |---|---|---|
