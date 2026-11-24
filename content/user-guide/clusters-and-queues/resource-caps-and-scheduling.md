@@ -483,8 +483,8 @@ scale. With it, the scheduler does the following for every action:
 
 > [!NOTE] Resource-aware scheduling is enabled per organization
 > It is off until the Union team turns it on for your organization, and it
-> needs Union to have your cluster configuration. Union-Managed deployments
-> already have the configuration; for Self-Managed deployments, the Union team
+> needs Union to have your cluster configuration. Union BYOC deployments
+> already have the configuration; for self-managed deployments, the Union team
 > sets it up. Talk to the Union team to have resource-aware scheduling turned
 > on for your organization. Without it, a queue treats a cluster as able to run anything
 > and places work on any healthy cluster it routes to. Resource caps and the
