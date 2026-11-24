@@ -153,4 +153,8 @@ Share clusters across teams with per-queue CPU, memory, and GPU caps, and choose
 Inspect and update the node groups a cluster declares, the node shapes it can schedule onto.
 {{< /link-card >}}
 
+{{< link-card target="on-demand" icon="gpu-card" title="Union On-Demand" >}}
+Run tasks on GPUs and CPUs that Union.ai provisions, operates, and bills by the minute, by sending runs to the union-ondemand queue.
+{{< /link-card >}}
+
 {{< /grid >}}
