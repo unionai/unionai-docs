@@ -1,7 +1,7 @@
 ---
 title: Secret
 icon: braces
-version: 2.13.2
+version: 2.14.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -38,6 +38,7 @@ class Secret(
 | [`listall()`](#listall) | List all secrets in the current project and domain. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`update()`](#update) | Replace the value of an existing regular secret in the current project and domain. |
 
 
 ### create()
@@ -165,4 +166,28 @@ Convert the object to a JSON string.
 
 
 **Returns:** str: A JSON string representation of the object.
+
+### update()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Secret.update.aio()`.
+```python
+def update(
+    cls,
+    name: str,
+    value: Union[str, bytes],
+)
+```
+Replace the value of an existing regular secret in the current project and domain.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | The name of the secret to update. |
+| `value` | `Union[str, bytes]` | The new secret value as a string or bytes. |
 

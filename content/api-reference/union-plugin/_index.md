@@ -2,7 +2,7 @@
 title: Union plugin
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: book
-version: 0.20.2
+version: 0.26.0
 variants: -flyte +union
 layout: py_api
 weight: 5
@@ -18,6 +18,8 @@ weight: 5
 
 | Class | Description |
 |-|-|
+| [`flyteplugins.union.ForkPlan`](flyteplugins.union/forkplan) | What a fork of *source_run* would reuse, as of *as_of*. |
+| [`flyteplugins.union.PlannedAction`](flyteplugins.union/plannedaction) | One source-run action, as a fork plan sees it. |
 | [`flyteplugins.union.factory.Factory`](flyteplugins.union.factory/factory) | A set of builds. |
 | [`flyteplugins.union.factory.TimeRange`](flyteplugins.union.factory/timerange) | A trailing window, relative to the consumer's own time value, ending at that value. |
 | [`flyteplugins.union.io.ActionRef`](flyteplugins.union.io/actionref) | Provenance: the action (one task execution within a run) that produced a particular `Volume` version, plus the output slot it was returned as. |
@@ -39,14 +41,42 @@ weight: 5
 | [`flyteplugins.union.remote.Metrics`](flyteplugins.union.remote/metrics) | Pod metrics of a task's action attempt or of an app, as shown in the Union UI. |
 | [`flyteplugins.union.remote.NodeGroup`](flyteplugins.union.remote/nodegroup) | One declared node group of a cluster: a pool of nodes and the shape each node has. |
 | [`flyteplugins.union.remote.NodeGroups`](flyteplugins.union.remote/nodegroups) | A cluster's declared node groups, as stored, with the generation they were read at. |
+| [`flyteplugins.union.remote.Org`](flyteplugins.union.remote/org) | A Union organization, with the limits and entitlements it runs with. |
+| [`flyteplugins.union.remote.OrgLimitRow`](flyteplugins.union.remote/orglimitrow) | One limit or entitlement of an org: what it runs with, the tier default, and why they differ. |
 | [`flyteplugins.union.remote.Policy`](flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`flyteplugins.union.remote.Queue`](flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`flyteplugins.union.remote.Role`](flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
 | [`flyteplugins.union.remote.SSHDebug`](flyteplugins.union.remote/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
+| [`flyteplugins.union.remote.Sandbox`](flyteplugins.union.remote/sandbox) | A sandbox session, as the platform has it. |
+| [`flyteplugins.union.remote.SandboxRun`](flyteplugins.union.remote/sandboxrun) | One run of a sandbox: its first, or one a resume started. |
 | [`flyteplugins.union.remote.SystemLogs`](flyteplugins.union.remote/systemlogs) | Logs of the Union system components running on a cluster's dataplane. |
 | [`flyteplugins.union.remote.User`](flyteplugins.union.remote/user) | Represents a Union user. |
 | [`flyteplugins.union.remote.VolumeExplore`](flyteplugins.union.remote/volumeexplore) | A resolved `Volume` plus the IO to inspect and walk its lineage. |
 | [`flyteplugins.union.remote.VolumeResolveError`](flyteplugins.union.remote/volumeresolveerror) | No (or ambiguous) Volume-typed value could be resolved on an action. |
+| [`flyteplugins.union.sandbox.CommandResult`](flyteplugins.union.sandbox/commandresult) | A finished command: what `Sandbox.run` returns. |
+| [`flyteplugins.union.sandbox.ConnectPhase`](flyteplugins.union.sandbox/connectphase) | What ``env.connect`` is doing now, for a caller that shows its progress (``on_phase=``). |
+| [`flyteplugins.union.sandbox.FileEntry`](flyteplugins.union.sandbox/fileentry) | One entry from `FileSystem.ls` or `FileSystem.stat`. |
+| [`flyteplugins.union.sandbox.FileSystem`](flyteplugins.union.sandbox/filesystem) | File access inside a sandbox (``sb.fs``). |
+| [`flyteplugins.union.sandbox.Mount`](flyteplugins.union.sandbox/mount) | A block volume a session mounts: ``volumes={"/data": Mount(v, mode="rw")}``. |
+| [`flyteplugins.union.sandbox.MountedVolume`](flyteplugins.union.sandbox/mountedvolume) | A block volume a session mounts (``sb.volumes["/ckpt"]``): a private copy of `volume`, at `path`, read-only or read-write. |
+| [`flyteplugins.union.sandbox.Network`](flyteplugins.union.sandbox/network) | Outbound network for a sandbox. |
+| [`flyteplugins.union.sandbox.Process`](flyteplugins.union.sandbox/process) | A running command, from `Sandbox.start`. |
+| [`flyteplugins.union.sandbox.ProcessError`](flyteplugins.union.sandbox/processerror) | A command ended abnormally: the session failed or its stream broke. |
+| [`flyteplugins.union.sandbox.ProcessUnsupported`](flyteplugins.union.sandbox/processunsupported) | The sandbox cannot give a command what was asked for it: its node runs a version from before commands had a stdin or a terminal. |
+| [`flyteplugins.union.sandbox.Sandbox`](flyteplugins.union.sandbox/sandbox) | A running sandbox session, from ``async with env.session("build") as sb``. |
+| [`flyteplugins.union.sandbox.SandboxCommandFailed`](flyteplugins.union.sandbox/sandboxcommandfailed) | A command run with ``sb.run(...)`` exited with a nonzero code (``check`` is on by default). |
+| [`flyteplugins.union.sandbox.SandboxCommandTimedOut`](flyteplugins.union.sandbox/sandboxcommandtimedout) | A command ran past its ``timeout`` and was stopped. |
+| [`flyteplugins.union.sandbox.SandboxEnvironment`](flyteplugins.union.sandbox/sandboxenvironment) | A sandbox definition: secrets, env vars, resources, network and lifetime. |
+| [`flyteplugins.union.sandbox.SandboxNotFound`](flyteplugins.union.sandbox/sandboxnotfound) | There is no sandbox of that name, and the call (``create=False``) makes none. |
+| [`flyteplugins.union.sandbox.SandboxSessionEnded`](flyteplugins.union.sandbox/sandboxsessionended) | A call into a sandbox failed because its session has ended: its microVM was lost (e.g. its node restarted), it ran past its maximum duration, or it was aborted. |
+| [`flyteplugins.union.sandbox.SandboxSessionError`](flyteplugins.union.sandbox/sandboxsessionerror) | A sandbox session could not be started, or ended before it was ready. |
+| [`flyteplugins.union.sandbox.SandboxSnapshot`](flyteplugins.union.sandbox/sandboxsnapshot) | A sandbox session's disk, memory and processes at one instant (``sb.snapshot()``, ``sb.suspend()``). |
+| [`flyteplugins.union.sandbox.SandboxUsageError`](flyteplugins.union.sandbox/sandboxusageerror) | A sandbox session was used in a way that can't work: started outside a task, with a flyte that has no sessions, or used after its ``async with`` block ended. |
+| [`flyteplugins.union.sandbox.SandboxVolume`](flyteplugins.union.sandbox/sandboxvolume) | A sandbox session's disk at a commit (``sb.commit()``, ``sb.close(commit=True)``). |
+| [`flyteplugins.union.sandbox.ScratchVolume`](flyteplugins.union.sandbox/scratchvolume) | A session's disk that stays on the node and ends with the session: ``env.session(name, volume=ScratchVolume())``. |
+| [`flyteplugins.union.sandbox.SessionStartup`](flyteplugins.union.sandbox/sessionstartup) | How long each step of starting a session took, in seconds (``sb.startup``). |
+| [`flyteplugins.union.sandbox.SnapshotFuture`](flyteplugins.union.sandbox/snapshotfuture) | A snapshot taken, from ``await sb.snapshot(wait=False)``: what it holds is fixed and its session runs on. |
+| [`flyteplugins.union.sandbox.Tty`](flyteplugins.union.sandbox/tty) | A terminal for a command to run on (``sb.start(command, tty=Tty(30, 120))``). |
 
 ### Functions
 
@@ -54,6 +84,7 @@ weight: 5
 |-|-|
 | [`flyteplugins.union.debug()`](flyteplugins.union/_index#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
 | [`flyteplugins.union.fork()`](flyteplugins.union/_index#fork) | Fork run *run_name*, replaying it with new code and/or inputs. |
+| [`flyteplugins.union.fork_plan()`](flyteplugins.union/_index#fork_plan) | Roughly what `fork(run_name, ...)` with these arguments would reuse, without forking. |
 | [`flyteplugins.union.with_debugcontext()`](flyteplugins.union/_index#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
 | [`flyteplugins.union.with_forkcontext()`](flyteplugins.union/_index#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
 | [`flyteplugins.union.factory.build()`](flyteplugins.union.factory/_index#build) | Name the artifact (or artifacts) one task call makes. |
@@ -74,5 +105,6 @@ weight: 5
 | [`flyteplugins.union.factory`](flyteplugins.union.factory/_index) | Factories: a declared graph of partitioned artifacts the platform can materialize on demand. |
 | [`flyteplugins.union.io`](flyteplugins.union.io/_index) | Persistent, mountable `Volume` type for the Flyte SDK v2. |
 | [`flyteplugins.union.remote`](flyteplugins.union.remote/_index) | Union remote control plane objects. |
+| [`flyteplugins.union.sandbox`](flyteplugins.union.sandbox/_index) | Sandboxes for agents and other tasks that run untrusted code. |
 | [`flyteplugins.union.utils`](flyteplugins.union.utils/_index) | Public utilities for ``flyteplugins.union``. |
 
