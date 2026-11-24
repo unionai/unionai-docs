@@ -64,7 +64,7 @@ controller is missing or the `clustered-task` plugin is not enabled.
 {{< variant union >}}
 {{< markdown >}}
 
-- **Union-hosted and Union-Managed data planes:** clustered tasks are enabled per tenant. Contact
+- **Union-Managed data planes:** clustered tasks are enabled per tenant. Contact
   Union support to turn them on; nothing needs to be installed on your side.
 - **Self-Managed data planes:** install the JobSet controller and enable the plugin, as for the other
   [compute plugins](../../../deployment/selfmanaged/configuration/plugins):

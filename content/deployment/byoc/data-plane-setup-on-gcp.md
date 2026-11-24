@@ -28,7 +28,7 @@ The project must have a billing account linked: the setup script enables the Com
 
    ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
 
-3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **Project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
+3. On **Cloud account**, select **Google Cloud** and enter the **GCP project ID** and **GCP project number**. The project number is shown beside the ID on the project's dashboard in the Google Cloud console. Select **Continue**.
 
    ![The Cloud account step with Google Cloud selected and a GCP project ID and project number entered](../../_static/images/deployment/connect-wizard/gcp-cloud-account.png)
 

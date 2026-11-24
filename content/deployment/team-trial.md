@@ -38,7 +38,7 @@ The **Plan** tab of **Settings → Plan & Invoices** opens with the trial:
   If you can upgrade, this row has an **Upgrade to Team** button.
 - **Days left**: days used and left, and the end date, "unless the credit runs out first".
 - **Credit left**: credit used and left, with "Compute and Union usage count against it."
-- **Enterprise**, with **Talk to us**, which opens an email to Union.ai support.
+- **Enterprise**, with **Talk to us**, which opens a chat with Union.ai support.
 
 Once the trial converts, members who can view billing (among the built-in policies, **Admin**) see a single **Team** row in place of the trial rows, and **Enterprise · Talk to us** stays.
 
@@ -56,7 +56,7 @@ It appears in three places:
 Each one opens the **Upgrade** drawer on **Settings → Plan & Invoices**:
 
 - **Team**: select **Add card**, enter the card, and select **Save card**.
-- **Enterprise**: select **Talk to us**, which opens an email to Union.ai support. No card is needed.
+- **Enterprise**: select **Talk to us**, which opens a chat with Union.ai support. No card is needed.
 
 What adding a card does depends on where the trial is:
 

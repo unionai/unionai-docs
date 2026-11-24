@@ -89,9 +89,9 @@ A typical feature page follows this order. Omit sections that don't apply.
   sentence-case headings: **Union-Managed** (Union.ai runs the data plane in your cloud account)
   and **Self-Managed** (you run it). On the first mention on a landing or overview page, write
   "Union-Managed (formerly BYOC)"; elsewhere, don't use "BYOC". A lowercase adjective in
-  ordinary use stays lowercase: "a self-managed Kubernetes cluster". Keep "Union-managed" for the
-  deployment model only; for anything else Union.ai runs, say what it does ("secrets that
-  Union.ai stores", "capacity that Union.ai runs").
+  ordinary use stays lowercase: "a self-managed Kubernetes cluster". Use "Union-Managed" only for
+  the deployment model; for anything else Union.ai runs, say what it does ("secrets that
+  Union.ai stores").
 - **UI labels** are quoted exactly as the console shows them, even where the console's
   spelling differs from these names.
 - **Concepts are lowercase nouns.** "Create a task", "the environment". Capitalize only the

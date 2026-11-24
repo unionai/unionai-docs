@@ -22,7 +22,7 @@ See [Data privacy](../platform-architecture#data-privacy) and [Where your data l
 
 1. Review the [platform architecture](../platform-architecture) to understand the control plane and data plane split.
 2. Set up your data plane on your cloud provider.
-   On AWS, Azure, and GCP, some organizations can do this themselves with a wizard in the Union.ai console. See the setup page for your cloud.
+   If **Connect your cluster** in the Union.ai console opens the **Add a cluster** wizard, you can do this yourself on AWS, Azure, or GCP. See the setup page for your cloud.
    - [AWS](./data-plane-setup-on-aws)
    - [Azure](./data-plane-setup-on-azure)
    - [GCP](./data-plane-setup-on-gcp)

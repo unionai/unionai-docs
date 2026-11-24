@@ -47,7 +47,7 @@ queues. They do not provision the **data plane** itself: the cloud resources
 cluster (by the agent from the Union.ai UI, or by a Helm release you run).
 
 If you run a Self-Managed deployment, provision the data plane first with
-[Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
+[Self-Managed deployment](../../deployment/selfmanaged/_index) (for example,
 [Provision your AWS resources](../../deployment/selfmanaged/aws/_index)),
 then use the commands here to add or change the pool, cluster, and queue records
 that route work to it.
