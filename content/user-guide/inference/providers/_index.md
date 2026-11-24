@@ -127,6 +127,18 @@ A provider returns 429 when you reach a rate limit, and some return 503 while th
 
 See [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) and [Controlling parallel execution](../../tasks/task-programming/controlling-parallelism).
 
+{{< variant union >}}
+{{< markdown >}}
+
+### Fall back to another model
+
+A task retry calls the same model again. Through the [Inference Gateway](../inference-gateway/_index), a request can also name fallback models. If the primary model fails, the gateway tries each fallback in turn, so a provider outage doesn't fail the task. See [Fallbacks](../inference-gateway/virtual-keys#fallbacks).
+
+Task retries don't help with a 402 or a 403 from the gateway. A 402 means the key has reached its budget, and a 403 means the model isn't allowed or a guardrail blocked the call. See [Errors](../inference-gateway/virtual-keys#errors).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Keep finished calls when a task retries
 
 When one task makes several calls in sequence, decorate the call with `@flyte.trace`. If the task fails and retries, the calls that finished replay their recorded answers instead of calling the provider again:
@@ -198,3 +210,11 @@ The secret's scope doesn't cover the task's project and domain. List secrets wit
 
 **The provider returns 429:**
 You've reached a rate limit on your provider account. Add retries with backoff and lower the map's `concurrency`, as in [Make provider calls reliable](#make-provider-calls-reliable). Check the limits and your usage in the provider's console.
+
+{{< variant union >}}
+{{< markdown >}}
+
+Through the Inference Gateway, the virtual key's own rate limit can also reject a call. Check the key's limit in **Settings → Inference Gateway → Virtual keys**.
+
+{{< /markdown >}}
+{{< /variant >}}
