@@ -26,18 +26,10 @@ See [Data privacy](../platform-architecture#data-privacy) and [Where your data l
    - [Azure](./data-plane-setup-on-azure)
    - [GCP](./data-plane-setup-on-gcp)
 
-## Cloud resource integration
-
-Connect your data plane to cloud-native services:
-
-- [AWS resources](./enabling-aws-resources/_index) (S3, ECR, Secrets Manager)
-- [Azure resources](./enabling-azure-resources/_index) (Blob Storage, Container Registry, Key Vault)
-- [GCP resources](./enabling-gcp-resources/_index) (Cloud Storage, Artifact Registry, BigQuery)
-
 ## Additional configuration
 
 - [Single sign-on setup](./single-sign-on-setup/_index) for OAuth2/OIDC-based authentication
-- [Multi-cluster and multi-cloud](./multi-cluster) for domain and project isolation
+- [Multi-cluster and multi-cloud](./multi-cluster) for running several clusters, in different accounts or clouds
 - [Data retention policy](./data-retention-policy) for controlling stored data lifecycle
 
 {{< subpage-cards >}}
