@@ -26,7 +26,7 @@ Union.ai then builds the VPC, an EKS cluster and its node pools, an S3 metadata 
 To create a cluster you need permission to manage clusters in your Union.ai organization, and permission to create a CloudFormation stack that creates IAM resources in your AWS account.
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
-2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+2. On **Deployment**, keep **Union-Managed** selected and select **Continue**.
 
    ![The Deployment step: "How should Union run your cluster?", with Union-Managed selected and Self-Managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
 
