@@ -1,8 +1,8 @@
 ---
 title: OrgLimitExceededError
-description: "This error is raised when the server refuses to launch an action because the organization is at one of its limits, for example `max_actions_per_run`."
+description: "This error is raised when the server refuses a request because the organization is at one of its limits, for example `max_actions_per_run` or `max_clusters`."
 icon: exclamation-triangle
-version: 2.13.2
+version: 2.14.1
 variants: +flyte +union
 layout: py_api
 ---
@@ -11,8 +11,9 @@ layout: py_api
 
 **Package:** `flyte.errors`
 
-This error is raised when the server refuses to launch an action because the organization is at one of its limits,
-for example `max_actions_per_run`. Retrying does not help; the message names the limit and the numbers.
+This error is raised when the server refuses a request because the organization is at one of its limits, for
+example `max_actions_per_run` or `max_clusters`. Retrying does not help: the limit has to be raised. `org_limit`
+holds the limit's name and numbers, when the server sent them.
 
 
 ## Parameters
@@ -20,9 +21,11 @@ for example `max_actions_per_run`. Retrying does not help; the message names the
 ```python
 class OrgLimitExceededError(
     message: str,
+    org_limit: flyte.errors.OrgLimit | None = None,
 )
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `message` | `str` | |
+| `org_limit` | `flyte.errors.OrgLimit \| None` | |
 
