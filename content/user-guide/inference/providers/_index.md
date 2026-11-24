@@ -19,7 +19,7 @@ keywords:
 
 Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
 
-Because each call runs in a task, it gets the task's retries, caching, and concurrency limits, and the run records its inputs and outputs. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
+When a task makes the call, you can give it the task's retries, caching, and concurrency limits, and the run records the task's inputs and outputs. A call from an app doesn't get these. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
 
 {{< variant union >}}
 {{< markdown >}}
