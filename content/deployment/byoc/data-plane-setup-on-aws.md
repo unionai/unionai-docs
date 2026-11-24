@@ -27,11 +27,23 @@ To create a cluster you need permission to manage clusters in your Union.ai orga
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
+
+   ![The Deployment step: "How should Union run your cluster?", with Union Managed selected and Self-managed beside it](../../_static/images/deployment/connect-wizard/deployment.png)
+
 3. On **Cloud account**, select **AWS** and enter the 12-digit ID of the AWS account the cluster runs in. Select **Continue**.
+
+   ![The Cloud account step with AWS selected and a 12-digit AWS account ID entered](../../_static/images/deployment/connect-wizard/aws-cloud-account.png)
+
 4. On **Size & region**, enter a **Cluster name** and choose a **Region**. The console offers `us-east-2` (Ohio).
 5. Answer **What will you mostly run?** and **How much will you run?**. The wizard recommends a size from your answers. Select any size to override it. See [Cluster sizes](#cluster-sizes). Select **Continue**.
+
+   ![The Size & region step: cluster name prod, region us-east-2 (Ohio), the two sizing questions, and the Basic, Standard and Advanced size cards with Standard recommended](../../_static/images/deployment/connect-wizard/aws-size-and-region.png)
+
 6. On **Review & launch**, check the summary and use **Edit** to change a section. Select the checkbox that agrees to usage-based billing, then select **Create cluster**. The console opens the cluster's page. Nothing is created in your AWS account yet.
 7. On the cluster's page, select **Approve in AWS**. CloudFormation opens with the stack filled in. Check that you're signed in to the AWS account you entered, acknowledge that the stack creates IAM resources, and create the stack.
+
+   ![The cluster's page before the stack exists: Finish setup in AWS, with Approve in AWS on the first step and the build and operator steps locked](../../_static/images/deployment/connect-wizard/aws-approve.png)
+
 
 Once the stack exists, Union.ai builds the cluster in about 30 minutes.
 The cluster's page shows progress until the cluster is ready. You can leave the page and come back to it.
