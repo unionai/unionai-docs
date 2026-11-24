@@ -118,7 +118,7 @@ A provider returns 429 when you reach a rate limit, and some return 503 while th
 |---|---|
 | `retries` with `flyte.Backoff` | Retries a failed call after 5, 10, 20, and 40 seconds, then every 60 seconds, up to 10 times. |
 | `cache="auto"` | A rerun with the same input returns the stored answer and doesn't call the provider. |
-| `concurrency=8` | At most 8 calls are in flight at once, so a long list stays under your rate limit. |
+| `concurrency=8` | At most 8 calls are in flight at once. This doesn't cap requests or tokens per minute, so fast calls can still reach a rate limit, and the retries handle the 429. |
 | One task per call | Each call is its own action, with its own retries, logs, inputs, and outputs. If one call fails, the others keep their results. |
 
 - Model output varies between calls, but a cache hit always returns the first answer. To sample again on every run, set `cache="disable"`. See [Caching](../../tasks/task-configuration/caching).
@@ -163,7 +163,7 @@ The override replaces the environment's secrets for that call. On a [reusable co
 
 ## Run agents
 
-To run an agent built with a provider's agent SDK, use the matching plugin. Each model turn replays on retry instead of calling the provider again, and each tool runs as its own task.
+To run an agent built with a provider's agent SDK, use the matching plugin. A tool wrapped with the plugin's `tool` runs as its own task. On a retry, the OpenAI, Google ADK, and Mistral plugins replay finished model turns, and the Claude plugin resumes the session from a checkpoint. Each guide covers what the plugin wraps for you and what you wrap yourself.
 
 | Provider | Agent SDK | Guide |
 |---|---|---|
