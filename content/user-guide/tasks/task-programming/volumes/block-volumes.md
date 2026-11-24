@@ -83,7 +83,7 @@ task controls. The mount broker therefore allows block volumes only for the
 workloads the cluster administrator permits, by namespace, by service account,
 or both. By default, a single-namespace cluster allows only pods in the data
 plane's own namespace, and a multi-namespace cluster allows every pod. If a task
-isn't allowed, its `mount()` fails with the broker's reason. On a self-managed cluster, see
+isn't allowed, its `mount()` fails with the broker's reason. On a Self-Managed cluster, see
 [Enable block volumes](../../../../deployment/selfmanaged/configuration/volumes#enable-block-volumes).
 
 > [!NOTE]

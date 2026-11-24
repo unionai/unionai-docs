@@ -39,14 +39,14 @@ Pools, clusters, and queues are managed with the `flyte` CLI or the
 administrator. These are administrative tasks; most workflow authors only need
 [task-side queue routing](../tasks/task-configuration/queues).
 
-## Standing up a self-managed cluster?
+## Standing up a Self-Managed cluster?
 
 The pages here manage the **control-plane records** for pools, clusters, and
 queues. They do not provision the **data plane** itself: the cloud resources
 (object store, secret store, registry) and the install of the data plane on the
 cluster (by the agent from the Union.ai UI, or by a Helm release you run).
 
-If you run a self-managed deployment, provision the data plane first with
+If you run a Self-Managed deployment, provision the data plane first with
 [Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
 [Provision your AWS resources](../../deployment/selfmanaged/aws/_index)),
 then use the commands here to add or change the pool, cluster, and queue records

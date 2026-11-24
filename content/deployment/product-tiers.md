@@ -39,7 +39,7 @@ In the tables below, ✓ means included and – means not included.
 | Feature | Team | Enterprise |
 |---|---|---|
 | [Self-managed](./selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
-| [Union-managed (BYOC)](./byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
+| [Union-Managed (formerly BYOC)](./byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
 | Clouds | All regions, neoclouds, and hyperscalers | Any cloud |
 | Marketplace commit drawdown | – | ✓ |
 

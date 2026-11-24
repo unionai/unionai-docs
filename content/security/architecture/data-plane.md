@@ -9,7 +9,7 @@ mermaid: true
 
 # Data plane
 
-The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account.
+The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the Self-Managed model, the customer operates the data plane independently. In the Union-Managed model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account.
 
 ## Components
 
@@ -79,7 +79,7 @@ App and serving traffic flows entirely within the customer's infrastructure. No 
 
 Under the default tier, inbound traffic reaches the serving endpoints through Cloudflare, which provides DDoS protection, before routing to the Kourier ingress gateway running in the customer's cluster. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, serving endpoints sit behind the same customer-managed internal load balancer and are reachable only from the customer's corporate network. Authentication is enforced by default on all endpoints under either tier: browser-based access uses SSO, and programmatic access uses API keys. Individual endpoints can be configured for anonymous access when required (for example, public-facing model endpoints on the default tier).
 
-RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure (Knative, Kourier, and the Union Operator) runs within the customer's Kubernetes cluster. In the BYOC model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
+RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure (Knative, Kourier, and the Union Operator) runs within the customer's Kubernetes cluster. In the Union-Managed model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
 
 ## Verification
 

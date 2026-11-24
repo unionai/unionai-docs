@@ -1,6 +1,6 @@
 ---
 title: Shared responsibility model
-description: Who owns which part of the stack in self-managed and BYOC deployments.
+description: Who owns which part of the stack in Self-Managed and Union-Managed deployments.
 icon: people
 weight: 5
 variants: -flyte +union
@@ -8,9 +8,9 @@ variants: -flyte +union
 
 # Shared responsibility model
 
-## Self-managed
+## Self-Managed
 
-In self-managed deployments, the customer owns and operates the data plane infrastructure, while Union.ai manages the control plane. The following table defines the responsibility boundary.
+In Self-Managed deployments, the customer owns and operates the data plane infrastructure, while Union.ai manages the control plane. The following table defines the responsibility boundary.
 
 | Area | Union.ai | Customer |
 |---|---|---|
@@ -23,11 +23,11 @@ In self-managed deployments, the customer owns and operates the data plane infra
 | Access control | RBAC framework | Role assignment and policy |
 | Compliance documentation | SOC 2 report, Trust Center | Customer-specific attestations |
 
-## BYOC shifts
+## Union-Managed shifts
 
-In BYOC deployments, Union.ai assumes additional operational responsibility for the data plane Kubernetes cluster while the customer retains ownership of the cloud account.
+In Union-Managed deployments, Union.ai assumes additional operational responsibility for the data plane Kubernetes cluster while the customer retains ownership of the cloud account.
 
-| Area | Self-managed | BYOC |
+| Area | Self-Managed | Union-Managed |
 |---|---|---|
 | Data plane Kubernetes cluster | Customer | Union.ai |
 | Cloud account (VPC, IAM) | Customer | Customer |
@@ -41,7 +41,7 @@ For the deployment-model summary, see the [security overview](../_index).
 
 ### Shared responsibility model
 
-**Reviewer focus:** Confirm that the responsibility boundaries are clearly defined and that the BYOC model correctly reflects the shifted responsibilities.
+**Reviewer focus:** Confirm that the responsibility boundaries are clearly defined and that the Union-Managed model correctly reflects the shifted responsibilities.
 
 **How to verify:**
 

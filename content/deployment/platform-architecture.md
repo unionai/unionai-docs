@@ -9,7 +9,7 @@ variants: -flyte +union
 # Platform architecture
 
 The Union.ai architecture consists of two components, referred to as planes: the control plane and the data plane.
-Both deployment models, [self-managed](./selfmanaged/_index) and [BYOC](./byoc/_index), share this split. They differ in who provisions and operates the data plane.
+Both deployment models, [Self-Managed](./selfmanaged/_index) and [Union-Managed](./byoc/_index), share this split. They differ in who provisions and operates the data plane.
 For the security model behind the split, see [Architecture](../security/architecture/_index) in the Security section.
 
 ![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../_static/images/deployment/platform-architecture/union-architecture.svg)
@@ -31,14 +31,14 @@ A resident Union.ai operator connects it to the control plane with minimal requi
 
 The nodes in your data plane cluster have different responsibilities. Union.ai distinguishes between the nodes that run its platform services and the worker nodes that run your workloads.
 
-Platform-service nodes, called default nodes in BYOC, guarantee the basic operation of the data plane and are always running. Services that run on them include worker-node autoscaling, monitoring, and the Union.ai operator.
+Platform-service nodes, called default nodes in Union-Managed deployments, guarantee the basic operation of the data plane and are always running. Services that run on them include worker-node autoscaling, monitoring, and the Union.ai operator.
 
 Worker nodes execute your workloads, and you have full control over their configuration:
 
-* **BYOC**: see [worker node groups](./byoc/configuring-your-data-plane#worker-node-groups).
+* **Union-Managed**: see [worker node groups](./byoc/configuring-your-data-plane#worker-node-groups).
 * **Self-managed**: see [Node pools](./selfmanaged/configuration/node-pools), which recommends separate node pools for Union.ai services and worker pods.
 
-When worker nodes are not in use, they scale down to the configured minimum. In BYOC, the default minimum is zero.
+When worker nodes are not in use, they scale down to the configured minimum. In a Union-Managed deployment, the default minimum is zero.
 
 ## Union.ai operator
 
@@ -46,10 +46,10 @@ The **Union.ai operator** is a dedicated service, resident in your data plane, t
 
 ### How your data plane is provisioned and maintained
 
-**BYOC.** Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires, such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, Union.ai deploys the operator onto it.
+**Union-Managed.** Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires, such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, Union.ai deploys the operator onto it.
 The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance, for example adding instance types, adjusting node-group sizes, or updating the versions of platform components, so that upgrades and configuration changes are handled for you.
 
-**Self-managed.** You provision the Kubernetes cluster and its supporting cloud resources yourself, and you own and operate them. How the data plane, operator included, gets into the cluster depends on your provider:
+**Self-Managed.** You provision the Kubernetes cluster and its supporting cloud resources yourself, and you own and operate them. How the data plane, operator included, gets into the cluster depends on your provider:
 
 * On AWS, GCP, and Azure, you [connect your cluster](./selfmanaged/connect-a-cluster) from the Union.ai UI. You install an agent, the agent connects out to Union.ai, and Union.ai installs the data plane through it. The agent manages the `dataplane` Helm chart and its values. See [What Union.ai installs in your cluster](./selfmanaged/whats-installed).
 * On other providers, and for AWS, GCP, or Azure deployments that were set up with Helm, you [deploy the data plane](./selfmanaged/deploy/_index) with the `dataplane` Helm chart yourself and [upgrade it](./selfmanaged/upgrade) when a new chart version is released.
@@ -63,7 +63,7 @@ Once installed, the operator is the resident data-plane component that keeps you
 * **Maintains platform services.** It manages the data plane's supporting services — including the secure tunnel used for connectivity, API-key provisioning, image building, secret watching, and compute reconciliation.
 * **Moves your data.** It runs the data-plane `dataproxy` service, which issues the presigned URLs that let clients read and write your workflow data directly to and from the object store in your data plane (see [Execution data](#execution-data)), so that data never transits the control plane.
 
-In BYOC, the operator also allows Union.ai's support engineers to access system-level logs and to apply changes at your request. In a self-managed deployment, Union.ai support has no access to your cluster. In neither model does the operator provide direct access to your secrets or data.
+In a Union-Managed deployment, the operator also allows Union.ai's support engineers to access system-level logs and to apply changes at your request. In a Self-Managed deployment, Union.ai support has no access to your cluster. In neither model does the operator provide direct access to your secrets or data.
 
 In addition, communication is always initiated by the Union.ai operator in the data plane toward the Union.ai control plane, not the other way around.
 This further enhances the security of your data plane.

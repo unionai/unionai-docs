@@ -15,7 +15,7 @@ sidebar_expanded: true
 > AWS, GCP, or Azure, provision your resources on [AWS](../aws/_index), [GCP](../gcp/_index), or
 > [Azure](../azure/_index) and [connect your cluster](../connect-a-cluster) from the Union.ai UI instead.
 
-In a self-managed deployment, Union.ai runs the **control plane** and you
+In a Self-Managed deployment, Union.ai runs the **control plane** and you
 run the **data plane** on your own Kubernetes cluster. This page covers the infrastructure
 **you** provision for the data plane: a Kubernetes cluster, a VPC, object storage, a
 managed identity binding, a container image registry, and egress to the

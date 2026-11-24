@@ -218,7 +218,7 @@ The conversion tool is located at `unionai-docs-infra/tools/jupyter_generator`.
 ## Mapped keys (`{{</* key */>}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
-For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
+For example, the product name changes if it is Flyte, Union.ai, etc. For that,
 we can define a single key `product_full_name` and map it to reflect automatically,
 without the need to `if variant` around it.
 
