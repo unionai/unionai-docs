@@ -196,7 +196,7 @@ Lifecycle / retention rules should be scoped to the offloaded-data prefixes, **n
 
 {{< variant union >}}
 {{< markdown >}}
-For how retention policies are configured in your deployment, see [Union-Managed data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
+For how retention policies are configured in your deployment, see [Union-Managed data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-Managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
 {{< /markdown >}}
 {{< /variant >}}
 
