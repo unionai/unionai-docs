@@ -9,7 +9,7 @@ variants: -flyte +union
 # Product tiers
 
 Union.ai has two plans, **Team** and **Enterprise**. Every self-service sign-up starts on Team.
-To see your plan and what you've used against its limits, go to **Settings → Plan & usage**.
+To see your plan, go to **Settings → Plan & Invoices**.
 
 A feature is either in a plan or it isn't. There are no add-ons.
 For rates per action, vCPU, memory, and GPU, see [Union.ai pricing](https://www.union.ai/pricing).
@@ -115,11 +115,14 @@ In the tables below, ✓ means included and – means not included.
 ## Your first month
 
 A new organization starts on Team with the $950 minimum waived.
-If Union.ai runs your clusters, the $500 fee on your first cluster is also waived that month.
-You don't need a payment method until the credit is used up or the month ends.
+If Union.ai runs your clusters, no cluster is charged the $500 fee that month: the fee starts when the month ends.
+You don't need a payment method that month.
+When the credit is used up or the month ends, the trial ends, and unless the trial converts to Team, your organization becomes read-only (see [When the trial ends](./team-trial#when-the-trial-ends)).
+If you signed up directly, add a card to stay on Team (see [Upgrade to Team](./team-trial#upgrade-to-team)).
+To follow the days and credit left, see [Team trial](./team-trial).
 
 ## Move to Enterprise
 
 Talk to Union.ai when you scale past one team or past two clusters.
 Also get in touch when security or procurement needs a private endpoint, CMEK, custom RBAC, retention beyond 30 days, or 24×7 support.
-Select **Talk to us** in **Settings → Plan & usage**, or [contact sales](https://www.union.ai/get-a-quote).
+If your organization started on a Team trial, select **Talk to us** in **Settings → Plan & Invoices**, or [contact sales](https://www.union.ai/get-a-quote).

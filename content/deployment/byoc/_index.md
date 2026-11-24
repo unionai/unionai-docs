@@ -2,7 +2,7 @@
 title: Union-Managed deployment
 description: Union manages the data plane infrastructure inside your cloud account; you supply the account and network configuration.
 icon: cloud-check
-weight: 5
+weight: 6
 variants: -flyte +union
 ---
 
