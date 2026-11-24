@@ -53,9 +53,9 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
-| Union.ai to Customer Kubernetes API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
+| Union.ai to Customer Kubernetes API (Union-Managed only) | PrivateLink / PSC | TLS (private connectivity) |
 
-For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
+For details on the Union-Managed private management connection, see [Private connectivity (Union-Managed)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
 
 ## Egress requirements
 

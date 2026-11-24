@@ -1,6 +1,6 @@
 ---
 title: What Union.ai installs in your cluster
-description: The cloud resources and in-cluster services a self-managed data plane runs on, the permissions they hold, and what they cost while idle.
+description: The cloud resources and in-cluster services a Self-Managed data plane runs on, the permissions they hold, and what they cost while idle.
 icon: box-seam
 weight: 4
 variants: -flyte +union

@@ -16,7 +16,7 @@ For setup with the Union.ai team, you provision an Azure app registration with s
 
 ## Set up in the Union.ai console
 
-The wizard creates a BYOC data plane in your Azure subscription.
+The wizard creates a Union-Managed data plane in your Azure subscription.
 You run one setup script in the subscription. It creates a resource group for the cluster, the identities the cluster uses, and their role assignments, then prints one line that you paste back into the console.
 Union.ai then builds the virtual network, an AKS cluster and its node pools, storage, a key vault, and a container registry in that resource group, and installs the data plane.
 Union.ai builds as an identity that is a Contributor on that resource group only and can't grant roles.
@@ -102,7 +102,7 @@ Union.ai manages Azure resources through a [Microsoft Entra ID Application](http
 Union.ai requires new roles and applications to support Union's cost allocation feature.
 This can be done by providing the `union` application additional permissions or you can choose to create the roles and applications yourself.
 
-#### Union managed cost allocation roles
+#### Let Union.ai create the cost allocation roles
 
 - Assign `User Access Administrator` role to the `union` application against the subscription. This enables Union.ai role creation.
 - Assign `Application Administrator` role to the `union` application within Microsoft Entra ID. This allows Union to create applications.

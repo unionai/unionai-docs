@@ -23,9 +23,9 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 
 ## Who manages the stores
 
-* The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a BYOC or self-managed deployment.
+* The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a Union-Managed or Self-Managed deployment.
 
-* The data plane bucket lives in your cloud account. In a BYOC deployment, it is managed by Union.ai (as is the entire data plane). In a self-managed deployment, you manage the bucket yourself.
+* The data plane bucket lives in your cloud account. In a Union-Managed deployment, it is managed by Union.ai (as is the entire data plane). In a Self-Managed deployment, you manage the bucket yourself.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -196,7 +196,7 @@ Lifecycle / retention rules should be scoped to the offloaded-data prefixes, **n
 
 {{< variant union >}}
 {{< markdown >}}
-For how retention policies are configured in your deployment, see [BYOC data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
+For how retention policies are configured in your deployment, see [Union-Managed data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
 {{< /markdown >}}
 {{< /variant >}}
 

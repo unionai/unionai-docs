@@ -26,13 +26,13 @@ As the primary maintainer and contributor of the open-source Flyte project, Unio
 Union.ai is also the company behind the commercial Union.ai product, which is built on Flyte.
 
 Because Flyte and Union.ai share much of their functionality, most of the documentation content is common between them.
-There are, however, significant differences between Flyte and Union.ai and among the Union.ai deployment options (BYOC and Self-managed).
+There are, however, significant differences between Flyte and Union.ai and among the Union.ai deployment models (Union-Managed and Self-Managed).
 
 To maintain the documentation for all of these variants efficiently, we use a single-source-of-truth approach:
 
 * All content is stored in a single GitHub repository, [`unionai/unionai-docs`](https://github.com/unionai/unionai-docs).
 * All content is published on a single website, [`www.union.ai/docs`]({{< docs_home root v2 >}}).
-* A variant selector at the top of each page lets you choose which variant to view: Flyte OSS or Union.ai (which covers both BYOC and Self-managed deployments).
+* A variant selector at the top of each page lets you choose which variant to view: Flyte OSS or Union.ai (which covers both Union-Managed and Self-Managed deployments).
 * A version selector lets you choose between v1 (Flyte/Union 1.x) and v2 (Flyte/Union 2.0, which you are viewing now).
 
 ### Versions

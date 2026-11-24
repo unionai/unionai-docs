@@ -1,14 +1,14 @@
 ---
-title: Self-managed deployment
+title: Self-Managed deployment
 description: Run the data plane on your own Kubernetes cluster, owning and operating the cluster while Union.ai runs the control plane.
 icon: server
 weight: 4
 variants: -flyte +union
 ---
 
-# Self-managed deployment
+# Self-Managed deployment
 
-In a self-managed deployment, you operate the data plane on your own Kubernetes infrastructure.
+In a Self-Managed deployment, you operate the data plane on your own Kubernetes infrastructure.
 Union.ai runs the control plane, and you own and operate the Kubernetes cluster the data plane runs on.
 On AWS, GCP, and Azure, when you set up from the Union.ai UI, you install an agent that connects out to Union.ai, and Union.ai installs the data plane into your cluster through that connection. Nothing dials in to your cluster.
 

@@ -19,7 +19,7 @@ If you do not wish to manage your own VPC then no additional configuration is ne
 
 ## Set up in the Union.ai console
 
-The wizard creates a BYOC data plane in your AWS account.
+The wizard creates a Union-Managed data plane in your AWS account.
 You launch one CloudFormation stack, which creates the IAM role Union.ai uses.
 Union.ai then builds the VPC, an EKS cluster and its node pools, an S3 metadata bucket, and an ECR repository, and installs the data plane.
 

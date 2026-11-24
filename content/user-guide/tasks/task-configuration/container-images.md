@@ -504,7 +504,7 @@ A static ECR token would expire after 12 hours.
 
 {{< variant union >}}
 {{< markdown >}}
-For BYOC data planes, see also [Enabling AWS ECR](../../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr) for running tasks directly on images stored in another account.
+For Union-Managed data planes, see also [Enabling AWS ECR](../../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr) for running tasks directly on images stored in another account.
 {{< /markdown >}}
 {{< /variant >}}
 

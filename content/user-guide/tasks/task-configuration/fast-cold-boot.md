@@ -17,8 +17,8 @@ You don't change your tasks.
 If you build from a Dockerfile, keep building it your way and pass the result through the remote builder, as shown in [Use an image from your existing build system](#use-an-image-from-your-existing-build-system).
 
 Fast cold boot is a data-plane setting, off by default.
-On BYOC, ask Union.ai support to enable it.
-On a self-managed data plane, set `nodeBootstrap.enabled` and then `imageBuilder.enableImageOptimization` in the [dataplane chart](../../../deployment/selfmanaged/helm-chart-reference/dataplane).
+On a Union-Managed data plane, ask Union.ai support to enable it.
+On a Self-Managed data plane, set `nodeBootstrap.enabled` and then `imageBuilder.enableImageOptimization` in the [dataplane chart](../../../deployment/selfmanaged/helm-chart-reference/dataplane).
 
 ## How it works
 

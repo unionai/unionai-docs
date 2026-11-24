@@ -56,6 +56,8 @@ A typical feature page follows this order. Omit sections that don't apply.
 - **Plain words.** "use", not "utilize" or "leverage"; "before", not "prior to"; "for example", not "e.g."; "make sure", not "ensure that".
 - **Be specific.** Give the value, the limit, the name: "times out after 10 seconds", not "times out quickly".
 - **Product names.** Use `{{</* key product_name */>}}` for text that differs between variants. Write "Union.ai" (not "Union AI" or "UnionAI") and "Flyte"; lowercase `flyte` only for the package, CLI, or module, in code. Write third-party names as their owners do: GitHub, Kubernetes (not "k8s"), Hugging Face. Say "data plane", never "compute plane".
+- **Deployment models** are proper nouns, capitalized wherever they appear, including in sentence-case headings: **Union-Managed** (Union.ai runs the data plane in your cloud account) and **Self-Managed** (you run it). On the first mention on a landing or overview page, write "Union-Managed (formerly BYOC)"; elsewhere, don't use "BYOC". A lowercase adjective in ordinary use stays lowercase: "a self-managed Kubernetes cluster". Keep "Union-managed" for the deployment model only; for anything else Union.ai runs, say what it does ("secrets that Union.ai stores", "capacity that Union.ai runs").
+- **UI labels** are quoted exactly as the console shows them, even where the console's spelling differs from these names.
 - **Concepts are lowercase nouns.** "Create a task", "the environment". Capitalize only the literal API class, in backticks: `flyte.TaskEnvironment`.
 - **Use the Oxford comma.** "tasks, apps, and triggers".
 

@@ -1,14 +1,14 @@
 ---
-title: BYOC deployment
+title: Union-Managed deployment
 description: Union manages the data plane infrastructure inside your cloud account; you supply the account and network configuration.
 icon: cloud-check
 weight: 5
 variants: -flyte +union
 ---
 
-# BYOC deployment
+# Union-Managed deployment
 
-In a BYOC (Bring Your Own Cloud) deployment, Union.ai manages the data plane infrastructure in your cloud account.
+In a Union-Managed deployment (formerly BYOC, Bring Your Own Cloud), Union.ai manages the data plane infrastructure in your cloud account.
 You provide the cloud account and network configuration; Union.ai handles Kubernetes cluster operations, upgrades, and monitoring.
 
 Your code, container images, logs, and runtime task inputs and outputs remain in your data plane.

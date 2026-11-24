@@ -19,7 +19,7 @@ determines the data plane configuration (object store, secret store, container
 registry) the cluster uses.
 
 Creating a cluster record registers the cluster in the control plane. It does not
-install Kubernetes resources or deploy the data plane itself. For self-managed
+install Kubernetes resources or deploy the data plane itself. For Self-Managed
 deployments, first provision and install the data plane using the appropriate
 [Self-managed deployment](../../deployment/selfmanaged/_index) guide, then use
 the commands or Python calls here to manage the control-plane record.

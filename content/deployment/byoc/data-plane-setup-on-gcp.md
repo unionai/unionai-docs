@@ -16,7 +16,7 @@ For setup with the Union.ai team, you provision a service account with sufficien
 
 ## Set up in the Union.ai console
 
-The wizard creates a BYOC data plane in your GCP project.
+The wizard creates a Union-Managed data plane in your GCP project.
 You run one setup script in the project. It enables the project APIs the data plane needs, creates an admin service account for the cluster, and lets Union.ai act as that service account through workload identity federation, without a key.
 Union.ai then builds the VPC network, a GKE cluster and its node pools, a Cloud Storage metadata bucket, an Artifact Registry repository, and the data plane's service accounts, and installs the data plane.
 
