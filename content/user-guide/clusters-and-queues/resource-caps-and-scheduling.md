@@ -166,8 +166,9 @@ Two cases change which cap an untyped request counts against:
   L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that the
   scheduler assigns to an L4 counts against both the `nvidia_gpu` cap and the
   L4 cap. On a
-  cluster without the configuration, an untyped request counts against the
-  `nvidia_gpu` cap only.
+  cluster whose configuration Union doesn't have (see
+  [Resource-aware scheduling](#resource-aware-scheduling)), an untyped request
+  counts against the `nvidia_gpu` cap only.
 - If a default GPU type is set in Settings, an untyped request is treated as a
   request for that type. It counts against that type's cap, not against the
   `nvidia_gpu` cap.
