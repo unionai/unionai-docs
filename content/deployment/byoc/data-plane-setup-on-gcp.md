@@ -21,6 +21,7 @@ You run one setup script in the project. It enables the project APIs the data pl
 Union.ai then builds the VPC network, a GKE cluster and its node pools, a Cloud Storage metadata bucket, an Artifact Registry repository, and the data plane's service accounts, and installs the data plane.
 
 To create a cluster you need permission to manage clusters in your Union.ai organization, and to be an owner of the GCP project.
+The project must have a billing account linked: the setup script enables the Compute Engine and GKE APIs, which Google Cloud allows only in a project with billing. See [Ensure billing is linked](#ensure-billing-is-linked).
 
 1. In the Union.ai console, select **Connect your cluster** on the home page or in the sidebar, or go to **Settings → Clusters** and select **New Cluster**. The **Add a cluster** wizard opens.
 2. On **Deployment**, keep **Union Managed** selected and select **Continue**.
