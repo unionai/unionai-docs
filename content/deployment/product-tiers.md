@@ -118,7 +118,7 @@ A new organization starts on Team with the $950 minimum waived.
 If Union.ai runs your clusters, no cluster is charged the $500 fee that month: the fee starts when the month ends.
 You don't need a payment method that month.
 When the credit is used up or the month ends, the trial ends, and unless the trial converts to Team, your organization becomes read-only (see [When the trial ends](./team-trial#when-the-trial-ends)).
-If your organization is billed by card, add a card to stay on Team (see [Upgrade to Team](./team-trial#upgrade-to-team)).
+If you signed up directly, add a card to stay on Team (see [Upgrade to Team](./team-trial#upgrade-to-team)).
 To follow the days and credit left, see [Team trial](./team-trial).
 
 ## Move to Enterprise

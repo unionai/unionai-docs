@@ -2,7 +2,7 @@
 title: Team trial
 description: Track the days and credit left in your organization's Team trial, upgrade to Team by adding a card, and see what the Union.ai UI does when the trial ends.
 icon: hourglass-split
-weight: 1
+weight: 3
 variants: -flyte +union
 ---
 
@@ -28,7 +28,7 @@ If you can upgrade, the card also has an **Upgrade** button (see [Upgrade to Tea
 Once a card is on file, the trial card shows "Team starts when days or credit run out", with the trial's end date.
 
 The card disappears once the trial converts to Team.
-If you subscribed on [AWS Marketplace](./sign-up/aws-marketplace), the trial converts to Team when it ends, so your organization doesn't become read-only.
+If you [subscribed through a cloud marketplace](./sign-up), the trial converts to Team when it ends and the marketplace bills you, so your organization doesn't become read-only.
 
 ## Trial on Settings → Plan & Invoices
 
@@ -44,7 +44,9 @@ Once the trial converts, members who can view billing (among the built-in polici
 
 ## Upgrade to Team
 
-Admins (the **Admin** policy, see [User management](../user-guide/user-management)) of an organization billed by card see an **Upgrade** button until a card is on file.
+If you subscribed through a cloud marketplace, there's no **Upgrade** button.
+
+If you signed up directly, admins (the **Admin** policy, see [User management](../user-guide/user-management)) see an **Upgrade** button until a card is on file.
 It appears in three places:
 
 - **Upgrade** on the trial card.
@@ -63,7 +65,7 @@ What adding a card does depends on where the trial is:
 
 ### Payments tab
 
-An organization billed by card also has a **Payments** tab on **Settings → Plan & Invoices**, which admins see:
+If you signed up directly, your organization also has a **Payments** tab on **Settings → Plan & Invoices**, which admins see:
 
 - **Payment method**: the card Stripe charges for each invoice, with **Add card** or **Replace card**, and **Manage saved cards**.
 - **Invoice history**: the invoices Stripe has sent the organization, newest first, with **Open Stripe billing portal**.
@@ -81,6 +83,6 @@ When the trial ends without converting, the organization is read-only in the Uni
 
 To keep using Union.ai:
 
-- If you're an admin and your organization is billed by card, select **Upgrade to Team** on the banner or **Upgrade** on the trial card, and add a card (see [Upgrade to Team](#upgrade-to-team)).
+- If you're an admin and you signed up directly, select **Upgrade to Team** on the banner or **Upgrade** on the trial card, and add a card (see [Upgrade to Team](#upgrade-to-team)).
   If you're not an admin, ask an admin to upgrade.
-- To move to Enterprise, or if your organization isn't billed by card, select **Talk to us** on **Settings → Plan & Invoices**.
+- To move to Enterprise, select **Talk to us** on **Settings → Plan & Invoices**.
