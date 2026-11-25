@@ -1,6 +1,6 @@
 ---
 title: Native app integrations
-description: Use pre-built environments for popular frameworks like Streamlit, FastAPI, vLLM, SGLang, and Ollama.
+description: Use pre-built environments for FastAPI, vLLM, and SGLang, or serve frameworks like Streamlit and Ollama with the generic `AppEnvironment`.
 icon: plugin
 weight: 3
 variants: +flyte +union
@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Native app integrations
 
-Flyte ships with a set of pre-built [`AppEnvironment`](../build-apps/_index) integrations that wrap popular frameworks and serving runtimes, so you can deploy common app types without writing the integration glue yourself. Each integration provides a ready-to-use environment class: just configure your app, image, resources, and scaling, and Flyte handles the rest.
+Flyte ships pre-built environment classes for FastAPI, vLLM, SGLang, and the Flyte webhook, so you can deploy those app types without writing the integration glue yourself: configure your app, image, resources, and scaling, and Flyte handles the rest. Streamlit and Ollama have no dedicated class; their pages show how to serve them with the generic [`AppEnvironment`](../build-apps/_index).
 
 > [!TIP]
 > If you're new to apps in Flyte, start with [Introducing apps](../../get-started/core-concepts/introducing-apps) for an overview, then see [Build apps](../build-apps/_index) to learn how to build custom app environments from scratch.
