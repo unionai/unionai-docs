@@ -1,6 +1,6 @@
 ---
 title: Subscribe and sign up
-description: "Create your organization and choose how you pay: on AWS Marketplace or directly. Billing is separate from where your data plane runs."
+description: "Create your organization and choose how you pay: on AWS Marketplace, on Google Cloud Marketplace, or directly. Billing is separate from where your data plane runs."
 icon: rocket-takeoff
 weight: 1
 variants: -flyte +union
@@ -13,7 +13,8 @@ Every self-service deployment on AWS, GCP, or Azure starts here. You create your
 **How you pay is separate from where your data plane runs.** A subscription is a billing relationship, not infrastructure: you can subscribe on AWS Marketplace and run your data plane on GCP or Azure.
 
 - **On AWS Marketplace.** Buy **Union Team** on AWS Marketplace, so the charges appear on your AWS bill. Start at [AWS Marketplace](./aws-marketplace), which hands you on to sign-up.
-- **Directly.** Start at [Create your account and organization](./create-organization). There is no GCP or Azure Marketplace listing yet.
+- **On Google Cloud Marketplace.** Buy **Union.ai Team** on [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/union-marketplace-public/unionaiteam), so the charges appear on your Google Cloud bill. If your data plane runs on GCP, also [label its resources](../selfmanaged/gcp/_index#label-resources-for-google-cloud-marketplace).
+- **Directly.** Start at [Create your account and organization](./create-organization). There is no Azure Marketplace listing.
 
 Either way, a new organization starts with a 30-day free [Team trial](./team-trial). The trial covers Union.ai's charges, not your cloud provider's: the resources your data plane runs on are billed to your own cloud account during the trial too. See [What it costs when nothing is running](../selfmanaged/whats-installed#what-it-costs-when-nothing-is-running).
 
@@ -21,7 +22,7 @@ Either way, a new organization starts with a 30-day free [Team trial](./team-tri
 
 ## The path
 
-1. **Subscribe**, if you pay on AWS Marketplace: [subscribe on AWS Marketplace](./aws-marketplace), then follow the handoff to Union.ai.
+1. **Subscribe**, if you pay through a marketplace: [subscribe on AWS Marketplace](./aws-marketplace) and follow the handoff to Union.ai, or buy Union.ai Team on Google Cloud Marketplace.
 2. **[Create your account and organization](./create-organization).** Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on.
 3. **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. Optional, but the quickest way to see Union.ai working.
 

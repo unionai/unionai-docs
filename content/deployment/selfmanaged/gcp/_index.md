@@ -27,7 +27,7 @@ You supply two values: your Google Cloud project ID and the address of your Unio
 > - The bucket is private, with the CORS rule from [step 4](#4-create-the-bucket-and-image-repository).
 > - The Artifact Registry repository is a private Docker repository.
 > - The service accounts have the roles from [step 5](#5-create-the-service-accounts-and-grant-access) and the Workload Identity binding from [step 7](#7-bind-the-cluster-to-the-service-accounts).
-> - For a Google Cloud Marketplace purchase, add the [consumption tracking label](#label-resources-for-google-cloud-marketplace) to these resources.
+> - If you bought Union.ai Team through Google Cloud Marketplace, add its [consumption tracking label](#label-resources-for-google-cloud-marketplace) to these resources.
 >
 > Then collect the values listed in [step 8](#8-collect-the-values-for-connecting-your-cluster), and go on to [Connect your cluster](../connect-a-cluster).
 
@@ -349,7 +349,7 @@ gcloud container clusters describe "$CLUSTER_NAME" \
   --region="$REGION" --project="$PROJECT_ID" --format='json(resourceLabels)'
 ```
 
-[GKE label propagation](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-managing-labels#label_propagation) can take up to one hour. If a node pool already has a conflicting `goog-partner-solution` value, its label overrides the cluster label. Updating node pool labels recreates nodes, so plan that change around running workloads.
+[GKE label propagation](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-managing-labels#label_propagation) can take up to one hour, and Google's Marketplace system can take several days to register the label. If a node pool already has a conflicting `goog-partner-solution` value, its label overrides the cluster label. Updating node pool labels recreates nodes, so plan that change around running workloads.
 
 ## 7. Bind the cluster to the service accounts
 
