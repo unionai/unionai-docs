@@ -67,6 +67,7 @@ A common ML pattern: train a model with a Flyte pipeline, then serve predictions
 from contextlib import asynccontextmanager
 from pathlib import Path
 import os
+import threading
 
 from fastapi import FastAPI
 import flyte
@@ -103,6 +104,11 @@ serving_env = FastAPIAppEnvironment(
     resources=flyte.Resources(cpu=1, memory="4Gi"),
 )
 
+@app.get("/health")
+async def health() -> dict:
+    # activate(wait=True) polls /health until it responds
+    return {"status": "healthy"}
+
 @app.get("/predict")
 async def predict(index: int = 0) -> dict:
     return {"prediction": app.state.model(index)}
@@ -112,9 +118,11 @@ if __name__ == "__main__":
     serving_env.parameters = []
     local_app = flyte.with_servecontext(mode="local").serve(serving_env)
     local_app.activate(wait=True)
+    # The local server stops when the script exits, so block until Ctrl+C
+    threading.Event().wait()
 ```
 
-Locally, the app loads `model.pt` from disk:
+Locally, the app loads `model.pt` from disk and serves until you stop the script with Ctrl+C:
 
 ```bash
 python serve_model.py
