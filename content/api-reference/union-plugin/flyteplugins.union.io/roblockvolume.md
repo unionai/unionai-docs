@@ -2,7 +2,7 @@
 title: ROBlockVolume
 description: "An immutable version of a `BlockVolume` -- what its `commit` and `finalize` return, and what a downstream task receives."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

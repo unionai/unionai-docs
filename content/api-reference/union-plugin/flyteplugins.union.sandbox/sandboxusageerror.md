@@ -2,7 +2,7 @@
 title: SandboxUsageError
 description: "A sandbox session was used in a way that can't work: started outside a task, with a flyte that has no sessions, or used after its ``async with`` block ended."
 icon: exclamation-triangle
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

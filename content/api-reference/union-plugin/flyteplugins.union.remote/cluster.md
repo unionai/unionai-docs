@@ -2,7 +2,7 @@
 title: Cluster
 description: "Represents a Union cluster."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

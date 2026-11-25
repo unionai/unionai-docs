@@ -1,7 +1,7 @@
 ---
 title: Link
 icon: diagram-3
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

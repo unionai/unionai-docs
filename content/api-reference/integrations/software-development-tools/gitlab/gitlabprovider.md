@@ -2,7 +2,7 @@
 title: GitLabProvider
 description: "GitLab's webhook provider, with its defaults pre-wired."
 icon: braces
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

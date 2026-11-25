@@ -2,7 +2,7 @@
 title: SessionRoutingInfo
 description: "Where in the platform a session is served: the pod its worker serves it from, and the cluster."
 icon: braces
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---
