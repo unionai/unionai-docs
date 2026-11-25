@@ -22,7 +22,7 @@ Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS
 Flyte lets you write workflows in standard Python: no domain-specific language, no special syntax, no restrictions.
 
 In Flyte, your "workflow" is a task that calls other tasks.
-Compare the same code as plain Python and as Flyte tasks: the Flyte version adds a `TaskEnvironment` and the `@env.task` decorators, and the function bodies stay the same.
+Compare the same code as plain Python and as Flyte tasks. The Flyte version imports `flyte`, adds a `TaskEnvironment`, and decorates the tasks with `@env.task`. The function bodies stay the same.
 
 {{< tabs "pure-python" >}}
 {{< tab "Plain Python" >}}
