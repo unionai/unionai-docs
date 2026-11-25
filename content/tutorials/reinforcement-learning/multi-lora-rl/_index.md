@@ -25,9 +25,8 @@ This tutorial runs that whole lifecycle on Union.ai for two skills at once:
 - **Distributed and autoscaled.** Generation, scoring, and training run in separate containers sized
   for the work. The rollout pool grows from one GPU replica to two when generation calls queue up, and
   shrinks when they are idle.
-- **Resilient.** Each run checkpoints every iteration, so with retries set on the driver it resumes
-  there after a preemption. A shared replica recovers from a crashed engine or a failed step without
-  corrupting the other run's state.
+- **Resilient.** Each run checkpoints every iteration and resumes there after a preemption. A crashed
+  engine or a failed step is retried on the shared replicas without corrupting the other run's state.
 - **A review for each run.** After its final eval, each run pauses until a person approves or rejects
   that skill's model. Nothing is published without an approval.
 - **Serving for each model.** Every approved model is published as an artifact and served by its own
@@ -326,9 +325,9 @@ it. The example handles each case in a specific place:
 
 | What fails | What happens |
 |---|---|
-| The driver's container is preempted | Without retries, the run fails. Set `retries` on `train_rl` and a retried driver loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have. See [Durable training](../../../user-guide/model-training/durable-training) |
-| The vLLM engine process crashes | The `generate` call fails, and so does the run that made it. `generate` clears the cached engine before it raises, so the replica builds a fresh engine on the next call instead of handing the dead one to the other run |
-| A `train_step` fails halfway through | The run that called it fails. The step marks the in-memory adapter as unpublished before it starts, so the next call for that adapter, a retry included, reloads it instead of training on top of half-updated weights |
+| The driver's container is preempted | The platform reschedules the driver, without using the task's `retries`. The new attempt loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have. See [Durable training](../../../user-guide/model-training/durable-training) |
+| The vLLM engine process crashes | `generate` clears the cached engine before it raises, and its `retries=2` runs the call again on a freshly built engine instead of handing the dead one to the other run |
+| A `train_step` fails halfway through | The step marks the in-memory adapter as unpublished before it starts, so its retry (`retries=2`) reloads the adapter it was given instead of training on top of half-updated weights |
 | A replica is lost | The next call lands on another replica, which loads the base model and the adapter from object storage. Nothing is stored only on a replica's disk |
 
 ## Distributed and autoscaled
