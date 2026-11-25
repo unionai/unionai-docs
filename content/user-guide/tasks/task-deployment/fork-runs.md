@@ -24,8 +24,7 @@ replayed except where it is unchanged.
 > `flyte fork` ships in `flyteplugins-union` 0.8.1 and later (`pip install flyteplugins-union`),
 > alongside `flyte` 2.6.5. It is remote-only: forking a run has no local equivalent.
 > `--task-action-inputs` and `--target-action` require `flyteplugins-union` 0.21.1 and `flyte`
-> 2.13.4 or later, both where you fork and in the image of every task in the run, and a Union.ai
-> backend that supports action overrides.
+> 2.13.4 or later, both where you fork and in the image of every task in the run.
 
 ## How it relates to rerun and recover
 
@@ -49,8 +48,7 @@ flowchart LR
 
 Fork can also change the root action's inputs, or the inputs of any task action inside the run.
 The substitute code is optional too: `fork(run, threshold=0.9)` with no `task_template` replays the
-source run's task spec against new inputs, which makes fork the way to recover a run with different
-inputs. On the CLI the file and task can be left out only when you pass `--task-action-inputs`.
+source run's task spec against new inputs. On the CLI the file and task can be left out only when you pass `--task-action-inputs`.
 
 ## Fork from the CLI
 
