@@ -12,7 +12,7 @@ variants: -flyte +union
 versioned file system that they mount and read and write like a local directory.
 A Volume is served **inside the task pod** by
 [FUSE](https://www.kernel.org/doc/html/latest/filesystems/fuse.html), so on a
-self-managed cluster the data plane must give task pods a way to get a FUSE
+Self-Managed cluster the data plane must give task pods a way to get a FUSE
 mount. The dataplane chart does this with one of two DaemonSets, depending on
 its version: the mount broker from chart version 2026.9.4 (on by default from
 2026.9.7), or the FUSE device plugin in versions before 2026.9.4:

@@ -2,7 +2,7 @@
 title: SnapshotFuture
 description: "A snapshot taken, from ``await sb.snapshot(wait=False)``: what it holds is fixed and its session runs on."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

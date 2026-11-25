@@ -2,7 +2,7 @@
 title: FileEntry
 description: "One entry from `FileSystem.ls` or `FileSystem.stat`."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

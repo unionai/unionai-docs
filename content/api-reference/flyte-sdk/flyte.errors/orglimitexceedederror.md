@@ -2,7 +2,7 @@
 title: OrgLimitExceededError
 description: "This error is raised when the server refuses a request because the organization is at one of its limits, for example `max_actions_per_run` or `max_clusters`."
 icon: exclamation-triangle
-version: 2.14.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

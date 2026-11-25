@@ -2,7 +2,7 @@
 title: SandboxSessionEnded
 description: "A call into a sandbox failed because its session has ended: its microVM was lost (e.g. its node restarted), it ran past its maximum duration, or it was aborted."
 icon: exclamation-triangle
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

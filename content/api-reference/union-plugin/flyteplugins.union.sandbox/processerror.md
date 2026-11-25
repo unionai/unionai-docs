@@ -2,7 +2,7 @@
 title: ProcessError
 description: "A command ended abnormally: the session failed or its stream broke."
 icon: exclamation-triangle
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

@@ -2,7 +2,7 @@
 title: SandboxEnvironment
 description: "A sandbox definition: secrets, env vars, resources, network and lifetime."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

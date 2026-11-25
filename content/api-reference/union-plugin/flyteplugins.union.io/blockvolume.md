@@ -2,7 +2,7 @@
 title: BlockVolume
 description: "A writable Volume whose content is one ext4 filesystem image."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---
@@ -488,6 +488,7 @@ def from_volume(
     size: Optional[str] = None,
     workers: int = 8,
     mount_path: Optional[str] = None,
+    artifact: Union[bool, str, 'ArtifactMetadata', 'VolumeArtifact', None] = None,
 ) -> 'BlockVolume'
 ```
 A new block volume holding a copy of a regular volume's files.
@@ -505,6 +506,12 @@ A source that is mounted by this task is read from its live mount (do
 not write to it meanwhile); otherwise it is mounted read-only for the
 copy and unmounted after.
 
+``artifact`` declares the new volume's artifact identity, as for
+`new`: returned from a task with ``produces_artifacts=True``, it
+is published as a volume artifact (one a sandbox can mount). The
+source's identity is not carried over: the copy is a different kind
+of volume.
+
 Returns the new volume mounted: keep working in it, `commit` it,
 or return it from the task (which publishes it).
 
@@ -516,6 +523,7 @@ or return it from the task (which publishes it).
 | `size` | `Optional[str]` | |
 | `workers` | `int` | |
 | `mount_path` | `Optional[str]` | |
+| `artifact` | `Union[bool, str, 'ArtifactMetadata', 'VolumeArtifact', None]` | |
 
 ### get_artifact_metadata()
 

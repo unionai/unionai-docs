@@ -2,7 +2,7 @@
 title: PlannedAction
 description: "One source-run action, as a fork plan sees it."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---

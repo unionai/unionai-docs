@@ -2,7 +2,7 @@
 title: Sandbox
 description: "A sandbox session, as the platform has it."
 icon: braces
-version: 0.26.0
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---
