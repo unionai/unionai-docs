@@ -15,7 +15,7 @@ This page builds the analytics factory from the [overview](./_index): `raw_event
 
 ## The tasks
 
-The tasks are ordinary. They take plain inputs, return plain outputs, and don't import the factory. Turn on caching, because the task cache is how a factory decides that a partition is still fresh:
+The tasks are ordinary. They take plain inputs, return plain outputs, and don't import the factory. The factory caches every build call whether or not the task does, but the task's cache setting decides what a redeploy rebuilds. With `cache="auto"`, a new version of the task rebuilds a partition only if the task's own function changed. Without it, every new version of the task rebuilds:
 
 ```python
 from datetime import datetime
