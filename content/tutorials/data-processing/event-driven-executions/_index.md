@@ -276,7 +276,8 @@ type checking against the task signature and breaks silently when either side ch
 ### Choosing the version a trigger runs
 
 The subscribers launch the version they name, which is why the task is deployed under
-`prod`. A trigger launches the version deployed with it unless you set `task_version`,
+`prod`. A trigger launches the version deployed with it unless you set `task_version`
+(requires `flyte` 2.12.5 or later; see [Pinning a trigger to a task version](../../../user-guide/triggers/manage-triggers#pinning-a-trigger-to-a-task-version)),
 as `on_new_data` does above. Deploy the version the trigger should run first, then deploy
 other builds with the pin set:
 
@@ -289,12 +290,9 @@ New artifact versions keep firing `consume` on `prod`, and its output names the 
 ran on. You can still launch the new build by hand to try it. To promote it, deploy again
 with `CONSUME_VERSION` set to the new version. To roll back, set it to the previous one.
 
-`task_version` must name a version of the task that is already deployed. Otherwise the
-deploy fails with `trigger on_new_dataset pins task version "<version>", which is not
+`task_version` must name a version of the task that is already deployed, or the version
+you are deploying. Otherwise the deploy fails with `trigger on_new_dataset pins task version "<version>", which is not
 deployed for task artifact_chain.consume; deploy that version first or remove the pin`.
-
-Every deploy also sets whether the trigger is active from `auto_activate`, which defaults
-to `True`.
 
 ## Choosing an approach
 
