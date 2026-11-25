@@ -27,7 +27,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 > CoreWeave, Crusoe, and Nebius have their own deployment guides with provider-specific GPU, storage, and registry steps: [CoreWeave](./coreweave) · [Crusoe](./crusoe) · [Nebius](./nebius).
 
 > [!NOTE] Planning more than one cluster?
-> This page covers the single-cluster path: one cluster in the `default` cluster pool, as created by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure.
+> This page covers the single-cluster path: one cluster in the `default` cluster pool, registered by the `flyte create cluster ... --pool default` command below. If you plan to connect several clusters to the same control plane, read [Multiple clusters](../configuration/multi-cluster) first. Pool membership governs metadata sharing: clusters in the same pool share one metadata bucket, and clusters in different pools must use different ones, so it affects the metadata bucket you configure.
 
 ## Assumptions
 
@@ -52,7 +52,7 @@ Before you start, provision your cloud infrastructure using the matching page an
    helm repo update
    ```
 
-2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name:
+2. Configure the `flyte` CLI to talk to your control plane, then register the cluster name. If you created your organization by [signing up](../../sign-up/_index), first [create the `default` pool](../../../user-guide/clusters-and-queues/cluster-pools#create-a-pool): run `flyte create cluster-pool default --edit` (or `--file <manifest>`) after `flyte create config` and before `flyte create cluster`.
 
    ```bash
    flyte create config --endpoint <YOUR_UNION_CONTROL_PLANE_URL> --org <YOUR_ORG_NAME>
@@ -61,7 +61,7 @@ Before you start, provision your cloud infrastructure using the matching page an
 
    `flyte create config` writes `.flyte/config.yaml`. The first command that contacts the control plane opens a browser to authenticate you.
 
-   Register the cluster before you install the chart: the data plane binds to this record when it starts. Every organization is provisioned with a `default` pool, so `--pool default` needs no extra setup.
+   Register the cluster before you install the chart: the data plane binds to this record when it starts. No organization starts with a `default` pool. If Union.ai set up your organization, `default` is created when its first cluster is registered. If you created your organization by signing up, `flyte create cluster` fails until you have created `default` with the `flyte create cluster-pool` command described above.
 
 3. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your control plane, provision authorization permissions for the app to operate on the cluster name you selected, and provide follow-up instructions. Pass the `--provider` value for your cloud (see the table above):
 
@@ -121,8 +121,11 @@ user guide:
 - [Managing queues](../../../user-guide/clusters-and-queues/queues): route workloads to a pool and enforce concurrency, resource caps, and priority.
 
 Each cluster is assigned exactly one pool. If no custom pool is specified when the
-cluster is created, it joins the `default` pool that every organization is
-provisioned with, so a single-cluster deployment needs no extra pool setup.
+cluster is created, it joins the `default` pool. No organization starts with
+one: if Union.ai set up your organization, `default` is created when its first
+cluster is registered; if you created your organization by signing up, you
+create `default` before you register your first cluster. Once `default` exists,
+a single-cluster deployment needs no further pool setup.
 
 ## Upgrades and maintenance
 
