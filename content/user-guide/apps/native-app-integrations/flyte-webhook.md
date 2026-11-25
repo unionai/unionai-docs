@@ -27,7 +27,7 @@ The webhook provides endpoints for the following operations:
 | **build** | `POST /build-image` | Build container images |
 | **prefetch** | `POST /prefetch/hf-model`, `GET /prefetch/hf-model/{run_name}`, `GET /prefetch/hf-model/{run_name}/io`, `POST /prefetch/hf-model/{run_name}/abort` | Prefetch HuggingFace models |
 
-All endpoints except `/health`, `/docs`, and `/openapi.json` use passthrough
+All endpoints except `/health`, `/docs`, `/openapi.json`, and `/redoc` use passthrough
 authentication, forwarding the caller's credentials to the
 {{< key product_name >}} control plane.
 
