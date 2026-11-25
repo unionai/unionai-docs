@@ -139,4 +139,5 @@ The gateway's image, `ghcr.io/unionai/union-llm-gateway`, must be pullable from 
 ## Limitations
 
 - Self-Hosted Base runs apps only on Knative Serving.
+- A gateway's **Usage** tab shows no usage history. Each key's 24-hour totals are on the **Virtual Keys** tab.
 - On your machine (`flyte start onebox --with apps`), apps aren't checked per caller: anyone who can reach the UI can call any app. Use it only for local evaluation.
