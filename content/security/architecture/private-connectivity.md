@@ -1,14 +1,14 @@
 ---
-title: Private connectivity (BYOC)
-description: How Union.ai reaches a BYOC customer cluster, and the optional private endpoint over AWS PrivateLink or GCP Private Service Connect.
+title: Private connectivity (Union-Managed)
+description: How Union.ai reaches a Union-Managed customer cluster, and the optional private endpoint over AWS PrivateLink or GCP Private Service Connect.
 icon: reception-4
 weight: 6
 variants: -flyte +union
 ---
 
-# Private connectivity (BYOC)
+# Private connectivity (Union-Managed)
 
-In the BYOC deployment model, Union.ai maintains a management connection to the customer's Kubernetes cluster. By default, this connection reaches the cluster's public Kubernetes API endpoint. A private endpoint is optional and available only for EKS and GKE clusters: when it is configured, the connection uses AWS PrivateLink (EKS) or GCP Private Service Connect (GKE). Azure (AKS) clusters have no private-endpoint option and are managed over their public API endpoint.
+In the Union-Managed deployment model, Union.ai maintains a management connection to the customer's Kubernetes cluster. By default, this connection reaches the cluster's public Kubernetes API endpoint. A private endpoint is optional and available only for EKS and GKE clusters: when it is configured, the connection uses AWS PrivateLink (EKS) or GCP Private Service Connect (GKE). Azure (AKS) clusters have no private-endpoint option and are managed over their public API endpoint.
 
 With a private endpoint, this connection is used exclusively for cluster management operations: Kubernetes version upgrades, node pool provisioning and scaling, Helm chart deployments and updates, and health monitoring. It provides Union.ai with the access needed to manage the Kubernetes cluster without exposing the Kubernetes API to the public internet.
 
@@ -16,7 +16,7 @@ With a private endpoint, the management connection does **not** carry customer d
 
 When the private endpoint is configured, the Kubernetes API isn't reachable from the public internet. This aligns with several compliance controls: ISO 27001 A.5.15 (Access control), A.8.20 (Networks security), A.8.22 (Segregation of networks), and CIS Controls v8 Control 12 (Network infrastructure management). Without a private endpoint, the cluster's Kubernetes API endpoint is public.
 
-In the self-managed alternative, no management connection exists because the customer operates the data plane independently. See the [security overview](../_index) for the deployment-model summary.
+In the Self-Managed alternative, no management connection exists because the customer operates the data plane independently. See the [security overview](../_index) for the deployment-model summary.
 
 ## Verification
 

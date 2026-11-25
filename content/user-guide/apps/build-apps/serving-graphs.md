@@ -56,7 +56,10 @@ at runtime each app is independent.
 ### Getting an upstream app's endpoint
 
 There are two ways for one app to discover another app's URL. Both resolve
-correctly across local, in-cluster, and external contexts.
+when the apps are deployed. When you serve locally, only `env.endpoint`
+resolves, to `http://localhost:<port>`. A `flyte.app.AppEndpoint` parameter's
+environment variable holds the parameter's string form
+(`type='string' app_name='...' public=False`) instead of a URL.
 
 **Pattern A: `env.endpoint` (Python property).** When both apps live in the
 same Python module, the upstream env object is in scope and you can read
@@ -152,8 +155,9 @@ sides deploy together:
 
 ### Deploy
 
-`flyte.serve(cpu_env)` deploys both apps. The CPU app is the public entry
-point; the GPU app is reached only via the cluster-internal endpoint:
+`flyte.serve(cpu_env)` deploys both apps. The CPU app is the entry point and
+calls the GPU app over the cluster-internal endpoint. The GPU app still gets
+its own public URL (on Union.ai, every app does):
 
 {{< code file="/unionai-examples/v2/user-guide/build-apps/serving_graphs/image_classification.py" fragment=deploy lang=python >}}
 
@@ -255,5 +259,5 @@ simpler to operate.
 2. **Persistent HTTP clients**: Open one `httpx.AsyncClient` per replica in the app's lifespan rather than per request, to avoid TCP/TLS setup overhead.
 3. **Pick the right wire format**: For tensor-shaped payloads, send raw bytes over `application/octet-stream` instead of JSON.
 4. **Size each node independently**: GPU narrow, CPU wide; use scale-to-zero (`replicas=(0, N)`) for bursty downstream services.
-5. **Authentication**: Use `requires_auth=True` on internal-only apps so they can't be reached from the public internet, and put public-facing auth on the entry-point app.
+5. **Authentication**: `requires_auth` (default `True`) doesn't make an app internal-only. On Union.ai, it only controls whether an app accepts unauthenticated requests: an app that only other apps call still has a public URL.
 6. **Endpoint access**: Prefer `app_env.endpoint` for in-module references; use `flyte.app.AppEndpoint` parameters when the upstream env isn't importable.

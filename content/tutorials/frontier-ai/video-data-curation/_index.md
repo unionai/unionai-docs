@@ -38,8 +38,8 @@ footage:
 - a pool of GPU workers scores every clip with CLIP and the LAION aesthetic head, RAFT optical
   flow, and the CRAFT text detector, each model loaded once per worker;
 - a second GPU pool captions the kept clips with SmolVLM2;
-- every stage is cached per chunk, and each caption per clip, so a new threshold reruns only
-  the selection;
+- every stage is cached per chunk, and each caption per clip, so a stricter threshold reruns
+  only the selection, and a looser one also captions the newly kept clips;
 - the manifest and the kept clips are published as a dataset artifact with a card, next to a
   report with the funnel, contact sheets per filter, histograms, captions, and throughput per stage.
 

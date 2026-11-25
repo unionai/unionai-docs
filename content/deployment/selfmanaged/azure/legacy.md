@@ -16,7 +16,7 @@ variants: -flyte +union
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE]
-> **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
+> **Deployment model**: This guide covers **Self-Managed**: you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 
@@ -261,7 +261,7 @@ az identity federated-credential create \
   --audiences api://AzureADTokenExchange
 ```
 
-In multi-namespace mode (Helm values `low_privilege: false` and `namespaces.enabled: true`, plus `clusterresourcesync.enabled: true` so that the chart creates the task namespaces), task pods run as the `default` service account in each task namespace. `values.azure.yaml` maps task namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
+In multi-namespace mode (`singleNamespace: false`; see [Choose a scope](../kubernetes-rbac#choose-a-scope)), task pods run as the `default` service account in each work namespace. If `clusterresourcesync` is enabled, it annotates that account with `azure.workload.identity/client-id` set to `global.AZURE_WORKER_CLIENT_ID` in every work namespace. Otherwise, add the annotation yourself. `values.azure.yaml` maps work namespaces to domains (`development`, `staging`, `production`), because Entra federated credentials can't match a wildcard subject. Also create a credential for each domain namespace:
 
 ```bash
 for ns in development staging production; do

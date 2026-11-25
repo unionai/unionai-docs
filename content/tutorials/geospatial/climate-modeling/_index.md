@@ -59,7 +59,7 @@ Climate data comes in specialized formats such as NetCDF, HDF5, and GRIB. The co
 > [!NOTE]
 > Decreasing the grid spacing via `grid_resolution_km` (for example, from 10 km to 5 km) increases grid resolution and significantly increases memory usage because it introduces more data points and intermediate state. Even with 141 GB of H200 GPU memory, high-resolution or adaptively refined simulations may exceed available VRAM, especially when running large ensembles.
 >
-> To mitigate this, consider reducing the ensemble size, limiting the refined region, running fewer physics variables, or scaling the simulation across more GPUs so memory is distributed more evenly.
+> To mitigate this, consider reducing the ensemble size, changing the refinement code to refine only a subregion instead of the full domain, running fewer physics variables, or scaling the simulation across more GPUs so memory is distributed more evenly.
 
 `ClimateMetrics` collects diagnostics at each iteration, such as convergence rate, energy conservation, and detected phenomena. These metrics are streamed to the real-time dashboard so you can monitor how the simulation evolves as it runs.
 
@@ -71,7 +71,7 @@ Different stages need different resources. Flyte's `TaskEnvironment` declares ex
 
 Here’s what each environment is responsible for:
 
-- **`gpu_env`**: Runs the atmospheric simulations on H200 GPUs. The 130 GB of GPU memory is used to hold the ensemble members in VRAM during execution.
+- **`gpu_env`**: Runs the atmospheric simulations on H200 GPUs. The GPU is requested with `gpu="H200:1"`. The `memory="130Gi"` setting requests 130 GiB of host memory for the task's container, separate from the GPU's VRAM.
 - **`dask_env`**: Provides a distributed Dask cluster for preprocessing. A scheduler and multiple workers handle data fusion and transformation in parallel.
 - **`cpu_env`**: Handles data ingestion and orchestration. This environment also includes the secrets required to access the ERA5 API.
 
@@ -210,11 +210,11 @@ Ensemble forecasting addresses this uncertainty by:
 
 ### Adaptive mesh refinement
 
-When a hurricane begins to form, coarse spatial grids are not sufficient to resolve critical features like eyewall dynamics. Adaptive mesh refinement allows the simulation to focus compute where it matters most by:
+When a hurricane begins to form, coarse spatial grids are not sufficient to resolve critical features like eyewall dynamics. Adaptive mesh refinement allows the simulation to resolve these features by:
 
 - Increasing grid resolution, for example from 10 km to 5 km
 - Reducing the timestep to maintain numerical stability
-- Refining only the regions of interest instead of the entire domain
+- Interpolating the data onto the finer grid across the entire domain
 
 This approach is computationally expensive, but it is essential for producing accurate intensity forecasts.
 
@@ -225,7 +225,7 @@ Rather than analyzing results after a simulation completes, this pipeline detect
 The system monitors for conditions such as:
 
 - **Hurricanes**: Wind speeds exceeding 33 m/s (Category 1 threshold) combined with central pressure below 980 mb
-- **Heatwaves**: Sustained temperature anomalies over a defined period
+- **Heatwaves**: A temperature anomaly that exceeds a threshold at any check
 
 Detecting these events in real time enables adaptive responses, such as refining the simulation or triggering alerts, and supports earlier warnings for extreme weather.
 
@@ -233,7 +233,7 @@ Detecting these events in real time enables adaptive responses, such as refining
 
 This example is intentionally scoped to keep the ideas clear, but there are several natural ways to extend it for more realistic workloads.
 
-To model different ocean basins, change the `region` parameter to values like `"pacific"` or `"indian"`. The ingestion tasks automatically adjust to pull the appropriate satellite coverage for each region.
+To model a different ocean basin, change the `region` parameter. The satellite ingestion task pulls GOES-16 data for `"atlantic"` and GOES-17 data for `"pacific"`. The task fails if any day in your `date_range` has no imagery, and GOES-17 imagery ends on January 10, 2023, so `"pacific"` fails with the example's default dates in September 2024. Any other value, such as `"indian"`, falls back to GOES-16, which covers the Atlantic.
 
 To run longer forecasts, increase `simulation_hours` in `SimulationParams`. The default of 240 hours, or 10 days, is typical for medium-range forecasting, but you can run longer simulations if you have the compute budget.
 

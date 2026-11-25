@@ -2,7 +2,7 @@
 title: External conditions
 description: Pause a task until an external signal arrives, such as a human approval or a callback.
 icon: pause-circle
-weight: 20
+weight: 25
 variants: +flyte +union
 ---
 
@@ -99,7 +99,7 @@ flyte.new_condition(
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `name` | `str` | required | Identifier for the condition within the parent action. Signal it with this name (`flyte signal condition <run> <name>`) or look it up with `flyte.remote.Condition.get("<name>", ...)`. |
+| `name` | `str` | required | Identifier for the condition within the parent action. Look it up with `flyte.remote.Condition.get("<name>", ...)`. `flyte signal condition` takes the condition's action name, not this name (see [From the CLI](#from-the-cli)). |
 | `prompt` | `str` | `"Approve?"` | Human-readable text shown in the UI signal form. |
 | `prompt_type` | `"text"` \| `"markdown"` | `"text"` | How the prompt is rendered. |
 | `data_type` | `type` | `bool` | Payload type: one of `bool`, `int`, `float`, `str`. Determines what `wait()` returns and what a signal must supply. |
@@ -122,8 +122,9 @@ A condition is satisfied by delivering exactly one typed signal of its declared 
 flyte get condition <run-name>
 flyte get condition <run-name> <parent-action>
 
-# Signal a specific condition by its name. Omit the value for an interactive typed prompt.
-flyte signal condition <run-name> <condition-name> true
+# Signal a condition by its action name (the Action column of `flyte get condition`), not the
+# name passed to new_condition. Omit the value for an interactive typed prompt.
+flyte signal condition <run-name> <condition-action-name> true
 ```
 
 The value is coerced to the condition's declared `data_type` (`true`/`false` for `bool`, integer
@@ -137,7 +138,6 @@ import flyte.remote
 condition = flyte.remote.Condition.get(
     "prod_write_approval",
     run_name="deploy-run-123",
-    action_name="etl_pipeline",
 )
 condition.signal(True)
 ```
@@ -174,7 +174,6 @@ per waiting task when many tasks wait at once.
 | Situation | Raised |
 |---|---|
 | Timeout elapses before a signal | `flyte.errors.ConditionTimedoutError` |
-| Creating a condition whose `name` already exists in the action | `flyte.errors.ConditionAlreadyExistsError` |
 | Condition fails during execution | `flyte.errors.ConditionFailedError` |
-| Signal value doesn't match `data_type` | `TypeError` (client-side, before any call) |
+| `Condition.signal` payload isn't a `bool`, `int`, `float`, or `str` | `TypeError` (client-side, before any call) |
 | `wait()` called outside a task context | `RuntimeError` |

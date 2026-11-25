@@ -122,6 +122,47 @@ print(f"MCP endpoint: {handle.endpoint}/flyte-mcp/mcp")
 The app is deployed into **your own tenant**, so the server sits in the same trust domain as the data it reads: run metadata, logs, and task inputs and outputs stay inside your account. Set `requires_auth=True` and the endpoint sits behind your organization's SSO, so each call runs as the person driving the agent, with their own permissions.
 
 See [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) for how deployment, activation, and scaling work in general.
+
+### Let clients sign in through OAuth discovery
+
+Requires `flyte` 2.13.4 or later.
+
+Some MCP clients, such as claude.ai connectors, can't take a pasted bearer token. They sign in by OAuth discovery instead, as the [MCP authorization spec](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) describes. To support them, set `protected_resource_metadata` and turn off the platform's authentication with `requires_auth=False`:
+
+```python
+from flyte.ai.mcp import FlyteMCPAppEnvironment, ProtectedResourceMetadata
+
+mcp_env = FlyteMCPAppEnvironment(
+    name="flyte-mcp",
+    requires_auth=False,
+    protected_resource_metadata=ProtectedResourceMetadata(),
+)
+```
+
+`requires_auth=False` is required because clients must reach the metadata without a token. The server still requires a bearer token on everything else. It then:
+
+- Serves an [RFC 9728](https://www.rfc-editor.org/rfc/rfc9728) metadata document, without authentication, at `/.well-known/oauth-protected-resource/flyte-mcp/mcp` (with the default mount path) and at the root `/.well-known/oauth-protected-resource`. The document names the MCP endpoint URL and the authorization server that issues its tokens.
+- Answers any request without an `Authorization: Bearer` header with `401` and `WWW-Authenticate: Bearer resource_metadata="<metadata URL>"`. `/health` stays open.
+- Forwards each request's bearer token to {{< key product_name >}}, so tool calls run as the signed-in user, as with `requires_auth=True`.
+
+`ProtectedResourceMetadata` takes these options:
+
+| Option | Default | Effect |
+|--------|---------|--------|
+| `authorization_servers` | The issuer your {{< key product_name >}} endpoint advertises | Issuer URLs the metadata advertises as issuing tokens for the server. Each must use HTTPS without a query or fragment. An empty list is rejected. |
+| `resource` | The request's scheme and `Host`, plus the MCP endpoint path | The full URL clients use to reach the MCP endpoint. Clients reject metadata whose `resource` doesn't match the URL they connected to. |
+| `scopes_supported` | None | OAuth scopes a client should request. Also sent as the `scope` parameter of the `401` challenge. |
+| `resource_name` | None | Human-readable server name. Some clients show it on their consent screen. |
+| `resource_documentation` | None | URL of documentation for developers using the server. |
+
+Gotchas:
+
+- **The transport must be HTTP.** Setting `protected_resource_metadata` with `transport="stdio"` raises `ValueError`.
+- **Set `resource` if a proxy changes the public URL.** If the proxy in front of the app rewrites the host or path, or terminates TLS so the app sees `http`, the derived URL won't match what clients connected to. The server never reads `Forwarded` or `X-Forwarded-Host` headers to build it.
+- **If the metadata returns `503`, set `authorization_servers`.** The default looks up the issuer from your {{< key product_name >}} endpoint the first time the metadata is requested. If that lookup fails, the metadata endpoint returns `503`, and the server logs the reason.
+- **Your identity provider must allow the client to sign in.** It must support the authorization-code flow with PKCE S256. It must also let the MCP client register: dynamic client registration, an administrator-approved client ID metadata document, or a preregistered client the MCP client supports. If you set `authorization_servers` to a provider you administer, register the client's exact redirect URI there, assign its users, and allow the requested scopes.
+- **The server doesn't validate tokens itself.** {{< key product_name >}} validates the token on each call the server makes to it. The `search` tools make no such call, so they answer any bearer value.
+- **Audience binding isn't enforced.** Clients send the server's URL as the RFC 8707 `resource` parameter, but the server doesn't check that the token's audience matches it. The token works as long as its audience is one {{< key product_name >}} accepts.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -163,7 +204,7 @@ mcp_env = FlyteMCPAppEnvironment(
 | `trigger` | `list_triggers`, `get_trigger`, `activate_trigger`, `deactivate_trigger` | Managing triggers |
 | `project` | `list_projects`, `get_project` | Discovering projects and domains |
 | `secret` | `list_secrets`, `create_secret`, `delete_secret` | Managing secrets (names only — values are never returned) |
-| `condition` | `list_conditions`, `signal_condition` | Answering human-in-the-loop gates |
+| `condition` | `list_conditions`, `get_condition`, `signal_condition` | Answering human-in-the-loop gates (`get_condition` requires `flyte` 2.13.5 or later) |
 | `identity` | `whoami` | Confirming which identity and org the server is acting as, and (for a server started with `flyte-mcp` 2.12.2 or later) which config file it was started from |
 | `search` | `search_flyte_sdk_examples`, `search_flyte_docs_examples`, `search_full_docs` | Grounding answers in SDK/docs |
 
@@ -230,6 +271,34 @@ mcp_env = FlyteMCPAppEnvironment(
     full_docs_path="/root/llms.txt",
 )
 ```
+
+## Reading logs
+
+Requires `flyte` 2.13.5 or later. Earlier releases return the first lines of the log as a plain string; from 2.13.5, `get_logs` returns a dict, so update any client code that parses its result.
+
+`get_logs` returns the last `max_lines` lines of an action's log (default 200), oldest first. The response is capped at 2,000 lines and about 100,000 characters, with the oldest lines dropped first. The response includes:
+
+| Field | Meaning |
+|-------|---------|
+| `logs` | The log lines, joined by newlines |
+| `available` | `false` when the action's logs are not up yet. `get_logs` returns right away in that case, unless the call passes `wait_for_logs=true`. |
+| `message` | A summary of what was returned, and what to call next |
+| `first_line`, `end_line` | The range of lines returned. Lines are numbered from 0 at the start of the log. |
+| `has_more_before`, `next_before_line` | Whether older lines exist, and the `before_line` value that reads them |
+| `attempt` | The attempt that was read. Pass it back when paging so the numbering stays on the same attempt if a retry starts. |
+| `stopped` | Why reading ended: `end_of_stream`, `idle`, `time_limit`, or `before_line` |
+| `timeout_s` | The read budget the call used, in seconds |
+
+To page back, call `get_logs` again with `before_line` set to `next_before_line`, and the same `attempt` and `filter_system` as the first call, so the line numbers don't shift. To read from the start of the log, pass `before_line` equal to `max_lines`.
+
+The log service streams from the start of the log, so finding the newest lines means reading the whole stream. A call reads for at most its `timeout_s` (default 30), clamped to between 1 second and the server's ceiling. Once lines are arriving, a gap with no new lines also ends the read. If `stopped` is `time_limit`, newer lines may exist: retry with a larger `timeout_s`.
+
+Two `FlyteMCPAppEnvironment` settings bound the read. Callers can't raise them.
+
+| Setting | Default | Effect |
+|---------|---------|--------|
+| `log_read_timeout_ceiling_s` | `120` | Upper limit on a call's `timeout_s`. Must be at least 1. |
+| `log_idle_timeout_s` | `5` | Seconds without a new line that end the read, once lines are arriving. Must be greater than 0. |
 
 ## Putting it together: a filtered server
 
@@ -309,7 +378,7 @@ OpenCode spawns the `uvx` command for you:
 2. **Always allowlist mutating tools**: If `run_task` or app/trigger management is enabled on a shared server, set the corresponding allowlist so an agent can't touch arbitrary resources. No allowlist applies to `abort_run`, `abort_action`, `create_secret`, `delete_secret`, or `signal_condition`, and each belongs to a group (`run`, `action`, `secret`, `condition`). To keep one from the server's agent, pass an explicit `tools=[...]` list that leaves it out, instead of `tool_groups`.
 3. **Prefer `tools` over `tool_groups` for read-only servers**: An explicit allowlist of read tools is the clearest way to guarantee an agent can't change anything.
 4. **Write specific `instructions`**: Describe what the server does and any constraints (e.g. "only allowlisted tasks can be run"). This guides tool selection and reduces wasted calls.
-5. **Keep auth on**: Leave `requires_auth=True` so only authenticated clients can reach a deployed server.
+5. **Keep auth on**: Leave `requires_auth=True` so only authenticated clients can reach a deployed server. The exception is a server with `protected_resource_metadata` set, which needs `requires_auth=False` and requires a bearer token itself.
 
 ## MCP tools reference
 
@@ -327,7 +396,7 @@ OpenCode spawns the `uvx` command for you:
 | `list_actions` | `action` | List the actions of a run |
 | `get_action` | `action` | Get action details and timing |
 | `abort_action` | `action` | Abort a single action |
-| `get_logs` | `logs` | Read action logs |
+| `get_logs` | `logs` | Read the newest lines of an action's logs, with a cursor to page back (see [Reading logs](#reading-logs)) |
 | `get_app` | `app` | Get an app |
 | `list_apps` | `app` | List apps |
 | `activate_app` | `app` | Activate an app |
@@ -341,7 +410,8 @@ OpenCode spawns the `uvx` command for you:
 | `list_secrets` | `secret` | List secret names |
 | `create_secret` | `secret` | Create a secret |
 | `delete_secret` | `secret` | Delete a secret |
-| `list_conditions` | `condition` | List the conditions of a run |
+| `list_conditions` | `condition` | List the conditions of a run, with each condition's `prompt`, `prompt_type`, `description`, and `timeout_s` (from `flyte` 2.13.5). If a condition's details fail to load, those fields are null and its `details_error` says why |
+| `get_condition` | `condition` | Get one condition of a run: its prompt, payload type, and timeout. Requires `flyte` 2.13.5 or later |
 | `signal_condition` | `condition` | Signal a waiting condition |
 | `whoami` | `identity` | Show the caller's identity |
 | `search_flyte_sdk_examples` | `search` | Search Flyte SDK examples |

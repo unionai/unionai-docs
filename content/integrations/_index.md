@@ -367,7 +367,7 @@ See the **Connector app** guide (`user-guide/build-apps/connector-app`) for a co
 
 {{< variant flyte >}}
 {{< markdown >}}
-Deploying a connector requires two steps: building a Docker image that contains your connector code and then patching the connector Kubernetes deployment to use it.
+Deploying a connector requires two steps: building a Docker image that contains your connector code and then patching the connector Kubernetes deployment to use it. The connector deployment exists only if your Flyte Helm chart includes the `flyteconnector` subchart and it is enabled: `flyte-binary` deploys it unless you set `flyteconnector.enabled: false`, and `flyte-core` deploys it only if you set `flyteconnector.enabled: true` in your Helm values.
 
 **Step 1: Build the connector image**
 
@@ -398,11 +398,11 @@ Once the image is pushed, patch the connector Kubernetes deployment to use it:
 
 ```bash
 kubectl set image deployment/<connector-deployment-name> \
-    connector=<YOUR_REGISTRY>/my-connector:<TAG> \
+    flyteconnector=<YOUR_REGISTRY>/my-connector:<TAG> \
     -n <flyte-namespace>
 ```
 
-Replace `<connector-deployment-name>` with the name of your connector deployment (e.g. `flyte-connector`), and `<flyte-namespace>` with the namespace where Flyte is installed (typically `flyte`).
+Replace `<connector-deployment-name>` with the name of your connector deployment (`flyteconnector` by default), and `<flyte-namespace>` with the namespace where Flyte is installed (typically `flyte`).
 {{< /markdown >}}
 {{< /variant >}}
 

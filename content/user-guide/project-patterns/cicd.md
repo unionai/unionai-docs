@@ -47,7 +47,7 @@ uv run flyte create api-key --name ci-cd-key
 
 The output is a single base64-encoded string of the form `endpoint:client_id:client_secret:org`. **It's shown only once**: copy it immediately.
 
-The creation call doesn't take a permissions argument: the key is created under the caller's organization and identity context. If you need the key's privileges to be narrower than the minting user's, assign a dedicated role or policy to the key's identity using `flyte create role`, `flyte create policy`, and `flyte create assignment`.
+The key gets its own identity in the caller's organization. It doesn't take on the minting user's permissions. By default, the key's identity is assigned the `contributor` policy. To grant access yourself instead, create the key with `--no-default-policies`, then assign a policy to the key's client ID, which the command prints, with `flyte create assignment --creds-subject <client-id> --policy <policy>`. `flyte get assignment --creds-subject <client-id>` lists the key's assignments. If you need a narrower policy, define it first with `flyte create role` and `flyte create policy`.
 
 ### Store the key as a CI secret
 
@@ -61,7 +61,7 @@ When `FLYTE_API_KEY` is present in the environment at deploy time, the `flyte` C
 
 ### Key scope and rotation
 
-The key inherits the permissions of the user who minted it. For CI you typically want a dedicated service identity with narrow scope: deploy rights on the target project/domain only. Rotate on a schedule (90 days is a reasonable default) by running `flyte create api-key` again and updating the secret.
+The key has its own identity. It has the `contributor` policy unless you created it with `--no-default-policies`. For CI you typically want narrow scope: deploy rights on the target project/domain only. Rotate on a schedule (90 days is a reasonable default) by running `flyte create api-key` again and updating the secret. The new key is a new identity with a new client ID. Give it a new `--name`, pass `--no-default-policies` again if you used it, and repeat your `flyte create assignment` for the new client ID. Then delete the old key with `flyte delete api-key <old-client-id>`.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -369,7 +369,7 @@ Because Flyte OSS builds images locally, the deploy steps need Docker available 
 {{< /markdown >}}
 {{< /variant >}}
 
-Image tags are content hashes of the `flyte.Image` definition: `flyte build` pushes `<registry>:flyte-<hash>`, and `flyte deploy` computes the same hash, sees the image already in the registry, and skips rebuilding. `--copy-style` must match between the two commands; otherwise the hashes diverge and deploy will build again.
+Image tags are content hashes of the `flyte.Image` definition: `flyte build` pushes `<registry>/<name>:<hash>`, and `flyte deploy` computes the same hash, sees the image already in the registry, and skips rebuilding. `--copy-style` must match between the two commands; otherwise the hashes diverge and deploy will build again.
 
 {{< variant union >}}
 {{< markdown >}}

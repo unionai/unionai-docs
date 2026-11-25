@@ -217,6 +217,7 @@ With `behavior="auto"` and `flyte` 2.12.0 or later, its cache version is a hash 
 * The image
 * The command (for a shell task, the rendered script) and the arguments
 * The input and output data directories, the metadata format and the file input layout
+* For a container task with `data_loading=False` (`flyte` 2.13.3 or later), the fact that data loading is turned off
 
 Changing any of these invalidates the cache.
 

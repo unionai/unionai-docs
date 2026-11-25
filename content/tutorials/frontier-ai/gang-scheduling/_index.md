@@ -55,15 +55,13 @@ collects them into a report that draws one timeline per worker and runs two chec
 
 ## Requirements
 
-- A Union cluster with gang scheduling turned on and a queue the jobs can use (`shared` by default).
+- A Union cluster with gang scheduling turned on, and a Kueue LocalQueue in your project's namespace for the
+  jobs to use. The jobs use one named `shared` by default. If your cluster's LocalQueue has another name, set
+  `GANG_QUEUE` to it. If the LocalQueue doesn't exist, the task fails with `KueueLocalQueueNotFound`.
 - `flyte>=2.11.2` and a Flyte config pointing at that cluster.
 - A GPU pool that can fit one job but not two: `GANG_WORKERS ≤ GPUs < 2 × GANG_WORKERS`, within both
-  the node pool's capacity and the queue's quota. If both jobs fit, they run side by side and the
+  the node pool's capacity and the Kueue quota behind that LocalQueue. If both jobs fit, they run side by side and the
   report says so. If one job cannot fit at all, it is rejected as infeasible.
-
-See [Resource caps and scheduling](../../../user-guide/clusters-and-queues/resource-caps-and-scheduling)
-for how queues admit gang-style jobs, and
-[Managing queues](../../../user-guide/clusters-and-queues/queues) to create the queue.
 
 ## Run it
 
@@ -76,7 +74,7 @@ cluster. Three knobs control the run:
 | --- | --- | --- |
 | `GANG_WORKERS` | `3` | Workers (pods, one GPU each) per job |
 | `GANG_GPU` | `L4:1` | Accelerator per worker. Set to `""` for a CPU-only rehearsal |
-| `GANG_QUEUE` | `shared` | The queue the jobs are submitted to |
+| `GANG_QUEUE` | `shared` | The Kueue LocalQueue the jobs are submitted to |
 
 Run it with GPUs:
 
@@ -100,16 +98,15 @@ the queue label on the pod template:
 
 Most of this is the ordinary clustered-environment setup you would use for any distributed job:
 `replicas=WORKERS` pods, one GPU each via `resources`, a PyTorch distributed runtime, and a failure
-policy that recreates the group rather than leaving it half-alive. The single line that turns on gang
+policy with `max_restarts=0`, so a failed worker fails the attempt instead of restarting the JobSet. The single line that turns on gang
 scheduling is the label:
 
 ```python
 pod_template=flyte.PodTemplate(labels={"kueue.x-k8s.io/queue-name": QUEUE})
 ```
 
-With that label present, the cluster's queue admits the whole JobSet as one gang—never a subset. A
-job that references a queue also inherits that queue's [resource caps and priority](../../../user-guide/clusters-and-queues/resource-caps-and-scheduling), so a queue is exactly how a team caps the GPUs its
-training jobs can use.
+With that label present, the Kueue LocalQueue it names admits the whole JobSet as one gang—never a
+subset. The label names a Kueue LocalQueue on the cluster, not a queue you create in Union.
 
 ## The training function
 
@@ -173,5 +170,3 @@ sat, and when its gang actually began training.
 
 - [Distributed LLM pretraining](../distributed-pretraining/_index) — a full multi-node FSDP pipeline in a `ClusteredTaskEnvironment`.
 - [Clustered task environment](../../../user-guide/tasks/task-configuration/clustered-task-environment) — how a clustered task starts a gang of pods on the backend.
-- [Resource caps and scheduling](../../../user-guide/clusters-and-queues/resource-caps-and-scheduling) — how queues enforce gang-style admission, caps, and priority.
-- [Managing queues](../../../user-guide/clusters-and-queues/queues) — creating and routing queues administratively.

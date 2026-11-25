@@ -30,7 +30,7 @@ The on-disk layout under the root looks like:
 <root>/messages.json                           # transcript
 <root>/<your/path>.{txt,json,…}                # path-addressed entries
 <root>/meta/<encoded_path>.json                # per-entry metadata (sha, actor, ts)
-<root>/audit/log.jsonl                         # opt-in audit trail
+<root>/audit/log.jsonl                         # audit trail (on by default)
 <root>/versions/<encoded_path>/<ts>_<sha>.txt  # opt-in version history
 ```
 
@@ -85,7 +85,7 @@ async def add_note(note: str) -> str:
 
 ## Optimistic concurrency
 
-When several tasks or agents share one keyed store (e.g. parallel tool calls, or a sleep/wake pattern), guard against lost updates by passing `expected_sha=`. The write succeeds only if the current content still matches; otherwise it raises `ConcurrencyError`:
+Pass `expected_sha=` to `write_text` or `write_json` to make a write conditional. The write succeeds only if the file's sha256 in this store's local working copy still matches `expected_sha`. Otherwise it raises `ConcurrencyError`. The check catches a change made through the same `MemoryStore` object after your read, if that change finished before your write started. It doesn't catch a write that another task or agent saved to the keyed remote: no `ConcurrencyError` is raised, and your next `save()` overwrites that write.
 
 ```python
 from flyte.ai.agents import ConcurrencyError
@@ -96,7 +96,7 @@ notes.append(note)
 try:
     await memory.write_json.aio("notes/notes.json", notes, expected_sha=sha, reason="agent note")
 except ConcurrencyError:
-    # Another writer updated the file between our read and write.
+    # The file changed in this store's working copy between our read and write.
     return "Memory changed while saving the note; please retry."
 ```
 

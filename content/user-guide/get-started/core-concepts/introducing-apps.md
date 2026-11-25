@@ -28,7 +28,7 @@ You've already learned about **tasks**: Python functions that run to completion 
 | Use case | Batch processing, training | APIs, inference, dashboards |
 | Durability | Inputs/outputs stored, can resume | Stateless request handling |
 
-## AppEnvironment
+## App environments
 
 Just as tasks use `TaskEnvironment`, apps use `AppEnvironment` to configure their runtime.
 
@@ -119,10 +119,10 @@ Use **apps** when:
 
 You now understand the core building blocks of Flyte:
 
-- **TaskEnvironment** and **AppEnvironment** configure where code runs
+- **Task environments** and **app environments** configure where code runs
 - **Tasks** are functions that execute and complete
 - **Apps** are long-running services
-- **Runs** and **Actions** track executions
+- **Runs** and **actions** track executions
 
 Before diving deeper, check out [Key capabilities](./key-capabilities) for an overview of what Flyte can do: from parallelism and caching to LLM serving and error recovery.
 

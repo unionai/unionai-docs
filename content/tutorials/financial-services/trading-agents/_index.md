@@ -150,7 +150,7 @@ flyte create secret openai_api_key --value <YOUR_OPENAI_API_KEY>
 flyte create secret finnhub_api_key --value <YOUR_FINNHUB_API_KEY>
 ```
 
-Then [clone the repo](https://github.com/unionai/unionai-examples), navigate to the `tutorials-v2/trading_agents` directory, and run the following commands:
+Then [clone the repo](https://github.com/unionai/unionai-examples), navigate to the `v2/tutorials/trading_agents` directory, and run the following commands:
 
 ```
 flyte create config --endpoint <FLYTE_OR_UNION_ENDPOINT> --project <PROJECT_NAME> --domain <DOMAIN_NAME> --builder remote

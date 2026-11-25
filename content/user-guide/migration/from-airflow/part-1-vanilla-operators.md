@@ -15,8 +15,8 @@ This is the first part of the [Airflow → Flyte migration guide](./_index). It 
 3. Triggers (in place of DAG schedules)
 4. PythonOperator → `@env.task`
 5. TaskFlow → `@env.task`
-6. BashOperator → ContainerTask
-7. KubernetesPodOperator → TaskEnvironment + PodTemplate
+6. BashOperator → `ContainerTask`
+7. KubernetesPodOperator → `TaskEnvironment` + `PodTemplate`
 8. Orchestration: parallelism, conditionals, error handling
 
 **Part 2** (later) covers provider operators: Beam, Dataproc, BigQuery, Databricks, Spark, sensors.
@@ -47,7 +47,7 @@ gpu_env = flyte.TaskEnvironment(
 )
 ```
 
-Docs: [TaskEnvironment](../../get-started/core-concepts/task-environment) · [Container Images](../../tasks/task-configuration/container-images)
+Docs: [Task environments](../../get-started/core-concepts/task-environment) · [Container Images](../../tasks/task-configuration/container-images)
 
 ---
 
@@ -263,13 +263,13 @@ TaskFlow ships several decorators beyond `@task`. Rough mapping:
 | `@task.bash` | [`ContainerTask`](#6-bashoperator-to-containertask) |
 | `@task.virtualenv` | `@env.task` on a `TaskEnvironment` with its own image |
 | `@task.docker` | `@env.task` on a `TaskEnvironment` with `image=...` |
-| `@task.kubernetes` | [`TaskEnvironment` + PodTemplate](#7-kubernetespodoperator-to-taskenvironment--podtemplate) |
+| `@task.kubernetes` | [`TaskEnvironment` + `PodTemplate`](#7-kubernetespodoperator-to-taskenvironment--podtemplate) |
 | `@task.branch` | plain `if` in the driver |
 | `@task.short_circuit` | plain `return` in the driver |
 
 ---
 
-## 6. BashOperator to ContainerTask
+## 6. BashOperator to `ContainerTask`
 
 Airflow's `BashOperator` runs a shell command in the Airflow worker's image, with inputs rendered into the command via Jinja templating and output captured as the last line of stdout.
 
@@ -344,7 +344,7 @@ async def extract(date: str) -> int:
 
 ### How the arguments map
 
-| BashOperator | ContainerTask |
+| BashOperator | `ContainerTask` |
 |---|---|
 | `bash_command` (string) | `command=[...]` (list; you choose the shell) |
 | (implicit worker image) | `image=` (explicit, per task) |
@@ -357,7 +357,7 @@ Docs: [Container Tasks](../../tasks/task-programming/container-tasks)
 
 ---
 
-## 7. KubernetesPodOperator to TaskEnvironment + PodTemplate
+## 7. KubernetesPodOperator to `TaskEnvironment` + `PodTemplate`
 
 `KubernetesPodOperator` (KPO) gives you the full pod spec: image, commands, env, secrets, resources, volumes, node selectors, tolerations, service accounts, affinity, plus XCom via a sidecar writing to `/airflow/xcom/return.json`.
 
@@ -431,7 +431,7 @@ async def load_warehouse(ds: str) -> int:
 
 You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the env's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
 
-Docs: [TaskEnvironment](../../get-started/core-concepts/task-environment) · [Secrets](../../tasks/task-configuration/secrets) · [PodTemplate / advanced k8s config](../../tasks/task-configuration/pod-templates)
+Docs: [Task environments](../../get-started/core-concepts/task-environment) · [Secrets](../../tasks/task-configuration/secrets) · [PodTemplate / advanced k8s config](../../tasks/task-configuration/pod-templates)
 
 ---
 

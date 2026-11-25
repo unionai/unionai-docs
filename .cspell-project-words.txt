@@ -84,6 +84,7 @@ autoscaler
 gRPC
 mTLS
 RBAC
+SCIM
 CRD
 CRDs
 VPC
@@ -142,6 +143,7 @@ asyncio
 BRCA
 Buildkitd
 buildx
+BYOK
 BYOI
 CFTR
 CIFAR
@@ -153,6 +155,7 @@ cpus
 crewai
 crio
 cubin
+DAPO
 Dask
 Daytona
 DBFS
@@ -287,6 +290,8 @@ Unsloth
 Xids
 # RLHF: reinforcement learning from human feedback.
 RLHF
+# RLVR: reinforcement learning with verifiable rewards.
+RLVR
 # Brax: JAX physics simulator for RL. Nsight: NVIDIA profiler.
 Brax
 Nsight
@@ -313,3 +318,10 @@ Enamine
 cloze
 acryloyl
 McNemar
+Timestral
+covariate
+covariates
+ERCOT
+MASE
+socktainer
+selfhosted

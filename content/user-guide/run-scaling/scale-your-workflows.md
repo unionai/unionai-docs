@@ -261,7 +261,7 @@ async def process_million_items(items: list[dict]) -> list[dict]:
     batches = [items[i:i + batch_size] for i in range(0, len(items), batch_size)]
 
     # Use flyte.map for parallel execution
-    results = await flyte.map(process_batch, batches)
+    results = [r async for r in flyte.map.aio(process_batch, batches, return_exceptions=False)]
 
     return [item for batch in results for item in batch]
 ```
@@ -279,13 +279,13 @@ from flyte.io import File, Dir, DataFrame
 async def process_large_file(input_file: File) -> File:
     """Files passed by reference, not copied."""
     # Download only when needed
-    local_path = input_file.download()
+    local_path = await input_file.download()
 
     # Process file
     result_path = process(local_path)
 
     # Upload result
-    return File.new_remote(result_path)
+    return await File.from_local(result_path)
 ```
 
 **Use inline types for small data**:
@@ -341,7 +341,7 @@ async def process_item(item: dict) -> dict:
 @env.task
 async def parallel_processing(items: list[dict]) -> list[dict]:
     """Process items in parallel using map."""
-    results = await flyte.map(process_item, items)
+    results = [r async for r in flyte.map.aio(process_item, items, return_exceptions=False)]
     return results
 ```
 
@@ -447,7 +447,7 @@ async def process_dataset(items: list[dict]) -> list[dict]:
     batch_size = 1000
     batches = [items[i:i + batch_size] for i in range(0, len(items), batch_size)]
 
-    results = await flyte.map(process_batch, batches)
+    results = [r async for r in flyte.map.aio(process_batch, batches, return_exceptions=False)]
     return [item for batch in results for item in batch]
 ```
 

@@ -54,11 +54,20 @@ Upon deploy, all triggers that are associated with a given task `T` will be auto
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the version of `T` being deployed. The open-source Flyte backend ignores a trigger's `task_version`, so pinned triggers also switch to the deployed version.
+Upon deploy, all triggers that the task definition of a given task `T` declares will be automatically switched to apply to the version of `T` being deployed. The open-source Flyte backend ignores a trigger's `task_version`, so pinned triggers also switch to the deployed version.
 {{< /markdown >}}
 {{< /variant >}}
 
-Triggers on task `T` that are defined elsewhere, such as in the UI, are deleted unless the task definition of `T` references them.
+{{< variant union >}}
+{{< markdown >}}
+Deploying `T` deletes the triggers on `T` that its task definition doesn't reference, including ones defined elsewhere, such as in the UI.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+If the task definition of `T` declares at least one trigger, deploying `T` deletes the triggers on `T` that it doesn't reference, including ones defined elsewhere, such as in the UI. If it declares no triggers, the deploy leaves the existing triggers on `T` in place, and they keep launching the version of `T` they were last deployed with.
+{{< /markdown >}}
+{{< /variant >}}
 
 <!-- TODO
 Add link to workflow deployment docs when available.
@@ -134,9 +143,20 @@ You can also view and manage your deployed triggers in the Union UI.
 
 ## Deleting triggers
 
-If you decide that you don't need a trigger anymore, you can remove the trigger from the task definition and deploy the task again.
+{{< variant union >}}
+{{< markdown >}}
+To delete a trigger you no longer need, remove it from the task definition and deploy the task again.
 
 Alternatively, delete it directly:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+To delete a trigger you no longer need, remove it from the task definition and deploy the task again. This works only while the task still declares at least one other trigger. If it was the task's only trigger, the redeploy doesn't delete it, and it keeps launching the version it was last deployed with.
+
+To delete a task's only trigger, or to delete any trigger without redeploying, delete it directly:
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< tabs "delete" >}}
 {{< tab "Programmatic" >}}

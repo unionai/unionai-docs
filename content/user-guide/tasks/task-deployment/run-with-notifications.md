@@ -13,7 +13,7 @@ Notifications fire when the run reaches the terminal execution phase; no trigger
 
 {{< code file="/unionai-examples/v2/user-guide/task-deployment/run-with-notifications/run_with_notifications.py" fragment="run-with-notifications" lang="python">}}
 
-Pass a single notification or a tuple of notifications. The notification types in `flyte.notify` are `Slack`, `Email`, `Teams`, and `Webhook`.
+Pass a single notification or a tuple of notifications. The supported notification types are `Slack`, `Email`, `Teams`, and `Webhook`. `flyte.notify` also exports `NamedDelivery` and `NamedRule`, but you can't use them: Union.ai rejects a run that includes them, and a local run skips them.
 
 > [!NOTE]
 > Delivery details such as `webhook_url` and `recipients` are plain values, sent to the backend with the run when you submit it. The example reads `SLACK_WEBHOOK_URL` from your local environment at submission, not inside the task, and a notification can't reference a secret. To choose the destination at runtime, for example a different webhook on each cluster, [send the notification from your code](./notify-from-code).
@@ -60,7 +60,7 @@ Use `blocks` instead of `message` for structured layouts. When `blocks` is provi
 
 ## Email notifications
 
-`notify.Email` sends an email notification. Provide `body` for plain text, `html_body` for HTML, or both (sent as multipart).
+`notify.Email` sends an email notification. Provide `body` for the plain-text part and `html_body` for the HTML part. On a remote run, the email always has an HTML part: if you omit `html_body`, that part reads "No HTML body", and mail clients that display HTML show that text instead of `body`.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/notifications/notifications.py" fragment="email-extended-notification" lang="python">}}
 
@@ -69,7 +69,7 @@ To receive emails locally while developing, start a debug SMTP server before run
 ```bash
 # Python >= 3.12
 pip install aiosmtpd
-python -m aiosmtpd -n -l localhost:1025
+python -m aiosmtpd -n -l localhost:25
 ```
 
-The server prints received emails to stdout. Port 1025 needs no special privileges; to listen on the standard SMTP port 25 instead, run the command with `sudo`. Either way, set the SMTP port in your configuration to match.
+The server prints received emails to stdout. A local run always sends email to `localhost` on port 25, and the port can't be changed, so the server must listen on port 25. On Linux, only root can listen on a port below 1024 by default: run the command with `sudo`, using the Python interpreter where you installed `aiosmtpd`.

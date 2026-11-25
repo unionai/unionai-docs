@@ -118,7 +118,7 @@ flyte deploy --recursive --copy-style all ./project
 
 ## `--copy-style`
 
-**`flyte deploy --copy_style [loaded_modules|all|none] <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
+**`flyte deploy --copy-style [loaded_modules|all|none] <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
 The `--copy-style` option controls what gets packaged:
 

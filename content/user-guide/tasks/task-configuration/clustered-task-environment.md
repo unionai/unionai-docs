@@ -17,9 +17,9 @@ computation.
 A `flyte.clustered.ClusteredTaskEnvironment` is a specialized `flyte.TaskEnvironment`: it takes all
 the usual environment settings (image, resources, secrets, and so on) and adds a few fields that
 describe the shape of the cluster. When you run a task defined on one, the backend launches a
-Kubernetes [JobSet](https://jobset.sigs.k8s.io/) of identical pods and bootstraps
-[`torchrun`](https://docs.pytorch.org/docs/stable/elastic/run.html) inside them, so your task body
-runs once per worker process with the standard PyTorch distributed environment variables already set.
+Kubernetes [JobSet](https://jobset.sigs.k8s.io/) of identical pods and, with the default `TorchRun`
+runtime, bootstraps [`torchrun`](https://docs.pytorch.org/docs/stable/elastic/run.html) inside
+them, so your task body runs once per worker process with the standard PyTorch distributed environment variables already set.
 
 ## When to use it
 
@@ -38,7 +38,8 @@ warm-container throughput, [reusable containers](./reusable-containers) instead.
 
 ## How it works
 
-When you decorate a function with a clustered environment's `@env.task` and run it, the backend:
+This section describes the default `TorchRun` runtime. When you decorate a function with a clustered
+environment's `@env.task` and run it, the backend:
 
 1. Creates a **JobSet** of `replicas` identical pods (one pod per node).
 2. Starts `torchrun` in each pod with `nproc_per_node` worker processes, so the total number of
@@ -50,6 +51,10 @@ When you decorate a function with a clustered environment's `@env.task` and run 
    (all-reduce, all-gather, …) work across the whole gang.
 5. Applies the `failure_policy` to decide whether to restart the JobSet on failure or node eviction,
    and returns the result from rank 0.
+
+With `JaxRun`, `torchrun` isn't started: each pod runs your task body as a single process with
+`RANK`, `WORLD_SIZE`, `MASTER_ADDR`, and `MASTER_PORT` set (`LOCAL_RANK` is `0`), and your code calls
+`flyte.clustered.jax_initialize()` instead of `init_process_group()` to join.
 
 Because every worker runs the same task body, you branch on the rank when you need to (for example,
 only rank 0 saves checkpoints or returns outputs).
@@ -64,9 +69,10 @@ controller is missing or the `clustered-task` plugin is not enabled.
 {{< variant union >}}
 {{< markdown >}}
 
-- **Union-hosted and Union-managed data planes:** clustered tasks are enabled per tenant. Contact
-  Union support to turn them on; nothing needs to be installed on your side.
-- **Self-managed data planes:** install the JobSet controller and enable the plugin, as for the other
+- **Union-Managed data planes:** clustered tasks are enabled per data plane, not per tenant. Contact
+  Union.ai support to turn them on for each data plane that should run them. Nothing needs to be
+  installed on your side.
+- **Self-Managed data planes:** install the JobSet controller and enable the plugin, as for the other
   [compute plugins](../../../deployment/selfmanaged/configuration/plugins):
 
   1. Install the controller (the `jobsets.jobset.x-k8s.io` CRD and the controller in `jobset-system`):
@@ -128,8 +134,8 @@ cluster-specific fields. For full type signatures and defaults, see `flyte.clust
 | Parameter | Description |
 |-----------|-------------|
 | **`replicas`** | Number of pods (nodes) in the JobSet. Required, must be `>= 1`. |
-| **`nproc_per_node`** | Worker processes per pod, passed to `torchrun --nproc-per-node`. Required, must be `>= 1`. When you request GPUs, it must be `<=` the GPU count per pod (typically one process per GPU). |
-| **`runtime`** | Launcher configuration. Currently a `flyte.clustered.TorchRun` instance (the default). |
+| **`nproc_per_node`** | Worker processes per pod. With `TorchRun`, passed to `torchrun --nproc-per-node`; with `JaxRun`, must be `1`. Required, must be `>= 1`. When you request GPUs, it must be `<=` the GPU count per pod (typically one process per GPU). |
+| **`runtime`** | Launcher configuration: a `flyte.clustered.TorchRun` instance (the default) or a `flyte.clustered.JaxRun` instance, which runs one process per pod. |
 | **`interconnect`** | Network fabric between pods. Currently only `"tcp"` is supported. |
 | **`failure_policy`** | JobSet-level restart policy — a `flyte.clustered.ClusterFailurePolicy` (see below). |
 | **`ttl_seconds_after_finished`** | Optional seconds to retain the JobSet after it completes, for inspecting pods. Defaults to the backend's behavior. |
@@ -180,9 +186,9 @@ torch.distributed.init_process_group(backend="nccl")
 
 Pod-local disk is wiped when a JobSet restarts, so long-running training must persist model state to
 durable storage rather than the local filesystem. Use the task's checkpoint store, available at
-`flyte.ctx().checkpoint`, and typically write from rank 0 only. The FSDP example below shows the full
-pattern: gather a full state dict onto rank 0 and save it (for models small enough to gather), or
-have every rank write its own shard (for models too large to gather).
+`flyte.ctx().checkpoint`, and typically write from rank 0 only. The checkpoint is a single remote
+object, so each `save()` replaces the previous contents; if several ranks save, the last write wins.
+The FSDP example below gathers a full state dict onto rank 0 and saves it from there.
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/clustered-task-environment/fsdp_train.py" lang="python" >}}
 
@@ -202,6 +208,7 @@ context:
   fresh for each run. Setting it raises an error.
 - **`nproc_per_node` must not exceed the GPU count.** When `resources.gpu` is set, `nproc_per_node`
   must be `<=` the number of GPUs per pod.
-- **`torchrun` runtime only.** The `runtime` must currently be a `flyte.clustered.TorchRun`; other
-  launchers are not yet supported.
+- **`TorchRun` or `JaxRun` runtime.** The SDK accepts a `runtime` that is a `flyte.clustered.TorchRun`
+  or a `flyte.clustered.JaxRun`; any other type raises a `TypeError`. With `JaxRun`, `nproc_per_node`
+  must be `1`.
 - **TCP interconnect only.** `interconnect` currently supports only `"tcp"`.

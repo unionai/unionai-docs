@@ -261,7 +261,7 @@ flyte get logs my_run_name a1
 {{< tabs "get-io" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
-Both `Run` and `Action` objects provide methods to retrieve inputs and outputs:
+`Run` and `ActionDetails` objects provide methods to retrieve inputs and outputs. An `Action` doesn't. Call `action.details()` to get its `ActionDetails` first:
 
 ```python
 run = flyte.remote.Run.get("my_run_name")
@@ -321,18 +321,12 @@ If an action fails, outputs are not available, but you can retrieve error inform
 action = flyte.remote.Action.get(run_name="my_run_name", name="a0")
 
 if action.phase == flyte.models.ActionPhase.FAILED:
-    # Outputs will raise an error
-    try:
-        outputs = action.outputs()
-    except RuntimeError as e:
-        print("Action failed, outputs not available")
-
-    # Get error details instead
+    # Get error details instead of outputs
     action_details = flyte.remote.ActionDetails.get(
         run_name="my_run_name",
         name="a0"
     )
-    print(action_details.pb2.error_info)
+    print(action_details.error_info)
 ```
 
 ## Understanding data storage
@@ -359,7 +353,7 @@ export FLYTE_AWS_ACCESS_KEY_ID="your-access-key-id"
 export FLYTE_AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 ```
 
-These are standard AWS credential environment variables that Flyte recognizes. They are your IAM user's access keys. If you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
+`flyte.storage.S3.auto()` reads these Flyte-specific variables. They aren't the standard `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Set them to your IAM user's access keys. If you don't already have them, follow the AWS guide on [managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to create them.
 
 **2. Initialize Flyte with S3 storage configuration:**
 
