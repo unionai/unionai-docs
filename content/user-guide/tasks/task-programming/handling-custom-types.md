@@ -181,7 +181,7 @@ import flyte
 flyte.init(load_plugin_type_transformers=False)
 ```
 
-By default, `load_plugin_type_transformers` is `True`. Setting it to `False` doesn't turn plugin loading off. Flyte still loads every installed type plugin the first time it looks up a type transformer.
+Setting it to `False` doesn't turn plugin loading off. Flyte still loads every installed type plugin the first time it looks up a type transformer.
 
 ## Using custom types in tasks
 
