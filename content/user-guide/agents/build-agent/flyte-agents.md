@@ -106,7 +106,7 @@ async def issue_refund(order_id: str, amount_usd: float) -> dict:
     ...
 ```
 
-When the LLM tries to call a tool marked `requires_approval=True`, the harness invokes the agent's `approval_callback` and waits for a boolean decision before executing. The default callback raises a human-input request via the `flyteplugins-hitl` plugin and blocks until a human approves or denies. If denied, the agent receives a synthetic tool message explaining the rejection so it can recover gracefully.
+When the LLM tries to call a tool marked `requires_approval=True`, the harness invokes the agent's `approval_callback` and waits for a boolean decision before executing. The default callback registers a [condition](../../tasks/task-programming/conditions) with `flyte.new_condition` and blocks until a human approves or denies. Outside a Flyte task context there is no condition to register, so the default callback denies the call immediately. If denied, the agent receives a synthetic tool message explaining the rejection so it can recover gracefully. In code mode (`code_mode=True`), the harness doesn't enforce `requires_approval`: it logs a warning and runs the tool without asking for approval.
 
 Pass `call_handler` to intercept *how* a tool is invoked. The handler is an async callback `(call_llm, tool_fn, **kwargs) -> result` that runs in place of the default execution. Await `tool_fn` to run the default behavior, or reach into `tool_fn.target` (the underlying task / callable) and `call_llm` (the agent's LLM callback) to do something custom. For example, ask the LLM how to size compute, then run the task with overridden resources and retry on OOM:
 
@@ -125,7 +125,7 @@ async def train(...): ...
 
 The harness can connect to one or more [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers and surface their tools transparently. On the first `run` call, the harness connects to each server, lists its tools, and registers them in the catalog.
 
-Declare servers with `MCPServerSpec`: either an HTTP(S) `url` (for streamable-http / SSE transports) or a `command` (for stdio servers):
+Declare servers with `MCPServerSpec`, setting either an HTTP(S) `url` (for streamable-http servers) or a `command` (for stdio servers). Servers that only speak the legacy SSE transport aren't supported:
 
 ```python
 from flyte.ai.agents import Agent, MCPServerSpec
