@@ -17,7 +17,7 @@ Each row links to the page that documents it in full.
 |-----------|--------------|-----------|
 | `flyte.TaskEnvironment(name="my-env", image=..., resources=...)` | Groups tasks that share a container image, resources, secrets, and cache settings. | [TaskEnvironment](./core-concepts/task-environment) |
 | `@env.task` | Turns a sync or async Python function into a task that runs in `env`. | [Tasks](./core-concepts/tasks) |
-| `flyte.map(my_task, items)` | Runs one task on every item of an iterable, in parallel, and yields the results in input order. In an async task, use `flyte.map.aio`. | [Mapping over inputs](../tasks/task-programming/map) |
+| `flyte.map(my_task, items)` | Runs one task on every item of an iterable, in parallel, and yields the results in input order. A failed call yields its exception in place of a result. In an async task, use `flyte.map.aio`. | [Mapping over inputs](../tasks/task-programming/map) |
 | `await asyncio.gather(*[my_task(x) for x in items])` | Runs task calls in parallel from an async task. Use it to fan out across different tasks. | [Fanout](../tasks/task-programming/fanout) |
 | `flyte.Image.from_debian_base().with_pip_packages("pandas")` | Defines the container image a task environment runs in. | [Container images](../tasks/task-configuration/container-images) |
 | `flyte.Resources(cpu=1, memory="1Gi", gpu="A100:1")` | Requests CPU, memory, GPUs, and disk for a task environment or task. | [Resources](../tasks/task-configuration/resources) |
