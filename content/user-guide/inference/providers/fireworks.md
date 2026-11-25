@@ -69,7 +69,7 @@ Set `REPLICAS` and `MAX_CONCURRENCY_PER_REPLICA` to your deployment's values. A 
 
 On the serverless tier, Fireworks limits tokens per minute for each account and model. Over the limit, or when Fireworks sheds load, it returns a 429 or a 503. [Retries with backoff](./_index#make-provider-calls-reliable) handle both.
 
-You can move to an on-demand deployment, but its requests still count toward account-wide limits, and a 429 there usually means the GPUs are saturated.
+You can move to an on-demand deployment. It has no account-level rate limit, and a 429 there means the deployment's GPUs are saturated: lower the map's `concurrency` or add replicas.
 
 {{< variant union >}}
 {{< markdown >}}
