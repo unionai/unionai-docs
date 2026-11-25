@@ -50,10 +50,10 @@ Install Self-Hosted Base in a namespace of its own: task pods, their secrets, an
 
 ## Install with the CLI
 
-`flyte install selfhosted-base`, from `flyteplugins-union` 0.21.0 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
+`flyte install selfhosted-base`, from `flyteplugins-union` 0.25.1 or later, checks the cluster, collects what the chart needs, and installs it with Helm (3.8 or later, on your `PATH`):
 
 ```shell
-pip install flyte "flyteplugins-union>=0.21.0"
+pip install flyte "flyteplugins-union>=0.26.2"
 flyte install selfhosted-base -n union --db-host <postgres host> --db-name <database> --db-user <user> \
   --db-password-secret selfhosted-base-db --bucket <bucket> --endpoint https://<store endpoint> \
   --set storage.authType=accesskey --set storage.existingSecret=selfhosted-base-s3
