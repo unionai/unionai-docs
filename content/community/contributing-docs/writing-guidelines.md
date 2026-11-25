@@ -37,6 +37,7 @@ A typical feature page follows this order. Omit sections that don't apply.
 7. Related pages
 
 - **Headings** are sentence case: capitalize only the first word and proper nouns. Name the content: "Configure retries", not "Retries: what you need to know". Use imperative verbs for task sections ("Deploy the app") and nouns for reference sections ("Event fields").
+- **Page titles fit the left nav.** The sidebar shows the frontmatter `title` as written, with no shorter label. Aim for about 35 characters or fewer, but let the rendered nav decide: if the title wraps there, shorten it. Drop words the parent section already says: under "Reinforcement learning", a title doesn't need "RL".
 - **One topic per page.** If a page covers two features a reader would look for separately, split it.
 - **Prefer lists and tables** for steps, options, and comparisons. Use prose to explain how things relate.
 
