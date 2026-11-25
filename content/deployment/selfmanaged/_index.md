@@ -2,7 +2,7 @@
 title: Self-Managed deployment
 description: Run the data plane on your own Kubernetes cluster, owning and operating the cluster while Union.ai runs the control plane.
 icon: server
-weight: 5
+weight: 3
 variants: -flyte +union
 ---
 

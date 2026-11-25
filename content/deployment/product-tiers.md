@@ -2,7 +2,7 @@
 title: Product tiers
 description: Compare the Team and Enterprise plans for Union.ai, including pricing model, deployment options, limits, security, networking, and support.
 icon: list-columns
-weight: 1
+weight: 6
 variants: -flyte +union
 ---
 
@@ -114,12 +114,9 @@ In the tables below, ✓ means included and – means not included.
 
 ## Your first month
 
-A new organization starts on Team with the $950 minimum waived.
-If Union.ai runs your clusters, no cluster is charged the $500 fee in the first 30 days: the fee starts when they end.
-You don't need a payment method that month.
-When the credit is used up or the month ends, the trial ends, and unless the trial converts to Team, your organization becomes read-only (see [When the trial ends](./team-trial#when-the-trial-ends)).
-If you signed up directly, add a card to stay on Team (see [Upgrade to Team](./team-trial#upgrade-to-team)).
-To follow the days and credit left, see [Team trial](./team-trial).
+A new organization starts with a 30-day Team trial: the $950 minimum is waived, and if Union.ai runs your clusters, so is the $500 fee per cluster.
+You don't need a payment method during the trial.
+See [Team trial](./sign-up/team-trial) for what's left, how to stay on Team, and what happens when the trial ends.
 
 ## Move to Enterprise
 

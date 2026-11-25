@@ -2,7 +2,7 @@
 title: Union-Managed deployment
 description: Union.ai builds and manages the data plane infrastructure inside your cloud account; you supply the account.
 icon: cloud-check
-weight: 6
+weight: 2
 variants: -flyte +union
 ---
 

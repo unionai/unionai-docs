@@ -2,13 +2,13 @@
 title: Team trial
 description: Track the days and credit left in your organization's Team trial, upgrade to Team by adding a card, and see what the Union.ai UI does when the trial ends.
 icon: hourglass-split
-weight: 3
+weight: 4
 variants: -flyte +union
 ---
 
 # Team trial
 
-A new self-service organization starts on a Team trial, the first month with the Team minimum waived (see [Product tiers](./product-tiers#your-first-month)).
+A new self-service organization starts on a Team trial, the first month with the Team minimum waived (see [Product tiers](../product-tiers#your-first-month)).
 The trial lasts 30 days and includes $950 of credit, and it ends when either runs out.
 The Union.ai UI shows what's left in the sidebar and on **Settings → Plan & Invoices**, and every member of the organization can see both.
 
@@ -28,7 +28,7 @@ If you can upgrade, the card also has an **Upgrade** button (see [Upgrade to Tea
 Once a card is on file, the trial card shows "Team starts when days or credit run out", with the trial's end date.
 
 The card disappears once the trial converts to Team.
-If you [subscribed through a cloud marketplace](./sign-up/_index), the trial converts to Team when it ends and the marketplace bills you, so your organization doesn't become read-only.
+If you [subscribed through a cloud marketplace](./_index), the trial converts to Team when it ends and the marketplace bills you, so your organization doesn't become read-only.
 
 ## Trial on Settings → Plan & Invoices
 
@@ -46,7 +46,7 @@ Once the trial converts, members who can view billing (among the built-in polici
 
 If you subscribed through a cloud marketplace, there's no **Upgrade** button.
 
-If you signed up directly, admins (the **Admin** policy, see [User management](../user-guide/user-management)) see an **Upgrade** button until a card is on file.
+If you signed up directly, admins (the **Admin** policy, see [User management](../../user-guide/user-management)) see an **Upgrade** button until a card is on file.
 It appears in three places:
 
 - **Upgrade** on the trial card.
