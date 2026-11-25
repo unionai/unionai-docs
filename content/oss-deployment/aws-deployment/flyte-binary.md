@@ -281,7 +281,8 @@ helm install flyte flyteorg/flyte-binary -n flyte --create-namespace -f values-e
 ## Default task resources
 
 Anything under `configuration.inline` is merged into the rendered Flyte config, which
-is how you set options the top-level values don't expose directly.
+is how you set options the top-level values don't expose directly. Nested maps merge,
+but a list or any other value replaces the chart's.
 
 Set the default CPU and memory **requests** for task pods that don't specify their own,
 via the Kubernetes plugin config:
@@ -298,7 +299,15 @@ configuration:
 ## Default scheduling for task pods
 
 Add tolerations, affinity / node selectors, or injected environment variables to every
-task pod under `configuration.inline.plugins.k8s`:
+task pod under `configuration.inline.plugins.k8s`.
+
+The chart already sets `default-env-vars` to `_U_EP_OVERRIDE`, `_U_INSECURE` and
+`_U_USE_ACTIONS`, which task pods use to reach Flyte. A `default-env-vars` list under
+`configuration.inline` replaces the chart's list rather than adding to it, so repeat
+those three entries in yours. `_U_EP_OVERRIDE` is `<fullname>-http.<namespace>:<port>`,
+where the port is `service.ports.http` (8090 by default). With `fullnameOverride: flyte`,
+the `flyte` namespace and the default port used in this guide, that is
+`flyte-http.flyte:8090`:
 
 ```yaml
 configuration:
@@ -312,6 +321,9 @@ configuration:
             effect: NoSchedule
         default-affinity: {}             # a standard core/v1 Affinity
         default-env-vars:
+          - _U_EP_OVERRIDE: flyte-http.flyte:8090   # the chart's three entries
+          - _U_INSECURE: "true"
+          - _U_USE_ACTIONS: "1"
           - MY_ENV_VAR: value            # injected into every task pod
 ```
 
