@@ -80,7 +80,7 @@ The `scaledown_after` parameter (idle TTL) determines how long an app instance c
 - **Development/Testing**: 60-180 seconds (1-3 minutes) - quick scale down for cost savings.
 - **Production APIs**: 300-600 seconds (5-10 minutes) - balance cost and responsiveness.
 - **Batch processing**: 900-1800 seconds (15-30 minutes) - longer to handle bursts.
-- **Always-on**: Set `min_replicas > 0` - never scale down.
+- **Always-on**: Set `min_replicas > 0` - never scale to zero.
 
 ### Autoscaling best practices
 
