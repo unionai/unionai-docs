@@ -76,7 +76,9 @@ You can move to an on-demand deployment. It has no account-level rate limit, and
 
 ## Route calls through the Inference Gateway
 
-To add budgets, fallbacks, and guardrails, [add Fireworks AI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add Fireworks AI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider), then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+
+The gateway can only use an organization-wide secret, so it can't use the project-scoped `fireworks-api-key` secret created above. Create the gateway's secret without `--project` and `--domain`. If your organization has more than one cluster pool, see [Org-wide secrets in a multi-cluster deployment](../../tasks/task-configuration/secrets#org-wide-secrets-in-a-multi-cluster-deployment).
 
 {{< /markdown >}}
 {{< /variant >}}
