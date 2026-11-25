@@ -68,13 +68,13 @@ and its Markdown version is at:
 
 {{< variant union >}}
 {{< markdown >}}
-* [`{{< docs_home union v2 >}}/api-reference/flyte-context.md`](flyte-context.md)
+* [`{{< docs_home union v2 >}}/api-reference/flyte-context.md`]({{< docs_home union v2 >}}/api-reference/flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 
 {{< variant flyte >}}
 {{< markdown >}}
-* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context.md`](flyte-context.md)
+* [`{{< docs_home flyte v2 >}}/api-reference/flyte-context.md`]({{< docs_home flyte v2 >}}/api-reference/flyte-context.md)
 {{< /markdown >}}
 {{< /variant >}}
 

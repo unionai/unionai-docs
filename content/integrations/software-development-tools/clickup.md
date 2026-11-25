@@ -33,7 +33,7 @@ Go to **Space Settings → Integrations → Webhooks** and set:
 1. **Endpoint**: the `/webhook/clickup` URL from the app's dashboard.
 2. **Events**: the events your handlers match.
 
-ClickUp generates a secret for the webhook. Store it as the `clickup-webhook-secret` Flyte secret.
+ClickUp generates a secret for the webhook. Store it as a Flyte secret with the key `CLICKUP_WEBHOOK_SECRET`.
 
 ## Events
 

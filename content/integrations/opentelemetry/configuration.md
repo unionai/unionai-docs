@@ -68,7 +68,7 @@ init(
 | `protocol`            | `http/protobuf`                     | OTLP transport, `http/protobuf` or `grpc`. gRPC needs the `[grpc]` extra                                                   |
 | `resource_attributes` | None                                | Extra resource attributes attached to every span                                                                           |
 | `exporter`            | None                                | One `SpanExporter` or several, used instead of building an OTLP exporter                                                   |
-| `tracer_provider`     | None                                | Adopt a provider you configured yourself. Cannot be combined with the arguments above                                      |
+| `tracer_provider`     | None                                | Adopt a provider you configured yourself. `service_name` is ignored. The other arguments above raise a `ValueError`        |
 | `disable_batch`       | `False`                             | Export each span as it ends instead of batching                                                                            |
 | `set_global`          | `True`                              | Install the provider as the global one, so other instrumentation shares it                                                 |
 

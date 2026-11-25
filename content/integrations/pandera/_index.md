@@ -92,7 +92,8 @@ For full details on schema definition, including custom checks, regex column mat
 ## Using schemas in tasks
 
 Annotate task inputs and outputs with pandera's generic `DataFrame` type. The plugin validates data on every
-encode (output) and decode (input):
+encode (output) and decode (input), except that for Polars `pt.LazyFrame` it checks only the schema by default (see
+[Polars lazy frames](#polars-lazy-frames)):
 
 ```python
 import pandera.typing.pandas as pt
@@ -131,7 +132,7 @@ async def lenient_pass_through(
 
 | `on_error` value | Behavior |
 |-|-|
-| `"raise"` (default) | Validation failure raises `pandera.errors.SchemaError` and the task fails |
+| `"raise"` (default) | Validation failure raises `pandera.errors.SchemaErrors` (a `RuntimeError` for PySpark SQL) and the task fails |
 | `"warn"` | Validation failure logs a warning and writes the report, but the task continues |
 
 You can mix `"raise"` and `"warn"` across inputs and outputs of the same task. For example, use `"warn"` on inputs
@@ -172,7 +173,7 @@ import flyte
 
 img = (
     flyte.Image.from_debian_base(python_version=(3, 12))
-    .with_pip_packages("flyteplugins-polars", "pandera[polars]")
+    .with_pip_packages("flyteplugins-pandera", "flyteplugins-polars", "pandera[polars]")
 )
 
 env = flyte.TaskEnvironment(
@@ -196,7 +197,7 @@ from flyteplugins.spark.task import Spark
 image = (
     flyte.Image.from_base("apache/spark-py:v3.4.0")
     .clone(name="pandera-pyspark-sql", python_version=(3, 10), extendable=True)
-    .with_pip_packages("flyteplugins-spark", "pandera[pyspark]")
+    .with_pip_packages("flyteplugins-pandera", "flyteplugins-spark", "pandera[pyspark]")
 )
 
 spark_conf = Spark(
@@ -224,8 +225,13 @@ env = flyte.TaskEnvironment(
 
 ## Polars lazy frames
 
-The Polars backend supports both `pt.DataFrame` (eager) and `pt.LazyFrame` (lazy). With lazy frames, pandera
-validates the data when the frame is materialized at task I/O boundaries:
+The Polars backend supports both `pt.DataFrame` (eager) and `pt.LazyFrame` (lazy). The plugin validates lazy frames
+without collecting them, so by default pandera checks only the schema (columns and dtypes) and skips data checks such
+as `Field(gt=0)`. To enforce data checks on lazy frames too, set pandera's `PANDERA_VALIDATION_DEPTH` environment
+variable to `SCHEMA_AND_DATA` in the task environment, for example
+`flyte.TaskEnvironment(..., env_vars={"PANDERA_VALIDATION_DEPTH": "SCHEMA_AND_DATA"})`.
+
+Use lazy frames like this:
 
 ```python
 import pandera.typing.polars as pt

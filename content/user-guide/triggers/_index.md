@@ -1,8 +1,8 @@
 ---
 title: Triggers
-description: Run tasks automatically on a schedule or in reaction to new data, or save named launch configurations to fire on demand.
+description: Run tasks automatically on a schedule, or save named launch configurations to fire on demand.
 icon: alarm
-weight: 6
+weight: 4
 variants: +flyte +union
 ---
 
@@ -18,7 +18,7 @@ from datetime import datetime
 env = flyte.TaskEnvironment(name="trigger_env")
 
 
-@env.task(triggers=flyte.Trigger.hourly())
+@env.task(triggers=flyte.Trigger.hourly("trigger_time"))
 def hourly_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Hourly example executed at {trigger_time.isoformat()} with x={x}"
 ```
@@ -48,8 +48,6 @@ The `automation` argument of `flyte.Trigger` decides what fires it. Each kind ca
 
 Every trigger, whatever its automation, can also be [fired on demand](./manual-triggers#firing-a-trigger-on-demand).
 
-Support is coming for webhook triggers, which will hit an API endpoint to run your task.
-
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -63,11 +61,6 @@ Support is coming for webhook triggers, which will hit an API endpoint to run yo
 | Manual | None | Only when fired from the UI or with `flyte.run(trigger)` | None | [Manual triggers](./manual-triggers) |
 
 Every trigger, whatever its automation, can also be [fired on demand](./manual-triggers#firing-a-trigger-on-demand).
-
-Support is coming for other trigger types, such as:
-
-* Webhook triggers: Hit an API endpoint to run your task.
-* Artifact triggers: Run a task when a specific artifact is produced.
 
 {{< /markdown >}}
 {{< /variant >}}

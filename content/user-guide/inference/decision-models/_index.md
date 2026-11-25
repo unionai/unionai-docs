@@ -270,3 +270,9 @@ Interleave a System One model with a generative one — typed guards, tool fan-o
 - [Typed decisions for agentic pipelines](../../../tutorials/agents/system-one-agents/_index): three pipelines and a measured A/B against a one-shot generative baseline.
 - [Agents](../../agents/_index): the loop these decisions most often sit inside.
 - [Tasks](../../tasks/_index): the unit each call runs in.
+
+{{< variant union >}}
+{{< markdown >}}
+- [Decisions on the Inference Gateway](../inference-gateway/decisions): call `POST /v1/decisions` through the gateway, with TypeSafe models, hosted LLMs, or your own vLLM and SGLang apps.
+{{< /markdown >}}
+{{< /variant >}}

@@ -2,7 +2,7 @@
 title: RootGroup
 description: "The `flyte` group."
 icon: braces
-version: 2.12.4
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -39,10 +39,28 @@ Initialize RichGroup class.
 
 | Method | Description |
 |-|-|
+| [`format_commands()`](#format_commands) | Extra format methods for multi methods that adds all the commands after the options. |
 | [`get_command()`](#get_command) | Given a context and a command name, this returns a `Command` object if it exists or returns ``None``. |
 | [`invoke()`](#invoke) | Given a context, this invokes the attached callback (if it exists) in the right way. |
 | [`list_commands()`](#list_commands) | Returns a list of subcommand names in the order they should appear. |
 
+
+### format_commands()
+
+```python
+def format_commands(
+    ctx: click.Context,
+    formatter: click.HelpFormatter,
+)
+```
+Extra format methods for multi methods that adds all the commands
+after the options.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `click.Context` | |
+| `formatter` | `click.HelpFormatter` | |
 
 ### get_command()
 

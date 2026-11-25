@@ -32,7 +32,7 @@ Here's a minimal example that runs a SQL query on Snowflake:
 
 ```python {hl_lines=[2, 4, 12]}
 from flyte.io import DataFrame
-from flyteplugins.connectors.snowflake import Snowflake, SnowflakeConfig
+from flyteplugins.snowflake import Snowflake, SnowflakeConfig
 
 config = SnowflakeConfig(
     account="myorg-myaccount",
@@ -190,9 +190,9 @@ Use the `inputs` parameter to define typed inputs for your query. Input values a
 
 ### Supported input types
 
-The `inputs` dictionary maps parameter names to Python values. Supported scalar types include `str`, `int`, `float`, and `bool`.
+The `inputs` dictionary maps parameter names to Python types. Supported scalar types include `str`, `int`, `float`, and `bool`.
 
-To insert multiple rows in a single query, you can also provide lists as input values. When using list inputs, be sure to set `batch=True` on the `Snowflake` task. This enables automatic batching, where the inputs are expanded and sent as a single multi-row query instead of you having to write multiple individual statements.
+To insert multiple rows in a single query, declare list types such as `list[int]` in `inputs` and pass lists when you call the task. When using list inputs, set `batch=True` on the `Snowflake` task. This enables automatic batching, where the inputs are expanded and sent as a single multi-row query instead of you having to write multiple individual statements.
 
 ### Batched `INSERT` with list inputs
 
@@ -202,7 +202,7 @@ Example:
 
 ```python
 query = "INSERT INTO t (a, b) VALUES (%(a)s, %(b)s)"
-inputs = {"a": [1, 2], "b": ["x", "y"]}
+inputs = {"a": list[int], "b": list[str]}  # called with a=[1, 2], b=["x", "y"]
 ```
 
 This is expanded into:

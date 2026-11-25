@@ -134,7 +134,7 @@ Add `--local` right after `run` to execute on your machine instead. The durabili
 | Self-healing | `retries=` on the agent task, combined with per-turn and per-tool replay, means a transient failure resumes rather than restarting. |
 | Cross-run memory | A `memory_key` continues a conversation across separate runs, workers and restarts, backed by object storage. |
 | Observability | Turns, tool calls, results and token usage render into the task report. |
-| Human in the loop | A tool can suspend on a Flyte condition and wait for a human. The run survives restarts while it waits. |
+| Human in the loop | A tool can wait on a Flyte condition for a human to answer. The tool task's pod keeps running while it waits. |
 
 [How it works](./how-it-works) covers each of these in detail, including where the durability seam sits and why.
 
@@ -146,7 +146,7 @@ The adapters share a contract but the underlying SDKs differ, so durability land
 |---|---|---|---|---|
 | [OpenAI](./openai) | Per turn | `FunctionTool` | Conversation transcript | 3.10+ |
 | [Claude](./claude-agent-sdk) | Per session, via resume | In-process MCP tool | Conversation transcript | 3.10+ |
-| [Google ADK](./google-adk) | Per turn | Plain callable | Session events | 3.10+ |
+| [Google ADK](./google-adk) | Per turn, built agents | Plain callable | Session events | 3.10+ |
 | [Mistral](./mistral) | Per turn | Plain callable | Server-side conversation ID | 3.10+ |
 | [LangChain](./langchain) | Per turn, built agents | `StructuredTool` | Conversation transcript | 3.10+ |
 | [LangGraph](./langgraph) | Per turn, via `ai_node` | `StructuredTool` | Conversation transcript | 3.10+ |

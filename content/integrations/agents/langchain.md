@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # LangChain
 
-Run [LangChain agents](https://docs.langchain.com/oss/python/langchain/agents) on Flyte. In LangChain 1.x an agent is built with `create_agent(model, tools, system_prompt=...)`, which returns a compiled graph. `run_agent` drives that graph inside your task, with tools running as durable child actions and model turns recorded for replay.
+Run [LangChain agents](https://docs.langchain.com/oss/python/langchain/agents) on Flyte. In LangChain 1.x an agent is built with `create_agent(model, tools, system_prompt=...)`, which returns a compiled graph. `run_agent` drives that graph inside your task, with tools running as durable child actions and, when `run_agent` builds the agent for you, model turns recorded for replay.
 
 ## Installation
 
@@ -58,7 +58,7 @@ Build the chat model inside the task, where the provider API key is available.
 
 **Tools:** `tool` turns an `@env.task` into a LangChain `StructuredTool`, a real `BaseTool` that drops straight into `create_agent(model, tools=[...])`. The args schema is built as a pydantic model from the task's typed signature, with annotations and defaults preserved, rather than being inferred from the wrapper. When the agent calls the tool, the coroutine dispatches to `task.aio()` and the call becomes a durable child action.
 
-**Model turns:** With `durable=True`, the chat model is wrapped in `DurableChatModel`, which records each turn via `flyte.trace`. On a retry, completed turns replay from their records and tool calls come back from cache.
+**Model turns:** When `run_agent` builds the agent (`tools` + `model`) with `durable=True`, the chat model is wrapped in `DurableChatModel`, which records each turn via `flyte.trace`. On a retry, completed turns replay from their records and tool calls come back from cache. A pre-built `agent=` graph's model turns are not recorded (see [Bring your own agent](#bring-your-own-agent)).
 
 **Observability:** The run timeline renders into the task report.
 
@@ -77,9 +77,8 @@ Tool calls stay durable either way. If you want the string form with durability,
 
 Pass a compiled `create_agent` graph as `agent=`.
 
-```python{hl_lines=["9-14"]}
+```python{hl_lines=["8-13"]}
 from langchain.agents import create_agent
-from flyteplugins.agents.langchain import DurableChatModel
 
 
 @env.task(report=True, retries=3)
@@ -87,14 +86,14 @@ async def support(request: str) -> str:
     from langchain_openai import ChatOpenAI
 
     graph = create_agent(
-        DurableChatModel(inner=ChatOpenAI(model="gpt-4o")),
+        ChatOpenAI(model="gpt-4o"),
         [lookup_account],
         system_prompt="You are a billing support agent.",
     )
     return await run_agent(request, agent=graph)
 ```
 
-A fully compiled graph owns its own model and cannot be rewrapped from outside, so wrap the model yourself with `DurableChatModel` when building it. Tool calls remain durable regardless.
+A fully compiled graph owns its own model and cannot be rewrapped from outside, so its model turns are not recorded for replay. Tool calls remain durable regardless.
 
 `agent` and `tools` are mutually exclusive.
 

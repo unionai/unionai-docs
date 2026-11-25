@@ -35,13 +35,15 @@ This example follows the `uv` script format to declare dependencies.
 # /// script
 # requires-python = "==3.13"
 # dependencies = [
-#    "flyte>=2.0.0b23",
+#    "flyte>=2.0.0b52",
 #    "langchain-core==0.3.66",
 #    "langchain-openai==0.3.24",
 #    "langchain-community==0.3.26",
 #    "beautifulsoup4==4.13.4",
 #    "docker==7.1.0",
 # ]
+# main = "main"
+# params = ""
 # ///
 ```
 
@@ -79,7 +81,7 @@ This string is then used as part of the LLM prompt.
 
 We set `max_depth = 20` to avoid loading an excessive number of documents.
 However, even with this limit, the resulting context can still be quite large.
-To handle this, we use an LLM (GPT-4 in this case) that supports extended context windows.
+To handle this, we use an LLM (GPT-4o in this case) that supports extended context windows.
 
 > [!NOTE]
 > Appending all documents into a single string can result in extremely large contexts, potentially exceeding the LLM’s token limit.
@@ -132,11 +134,14 @@ If the code execution fails, we reflect on the error and retry until we reach th
 
 ## Running the code agent
 
-If things are working properly, you should see output similar to the following:
+If things are working properly, the run produces output similar to the following.
+The tasks run on the cluster, so this output isn't printed in your terminal: `uv run agent.py` prints the run's URL and then follows the run's progress until it finishes.
+Open that URL to find the `---…---` lines in the logs of the `generate`, `code_check` and `main` tasks, and the solution summary and code in the output of `main`:
 
 ```
 ---GENERATING CODE SOLUTION---
 ---CHECKING CODE---
+---CODE IMPORT CHECK: PASSED---
 ---CODE BLOCK CHECK: PASSED---
 ---NO CODE TEST FAILURES---
 ---DECISION: FINISH---

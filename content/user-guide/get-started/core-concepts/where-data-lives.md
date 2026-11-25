@@ -23,9 +23,9 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 
 ## Who manages the stores
 
-* The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a BYOC or self-managed deployment.
+* The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a Union-Managed or Self-Managed deployment.
 
-* The data plane bucket lives in your cloud account. In a BYOC deployment, it is managed by Union.ai (as is the entire data plane). In a self-managed deployment, you manage the bucket yourself.
+* The data plane bucket lives in your cloud account. In a Union-Managed deployment, it is managed by Union.ai (as is the entire data plane). In a Self-Managed deployment, you manage the bucket yourself.
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -77,7 +77,29 @@ Every run's inputs and outputs are written to the bucket as `inputs.pb` / `outpu
 - **Fast-registered code bundles**: what `flyte deploy` and `flyte run --copy-style all` upload so the cluster can run your local Python.
 - **Image-build contexts**: when {{< key product_name >}} builds a container image from an `Image` definition that requires a build context.
 
-The layout under your bucket is `<project>/<domain>/...`, with the bulk of execution artifacts under per-run, per-action subprefixes (`<run-name>/<action>/...` for outputs / Decks / checkpoints) and sibling prefixes for offloaded inputs and SDK uploads (code bundles, image-build contexts). You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+{{< variant union >}}
+{{< markdown >}}
+By default, inputs (including inputs uploaded ahead of a run), outputs, Decks and `@flyte.trace` records live under per-run, per-action subprefixes of `metadata/v2/<org>/<project>/<domain>/<run-name>/<action>/...`.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+By default, the open-source Flyte backend stores a run's inputs and outputs under its configured run storage prefix (`runs.storagePrefix` in the `flyte-binary` chart). Inputs uploaded ahead of a run go to the backend's storage container instead. Setting `run_base_dir` in `flyte.with_runcontext` puts both under one base.
+{{< /markdown >}}
+{{< /variant >}}
+
+Offloaded values (`File`, `Dir`, `DataFrame` contents and similar) and task checkpoints go to a separate per-run raw-output prefix, and SDK uploads (code bundles, image-build contexts) have their own prefixes.
+
+{{< variant union >}}
+{{< markdown >}}
+You don't typically need to know the exact paths; you do need to know that **everything above lives behind one configured bucket prefix**.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You don't typically need to know the exact paths; you do need to know that **run data and uploads can live in different buckets**: run data lives in the bucket of the configured `storagePrefix`, and uploads live under the backend's storage container.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## What "literal" and "raw data" mean
 
@@ -86,9 +108,9 @@ Every value a task takes in or returns is, in Flyte's data model, a **literal**:
 - **Inline**: small values (primitives like `int` / `float` / `str` / `bool`, collections, and JSON-serializable dataclasses and Pydantic models) are serialized *by value* directly into the run's `inputs.pb` / `outputs.pb`.
 - **By reference**: large values (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, large model objects, larger pickled objects) are offloaded to their own objects in the bucket; the literal recorded in `inputs.pb` / `outputs.pb` then holds only a *URI pointer* to them.
 
-**Raw data** is that offloaded content itself: the file, directory, DataFrame, or model bytes a by-reference literal points at, plus other offloaded artifacts such as checkpoints. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates. Because it's carried as a URI rather than copied inline, raw data is often described as being "passed by reference" (as opposed to inline literals, which are "passed by value").
+A Python-pickled value is inlined when `sys.getsizeof` reports 10 KB (10,240 bytes) or less, and offloaded above that. `sys.getsizeof` counts only the outer object, not the data it references, so a small object holding a lot of data is still inlined.
 
-(In the deployment and architecture guides you may also see execution data split into *literal data* and *raw data*. There, *literal data* means specifically the inline values above and *raw data* the offloaded ones, the same distinction, named as two categories.)
+**Raw data** is that offloaded content itself: the file, directory, DataFrame, or model bytes a by-reference literal points at, plus other offloaded artifacts such as checkpoints. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates. Because it's carried as a URI rather than copied inline, raw data is often described as being "passed by reference" (as opposed to inline literals, which are "passed by value").
 
 In short: every input and output is a **literal**; a literal is stored either **inline** (the value lives in `inputs.pb` / `outputs.pb`) or **by reference** to **raw data** offloaded elsewhere in the bucket.
 
@@ -104,15 +126,37 @@ This is the sense most relevant to you: the database is durable, and losing the 
 
 ### 2. "Metadata bucket" (a deployment/ops term you may see)
 
-The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above. It holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
+The Helm chart and some operational guides refer to a **"metadata bucket"** or `metadataContainer`. **This is a legacy name.** The bucket it refers to does *not* hold the database-style metadata above.
+
+{{< variant union >}}
+{{< markdown >}}
+It holds `inputs.pb`, `outputs.pb`, Decks, checkpoints, code bundles, and offloaded data. In other words, it holds exactly the "bucket" contents listed in the previous section.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source backend it is the storage container that holds uploads, such as code bundles and inputs uploaded ahead of a run. Run inputs and outputs (`inputs.pb`, `outputs.pb`) go to the bucket of the configured `runs.storagePrefix` instead, which with the `flyte-binary` chart's defaults is a different bucket.
+{{< /markdown >}}
+{{< /variant >}}
 
 If you see "metadata bucket" in an ops context, read it as **"the data plane object-store bucket."** The naming is unfortunate; the contents are what you'd expect from a data bucket.
 
-You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and `metadata_path` on `RunContext`, which is a local scratch directory used only by `from_local()` execution). Those are small property bags or local scratch paths and don't change where your data is stored.
+You can largely ignore other appearances of the word in API surfaces (`TaskMetadata`, `ActionMetadata`, and the `/tmp/flyte/metadata` scratch directory that local-mode runs write to). Those are small property bags or local scratch paths and don't change where your data is stored.
 
 ## Per-run customization: `raw_data_path`
 
-By default, offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) land alongside everything else under the deployment's configured bucket prefix. You can route them to a different prefix, including a different bucket entirely, for a single run:
+{{< variant union >}}
+{{< markdown >}}
+By default, offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) land alongside everything else under the deployment's configured bucket prefix.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+By default, the open-source backend writes offloaded values (`File`, `Dir`, `DataFrame`, checkpoints) next to each action's outputs, in the bucket of the configured `storagePrefix`.
+{{< /markdown >}}
+{{< /variant >}}
+
+You can route them to a different prefix, including a different bucket entirely, for a single run:
 
 ```python
 import flyte
@@ -124,7 +168,13 @@ run = flyte.with_runcontext(
 ).run(my_task, x=1)
 ```
 
-This is the supported way to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+Use it to send a sensitive run to an isolated bucket, point at a bucket with different lifecycle rules, or otherwise route offloaded data per run. The `inputs.pb` / `outputs.pb` themselves still land in the deployment's bucket; only the *raw* offloaded contents move.
+
+{{< variant flyte >}}
+{{< markdown >}}
+On the open-source Flyte backend, remote runs apply `raw_data_path` only with flyteorg/flyte `v2.0.54` or later.
+{{< /markdown >}}
+{{< /variant >}}
 
 Any scheme Flyte's storage layer can resolve works here, not just `s3://`, `gs://` and local paths. `s3://`, `gs://`, `abfs://` and `abfss://` are served by the built-in obstore backend; anything else falls back to the filesystem `fsspec` has registered for that scheme. Hugging Face storage buckets are one such target, so `raw_data_path="hf://buckets/<username>/<bucket>/..."` sends offloaded values to the Hub. See [Hugging Face buckets as raw data storage](../../../integrations/huggingface/_index#hugging-face-buckets-as-raw-data-storage) for a worked example.
 
@@ -146,7 +196,7 @@ Lifecycle / retention rules should be scoped to the offloaded-data prefixes, **n
 
 {{< variant union >}}
 {{< markdown >}}
-For how retention policies are configured in your deployment, see [BYOC data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
+For how retention policies are configured in your deployment, see [Union-Managed data retention policy](../../../deployment/byoc/data-retention-policy) or [Self-Managed data retention](../../../deployment/selfmanaged/configuration/data-retention).
 {{< /markdown >}}
 {{< /variant >}}
 

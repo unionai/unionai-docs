@@ -26,7 +26,7 @@ Roles (built-in or custom) define sets of permitted **actions**; custom **polici
 
 ## Enforcement
 
-Every request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at two points: the control plane API gates orchestration metadata operations (run lifecycle, task definitions, RBAC management, project/domain queries), and the Envoy router inside the customer's cluster gates every customer-data request to the `dataproxy` service (signed URLs, structured I/O retrieval, log fetching, auxiliary UI proxying, secret writes). Both enforcement points evaluate the same Union.ai identity against the same RBAC policy.
+Every request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at two points: the control plane API gates orchestration metadata operations (run lifecycle, task definitions, RBAC management, project/domain queries), and the data plane's `dataproxy` service gates every customer-data request (signed URLs, structured I/O retrieval, log fetching, auxiliary UI proxying, secret writes) after the Envoy router inside the customer's cluster has authenticated it. For each decision, `dataproxy` asks the control plane's authorizer, sending the caller's identity and the requested action, not customer data. Both enforcement points evaluate the same Union.ai identity against the same RBAC policy.
 
 ## Least privilege
 
@@ -65,6 +65,6 @@ Union.ai enforces least privilege across all components. IAM roles on the data p
    flyte -of json get policy
    ```
 
-6. For Union.ai employee access, list every identity-to-policy assignment in the organization with `flyte get assignment`, inspect the policies they name with `flyte get policy <name>`, then inspect the roles those policies bind with `flyte get role <name>`. The role carries the action list, so the last step is the one that shows the effective access. See [Human access controls](./human-access).
+6. For Union.ai employee access, get the subjects of the staff identities in your tenant from Union.ai (`flyte get member` and `flyte get user` don't list support staff). Look up the policies assigned to each identity with `flyte get assignment --user-subject <subject>`, inspect those policies with `flyte get policy <name>`, then inspect the roles those policies bind with `flyte get role <name>`. The role carries the action list, so the last step is the one that shows the effective access. See [Human access controls](./human-access).
 
-This verification is fully self-service.
+Steps 1–5 are fully self-service. Step 6 also needs the staff subjects from Union.ai, and assignment output shows only customer-visible policies, not internal system policies.

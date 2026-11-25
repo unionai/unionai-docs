@@ -33,9 +33,8 @@ Flyte automatically creates a deployment plan that includes:
 
 - The app you're deploying
 - All [app environment dependencies](../configure-apps/apps-depending-on-environments) (via `depends_on`)
-- Proper deployment order
 
-{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=deployment-plan lang=python >}}
+The app and the environments it reaches through `depends_on` go into a single plan, and the environments in a plan deploy concurrently. For example, if `frontend` depends on `backend`, `flyte.deploy(frontend)` deploys both and returns a list with one `Deployment`, whose `envs` contains both `frontend` and `backend`.
 
 ## Overriding app configuration at deployment time
 
@@ -46,7 +45,7 @@ app environment with the desired overrides.
 
 ## Activation/deactivation
 
-Unlike serving, deployment does not automatically activate apps. You need to activate them explicitly:
+Deploying an app activates it. To deactivate a deployed app, or activate it again, use `deactivate()` and `activate()` on the `App`:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/deploy_examples.py" fragment=activation-deactivation lang=python >}}
 
@@ -62,14 +61,15 @@ flyte deploy path/to/app.py app
 
 Where `app` is the variable name of the `AppEnvironment` object.
 
-You can also specify the following options:
+You can also specify the following options. They go before the file path:
 
 ```bash
-flyte deploy path/to/app.py app \
+flyte deploy \
     --version v1.0.0 \
     --project my-project \
     --domain production \
-    --dry-run
+    --dry-run \
+    path/to/app.py app
 ```
 
 ## Example: Full deployment configuration
@@ -83,9 +83,9 @@ flyte deploy path/to/app.py app \
 3. **Test first**: Test with serve before deploying to production.
 4. **Manage dependencies**: Use `depends_on` to manage app dependencies.
 5. **Activation strategy**: Have a strategy for activating/deactivating apps.
-7. **Use dry-run**: Test deployments with `dryrun=True` first (`--dry-run` on the CLI).
-8. **Separate environments**: Use different projects/domains for different environments.
-9. **Parameter management**: Consider using environment-specific parameter values.
+6. **Use dry-run**: Test deployments with `dry_run=True` first (`--dry-run` on the CLI). `dry_run` needs `flyte` v2.8.0 or later; earlier versions take `dryrun`. From v2.8.0, `dryrun` is a deprecated alias that still works but raises a `FutureWarning`. The example above still uses it.
+7. **Separate environments**: Use different projects/domains for different environments.
+8. **Parameter management**: Consider using environment-specific parameter values.
 
 ## Deployment status and return value
 

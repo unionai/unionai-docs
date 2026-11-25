@@ -10,9 +10,9 @@ mermaid: true
 # Clusters and queues
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
-> The `flyte` cluster, pool, and queue commands and the Python objects on these
+> The `flyte` cluster, pool, queue, and node-groups commands and the Python objects on these
 > pages are provided by the `flyteplugins-union` package. Install it with
-> `pip install flyteplugins-union`.
+> `pip install flyteplugins-union`. The node-groups commands need version 0.20.2 or later.
 
 As a {{< key product_name >}} deployment grows past a single cluster, you need to
 control *where* a workload runs and *under what limits*. Three primitives do this:
@@ -39,18 +39,18 @@ Pools, clusters, and queues are managed with the `flyte` CLI or the
 administrator. These are administrative tasks; most workflow authors only need
 [task-side queue routing](../tasks/task-configuration/queues).
 
-## Standing up a self-managed cluster?
+## Standing up a Self-Managed cluster?
 
 The pages here manage the **control-plane records** for pools, clusters, and
 queues. They do not provision the **data plane** itself: the cloud resources
-(object store, secret store, registry) and the Helm release that registers a
-cluster with the control plane.
+(object store, secret store, registry) and the install of the data plane on the
+cluster (by the agent from the Union.ai UI, or by a Helm release you run).
 
-If you run a self-managed deployment, provision the data plane first with
-[Self-managed deployment](../../deployment/selfmanaged/_index) (for example,
-[Data plane setup on AWS](../../deployment/selfmanaged/aws/legacy)),
-then use the commands here to manage the pool, cluster, and queue records that
-route work to it.
+If you run a Self-Managed deployment, provision the data plane first with
+[Self-Managed deployment](../../deployment/selfmanaged/_index) (for example,
+[Provision your AWS resources](../../deployment/selfmanaged/aws/_index)),
+then use the commands here to add or change the pool, cluster, and queue records
+that route work to it.
 
 ## How they fit together
 
@@ -116,11 +116,18 @@ destination data plane. Then move its drained queue or follow a
 [drain-and-replace migration](./queues#move-work-to-another-pool).
 
 > [!NOTE] The simple case is invisible
-> Each cluster is assigned exactly one pool. If no custom pool is specified when
-> the cluster is created, it joins the `default` pool that every organization is
-> provisioned with. So if you run a single cluster, or several clusters that share
-> one bucket, secret store, and registry, you never need to think about pools: your
-> cluster lands in `default`, queues route to `default`, and you can skip straight
+> Each cluster is assigned exactly one pool. A Union-Managed cluster, built with
+> the **Add a cluster** wizard, gets a pool of its own: see
+> [Multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster). A
+> Self-Managed cluster joins the pool you name, or the `default` pool if you name
+> none. No organization starts with `default`: if Union.ai set up your organization, `default` is created when its first
+> cluster is registered; if you created your organization yourself by
+> [signing up](../../deployment/sign-up/_index), you
+> [create `default`](../../deployment/selfmanaged/connect-a-cluster) before you
+> register your first cluster. So if you run a single Self-Managed cluster, or several
+> that share one bucket, secret store, and registry, you don't need to
+> think about pools once `default` exists: your cluster lands in `default`,
+> queues route to `default`, and you can skip straight
 > to [Managing queues](./queues). Pools only matter once you have clusters with **distinct**
 > data planes (for example, separate dev and prod cloud accounts).
 
@@ -142,6 +149,10 @@ Create and manage the scheduling lanes that route workloads to a pool and enforc
 
 {{< link-card target="resource-caps-and-scheduling" icon="sliders" title="Resource caps and scheduling" >}}
 Share clusters across teams with per-queue CPU, memory, and GPU caps, and choose how a queue schedules work when capacity is tight.
+{{< /link-card >}}
+
+{{< link-card target="node-groups" icon="server" title="Node groups" >}}
+Inspect and update the node groups a cluster declares, the node shapes it can schedule onto.
 {{< /link-card >}}
 
 {{< /grid >}}

@@ -71,7 +71,7 @@ config:
             - displayName: Dask Runner logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -114,7 +114,7 @@ config:
             - displayName: Dask Runner logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -182,7 +182,7 @@ config:
             - displayName: Ray Head logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}
@@ -223,7 +223,7 @@ config:
             - displayName: Ray Head logs
               scheme: TaskExecution
               templateUris:
-                - "/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
+                - "/console/projects/{{`{{.executionProject}}`}}/domains/{{`{{.executionDomain}}`}}/executions/{{`{{.executionName}}`}}/nodeId/{{`{{.nodeID}}`}}/taskId/{{`{{.taskID}}`}}/attempt/{{`{{.taskRetryAttempt}}`}}/view/logs?duration=all&fromExecutionNav=true"
 ```
 
 {{< /markdown >}}

@@ -2,7 +2,7 @@
 title: flyte.errors
 description: "Exceptions raised by Union."
 icon: box-seam
-version: 2.12.4
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---
@@ -14,6 +14,12 @@ Exceptions raised by Union.
 These errors are raised when the underlying task execution fails, either because of a user error, system error or an
 unknown error.
 ## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`OrgLimit`](../flyte.errors/orglimit) | The org limit a request was refused at, as the server reported it. |
 
 ### Errors
 
@@ -54,11 +60,13 @@ unknown error.
 | [`NotInTaskContextError`](../flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](../flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`OnlyAsyncIOSupportedError`](../flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
+| [`OrgEntitlementRequiredError`](../flyte.errors/orgentitlementrequirederror) | This error is raised when the server refuses a request because the organization isn't entitled to a capability, for example a private control plane endpoint. |
+| [`OrgLimitExceededError`](../flyte.errors/orglimitexceedederror) | This error is raised when the server refuses a request because the organization is at one of its limits, for example `max_actions_per_run` or `max_clusters`. |
 | [`ParameterMaterializationError`](../flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`PrimaryContainerNotFoundError`](../flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`RemoteTaskNotFoundError`](../flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RemoteTaskUsageError`](../flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
-| [`ResourceExhaustedError`](../flyte.errors/resourceexhaustederror) |  |
+| [`ResourceExhaustedError`](../flyte.errors/resourceexhaustederror) | This error is raised when the server refuses a request for now, for example because the organization is at its `max_concurrent_runs` or `max_queue_depth`: it succeeds once running work finishes. |
 | [`RestrictedTypeError`](../flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one value. |
 | [`RetriesExhaustedError`](../flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`RuntimeDataValidationError`](../flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |

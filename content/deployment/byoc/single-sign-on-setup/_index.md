@@ -2,7 +2,7 @@
 title: Single sign on setup
 description: Set up SSO against any SAML or OIDC identity provider through OAuth2.
 icon: person-check
-weight: 12
+weight: 8
 variants: -flyte +union
 ---
 

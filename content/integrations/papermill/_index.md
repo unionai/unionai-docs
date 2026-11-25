@@ -10,7 +10,7 @@ variants: +flyte +union
 
 The Papermill plugin lets you run Jupyter notebooks as Flyte tasks. It uses [papermill](https://papermill.readthedocs.io/) to parameterize and execute `.ipynb` files, capture their outputs as typed Flyte values, and render the executed notebook as an HTML report visible in the Flyte UI.
 
-A `NotebookTask` behaves like any other Flyte task: it has typed inputs and outputs, participates in workflows, runs remotely, integrates with the Flyte type system (including `File`, `Dir`, and `DataFrame`), and can call other Flyte tasks from within the notebook.
+A `NotebookTask` behaves like any other Flyte task: it has typed inputs and outputs, participates in workflows, runs remotely, integrates with the Flyte type system (including `File`, `Dir`, and `DataFrame`), and can call other Flyte tasks from within the notebook (see [Calling Flyte tasks from notebooks](#calling-flyte-tasks-from-notebooks)).
 
 ## When to use this plugin
 
@@ -60,7 +60,7 @@ def workflow(x: int = 5, y: float = 3.14) -> float:
     return add_numbers(x=x, y=y)
 ```
 
-`notebook_path` may be relative (resolved against the calling file's directory) or absolute.
+`notebook_path` may be relative (resolved against the current working directory) or absolute.
 
 ## Notebook setup
 
@@ -184,13 +184,13 @@ def report_workflow(message: str = "hello"):
     printer(message=message)
 ```
 
-If a declared output is missing from `record_outputs(...)`, `NotebookTask` raises `TypeError` listing the missing names.
+If a declared output is missing from `record_outputs(...)`, `NotebookTask` fails with an error naming the first missing output.
 
 ## Calling Flyte tasks from notebooks
 
-You can call other Flyte tasks directly from inside a notebook. The plugin injects the parent task's runtime context into the notebook kernel at the start of execution, so task calls are routed through the Flyte controller automatically, so no manual setup required.
+You can call other Flyte tasks directly from inside a notebook when the `NotebookTask` runs remotely. The plugin injects the parent task's runtime context into the notebook kernel at the start of execution, so task calls are routed through the Flyte controller with no manual setup.
 
-When running remotely, each task call is submitted to Flyte and appears as a separate node in the run graph. When running locally, the calls execute in-process as regular Python functions.
+When running remotely, each task call is submitted to Flyte and appears as a separate node in the run graph. When the `NotebookTask` runs locally, task calls inside the notebook fail with `RuntimeUserError: Controller is not initialized`.
 
 ```python{hl_lines=[1, 4]}
 # Inside a notebook cell
@@ -199,12 +199,12 @@ from my_tasks import expensive_task
 result = await expensive_task(data=42)
 ```
 
-Sync tasks can be called the same way:
+Notebook cells run inside the kernel's event loop, so call sync tasks with `.aio()`. In a remote run, a plain blocking call raises `SyncTaskCallInAsyncContextError`:
 
 ```python{hl_lines=[3]}
 from my_tasks import compute_total
 
-total = compute_total(values=[1, 2, 3])
+total = await compute_total.aio(values=[1, 2, 3])
 ```
 
 > [!NOTE]
@@ -399,6 +399,7 @@ In this mode:
 - No HTML report is rendered (no task context)
 - `File` and `Dir` outputs created inside the notebook resolve to local paths
 - No plugin lifecycle hooks fire (so no Spark cluster is provisioned, etc.)
+- Task calls inside the notebook fail with `RuntimeUserError: Controller is not initialized`. See [Calling Flyte tasks from notebooks](#calling-flyte-tasks-from-notebooks).
 
 This makes iteration on notebook logic fast. You can run the task from a script, REPL or test without going through Flyte at all.
 
@@ -434,7 +435,7 @@ NotebookTask(
 | Parameter                      | Default | Description                                                                               |
 | ------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
 | `name`                         | -       | Task name                                                                                 |
-| `notebook_path`                | -       | Path to the `.ipynb`, relative to the calling file or absolute                            |
+| `notebook_path`                | -       | Path to the `.ipynb`, relative to the current working directory or absolute               |
 | `task_environment`             | -       | `TaskEnvironment` for registration and on-cluster execution                                   |
 | `inputs`                       | `None`  | `{name: type}` dict of notebook inputs                                                    |
 | `outputs`                      | `None`  | `{name: type}` dict of notebook outputs                                                   |

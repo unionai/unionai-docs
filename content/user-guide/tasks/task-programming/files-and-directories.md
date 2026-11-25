@@ -83,7 +83,7 @@ The two forms are otherwise equivalent — pick the one that matches how your ta
 | `Dir.new_remote()` | `Dir.new_remote()` | Allocate a new remote directory to stream into |
 | `Dir.from_existing_remote(uri)` | `Dir.from_existing_remote(uri)` | Reference a directory that already exists remotely |
 | `async for f in dir.walk()` | `for f in dir.walk_sync()` | Iterate over the files in the directory |
-| `await dir.list_files()` | `dir.list_files_sync()` | List the files in the directory (non-recursive) |
+| `await dir.list_files()` | `dir.list_files_sync()` | List the files in the directory (see the note below for how deep each one goes) |
 | `await dir.get_file(name)` | `dir.get_file_sync(name)` | Get a single file from the directory by name |
 | `await dir.download()` | `dir.download_sync()` | Download the whole directory to the local filesystem |
 | `await dir.exists()` | `dir.exists_sync()` | Check whether the directory exists |
@@ -91,7 +91,11 @@ The two forms are otherwise equivalent — pick the one that matches how your ta
 If a `Dir` already points at the local filesystem, `dir.download()` and `dir.download_sync()` with no `local_path` return the directory's own path without copying it. Modifying or deleting files under it changes the source.
 
 > [!NOTE]
-> `walk_sync()` additionally accepts a `file_pattern` glob (for example `file_pattern="*.txt"`) to filter the files it yields. Both forms accept `recursive` and `max_depth`.
+> `walk()` accepts `recursive` and `max_depth`. With `recursive=False`, it yields the top-level files and the files one subdirectory down. `list_files()` returns the same set.
+>
+> `walk_sync()` accepts `recursive` and `file_pattern` but ignores both. Unless you pass `max_depth`, it yields every file at every depth. `list_files_sync()` also returns every file at every depth.
+>
+> To return only the top-level files from either form, pass `max_depth=1` and leave `recursive` at its default. In `walk()`, `recursive=False` replaces any `max_depth` you pass with 2.
 
 ### Synchronous example
 

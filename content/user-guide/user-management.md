@@ -14,7 +14,7 @@ The system has four core concepts:
 * **Role**: A named set of actions (e.g. view inventory, create executions).
 * **Policy**: Binds one or more roles to specific projects, domains, or the entire organization.
 * **User / Application**: An actor assigned to policies. Users are identified by email; applications by ID.
-* **Action**: An operation like `view_flyte_inventory`, `create_flyte_executions` or `manage_secrets`. See [Available actions](#available-actions).
+* **Action**: An operation like `view_flyte_inventory`, `create_flyte_executions` or `register_flyte_inventory`. See [Available actions](#available-actions).
 
 ## Built-in policies
 
@@ -39,16 +39,17 @@ For fine-grained control, create custom roles and policies using the CLI or prog
 Install the Union CLI plugin:
 
 ```bash
-pip install 'flyteplugins-union>=0.20.1'
+pip install 'flyteplugins-union>=0.20.2'
 ```
 
 This adds `role`, `policy`, `assignment`, `user`, and `member` subcommands to the `flyte` CLI.
 
 > [!WARNING]
-> Use `flyteplugins-union` 0.20.1 or later.
-> Older versions don't support every action in [Available actions](#available-actions).
-> They fail to read a role that holds one (`flyte get role`, `flyte update role`, `Role.get`),
-> and `Role.update` silently removes them.
+> Use `flyteplugins-union` 0.20.2 or later.
+> With `flyte` 2.12.2 or later, earlier versions fail to import and the `flyte` CLI drops their subcommands.
+> Versions before 0.20.1 also don't support the actions listed after the table in [Available actions](#available-actions) (all except `view_identities`), which the built-in policies hold.
+> On a role that holds one, `Role.actions` and `flyte update role` fail,
+> and `Role.update` silently removes those actions.
 
 ### Walkthrough: restrict a team to run workflows in production only
 
@@ -212,28 +213,11 @@ Navigate to **Settings > User Management** to:
 | Action | Description |
 |---|---|
 | `administer_project` | Archive/update projects, manage customizable resources |
-| `manage_permissions` | Manage users, applications, and policy assignments |
-| `view_permissions` | View roles, policies, and assignments |
+| `manage_permissions` | View and edit roles and policies, and manage users, applications, and policy assignments |
 | `create_flyte_executions` | Launch runs and upload inputs |
 | `register_flyte_inventory` | Register and deploy workflows, tasks, and launch plans |
 | `view_flyte_executions` | View runs and actions |
 | `view_flyte_inventory` | View registered workflows, tasks, and launch plans |
-| `view_secrets` | View secrets (get, list) |
-| `manage_secrets` | Create, update, and delete secrets |
-| `view_apps` | View apps, replicas, app logs, and app metrics |
-| `manage_apps` | Deploy, update, and delete apps |
-| `view_triggers` | View triggers and their revision history |
-| `manage_triggers` | Activate and deactivate triggers (creating and deleting triggers requires `register_flyte_inventory`) |
-| `view_workspaces` | View workspace definitions and instances |
-| `manage_workspaces` | Create and update workspace definitions; start and stop workspace instances |
-| `view_artifacts` | View artifacts, cards, and artifact usage |
-| `manage_artifacts` | Create, declare, tag, and delete artifacts |
-| `view_settings` | View settings |
-| `edit_settings` | Create and update settings |
-| `manage_api_keys` | Create and delete API keys |
-| `view_clusters` | View clusters, cluster pools, node groups, and cluster usage |
-| `view_usage` | View usage, metrics, quotas, and credits |
-| `view_identities` | View users and members |
 | `administer_account` | Manage billing and account-wide settings |
 | `manage_cluster` | Manage clusters |
 | `manage_queue` | Manage cluster queues |
@@ -242,9 +226,15 @@ Navigate to **Settings > User Management** to:
 | `edit_cluster_related_attributes` | Edit cluster-related attributes (cluster resources, cluster assignment) |
 | `edit_unused_attributes` | Edit execution queue, execution cluster label, quality of service, and plugin override attributes |
 | `support_system_logs` | View system logs |
-| `view_llm_gateway` | View the inference gateway, its providers, virtual keys, and usage |
-| `manage_llm_gateway` | Deploy and delete the inference gateway and manage its upstream providers |
-| `manage_llm_gateway_keys` | Issue and revoke inference gateway virtual keys |
+| `view_llm_gateway` | View the inference gateway, its providers, guardrails, and virtual keys (without their values) |
+| `manage_llm_gateway` | Deploy and delete the inference gateway, and manage its upstream providers and guardrails |
+| `manage_llm_gateway_keys` | Issue, revoke, and view inference gateway virtual keys, and view inference gateway usage |
+
+Roles also accept the following actions, but no Union service checks them, so granting one has no effect:
+`view_secrets`, `manage_secrets`, `view_apps`, `manage_apps`, `view_triggers`, `manage_triggers`, `view_workspaces`, `manage_workspaces`, `view_artifacts`, `manage_artifacts`, `view_settings`, `edit_settings`, `manage_api_keys`, `view_clusters`, `view_permissions`, `view_usage`, `view_identities`.
+A role that holds `create_flyte_executions` can list, get, create, update, and delete secrets at the scope it's bound to.
+Viewing triggers requires `view_flyte_inventory`.
+Creating, activating, deactivating, and deleting triggers requires `register_flyte_inventory`.
 
 ## CLI command reference
 
@@ -259,7 +249,7 @@ Navigate to **Settings > User Management** to:
 | `flyte update policy <name>` | Edit a policy in `$EDITOR` |
 | `flyte delete policy <name>` | Delete a policy |
 | `flyte create assignment --email <email> \| --user-subject <id> \| --creds-subject <id> --policy <name>` | Assign a policy to a user or application |
-| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | List all assignments or view a specific one |
+| `flyte get assignment [--user-subject <id> \| --creds-subject <id>]` | View the policies assigned to a user or application |
 | `flyte delete assignment --user-subject <id> \| --creds-subject <id> --policy <name>` | Unassign a policy from a user or application |
 | `flyte get user [<subject>]` | List all users or view a specific one |
 | `flyte delete user <subject>` | Delete a user |

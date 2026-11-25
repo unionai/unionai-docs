@@ -165,9 +165,8 @@ Two cases change which cap an untyped request counts against:
   own cap, the request counts against that cap as well. On a cluster with T4,
   L4, and A10G nodes and a queue that caps L4s, a `gpu=1` task that the
   scheduler assigns to an L4 counts against both the `nvidia_gpu` cap and the
-  L4 cap. Without
-  resource-aware scheduling, an untyped request counts against the `nvidia_gpu`
-  cap only.
+  L4 cap. On a cluster whose configuration Union doesn't have, an untyped
+  request counts against the `nvidia_gpu` cap only.
 - If a default GPU type is set in Settings, an untyped request is treated as a
   request for that type. It counts against that type's cap, not against the
   `nvidia_gpu` cap.
@@ -481,14 +480,17 @@ scale. With it, the scheduler does the following for every action:
   policy. On a strict FIFO queue it blocks the line.
 - Among the clusters with room, it places the action on the least loaded one.
 
-> [!NOTE] Resource-aware scheduling is enabled per organization
-> It is off until the Union team turns it on for your organization, and it
-> needs Union to have your cluster configuration. Union BYOC deployments
-> already have the configuration; for self-managed deployments, the Union team
-> sets it up. Talk to the Union team to have resource-aware scheduling turned
-> on for your organization. Without it, a queue treats a cluster as able to run anything
-> and places work on any healthy cluster it routes to. Resource caps and the
-> scheduling policy apply either way.
+> [!NOTE] Cluster configuration required
+> Resource-aware scheduling is on for every organization. It applies to a
+> cluster when Union has that cluster's configuration. Union records the
+> configuration when it provisions a Union-Managed cluster. For a Self-Managed
+> cluster, declare its node pools as [node groups](./node-groups) with
+> `flyte update node-groups`, which needs the `manage_cluster` action (see
+> [Available actions](../user-management#available-actions)). Union doesn't
+> check the declaration against your nodes: if it understates a node group,
+> actions that would fit can fail as infeasible. A queue
+> treats a cluster without the configuration as able to run anything. Resource
+> caps and the scheduling policy apply either way.
 
 ## Infeasible requests fail fast
 
@@ -498,7 +500,8 @@ strict FIFO queue it would also block everything behind it. The scheduler fails
 such an action as soon as it sees it.
 
 With [resource-aware scheduling](#resource-aware-scheduling), the check also
-covers the clusters. An action then also fails as infeasible when no cluster its
+covers the clusters, as long as Union has the configuration of every cluster the
+queue routes to. An action then also fails as infeasible when no cluster its
 queue routes to could ever run it:
 
 - It asks for an accelerator that none of those clusters has.

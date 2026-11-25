@@ -308,13 +308,13 @@ On the first attempt, the full pipeline runs. If a transient failure occurs, the
 
 - Logs every iteration with attempt count, error type, and package changes
 - Tracks total input/output tokens across all LLM calls (available on `result.total_input_tokens` and `result.total_output_tokens`)
-- Results include full conversation history for debugging (`result.conversation_history`)
+- Results include the initial system and user messages sent to the LLM (`result.conversation_history`); retry messages are not recorded
 
 ### Agent backend
 
 - Traces each tool call (name + input) via `PostToolUse` hooks
 - Traces tool failures via `PostToolUseFailure` hooks
-- Traces a summary when the agent finishes (total tool calls, tool distribution, final image/packages)
+- Traces a summary when the agent finishes (total tool calls, the last 20 tool calls, and the number of sandbox test executions)
 - Classifies Bash commands as safe, denied, or intercepted (for sandbox execution)
 - All traces appear in the Flyte UI
 
@@ -516,7 +516,7 @@ agent = AutoCoderAgent(
 | Parameter         | Type              | Default        | Description                                                                            |
 | ----------------- | ----------------- | -------------- | -------------------------------------------------------------------------------------- |
 | `name`            | `str`             | `"auto-coder"` | Unique name for tracking and image naming                                              |
-| `model`           | `str`             | `"gpt-4.1"`    | LiteLLM model identifier                                                               |
+| `model`           | `str`             | required       | Model identifier: a LiteLLM model for `backend="litellm"`, a Claude model for `backend="claude"` |
 | `backend`         | `str`             | `"litellm"`    | Execution backend: `"litellm"` or `"claude"`                                           |
 | `system_prompt`   | `str`             | `None`         | Custom system prompt override                                                          |
 | `api_key`         | `str`             | `None`         | Name of the environment variable containing the LLM API key (e.g., `"OPENAI_API_KEY"`) |
@@ -565,7 +565,7 @@ agent = AutoCoderAgent(
 | `original_samples`         | `dict[str, File] \| None` | Sample data as Files (defaults for `run()`/`as_task()`)   |
 | `total_input_tokens`       | `int`                     | Total input tokens across all LLM calls                   |
 | `total_output_tokens`      | `int`                     | Total output tokens across all LLM calls                  |
-| `conversation_history`     | `list[dict]`              | Full LLM conversation history for debugging               |
+| `conversation_history`     | `list[dict]`              | Initial system and user messages; empty in Agent mode     |
 
 ### `CodeGenEvalResult` methods
 

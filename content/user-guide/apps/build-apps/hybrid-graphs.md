@@ -25,7 +25,7 @@ Tasks can call apps by making HTTP requests to the app's endpoint. This is usefu
 
 Key points:
 
-- The task environment uses `depends_on=[app_env]` to ensure the app is deployed first
+- The task environment uses `depends_on=[app_env]`, so deploying `task_env` also deploys the app
 - Access the app endpoint via `app_env.endpoint`
 - Use standard HTTP client libraries (like `httpx`) to make requests
 
@@ -213,7 +213,7 @@ The `RUN_MODE` variable gives you a smooth development progression:
 
 ## Best practices
 
-1. **Use `depends_on`**: Always specify dependencies to ensure proper deployment order.
+1. **Use `depends_on`**: List the apps a task environment calls in its `depends_on`, so they're deployed along with it.
 2. **Handle errors**: Implement proper error handling for HTTP requests.
 3. **Use async clients**: Use async HTTP clients (`httpx.AsyncClient`) in async contexts.
 4. **Initialize Flyte**: For apps calling tasks, initialize Flyte in the app's startup.

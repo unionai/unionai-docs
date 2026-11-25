@@ -49,7 +49,7 @@ You supply two values: your Google Cloud project ID and the address of your Unio
 
 - A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
-The commands create billable resources, including a regional GKE control plane, its nodes, and Cloud NAT. They bill hourly whether or not anything runs. Use a project dedicated to the data plane: [step 5](#5-create-the-service-accounts-and-grant-access) grants Secret Manager roles on the whole project.
+The commands create billable resources, including a regional GKE control plane, its nodes, and Cloud NAT. They bill hourly whether or not anything runs. See [What Union.ai installs in your cluster](../whats-installed) for what runs on them. Use a project dedicated to the data plane: [step 5](#5-create-the-service-accounts-and-grant-access) grants Secret Manager roles on the whole project.
 
 Run every step in the same shell session. Later steps use the variables that earlier steps export.
 

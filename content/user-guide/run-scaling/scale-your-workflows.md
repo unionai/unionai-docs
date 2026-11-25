@@ -86,6 +86,14 @@ If task runtime is comparable to or less than overhead, consider:
 3. **Reusable containers**: Eliminate container creation overhead (`t`)
 4. **Local execution**: Run lightweight operations within the parent task
 
+{{< variant union >}}
+{{< markdown >}}
+A driver task that only calls other tasks has the same overhead problem in reverse: it holds a pod
+for as long as its children run. An [orchestrator task](../tasks/task-programming/orchestrator-tasks)
+has no pod of its own, so it starts in milliseconds and holds nothing while it waits.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## System architecture and data flow
 
 To optimize performance, understand how tasks flow through the system:

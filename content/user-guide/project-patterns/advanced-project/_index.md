@@ -86,7 +86,7 @@ flowchart TD
 To create the secret:
 
 ```bash
-flyte secret create openai-api-key
+flyte create secret openai-api-key
 ```
 
 ## Parts

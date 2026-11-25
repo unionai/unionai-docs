@@ -1,58 +1,48 @@
 ---
 title: Multi-cluster and multi-cloud
-description: Map each project or domain to its own cloud account or project, including across providers.
+description: Run several Union-Managed clusters, in different cloud accounts or clouds, and choose which one runs your work.
 icon: diagram-3
-weight: 4
+weight: 9
 variants: -flyte +union
 ---
 
 # Multi-cluster and multi-cloud
 
-When [configuring your data plane](./configuring-your-data-plane), you can map each domain or project to its own GCP project or AWS subaccount. You can even mix cloud providers: Some of your domains and/or projects can be mapped to AWS subaccounts while others can be mapped to GCP projects.
+You can run more than one Union-Managed cluster: for example, separate clusters for development and production.
+Create each one with the **Add a cluster** wizard, as on the setup page for [AWS](./data-plane-setup-on-aws), [GCP](./data-plane-setup-on-gcp), or [Azure](./data-plane-setup-on-azure).
 
-## Domain isolation
+- The wizard builds one cluster at a time in an organization. Start the next once the previous build ends.
+- Each cluster can be in a different account, in any region the console offers. Clusters in more than one region or cloud need the Enterprise plan.
+- The Team plan allows two active clusters. See [Product tiers](../product-tiers).
 
-If you choose domain isolation, then you would have one GCP project or AWS subaccount for each domain. For example:
+## Each cluster has its own pool
 
-| Domain        | GCP project or AWS subaccount     |
-| ------------- | --------------------------------- |
-| `development` | `gcp-project-union-development`   |
-| `staging`     | `gcp-project-union-staging`       |
-| `production`  | `aws-subaccount-union-production` |
+The wizard puts every cluster in a [cluster pool](../../user-guide/clusters-and-queues/cluster-pools) of its own, with its own object store and container registry in the cluster's cloud account.
+Secrets are stored in the account's Secrets Manager in the cluster's region (AWS), in the project's Secret Manager (GCP), or in the cluster's own key vault (Azure).
 
-## Project isolation
+The pool is named `default-<cloud>-<account>-<region>-<cluster>`, for example `default-aws-123456789012-us-east-2-prod`.
+The name is lowercased and, past 63 characters, shortened with a hash. `flyte get cluster-pool` lists the exact names.
 
-If you choose project isolation, then you would have one GCP project or AWS subaccount for each Union.ai project-domain pair. For example:
+A run's code bundle, inputs, and outputs stay in the object store of the cluster that runs it.
+Work can't move from one pool to another. See [Crossing a pool boundary](../../user-guide/clusters-and-queues/_index#crossing-a-pool-boundary).
 
-| Domain/Project          | GCP Project or AWS Subaccount               |
-| ----------------------- | ------------------------------------------- |
-| `development/project-1` | `gcp-project-union-development-project-1`   |
-| `development/project-2` | `gcp-project-union-development-project-2`   |
-| `development/project-3` | `gcp-project-union-development-project-3`   |
-| `staging/project-1`     | `gcp-project-union-staging-project-1`       |
-| `staging/project-2`     | `gcp-project-union-staging-project-2`       |
-| `staging/project-3`     | `gcp-project-union-staging-project-3`       |
-| `production/project-1`  | `aws-subaccount-union-production-project-1` |
-| `production/project-2`  | `aws-subaccount-union-production-project-2` |
-| `production/project-3`  | `aws-subaccount-union-production-project-3` |
+## Choose which cluster runs your work
 
-The precise set of GCP projects and/or AWS subaccounts depends on the number of Union.ai domains and projects that you have.
+Every cluster has a queue with the same name as the cluster, which routes only to that cluster.
+To run on a particular cluster, submit to its queue:
 
-> [!NOTE] Limitations of project per GCP project/AWS subaccount
-> Note that if you choose to map each Union.ai project to its own GCP project/AWS subaccount,
-> you will need to define the set of such projects up front. This is because the Union.ai project will have to be
-> created when the GCP project/AWS subaccount is set up.
->
-> If you also want the ability to create projects on demand, this can be supported by having an additional
-> _default_ GCP project/AWS subaccount. Any projects created _after_ onboarding will be created in that
-> default GCP project/AWS subaccount.
+```bash
+flyte run --queue <cluster-name> hello.py main
+```
 
-## Data and metadata isolation
+From Python, use `flyte.with_runcontext(queue=...)`.
+To send a task's runs to the same cluster every time, set the queue on its task environment. See [Queues](../../user-guide/tasks/task-configuration/queues).
 
-Each domain or project is isolated within its own AWS account or Google project, and therefore provides the level of compute and data isolation intrinsic to that arrangement. Specifically, execution-time isolation per domain or project is maintained for both compute and user data stored in blob store (or other configured storage).
+Sending a run's code bundle and inputs to its queue's cluster requires `flyte` 2.12.2 or later.
+With `flyte run`, local `File`, `Dir`, and `DataFrame` inputs need `flyte` 2.15.0 or later.
 
-In addition, metadata specific to the internals of Union.ai can be either isolated or shared across clusters, depending on the configuration you choose.
+A run that names no queue goes to the `run.default_queue` setting of its project and domain or, if that isn't set, to the `default` queue, which is in your first cluster's pool.
+To send all of a project's or domain's work to one cluster, set its `run.default_queue` to that cluster's queue.
+See [Route work to the right cluster pool](../../user-guide/project-patterns/resource-management#route-work-to-the-right-cluster-pool-in-multi-cluster-deployments).
 
-Specifically, the sharing of metadata is controlled by the cluster pool to which a cluster belongs. If two clusters are in the same cluster pool, then they _must_ share the same metadata bucket. If they are in different cluster pools, then they _must_ have different metadata buckets. You could, for example, have a single metadata bucket for all your development clusters, and a separate one for all your production clusters, by grouping the clusters into cluster pools accordingly. Alternatively you could have a separate metadata bucket for each cluster, by putting each cluster in its own cluster pool.
-
-You specify the cluster pool to which a cluster belongs when you [configure your data plane](./configuring-your-data-plane) with the help of the Union.ai team.
+For queue limits and resource caps, see [Clusters and queues](../../user-guide/clusters-and-queues/_index).

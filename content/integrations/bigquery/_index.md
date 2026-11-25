@@ -82,7 +82,7 @@ if __name__ == "__main__":
 |-------|------|----------|-------------|
 | `ProjectID` | `str` | Yes | GCP project ID |
 | `Location` | `str` | No | BigQuery region (e.g., `"US"`, `"EU"`) |
-| `QueryJobConfig` | `bigquery.QueryJobConfig` | No | Native BigQuery [QueryJobConfig](https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig) object for advanced settings |
+| `QueryJobConfig` | `bigquery.QueryJobConfig` | No | Accepted, but the connector doesn't apply its settings to the query job |
 
 ### `BigQueryTask` parameters
 
@@ -120,9 +120,7 @@ Use the `inputs` parameter to define typed inputs for your query. Input values a
 | `float` | `FLOAT64` |
 | `str` | `STRING` |
 | `bool` | `BOOL` |
-| `bytes` | `BYTES` |
 | `datetime` | `DATETIME` |
-| `list` | `ARRAY` |
 
 ### Parameterized query example
 

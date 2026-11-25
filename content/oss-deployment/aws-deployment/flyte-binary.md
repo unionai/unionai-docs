@@ -51,7 +51,7 @@ configuration:
     postgres:
       host: <postgres-host>            # e.g. my-db.example.com
       port: 5432
-      dbname: flyte                    # database must already exist
+      dbname: flyte                    # created at startup if it doesn't exist
       username: flyte
       password: <db-password>          # creates a mounted Secret (or use passwordPath)
       options: "sslmode=require"       # use sslmode=disable only for local/dev
@@ -79,7 +79,7 @@ The required fields:
 | Setting | Key | Notes |
 |---|---|---|
 | Database host | `configuration.database.postgres.host` | Reachable from the cluster. |
-| Database name | `configuration.database.postgres.dbname` | Must already exist. |
+| Database name | `configuration.database.postgres.dbname` | If it doesn't exist, Flyte creates it at startup through the default `postgres` database, which requires the database user to have permission to create databases. |
 | Database user | `configuration.database.postgres.username` | Default `postgres`. |
 | Database password | `configuration.database.postgres.password` | Creates and mounts a Secret. Use `passwordPath` instead to mount your own. The two are mutually exclusive. |
 | Storage bucket | `configuration.storage.metadataContainer` | The object-store bucket Flyte reads and writes. |
@@ -107,9 +107,10 @@ kubectl -n flyte rollout status deploy/flyte
 kubectl -n flyte get pods
 ```
 
-A `wait-for-db` init container blocks startup until the database is reachable, so a
-pod stuck in `Init` usually means the database host, credentials, or network policy
-are wrong.
+A `wait-for-db` init container blocks startup until the database server accepts
+connections. It runs `pg_isready` and doesn't log in, so a pod stuck in `Init` usually
+means the database host, port, or network policy is wrong. Wrong credentials pass the
+init container and make the main container fail at startup instead.
 
 ## 4. Grant object-store access
 
@@ -358,13 +359,14 @@ To keep the **database password** out of the values file too, leave
 - mount the password as a file and point
   `configuration.database.postgres.passwordPath` at it.
 
-When `authType: accesskey`, keep the **S3 secret key** out of the values file the
-same way: leave `configuration.storage.providerConfig.s3.secretKey` empty and
-either:
-
-- reference an existing Kubernetes Secret with `configuration.extraInlineSecretRefs`, or
-- mount the secret key as a file and point
-  `configuration.storage.providerConfig.s3.secretKeyPath` at it.
+When `authType: accesskey`, keep the **S3 secret key** out of the values file by
+leaving `configuration.storage.providerConfig.s3.secretKey` empty, mounting the secret
+key as a file, and pointing `configuration.storage.providerConfig.s3.secretKeyPath` at
+it. If both `secretKey` and `secretKeyPath` are empty, the chart fails to render with
+`secretKey or secretKeyPath must be configured`, even if the key is supplied through
+`configuration.extraInlineSecretRefs`. With `secretKeyPath`, also set
+`configuration.co-pilot.storageSecretRef` to an existing Secret that holds co-pilot's complete
+storage configuration: the key file exists only in the Flyte pod, so task pods can't read it.
 
 On the recommended `authType: iam` path there is no storage secret to manage.
 

@@ -2,7 +2,7 @@
 title: Agents
 description: Durable, self-healing agents built from tasks and apps, with sandboxing and MCP.
 icon: robot
-weight: 9
+weight: 8
 variants: +flyte +union
 ---
 

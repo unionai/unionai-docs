@@ -16,8 +16,7 @@ This tutorial builds a bioinformatics pipeline that compares homologous genes ac
 Flyte makes the multi-stage GPU/CPU pipeline reliable:
 
 - **Separate CPU and GPU `TaskEnvironment`s** so alignment runs on modest CPU boxes while Carbon scoring and ESMFold run on GPUs.
-- **`report=True`** on every stage for live HTML progress and final summaries in the Flyte UI.
-- **Cached data loading** and orchestrated fan-out across pipeline stages.
+- **`report=True`** on every stage after gene loading for live HTML progress and final summaries in the Flyte UI.
 
 ## Define the task environments
 
@@ -42,7 +41,7 @@ Dependencies are declared at the top of the file using the `uv` script style:
 
 ## Orchestrate the pipeline
 
-The top-level `pipeline` task chains four stages: load genes, Carbon scoring, sequence alignment, ESMFold folding, and a cross-species summary report.
+The top-level `pipeline` task chains five stages: load genes, Carbon scoring, sequence alignment, ESMFold folding, and a cross-species summary report.
 
 {{< code file="/unionai-examples/v2/tutorials/genomic_gene_comparison/genomic_gene_comparison.py" fragment=pipeline lang=python >}}
 

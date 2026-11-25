@@ -33,7 +33,7 @@ Go to **Settings → API → Webhooks → New webhook** and set:
 1. **URL**: the `/webhook/linear` URL from the app's dashboard.
 2. **Resource types**: the entities your handlers match.
 
-Linear generates a signing secret for the webhook. Store it as the `linear-webhook-secret` Flyte secret.
+Linear generates a signing secret for the webhook. Store it as the `LINEAR_WEBHOOK_SECRET` Flyte secret.
 
 ## Events
 

@@ -32,7 +32,7 @@ At the end you have the values you enter when you [connect your cluster](../conn
 
 ## Agent-assisted provisioning
 
-If you work with a coding agent, the `union-self-serve` skill from [union-skills](https://github.com/unionai-oss/union-skills/) can run this page for you. It does not take a different path: it works through the same steps below, in the same order, with the same commands. What it adds is that it carries the exported values from one step to the next, pauses for your approval before each command that creates a billable AWS resource, and tells you which values to plug into the Union.ai UI and which to copy back out of it.
+If you work with a coding agent, the `union-self-serve` skill from [union-skills](https://github.com/unionai-oss/union-skills/) can run this page for you. It creates the same resources as the steps below, but in a different order. It creates the S3 bucket and ECR repository (steps 3 and 4) first, so you can fill in the cluster pool form while the EKS cluster (step 2) builds. Then it runs steps 5–7. Some of its commands differ from the page's, such as its default Kubernetes version. It also carries the exported values from one step to the next, pauses for your approval before each command that creates a billable AWS resource, and tells you which values to plug into the Union.ai UI and which to copy back out of it.
 
 Install the skills into your agent. Without `--target`, the installer detects the harnesses on your machine; pass `--target` to pick one explicitly.
 
@@ -129,7 +129,7 @@ Use the bare hostname, for example, `{org}.hosted.unionai.cloud`; omit the `http
 - Permissions to create EKS, EC2/VPC, IAM, S3, ECR, and CloudWatch resources.
 - A Union.ai organization. See [Create your account and organization](../../sign-up/create-organization).
 
-The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. Choose a dedicated test account when possible.
+The commands create billable resources, including an EKS control plane, the EC2 nodes Auto Mode launches, and networking. With the data plane installed and no tasks running, they cost about $400–450 per month at on-demand prices in us-east-2. See [What Union.ai installs in your cluster](../whats-installed) for what runs on them and the cost breakdown. Choose a dedicated test account when possible.
 
 Run every step in the same shell session. Later steps use the variables that earlier steps export.
 

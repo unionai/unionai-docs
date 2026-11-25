@@ -2,7 +2,7 @@
 title: flyteplugins.union.remote
 description: "Union remote control plane objects."
 icon: box-seam
-version: 0.20.2
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---
@@ -59,10 +59,14 @@ Example:
 | [`Metrics`](../flyteplugins.union.remote/metrics) | Pod metrics of a task's action attempt or of an app, as shown in the Union UI. |
 | [`NodeGroup`](../flyteplugins.union.remote/nodegroup) | One declared node group of a cluster: a pool of nodes and the shape each node has. |
 | [`NodeGroups`](../flyteplugins.union.remote/nodegroups) | A cluster's declared node groups, as stored, with the generation they were read at. |
+| [`Org`](../flyteplugins.union.remote/org) | A Union organization, with the limits and entitlements it runs with. |
+| [`OrgLimitRow`](../flyteplugins.union.remote/orglimitrow) | One limit or entitlement of an org: what it runs with, the tier default, and why they differ. |
 | [`Policy`](../flyteplugins.union.remote/policy) | Represents a Union RBAC Policy. |
 | [`Queue`](../flyteplugins.union.remote/queue) | Represents a Union scheduling queue. |
 | [`Role`](../flyteplugins.union.remote/role) | Represents a Union RBAC Role. |
 | [`SSHDebug`](../flyteplugins.union.remote/sshdebug) | Resolved SSH-into-task connect info for a running debug action. |
+| [`Sandbox`](../flyteplugins.union.remote/sandbox) | A sandbox session, as the platform has it. |
+| [`SandboxRun`](../flyteplugins.union.remote/sandboxrun) | One run of a sandbox: its first, or one a resume started. |
 | [`SystemLogs`](../flyteplugins.union.remote/systemlogs) | Logs of the Union system components running on a cluster's dataplane. |
 | [`User`](../flyteplugins.union.remote/user) | Represents a Union user. |
 | [`VolumeExplore`](../flyteplugins.union.remote/volumeexplore) | A resolved `Volume` plus the IO to inspect and walk its lineage. |

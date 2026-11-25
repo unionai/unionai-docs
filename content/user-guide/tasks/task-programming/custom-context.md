@@ -56,7 +56,7 @@ It is the cleanest mechanism when you need something available everywhere, but n
 
 There are two ways to set custom context for a Flyte run:
 
-1. Set it once for the entire run when you launch (`with_runcontext`): this establishes the base context for the execution
+1. Set it once for the entire run when you launch (`with_runcontext`, or the `flyte run` flags in [From the CLI](#from-the-cli)): this establishes the base context for the execution
 2. Set or override it inside task code using `flyte.custom_context(...)` context manager: this changes the active context for that task block and any nested tasks called from it
 
 Both are legitimate and complementary. The important behavioral rules to understand are:
@@ -76,6 +76,26 @@ Output (every task sees the base keys unless overridden):
 ```bash
 leaf sees: {"trace_id": "root-abc", "experiment": "v1"}
 ```
+
+### From the CLI
+
+Set the run-level context from `flyte run` with two repeatable flags. Both require `flyte` 2.12.2 or later.
+
+- `--custom-context KEY=VALUE` sets a key to a literal value. Everything after the first `=` is the value.
+- `--custom-context-from-env VAR` sets key `VAR` to the value of the local environment variable `VAR`. Use `KEY=VAR` to store it under a different key. The command fails if `VAR` is not set.
+
+```bash
+flyte run \
+  --custom-context experiment=calibration \
+  --custom-context-from-env API_BASE_URL \
+  deployed-task my_env.my_task:v1
+```
+
+For file tasks, `--local` and `--tui` runs, and `deployed-task`, the flags pass the merged values to `with_runcontext(custom_context=...)`, the same as setting them from Python.
+
+- If both flags set the same key, `--custom-context` wins.
+- Keys reserved by Flyte are rejected with `Custom context key(s) [...] are reserved by Flyte.`
+- Custom context is stored as run metadata. Don't use it for secrets.
 
 ### Overriding inside a task (local override that affects nested tasks)
 

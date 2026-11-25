@@ -321,7 +321,7 @@ async def driver(date: str) -> int:
 Two things about the invocation:
 
 - `TaskEnvironment.from_task(...)` wraps the container task in an environment so it can be registered alongside the driver.
-- The driver's env `depends_on=[container_env]` so Flyte registers both together. The driver's own image needs Flyte installed (that's what `from_uv_project` does: builds an image from your `pyproject.toml`, which includes `flyte`). The container task's image does *not* need Flyte; it just needs the tools its command invokes.
+- The driver's env `depends_on=[container_env]` so Flyte registers both together. The driver's own image needs Flyte installed. `flyte.Image.from_debian_base()` installs it by default, and `flyte.Image.with_uv_project()` layers your project's dependencies on top. The container task's image does *not* need Flyte; it just needs the tools its command invokes.
 
 ### When to use `ContainerTask`
 
@@ -429,7 +429,7 @@ async def load_warehouse(ds: str) -> int:
     ...
 ```
 
-You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the decorator's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
+You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the env's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
 
 Docs: [TaskEnvironment](../../get-started/core-concepts/task-environment) · [Secrets](../../tasks/task-configuration/secrets) · [PodTemplate / advanced k8s config](../../tasks/task-configuration/pod-templates)
 

@@ -21,15 +21,56 @@ secrets.
 
 ## When you need more than one pool
 
-Most deployments need exactly one pool. Each cluster is assigned exactly one
-pool, and if no custom pool is specified when the cluster is created, it joins
-the `default` pool that every organization is provisioned with. If your clusters
+Each cluster is assigned exactly one pool. A Union-Managed cluster, built with
+the **Add a cluster** wizard, gets a pool of its own: see
+[Multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster). A
+Self-Managed cluster joins the pool you name, or the `default` pool if you name
+none, and most Self-Managed deployments need only `default`. No organization
+starts with `default`; see
+[Clusters and queues](./_index) for how `default` comes to exist. If your clusters
 share a bucket, secret store, and registry, leave them in `default` and move on
 to [Clusters](./clusters).
 
 Create additional pools when you have clusters with **distinct** data planes:
 for example, separate development and production cloud accounts, each with its own
 bucket, secrets vault, and registry. Each such environment becomes its own pool.
+
+## Run on a queue in another pool
+
+A run's data must be in the object store of the pool its queue belongs to. Name
+the queue when you submit the run, and the SDK uploads the run's code bundle and
+inputs to that queue's pool, and places any remote image build the run needs on
+that queue:
+
+```bash
+flyte run --queue <queue> hello.py main
+```
+
+`flyte.with_runcontext(queue=...)` does the same from Python. Without an explicit
+queue, the task's own queue is used. Requires `flyte` 2.12.2 or later, and a
+control plane that routes uploads by queue. Otherwise the code bundle and inputs
+go to the project/domain default pool.
+
+For deployed tasks, `flyte deploy --queue <queue>` (or
+`flyte.deploy(..., queue=...)`) uploads the code bundle and trigger inputs to
+that queue's pool, under the same conditions.
+
+A run can be rejected at submission when its data is in a different pool's
+object store than its queue:
+
+- Its inputs were uploaded to another pool.
+- Its task was deployed to the project/domain's default pool, and the run is on
+  a queue in another pool.
+
+Runs fired by triggers aren't checked; they fail in the task pod instead.
+
+Each rejection's error names the two fixes that apply:
+
+- **Inputs in another pool:** submit the run with `--queue <queue>` (`flyte`
+  2.12.2 or later) so its inputs are uploaded to that queue's pool, or run it on
+  a queue in the pool that holds its inputs.
+- **Task deployed to the default pool:** run it on a queue in the default pool,
+  or redeploy the task with `--queue <queue>` (`flyte` 2.12.2 or later).
 
 ## Create a pool
 

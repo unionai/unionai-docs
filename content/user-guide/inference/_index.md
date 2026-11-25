@@ -2,7 +2,7 @@
 title: Inference
 description: Run models from Flyte by calling a hosted provider, serving open-weight models on your own GPUs, deploying the models your tasks train, or making typed model calls.
 icon: cpu
-weight: 4
+weight: 7
 variants: +flyte +union
 ---
 

@@ -28,7 +28,13 @@ Requires Python 3.10 or later. Install only the extras you use:
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_webhooks.py" fragment=app lang=python >}}
 
-The provider reads its secret from `GITHUB_WEBHOOK_SECRET`, which the app mounts automatically.
+The provider reads its secret from `GITHUB_WEBHOOK_SECRET`, which the app mounts automatically. Generate a secret and store it under that name. Keep the value: you enter it in GitHub as well.
+
+```bash
+WEBHOOK_SECRET="$(openssl rand -hex 32)"
+flyte create secret GITHUB_WEBHOOK_SECRET --value "$WEBHOOK_SECRET"
+echo "$WEBHOOK_SECRET"
+```
 
 Register a handler against an event constant, and launch a run with `run_once`:
 
@@ -43,7 +49,7 @@ Serve the app, then copy the payload URL from the dashboard:
 In the repository, go to **Settings → Webhooks → Add webhook** and set:
 
 1. **Payload URL**: the `/webhook/github` URL from the app's dashboard.
-2. **Secret**: the value you stored as the `github-webhook-secret` Flyte secret.
+2. **Secret**: the value you stored as the `GITHUB_WEBHOOK_SECRET` Flyte secret.
 3. **Content type**: either option works. The provider handles `application/json` and the default `application/x-www-form-urlencoded` identically.
 4. **Events**: the events your handlers match.
 
@@ -91,7 +97,7 @@ The token the task uses to read the pull request is a separate credential from t
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/github/github_tasks.py" fragment=review-gate lang=python >}}
 
-The condition is stored on the backend, so the run can wait for days and survives restarts.
+The condition is stored on the backend. The task that calls `review_pr` keeps its pod running until the review is answered or times out. See [Resources while waiting](../../user-guide/tasks/task-programming/conditions#resources-while-waiting).
 
 `review_pr` returns a `ReviewDecision`:
 

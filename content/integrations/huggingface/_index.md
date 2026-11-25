@@ -139,10 +139,10 @@ On a hit you'll see `Using cached Hugging Face dataset at ...` in the task logs;
 
 The plugin's artifact cache and Flyte's task cache do not key on the same thing.
 
-|                                   | Keyed on                                                        | Decides                                      |
-| --------------------------------- | --------------------------------------------------------------- | -------------------------------------------- |
-| **Artifact cache** (`cache_root`) | repo, config, split, revision, **plus the resolved shard list** | Whether the Hub is contacted                 |
-| **Task cache** (`DataFrame.hash`) | repo, config, split, revision                                   | Whether a downstream cached task re-executes |
+|                                   | Keyed on                                                        | Decides                                        |
+| --------------------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
+| **Artifact cache** (`cache_root`) | repo, config, split, revision, **plus the resolved shard list** | Whether the shards are downloaded from the Hub |
+| **Task cache** (`DataFrame.hash`) | repo, config, split, revision                                   | Whether a downstream cached task re-executes   |
 
 `from_hf()` stamps a hash onto the `DataFrame` it returns, and Flyte uses a literal's hash, when present, in place of the serialized literal when computing an action's cache key. Two consequences follow:
 
@@ -150,7 +150,7 @@ The plugin's artifact cache and Flyte's task cache do not key on the same thing.
 - **The shard list is not part of the hash either:** If a repo's Parquet conversion is regenerated, the artifact cache notices and re-downloads, but a downstream `cache="auto"` task still hits on its old result.
 
 > [!WARNING] Pin `revision` when correctness depends on the exact bytes
-> The default `refs/convert/parquet` is a moving branch that Hugging Face regenerates when the source dataset changes. The artifact-cache fingerprint is derived from what `HfFileSystem.ls` reports, in practice the file path and byte size. Although it also checks `etag` and `last_modified`, those fields are empty.
+> The default `refs/convert/parquet` is a moving branch that Hugging Face regenerates when the source dataset changes. Every materialization, cache hit or not, lists the repo on the Hub with `HfFileSystem.ls` to build the artifact-cache fingerprint. The fingerprint is derived from what `HfFileSystem.ls` reports, in practice the file path and byte size. Although it also checks `etag` and `last_modified`, those fields are empty.
 >
 > As a result, a revision that changes file contents without changing file sizes may not invalidate the cache.
 >
@@ -260,7 +260,7 @@ The driver builds both references up front and fans the CPU work out across them
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/huggingface/imdb_sentiment.py" fragment="main" lang="python" >}}
 
-The first run downloads both splits into `cache_root`. Every run after that starts from Parquet already in storage, including runs from a colleague's laptop once `HF_CACHE_ROOT` points you both at the same bucket.
+The first run downloads both splits into `cache_root`. Every run after that starts from Parquet already in storage, including runs from a colleague's laptop once `HF_CACHE_ROOT` points you both at the same bucket. Later runs still list the repo on the Hub to check the cache; they just don't download the shards again.
 
 When you adapt this, keep one detail from `main`: evaluation scores the _shuffled_ subsample, not the head of the raw test split. IMDB's test split is ordered by label, 12,500 negatives followed by 12,500 positives, so streaming the first N rows would score a model against negatives only and report an accuracy that means nothing. Sorted splits are common enough on the Hub that you should check before taking a prefix of one.
 
