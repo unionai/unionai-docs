@@ -134,7 +134,7 @@ See [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) 
 
 A task retry calls the same model again. Through the [Inference Gateway](../inference-gateway/_index), a request can also name fallback models. If the primary model fails, the gateway tries each fallback in turn, so a provider outage doesn't fail the task. See [Fallbacks](../inference-gateway/virtual-keys#fallbacks).
 
-Task retries don't help with a 402 or a 403 from the gateway. A 402 means the key has reached its budget, and a 403 means the model isn't allowed or a guardrail blocked the call. See [Errors](../inference-gateway/virtual-keys#errors).
+Task retries don't help with a 402 or a `model_blocked` 403 from the gateway. A 402 means the key has reached its budget, and a `model_blocked` 403 means the model isn't on the key's allowlist. A `guardrail_blocked` 403 means a guardrail refused the prompt or the model's answer. See [Errors](../inference-gateway/virtual-keys#errors). To fail the task at once on a 402 or a `model_blocked` 403 instead of using up its retries, catch it and raise `flyte.errors.NonRecoverableError`. See [Skip retries for failures that can't be fixed](../../tasks/task-configuration/retries-and-timeouts#skip-retries-for-failures-that-cant-be-fixed).
 
 {{< /markdown >}}
 {{< /variant >}}
