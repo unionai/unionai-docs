@@ -172,7 +172,7 @@ Each data plane uses GCS buckets to store data used in workflow execution.
 Union recommends the use of two buckets:
 
 1. **Metadata bucket**: contains workflow execution data such as task inputs and outputs.
-2. **Fast registration bucket**: contains the code bundles that `flyte deploy` and `flyte run` upload and copy into the Flyte task container at runtime. Every `--copy-style` except `none` uploads a bundle; with `none`, a bundle of just the files an environment lists in `include` is still uploaded.
+2. **Fast registration bucket**: contains the code bundles that `flyte deploy` and `flyte run` upload and copy into the Flyte task container at runtime. `--copy-style loaded_modules` and `--copy-style all` upload a bundle, as does `flyte deploy --copy-style custom`; with `none`, a bundle of just the files an environment lists in `include` is still uploaded. `flyte run --copy-style custom` fails before any bundle is built.
 
 You can also choose to use a single bucket.
 

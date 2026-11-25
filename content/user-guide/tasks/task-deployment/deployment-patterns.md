@@ -182,14 +182,14 @@ The main entrypoint demonstrates proper initialization and execution patterns:
 ### Key features
 
 - **Async task chains**: Tasks can be chained together with proper async/await patterns
-- **External dependencies**: Demonstrates integration with external libraries (`httpx`, `pyyaml`)
+- **External dependencies**: Demonstrates integration with external libraries (`httpx`, `numpy`, `pydantic`)
 - **uv integration**: Uses `.with_uv_project()` for dependency management
 - **Resource specification**: Shows how to set memory and CPU requirements
 - **Proper error handling**: Includes timeout and error handling in API calls
 
 ### Key learning points
 
-1. **Separation of concerns**: Business logic (`data/`, `models/`) separate from orchestration (`main.py`)
+1. **Separation of concerns**: Business logic (`data/`, `models/`) separate from orchestration (`tasks/tasks.py`)
 2. **Reusable code**: Non-Flyte modules can be tested independently and reused
 3. **Async support**: Demonstrates async Flyte tasks for I/O-bound operations
 4. **Dependency management**: Shows how external packages integrate with Flyte
@@ -198,22 +198,18 @@ The main entrypoint demonstrates proper initialization and execution patterns:
 
 ### Usage patterns
 
-**Run locally:**
-
-```bash
-python -m pyproject_package.main
-```
+Run these commands from the project directory, the one that contains `pyproject.toml`.
 
 **Deploy to Flyte:**
 
 ```bash
-flyte deploy .
+flyte deploy --root-dir src --all --recursive src
 ```
 
 **Run remotely:**
 
 ```bash
-python -m pyproject_package.main  # Uses remote execution
+uv run python -m pyproject_package.main  # Uses remote execution
 ```
 
 ### What this example demonstrates
@@ -316,7 +312,7 @@ However, for deployment and on-cluster execution, still use `--root-dir` for con
 
 ```bash
 flyte run --root-dir . lib/workflows/workflow1.py process_workflow
-flyte deploy --root-dir . lib/workflows/workflow1.py
+flyte deploy --root-dir . --all lib/workflows/workflow1.py
 ```
 
 ### When to use
@@ -661,7 +657,7 @@ You can vary multiple aspects based on context:
 
 ```bash
 flyte run environment_picker.py entrypoint --n 5
-flyte deploy environment_picker.py
+flyte deploy --all environment_picker.py
 ```
 
 For programmatic usage, ensure proper initialization:

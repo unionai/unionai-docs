@@ -74,7 +74,7 @@ All other inputs must have values in the trigger definition or defaults on the t
 ## Firing an artifact trigger by hand
 
 > [!NOTE]
-> Firing a trigger from Python requires flyte 2.7.1 or later. Passing an `Artifact` object as an input override requires flyte 2.7.2 or later; on 2.7.1 the trigger path does not bind artifacts and raises a `TypeError`.
+> Firing a trigger from Python requires flyte 2.7.1 or later. Passing an `Artifact` object as an input override requires flyte 2.10.0 or later. Earlier releases don't bind artifacts when firing a trigger and raise a `TypeError`.
 
 An artifact trigger can also be fired on demand, from the UI or by passing it to `flyte.run()` in Python. See [Firing a trigger on demand](./manual-triggers#firing-a-trigger-on-demand).
 

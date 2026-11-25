@@ -19,10 +19,12 @@ keywords:
 
 Tasks and apps can call a hosted model API using a key from your own provider account. Billing, rate limits, and data handling stay under your agreement with the provider. You store the key as a secret, and your code reads it from an environment variable at runtime.
 
+When a task makes the call, you can give it the task's retries, caching, and concurrency limits, and the run records the task's inputs and outputs. A call from an app doesn't get these. See [Make provider calls reliable](#make-provider-calls-reliable). To run an agent on a provider's model, see [Run agents](#run-agents).
+
 {{< variant union >}}
 {{< markdown >}}
 
-This works on both BYOC and Self-managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [Inference Gateway](#choose-direct-calls-or-the-gateway).
+This works on both Union-Managed and Self-Managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [Inference Gateway](#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -106,6 +108,45 @@ Declare the secret on the environment and read it from the environment variable.
 
 A task can only read a secret whose scope covers the project and domain it runs in. Provider model IDs change often, so check the provider's model catalog for current names.
 
+## Make provider calls reliable
+
+A provider returns 429 when you reach a rate limit, and some return 503 while they add capacity. Task settings handle both without changing the call:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/reliable_calls.py" fragment="task" lang="python" >}}
+
+| Setting | Effect |
+|---|---|
+| `retries` with `flyte.Backoff` | Retries a failed call after 5, 10, 20, and 40 seconds, then every 60 seconds, up to 10 times. |
+| `cache="auto"` | A rerun with the same input returns the stored answer and doesn't call the provider. |
+| `concurrency=8` | At most 8 calls are in flight at once. This doesn't cap requests or tokens per minute, so fast calls can still reach a rate limit, and the retries handle the 429. |
+| One task per call | Each call is its own action, with its own retries, logs, inputs, and outputs. If one call fails, the others keep their results. |
+
+- Model output varies between calls, but a cache hit always returns the first answer. To sample again on every run, set `cache="disable"`. See [Caching](../../tasks/task-configuration/caching).
+- The OpenAI and Anthropic SDKs retry a 429 twice by default, so task retries start after the SDK gives up.
+- With `return_exceptions=False`, a call that fails after its last retry fails `main`. With the default, `True`, the map returns the exception in place of that result and keeps the others.
+
+See [Retries and timeouts](../../tasks/task-configuration/retries-and-timeouts) and [Controlling parallel execution](../../tasks/task-programming/controlling-parallelism).
+
+{{< variant union >}}
+{{< markdown >}}
+
+### Fall back to another model
+
+A task retry calls the same model again. Through the [Inference Gateway](../inference-gateway/_index), a request can also name fallback models. If the primary model fails, the gateway tries each fallback in turn, so a provider outage doesn't fail the task. See [Fallbacks](../inference-gateway/virtual-keys#fallbacks).
+
+Task retries don't help with a 402 or a 403 from the gateway. A 402 means the key has reached its budget, and a 403 means the model isn't allowed or a guardrail blocked the call. See [Errors](../inference-gateway/virtual-keys#errors).
+
+{{< /markdown >}}
+{{< /variant >}}
+
+### Keep finished calls when a task retries
+
+When one task makes several calls in sequence, decorate the call with `@flyte.trace`. If the task fails and retries, the calls that finished replay their recorded answers instead of calling the provider again:
+
+{{< code file="/unionai-examples/v2/user-guide/inference/providers/durable_calls.py" fragment="trace" lang="python" >}}
+
+A traced call replays only if its function declares a return type and the call returned something other than `None`. See [Traces](../../tasks/task-programming/traces).
+
 ## Call the provider from an app
 
 `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable:
@@ -119,6 +160,19 @@ Override the secret for a single invocation when the same task needs different c
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/override_key.py" fragment="override" lang="python" >}}
 
 The override replaces the environment's secrets for that call. On a [reusable container](../../tasks/task-configuration/reusable-containers) it raises an error unless you also pass `reusable="off"`. See [Overriding secrets](../../tasks/task-configuration/overrides#overriding-secrets).
+
+## Run agents
+
+To run an agent built with a provider's agent SDK, use the matching plugin. An `@env.task` wrapped with the plugin's `tool` runs as its own task, with its own retries and cache. On a retry, the OpenAI, Google ADK, and Mistral plugins replay finished model turns, and the Claude plugin resumes the session from a checkpoint. Each guide covers what the plugin wraps for you and what you wrap yourself.
+
+| Provider | Agent SDK | Guide |
+|---|---|---|
+| OpenAI | OpenAI Agents SDK | [OpenAI Agents SDK](../../../integrations/agents/openai) |
+| Anthropic | Claude Agent SDK | [Claude Agent SDK](../../../integrations/agents/claude-agent-sdk) |
+| Gemini API and Google Vertex AI | Google ADK | [Google ADK](../../../integrations/agents/google-adk) |
+| Mistral AI | Mistral Agents | [Mistral](../../../integrations/agents/mistral) |
+
+For other providers, use a framework that supports several model providers, such as LangChain or Pydantic AI. See [Agent frameworks](../../../integrations/agents/_index).
 
 {{< variant union >}}
 {{< markdown >}}
@@ -155,4 +209,12 @@ The key is invalid, revoked, or was stored with a typo. Test it outside Flyte wi
 The secret's scope doesn't cover the task's project and domain. List secrets with the same `--project` and `--domain` the task uses.
 
 **The provider returns 429:**
-You've reached a rate limit on your provider account. Check its limits and your usage in the provider's console.
+You've reached a rate limit on your provider account. Add retries with backoff and lower the map's `concurrency`, as in [Make provider calls reliable](#make-provider-calls-reliable). Check the limits and your usage in the provider's console.
+
+{{< variant union >}}
+{{< markdown >}}
+
+Through the Inference Gateway, the virtual key's own rate limit can also reject a call. Check the key's limit in **Settings → Inference Gateway → Virtual keys**.
+
+{{< /markdown >}}
+{{< /variant >}}

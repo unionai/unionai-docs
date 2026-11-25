@@ -95,7 +95,7 @@ flyte create secret MY_SECRET_KEY --value my_secret_value --project my_project -
 Each [cluster pool](../../clusters-and-queues/cluster-pools) has its own secret store, declared as part of the pool's data plane configuration.
 A secret therefore lives in the secret store of one particular pool, not in a single global store.
 
-If your organization has more than one [cluster pool](../../clusters-and-queues/cluster-pools), you must name the pool explicitly with the `--cluster-pool` flag.
+Because each pool's data plane serves secret requests directly, an organization with more than one cluster pool must name the pool explicitly with the `--cluster-pool` flag.
 All three secret commands accept it:
 
 ```bash
@@ -113,11 +113,19 @@ Use `flyte get cluster-pool` to list the pool names available in your organizati
 
 To make the same org-wide secret available to workloads in every pool, create it once per pool.
 
+In the SDK, a secret request scoped to a cluster pool fails with a `ValueError` if a project or domain is set.
+`flyte.init_from_config()` takes the project and domain from your config file, so clear them before you initialize:
+
 ```python
+import dataclasses
+
 import flyte
+import flyte.config
 import flyte.remote
 
-flyte.init_from_config()
+config = flyte.config.auto()
+config = dataclasses.replace(config, task=dataclasses.replace(config.task, project=None, domain=None))
+flyte.init_from_config(config)
 
 flyte.remote.Secret.create(name="MY_SECRET_KEY", value="my_secret_value", cluster_pool="prod")
 
@@ -214,15 +222,6 @@ For example:
 > This fixed path is the directory in which the secret file will be placed.
 > The name of the secret file is the key of the secret exactly as you created it, including its case.
 > For example, a secret created as `MY_CERT` is mounted at `/etc/flyte/secrets/MY_CERT`.
-
-{{< variant union >}}
-{{< markdown >}}
-The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
-Secrets read directly from an external store use a different, provider-specific path:
-see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager)
-or [Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Using secrets in local runs
 

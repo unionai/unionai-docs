@@ -38,7 +38,7 @@ The Flyte task returns both the path to the database and the generated table met
 
 {{< variant union >}}
 
-With Union artifacts (coming soon!), you'll be able to persist the ingested SQLite database as an artifact. This removes the need to rerun data ingestion in every pipeline.
+With Union [artifacts](../../../user-guide/artifacts/_index), you can persist the ingested SQLite database as an artifact. This removes the need to rerun data ingestion in every pipeline.
 
 {{< /variant >}}
 
@@ -131,7 +131,7 @@ Even with automated checks, human review remains critical. Since this dataset se
 
 {{< variant union >}}
 
-Support for human-in-the-loop pipelines is coming soon in Flyte 2!
+To pause a run until a person responds, use the human-in-the-loop plugin, `flyteplugins.hitl`.
 
 {{< /variant>}}
 
@@ -153,7 +153,7 @@ Here's how prompt accuracy evolves over time, as shown in the UI report:
 
 ### Iterative optimization
 
-An optimizer LLM proposes new prompts by analyzing patterns in successful and failed generations. Each candidate runs through the evaluation loop, and we select the best performer.
+An optimizer LLM proposes a new prompt from the earlier prompts and their accuracy scores. Each candidate runs through the evaluation loop, and we select the best performer.
 
 {{< code file="/unionai-examples/v2/tutorials/text_to_sql/optimizer.py" fragment=prompt_optimizer lang=python >}}
 

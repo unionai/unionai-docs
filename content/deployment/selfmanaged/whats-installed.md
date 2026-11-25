@@ -1,6 +1,6 @@
 ---
 title: What Union.ai installs in your cluster
-description: The cloud resources and in-cluster services a self-managed data plane runs on, the permissions they hold, and what they cost while idle.
+description: The cloud resources and in-cluster services a Self-Managed data plane runs on, the permissions they hold, and what they cost while idle.
 icon: box-seam
 weight: 4
 variants: -flyte +union
@@ -54,7 +54,7 @@ The figures were measured on an idle AWS cluster connected in October 2026, with
 
 ## Permissions
 
-A data plane connected from the Union.ai UI runs in standard mode. The chart creates cluster-wide ClusterRoles as well as Roles in its own namespace, so some of Union.ai's permissions span the whole cluster. Your tasks still run only in the namespace you registered. [Kubernetes access controls](./kubernetes-rbac) lists the roles and what each can reach.
+A data plane connected from the Union.ai UI on chart 2026.11.4 or later runs in single-namespace mode. Every grant that can be namespaced is a Role in the release namespace. The chart also creates ClusterRoles for a fixed list of cluster-scoped reads, such as nodes and metrics. Your tasks run only in the namespace you registered. [Kubernetes access controls](./kubernetes-rbac) lists the roles and what each can reach.
 
 Two services run privileged pods: the image builder, which runs BuildKit in rootful mode, and the volume mount broker.
 

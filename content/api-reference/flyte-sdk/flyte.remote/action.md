@@ -2,7 +2,7 @@
 title: Action
 description: "A class representing an action."
 icon: braces
-version: 2.13.2
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

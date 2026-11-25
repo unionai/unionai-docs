@@ -135,9 +135,9 @@ Manage users, roles, and policies for your Union cluster.
 
 {{< markdown >}}
 
-## Clusters and queues
+## Clusters, queues, and costs
 
-Stand up clusters and govern where your workloads run.
+Stand up clusters, govern where your workloads run, and see what they cost.
 
 {{< /markdown >}}
 
@@ -145,6 +145,10 @@ Stand up clusters and govern where your workloads run.
 
 {{< link-card target="clusters-and-queues" icon="cloud" title="Clusters and queues" >}}
 Group clusters into pools, register clusters, and create queues that route and rate-limit your workloads.
+{{< /link-card >}}
+
+{{< link-card target="costs" icon="currency-dollar" title="Costs" >}}
+See what the compute behind your tasks, environments, and apps costs, from the whole organization down to a single action.
 {{< /link-card >}}
 
 {{< /grid >}}

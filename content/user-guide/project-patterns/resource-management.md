@@ -26,7 +26,7 @@ Domains are orthogonal to projects. They represent distinct environments (typica
 
 A production domain in particular ensures a clean slate, so cached executions from development don't produce unexpected behavior in production runs.
 
-A common pattern is to split clusters and networking across domains as well: for example, a dedicated production cluster with stricter network controls, separate from the cluster development and staging share. See [multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster) for how this maps to underlying cloud accounts.
+A common pattern is to split clusters and networking across domains as well: for example, a dedicated production cluster with stricter network controls, separate from the cluster development and staging share. To send a domain's work to its own cluster, see [Route work to the right cluster pool](#route-work-to-the-right-cluster-pool-in-multi-cluster-deployments).
 
 ## Resource limits
 

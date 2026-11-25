@@ -71,7 +71,7 @@ Two things worth noting:
 
 - With `cache="auto"`, training results are cached based on the input data and config. If you rerun the pipeline with the same dataset and hyperparameters, Union skips training entirely and returns the cached metrics. This makes hyperparameter search much cheaper: only configurations you haven't tried before actually execute.
 
-- `@wandb_init`: the `flyteplugins-wandb` integration initializes a W&B run automatically and makes it available via `get_wandb_run()`. This means every training run automatically logs metrics, learning rate curves, and t-SNE visualizations of the learned feature space to your W&B project.
+- `@wandb_init`: the `flyteplugins-wandb` integration initializes a W&B run automatically and makes it available via `get_wandb_run()`. Passing that run to Lightning's `WandbLogger` sends training and validation loss and accuracy to your W&B project, and a callback logs t-SNE visualizations of the learned feature space to the same run.
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/training.py" fragment="wandb_logging" lang="python" >}}
 
@@ -83,7 +83,7 @@ This task reads the `metrics.json` produced by training and renders interactive 
 
 ### Task 4: Orchestration (`pipeline_env`)
 
-The pipeline task is a lightweight orchestrator. It has no heavy dependencies of its own, just enough to call the three tasks above in sequence. The `async`/`await` pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
+The pipeline task is a lightweight orchestrator: it calls the three tasks above in sequence, with 2 CPU cores and 4 GB RAM. It uses the same image as the other tasks, so it carries the same dependencies (PyTorch, Lightning, timm, W&B and the rest). The `async`/`await` pattern means each task handoff is non-blocking: Union manages scheduling, retries, and data movement between tasks transparently.
 
 {{< code file="/unionai-examples/v2/tutorials/satellite_image_classification/run.py" fragment="orchestration" lang="python" >}}
 

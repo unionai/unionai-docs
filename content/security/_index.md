@@ -44,10 +44,10 @@ This includes organizational security practices, vulnerability management, and a
 
 Union.ai offers two deployment models, both sharing the same control plane / data plane architecture and security controls described in this section.
 
-In **BYOC** deployments, Union.ai manages the data plane in the customer's cloud account via private connectivity (PrivateLink/PSC).
+In **Union-Managed** deployments (formerly BYOC), Union.ai builds and manages the data plane in the customer's cloud account. See [Private connectivity](./architecture/private-connectivity) for how Union.ai reaches the cluster.
 Union.ai handles upgrades, monitoring, and provisioning, while maintaining strict separation from customer data, secrets, and logs.
 
-In **Self-managed** deployments, the customer operates their data plane independently.
+In **Self-Managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
 Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 

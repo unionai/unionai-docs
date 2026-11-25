@@ -1,6 +1,6 @@
 ---
 title: User-defined MCP server
-description: Deploy any FastMCP instance as a long-running app serving its tools over HTTP.
+description: Serve any FastMCP instance as a long-running app over HTTP, or locally over stdio.
 icon: plug
 weight: 1
 variants: +flyte +union
@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # User-defined MCP server
 
-`MCPAppEnvironment` deploys any [FastMCP](https://modelcontextprotocol.io) instance as a long-running {{< key product_name >}} app, serving its tools over HTTP. Use it when you want to expose your *own* custom tools to AI assistants and LLM clients, rather than the built-in Flyte operations covered in [Flyte MCP server](./flyte_mcp_server).
+`MCPAppEnvironment` deploys any [FastMCP](https://modelcontextprotocol.io) instance as a long-running {{< key product_name >}} app serving its tools over HTTP, or runs it locally over stdio. Use it when you want to expose your *own* custom tools to AI assistants and LLM clients, rather than the built-in Flyte operations covered in [Flyte MCP server](./flyte_mcp_server).
 
 ## When to use it
 
@@ -18,11 +18,11 @@ Reach for `MCPAppEnvironment` when:
 - You want an LLM client like Claude Code, Claude Desktop, or OpenCode to call those tools over a stable, authenticated HTTP endpoint.
 - You want the tool server to run on {{< key product_name >}} infrastructure, with the same image, secrets, resources, and autoscaling story as any other app.
 
-If instead you want assistants to *operate your {{< key product_name >}} cluster* (run tasks, inspect runs, build images, search docs), use [`FlyteMCPAppEnvironment`](./flyte_mcp_server). It ships those tools for you. The two can also run side by side as separate apps.
+If instead you want assistants to *operate your {{< key product_name >}} cluster* (run tasks, inspect runs, read logs, search docs), use [`FlyteMCPAppEnvironment`](./flyte_mcp_server). It ships those tools for you. The two can also run side by side as separate apps.
 
 ## How it works
 
-You build a `FastMCP` instance and register tools on it with the `@mcp.tool()` decorator. `MCPAppEnvironment` wraps that instance in a Starlette + Uvicorn server and deploys it as an app. Every tool you defined on the instance is exposed automatically; there is no extra registration step.
+You build a `FastMCP` instance and register tools on it with the `@mcp.tool()` decorator. For the HTTP transports, `MCPAppEnvironment` wraps that instance in a Starlette + Uvicorn server and deploys it as an app. With `stdio`, it serves the instance over the process's stdin and stdout instead. Every tool you defined on the instance is exposed automatically; there is no extra registration step.
 
 ## Basic example
 
@@ -48,18 +48,19 @@ The session path is `{mcp_mount_path}/mcp` for `streamable-http` and `{mcp_mount
 |-----------|------------------|-------------|
 | `streamable-http` (default) | `{mcp_mount_path}/mcp` | The right choice for almost all remote deployments. Works with Claude Code, Claude Desktop, and OpenCode. |
 | `sse` | `{mcp_mount_path}/sse` | Only when a client specifically requires a Server-Sent Events stream. Being phased out across the MCP ecosystem. |
+| `stdio` | None (stdin/stdout) | A local server that the client launches as a subprocess. Start it with `env.run_stdio()`. It runs only locally: it has no HTTP endpoints, so don't serve it with `flyte.serve` or deploy it. Send logs to stderr: anything written to stdout corrupts the stream. |
 
 ```python
 env = MCPAppEnvironment(
     name="my-mcp",
     mcp=mcp,
-    transport="streamable-http",  # or "sse"
+    transport="streamable-http",  # or "sse" or "stdio"
 )
 ```
 
 ## Connecting a client
 
-User-defined MCP servers are always deployed as remote HTTP apps; there is no local CLI equivalent. Once `flyte.serve(env)` prints your endpoint, register it with your client.
+For the HTTP transports, register the endpoint that `flyte.serve(env)` prints with your client. A `stdio` server runs locally instead: configure your client to launch the script that calls `env.run_stdio()`.
 
 The session URL depends on your `mcp_mount_path` (default `/mcp`) and transport (default `streamable-http`), so the full endpoint is `https://<YOUR_HOST>/mcp/mcp`.
 

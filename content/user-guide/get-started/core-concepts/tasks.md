@@ -110,8 +110,9 @@ To run a task on your Flyte backend:
 import flyte
 
 flyte.init_from_config()
-result = flyte.run(greet, name="World")
-print(result)  # "Hello, World!"
+run = flyte.run(greet, name="World")
+run.wait()
+print(run.outputs()[0])  # "Hello, World!"
 ```
 
 Or from the command line:
@@ -120,7 +121,7 @@ Or from the command line:
 flyte run my_script.py greet --name World
 ```
 
-This sends your code to the Flyte backend, runs it in a container, and returns the result.
+This sends your code to the Flyte backend to run in a container. By default, neither waits for the run to finish. `flyte.run` returns a `Run` handle as soon as the run is submitted. `flyte run` prints a link to the run in the UI and exits, unless you pass `--follow` to stream its logs. To get the result in Python, call `run.wait()` and then `run.outputs()`.
 
 ## Next steps
 

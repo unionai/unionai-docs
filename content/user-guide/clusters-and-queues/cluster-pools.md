@@ -21,9 +21,12 @@ secrets.
 
 ## When you need more than one pool
 
-Most deployments need exactly one pool. Each cluster is assigned exactly one
-pool, and if no custom pool is specified when the cluster is created, it joins
-the `default` pool. No organization starts with one; see
+Each cluster is assigned exactly one pool. A Union-Managed cluster, built with
+the **Add a cluster** wizard, gets a pool of its own: see
+[Multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster). A
+Self-Managed cluster joins the pool you name, or the `default` pool if you name
+none, and most Self-Managed deployments need only `default`. No organization
+starts with `default`; see
 [Clusters and queues](./_index) for how `default` comes to exist. If your clusters
 share a bucket, secret store, and registry, leave them in `default` and move on
 to [Clusters](./clusters).
@@ -193,6 +196,22 @@ print(pool.image_registry)
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "Console" >}}
+{{< markdown >}}
+
+On the console's **Clusters** page, turn on **View by Pool**, open a pool row's
+menu, and choose **View Pool**. A pool has a row only while at least one of its
+clusters is listed, so an empty pool, or one whose clusters your search or
+filters hide, has no row; for an empty pool, use the CLI or SDK. The pool's
+panel has three tabs:
+
+- **Overview**: the pool's health, its clusters, and the queues routed to it.
+- **Apps**: the apps running on the pool's clusters.
+- **Settings**: the object store, object store endpoint, secrets store, and
+  image registry.
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 `member_clusters` is derived from clusters that were registered into the pool.
@@ -230,6 +249,23 @@ ClusterPool.update(
 
 {{< /markdown >}}
 {{< /tab >}}
+{{< tab "Console" >}}
+{{< markdown >}}
+
+On the console's **Clusters** page, turn on **View by Pool**, open the pool
+row's menu, and choose **Edit Pool**. (From an open pool panel, click **Edit**
+on its **Settings** tab.) Change the object store, object store endpoint,
+secrets store locator (not for a `KUBERNETES` secret store, or a pool with no
+secret store), or image registry, then click **Save changes**. The pool name
+and the secrets store type can't be changed here. As with viewing a pool, this
+needs the pool's row: for an empty pool, use the CLI or SDK.
+
+Editing requires the `manage_cluster` action (see
+[Available actions](../user-management#available-actions)); without it,
+**Edit Pool** is disabled.
+
+{{< /markdown >}}
+{{< /tab >}}
 {{< /tabs >}}
 
 Editing the pool config changes the contract every member cluster is validated
@@ -240,7 +276,7 @@ whichever side is wrong — the pool here, or the cluster in its own deployment.
 
 ## Manage membership
 
-Cluster pool membership is normally set when clusters are registered:
+Cluster pool membership is set when clusters are registered:
 
 {{< tabs "cluster-pool-membership" >}}
 {{< tab "CLI" >}}
@@ -265,9 +301,9 @@ Cluster.create("prod-us-east-1", cluster_pool_name="prod")
 {{< /tab >}}
 {{< /tabs >}}
 
-You can also list clusters under `member_clusters` in the pool manifest to add
-them to the pool. That route only adds: it cannot remove a cluster from a pool
-or move one elsewhere.
+Listing clusters under `member_clusters` in the pool manifest, or passing
+`member_clusters` to `ClusterPool.create` or `ClusterPool.update`, does not
+change membership: the control plane ignores the field when it saves the pool.
 
 An existing cluster can be reassigned to another pool, but its co-named queue
 must be `drained` first; the simplest way to get there is to

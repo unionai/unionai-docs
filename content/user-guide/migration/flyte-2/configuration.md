@@ -12,7 +12,7 @@ In Flyte 1, image, resources, caching, secrets, and scheduling were configured p
 
 ## Image, resources, and caching
 
-Image, resources, and caching move from the `@task` decorator to the `TaskEnvironment`. Per-task settings like `retries` and `timeout` stay on `@env.task`. Note that `mem` is renamed to `memory`, and there are no separate `requests`/`limits` — a single `Resources` value serves as both.
+Image, resources, and caching move from the `@task` decorator to the `TaskEnvironment`. Per-task settings like `retries` and `timeout` stay on `@env.task`. `mem` is renamed to `memory`, and there are no separate `requests`/`limits` arguments: a single `Resources` value covers both (see [Resources](#resources)).
 
 {{< tabs "migration-task-config" >}}
 {{< tab "Flyte 1" >}}
@@ -58,7 +58,7 @@ Common chainable builder methods: `.with_pip_packages(...)`, `.with_requirements
 | `python_version` | `python_version` (tuple) | `"3.11"` becomes `(3, 11)` |
 | `packages` | `.with_pip_packages()` | Method instead of param |
 | `apt_packages` | `.with_apt_packages()` | Method instead of param |
-| `requirements` | `.with_requirements()` | Supports txt, poetry.lock, uv.lock |
+| `requirements` | `.with_requirements()` | `.txt` files only; for lock files use `.with_uv_project()` or `.with_poetry_project()` |
 | `env` | `.with_env_vars()` | Method instead of param |
 | `commands` | `.with_commands()` | Method instead of param |
 | `copy` / `source_root` | `.with_source_file()` / `.with_source_folder()` | More explicit methods |
@@ -84,7 +84,7 @@ See [Container images](../../tasks/task-configuration/container-images) for more
 
 ## Resources
 
-A single `flyte.Resources` value serves as both request and limit — there are no separate `requests`/`limits`. Several parameters were renamed.
+A single `flyte.Resources` value replaces Flyte 1's separate `requests` and `limits`. For `cpu` and `memory`, a `(request, limit)` tuple such as `memory=("1Gi", "4Gi")` sets the request and the limit separately. A single value sets the request, and the limit defaults to the same value. Several parameters were renamed.
 
 | Flyte 1 | Flyte 2 | Notes |
 |---|---|---|
@@ -118,7 +118,7 @@ Caching is enabled at the env level with `cache="auto"` (or per-task on `@env.ta
 | Behavior | Description |
 |---|---|
 | `"auto"` | Cache results and reuse if available |
-| `"override"` | Always execute and overwrite the cache |
+| `"override"` | Cache results, using the explicit `version_override` string as the cache version |
 | `"disable"` | No caching (default for a `TaskEnvironment`) |
 
 ```python
@@ -130,7 +130,7 @@ def cached_task(x: int) -> int:
 
 # Advanced control (replaces cache_version, serialize, ignored_inputs, ...)
 @env.task(cache=flyte.Cache(
-    behavior="auto",
+    behavior="override",
     version_override="v1.0",
     serialize=True,
     ignored_inputs=("debug",),

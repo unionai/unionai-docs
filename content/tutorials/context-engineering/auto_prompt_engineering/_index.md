@@ -97,7 +97,7 @@ When using a hosted model, just provide its <code>hosted_model_uri</code> in <co
 
 {{< /variant >}}
 
-Finally, we wrap the trace in a task to call both target and review models:
+Finally, we define a function that calls the trace twice, once for the target model and once for the review model:
 
 {{< code file="/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=generate_and_review lang=python >}}
 
@@ -105,7 +105,7 @@ Finally, we wrap the trace in a task to call both target and review models:
 
 We now define the evaluation process.
 
-Each prompt in the dataset is tested in parallel, but we use a semaphore to control concurrency. A helper function ties together the `generate_and_review` task with an HTML report template. Using `asyncio.gather`, we evaluate multiple prompts at once.
+Each prompt in the dataset is tested in parallel, but we use a semaphore to control concurrency. A helper function ties together the `generate_and_review` function with an HTML report template. Using `asyncio.gather`, we evaluate multiple prompts at once.
 
 The function measures accuracy as the fraction of responses that match the ground truth. Flyte streams these results to the UI, so you can watch evaluations happen live.
 

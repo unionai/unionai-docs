@@ -96,7 +96,7 @@ Outside a task — in a notebook or a local script — materialize the value wit
 import asyncio
 
 import flyte
-from flyte.io import Dir
+from flyte.io import File
 from flyte.remote import Artifact
 
 flyte.init_from_config()
@@ -104,7 +104,7 @@ flyte.init_from_config()
 
 async def load() -> str:
     artifact = Artifact.get("trained-model")
-    weights = await artifact.to_python(Dir)  # File or DataFrame for other artifacts
+    weights = await artifact.to_python.aio(File)  # Dir or DataFrame for other artifacts
     return await weights.download()
 
 

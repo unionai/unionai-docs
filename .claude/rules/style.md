@@ -85,6 +85,16 @@ A typical feature page follows this order. Omit sections that don't apply.
   Write "Union.ai" (not "Union AI" or "UnionAI") and "Flyte"; lowercase `flyte` only for the
   package, CLI, or module, in code. Write third-party names as their owners do: GitHub,
   Kubernetes (not "k8s"), Hugging Face. Say "data plane", never "compute plane".
+- **Deployment models** are proper nouns, capitalized wherever they appear, including in
+  sentence-case headings: **Union-Managed** (Union.ai runs the data plane in your cloud account),
+  **Self-Managed** (you run it), and **Self-Hosted Base** (you run all of Union.ai in your own
+  Kubernetes cluster). On the first mention on a landing or overview page, write
+  "Union-Managed (formerly BYOC)"; elsewhere, don't use "BYOC". A lowercase adjective in
+  ordinary use stays lowercase: "a self-managed Kubernetes cluster". Use "Union-Managed" only for
+  the deployment model; for anything else Union.ai runs, say what it does ("secrets that
+  Union.ai stores").
+- **UI labels** are quoted exactly as the console shows them, even where the console's
+  spelling differs from these names.
 - **Concepts are lowercase nouns.** "Create a task", "the environment". Capitalize only the
   literal API class, in backticks: `flyte.TaskEnvironment`.
 - **Use the Oxford comma.** "tasks, apps, and triggers".
