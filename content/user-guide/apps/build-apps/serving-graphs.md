@@ -259,5 +259,5 @@ simpler to operate.
 2. **Persistent HTTP clients**: Open one `httpx.AsyncClient` per replica in the app's lifespan rather than per request, to avoid TCP/TLS setup overhead.
 3. **Pick the right wire format**: For tensor-shaped payloads, send raw bytes over `application/octet-stream` instead of JSON.
 4. **Size each node independently**: GPU narrow, CPU wide; use scale-to-zero (`replicas=(0, N)`) for bursty downstream services.
-5. **Authentication**: `requires_auth` (default `True`) doesn't make an app internal-only. On Union.ai, it only controls whether an app accepts unauthenticated requests: an app that only other apps call still has a public URL, and any authenticated user can reach it.
+5. **Authentication**: `requires_auth` (default `True`) doesn't make an app internal-only. On Union.ai, it only controls whether an app accepts unauthenticated requests: an app that only other apps call still has a public URL.
 6. **Endpoint access**: Prefer `app_env.endpoint` for in-module references; use `flyte.app.AppEndpoint` parameters when the upstream env isn't importable.
