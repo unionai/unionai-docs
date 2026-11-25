@@ -204,7 +204,7 @@ mcp_env = FlyteMCPAppEnvironment(
 | `trigger` | `list_triggers`, `get_trigger`, `activate_trigger`, `deactivate_trigger` | Managing triggers |
 | `project` | `list_projects`, `get_project` | Discovering projects and domains |
 | `secret` | `list_secrets`, `create_secret`, `delete_secret` | Managing secrets (names only — values are never returned) |
-| `condition` | `list_conditions`, `signal_condition` | Answering human-in-the-loop gates |
+| `condition` | `list_conditions`, `get_condition`, `signal_condition` | Answering human-in-the-loop gates (`get_condition` requires `flyte` 2.13.5 or later) |
 | `identity` | `whoami` | Confirming which identity and org the server is acting as, and (for a server started with `flyte-mcp` 2.12.2 or later) which config file it was started from |
 | `search` | `search_flyte_sdk_examples`, `search_flyte_docs_examples`, `search_full_docs` | Grounding answers in SDK/docs |
 
@@ -271,6 +271,34 @@ mcp_env = FlyteMCPAppEnvironment(
     full_docs_path="/root/llms.txt",
 )
 ```
+
+## Reading logs
+
+Requires `flyte` 2.13.5 or later. Earlier releases return the first lines of the log as a plain string; from 2.13.5, `get_logs` returns a dict, so update any client code that parses its result.
+
+`get_logs` returns the last `max_lines` lines of an action's log (default 200), oldest first. The response is capped at 2,000 lines and about 100,000 characters, with the oldest lines dropped first. The response includes:
+
+| Field | Meaning |
+|-------|---------|
+| `logs` | The log lines, joined by newlines |
+| `available` | `false` when the action's logs are not up yet. `get_logs` returns right away in that case, unless the call passes `wait_for_logs=true`. |
+| `message` | A summary of what was returned, and what to call next |
+| `first_line`, `end_line` | The range of lines returned. Lines are numbered from 0 at the start of the log. |
+| `has_more_before`, `next_before_line` | Whether older lines exist, and the `before_line` value that reads them |
+| `attempt` | The attempt that was read. Pass it back when paging so the numbering stays on the same attempt if a retry starts. |
+| `stopped` | Why reading ended: `end_of_stream`, `idle`, `time_limit`, or `before_line` |
+| `timeout_s` | The read budget the call used, in seconds |
+
+To page back, call `get_logs` again with `before_line` set to `next_before_line`, and the same `attempt` and `filter_system` as the first call, so the line numbers don't shift. To read from the start of the log, pass `before_line` equal to `max_lines`.
+
+The log service streams from the start of the log, so finding the newest lines means reading the whole stream. A call reads for at most its `timeout_s` (default 30), clamped to between 1 second and the server's ceiling. Once lines are arriving, a gap with no new lines also ends the read. If `stopped` is `time_limit`, newer lines may exist: retry with a larger `timeout_s`.
+
+Two `FlyteMCPAppEnvironment` settings bound the read. Callers can't raise them.
+
+| Setting | Default | Effect |
+|---------|---------|--------|
+| `log_read_timeout_ceiling_s` | `120` | Upper limit on a call's `timeout_s`. Must be at least 1. |
+| `log_idle_timeout_s` | `5` | Seconds without a new line that end the read, once lines are arriving. Must be greater than 0. |
 
 ## Putting it together: a filtered server
 
@@ -368,7 +396,7 @@ OpenCode spawns the `uvx` command for you:
 | `list_actions` | `action` | List the actions of a run |
 | `get_action` | `action` | Get action details and timing |
 | `abort_action` | `action` | Abort a single action |
-| `get_logs` | `logs` | Read action logs |
+| `get_logs` | `logs` | Read the newest lines of an action's logs, with a cursor to page back (see [Reading logs](#reading-logs)) |
 | `get_app` | `app` | Get an app |
 | `list_apps` | `app` | List apps |
 | `activate_app` | `app` | Activate an app |
@@ -382,7 +410,8 @@ OpenCode spawns the `uvx` command for you:
 | `list_secrets` | `secret` | List secret names |
 | `create_secret` | `secret` | Create a secret |
 | `delete_secret` | `secret` | Delete a secret |
-| `list_conditions` | `condition` | List the conditions of a run |
+| `list_conditions` | `condition` | List the conditions of a run, with each condition's `prompt`, `prompt_type`, `description`, and `timeout_s` (from `flyte` 2.13.5). If a condition's details fail to load, those fields are null and its `details_error` says why |
+| `get_condition` | `condition` | Get one condition of a run: its prompt, payload type, and timeout. Requires `flyte` 2.13.5 or later |
 | `signal_condition` | `condition` | Signal a waiting condition |
 | `whoami` | `identity` | Show the caller's identity |
 | `search_flyte_sdk_examples` | `search` | Search Flyte SDK examples |
