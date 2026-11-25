@@ -30,10 +30,11 @@ In Union-Managed deployments, Union.ai assumes additional operational responsibi
 | Area | Self-Managed | Union-Managed |
 |---|---|---|
 | Data plane Kubernetes cluster | Customer | Union.ai |
-| Cloud account (VPC, IAM) | Customer | Customer |
+| Cloud account | Customer | Customer |
+| VPC and network | Customer | Union.ai |
 | IAM role provisioning | Customer | Union.ai |
 | Secrets management | Customer (backend + values) | Union.ai (default backend) + Customer (values) |
-| Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + PrivateLink) + Customer (VPC) |
+| Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + VPC) |
 
 For the deployment-model summary, see the [security overview](../_index).
 

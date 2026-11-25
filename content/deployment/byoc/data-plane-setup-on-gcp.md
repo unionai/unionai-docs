@@ -2,7 +2,7 @@
 title: Data plane setup on GCP
 description: Create a Union-Managed data plane in your GCP project with the Add a cluster wizard in the Union.ai console.
 icon: cloud
-weight: 6
+weight: 2
 variants: -flyte +union
 ---
 

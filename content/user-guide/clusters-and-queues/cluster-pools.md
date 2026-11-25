@@ -21,9 +21,12 @@ secrets.
 
 ## When you need more than one pool
 
-Most deployments need exactly one pool. Each cluster is assigned exactly one
-pool, and if no custom pool is specified when the cluster is created, it joins
-the `default` pool. No organization starts with one; see
+Each cluster is assigned exactly one pool. A Union-Managed cluster, built with
+the **Add a cluster** wizard, gets a pool of its own: see
+[Multi-cluster and multi-cloud](../../deployment/byoc/multi-cluster). A
+Self-Managed cluster joins the pool you name, or the `default` pool if you name
+none, and most Self-Managed deployments need only `default`. No organization
+starts with `default`; see
 [Clusters and queues](./_index) for how `default` comes to exist. If your clusters
 share a bucket, secret store, and registry, leave them in `default` and move on
 to [Clusters](./clusters).

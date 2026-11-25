@@ -33,12 +33,12 @@ The nodes in your data plane cluster have different responsibilities. Union.ai d
 
 Platform-service nodes, called default nodes in Union-Managed deployments, guarantee the basic operation of the data plane and are always running. Services that run on them include worker-node autoscaling, monitoring, and the Union.ai operator.
 
-Worker nodes execute your workloads, and you have full control over their configuration:
+Worker nodes execute your workloads:
 
-* **Union-Managed**: see [worker node groups](./byoc/configuring-your-data-plane#worker-node-groups).
+* **Union-Managed**: the size you choose in the **Add a cluster** wizard sets how far the worker node pools can grow. See **Cluster sizes** for [AWS](./byoc/data-plane-setup-on-aws#cluster-sizes), [GCP](./byoc/data-plane-setup-on-gcp#cluster-sizes), and [Azure](./byoc/data-plane-setup-on-azure#cluster-sizes).
 * **Self-Managed**: see [Node pools](./selfmanaged/configuration/node-pools), which recommends separate node pools for Union.ai services and worker pods.
 
-When worker nodes are not in use, they scale down to the configured minimum. In a Union-Managed deployment, the default minimum is zero.
+When worker nodes are not in use, they scale down to the configured minimum. In a Union-Managed deployment, GPU node pools scale down to zero.
 
 ## Union.ai operator
 
@@ -47,7 +47,7 @@ The **Union.ai operator** is a dedicated service, resident in your data plane, t
 ### How your data plane is provisioned and maintained
 
 **Union-Managed.** Your data plane is created by the control plane, not by the operator. When you onboard, the control plane uses infrastructure-as-code, applied against your cloud account, to provision the Kubernetes cluster (for example, an EKS cluster on AWS) along with the supporting cloud resources the platform requires, such as IAM roles and the object-storage buckets that hold your workflow data and metadata. Once that cluster is up, Union.ai deploys the operator onto it.
-The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance, for example adding instance types, adjusting node-group sizes, or updating the versions of platform components, so that upgrades and configuration changes are handled for you.
+The control plane periodically re-runs this same provisioning process to apply infrastructure changes to your cluster as part of ongoing deployment and maintenance, for example adding instance types or updating the versions of platform components, so that upgrades and configuration changes are handled for you.
 
 **Self-Managed.** You provision the Kubernetes cluster and its supporting cloud resources yourself, and you own and operate them. How the data plane, operator included, gets into the cluster depends on your provider:
 

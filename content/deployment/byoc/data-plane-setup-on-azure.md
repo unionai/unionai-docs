@@ -2,7 +2,7 @@
 title: Data plane setup on Azure
 description: Create a Union-Managed data plane in your Azure subscription with the Add a cluster wizard in the Union.ai console.
 icon: cloud
-weight: 7
+weight: 3
 variants: -flyte +union
 ---
 

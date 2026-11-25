@@ -502,12 +502,6 @@ A static ECR token would expire after 12 hours.
    Leave `registry` unset so the built image is pushed to your Union instance's default registry, as usual.
    Tasks pull it from there, so the `TaskEnvironment` doesn't need the secret.
 
-{{< variant union >}}
-{{< markdown >}}
-For Union-Managed data planes, see also [Enabling AWS ECR](../../../deployment/byoc/enabling-aws-resources/enabling-aws-ecr) for running tasks directly on images stored in another account.
-{{< /markdown >}}
-{{< /variant >}}
-
 ### Install private PyPI packages
 
 To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.
