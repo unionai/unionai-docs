@@ -28,7 +28,7 @@ Each provider's page has a **Legacy steps** page under it: the earlier instructi
 
 The UI flow covers AWS, GCP, and Azure today. On OCI, CoreWeave, Crusoe, and Nebius, and on generic Kubernetes (on-premises or any other environment), you provision the infrastructure and install the data plane with Helm yourself. Existing AWS, GCP, and Azure deployments that were set up with Helm follow this path too:
 
-1. Review the [platform architecture](../platform-architecture) to understand the control plane, data plane operators, and security model.
+1. Read [Architecture](../../user-guide/get-started/core-concepts/architecture) to understand the control plane, the data plane, and the Union.ai operator.
 2. Review the [infrastructure recommendations](./infrastructure-recommendations/_index) for the sizing model, networking and IP planning, identity, and the [scaling constraints](./infrastructure-recommendations/scaling-constraints) to plan around.
 3. Provision your infrastructure using the page for your provider:
    - [OCI](./infrastructure-recommendations/oci)

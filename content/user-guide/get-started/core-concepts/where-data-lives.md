@@ -108,9 +108,9 @@ Every value a task takes in or returns is, in Flyte's data model, a **literal**:
 - **Inline**: small values (primitives like `int` / `float` / `str` / `bool`, collections, and JSON-serializable dataclasses and Pydantic models) are serialized *by value* directly into the run's `inputs.pb` / `outputs.pb`.
 - **By reference**: large values (`flyte.io.File`, `flyte.io.Dir`, `flyte.io.DataFrame`, large model objects, larger pickled objects) are offloaded to their own objects in the bucket; the literal recorded in `inputs.pb` / `outputs.pb` then holds only a *URI pointer* to them.
 
-**Raw data** is that offloaded content itself: the file, directory, DataFrame, or model bytes a by-reference literal points at, plus other offloaded artifacts such as checkpoints. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates. Because it's carried as a URI rather than copied inline, raw data is often described as being "passed by reference" (as opposed to inline literals, which are "passed by value").
+A Python-pickled value is inlined when `sys.getsizeof` reports 10 KB (10,240 bytes) or less, and offloaded above that. `sys.getsizeof` counts only the outer object, not the data it references, so a small object holding a lot of data is still inlined.
 
-(In the deployment and architecture guides you may also see execution data split into *literal data* and *raw data*. There, *literal data* means specifically the inline values above and *raw data* the offloaded ones, the same distinction, named as two categories.)
+**Raw data** is that offloaded content itself: the file, directory, DataFrame, or model bytes a by-reference literal points at, plus other offloaded artifacts such as checkpoints. It's exactly the offloaded values listed under [What goes in the bucket](#what-goes-in-the-bucket) above, and it's what `raw_data_path` (below) relocates. Because it's carried as a URI rather than copied inline, raw data is often described as being "passed by reference" (as opposed to inline literals, which are "passed by value").
 
 In short: every input and output is a **literal**; a literal is stored either **inline** (the value lives in `inputs.pb` / `outputs.pb`) or **by reference** to **raw data** offloaded elsewhere in the bucket.
 
