@@ -104,7 +104,7 @@ flyte.init_from_config()
 
 async def load() -> str:
     artifact = Artifact.get("trained-model")
-    weights = await artifact.to_python(File)  # Dir or DataFrame for other artifacts
+    weights = await artifact.to_python.aio(File)  # Dir or DataFrame for other artifacts
     return await weights.download()
 
 
