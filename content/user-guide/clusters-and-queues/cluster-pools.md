@@ -199,9 +199,8 @@ print(pool.image_registry)
 On the console's **Clusters** page, turn on **View by Pool**, open a pool row's
 menu, and choose **View Pool**. A pool has a row only while at least one of its
 clusters is listed, so an empty pool, or one whose clusters your search or
-filters hide, has no row; for an empty pool, use the CLI or SDK. If your
-organization has a single pool and **View by Pool** isn't shown, use the CLI or
-SDK as well. The pool's panel has three tabs:
+filters hide, has no row; for an empty pool, use the CLI or SDK. The pool's
+panel has three tabs:
 
 - **Overview**: the pool's health, its clusters, and the queues routed to it.
 - **Apps**: the apps running on the pool's clusters.
@@ -256,11 +255,11 @@ on its **Settings** tab.) Change the object store, object store endpoint,
 secrets store locator (not for a `KUBERNETES` secret store, or a pool with no
 secret store), or image registry, then click **Save changes**. The pool name
 and the secrets store type can't be changed here. As with viewing a pool, this
-needs the pool's row: for an empty pool, or a single-pool organization that
-doesn't see **View by Pool**, use the CLI or SDK.
+needs the pool's row: for an empty pool, use the CLI or SDK.
 
-Editing requires the `MANAGE_CLUSTER` permission; without it, **Edit Pool** is
-disabled.
+Editing requires the `manage_cluster` action (see
+[Available actions](../user-management#available-actions)); without it,
+**Edit Pool** is disabled.
 
 {{< /markdown >}}
 {{< /tab >}}
