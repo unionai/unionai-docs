@@ -49,7 +49,10 @@ flyte run --queue <queue> hello.py main
 `flyte.with_runcontext(queue=...)` does the same from Python. Without an explicit
 queue, the task's own queue is used. Requires `flyte` 2.12.2 or later, and a
 control plane that routes uploads by queue. Otherwise the code bundle and inputs
-go to the project/domain default pool.
+go to the project/domain default pool. Local `File`, `Dir`, and `DataFrame`
+inputs given to `flyte run` on the command line follow the queue only with
+`flyte` 2.14.1 or later. Earlier versions upload them to the project/domain
+default pool.
 
 For deployed tasks, `flyte deploy --queue <queue>` (or
 `flyte.deploy(..., queue=...)`) uploads the code bundle and trigger inputs to
@@ -67,7 +70,8 @@ Runs fired by triggers aren't checked; they fail in the task pod instead.
 Each rejection's error names the two fixes that apply:
 
 - **Inputs in another pool:** submit the run with `--queue <queue>` (`flyte`
-  2.12.2 or later) so its inputs are uploaded to that queue's pool, or run it on
+  2.12.2 or later; 2.14.1 or later for local `File`, `Dir`, and `DataFrame`
+  inputs to `flyte run`) so its inputs are uploaded to that queue's pool, or run it on
   a queue in the pool that holds its inputs.
 - **Task deployed to the default pool:** run it on a queue in the default pool,
   or redeploy the task with `--queue <queue>` (`flyte` 2.12.2 or later).
