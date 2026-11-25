@@ -66,7 +66,57 @@ A provider named `qwen` whose app serves `qwen3-8b` is called as `qwen/qwen3-8b`
 The gateway reaches the app over its cluster-local address, so no API key or public URL is involved. The app must be running when you add it.
 
 > [!WARNING] Set a cost for self-hosted models you want to budget
-> A self-hosted provider with no cost is treated as free: its calls never count against any virtual key's budget. To change the cost later, remove the provider and add it again.
+> A self-hosted provider with no cost is treated as free: its calls never count against any virtual key's budget. To set one later, see [Change the budget price of a self-hosted model](#change-the-budget-price-of-a-self-hosted-model).
+
+## See what a self-hosted model costs to run
+
+The **Cost** of a self-hosted provider is the price budgets count its tokens at. It is the number you typed, not what the model costs you. The console measures that separately: what the serving app cost to run, divided by the tokens the gateway routed to it.
+
+In **Settings → Inference Gateway → Providers**, a self-hosted provider shows a line under its cost, for example `actual cost $1.31 / 1M tokens`. Expand the provider's row for **Actual cost to run**, and choose a period of `24h`, `7d`, or `30d`.
+
+| Figure | Meaning |
+|---|---|
+| **Actual cost per 1M tokens** | **App cost** divided by **Tokens served**, per 1 million tokens. |
+| **GPU hours** | The GPU time the app reserved. Two GPUs for one hour is 2 GPU hours. |
+| **App cost** | The app's share of the price of the nodes it ran on, for every hour it ran, busy or idle. |
+| **Tokens served** | Input and output tokens the gateway routed to the app. |
+| **GPUs busy** | The share of time the GPUs were doing any work. It is not how full they were, so the room to serve more is usually larger than this number suggests. |
+
+The figures are measured from the app's usage. They are not an estimate.
+
+What moves the cost per token:
+
+- **Idle time.** The app costs the same whether it is serving or waiting. The less traffic it gets, the more each token costs.
+- **Calls that skip the gateway.** Only tokens routed through this gateway are counted. If callers also reach the app directly, the cost per token reads higher than it is.
+- **Providers that share an app.** Providers that serve from the same app show one figure: the app's cost divided by the tokens of all of them.
+
+The period is counted in whole hours, up to the start of the current hour. It never starts before the provider was added, so a provider added less than an hour ago shows no figure yet.
+
+In three cases the console shows no cost per token:
+
+- No tokens went through the gateway in the period.
+- No price is known for the app's instance type. **GPU hours** still appear, without dollars.
+- You don't have permission to view costs.
+
+## Change the budget price of a self-hosted model
+
+To change the price budgets count a self-hosted model at, you need permission to manage the gateway.
+
+1. In **Settings → Inference Gateway → Providers**, click the edit button next to the provider's cost.
+
+   To start from what the model cost to run, expand the provider's row and click **Meter budgets at this cost** instead. The price is filled in with the actual cost per 1 million tokens, rounded up to the cent.
+
+2. Enter the **Price per 1M tokens** in USD.
+
+   To price input and output tokens separately, select **Set different prices for input and output tokens**.
+
+3. Save the price.
+
+The price applies to new requests. Spend already recorded doesn't change.
+
+A price can't be removed once it is set. To make a priced provider free, add the app again under a new provider name and remove the old provider.
+
+Hosted providers are metered from the gateway's price catalog, and their prices can't be changed.
 
 ## Remove a provider
 
