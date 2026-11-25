@@ -25,4 +25,10 @@ Fine-tune a language model for SQL generation using full, LoRA, or QLoRA methods
 Fine-tune ModernBERT on Twitter emotion labels with confusion-matrix evaluation and attention visualizations.
 {{< /link-card >}}
 
+{{< variant union >}}
+{{< link-card target="artifacts-model-registry" icon="box-seam" title="Artifacts as a model registry" >}}
+Version, stage, promote, and roll out models with artifacts, partitions, and triggers, with every transition recorded as lineage.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< /grid >}}
