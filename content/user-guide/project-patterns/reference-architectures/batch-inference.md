@@ -1,6 +1,6 @@
 ---
 title: Batch inference
-description: Run a model over a large dataset on a schedule, with the dataset split into chunks, the model loaded once per GPU replica, and the GPU kept busy.
+description: Run a model over a large dataset on a schedule, with the model loaded once and the GPU kept busy.
 icon: stack
 weight: 2
 variants: +flyte +union

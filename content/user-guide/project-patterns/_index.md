@@ -1,6 +1,6 @@
 ---
 title: Project patterns
-description: Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, an advanced end-to-end project, and reference architectures.
+description: Patterns for BYO images, monorepos with uv, CI/CD, multi-team resource management, the software development lifecycle, and an advanced end-to-end project.
 icon: folder
 weight: 12
 variants: +flyte +union

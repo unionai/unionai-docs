@@ -1,6 +1,6 @@
 ---
 title: Reference architectures
-description: End-to-end designs for common workloads (training and serving, batch inference, and an agent platform) that show which Flyte constructs to combine and how data moves between them.
+description: End-to-end designs for training and serving, batch inference, and an agent platform, showing which constructs to combine and how data moves between them.
 icon: diagram-3
 weight: 7
 variants: +flyte +union
