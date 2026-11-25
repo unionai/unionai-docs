@@ -39,9 +39,15 @@ flyte create secret vertex-service-account --from-file <path-to-key.json> --proj
 
 Replace `<project>`, `<location>`, and `<model-id>` with your own values.
 
+To retry rate limits, cache answers, and limit concurrency, see [Make provider calls reliable](./_index#make-provider-calls-reliable).
+
 ## Call Vertex AI from an app
 
 An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
+
+## Run Google ADK agents
+
+To run an agent built with Google ADK on Vertex AI, use `flyteplugins-agents-google`. See [Google ADK](../../../integrations/agents/google-adk).
 
 {{< variant union >}}
 {{< markdown >}}
