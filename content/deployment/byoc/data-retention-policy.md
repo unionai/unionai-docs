@@ -2,7 +2,7 @@
 title: Data retention policy
 description: How long run data stays in the data plane object store before it is deleted automatically.
 icon: calendar-x
-weight: 8
+weight: 4
 variants: -flyte +union
 ---
 

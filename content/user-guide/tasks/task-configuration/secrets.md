@@ -215,15 +215,6 @@ For example:
 > The name of the secret file is the key of the secret exactly as you created it, including its case.
 > For example, a secret created as `MY_CERT` is mounted at `/etc/flyte/secrets/MY_CERT`.
 
-{{< variant union >}}
-{{< markdown >}}
-The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
-Secrets read directly from an external store use a different, provider-specific path:
-see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager)
-or [Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
-{{< /markdown >}}
-{{< /variant >}}
-
 ## Using secrets in local runs
 
 When you run a task locally, for example with `flyte run --local` or by calling the task directly in Python, secrets are **not** fetched from the secret store.

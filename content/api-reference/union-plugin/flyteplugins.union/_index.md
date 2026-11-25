@@ -2,7 +2,7 @@
 title: flyteplugins.union
 description: "Union SDK - Proprietary extensions for Flyte."
 icon: box-seam
-version: 0.20.2
+version: 0.26.2
 variants: -flyte +union
 layout: py_api
 ---
@@ -14,12 +14,20 @@ Union SDK - Proprietary extensions for Flyte.
 This package provides Union-specific functionality on top of the open-source Flyte SDK.
 ## Directory
 
+### Classes
+
+| Class | Description |
+|-|-|
+| [`ForkPlan`](../flyteplugins.union/forkplan) | What a fork of *source_run* would reuse, as of *as_of*. |
+| [`PlannedAction`](../flyteplugins.union/plannedaction) | One source-run action, as a fork plan sees it. |
+
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`debug()`](#debug) | Launch a task, or relaunch an existing run, with ssh-into-task debug enabled. |
 | [`fork()`](#fork) | Fork run *run_name*, replaying it with new code and/or inputs. |
+| [`fork_plan()`](#fork_plan) | Roughly what `fork(run_name, ...)` with these arguments would reuse, without forking. |
 | [`with_debugcontext()`](#with_debugcontext) | Like `flyte.with_runcontext`, but preconfigured for ssh-into-task debug. |
 | [`with_forkcontext()`](#with_forkcontext) | Like `flyte.with_runcontext`, but the returned runner can also `fork(run_name, ...)`. |
 
@@ -85,13 +93,19 @@ def fork(
     task_template: TaskTemplate | None = None,
     force_rerun_actions: Sequence[str] | None = None,
     allow_missing_source_outputs: bool = False,
+    task_action_inputs: Mapping[str, Mapping[str, Any]] | None = None,
+    target_action: str | None = None,
+    abort_source: bool = <unset>,
+    wait_for: Sequence[str] | None = <unset>,
+    wait_timeout: timedelta | None = <unset>,
     **inputs: Any,
 ) -> Run
 ```
 Fork run *run_name*, replaying it with new code and/or inputs. Returns a `Run`.
 
 Its succeeded actions are reused; the ones whose code you edited re-execute, along with
-anything downstream of them. Pass keyword inputs to change the root action's parameters
+anything downstream of them. *run_name* may still be running: then the actions it is still
+running run again in the fork (see `fork_plan`). Pass keyword inputs to change the root action's parameters
 (`fork("r1", task_template=fixed, x=2)`); inputs left out keep the source run's values. Use
 `with_forkcontext(...)` to apply run-context overrides (name, env vars, ...).
 
@@ -103,9 +117,64 @@ anything downstream of them. Pass keyword inputs to change the root action's par
 | `task_template` | `TaskTemplate \| None` | Substitute task to run instead of the source run's code. |
 | `force_rerun_actions` | `Sequence[str] \| None` | Names of actions that must re-execute even though they succeeded in the source run. A listed parent re-enqueues its children — list them too to force the whole subtree. Unknown names are ignored. |
 | `allow_missing_source_outputs` | `bool` | Proceed when the source run's outputs were cleaned up from storage, using its inputs URI directly. |
+| `task_action_inputs` | `Mapping[str, Mapping[str, Any]] \| None` | Input overrides for task actions of the source run, keyed by action name (`{"<action name>": {"<input>": <value>}}`); see `_ForkRunner.fork`. |
+| `target_action` | `str \| None` | The task action to apply the code update (*task_template*) to; defaults to the root. See `_ForkRunner.fork`. |
+| `abort_source` | `bool` | Abort the source run, if still running, once the fork is created. |
+| `wait_for` | `Sequence[str] \| None` | Source actions to wait for (to succeed) before forking, so they are reused. |
+| `wait_timeout` | `timedelta \| None` | Give up waiting after this long (`ForkWaitTimeoutError`). |
 | `**inputs` | `Any` | Native keyword inputs to change the root action's parameters; omit an input to keep the source run's value. |
 
 **Returns:** the new Run.
+
+#### fork_plan()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await fork_plan.aio()`.
+```python
+def fork_plan(
+    run_name: str,
+    task_template: TaskTemplate | None = None,
+    force_rerun_actions: Sequence[str] | None = None,
+    task_action_inputs: Mapping[str, Mapping[str, Any]] | None = None,
+    target_action: str | None = None,
+    max_actions: int | None = 1000,
+    **inputs: Any,
+) -> ForkPlan
+```
+Roughly what `fork(run_name, ...)` with these arguments would reuse, without forking.
+
+Built from the source run's action list as it stands now (`ForkPlan.as_of`); for a running
+source it is a snapshot, and actions still in flight may finish before the fork reaches them.
+Nothing is uploaded or submitted. Every argument after *run_name* is keyword-only and named as
+`fork`'s, so a plan's call reads like its fork's. *task_template* and *inputs* are accepted for
+that reason, but they do not change the buckets: which actions a code change or changed inputs
+re-run is decided as the fork runs. `reused` is therefore an upper bound — a code change,
+changed root inputs, or the outputs of overridden actions can make some of those re-run too.
+
+At most *max_actions* source actions are listed (None for all); past that the plan is
+`truncated`, and an override of an action beyond it is not checked.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `run_name` | `str` | |
+| `task_template` | `TaskTemplate \| None` | |
+| `force_rerun_actions` | `Sequence[str] \| None` | |
+| `task_action_inputs` | `Mapping[str, Mapping[str, Any]] \| None` | |
+| `target_action` | `str \| None` | |
+| `max_actions` | `int \| None` | |
+| `**inputs` | `Any` | |
+
+**Raises**
+
+| Exception | Description |
+|-|-|
+| `SourceActionNotStartedError` | a *task_action_inputs* key (or *target_action*) that a running source has not reached yet. |
+| `ValueError` | such a key a finished source does not have. |
 
 #### with_debugcontext()
 
