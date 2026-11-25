@@ -17,11 +17,11 @@ This tutorial runs LAB itself, through Flyte, with US open-weight models served 
 3. What changes across checkpoints when you train against it?
 4. How many pairwise judgments does it take to call a preference result a null?
 
-It is not a replication of Harvey's results. LAB publishes no hold-out split, so the tasks are a seeded sample; the judges are open-weight models; the policies are 20B–120B; and episodes are capped at a few dozen turns.
+It is not a replication of Harvey's results. LAB publishes no hold-out split, so the tasks are a seeded sample; the judges are open-weight models; the policies are 20B–120B; and episodes are capped at a few dozen turns. The training run stopped after seven steps, so the checkpoint matrix below is shown with base policies.
 
 > [!NOTE]
 > Full code is available [on GitHub](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/legal_agent_rl).
-> The examples were run on one 8× AMD Instinct MI355X node from a GPU market, reached through a queue, and on a single NVIDIA L40S.
+> The rollouts and training were run on one 8× AMD Instinct MI355X node from a GPU market, reached through a queue; grading and the probes ran on NVIDIA L4 and L40S GPUs.
 > The calibration step uses LAB's standard hosted judges and needs secrets named `ANTHROPIC_API_KEY` and `OPENAI_API_KEY`.
 
 ## Run it
@@ -33,7 +33,11 @@ export CLUSTER=amd GPU_QUEUE=<your GPU queue>   # or CLUSTER=demo for one NVIDIA
 python smoke.py                                  # one rollout per model, both judges, one LoRA step
 python sweep.py --tasks 48 --samples 8           # base rollouts and grades
 python audit.py --sweep-run <run>                # the reward and judge audit, on CPU
-python padding.py --sweep-run <run>              # the padding probe
+python grade_shards.py --rollouts sweep_rollouts.jsonl.gz   # grade existing rollouts anywhere, one GPU per shard
+python grade_shards.py merge --rollouts sweep_rollouts.jsonl.gz --runs <run>   # merge shard verdicts, print the audit
+python probes.py variants --rollouts sweep_rollouts.jsonl.gz # padding probe
+python probes.py pairs --rollouts sweep_rollouts.jsonl.gz    # pairwise tournament and A/A test
+python diag.py                                   # does the trainer agree with the sampler?
 python train.py                                  # checkpoints
 python checkpoints.py --train-run <run>          # checkpoint matrix and tournament
 ```
@@ -72,7 +76,13 @@ When the task retries on a new node, finished rollouts and grades replay from th
 
 {{< code file="/unionai-examples/v2/tutorials/legal_agent_rl/sweep.py" fragment="sweep" lang="python" >}}
 
-<!-- RESULTS: sweep -->
+On one 8× MI355X node, three US open-weight models (`gpt-oss-120b`, `gpt-oss-20b`, `Nemotron-3-Nano-30B-A3B`) ran 48 LAB tasks × 8 rollouts in 96 minutes: 1,152 episodes launched, 1,151 finished. The grading step ran separately, on NVIDIA L4 GPUs on another cluster, from the same rollouts.
+
+| Policy | Criteria passed | All-pass | Cut off | No deliverable | Median turns |
+| --- | --- | --- | --- | --- | --- |
+| gpt-oss-120b | 31.0% | 0 of 384 | 0.3% | 5.5% | 12 |
+| Nemotron 3 Nano 30B | 13.0% | 0 of 384 | 7.3% | 34.6% | 23 |
+| gpt-oss-20b | 11.6% | 0 of 383 | 2.1% | 12.5% | 15 |
 
 ## What the reward pays for
 
@@ -86,7 +96,7 @@ Judge noise is measured the same way: re-grade the same rollouts and compare how
 
 The audit is CPU work over verdicts that are already paid for, so changing the weights is a new run of `audit.py`, not a new sweep.
 
-<!-- RESULTS: audit -->
+With `gpt-oss-20b` as the judge, no rollout passed every criterion, so the all-pass term was constant in all 144 groups and carried none of the advantage. Criteria carried 60–69% of within-group reward variance and issue groups 28–40%. Re-grading flipped 2.4–4.7% of criterion verdicts, a median of 1–4% of the group signal (7–14% at the 90th percentile). A second judge from another family, `Nemotron-3-Nano-4B`, agreed on 90% of 41,196 criterion verdicts (Cohen's kappa 0.70) and was more lenient (25% of criteria passed against 19%), and the gpt-oss judge showed no preference for its own family.
 
 ## Does the rubric pay for padding?
 
@@ -96,7 +106,7 @@ The audit is CPU work over verdicts that are already paid for, so changing the w
 
 {{< code file="/unionai-examples/v2/tutorials/legal_agent_rl/padding.py" fragment="summarize" lang="python" >}}
 
-<!-- RESULTS: padding -->
+On 94 deliverables from `gpt-oss-120b`, padding added 10–14% to each and raised criteria passed by about half a point (+0.52 generic, +0.51 speculative, on a 33.0% baseline), against a re-grading noise of 3.9 points. Pairwise, `gpt-oss-20b` picked whichever draft it saw first in more than 90% of judgments; `Nemotron-3-Nano-4B` split the speculative pairs 17–17.
 
 ## Training to make checkpoints
 
@@ -115,7 +125,7 @@ Things that differ from the published recipe, and why:
 - **LoRA on the attention projections.** Harvey's adapter covers the whole network, routed experts included. Expert LoRA only fits 16k-token sequences on this stack, and attention projections are the layers vLLM hot-loads for gpt-oss.
 - **Four data-parallel trainer ranks** on the node's last four GPUs, with the adapter's gradients all-reduced.
 
-<!-- RESULTS: training -->
+The first run's importance ratio averaged 0.33 with 99% of tokens clipped: Transformers had silently re-initialized gpt-oss's expert weights when loading the dequantized copy. `diag.py` compares the trainer's log-probabilities with vLLM's on real turns; after loading the original checkpoint and dequantizing in memory, the two agreed (−0.3508 against −0.3500), and the ratio stayed at 0.997–1.001 over seven steps.
 
 ## A checkpoint matrix of cached cells
 
@@ -129,12 +139,13 @@ The tournament is cells too: one per pair of checkpoints, sample-matched, both o
 
 {{< code file="/unionai-examples/v2/tutorials/legal_agent_rl/preference.py" fragment="bradley_terry" lang="python" >}}
 
-<!-- RESULTS: matrix -->
+Run on base policies rather than checkpoints, the tournament gave: the first-shown draft won 69% (`gpt-oss-20b` judge) and 60% (`Nemotron-3-Nano-4B` judge) of judgments; an A/A pair scored 0.54 (0.46–0.61) and 0.56 (0.48–0.64); and `gpt-oss-120b` beat the other two at 0.81–0.87 under both judges, with no preference for a judge's own model family. A sign test needs 783 decided pairs to tell a 55/45 preference from 50/50 (`preference.pairs_needed`).
 
 ## Things this example hit
 
 - **aiter compiles at first use.** On a pip-installed ROCm stack, vLLM's aiter kernels fail their runtime build and the engine dies on the first request. `servers.py` sets `VLLM_ROCM_USE_AITER=0`.
 - **Every model needs its tool-call parser.** `--enable-auto-tool-choice` without `--tool-call-parser` exits at startup; `servers.PARSERS` holds the ones used here.
 - **A custom base image needs Flyte in its own interpreter.** Building from LAB's sandbox image put Flyte in a separate virtual environment the entrypoint couldn't find; installing into the image's Python fixes it and keeps `lab_core` next to the agent's document tools.
+- **A dequantized MoE checkpoint can load with missing weights.** Saving gpt-oss's dequantized weights and reading them back with Transformers re-initialized the experts without an error. vLLM read the same files correctly.
 - **Not every model is an agent in this harness.** Olmo 3 7B Instruct answered in prose instead of calling tools, and vLLM 0.34 doesn't support Inkling 2 Mini's architecture yet.
 - **Whole-node GPU pools.** GPUs go in a pod template, every task in the run goes to the pool's queue, and images are built off-queue and pinned.
