@@ -69,9 +69,10 @@ flyte run my_script.py pipeline --x 5
 Output:
 
 ```bash
-abc123xyz
-https://my-instance.example.com/v2/runs/project/my-project/domain/development/abc123xyz
-Run 'a0' completed successfully.
+╭────── Remote Run ──────╮
+│ Created Run: abc123xyz │
+╰────────────────────────╯
+URL: https://my-instance.example.com/v2/domain/development/project/my-project/runs/abc123xyz
 ```
 
 In the UI, you can:
@@ -110,8 +111,8 @@ import flyte
 flyte.init_from_config()
 run = flyte.run(pipeline, x=5)
 
-# The run object has status information
-print(run.status)
+# The run object holds its phase as of submission; call run.wait() first to get the final phase
+print(run.phase)
 ```
 
 ## Next steps
