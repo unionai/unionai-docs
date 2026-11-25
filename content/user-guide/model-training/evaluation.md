@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Evaluation
 
-Evaluation answers whether a trained model is good enough to use, and whether it is better than the one you have. It has two parts with different costs: an inference pass that runs the model over a held-out set, which needs the model's hardware, and the metrics computed from its predictions, which run on a CPU in seconds. Flyte runs them as separate tasks, so you can change a metric without running the model again.
+Evaluation answers whether a trained model is good enough to use, and whether it is better than the one you have. It has two parts with different costs: an inference pass that runs the model over a held-out set, which needs the model's hardware, and the metrics computed from its predictions, which run on a CPU in seconds. Flyte runs them as separate tasks, each on its own hardware.
 
 ## Separate inference from metrics
 
@@ -22,8 +22,8 @@ The prediction task runs the model over one shard of the held-out set and return
 
 {{< code file="/unionai-examples/v2/user-guide/model-training/evaluation.py" fragment="predict" lang=python >}}
 
-- **Keep the predictions.** The task returns the labels, the predicted classes, and the scores as a DataFrame. You can compute new metrics from it, slice it by subgroup, or inspect the examples the model got wrong, without running the model again.
-- **`cache="auto"`** stores the predictions under the model and the shard. Evaluating the same checkpoint again, for example from a later pipeline, reuses them.
+- **Keep the predictions.** The task returns the labels, the predicted classes, and the scores as a DataFrame. You can compute new metrics from it, slice it by subgroup, or inspect the examples the model got wrong. Working from that stored DataFrame doesn't run the model again, but rerunning the driver does.
+- **`cache="auto"`** keys the predictions on the model file and the shard. In this example, both change on every run. The driver re-uploads the training set, so `train_model` runs again and writes a new model file. Each shard sliced with `test.iloc[...]` also goes to a new location. Rerunning the driver runs `predict` over every shard again.
 - **Shards in parallel.** Each shard is its own task, so a large test set finishes in the time of one shard.
 
 For an LLM or other large model, the inference pass is a batch inference job: load the model once per task, and send it as many examples at a time as the engine can batch. See [Batch inference](../inference/batch-inference) and [Stream model weights](../inference/stream-model-weights).
@@ -34,7 +34,7 @@ The metrics task reads the stored predictions and returns typed metrics:
 
 {{< code file="/unionai-examples/v2/user-guide/model-training/evaluation.py" fragment="metrics" lang=python >}}
 
-It has no cache, because it is cheap. To add a metric, edit this task and rerun: the predictions come from the cache, and only the metrics run again.
+It has no cache, because it is cheap.
 
 ## Compare against a baseline
 
