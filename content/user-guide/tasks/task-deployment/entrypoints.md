@@ -92,7 +92,7 @@ The default is `entrypoint=False`. If you don't mark anything, nothing is treate
 {{< markdown >}}
 
 > [!NOTE]
-> The open-source Flyte backend ignores the entrypoint filter. On it, `flyte get task` with the `--entrypoint` flag, and `flyte.remote.Task.listall()` with `entrypoint=True`, return all tasks, not only entrypoints.
+> The open-source Flyte backend ignores the entrypoint filter. `flyte get task --entrypoint` and `flyte.remote.Task.listall(entrypoint=True)` list every task there, not only entrypoints.
 
 {{< /markdown >}}
 {{< /variant >}}
