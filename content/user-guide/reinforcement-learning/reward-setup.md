@@ -42,6 +42,37 @@ A judge call is an API request that costs money and can fail after it returns, f
 
 `verify_and_judge` combines both kinds of signal: the deterministic verifier decides whether the answer is correct, and the judge grades how the policy got there. The task returns a typed `Reward`, so each component is visible in the UI and the trainer can weight them. See [Traces](../tasks/task-programming/traces).
 
+## Verify with a simulator
+
+In some domains, a verifier is a simulation: a molecular-dynamics or docking run scores a proposed molecule, a physics simulation checks that a design holds up, and a robot simulator checks that a plan reaches its goal. A simulation verifier is deterministic and hard to argue with, but it is slow, and it often needs its own software stack and hardware.
+
+Give the verifier its own task environment:
+
+```python
+import flyte
+
+# The simulator's own image, with flyte installed in it
+sim_image = flyte.Image.from_base("ghcr.io/your-org/md-simulator:1.4")
+
+sim_env = flyte.TaskEnvironment(
+    name="sim-verifier",
+    image=sim_image,
+    resources=flyte.Resources(cpu=8, memory="16Gi", gpu="L4:1"),
+)
+
+
+@sim_env.task(cache="auto", retries=1, timeout=flyte.Timeout(max_runtime=900))
+async def simulate(candidate: str, protocol_version: str) -> float:
+    ...  # run the simulation on the candidate and return a score
+```
+
+- **Its own image.** The simulator's dependencies stay out of the policy's and the trainer's images. Each verifier, and each environment, can use whatever image it needs.
+- **Its own hardware.** The verifier gets the CPUs or GPU the simulation needs, and holds them only while it runs.
+- **A cache keyed on the candidate.** Policies propose the same candidate many times, within a group and across iterations. With `cache="auto"`, each distinct candidate is simulated once, and a new `protocol_version` re-simulates everything.
+- **A timeout that ends in a score.** Decide what a simulation that doesn't finish earns. When `simulate` times out or fails after its retries, the scoring task that called it catches the error and returns the lowest reward, so the policy can't learn that a pathological candidate escapes scoring.
+
+The policy controls only the candidate. Validate it before simulating, such as parsing a molecule or checking a design's bounds, and score an invalid candidate as wrong. Keep the simulation's parameters in the verifier, not in anything the policy writes. See [Rewards that resist hacking](./hard-to-game-rewards).
+
 ## Change the reward without regenerating rollouts
 
 Reward design is iterative. When you change the rubric, the rollouts from earlier steps are still valid inputs, and regenerating them costs GPU time. Pass the rubric to the loop as an input, and choose how to reuse the rollouts:
@@ -72,4 +103,5 @@ Either way, the first step's rollouts are reused, because the worlds and startin
 - [Training environment](./training-environment): what produces the trajectories you score.
 - [Training loop](./training-loop): how rewards become advantages for the policy update.
 - [Run model-written code safely](./training-environment#run-model-written-code-safely): sandbox the code a reward executes.
+- [Rewards that resist hacking](./hard-to-game-rewards): graders and verifiers a policy can't game.
 - [Evaluation gates](../project-patterns/software-development-lifecycle/evaluation-gates): score a model before it is promoted.

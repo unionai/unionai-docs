@@ -60,6 +60,7 @@ Overlapping generation with a multi-node trainer step can hide the trainer's tim
 | [Inference rollouts](./inference-rollouts) | Generating completions or trajectories from the current policy, and getting new weights to the generators |
 | [Training loop](./training-loop) | The driver task that ties the parts together, the policy update, multi-node trainers, and overlapping generation with training |
 | [Evaluation](./evaluation) | Sampling the policy on held-out problems, training-health metrics, and catching reward hacking |
+| [Rewards that resist hacking](./hard-to-game-rewards) | Grading outside the policy's reach, red-teaming the grader before training, and auditing trajectories during it |
 
 The examples on these pages come from a GRPO loop with LoRA adapters and an agentic RL loop with sandboxed environments. To fine-tune on labeled data instead, see [Post-training](../model-training/post-training).
 
@@ -74,6 +75,7 @@ The examples on these pages come from a GRPO loop with LoRA adapters and an agen
 - [Teach a humanoid to run](../../tutorials/reinforcement-learning/humanoid-locomotion/_index): a simulator compiled onto the GPU, with a live video report of the policy as it learns.
 - [Reward design with Claude and sandboxes](../../tutorials/reinforcement-learning/eureka-reward-design/_index): model-written reward functions, each trained in a sandbox.
 - [Self-play league for Connect Four](../../tutorials/reinforcement-learning/self-play-league/_index): a learner, a league of its past snapshots, and Elo ratings.
+- [Red-team your RL grader](../../tutorials/reinforcement-learning/grader-red-team/_index): known exploits against three graders, and a sealed grader that refuses all of them.
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -135,6 +135,8 @@ The policy optimizes the reward you wrote, including its mistakes. Look for thes
 
 Keep the evaluation verifier separate from the reward function, so a flaw in the reward doesn't also hide in the evaluation. Because every completion a rollout task returns is stored, you can read the completions the reward scored highest at any iteration and check them yourself.
 
+To build a grader that holds up, red-team it before training, and audit trajectories during training, see [Rewards that resist hacking](./hard-to-game-rewards).
+
 ## Check what the policy may have lost
 
 RL on a narrow task can lower performance on others. Rerun a broad suite, such as instruction-following and general-knowledge benchmarks, on the final policy and on the base model. [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) and [lighteval](https://github.com/huggingface/lighteval) run standard benchmarks with a vLLM backend. [Inspect](https://inspect.aisi.org.uk/) runs agentic and multi-turn evaluations. Run each suite in its own task, so suites run in parallel and are cached separately.
@@ -146,6 +148,7 @@ Two RL runs with different seeds can end far apart. Before you conclude that one
 ## Related
 
 - [Reward setup](./reward-setup): the reward the policy trains on.
+- [Rewards that resist hacking](./hard-to-game-rewards): graders that a policy can't game.
 - [Training loop](./training-loop): where evaluation runs during training.
 - [Evaluation gates](../project-patterns/software-development-lifecycle/evaluation-gates): promote a policy only when it beats what is live.
 - [Evaluation](../model-training/evaluation): evaluating supervised models.
