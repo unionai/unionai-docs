@@ -84,6 +84,7 @@ autoscaler
 gRPC
 mTLS
 RBAC
+SCIM
 CRD
 CRDs
 VPC
@@ -101,6 +102,8 @@ Algolia
 Notion
 GitHub
 GitLab
+
+leasor
 
 # --- Python / tooling ---
 dataclass
@@ -140,6 +143,7 @@ asyncio
 BRCA
 Buildkitd
 buildx
+BYOK
 BYOI
 CFTR
 CIFAR
@@ -151,6 +155,7 @@ cpus
 crewai
 crio
 cubin
+DAPO
 Dask
 Daytona
 DBFS
@@ -313,3 +318,10 @@ Enamine
 cloze
 acryloyl
 McNemar
+Timestral
+covariate
+covariates
+ERCOT
+MASE
+socktainer
+selfhosted

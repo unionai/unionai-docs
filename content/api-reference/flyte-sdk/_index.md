@@ -2,7 +2,7 @@
 title: Flyte SDK
 description: "Flyte SDK for authoring compound AI applications, services and workflows."
 icon: book
-version: 2.13.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 weight: 4
@@ -72,6 +72,7 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.ai.chat.app.CustomTheme`](flyte.ai.chat.app/customtheme) | Declarative color theme for the Agent Chat UI. |
 | [`flyte.ai.mcp.FlyteMCPAppEnvironment`](flyte.ai.mcp/flytemcpappenvironment) | Serve a Flyte-facing MCP server over HTTP (FastMCP + Starlette + Uvicorn). |
 | [`flyte.ai.mcp.MCPAppEnvironment`](flyte.ai.mcp/mcpappenvironment) | Serve a FastMCP server over HTTP (Starlette + Uvicorn) or over stdio. |
+| [`flyte.ai.mcp.ProtectedResourceMetadata`](flyte.ai.mcp/protectedresourcemetadata) | What an MCP server advertises about its own authorization, per RFC 9728. |
 | [`flyte.app.AppEndpoint`](flyte.app/appendpoint) | Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](flyte.app/appenvironment) | Configure a long-running app environment for APIs, dashboards, or model servers. |
 | [`flyte.app.ArtifactValue`](flyte.app/artifactvalue) | Use a published artifact as an app parameter value. |
@@ -141,11 +142,14 @@ Flyte is the core Python SDK for the Union and Flyte platforms.
 | [`flyte.errors.NotInTaskContextError`](flyte.errors/notintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](flyte.errors/oomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
+| [`flyte.errors.OrgEntitlementRequiredError`](flyte.errors/orgentitlementrequirederror) | This error is raised when the server refuses a request because the organization isn't entitled to a capability, for example a private control plane endpoint. |
+| [`flyte.errors.OrgLimit`](flyte.errors/orglimit) | The org limit a request was refused at, as the server reported it. |
+| [`flyte.errors.OrgLimitExceededError`](flyte.errors/orglimitexceedederror) | This error is raised when the server refuses a request because the organization is at one of its limits, for example `max_actions_per_run` or `max_clusters`. |
 | [`flyte.errors.ParameterMaterializationError`](flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization, but the materialization fails. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`flyte.errors.RemoteTaskNotFoundError`](flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RemoteTaskUsageError`](flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
-| [`flyte.errors.ResourceExhaustedError`](flyte.errors/resourceexhaustederror) |  |
+| [`flyte.errors.ResourceExhaustedError`](flyte.errors/resourceexhaustederror) | This error is raised when the server refuses a request for now, for example because the organization is at its `max_concurrent_runs` or `max_queue_depth`: it succeeds once running work finishes. |
 | [`flyte.errors.RestrictedTypeError`](flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one value. |
 | [`flyte.errors.RetriesExhaustedError`](flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RuntimeDataValidationError`](flyte.errors/runtimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |

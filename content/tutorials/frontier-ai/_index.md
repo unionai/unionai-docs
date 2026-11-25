@@ -30,6 +30,7 @@ on a Union cluster. Each one names the labs and papers it is modeled on.
 | Tutorial | Who does this | What makes it hard at scale |
 | --- | --- | --- |
 | [Distributed LLM pretraining](./distributed-pretraining/_index) | Every foundation model lab | Multi-GPU training that has to survive failures and stream data |
+| [Gang scheduling for multi-node training](./gang-scheduling/_index) | Any team running multi-node GPU jobs | A job is only useful when every worker starts together; a partial start strands GPUs and deadlocks competing jobs |
 | [Refine a pretraining corpus](./pretraining-data-refinery/_index) | Pretraining data teams, as in FineWeb-Edu, Essential-Web, and Zyda-2 | Billions of documents, CPU and GPU stages, and LLM labels that cost too much to run on everything |
 | [Evaluate every checkpoint](./checkpoint-evals/_index) | Post-training and evals teams, as in OLMo and OLMES | Evals that must keep up with training without slowing it, and never re-run when nothing changed |
 | [Curate a video dataset for generative video](./video-data-curation/_index) | Generative video and world-model labs, as in Open-Sora and Stable Video Diffusion | Hours of footage through decoders, scoring models, and captioners on different hardware |
@@ -44,6 +45,12 @@ on a Union cluster. Each one names the labs and papers it is modeled on.
 {{< link-card target="distributed-pretraining" icon="cpu" title="Distributed LLM pretraining" >}}
 Pretrain large language models at scale with PyTorch Lightning, FSDP, and H200 GPUs, featuring streaming data and real-time metrics.
 {{< /link-card >}}
+
+{{< variant union >}}
+{{< link-card target="gang-scheduling" icon="diagram-3" title="Gang scheduling for multi-node training" >}}
+Show that a distributed training job is only useful when every worker starts together, and that the workers a cluster cannot fit stay off the GPUs until the whole job can run.
+{{< /link-card >}}
+{{< /variant >}}
 
 {{< variant union >}}
 {{< link-card target="pretraining-data-refinery" icon="filter" title="Refine a pretraining corpus" >}}

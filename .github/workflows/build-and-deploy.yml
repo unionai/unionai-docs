@@ -81,7 +81,11 @@ jobs:
   build-and-deploy:
     name: "Build and deploy docs"
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Job-level cap. A main build now takes 28-30 minutes (build ~15, deploy
+    # ~5, search index ~6), so at 30 the last step, Update search index, was
+    # cut off and the run showed as cancelled (DOCP-145). The step-level caps
+    # below (deploy 10, index 15) still stop a hung step from eating the job.
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -104,7 +108,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.3
+        uses: astral-sh/setup-uv@v10.4.0
 
       - name: Print environment
         run: |

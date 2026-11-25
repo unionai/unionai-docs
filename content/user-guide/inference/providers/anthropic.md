@@ -37,11 +37,17 @@ flyte create secret anthropic-api-key --project <your-project> --domain developm
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/call_anthropic.py" fragment="task" lang="python" >}}
 
+To retry rate limits, cache answers, and limit concurrency, see [Make provider calls reliable](./_index#make-provider-calls-reliable).
+
 ## Call Anthropic from an app
 
 An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
 
 Anthropic also has an OpenAI-compatible endpoint, which its docs describe as being for testing and comparing models, not production.
+
+## Run Claude agents
+
+To run an agent built with the Claude Agent SDK, use `flyteplugins-agents-claude`. See [Claude Agent SDK](../../../integrations/agents/claude-agent-sdk).
 
 {{< variant union >}}
 {{< markdown >}}

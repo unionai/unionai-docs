@@ -13,6 +13,15 @@ Secrets reside in a secret store on the data plane of your Union/Flyte backend.
 You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
 Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
 
+{{< variant union >}}
+{{< markdown >}}
+On {{< key product_name >}}, the secret store is in your own infrastructure.
+It is your cloud provider's secret manager (AWS Secrets Manager, Google Secret Manager, or Azure Key Vault) or Kubernetes Secrets, depending on how your data plane is configured.
+Secret values never pass through the {{< key product_name >}} control plane.
+See [Secrets management](../../../security/data-protection/secrets).
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Creating a literal string secret
 
 You can create a secret using the [`flyte create secret`](../../../api-reference/flyte-cli#flyte-create-secret) command like this:
@@ -205,15 +214,6 @@ For example:
 > This fixed path is the directory in which the secret file will be placed.
 > The name of the secret file is the key of the secret exactly as you created it, including its case.
 > For example, a secret created as `MY_CERT` is mounted at `/etc/flyte/secrets/MY_CERT`.
-
-{{< variant union >}}
-{{< markdown >}}
-The path above applies to secrets created with `flyte create secret`, the SDK, or the UI.
-Secrets read directly from an external store use a different, provider-specific path:
-see [AWS Secrets Manager](../../../deployment/byoc/enabling-aws-resources/enabling-aws-secrets-manager)
-or [Azure Key Vault](../../../deployment/byoc/enabling-azure-resources/enabling-azure-key-vault).
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Using secrets in local runs
 

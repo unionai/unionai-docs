@@ -2,7 +2,7 @@
 title: TaskTemplate
 description: "Task template is a template for a task that can be executed."
 icon: braces
-version: 2.13.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---
