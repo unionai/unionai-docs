@@ -165,6 +165,8 @@ Most Flyte features work in both in-process and on-cluster execution. The table 
 | **Reports** | HTML files saved locally. TUI shows the file path. | [Reports](../../tasks/task-programming/reports) |
 | **Serving** | Run apps locally with `python serve.py` or `flyte.with_servecontext(mode="local")`. | [Serve and deploy apps](../../apps/serve-and-deploy-apps/_index) |
 | **Plugins** | Same decorators and APIs as remote. Secrets come from environment variables. | [Integrations](../../../api-reference/integrations/_index) |
+| **Connectors** | Query and script connector tasks (Snowflake, BigQuery, Slurm script tasks) run the connector in your Python process, and it submits the job to the external system. Their secrets come from environment variables. If one is missing, the task fails with `Secret <NAME> not found in environment.` Function-style connector tasks (Databricks, Slurm function tasks) don't run in a `--local` run. | [Connectors](../../../integrations/_index#connectors) |
+| **Custom context** | Same as remote. Set it with `flyte.with_runcontext(custom_context=...)` or `flyte run --local --custom-context KEY=VALUE` (`flyte` 2.12.2 or later), and override it with `flyte.custom_context()`. Nested tasks inherit it. | [Custom context](../../tasks/task-programming/custom-context) |
 | **Secrets** | Read from environment variables you export, or from local files for file-mounted secrets. Flyte does not load `.env` files. No `flyte create secret` needed. | [Secrets](../../tasks/task-configuration/secrets) |
 
 {{< variant union >}}
