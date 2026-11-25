@@ -47,7 +47,7 @@ uv run flyte create api-key --name ci-cd-key
 
 The output is a single base64-encoded string of the form `endpoint:client_id:client_secret:org`. **It's shown only once**: copy it immediately.
 
-The key gets its own identity in the caller's organization. It doesn't take on the minting user's permissions. By default, the key's identity is assigned the `contributor` policy. To grant access yourself instead, create the key with `--no-default-policies`. Before you rely on it, check with `flyte get assignment --creds-subject <client-id>` that the key has no `contributor` assignment. Then assign a policy to the key's client ID, which the command prints, with `flyte create assignment --creds-subject <client-id> --policy <policy>`. If you need a narrower policy, define it first with `flyte create role` and `flyte create policy`.
+The key gets its own identity in the caller's organization. It doesn't take on the minting user's permissions. By default, the key's identity is assigned the `contributor` policy. To grant access yourself instead, create the key with `--no-default-policies`, then assign a policy to the key's client ID, which the command prints, with `flyte create assignment --creds-subject <client-id> --policy <policy>`. `flyte get assignment --creds-subject <client-id>` lists the key's assignments. If you need a narrower policy, define it first with `flyte create role` and `flyte create policy`.
 
 ### Store the key as a CI secret
 
@@ -61,7 +61,7 @@ When `FLYTE_API_KEY` is present in the environment at deploy time, the `flyte` C
 
 ### Key scope and rotation
 
-The key has its own identity. It has the `contributor` policy unless you created it with `--no-default-policies`. For CI you typically want narrow scope: deploy rights on the target project/domain only. Rotate on a schedule (90 days is a reasonable default) by running `flyte create api-key` again and updating the secret. The new key is a new identity with a new client ID. Give it a new `--name`, pass `--no-default-policies` again if you used it, check its assignments as described above, and repeat your `flyte create assignment` for the new client ID. Then delete the old key with `flyte delete api-key <old-client-id>`.
+The key has its own identity. It has the `contributor` policy unless you created it with `--no-default-policies`. For CI you typically want narrow scope: deploy rights on the target project/domain only. Rotate on a schedule (90 days is a reasonable default) by running `flyte create api-key` again and updating the secret. The new key is a new identity with a new client ID. Give it a new `--name`, pass `--no-default-policies` again if you used it, and repeat your `flyte create assignment` for the new client ID. Then delete the old key with `flyte delete api-key <old-client-id>`.
 {{< /markdown >}}
 {{< /variant >}}
 
