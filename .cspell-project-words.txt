@@ -321,3 +321,5 @@ covariate
 covariates
 ERCOT
 MASE
+socktainer
+selfhosted
