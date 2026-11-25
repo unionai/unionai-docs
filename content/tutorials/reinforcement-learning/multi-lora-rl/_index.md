@@ -2,7 +2,7 @@
 title: Concurrent RL runs on a shared base model
 icon: layers
 description: "End-to-end RL for several skills at once: concurrent GRPO runs share warm GPUs and one copy of the base model, checkpoint every iteration, autoscale, pause for a review, and serve each approved model."
-weight: 6
+weight: 8
 variants: -flyte +union
 mermaid: true
 ---
@@ -23,10 +23,11 @@ This tutorial runs that whole lifecycle on Union.ai for two skills at once:
 - **Concurrent runs on shared GPUs.** Both RL runs are in progress at the same time and call into the
   same warm GPU replicas. The base model is loaded once; each run trains its own LoRA adapter on top.
 - **Distributed and autoscaled.** Generation, scoring, and training run in separate containers sized
-  for the work. The rollout pool grows from one GPU replica to two when both runs are generating, and
+  for the work. The rollout pool grows from one GPU replica to two when generation calls queue up, and
   shrinks when they are idle.
-- **Resilient.** Each run checkpoints every iteration and resumes there after a preemption. Shared
-  replicas recover from a crashed engine or a failed step without disturbing the other run.
+- **Resilient.** Each run checkpoints every iteration, so with retries set on the driver it resumes
+  there after a preemption. A shared replica recovers from a crashed engine or a failed step without
+  corrupting the other run's state.
 - **A review for each run.** After its final eval, each run pauses until a person approves or rejects
   that skill's model. Nothing is published without an approval.
 - **Serving for each model.** Every approved model is published as an artifact and served by its own
@@ -104,8 +105,9 @@ A **reusable** environment keeps its containers alive between task calls. The Py
 anything it has loaded into GPU memory, is still there for the next call. For an RL loop that is the
 difference between loading a model once and loading it hundreds of times.
 
-Reusable environments are also shared **across runs** by default (`ReusePolicy(scope="global")`). When
-the countdown run and the JSON run are both active, they call into the same replicas:
+Reusable environments are also shared **across runs**: runs that use an environment with the same name
+and version call into the same replicas. When the countdown run and the JSON run are both active, they
+call into the same replicas:
 
 ```mermaid
 flowchart LR
@@ -148,17 +150,19 @@ You need a Union.ai deployment with L4 capacity and a Flyte config pointing at i
 (`flyte create config`).
 
 ```bash
+git clone https://github.com/unionai/unionai-examples
+cd unionai-examples/v2/tutorials/rl_multi_lora
 uv sync
 
 # 1. Train both skills: two runs in progress at once, sharing the same warm replicas.
 #    The first time, this also copies the base model into your object store.
-python train.py --task all
+uv run python train.py --task all
 
 # 2. Each run pauses for review after its final eval. Approve it on the run page, or:
-python review.py <run-name> --approve     # or --reject
+uv run python review.py <run-name> --approve     # or --reject
 
 # 3. Serve the base model, every approved model, and the side-by-side chat.
-python serve.py                           # or: python serve.py --tasks json
+uv run python serve.py                           # or: uv run python serve.py --tasks json
 ```
 
 `train.py` prints a URL per run. Open one to watch its report update after every iteration.
@@ -282,7 +286,7 @@ countdown run is still training.
 While a run waits, it holds only its 1-CPU driver. The shared GPU replicas keep serving the other run,
 and once no run is using them they scale down on their own.
 
-If the reviewer rejects the model, the run fails with a clear message and publishes nothing. If nobody
+If the reviewer rejects the model, the run fails with a message and publishes nothing. If nobody
 answers within `REVIEW_TIMEOUT` (24 hours), `wait` raises `flyte.errors.ConditionTimedoutError` and the
 run also ends without publishing.
 
@@ -317,14 +321,14 @@ report, checkpoint, review, and artifact. They share the rollout, reward, and tr
 
 ## What happens when something fails
 
-A long RL run will see failures, and on shared replicas a failure must not take the other run down with
+A long RL run sees failures, and on shared replicas a failure must not take the other run down with
 it. The example handles each case in a specific place:
 
 | What fails | What happens |
 |---|---|
-| The driver's container is preempted | The platform retries the driver. The retry loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have |
-| The vLLM engine process crashes | `generate` clears the cached engine before it raises, so the replica builds a fresh engine on the next call instead of handing the dead one to the other run |
-| A `train_step` fails halfway through | The step marks the in-memory adapter as unpublished before it starts. A retry reloads the adapter it was given instead of training on top of half-updated weights |
+| The driver's container is preempted | Without retries, the run fails. Set `retries` on `train_rl` and a retried driver loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have. See [Durable training](../../../user-guide/model-training/durable-training) |
+| The vLLM engine process crashes | The `generate` call fails, and so does the run that made it. `generate` clears the cached engine before it raises, so the replica builds a fresh engine on the next call instead of handing the dead one to the other run |
+| A `train_step` fails halfway through | The run that called it fails. The step marks the in-memory adapter as unpublished before it starts, so the next call for that adapter, a retry included, reloads it instead of training on top of half-updated weights |
 | A replica is lost | The next call lands on another replica, which loads the base model and the adapter from object storage. Nothing is stored only on a replica's disk |
 
 ## Distributed and autoscaled
@@ -332,8 +336,8 @@ it. The example handles each case in a specific place:
 Nothing in the loop says how many machines it runs on. That is set by the environments:
 
 - **Rollouts** scale between one and two GPU replicas (`replicas=(1, ROLLOUT_CHUNKS)`). Each iteration
-  splits its problems into two `generate` calls, and with two runs active there are up to four calls
-  waiting at once, so the pool grows to its second replica. When the runs go quiet, idle replicas shut
+  splits its problems into two `generate` calls that run in parallel, so a single run already scales
+  the pool to its second replica, and with two runs active, calls queue for the two replicas. When the runs go quiet, idle replicas shut
   down after `scaledown_ttl`, and the whole pool after `idle_ttl`.
 - **Scoring** runs on one CPU replica that takes eight calls at a time.
 - **Training** is one GPU replica that holds both skills. The runs take turns on the GPU, which is the
@@ -358,7 +362,7 @@ Every model app autoscales on the number of requests in flight and scales to zer
 {{< code file="/unionai-examples/v2/tutorials/rl_multi_lora/serve.py" fragment=scaling lang=python >}}
 
 The first request to a model that has scaled to zero waits for a replica to start. For a live demo, set
-`MODEL_SCALING` to `Scaling(replicas=(1, 1))` beforehand and put it back afterwards.
+`MODEL_SCALING` to `Scaling(replicas=(1, 1))` beforehand and put it back afterward.
 
 The chat app (`chat_ui.py`) sends the same prompt to two models and grades both answers with the same
 checker used in training, so you see a pass or fail badge next to each.
@@ -375,7 +379,7 @@ run waits for its review.
 | `countdown` | 60 | 6% | 26% | 48 min |
 
 The same skills trained one at a time ended at 94% and 25% to 29%, so sharing the replicas did not cost
-accuracy. Your numbers will differ by a few points from run to run.
+accuracy. Your numbers differ by a few points from run to run.
 
 JSON extraction is mostly a formatting and attention problem, and the model learns it almost completely.
 Countdown needs search and arithmetic, which a 1.5B model improves at more slowly. More iterations or a
@@ -451,14 +455,15 @@ ask for a minimum accuracy and publish only above it. To skip human review for a
 | `MICRO_BATCH` | `train.py` | Sequences per backward pass. Lower it if the trainer runs out of GPU memory |
 | `REVIEW_TIMEOUT` | `train.py` | How long a finished run waits for a reviewer |
 | `MODEL_SCALING` | `serve.py` | Replicas per served model and when to add one |
-| `ReusePolicy(scope="run")` | `train.py` | Give every run its own replicas instead of sharing them |
+| Environment `name` | `train.py` | Give a run its own replicas by giving its reusable environments a distinct name |
 
 ### Isolating runs
 
 Sharing replicas is what makes several runs cheap, and it means the code inside a replica cannot assume
 it serves one run. This example keys all cached state by skill or by adapter path for that reason. If
 you would rather give each run private replicas, for example to compare two learning rates for the same
-skill at the same time, set `scope="run"` on the reusable environments. Two concurrent runs of the
+skill at the same time, give each run's reusable environments a distinct `name`. Reusable containers
+are shared by environment name and version, whatever the `ReusePolicy` scope. Two concurrent runs of the
 *same* skill on shared replicas would otherwise take turns evicting each other's adapter from the
 trainer.
 
@@ -486,4 +491,3 @@ trainer.
 | `serve.py` | One autoscaling vLLM app per model bound to its artifact, plus the chat app |
 | `chat_ui.py` | Side-by-side Gradio chat with pass or fail grading |
 | `report_helpers.py` | The live training report |
-| `DEMO.md` | Talk track for presenting the chat live |
