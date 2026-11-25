@@ -1,7 +1,7 @@
 ---
 title: Reinforcement learning
 icon: trophy
-description: "Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, harness evals and trace audits, LoRA ablation screens, humanoid locomotion, model-written rewards, and self-play."
+description: "Reinforcement learning for LLMs, agents, robots, and games: GRPO, durable agentic RL, harness evals and trace audits, LoRA ablation screens, rubric rewards on legal agents, humanoid locomotion, model-written rewards, and self-play."
 weight: 10
 variants: +flyte +union
 sidebar_expanded: true
@@ -26,6 +26,7 @@ different shapes of it.
 | [Durable agentic RL with SkyRL and Harbor](./agentic-rl-skyrl/_index) | An LLM agent acting in a sandboxed world over many turns | Long, failure-prone trials and LLM judges that are expensive to re-run | Durable trials, a memoized judge, exactly-once training steps, and re-scoring by caching |
 | [Harness evals and trace audits for agentic RL](./agentic-rl-evals/_index) | A tool-using agent before training, and published trajectories after it | Harness bugs move reward like training does, and traces are too many to read by hand | A versioned harness, a cached cell per (task, harness, model, pass), and re-labeling without re-downloading |
 | [Can a LoRA screen pick the right RL ablation?](./lora-ablation-screen/_index) | Qwen3-0.6B trained with GRPO, as LoRA adapters and at full weight | Full-weight ablations are expensive, and a cheap screen is only useful if it ranks arms the same way | One durable action per arm on its own GPU, and a cached screen that runs only new arms |
+| [Rubric rewards and checkpoints on Harvey's LAB](./legal-agent-rl/_index) | US open-weight legal agents (gpt-oss, Nemotron) on Harvey's Legal Agent Benchmark | An LLM judge grades long rubrics, nodes come from a GPU market and get taken back, and picking a checkpoint is an eval matrix | LAB's harness in a pod, traced rollouts and grades that survive a reclaimed node, re-weighting rewards over cached verdicts, and cached checkpoint cells |
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -69,6 +70,12 @@ Treat the agent harness as a versioned input, cache every eval cell, and mine pu
 {{< variant union >}}
 {{< link-card target="lora-ablation-screen" icon="sliders" title="Can a LoRA screen pick the right RL ablation?" >}}
 Train the same GRPO loss-aggregation arms as LoRA adapters and at full weight, one durable action per arm, and check whether the two rankings agree.
+{{< /link-card >}}
+{{< /variant >}}
+
+{{< variant union >}}
+{{< link-card target="legal-agent-rl" icon="briefcase" title="Rubric rewards and checkpoints on Harvey's LAB" >}}
+Run Harvey's Legal Agent Benchmark on US open-weight models, measure what a rubric reward pays for and how noisy its judge is, and pick a checkpoint from a cached eval matrix.
 {{< /link-card >}}
 {{< /variant >}}
 
