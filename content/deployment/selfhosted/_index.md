@@ -1,21 +1,21 @@
 ---
-title: Self-hosted deployment
+title: Self-Hosted deployment
 weight: 6
 variants: -flyte +union
 sidebar_expanded: true
 mermaid: true
 ---
 
-# Self-hosted deployment
+# Self-Hosted deployment
 
-In a self-hosted deployment, you host both the **control plane** and the **data plane**. You choose the topology that fits your operational and regulatory requirements — both planes in a single Kubernetes cluster, in separate clusters, in different regions, or any combination. {{< key product_name >}} gives you complete control over the installation with full data sovereignty.
+In a Self-Hosted deployment, you host both the **control plane** and the **data plane**. You choose the topology that fits your operational and regulatory requirements — both planes in a single Kubernetes cluster, in separate clusters, in different regions, or any combination. {{< key product_name >}} gives you complete control over the installation with full data sovereignty.
 
 > [!NOTE]
-> Self-hosted deployment is distinct from [self-managed deployment](../selfmanaged/_index), where {{< key product_name >}} hosts the control plane and you manage only the data plane.
+> Self-Hosted deployment is distinct from [Self-Managed deployment](../selfmanaged/_index), where {{< key product_name >}} hosts the control plane and you manage only the data plane.
 
-## When to use self-hosted deployment
+## When to use Self-Hosted deployment
 
-Choose self-hosted deployment when:
+Choose Self-Hosted deployment when:
 
 - You need full control over both control plane and data plane
 - You have strict data locality or sovereignty requirements
@@ -23,14 +23,14 @@ Choose self-hosted deployment when:
 - You are running in an air-gapped or restricted network environment
 - You need to colocate the control plane with the data plane for latency, isolation, or regulatory reasons
 
-Choose [self-managed deployment](../selfmanaged/_index) when:
+Choose [Self-Managed deployment](../selfmanaged/_index) when:
 
 - You want {{< key product_name >}} to manage the control plane
 - You need {{< key product_name >}}'s managed services and support
 
 ## Topologies
 
-Self-hosted deployments support two topologies, distinguished by how the control plane and data plane are placed relative to each other:
+Self-Hosted deployments support two topologies, distinguished by how the control plane and data plane are placed relative to each other:
 
 - **Separate-cluster (default and recommended)** — control plane in one Kubernetes cluster, one or more data planes in separate clusters (often per environment, region, or business unit). Communication is via the control plane's external ingress; each data plane authenticates to the CP as a workload identity. Data planes may run on different cloud providers than the CP. This is the topology [Infrastructure requirements](./infrastructure-requirements) is written around.
 - **Intra-cluster (special case)** — both planes in the same Kubernetes cluster, communicating over cluster-local Services. The simplest topology; used by the [Getting started](./getting-started) walkthrough and for footprint-constrained or evaluation deployments. Enable by setting `CONTROLPLANE_GRPC_ENDPOINT` + `QUEUE_GRPC_ENDPOINT` to cluster-local svc URLs in your `values.{aws,gcp}.yaml` — see [Getting started → Optional: intracluster topology](./getting-started#optional-intracluster-topology). [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) covers the substrate trade-offs.

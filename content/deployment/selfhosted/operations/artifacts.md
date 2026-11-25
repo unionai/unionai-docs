@@ -8,7 +8,7 @@ variants: -flyte +union
 
 Artifacts let tasks publish and consume **versioned, named** outputs — models, datasets, feature tables — with lineage back to the run that produced them, and let runs be **triggered** when a new version of an artifact appears. For how to use them, see [Artifacts](../../../user-guide/artifacts/_index) in the user guide.
 
-On a {{< key product_name >}} self-hosted deployment the Artifacts service is **enabled by default** and needs nothing provisioned: no dedicated bucket, no object-store credentials, no workload-identity binding.
+On a {{< key product_name >}} Self-Hosted deployment the Artifacts service is **enabled by default** and needs nothing provisioned: no dedicated bucket, no object-store credentials, no workload-identity binding.
 
 ## How it stores data
 

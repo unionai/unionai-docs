@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Task routing
 
-After installing a {{< key product_name >}} self-hosted deployment, the control plane still needs to be told **which data plane runs a given project's tasks**. Until that routing exists, a submitted run has no queue to land on, and control-plane bootstrap jobs that build images fail with `no enabled cluster in pool`.
+After installing a {{< key product_name >}} Self-Hosted deployment, the control plane still needs to be told **which data plane runs a given project's tasks**. Until that routing exists, a submitted run has no queue to land on, and control-plane bootstrap jobs that build images fail with `no enabled cluster in pool`.
 
 This guide covers the queue model and the one-time steps to configure routing for each data plane. Perform them after the control plane and data plane are installed and healthy, and after the data plane has registered with the control plane.
 

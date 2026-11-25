@@ -7,7 +7,7 @@ description: Turn off the web console's analytics and the Flyte SDK's telemetry 
 
 # Telemetry
 
-A self-hosted deployment sends telemetry from two places:
+A Self-Hosted deployment sends telemetry from two places:
 
 | Source | What it sends |
 |---|---|

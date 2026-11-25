@@ -6,7 +6,7 @@ mermaid: true
 ---
 # App serving
 
-App serving lets your data plane run long-lived applications — Streamlit dashboards, FastAPI services, and other custom apps — alongside batch tasks. In a self-hosted deployment the data plane chart ships a vendored serving stack (Knative Serving + Kourier + an Envoy gateway) that scales each app from zero, routes traffic to it, and enforces {{< key product_name >}} authentication in front of it.
+App serving lets your data plane run long-lived applications — Streamlit dashboards, FastAPI services, and other custom apps — alongside batch tasks. In a Self-Hosted deployment the data plane chart ships a vendored serving stack (Knative Serving + Kourier + an Envoy gateway) that scales each app from zero, routes traffic to it, and enforces {{< key product_name >}} authentication in front of it.
 
 This page covers the supported setup, how apps are exposed, the DNS and TLS they require, and the Helm values that turn app serving on.
 
@@ -78,7 +78,7 @@ App hostnames are **subdomains of the control-plane host**. This is deliberate: 
 
 ## Prerequisites
 
-- A healthy self-hosted deployment with the control plane and a single data plane running (see [Getting started](./getting-started)).
+- A healthy Self-Hosted deployment with the control plane and a single data plane running (see [Getting started](./getting-started)).
 - App serving CRDs installed in the data plane cluster from the vendored `helm-charts/crds/` directory (the [Getting started](./getting-started) data-plane steps install these).
 - The ability to resolve and serve the apps wildcard `*.apps.<control-plane-host>` — see [DNS and TLS](#dns-and-tls). A split-cluster data plane additionally needs to publish a wildcard DNS record and provision a wildcard TLS certificate.
 

@@ -12,9 +12,9 @@ mermaid: true
 
 ## Architecture
 
-### Self-hosted intra-cluster
+### Self-Hosted intra-cluster
 
-In a self-hosted deployment, the controlplane and dataplane share a single Kubernetes cluster. The controlplane namespace runs Prometheus, Grafana, and AlertManager. Prometheus scrapes metrics from services in both namespaces.
+In a Self-Hosted deployment, the controlplane and dataplane share a single Kubernetes cluster. The controlplane namespace runs Prometheus, Grafana, and AlertManager. Prometheus scrapes metrics from services in both namespaces.
 
 ```mermaid
 graph LR

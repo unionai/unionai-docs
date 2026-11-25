@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Troubleshooting
 
-Common issues encountered during and after a {{< key product_name >}} self-hosted deployment. Commands assume `kubectl` is configured against the cluster and that you've replaced `<controlplane-namespace>` / `<dataplane-namespace>` with the namespaces you used during install.
+Common issues encountered during and after a {{< key product_name >}} Self-Hosted deployment. Commands assume `kubectl` is configured against the cluster and that you've replaced `<controlplane-namespace>` / `<dataplane-namespace>` with the namespaces you used during install.
 
 ## Control plane
 

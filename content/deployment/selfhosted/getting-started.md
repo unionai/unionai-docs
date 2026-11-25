@@ -6,12 +6,12 @@ variants: -flyte +union
 
 # Getting started
 
-This guide walks you through installing a {{< key product_name >}} self-hosted deployment end-to-end using the canonical `values.{aws,gcp}.yaml` overlays. The walkthrough is topology-agnostic — control plane and data plane reach each other through `UNION_HOST`. If you're running both planes in the same Kubernetes cluster, see [Optional: intracluster topology](#optional-intracluster-topology) at the bottom to layer in cluster-local routing.
+This guide walks you through installing a {{< key product_name >}} Self-Hosted deployment end-to-end using the canonical `values.{aws,gcp}.yaml` overlays. The walkthrough is topology-agnostic — control plane and data plane reach each other through `UNION_HOST`. If you're running both planes in the same Kubernetes cluster, see [Optional: intracluster topology](#optional-intracluster-topology) at the bottom to layer in cluster-local routing.
 
 It assumes your cloud substrate (VPC, Kubernetes cluster, database, object storage, identity bindings) is already provisioned. For what to provision and how to size it, see [Infrastructure requirements](./infrastructure-requirements).
 
 > [!NOTE]
-> Self-hosted deployment is officially supported on **AWS**. **GCP** support is in preview; additional cloud providers are coming. The walkthrough below uses tabs to switch between cloud-specific details where they differ.
+> Self-Hosted deployment is officially supported on **AWS**. **GCP** support is in preview; additional cloud providers are coming. The walkthrough below uses tabs to switch between cloud-specific details where they differ.
 
 ## Prerequisites
 
@@ -453,7 +453,7 @@ A few values are worth understanding because they affect the deployment's identi
 
 ### Single-tenant mode
 
-Self-hosted deployments operate in single-tenant mode with an explicit organization name:
+Self-Hosted deployments operate in single-tenant mode with an explicit organization name:
 
 ```yaml
 global:
@@ -490,11 +490,11 @@ updateStatus:
 
 See [Infrastructure requirements → Intra-cluster topology](./infrastructure-requirements#intra-cluster-topology) for the substrate trade-offs (shared etcd, shared node pools, migration path to split-cluster).
 
-## Key differences from a self-managed deployment
+## Key differences from a Self-Managed deployment
 
-The defining difference between [self-managed](../selfmanaged/_index) and self-hosted is **who operates the control plane**. Everything else — topology, networking, certificate sources — follows from that choice and varies independently.
+The defining difference between [Self-Managed](../selfmanaged/_index) and Self-Hosted is **who operates the control plane**. Everything else — topology, networking, certificate sources — follows from that choice and varies independently.
 
-| Aspect | Self-managed | Self-hosted |
+| Aspect | Self-Managed | Self-Hosted |
 | --- | --- | --- |
 | Control plane operator | {{< key product_name >}} | You |
 | Control plane location | {{< key product_name >}}-managed infrastructure | Your Kubernetes cluster(s) |

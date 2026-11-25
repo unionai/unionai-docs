@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Infrastructure requirements
 
-A {{< key product_name >}} self-hosted deployment is built from standard cloud-provider primitives — one or more Kubernetes clusters, VPC(s), object storage, managed identity bindings, TLS-terminating ingress, a container image registry, and a managed PostgreSQL instance for the control plane. Nothing on this page is {{< key product_name >}}-specific infrastructure; it is your cloud account's standard infrastructure wired up to support {{< key product_name >}}'s control plane and data plane.
+A {{< key product_name >}} Self-Hosted deployment is built from standard cloud-provider primitives — one or more Kubernetes clusters, VPC(s), object storage, managed identity bindings, TLS-terminating ingress, a container image registry, and a managed PostgreSQL instance for the control plane. Nothing on this page is {{< key product_name >}}-specific infrastructure; it is your cloud account's standard infrastructure wired up to support {{< key product_name >}}'s control plane and data plane.
 
 The default and recommended topology is **separate-cluster** — the control plane and data plane run in different Kubernetes clusters, communicating over the control plane's external ingress. This isolates blast radius (a DP cluster outage doesn't affect CP availability), allows the two planes to evolve independently, and matches how multi-region and multi-environment deployments naturally lay out. **Intra-cluster** — both planes in the same cluster — is supported as a [special case](#intra-cluster-topology) (covered at the end of this page) for footprint-constrained deployments, lab environments, and the [Getting started](./getting-started) walkthrough.
 
@@ -14,9 +14,9 @@ For the installation walkthrough, see [Getting started](./getting-started).
 
 ## Sizing model
 
-Self-hosted has two distinct sizing regimes, driven by very different workload signals.
+Self-Hosted has two distinct sizing regimes, driven by very different workload signals.
 
-- **Self-hosted runs in single-tenant mode**: one organization per deployment.
+- **Self-Hosted runs in single-tenant mode**: one organization per deployment.
 - **Control plane is steady-state.** CP footprint scales with **active users** and **concurrent actions in flight** — not with task-pod volume on the data plane side. Once provisioned, CP changes only when those dimensions grow. CP sizing is a one-time exercise revisited annually or when growth dictates.
 - **Data plane is peak-driven.** DP footprint tracks the maximum concurrent execution load: actions running, nodes provisioned, pods per node, IPs consumed, NIC and disk throughput. DP sizing must accommodate workload bursts, and the constraints stack — every limit (vCPU quota, pod IP allocation, conntrack table, etcd object count, registry pull rate) bites independently as workload grows.
 
@@ -854,7 +854,7 @@ The exact configuration keys, defaults, and override paths live in the chart's `
 **Resolution**:
 
 - Raise the data plane executor's action limit to match expected concurrency. Higher gives more throughput at the cost of more queue-service Watch connections.
-- Cap the control plane's scheduled-run ceiling to keep workload bursts predictable. Self-hosted runs single-tenant; any "per-organization" naming in the chart config caps your single org.
+- Cap the control plane's scheduled-run ceiling to keep workload bursts predictable. Self-Hosted runs single-tenant; any "per-organization" naming in the chart config caps your single org.
 - Monitor queue-service health and tune it vertically (CPU/memory limits) if the queue service itself becomes the bottleneck — it is single-replica.
 
 ## Intra-cluster topology

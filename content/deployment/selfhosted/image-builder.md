@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Image builder
 
-The image builder lets {{< key product_name >}} automatically build container images for your tasks when you use the `flyte.Image` API. In self-hosted deployments, the controlplane Helm chart registers the required `build-image` task automatically as part of `helm install` / `helm upgrade` — operators don't need to run anything by hand for the common case.
+The image builder lets {{< key product_name >}} automatically build container images for your tasks when you use the `flyte.Image` API. In Self-Hosted deployments, the controlplane Helm chart registers the required `build-image` task automatically as part of `helm install` / `helm upgrade` — operators don't need to run anything by hand for the common case.
 
 > [!NOTE]
 > Chart-side auto-registration is available **as of helm-charts `2026.7.8`**. On older chart versions, operators must run `flyte deploy ... build_image_task.py` after each `helm upgrade` — see [Manual registration](#manual-registration).
@@ -22,7 +22,7 @@ The Job pins the task version to the chart's `appVersion`, so every `helm upgrad
 
 ## Prerequisites
 
-- A running self-hosted deployment with control plane and data plane healthy.
+- A running Self-Hosted deployment with control plane and data plane healthy.
 - Image builder enabled in your data plane Helm values (`imageBuilder.enabled: true`).
 - (Optional, only if changing defaults) The controlplane chart values described in [Configuration](#configuration) below.
 

@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Identity
 
-The {{< key product_name >}} identity service provides **user and application management** for self-hosted deployments. It powers the **User Management** page in the console, enabling administrators to view, invite, and manage users and service accounts.
+The {{< key product_name >}} identity service provides **user and application management** for Self-Hosted deployments. It powers the **User Management** page in the console, enabling administrators to view, invite, and manage users and service accounts.
 
 The identity service integrates with your identity provider to fetch user and application data. Without it, the User Management page displays a limited view based only on locally-cached authorization data.
 

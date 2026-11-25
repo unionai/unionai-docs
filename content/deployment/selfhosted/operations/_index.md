@@ -6,7 +6,7 @@ variants: -flyte +union
 
 # Operations
 
-Guides for operating a {{< key product_name >}} self-hosted deployment after initial setup.
+Guides for operating a {{< key product_name >}} Self-Hosted deployment after initial setup.
 
 {{< grid >}}
 

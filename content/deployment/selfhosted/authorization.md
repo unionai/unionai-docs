@@ -6,9 +6,9 @@ mermaid: true
 ---
 # Authorization
 
-{{< key product_name >}} self-hosted deployments support configurable authorization backends to control who can perform which actions on platform resources. The authorization mode determines how access control decisions are made for API requests from the console, CLI, and SDK.
+{{< key product_name >}} Self-Hosted deployments support configurable authorization backends to control who can perform which actions on platform resources. The authorization mode determines how access control decisions are made for API requests from the console, CLI, and SDK.
 
-Unlike other deployment models where {{< key product_name >}} manages RBAC for you, **self-hosted deployments let you choose the authorization model** that fits your organization's security requirements.
+Unlike other deployment models where {{< key product_name >}} manages RBAC for you, **Self-Hosted deployments let you choose the authorization model** that fits your organization's security requirements.
 
 ## Prerequisites
 

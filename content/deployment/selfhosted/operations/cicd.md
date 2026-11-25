@@ -6,9 +6,9 @@ variants: -flyte +union
 
 # CI/CD integration
 
-This guide covers how to authenticate `flyte deploy` from a CI/CD pipeline (GitHub Actions, Jenkins, GitLab CI, etc.) against a self-hosted {{< key product_name >}} deployment.
+This guide covers how to authenticate `flyte deploy` from a CI/CD pipeline (GitHub Actions, Jenkins, GitLab CI, etc.) against a Self-Hosted {{< key product_name >}} deployment.
 
-In serverless and BYOC deployments, `flyte create api-key` mints an API key automatically. Self-hosted deployments don't have access to the identity service that backs this command. Instead, you create a dedicated OAuth application in your identity provider and encode its credentials as an API key manually.
+In serverless and Union-Managed deployments, `flyte create api-key` mints an API key automatically. Self-Hosted deployments don't have access to the identity service that backs this command. Instead, you create a dedicated OAuth application in your identity provider and encode its credentials as an API key manually.
 
 For `flyte deploy` usage, flags, and workflow examples, see the [CI/CD deployments]({{< docs_home union v2 >}}/user-guide/project-patterns/cicd/) guide.
 
@@ -164,7 +164,7 @@ The `FLYTE_API_KEY` variable is automatically available to all jobs.
 
 ## Step 4: Configure `flyte deploy`
 
-Create a `config.yaml` in your repository pointing at your self-hosted deployment:
+Create a `config.yaml` in your repository pointing at your Self-Hosted deployment:
 
 ```yaml
 admin:

@@ -8,16 +8,16 @@ variants: -flyte +union
 
 ## Deployment models
 
-**Self-managed deployment**
+**Self-Managed deployment**
 : {{< key product_name >}} hosts the control plane. You manage the data plane in your own cloud account. Data plane provisioning is handled via `uctl selfserve`. See [Platform deployment](./_index).
 
-**Self-hosted deployment**
-: You host both the control plane and data plane in the same Kubernetes cluster. All communication stays within your infrastructure via Kubernetes internal networking. See [Self-hosted deployment](./selfhosted/_index).
+**Self-Hosted deployment**
+: You host both the control plane and data plane in the same Kubernetes cluster. All communication stays within your infrastructure via Kubernetes internal networking. See [Self-Hosted deployment](./selfhosted/_index).
 
 ## Architecture components
 
 **Control plane**
-: The orchestration layer that manages workflow execution state. Includes FlyteAdmin, scheduler, queue service, cache service, and supporting services. In self-managed deployments, the control plane is hosted by {{< key product_name >}}. In self-hosted deployments, you deploy it in a namespace you choose — the install guides use the `<controlplane-namespace>` placeholder (typically `union-cp`).
+: The orchestration layer that manages workflow execution state. Includes FlyteAdmin, scheduler, queue service, cache service, and supporting services. In Self-Managed deployments, the control plane is hosted by {{< key product_name >}}. In Self-Hosted deployments, you deploy it in a namespace you choose — the install guides use the `<controlplane-namespace>` placeholder (typically `union-cp`).
 
 **Data plane**
 : The execution layer where your code and data reside. Includes the operator, propeller, and worker pods that run your tasks. Deployed in a namespace you choose — the install guides use the `<dataplane-namespace>` placeholder (typically `union`).

@@ -6,16 +6,16 @@ variants: -flyte +union
 
 # Authentication
 
-{{< key product_name >}} self-hosted deployments use [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization.
+{{< key product_name >}} Self-Hosted deployments use [OpenID Connect (OIDC)](https://openid.net/specs/openid-connect-core-1_0.html) for user authentication and [OAuth 2.0](https://tools.ietf.org/html/rfc6749) for service-to-service authorization.
 
-Unlike serverless and BYOC deployments where {{< key product_name >}} manages authentication for you, **self-hosted deployments require you to create and manage OAuth applications in your own identity provider** (e.g. Okta, Microsoft Entra ID, Google Workspace, or any OIDC-compliant provider). {{< key product_name >}} does not provision or manage these applications — you are responsible for their lifecycle, credential rotation, and access policies.
+Unlike serverless and Union-Managed deployments where {{< key product_name >}} manages authentication for you, **Self-Hosted deployments require you to create and manage OAuth applications in your own identity provider** (e.g. Okta, Microsoft Entra ID, Google Workspace, or any OIDC-compliant provider). {{< key product_name >}} does not provision or manage these applications — you are responsible for their lifecycle, credential rotation, and access policies.
 
 > [!NOTE]
-> This guide covers authentication for **self-hosted** deployments where you manage both the control plane and data plane. For **self-managed** deployments ({{< key product_name >}}-hosted control plane), authentication is handled automatically via `uctl selfserve provision-dataplane-resources` and `uctl create apikey`.
+> This guide covers authentication for **Self-Hosted** deployments where you manage both the control plane and data plane. For **Self-Managed** deployments ({{< key product_name >}}-hosted control plane), authentication is handled automatically via `uctl selfserve provision-dataplane-resources` and `uctl create apikey`.
 
 ## Overview
 
-Self-hosted authentication requires creating **five OAuth2 client applications** in your own identity provider (plus an optional sixth for CI/CD). Each application serves a different authentication flow:
+Self-Hosted authentication requires creating **five OAuth2 client applications** in your own identity provider (plus an optional sixth for CI/CD). Each application serves a different authentication flow:
 
 | # | Application | Type | Grant types | Purpose |
 |---|-------------|------|-------------|---------|
@@ -694,9 +694,9 @@ kubectl logs -n <dataplane-namespace> -l app.kubernetes.io/name=operator --tail=
 > [!NOTE]
 > `union-secret-auth` and the EAGER secret are **per data plane** — each data plane holds its own copy in its own namespace, sourced from that data plane's Operator (App 4) and EAGER (App 5) clients. If instead you seed EAGER credentials via `apiKeyOverrides` (see the section above), those Secrets live in the control plane namespace.
 
-## Self-hosted vs. self-managed authentication
+## Self-Hosted vs. Self-Managed authentication
 
-| Aspect | Self-hosted | Self-managed |
+| Aspect | Self-Hosted | Self-Managed |
 |--------|------------|--------------|
 | OAuth app creation | Manual — create all 5 apps | Automatic — `uctl selfserve provision-dataplane-resources` creates apps 1-3 |
 | EAGER_API_KEY | Manual — encode and create secret | Automatic — `uctl create apikey` generates and provisions |
