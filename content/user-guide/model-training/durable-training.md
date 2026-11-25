@@ -12,7 +12,8 @@ The longer a training job runs, the more likely something under it fails: a spot
 
 | Failure | What to use | What happens |
 |---|---|---|
-| The task's pod dies or is preempted | `retries` with `flyte.Checkpoint` | The next attempt loads the last checkpoint and continues from there |
+| The task's pod is preempted or its node shuts down | `flyte.Checkpoint` | The platform reschedules the task without using its `retries`, and the next attempt loads the last checkpoint |
+| The task's code fails | `retries` with `flyte.Checkpoint` | The next attempt loads the last checkpoint and continues from there |
 | A node in a multi-node job fails, or the job is preempted after it starts | `ClusterFailurePolicy` | The whole group restarts in place and resumes from the checkpoint |
 | The container runs out of memory | `flyte.errors.OOMError` with `override` | The driver retries the task with more memory |
 | The GPU type you asked for isn't available | `max_queued_time` with `override` | The driver moves on to the next GPU type |
@@ -28,7 +29,7 @@ Save the optimizer state and the step or epoch along with the weights, so the re
 
 ## Use spot capacity
 
-Spot and preemptible GPUs cost a fraction of on-demand ones. With checkpoints in place, a preemption costs only the work since the last save. Set `interruptible=True` and give the task retries:
+Spot and preemptible GPUs cost a fraction of on-demand ones. With checkpoints in place, a preemption costs only the work since the last save. Set `interruptible=True`. The platform reschedules a preempted task on its own retry budget, so set `retries` only for failures in your own code:
 
 ```python
 import flyte
@@ -40,7 +41,7 @@ train_env = flyte.TaskEnvironment(
 )
 
 
-@train_env.task(retries=5)
+@train_env.task(retries=2)  # for failures in the training code; preemptions don't use these
 async def train(epochs: int) -> flyte.io.Dir: ...
 ```
 
