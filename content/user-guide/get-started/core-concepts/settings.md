@@ -20,7 +20,7 @@ Settings are stored at three scope levels:
 |-------|---------------|---------------|
 | **Org** | Org admins | - |
 | **Domain** | Org admins | Org |
-| **Project** | Project owners, org admins | Domain, then org |
+| **Project** | Org admins, and users with `administer_project` on the project | Domain, then org |
 
 When a setting has no value at the current scope, the next broader scope is consulted automatically.
 
@@ -84,7 +84,9 @@ When you save and close the editor, the CLI prints a summary of your changes and
 
 ```
 Changes to apply:
+Added overrides:
   + run.default_queue: fast-queue
+Modified overrides:
   ~ task_resource.min.cpu: 500m → 2
 
 Apply these changes? [Y/n]:
@@ -198,6 +200,7 @@ Settings operations require the following actions, scoped to the org, domain, or
 | Operation | Required action |
 |-----------|----------------|
 | View settings (open the editor) | `view_flyte_inventory` |
-| Create or update settings | `register_flyte_inventory` |
+| Create or update org or domain settings | `administer_account` |
+| Create or update project settings | `administer_project` |
 
-The **Contributor** built-in role includes both actions. The **Viewer** role includes `view_flyte_inventory` only. See [User management](../../user-management) for details on roles and how to assign them.
+The **Admin** built-in role includes all of these actions. The **Contributor** and **Viewer** roles include `view_flyte_inventory` but neither administer action, so they can view settings but can't change them. See [User management](../../user-management) for details on roles and how to assign them.
