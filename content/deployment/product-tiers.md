@@ -102,6 +102,7 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
+| [Cost Insights](../user-guide/costs) (preview): estimated cost by project, task, and run | – | ✓ |
 | Custom cloud configuration | – | ✓ |
 | Custom RBAC and namespace topology | – | ✓ |
 
