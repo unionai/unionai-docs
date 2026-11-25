@@ -14,7 +14,7 @@ No PHI ever transits Union.ai's control plane. Bulk PHI (files, DataFrames), str
 
 To request a Business Associate Agreement (BAA), submit the request through Union.ai's [Trust Center](https://app.vanta.com/c/union/trust-center).
 
-All data is encrypted at rest and in transit. RBAC policies restrict access to authorized users. All API requests are authenticated and logged with identity, operation, and timestamp. These guarantees apply equally to self-managed and BYOC deployments.
+All data is encrypted at rest and in transit. RBAC policies restrict access to authorized users. All API requests are authenticated and logged with identity, operation, and timestamp. These guarantees apply equally to Self-Managed and Union-Managed deployments.
 
 ## Verification
 

@@ -16,7 +16,7 @@ variants: -flyte +union
 This page walks you through the Azure infrastructure required before deploying the Union dataplane on AKS. If you already have these resources, skip to [Deploy the dataplane](../deploy/_index).
 
 > [!NOTE]
-> **Deployment model**: This guide covers **Self-managed**: you run only the dataplane chart; Union hosts the control plane.
+> **Deployment model**: This guide covers **Self-Managed**: you run only the dataplane chart; Union hosts the control plane.
 
 ## Prerequisites
 

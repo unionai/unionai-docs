@@ -19,7 +19,7 @@ A cluster's **node groups** are the node shapes it can schedule onto: for each
 group, the instance types, the node count range, the allocatable CPU and memory
 of one node, the pod slots per node, accelerators, architecture, capacity
 types, weight, limits, labels, and taints. Use `flyte get node-groups` to see
-what a [cluster](./clusters) declares. On a self-managed cluster, use
+what a [cluster](./clusters) declares. On a Self-Managed cluster, use
 `flyte update node-groups` to change it (see [Who can write node groups](#who-can-write-node-groups)).
 
 ## Inspect node groups
@@ -133,7 +133,7 @@ the file always replaces whatever is stored.
 ### Who can write node groups
 
 The control plane decides whether you may write a cluster's node groups. Node
-groups of a cluster that {{< key product_name >}} provisions (BYOC) are managed
+groups of a cluster that {{< key product_name >}} provisions (Union-Managed) are managed
 by provisioning, so a write to one is refused, and the CLI shows the control
 plane's error. A cluster with no recorded type is refused the same way. On a
 cluster you manage, you need permission to manage that cluster.

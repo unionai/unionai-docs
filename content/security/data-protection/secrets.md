@@ -14,10 +14,10 @@ Union.ai's secrets management system stores secret values exclusively within the
 
 | Backend | Storage Location | Default |
 |---|---|---|
-| Kubernetes Secrets | Kubernetes etcd on customer cluster | Self-managed default |
-| AWS Secrets Manager | AWS-managed service | BYOC default (AWS) |
-| GCP Secret Manager | GCP-managed service | BYOC default (GCP) |
-| Azure Key Vault | Azure-managed service | BYOC default (Azure) |
+| Kubernetes Secrets | Kubernetes etcd on customer cluster | Self-Managed default |
+| AWS Secrets Manager | AWS-managed service | Union-Managed default (AWS) |
+| GCP Secret Manager | GCP-managed service | Union-Managed default (GCP) |
+| Azure Key Vault | Azure-managed service | Union-Managed default (Azure) |
 
 All four backends are available regardless of deployment model. The choice of backend is a deployment configuration on the data plane operator. Each backend integrates with its cloud provider's native encryption and access control mechanisms.
 

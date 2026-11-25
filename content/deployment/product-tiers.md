@@ -2,14 +2,14 @@
 title: Product tiers
 description: Compare the Team and Enterprise plans for Union.ai, including pricing model, deployment options, limits, security, networking, and support.
 icon: list-columns
-weight: 1
+weight: 6
 variants: -flyte +union
 ---
 
 # Product tiers
 
 Union.ai has two plans, **Team** and **Enterprise**. Every self-service sign-up starts on Team.
-To see your plan and what you've used against its limits, go to **Settings → Plan & usage**.
+To see your plan, go to **Settings → Plan & Invoices**.
 
 A feature is either in a plan or it isn't. There are no add-ons.
 For rates per action, vCPU, memory, and GPU, see [Union.ai pricing](https://www.union.ai/pricing).
@@ -38,8 +38,9 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
-| [Self-managed](./selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
-| [Union-managed (BYOC)](./byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
+| [Self-Managed](./selfmanaged/_index): Union.ai runs the control plane, you run the data plane | ✓ | ✓ |
+| [Union-Managed (formerly BYOC)](./byoc/_index): Union.ai runs the data plane in your cloud account | $500 per cluster per month | $500 per cluster per month, capped at $2,500 |
+| [Self-Hosted Base](./selfhosted-base/_index): you run the whole platform in your own Kubernetes cluster, with a license key | 30-day trial key | By contract |
 | Clouds | All regions, neoclouds, and hyperscalers | Any cloud |
 | Marketplace commit drawdown | – | ✓ |
 
@@ -114,12 +115,12 @@ In the tables below, ✓ means included and – means not included.
 
 ## Your first month
 
-A new organization starts on Team with the $950 minimum waived.
-If Union.ai runs your clusters, the $500 fee on your first cluster is also waived that month.
-You don't need a payment method until the credit is used up or the month ends.
+A new organization starts with a 30-day Team trial: the $950 minimum is waived, and if Union.ai runs your clusters, so is the $500 fee per cluster.
+You don't need a payment method during the trial.
+See [Team trial](./sign-up/team-trial) for what's left, how to stay on Team, and what happens when the trial ends.
 
 ## Move to Enterprise
 
 Talk to Union.ai when you scale past one team or past two clusters.
 Also get in touch when security or procurement needs a private endpoint, CMEK, custom RBAC, retention beyond 30 days, or 24×7 support.
-Select **Talk to us** in **Settings → Plan & usage**, or [contact sales](https://www.union.ai/get-a-quote).
+If your organization started on a Team trial, select **Talk to us** in **Settings → Plan & Invoices**, or [contact sales](https://www.union.ai/get-a-quote).

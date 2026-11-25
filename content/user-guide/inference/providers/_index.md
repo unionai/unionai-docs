@@ -22,7 +22,7 @@ Tasks and apps can call a hosted model API using a key from your own provider ac
 {{< variant union >}}
 {{< markdown >}}
 
-This works on both BYOC and Self-managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [Inference Gateway](#choose-direct-calls-or-the-gateway).
+This works on both Union-Managed and Self-Managed deployments. To add budgets, fallbacks, and guardrails, route the same calls through the [Inference Gateway](#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
