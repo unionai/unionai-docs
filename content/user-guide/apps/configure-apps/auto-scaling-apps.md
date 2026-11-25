@@ -45,16 +45,7 @@ This configuration:
 
 For apps that need to always be running:
 
-```python
-# Always-on app
-app_env2 = flyte.app.AppEnvironment(
-    name="always-on-api",
-    scaling=flyte.app.Scaling(
-        replicas=(1, 1),  # Always keep 1 replica running
-    ),
-    # ...
-)
-```
+{{< code file="/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=always-on lang=python >}}
 
 #### Scale-to-zero app
 
