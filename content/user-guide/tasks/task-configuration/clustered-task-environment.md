@@ -135,7 +135,7 @@ cluster-specific fields. For full type signatures and defaults, see `flyte.clust
 |-----------|-------------|
 | **`replicas`** | Number of pods (nodes) in the JobSet. Required, must be `>= 1`. |
 | **`nproc_per_node`** | Worker processes per pod. With `TorchRun`, passed to `torchrun --nproc-per-node`; with `JaxRun`, must be `1`. Required, must be `>= 1`. When you request GPUs, it must be `<=` the GPU count per pod (typically one process per GPU). |
-| **`runtime`** | Launcher configuration: a `flyte.clustered.TorchRun` instance (the default). The SDK also accepts a `flyte.clustered.JaxRun` instance, which runs one process per pod; `JaxRun` has not yet been confirmed end to end on a cluster. |
+| **`runtime`** | Launcher configuration: a `flyte.clustered.TorchRun` instance (the default) or a `flyte.clustered.JaxRun` instance, which runs one process per pod. |
 | **`interconnect`** | Network fabric between pods. Currently only `"tcp"` is supported. |
 | **`failure_policy`** | JobSet-level restart policy — a `flyte.clustered.ClusterFailurePolicy` (see below). |
 | **`ttl_seconds_after_finished`** | Optional seconds to retain the JobSet after it completes, for inspecting pods. Defaults to the backend's behavior. |
@@ -210,5 +210,5 @@ context:
   must be `<=` the number of GPUs per pod.
 - **`TorchRun` or `JaxRun` runtime.** The SDK accepts a `runtime` that is a `flyte.clustered.TorchRun`
   or a `flyte.clustered.JaxRun`; any other type raises a `TypeError`. With `JaxRun`, `nproc_per_node`
-  must be `1`. `JaxRun` has not yet been confirmed end to end on a cluster.
+  must be `1`.
 - **TCP interconnect only.** `interconnect` currently supports only `"tcp"`.
