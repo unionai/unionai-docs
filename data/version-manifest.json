@@ -1,10 +1,11 @@
 {
-  "docs_version": "2.15.0.1",
-  "tag": "v2.15.0.1",
-  "z": 1,
+  "docs_version": "2.15.0.2",
+  "tag": "v2.15.0.2",
+  "z": 2,
   "cut_kind": "manual",
   "existing_z": [
-    0
+    0,
+    1
   ],
   "sdk": "2.15.0",
   "sdk_on_pypi": "true",
@@ -13,15 +14,15 @@
     "union": {
       "flyte-sdk": "2.15.0",
       "flyteplugins-union": "0.26.2",
-      "examples": "35fdc2028f00ad2043ecbc326a3d66f335beff0a",
-      "content": "30e8886ece89eb01b4957fc3602b980b2dd26973",
+      "examples": "d5b3daab0a6c2248d142d2c10d53af68e7da0f6a",
+      "content": "1f3171e84b1adfa802514449b703295720f18013",
       "infra": "c676774c29e2609284613765a98efe50bbb9f40a"
     },
     "flyte": {
       "flyte-sdk": "2.15.0",
       "backend": "v2.0.57",
-      "examples": "35fdc2028f00ad2043ecbc326a3d66f335beff0a",
-      "content": "30e8886ece89eb01b4957fc3602b980b2dd26973",
+      "examples": "d5b3daab0a6c2248d142d2c10d53af68e7da0f6a",
+      "content": "1f3171e84b1adfa802514449b703295720f18013",
       "infra": "c676774c29e2609284613765a98efe50bbb9f40a"
     }
   }
