@@ -113,11 +113,19 @@ Use `flyte get cluster-pool` to list the pool names available in your organizati
 
 To make the same org-wide secret available to workloads in every pool, create it once per pool.
 
+In the SDK, a secret request scoped to a cluster pool fails with a `ValueError` if a project or domain is set.
+`flyte.init_from_config()` takes the project and domain from your config file, so clear them before you initialize:
+
 ```python
+import dataclasses
+
 import flyte
+import flyte.config
 import flyte.remote
 
-flyte.init_from_config()
+config = flyte.config.auto()
+config = dataclasses.replace(config, task=dataclasses.replace(config.task, project=None, domain=None))
+flyte.init_from_config(config)
 
 flyte.remote.Secret.create(name="MY_SECRET_KEY", value="my_secret_value", cluster_pool="prod")
 
