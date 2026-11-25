@@ -84,7 +84,7 @@ See [Container images](../../tasks/task-configuration/container-images) for more
 
 ## Resources
 
-A single `flyte.Resources` value replaces Flyte 1's separate `requests` and `limits`. For `cpu` and `memory`, a `(request, limit)` tuple such as `memory=("1Gi", "4Gi")` sets the request and the limit separately. A single value sets the request, and the platform fills in the limit, often with the same value. Several parameters were renamed.
+A single `flyte.Resources` value replaces Flyte 1's separate `requests` and `limits`. For `cpu` and `memory`, a `(request, limit)` tuple such as `memory=("1Gi", "4Gi")` sets the request and the limit separately. A single value sets the request, and the limit defaults to the same value. Several parameters were renamed.
 
 | Flyte 1 | Flyte 2 | Notes |
 |---|---|---|
