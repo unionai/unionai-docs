@@ -84,7 +84,7 @@ Flyte runs the script exactly as written: no injected preamble, no automatic out
 
 Your script must:
 
-- Read inputs from `/var/inputs/<name>` (files are bind-mounted at these paths)
+- Read inputs from `/var/inputs/<name>` or from `--<name>` command-line arguments (see [How types are handled](#how-types-are-handled))
 - Write outputs to `/var/outputs/<name>`
 
 ```python{hl_lines=["4-9", 12, 17]}
@@ -136,7 +136,7 @@ count = await linecount_sandbox.run.aio(data_file=data_file)
 Command mode is useful for running test suites, compiled binaries, shell pipelines, or any non-Python workload.
 
 Use `arguments` to pass positional arguments to the command.
-File inputs are bind-mounted at `/var/inputs/<name>` and can be referenced in the arguments list:
+`File` and `Dir` inputs are bind-mounted at `/var/inputs/<name>` and can be referenced in the arguments list:
 
 ```python{hl_lines=[4, 5]}
 sandbox = flyte.sandbox.create(
@@ -173,7 +173,8 @@ Both forms build the container image (if not already built), start the container
 If the sandbox code fails (non-zero exit code, Python exception, or timeout), `.run()` raises an exception with the error details.
 If `retries` is set, Flyte automatically retries the execution before surfacing the error.
 
-If the image build fails due to an invalid package, an `InvalidPackageError` is raised with the package name and the underlying error message.
+If the image build fails, `.run()` raises `flyte.errors.ImageBuildError`.
+To find the cause, such as a package that apt or pip can't install, check the build output: the terminal for a local build, or the build run's page for a remote build.
 
 ## Supported types
 
@@ -183,25 +184,27 @@ Inputs and outputs must use one of the following types:
 | ---------------- | ----------------------------------------- |
 | **Primitive**    | `int`, `float`, `str`, `bool`             |
 | **Date/time**    | `datetime.datetime`, `datetime.timedelta` |
-| **File handles** | `flyte.io.File`                           |
+| **File handles** | `flyte.io.File`, `flyte.io.Dir`           |
 
 ### How types are handled
 
 **In auto-IO mode:**
 
 - **Primitive and date/time inputs** are injected as local variables with the correct Python type. Flyte generates an `argparse` preamble behind the scenes. Your code just uses the variable names directly.
-- **`File` inputs** are bind-mounted into the container. The input variable contains the file path as a string (e.g., `"/var/inputs/payload"`), so you can read it with `pathlib.Path(payload).read_text()`.
+- **`File` and `Dir` inputs** are bind-mounted into the container. The input variable contains the path as a string (e.g., `"/var/inputs/payload"`), so you can read a file with `pathlib.Path(payload).read_text()`.
 - **Primitive and date/time outputs** are written to `/var/outputs/<name>` automatically. Just assign the value to a variable matching the declared output name.
-- **`File` outputs** are the exception: your code must write the file to `/var/outputs/<name>` manually.
+- **`File` and `Dir` outputs** are the exception: your code must write them to `/var/outputs/<name>` manually.
 
 **In verbatim mode:**
 
-- All inputs (including primitives) are available at `/var/inputs/<name>`. Your script reads them directly from the filesystem.
+- `File` and `Dir` inputs are available at `/var/inputs/<name>`.
+- Primitive and date/time inputs are written to `/var/inputs/<name>` when the sandbox runs on the cluster, but not when `.run()` executes locally.
+- Every input is also passed to the script as a `--<name> <value>` command-line argument.
 - All outputs must be written to `/var/outputs/<name>` by your script.
 
 **In command mode:**
 
-- `File` inputs are bind-mounted at `/var/inputs/<name>`.
+- `File` and `Dir` inputs are bind-mounted at `/var/inputs/<name>`.
 - All outputs must be written to `/var/outputs/<name>` by your command.
 
 ## Configuring the container image
@@ -236,7 +239,7 @@ sandbox = flyte.sandbox.create(
 ```
 
 > [!NOTE]
-> `gcc`, `g++`, and `make` are included automatically in every sandbox image.
+> When Flyte builds the sandbox image, it adds `gcc`, `g++`, and `make` to `system_packages`, unless the list already includes `gcc`.
 
 ### Additional Dockerfile commands
 
