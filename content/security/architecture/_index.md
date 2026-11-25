@@ -22,10 +22,10 @@ stored there.
 
 All communication runs outbound-only over direct gRPC. Customer-data requests reach the data plane
 through the Direct-to-Data-Plane tunnel and terminate at an Envoy router inside the customer's
-cluster, so there is no inbound attack surface and no perimeter firewall rules are required. Two
-options change that path: the Enterprise-tier **Sovereign Data Plane** replaces the tunnel with a
-customer-managed load balancer inside the customer's VPC, reachable only from the corporate network;
-and in **Union-Managed**, Union.ai manages the cluster over PrivateLink, Private Service Connect, or Azure
-Private Link, so the Kubernetes API is never exposed to the public internet.
+cluster, so there is no inbound attack surface and no perimeter firewall rules are required. One
+option changes that path: the Enterprise-tier **Sovereign Data Plane** replaces the tunnel with a
+customer-managed load balancer inside the customer's VPC, reachable only from the corporate network.
+In **Union-Managed**, Union.ai also manages the cluster through its Kubernetes API, separately from
+this path. See [Private connectivity](./private-connectivity).
 
 {{< subpage-cards >}}
