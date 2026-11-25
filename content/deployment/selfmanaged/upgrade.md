@@ -1,6 +1,6 @@
 ---
 title: Upgrade the data plane
-description: Keep a self-managed data plane current, including the chart, its CRDs, and your values file.
+description: Keep a Self-Managed data plane current, including the chart, its CRDs, and your values file.
 icon: arrow-up-circle
 weight: 8
 variants: -flyte +union
@@ -18,7 +18,7 @@ current, the supported way to do it, and how to automate it.
 
 ## What you maintain
 
-A self-managed data plane has three pieces that move together:
+A Self-Managed data plane has three pieces that move together:
 
 | Piece | What it is | How it is updated |
 |---|---|---|

@@ -12,7 +12,7 @@ Interruptible tasks are allowed to run on spot (also called preemptible) instanc
 providers offer at a lower price but can be reclaimed at any time. A task left non-interruptible should
 stay on on-demand instances so that it is not evicted while it runs.
 
-On a self-managed cluster, Union has no way to tell which of your nodes are spot and which are
+On a Self-Managed cluster, Union has no way to tell which of your nodes are spot and which are
 on-demand unless you configure it. If you skip this configuration, the `interruptible` setting has no
 effect on placement. Both kinds of task can land on either kind of node, and a non-interruptible task
 may be evicted when a spot node is reclaimed.
