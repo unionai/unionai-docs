@@ -51,7 +51,7 @@ FastAPI is a modern, fast web framework for building APIs. Here's a minimal sing
 
 **Key points**
 
-- **FastAPIAppEnvironment**: Automatically configures uvicorn and FastAPI
+- **`FastAPIAppEnvironment`**: Automatically configures uvicorn and FastAPI
 - **Type hints**: FastAPI uses Python type hints for automatic validation
 - **Auto docs**: Interactive API documentation at `/docs` endpoint
 - **Async support**: Built-in support for async/await patterns

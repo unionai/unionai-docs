@@ -1,6 +1,6 @@
 ---
 title: FastAPI app
-description: Deploy a FastAPI application with FastAPIAppEnvironment.
+description: Deploy a FastAPI application with `FastAPIAppEnvironment`.
 icon: lightning-charge
 weight: 9
 variants: +flyte +union
