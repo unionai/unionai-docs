@@ -169,7 +169,7 @@ When a task input is a DataFrame (`pandas`, `polars`, or `flyte.io.DataFrame`), 
 To cache on **content** instead, attach a hash of the data at the point where it is produced. Flyte then uses that content hash when computing the cache key of any downstream consuming task, so identical content produces a cache hit regardless of where it is stored.
 
 > [!NOTE]
-> Content-based hashing applies only on-cluster. In-process runs still cache across runs, but key these types on their location, so identical content at a new path is a cache miss. See [Local development caching](#local-development-caching).
+> In-process runs also use content hashes for DataFrames and for a `Dir` with a `dir_cache_key`. A `File` given a `HashFunction` through `hash_method` is keyed on its location when the run's raw-data path is local, the default for in-process runs, so identical content at a new path is a cache miss. See [Local development caching](#local-development-caching).
 
 ### DataFrames
 
@@ -187,7 +187,7 @@ For `flyte.io.DataFrame`, pass the `HashFunction` to `DataFrame.from_local` via 
 
 ### Files
 
-A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new_remote`). Pass a `HashFunction` that hashes the file's bytes, and the file is cached on its content rather than its remote path:
+A `flyte.io.File` accepts a `hash_method` on `File.from_local` (and on `File.new_remote`). Pass a `HashFunction` that hashes the file's bytes, and the file is cached on its content rather than its remote path, except in an in-process run with a local raw-data path, where the file isn't hashed (see the note above):
 
 {{< code file="/unionai-examples/v2/user-guide/task-configuration/caching/content_caching.py" fragment="file" lang="python" >}}
 

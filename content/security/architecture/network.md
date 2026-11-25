@@ -24,7 +24,7 @@ The client-to-data-plane path is direct: client → tunnel (or internal load bal
 
 ## Direct-to-Data-Plane tunnel
 
-The Direct-to-Data-Plane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries only client-to-data-plane traffic; the data-plane-to-control-plane channel is the separate direct gRPC connection described below. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity and enforces RBAC before forwarding to the data-plane `dataproxy` service. The Union.ai control plane is not on this path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
+The Direct-to-Data-Plane tunnel is an outbound-only encrypted Cloudflare Tunnel from the customer's cluster to the Cloudflare edge network. It is initiated by a `cloudflared` daemon in the data plane and carries only client-to-data-plane traffic; the data-plane-to-control-plane channel is the separate direct gRPC connection described below. The tunnel **terminates inside the customer's cluster** at an Envoy router that authenticates each request against Union identity before forwarding to the data-plane `dataproxy` service, which enforces RBAC by asking the control plane's authorizer for each decision. That check carries the caller's identity and the requested action, not customer data, so the Union.ai control plane is not on this data path. For background on the underlying connector, see Cloudflare's [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) documentation.
 
 Under the default tier, all traffic through the tunnel is encrypted using a layered transport: TLS 1.3 from the client to the Cloudflare edge, mTLS plus Cloudflare Tunnel encryption from the edge to the data plane, and Cloudflare Access service tokens for application-layer authentication. Tunnel tokens are rotated automatically: the data plane operator periodically polls Union.ai and picks up updated tokens when issued.
 
@@ -53,9 +53,9 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
-| Union.ai to Customer Kubernetes API (BYOC only) | PrivateLink / PSC | TLS (private connectivity) |
+| Union.ai to Customer Kubernetes API (Union-Managed only) | PrivateLink / PSC | TLS (private connectivity) |
 
-For details on the BYOC private management connection, see [Private connectivity (BYOC)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
+For details on the Union-Managed private management connection, see [Private connectivity (Union-Managed)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
 
 ## Egress requirements
 
@@ -63,7 +63,7 @@ Because every connection is [outbound-only](#outbound-only-model), configuring n
 
 | Source (data plane) | Destination | Port / protocol | Purpose |
 |---|---|---|---|
-| Data plane operator (all components) | Union.ai control plane, at your tenant endpoint (`<tenant>.hosted.unionai.cloud`) | TCP 443 (TLS) | Outbound gRPC-over-TLS orchestration RPCs: cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs, and metrics. This is the same tenant DNS the UI and CLI use, and every data plane component authenticates to the control plane over it. See [Data plane](./data-plane) for the components that use this channel. |
+| Data plane operator (all components) | Union.ai control plane, at your tenant endpoint (`<tenant>.hosted.unionai.cloud`) | TCP 443 (TLS) | Outbound gRPC-over-TLS orchestration RPCs: cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs, RBAC authorization checks from `dataproxy`, and metrics. This is the same tenant DNS the UI and CLI use, and every data plane component authenticates to the control plane over it. See [Data plane](./data-plane) for the components that use this channel. |
 | `cloudflared` (Tunnel Service) | Cloudflare edge network | TCP 7844 | Establishes the outbound [Direct-to-Data-Plane tunnel](#direct-to-data-plane-tunnel) (default tier only). See Cloudflare's [firewall configuration guidance](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/) for the exact ports and hostnames the `cloudflared` daemon needs. |
 
 Both destinations are reached over the customer's existing outbound path (typically a NAT gateway). No inbound rules are required on the customer's external perimeter.

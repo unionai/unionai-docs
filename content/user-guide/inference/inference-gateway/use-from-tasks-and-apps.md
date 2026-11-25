@@ -16,7 +16,7 @@ Tasks and apps on any of your Union clusters call the gateway like any OpenAI-co
 - A [virtual key](./virtual-keys) for the task or app, stored as a Union secret:
 
   ```bash
-  flyte create secret llm-gateway-key sk-un-...
+  flyte create secret llm-gateway-key --value sk-un-...
   ```
 
 ## Call the gateway from a task

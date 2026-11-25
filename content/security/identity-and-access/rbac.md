@@ -26,7 +26,7 @@ Roles (built-in or custom) define sets of permitted **actions**; custom **polici
 
 ## Enforcement
 
-Every request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at two points: the control plane API gates orchestration metadata operations (run lifecycle, task definitions, RBAC management, project/domain queries), and the Envoy router inside the customer's cluster gates every customer-data request to the `dataproxy` service (signed URLs, structured I/O retrieval, log fetching, auxiliary UI proxying, secret writes). Both enforcement points evaluate the same Union.ai identity against the same RBAC policy.
+Every request is authenticated and authorized against the user's role assignments before any data access occurs. Enforcement happens at two points: the control plane API gates orchestration metadata operations (run lifecycle, task definitions, RBAC management, project/domain queries), and the data plane's `dataproxy` service gates every customer-data request (signed URLs, structured I/O retrieval, log fetching, auxiliary UI proxying, secret writes) after the Envoy router inside the customer's cluster has authenticated it. For each decision, `dataproxy` asks the control plane's authorizer, sending the caller's identity and the requested action, not customer data. Both enforcement points evaluate the same Union.ai identity against the same RBAC policy.
 
 ## Least privilege
 

@@ -24,7 +24,7 @@ Enterprise customers can further restrict the client-to-data-plane path with the
 No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
 **[Data protection](./data-protection/_index)**
-No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret writes, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel, with authentication and RBAC enforced by an Envoy router inside the customer's cluster.
+No customer data ever transits Union.ai's control plane. Workflow inputs and outputs, code bundles, secret writes, logs, reports, and auxiliary UI traffic are served directly from the customer's data plane through the Direct-to-Data-Plane tunnel. An Envoy router inside the customer's cluster authenticates each request. The data plane's `dataproxy` service then enforces RBAC by asking the control plane's authorizer, which receives the caller's identity and the requested action, not customer data.
 The control plane holds orchestration metadata only (run IDs, schedules, phase transitions, task definitions, error messages, and the RBAC graph), always encrypted at rest.
 
 **[Identity and access](./identity-and-access/_index)**
@@ -44,10 +44,10 @@ This includes organizational security practices, vulnerability management, and a
 
 Union.ai offers two deployment models, both sharing the same control plane / data plane architecture and security controls described in this section.
 
-In **BYOC** deployments, Union.ai manages the data plane in the customer's cloud account via private connectivity (PrivateLink/PSC).
+In **Union-Managed** deployments (formerly BYOC), Union.ai builds and manages the data plane in the customer's cloud account. See [Private connectivity](./architecture/private-connectivity) for how Union.ai reaches the cluster.
 Union.ai handles upgrades, monitoring, and provisioning, while maintaining strict separation from customer data, secrets, and logs.
 
-In **Self-managed** deployments, the customer operates their data plane independently.
+In **Self-Managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
 Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
 

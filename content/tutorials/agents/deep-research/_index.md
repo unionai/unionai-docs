@@ -25,14 +25,14 @@ The agent executes a multi-step trajectory:
 - Parallel search across multiple queries.
 - Evaluation of retrieved results.
 - Adaptive iteration: If results are insufficient, it formulates new research queries and repeats the search-evaluate cycle.
-- Synthesis: After a fixed number of iterations, it produces a comprehensive research report.
+- Synthesis: When evaluation finds no more queries to run, or after at most `budget` iterations, it produces a comprehensive research report.
 
 What makes this workflow compelling is its dynamic, evolving nature. The agent isn't just following a fixed plan; it's making decisions in context, using multiple prompts and reasoning steps to steer the process.
 
 Flyte is uniquely well-suited for this kind of system. It provides:
 
 - Structured composition of dynamic reasoning steps
-- Built-in parallelism for faster search and evaluation
+- Built-in parallelism for faster search and summarization
 - Traceability and observability into each step and iteration
 - Scalability for long-running or compute-intensive workloads
 
@@ -56,7 +56,7 @@ The Python packages are declared at the top of the file using the `uv` script st
 # /// script
 # requires-python = "==3.13"
 # dependencies = [
-#    "flyte>=2.0.0b6",
+#    "flyte>=2.0.0b52",
 #    "pydantic==2.11.5",
 #    "litellm==1.72.2",
 #    "tavily-python==0.7.5",
@@ -64,6 +64,8 @@ The Python packages are declared at the top of the file using the `uv` script st
 #    "markdown==3.8.2",
 #    "pymdown-extensions==10.16.1",
 # ]
+# main = "main"
+# params = ""
 # ///
 ```
 
@@ -82,7 +84,7 @@ LLM calls use LiteLLM, and each is wrapped with `flyte.trace` for observability:
 
 ## Search and summarize
 
-We submit each research query to Tavily and summarize the results using an LLM. We run all summarization tasks with `asyncio.gather`, which signals to Flyte that these tasks can be distributed across separate compute resources.
+We submit each research query to Tavily and summarize the results using an LLM. We run the summarization calls concurrently with `asyncio.gather`. They are plain coroutines, not tasks, so they run inside the `search_and_summarize` task's own container. Separate compute comes one level up. The `search_all_queries` task (not shown here) uses `asyncio.gather` to run one `search_and_summarize` task per query in parallel.
 
 {{< code file="/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=search_and_summarize lang=python >}}
 

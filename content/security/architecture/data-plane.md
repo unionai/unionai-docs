@@ -9,13 +9,13 @@ mermaid: true
 
 # Data plane
 
-The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the self-managed model, the customer operates the data plane independently. In the BYOC model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account.
+The data plane runs entirely within the customer's cloud account on a Kubernetes cluster. It is where all computation occurs and where customer data is stored at rest (see [Data classification and residency](../data-protection/classification-and-residency)). In the Self-Managed model, the customer operates the data plane independently. In the Union-Managed model, Union.ai manages the Kubernetes cluster on the customer's behalf, but it still runs in the customer's cloud account.
 
 ## Components
 
 The data plane consists of several components, each handling a specific aspect of task execution and data management.
 
-**Envoy router** is the AuthN/AuthZ enforcement point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-Data-Plane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity and evaluated against the RBAC policy *inside the customer's cluster* before forwarding to the `dataproxy` service. The Union.ai control plane is not on the path.
+**Envoy router** is the authentication point that fronts every customer-data request entering the cluster. Under the default tier, it sits at the egress of the Direct-to-Data-Plane tunnel; under the [Sovereign Data Plane](./sovereign-data-plane) tier, it sits behind the customer-managed internal load balancer. In either case, every request is authenticated against the requester's Union.ai identity before forwarding to the `dataproxy` service, which enforces RBAC by asking the control plane's authorizer for each decision. That check carries the caller's identity and the requested action, not customer data, so the Union.ai control plane is not on the data path.
 
 **Dataproxy service** is the single endpoint for every customer-data request. It handles:
 
@@ -31,7 +31,7 @@ The data plane consists of several components, each handling a specific aspect o
 
 **Tunnel Service** maintains the outbound-only encrypted Direct-to-Data-Plane tunnel (a Cloudflare Tunnel under the hood) from the data plane to the Cloudflare edge under the default tier. This service initiates the tunnel (no inbound ports required), performs health checks and heartbeats, and automatically reconnects if the connection drops. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the Tunnel Service is replaced by a customer-managed internal load balancer that fronts the Envoy router; the rest of the data plane components are identical.
 
-In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details, and [Egress requirements](./network#egress-requirements) for the specific outbound ports and endpoints.
+In addition to the client-to-data-plane path, the data plane operator establishes a separate outbound gRPC connection (TLS) to the regional control plane endpoint for orchestration RPCs (cluster registration, action lifecycle, event reporting, catalog and artifact lookups, admin RPCs, RBAC authorization checks from `dataproxy`). This channel is outbound-initiated under both tiers and carries no customer data. See [Network architecture](./network) for the channel details, and [Egress requirements](./network#egress-requirements) for the specific outbound ports and endpoints.
 
 **Metrics Reporter** ships operational metrics (resource utilization, GPU utilization, queue depth) from the data plane to the control plane on its own schedule. The push model means the control plane needs no network route into the data plane at all -- a prerequisite for the Sovereign Data Plane tier.
 
@@ -65,13 +65,15 @@ The SDK uploads code bundles via presigned URL, but task pods do not use presign
 
 ## IAM and workload identity
 
-The data plane uses two IAM roles to separate platform-level and user-level access:
+The data plane uses two cloud identities to separate platform-level and task-level access:
 
-**`adminflyterole`** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets, access to the secrets manager for retrieving user-defined secrets, and read access to persisted logs. This role is bound to platform service accounts via workload identity federation.
+**The backend identity** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets and creates, reads, and updates secrets in the data plane's secret store. It is bound to platform service accounts via workload identity federation.
 
-**`userflyterole`** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. It does not have access to the secrets manager or platform-level resources.
+**The worker identity** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs, and read access to secrets, which a task receives when it requests them. It has no other platform-level access.
 
-Both roles use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
+In a Union-Managed deployment, Union.ai creates them as `<prefix>-backend` and `<prefix>-worker`, where `<prefix>` is `union-<org>-<cluster>`, shortened to fit the cloud's name limits. In a Self-Managed deployment, they are the identities you create when you provision your cloud resources.
+
+Both identities use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 
 ## Apps & serving security
 
@@ -79,7 +81,7 @@ App and serving traffic flows entirely within the customer's infrastructure. No 
 
 Under the default tier, inbound traffic reaches the serving endpoints through Cloudflare, which provides DDoS protection, before routing to the Kourier ingress gateway running in the customer's cluster. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, serving endpoints sit behind the same customer-managed internal load balancer and are reachable only from the customer's corporate network. Authentication is enforced by default on all endpoints under either tier: browser-based access uses SSO, and programmatic access uses API keys. Individual endpoints can be configured for anonymous access when required (for example, public-facing model endpoints on the default tier).
 
-RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure (Knative, Kourier, and the Union Operator) runs within the customer's Kubernetes cluster. In the BYOC model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
+RBAC controls govern which users and service accounts can deploy applications and access specific endpoints, scoped per project. All serving infrastructure (Knative, Kourier, and the Union Operator) runs within the customer's Kubernetes cluster. In the Union-Managed model, Union.ai manages the lifecycle of this serving infrastructure (upgrades, scaling, configuration), but the infrastructure itself resides in the customer's account.
 
 ## Verification
 
@@ -165,23 +167,23 @@ RBAC controls govern which users and service accounts can deploy applications an
 
 ### IAM and workload identity
 
-**Reviewer focus:** Confirm that the two IAM roles exist with the documented permissions, that workload identity federation is in use, and that no static credentials are present.
+**Reviewer focus:** Confirm that the two identities exist with the documented permissions, that workload identity federation is in use, and that no static credentials are present.
 
 **How to verify:**
 
 1. Inspect the IAM roles and their policies:
 
    ```bash
-   aws iam get-role --role-name adminflyterole
-   aws iam list-role-policies --role-name adminflyterole
-   aws iam list-attached-role-policies --role-name adminflyterole
+   aws iam get-role --role-name <prefix>-backend
+   aws iam list-role-policies --role-name <prefix>-backend
+   aws iam list-attached-role-policies --role-name <prefix>-backend
 
-   aws iam get-role --role-name userflyterole
-   aws iam list-role-policies --role-name userflyterole
-   aws iam list-attached-role-policies --role-name userflyterole
+   aws iam get-role --role-name <prefix>-worker
+   aws iam list-role-policies --role-name <prefix>-worker
+   aws iam list-attached-role-policies --role-name <prefix>-worker
    ```
 
-   Confirm that `adminflyterole` has object store, secrets manager, and log access. Confirm that `userflyterole` has only object store access.
+   Replace `<prefix>` with the role name prefix described above. Confirm that the backend role has object store and Secrets Manager read/write access. Confirm that the worker role has object store access and read-only Secrets Manager access.
 
 2. Verify workload identity annotations on service accounts:
 

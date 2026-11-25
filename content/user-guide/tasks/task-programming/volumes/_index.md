@@ -121,7 +121,7 @@ env = flyte.TaskEnvironment(
 > `CAP_SYS_ADMIN`, no `/dev/fuse`, no `fuse3` package.
 >
 > It relies on a mount broker running on the cluster. The Union data plane ships
-> one; on a self-managed cluster an administrator
+> one; on a Self-Managed cluster an administrator
 > [enables it](../../../../deployment/selfmanaged/configuration/volumes).
 
 ### Volumes in apps
@@ -154,7 +154,7 @@ an app.
 
 The app's Knative Serving must allow inline CSI volumes and mount propagation
 (the `kubernetes.podspec-volumes-csi` and
-`kubernetes.podspec-volumes-mount-propagation` features). On a self-managed
+`kubernetes.podspec-volumes-mount-propagation` features). On a Self-Managed
 data plane, an administrator must confirm that both features are enabled in the
 Knative Serving configuration. A data plane that still serves apps through the
 `knative-operator` chart (Knative Serving 1.16) supports neither, so complete

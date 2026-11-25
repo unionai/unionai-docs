@@ -36,9 +36,15 @@ flyte create secret openai-api-key --project <your-project> --domain development
 
 {{< code file="/unionai-examples/v2/user-guide/inference/providers/call_openai.py" fragment="task" lang="python" >}}
 
+To retry rate limits, cache answers, and limit concurrency, see [Make provider calls reliable](./_index#make-provider-calls-reliable).
+
 ## Call OpenAI from an app
 
 An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).
+
+## Run OpenAI agents
+
+To run an agent built with the OpenAI Agents SDK, use `flyteplugins-agents-openai`. See [OpenAI Agents SDK](../../../integrations/agents/openai).
 
 {{< variant union >}}
 {{< markdown >}}

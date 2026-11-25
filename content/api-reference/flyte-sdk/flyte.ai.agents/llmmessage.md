@@ -2,7 +2,7 @@
 title: LLMMessage
 description: "Provider-agnostic shape returned by `flyte.ai.agents.LLMCallable`."
 icon: braces
-version: 2.13.1
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---
