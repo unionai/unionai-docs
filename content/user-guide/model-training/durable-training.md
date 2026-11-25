@@ -89,7 +89,7 @@ async def main(epochs: int) -> flyte.io.Dir:
     raise RuntimeError("Out of memory at every size")
 ```
 
-`override` keeps the task's own `retries` unless you pass a nonzero count or a `flyte.RetryStrategy`; as of `flyte` 2.13.6, it ignores `retries=0`. `retries=flyte.RetryStrategy(count=0)` sends an out-of-memory error straight back to the driver, instead of trying the same size again first.
+`override` keeps the task's own `retries` unless you pass a nonzero count or a `flyte.RetryStrategy`: it ignores `retries=0`. `retries=flyte.RetryStrategy(count=0)` sends an out-of-memory error straight back to the driver, instead of trying the same size again first.
 
 Running out of GPU memory is different: the framework raises its own exception, such as `torch.cuda.OutOfMemoryError`. See [Error handling](../tasks/task-programming/error-handling#out-of-memory-on-the-gpu) to catch it and retry with a smaller batch.
 
