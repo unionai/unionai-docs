@@ -2,7 +2,7 @@
 title: AppleSiliconError
 description: "Base class for errors of the devbox-local Apple Silicon accelerator, requested with `flyte.Resources(gpu=\"AppleSilicon\")`."
 icon: exclamation-triangle
-version: 2.13.2
+version: 2.15.0
 variants: +flyte +union
 layout: py_api
 ---

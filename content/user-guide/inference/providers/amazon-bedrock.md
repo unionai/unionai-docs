@@ -39,6 +39,8 @@ flyte create secret amazon-bedrock-api-key --project <your-project> --domain dev
 
 Replace `<model-id>` with a model from the [Bedrock docs](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-chat-completions.html).
 
+To retry rate limits, cache answers, and limit concurrency, see [Make provider calls reliable](./_index#make-provider-calls-reliable).
+
 ## Call Bedrock from an app
 
 An `AppEnvironment` takes the same `secrets` argument, and the app reads the same environment variable. See [Call the provider from an app](./_index#call-the-provider-from-an-app).

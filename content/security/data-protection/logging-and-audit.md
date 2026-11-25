@@ -16,7 +16,7 @@ Log data does not transit the control plane. Live and persisted logs alike are s
 
 ## Observability metrics
 
-A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-Data-Plane tunnel. Metrics data never leaves the customer's infrastructure. In BYOC deployments, Union.ai deploys and manages the monitoring stack.
+A per-cluster monitoring instance stores time-series observability metrics including resource utilization and cost data. Queries are served from the data plane through the Direct-to-Data-Plane tunnel. Metrics data never leaves the customer's infrastructure. In Union-Managed deployments, Union.ai deploys and manages the monitoring stack.
 
 ## Audit trail
 
