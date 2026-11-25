@@ -37,7 +37,7 @@ The first start pulls the image and takes a few minutes; later starts take secon
 
 The SDK configuration points at the installation's organization, project `flytesnacks`, and domain `development`. Union.ai organizes work into projects, and each project into domains (`development`, `staging`, `production`); these are Union.ai names, not Kubernetes namespaces or DNS names.
 
-The organization is `onebox` unless you choose one. To use the organization you signed up as, the one your license key names, start a new installation with `flyte start onebox --organization <your-organization>`. Requires Self-hosted Base 2026.11.15 or later. The organization can't change once the installation holds data; to start over with another, run `flyte stop onebox --delete --volume`, which deletes everything.
+The organization is `onebox` unless you choose one. To use the organization you signed up as, the one your license key names, start a new installation with `flyte start onebox --organization <your-organization>`. Requires Self-Hosted Base 2026.11.15 or later. The organization can't change once the installation holds data; to start over with another, run `flyte stop onebox --delete --volume`, which deletes everything.
 
 To see the pods inside the container:
 
@@ -117,7 +117,7 @@ flyte start onebox --recreate --apple-silicon   # add it to an existing one
 env = flyte.TaskEnvironment(name="mlx_env", resources=flyte.Resources(gpu="AppleSilicon"))
 ```
 
-It needs flyte 2.13.1 or later. Self-hosted Base starts a bridge on your Mac that runs those tasks and apps, and publishes its ports on `localhost` only, since that work runs as you on your machine. The bridge's log is `~/.flyte/onebox/apple-silicon/bridge.log`. Later starts and `--recreate` keep Apple Silicon on.
+It needs flyte 2.13.1 or later. Self-Hosted Base starts a bridge on your Mac that runs those tasks and apps, and publishes its ports on `localhost` only, since that work runs as you on your machine. The bridge's log is `~/.flyte/onebox/apple-silicon/bridge.log`. Later starts and `--recreate` keep Apple Silicon on.
 
 ## Use your own images
 
@@ -133,7 +133,7 @@ kubectl -n onebox patch serviceaccount default -p '{"imagePullSecrets": [{"name"
 ## Stop, resume, and delete
 
 ```shell
-flyte stop onebox                     # pause it; flyte start Self-hosted Base resumes where it left off
+flyte stop onebox                     # pause it; flyte start Self-Hosted Base resumes where it left off
 flyte stop onebox --delete            # remove the container; runs and data stay in a Docker volume
 flyte stop onebox --delete --volume   # remove everything
 ```

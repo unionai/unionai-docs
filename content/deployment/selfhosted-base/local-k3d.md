@@ -1,6 +1,6 @@
 ---
 title: Install the chart on k3d
-description: Install the Self-hosted Base chart step by step in a local k3d cluster, with throwaway PostgreSQL and S3, and run a workflow against it.
+description: Install the Self-Hosted Base chart step by step in a local k3d cluster, with throwaway PostgreSQL and S3, and run a workflow against it.
 icon: laptop
 weight: 11
 variants: -flyte +union
@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Install the chart on k3d
 
-To try Union.ai on your machine, [`flyte start onebox`](./try-locally) is quicker: it runs everything in one container. This guide instead installs the Self-hosted Base chart step by step on your laptop, in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
+To try Union.ai on your machine, [`flyte start onebox`](./try-locally) is quicker: it runs everything in one container. This guide instead installs the Self-Hosted Base chart step by step on your laptop, in a [k3d](https://k3d.io) cluster, with a throwaway PostgreSQL database and S3-compatible store inside the cluster, and runs a workflow against it. Nothing is authenticated, so keep it on your machine.
 
 ## Prerequisites
 
@@ -115,7 +115,7 @@ kubectl -n union apply -f prereqs.yaml
 kubectl -n union wait --for=condition=complete job/create-bucket --timeout=300s
 ```
 
-## Install Self-hosted Base
+## Install Self-Hosted Base
 
 The SDK uploads your code straight to the bucket, so the store's address must work from your laptop and from inside the cluster. Your machine's network address does both:
 
@@ -152,7 +152,7 @@ Open [http://localhost:8080/v2](http://localhost:8080/v2).
 
 ## Run a workflow
 
-In another terminal, install the SDK and point the CLI at Self-hosted Base:
+In another terminal, install the SDK and point the CLI at Self-Hosted Base:
 
 ```shell
 pip install flyte
@@ -199,4 +199,4 @@ k3d cluster delete selfhosted-base
 |---|---|
 | `flyte run` fails while uploading the code bundle | The SDK cannot reach `storage.endpoint`. Check that `curl http://${HOST_IP}:30566` answers from your machine, and that `HOST_IP` is still your address. |
 | Task pods fail to read their inputs | The pods cannot reach `storage.endpoint`. Same check, from a pod: `kubectl -n union run probe --rm -it --image=curlimages/curl:8.10.1 -- curl -sI http://${HOST_IP}:30566`. |
-| The Self-hosted Base pod restarts with database errors | PostgreSQL wasn't ready yet. It recovers on its own once `kubectl -n union get pods` shows postgres ready. |
+| The Self-Hosted Base pod restarts with database errors | PostgreSQL wasn't ready yet. It recovers on its own once `kubectl -n union get pods` shows postgres ready. |

@@ -1,6 +1,6 @@
 ---
 title: OAuth apps
-description: Give scripts and CI their own credentials, either created in your identity provider or registered by Self-hosted Base through OAuth 2.0 Dynamic Client Registration.
+description: Give scripts and CI their own credentials, either created in your identity provider or registered by Self-Hosted Base through OAuth 2.0 Dynamic Client Registration.
 icon: key
 weight: 10
 variants: -flyte +union
@@ -8,26 +8,26 @@ variants: -flyte +union
 
 # OAuth apps
 
-An OAuth app is a client ID and secret that scripts and CI use instead of a person's sign-in. It gets a token with the client credentials grant, and Self-hosted Base treats requests with that token as the app: the app has its own role, and runs it starts are attributed to it.
+An OAuth app is a client ID and secret that scripts and CI use instead of a person's sign-in. It gets a token with the client credentials grant, and Self-Hosted Base treats requests with that token as the app: the app has its own role, and runs it starts are attributed to it.
 
 Choose who creates apps with `apps.provider`:
 
 | `apps.provider` | Apps are created | Use when |
 |---|---|---|
 | `none` (default) | In your identity provider, by its admins | Your IdP doesn't support Dynamic Client Registration, or you manage clients there anyway. |
-| `dcr` | By users, through Self-hosted Base | Your IdP lets applications create and manage OAuth clients through an API, such as Keycloak. |
+| `dcr` | By users, through Self-Hosted Base | Your IdP lets applications create and manage OAuth clients through an API, such as Keycloak. |
 
-Either way, the proxy in front of Self-hosted Base must accept the apps' tokens. See [Authentication](./authentication).
+Either way, the proxy in front of Self-Hosted Base must accept the apps' tokens. See [Authentication](./authentication).
 
 ## Apps created in your IdP (`none`)
 
-Create a client with the client credentials grant in your IdP, and use its ID and secret. Creating, listing, or deleting apps through Self-hosted Base, from the CLI or the UI, fails with `FAILED_PRECONDITION` and says apps are managed in your identity provider. Clients you created in the IdP still authenticate through the proxy.
+Create a client with the client credentials grant in your IdP, and use its ID and secret. Creating, listing, or deleting apps through Self-Hosted Base, from the CLI or the UI, fails with `FAILED_PRECONDITION` and says apps are managed in your identity provider. Clients you created in the IdP still authenticate through the proxy.
 
 With authorization on, an app is identified by the subject its tokens carry, and gets `authz.defaultRole` the first time it makes a request.
 
-## Apps registered by Self-hosted Base (`dcr`)
+## Apps registered by Self-Hosted Base (`dcr`)
 
-This needs OAuth Dynamic Client Registration (RFC 7591) and client management (RFC 7592) at your IdP. Self-hosted Base registers the client at your IdP and returns its secret once. Self-hosted Base keeps each app's ID, name, creator, and the credentials it needs to manage the client, in its database. It doesn't keep the secret. Deleting an app deletes the client at the IdP.
+This needs OAuth Dynamic Client Registration (RFC 7591) and client management (RFC 7592) at your IdP. Self-Hosted Base registers the client at your IdP and returns its secret once. Self-Hosted Base keeps each app's ID, name, creator, and the credentials it needs to manage the client, in its database. It doesn't keep the secret. Deleting an app deletes the client at the IdP.
 
 ### Keycloak
 
@@ -38,7 +38,7 @@ This needs OAuth Dynamic Client Registration (RFC 7591) and client management (R
    kubectl -n union create secret generic selfhosted-base-dcr --from-literal=token='<initial access token>'
    ```
 
-3. Configure Self-hosted Base:
+3. Configure Self-Hosted Base:
 
    ```yaml
    apps:
@@ -69,7 +69,7 @@ flyte.init(
 )
 ```
 
-Requests with the app's token act as the app. The proxy verifies the token and tells Self-hosted Base who the caller is, and Self-hosted Base recognizes a registered app by what the proxy reports: a subject that is the app's client ID (Okta; Auth0's `<client id>@clients`), or Keycloak's `service-account-<client id>` username. Self-hosted Base doesn't read the token itself.
+Requests with the app's token act as the app. The proxy verifies the token and tells Self-Hosted Base who the caller is, and Self-Hosted Base recognizes a registered app by what the proxy reports: a subject that is the app's client ID (Okta; Auth0's `<client id>@clients`), or Keycloak's `service-account-<client id>` username. Self-Hosted Base doesn't read the token itself.
 
 ## Gotchas
 
@@ -77,4 +77,4 @@ Requests with the app's token act as the app. The proxy verifies the token and t
 |---|---|
 | Creating an app fails with `PERMISSION_DENIED` from the identity provider | The initial access token is missing, expired, or used up. Create a new one. |
 | An app's token is redirected to the IdP | The proxy doesn't accept it. See the oauth2-proxy troubleshooting in [Authentication](./authentication#troubleshooting). |
-| Runs by an app show as a user | The proxy reports an identity Self-hosted Base doesn't recognize as the app, or an email (users have one, apps don't). Check the headers the proxy sets: the subject should be the client ID, or on Keycloak the preferred username `service-account-<client id>` (oauth2-proxy sends it in `X-Forwarded-Preferred-Username` with `--pass-user-headers`). |
+| Runs by an app show as a user | The proxy reports an identity Self-Hosted Base doesn't recognize as the app, or an email (users have one, apps don't). Check the headers the proxy sets: the subject should be the client ID, or on Keycloak the preferred username `service-account-<client id>` (oauth2-proxy sends it in `X-Forwarded-Preferred-Username` with `--pass-user-headers`). |

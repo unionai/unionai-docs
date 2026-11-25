@@ -1,6 +1,6 @@
 ---
 title: Authentication
-description: Put oauth2-proxy or an AWS ALB in front of Self-hosted Base for single sign-on in the browser and token login for the SDK and CLI.
+description: Put oauth2-proxy or an AWS ALB in front of Self-Hosted Base for single sign-on in the browser and token login for the SDK and CLI.
 icon: shield-lock
 weight: 5
 variants: -flyte +union
@@ -8,14 +8,14 @@ variants: -flyte +union
 
 # Authentication
 
-Self-hosted Base doesn't sign anyone in. Put an authenticating proxy in front of it that logs users in at your identity provider (IdP) and forwards who they are in request headers. Self-hosted Base trusts those headers. This page sets that up with [oauth2-proxy](#oauth2-proxy), which runs anywhere, or an [AWS ALB](#aws-alb).
+Self-Hosted Base doesn't sign anyone in. Put an authenticating proxy in front of it that logs users in at your identity provider (IdP) and forwards who they are in request headers. Self-Hosted Base trusts those headers. This page sets that up with [oauth2-proxy](#oauth2-proxy), which runs anywhere, or an [AWS ALB](#aws-alb).
 
 Two kinds of clients go through the proxy:
 
 - **Browsers** sign in at the IdP and get a session cookie from the proxy.
-- **The SDK and CLI** get a token from the IdP and send it as `Authorization: Bearer`. They find the IdP by asking Self-hosted Base, which advertises it from `authMetadata` at two discovery paths. The proxy must let those through without a login, and accept the IdP's tokens.
+- **The SDK and CLI** get a token from the IdP and send it as `Authorization: Bearer`. They find the IdP by asking Self-Hosted Base, which advertises it from `authMetadata` at two discovery paths. The proxy must let those through without a login, and accept the IdP's tokens.
 
-## How Self-hosted Base reads identity
+## How Self-Hosted Base reads identity
 
 | Value | Default | Holds |
 |---|---|---|
@@ -30,16 +30,16 @@ The defaults match oauth2-proxy.
 > [!WARNING] List only headers your proxy sets
 > A proxy overwrites the identity headers it sets and passes every other header through from the client. If you list a header your proxy doesn't set, any signed-in user can send it and act as someone else. List exactly the headers your proxy sets, and empty the lists you don't use.
 
-Self-hosted Base also has to be reachable **only** through the proxy. Make sure of it with one or both of these:
+Self-Hosted Base also has to be reachable **only** through the proxy. Make sure of it with one or both of these:
 
 - `networkPolicy.proxyFrom`: only the proxy's pods, or its address range, can reach port `80`. See [Authorization](./authorization#network-policy).
-- `identity.proxySecret`: the proxy adds a shared secret header to each request, and Self-hosted Base ignores identity headers on requests without it.
+- `identity.proxySecret`: the proxy adds a shared secret header to each request, and Self-Hosted Base ignores identity headers on requests without it.
 
 Once requests carry an identity, turn on [Authorization](./authorization) to decide what each user can do.
 
 ## oauth2-proxy
 
-[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) runs as a Deployment in your cluster, in front of the Self-hosted Base Service, and works with any OIDC IdP.
+[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) runs as a Deployment in your cluster, in front of the Self-Hosted Base Service, and works with any OIDC IdP.
 
 ### 1. Register two applications at your IdP
 
@@ -50,9 +50,9 @@ Once requests carry an identity, turn on [Authorization](./authorization) to dec
 
 `<host>` is the address your users open. Note the issuer URL, the web application's client ID and secret, and the CLI application's client ID.
 
-### 2. Configure Self-hosted Base
+### 2. Configure Self-Hosted Base
 
-Add to your Self-hosted Base `values.yaml`:
+Add to your Self-Hosted Base `values.yaml`:
 
 ```yaml
 authMetadata:
@@ -74,7 +74,7 @@ Run `helm upgrade` with the new values.
 
 ### 3. Deploy oauth2-proxy
 
-Deploy oauth2-proxy in Self-hosted Base's namespace with these arguments:
+Deploy oauth2-proxy in Self-Hosted Base's namespace with these arguments:
 
 ```yaml
 args:
@@ -88,7 +88,7 @@ args:
   - --scope=openid email profile
   - --code-challenge-method=S256
   - --upstream=http://selfhosted-base.union.svc:80
-  # Forward the user to Self-hosted Base in X-Forwarded-User, -Email, -Preferred-Username and -Groups.
+  # Forward the user to Self-Hosted Base in X-Forwarded-User, -Email, -Preferred-Username and -Groups.
   - --pass-user-headers=true
   # Let the SDK and CLI find the IdP before they have a token.
   - --skip-auth-route=^/flyteidl2\.auth\.AuthMetadataService/
@@ -109,7 +109,7 @@ args:
 
 The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS in one of two ways:
 
-- **Behind a gateway or load balancer that terminates TLS** (most common). Add `--reverse-proxy=true` so oauth2-proxy trusts the `X-Forwarded-*` headers the gateway sets; it passes `X-Forwarded-Proto` on to Self-hosted Base. For example, with any [Gateway API](https://gateway-api.sigs.k8s.io/) implementation:
+- **Behind a gateway or load balancer that terminates TLS** (most common). Add `--reverse-proxy=true` so oauth2-proxy trusts the `X-Forwarded-*` headers the gateway sets; it passes `X-Forwarded-Proto` on to Self-Hosted Base. For example, with any [Gateway API](https://gateway-api.sigs.k8s.io/) implementation:
 
   ```yaml
   apiVersion: gateway.networking.k8s.io/v1
@@ -140,11 +140,11 @@ The SDK sends tokens only over TLS, so serve oauth2-proxy over HTTPS in one of t
       - backendRefs: [{name: oauth2-proxy, port: 80}]
   ```
 
-  oauth2-proxy's session cookie can be several kilobytes; if your gateway limits request header sizes, allow at least 16 KB. If your gateway doesn't set `X-Forwarded-Proto`, also set `publicScheme: https` in Self-hosted Base's values.
+  oauth2-proxy's session cookie can be several kilobytes; if your gateway limits request header sizes, allow at least 16 KB. If your gateway doesn't set `X-Forwarded-Proto`, also set `publicScheme: https` in Self-Hosted Base's values.
 
-- **With its own certificate** (`--https-address` and `--tls-cert-file`). Nothing sets `X-Forwarded-Proto` then, so also set `publicScheme: https` in Self-hosted Base's values.
+- **With its own certificate** (`--https-address` and `--tls-cert-file`). Nothing sets `X-Forwarded-Proto` then, so also set `publicScheme: https` in Self-Hosted Base's values.
 
-Expose oauth2-proxy at `<host>`, and only oauth2-proxy: Self-hosted Base's Service stays `ClusterIP`.
+Expose oauth2-proxy at `<host>`, and only oauth2-proxy: Self-Hosted Base's Service stays `ClusterIP`.
 
 ### 4. Sign in
 
@@ -194,7 +194,7 @@ On EKS, an Application Load Balancer can do the sign-in itself: it challenges br
 - An ACM certificate for `<host>`. ALB authenticates only on HTTPS listeners.
 - Two applications at your IdP, as for [oauth2-proxy](#1-register-two-applications-at-your-idp), except the web application's redirect URI is `https://<host>/oauth2/idpresponse`.
 
-Store the web application's credentials where the controller can read them, in Self-hosted Base's namespace, with exactly these keys:
+Store the web application's credentials where the controller can read them, in Self-Hosted Base's namespace, with exactly these keys:
 
 ```shell
 kubectl -n union create secret generic selfhosted-base-oidc \
@@ -202,7 +202,7 @@ kubectl -n union create secret generic selfhosted-base-oidc \
   --from-literal=clientSecret='<web application client secret>'
 ```
 
-### 1. Configure Self-hosted Base
+### 1. Configure Self-Hosted Base
 
 ALB forwards the browser's identity as a signed JWT in `X-Amzn-Oidc-Data`, and passes the SDK's token through in `Authorization`. Read identity from those two only, and empty the header lists, since ALB doesn't set those headers:
 
@@ -214,7 +214,7 @@ identity:
   groupsHeaders: []
   claimsJWTHeaders: [Authorization, X-Amzn-Oidc-Data]
   logoutRedirect: <IdP logout URL>
-  # ALB has no sign-out endpoint: Self-hosted Base expires its session cookies.
+  # ALB has no sign-out endpoint: Self-Hosted Base expires its session cookies.
   logoutClearCookies:
     - AWSELBAuthSessionCookie-0
     - AWSELBAuthSessionCookie-1
@@ -230,7 +230,7 @@ networkPolicy:
         cidr: <VPC CIDR>
 ```
 
-Self-hosted Base reads the first of the two JWT headers present. Every request that carries `Authorization: Bearer` takes the API rule, where ALB has validated the token; every other request has been signed in by ALB, which sets `X-Amzn-Oidc-Data` itself.
+Self-Hosted Base reads the first of the two JWT headers present. Every request that carries `Authorization: Bearer` takes the API rule, where ALB has validated the token; every other request has been signed in by ALB, which sets `X-Amzn-Oidc-Data` itself.
 
 ### 2. Create the Gateway
 
@@ -271,7 +271,7 @@ spec:
       port: 443
       hostname: <host>
 ---
-# Targets are Self-hosted Base's pods, health-checked on /healthz: Self-hosted Base answers / with
+# Targets are Self-Hosted Base's pods, health-checked on /healthz: Self-Hosted Base answers / with
 # a redirect, which ALB counts as unhealthy.
 apiVersion: gateway.k8s.aws/v1
 kind: TargetGroupConfiguration
@@ -370,10 +370,10 @@ Point DNS for `<host>` at the ALB (the Gateway's address), then sign in as in [o
 
 | Symptom | Cause and fix |
 |---|---|
-| The UI loads, but every API call returns `401` | Self-hosted Base doesn't see the identity headers. Check that `identity.*` names the headers your proxy sets, and, with `identity.proxySecret`, that the proxy sends the secret. |
+| The UI loads, but every API call returns `401` | Self-Hosted Base doesn't see the identity headers. Check that `identity.*` names the headers your proxy sets, and, with `identity.proxySecret`, that the proxy sends the secret. |
 | The CLI says the endpoint doesn't support authentication, or skips sign-in | `authMetadata.externalAuthServerBaseUrl` isn't set, the proxy requires a login on the discovery paths, or the CLI config has `insecure: true`. |
 | The CLI signs in, then API calls are redirected to the IdP or return `401` | The proxy doesn't accept the token. For oauth2-proxy, check that `--oidc-extra-audience` (or `--extra-jwt-issuers`) matches the token's `aud`; its log names the audience it expected. For ALB, check the `jwtValidationConfig` issuer and JWKS URL. |
 | An OAuth app's token is redirected to the IdP, and oauth2-proxy logs `email in id_token ... isn't verified` | Client-credentials tokens have no email. Add `--insecure-oidc-allow-unverified-email=true`. |
-| `flyte run` fails while uploading the code bundle, behind a proxy that terminates TLS itself | Self-hosted Base gave the SDK an `http://` address. Set `publicScheme: https`. |
+| `flyte run` fails while uploading the code bundle, behind a proxy that terminates TLS itself | Self-Hosted Base gave the SDK an `http://` address. Set `publicScheme: https`. |
 | ALB targets are unhealthy | The health check path isn't `/healthz`. |
-| ALB: the Gateway or HTTPRoute reports that it can't read secret `selfhosted-base-oidc` | The AWS Load Balancer Controller can't read Secrets in Self-hosted Base's namespace. Grant its service account `get`, `list`, and `watch` on Secrets there. |
+| ALB: the Gateway or HTTPRoute reports that it can't read secret `selfhosted-base-oidc` | The AWS Load Balancer Controller can't read Secrets in Self-Hosted Base's namespace. Grant its service account `get`, `list`, and `watch` on Secrets there. |

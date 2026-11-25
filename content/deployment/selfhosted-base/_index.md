@@ -1,24 +1,24 @@
 ---
-title: Self-hosted Base
+title: Self-Hosted Base
 description: Run Union.ai, its workflow services and UI, in your own Kubernetes cluster, installed with one Helm chart.
 icon: box
 weight: 4
 variants: -flyte +union
 ---
 
-# Self-hosted Union.ai
+# Self-Hosted Base
 
-Self-hosted Union.ai runs **in your own Kubernetes cluster**: the services that store and run your workflows, and the web UI. You install it with one Helm chart, `selfhosted-base`, and connect it to a PostgreSQL database and an object storage bucket. Nothing runs in Union.ai's cloud. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants everything in its own cluster.
+Self-Hosted Base runs Union.ai **in your own Kubernetes cluster**: the services that store and run your workflows, and the web UI. You install it with one Helm chart, `selfhosted-base`, and connect it to a PostgreSQL database and an object storage bucket. Nothing runs in Union.ai's cloud. Use it to evaluate Union.ai on infrastructure you control, or for a team that wants everything in its own cluster.
 
 ## What runs
 
 | Component | What it does |
 |---|---|
-| **Self-hosted Base** | Runs your workflows: it stores runs, projects, users, and their permissions, launches each task as a pod, and serves the API that the SDK and CLI use. |
-| **The UI** | The Union.ai web app, in the same pod as Self-hosted Base and served by it at `/v2`. |
+| **Self-Hosted Base** | Runs your workflows: it stores runs, projects, users, and their permissions, launches each task as a pod, and serves the API that the SDK and CLI use. |
+| **The UI** | The Union.ai web app, in the same pod as Self-Hosted Base and served by it at `/v2`. |
 | **Node agent** | One per node: mounts [Union Volumes](../../user-guide/tasks/task-programming/volumes/_index) (shared, persistent storage for tasks) into task pods. |
 
-Users, the SDK, and the CLI reach the UI, the API, and sign-in through one port, `80`; the other [ports](#ports) are for traffic inside the cluster. Task pods run in the namespace you install Self-hosted Base into.
+Users, the SDK, and the CLI reach the UI, the API, and sign-in through one port, `80`; the other [ports](#ports) are for traffic inside the cluster. Task pods run in the namespace you install Self-Hosted Base into.
 
 Some features need more components, which the chart can run for you: Knative Serving and a gateway for [apps](./apps), BuildKit and a registry for the [image builder](./image-builder), and Prometheus for [task metrics](./metrics). See [Add-ons](#add-ons).
 
@@ -46,17 +46,17 @@ For an airgapped install or a private mirror, copy each image with all its archi
 
 The bucket can be in Amazon S3, Google Cloud Storage (`storage.type: gcs`), Azure Blob Storage (`azure`), or an S3-compatible store such as MinIO, Cloudflare R2, or Ceph (`s3`). It needs a CORS rule for the UI; see [Bucket CORS](#bucket-cors).
 
-Before you give anyone else access, put an authenticating proxy in front of Self-hosted Base and turn on role-based access control; see [Authentication](./authentication) and [Authorization](./authorization).
+Before you give anyone else access, put an authenticating proxy in front of Self-Hosted Base and turn on role-based access control; see [Authentication](./authentication) and [Authorization](./authorization).
 
-Everything else has a working default. Self-hosted Base creates its tables on first start and upgrades them on every upgrade.
+Everything else has a working default. Self-Hosted Base creates its tables on first start and upgrades them on every upgrade.
 
 ## Minimum requirements
 
 | | Minimum |
 |---|---|
 | Kubernetes | 1.28 or later. On GKE, a Standard cluster: Autopilot isn't supported. |
-| Cluster capacity | 4 CPUs and 8 GiB of memory to spare across the nodes that accept pods, for Self-hosted Base, the UI, and a few task pods. Your tasks need room of their own beyond that. |
-| Self-hosted Base | One pod, requesting 1 CPU and 2 GiB of memory (the chart's default). That runs 4,000 tasks at once and starts 128 runs a second; see [Sizing](#sizing). |
+| Cluster capacity | 4 CPUs and 8 GiB of memory to spare across the nodes that accept pods, for Self-Hosted Base, the UI, and a few task pods. Your tasks need room of their own beyond that. |
+| Self-Hosted Base | One pod, requesting 1 CPU and 2 GiB of memory (the chart's default). That runs 4,000 tasks at once and starts 128 runs a second; see [Sizing](#sizing). |
 | PostgreSQL | A connection limit above `database.maxOpenConnections`, which is 40 by default. Beyond an evaluation, use a managed database such as Amazon RDS or Cloud SQL. |
 | On your machine | Docker with 4 CPUs and 8 GB of memory, to [try Union.ai locally](./try-locally). |
 
@@ -70,7 +70,7 @@ The UI reads some objects straight from the bucket, through presigned URLs: a ta
 
 For a proof of concept, start with [Try Union.ai on your machine](./try-locally): one command, `flyte start onebox`, runs everything in one Docker container on your laptop, with nothing to set up first.
 
-To install Self-hosted Base on a Kubernetes cluster, `flyte install selfhosted-base` checks the cluster, asks for the database and bucket, and installs the chart; see [Install with the CLI](./kubernetes#install-with-the-cli). For each step by hand, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
+To install Self-Hosted Base on a Kubernetes cluster, `flyte install selfhosted-base` checks the cluster, asks for the database and bucket, and installs the chart; see [Install with the CLI](./kubernetes#install-with-the-cli). For each step by hand, use the guide for [Amazon EKS](./eks), [Google GKE](./gke), or [any other Kubernetes cluster](./kubernetes). Then decide who can reach it and what they can do: [Authentication](./authentication) and [Authorization](./authorization). [Install the chart on k3d](./local-k3d) runs the same chart in a local k3d cluster, for testing the chart itself.
 
 {{< subpage-cards >}}
 
@@ -81,18 +81,18 @@ To install Self-hosted Base on a Kubernetes cluster, `flyte install selfhosted-b
 | `80` | Users, the SDK, and the CLI: the UI, the API, and sign-in. Put your authenticating proxy in front of this port. |
 | `8082` | Task pods, to start and track the tasks they call. In-cluster only. |
 | `15606` | Task workers that [reuse a running container](../../user-guide/tasks/task-configuration/reusable-containers) across tasks. In-cluster only. |
-| `9443` | The Kubernetes API server, calling Self-hosted Base's webhook that adds secrets to task pods. |
-| `8083` | With [apps](./apps) on: the apps gateway, asking Self-hosted Base who may call an app. Only the gateway. |
+| `9443` | The Kubernetes API server, calling Self-Hosted Base's webhook that adds secrets to task pods. |
+| `8083` | With [apps](./apps) on: the apps gateway, asking Self-Hosted Base who may call an app. Only the gateway. |
 
 ## License key
 
-A license key is what lets an installation make changes. Without a valid key, Self-hosted Base is read-only: reads work, changes are refused, and runs in flight finish. Each installation needs its own key, issued for its 32-character install ID, which Self-hosted Base generates on first start and keeps across upgrades.
+A license key is what lets an installation make changes. Without a valid key, Self-Hosted Base is read-only: reads work, changes are refused, and runs in flight finish. Each installation needs its own key, issued for its 32-character install ID, which Self-Hosted Base generates on first start and keeps across upgrades.
 
 ### Get a key
 
-1. In the Self-hosted Base UI, open **Settings → License** and select **Get a key**. It opens Union.ai's sign-up with this installation's ID.
+1. In the Self-Hosted Base UI, open **Settings → License** and select **Get a key**. It opens Union.ai's sign-up with this installation's ID.
 2. Sign in to your Union.ai organization, or sign up and create one. You land on the organization's **License Keys** page with this installation filled in. An administrator of your Union.ai organization issues the key there. Without a contract, it's a 30-day trial; an organization has one trial period, shared by all its installations. With a contract, the key lasts until the contract ends.
-3. Back in the Self-hosted Base UI, select **Add key** and paste it. With [authorization](./authorization) on, adding a key needs the installation's `admin` role. Read-only lifts right away.
+3. Back in the Self-Hosted Base UI, select **Add key** and paste it. With [authorization](./authorization) on, adding a key needs the installation's `admin` role. Read-only lifts right away.
 
 You can also mount a key from a Secret:
 
@@ -102,17 +102,17 @@ helm upgrade selfhosted-base unionai/selfhosted-base -n union -f values.yaml \
   --set license.existingSecret=selfhosted-base-license
 ```
 
-Self-hosted Base picks up a rotated key in the Secret without a restart. Keys are verified offline, against Union.ai's public keys built into each release; nothing is sent to Union.ai. Only keys Union.ai issues are accepted.
+Self-Hosted Base picks up a rotated key in the Secret without a restart. Keys are verified offline, against Union.ai's public keys built into each release; nothing is sent to Union.ai. Only keys Union.ai issues are accepted.
 
 To send **Get a key** to your own license-request page instead, set `license.issueURL`. Keys still have to come from Union.ai.
 
 ### Organization
 
-The UI greets the organization your key was issued to. The installation also has an organization of its own, which everything it stores and every SDK and CLI configuration uses: `onebox` unless you set it. To make the two match, set it on the first install, with `flyte install selfhosted-base --organization <your-organization>` or the chart's `organization` value. Keep it unchanged afterwards: the installation's data is stored under it. Requires Self-hosted Base 2026.11.15 and `flyteplugins-union` 0.26.2 or later.
+The UI greets the organization your key was issued to. The installation also has an organization of its own, which everything it stores and every SDK and CLI configuration uses: `onebox` unless you set it. To make the two match, set it on the first install, with `flyte install selfhosted-base --organization <your-organization>` or the chart's `organization` value. Keep it unchanged afterwards: the installation's data is stored under it. Requires Self-Hosted Base 2026.11.15 and `flyteplugins-union` 0.26.2 or later.
 
 ### Limits and entitlements
 
-A key records your organization's limits and features when it is issued, such as the maximum number of users or concurrent runs. Self-hosted Base holds the installation to them. They can't be changed inside Self-hosted Base: when your organization's limits change, issue the key again and add the new one.
+A key records your organization's limits and features when it is issued, such as the maximum number of users or concurrent runs. Self-Hosted Base holds the installation to them. They can't be changed inside Self-Hosted Base: when your organization's limits change, issue the key again and add the new one.
 
 By default, a request over a limit is logged and counted, not refused. To refuse it, set the limit's mode through the chart's `extraConfig`:
 
@@ -125,7 +125,7 @@ extraConfig:
 
 ## A private CA, extra mounts and proxies
 
-`caBundle` names a ConfigMap (`caBundle.configMap`) or Secret (`caBundle.secret`) key holding a PEM bundle that Self-hosted Base, the UI, and every task pod trust: for an S3 endpoint, database, identity provider, or registry signed by a private CA. It replaces the system trust store (`SSL_CERT_FILE`, `REQUESTS_CA_BUNDLE`, `AWS_CA_BUNDLE`, and others), so include the public roots if anything is reached over the internet:
+`caBundle` names a ConfigMap (`caBundle.configMap`) or Secret (`caBundle.secret`) key holding a PEM bundle that Self-Hosted Base, the UI, and every task pod trust: for an S3 endpoint, database, identity provider, or registry signed by a private CA. It replaces the system trust store (`SSL_CERT_FILE`, `REQUESTS_CA_BUNDLE`, `AWS_CA_BUNDLE`, and others), so include the public roots if anything is reached over the internet:
 
 ```shell
 cat /etc/ssl/certs/ca-certificates.crt corp-ca.pem > ca-bundle.pem
@@ -133,7 +133,7 @@ kubectl -n union create configmap ca-bundle --from-file=ca-bundle.pem
 helm upgrade selfhosted-base unionai/selfhosted-base -n union -f values.yaml --set caBundle.configMap=ca-bundle
 ```
 
-`extraVolumes` and `extraVolumeMounts` add volumes to the Self-hosted Base container. Task pods get theirs from `taskPods.extraVolumes`, `taskPods.extraVolumeMounts`, and `taskPods.extraEnv`, for example an outbound proxy's `HTTPS_PROXY` and `NO_PROXY`, or a shared dataset. These task-pod settings, and `caBundle`, apply to every task, image builds included. A task's own `pod_template` applies on top of them.
+`extraVolumes` and `extraVolumeMounts` add volumes to the Self-Hosted Base container. Task pods get theirs from `taskPods.extraVolumes`, `taskPods.extraVolumeMounts`, and `taskPods.extraEnv`, for example an outbound proxy's `HTTPS_PROXY` and `NO_PROXY`, or a shared dataset. These task-pod settings, and `caBundle`, apply to every task, image builds included. A task's own `pod_template` applies on top of them.
 
 ## Upgrade
 
@@ -141,7 +141,7 @@ helm upgrade selfhosted-base unionai/selfhosted-base -n union -f values.yaml --s
 helm upgrade selfhosted-base unionai/selfhosted-base -n union -f values.yaml
 ```
 
-Self-hosted Base runs one replica and migrates the database on start, so an upgrade restarts it: the UI and API are unavailable until the new pod is ready.
+Self-Hosted Base runs one replica and migrates the database on start, so an upgrade restarts it: the UI and API are unavailable until the new pod is ready.
 
 ## Uninstall
 
@@ -149,11 +149,11 @@ Self-hosted Base runs one replica and migrates the database on start, so an upgr
 helm uninstall selfhosted-base -n union
 ```
 
-The chart installs the pod admission webhook's `MutatingWebhookConfiguration` and its serving certificate, so `helm uninstall` removes them. What Self-hosted Base created while running, such as task pods, apps, and secrets, stays until you delete the namespace. Helm never deletes the Knative CRDs the chart installed. The database and the bucket are yours and are left as they are.
+The chart installs the pod admission webhook's `MutatingWebhookConfiguration` and its serving certificate, so `helm uninstall` removes them. What Self-Hosted Base created while running, such as task pods, apps, and secrets, stays until you delete the namespace. Helm never deletes the Knative CRDs the chart installed. The database and the bucket are yours and are left as they are.
 
 ## Add-ons
 
-Four features need components beside Self-hosted Base. The chart can run three of them for you; Self-hosted Base starts without any of them and never waits for them:
+Four features need components beside Self-Hosted Base. The chart can run three of them for you; Self-Hosted Base starts without any of them and never waits for them:
 
 | Feature | Needs | Chart value | Page |
 |---|---|---|---|
@@ -166,7 +166,7 @@ The Logs tab streams logs of running tasks without any add-on.
 
 ## Debug in VS Code
 
-The **Debug** button reruns a task with a VS Code server in its pod, and **Open VS Code** opens it through Self-hosted Base. It needs no add-on, but:
+The **Debug** button reruns a task with a VS Code server in its pod, and **Open VS Code** opens it through Self-Hosted Base. It needs no add-on, but:
 
 - Opening it needs permission to run in the project (the contributor role with authorization on), since the server runs code with the task's credentials.
 - Your proxy must pass websockets through. oauth2-proxy and the AWS ALB do by default; so do most Gateway API implementations.
@@ -174,21 +174,21 @@ The **Debug** button reruns a task with a VS Code server in its pod, and **Open 
 
 ## Sizing
 
-Size Self-hosted Base by how many runs you start a second: CPU runs out first. Memory stays within the container's limit, because Self-hosted Base sets its Go memory limit to 90% of it. These numbers need Self-hosted Base 2026.11.14 or later.
+Size Self-Hosted Base by how many runs you start a second: CPU runs out first. Memory stays within the container's limit, because Self-Hosted Base sets its Go memory limit to 90% of it. These numbers need Self-Hosted Base 2026.11.14 or later.
 
-Measured in November 2026 on AWS, with Self-hosted Base as one replica (CPU and memory requests equal to limits), PostgreSQL 16, and short tasks. Every run succeeded:
+Measured in November 2026 on AWS, with Self-Hosted Base as one replica (CPU and memory requests equal to limits), PostgreSQL 16, and short tasks. Every run succeeded:
 
 | | 1 CPU, 2 GiB (the chart's default) | 2 CPUs, 4 GiB |
 |---|---|---|
 | Runs started a second, sustained | 128 with no errors. Accepted within 0.2 seconds at 32 a second, 0.5 seconds at 64, and 1.5 seconds at 128 (95th percentile) | 128 with no errors, accepted within 0.15 seconds (95th percentile) |
 | Tasks running at once | 4,000 (as many as the test cluster held) | 4,000 (as many as the test cluster held) |
-| What runs out first | CPU: Self-hosted Base uses its full CPU from 64 runs a second | CPU: Self-hosted Base nears its 2 CPUs at 128 runs a second |
-| Self-hosted Base memory at its busiest | 1.8 GiB, with about 13,000 actions in flight | 3.3 GiB |
+| What runs out first | CPU: Self-Hosted Base uses its full CPU from 64 runs a second | CPU: Self-Hosted Base nears its 2 CPUs at 128 runs a second |
+| Self-Hosted Base memory at its busiest | 1.8 GiB, with about 13,000 actions in flight | 3.3 GiB |
 | PostgreSQL at its busiest | 0.4 CPUs, 1.2 GiB, about 230 connections | 0.65 CPUs, 1.1 GiB, about 190 connections |
 
 Each task adds about 10 KB to the database.
 
-Self-hosted Base runs at most 500 tasks at a time; the rest wait in the queue until one finishes. To run more at once, raise the limit to what your cluster can run:
+Self-Hosted Base runs at most 500 tasks at a time; the rest wait in the queue until one finishes. To run more at once, raise the limit to what your cluster can run:
 
 ```yaml
 extraConfig:
@@ -196,7 +196,7 @@ extraConfig:
     capacity: 4000
 ```
 
-To accept runs quickly above about 32 a second, give Self-hosted Base 2 CPUs. For thousands of tasks at once, also give it more database connections:
+To accept runs quickly above about 32 a second, give Self-Hosted Base 2 CPUs. For thousands of tasks at once, also give it more database connections:
 
 ```yaml
 resources:
@@ -210,10 +210,10 @@ Give PostgreSQL 1 CPU and a connection limit of at least 300.
 
 ## Limitations
 
-- Self-hosted Base runs as a single replica, without high availability.
-- Tasks run only in the cluster Self-hosted Base is installed in.
+- Self-Hosted Base runs as a single replica, without high availability.
+- Tasks run only in the cluster Self-Hosted Base is installed in.
 - The dashboards' queue panels show no data.
 
 ## License
 
-Self-hosted Union.ai is under the [Union License](https://www.union.ai/licensing/union-license). The license is in the chart (`LICENSE`, with Union.ai's copyright in `NOTICE`). The Self-hosted Base image has it in `/usr/share/doc/onebox/`, and the image `flyte start onebox` runs has it in `/onebox/licenses/`, beside the notices for the third-party software they include.
+Self-Hosted Base is under the [Union License](https://www.union.ai/licensing/union-license). The license is in the chart (`LICENSE`, with Union.ai's copyright in `NOTICE`). The Self-Hosted Base image has it in `/usr/share/doc/onebox/`, and the image `flyte start onebox` runs has it in `/onebox/licenses/`, beside the notices for the third-party software they include.

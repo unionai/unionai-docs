@@ -1,6 +1,6 @@
 ---
 title: Task logs
-description: Keep the logs of finished tasks available in the UI by shipping container logs to Self-hosted Base's bucket with fluent-bit.
+description: Keep the logs of finished tasks available in the UI by shipping container logs to Self-Hosted Base's bucket with fluent-bit.
 icon: journal-text
 weight: 7
 variants: -flyte +union
@@ -8,11 +8,11 @@ variants: -flyte +union
 
 # Task logs
 
-The Logs tab streams a task's logs from its pod while the pod exists. Self-hosted Base deletes task pods when they finish, so to keep logs available afterwards, ship container logs to Self-hosted Base's bucket with a log shipper. Self-hosted Base reads them back from there once the pod is gone. This page uses [fluent-bit](https://fluentbit.io), installed separately; Self-hosted Base doesn't depend on it to start.
+The Logs tab streams a task's logs from its pod while the pod exists. Self-Hosted Base deletes task pods when they finish, so to keep logs available afterwards, ship container logs to Self-Hosted Base's bucket with a log shipper. Self-Hosted Base reads them back from there once the pod is gone. This page uses [fluent-bit](https://fluentbit.io), installed separately; Self-Hosted Base doesn't depend on it to start.
 
-## Where Self-hosted Base reads logs
+## Where Self-Hosted Base reads logs
 
-For a container that no longer exists, Self-hosted Base reads every object under this prefix in its bucket, in key order:
+For a container that no longer exists, Self-Hosted Base reads every object under this prefix in its bucket, in key order:
 
 ```text
 persisted-logs/namespace-<namespace>.pod-<pod>.cont-<container>/
@@ -57,7 +57,7 @@ config:
         endpoint         <https://store endpoint>
 ```
 
-`Path` limits the shipper to Self-hosted Base's namespace (`union` here). Install it in the same namespace, so it can read the credentials Secret:
+`Path` limits the shipper to Self-Hosted Base's namespace (`union` here). Install it in the same namespace, so it can read the credentials Secret:
 
 ```shell
 helm install fluent-bit fluent-bit --repo https://fluent.github.io/helm-charts \
@@ -72,4 +72,4 @@ fluent-bit uploads at most once a minute, so the last minute of a finished task 
 |---|---|
 | The fluent-bit pods stay in `ContainerCreating` with `hostPath type check failed: /etc/machine-id` | The chart mounts `/etc/machine-id`, which some nodes (k3d, kind) don't have. Mount only `/var/log`: set `daemonSetVolumes` and `daemonSetVolumeMounts` to a single `hostPath` volume for `/var/log`. |
 | Only the last minute of a long task's logs is shown | `s3_key_format` writes the same key on every upload (for example `static_file_path true` without a timestamp), so each upload overwrites the previous one. Use a per-upload key as above. |
-| Logs of finished tasks fail with `LIMIT_EXCEEDED` | A single object is larger than `storage.limits.maxDownloadMBs` in Self-hosted Base's configuration (default `1024`). |
+| Logs of finished tasks fail with `LIMIT_EXCEEDED` | A single object is larger than `storage.limits.maxDownloadMBs` in Self-Hosted Base's configuration (default `1024`). |

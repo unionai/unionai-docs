@@ -8,7 +8,7 @@ variants: -flyte +union
 
 # Image builder
 
-With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks Self-hosted Base whether the image already exists, so an image is built once and reused. Self-hosted Base sets up the build task itself. You bring BuildKit and the registry, or, on a single-user or evaluation cluster, have the chart run both. Self-hosted Base doesn't depend on any of them to start.
+With the image builder, the SDK builds a task's container image inside your cluster instead of on the machine that runs `flyte run`. It runs a `build-image` task that sends the build to BuildKit and pushes the result to a registry. Before building, the SDK asks Self-Hosted Base whether the image already exists, so an image is built once and reused. Self-Hosted Base sets up the build task itself. You bring BuildKit and the registry, or, on a single-user or evaluation cluster, have the chart run both. Self-Hosted Base doesn't depend on any of them to start.
 
 ## Requirements
 
@@ -16,10 +16,10 @@ With the image builder, the SDK builds a task's container image inside your clus
 - **A registry** that:
   - BuildKit can push to without credentials;
   - your nodes can pull from, at the same address BuildKit pushed to;
-  - Self-hosted Base can read anonymously, possibly at a different address.
+  - Self-Hosted Base can read anonymously, possibly at a different address.
 
   Registries that require credentials aren't supported.
-- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `ghcr.io/unionai/imagebuilder` with each release, for amd64 and arm64. The chart uses them at its `appVersion` unless you set `imageBuilder.taskImages.tag`. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the chart's `appVersion`, and point Self-hosted Base at it:
+- **Access to the build task's images.** The `build-image` task runs the `build-image` image and has BuildKit use the `frontend-v2` image, both published by Union at `ghcr.io/unionai/imagebuilder` with each release, for amd64 and arm64. The chart uses them at its `appVersion` unless you set `imageBuilder.taskImages.tag`. Nodes must be able to pull `build-image`, and BuildKit `frontend-v2`. Without internet access, copy both to a registry of yours, at the chart's `appVersion`, and point Self-Hosted Base at it:
 
   ```yaml
   imageBuilder:
@@ -29,7 +29,7 @@ With the image builder, the SDK builds a task's container image inside your clus
 
 ## Run BuildKit and a registry with the chart
 
-`imageBuilder.bundled.enabled` runs a BuildKit daemon and a registry in Self-hosted Base's namespace and points Self-hosted Base at them:
+`imageBuilder.bundled.enabled` runs a BuildKit daemon and a registry in Self-Hosted Base's namespace and points Self-Hosted Base at them:
 
 ```yaml
 imageBuilder:
@@ -39,7 +39,7 @@ imageBuilder:
 ```
 
 - BuildKit runs privileged and on the node's network, listening without TLS on port `imageBuilder.bundled.buildkit.hostPort` (`30234`) of its node, behind a Service on port `1234`.
-- The registry listens on NodePort `imageBuilder.bundled.registry.nodePort` (`30000`) of every node and accepts anonymous pushes. BuildKit pushes to `localhost:30000/onebox` and nodes pull from there, since containerd and BuildKit accept plain HTTP for `localhost`. Self-hosted Base checks for existing images at the registry's in-cluster Service.
+- The registry listens on NodePort `imageBuilder.bundled.registry.nodePort` (`30000`) of every node and accepts anonymous pushes. BuildKit pushes to `localhost:30000/onebox` and nodes pull from there, since containerd and BuildKit accept plain HTTP for `localhost`. Self-Hosted Base checks for existing images at the registry's in-cluster Service.
 - Images are kept on an `emptyDir`, so they're rebuilt after the registry restarts. Set `imageBuilder.bundled.registry.storage` (for example `20Gi`) to keep them on a PersistentVolumeClaim instead; `helm uninstall` leaves the claim behind.
 
 Any of `imageBuilder.buildkitURI`, `imageBuilder.repository`, and `imageBuilder.lookupURL` you set yourself wins over the bundled address. `lookupURL` points at the bundled registry only while `repository` does.
@@ -49,19 +49,19 @@ Any of `imageBuilder.buildkitURI`, `imageBuilder.repository`, and `imageBuilder.
 
 ## Bring your own BuildKit and registry
 
-On a shared cluster, run BuildKit rootless, and restrict access to it with a NetworkPolicy that admits only Self-hosted Base's namespace: the `build-image` task connects to BuildKit without client TLS, so a BuildKit that requires mutual TLS can't be used. Use a registry with TLS. Then point Self-hosted Base at them:
+On a shared cluster, run BuildKit rootless, and restrict access to it with a NetworkPolicy that admits only Self-Hosted Base's namespace: the `build-image` task connects to BuildKit without client TLS, so a BuildKit that requires mutual TLS can't be used. Use a registry with TLS. Then point Self-Hosted Base at them:
 
 ```yaml
 imageBuilder:
   enabled: true
   buildkitURI: tcp://buildkit.buildkit.svc:1234            # as task pods reach BuildKit
   repository: registry.example.com/union                  # where nodes pull from
-  lookupURL: https://registry.example.com/union           # where Self-hosted Base checks
+  lookupURL: https://registry.example.com/union           # where Self-Hosted Base checks
 ```
 
-`lookupURL` defaults to `https://<repository>`; set it when Self-hosted Base reaches the registry at another address.
+`lookupURL` defaults to `https://<repository>`; set it when Self-Hosted Base reaches the registry at another address.
 
-Either way, Self-hosted Base sets up the image builder a few seconds after it starts, and again when its images change. There's nothing to register by hand. The build task lives in the `system` project's `production` domain, which matters only for troubleshooting (below).
+Either way, Self-Hosted Base sets up the image builder a few seconds after it starts, and again when its images change. There's nothing to register by hand. The build task lives in the `system` project's `production` domain, which matters only for troubleshooting (below).
 
 ## Build an image
 
@@ -81,7 +81,7 @@ i Image localhost:30000/onebox/my-image:3892709e... already exists, skipping bui
 
 | Symptom | Cause and fix |
 |---|---|
-| `remote image builder is not enabled` | The `build-image` task isn't registered in `system`/`production` yet, or the CLI user can't read that project. Self-hosted Base registers it shortly after starting; while it can't, its log says `build-image task not registered yet` and why. |
+| `remote image builder is not enabled` | The `build-image` task isn't registered in `system`/`production` yet, or the CLI user can't read that project. Self-Hosted Base registers it shortly after starting; while it can't, its log says `build-image task not registered yet` and why. |
 | Builds fail with `exit code 255` while BuildKit loads the frontend | BuildKit can't run the `frontend-v2` image on its node's architecture. With a mirror, copy the image with all its architectures (for example `crane copy` or `docker buildx imagetools create`), not just one. |
-| Every run rebuilds | Self-hosted Base can't read the registry at `imageBuilder.lookupURL`, or the path differs from `imageBuilder.repository`. They must name the same repository. |
+| Every run rebuilds | Self-Hosted Base can't read the registry at `imageBuilder.lookupURL`, or the path differs from `imageBuilder.repository`. They must name the same repository. |
 | Task pods fail with `ErrImagePull` after a successful build | Nodes can't pull from `imageBuilder.repository`. It must resolve and be trusted from the node. |
