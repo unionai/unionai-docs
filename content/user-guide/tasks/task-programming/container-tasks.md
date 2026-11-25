@@ -20,7 +20,7 @@ A container task is a special type of Flyte task that executes arbitrary contain
 
 ## How data flows in and out
 
-The magic of container tasks lies in Flyte's **copilot sidecar system**. When you execute a container task, Flyte:
+The magic of container tasks lies in Flyte's **copilot sidecar system**. When you execute a container task (unless you set `data_loading=False`, see [ContainerTask parameters](#containertask-parameters)), Flyte:
 
 1. Launches your specified container alongside a copilot sidecar container
 2. Uses shared Kubernetes pod volumes to pass data between containers
@@ -76,7 +76,7 @@ async def say_hello(name: str = "flyte") -> str:
 
 ## Advanced: Passing files and directories
 
-Container tasks can accept `File` and `Dir` inputs. For these types, use path-based syntax (not template syntax) in your commands:
+Container tasks can accept `File` and `Dir` inputs. For these types, use path-based syntax (not template syntax) in your commands. In remote execution, path-based inputs need `data_loading=True` (the default):
 
 ```python
 from flyte.io import File
@@ -226,11 +226,12 @@ async def multi_lang_workflow(iterations: int) -> dict:
 - **command**: Command to execute in the container (list of strings)
 - **inputs**: Dictionary mapping input names to types
 - **outputs**: Dictionary mapping output names to types
-- **input_data_dir**: Directory where Flyte writes input data (default: `/var/inputs`)
-- **output_data_dir**: Directory where Flyte reads output data (default: `/var/outputs`)
+- **input_data_dir**: Directory where Flyte writes input data (default: `/var/inputs`). In remote execution, only when `data_loading` is `True`
+- **output_data_dir**: Directory where Flyte reads output data (default: `/var/outputs`). In remote execution, only when `data_loading` is `True`
 - **arguments**: Additional command arguments (list of strings)
 - **metadata_format**: Format for metadata serialization (`"JSON"`, `"YAML"`, or `"PROTO"`)
 - **local_logs**: Whether to print container logs during local execution (default: `True`)
+- **data_loading**: Whether Flyte adds the copilot sidecar to move inputs and outputs (default: `True`). Set it to `False` for a container that reads its inputs from template arguments and writes its outputs itself to `{{.outputPrefix}}`. Flyte then adds no copilot containers to the pod and doesn't use `input_data_dir` or `output_data_dir`, so path-based `File` and `Dir` inputs aren't staged. Only affects remote execution. Requires `flyte` 2.13.3 or later.
 
 ### Supported input/output types
 
