@@ -41,4 +41,8 @@ Automate your own development process with Flyte, using event-driven runs, revie
 An advanced guide for building an LLM reporting agent on Flyte.
 {{< /link-card >}}
 
+{{< link-card target="reference-architectures" icon="diagram-3" title="Reference architectures" >}}
+End-to-end designs for training and serving, batch inference, and an agent platform, showing which constructs to combine and how data moves between them.
+{{< /link-card >}}
+
 {{< /grid >}}
