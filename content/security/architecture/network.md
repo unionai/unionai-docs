@@ -59,7 +59,7 @@ For details on the Union-Managed management connection, see [Private connectivit
 
 ## Egress requirements
 
-Because every data-plane connection is [outbound-only](#outbound-only-model), configuring network access for the data plane is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to.
+The orchestration channel and the Direct-to-Data-Plane tunnel are [outbound-only](#outbound-only-model), so configuring network access for them is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open for them. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to. In Union-Managed deployments, Union.ai's management connection to the cluster's Kubernetes API is separate: it reaches the API endpoint, which is public by default. See [Private connectivity (Union-Managed)](./private-connectivity).
 
 | Source (data plane) | Destination | Port / protocol | Purpose |
 |---|---|---|---|
