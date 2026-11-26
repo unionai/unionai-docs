@@ -11,12 +11,13 @@ secondary_topnav: -flyte +union
 
 # Platform deployment
 
-You can deploy Union.ai on all major cloud providers, on neocloud providers, and on-premises on any Kubernetes cluster. You can also choose between two deployment models, depending on how much of the data plane you want to manage yourself:
+You can deploy Union.ai on all major cloud providers, on neocloud providers, and on-premises on any Kubernetes cluster. You can also choose between three deployment models, depending on how much of the platform you want to manage yourself:
 
 * **[Union-Managed deployment](./byoc/_index)** (formerly BYOC): Union.ai runs the data plane for you, in your cloud account. You provide the cloud account; Union.ai builds the cluster in it and handles upgrades and monitoring. To do this, Union.ai support has some access to your cluster, strictly for upgrades, provisioning, and maintaining cluster health, but never to your object storage or logs. Supported on AWS, GCP, and Azure.
 * **[Self-Managed deployment](./selfmanaged/_index)**: You run the data plane on infrastructure you control, and you manage the cluster, upgrades, and all operational aspects. Union.ai support has no access to your cluster, giving you the highest level of data isolation. Supported on AWS, GCP, Azure and OCI; on neocloud providers including CoreWeave, Crusoe, and Nebius; and on any generic Kubernetes environment.
+* **[Self-Hosted deployment](./selfhosted/_index)**: You run both the control plane and the data plane on infrastructure you control, in one Kubernetes cluster or across several. All communication between the planes stays inside your infrastructure. Choose it when you need full data sovereignty or run in an air-gapped or restricted network.
 
-In both cases, the control plane runs in Union.ai's cloud account, but due to Union's [Zero Trust architecture](../security/_index), your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own cloud account. See [Architecture](../user-guide/get-started/core-concepts/architecture) for what each plane does, [Where your data lives](../user-guide/get-started/core-concepts/where-data-lives) for what data each holds, and [Two-plane separation](../security/architecture/two-plane-separation) for the security model behind the split.
+In Union-Managed and Self-Managed deployments, the control plane runs in Union.ai's cloud account. In a Self-Hosted deployment, you run it in your own infrastructure as well. In every model, Union's [Zero Trust architecture](../security/_index) means your data and code never traverse the control plane. Your code, data, container images, secrets and logs stay in the data plane in your own infrastructure. See [Architecture](../user-guide/get-started/core-concepts/architecture) for what each plane does, [Where your data lives](../user-guide/get-started/core-concepts/where-data-lives) for what data each holds, and [Two-plane separation](../security/architecture/two-plane-separation) for the security model behind the split.
 
 ## Get started
 
