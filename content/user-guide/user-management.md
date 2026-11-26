@@ -208,6 +208,15 @@ Navigate to **Settings > User Management** to:
 * **Change policies**: select a user and edit their assignments.
 * **Remove a user**: select a user and remove them.
 
+On the **Policies** tab, select a policy to open its page, which lists the policy's bindings. If you hold the `manage_permissions` action organization-wide (the **Admin** policy does), you can:
+
+* **Edit bindings**: click **Edit bindings**, then add, change, or remove bindings and click **Save**.
+  Each binding pairs a role with a scope: **Full organization**, **Domain**, or **Domain + Project**.
+  Archived projects aren't offered.
+  You can't remove a policy's organization-wide `admin` binding.
+* **Delete the policy**: click **Delete Policy** to delete it and remove it from all users.
+  The page offers this for built-in policies too: deleting **Admin** removes admin access from every user who holds it through that policy.
+
 ## Available actions
 
 | Action | Description |
