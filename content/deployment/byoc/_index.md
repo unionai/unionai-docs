@@ -32,10 +32,8 @@ Union.ai's control plane provisions your data plane with infrastructure-as-code,
 Union.ai then installs the data plane, including the Union.ai operator.
 The control plane re-runs the same provisioning to apply infrastructure changes, such as new instance types or new versions of platform components, so upgrades are handled for you.
 
-The cluster has two kinds of nodes:
-
-- **Default nodes** run Union.ai's platform services, such as autoscaling, monitoring, and the operator. They are always running.
-- **Worker nodes** run your tasks and apps. The size you choose in the wizard sets how far the worker node pools can grow: see **Cluster sizes** for [AWS](./data-plane-setup-on-aws#cluster-sizes), [GCP](./data-plane-setup-on-gcp#cluster-sizes), and [Azure](./data-plane-setup-on-azure#cluster-sizes). GPU node pools scale down to zero when no task needs them.
+Union.ai's platform services, such as the operator, run on the same autoscaled CPU node pool as your CPU tasks and apps.
+The size you choose in the wizard sets how far the node pools can grow: see **Cluster sizes** for [AWS](./data-plane-setup-on-aws#cluster-sizes), [GCP](./data-plane-setup-on-gcp#cluster-sizes), and [Azure](./data-plane-setup-on-azure#cluster-sizes). GPU node pools scale down to zero when no task needs them.
 
 ## Additional configuration
 
