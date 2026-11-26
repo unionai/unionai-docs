@@ -378,11 +378,11 @@ XCom has no equivalent; the task's typed return value is the output, and large p
 | `env_vars` (dict) | `TaskEnvironment(env_vars={...})` |
 | `secrets=[Secret(...)]` | `TaskEnvironment(secrets=[flyte.Secret(...)])` |
 | `container_resources` (requests/limits) | `TaskEnvironment(resources=flyte.Resources(cpu=(1,4), memory="2Gi", gpu="T4:1"))` |
-| `node_selector`, `tolerations`, `affinity` | `flyte.PodTemplate(pod_spec=V1PodSpec(node_selector=..., tolerations=..., affinity=...))` |
-| `service_account_name` | `PodTemplate(pod_spec=V1PodSpec(service_account_name=...))` |
-| `volumes`, `volume_mounts` | `PodTemplate(pod_spec=V1PodSpec(volumes=[...], containers=[V1Container(volume_mounts=[...])]))` |
-| `image_pull_secrets` | `PodTemplate(pod_spec=V1PodSpec(image_pull_secrets=[V1LocalObjectReference(name=...)]))` |
-| `security_context` | `PodTemplate(pod_spec=V1PodSpec(security_context=...))` |
+| `node_selector`, `tolerations`, `affinity` | `flyte.PodTemplate(pod_spec=V1PodSpec(containers=[], node_selector=..., tolerations=..., affinity=...))` |
+| `service_account_name` | `PodTemplate(pod_spec=V1PodSpec(containers=[], service_account_name=...))` |
+| `volumes`, `volume_mounts` | `PodTemplate(pod_spec=V1PodSpec(volumes=[...], containers=[V1Container(name="primary", volume_mounts=[...])]))` |
+| `image_pull_secrets` | `PodTemplate(pod_spec=V1PodSpec(containers=[], image_pull_secrets=[V1LocalObjectReference(name=...)]))` |
+| `security_context` | `PodTemplate(pod_spec=V1PodSpec(containers=[], security_context=...))` |
 | `labels`, `annotations` | `PodTemplate(labels={...}, annotations={...})` |
 | `init_containers`, sidecars | `PodTemplate(pod_spec=V1PodSpec(init_containers=[...], containers=[primary, ...]))` |
 | `retries`, `retry_delay` | `@env.task(retries=...)` |
@@ -402,6 +402,7 @@ pod_template = flyte.PodTemplate(
     primary_container_name="primary",
     labels={"team": "etl"},
     pod_spec=V1PodSpec(
+        containers=[],
         service_account_name="etl-runner",
         init_containers=[
             V1Container(
@@ -429,7 +430,7 @@ async def load_warehouse(ds: str) -> int:
     ...
 ```
 
-You don't have to list the primary container in the pod_spec; Flyte fills it in from the env's image, the function's command, and the env's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
+`V1PodSpec` requires `containers`, but you don't have to list the primary container in it: pass `containers=[]` and Flyte fills it in from the env's image, the function's command, and the env's resources. Add a `V1Container(name="primary", ...)` entry only when you need to put fields on it directly (volume mounts, extra env, security context).
 
 Docs: [Task environments](../../get-started/core-concepts/task-environment) · [Secrets](../../tasks/task-configuration/secrets) · [PodTemplate / advanced k8s config](../../tasks/task-configuration/pod-templates)
 
