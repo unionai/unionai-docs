@@ -50,7 +50,7 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-Managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Unlike in Union-Managed deployments, Union.ai has no management connection to the customer's Kubernetes API.
+Union.ai has no infrastructure access to the customer's data plane: no IAM roles, no VPN, no SSH keys, and no management connection to its Kubernetes API.
 The data plane opens an outbound direct gRPC connection to the control plane, which carries orchestration metadata.
 Under the default tier, it also opens the outbound [Direct-to-Data-Plane tunnel](./architecture/network#direct-to-data-plane-tunnel), through which clients reach the data plane.
 
