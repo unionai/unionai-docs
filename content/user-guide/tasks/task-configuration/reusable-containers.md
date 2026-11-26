@@ -91,10 +91,20 @@ reuse_policy = flyte.ReusePolicy(
 
 ### Key relationships
 
-- **Total throughput** = `replicas × concurrency`
+- **Total throughput** = `max_replicas × concurrency` (for an integer `replicas`, min and max are the same)
 - **Resource usage** = `replicas × TaskEnvironment.resources`
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**:  `scaledown_ttl` manages individual containers, `idle_ttl` manages the environment
+
+### Scale to zero
+
+An integer `replicas` keeps a fixed number of replicas. A `(min, max)` tuple scales the environment between the two with demand, and the minimum can be 0.
+
+With `replicas=(0, N)`, the environment starts with no replicas and adds them as tasks arrive, up to N. Each replica that stays idle for `scaledown_ttl` is removed, so an idle environment shrinks to zero replicas.
+The trade-off is a cold start: when no replica is running, the next task waits for a container to be created, its image pulled, and its Python process initialized.
+To keep warm replicas ready, set the minimum to 1 or more.
+
+On Self-Managed deployments, scale to zero requires the `dataplane` Helm chart 2026.11.0 or later. With an earlier chart, an environment declared with `replicas=(0, N)` starts with N replicas and keeps all of them until `idle_ttl` shuts down the environment.
 
 ## Simple example
 
