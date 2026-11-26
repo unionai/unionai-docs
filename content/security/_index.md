@@ -19,7 +19,8 @@ Beyond describing the model, it provides concrete verification steps so that rev
 
 **[Architecture](./architecture/_index)**
 The system is divided into a control plane hosted by Union.ai and a data plane hosted on the customer's infrastructure.
-The only connection between the two planes is an outbound-only route from the data plane to the control plane that carries orchestration metadata.
+In Self-Managed deployments, the only connection between the two planes is an outbound-only route from the data plane to the control plane that carries orchestration metadata.
+Union-Managed deployments add a management connection from Union.ai to the customer's Kubernetes API.
 Enterprise customers can further restrict the client-to-data-plane path with the [Sovereign Data Plane](./architecture/sovereign-data-plane) option.
 No inbound firewall rules are required on the customer's external network perimeter under either configuration.
 
@@ -49,7 +50,9 @@ Union.ai handles upgrades, monitoring, and provisioning, while maintaining stric
 
 In **Self-Managed** deployments, the customer operates their data plane independently.
 The customer is responsible for all aspects of data plane management, including upgrades, monitoring, and provisioning.
-Union.ai has no access to the customer's infrastructure: the only pathway between Union.ai and the customer's network is an outbound-initiated direct gRPC connection from the data plane carrying orchestration metadata.
+Unlike in Union-Managed deployments, Union.ai has no management connection to the customer's Kubernetes API.
+The data plane opens an outbound direct gRPC connection to the control plane, which carries orchestration metadata.
+Under the default tier, it also opens the outbound [Direct-to-Data-Plane tunnel](./architecture/network#direct-to-data-plane-tunnel), through which clients reach the data plane.
 
 Independently of deployment model, Enterprise customers can elect the [Sovereign Data Plane](./architecture/sovereign-data-plane) tier, under which the client-to-data-plane path runs through a customer-managed internal load balancer reachable only from the corporate VPN: no third-party network on the path, and no client route into the data plane from outside the customer's corporate network.
 
