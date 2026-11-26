@@ -23,7 +23,7 @@ Either way, a new organization starts with a 30-day free [Team trial](./team-tri
 ## The path
 
 1. **Subscribe**, if you pay through a marketplace: [subscribe on AWS Marketplace](./aws-marketplace) and follow the handoff to Union.ai, or buy Union.ai Team on Google Cloud Marketplace.
-2. **[Create your account and organization](./create-organization).** Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on.
+2. **[Create your account and organization](./create-organization)** on the **Sign up** page. Your organization is your team's workspace: it groups your team members, projects, tasks, apps and so on. To return to an organization later, [log in](./create-organization#log-in-later).
 3. **[Run your first workflow locally](./run-locally).** Run a workflow on your own machine and follow it in the Union.ai UI, with no cluster. Optional, but the quickest way to see Union.ai working.
 
 Then set up your [Self-Managed deployment](../selfmanaged/_index): provision your cloud resources on [AWS](../selfmanaged/aws/_index), [GCP](../selfmanaged/gcp/_index), or [Azure](../selfmanaged/azure/_index), and [connect your cluster](../selfmanaged/connect-a-cluster). Or, in the **Add a cluster** wizard, have Union.ai build a [Union-Managed](../byoc/_index) data plane in your cloud account, with no cloud resources to provision first.

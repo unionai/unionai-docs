@@ -18,12 +18,14 @@ A Google or Microsoft account for work. Union.ai sign-up is currently only avail
 
 ## Create your account
 
-Go to [signup.hosted.unionai.cloud](https://signup.hosted.unionai.cloud) and select **Continue with Google** or **Continue with Microsoft**. Choose the account you want to use for Union.ai.
+Go to the **Sign up** page at [signup.hosted.unionai.cloud/signup](https://signup.hosted.unionai.cloud/signup) and select **Continue with Google** or **Continue with Microsoft**. Choose the account you want to use for Union.ai.
 
 ![The Sign up for Union.ai page, offering Continue with Google, Continue with Microsoft, and Sign up via AWS Marketplace](../../_static/images/deployment/marketplace/sign-up/create-account.png)
 
+After you sign in, Union.ai lists any organizations your company already has. Select **Create new organization**. If you came from AWS Marketplace, you go straight to the organization form instead.
+
 > [!NOTE] Paying through AWS Marketplace?
-> If you want the charges on your AWS bill, select **Sign up via AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. That works wherever your cluster runs: how you pay is separate from where your data plane lives. Otherwise, sign up directly. Either way, your organization starts with a 30-day free trial.
+> If you want the charges on your AWS bill, select **AWS Marketplace** on the sign-up page and [subscribe there](./aws-marketplace) first; you return to this step after you complete the subscription. That works wherever your cluster runs: how you pay is separate from where your data plane lives. Otherwise, sign up directly. Either way, your organization starts with a 30-day free trial.
 
 ## Create your organization
 
@@ -44,6 +46,10 @@ Union.ai sets up your organization in about thirty seconds. You'll see each step
 ## Open your organization
 
 When setup finishes, Union.ai takes you to your organization's home page. Your organization's address is in your browser's address bar. Its form depends on the region you chose: `<your-org>.hosted.unionai.cloud` for `us-east-2`, and `<your-org>.<region>.unionai.cloud` for the other regions (for example, `<your-org>.eu-west-2.unionai.cloud`). You'll need it when you [set up the CLI](./run-locally#set-up-the-cli).
+
+## Log in later
+
+To return to an organization, go to the **Log in** page at [signup.hosted.unionai.cloud/login](https://signup.hosted.unionai.cloud/login) and select **Continue with Google** or **Continue with Microsoft**. Union.ai lists your company's organizations. Choose one, or select **Create new organization**. If your browser remembers the organization you used last, it appears first as **Continue to** your organization, marked **Last used**. Union.ai doesn't pick an organization for you, even when there is only one. Each organization controls its own access, so you can open only those you are a member of.
 
 ## Choose how to start
 
