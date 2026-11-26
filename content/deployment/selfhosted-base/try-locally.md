@@ -15,7 +15,7 @@ Nothing is authenticated and everything runs on one machine, so use it to try th
 ## Prerequisites
 
 - Docker, with at least 4 CPUs and 8 GB of memory available to it. Docker Desktop and OrbStack work; Apple's `container` runtime and socktainer don't.
-- Python 3.10 or later.
+- Python 3.11 or later.
 - Ports `30080`, `30566`, and `36443` free on your machine.
 
 ## Start Union.ai
@@ -133,7 +133,7 @@ kubectl -n onebox patch serviceaccount default -p '{"imagePullSecrets": [{"name"
 ## Stop, resume, and delete
 
 ```shell
-flyte stop onebox                     # pause it; flyte start Self-Hosted Base resumes where it left off
+flyte stop onebox                     # pause it; flyte start onebox resumes where it left off
 flyte stop onebox --delete            # remove the container; runs and data stay in a Docker volume
 flyte stop onebox --delete --volume   # remove everything
 ```

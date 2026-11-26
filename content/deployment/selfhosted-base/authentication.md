@@ -19,7 +19,7 @@ Two kinds of clients go through the proxy:
 
 | Value | Default | Holds |
 |---|---|---|
-| `identity.subjectHeaders` | `[X-Forwarded-User]` | The user's stable ID. Required: a request without it is anonymous. |
+| `identity.subjectHeaders` | `[X-Forwarded-User]` | The user's stable ID. If no subject is set, the email is used instead; a request with neither is anonymous. |
 | `identity.emailHeaders` | `[X-Forwarded-Email]` | Email |
 | `identity.nameHeaders` | `[X-Forwarded-Preferred-Username]` | Display name |
 | `identity.groupsHeaders` | `[X-Forwarded-Groups]` | Comma-separated groups |
@@ -32,7 +32,7 @@ The defaults match oauth2-proxy.
 
 Self-Hosted Base also has to be reachable **only** through the proxy. Make sure of it with one or both of these:
 
-- `networkPolicy.proxyFrom`: only the proxy's pods, or its address range, can reach port `80`. See [Authorization](./authorization#network-policy).
+- `networkPolicy.proxyFrom`: only the proxy's pods, or its address range, can reach port `80`. The chart creates the policy only with `authz.enabled` or `networkPolicy.enabled: true`. See [Authorization](./authorization#network-policy).
 - `identity.proxySecret`: the proxy adds a shared secret header to each request, and Self-Hosted Base ignores identity headers on requests without it.
 
 Once requests carry an identity, turn on [Authorization](./authorization) to decide what each user can do.
@@ -62,6 +62,7 @@ authMetadata:
 identity:
   logoutRedirect: /oauth2/sign_out
 networkPolicy:
+  enabled: true
   proxyFrom:
     - podSelector:
         matchLabels:
@@ -157,7 +158,7 @@ flyte create config --endpoint <host> --org onebox --project default --domain de
 flyte run hello.py main
 ```
 
-The first command opens a browser to sign in at the IdP. After that the CLI refreshes its token itself.
+The first time, `flyte run` opens a browser to sign in at the IdP. After that the CLI refreshes its token itself.
 
 If `<host>`'s certificate is issued by a private CA, point the CLI at the CA certificate in `.flyte/config.yaml`:
 
@@ -225,6 +226,7 @@ authMetadata:
   flyteClient:
     clientId: <CLI application client ID>
 networkPolicy:
+  enabled: true
   proxyFrom:
     - ipBlock:
         cidr: <VPC CIDR>

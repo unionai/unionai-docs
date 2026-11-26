@@ -32,6 +32,8 @@ The chart pulls three public images from GitHub's container registry, tagged wit
 | `ghcr.io/unionai/selfhosted-base-console` | `console.image.repository` |
 | `ghcr.io/unionai/envoy` (only with apps on) | `serving.gateway.envoy.image.repository` |
 
+With apps on, the chart also runs Knative Serving from `gcr.io/knative-releases` images pinned by digest, unless you set `serving.knative.install: false`. See [Apps](./apps#1-knative-serving).
+
 With the [image builder](./image-builder), task pods also pull `ghcr.io/unionai/imagebuilder/build-image` and `frontend-v2`. [`flyte start onebox`](./try-locally) runs a different image, `ghcr.io/unionai/onebox`, with the server and UI images preloaded; its add-ons and image builds pull the rest when they need them.
 
 For an airgapped install or a private mirror, copy each image with all its architectures, point these values at your copies, and add the mirror's pull secret to `imagePullSecrets` if it needs one.

@@ -93,7 +93,7 @@ serving:
   publicURLPattern: https://platform.example.com/union/apps/%s/
 ```
 
-The path must be `<basePath>/apps/%s/`. Everything else under `basePath` belongs to Self-Hosted Base (the UI and its REST routes), and Self-Hosted Base refuses to start with apps anywhere they would shadow it. Requests reach an app with its path intact, and the app finds the path in `_U_APP_BASE_PATH`. The SDK's FastAPI and Streamlit apps serve under it on their own; pass it to other servers, such as Jupyter's `base_url`. For servers that only serve at `/`, set `serving.stripAppPathPrefix: true`: the path is removed before the request reaches the app, and sent as `X-Forwarded-Prefix`.
+The path must be `<basePath>/apps/%s/`. Everything else under `basePath` belongs to Self-Hosted Base (the UI and its REST routes), and Self-Hosted Base refuses to start with apps anywhere they would shadow it. Requests reach an app with its path intact, and the app finds the path in `_U_APP_BASE_PATH`. The SDK's FastAPI and Streamlit apps don't read it and serve at `/`. Pass the path to servers that can serve under one, such as Jupyter's `base_url`. For servers that only serve at `/`, set `serving.stripAppPathPrefix: true`: the path is removed before the request reaches the app, and sent as `X-Forwarded-Prefix`.
 
 > [!WARNING] Apps on Self-Hosted Base's host share its origin
 > Path-based apps on the host that serves the UI share its origin with the UI and everything else on that host. An app's script can make requests as the user who opens the app, so use them only for apps whose authors you trust as much as the platform.

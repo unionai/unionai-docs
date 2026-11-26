@@ -69,6 +69,6 @@ Run `helm upgrade`. If your Prometheus serves under a path prefix, include it, f
 
 | Symptom | Cause and fix |
 |---|---|
-| The Metrics tab says the action ran too briefly | Metrics need at least two scrapes of the task's pod. With a one-minute scrape interval, tasks shorter than about two minutes have no CPU chart. |
+| The Metrics tab says "No data (action under 30 seconds)" | Self-Hosted Base shows no metrics for an action attempt that ran less than 30 seconds. |
 | Memory charts render but CPU charts are empty | CPU usage is a rate over two cAdvisor samples. Wait for a second scrape, or lower the scrape interval. |
 | Requested and limit lines are missing | kube-state-metrics isn't scraped, or doesn't watch Self-Hosted Base's namespace. |
