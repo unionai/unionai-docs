@@ -161,7 +161,7 @@ The **Installation progress** panel on the cluster's page tracks two phases:
 | **Installing the Union agent** | The agent starts in your cluster and connects out to Union.ai. The panel shows the connection status. |
 | **Installing the Union operator** | Union.ai installs the data plane through that connection. The panel shows the cluster's health. |
 
-Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later. Until it finishes, the cluster shows as **Unhealthy** at the top of the page. That is expected during the install.
+Only the first phase needs you. Once the agent connects, Union.ai installs the data plane itself, so there is nothing more to run. The second phase takes a few minutes on a new cluster, mostly spent pulling images. You can leave the page while it runs and come back to it later. Until it finishes, the cluster shows as **Setting up** at the top of the page. If a phase fails, the header shows the cluster's actual health instead.
 
 If you check progress with `kubectl`, the agent runs in the `dataplane-agent` namespace, and the data plane installs into the namespace you entered when you registered the cluster, or `union` if you left it empty.
 
