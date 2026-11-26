@@ -51,7 +51,7 @@ To run an agent built with the OpenAI Agents SDK, use `flyteplugins-agents-opena
 
 ## Route calls through the Inference Gateway
 
-To add budgets, fallbacks, and guardrails, [add OpenAI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider) using the same secret, then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). See [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
+To add budgets, fallbacks, and guardrails, [add OpenAI to the Inference Gateway](../inference-gateway/providers#add-a-hosted-provider) with an organization-wide secret, then [point your client at the gateway](../inference-gateway/use-from-tasks-and-apps). The gateway can't use the project-scoped secret created above, so store the key again without `--project` and `--domain`. If your organization has more than one cluster pool, also pass `--cluster-pool` with the gateway's pool. See [Org-wide secrets in a multi-cluster deployment](../../tasks/task-configuration/secrets#org-wide-secrets-in-a-multi-cluster-deployment) and [Choose direct calls or the gateway](./_index#choose-direct-calls-or-the-gateway).
 
 {{< /markdown >}}
 {{< /variant >}}
