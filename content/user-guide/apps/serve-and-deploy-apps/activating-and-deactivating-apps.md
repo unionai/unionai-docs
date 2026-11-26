@@ -36,12 +36,6 @@ Deactivate an app when you no longer need it:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=typical-deployment-workflow lang=python >}}
 
-### Blue-green deployment
-
-For zero-downtime deployments:
-
-{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=blue-green-deployment lang=python >}}
-
 ## Using CLI
 
 ### Activate
@@ -69,9 +63,8 @@ For all available options, see the [CLI reference](../../../api-reference/flyte-
 
 1. **Test before deploying**: Test with serve or a dry run before deploying
 2. **Version management**: Keep track of which version is active
-4. **Blue-green deployments**: Use blue-green for zero-downtime
-5. **Monitor**: Monitor apps after activation
-6. **Cleanup**: Deactivate and remove old versions periodically
+3. **Monitor**: Monitor apps after activation
+4. **Cleanup**: Deactivate and remove old versions periodically
 
 ## Automatic activation with serve
 
