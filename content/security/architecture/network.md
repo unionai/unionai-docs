@@ -12,9 +12,9 @@ The network architecture reinforces the [two-plane separation](./two-plane-separ
 
 ## Outbound-only model
 
-All network connections between the data plane and Union.ai are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter.
+All orchestration and customer-data connections between the data plane and Union.ai are initiated by the data plane. Under the default tier, the customer's network requires only standard outbound HTTPS access to Cloudflare edge nodes. No inbound firewall rules, port forwarding, or VPN configuration are needed at the customer's external perimeter. In Union-Managed deployments, Union.ai also connects to the cluster's Kubernetes API to manage the cluster. That connection uses the public API endpoint unless a private endpoint is configured. See [Private connectivity (Union-Managed)](./private-connectivity).
 
-At the external perimeter, this model eliminates the inbound attack surface entirely. There are no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. The customer's external network perimeter remains unaffected by the Union.ai integration. Firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
+At the external perimeter, this model eliminates the inbound attack surface for orchestration and customer-data traffic. These paths add no externally-listening services on the customer's network for an attacker to discover through port scanning or exploit through service vulnerabilities. For these paths, the customer's external network perimeter remains unaffected by the Union.ai integration, and firewall management at the perimeter is simplified to a single rule: permit outbound HTTPS, which most enterprise networks already allow.
 
 The trust model is customer-initiated: the data plane decides when and whether to connect, and the customer can sever either channel at any time by blocking outbound traffic or shutting down the data plane operator.
 
@@ -53,13 +53,13 @@ All communication paths in the system use encryption. No unencrypted communicati
 | Client to Object Store | HTTPS (presigned URL) | TLS 1.2+ (cloud provider enforced) |
 | Fluent Bit to Log Aggregator | Cloud provider SDK | TLS (cloud-native) |
 | Task Pods to Object Store | Cloud provider SDK | TLS (cloud-native) |
-| Union.ai to Customer Kubernetes API (Union-Managed only) | PrivateLink / PSC | TLS (private connectivity) |
+| Union.ai to Customer Kubernetes API (Union-Managed only) | Public Kubernetes API endpoint by default; PrivateLink (EKS) or PSC (GKE) when a private endpoint is configured | TLS |
 
-For details on the Union-Managed private management connection, see [Private connectivity (Union-Managed)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
+For details on the Union-Managed management connection, see [Private connectivity (Union-Managed)](./private-connectivity). For the concrete outbound ports and endpoints the data plane connects to, see [Egress requirements](#egress-requirements) below.
 
 ## Egress requirements
 
-Because every connection is [outbound-only](#outbound-only-model), configuring network access for the data plane is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to.
+The orchestration channel and the Direct-to-Data-Plane tunnel are [outbound-only](#outbound-only-model), so configuring network access for them is a matter of permitting a small set of outbound destinations -- there are no inbound firewall rules, port forwarding, or listening services to open for them. This section makes that model concrete: the specific destinations, ports, and protocols the data plane initiates connections to. In Union-Managed deployments, Union.ai's management connection to the cluster's Kubernetes API is separate: it reaches the API endpoint, which is public by default. See [Private connectivity (Union-Managed)](./private-connectivity).
 
 | Source (data plane) | Destination | Port / protocol | Purpose |
 |---|---|---|---|
