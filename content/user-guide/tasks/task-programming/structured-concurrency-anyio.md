@@ -1,6 +1,6 @@
 ---
 title: Structured concurrency with anyio
-description: Use anyio or trio instead of asyncio, since the graph is built from what you await.
+description: Use anyio task groups on the asyncio backend instead of raw asyncio calls.
 icon: diagram-3
 weight: 24
 variants: +flyte +union
@@ -8,10 +8,10 @@ variants: +flyte +union
 
 # Structured concurrency with anyio
 
-Flyte builds a task's dependency graph from what you `await` — not from any particular async library.
+In Flyte, ordering comes from what you `await`, not from any particular async library.
 `asyncio` is the default and the one used throughout the [Fanout](./fanout), [Controlling parallel execution](./controlling-parallelism), and [Task dependencies and ordering](./task-dependencies) guides, but it is not the only option.
-Any structured-concurrency runtime that drives coroutines works, and [`anyio`](https://anyio.readthedocs.io/) is a popular one.
-Its **task groups** give you a top-level alternative to raw `asyncio.gather` / `asyncio.create_task`, with clearer lifetime and error-propagation semantics.
+Task calls wait on `asyncio` futures, so a library that runs on top of `asyncio`, such as [`anyio`](https://anyio.readthedocs.io/) on its `asyncio` backend, works. Runtimes with their own event loop, such as `trio`, don't.
+`anyio`'s **task groups** give you a top-level alternative to raw `asyncio.gather` / `asyncio.create_task`, with clearer lifetime and error-propagation semantics.
 
 Use `anyio` when you want structured concurrency — a scope that owns the tasks it spawns, waits for all of them on exit, and cancels the siblings automatically if one fails — instead of tracking `asyncio.create_task` handles by hand.
 
@@ -65,7 +65,7 @@ async def predict_batch(requests: list[InferenceRequest]) -> list[float]:
 What happens here mirrors an `asyncio.gather` fanout, but with structured-concurrency guarantees:
 
 1. **`start_soon` schedules each `predict_one`** into the group. As with `asyncio`, Flyte runs each action in its own container, so the batch executes in true parallel across the cluster — the runtime you use to express concurrency does not change how Flyte distributes the work.
-2. **Leaving the `async with` block is the fan-in edge.** The group blocks until all spawned tasks finish, exactly as `await asyncio.gather(...)` would. `predict_batch` cannot return until every prediction is in.
+2. **Leaving the `async with` block is the fan-in.** The group blocks until all spawned tasks finish, exactly as `await asyncio.gather(...)` would. `predict_batch` cannot return until every prediction is in.
 3. **`ResultCapture` collects the return values**, which you read with `.result()` after the group closes.
 
 > [!NOTE]
@@ -76,11 +76,11 @@ What happens here mirrors an `asyncio.gather` fanout, but with structured-concur
 Reach for `anyio` when:
 
 - You want **structured concurrency** — spawned work is scoped to a block, awaited on exit, and cancelled together on error — rather than manually pairing `asyncio.create_task` handles with `asyncio.gather`.
-- Your code (or a library you depend on) already uses `anyio` or `trio`, and you want one consistent concurrency model.
+- Your code (or a library you depend on) already uses `anyio`, and you want one consistent concurrency model.
 
 Stay with `asyncio` when:
 
 - You just need to fan out and collect results — `await asyncio.gather(...)` is simpler (see [Fanout](./fanout)).
 - You need fine-grained, dependency-driven scheduling where different consumers await different producers (see [Task dependencies and ordering](./task-dependencies)).
 
-Either way, the underlying model is the same: Flyte reads the dependency graph from your `await`s and turns concurrent coroutines into distributed parallel actions.
+Either way, the underlying model is the same: ordering comes from your `await`s, and Flyte runs each task call as its own action, so concurrent coroutines become parallel actions.

@@ -31,7 +31,8 @@ Consider this example where `main` exits after 10 seconds, but it has spawned a 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/abort-tasks/action_lifetime.py" lang="python" >}}
 
 When `main` returns after 10 seconds, the `sleep_for` action (which still has 20 seconds remaining) is automatically aborted.
-The `sleep_for` task receives an `asyncio.CancelledError`, giving it a chance to handle the cancellation gracefully.
+In a remote run, aborting `sleep_for` deletes its pod, and Kubernetes sends the task SIGTERM, then SIGKILL after the termination grace period.
+The task doesn't receive an `asyncio.CancelledError`, so the `except asyncio.CancelledError` block in `sleep_for` doesn't run.
 
 ## Canceling actions programmatically
 

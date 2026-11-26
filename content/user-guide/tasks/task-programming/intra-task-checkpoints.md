@@ -114,7 +114,9 @@ restores the model, optimizer, and epoch from there:
 {{< markdown >}}
 `transformers.Trainer` writes `checkpoint-<step>` directories under its
 `output_dir` (here, every epoch via `save_strategy="epoch"`). A `TrainerCallback`
-mirrors that directory to Flyte after each save:
+mirrors that directory to Flyte in `on_epoch_end`. `Trainer` calls `on_epoch_end`
+before it writes that epoch's checkpoint, so each upload holds the previous epoch's
+checkpoint, and the last epoch's checkpoint isn't uploaded:
 {{< /markdown >}}
 
 <br>

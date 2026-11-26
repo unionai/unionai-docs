@@ -232,6 +232,8 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 
 ### 4. Limit fanout for system stability
 
+{{< variant union >}}
+{{< markdown >}}
 Flyte tracks a bounded number of actions per run for monitoring and visualization:
 
 - **Current limit**: 200k actions per run
@@ -247,6 +249,8 @@ summed across every map and fanout. Note that per-map `concurrency` does **not**
 throttles how many actions run *at once*, not how many the run creates in total, so only batching
 reduces the count. For how the two controls compose,
 see [Per-map concurrency vs. the run-level action cap](../tasks/task-programming/controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap).
+{{< /markdown >}}
+{{< /variant >}}
 
 **Example: Control fanout with batching**
 
@@ -368,7 +372,7 @@ Follow this workflow to optimize your Flyte workflows:
 5. **Reusable containers**: Enable reusable containers to eliminate `t`.
 6. **Traces**: Use traces for lightweight operations within tasks.
 7. **Cache**: Enable caching for deterministic, expensive tasks.
-8. **Limit fanout**: Keep total actions below 200k.
+8. **Limit fanout**: Batch work to keep the total number of actions in a run down{{< variant union >}}, below 200k{{< /variant >}}.
 9. **Monitor**: Use the UI to monitor execution and identify issues.
 10. **Iterate**: Continuously refine based on performance metrics.
 
@@ -462,7 +466,12 @@ async def process_dataset(items: list[dict]) -> list[dict]:
 
 Reach out to the Union team if you:
 
+{{< variant union >}}
+{{< markdown >}}
 - Need more than 200k tracked actions per run, or need full UI visibility beyond that point
+{{< /markdown >}}
+{{< /variant >}}
+
 - Want to use high-performance metastores (Redis, PostgreSQL) instead of object stores
 - Have specific performance requirements or constraints
 - Need help profiling and optimizing your workflows
