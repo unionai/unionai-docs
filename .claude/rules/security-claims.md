@@ -2,6 +2,7 @@
 paths:
   - "content/security/**"
   - "content/deployment/**"
+  - "content/user-guide/**"
 ---
 
 # Security claims: customer data and the control plane
