@@ -2,7 +2,7 @@
 title: Other frameworks
 description: "Serve models with Ray Serve, LitServe, BentoML, or any other ML serving framework by running its server in a generic `AppEnvironment`."
 icon: cpu
-weight: 6
+weight: 7
 variants: +flyte +union
 keywords:
   - Ray Serve

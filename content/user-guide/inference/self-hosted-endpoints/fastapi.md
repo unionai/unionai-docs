@@ -2,7 +2,7 @@
 title: FastAPI
 description: "Serve any Python model behind a custom REST API on your own compute with FastAPI, for models and request shapes an LLM server doesn't cover."
 icon: cpu
-weight: 5
+weight: 6
 variants: +flyte +union
 keywords:
   - FastAPI model serving

@@ -1,6 +1,6 @@
 ---
 title: Native app integrations
-description: Use pre-built environments for FastAPI, vLLM, and SGLang, or serve frameworks like Streamlit and Ollama with the generic `AppEnvironment`.
+description: Use pre-built environments for FastAPI, vLLM, SGLang, and oMLX, or serve frameworks like Streamlit and Ollama with the generic `AppEnvironment`.
 icon: plugin
 weight: 3
 variants: +flyte +union
@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Native app integrations
 
-Flyte ships pre-built environment classes for FastAPI, vLLM, SGLang, and the Flyte webhook, so you can deploy those app types without writing the integration glue yourself: configure your app, image, resources, and scaling, and Flyte handles the rest. Streamlit and Ollama have no dedicated class; their pages show how to serve them with the generic [`AppEnvironment`](../build-apps/_index).
+Flyte ships pre-built environment classes for FastAPI, vLLM, SGLang, oMLX, and the Flyte webhook, so you can deploy those app types without writing the integration glue yourself: configure your app, image, resources, and scaling, and Flyte handles the rest. Streamlit and Ollama have no dedicated class; their pages show how to serve them with the generic [`AppEnvironment`](../build-apps/_index).
 
 > [!TIP]
 > If you're new to apps in Flyte, start with [Introducing apps](../../get-started/core-concepts/introducing-apps) for an overview, then see [Build apps](../build-apps/_index) to learn how to build custom app environments from scratch.
@@ -32,6 +32,7 @@ For app types not covered here, build a custom [`AppEnvironment`](../build-apps/
 | [vLLM endpoint](../../inference/self-hosted-endpoints/vllm) | [vLLM](https://docs.vllm.ai/) | High-throughput LLM inference with an OpenAI-compatible API |
 | [SGLang endpoint](../../inference/self-hosted-endpoints/sglang) | [SGLang](https://docs.sglang.io/) | Structured generation and LLM serving with an OpenAI-compatible API |
 | [Ollama endpoint](../../inference/self-hosted-endpoints/ollama) | [Ollama](https://ollama.com/) | Lightweight local-style LLM serving with an OpenAI-compatible API |
+| [oMLX endpoint](../../inference/self-hosted-endpoints/omlx) | [oMLX](https://github.com/jundot/omlx) | Local LLM serving on a Mac's Apple Silicon GPU from a devbox, with an OpenAI-compatible API |
 | [Flyte webhook](./flyte-webhook) | [FastAPI](https://fastapi.tiangolo.com/) | Pre-built HTTP endpoints for common Flyte control plane operations |
 
 See [Inference](../../inference/_index) for choosing between serving a model yourself and calling a hosted provider.
@@ -43,6 +44,7 @@ See [Inference](../../inference/_index) for choosing between serving a model you
 - [**vLLM endpoint**](../../inference/self-hosted-endpoints/vllm): Serve large language models with vLLM
 - [**SGLang endpoint**](../../inference/self-hosted-endpoints/sglang): Serve LLMs with SGLang for structured generation
 - [**Ollama endpoint**](../../inference/self-hosted-endpoints/ollama): Serve lightweight LLMs with Ollama
+- [**oMLX endpoint**](../../inference/self-hosted-endpoints/omlx): Serve LLMs on a Mac's Apple Silicon GPU from a devbox with oMLX
 - [**Flyte webhook**](./flyte-webhook): Pre-built webhook for common Flyte operations
 
 {{< subpage-cards >}}
