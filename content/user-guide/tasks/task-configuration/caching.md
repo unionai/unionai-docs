@@ -123,6 +123,33 @@ Use `salt` to vary cache keys without changing function logic:
 - Temporary cache namespaces for experiments.
 - Environment-specific cache isolation.
 
+### Cache expiry
+
+A cached result older than its maximum age is a cache miss, so the task runs again.
+The age counts from when the result was written to the cache.
+
+{{< variant union >}}
+{{< markdown >}}
+Set the maximum age for a task with the `max_age` parameter of `flyte.Cache`, as a `datetime.timedelta` or an integer number of seconds.
+`max_age=0` turns off age-based expiry for the task, and a negative value raises a `ValueError`.
+Requires `flyte` 2.6.13 or later.
+See the [`Cache` API reference](../../../api-reference/flyte-sdk/flyte/cache).
+
+If you don't set `max_age`, the platform's default maximum age applies.
+In a [Union-Managed deployment](../../../deployment/byoc), Union.ai sets that default below your plan's data retention period, so the cache doesn't point to outputs that have been deleted.
+See [Data retention policy](../../../deployment/byoc/data-retention-policy) for the retention period of each plan.
+With `max_age=0`, or a `max_age` longer than that retention period, a cache entry can outlive the outputs it points to.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The maximum age is the `plugins.catalogCache.maxCacheAge` setting of the Flyte backend.
+Its default, `0`, means cached results never expire.
+
+The Flyte backend doesn't apply the task-level `max_age` parameter of `flyte.Cache`, so setting it on a task has no effect.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Caching with `flyte.map`
 
 When you [map a task over a list of inputs](../task-programming/map), each item runs as its own **independent task action** with its own inputs. Caching therefore applies **per element**: configure the cache on the mapped task (via the `@env.task` decorator or the `TaskEnvironment`, exactly as above — there is no separate cache setting on the `flyte.map` call itself), and Flyte computes a cache key for each item individually.
@@ -296,3 +323,4 @@ Local cache behavior:
 - Stored in `local-cache/cache.db`, in the directory that holds your config file (for example `.flyte/local-cache/`), or in `~/.flyte/local-cache/` when no config file is found
 - Only `behavior="auto"` reads from the local cache
 - No project/domain isolation (since running locally)
+- No expiry: `max_age` doesn't apply, and a local entry doesn't expire
