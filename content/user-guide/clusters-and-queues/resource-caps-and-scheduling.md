@@ -366,9 +366,9 @@ policies consider actions in the order they were queued.
 |---|---|---|
 | Setting | `greedy_capacity` | `strict_fifo` |
 | When the next action does not fit | Skips it and schedules the actions behind it that fit | Stops and waits for it |
-| Order | First come, first served among the actions that fit | First come, first served (on very deep queues, ordering is best effort) |
+| Order | First come, first served among the actions that fit | First come, first served (on very deep queues or under a large backlog, ordering is best effort) |
 | Idle capacity while work is waiting | No | Yes, while the head of the line is blocked |
-| Can a large action be starved? | Yes, while smaller actions keep fitting | No |
+| Can a large action be starved? | Yes, while smaller actions keep fitting | Yes, while smaller actions from other queues on the same clusters keep taking the capacity it waits for |
 | Reusable containers (warm pools) | Actions for a running warm pool keep being scheduled | Actions for a running warm pool wait behind the blocked head |
 | Use it for | Most queues | Gang-style jobs and strict ordering |
 
@@ -400,8 +400,7 @@ runs in reusable containers, and when you want the capacity you pay for to stay
 in use.
 
 A very large action can wait a long time when smaller ones keep arriving and
-keep fitting. If a queue carries both, move the large jobs to their own strict
-FIFO queue, or give them a
+keep fitting. If a queue carries both, give the large jobs a
 [`max_queued_time`](../tasks/task-configuration/retries-and-timeouts#max_queued_time-fail-fast-when-capacity-isnt-available)
 so they fail after a set wait.
 
@@ -411,14 +410,19 @@ Set with `--scheduling strict_fifo`.
 
 The queue schedules actions in arrival order. When the action at the head of
 the line does not fit, the queue schedules nothing behind it until it does. On
-a very deep queue, the order is best effort: the scheduler sorts each batch of
-waiting actions it reads, not the whole queue. As running work finishes, the freed capacity accumulates for the head of
-the line, and later, smaller actions cannot take it.
+a very deep queue, or when the scheduler has a large backlog of waiting actions,
+the order is best effort: the scheduler sorts each batch of waiting actions it
+reads, not the whole queue. As running work finishes, the scheduler sets freed
+capacity aside for the head of the line. The hold isn't reliable. It can lapse
+when the scheduler has a large backlog of waiting actions, or when the queue is
+at its action concurrency cap. Smaller actions from other queues on the same
+clusters can then take the capacity, and a large action at the head can wait
+behind them for a long time.
 
 Use it for gang-style jobs. A distributed training job that needs 32 GPUs at
 once starts only when 32 are free together. Under greedy capacity, a steady
-stream of one-GPU actions can take each GPU as it frees up, and the large job
-never starts. Also use it when work must start in the order it was submitted.
+stream of one-GPU actions in the same queue can take each GPU as it frees up,
+and the large job never starts. Also use it when work must start in the order it was submitted.
 
 Capacity sits idle while the head of the line waits, and every action behind it
 waits too, including the ones that would fit.
@@ -447,7 +451,8 @@ down, and the next action then starts cold.
 
 Put work that runs in reusable containers on a greedy capacity queue. If the
 same team also runs gang-style jobs, give those jobs their own strict FIFO
-queue.
+queue, and give them a `max_queued_time`: smaller actions from the greedy queue
+can still take capacity the gang job waits for.
 
 ### When the line is blocked
 
@@ -457,7 +462,7 @@ actions waiting behind it, and the `flyte get queue --watch` table marks the
 queue as blocked. In Python, `Queue.details` returns `head_blocked` and
 `head_blocked_since`.
 
-A blocked head clears as running work finishes. To let the waiting actions that
+A blocked head clears once enough capacity is free for it. To let the waiting actions that
 fit run now, switch the policy:
 
 ```bash
