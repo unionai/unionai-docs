@@ -17,8 +17,8 @@ name: Build PR
 # Build fidelity (DOC-1333): previews default to the cheap SINGLE-VERSION build
 # — no /docs/latest, no pinned trees, no versions.json. That is a deliberate,
 # documented trade-off (most PRs never touch the assembly), not drift: a PR
-# that touches a versioning surface (versions.toml, the unionai-docs-infra
-# pointer, data/version-manifest.json, .github/workflows/) gets the FULL
+# that touches a versioning surface (versions.toml, the unionai-docs-infra or
+# unionai-examples pointer, data/version-manifest.json, .github/workflows/) gets the FULL
 # multi-version assembly (~3x build time) so its preview matches production in
 # exactly the dimension under test. Both modes run the same shared script as
 # the push deploy (unionai-docs-infra/scripts/ci-build-dist.sh).
@@ -93,7 +93,10 @@ jobs:
           # PR's content — that is what a preview is for.
           MODE=single
           CHANGED=$(git diff --name-only "origin/${GITHUB_BASE_REF}...HEAD" 2>/dev/null || true)
-          PATTERN='^(versions\.toml$|unionai-docs-infra$|data/version-manifest\.json$|\.github/workflows/)'
+          # unionai-examples counts: every pinned tree builds with this branch's examples
+          # checkout (DOC-1329), so a pointer move that drops a fragment a pin still
+          # embeds breaks only the multi-version build.
+          PATTERN='^(versions\.toml$|unionai-docs-infra$|unionai-examples$|data/version-manifest\.json$|\.github/workflows/)'
           if echo "$CHANGED" | grep -qE "$PATTERN"; then
             MODE=versions
             echo "versioning surfaces changed by this PR:"
