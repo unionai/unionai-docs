@@ -135,5 +135,10 @@ the file always replaces whatever is stored.
 The control plane decides whether you may write a cluster's node groups. Node
 groups of a cluster that {{< key product_name >}} provisions (Union-Managed) are managed
 by provisioning, so a write to one is refused, and the CLI shows the control
-plane's error. A cluster with no recorded type is refused the same way. On a
+plane's error. To change a Union-Managed cluster's node groups, go to
+**Settings → Clusters** in the console and select **Adjust configuration** at
+the top of the page. It opens {{< key product_name >}}'s node group
+configuration request form in a new tab, where you request the change from
+{{< key product_name >}}. A cluster with no recorded type is refused the same way as a
+Union-Managed one. On a
 cluster you manage, you need permission to manage that cluster.
