@@ -34,7 +34,14 @@ The `on_phase` parameter accepts a single phase or a tuple of phases from `flyte
 
 ## Template variables
 
-All message fields support template variables substituted at delivery time:
+The backend substitutes template variables at delivery time in these fields:
+
+- `notify.Slack`: `message` and `blocks`
+- `notify.Teams`: `title`, `message`, and `card`
+- `notify.Email`: `subject`, `body`, and `html_body`
+- `notify.Webhook`: `body`
+
+The available variables:
 
 | Variable | Description |
 |----------|-------------|
