@@ -13,7 +13,7 @@ To try Union.ai on your machine, [`flyte start onebox`](./try-locally) is quicke
 ## Prerequisites
 
 - Docker, [k3d](https://k3d.io), `kubectl`, and [Helm](https://helm.sh) 3.
-- Python 3.10 or later.
+- Python 3.11 or later.
 
 ## Create the cluster
 
@@ -149,6 +149,8 @@ kubectl -n union port-forward svc/selfhosted-base 8080:80
 ```
 
 Open [http://localhost:8080/v2](http://localhost:8080/v2).
+
+Add a license key before you run anything: open **Settings → License** and select **Get a key**, or set `license.existingSecret`. Without a valid key, Self-Hosted Base is read-only and refuses new runs. See [License key](./_index#license-key).
 
 ## Run a workflow
 
