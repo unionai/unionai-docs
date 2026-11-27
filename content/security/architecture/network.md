@@ -100,6 +100,26 @@ We are currently transition from ingress-nginx to envoy-gateway so please allowl
 > [!NOTE]
 > A forthcoming VPN-based option will let the data plane connect without the Cloudflare Tunnel, making the `cloudflared` egress on TCP 7844 optional. This is not yet available: under the default tier today, the Direct-to-Data-Plane tunnel requires outbound TCP 7844 to the Cloudflare edge. Enterprise customers who need to eliminate the third-party tunnel path now can use the [Sovereign Data Plane](./sovereign-data-plane) tier, which replaces it with a customer-managed internal load balancer reachable only from the corporate VPN.
 
+## Client (CLI, SDK, and UI) network requirements
+
+The `flyte` CLI, the `flyte` SDK, and the browser running the Union.ai UI connect to the destinations below to sign in, register and deploy tasks, upload code and inputs, build images, and read logs and outputs. Every destination in the table is outbound HTTPS on TCP 443, except an internal load balancer under the Sovereign Data Plane, which uses the port it listens on. Use this table for a firewall or proxy exemption request.
+
+| Destination | Port / protocol | Purpose |
+|---|---|---|
+| Your tenant endpoint (`<tenant>.hosted.unionai.cloud`), the endpoint in your `flyte` configuration | TCP 443, HTTPS. The CLI and SDK make Connect RPC calls and negotiate HTTP/2. | Control plane API: sign-in discovery, task registration and deployment, runs, and routing of data-plane requests. The UI is served from the same host. To allowlist by IP address, see [Resolving control plane IP addresses](#resolving-control-plane-ip-addresses). |
+| Your Direct-to-Data-Plane tunnel domain (`<tenant>-<tenant>-tunnel.unionai.cloud`). In [multi-cluster deployments](#per-cluster-routing), each cluster has its own tunnel domain: allow each one. Under the [Sovereign Data Plane](./sovereign-data-plane) tier, the hostname of your internal load balancer instead. | TCP 443, HTTPS (for an internal load balancer, the port it listens on), same transport as the tenant endpoint | Customer-data requests to the data plane `dataproxy`: issuing signed upload and download URLs, uploading task inputs, reading logs and structured outputs. |
+| Your data plane's object store: Amazon S3, Google Cloud Storage, or Azure Blob Storage, at the hostnames in the signed URLs the data plane issues, including regional and bucket-specific hostnames | TCP 443, HTTPS | Uploading code bundles, files, directories, and image build contexts, and downloading outputs, directly through [signed URLs](#direct-to-data-plane-tunnel). |
+| The identity provider your tenant uses for sign-in, at the authorization, token, and device-authorization endpoints listed at `https://<tenant>.hosted.unionai.cloud/.well-known/oauth-authorization-server` | TCP 443, HTTPS | Browser sign-in, device-code sign-in, API key token exchange, and token refresh. The CLI and SDK read these endpoints from your tenant at sign-in. |
+
+If a TLS-inspecting proxy, such as Zscaler or Netskope, sits on this path, exempt the tenant endpoint and the tunnel domain from inspection.
+
+Container registries depend on the image builder:
+
+- With the remote builder (`builder: remote` in your `flyte` configuration), the image is built in your data plane. The client uploads the build context through a signed URL and reaches no container registry.
+- With the local builder, the default when no builder is configured, Docker on your machine pulls base images and pushes the built image. Allow the registries your images pull from and the registry you push to.
+
+The CLI and SDK also send crash reports to Sentry at `o4507249423810560.ingest.us.sentry.io`. They don't need this destination to work. Set `DO_NOT_TRACK=1` to turn crash reporting off.
+
 ## Verification
 
 ### Outbound-only model
