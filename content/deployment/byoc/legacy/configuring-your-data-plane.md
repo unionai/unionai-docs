@@ -51,7 +51,7 @@ You can further partition your deployment so that each Flyte domain-project pair
 
 In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by the type of workloads that will run on them, or by region (Enterprise plan).
 
-See [Multi-cluster](../multi-cluster) for more information.
+Tell the Union.ai team which domains or domain-project pairs each cluster serves, and how to group the clusters into pools.
 
 ## Account ID
 
