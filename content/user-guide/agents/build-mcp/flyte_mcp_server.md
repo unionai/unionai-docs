@@ -200,10 +200,10 @@ mcp_env = FlyteMCPAppEnvironment(
 | `run` | `get_run`, `get_run_io`, `abort_run`, `list_runs`, `wait_for_run`, `rerun_run` | Monitoring and controlling runs |
 | `action` | `list_actions`, `get_action`, `abort_action` | Debugging a run step by step: phases, attempts, failure details, timing |
 | `logs` | `get_logs` | Reading task logs |
-| `app` | `get_app`, `list_apps`, `activate_app`, `deactivate_app` | Managing deployed apps |
-| `trigger` | `list_triggers`, `get_trigger`, `activate_trigger`, `deactivate_trigger` | Managing triggers |
+| `app` | `get_app`, `list_apps`, `activate_app`, `deactivate_app`, `delete_app` | Managing deployed apps (`delete_app` requires `flyte` 2.13.5 or later) |
+| `trigger` | `list_triggers`, `get_trigger`, `activate_trigger`, `deactivate_trigger`, `create_trigger`, `delete_trigger` | Managing triggers (`create_trigger` and `delete_trigger` require `flyte` 2.13.5 or later) |
 | `project` | `list_projects`, `get_project` | Discovering projects and domains |
-| `secret` | `list_secrets`, `create_secret`, `delete_secret` | Managing secrets (names only — values are never returned) |
+| `secret` | `list_secrets`, `get_secret`, `create_secret`, `update_secret`, `generate_secret`, `delete_secret` | Managing secrets (names and status only — values are never returned; see [Managing secrets](#managing-secrets)). `get_secret`, `update_secret`, and `generate_secret` require `flyte` 2.13.5 or later |
 | `condition` | `list_conditions`, `get_condition`, `signal_condition` | Answering human-in-the-loop gates (`get_condition` requires `flyte` 2.13.5 or later) |
 | `identity` | `whoami` | Confirming which identity and org the server is acting as, and (for a server started with `flyte-mcp` 2.12.2 or later) which config file it was started from |
 | `search` | `search_flyte_sdk_examples`, `search_flyte_docs_examples`, `search_full_docs` | Grounding answers in SDK/docs |
@@ -238,7 +238,7 @@ mcp_env = FlyteMCPAppEnvironment(
 )
 ```
 
-When an allowlist is set, calls targeting anything outside it are rejected. Omitting an allowlist leaves that resource type unrestricted.
+When an allowlist is set, calls targeting anything outside it are rejected. Omitting an allowlist leaves that resource type unrestricted. `create_trigger` must clear both `trigger_allowlist` and `task_allowlist`, because the trigger launches its task. `rerun_run` with `action_name` is checked against that action's task.
 
 ## Enabling the search tools
 
@@ -293,12 +293,34 @@ To page back, call `get_logs` again with `before_line` set to `next_before_line`
 
 The log service streams from the start of the log, so finding the newest lines means reading the whole stream. A call reads for at most its `timeout_s` (default 30), clamped to between 1 second and the server's ceiling. Once lines are arriving, a gap with no new lines also ends the read. If `stopped` is `time_limit`, newer lines may exist: retry with a larger `timeout_s`.
 
+Pass `show_ts=true` to prefix each line with its timestamp. Requires `flyte` 2.13.5 or later.
+
 Two `FlyteMCPAppEnvironment` settings bound the read. Callers can't raise them.
 
 | Setting | Default | Effect |
 |---------|---------|--------|
 | `log_read_timeout_ceiling_s` | `120` | Upper limit on a call's `timeout_s`. Must be at least 1. |
 | `log_idle_timeout_s` | `5` | Seconds without a new line that end the read, once lines are arriving. Must be greater than 0. |
+
+## Managing secrets
+
+Requires `flyte` 2.13.5 or later. In earlier releases, `create_secret` takes the secret's value as an argument.
+
+By default, `create_secret` and `update_secret` take no `value` argument, so the secret's value never passes through the model. Instead, each returns `status: awaiting_value` and a way for the person driving the agent to enter the value:
+
+- **Over stdio**, a `cli_fallback` command, such as `flyte create secret my-secret -p my-project -d development`, for the person to run in their own terminal. It prompts for the value with hidden input.
+
+{{< variant union >}}
+{{< markdown >}}
+- **Over HTTP**, a `url` on the MCP server (under `/secret-input/`) that the person opens to type the value into a form. The link works once and expires after 10 minutes, at the result's `expires_at`. The pending links live in the server's memory, so they last only as long as the server process: run the server as a single replica, and note that if it scales to zero (the default scaling) before the person submits the form, the link is lost.
+{{< /markdown >}}
+{{< /variant >}}
+
+`create_secret` fails without changing anything if the secret already exists, and `update_secret` if it doesn't. Call `get_secret` afterwards: it reports whether the secret exists, its status on each cluster, and `ready: true` once every cluster has it. It never returns the value.
+
+`generate_secret` creates an SSH key pair on the server (`kind` is `ssh-ed25519` by default, or 4096-bit `ssh-rsa`), stores the private key as the secret, and returns only the public key and its fingerprint. It fails without changing anything if the secret already exists.
+
+To let `create_secret` and `update_secret` take a `value` argument, set `allow_inline_secret_values=True` on `FlyteMCPAppEnvironment`, or pass `--allow-inline-secret-values` to `flyte-mcp`. The value then sits in the model's context.
 
 ## Putting it together: a filtered server
 
@@ -375,7 +397,7 @@ OpenCode spawns the `uvx` command for you:
 ## Best practices
 
 1. **Start broad locally, scope down for sharing**: Run with `all` tools via `uvx` while exploring, then enable only the groups or tools you need before deploying a shared server.
-2. **Always allowlist mutating tools**: If `run_task` or app/trigger management is enabled on a shared server, set the corresponding allowlist so an agent can't touch arbitrary resources. No allowlist applies to `abort_run`, `abort_action`, `create_secret`, `delete_secret`, or `signal_condition`, and each belongs to a group (`run`, `action`, `secret`, `condition`). To keep one from the server's agent, pass an explicit `tools=[...]` list that leaves it out, instead of `tool_groups`.
+2. **Always allowlist mutating tools**: If `run_task` or app/trigger management is enabled on a shared server, set the corresponding allowlist so an agent can't touch arbitrary resources. No allowlist applies to `abort_run`, `abort_action`, `create_secret`, `update_secret`, `generate_secret`, `delete_secret`, or `signal_condition`, and each belongs to a group (`run`, `action`, `secret`, `condition`). To keep one from the server's agent, pass an explicit `tools=[...]` list that leaves it out, instead of `tool_groups`.
 3. **Prefer `tools` over `tool_groups` for read-only servers**: An explicit allowlist of read tools is the clearest way to guarantee an agent can't change anything.
 4. **Write specific `instructions`**: Describe what the server does and any constraints (e.g. "only allowlisted tasks can be run"). This guides tool selection and reduces wasted calls.
 5. **Keep auth on**: Leave `requires_auth=True` so only authenticated clients can reach a deployed server. The exception is a server with `protected_resource_metadata` set, which needs `requires_auth=False` and requires a bearer token itself.
@@ -384,33 +406,39 @@ OpenCode spawns the `uvx` command for you:
 
 | Tool | Group | Description |
 |------|-------|-------------|
-| `run_task` | `task` | Run a task |
+| `run_task` | `task` | Run a task. From `flyte` 2.13.5, also takes run settings: `run_name`, `labels`, `env`, `queue`, `service_account`, `max_action_concurrency`, `raw_data_path`, `custom_context`, and `run_project`/`run_domain` to create the run in another project or domain |
 | `get_task` | `task` | Get task details |
-| `list_tasks` | `task` | List tasks |
-| `get_run` | `run` | Get a run |
-| `get_run_io` | `run` | Get run inputs and outputs |
+| `list_tasks` | `task` | List tasks. From `flyte` 2.13.5, `name` lists all versions of one task |
+| `get_run` | `run` | Get a run. From `flyte` 2.13.5, also reports its start and end time, duration, labels, and for a failed run the error's kind and message |
+| `get_run_io` | `run` | Get run inputs and outputs. From `flyte` 2.13.5, `action_name` reads a nested action's |
 | `abort_run` | `run` | Abort a run |
-| `list_runs` | `run` | List runs |
+| `list_runs` | `run` | List runs. From `flyte` 2.13.5, filters by phase, owner (`only_mine`), `paused_only`, `task_version`, creation and update time, and labels |
 | `wait_for_run` | `run` | Wait for a run to finish |
-| `rerun_run` | `run` | Re-run a prior run |
+| `rerun_run` | `run` | Re-run a prior run. From `flyte` 2.13.5: `recover` re-executes only what failed or never ran, `force_rerun_actions` (with `recover`) re-executes named succeeded actions, `action_name` re-runs one action (not with `recover`), and `name`, `labels`, and `env` set the new run's |
 | `list_actions` | `action` | List the actions of a run |
 | `get_action` | `action` | Get action details and timing |
 | `abort_action` | `action` | Abort a single action |
 | `get_logs` | `logs` | Read the newest lines of an action's logs, with a cursor to page back (see [Reading logs](#reading-logs)) |
 | `get_app` | `app` | Get an app |
-| `list_apps` | `app` | List apps |
+| `list_apps` | `app` | List apps. From `flyte` 2.13.5, filters by owner (`only_mine`) and `status` |
 | `activate_app` | `app` | Activate an app |
 | `deactivate_app` | `app` | Deactivate an app |
+| `delete_app` | `app` | Permanently delete an app. Requires `flyte` 2.13.5 or later |
 | `list_triggers` | `trigger` | List triggers |
 | `get_trigger` | `trigger` | Get a trigger |
 | `activate_trigger` | `trigger` | Activate a trigger |
 | `deactivate_trigger` | `trigger` | Deactivate a trigger |
+| `create_trigger` | `trigger` | Create a trigger that runs a registered task on a cron schedule. Requires `flyte` 2.13.5 or later |
+| `delete_trigger` | `trigger` | Permanently delete a trigger. Requires `flyte` 2.13.5 or later |
 | `list_projects` | `project` | List projects |
 | `get_project` | `project` | Get a project |
 | `list_secrets` | `secret` | List secret names |
-| `create_secret` | `secret` | Create a secret |
+| `get_secret` | `secret` | Check whether a secret exists and is ready on every cluster. Requires `flyte` 2.13.5 or later |
+| `create_secret` | `secret` | Create a secret (see [Managing secrets](#managing-secrets)) |
+| `update_secret` | `secret` | Replace an existing secret's value (see [Managing secrets](#managing-secrets)). Requires `flyte` 2.13.5 or later |
+| `generate_secret` | `secret` | Generate an SSH key pair and store the private key as a secret. Requires `flyte` 2.13.5 or later |
 | `delete_secret` | `secret` | Delete a secret |
-| `list_conditions` | `condition` | List the conditions of a run, with each condition's `prompt`, `prompt_type`, `description`, and `timeout_s` (from `flyte` 2.13.5). If a condition's details fail to load, those fields are null and its `details_error` says why |
+| `list_conditions` | `condition` | List the conditions of a run, with each condition's `prompt`, `prompt_type`, `description`, and `timeout_s` (from `flyte` 2.13.5). If a condition's details fail to load, those fields are null and its `details_error` says why. From `flyte` 2.13.5, pass `action_name` to list only one action's conditions |
 | `get_condition` | `condition` | Get one condition of a run: its prompt, payload type, and timeout. Requires `flyte` 2.13.5 or later |
 | `signal_condition` | `condition` | Signal a waiting condition |
 | `whoami` | `identity` | Show the caller's identity |
