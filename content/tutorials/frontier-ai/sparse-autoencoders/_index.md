@@ -75,7 +75,7 @@ flowchart LR
 | --- | --- |
 | Compute the activations once, and keep them | `cache="auto"` on the harvest task, which returns a `flyte.io.Dir` per layer |
 | Train a grid of SAEs at once | One GPU task per (layer, width), launched together with `asyncio.gather` |
-| Add a width without redoing the rest | Caching on every task, salted with a version for each helper module: a re-run only trains the new grid cells |
+| Add a width without redoing the rest | Caching on the harvest, training, and labeling tasks, salted with a version for each helper module: a re-run only trains the new grid cells |
 | Never pay twice for the same Claude call | `@flyte.trace` on each call, so a retried task replays the recorded answer |
 | Watch training, then read the features | A live report per trainer, and a feature browser tab in the driver's report |
 | Hand the result to other teams | `flyte.artifacts` with a model card |
@@ -283,7 +283,7 @@ so that length could not hint at the answer, and the final run above scored 0.73
 
 ## Add a width without redoing the rest
 
-Every task is cached, so a run that changes one input only redoes the work that depends on it.
+The harvest, training, and labeling tasks are cached, so a run that changes one input only redoes the work that depends on it.
 Add a third width:
 
 ```bash

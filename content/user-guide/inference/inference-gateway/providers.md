@@ -25,7 +25,7 @@ A provider is a source of models behind the gateway: a hosted API such as OpenAI
 
    | Field | Meaning |
    |---|---|
-   | **Provider** | One of the supported providers listed below. |
+   | **Provider** | One of the providers you can add in the console, listed under [Supported providers](#supported-providers) below. |
    | **API key secret** | The Union secret that holds the API key, for example `openai-api-key`. |
    | **Models** | A comma-separated allowlist, for example `gpt-4.1, gpt-4.1-mini`. Leave it empty to allow every model. |
    | **Weight** | The load-balancing weight of the provider's API key among that provider's keys. The gateway gives each hosted provider one key, so the weight doesn't split traffic between providers. Defaults to `1`. |
@@ -38,9 +38,9 @@ The gateway meters hosted providers from its built-in price catalog, so budgets 
 
 ### Supported providers
 
-`openai`, `anthropic`, `azure`, `bedrock`, `vertex`, `gemini`, `mistral`, `cohere`, `groq`, `deepseek`, `xai`, `perplexity`, `cerebras`, `fireworks`, `openrouter`, `huggingface`, `nebius`, `sarvam`, `elevenlabs`, `runway`, `wafer`, `typesafe`.
+In the console, you can add `openai`, `anthropic`, `bedrock`, `vertex`, `fireworks`, and `typesafe`.
 
-The console lists the providers your gateway supports when you add one.
+The console also lists `azure`, `mistral`, `cohere`, `groq`, `deepseek`, `xai`, `perplexity`, `cerebras`, `openrouter`, `huggingface`, `nebius`, `sarvam`, `elevenlabs`, `runway`, and `wafer`, but greys them out, with the tooltip "Coming soon. Ask Union for access."
 
 To call a provider directly from a task or app instead, without the gateway, see [Providers](../providers/_index) in the Inference section.
 
