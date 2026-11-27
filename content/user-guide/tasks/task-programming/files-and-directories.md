@@ -169,6 +169,31 @@ def main() -> int:
     return read_dir(d)
 ```
 
+## Tune uploads to object storage
+
+In task code, `File.from_local` and `Dir.from_local` upload to S3, Google Cloud Storage, and Azure Blob Storage as multipart uploads. Each part is a separate request. Uploading many large files at once can send more requests than the object store accepts, and it throttles the uploads. On S3, this shows up as `503 SlowDown` errors.
+
+Three environment variables control how many requests an upload sends:
+
+| Variable | Default | Controls |
+|---|---|---|
+| `FLYTE_IO_UPLOAD_MAX_CONCURRENCY` | `12` | Parts of one file uploaded at once. Values below 1 are raised to 1. |
+| `FLYTE_IO_BATCH_SIZE` | `32` | Files uploaded at once by `Dir.from_local`. |
+| `FLYTE_IO_UPLOAD_CHUNK_SIZE` | `5242880` (5 MiB) | Minimum part size, in bytes. Values below 5 MiB are raised to 5 MiB. The SDK uses a larger part size for a file too large to upload in 9,000 parts. |
+
+With the defaults, `Dir.from_local` can have up to 384 parts in flight (32 files × 12 parts each). To reduce the request rate, lower `FLYTE_IO_UPLOAD_MAX_CONCURRENCY` and `FLYTE_IO_BATCH_SIZE`. To send fewer requests for the same data, raise `FLYTE_IO_UPLOAD_CHUNK_SIZE`.
+
+The SDK reads these variables when it's imported, so they must be in the task container's environment before the task starts. Setting them in task code has no effect. Set them in the task environment's `env_vars`. For example, `env_vars={"FLYTE_IO_UPLOAD_MAX_CONCURRENCY": "4", "FLYTE_IO_BATCH_SIZE": "8"}` on the `TaskEnvironment` sets them in the container of every task in that environment.
+
+To override the settings for one upload, pass them as arguments:
+
+- `File.from_local` and `File.from_local_sync` take `chunk_size` and `max_concurrency`.
+- `Dir.from_local` and `Dir.from_local_sync` take `batch_size`, `chunk_size`, and `max_concurrency`.
+
+For example, `await File.from_local(path, chunk_size=64 * 1024 * 1024, max_concurrency=2)` uploads in parts of at least 64 MiB, two at a time. A `chunk_size` below 5 MiB is raised to 5 MiB, with a warning.
+
+If `hash_method` is a `HashMethod` that computes the hash during the upload, `File.from_local` uploads in parts of at least 10 MiB, so `FLYTE_IO_UPLOAD_CHUNK_SIZE` changes the part size only when it's above 10 MiB. To set a smaller part size, pass `chunk_size` to the call.
+
 ## JSONL files
 
 Flyte provides typed JSON Lines (JSONL) I/O through the `flyteplugins-jsonl` plugin, which extends `File` and `Dir` with the `JsonlFile` and `JsonlDir` types, adding streaming record-level read/write, optional zstd compression, and automatic shard rotation for large datasets.
