@@ -23,9 +23,9 @@ When you run a Flyte task, your data ends up in two stores: a **database** in th
 
 ## Who manages the stores
 
-* The control plane database (being part of the control plane) is always managed by Union.ai, regardless of whether you are using a Union-Managed or Self-Managed deployment.
+* In a Union-Managed or Self-Managed deployment, the control plane database (being part of the control plane) is managed by Union.ai. In a [Self-Hosted Base](../../../deployment/selfhosted-base/_index) deployment, you provide the PostgreSQL database and manage it.
 
-* The data plane bucket lives in your cloud account. In a Union-Managed deployment, it is managed by Union.ai (as is the entire data plane). In a Self-Managed deployment, you manage the bucket yourself.
+* In a Union-Managed or Self-Managed deployment, the data plane bucket lives in your cloud account. In a Union-Managed deployment, it is managed by Union.ai (as is the entire data plane). In a Self-Managed deployment, you manage the bucket yourself. In a Self-Hosted Base deployment, you provide the bucket and manage it.
 {{< /markdown >}}
 {{< /variant >}}
 

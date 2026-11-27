@@ -17,6 +17,12 @@ This guide covers how to build AI applications, data pipelines, and ML workflows
 
 Programs written using the Flyte 2 SDK can run on either a Union.ai or Flyte OSS back-end. This guide applies to both.
 
+{{< variant union >}}
+{{< markdown >}}
+To try Union.ai on infrastructure you control, [run it on your machine](../../deployment/selfhosted-base/try-locally) with `flyte start onebox`, or install [Self-Hosted Base](../../deployment/selfhosted-base/_index) in your own Kubernetes cluster.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Pure Python, no DSL
 
 Flyte lets you write workflows in standard Python: no domain-specific language, no special syntax, no restrictions.
