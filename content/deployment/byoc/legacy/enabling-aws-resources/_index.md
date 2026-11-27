@@ -11,6 +11,7 @@ variants: -flyte +union
 > [!NOTE] Legacy instructions
 > These are the earlier instructions, in which the Union.ai team provisions the data plane from details you send.
 > They remain for data planes that were set up this way. To create a data plane, use the [Add a cluster wizard](../../data-plane-setup-on-aws) instead.
+> For a data plane created with the wizard, see [Task access to cloud resources](../../task-access-to-cloud-resources) instead.
 
 Components of your Union.ai data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 

@@ -37,6 +37,7 @@ The size you choose in the wizard sets how far the node pools can grow: see **Cl
 
 ## Additional configuration
 
+- [Task access to cloud resources](./task-access-to-cloud-resources) for giving your tasks access to your own buckets, secrets, and other cloud resources
 - [Data retention policy](./data-retention-policy) for controlling stored data lifecycle
 - [Single sign-on setup](./single-sign-on-setup/_index) for OAuth2/OIDC-based authentication
 - [Multi-cluster and multi-cloud](./multi-cluster) for running several clusters, in different accounts or clouds

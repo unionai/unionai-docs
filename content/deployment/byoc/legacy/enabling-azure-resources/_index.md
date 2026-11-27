@@ -11,6 +11,7 @@ variants: -flyte +union
 > [!NOTE] Legacy instructions
 > These are the earlier instructions, in which the Union.ai team provisions the data plane from details you send.
 > They remain for data planes that were set up this way. To create a data plane, use the [Add a cluster wizard](../../data-plane-setup-on-azure) instead.
+> For a data plane created with the wizard, see [Task access to cloud resources](../../task-access-to-cloud-resources) instead.
 
 Components of your Union.ai data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
