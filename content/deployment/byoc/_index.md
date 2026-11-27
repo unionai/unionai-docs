@@ -41,4 +41,8 @@ The size you choose in the wizard sets how far the node pools can grow: see **Cl
 - [Single sign-on setup](./single-sign-on-setup/_index) for OAuth2/OIDC-based authentication
 - [Multi-cluster and multi-cloud](./multi-cluster) for running several clusters, in different accounts or clouds
 
+## Legacy setup
+
+If your data plane wasn't created with the **Add a cluster** wizard, see [Legacy setup](./legacy/_index) for the instructions it was set up with: granting Union.ai access to your cloud account, configuring the data plane, and connecting cloud resources on AWS, GCP, and Azure.
+
 {{< subpage-cards >}}
