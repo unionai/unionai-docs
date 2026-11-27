@@ -69,9 +69,9 @@ The data plane uses two cloud identities to separate platform-level and task-lev
 
 **The backend identity** is used by platform services (Executor, Dataproxy). It has read/write access to the object store buckets and creates, reads, and updates secrets in the data plane's secret store. It is bound to platform service accounts via workload identity federation.
 
-**The worker identity** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs, and read access to secrets, which a task receives when it requests them. It has no other platform-level access.
+**The worker identity** is used by task pods (the containers running user code). It has read/write access to the object store buckets for reading inputs and writing outputs. A task receives the secrets it requests when its pod starts, and in some deployments the worker identity can also read the data plane's secret store directly. In some deployments it can also push and pull images in the data plane's container registry, which image-building tasks use.
 
-In a Union-Managed deployment, Union.ai creates them as `<prefix>-backend` and `<prefix>-worker`, where `<prefix>` is `union-<org>-<cluster>`, shortened to fit the cloud's name limits. In a Self-Managed deployment, they are the identities you create when you provision your cloud resources.
+In a Union-Managed deployment, Union.ai creates them, and their names depend on how the data plane was provisioned: ask Union.ai for the names of yours. In a Self-Managed deployment, they are the identities you create when you provision your cloud resources.
 
 Both identities use cloud-native workload identity federation: IRSA (IAM Roles for Service Accounts) on AWS, Workload Identity on GCP, and Azure Workload Identity on Azure. No static credentials are created, stored, or rotated. The Kubernetes service account annotations bind each pod to the appropriate IAM role automatically.
 
@@ -174,16 +174,16 @@ RBAC controls govern which users and service accounts can deploy applications an
 1. Inspect the IAM roles and their policies:
 
    ```bash
-   aws iam get-role --role-name <prefix>-backend
-   aws iam list-role-policies --role-name <prefix>-backend
-   aws iam list-attached-role-policies --role-name <prefix>-backend
+   aws iam get-role --role-name <backend-role>
+   aws iam list-role-policies --role-name <backend-role>
+   aws iam list-attached-role-policies --role-name <backend-role>
 
-   aws iam get-role --role-name <prefix>-worker
-   aws iam list-role-policies --role-name <prefix>-worker
-   aws iam list-attached-role-policies --role-name <prefix>-worker
+   aws iam get-role --role-name <worker-role>
+   aws iam list-role-policies --role-name <worker-role>
+   aws iam list-attached-role-policies --role-name <worker-role>
    ```
 
-   Replace `<prefix>` with the role name prefix described above. Confirm that the backend role has object store and Secrets Manager read/write access. Confirm that the worker role has object store access and read-only Secrets Manager access.
+   Replace `<backend-role>` and `<worker-role>` with the names of your backend and worker roles. Confirm that the backend role has object store and Secrets Manager read/write access. Confirm that the worker role has object store access, plus read-only Secrets Manager access in deployments that grant it.
 
 2. Verify workload identity annotations on service accounts:
 
