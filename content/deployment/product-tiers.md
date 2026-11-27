@@ -11,7 +11,6 @@ variants: -flyte +union
 Union.ai has two plans, **Team** and **Enterprise**. Every self-service sign-up starts on Team.
 To see your plan, go to **Settings → Plan & Invoices**.
 
-A feature is either in a plan or it isn't. There are no add-ons.
 For rates per action, vCPU, memory, and GPU, see [Union.ai pricing](https://www.union.ai/pricing).
 
 | | Team | Enterprise |
@@ -28,10 +27,9 @@ In the tables below, ✓ means included and – means not included.
 
 | Feature | Team | Enterprise |
 |---|---|---|
-| How you pay | $950 monthly minimum, charged on the 1st and issued back as a $950 usage credit. Unused credit expires at the end of the month. Renews automatically. | Annual commit, paid up front and fully credited. The rate card continues as overage after the commit is consumed. |
+| How you pay | $950 monthly minimum, charged each billing month and issued back as a $950 usage credit. Unused credit expires at the end of the billing month. Renews automatically. | Annual commit, paid up front and fully credited. The rate card continues as overage after the commit is consumed. |
 | Usage rates | The four published monthly ladders | One rate per meter (the bottom of each ladder), with no bands |
 | Monthly action ceiling | None | None |
-| Single-tenant control plane | – | ✓ |
 | Guided Install (one-time) | Standard $5,000, Advanced from $15,000 | Standard $5,000, Advanced from $15,000 |
 
 ### Deployment
@@ -54,7 +52,7 @@ In the tables below, ✓ means included and – means not included.
 | Fanout (actions per run) | 200,000 | Custom |
 | Apps | ✓ | Custom |
 | Named artifacts | Unlimited. Each version is billed as an action. | Unlimited. Each version is billed as an action. |
-| Tracked runs | Unlimited. Each run is billed as an action. | Unlimited. Each run is billed as an action. |
+| Tracked runs | Unlimited. Each finished action of a tracked run is billed at the action ladder's rates, counted on a separate ladder and invoice line. | Unlimited. Each finished action of a tracked run is billed at the action rate, on its own invoice line. |
 | Retention | 30 days, with 90-day trends | Custom, contractual |
 | Extended retention or deletion terms beyond 30 days | – | ✓ |
 
