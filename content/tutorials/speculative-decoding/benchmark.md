@@ -205,7 +205,7 @@ tokens; what matters here is that it is the same for every configuration.
   and its speedup from 4.6x to 6.7x. [Serve and retrain draft models](./serve-and-retrain)
   keeps that gap open as traffic changes.
 - **Agent traffic drafts best.** Tool calls repeat tool names and argument names from the
-  schema, and JSON syntax is predictable. Draft-free methods help only here: `suffix` matches
+  schema, and JSON syntax is predictable. Draft-free methods help most here: `suffix` matches
   the public EAGLE-3 head on agent traffic with no training, and barely helps on chat.
 - **A drafter trained from scratch needs more data.** `dspark-trained` saw 11,728 rows for
   five epochs. It beats EAGLE-3 on agent traffic but trails it on chat and math, where the

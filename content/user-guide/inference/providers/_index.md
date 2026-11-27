@@ -179,7 +179,7 @@ For other providers, use a framework that supports several model providers, such
 
 ## Choose direct calls or the gateway
 
-Calling a provider directly needs the fewest moving parts. The [Inference Gateway](../inference-gateway/_index) supports all of the providers above, including Fireworks, behind one endpoint.
+Calling a provider directly needs the fewest moving parts. The [Inference Gateway](../inference-gateway/_index) puts providers behind one endpoint. In the console, you can add OpenAI, Anthropic, Amazon Bedrock, Vertex AI, Fireworks, and TypeSafe. The console lists other providers but greys them out, with the tooltip "Coming soon. Ask Union for access."
 
 | | Direct call | Inference Gateway |
 |---|---|---|

@@ -79,13 +79,14 @@ GPUs, and [Serve and retrain draft models](./serve-and-retrain) closes the loop.
 - **Traces as data.** Every model call in the agent is a `flyte.trace`, and each agent job
   returns its episodes as a file that nightly retraining collects.
 - **Scheduled, gated retraining.** A cron trigger retrains the draft model every night and
-  promotes it only if its acceptance length beats the current one.
+  promotes it only if its acceptance length beats the current one by at least 2%.
 
 {{< variant union >}}
 {{< markdown >}}
-On Union, each promoted draft model is also published as a versioned artifact with a model
-card, and its training traces as a data artifact with a data card. The serving app follows
-the latest version, and rolling back is one call.
+On Union, running `promote.py` publishes a promoted draft model as a versioned artifact with a
+model card, and its training traces as a data artifact with a data card. Retraining doesn't
+run it for you. An app served from the artifact uses the version that was latest when you
+deployed it, and rolling back is one call.
 {{< /markdown >}}
 {{< /variant >}}
 

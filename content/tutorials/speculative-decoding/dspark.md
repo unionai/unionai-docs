@@ -76,7 +76,9 @@ python serve.py --method dspark
 ```
 
 [Serve and retrain draft models](./serve-and-retrain) covers the app, the agent that sends it
-traffic, and nightly retraining. Every step there takes `--method dspark`.
+traffic, and nightly retraining. Pass `--method dspark` to each command there that picks a
+family. Deploying `flywheel.py` schedules every family, and `promote.py --traces` takes no
+family.
 
 ## Choose a draft model family
 

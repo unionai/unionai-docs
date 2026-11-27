@@ -8,7 +8,7 @@ variants: +flyte +union
 
 # Classical machine learning
 
-Classical models such as gradient-boosted trees, linear models, and random forests train on CPUs in seconds to minutes. The cost is in how many times you train them: one fit per hyperparameter setting, per fold, per feature set. Flyte turns each fit into a task, runs them all at once, and caches every result, so a sweep that took an afternoon on a laptop finishes, given enough cluster capacity, in the time of its slowest trial.
+Classical models such as gradient-boosted trees, linear models, and random forests train on CPUs in seconds to minutes. The cost is in how many times you train them: one fit per hyperparameter setting, per fold, per feature set. Flyte turns each fit into a task and runs them all at once, so a sweep that took an afternoon on a laptop finishes, given enough cluster capacity, in the time of its slowest trial.
 
 ## Define the environments
 
@@ -24,7 +24,7 @@ Load and clean the data in its own task, with `cache="auto"`:
 
 {{< code file="/unionai-examples/v2/user-guide/model-training/classical_ml.py" fragment="data" lang=python >}}
 
-The task returns a `pandas.DataFrame`, which Flyte stores as Parquet in your object store. Every trial receives a reference to the same stored data, and later runs skip the load entirely. See [DataFrames](../tasks/task-programming/dataframes).
+The task returns a `pandas.DataFrame`, which Flyte stores as Parquet in your object store, and later runs skip the load entirely. The driver receives the data as a `pandas.DataFrame`, so each trial call uploads it again, to a new path. See [DataFrames](../tasks/task-programming/dataframes).
 
 ## Score one setting per task
 
@@ -33,7 +33,7 @@ Each hyperparameter setting is one call to an evaluation task:
 {{< code file="/unionai-examples/v2/user-guide/model-training/classical_ml.py" fragment="trial" lang=python >}}
 
 - **Typed inputs and outputs.** `Params` and `TrialResult` are dataclasses, so the UI shows each trial's settings and score, and the driver gets real objects back. See [Data classes and structures](../tasks/task-programming/dataclasses-and-structures).
-- **Caching per trial.** With `cache="auto"`, rerunning a sweep with one new value only runs the new trials.
+- **Caching per trial.** The trial's cache key includes the path its copy of the data was uploaded to, which is new on every call, so rerunning the sweep runs every trial again.
 - **Retries per trial.** One trial that fails on a bad node retries on its own instead of failing the sweep.
 
 ## Run the sweep in parallel

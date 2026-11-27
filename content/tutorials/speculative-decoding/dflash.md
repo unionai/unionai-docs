@@ -31,8 +31,8 @@ length to serve with, and its training flags.
 {{< code file="/unionai-examples/v2/tutorials/speculative_decoding/recipes.py" fragment="dflash" lang="python" >}}
 
 - **Five target layers, not three.** DFlash reads layers 2, 10, 18, 26, and 34 of Qwen3-8B.
-  The hidden-state server captures exactly the recipe's layers, and the trainer reads the
-  same list, so the two can never disagree.
+  The hidden-state server captures the recipe's layers, plus the target's final layer for the
+  training targets, and the trainer reads the same list, so the two can never disagree.
 - **15 draft tokens.** A block of 16 positions starts with the token the target already
   produced, so vLLM serves it with `num_speculative_tokens=15`.
 - **D-PACE loss weighting.** Later positions in a block are accepted only when every earlier
@@ -78,4 +78,6 @@ python serve.py --method dflash
 ```
 
 [Serve and retrain draft models](./serve-and-retrain) covers the app, the agent that sends it
-traffic, and nightly retraining. Every step there takes `--method dflash`.
+traffic, and nightly retraining. Pass `--method dflash` to each command there that picks a
+family. Deploying `flywheel.py` schedules every family, and `promote.py --traces` takes no
+family.

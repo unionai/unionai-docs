@@ -129,7 +129,7 @@ A volume has one writer while it is mounted, so in a multi-node trainer only one
 
 ## Keep rollouts on-policy
 
-Training on rollouts from an older policy biases the update. Record which policy version produced each rollout, so the trainer can detect stale samples or correct for them. Pass the version number into the rollout task and return it with each rollout. To compute importance ratios, also store the token IDs and sampling log-probabilities the engine returns: set `SamplingParams(logprobs=0)`, which returns only the sampled token's log-probability, and keep it with the completion. Sample at `temperature=1.0` with `top_p=1.0`: vLLM reports log-probabilities after its sampling adjustments, so they equal the policy's own only at those settings. See [Overlap generation with training](./training-loop#overlap-generation-with-training) for the loss that uses them.
+Training on rollouts from an older policy biases the update. Record which policy version produced each rollout, so the trainer can detect stale samples or correct for them. Pass the version number into the rollout task and return it with each rollout. To compute importance ratios, also store the token IDs and sampling log-probabilities the engine returns: set `SamplingParams(logprobs=0)`, which returns only the sampled token's log-probability, and keep it with the completion. Sample at `temperature=1.0` with `top_p=1.0`: by default, vLLM reports log-probabilities from before temperature and top-k/top-p are applied, so they match the distribution the tokens were sampled from only at those settings. See [Overlap generation with training](./training-loop#overlap-generation-with-training) for the loss that uses them.
 
 ## Related
 
