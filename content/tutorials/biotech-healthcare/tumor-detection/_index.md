@@ -25,7 +25,7 @@ Flyte handles the production concerns:
 
 - **Per-task resources**: CPU for download/reporting, a GPU for training.
 - **`cache="auto"`** on dataset download and training, so reruns with the same data and config are free.
-- **`retries=3`** plus **Flyte checkpointing** on the training task so a preempted GPU job resumes from the last epoch.
+- **Flyte checkpointing** on the training task so a preempted GPU job resumes from the last epoch, plus **`retries=3`** for failures in the training code.
 - **Built-in reports** to visualize metrics without separate dashboard infrastructure.
 
 ## Define the container image
@@ -54,7 +54,7 @@ The first task downloads the public [Brain Tumor MRI dataset](https://huggingfac
 
 ## Train the model
 
-The training task downloads the dataset `Dir`, runs two-phase training (frozen backbone, then full fine-tuning), and writes metrics and predictions to an output `Dir`. It sets `retries=3` so a preempted GPU node restarts the task.
+The training task downloads the dataset `Dir`, runs two-phase training (frozen backbone, then full fine-tuning), and writes metrics and predictions to an output `Dir`. If its GPU node is preempted, the platform restarts the task without using its `retries=3`.
 
 {{< code file="/unionai-examples/v2/tutorials/tumor_detection/run.py" fragment=train_model lang=python >}}
 

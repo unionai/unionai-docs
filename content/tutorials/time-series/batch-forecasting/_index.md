@@ -72,7 +72,7 @@ Forecasting runs in a CPU environment. `interruptible=True` lets those tasks run
 Three layers make this task durable:
 
 - **Caching.** `cache="auto"` keys the result on the task's inputs: the dataset, the customer IDs, the model, and the windows. Re-run the pipeline after adding a checkpoint and only the new checkpoint's shards execute.
-- **Retries.** `retries=3` re-runs the task after a preemption, an out-of-memory kill, or a failed weight download.
+- **Retries.** `retries=3` re-runs the task after an out-of-memory kill or a failed weight download. The platform re-runs a preempted task without using them.
 - **Checkpoints.** After each window, the task saves the scores so far with `flyte.ctx().checkpoint`. A retry loads them and skips the finished windows. See [Intra-task checkpoints](../../../user-guide/tasks/task-programming/intra-task-checkpoints).
 
 ## Fan out the backtest

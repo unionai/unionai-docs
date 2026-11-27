@@ -39,7 +39,7 @@ Each part of the loop uses one construct:
 - **The update.** `train_step` takes the rollouts and rewards and returns the next adapter as a `flyte.io.Dir`, which the next iteration's rollouts receive.
 - **One node per iteration in the UI.** `flyte.group(f"iter-{it}")` collects an iteration's rollout, reward, and train actions, so you can open iteration 12 and see exactly which completions it trained on.
 - **A live report.** `report=True` and `flyte.report.replace.aio` publish reward, accuracy, and loss after every iteration.
-- **Resuming.** The driver saves the iteration number, the adapter's path, and the report history to `flyte.ctx().checkpoint` after every iteration. If a later attempt of the driver starts, it loads that state and continues from the next iteration instead of from the start. Set `retries` on the driver task so that a failed or preempted driver gets another attempt. The checkpoint belongs to the task's attempts within one run, so a new run starts from iteration 0.
+- **Resuming.** The driver saves the iteration number, the adapter's path, and the report history to `flyte.ctx().checkpoint` after every iteration. If a later attempt of the driver starts, it loads that state and continues from the next iteration instead of from the start. Set `retries` on the driver task so that a driver that fails gets another attempt. A preempted driver gets one without using its `retries`. The checkpoint belongs to the task's attempts within one run, so a new run starts from iteration 0.
 
 {{< /markdown >}}
 {{< /variant >}}
