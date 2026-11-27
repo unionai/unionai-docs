@@ -142,7 +142,8 @@ How to read it:
 
 ```bash
 # From v2/tutorials/pandera_cost_of_not_validating in your unionai-examples clone.
-# On the cluster in your Flyte config; builds the image remotely, then writes results/ locally
+# On the cluster in your Flyte config; builds the image with the config's image builder
+# (a local Docker build if none is set), then writes results/ locally
 uv run main.py
 
 # Locally, with a short configuration
