@@ -1,12 +1,12 @@
 ---
-title: Data plane setup on AWS
+title: Data plane setup on AWS (legacy)
 description: Grant Union permission to provision and maintain compute resources in your AWS account.
 icon: cloud
 weight: 1
 variants: -flyte +union
 ---
 
-# Data plane setup on AWS
+# Data plane setup on AWS (legacy)
 
 > [!NOTE] Legacy instructions
 > These are the earlier instructions, in which the Union.ai team provisions the data plane from details you send.

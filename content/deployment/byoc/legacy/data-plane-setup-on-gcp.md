@@ -1,12 +1,12 @@
 ---
-title: Data plane setup on GCP
+title: Data plane setup on GCP (legacy)
 description: Grant Union permission to provision and maintain compute resources in your GCP account.
 icon: cloud
 weight: 2
 variants: -flyte +union
 ---
 
-# Data plane setup on GCP
+# Data plane setup on GCP (legacy)
 
 > [!NOTE] Legacy instructions
 > These are the earlier instructions, in which the Union.ai team provisions the data plane from details you send.

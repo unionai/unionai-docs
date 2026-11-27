@@ -1,12 +1,12 @@
 ---
-title: Data plane setup on Azure
+title: Data plane setup on Azure (legacy)
 description: Grant Union permission to provision and maintain compute resources in your Azure subscription.
 icon: cloud
 weight: 3
 variants: -flyte +union
 ---
 
-# Data plane setup on Azure
+# Data plane setup on Azure (legacy)
 
 > [!NOTE] Legacy instructions
 > These are the earlier instructions, in which the Union.ai team provisions the data plane from details you send.
