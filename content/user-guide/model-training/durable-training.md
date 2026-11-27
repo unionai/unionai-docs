@@ -16,7 +16,7 @@ The longer a training job runs, the more likely something under it fails: a spot
 | The task's code fails | `retries` with `flyte.Checkpoint` | The next attempt loads the last checkpoint and continues from there |
 | A node in a multi-node job fails, or the job is preempted after it starts | `ClusterFailurePolicy` | The whole group restarts in place and resumes from the checkpoint |
 | The container runs out of memory | `flyte.errors.OOMError` with `override` | The driver retries the task with more memory |
-| The GPU type you asked for isn't available | `max_queued_time` with `override` | The driver moves on to the next GPU type |
+| The GPU type you asked for isn't available | `max_queued_time` with `override` (Union backend only) | The driver moves on to the next GPU type |
 | A later stage fails | Recovery or caching | A new run reuses the stages that already succeeded |
 
 ## Resume from a checkpoint after a retry
@@ -107,6 +107,15 @@ When the platform attributes a failure to a GPU fault, such as a GPU that fell o
 ## Fall back to another GPU type
 
 A job that asks for scarce GPUs can wait in the queue for a long time. Set `timeout=flyte.Timeout(max_queued_time=...)` on the training task to bound the wait. When it expires, the driver catches `flyte.errors.MaxQueuedTimeExceededError` and calls the task again with `override(resources=...)` for the next GPU type on its list. See [Falling back when GPU capacity isn't available](../tasks/task-programming/error-handling#falling-back-when-gpu-capacity-isnt-available) for the full example.
+
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't enforce `max_queued_time`. On it, a queued task is never
+> failed for exceeding `max_queued_time`, so `MaxQueuedTimeExceededError` is not raised and this
+> fallback never runs. It applies only on a Union backend.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Reuse finished stages
 
