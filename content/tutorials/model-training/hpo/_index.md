@@ -45,12 +45,12 @@ We start by declaring a Python environment using Python 3.13 and specifying our 
 
 ```
 # /// script
-requires-python = "==3.13"
-dependencies = [
-   "optuna>=4.0.0,<5.0.0",
-   "flyte>=2.0.0b0",
-   "scikit-learn==1.7.0",
-]
+# requires-python = "==3.13"
+# dependencies = [
+#    "optuna>=4.0.0,<5.0.0",
+#    "flyte>=2.0.0b52",
+#    "scikit-learn==1.7.0",
+# ]
 # ///
 ```
 
