@@ -36,6 +36,23 @@ Deactivate an app when you no longer need it:
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=typical-deployment-workflow lang=python >}}
 
+### Update a live app without downtime
+
+To update a running app, deploy it again. The deploy creates a new revision of the app. The current revision keeps serving requests until the new one is ready, and then all traffic moves to the new revision:
+
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=zero-downtime-update lang=python >}}
+
+- If the new revision never becomes ready, the current revision keeps serving.
+- If the app's spec hasn't changed, the deploy does nothing and no new revision is created.
+
+### Test a new version before it takes traffic
+
+Traffic moves to a new revision as soon as it's ready, so you can't check a revision of the live app before users reach it. To test a new version first, deploy it as a separate app next to the live one, then roll it out:
+
+{{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=test-before-switching lang=python >}}
+
+The candidate has its own URL, so testing it doesn't affect the live app.
+
 ## Using CLI
 
 ### Activate
@@ -63,8 +80,9 @@ For all available options, see the [CLI reference](../../../api-reference/flyte-
 
 1. **Test before deploying**: Test with serve or a dry run before deploying
 2. **Version management**: Keep track of which version is active
-3. **Monitor**: Monitor apps after activation
-4. **Cleanup**: Deactivate and remove old versions periodically
+3. **Zero-downtime updates**: Update a running app by redeploying it, and test risky versions as a separate app first
+4. **Monitor**: Monitor apps after activation
+5. **Cleanup**: Deactivate and remove old versions periodically
 
 ## Automatic activation with serve
 
