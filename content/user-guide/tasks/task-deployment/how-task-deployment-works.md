@@ -85,20 +85,20 @@ For detailed information about working with multiple environments, see [Multiple
 
 Once the task environments and their dependencies are resolved, Flyte proceeds to package your code into a bundle based on the `copy_style` option:
 
-### `--copy_style loaded_modules` (default)
+### `--copy-style loaded_modules` (default)
 
 This is the smart bundling approach that analyzes which Python modules were actually imported during the task environment discovery phase.
 It examines the runtime module registry (`sys.modules`) and includes only those modules that meet specific criteria:
 they must have source files located within your project directory (not in system locations like `site-packages`), and they must not be part of the Flyte SDK itself.
 This selective approach results in smaller, faster-to-upload bundles that contain exactly the code needed to run your tasks, making it ideal for most development and production scenarios.
 
-### `--copy_style all`
+### `--copy-style all`
 
 This bundling strategy takes a directory-walking approach, recursively traversing your entire project directory and including every file it encounters.
 Unlike the smart bundling that only includes imported Python modules, this method captures all project files regardless of whether they were imported during discovery.
 This is particularly useful for projects that use dynamic imports, load configuration files or data assets at runtime, or have dependencies that aren't captured through normal Python import mechanisms.
 
-### `--copy_style none`
+### `--copy-style none`
 
 This option completely skips code bundle creation, meaning no source code is packaged or uploaded to cloud storage.
 When using this approach, you must provide an explicit version parameter since there's no code bundle to generate a version from.
