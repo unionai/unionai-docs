@@ -95,6 +95,16 @@ long time if the cluster has none free. Set
 to bound that wait. When it fires, the parent catches `flyte.errors.MaxQueuedTimeExceededError` and can try a
 different accelerator instead of waiting forever:
 
+{{< variant flyte >}}
+{{< markdown >}}
+> [!NOTE]
+> The open-source Flyte backend doesn't enforce `max_queued_time`. On it, a queued task is never
+> failed for exceeding `max_queued_time`, so `MaxQueuedTimeExceededError` is never raised and the
+> fallbacks on this page that catch it never run. Everything this page says about
+> `MaxQueuedTimeExceededError` applies only on a Union backend.
+{{< /markdown >}}
+{{< /variant >}}
+
 ```python
 from datetime import timedelta
 
