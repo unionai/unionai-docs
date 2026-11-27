@@ -40,8 +40,8 @@ The pattern is:
 2. Wrap each task call in an inner async function that acquires the semaphore before calling and releases it after.
 3. Pass all wrapped calls to `asyncio.gather`.
 
-All eight tasks are submitted immediately, but the Flyte orchestrator only allows three to run in parallel.
-As each one completes, the next waiting task starts.
+The semaphore lives in the parent task's Python process, and each task call waits for a slot before it submits its action.
+So at most three actions are submitted at a time, and as each one completes, the next waiting task call submits its action.
 
 > [!NOTE]
 > The semaphore controls how many tasks execute concurrently on the Flyte cluster.
@@ -85,6 +85,8 @@ Use **`asyncio.Semaphore`** when:
 - You want to combine concurrency control with error handling (e.g., `asyncio.gather(*tasks, return_exceptions=True)`).
 - You are calling multiple different tasks in one parallel batch.
 
+{{< variant union >}}
+{{< markdown >}}
 ## Per-map concurrency vs. the run-level action cap
 
 The `concurrency` parameter (and `asyncio.Semaphore`) throttle how many actions run **at the same
@@ -117,3 +119,5 @@ In practice, use the two controls for different jobs:
 
 For the full run-scaling picture — task overhead, batch sizing, and fan-out control — see
 [Scale your workflows](../../run-scaling/scale-your-workflows).
+{{< /markdown >}}
+{{< /variant >}}

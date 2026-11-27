@@ -47,7 +47,7 @@ Then load the previous attempt's checkpoint at the start of the task and pass it
 
 {{< code file="/unionai-examples/v2/user-guide/task-programming/intra-task-checkpoints/huggingface_trainer_checkpoint.py" fragment="task" lang=python >}}
 
-With `retries` set on the task, a failed attempt restarts from the last saved epoch. The same pattern works for PyTorch Lightning, plain PyTorch loops, and Unsloth. The [Brain tumor MRI classification](../../tutorials/biotech-healthcare/tumor-detection/_index) tutorial does it for Lightning. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints).
+With `retries` set on the task, a failed attempt restarts from the last checkpoint the callback uploaded. The callback runs in `on_epoch_end`, before `Trainer` writes that epoch's checkpoint, so that checkpoint is one epoch behind the last one saved. The same pattern works for PyTorch Lightning, plain PyTorch loops, and Unsloth. The [Brain tumor MRI classification](../../tutorials/biotech-healthcare/tumor-detection/_index) tutorial does it for Lightning. See [Intra-task checkpoints](../tasks/task-programming/intra-task-checkpoints).
 
 ## Watch training while it runs
 

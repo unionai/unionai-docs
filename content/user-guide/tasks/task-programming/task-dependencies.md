@@ -9,15 +9,15 @@ variants: +flyte +union
 # Task dependencies and ordering
 
 Flyte 1 built a workflow's DAG (directed acyclic graph) explicitly: you declared nodes and wired their edges with the `>>` operator or `create_node`.
-Flyte 2 has no such API. Instead, **the dependency graph is inferred from the data you `await`**.
-When you await one task's result and pass it into another, Flyte records the edge; tasks that share no data run independently.
+Flyte 2 has no such API, and it doesn't infer or store a dependency graph. Instead, **ordering comes from the order of the `await`s in the parent task**.
+Each task call submits an action with the input values the parent already holds, and nothing links that action to the one that produced them.
 This page shows how to express the ordering patterns you used to build by hand — sequencing, fan-out, fan-in, and fine-grained dependency-driven scheduling — using ordinary Python `asyncio`.
 
 If you are coming from Flyte 1, read [Parallelism and fan-out](../../migration/flyte-2/parallelism) first for the migration mapping.
 
-## The dependency graph is implicit
+## Ordering comes from `await`
 
-There is nothing special to learn: a data dependency *is* the edge.
+There is nothing special to learn: a task can't run until the parent has awaited the results it passes in.
 
 ```python
 import asyncio
@@ -49,7 +49,7 @@ async def main() -> str:
     return await load(clean)       # waits for transform — it consumes `clean`
 ```
 
-Each `await` means "wait for this to finish before continuing," so a chain of `await`s that pass results downstream runs sequentially — exactly like a linear Flyte 1 workflow. You never declare the edges; passing `raw` into `transform` and `clean` into `load` *is* the DAG.
+Each `await` means "wait for this to finish before continuing," so a chain of `await`s that pass results downstream runs sequentially — exactly like a linear Flyte 1 workflow. You never declare edges: `transform` can't start until `main` has awaited `raw`, and `load` can't start until `main` has awaited `clean`.
 
 ## Ordering without a data dependency
 
@@ -86,7 +86,7 @@ async def main() -> str:
     return await combine(a, b, c)
 ```
 
-The `await asyncio.gather(...)` establishes the fan-in edge: `combine` cannot start until all three upstream tasks have produced their results.
+The `await asyncio.gather(...)` creates the fan-in: `combine` cannot start until all three upstream tasks have produced their results.
 
 ## Dependency-driven scheduling
 
@@ -175,7 +175,7 @@ async def main() -> str:
 `needs_short` starts about a second in, as soon as `short_producer` returns — it does not wait for the 10-second `long_producer`. Awaiting an `asyncio` task handle more than once is safe: the handle caches its result, so `long_task` can feed both `run_needs_long` and `run_needs_all` without re-running the producer.
 
 > [!NOTE]
-> Reach for helper coroutines that each `await` their specific handles, rather than a manual completion loop that inspects [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) and dispatches downstream tasks by hand. Hand-rolled dispatch loops are easy to get wrong — a mis-tracked "has this fired yet?" check can launch the same downstream task twice. Let the dependency edges fall out of `await` instead.
+> Reach for helper coroutines that each `await` their specific handles, rather than a manual completion loop that inspects [`asyncio.as_completed`](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed) and dispatches downstream tasks by hand. Hand-rolled dispatch loops are easy to get wrong — a mis-tracked "has this fired yet?" check can launch the same downstream task twice. Let the order of your `await`s express the dependencies instead.
 
 ## When to reach for `as_completed`
 
@@ -196,8 +196,8 @@ For a worked streaming/reduce example, see [Fanout](./fanout) and [Controlling p
 
 ## Summary
 
-- Flyte 2 has no explicit DAG-construction API; dependencies come from the data you `await`.
+- Flyte 2 has no explicit DAG-construction API and builds no dependency graph; ordering comes from the order of your `await`s.
 - Sequence tasks by awaiting them in order — a preceding `await` orders even tasks that share no data.
 - Fan out with `asyncio.gather`; fan in by awaiting several results into one downstream task.
 - For fine-grained scheduling, keep producer handles from `asyncio.create_task` and have each consumer await only the handles it depends on, so it starts as early as possible.
-- Prefer letting `await` express the graph over hand-rolled completion-tracking loops.
+- Prefer letting `await` express the dependencies over hand-rolled completion-tracking loops.

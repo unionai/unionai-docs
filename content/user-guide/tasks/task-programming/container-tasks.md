@@ -230,17 +230,20 @@ async def multi_lang_workflow(iterations: int) -> dict:
 - **output_data_dir**: Directory where Flyte reads output data (default: `/var/outputs`). In remote execution, only when `data_loading` is `True`
 - **arguments**: Additional command arguments (list of strings)
 - **metadata_format**: Format for metadata serialization (`"JSON"`, `"YAML"`, or `"PROTO"`)
-- **local_logs**: Whether to print container logs during local execution (default: `True`)
+- **local_logs**: Whether to log the container's output at debug level after the container exits, during local execution (default: `True`). The Flyte logger defaults to the `WARNING` level, so these logs don't appear unless you lower the log level.
 - **data_loading**: Whether Flyte adds the copilot sidecar to move inputs and outputs (default: `True`). Set it to `False` for a container that reads its inputs from template arguments and writes its outputs itself to `{{.outputPrefix}}`. Flyte then adds no copilot containers to the pod and doesn't use `input_data_dir` or `output_data_dir`, so path-based `File` and `Dir` inputs aren't staged. Only affects remote execution. Requires `flyte` 2.13.3 or later.
 
 ### Supported input/output types
 
-Container tasks support all standard Flyte types:
+Container tasks support these types:
 
 - Primitives: `str`, `int`, `float`, `bool`
 - Temporal: `datetime.datetime`, `datetime.timedelta`
 - File system: `File`, `Dir`
-- Complex types: dataclasses, Pydantic models (serialized as JSON/YAML/PROTO)
+- Complex types: dataclasses, Pydantic models
+
+In remote execution, the copilot sidecar writes a dataclass or Pydantic input to its input file as MessagePack-encoded bytes.
+It fails on outputs of types other than those listed here, such as `list[int]` or `dict[str, int]`.
 
 ## Best practices
 
@@ -257,7 +260,7 @@ Container tasks require Docker to be installed and running on your local machine
 
 1. Pull the specified image (if not already available)
 2. Mount local directories for inputs and outputs
-3. Stream container logs to your console
+3. Log the container's output at debug level after it exits, if `local_logs` is `True`
 4. Extract outputs after container completion
 
 This makes it easy to develop and test container tasks before deploying to a remote cluster.

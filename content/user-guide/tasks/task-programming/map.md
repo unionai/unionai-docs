@@ -119,6 +119,8 @@ Only three actions are in flight at a time; as each completes, the next input is
 full comparison of `flyte.map(concurrency=N)` against `asyncio.Semaphore`, see
 [Controlling parallel execution](./controlling-parallelism).
 
+{{< variant union >}}
+{{< markdown >}}
 > [!NOTE]
 > `concurrency` limits how many actions run *at once*; it does not reduce the *total* number of
 > actions the map creates. A large map still counts every item against the run-level ceiling
@@ -126,6 +128,8 @@ full comparison of `flyte.map(concurrency=N)` against `asyncio.Semaphore`, see
 > produces fewer actions — see
 > [Per-map concurrency vs. the run-level action cap](./controlling-parallelism#per-map-concurrency-vs-the-run-level-action-cap)
 > and [Scale your workflows](../../run-scaling/scale-your-workflows).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Handling errors
 
