@@ -1,6 +1,6 @@
 ---
 title: Architecture
-description: How Union.ai is put together, the control plane Union.ai runs and the data plane that runs your work in your own cloud account, and how the two work together.
+description: How Union-Managed and Self-Managed deployments are put together, the control plane Union.ai runs and the data plane that runs your work in your own cloud account, and how the two work together.
 icon: diagram-2
 weight: 10
 variants: -flyte +union
@@ -8,9 +8,10 @@ variants: -flyte +union
 
 # Architecture
 
-Union.ai is split into two planes.
+In Union-Managed and Self-Managed deployments, Union.ai is split into two planes.
 The **control plane**, which Union.ai runs, orchestrates your work.
 The **data plane**, a Kubernetes cluster in your own cloud account or on your own infrastructure, runs it and holds your data.
+In a [Self-Hosted Base](../../../deployment/selfhosted-base/_index) deployment, Union.ai isn't split this way: one pod in your cluster runs the services that store and run your workflows, and the UI.
 
 ![Diagram of the Union.ai platform architecture: user-facing surfaces and control-plane services on the Union side, connected over a secure channel to the customer's isolated Kubernetes data plane across cloud providers](../../../_static/images/deployment/platform-architecture/union-architecture.svg)
 
@@ -53,6 +54,8 @@ See [How task run works](../../tasks/task-deployment/how-task-run-works) for the
 
 Who builds and operates the data plane depends on your deployment model.
 In a [Union-Managed](../../../deployment/byoc/_index) deployment, Union.ai builds and runs it in your cloud account.
-In a [Self-Managed](../../../deployment/selfmanaged/_index) deployment, you do. See [Platform deployment](../../../deployment/_index).
+In a [Self-Managed](../../../deployment/selfmanaged/_index) deployment, you do.
+In a [Self-Hosted Base](../../../deployment/selfhosted-base/_index) deployment, you run all of Union.ai in your own Kubernetes cluster, and nothing runs in Union.ai's cloud.
+See [Platform deployment](../../../deployment/_index).
 
 For how the split protects your data, see [Architecture](../../../security/architecture/_index) in the Security section.

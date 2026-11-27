@@ -1,6 +1,6 @@
 ---
 title: Shared responsibility model
-description: Who owns which part of the stack in Self-Managed and Union-Managed deployments.
+description: Who owns which part of the stack in Self-Managed, Union-Managed, and Self-Hosted Base deployments.
 icon: people
 weight: 5
 variants: -flyte +union
@@ -35,6 +35,10 @@ In Union-Managed deployments, Union.ai assumes additional operational responsibi
 | IAM role provisioning | Customer | Union.ai |
 | Secrets management | Customer (backend + values) | Union.ai (default backend) + Customer (values) |
 | Network security | Union.ai (tunnel) + Customer (firewall/VPC) | Union.ai (tunnel + VPC) |
+
+## Self-Hosted Base
+
+In [Self-Hosted Base](../../deployment/selfhosted-base/_index) deployments, the customer runs all of Union.ai in their own Kubernetes cluster. The customer provides and operates the cluster, its PostgreSQL database and object storage, the network, authentication, and access control. Nothing runs in Union.ai's cloud.
 
 For the deployment-model summary, see the [security overview](../_index).
 
