@@ -51,7 +51,10 @@ Traffic moves to a new revision as soon as it's ready, so you can't check a revi
 
 {{< code file="/unionai-examples/v2/user-guide/serve-and-deploy-apps/activation_examples.py" fragment=test-before-switching lang=python >}}
 
-The candidate has its own URL, so testing it doesn't affect the live app.
+The candidate has its own URL, so the live app's traffic doesn't reach it. It isn't isolated in other ways:
+
+- The candidate keeps the live app's `depends_on`, so deploying it also deploys those environments under their live names. To leave them untouched, pass `depends_on=[]` to `clone_with()`, or point it at test copies.
+- The candidate has the same secrets and environment variables as the live app. If your checks write data, point the candidate at test resources.
 
 ## Using CLI
 
