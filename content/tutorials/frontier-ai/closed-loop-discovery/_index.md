@@ -151,8 +151,9 @@ embedding and a higher electronic temperature, which helps a stubborn SCF conver
 The task around it is short. The calculation runs in a thread so the replica stays responsive.
 A molecule that fails every attempt comes back as a `Measurement` with `ok=False` and the
 reasons, so it counts against the budget like a failed experiment and never fails the round.
-A replica that is preempted mid-calculation doesn't use the task-level `retries=2`: the platform
-retries the call on its own budget.
+Task-level `retries=2` are for the infrastructure, such as a replica that runs out of memory
+mid-calculation. The platform retries the call of a preempted replica even without `retries`, but
+each relaunch counts against them, so the budget also leaves room for preemptions.
 The task's cache keys every result on the SMILES string, and the result records the run that
 computed it, so the report can count how many measurements came from earlier runs. `"auto"`
 caching hashes the task's own source, not the modules it imports, so a change to `oracle.py`

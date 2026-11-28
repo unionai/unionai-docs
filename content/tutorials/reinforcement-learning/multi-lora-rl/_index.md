@@ -325,7 +325,7 @@ it. The example handles each case in a specific place:
 
 | What fails | What happens |
 |---|---|
-| The driver's container is preempted | The platform reschedules the driver, without using the task's `retries`. The new attempt loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have. See [Durable training](../../../user-guide/model-training/durable-training) |
+| The driver's container is preempted | The platform reschedules the driver, even though it sets no `retries`. If you add `retries`, each relaunch counts against them, so leave room for preemptions. The new attempt loads the last checkpoint and continues from the next iteration with the same adapter, history, and base eval. Problems are generated from the iteration number, so the resumed run sees the same problems it would have. See [Durable training](../../../user-guide/model-training/durable-training) |
 | The vLLM engine process crashes | `generate` clears the cached engine before it raises, and its `retries=2` runs the call again on a freshly built engine instead of handing the dead one to the other run |
 | A `train_step` fails halfway through | The step marks the in-memory adapter as unpublished before it starts, so its retry (`retries=2`) reloads the adapter it was given instead of training on top of half-updated weights |
 | A replica is lost | The next call lands on another replica, which loads the base model and the adapter from object storage. Nothing is stored only on a replica's disk |

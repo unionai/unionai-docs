@@ -12,7 +12,7 @@ The longer a training job runs, the more likely something under it fails: a spot
 
 | Failure | What to use | What happens |
 |---|---|---|
-| The task's pod is preempted or its node shuts down | `flyte.Checkpoint` | The platform reschedules the task without using its `retries`, and the next attempt loads the last checkpoint |
+| The task's pod is preempted or its node shuts down | `flyte.Checkpoint` | The platform reschedules the task even without `retries`, and the next attempt loads the last checkpoint. On a Union backend, each relaunch counts against `retries` |
 | The task's code fails | `retries` with `flyte.Checkpoint` | The next attempt loads the last checkpoint and continues from there |
 | A node in a multi-node job fails, or the job is preempted after it starts | `ClusterFailurePolicy` | The whole group restarts in place and resumes from the checkpoint |
 | The container runs out of memory | `flyte.errors.OOMError` with `override` | The driver retries the task with more memory |
@@ -29,7 +29,18 @@ Save the optimizer state and the step or epoch along with the weights, so the re
 
 ## Use spot capacity
 
-Spot and preemptible GPUs cost a fraction of on-demand ones. With checkpoints in place, a preemption costs only the work since the last save. Set `interruptible=True`. The platform reschedules a preempted task on its own retry budget, so set `retries` only for failures in your own code:
+Spot and preemptible GPUs cost a fraction of on-demand ones. With checkpoints in place, a preemption costs only the work since the last save. Set `interruptible=True`. A preemption is a system failure, so the platform reschedules a preempted task even when it sets no `retries`.
+
+{{< variant union >}}
+{{< markdown >}}
+Each relaunch still counts against the task's `retries`, so every preemption leaves one fewer retry for a failure in your code. Set `retries` with room for preemptions as well as code failures:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend relaunches a preempted task within the same attempt, so preemptions don't use the task's `retries`. By default it allows three system failures per attempt, and a fourth fails the task. Set `retries` for failures in your own code:
+{{< /markdown >}}
+{{< /variant >}}
 
 ```python
 import flyte
@@ -41,7 +52,7 @@ train_env = flyte.TaskEnvironment(
 )
 
 
-@train_env.task(retries=2)  # for failures in the training code; preemptions don't use these
+@train_env.task(retries=2)  # for failures in the training code; on Union, preemptions also count against these
 async def train(epochs: int) -> flyte.io.Dir: ...
 ```
 

@@ -193,9 +193,10 @@ very different things:
   error the task's retries are already used up. Fix the code, or change what you run (a different kernel,
   precision, or batch size); don't simply re-run it.
 - `flyte.errors.GPUFaultSystemError`: the hardware failed, for example an uncorrectable ECC error, a GPU that
-  fell off the bus, or an NVLink error. The platform retries these without charging your retry budget and
-  reschedules onto other hardware where it can. You only see this error after the platform has given up, so
-  retrying in place is unlikely to help. Move to a different GPU type, queue, or cluster instead.
+  fell off the bus, or an NVLink error. The platform retries these even when the task sets no retries, and
+  reschedules onto other hardware where it can. On a Union backend each of these retries counts against the
+  task's retry budget; on the open-source Flyte backend it doesn't. You only see this error after the platform
+  has given up, so retrying in place is unlikely to help. Move to a different GPU type, queue, or cluster instead.
 
 {{< variant union >}}
 {{< markdown >}}

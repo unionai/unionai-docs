@@ -256,7 +256,7 @@ Docs: [Triggers](../triggers/_index) &middot; [Error handling](../tasks/task-pro
 `--requeue` restarts the script from the top and leaves the rest to you. Flyte splits the problem
 into pieces that can be configured separately.
 
-**Retries** are declarative, and count only against failures your code is responsible for:
+**Retries** are declarative:
 
 ```python
 @env.task(retries=3, timeout=timedelta(hours=4))
@@ -264,8 +264,9 @@ async def train(cfg: TrainConfig) -> flyte.io.File: ...
 ```
 
 **Spot capacity** is a flag. `interruptible=True` schedules the task on spot or preemptible
-instances. Preemptions are recorded as system failures rather than task failures, so they do not
-consume the retry budget.
+instances. Preemptions are recorded as system failures rather than task failures, so a preempted
+task is retried even without `retries`. On a Union backend each relaunch counts against `retries`,
+so leave room for preemptions as well as failures in your code.
 
 **Checkpoints** make the retry cheap. `flyte.ctx().checkpoint` writes to object storage rather than
 a shared filesystem, so the next attempt resumes on whatever node it lands on:

@@ -58,7 +58,7 @@ In Flyte, pass the training task's output to the app with `flyte.app.RunOutput`,
 
 ## Variations
 
-- **Long or preemptible training:** save progress with `flyte.Checkpoint` so a retried attempt resumes from its last checkpoint. The platform retries a preempted task without using its `retries`; set `retries` to also recover from errors in your own code. See [Durable training](../../model-training/durable-training).
+- **Long or preemptible training:** save progress with `flyte.Checkpoint` so a retried attempt resumes from its last checkpoint. The platform retries a preempted task even without `retries`, but on a Union backend each relaunch counts against them, so set `retries` with room for preemptions as well as errors in your own code. See [Durable training](../../model-training/durable-training).
 - **Hyperparameter search:** have the driver fan out one training task per trial. See [Hyperparameter optimization](../../model-training/hyperparameter-optimization).
 - **Fine-tuning a pretrained LLM:** replace the training stage with SFT, LoRA, or preference tuning. See [Post-training](../../model-training/post-training).
 
