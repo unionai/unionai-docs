@@ -63,7 +63,7 @@ Then mount the artifact into a `FastAPIAppEnvironment` with a parameter:
 
 {{< markdown >}}
 
-`mount` is always a directory. A `flyte.io.File` artifact is downloaded into it, and a `flyte.io.Dir` artifact appears at it. An artifact used as an app parameter must store one of those two types. See [Use artifacts in apps](../artifacts/artifacts-in-apps).
+A `flyte.io.Dir` artifact appears at `mount`. A `flyte.io.File` artifact is downloaded into `mount` only when the path ends in `/` or is an existing directory. Otherwise, the file is saved at the `mount` path itself. An artifact used as an app parameter must store one of those two types. See [Use artifacts in apps](../artifacts/artifacts-in-apps).
 
 ## Pin and roll back a version
 
@@ -139,7 +139,7 @@ Then mount the task's output into a `FastAPIAppEnvironment` with a parameter:
 
 {{< markdown >}}
 
-`mount` is always a directory. A `flyte.io.File` output is downloaded into it, and a `flyte.io.Dir` output appears at it. See [Passing parameters into app environments](../apps/configure-apps/passing-parameters).
+A `flyte.io.Dir` output appears at `mount`. A `flyte.io.File` output is downloaded into `mount` only when the path ends in `/` or is an existing directory. Otherwise, the file is saved at the `mount` path itself. See [Passing parameters into app environments](../apps/configure-apps/passing-parameters).
 
 {{< /markdown >}}
 {{< /variant >}}
