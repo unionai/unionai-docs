@@ -24,7 +24,19 @@ Settings are stored at three scope levels:
 
 When a setting has no value at the current scope, the next broader scope is consulted automatically.
 
-## Editing settings
+You can edit settings in the console, with the `flyte` CLI, or from Python. All three change the same values.
+
+## Edit settings in the console
+
+Open **Settings → Default Settings**. The page has one tab per scope:
+
+- **Organization**: the org's settings.
+- **Domain**: pick a domain to edit its settings.
+- **Project**: pick a project and one of its domains to edit the settings for that project-domain pair.
+
+To change a value, you need the action the [Permissions](#permissions) table lists for that scope: `administer_account` on the **Organization** and **Domain** tabs, `administer_project` on the **Project** tab.
+
+## Edit settings with the CLI
 
 Use `flyte edit settings` to view and modify settings interactively. The command opens your `$EDITOR` with a structured YAML file showing the current state of that scope.
 
@@ -105,7 +117,7 @@ flyte edit settings --domain production --from-file settings.yaml
 
 The file should be a plain YAML mapping of dot-notation keys to values. Changes are printed and applied immediately without a confirmation prompt.
 
-## Editing settings from Python
+## Edit settings from Python
 
 The same scopes can be read and written from Python with `flyte.remote.Settings`: useful for scripted setup, audits, or wiring configuration into your own tooling. Fetch a scope with `get_settings_for_edit()`, inspect its values, then write them back with `update_settings()`.
 
@@ -199,8 +211,24 @@ Settings operations require the following actions, scoped to the org, domain, or
 
 | Operation | Required action |
 |-----------|----------------|
-| View settings (open the editor) | `view_flyte_inventory` |
+| View settings | `view_flyte_inventory` |
 | Create or update org or domain settings | `administer_account` |
 | Create or update project settings | `administer_project` |
 
 The **Admin** built-in role includes all of these actions. The **Contributor** and **Viewer** roles include `view_flyte_inventory` but neither administer action, so they can view settings but can't change them. See [User management](../../user-management) for details on roles and how to assign them.
+
+## Console pages and CLI commands
+
+Most pages under **Settings** in the console have `flyte` CLI equivalents. Commands from the `flyteplugins-union` package need that package installed alongside `flyte`: see [Install the SDK](../quickstart#install-the-sdk).
+
+| Console page | CLI commands | Package |
+|--------------|--------------|---------|
+| **Default Settings** | `flyte get settings`, `flyte edit settings` | `flyte` |
+| **Secrets** | `flyte create secret`, `flyte get secret`, `flyte delete secret` | `flyte` |
+| **User Management** (**Users**, **Policies**, and **Roles** tabs) | `user`, `member`, `role`, `policy`, and `assignment` commands | `flyteplugins-union` |
+| **User Management** (**OAuth Apps** tab) | `flyte create api-key`, `flyte get api-key`, `flyte delete api-key` | `flyteplugins-union` |
+| **Clusters** (shown to users who can view clusters) | `cluster` and `cluster-pool` commands | `flyteplugins-union` |
+| **Queues** (shown to users who can view queues) | `queue` commands | `flyteplugins-union` |
+| **Inference Gateway** | None: console only | - |
+
+The [Flyte CLI reference](../../../api-reference/flyte-cli) lists every command and its options.

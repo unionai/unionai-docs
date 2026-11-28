@@ -109,7 +109,7 @@ flyte get secret --cluster-pool prod
 flyte delete secret MY_SECRET_KEY --cluster-pool prod
 ```
 
-Use `flyte get cluster-pool` to list the pool names available in your organization.
+Use `flyte get cluster-pool` to list the pool names available in your organization. That command comes from the `flyteplugins-union` package: see [Install the SDK](../../get-started/quickstart#install-the-sdk).
 
 To make the same org-wide secret available to workloads in every pool, create it once per pool.
 

@@ -13,6 +13,8 @@ variants: -flyte +union
 
 Once a factory is [declared](./declare-a-factory), there is one verb for running it: **materialize**. You name an artifact and a partition or a range, and the factory builds whatever is needed to produce it.
 
+The `flyte factory` commands on this page come from the `flyteplugins-union` package: see [Install the SDK](../get-started/quickstart#install-the-sdk).
+
 ## Deploy
 
 Deploy the tasks, then the factory:
