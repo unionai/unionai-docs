@@ -1,6 +1,6 @@
 ---
 title: Multiple Clusters
-description: Attach several Kubernetes clusters to one control plane with the clusterPool abstraction.
+description: Attach several Kubernetes clusters to one control plane with cluster pools.
 icon: diagram-3
 weight: 3
 variants: -flyte +union
@@ -8,38 +8,15 @@ variants: -flyte +union
 
 # Multiple clusters
 
-Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using the `clusterPool` abstraction.
+Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using cluster pools.
 
-Currently, the clusterPool configuration is performed by Union in the control plane when you provide the mapping between clusterPool name and clusterNames using the following structure:
-
-```yaml
-clusterPoolname:
-  - clusterName
-```
-
-With `clusterName` matching the name you used to install the Union operator Helm chart.
-
-You can have as many cluster pools as needed:
-
-**Example**
-
-```yaml
-default: # this is the clusterPool where executions will run, unless another mapping specified
-  - my-dev-cluster
-development-cp:
-  - my-dev-cluster
-staging-cp:
-  - my-staging-cluster
-production-cp:
-  - production-cluster-1
-  - production-cluster-2
-dr-region:
-  - dr-site-cluster
-```
+You create and manage cluster pools yourself with the `flyte create cluster-pool` command from the `flyteplugins-union` plugin. Each cluster belongs to exactly one pool. Create the pool first, then name it with `--pool` when you register the cluster with `flyte create cluster`. Without `--pool`, the cluster joins the `default` pool. If you created your organization by signing up, create `default` with `flyte create cluster-pool` first; if Union.ai set up your organization, `default` is created when its first cluster is registered. Register each cluster under the name you set as `global.CLUSTER_NAME` when you install the `unionai/dataplane` Helm chart. You can have as many cluster pools as needed. See [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools) for how to create pools, manage membership and move a cluster to another pool.
 
 ## Routing work to a cluster pool
 
 Work reaches a cluster pool through a queue. A queue lives in one cluster pool and routes runs to the clusters in it; users submit to a queue, never to a pool or a cluster directly. See [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools) and [Managing queues](../../../user-guide/clusters-and-queues/queues) for the full model.
+
+These examples assume pools named `development-cp` and `production-cp`, created with `flyte create cluster-pool`.
 
 > [!NOTE] Requires the `flyteplugins-union` plugin
 > The `flyte create queue` and related commands are provided by the `flyteplugins-union` package. Install it with `pip install flyteplugins-union`.
