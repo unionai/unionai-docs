@@ -58,7 +58,7 @@ flyte create artifact my-model --from-file model.pt --card model_card.html --car
 
 If you do not pass a version, one is generated for you. Set attrs, kind, and a card the same way as in task-produced [metadata](./task-outputs#metadata).
 
-The external ref records where the data came from. When `Artifact.create()` runs inside a task, the producing run is stamped on the artifact automatically; outside a task, the external ref is the provenance you can attach.
+The external ref records where the data came from. An artifact records a single source: either the external ref or the action that produced it. When `Artifact.create()` runs inside a task in a remote run and you don't pass an external ref, the artifact records the producing action automatically. If you pass an external ref, it replaces the action. No action is recorded when the task publishes into a different project or domain from its own.
 
 ## Finding artifacts
 
