@@ -1,6 +1,6 @@
 ---
 title: Clusters
-description: Register execution clusters into a pool and inspect their state, capacity, and bound queues.
+description: Register execution clusters into a pool, inspect their state, capacity, and bound queues, and read their component config and system logs.
 icon: cloud
 weight: 2
 variants: -flyte +union
@@ -526,6 +526,58 @@ it finishes deleting on its own, and you can undelete it separately afterwards.
 The cluster's pool must itself be live; undelete the pool first if it was
 deleted. Run `flyte update cluster <name> --activate` to reactivate cluster and
 queue together.
+
+## Troubleshoot a cluster
+
+Two commands read from a cluster's data plane what its {{< key product_name >}}
+components are running with and what they are logging. Full options are in the
+[CLI reference](../../api-reference/flyte-cli).
+
+- **`flyte get cluster-config <cluster>`** shows the live contents of the
+  ConfigMaps the cluster's core components run with, such as `union-operator`,
+  `executor`, `leaseworker`, and `flyte-propeller-config`. Use it when a
+  configuration change doesn't seem to take effect: it shows what the cluster
+  is running, not what your values file says. Depending on the data plane's
+  version, OAuth client secrets may show as `<redacted>` instead of their
+  value; that is not a misconfiguration. `--config-map <name>` limits the
+  output to one ConfigMap, and `--key <key>` to one key in it. `--raw` prints
+  the values unformatted, for piping. `--key` and `--raw` both require
+  `--config-map`. After the output, a **Not collected** line lists each ConfigMap
+  the cluster could not return, with the reason: `not found` or
+  `permission denied`.
+- **`flyte get system-logs <cluster> -n <namespace>`** streams the logs of the
+  cluster's system components. Use it when a component is misbehaving.
+  `--namespace` (`-n`) is required: it is the Kubernetes namespace the
+  components run in. `--application` picks the component: `unionoperator`
+  (the default), `flytepropeller`, `leaseworker`, or `unionoperatorproxy`.
+  `--since` or `--since-time` limits how far back the stream starts, and
+  `--source` chooses between live pods and persisted logs; by default it reads
+  live pods and falls back to persisted logs.
+
+The console shows the same system logs live in the **Logs** tab of the
+cluster's page, with a menu to pick the component.
+
+### Who can run them
+
+`flyte get cluster-config` needs the `view_cluster_config` action.
+`flyte get system-logs` and the console's **Logs** tab need the
+`support_system_logs` action. Of the
+[built-in policies](../user-management#built-in-policies), only Admin holds
+them; Contributor and Viewer don't. A custom role can grant either action.
+Without `support_system_logs`, the **Logs** tab still appears, but says you
+don't have access to system logs.
+
+### Self-Managed: `permission denied` for every ConfigMap
+
+In `dataplane` charts earlier than 2026.11.4, the operator proxy's own service
+account can't read the component ConfigMaps. This affects a Self-Managed data
+plane that runs the proxy under that account, which happens when
+`commonServiceAccount.enabled` is `false` outside single-namespace mode (see
+[Kubernetes RBAC](../../deployment/selfmanaged/kubernetes-rbac)).
+`flyte get cluster-config` then succeeds but lists every ConfigMap as not
+collected, with `permission denied`.
+[Upgrade the data plane](../../deployment/selfmanaged/upgrade) to chart
+2026.11.4 or later.
 
 ## Next
 
