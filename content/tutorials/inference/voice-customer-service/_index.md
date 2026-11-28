@@ -35,7 +35,7 @@ The demo is two apps plus the browser:
 | `llm_app` | `VLLMAppEnvironment`    | L4 GPU   | serve Qwen with vLLM, OpenAI-compatible `/v1`                    |
 | `ui_app`  | `FastAPIAppEnvironment` | CPU      | serve the voice page, proxy chat to `llm_app`, synthesize speech |
 
-Speech recognition and the default text-to-speech are handled by the browser through the Web Speech API, so there is no audio model to host for input and the GPU footprint stays tiny. The page's JavaScript calls only the UI app, and the UI app calls the model, which avoids any cross-origin setup in the browser. The model still has its own URL: `llm_app` and `ui_app` both set `requires_auth=False`, which deploys their URLs without authentication, so on Union anyone who has either URL can call the model. See **Authentication** under [Going further](#going-further) to require a token.
+Speech recognition is handled by the browser through the Web Speech API, so there is no audio model to host for input and the GPU footprint stays tiny. The default voice for replies is Kokoro, served by the UI app on CPU. The page uses the browser's text-to-speech only when Kokoro isn't available, or if you switch to it. The page's JavaScript calls only the UI app, and the UI app calls the model, which avoids any cross-origin setup in the browser. The model still has its own URL: `llm_app` and `ui_app` both set `requires_auth=False`, which deploys their URLs without authentication, so on Union anyone who has either URL can call the model. See **Authentication** under [Going further](#going-further) to require a token.
 
 ```mermaid
 flowchart LR
