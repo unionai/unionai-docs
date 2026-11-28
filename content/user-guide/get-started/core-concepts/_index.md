@@ -26,7 +26,7 @@ Four pieces do most of the work:
 Two more ideas sit on top. An **app** is a long-running service rather than a job that finishes,
 and **projects and domains** decide where a run lives and what it is allowed to reach.
 
-The pages below build on each other, so read them in order if you are new. The last one puts
-every piece together in a project you can deploy.
+The pages below build on each other, so read them in order if you are new. [Basic project](./basic-project)
+puts every piece together in a project you can deploy.
 
 {{< subpage-cards >}}
