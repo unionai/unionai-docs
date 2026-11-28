@@ -79,8 +79,8 @@ python learn_to_run.py
 
 The first run builds the image, which takes a while because of the CUDA build of JAX. Later
 runs reuse it. `--smoke` trains 20 million steps in a few minutes, which is enough to check
-the plumbing but not enough for the robot to stay up. `--checkpoint` skips training and only
-replays and reports an existing policy.
+the plumbing but not enough for the robot to stay up. `--checkpoint` skips training, replays
+and reports an existing policy, and, as the example stands, publishes it as `g1-run-policy`.
 
 ## The image and environments
 
