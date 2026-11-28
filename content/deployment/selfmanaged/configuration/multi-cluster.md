@@ -1,6 +1,6 @@
 ---
 title: Multiple Clusters
-description: Attach several Kubernetes clusters to one control plane with the clusterPool abstraction.
+description: Attach several Kubernetes clusters to one control plane with cluster pools.
 icon: diagram-3
 weight: 3
 variants: -flyte +union
@@ -8,9 +8,9 @@ variants: -flyte +union
 
 # Multiple clusters
 
-Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using the `clusterPool` abstraction.
+Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using cluster pools.
 
-You create and manage cluster pools yourself with the `flyte create cluster-pool` command from the `flyteplugins-union` plugin. Each cluster belongs to exactly one pool. Create the pool first, then name it with `--pool` when you register the cluster with `flyte create cluster`. Without `--pool`, the cluster joins the `default` pool, which must also exist: if you created your organization by signing up, create `default` with `flyte create cluster-pool` first. Register each cluster under the name you set as `global.CLUSTER_NAME` when you install the `unionai/dataplane` Helm chart. You can have as many cluster pools as needed. See [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools) for how to create pools, manage membership and move a cluster to another pool.
+You create and manage cluster pools yourself with the `flyte create cluster-pool` command from the `flyteplugins-union` plugin. Each cluster belongs to exactly one pool. Create the pool first, then name it with `--pool` when you register the cluster with `flyte create cluster`. Without `--pool`, the cluster joins the `default` pool. If you created your organization by signing up, create `default` with `flyte create cluster-pool` first; if Union.ai set up your organization, `default` is created when its first cluster is registered. Register each cluster under the name you set as `global.CLUSTER_NAME` when you install the `unionai/dataplane` Helm chart. You can have as many cluster pools as needed. See [Cluster pools](../../../user-guide/clusters-and-queues/cluster-pools) for how to create pools, manage membership and move a cluster to another pool.
 
 ## Routing work to a cluster pool
 
