@@ -99,7 +99,7 @@ All of these run as ordinary apps, so the rest of the app documentation applies:
 
 - Confirm the server binds `0.0.0.0` rather than `localhost`. Many frameworks default to `localhost` or use their own default port, such as 3000 for BentoML and 8000 for Ray Serve.
 - Check that the server's port matches `port` on the `AppEnvironment`.
-- Avoid the reserved ports 8012, 8022, 8112, and 9090.
+- Avoid the reserved ports 8012, 8022, 8112, 9090, and 9091.
 
 **The server starts, then the container exits:**
 
