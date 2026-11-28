@@ -132,9 +132,9 @@ costs about 32 KB per token for an 8B model, which is terabytes for a dataset of
 hundred million tokens. In **online mode**, a vLLM server computes hidden states on demand
 and the trainer consumes and discards them.
 
-The hidden-state server is ordinary `vllm serve` with two extra flags. One tells vLLM which
-of the target's layers to capture. The other attaches a connector that writes them to a
-shared path for every request:
+The hidden-state server is ordinary `vllm serve` with three extra flags. One tells vLLM which
+of the target's layers to capture. Another attaches a connector that writes them to a
+shared path for every request. The third is `--enable-scale-out`:
 
 {{< code file="/unionai-examples/v2/tutorials/speculative_decoding/vllm_server.py" fragment="hidden-states" lang="python" >}}
 
@@ -167,13 +167,15 @@ Things to know about the training settings:
 - **Two kinds of training data, one dataset.** Regenerated chat files are already
   tokenized. Agent traces are raw conversations, which `prepare-data` renders through the
   vLLM server's chat template endpoint, tool schemas included. `prepare_data` prepares each
-  kind separately and merges them, and the task fails if fewer rows come out than went in:
+  kind separately and merges them, and the task fails if fewer than 90% of the rows that went
+  in come out:
 
   {{< code file="/unionai-examples/v2/tutorials/speculative_decoding/train.py" fragment="prepare" lang="python" >}}
 
   Rendering conversations that carry tool schemas needs vLLM's tool-calling flags on the
   hidden-state server. Without them, every agent trace fails to render, and without the row
-  check, training would silently run on chat data alone.
+  check, training would silently run on chat data alone. The check catches this only when
+  agent traces are more than 10% of the input rows.
 - **The training-time-test depth is 3.** The draft is unrolled on its own predictions
   for `--ttt-steps` steps. Match it to `num_speculative_tokens` at serving time, or raise it
   for math and code, where longer drafts get accepted.
