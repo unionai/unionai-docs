@@ -96,10 +96,9 @@ This persistence happens automatically. You don't need to add logging or manuall
 
 ## Reproducibility
 
-Flyte ensures that runs can be reproduced exactly:
+Flyte helps you reproduce runs:
 
-- **Deterministic execution**: same inputs produce same outputs
-- **Caching**: task results are cached and reused when inputs match
+- **Caching**: tasks with caching enabled reuse earlier results when inputs match
 - **Versioned containers**: code runs in the same environment every time
 
 Caching is configurable per task:
@@ -111,7 +110,7 @@ async def expensive_computation(data: str) -> str:
     ...
 ```
 
-When you rerun a workflow, Flyte serves cached results for unchanged tasks rather than recomputing them.
+When you rerun a workflow, Flyte serves cached results for unchanged tasks that have caching enabled.
 
 ## Recoverability
 
@@ -129,8 +128,8 @@ Flyte handles the hard parts of distributed execution:
 
 - **Parallel execution**: express parallelism with `asyncio.gather()`, Flyte handles the rest
 - **Dynamic workflows**: construct workflows based on runtime data, not just static definitions
-- **Fast scheduling**: reusable containers achieve millisecond-level task startup
-- **Resource management**: specify CPU, memory, and GPU requirements per task
+{{% variant union %}}- **Fast scheduling**: reusable containers achieve millisecond-level task startup
+{{% /variant %}}- **Resource management**: specify CPU, memory, and GPU requirements per task
 
 ## What this means in practice
 
