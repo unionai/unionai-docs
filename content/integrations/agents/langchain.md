@@ -16,7 +16,7 @@ Run [LangChain agents](https://docs.langchain.com/oss/python/langchain/agents) o
 pip install flyteplugins-agents-langchain
 ```
 
-Requires Python 3.10 or later. Install the provider integration you need alongside it, for example `langchain-openai` or `langchain-anthropic`.
+Requires Python 3.11 or later. Install the provider integration you need alongside it, for example `langchain-openai` or `langchain-anthropic`.
 
 ## Quick start
 
@@ -60,7 +60,7 @@ Build the chat model inside the task, where the provider API key is available.
 
 **Model turns:** When `run_agent` builds the agent (`tools` + `model`) with `durable=True`, the chat model is wrapped in `DurableChatModel`, which records each turn via `flyte.trace`. On a retry, completed turns replay from their records and tool calls come back from cache. A pre-built `agent=` graph's model turns are not recorded (see [Bring your own agent](#bring-your-own-agent)).
 
-**Observability:** The run timeline renders into the task report.
+**Observability:** With `observability=True` (the default) and `report=True` on the task, `run_agent` writes a "LangChain agent" heading to the `Agent` tab of the task report. It does not record model turns or tool calls there.
 
 ## Pass a model instance, not a string
 
@@ -114,9 +114,9 @@ The conversation transcript is persisted to a durable, keyed `MemoryStore`. On t
 | `model` | `Any` | `None` | A LangChain chat model. Required when `agent` is not given |
 | `instructions` | `str \| None` | `None` | System prompt for the built agent |
 | `agent` | `Any` | `None` | A pre-built compiled `create_agent` graph. Mutually exclusive with `tools` |
-| `name` | `str` | `"langchain-agent"` | Agent name, used for debugging and observability |
+| `name` | `str` | `"langchain-agent"` | Used only in the default system prompt (`You are a helpful assistant named {name}.`) when `instructions` is not given |
 | `durable` | `bool` | `True` | Record and replay each model turn. Applies on the builder path |
-| `observability` | `bool` | `True` | Render the timeline into the task report |
+| `observability` | `bool` | `True` | Write a "LangChain agent" heading to the task report, when the task has `report=True` |
 | `memory_key` | `str \| None` | `None` | Stable user or thread ID for cross-run memory |
 | `**agent_kwargs` | | | Forwarded to `create_agent` |
 
