@@ -365,6 +365,8 @@ await train.override(queue="prod-high")(cfg)
 | `MaxSubmitJobs` | queue depth, which rejects past the limit rather than queueing forever |
 | `squeue -p gpu` | `flyte get queue gpu --watch` |
 
+`flyte get queue` comes from the `flyteplugins-union` package: see [Install the SDK](../get-started/quickstart#install-the-sdk).
+
 Two differences from Slurm's accounting model will affect how you plan capacity. Queue priority
 controls *ordering*, not preemption: queue priority alone never evicts a running low-priority task
 when higher-priority work arrives. And when a queue hits its depth limit, new submissions are

@@ -19,6 +19,9 @@ behave differently over NFS - each is called out where it comes up.
 This is the workflow for building a dataset by hand, inspecting one in place
 with ordinary tools, or carrying one onto a plane.
 
+The volume commands on this page come from the `flyteplugins-union` package:
+see [Install the SDK](../../../get-started/quickstart#install-the-sdk).
+
 ## Create a volume
 
 ```bash

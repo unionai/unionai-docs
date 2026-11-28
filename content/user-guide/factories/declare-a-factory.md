@@ -13,6 +13,8 @@ variants: -flyte +union
 
 This page builds the analytics factory from the [overview](./_index): `raw_events` is cleaned per day and region, combined across regions into `features`, and rolled into a report over a trailing three-day window.
 
+The `flyte factory` commands on this page come from the `flyteplugins-union` package: see [Install the SDK](../get-started/quickstart#install-the-sdk).
+
 ## The tasks
 
 The tasks are ordinary. They take plain inputs, return plain outputs, and don't import the factory. The factory caches every build call whether or not the task does, but the task's cache setting decides what a redeploy rebuilds. With `cache="auto"`, a new version of the task rebuilds a partition only if the task's own function changed. Without it, every new version of the task rebuilds:

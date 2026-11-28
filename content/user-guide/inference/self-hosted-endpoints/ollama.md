@@ -89,7 +89,7 @@ The generic `AppEnvironment` uses Union's platform-level authentication. Leave `
 {{< markdown >}}
 ### Calling an authenticated app
 
-With `requires_auth=True` (the default), callers authenticate with a Union API key. Create one with the CLI:
+With `requires_auth=True` (the default), callers authenticate with a Union API key. Create one with the CLI command `flyte create api-key`, which comes from the `flyteplugins-union` package (see [Install the SDK](../../get-started/quickstart#install-the-sdk)):
 
 ```bash
 flyte create api-key --name ollama-app-key
