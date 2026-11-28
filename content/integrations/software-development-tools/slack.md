@@ -124,7 +124,7 @@ To keep the bot token in one place, deploy `notify.env`. It provides a `send` ta
 
 {{< code file="/unionai-examples/v2/integrations/flyte-plugins/slack/slack_tasks.py" fragment=approval lang=python >}}
 
-The task posts a Block Kit message and waits on a `flyte.new_condition`. When someone clicks a button, the handler added by `approval.register(app_env)` resolves the condition and replaces the buttons with a line showing who decided. Each button carries the run, action, and condition names, so the handler needs no other configuration.
+The task posts a Block Kit message and waits on a `flyte.new_condition`. When someone clicks a button, the handler added by `approval.register(app_env)` resolves the condition. It then replaces the whole message, prompt included, with a line showing the choice and who decided. Each button carries the run, action, and condition names, so the handler needs no other configuration.
 
 `request` accepts:
 
