@@ -90,7 +90,7 @@ def my_task(x: int) -> int:
 |---|---|---|
 | `container_image` | `TaskEnvironment(image=...)` | Env-level only |
 | `requests` | `TaskEnvironment(resources=...)` | Env-level only |
-| `limits` | `TaskEnvironment(resources=...)` | Combined with requests (single value) |
+| `limits` | `TaskEnvironment(resources=...)` | Set with requests: a `(request, limit)` tuple for `cpu` or `memory` |
 | `environment` | `TaskEnvironment(env_vars=...)` | Env-level only |
 | `secret_requests` | `TaskEnvironment(secrets=...)` | Env-level only |
 | `cache` | Both | Can override at task level |
