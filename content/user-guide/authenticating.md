@@ -396,10 +396,10 @@ List existing keys:
 flyte get api-key
 ```
 
-Delete a key:
+Delete a key by its client ID, which `flyte create api-key` prints:
 
 ```bash
-flyte delete api-key my-ci-key
+flyte delete api-key <client-id>
 ```
 
 {{< /markdown >}}
