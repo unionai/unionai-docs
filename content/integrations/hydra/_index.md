@@ -371,7 +371,7 @@ eval "$(_FLYTE_COMPLETE=bash_source flyte)"
 Once installed, `flyte hydra run` adds Hydra-aware completion after `SCRIPT TASK_NAME`. The command imports the script, inspects the task signature, and suggests:
 
 - The app override flag matching the task's `DictConfig` parameter (`--cfg`, `--config`, ...).
-- Override values for that flag and `--hydra-override` via Hydra's own completion engine, including config keys, config-group selections and sweep functions.
+- Override values for that flag and `--hydra-override` via Hydra's own completion engine, including config keys, values and config-group selections.
 
 ```bash{hl_lines=["2-3", "6-7"]}
 flyte hydra run --config-path conf --config-name training \
