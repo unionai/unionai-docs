@@ -68,23 +68,31 @@ async def main(data: list[int]) -> str:
 ## Behavior on preemption
 
 When a spot instance is reclaimed, the running task is terminated and automatically
-rescheduled. Preemptions are retried on a separate, platform-managed budget, so they do
-**not** consume the task's configured [retries](./retries-and-timeouts) — you don't need to
-set `retries` for an interruptible task to be resilient to preemption.
+rescheduled. A preemption is a system failure, so the task is rescheduled even when it sets no
+[retries](./retries-and-timeouts).
 
-`retries` instead governs re-attempts after your own task code fails (for example, an
-unhandled exception or a timeout), and behaves the same for interruptible and
+{{< variant union >}}
+{{< markdown >}}
+Each relaunch still counts against the task's `retries`, so every preemption leaves one fewer
+retry for a failure in your own code (for example, an unhandled exception or a timeout). Set
+`retries` on an interruptible task with room for preemptions as well as code failures:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend relaunches a preempted task within the same attempt, so preemptions
+don't use the task's `retries`. By default it allows three system failures per attempt, and a
+fourth fails the task. `retries` governs re-attempts after your own task code fails (for example,
+an unhandled exception or a timeout), and behaves the same for interruptible and
 non-interruptible tasks:
+{{< /markdown >}}
+{{< /variant >}}
 
 ```python
 @env.task(interruptible=True, retries=3)
 def train_model(data: list[float]) -> dict:
     return {"accuracy": 0.95}
 ```
-
-> [!NOTE]
-> Retries due to spot preemption do not count against the user-configured retry budget.
-> System retries (for preemptions and other system-level failures) are tracked separately.
 
 ## Fall back to on-demand when spot capacity is unavailable
 

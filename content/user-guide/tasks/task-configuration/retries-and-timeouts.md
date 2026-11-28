@@ -131,13 +131,33 @@ Finally, configure Flyte and run:
 ### System retries
 
 `retries=N` covers failures of *your task*: exceptions, non-zero exits, timeouts you've configured.
-Failures caused by the underlying infrastructure (a node disappearing, ephemeral storage running out, a spot instance getting preempted, and so on) are handled separately. The platform retries these on its own and they do not consume your `retries=N` budget. They **do**, however, count against the `deadline` (see below), because the deadline is an absolute bound on total wall-clock regardless of who triggered the retry.
+Failures caused by the underlying infrastructure (a node disappearing, ephemeral storage running out, a spot instance getting preempted, and so on) are system failures. The platform retries these on its own, even when the task sets no `retries`. They also count against the `deadline` (see below), because the deadline is an absolute bound on total wall-clock regardless of who triggered the retry.
+
+{{< variant union >}}
+{{< markdown >}}
+Each system retry starts a new attempt, and that attempt counts against `retries=N`. A task that is preempted twice has two fewer retries left for failures in your code, so set `retries` with room for preemptions as well as code failures.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The open-source Flyte backend retries a system failure within the same attempt, so it doesn't use your `retries=N` budget.
+{{< /markdown >}}
+{{< /variant >}}
 
 > [!NOTE]
 > Retries run the task from the beginning, so your task logic should be idempotent.
 > Avoid relying on local state from a previous attempt, and make any external side effects safe to repeat.
 
+{{< variant union >}}
+{{< markdown >}}
 The platform does eventually give up, but only after many retries: a persistent infrastructure problem can churn for a while before the run is terminated. If you spot a task repeatedly failing on the same infrastructure error, abort it manually rather than waiting for the system to give up on its own. You don't configure the system retry budget from Python; it's a platform-level concern.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The platform does eventually give up: by default, the open-source Flyte backend allows three system failures per attempt, and a fourth fails the task. The limit is the backend's `maxSystemFailures` setting; you don't configure it from Python.
+{{< /markdown >}}
+{{< /variant >}}
 
 For workloads on spot/preemptible compute, see also [Behavior on preemption](./interruptible-tasks-and-queues#behavior-on-preemption), which describes how preempted interruptible tasks are rescheduled.
 
