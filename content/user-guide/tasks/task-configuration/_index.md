@@ -60,7 +60,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **image** | `TaskEnvironment` only | [Container images](./container-images) &bull; [`Image` API ref](../../../api-reference/flyte-sdk/flyte/image) |
 | **depends_on** | `TaskEnvironment` only | [Multiple environments](./multiple-environments) |
 | **description** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) |
-| **plugin_config** | `TaskEnvironment` only | [Task plugins](./task-plugins) |
+| **plugin_config** | `TaskEnvironment`, `override` | [Task plugins](./task-plugins) |
 | **resources** | `TaskEnvironment`, `override`\* | [Resources](./resources) &bull; [`Resources` API ref](../../../api-reference/flyte-sdk/flyte/resources) |
 | **env_vars** | `TaskEnvironment`, `override`\* | [Additional task settings](./additional-task-settings#environment-variables) |
 | **secrets** | `TaskEnvironment`, `override`\* | [Secrets](./secrets) &bull; [`Secret` API ref](../../../api-reference/flyte-sdk/flyte/secret) |
@@ -90,7 +90,7 @@ For the complete parameter interaction matrix showing which parameters can be se
 | **image** | `TaskEnvironment` only | [Container images](./container-images) &bull; [`Image` API ref](../../../api-reference/flyte-sdk/flyte/image) |
 | **depends_on** | `TaskEnvironment` only | [Multiple environments](./multiple-environments) |
 | **description** | `TaskEnvironment` only | [Additional task settings](./additional-task-settings) |
-| **plugin_config** | `TaskEnvironment` only | [Task plugins](./task-plugins) |
+| **plugin_config** | `TaskEnvironment`, `override` | [Task plugins](./task-plugins) |
 | **resources** | `TaskEnvironment`, `override`\* | [Resources](./resources) &bull; [`Resources` API ref](../../../api-reference/flyte-sdk/flyte/resources) |
 | **env_vars** | `TaskEnvironment`, `override`\* | [Additional task settings](./additional-task-settings#environment-variables) |
 | **secrets** | `TaskEnvironment`, `override`\* | [Secrets](./secrets) &bull; [`Secret` API ref](../../../api-reference/flyte-sdk/flyte/secret) |
@@ -134,7 +134,8 @@ A trigger can run the task on a schedule (a cron expression or a fixed interval)
 Everything above configures a task that runs in a single container. Some tasks instead need a *gang*
 of pods working together as one distributed job — the classic case being multi-node, multi-GPU model
 training. For those, use a specialized `flyte.clustered.ClusteredTaskEnvironment` instead of a plain
-`TaskEnvironment`. It inherits all the configuration above and adds a few fields that describe the
+`TaskEnvironment`. It accepts the configuration above except `reusable`, which raises a `ValueError`,
+and `plugin_config`, which it replaces with its own. It adds a few fields that describe the
 cluster shape: `replicas` (pods) and `nproc_per_node` (worker processes per pod). When you run the
 task, the backend launches a Kubernetes JobSet of identical pods, sets up a `torchrun` rendezvous
 across them, and runs your task body once per worker.
