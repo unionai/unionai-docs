@@ -61,7 +61,7 @@ flyte run --project my-proj --domain development python-script ...
 | `--gpu-type` | `T4` | Accelerator class: `T4`, `A100`, `H100`, `L4`, `A10G`, etc. Only used when `--gpu > 0`. |
 | `--image` | *(auto)* | Container image URI or a named image from your config. Mutually exclusive with `--packages`. |
 | `--packages` | *(none)* | Comma-separated pip packages layered onto the default base image, e.g. `torch,transformers`. Mutually exclusive with `--image`. |
-| `--timeout` | `3600` | Task timeout in seconds. The subprocess is killed 60 s before this. |
+| `--timeout` | `3600` | Task timeout in seconds. |
 | `--extra-args` | *(none)* | Comma-separated values passed to the script as `sys.argv`. |
 | `--output-dir` | *(none)* | Directory path *inside the container* to upload as the task's output after the script finishes. |
 | `--include-files` | *(none)* | Path or glob (relative to the script's directory) to bundle alongside the script. Repeat the flag to pass multiple entries. |
