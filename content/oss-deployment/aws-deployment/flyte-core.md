@@ -213,13 +213,13 @@ ingress:
 ```
 
 That renders one `Ingress` named `flyte-http` carrying 16 path prefixes (two
-more when `app` is enabled). Older `flyte-core` charts don't route
+more when `app` is enabled). Charts before v2.0.54 don't route
 `.settings.SettingsService` and render 15:
 
 | Path prefix | Backend |
 |---|---|
 | `/v2` (`console.basePath`) | `flyte-console` |
-| `/flyteidl2.workflow.RunService`, `.task.TaskService`, `.trigger.TriggerService`, `.project.ProjectService`, `.auth.IdentityService`, `.settings.SettingsService` (newer charts only) | `flyte-runs` |
+| `/flyteidl2.workflow.RunService`, `.task.TaskService`, `.trigger.TriggerService`, `.project.ProjectService`, `.auth.IdentityService`, `.settings.SettingsService` (v2.0.54 or later) | `flyte-runs` |
 | `/flyteidl2.actions.ActionsService` | `flyte-actions` |
 | `/flyteidl2.workflow.EventsProxyService` | `flyte-events` |
 | `/flyteidl2.cacheservice.v2.CacheService` | `flyte-cache` |
