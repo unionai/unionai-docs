@@ -49,7 +49,7 @@ image = flyte.Image.from_debian_base().with_uv_project(
 
 **Two installation modes:**
 
-- `dependencies_only` (default): Only `pyproject.toml` and `uv.lock` are included in the build context. The image hash covers only these two files. Your code does not affect the image hash.
+- `dependencies_only` (default): `pyproject.toml`, `uv.lock`, and the source of any editable path dependencies (such as workspace members) are included in the build context. The image hash covers only `pyproject.toml` and `uv.lock`. Your code does not affect the image hash.
 
 - `install_project`: The entire project directory is copied into the build context. Any code change triggers a full image rebuild. Use this only when you need the project installed as a proper package (e.g., when you need package entry points or compiled extension modules).
 
@@ -182,7 +182,7 @@ repo_root/
 
 {{< code file="/unionai-examples/v2/user-guide/project-patterns/monorepo-with-uv/02_sibling_packages/my_app/src/my_app/env.py" lang="python" >}}
 
-`with_source_folder(MY_LIB_PKG)` copies the `my_lib` package directory into the image at `/root/my_lib/`. This is necessary because the editable install's `.pth` file points to a path that only exists during the image build stage. The `my_lib` layer is part of the image hash, so the image rebuilds when `my_lib` changes: correct behavior for a dependency.
+`with_source_folder(MY_LIB_PKG)` copies the `my_lib` package directory into the image's working directory, at `/home/flyte/my_lib/`. This is necessary because the editable install's `.pth` file points to a path that only exists during the image build stage. The `my_lib` layer is part of the image hash, so the image rebuilds when `my_lib` changes: correct behavior for a dependency.
 
 **Task definitions:**
 
@@ -254,7 +254,7 @@ dependencies = ["seeds"]
 package = true
 ```
 
-**Building the image** — point `.with_uv_project()` at the *workspace-root* `pyproject.toml`. Because `project_install_mode` defaults to `dependencies_only`, only the workspace's `pyproject.toml` and `uv.lock` enter the build context, so the image rebuilds only when dependencies change — fast registration is preserved. `extra_args` is forwarded to the `uv sync` that installs the dependencies (not to `pip install`), so `uv sync` flags apply — here `--only-group albatross` installs just that dependency group, keeping the image lean:
+**Building the image** — point `.with_uv_project()` at the *workspace-root* `pyproject.toml`. Because `project_install_mode` defaults to `dependencies_only`, the image hash covers only the workspace's `pyproject.toml` and `uv.lock`, so the image rebuilds only when dependencies change — fast registration is preserved. `extra_args` is forwarded to the `uv sync` that installs the dependencies (not to `pip install`), so `uv sync` flags apply — here `--only-group albatross` installs just that dependency group, keeping the image lean:
 
 ```python
 from pathlib import Path
@@ -277,7 +277,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build `uv sync` resolves the members `bird-feeder` and `seeds` from the shared `uv.lock` (uv reads the member metadata during the sync), but their **code is not baked into the image** — only `pyproject.toml` and `uv.lock` enter the build context. The sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member) and is on `sys.path` at runtime. The `[tool.uv.workspace]` config's job is to let uv resolve the siblings from the one lockfile; it does not put their code in the image.
+You do **not** need `with_source_folder()` to bake sibling code into the image (as Pattern B requires): in the default `dependencies_only` build `uv sync` resolves the members `bird-feeder` and `seeds` from the shared `uv.lock` (uv reads the member metadata during the sync), but their **code is not baked into the image**: the members' source is mounted into the build only for the `uv sync`, and only `pyproject.toml` and `uv.lock` count toward the image hash. The sibling source (`from bird_feeder.actions import ...`, `from seeds.actions import ...`) travels in the **code bundle** instead (the entry point below sets `root_dir` to the workspace root, so the bundle packages every member) and is on `sys.path` at runtime. The `[tool.uv.workspace]` config's job is to let uv resolve the siblings from the one lockfile; it does not put their code in the image.
 
 **Entry point** — set `root_dir` to the *workspace root* (here `albatross/`), **not** to any single member's `src/`. A workspace spreads its members across several `src/` trees (`src/albatross/`, `packages/bird_feeder/src/`, …), so the workspace root is the one directory whose bundle captures them all — this is the `root_dir` rule from the start of this page applied to a multi-member tree, not an exception to it. With every member's source in the bundle, imports resolve the same way locally and at runtime:
 
