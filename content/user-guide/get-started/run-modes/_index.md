@@ -58,7 +58,7 @@ Run tasks and apps on a deployed cluster, in the cloud or on-premises, with full
 | **🐳 Docker required** | No | Yes | Yes (local image build) |
 | **💻 Flyte UI** | No (TUI only) | Yes (`localhost:30080`) | Yes |
 | **📦 Container images** | Ignored | Built locally | Built locally, pushed to a registry |
-| **🔀 Parallelism** | Sequential | Cluster-level | Cluster-level |
+| **🔀 Parallelism** | In-process: `asyncio.gather` runs concurrently, `flyte.map` runs sequentially | Cluster-level | Cluster-level |
 | **⭐️ Best for** | Fast iteration, debugging | Testing container builds, full Flyte features | Production, GPUs, scale |
 
 The same task code runs unchanged on all three. Start with local execution for fast feedback, move to the Devbox to validate on-cluster execution, then deploy to your Flyte cluster for production.
@@ -75,7 +75,7 @@ The same task code runs unchanged on all three. Start with local execution for f
 | **🐳 Docker required** | No | Yes | No (remote build) |
 | **💻 Flyte UI** | TUI, or the console with `--tracked` | Yes (`localhost:30080`) | Yes |
 | **📦 Container images** | Ignored | Built locally | Built locally or remotely |
-| **🔀 Parallelism** | Sequential | Cluster-level | Cluster-level |
+| **🔀 Parallelism** | In-process: `asyncio.gather` runs concurrently, `flyte.map` runs sequentially | Cluster-level | Cluster-level |
 | **⭐️ Best for** | Fast iteration, debugging | Testing container builds, full Flyte features | Production, GPUs, scale |
 
 The same task code runs unchanged on all three. Start with local execution for fast feedback, move to the Devbox to validate on-cluster execution, then run on a deployed cluster for production.
