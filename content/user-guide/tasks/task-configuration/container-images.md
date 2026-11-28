@@ -502,6 +502,27 @@ A static ECR token would expire after 12 hours.
    Leave `registry` unset so the built image is pushed to your Union instance's default registry, as usual.
    Tasks pull it from there, so the `TaskEnvironment` doesn't need the secret.
 
+{{< variant union >}}
+{{< markdown >}}
+#### Image retention
+
+Images that `ImageBuilder` pushes to your Union instance's default registry may not stay there forever.
+In a Union-Managed deployment, Union.ai can set a retention rule on that registry. Whether it does, and which rule applies, depends on how Union.ai provisioned your data plane. Where the default rule applies, it depends on the cloud:
+
+* **AWS**: an image is archived after 60 days without a pull. An archived image can't be pulled, and it is deleted 90 days after it was archived. An image that tasks keep pulling is never archived.
+* **GCP and Azure**: an image is deleted 30 days after it was pushed, whether or not tasks still use it.
+
+Union.ai can set a different retention period for your organization, or turn expiry off. A period set this way replaces the 60-day window on AWS and the 30-day window on GCP and Azure.
+Retention isn't a console setting. Contact Union.ai support to find out the rule for your data plane, to change its period, or to restore an archived image on AWS before it is deleted.
+
+In a Self-Managed deployment, you create and manage the registry, and its own lifecycle settings decide how long images are kept.
+The same applies to images pushed to a registry you set with `registry`, and to images you build locally.
+
+If a task's image has been archived or deleted, the task can't start: Kubernetes can't pull the image and reports `ImagePullBackOff`, and the task fails without running your code.
+To rebuild the image, call `flyte.build()` on it with `force=True`. This skips the check for an existing image and the cached result of the earlier build, and builds the image again. Then run the task again.
+{{< /markdown >}}
+{{< /variant >}}
+
 ### Install private PyPI packages
 
 To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.
