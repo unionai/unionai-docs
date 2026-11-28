@@ -39,7 +39,7 @@ Union.ai uses OAuth2 / OIDC for SSO. Customers can configure any OIDC or SAML 2.
    ```bash
    flyte create api-key --name <key-name>
    # Use the key in a script to authenticate
-   flyte delete api-key <key-name>
+   flyte delete api-key <client-id>  # the Client ID printed by flyte create api-key
    # Confirm the revoked key is rejected
    ```
 
