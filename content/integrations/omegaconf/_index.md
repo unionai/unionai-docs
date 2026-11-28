@@ -394,28 +394,27 @@ async def inspect(cfg: DictConfig) -> str:
 
 ### Merging overrides on top of a structured base
 
-```python{hl_lines=[3, 11]}
+```python{hl_lines=[3, 10]}
 @env.task
 async def structured_merge_pipeline() -> str:
     base = OmegaConf.structured(TrainConf())
     overrides = OmegaConf.create(
         {
             "optimizer": {"lr": 0.05},
-            "training": {"epochs": 100},
-            "experiment_name": "sweep-run-1",
+            "epochs": 100,
         }
     )
     cfg = OmegaConf.merge(base, overrides)
     return await validate_config(cfg)
 ```
 
-Merging an unknown key against a structured config raises an error, so define every key the override layer might supply on the dataclass.
+Every key in the override layer must exist on the `TrainConf` from [Basic structured config](#basic-structured-config): merging a key the dataclass doesn't define raises `omegaconf.errors.ConfigKeyError`.
 
 ## Embedding rich Python values inside a plain DictConfig
 
 A plain `DictConfig` (one not bound to a dataclass) can still hold Python values that OmegaConf does not natively model. The plugin preserves the following types end-to-end whether they appear in plain or structured configs:
 
-- `pathlib.Path` and any subclass of `pathlib.PurePath`
+- `pathlib.Path`
 - `enum.Enum` members
 - `bytes`
 
