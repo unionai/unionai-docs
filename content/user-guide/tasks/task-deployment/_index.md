@@ -171,6 +171,14 @@ For more details on how `flyte deploy` and `flyte.deploy()` work under the hood,
 
 If you have already deployed your task environment, you can run its tasks without redeploying by using the `flyte run` CLI command or the `flyte.run()` SDK function in a slightly different way. Alternatively, you can always initiate execution of a deployed task from the UI.
 
+{{< variant union >}}
+{{< markdown >}}
+
+To find a deployed task in the UI and launch it with the launch form, see [Launch deployed tasks from the UI](./launch-from-ui).
+
+{{< /markdown >}}
+{{< /variant >}}
+
 {{< tabs "run-deployed" >}}
 {{< tab "Programmatic" >}}
 {{< markdown >}}
