@@ -46,7 +46,7 @@ Parameter(
 
 This configuration:
 
-1. **Finds the latest run** of `report_batch_pipeline` in the `driver` environment
+1. **Finds the latest successful run** of `report_batch_pipeline` in the `driver` environment when you deploy the app
 2. **Downloads the output** to local storage (`download=True`)
 3. **Sets an environment variable** with the path (`REPORTS_PATH`)
 
@@ -104,7 +104,7 @@ The typical workflow is:
    uv run generate.py
    ```
 
-2. **Deploy or refresh the app** to view results:
+2. **Deploy the app again** to view results:
 
    ```bash
    uv run serve.py
@@ -112,13 +112,15 @@ The typical workflow is:
 
 3. **Access the app** at the provided URL and browse all generated reports
 
-The app automatically picks up the latest pipeline run, so you can generate
-new batches and always see the most recent results.
+Each deployment picks up the latest successful pipeline run, so after you generate a new
+batch, deploy the app again to see the most recent results.
 
-## Automatic updates with RunOutput
+## Pick up new runs with RunOutput
 
-The `RunOutput` connection is evaluated at app startup. Each time the app
-restarts or redeploys, it fetches the latest batch pipeline output.
+The `RunOutput` connection is resolved when you deploy the app: the latest successful
+batch pipeline output is looked up at deploy time and its path is stored in the
+deployed app. Restarting the app reuses that stored output. To pick up a newer
+run, deploy the app again.
 
 For real-time updates without redeployment, you could:
 
